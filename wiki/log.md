@@ -2,7 +2,7 @@
 id: LOG-WIKI
 type: log
 status: active
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 ---
 
@@ -459,3 +459,115 @@ a bounded analysis stage and exports with analysis disabled. Actual JVM gates,
 closed-project verification and storage admission remain unimplemented/unproven.
 Linked the research index, export design and phase ledger. Independent design
 review is pending; no additional analyzer was launched.
+
+## [2026-10-09] ingest | Full main-image inventory and default pilot
+
+After the user freed disk space, the single retry completed Ghidra analysis in
+3,016 reported seconds. The [completion record](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/analysis-completion-v1.json)
+pins full retained evidence exported after the MCP size limit, without repeating
+the query. The [phase ledger](research/native-phase-execution.md#full-analysis-checkpoint)
+records the frozen inventory and twenty successful pilot exports with warnings.
+The two original Start/Stop wrapper seeds were absent as exact discovered entries;
+their known branch destinations were verified and substituted for the pilot.
+Updated source, preparation, questions and coverage; runtime compatibility remains
+unknown. The selected-profile failures remain unchanged. Actual full-scale costs
+require grouped ingestion and attempted-first browser loading before bulk work.
+
+The [recovery design](research/native-analysis-recovery.md) received independent
+[design review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/native-recovery-quality-review-v1.json)
+after correcting gate-load failure handling. It is a contingency, not implemented
+persistence. The current provider remains open; no competing analyzer was started.
+
+## [2026-10-09] query | Shared transport helper and profile comparison
+
+The [native study](research/native-transport-study.md#default-profile-comparison-and-shared-helper)
+now records the default-profile Stop warnings at the same computed transfers
+that failed the selected profile. A focused follow-up established memory access
+widths in a shared record-building path and a small byte getter. Its large caller
+list caused an MCP size limit; retained evidence was exported without repeating
+the query. Updated the wrapper lesson and atlas revision 6. The
+[independent semantic review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-review-v1.json)
+verified source hashes, assembly and careful observed/inferred/unknown wording.
+The indirect consumer and external behavior remain unresolved; released handoff
+bytes and compatibility coverage are unchanged.
+
+
+## [2026-10-10] maintenance | Reviewed exports, browser checkpoints and capacity closure
+
+The [phase report](research/native-phase-execution.md#stratified-checkpoint-and-phase-report--2026-10-10)
+records two completed 1,000-function stages and the remaining export gate. The
+first stage was contiguous; the second used independently checked address strata.
+Both retain exact requests, source hashes, method copies, resource checks and
+checkpoint results. The independent final stage review verified new revisions
+and unchanged prior payloads, then recommended stopping further bulk work until
+a durable storage budget or reviewed compact format provides adequate margin.
+These sample-derived scenarios are not whole-program size or timing forecasts.
+
+Grouped ingestion and attempted-first/lazy-full browsing passed independent
+scope and quality reviews. The [84-test tool suite](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json)
+pins final source hashes; [frozen methods](../analysis/ableton-live-12.4.3/native-live-arm64-v1/methods/export-and-browser-v2/manifest.json)
+preserve those tools and design snapshots. Updated export/browser designs and
+execution pages. The [final browser check](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/browser-checkpoint-2026-10-10-v1/report.json)
+verified generated hashes, local links and stable anchors, including `#python`.
+No real-browser visual pass or original-versus-candidate test was performed.
+
+Saved the provider-neutral analysis snapshot and closed the owned provider,
+controller and monitor. The [closure manifest](../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/post-run/manifest-v1.json)
+pins receipts, logs and identity reconciliation: no owned survivors or temporary
+Ghidra directory remain. This preserves observations, not the ephemeral native
+database. Updated sources, questions and coverage; all compatibility results
+remain unknown. Reverified the released MIDI handoff's unchanged manifest and
+59 payloads; its 54 comparison cases remain unexecuted.
+
+
+## [2026-10-10] lint | Final native checkpoint documentation
+
+The [final validation record](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v4/report.json)
+retains the wiki checker, output and whitespace check, and rechecks final tool
+source pins, frozen methods, stage-summary pins, session-closure pins and released
+handoff bytes. The separate browser and stage reviews establish their explicitly
+named scopes; none is a runtime compatibility pass.
+
+The preceding v3 validation attempt retained an error for its not-yet-written
+report link, while the old checker returned exit zero despite a nonempty error
+list. That attempt's pass label is superseded by v4. The retained v4 checker
+returns nonzero on documentation errors, and the runner also inspects the error
+list explicitly. Earlier captures remain unchanged.
+
+
+## [2026-10-10] query | Continuation capacity and exact compact archives
+
+The user requested continuation after the prior capacity checkpoint. Reverified
+the retained arm64 source and captured fresh free disk, host state and allocated
+payload sizes in [continuation preflight](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/continuation-v1/host-and-storage.json).
+No native analyzer or old transport lock was present. Drafted the canonical
+[compact archive and continuation plan](research/native-compact-storage.md),
+assigned one tooling author, and commissioned a separate read-only audit of
+the persistent design. Updated recovery design activation and added the
+[storage/recovery lesson](research/learning/walkthroughs/artifact-storage-and-recovery.md).
+New compressed storage savings and cold native recovery remain unproven until
+actual round-trip and save/reopen captures exist.
+
+## [2026-10-10] query | Compact archive failure review and reader clarity
+
+The initial scope review exposed a failed-rename publication window; author
+revision 2 fixed it. Separate quality review reproduced a later output-directory
+sync failure after the completion marker had been removed, and internally
+consistent archive changes which disagreed with unchanged source envelopes.
+The retained [publication reproduction](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-quality-review-v1/publication-tail-reproduction.stdout.txt)
+and [source-agreement reproduction](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-quality-review-v1/source-authority-reproduction.stdout.txt)
+cover synthetic fixtures, not changes to Live captures. Returned both findings
+to the same author for corrections and scope/quality rereview before real use.
+
+A separate reader review identified ambiguous storage wording and missing
+navigation/counts. Updated the [storage lesson](research/learning/walkthroughs/artifact-storage-and-recovery.md)
+with direct browser links, code-versus-metadata sizes, the retained/pending counts
+and the fact that a mirror neither exports more functions nor frees space while
+old evidence remains. Expanded the canonical plan with concrete viewer limits,
+revision selection and exact-byte download criteria.
+
+The [reader rereview](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/storage-learning-review-v2/report.md)
+passed the revised lesson's clarity for its exact retained page hash. Root
+reverified all five payload pins, and all 27 sealed quality-review payload pins.
+These are documentation/review results, not archive execution, database recovery
+or behavioral compatibility results.

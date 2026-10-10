@@ -2,7 +2,7 @@
 id: RESEARCH-QUESTIONS
 type: questions
 status: active
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 ---
 
@@ -30,7 +30,7 @@ no experimental contradiction has been established yet.
   retains exact build, original/slice digests, extraction provenance and environment.
   Ghidra accepted the Live slice. Subsequent selected main-Live code exports
   are recorded in the [execution ledger](research/native-phase-execution.md);
-  full-inventory coverage remains open in Q-011.
+  systematic export coverage and cold recovery remain open in Q-011.
 - Retention limitation: installed resources remain mutable external originals;
   local ignored evidence is not an off-machine backup. Q-003 remains open.
 
@@ -121,16 +121,20 @@ no experimental contradiction has been established yet.
 - State: open; owner: native-analysis coordinator.
 - Affects: [next-phase roadmap](research/native-decompilation-roadmap.md), main
   Live corpus and downstream native behavior investigations.
-- Evidence: [preparation](research/ableton-decompilation-preparation.md) establishes
-  that Ghidra accepted the main slice, while deep analysis was tested only on
-  Push2; the retained [capability note](../analysis/ableton-live-12.4.3/phase-2-plan/tool-capabilities.json)
-  identifies advertised tool arguments, not exercised main-image capacity.
-- Progress: the [execution ledger](research/native-phase-execution.md) records
-  the full-analysis disk-floor stop, successful selected-entry exports and
-  the changed resource policy for a capacity-enabled retry. Readable main
-  pseudocode exists; full inventory and systematic export do not.
-- Gap: full-analysis completion cost, discovered-function count, default-profile
-  export throughput and cold-provider recovery remain unmeasured.
-- Next action: retry with the newly freed capacity, two-worker default pools and
-  aggregate process monitoring; retain the result before scheduling exports.
-  Selected-entry manifests must remain separate from the default corpus.
+- Evidence: the [execution ledger](research/native-phase-execution.md) links the
+  successful full-analysis completion, frozen inventory and bounded default-profile
+  export checkpoints. The earlier disk stop and separate selected exports remain retained.
+- Progress: full analysis completed after disk capacity was freed. Actual JVM
+  diagnostics disproved the intended two-worker pool setting; aggregate monitoring
+  remained active. The full inventory is available; reviewed grouped ingestion and
+  attempted-first browsing have been exercised on a systematic export stage,
+  with warnings preserved.
+- Gap: full-corpus storage/throughput and cold-provider recovery remain unproven.
+  Grouped checkpoints reduce whole-ledger rewriting, but do not remove its cost.
+  The two bounded samples do not establish full-corpus fit; the capacity review
+  stopped further bulk expansion. The current provider uses an ephemeral database.
+- Next action: execute the [compact/archive and recovery plan](research/native-compact-storage.md),
+  measure exact round-trip/storage results, then establish database recovery
+  before admitting a larger stage. The
+  [persistent recovery design](research/native-analysis-recovery.md) is reviewed
+  but unimplemented. Keep selected, linker and default-profile evidence separate.

@@ -2,20 +2,21 @@
 id: DESIGN-NATIVE-ANALYSIS-RECOVERY
 type: research
 status: draft
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
 
 # Recoverable native analysis after the REA retry
 
-**Proposed, not executed.** If the single full-inventory REA retry ends without
-usable results, use a separately profiled, persistent Ghidra headless project.
-First prove the actual JVM settings and a saved import; then attempt one bounded
-analysis pass. This page prepares that route. It does not start another analyzer,
-modify installed REA/Ghidra, or change the active run. The coordinator must first
-retain the retry outcome and reconcile all owned processes. If the retry returns
-useful evidence, export it before closing its ephemeral session instead.
+**Execution preparation authorized; target stages not yet run.** The full REA
+retry produced usable results and closed with retained observations, but its
+native database was ephemeral. On the user's 2026-10-10 continuation, implement
+this separately profiled persistent route alongside the
+[compact-storage tasks](native-compact-storage.md). First prove actual JVM settings
+and synthetic save/reopen behavior, then admit a saved target import and decide
+one bounded analysis pass from measured capacity. Installed REA/Ghidra stay
+unchanged. The prior owner and descendants were reconciled before this work.
 
 The [phase ledger](native-phase-execution.md) remains authoritative for execution
 status; the [export design](native-export-design.md) defines corpus integrity.
@@ -47,7 +48,7 @@ Ghidra documents `-import ... -noanalysis` for an import without auto-analysis a
 cooperatively and permits completed analyzer results to be saved. It does not
 bound import, scripts, saving, or an analyzer that fails to cooperate.
 
-Two source details affect the design:
+Three source details affect the design:
 
 - `HeadlessAnalyzer.java:1047–1069` calls `reAnalyzeAll(null)` on ordinary
   processing. Reopening preserves database facts; it does **not** resume the
@@ -57,7 +58,15 @@ Two source details affect the design:
   must first call `enableHeadlessAnalysis(false)`, then capture
   `analysisTimeoutOccurred()` and return without editing the program. These are
   the actual installed `HeadlessScript` APIs; the README's timeout-query method
-  name is outdated. A script exception alone is not an adequate fail-closed gate.
+  name is outdated. If that script fails to load, it cannot suppress this branch;
+  the controller must reject the stage and stop it as described below.
+- `HeadlessAnalyzer.java:968–973` catches script load/constructor/provider
+  exceptions and can return the incoming `CONTINUE`. Starting B with analysis
+  enabled would therefore bypass a missing gate. Start **every** stage with
+  `-noanalysis`; only a successfully running gate in B may enable analysis after
+  receiving the controller's verified acknowledgment. Execution failure of an
+  instantiated `HeadlessScript` returns `ABORT` at lines 950–955, but that does
+  not cover script-loading failure.
 
 ## Exact launch route and verification gate
 
@@ -88,15 +97,15 @@ recovery_headless() {
 recovery_headless "$RECOVERY_ROOT/work" LiveRecovery \
   -import "$RECOVERY_TARGET" -noanalysis -max-cpu 2 \
   -scriptPath "$RECOVERY_ROOT/scripts" \
-  -preScript RecoveryLaunchGate.java "$RECOVERY_ROOT/import-gate.json" \
+  -preScript RecoveryLaunchGate.java "$RECOVERY_ROOT/import-gate.json" verify-only "$RECOVERY_ROOT/import-ack.json" \
   -log "$RECOVERY_ROOT/logs/import.log" \
   -scriptlog "$RECOVERY_ROOT/logs/import-script.log"
 
 # B: one analysis pass on a disposable working copy of the verified baseline.
 recovery_headless "$RECOVERY_ROOT/work" LiveRecovery \
-  -process Live.arm64 -max-cpu 2 -analysisTimeoutPerFile 900 \
+  -process Live.arm64 -noanalysis -max-cpu 2 -analysisTimeoutPerFile 900 \
   -scriptPath "$RECOVERY_ROOT/scripts" \
-  -preScript RecoveryLaunchGate.java "$RECOVERY_ROOT/analysis-gate.json" \
+  -preScript RecoveryLaunchGate.java "$RECOVERY_ROOT/analysis-gate.json" enable-analysis-after-ack "$RECOVERY_ROOT/analysis-ack.json" \
   -postScript RecoveryAnalysisOutcome.java "$RECOVERY_ROOT/analysis-outcome.json" \
   -log "$RECOVERY_ROOT/logs/analysis.log" \
   -scriptlog "$RECOVERY_ROOT/logs/analysis-script.log"
@@ -120,11 +129,32 @@ hash and arm64 language, `Runtime.availableProcessors()==2`,
 `SystemUtilities.getDefaultThreadPoolSize()==2`, `cpu.core.override=2`,
 `cpu.core.limit=2`, the effective 4 GiB maximum heap, and isolated home/temp paths.
 External JVM flags must independently show `ActiveProcessorCount=2` and the heap
-limit. Missing or contradictory records fail the gate. On failure the script
-must explicitly disable analysis and set `HeadlessContinuationOption.ABORT`;
-the controller marks the stage failed even if headless exits zero. Do not
-publish the resulting project as an accepted checkpoint. The external watchdog
-is active from process creation, including import before its pre-script runs.
+limit. The gate starts by disabling analysis and setting
+`HeadlessContinuationOption.ABORT`. It writes its checked in-JVM record, then
+waits at most ten seconds for an atomic controller acknowledgment. That
+acknowledgment must match a fresh run/stage nonce, target hash, gate-record hash
+and the current JVM PID/creation identity, and attest that the external command,
+flags and properties passed. A stale acknowledgment or elapsed time is not
+approval. Only after matching acknowledgment may B's gate explicitly call
+`enableHeadlessAnalysis(true)`. Every successful mode then finishes with
+`CONTINUE`; `verify-only`, used by import, reopen and export with fresh per-stage
+record/acknowledgment paths, leaves analysis disabled. The controller must
+also retain a positive gate-completion milestone; a missing/load-failed gate can
+neither start analysis nor produce an accepted checkpoint, even if headless
+saves the unchanged program and exits zero.
+
+Missing or contradictory records fail the stage. The external watchdog is
+active from process creation, including import before its pre-script runs.
+On `REPORT SCRIPT ERROR`, an explicit gate/outcome error, or missing required
+milestone, close the queue and stop the owned process promptly. After the
+analysis-completed or analysis-timeout log milestone, allow at most ten seconds
+for a valid outcome record. An outcome-script load failure may enter the untimed
+post-analysis branch **before** the controller observes the failure. This design
+does not claim to prevent that work completely: the external 1,200-second hard
+deadline and resource stops remain active, the error triggers earlier shutdown,
+and the resulting working tree is never accepted as a checkpoint. Normal
+successful outcome-script execution disables that additional pass. Do not treat
+a zero exit, a save log, or an outcome record alone as sufficient stage success.
 
 ## Persistence, checkpoints and exported artifacts
 
@@ -139,7 +169,7 @@ is active from process creation, including import before its pre-script runs.
    including startup, outcome script and save. Retain timeout status separately
    from process exit. A cooperative timeout can yield a **partial** checkpoint
    after successful save, close, hash and read-only reopen. A kill, failed save,
-   missing outcome record, or failed reopen leaves an unverified working tree;
+   failed/missing gate or outcome record, any script-load error, or failed reopen leaves an unverified working tree;
    retain its failure evidence and use the last verified baseline for recovery.
 3. **Export without reanalysis.** On a disposable working copy of a verified
    analysis checkpoint, run `-process Live.arm64 -noanalysis -readOnly -max-cpu 2`, the launch gate,
@@ -204,8 +234,10 @@ active REA analyzer or another writer to the project.
 
 The next authorized preparation task is the small owned driver plus three analyst
 scripts described above. Preserve exact source copies and command arrays; compile
-against the installed API; test ineffective JVM settings, gate-script failures,
-timeout reporting, suppression of post-script analysis, failed saves, interrupted
+against the installed API; test ineffective JVM settings, gate load/constructor/
+execution failures, absent/stale/mismatched controller acknowledgments, outcome
+load failures, missing outcome milestones, timeout reporting, successful-script
+suppression of post-script analysis, failed saves, interrupted
 copies, PID reuse, low disk and malformed export records. Exercise the synthetic
 save/reopen/timeout path before the target. Obtain independent scope and quality
 reviews, then let the coordinator run A and decide B from its measured admission
@@ -222,7 +254,7 @@ were inspected read-only; capture their exact bytes with the future method.
 | --- | --- | --- |
 | `support/analyzeHeadlessREADME.md` | `-process`, `-readOnly`, `-deleteProject`, `-noanalysis`, `-analysisTimeoutPerFile`, `-max-cpu` | `7c652d030b02b89f23c4853eafbaec51fa2eef5cc8243def5cc704cb78c4b7c2` |
 | `Ghidra/Features/Base/lib/Base-src.zip` | Archive containing the two members below | `4c51fc79a73ac7187fb5138a16b1952040585df9599cd50546c35fbc37e05627` |
-| `ghidra/app/util/headless/HeadlessAnalyzer.java` | Lines 1008–1135, 1183–1227, 1586–1629: pre-gate, timeout, extra analysis, processing/import save | `3351b9aae4519b61bfae2cd8cc40cc78912cb63135041b4054c5f638f350b299` |
+| `ghidra/app/util/headless/HeadlessAnalyzer.java` | Lines 915–973, 1008–1135, 1183–1227, 1586–1629: script-loading failure, pre-gate, timeout, extra analysis, processing/import save | `3351b9aae4519b61bfae2cd8cc40cc78912cb63135041b4054c5f638f350b299` |
 | `ghidra/app/util/headless/HeadlessScript.java` | Lines 202–203, 240–243, 384–386: explicit abort, disable analysis, actual timeout API | `422cbfe4be0f4e0b0079ba929429ac60ef7b77c6a47fa6a83a5389d804f0e31f` |
 
 **Review performed:** canonical execution/export pages, retained launch correction,
@@ -231,3 +263,26 @@ control flow and source hashes. **Not performed:** a new JVM probe, synthetic
 headless execution, target import/analysis, persistence demonstration, tooling
 installation, provider edits, or application implementation. Root owns the index,
 phase ledger and shared investigation log updates for this proposed route.
+
+
+## Continuation preparation audit
+
+The [revision-2 preparation packet](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-preparation-v2/preparation-report.md)
+retains exact installed API sources, concrete driver/script interfaces and
+synthetic failure cases. Its [manifest](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-preparation-v2/manifest.json)
+was verified after capture. The audit establishes feasibility against those
+source versions; it did not launch a JVM or target.
+
+The inventory exporter must combine ordinary and external function iterators
+and reconcile their sum with the reported function count. Read-only processing
+can change project bookkeeping; reopen/export disposable full copies and check
+the sealed source afterward. A deterministic timeout test needs a fixture-only
+analyzer that receives and polls the timed cancellation monitor. All three
+points have exact retained source locators in the packet.
+
+The prior design review pins an earlier page version. The packet preserves the
+current page and an explicitly reconstructed prior page; reversing only the
+activation paragraph/date edits reproduced the original review hash. This does
+not extend the prior review to new implementation or this page's current hash.
+Actual compilation, handshake, save/reopen, timeout and target results remain
+pending.

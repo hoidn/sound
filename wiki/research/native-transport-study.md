@@ -366,7 +366,7 @@ notes stay in the analyst workspace; only reviewed external contracts cross the
 | First selected native factory | Exported and inspected; four call edges retained under the no-analysis profile |
 | Native reader/writer and handler tracing | Four follow-up destinations inspected: three exports and one computed-transfer failure; shared guarded transport call identified; field/action connections remain unresolved |
 | Fixture byte retention and mutations | Complete for 12 P1-A–D inputs; both original resources match prior hashes; XML syntax/gzip round trips checked; reference acceptance unknown |
-| Native walkthroughs, evidence review and contracts | Two native lessons written; reader review pending; behavioral contracts unresolved |
+| Native walkthroughs, evidence review and contracts | Two native lessons reader-reviewed; behavioral contracts unresolved |
 | Reference comparison | Unknown; no candidate or comparison run |
 
 The [independent preparation review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/independent-review-v1.json)
@@ -384,3 +384,56 @@ locations, including the failed wrappers. It does not validate a recovered body,
 resolve a computed transfer, or change any failed export to success. The
 [source page](sources/ableton-live-12.4.3.md) owns the whole index's identity and
 limits. No new native analysis or runtime call was required for this comparison.
+
+
+## Default-profile comparison and shared helper
+
+The [default pilot review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/first-default-pilot-review-v1.json)
+verified twenty exports from the completed whole-image analysis. Its
+[provenance amendment](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/first-default-pilot-review-v1-provenance-amendment.json)
+corrects the tooling version attached to a historical scaling observation; the
+native findings remain unchanged. The Start/Stop wrapper addresses appear in
+the symbol and linker-start indexes but are absent as exact discovered entries.
+That is an observed disagreement between indexes, not proof that the wrappers
+were merged into another function. No body-range evidence establishes the cause.
+
+The default profile produced [Stop pseudocode](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/functions/0x102767b70/ev_2bdece1772423ee0a8c327b787f71017b84e69af7d109ed21100070237fba02d-3/pseudocode.c)
+with explicit warnings at `0x102767c60` and `0x102767c98`. These are the same
+computed transfers rejected by the selected profile. The new readable output
+is an additional result under different acceptance rules; it neither erases
+that failure nor resolves those transfers.
+
+A subsequent [source-pinned packet](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-v1/findings.json)
+records DEF-TRANSPORT-01–03. Its [manifest](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-v1/manifest.json)
+pins four readable assembly excerpts and the findings:
+
+- **Observed:** shared helper `0x101a4abd8` prepares a local structure, forwards
+  incoming arguments to an eight-byte store helper and three one-byte store
+  calls, invokes an indirect target through a table at offset `0x10`, then calls
+  another helper. Exact instructions are in the
+  [40-instruction body](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-v1/0x101a4abd8-assembly.txt).
+- **Observed:** [eight-byte](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-v1/0x101a9c600-assembly.txt)
+  and [one-byte](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-v1/0x101a9c504-assembly.txt)
+  helpers read a 16-bit field at offset `2`, store at base + that value + `4`,
+  increment by the corresponding width, and write the field back as 16 bits.
+  A shared append-length field is the supported interpretation; capacity and
+  caller preconditions remain unknown.
+- **Observed:** [getter `0x1015645a0`](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-v1/0x1015645a0-assembly.txt)
+  loads one byte from incoming pointer + `0x60` and returns. Its eight-byte body
+  has a large retained caller list, so the dossier exceeded the MCP response
+  budget and was exported from retained evidence. Body size does not predict
+  the size of reference evidence.
+
+**Inferred:** the shared path assembles a temporary record before an indirect
+operation. **Unknown:** whether that operation queues, dispatches, logs or
+otherwise consumes the record; what its selector and bytes mean externally;
+and how it relates to observable Start/Stop ordering. The getter does not by
+itself connect an object to the LoopOn schema or establish a runtime default.
+The next discriminating static question is the indirect target and its consumer,
+not a behavioral assertion based on the constants alone.
+
+
+The [independent semantic review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-review-v1.json)
+verified the packet's source/profile identities, instruction excerpts and linked
+lesson/atlas wording. It supports these static findings only; no external
+Start/Stop behavior or LoopOn default was established.

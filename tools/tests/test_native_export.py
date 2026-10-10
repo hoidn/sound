@@ -124,4 +124,144 @@ class ExportTests(unittest.TestCase):
     def test_unknown_classification_remains_visible(self):
         self.assertEqual(e.freeze_inventory([{'address':'0x1000','value':'unknown'}])[0]['classification'],'unclassified')
 
+    def test_read_only_coverage_validates_without_rewriting_checkpoint(self):
+        e.ingest(self.root,self.output())
+        checkpoint=self.root/'coverage.json';before=checkpoint.read_bytes();stamp=checkpoint.stat().st_mtime_ns
+        self.assertEqual(e.coverage(self.root,persist=False),json.loads(before))
+        self.assertEqual(checkpoint.read_bytes(),before);self.assertEqual(checkpoint.stat().st_mtime_ns,stamp)
+        # This API computes source-authoritative coverage; callers decide whether
+        # a stale checkpoint is acceptable. It never repairs it implicitly.
+        checkpoint.write_bytes(b'not a coverage document')
+        self.assertEqual(e.coverage(self.root,persist=False)['successful'],1)
+        self.assertEqual(checkpoint.read_bytes(),b'not a coverage document')
+
+    def test_read_only_coverage_rejects_corruption_without_touching_checkpoint(self):
+        e.ingest(self.root,self.output());checkpoint=self.root/'coverage.json'
+        before=checkpoint.read_bytes();stamp=checkpoint.stat().st_mtime_ns
+        next((self.root/'functions').rglob('pseudocode.c')).write_text('tampered')
+        with self.assertRaises(e.IntegrityError):e.coverage(self.root,persist=False)
+        self.assertEqual(checkpoint.read_bytes(),before);self.assertEqual(checkpoint.stat().st_mtime_ns,stamp)
+
+    def test_explicit_read_adapter_uses_same_authority_and_cannot_write(self):
+        e.ingest(self.root,self.output());checkpoint=self.root/'coverage.json';before=checkpoint.read_bytes();stamp=checkpoint.stat().st_mtime_ns
+        reader=e.FilesystemCorpusReader(self.root)
+        self.assertEqual(e.coverage(self.root,persist=False,reader=reader),json.loads(before))
+        with self.assertRaises(e.IntegrityError):e.coverage(self.root,reader=reader)
+        next((self.root/'functions').rglob('pseudocode.c')).write_bytes(b'changed')
+        with self.assertRaises(e.IntegrityError):e.coverage(self.root,persist=False,reader=reader)
+        self.assertEqual(checkpoint.read_bytes(),before);self.assertEqual(checkpoint.stat().st_mtime_ns,stamp)
+
+    def test_filesystem_read_adapter_preserves_root_symlink_rejection(self):
+        alias=self.base/'reader-alias';alias.symlink_to(self.root)
+        with self.assertRaises(e.IntegrityError):e.FilesystemCorpusReader(alias)
+
+    def second_output(self, n=3):
+        source=self.output('other code',n);r=json.loads(source.read_bytes());r['parameters']['procedure']='0x3000'
+        source.write_bytes(e.encoded(r));return source
+    def test_group_matches_individual_ingest_and_replay(self):
+        first=self.output();second=self.second_output()
+        other=self.base/'individual';other.mkdir();e.initialize(other,self.source,TARGET,'arm64')
+        e.ingest(other,first);expected=e.ingest(other,second)
+        actual=e.ingest_many(self.root,[first,second]);self.assertEqual(actual,expected)
+        files={str(p):p.stat().st_mtime_ns for p in (self.root/'functions').rglob('*') if p.is_file()}
+        self.assertEqual(e.ingest_many(self.root,[first,second]),expected)
+        self.assertEqual(files,{str(p):p.stat().st_mtime_ns for p in (self.root/'functions').rglob('*') if p.is_file()})
+    def test_group_partial_failure_keeps_prior_commits_and_checkpoint(self):
+        first=self.output();second=self.second_output();good=second.read_bytes()
+        bad=json.loads(good);bad['subject']['digest']['sha256']='c'*64;second.write_bytes(e.encoded(bad))
+        checkpoint=(self.root/'coverage.json').read_bytes()
+        with self.assertRaises(e.IntegrityError):e.ingest_many(self.root,[first,second])
+        self.assertEqual((self.root/'coverage.json').read_bytes(),checkpoint)
+        self.assertEqual(len(list((self.root/'functions').rglob('pseudocode.c'))),1)
+        second.write_bytes(good);self.assertEqual(e.ingest_many(self.root,[first,second])['successful'],2)
+    def test_group_evidence_identity_change_rejected(self):
+        first=self.output();e.ingest(self.root,first);first.write_bytes(e.encoded(record('procedure_pseudo_code','changed',2)))
+        with self.assertRaisesRegex(e.IntegrityError,'reused'):e.ingest_many(self.root,[first])
+    def test_group_audits_corrupt_existing_payload(self):
+        e.ingest(self.root,self.output());next((self.root/'functions').rglob('pseudocode.c')).write_text('tampered')
+        checkpoint=(self.root/'coverage.json').read_bytes()
+        with self.assertRaises(e.IntegrityError):e.ingest_many(self.root,[self.second_output()])
+        self.assertEqual((self.root/'coverage.json').read_bytes(),checkpoint)
+    def test_sparse_audit_rejects_unexpected_entries(self):
+        for relative,kind in [('functions/0x9000','directory'),('functions/junk','file'),
+                              ('functions/0x1000/junk','directory'),('functions/0x01000','directory')]:
+            path=self.root/relative;path.parent.mkdir(parents=True,exist_ok=True)
+            if kind=='directory':path.mkdir()
+            else:path.write_text('junk')
+            with self.subTest(relative=relative),self.assertRaises(e.IntegrityError):e.coverage(self.root)
+            if kind=='directory':path.rmdir()
+            else:path.unlink()
+    def test_sparse_audit_rejects_empty_nested_directory_and_symlink(self):
+        e.ingest(self.root,self.output());revision=next((self.root/'functions'/'0x1000').iterdir())
+        extra=revision/'extra';extra.mkdir()
+        with self.assertRaises(e.IntegrityError):e.coverage(self.root)
+        extra.rmdir();link=self.root/'functions'/'0x3000';link.symlink_to(self.base/'missing')
+        with self.assertRaises(e.IntegrityError):e.coverage(self.root)
+    def test_cached_inventory_identity_change_rejected(self):
+        context=e.inventory_context(self.root);path=self.root/'inventory'/'v1.json';path.write_bytes(path.read_bytes()+b' ')
+        with self.assertRaisesRegex(e.IntegrityError,'context changed'):e.coverage(self.root,context)
+    def test_source_cache_eviction_keeps_authoritative_validation(self):
+        inputs=[]
+        for i in range(10,19):
+            rec=record('batch_decompile',{'items':[{'address':addr,'status':'ok','pseudocode':'code'+str(i)} for addr in ['0x1000','0x3000']]},i)
+            path=self.base/f'batch-{i}.json';path.write_bytes(e.encoded(rec));inputs.append(path)
+        e.ingest_many(self.root,inputs)
+        source=self.root/'evidence'/f'{e.sha(inputs[0].read_bytes())}.json'
+        original=Path.read_bytes;reads=0
+        def read_bytes(path):
+            nonlocal reads
+            if path==source:
+                reads+=1
+                if reads==2:return b'corruption detected on cache reload'
+            return original(path)
+        from unittest.mock import patch
+        with patch.object(Path,'read_bytes',read_bytes):
+            with self.assertRaisesRegex(e.IntegrityError,'source evidence corrupted'):e.coverage(self.root)
+        self.assertEqual(reads,2)
+
+
+    def test_prewrite_symlink_boundaries_never_write_outside(self):
+        import shutil
+        first=self.output();digest=e.sha(first.read_bytes());revision='ev_'+f'{2:064x}'+'-0'
+        cases=[('functions','directory'),('functions/0x1000','directory'),
+               (f'functions/0x1000/{revision}','directory'),('.staging','directory'),
+               ('evidence','directory'),(f'evidence/{digest}.json','file'),
+               (f'functions/0x1000/{revision}/pseudocode.c','file'),
+               (f'functions/0x1000/{revision}/metadata.json','file'),
+               ('coverage.json','file'),('inventory','directory')]
+        for number,(relative,kind) in enumerate(cases):
+            for dangling in (False,True):
+                with self.subTest(relative=relative,dangling=dangling):
+                    root=self.base/f'unsafe-{number}-{dangling}';root.mkdir();e.initialize(root,self.source,TARGET,'arm64')
+                    outside=self.base/f'outside-{number}-{dangling}'
+                    if not dangling:
+                        if kind=='directory':outside.mkdir()
+                        else:outside.write_text('preserve me')
+                    path=root/relative;path.parent.mkdir(parents=True,exist_ok=True)
+                    if path.is_dir():shutil.rmtree(path)
+                    elif path.exists():path.unlink()
+                    path.symlink_to(outside)
+                    before={str(p.relative_to(outside)):(p.read_bytes() if p.is_file() else None) for p in outside.rglob('*')} if outside.is_dir() else (outside.read_bytes() if outside.is_file() else None)
+                    with self.assertRaises(e.IntegrityError):e.ingest_many(root,[first])
+                    after={str(p.relative_to(outside)):(p.read_bytes() if p.is_file() else None) for p in outside.rglob('*')} if outside.is_dir() else (outside.read_bytes() if outside.is_file() else None)
+                    self.assertEqual(after,before)
+                    self.assertEqual(outside.exists(),not dangling)
+    def test_root_and_lock_symlinks_rejected_before_open(self):
+        outside=self.base/'outside-lock';outside.write_text('preserve')
+        (self.root/'.ingest.lock').symlink_to(outside)
+        with self.assertRaises(e.IntegrityError):
+            with e.locked(self.root):self.fail('unsafe lock opened')
+        self.assertEqual(outside.read_text(),'preserve')
+        link=self.base/'root-alias';link.symlink_to(self.root)
+        with self.assertRaises(e.IntegrityError):e.ingest_many(link,[self.output()])
+    def test_prewrite_boundaries_check_entire_batch_before_retention(self):
+        r=record('batch_decompile',{'items':[{'address':addr,'status':'ok','pseudocode':'code'} for addr in ['0x1000','0x3000']]},30)
+        source=self.base/'two-items.json';source.write_bytes(e.encoded(r))
+        outside=self.base/'outside-second';outside.mkdir()
+        (self.root/'functions').mkdir();(self.root/'functions'/'0x3000').symlink_to(outside)
+        with self.assertRaises(e.IntegrityError):e.ingest_many(self.root,[source])
+        self.assertEqual(list(outside.iterdir()),[])
+        self.assertFalse((self.root/'functions'/'0x1000').exists())
+        self.assertFalse((self.root/'evidence'/f'{e.sha(source.read_bytes())}.json').exists())
+
 if __name__=='__main__':unittest.main()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Analyst-only immutable REA evidence ingestion. Does not invoke an analyzer."""
 import argparse
-from collections import Counter
+from collections import Counter, OrderedDict
 from contextlib import contextmanager
 import fcntl
 import hashlib
@@ -43,6 +43,33 @@ def address_sort_key(value):
     return (space,int(offset,16)) if separator else ('',int(canonical,16))
 
 
+def safe_destination(root, path, kind):
+    """Reject preexisting symlinks and non-directory ancestors before a write.
+
+    The coordinator's exclusive writer lock covers normal use; this is not a
+    defense against a hostile process swapping filesystem paths concurrently.
+    """
+    if root.is_symlink() or (root.exists() and not root.is_dir()):
+        raise IntegrityError('Unsafe corpus root')
+    try:parts=path.relative_to(root).parts
+    except ValueError as cause:raise IntegrityError('Destination outside corpus') from cause
+    if any(part in ('.','..') for part in parts):raise IntegrityError('Unsafe destination components')
+    current=root
+    for index,part in enumerate(parts):
+        current=current/part
+        if current.is_symlink():raise IntegrityError(f'Symbolic link destination: {current}')
+        expected=kind if index==len(parts)-1 else 'directory'
+        if current.exists() and not (current.is_dir() if expected=='directory' else current.is_file()):
+            raise IntegrityError(f'Unexpected destination type: {current}')
+
+
+def write_boundaries(root):
+    for name in ('functions','.staging','evidence','inventory'):
+        safe_destination(root,root/name,'directory')
+    for name in ('run.json','coverage.json','.ingest.lock','inventory/v1.json'):
+        safe_destination(root,root/name,'file')
+
+
 def durable(path, data, immutable=True):
     path.parent.mkdir(parents=True, exist_ok=True)
     if immutable and path.exists():
@@ -63,6 +90,7 @@ def durable(path, data, immutable=True):
 
 @contextmanager
 def locked(root):
+    write_boundaries(root)
     root.mkdir(parents=True, exist_ok=True)
     with (root/'.ingest.lock').open('a') as stream:
         fcntl.flock(stream, fcntl.LOCK_EX)
@@ -137,11 +165,12 @@ def freeze_inventory(rows):
 
 def retain(root, source):
     data=Path(source).read_bytes();digest=sha(data)
-    path=root/'evidence'/f'{digest}.json';durable(path,data)
+    path=root/'evidence'/f'{digest}.json';safe_destination(root,path,'file');durable(path,data)
     return digest, records(json.loads(data))
 
 
 def initialize(root, source, target, arch):
+    write_boundaries(root)
     if not re.fullmatch('[0-9a-f]{64}',target): raise IntegrityError('Invalid target SHA-256')
     data=Path(source).read_bytes();candidates=[r for r in records(json.loads(data)) if r.get('operation')=='list_procedures']
     if len(candidates)!=1: raise IntegrityError('Supply exactly one list_procedures record')
@@ -177,14 +206,37 @@ def extraction(record):
             'incoming_references':value.get('incoming_references',[]),'outgoing_references':value.get('outgoing_references',[])},value.get('limitations',[])
 
 
-def verify_revision(path):
-    manifest=json.loads((path/'manifest.json').read_bytes())
-    actual={str(p.relative_to(path)) for p in path.rglob('*') if p.is_file() and p.name!='manifest.json'}
+class FilesystemCorpusReader:
+    """Read interface for the shared source-authority validators.
+
+    Alternative readers must provide exact bytes/hashes and a complete listing
+    of committed revisions and regular payload names. They cannot persist a
+    coverage checkpoint. Filesystem checks stay here rather than disappearing
+    when coverage is requested without writes.
+    """
+    def __init__(self,root):
+        write_boundaries(root)
+        self.root=root
+    def read_bytes(self,path):return path.read_bytes()
+    def file_sha(self,path):return file_sha(path)
+    def revision_files(self,path):
+        if any(p.is_symlink() or not p.is_file() for p in path.rglob('*')):
+            raise IntegrityError('Unexpected directory/symbolic link in revision payload')
+        return {str(p.relative_to(path)) for p in path.rglob('*') if p.is_file()}
+    def committed_directories(self,functions):return committed_directories(self.root,functions)
+
+
+def verify_revision(path, *, reader=None):
+    reader=FilesystemCorpusReader(path) if reader is None else reader
+    names=reader.revision_files(path)
+    manifest=json.loads(reader.read_bytes(path/'manifest.json'))
+    if 'metadata.json' not in manifest:raise IntegrityError('Missing required metadata payload')
+    actual=names-{'manifest.json'}
     if actual != set(manifest):raise IntegrityError(f'Payload set differs: {path}')
     for name,digest in manifest.items():
         if name not in ('metadata.json','pseudocode.c'):raise IntegrityError('Unexpected revision payload')
-        if sha((path/name).read_bytes())!=digest:raise IntegrityError(f'Corrupt committed payload: {path/name}')
-    return json.loads((path/'metadata.json').read_bytes())
+        if reader.file_sha(path/name)!=digest:raise IntegrityError(f'Corrupt committed payload: {path/name}')
+    return json.loads(reader.read_bytes(path/'metadata.json'))
 
 
 def metadata_for(rec, record_index, source_hash, item):
@@ -204,9 +256,8 @@ def metadata_for(rec, record_index, source_hash, item):
       'details':details,'analysis_profile':rec['analysis_profile']}
 
 
-def ingest(root, source, interrupt_before_commit=False):
-    run=json.loads((root/'run.json').read_bytes());inv=json.loads((root/'inventory'/'v1.json').read_bytes())
-    functions={g['address']:g for g in inv['functions']}
+def commit_evidence(root, source, context, interrupt_before_commit=False):
+    run=context['run'];functions=context['functions']
     data=Path(source).read_bytes();recs=records(json.loads(data));work=[]
     for record_index,rec in enumerate(recs):
         if rec.get('operation') not in ('batch_decompile','procedure_pseudo_code','analyze_function'):continue
@@ -219,6 +270,14 @@ def ingest(root, source, interrupt_before_commit=False):
             revision=metadata['revision']
             work.append((entry,revision,code,metadata))
     if not work:raise IntegrityError('No supported pseudocode attempts in evidence')
+    # Validate all destinations in this source before retaining or publishing any.
+    write_boundaries(root)
+    safe_destination(root,root/'evidence'/f'{sha(data)}.json','file')
+    for entry,revision,code,metadata in work:
+        final=root/'functions'/entry/revision
+        safe_destination(root,final,'directory')
+        for name in ('metadata.json','manifest.json','pseudocode.c'):
+            safe_destination(root,final/name,'file')
     retain(root,source)
     for entry,revision,code,metadata in work:
         final=root/'functions'/entry/revision
@@ -235,44 +294,107 @@ def ingest(root, source, interrupt_before_commit=False):
         if code:durable(stage/'pseudocode.c',code.encode())
         durable(stage/'manifest.json',encoded({p.name:sha(p.read_bytes()) for p in stage.iterdir()}))
         if interrupt_before_commit:raise InterruptedError('Test interruption: staged files remain uncommitted')
+        safe_destination(root,final,'directory')
         final.parent.mkdir(parents=True,exist_ok=True);os.rename(stage,final)
         fd=os.open(final.parent,os.O_RDONLY)
         try:os.fsync(fd)
         finally:os.close(fd)
-    return coverage(root)
 
 
-def coverage(root):
-    run=json.loads((root/'run.json').read_bytes());inv=json.loads((root/'inventory'/'v1.json').read_bytes())
+def file_sha(path):
+    digest=hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda:stream.read(1024*1024),b''):digest.update(block)
+    return digest.hexdigest()
+
+
+def inventory_context(root, *, reader=None):
+    if reader is None:write_boundaries(root)
+    reader=FilesystemCorpusReader(root) if reader is None else reader
+    pins={}
+    def read_pinned(path):
+        raw=reader.read_bytes(path);pins[str(path.relative_to(root))]=sha(raw)
+        return json.loads(raw)
+    run=read_pinned(root/'run.json');inv=read_pinned(root/'inventory'/'v1.json')
     source=root/'evidence'/f"{run['inventory_source_sha256']}.json"
-    if sha(source.read_bytes())!=run['inventory_source_sha256']:raise IntegrityError('Inventory source corrupted')
-    rec=next(r for r in records(json.loads(source.read_bytes())) if r.get('evidence_id')==run['inventory_evidence_id'])
+    source_value=read_pinned(source)
+    if pins[str(source.relative_to(root))]!=run['inventory_source_sha256']:raise IntegrityError('Inventory source corrupted')
+    rec=next(r for r in records(source_value) if r.get('evidence_id')==run['inventory_evidence_id'])
     validate(rec,run)
     if inv['rows']!=rec['normalized_result'] or inv['functions']!=freeze_inventory(inv['rows']):raise IntegrityError('Frozen inventory corrupted')
-    source_cache={}
+    return {'run':run,'inventory':inv,'functions':{g['address']:g for g in inv['functions']},'pins':pins}
+
+
+def recheck_context(root, context, *, reader=None):
+    reader=FilesystemCorpusReader(root) if reader is None else reader
+    for relative,digest in context['pins'].items():
+        if reader.file_sha(root/relative)!=digest:raise IntegrityError('Pinned inventory context changed')
+
+
+def ingest(root, source, interrupt_before_commit=False):
+    context=inventory_context(root)
+    commit_evidence(root,source,context,interrupt_before_commit)
+    return coverage(root,context)
+
+
+def ingest_many(root, sources):
+    if not sources:raise IntegrityError('Supply at least one explicit evidence file')
+    context=inventory_context(root)
+    for source in sources:commit_evidence(root,source,context)
+    return coverage(root,context)
+
+
+def committed_directories(root, functions):
+    base=root/'functions'
+    if base.is_symlink():raise IntegrityError('Invalid functions directory')
+    if not base.exists():return {}
+    if not base.is_dir():raise IntegrityError('Invalid functions directory')
+    found={}
+    for entry_path in base.iterdir():
+        if entry_path.is_symlink() or not entry_path.is_dir():raise IntegrityError('Unexpected function directory entry')
+        entry=address(entry_path.name)
+        if entry!=entry_path.name or entry not in functions:raise IntegrityError('Unknown/noncanonical function directory')
+        found[entry]=[]
+        for revision in entry_path.iterdir():
+            if revision.is_symlink() or not revision.is_dir() or not re.fullmatch(r'ev_[0-9a-f]{64}-[0-9]+',revision.name):
+                raise IntegrityError('Unexpected revision directory entry')
+            found[entry].append(revision)
+    return found
+
+
+def coverage(root, context=None, *, persist=True, reader=None):
+    if reader is not None and persist:raise IntegrityError('Explicit corpus readers cannot persist coverage')
+    if reader is None:write_boundaries(root)
+    reader=FilesystemCorpusReader(root) if reader is None else reader
+    context=inventory_context(root,reader=reader) if context is None else context
+    recheck_context(root,context,reader=reader)
+    run=context['run'];inv=context['inventory']
+    paths=reader.committed_directories(context['functions'])
+    source_cache=OrderedDict()
     entries=[]
     for group in inv['functions']:
         entry=group['address'];revisions=[]
-        for path in sorted((root/'functions'/entry).glob('*')):
-            if path.is_dir():
-                metadata=verify_revision(path);digest=metadata['source_sha256']
-                if not re.fullmatch('[0-9a-f]{64}',digest):raise IntegrityError('Invalid source digest')
-                if digest not in source_cache:
-                    try:raw=(root/'evidence'/f'{digest}.json').read_bytes()
-                    except FileNotFoundError as cause:raise IntegrityError('Missing authoritative evidence') from cause
-                    if sha(raw)!=digest:raise IntegrityError('Retained source evidence corrupted')
-                    source_cache[digest]=records(json.loads(raw))
-                source_record=source_cache[digest][metadata['source_record_index']]
-                validate(source_record,run)
-                items={item[0]:item for item in extraction(source_record)}
-                item=items[metadata['source_item_index']]
-                expected=metadata_for(source_record,metadata['source_record_index'],digest,item)
-                if expected!=metadata or metadata['address']!=entry or metadata['revision']!=path.name:
-                    raise IntegrityError('Revision metadata disagrees with authoritative evidence')
-                code=item[2]
-                if code and (path/'pseudocode.c').read_bytes()!=code.encode():raise IntegrityError('Pseudocode differs from evidence')
-                if not code and (path/'pseudocode.c').exists():raise IntegrityError('Unexpected pseudocode payload')
-                revisions.append(metadata)
+        for path in sorted(paths.get(entry,[])):
+            metadata=verify_revision(path,reader=reader);digest=metadata['source_sha256']
+            if not re.fullmatch('[0-9a-f]{64}',digest):raise IntegrityError('Invalid source digest')
+            if digest not in source_cache:
+                try:raw=reader.read_bytes(root/'evidence'/f'{digest}.json')
+                except FileNotFoundError as cause:raise IntegrityError('Missing authoritative evidence') from cause
+                if sha(raw)!=digest:raise IntegrityError('Retained source evidence corrupted')
+                source_cache[digest]=records(json.loads(raw))
+                if len(source_cache)>8:source_cache.popitem(last=False)
+            source_cache.move_to_end(digest)
+            source_record=source_cache[digest][metadata['source_record_index']]
+            validate(source_record,run)
+            items={item[0]:item for item in extraction(source_record)}
+            item=items[metadata['source_item_index']]
+            expected=metadata_for(source_record,metadata['source_record_index'],digest,item)
+            if expected!=metadata or metadata['address']!=entry or metadata['revision']!=path.name:
+                raise IntegrityError('Revision metadata disagrees with authoritative evidence')
+            code=item[2]
+            if code and reader.read_bytes(path/'pseudocode.c')!=code.encode():raise IntegrityError('Pseudocode differs from evidence')
+            if not code and 'pseudocode.c' in reader.revision_files(path):raise IntegrityError('Unexpected pseudocode payload')
+            revisions.append(metadata)
         statuses={r['state'] for r in revisions}
         state=group['classification'] if group['classification']!='eligible' else (
             'exported' if 'exported' in statuses else 'exported-with-warnings' if 'exported-with-warnings' in statuses else 'failed' if revisions else 'pending')
@@ -286,18 +408,20 @@ def coverage(root):
         'limitations':['Inventory is discovered functions, not all original source.',
                       'Nonexternal functions are eligible; body completeness may be unknown until a dossier.',
                       'No decompilation output establishes runtime compatibility.']}
-    durable(root/'coverage.json',encoded(result),immutable=False)
+    if persist:durable(root/'coverage.json',encoded(result),immutable=False)
     return result
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('command',choices=['init','ingest','check','queue'])
-    parser.add_argument('--root',type=Path,required=True);parser.add_argument('--evidence',type=Path)
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('command',choices=['init','ingest','ingest-many','check','queue'])
+    parser.add_argument('--root',type=Path,required=True);parser.add_argument('--evidence',type=Path,action='append')
     parser.add_argument('--target-sha256');parser.add_argument('--architecture',default='arm64');parser.add_argument('--limit',type=int,default=20)
     args=parser.parse_args()
     with locked(args.root):
-        if args.command=='init':result=initialize(args.root,args.evidence,args.target_sha256,args.architecture)
-        elif args.command=='ingest':result=ingest(args.root,args.evidence)
+        if args.command in ('init','ingest') and len(args.evidence or [])!=1:parser.error('init/ingest require exactly one --evidence')
+        if args.command=='init':result=initialize(args.root,args.evidence[0],args.target_sha256,args.architecture)
+        elif args.command=='ingest':result=ingest(args.root,args.evidence[0])
+        elif args.command=='ingest-many':result=ingest_many(args.root,args.evidence)
         else:result=coverage(args.root)
     if args.command=='queue':print(json.dumps([e['address'] for e in result['functions'] if e['state']=='pending'][:args.limit]))
     else:print(json.dumps({k:v for k,v in result.items() if k!='functions'},indent=2))

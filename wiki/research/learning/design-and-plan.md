@@ -99,3 +99,11 @@ conclusions and limits for both native lessons and confirms the selected browser
 route distinguishes seventeen exports from seven failed entries. This closes
 L3–L5 for the current materials; it does not close the native behavior questions
 or establish complete program understanding.
+
+
+The [default-profile follow-up review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/default-transport-packet-review-v1.json)
+checks the new profile-comparison lesson, atlas revision 6 and canonical shared
+helper packet. It verifies source hashes, four instruction excerpts and the
+boundary between observed memory writes and inferred record assembly. The
+unresolved indirect consumer remains an explicit next question, not a native
+behavior contract.

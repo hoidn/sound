@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-PHASE-EXECUTION
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
@@ -133,15 +133,15 @@ Generated view files are replaceable; captured provider outputs are versioned.
 | Gate | Current state | Evidence needed |
 | --- | --- | --- |
 | Design/preflight | Passed; aggregate monitor scope/quality reviews passed | Design pages, input digest, resource limits and metadata transport round trip |
-| M1 Main analysis/pilot | Selected pilot exported 17 of 24 entries; seven explicit failures; full inventory unavailable | Identified main functions and actual exported pseudocode |
-| M2 Reliable export | REA importer reviewed with 31 tests; selected route exercised with sealed manifests; default corpus recovery pending | Scope/quality reviews, tests, recovery demonstration |
-| M3 Systematic export | Not started | Frozen inventory with all eligible functions attempted |
-| M4 Browser | Selected, default and declared-start navigation reviewed; 26 browser tests pass; real-browser rendering unverified | Human navigation/filter checks and working text fallback |
-| M5 Behavior/teaching | Two native packets and lessons reader-reviewed; external native contract unresolved | Two native packets, walkthroughs and reviewed atlas |
-| M6 Handoff/report | MIDI fallback handoff released; full phase report awaits native outcome | Released finite contract plus honest coverage report |
+| M1 Main analysis/pilot | Full inventory retained; 20 default-profile pilot exports saved (16 warned); selected profile remains separate | Identified main functions and actual exported pseudocode |
+| M2 Reliable export | Grouped ingestion and immutable exports independently reviewed and exercised; cold database recovery unproven | Scope/quality reviews, tests, recovery demonstration |
+| M3 Systematic export | Inventory frozen; two 1,000-entry stages complete; 416,390 eligible entries pending; capacity gate stops further bulk export | Frozen inventory with all eligible functions attempted |
+| M4 Browser | Selected, default and declared-start navigation reviewed; 28 browser tests pass; real-browser rendering unverified | Human navigation/filter checks and working text fallback |
+| M5 Behavior/teaching | Native packets, profile comparison and shared-helper follow-up reviewed; external native contract unresolved | Two native packets, walkthroughs and reviewed atlas |
+| M6 Handoff/report | MIDI fallback handoff released; checkpoint report below records partial native delivery and remaining gates | Released finite contract plus honest coverage report |
 
-The current [combined tool check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v1.json)
-records 71 passing analyst-tool tests with exact source hashes. These cover
+The current [combined tool check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json)
+records 84 passing analyst-tool tests with exact source hashes. These cover
 transport, ingestion, selected export, metadata extraction and browser projection,
 not original Live behavior.
 
@@ -178,8 +178,9 @@ were independently verified (27, 75 and 35 files respectively).
 The additional disk capacity and aggregate resource guard support one
 full-analysis retry with a new spool and resource record; the previous failure
 remains immutable. The intended reduced pool size did not take effect.
-The retry is active in `transport-retry-v3`: target open succeeded and one
-full-inventory request is in flight.
+The retry in `transport-retry-v3` completed analysis and returned a full retained
+inventory. The provider session completed the bounded exports below and then closed with
+a retained observation snapshot; no analyzer remains running.
 [Retry preflight](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/retry-v3.json)
 pins 12.1 GiB available disk, requested CPU settings, tooling and review hashes.
 The actual JVM [command capture](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/diagnostics/command-line-v1.json)
@@ -194,3 +195,163 @@ The browser at `browse/index.html` is a regenerated view of committed evidence.
 It will be refreshed at each exported batch/checkpoint; existing `#python` links
 remain stable. Learning and program-map links are added alongside native code.
 A refresh reflects the last generation, not live process state.
+
+
+## Full-analysis checkpoint
+
+The [completion record](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/analysis-completion-v1.json)
+pins the full inventory and analysis log. Ghidra reported 3,016 seconds of
+analysis; the inventory request took 3,068,869 ms including startup and delivery.
+The query exceeded the 10 MiB MCP response budget, so the coordinator exported
+its retained evidence without repeating analysis. That 121,206,515-byte bundle
+contains 420,472 distinct discovered entries: 418,418 nonexternal eligible entries
+and 2,054 external entries. Local thunks remain eligible and distinct from
+externals. Analyzer completion coexists with retained type/address-space errors;
+it does not imply complete control-flow or type recovery.
+
+The frozen inventory and [coverage ledger](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/coverage.json)
+now exist. All twenty pilot entries exported: four without warnings and sixteen
+with warnings. Eighteen original symbol seeds matched exact inventory entries;
+the Start/Stop wrapper seeds did not. Their previously observed branch targets
+were exact nonexternal entries and completed the twenty-entry pilot, as pinned
+by the [resolution](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/pilot-inventory-resolution-v1.json)
+and [additions](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/pilot-inventory-additions-v1.json).
+No functions were created to force those matches. The reason for the two missing
+wrapper entries remains unknown.
+
+Pilot provider calls took 653 ms combined, excluding cold analysis and ingestion.
+These small factory/wrapper selections cannot support a whole-program ETA.
+The initial per-batch importer repeatedly scanned the full inventory and rewrote
+approximately 97 MB of coverage. The reviewed grouped importer now shares one
+validated inventory context and writes coverage once per checkpoint; immutable
+function revisions still commit independently. The browser starts with attempted
+entries and loads the full inventory on request. Storage fit and cold database
+recovery remain open gates; neither optimization establishes them.
+
+The [persistent recovery design review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/native-recovery-quality-review-v1.json)
+passed after fixing the proposed gate-load failure path. This is a reviewed
+contingency design, not a tested replacement for the current ephemeral session.
+
+
+## Bounded export checkpoint
+
+The first [systematic stage](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/bulk-stage-v1/summary-v1.json)
+completed 1,000 previously pending entries in 20 batches of 50, with four audited
+ingestion checkpoints. Provider requests took 7.749 seconds combined and
+ingestion took 31.109 seconds; these exclude cold analysis, coordination and
+browser generation. The final checkpoint measured 23,625,728 additional allocated
+regular-file bytes within the corpus and spool. Free disk fell from 10,671,747,072
+to 9,582,792,704 bytes during the stage; the larger global change cannot be
+attributed to those retained files. Directory allocation is not counted.
+
+After eight focused helper exports and this stage, coverage reached 1,028
+default-profile exports: 937 without per-function warnings, 91 with warnings,
+417,390 eligible entries pending and 2,054 external entries excluded. A warning-free
+export is not a semantic correctness result. This contiguous low-address sample
+cannot forecast the whole binary. Subsequent progress must use a separately
+admitted stage and fresh resource checks.
+
+The [reviewed method snapshot](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/methods/export-and-browser-v2/manifest.json)
+preserves the exporter, browser and tests used for bulk work. Grouped ingestion
+received independent scope and quality reviews, including a corrected pre-write
+symlink escape. Every successful checkpoint audits committed revisions before
+publishing coverage. Browser regeneration follows the writer transaction;
+`#python` remains stable, and `#native` opens attempted entries with a lazy full
+inventory button. Browser tests include malformed lazy data and stale-snapshot
+handling; no real-browser rendering pass was obtained.
+
+
+## Stratified checkpoint and phase report — 2026-10-10
+
+The separately admitted [stratified stage](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/stratified-stage-v1/summary-v1.json)
+selected the midpoint entry from each of 1,000 equal-count strata in the sorted
+remaining inventory. Its [admission review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/stratified-stage-v1-quality-admission.json)
+verified the selection and corrected the deadline check after filesystem admission.
+The earlier stage's methods remain immutable. All 20 new batches and four
+checkpoints completed: 779 exports without warnings and 221 with warnings.
+Provider requests took 16.808 seconds combined; ingestion took 33.119 seconds.
+Additional allocated regular-file storage at its final checkpoint was 22,761,472
+bytes. Those timings exclude cold analysis and browser/coordinator work.
+
+Current default-profile coverage is **2,028 exports**, comprising **1,716 without
+per-function warnings and 312 with warnings**, with **416,390 eligible entries
+pending** and **2,054 external entries excluded**. No per-function failures were
+reported in these default-profile batches; selected-profile failures remain in
+their separate historical corpus. This is partial export coverage, not recovered
+original source, semantic completeness or behavior compatibility.
+
+The [final browser checkpoint](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/browser-checkpoint-2026-10-10-v1/report.json)
+independently verified 2,200 input/output hashes, five helper pins, 6,219 local
+links, all 420,472 full-index rows and exactly 2,028 initial attempted rows.
+`#python`, `#native`, `#selected-native` and `#declared-starts` remain available.
+The initial native data is 1,002,291 bytes; the optional full index is 35,274,039
+bytes. This was a file/structure check, without browser or JavaScript execution.
+
+The independent [stage and capacity review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/stratified-stage-v1/quality-review-v1.json)
+verified all new payloads and that prior payloads were unchanged.
+**Capacity decision:** stop systematic expansion at this checkpoint. At final review,
+10,650,132,480 bytes were free, leaving about 7.43 GB above the 3 GiB reserve.
+The earlier admission decision saw 9,590,841,344 bytes free; the subsequent global
+change is recorded separately from retained corpus growth.
+Applying the stratified stage's allocation rate to the remaining entries gives
+a planning scenario of about 9.48 GB, before unmeasured directory overhead and
+unrelated disk movement. This is not a reliable forecast or a proof of inability
+to fit. It does not provide sufficient margin to admit full expansion. A larger
+durable volume/budget or a separately designed and reviewed compact future
+format is required before the next bulk stage; existing captures and manifests
+remain intact. Additional sampling is not the default next action.
+
+Delivered work includes the full native inventory, accessible code checkpoints,
+reviewed exporter/browser tooling, a method guide, program atlas revision 6,
+worked native evidence packets and the immutable
+[MIDI configuration handoff](../../handoff/midi-config-v1/README.md). The native
+transport packets establish construction, forwarding and record-building evidence;
+they do not yet establish the persisted LoopOn field or an external Start/Stop
+contract. The MIDI release covers four partial clauses with 54 unexecuted cases.
+No isolated candidate workspace or independent application has been built, and
+no original-versus-candidate scenario has run.
+
+Next work is to satisfy the durable capacity and cold-recovery gates, resume
+only the pending inventory entries under reviewed limits, and resolve the native
+packet's named semantic gaps before releasing a native behavioral contract.
+The roadmap's whole-corpus and native-contract milestones remain incomplete.
+
+
+## Session closure
+
+The [closure manifest](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/post-run/manifest-v1.json)
+pins a 155,425,925-byte provider-neutral snapshot with 52 reported evidence records,
+final logs, resource samples, close/shutdown receipts and owned-process identities.
+All five recorded owned processes exited; the transport lock and owned temporary
+Ghidra directory were absent at reconciliation. The retained arm64 source digest
+was reverified. No unrelated processes or files were removed.
+
+This snapshot preserves observations and cached analysis entries; it is **not**
+a persistent Ghidra database or a tested cold decompilation resume. The full retry
+record has 5,636 resource samples, minimum free disk 8,353,005,568 bytes and maximum
+aggregate owned RSS 4,339,400,704 bytes, with no monitor stop reason. These metrics
+exclude independent Python ingesters and do not describe total system pressure.
+The session is closed; no unattended export job remains.
+
+
+## Authorized continuation — 2026-10-10
+
+The user requested continuation after closure. The
+[compact storage and durable analysis plan](native-compact-storage.md) sequences
+exact archive tooling, offline code access, persistent save/reopen proof and
+then new target admission. A fresh
+[host/storage record](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/continuation-v1/host-and-storage.json)
+reverified target bytes and the absence of an owned analyzer/transport lock.
+Free disk remains variable; earlier resource decisions are retained for their
+measured states.
+
+One author is correcting the archive task after separate scope and quality
+reviews; the [canonical plan](native-compact-storage.md#status) records the retained
+fixture findings. The separate persistent-design audit is complete without a JVM
+launch; its [preparation packet](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-preparation-v2/preparation-report.md)
+defines the controller, scripts and synthetic proof matrix. Each code task requires
+scope review then separate quality review. Actual archive savings and cold database recovery
+are not yet established. Existing export counts and compatibility statuses do
+not change when mirrored or compressed. The
+[storage/recovery lesson](learning/walkthroughs/artifact-storage-and-recovery.md)
+links the measured payload allocation and explains the separate proof obligations.

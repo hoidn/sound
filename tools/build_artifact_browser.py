@@ -149,6 +149,11 @@ def _build() -> dict:
     OUT.mkdir(parents=True, exist_ok=True)
     corpus = ARTIFACTS / 'native-live-arm64-v1'
     native_coverage, native_rows, native_inputs = native_browser.project(corpus, href)
+    native_scripts = native_browser.index_scripts(native_rows)
+    native_inventory_revision = hashlib.sha256(native_scripts['native-inventory.js'].encode('utf-8')).hexdigest()
+    native_scripts['native-inventory.js'] += f'window.nativeInventoryRevision="{native_inventory_revision}";\n'
+    native_initial_rows = sum(row[3] > 0 for row in native_rows)
+    native_inventory_bytes = len(native_scripts['native-inventory.js'].encode('utf-8'))
     selected_runs, selected_inputs = selected_browser.project(ARTIFACTS, href)
     declared_starts, starts_inputs = function_starts_browser.project(ARTIFACTS / 'derived/function-starts-v1', href)
     starts_content = '<p>No sealed linker-declared starts capture is available in this snapshot.</p>'
@@ -196,11 +201,13 @@ def _build() -> dict:
 <p>Target SHA-256: <code>{escape(n['target_sha256'])}</code>. Inventory evidence: <code>{escape(n['inventory_evidence_id'])}</code>. {link(corpus / 'coverage.json', 'Full coverage and revision ledger')}.</p>
 <p>Search addresses, aliases and status. Each row links a retained revision matching the aggregate status; it need not be the newest attempt. The full ledger records every revision. Warning and failure details remain in revision metadata. Pseudocode approximates compiled behavior; it is not original or guaranteed compilable source.</p>
 <noscript><p>JavaScript is disabled. Open the full coverage ledger above to find addresses and revision identities.</p></noscript>
+<p id="native-scope">Searching {native_initial_rows:,} functions with retained attempts. Pending and external addresses without attempts become searchable after loading the full inventory.</p>
+<button id="native-load-inventory" type="button" data-total="{len(native_rows)}" data-revision="{native_inventory_revision}">Load all {len(native_rows):,} inventoried addresses ({native_inventory_bytes / 1000000:.1f} MB local index)</button><p id="native-load-status" role="status" aria-live="polite"></p>
 <div class="controls"><div><label for="native-search">Search native functions</label><input id="native-search" type="search" placeholder="Address, symbol or status"></div><div><label for="native-status">Export status</label><select id="native-status"><option value="">All states</option>{states}</select></div></div>
 <p id="native-count" role="status" aria-live="polite"></p><button id="native-prev" type="button">Previous 100</button> <button id="native-next" type="button">Next 100</button>
 <div class="table-wrap"><table><caption>Main Live arm64 function corpus · at most 100 rows displayed</caption><thead><tr><th>Address</th><th>Aliases</th><th>Status</th><th>Attempts</th><th>Artifacts</th></tr></thead><tbody id="native-rows"></tbody></table></div>'''
     generated = {
-        'native-index.js': native_browser.data_script(native_rows),
+        **native_scripts,
         "push2-entry-assembly.txt": "\n".join(dossier["assembly"]) + "\n",
         "push2-entry-callees.tsv": tsv(
             [["address", "name", "external", "thunk", "classification_provenance"]] +
@@ -271,6 +278,10 @@ def _build() -> dict:
                    "python_disassembly_files": len(modules), "assembly_lines": len(dossier['assembly']),
                    "callees": len(dossier['callees']), "string_references": len(dossier['referenced_strings'])},
         "native_coverage": native_coverage,
+        "native_navigation": {"initial_scope": "functions with retained attempts", "initial_rows": native_initial_rows,
+                              "inventory_rows": len(native_rows), "inventory_index_bytes": native_inventory_bytes,
+                              "inventory_revision": native_inventory_revision,
+                              "inventory_load": "Explicit local script load; no fetch or server"},
         "selected_runs": [{k: v for k, v in run.items() if k not in ('rows', 'links')} for run in selected_runs],
         "linker_declared_starts": {k: v for k, v in declared_starts.items() if k != 'links'} if declared_starts else None,
         "inputs": [{"path": p.relative_to(ROOT).as_posix(), "sha256": digest(p)} for p in input_paths],

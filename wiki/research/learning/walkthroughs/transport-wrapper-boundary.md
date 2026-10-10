@@ -113,3 +113,22 @@ were decompiled successfully? No. Process completion and item acceptance are
 different results. The item metadata records failure, while the assembly gives
 us useful next targets. That distinction belongs in both the browser and the
 [program atlas](../../program-structure.md#transport-wrapper-branches).
+
+
+## When another profile produces code
+
+Later, completed whole-image analysis produced
+[default-profile Stop pseudocode](../../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/functions/0x102767b70/ev_2bdece1772423ee0a8c327b787f71017b84e69af7d109ed21100070237fba02d-3/pseudocode.c).
+Open it and search for `WARNING`. It reports unrecovered jumps at the same two
+addresses and represents each indirect jump as a call. The selected profile
+rejected those unresolved transfers; the default export retained pseudocode
+with warnings. Both outcomes remain valid descriptions of their own methods.
+Readable output is not evidence that the missing targets have been recovered.
+
+The [shared-helper follow-up](../../native-transport-study.md#default-profile-comparison-and-shared-helper)
+then traced the common call into a small record-building path. Instructions
+show one eight-byte append and three one-byte appends, followed by an indirect
+operation whose purpose is still unknown. This replaces one broad question
+with a narrower one: who consumes that record, and how does consumption affect
+externally visible state? Calling its bytes “play” and “stop” before answering
+that question would still be a guess.

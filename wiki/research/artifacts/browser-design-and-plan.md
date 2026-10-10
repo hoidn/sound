@@ -174,3 +174,81 @@ was launched for this amendment. Independent
 [scope review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-function-starts-scope-review-v1.json)
 and [quality review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-function-starts-quality-review-v1.json)
 passed on the pinned production code and generated view.
+
+## Full-inventory publication amendment
+
+The first default-profile ledger contains 420,472 discovered addresses. A
+read-only measurement produced a 34.40 MB compact JavaScript index. Python
+projection took 2.16 seconds and serialization 0.20 seconds, peaking near 741 MB
+RSS. A Node/V8 proxy took 645 ms to parse and 167 ms to construct search text,
+with 13–24 ms filters and approximately 512 MB RSS. These are local processing
+measurements, not browser rendering or interaction validation.
+
+The [scale assessment](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/browser-scale-assessment-v1/report.json)
+retains those observations, frozen inventory identity and copies of the measured
+browser methods. The two measurements sampled the changing ledger at one and
+six retained attempts respectively; they share the frozen inventory count but
+are not one atomic corpus snapshot.
+
+Publish retained attempts in the initial compact index so available code and
+failed attempts are immediately discoverable. Preserve the complete inventory
+as a second local JavaScript file, loaded only after an explicit reader action.
+The button states the address count and file size. Loading replaces the searchable
+metadata set without changing full coverage counts or raw provenance links.
+The full file contains metadata only; pseudocode remains in immutable artifacts.
+
+Use a local script element, not fetch, to preserve local-file operation. Expose
+loading, failure and completion status accessibly; allow retry after a failed
+load. Keep the 100-row pagination and all existing anchors. Default filters
+apply to retained attempts until the reader loads all addresses; label that
+scope explicitly so pending/external search results are not mistaken for absent
+inventory entries. The no-JavaScript fallback remains the raw coverage ledger.
+
+Pin the optional full index to the generated page with a digest token. If a
+page left open later encounters an index from a newer regeneration, preserve
+its current attempts and request a page refresh instead of mixing snapshots.
+This avoids keeping a new 34 MB inventory copy for every published batch.
+
+Plan: preserve measured evidence; implement the bounded split and loader;
+exercise initial scope, loading, error/retry, filtering and pagination with a
+DOM stub; coordinate a paused writer for full-scale generation; check the real
+artifact links, hashes and sizes; submit scope and quality reviews. This
+amendment is implemented and reviewed below.
+
+The first reviewed full publication contained 20 default-profile exports (four
+without and sixteen with warnings). Its initial native index is 10,703 bytes;
+the explicit full inventory is 34,409,279 bytes. Full publication took 3.06
+seconds with 659 MB peak Python RSS in this measurement. The
+[author validation record](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-full-corpus-author-check-v1.json)
+pins this first publication: 28 browser tests, 195 links and 192 input/output
+digests passed. The actual generated indexes and shipped loader also ran under
+a Node DOM stub: initial 20 entries, full 420,472 entries, bounded 100-row
+display and known export/external/warning filters passed. These checks still do
+not constitute browser rendering or accessibility validation.
+
+Scope review found a malformed-full-index recovery error; rollback now restores
+the retained-attempt dataset and usable filters if full rendering fails. Quality
+review found the corresponding later-page case, so all row schemas, aliases
+and link tuples are now validated before the full dataset is accepted. Sparse
+arrays also reject before acceptance. Tests cover malformed row 150, failed
+loading, retry, wrong row count and changed snapshot token.
+After the dependent exporter froze, the
+[final author validation revision](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-full-corpus-author-check-v3.json)
+regenerated the view and checked all five helper pins, 195 links and 192
+input/output digests. The actual indexes and updated loader were rechecked
+under the Node DOM stub, including the 420,472-row load and known filters.
+Independent [scope review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-full-corpus-scope-review-v1.json)
+and [quality review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-full-corpus-quality-review-v1.json)
+approved the final source set. Both independently passed the 28 browser tests;
+they checked the reviewed snapshot's 192 input/output hashes, five helper pins,
+195 local links and complete inventory/initial-attempt subset. The reports pin
+that historical publication; later regeneration changes its output hashes and
+counts without rewriting those reviews.
+
+The [frozen method manifest](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/methods/export-and-browser-v2/manifest.json)
+retains the reviewed code, tests and pre-disposition design. The browser tests
+also belong to the [84-test combined analyst-tool suite](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json).
+No real browser rendering, accessibility or visual verification is claimed.
+Loading the full index still has material memory cost; the revision token guards
+against mixed generated snapshots, not hostile JavaScript. Current export counts
+and stage outcomes remain in the [phase execution ledger](../native-phase-execution.md).

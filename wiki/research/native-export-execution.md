@@ -19,14 +19,13 @@ within the [major-phase roadmap](native-decompilation-roadmap.md).
 6. Test replay, interruption, corruption and identity rejection; obtain scope then quality reviews.
 7. Coordinator runs pilot/batches and publishes measured results and current coverage.
 
-Steps 1–3 and the file-ingestion implementation/tests are complete. Independent
-scope and quality reviews passed. The default main-image analysis stopped at its disk floor before returning an
-inventory. Separately profiled selected-entry runs now retain fourteen successful
-pseudocode exports and six explicit failures across twenty nominated entries
-in the initial pilot; the [execution ledger](native-phase-execution.md) records
-subsequent follow-up exports and the active full-analysis retry.
-Full inventory coverage and cold-recovery measurement remain unproven. Provider-owned analysis and bulk scheduling are coordinator
-responsibilities; the file ingestor does not initiate expensive work.
+The transport, frozen inventory, default-profile export pilot, grouped ingestion
+and attempted-first browser are complete within their reviewed tool scope. The
+[phase execution ledger](native-phase-execution.md) owns current export counts,
+bounded-stage results and provider status. Full-corpus decompilation and
+cold-provider database recovery remain unproven; tool approval does not establish
+either. Provider-owned analysis and bulk scheduling remain coordinator
+responsibilities.
 
 ## Implemented transport and ledger
 
@@ -308,3 +307,75 @@ standalone method would need a fresh profile/output root, retained launch argv a
 actual JVM property verification before claiming the cap. No such driver change
 or retry was implemented here. Pool size remains distinct from a process or memory
 quota; explicit pool resizing and other process activity still require monitoring.
+
+## Grouped evidence ingestion
+
+After the default main inventory became available, a [capacity review](native-export-design.md#explicit-grouped-ingestion-after-the-real-inventory)
+identified repeated inventory parsing, empty-directory probes and full checkpoint
+serialization. The ingestor now accepts an explicit ordered group:
+
+```sh
+python3 tools/export_native_corpus.py ingest-many \
+  --root analysis/ableton-live-12.4.3/native-live-arm64-v1 \
+  --evidence PATH_TO_FIRST_RETAINED_RESULT \
+  --evidence PATH_TO_SECOND_RETAINED_RESULT
+```
+
+It shares one verified inventory context, commits evidence/revisions immediately,
+and publishes a complete coverage audit at group completion. All previous
+`ingest` and `check` calls remain supported. If a later source fails validation,
+earlier immutable commits remain and the previous coverage checkpoint stays
+unchanged. Fix the input and replay the explicit group, or run `check`, before
+reporting current totals. This command neither submits provider work nor selects
+functions or retries failures.
+
+The patch includes sparse directory enumeration with orphan/symlink/extra-payload
+rejection, final pinned-byte checks, and an eight-file LRU for parsed source
+evidence. Every reloaded source is rehashed. The initial twenty-five exporter tests covered
+grouped-versus-individual equivalence, partial failure/replay, changed
+evidence identities, existing corruption, unexpected directories, changed cached
+inventory and source corruption after cache eviction. The corrected revision
+passed twenty-eight exporter tests and the final reviews linked below. Reviewer
+tests used temporary synthetic corpora without mutating the live main corpus.
+
+A [420,472-row synthetic benchmark](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/grouped-benchmark.json)
+measured three individual ingestion/checkpoint calls at 17.88 seconds versus
+6.15 seconds for one grouped replay of the same three sources. The synthetic
+inventory was 197.4MB and coverage 89.9MB. Peak process RSS across initialization
+and all phases was 1.60GB; the temporary corpus was deleted after measurement.
+The individual calls committed three new tiny functions while the grouped call
+replayed them, so this is not a perfectly symmetric throughput comparison. It
+supports reducing repeated full checkpoints, not a decompiler speed or whole-
+corpus storage forecast. Full checks remain inventory-sized and large-corpus
+checkpoint cadence still requires coordinator judgment.
+
+
+The first grouped-ingestion quality review identified a concrete pre-write
+boundary failure: a symlinked `functions` directory could receive outside writes
+before the final audit rejected it. The [retained finding](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/grouped-quality-findings-v1.json)
+is preserved. The author correction validates all destination ancestors before
+writing, including dangling links, staging, evidence, lock and revision payload
+paths. Twenty-eight exporter tests now pass; the three added tests include
+multiple existing/dangling destination cases and assert no outside writes.
+Refreshed [scope review v2](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/grouped-scope-review-v2.json)
+and independent [quality review v2](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/grouped-quality-review-v2.json)
+approved the correction, including a repeat of the original escape reproduction
+with no outside writes. The earlier benchmark pins the preceding source revision
+and is not relabeled as a measurement of this correction.
+
+## Completed tool validation
+
+The [combined suite record](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json)
+and [test output](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.txt)
+retain **84 passing analyst-tool tests** from 2026-10-10 06:40 UTC (2026-10-09
+locally). This includes the exporter, transport, selected-entry driver, metadata
+extractor and browser tests. It is tooling validation, not executed Live behavior
+or original-versus-candidate compatibility testing.
+
+The [frozen export/browser method manifest](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/methods/export-and-browser-v2/manifest.json)
+pins copied code, tests and the pre-disposition design pages. These mutable pages
+now record the review outcome; the frozen copies and earlier reviews remain
+unchanged. Browser acceptance and its Node-proxy/visual-validation limits are
+canonical in the [browser plan](artifacts/browser-design-and-plan.md#full-inventory-publication-amendment).
+Current native execution belongs in the [phase ledger](native-phase-execution.md),
+not in these historical tool-test totals.

@@ -142,3 +142,75 @@ Before any fallback launch, compile against the installed Ghidra libraries and
 review model tests for limits/identity, entry/window handling, failure retention,
 script provenance and process lifetime. Compilation does not import a target.
 The coordinator alone decides whether the fallback trigger has occurred.
+
+## Explicit grouped ingestion after the real inventory
+
+The default analyzer eventually returned 420,472 rows, including 418,418 eligible
+entries. The original one-source ingest rebuilds the entire coverage view for
+each small batch. [Measured metadata costs](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/report.json)
+include 2.73 seconds just probing 420,472 nonexistent function directories and
+1.52 seconds emitting minimal synthetic row JSON. At that measurement, the real frozen inventory was
+212MB and the coverage view was 97MB. These costs recur even when a batch
+adds only five functions; they are separate from decompiler throughput.
+
+The approved narrow adjustment adds `ingest-many` for an explicit ordered list
+of retained evidence files. Validate the pinned inventory once into a context,
+then validate each evidence record and commit its immutable function revisions
+immediately. Perform one complete authoritative-source/payload audit and publish
+one coverage checkpoint after the whole group. A failed group retains earlier
+commits, reports failure, and leaves the previous coverage checkpoint unchanged;
+`check` or replay reconciles committed files. It never claims a partially completed
+group as an up-to-date checkpoint. Existing `ingest`, `check`, and Python call
+semantics remain compatible.
+
+Enumerate only existing function directories before constructing the complete
+inventory-sized coverage table. Reject orphan addresses, unexpected files,
+noncanonical directory names and symbolic links rather than ignoring them. Every
+committed revision still verifies its complete payload set, source hash,
+target/profile, exact source locator, metadata and pseudocode. The grouped path
+must recheck inventory/run/source byte identities before its final audit; a
+cached object is not permission to trust changed files. No persistent trusted
+cache, automatic retry, provider call or scheduling policy is added.
+
+Tests must establish equivalent coverage, group failure and unchanged replay,
+identity rejection, corrupt committed payload detection and unexpected-directory
+rejection. Separate scope and quality reviews precede use on the real corpus.
+
+The first twenty default-profile pilot exports allocated three 4KiB files per function even
+when the pseudocode is smaller. Applying that allocation pattern to 418,418
+eligible functions requires 5.14GB (4.79GiB) before directories, raw evidence,
+transport copies, larger code, retries or browser output. This is a storage
+scenario, not a prediction from a representative sample. Roughly 10GiB free
+with a 3GiB reserve does not establish that all eligible exports will fit.
+Future scheduling must measure output allocation across broader batches and stop
+at the resource floor; failed and unattempted entries remain distinct. Grouped
+ingestion reduces repeated bookkeeping, not the inherent corpus storage cost.
+
+The source-verification cache now retains at most eight parsed evidence files.
+Eviction discards only in-memory copies; reloading verifies the content hash and
+record provenance again. Eight large files can still consume substantial memory,
+so this is a bounded entry count, not a hard byte/RSS quota. The regression test
+forces a source to be revisited after eviction and detects corruption on reload.
+
+
+Quality review found that post-write sparse audits alone rejected a preexisting
+`functions` symlink only after files had escaped the corpus. The correction
+checks the root, lock, evidence, staging, inventory and checkpoint destinations,
+and every function/address/revision/payload destination in the current source,
+before retaining evidence or creating revisions. Existing and dangling symlinks
+are rejected. Checks cover the small destination set, not all inventory entries.
+Tests verify no outside files or directories appear, including a two-item batch
+whose second destination is unsafe. The exclusive writer lock governs normal
+operation; this check does not claim protection against a hostile process
+swapping filesystem paths concurrently. Historical findings and earlier review
+records remain retained. Refreshed [scope review v2](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/grouped-scope-review-v2.json)
+and [quality review v2](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/bulk-ledger-scale-v1/grouped-quality-review-v2.json)
+passed on the corrected source, including twenty-eight exporter tests and the
+original escape reproduction with no outside writes.
+
+The reviewed method is retained in the [export/browser v2 manifest](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/methods/export-and-browser-v2/manifest.json).
+The [completed tool-validation record](native-export-execution.md#completed-tool-validation)
+links the final 84-test combined suite. These checks approve the bounded analyst
+tooling; they do not establish full-corpus feasibility, recovered Live behavior,
+visual browser fidelity or persistence of the provider's ephemeral database.
+Use the [phase ledger](native-phase-execution.md) for current execution progress.

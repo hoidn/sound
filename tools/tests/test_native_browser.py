@@ -35,6 +35,20 @@ class BrowserTests(unittest.TestCase):
     def test_absent_inventory_is_unknown(self):
         self.assertEqual(browser.project(self.root, str), (None, [], []))
 
+    def test_initial_index_has_only_retained_attempts_and_full_index_is_separate(self):
+        rows = [['0x1', ['pending'], 'pending', 0, []],
+                ['0x2', ['has code'], 'exported', 1, [['Pseudocode', 'code.c']]],
+                ['0x3', ['failed'], 'failed', 1, [['Metadata', 'meta.json']]],
+                ['EXTERNAL:0x1', ['external'], 'external', 0, []]]
+        scripts = browser.index_scripts(rows)
+        initial = json.loads(scripts['native-index.js'][len('window.nativeRows='):-2])
+        full = json.loads(scripts['native-inventory.js'][len('window.nativeInventoryRows='):-2])
+        self.assertEqual(initial, rows[1:3])
+        self.assertEqual(full, rows)
+        self.assertNotIn('nativeInventoryRows', scripts['native-index.js'])
+        with self.assertRaises(ValueError):
+            browser.data_script(rows, 'unsafe;code')
+
     def test_generator_holds_exporter_lock_through_publication(self):
         def publication():
             with (self.root / 'native-live-arm64-v1/.ingest.lock').open('a') as other:
@@ -178,6 +192,65 @@ assert.equal(ids['native-rows'].children.length, 0);
 assert.match(ids['native-count'].textContent, /page 0 of 0/);
 ids['native-status'].value=''; ids['native-search'].value='0X1000 SYMBOL_0'; ids['native-search'].handlers.input();
 assert.equal(ids['native-rows'].children.length, 1);
+'''
+        result = subprocess.run([shutil.which('node'), '-e', prelude + browser.SCRIPT + assertions], capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    @unittest.skipUnless(shutil.which('node'), 'Node is unavailable')
+    def test_lazy_inventory_loading_retry_and_scope_with_dom_stub(self):
+        prelude = r'''
+const assert = require('node:assert/strict');
+function element() { return { children: [], value: '', textContent: '', handlers: {}, dataset: {},
+  append(...children) { this.children.push(...children); }, replaceChildren() { this.children = []; },
+  remove() { this.removed = true; }, addEventListener(type, callback) { this.handlers[type] = callback; }
+}; }
+const ids = Object.fromEntries(['native-search','native-status','native-rows','native-count','native-prev','native-next','native-load-inventory','native-load-status','native-scope'].map(id => [id, element()]));
+ids['native-load-inventory'].dataset.total='205';
+ids['native-load-inventory'].dataset.revision='captured-v1';
+const head=element();
+global.document={getElementById(id) {return ids[id];},createElement:element,head};
+global.window={nativeRows:[['0x1000',['existing code'],'exported',1,[['Pseudocode','code.c']]]]};
+const full=Array.from({length:205},(_,i)=>['0x'+(4096+i).toString(16),['symbol_'+i],i===0?'exported':'pending',i===0?1:0,[]]);
+'''
+        assertions = r'''
+assert.equal(head.children.length,0); // No initial full-inventory load.
+assert.equal(ids['native-rows'].children.length,1);
+const load=ids['native-load-inventory']; load.handlers.click();
+assert.equal(load.disabled,true); assert.equal(head.children[0].src,'native-inventory.js');
+load.handlers.click(); assert.equal(head.children.length,1); // Duplicate load suppressed.
+head.children[0].onerror(); assert.equal(load.disabled,false);
+assert.equal(ids['native-rows'].children.length,1); assert.match(ids['native-load-status'].textContent,/retry/);
+load.handlers.click(); window.nativeInventoryRows=[]; window.nativeInventoryRevision='captured-v1'; head.children[1].onload();
+assert.equal(load.disabled,false); assert.equal(ids['native-rows'].children.length,1); // Wrong count rejected.
+load.handlers.click(); window.nativeInventoryRows=full; window.nativeInventoryRevision='changed-v2'; head.children[2].onload();
+assert.match(ids['native-load-status'].textContent,/refresh this page/); assert.equal(ids['native-rows'].children.length,1);
+const malformed=full.map(row=>row.slice()); malformed[0][4]=null;
+load.handlers.click(); window.nativeInventoryRows=malformed; window.nativeInventoryRevision='captured-v1'; head.children[3].onload();
+assert.equal(load.disabled,false); assert.equal(ids['native-rows'].children.length,1);
+assert.equal(ids['native-rows'].children[0].children[1].textContent,'existing code');
+for (const [field,value] of [[4,null],[4,[['broken']]],[4,[['label',null]]],[4,new Array(1)],[1,null],[1,[123]],[1,new Array(1)],[0,123],[2,null],[3,-1],[3,0.5]]) {
+  const badTail=full.map(row=>row.slice());badTail[150][field]=value;
+  load.handlers.click();window.nativeInventoryRows=badTail;window.nativeInventoryRevision='captured-v1';head.children.at(-1).onload();
+  assert.equal(load.disabled,false);assert.equal(ids['native-rows'].children.length,1);
+  assert.equal(ids['native-next'].disabled,true); // Tail rows reject before a later page can crash.
+}
+const sparse=full.slice();delete sparse[150];
+load.handlers.click();window.nativeInventoryRows=sparse;window.nativeInventoryRevision='captured-v1';head.children.at(-1).onload();
+assert.equal(load.disabled,false);assert.equal(ids['native-rows'].children.length,1);
+ids['native-search'].value='existing'; ids['native-search'].handlers.input();
+assert.equal(ids['native-rows'].children.length,1); // Filters remain usable after failed render.
+ids['native-search'].value='symbol_204'; ids['native-search'].handlers.input();
+assert.equal(ids['native-rows'].children.length,0);
+load.handlers.click(); window.nativeInventoryRows=full; window.nativeInventoryRevision='captured-v1'; head.children.at(-1).onload();
+assert.equal(load.hidden,true); assert.equal(ids['native-rows'].children.length,1);
+assert.equal(ids['native-rows'].children[0].children[1].textContent,'symbol_204');
+assert.match(ids['native-scope'].textContent,/all 205/);
+ids['native-search'].value=''; ids['native-search'].handlers.input();
+assert.equal(ids['native-rows'].children.length,100);
+ids['native-next'].handlers.click(); ids['native-next'].handlers.click();
+assert.equal(ids['native-rows'].children.length,5);
+ids['native-status'].value='pending'; ids['native-status'].handlers.input();
+assert.match(ids['native-count'].textContent,/204 matching functions/);
 '''
         result = subprocess.run([shutil.which('node'), '-e', prelude + browser.SCRIPT + assertions], capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)

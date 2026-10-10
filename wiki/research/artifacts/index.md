@@ -2,7 +2,7 @@
 id: NAV-ABLETON-ARTIFACTS
 type: index
 status: active
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -42,7 +42,8 @@ retained output.
 | I want to… | Open | What is available |
 | --- | --- | --- |
 | Understand the application bundle | [Package map and findings](../ableton-package-structure.md#bundle-map) | Core, helpers, dependencies and resource boundaries |
-| Read main Live pseudocode | [Selected-entry browser](../../../analysis/ableton-live-12.4.3/browse/index.html#selected-native), [first selected ALoopOn factory](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/functions/0x10276e5d4/pseudocode.c) | Selected native entries with separate profile, code, assembly and metadata; failed attempts remain visible |
+| Read default-profile main Live pseudocode | [Native corpus browser](../../../analysis/ableton-live-12.4.3/browse/index.html#native), [coverage ledger](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/coverage.json) | Retained exports appear immediately; optionally load all inventoried addresses for search |
+| Compare bounded selected-entry captures | [Selected-entry browser](../../../analysis/ableton-live-12.4.3/browse/index.html#selected-native), [first selected ALoopOn factory](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/functions/0x10276e5d4/pseudocode.c) | Separate no-auto-analysis profile with code, assembly and metadata; failed attempts remain visible |
 | Read helper pseudocode | [Push2 entry pseudocode](../../../analysis/ableton-live-12.4.3/push2-entry-pseudocode.c) | One Ghidra-decompiled helper entry, with warnings |
 | Inspect that function's machine instructions | [Push2 assembly](../../../analysis/ableton-live-12.4.3/browse/push2-entry-assembly.txt) | 1,590 retained assembly lines with static addresses |
 | Follow its calls or strings | [Callee table](../../../analysis/ableton-live-12.4.3/browse/push2-entry-callees.tsv), [string table](../../../analysis/ableton-live-12.4.3/browse/push2-entry-strings.tsv) | 77 callee records and 47 referenced strings; incomplete indirect-flow coverage |
@@ -58,7 +59,8 @@ retained output.
 
 | Target | Retained work | What this does not establish |
 | --- | --- | --- |
-| Main Live executable | Symbols, dependencies, extracted arm64 slice and sealed selected-entry pseudocode/assembly; see browser for retained outcomes | Selected entries use a custom no-auto-analysis profile, not a whole-image inventory or REA records; default-profile coverage remains separate |
+| Main Live default profile | Frozen Ghidra inventory of 420,472 addresses and retained pseudocode exports; browser reads the coverage ledger | Inventory size is not exported code coverage, recovered original source or demonstrated behavior |
+| Main Live selected-entry profile | Sealed custom-script pseudocode/assembly and failed attempts; see browser for retained outcomes | Uses a no-auto-analysis profile, separate from the default-profile inventory and REA records |
 | Push2 display helper | Ghidra inventory and one entry-function dossier with pseudocode, assembly and references | Not complete helper decompilation; 13,611 inventoried procedures are not 13,611 decompiled functions |
 | MIDI user mapping | Seventeen CPython 3.11 modules disassembled and selected paths traced | Disassembly is opcode text, not recovered Python source; remaining modules untraced |
 | Other native candidates | Package inventory and partial dependency model | Format labels are not validation: some Java `.class` headers resemble universal Mach-O |
@@ -80,6 +82,7 @@ process addresses. Canonical identities and limitations are in the
 | [Push2 full dossier](../../../analysis/ableton-live-12.4.3/evidence/push2-entry-dossier.json) | JSON / 9.2 MB | Exact function evidence, including block/reference detail omitted from readable extracts |
 | [Push2 analysis snapshot](../../../analysis/ableton-live-12.4.3/evidence/push2-analysis-snapshot.json) | JSON / 10.3 MB | Eligible cached queries for resuming REA; not a full Ghidra project |
 | [Slice provenance](../../../analysis/ableton-live-12.4.3/derived/manifest.json) | JSON | Original hashes, extraction commands and slice byte identity |
+| [Default-profile coverage](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/coverage.json), [analysis identity](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/run.json) | JSON | Frozen inventory identity, exact function states, retained revision IDs and profile; use the browser for direct code links |
 | [Declared-starts summary](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/summary.json), [sealed provenance](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/manifest.json) | JSON and TSV | Linker metadata decoded with a captured extraction method; adjacent starts do not establish function sizes |
 | [Live arm64 input](../../../analysis/ableton-live-12.4.3/derived/Live.arm64) | Mach-O binary / 149.7 MB | Prepared analyzer input, not a readable report |
 | [Selected native run 1](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/run-status.json), [manifest](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/manifest.json) | Custom Ghidra capture / JSON and code | First main Live selected entry; sealed identities, method and outcomes |
@@ -92,6 +95,19 @@ The large [static export](../../../analysis/ableton-live-12.4.3/evidence/static-
 (about 313 MB) and [decompilation export](../../../analysis/ableton-live-12.4.3/evidence/decompilation-evidence.json)
 (about 5.3 MB) retain full REA records. Start with the summaries above; use these
 exports when auditing an exact evidence ID. Sizes are decimal and rounded.
+
+## Reviewed navigation and export methods
+
+The [frozen export/browser v2 method](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/methods/export-and-browser-v2/manifest.json)
+retains reviewed code, tests and design copies. The
+[completed tool-validation record](../native-export-execution.md#completed-tool-validation)
+links the 84-test combined suite and corrected grouped-ingestion reviews;
+the [browser plan](browser-design-and-plan.md#full-inventory-publication-amendment)
+links its 28-test scope/quality reviews and malformed-index recovery fixes.
+Those reviews pin historical artifacts. The browser is regenerated from current
+retained evidence, and the [phase ledger](../native-phase-execution.md) owns live
+progress. Node DOM-stub checks do not establish visual or accessibility quality;
+retained evidence and query snapshots do not establish cold database persistence.
 
 ## Python module directory
 
@@ -153,12 +169,19 @@ observation. Rebuild only these views with the repository tool:
 python3 tools/build_artifact_browser.py
 ```
 
-Once `native-live-arm64-v1/coverage.json` exists, regeneration reads its actual
-function states and adds searchable, paginated rows (100 per page) with direct
+Regeneration reads `native-live-arm64-v1/coverage.json` and adds actual function
+states and searchable, paginated rows (100 per page) with direct
 pseudocode, revision metadata and source-evidence links. No code is embedded in
 the index. The full coverage ledger retains all attempt identities; displayed
 links select a revision supporting the aggregate state, not necessarily the
 newest attempt. Generation does not replace the exporter's integrity check.
+
+The initial native search contains functions with retained attempts so available
+code is easy to find. An explicit button loads the complete address index from a
+local JavaScript file, including pending and external entries. Counts above the
+table always describe the full ledger. Loading needs no server or fetch call;
+a page left open across regeneration asks for a refresh if its inventory
+snapshot no longer matches. The full index remains metadata, not embedded code.
 
 The selected-entry shelf discovers sealed `native-live-arm64-targeted-v*`
 captures independently. It verifies each manifest and clean process teardown
@@ -179,3 +202,9 @@ the same paths. The generator requires that evidence and does not reacquire it.
 Do not move or rename captured payloads to tidy the directory: update this
 catalog and generate new views while preserving source bytes and old manifests.
 This catalog is not part of a clean implementation handoff.
+
+The [2026-10-10 browser checkpoint](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/browser-checkpoint-2026-10-10-v1/report.json)
+verifies the current generated files, local links, stable section anchors and
+attempted/full inventory agreement. It is a structural check, not visual browser
+QA. See the [phase report](../native-phase-execution.md#stratified-checkpoint-and-phase-report--2026-10-10)
+for current export coverage and the capacity decision.

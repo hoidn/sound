@@ -5,7 +5,7 @@ status: current
 updated: 2026-10-09
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
-revision: 5
+revision: 6
 ---
 
 # An evolving map of Live
@@ -160,21 +160,43 @@ pin these exact static transfers:
 ```mermaid
 flowchart LR
     A[OnStart named wrapper 0x102770a58] -->|B at 0x102770a60| B[0x10276a7b0 exported]
-    C[OnStop named wrapper 0x102770a64] -->|B at 0x102770a64| D[0x102767b70 assembly only]
+    C[OnStop named wrapper 0x102770a64] -->|B at 0x102770a64| D[0x102767b70 selected assembly; default warned code]
     B -->|conditional BL at 0x10276a8e8| E[0x101a4abd8 effect unresolved]
     D -->|conditional BL at 0x102767be4| E
 ```
 
-Wrapper arrows are direct branches; the two later arrows are conditional call
-instructions found by the follow-up. The
+Wrapper arrows are direct branches; the two later arrows are calls
+reached on conditional paths found by the follow-up. The
 [destination packet](native-transport-study.md#transport-packet-after-the-destination-follow-up)
 records their shared target and differing argument patterns. The Stop body
-still has two unresolved computed transfers, so its pseudocode export remains
+still has two unresolved computed transfers, so its selected-profile pseudocode export remains
 failed. Neither the common callee's effect nor the external state transition is
 established. Start's wrapper first writes one to `w1` and `w2`; the parameter
 meanings remain unknown. The
 [failure lesson](learning/walkthroughs/transport-wrapper-boundary.md)
 shows how a bounded negative result narrows the next investigation.
+
+## A small native record-building path
+
+The [default-profile follow-up](native-transport-study.md#default-profile-comparison-and-shared-helper)
+traced the shared transport callee one level further. The solid arrows below
+mean observed call instructions; the dashed node remains an unresolved indirect
+operation. The append descriptions come from the helpers' exact memory accesses,
+not recovered original names.
+
+```mermaid
+flowchart LR
+    A[Shared helper 0x101a4abd8] -->|BL at 0x101a4ac24| B[Append eight bytes 0x101a9c600]
+    A -->|Three BL instructions| C[Append one byte 0x101a9c504]
+    A -.->|BLR at 0x101a4ac58| D[Unresolved indirect operation]
+```
+
+The helper builds a local structure and passes its address to the indirect
+operation. Record assembly is supported; queuing, dispatch, ownership and the
+external meaning of its values remain unknown. This is a local code map, not
+a recovered application-wide command architecture. Default-profile pseudocode
+also preserves warnings at Stop's two computed transfers; the earlier selected
+failure remains valid. The linked study owns the exact evidence and limits.
 
 ## Broader native structure remains open
 

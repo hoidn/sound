@@ -69,20 +69,39 @@ def project(corpus, href):
     return summary, rows, inputs
 
 
-def data_script(rows):
+def data_script(rows, variable='nativeRows'):
     # External JS, with HTML-significant characters escaped as an extra safeguard.
-    return 'window.nativeRows=' + json.dumps(rows, ensure_ascii=True, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026') + ';\n'
+    if variable not in ('nativeRows', 'nativeInventoryRows'):
+        raise ValueError('Unknown native index variable')
+    return 'window.' + variable + '=' + json.dumps(rows, ensure_ascii=True, separators=(',', ':')).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026') + ';\n'
+
+
+def index_scripts(rows):
+    """Keep the initial index focused on artifacts; full inventory loads on demand."""
+    return {
+        'native-index.js': data_script([row for row in rows if row[3] > 0]),
+        'native-inventory.js': data_script(rows, 'nativeInventoryRows'),
+    }
 
 
 SCRIPT = r"""
 (() => {
   'use strict';
-  const all = window.nativeRows || [];
+  let all = window.nativeRows || [];
   const search = document.getElementById('native-search');
   if (!search) return;
   const status = document.getElementById('native-status');
   const body = document.getElementById('native-rows');
-  const searchable = all.map(row => [row[0], ...row[1], row[2]].join(' ').toLowerCase());
+  const index = rows => Array.from(rows, row => {
+    if (!Array.isArray(row) || row.length !== 5 || typeof row[0] !== 'string' ||
+        !Array.isArray(row[1]) || !Array.from(row[1]).every(alias => typeof alias === 'string') ||
+        typeof row[2] !== 'string' || !Number.isInteger(row[3]) || row[3] < 0 ||
+        !Array.isArray(row[4]) || !Array.from(row[4]).every(link => Array.isArray(link) && link.length === 2 && typeof link[0] === 'string' && typeof link[1] === 'string')) {
+      throw new Error('Malformed native inventory row');
+    }
+    return [row[0], ...row[1], row[2]].join(' ').toLowerCase();
+  });
+  let searchable = index(all);
   let matches = all.map((_, i) => i), page = 0;
   const pageSize = 100;
   function render() {
@@ -112,6 +131,43 @@ SCRIPT = r"""
   search.addEventListener('input', filter); status.addEventListener('input', filter);
   document.getElementById('native-prev').addEventListener('click', () => { if (page > 0) { page--; render(); } });
   document.getElementById('native-next').addEventListener('click', () => { if ((page + 1) * pageSize < matches.length) { page++; render(); } });
+  const load = document.getElementById('native-load-inventory');
+  if (load) load.addEventListener('click', () => {
+    if (load.disabled) return;
+    load.disabled = true;
+    const message = document.getElementById('native-load-status');
+    message.textContent = 'Loading the complete local inventory…';
+    delete window.nativeInventoryRows;
+    delete window.nativeInventoryRevision;
+    const script = document.createElement('script');
+    const failed = (reason = 'The complete inventory could not be loaded. Retained attempts remain available; retry the load or open the raw coverage ledger.') => {
+      delete window.nativeInventoryRows;
+      delete window.nativeInventoryRevision;
+      message.textContent = reason;
+      load.disabled = false; script.remove();
+    };
+    script.src = 'native-inventory.js';
+    script.onerror = () => failed();
+    script.onload = () => {
+      const previousAll = all, previousSearchable = searchable;
+      try {
+        if (window.nativeInventoryRevision !== load.dataset.revision) {
+          failed('The complete inventory snapshot has changed. Retained attempts remain available; refresh this page before loading the complete inventory.');
+          return;
+        }
+        const next = window.nativeInventoryRows;
+        if (!Array.isArray(next) || next.length !== Number(load.dataset.total)) throw new Error('Inventory count mismatch');
+        const nextIndex = index(next);
+        all = next; searchable = nextIndex; filter();
+        document.getElementById('native-scope').textContent = `Searching all ${all.length.toLocaleString('en-US')} inventoried addresses, including pending and external entries.`;
+        message.textContent = 'Complete inventory loaded from local files.';
+        load.hidden = true; script.remove();
+      } catch (_) {
+        all = previousAll; searchable = previousSearchable; filter(); failed();
+      }
+    };
+    document.head.append(script);
+  });
   render();
 })();
 """

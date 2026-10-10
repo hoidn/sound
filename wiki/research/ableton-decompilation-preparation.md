@@ -32,8 +32,9 @@ proves target/provider validation only. The [authorized execution](native-phase-
 retains a full-analysis attempt stopped at the disk floor, followed by a
 separate bounded selected-entry route that exported main Live pseudocode.
 The [artifact catalog](artifacts/index.md) links the readable files; the
-execution ledger distinguishes these exports from the still-unavailable full
-procedure inventory.
+execution ledger now also records the successful full-analysis retry, its frozen
+procedure inventory and default-profile export checkpoints. The selected route remains a
+separate analysis profile.
 
 The Push2 pipeline check completed Ghidra auto-analysis: 13,611 procedures and
 14,769 defined strings. These are provider inventory counts, not original-source

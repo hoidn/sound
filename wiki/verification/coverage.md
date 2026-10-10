@@ -2,7 +2,7 @@
 id: VAL-COVERAGE
 type: coverage
 status: planned
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 ---
 
@@ -49,9 +49,10 @@ verification statuses remain unknown.
 The [decompilation and learning roadmap](../research/native-decompilation-roadmap.md)
 separates export completeness, semantic coverage, pedagogical review and empirical
 compatibility. Its [execution ledger](../research/native-phase-execution.md) now records the
-authorized work: reviewed analyst tooling, a disk-limited full-analysis attempt,
-and actual selected main Live pseudocode exports with explicit failed entries.
-Full-inventory throughput/recovery remains unknown (Q-011); these artifacts
+authorized work: reviewed analyst tooling, a retained full inventory and bounded default-profile
+export checkpoints, plus separate selected main Live exports with explicit failed entries.
+Further bulk work stopped at the measured capacity gate; whole-corpus fit and
+cold recovery remain unestablished (Q-011). These artifacts
 establish no original-versus-candidate compatibility. All comparison statuses
 above remain unchanged.
 

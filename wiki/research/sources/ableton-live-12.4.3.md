@@ -2,7 +2,7 @@
 id: SRC-ABLETON-12-4-3
 type: source
 status: current
-updated: 2026-10-09
+updated: 2026-10-10
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -114,7 +114,8 @@ and [v3](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v3/man
 pin target identity, retained method and all output hashes. They use a bounded
 no-autoanalysis profile; their pseudocode is generated analysis, not recovered
 original C++ source. The [execution ledger](../native-phase-execution.md)
-records outcomes and the separate default-analysis failure.
+records these outcomes, the first default-analysis failure and the successful
+full-analysis retry.
 
 The [linker metadata index](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/summary.json)
 decodes the pinned thin image's `LC_FUNCTION_STARTS` payload at file offset
@@ -126,3 +127,30 @@ all entries against the original payload. These are declared starts, not
 Ghidra-discovered functions, body ranges or decompiled code; neighboring starts
 do not define function sizes. The [design](../function-starts-design.md) records
 format checks, resource measurement and review status.
+
+
+## Main Live default-profile analysis
+
+The [completion record](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/analysis-completion-v1.json)
+pins the successful retry's full inventory bundle, analysis log and resource
+observations. Inventory evidence ID:
+`ev_e2ec1d6bec222974ebac6a973ec92c9453cbe2ac8e30217fa238db931f6211c8`.
+The Ghidra 12.1.4 default profile digest is
+`5b7927397d54a65b8e4ae3db210b45b6c649ea2022e950843c5906a01c2a487b`.
+The complete [retained bundle](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/inventory-evidence.json)
+is 121,206,515 bytes with SHA-256
+`701547de1c5ba4b0f9b6f6b7e5b6ba67602874bcec015ebc92a0a5c394b5d60f`.
+The MCP response was too large; the existing evidence was exported, not rerun.
+
+The [execution ledger](../native-phase-execution.md#stratified-checkpoint-and-phase-report--2026-10-10)
+owns counts, pilot selection and current export progress. Individual revisions
+retain pseudocode and provenance; warnings are preserved. Analysis completion
+is not complete control-flow recovery, and this profile does not supersede or
+rewrite the separately sealed selected-entry captures. No original Live process
+or compatibility scenario was executed by this static analysis.
+
+The [session closure manifest](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/post-run/manifest-v1.json)
+pins the final provider-neutral observation snapshot, close receipts and process
+reconciliation. It preserves evidence, not a durable Ghidra database. The source
+digest was reverified after shutdown; subsequent bulk work must satisfy the
+capacity and recovery gates in the execution ledger.
