@@ -28,7 +28,9 @@ no experimental contradiction has been established yet.
 - Affects: [investigation plan](research/ableton-plan.md), all future evidence.
 - Resolution: [SRC-ABLETON-12-4-3](research/sources/ableton-live-12.4.3.md)
   retains exact build, original/slice digests, extraction provenance and environment.
-  Ghidra accepted the Live slice; only Push2 received deep analysis in this pass.
+  Ghidra accepted the Live slice. Subsequent selected main-Live code exports
+  are recorded in the [execution ledger](research/native-phase-execution.md);
+  full-inventory coverage remains open in Q-011.
 - Retention limitation: installed resources remain mutable external originals;
   local ignored evidence is not an off-machine backup. Q-003 remains open.
 

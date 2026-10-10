@@ -16,7 +16,9 @@ to the isolated implementation workspace.
 | [Learning route](learning/index.md) | Human-readable method, glossary and worked investigations |
 | [Program structure atlas](program-structure.md) | Observed package boundaries, traced relationships and explicit unknowns |
 | [Phase execution plan](native-phase-execution.md) | Authorized sequence, resource envelope and actual milestone ledger |
+| [Native analysis recovery design](native-analysis-recovery.md) | Proposed persistent checkpoints, verified JVM settings and bounded analysis stages |
 | [Native transport study](native-transport-study.md) | Loop-enable persistence and Start/Stop investigation design, exact seeds and case boundaries |
+| [Linker function-start index design](function-starts-design.md) | Bounded Mach-O metadata navigation, distinct from analyzer-discovered functions |
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |
 | [Native export task plan](native-export-execution.md) | Implementation tasks and tool-validation state |
 | [Next major phase roadmap](native-decompilation-roadmap.md) | Main Live code export, human-readable method/structure atlas and first handoff milestones |

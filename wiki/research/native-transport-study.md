@@ -374,3 +374,13 @@ verified the resource hashes, locators, all twelve exact patches, gzip/XML check
 and retained manifests. It found no material issues. This review approves the
 prepared static inputs and their provenance; behavioral expectations remain
 unknown pending tracing or reference observations.
+
+## Linker metadata cross-check
+
+A [retained membership check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/function-start-membership-v1.json)
+found all 24 selected-entry addresses in the independently reviewed
+`LC_FUNCTION_STARTS` index. This corroborates their presence as declared start
+locations, including the failed wrappers. It does not validate a recovered body,
+resolve a computed transfer, or change any failed export to success. The
+[source page](sources/ableton-live-12.4.3.md) owns the whole index's identity and
+limits. No new native analysis or runtime call was required for this comparison.

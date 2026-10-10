@@ -381,3 +381,81 @@ one-second resource samples and the existing disk reserve. No default
 inventory has yet returned. Native packets still do not establish externally
 observable transport contracts; a finite MIDI configuration handoff candidate
 is being prepared under the roadmap fallback.
+
+## [2026-10-09] query | Native teaching packets reviewed
+
+Two native investigations now retain the selected call paths, assembly and
+pseudocode: loop-related construction and Start/Stop wrapper destinations.
+Updated the program atlas, method guide and two walkthroughs. Independent
+reader review verified eight page hashes, 195 links/anchors, eleven packet
+artifact hashes and the quoted excerpts. Teaching acceptance passed; persisted
+loop defaults and transport effects remain unresolved. These findings support
+the explicit MIDI fallback for the first finite handoff, not an invented native
+behavioral contract.
+
+## [2026-10-09] query | Actual launch did not retain requested pool settings
+
+Correction to the retry entry above: a standalone JVM accepted the two pool
+settings, but the active REA-launched JVM did not retain them. Its captured
+command line lacks ActiveProcessorCount and sets cpu.core.override to empty;
+the process sampler observed nine native decompiler children. Retained actual
+command/properties/thread captures under transport-retry-v3/diagnostics. The
+new disk capacity and aggregate monitor remain effective changed conditions;
+the two-worker intention is not an achieved property of this run. Corrected
+the execution ledger and requested a bounded installed-launch source trace.
+
+## [2026-10-09] release | Finite MIDI configuration handoff
+
+Published immutable local handoff `midi-config-v1` after independent scope,
+quality and final isolated-package checks. The four partial clauses cover only
+master/cue/crossfader assignment interpretation. All 54 fixtures and substantive
+case expectations are unchanged from the reviewed candidate; 60 final files and
+59 payload hashes verified. Catalog records manifest SHA-256
+`9e3ab46efba170f61bcd7b9fce5d579c263aefd90097dc06695339594308b6ee`.
+Updated project/spec/research/verification navigation and implementation-side
+release metadata. Reference and candidate executions remain not-run, wider MIDI
+requirements remain draft, and no implementation workspace is provisioned.
+This is the native roadmap's explicit fallback; it does not close native
+transport/persistence semantics or whole-binary export gates.
+
+## [2026-10-09] ingest | Linker-declared function-start navigation
+
+Added a strict, bounded metadata extractor and a sealed index of 413,794
+linker-declared main-image starts. Actual extraction took 1.04 seconds with
+31.5 MB process peak RSS; twelve tests and independent scope/quality reviews
+passed. Independent review decoded the complete table against the retained
+binary. Updated source, atlas and design; all 24 selected entries also occur in
+this metadata, without changing their export outcomes. A separate browser shelf
+provides count and direct table/provenance links. This index is not the missing
+Ghidra inventory, body coverage, original source or a new export denominator.
+
+## [2026-10-09] lint | Reviewed tooling and local release checkpoint
+
+The combined analyst-tool suite passed all 71 tests; exact tool/test hashes and
+output are retained in native-live-arm64-v1/preflight/tool-suite-v1.json and its
+text capture. Regenerated the offline browser after reviewed changes. Full wiki
+check passed 47 pages, 606 relative links and 48 earlier source/disassembly
+hashes; the new metadata/native/release manifests have separate retained checks.
+No real-browser rendering pass or original-versus-candidate compatibility is
+claimed. Full native inventory remains in flight.
+
+## [2026-10-09] maintenance | Preserve reviewed draft versions
+
+Publication updates advanced two mutable wiki pages pinned by the handoff's
+analyst traceability. Retained exact reviewed copies by reversing the recorded
+publication-only edits and matching their pre-existing SHA-256 pins; recorded
+that reconstruction explicitly. Independent focused retention review verified
+both snapshots, the other ten unchanged source pins and every published release
+file. Corrected the plan's stale pending-review disposition. No behavior, fixture,
+case expectation or released payload changed.
+
+## [2026-10-09] query | Persistent native recovery design
+
+Drafted the [recovery design](research/native-analysis-recovery.md) while the
+single full REA retry remains active. Installed source establishes that ordinary
+headless processing restarts analysis scheduling and can run an extra untimed
+pass after post-scripts. The proposed route therefore separates a saved import,
+a bounded analysis stage and exports with analysis disabled. Actual JVM gates,
+closed-project verification and storage admission remain unimplemented/unproven.
+Linked the research index, export design and phase ledger. Independent design
+review is pending; no additional analyzer was launched.

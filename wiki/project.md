@@ -21,11 +21,11 @@ documentation structure is not completion of the application.
 | Documentation routing and schema | Established in this workspace |
 | Reference target | Ableton Live 12 Suite 12.4.3; identity and static evidence retained locally (see research index) |
 | Research | Methodology sources, investigation plan, and cataloged package-analysis/decompilation-preparation records |
-| Behavioral specifications | MIDI user mapping draft and planned cases prepared; no behavioral contract released |
+| Behavioral specifications | Broader MIDI mapping draft; first finite configuration handoff released |
 | Implementation | No application code; architecture choices remain proposals |
 | Verification | No retained original-versus-candidate compatibility results |
 | Clean implementation workspace | Not provisioned; this checkout contains analyst material |
-| Published handoffs | None |
+| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases |
 
 ## Current phase
 

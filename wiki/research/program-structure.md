@@ -5,7 +5,7 @@ status: current
 updated: 2026-10-09
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
-revision: 4
+revision: 5
 ---
 
 # An evolving map of Live
@@ -49,6 +49,16 @@ unresolved loads and partial coverage remain in the [package findings](ableton-p
 | MIDI scripts | [Seventeen decoded modules](artifacts/index.md#python-module-directory) and selected traced paths | Every controller, native arithmetic or host lifecycle |
 | Schemas and sets | [Resource findings](../../analysis/ableton-live-12.4.3/resource-findings.txt) | A complete accepted-file grammar or runtime defaults |
 | QML and other GUI resources | [Package resource inventory](ableton-package-structure.md#resources-that-can-ground-specifications) | All widget behavior, native bindings or exact rendering |
+
+## A linker-provided navigation index
+
+The main executable also carries an `LC_FUNCTION_STARTS` table. The
+[source record](sources/ableton-live-12.4.3.md) pins its 413,794 decoded start
+addresses and the [readable table](../../analysis/ableton-live-12.4.3/derived/function-starts-v1/addresses.tsv)
+maps each to a file offset. This gives us many more search locations than the
+retained symbol names alone. It supplies no names, bodies or responsibilities.
+The distance to the next start is not a recovered function size, and this table
+is not the full analyzer inventory or the denominator for current exports.
 
 ## One code path we have traced: user controller configuration
 

@@ -9,8 +9,9 @@ access: analysis
 # Behavioral specification index
 
 Specifications define what must be observable, independent of the original's
-internal implementation. This directory contains analyst-side drafts; no
-behavioral spec has been released.
+internal implementation. This directory contains analyst-side drafts. The
+[first configuration release](../../handoff/midi-config-v1/README.md) approves
+only four explicitly partial clauses; the wider MIDI draft remains unreleased.
 
 | Page | Purpose |
 | --- | --- |

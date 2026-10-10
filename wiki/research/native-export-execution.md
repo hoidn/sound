@@ -266,12 +266,45 @@ plus one. Adding `-Dcpu.core.override=2` produces a default pool of two. The
 actual small JVM probe measured baseline processors/pool as 8/9, processor flag
 alone as 2/3, and both flags as 2/2. It imported no target and ran no analysis.
 
-For a coordinator-approved retry, set only the owned process environment:
-`JAVA_TOOL_OPTIONS='-XX:ActiveProcessorCount=2 -Dcpu.core.override=2'`.
-Installed `ParallelDecompiler.java:94` selects a shared `GThreadPool`, whose
-executor initializes from that default; `AutoAnalysisManager.java:83` uses the
-same default for its analysis pool. This limits those default pools individually;
-it does not impose a total process or memory quota, and explicitly resized pools
-can differ. Aggregate owned-process RSS monitoring and the disk reserve remain
-necessary. A retry needs its own retained invocation/resource configuration and
-new evidence directory; none was launched by this source/probe investigation.
+The initial proposal was to set owned `JAVA_TOOL_OPTIONS` to both flags. **That
+proposal did not survive the actual REA launch and must not be reused as a proven
+REA control.** Installed `ParallelDecompiler.java:94` selects a shared
+`GThreadPool`, whose executor initializes from the default;
+`AutoAnalysisManager.java:83` uses the same default for its analysis pool. The
+isolated sizing result remains valid, but it does not establish that REA forwards
+the settings. The correction below records that missing launch-boundary check.
+
+## Actual REA launch correction
+
+The active `transport-retry-v3` diagnostics showed empty `cpu.core.override` and
+`cpu.core.limit`, no `ActiveProcessorCount` JVM argument, and multiple native
+decompiler children despite the intended environment settings. The retained
+[correction record and source copies](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/launch-pool-correction-v1/report.json)
+identify the cause: `GhidraInstallation.js:262–270` explicitly clears
+`JAVA_TOOL_OPTIONS`, `_JAVA_OPTIONS`, `JDK_JAVA_OPTIONS` and `GHIDRA_JAVA_OPTIONS`.
+A target-free call to that exact installed environment helper reproduced the
+cleared values. The original JVM-only probe is preserved, not rewritten.
+
+On POSIX, `GhidraLauncher.js` invokes `GhidraJavaLaunch.js` directly instead of
+the standard headless shell. That builder reads `LaunchSupport -vmargs`, including
+empty CPU properties from `support/launch.properties:69,74`, then constructs its
+own JVM argument array. The inspected REA headless argument builder exposes no
+CPU limit option. A different guessed environment variable is therefore not an
+evidence-based fix. The [actual JVM command line](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/diagnostics/command-line-v1.json)
+confirms the source-derived explanation. The coordinator keeps the active run
+under its aggregate RSS/disk watchdog; this investigation neither changes nor
+interrupts it.
+
+A future scoped alternative is a separately reviewed standalone headless driver,
+using Ghidra's supported `-max-cpu 2` argument and the standard shell launch's
+`GHIDRA_HEADLESS_JAVA_OPTIONS='-Dcpu.core.override=2'`. The shell appends those JVM
+options after `launch.properties`; this avoids editing the provider installation.
+`-max-cpu 2` alone sets `cpu.core.limit=2`, which normally allows a default pool of
+three because the utility adds one. The explicit override is needed for exactly
+two default workers per pool. The selected-entry driver already demonstrates
+standalone headless launch with `-max-cpu 2`, but its current environment clears
+headless JVM options and it has not tested this additional override. A full-analysis
+standalone method would need a fresh profile/output root, retained launch argv and
+actual JVM property verification before claiming the cap. No such driver change
+or retry was implemented here. Pool size remains distinct from a process or memory
+quota; explicit pool resizing and other process activity still require monitoring.

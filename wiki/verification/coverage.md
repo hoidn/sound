@@ -9,7 +9,8 @@ access: analysis
 # Whole application verification coverage
 
 The [feature map](../specs/feature-map.md) defines the current planning scope.
-One bounded ecosystem draft exists; all families remain unimplemented and unverified. This
+A bounded ecosystem draft and a finite configuration release exist; all
+families remain unimplemented and unverified. This
 matrix is an analyst view; the implementer has a separate mapping of released
 requirements to candidate code and tests.
 
@@ -26,7 +27,7 @@ requirements to candidate code and tests.
 | FEAT-WARP | None | Not started | Unknown | Mode/settings and algorithm analysis; flag numerical comparisons |
 | FEAT-PERSISTENCE | None | Not started | Unknown | Packaged files, schema and loader/migration paths |
 | FEAT-UI | None | Not started | Unknown | UI resources, bindings and command/focus dispatch |
-| FEAT-MIDI-USER-MAPPING | [Draft revision 1](../specs/midi-user-mapping.md); no handoff | Not started | Unknown; 46 case groups not run | Review static expectations; resolve selected host/native gaps |
+| FEAT-MIDI-USER-MAPPING | [Broader draft](../specs/midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md) | Not started | Unknown; 54 release cases and 46 broader draft groups not run | Independently observe released routes; resolve excluded host/native gaps |
 | FEAT-ECOSYSTEM | None | Not started | Unknown | Shipped integration contracts and protocol handlers |
 | FEAT-DELIVERY | None | Not started | Unknown | Package/configuration and export/teardown paths |
 

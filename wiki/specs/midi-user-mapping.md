@@ -220,6 +220,9 @@ Post-review editorial changes record these dispositions and align the runtime
 escalation wording with ADR 0002; requirements and cases remain unchanged.
 Cases 041–043 cover omitted mixer-toggle default and INI lexical rules;
 044–046 add valid-CC invalid-channel, unknown interpolation and paired
-more-than-eight-encoder banking cases. No handoff snapshot exists, no
-implementation coverage is claimed, and no original-versus-candidate comparison
-has run.
+more-than-eight-encoder banking cases. The broader draft remains unreleased. The subsequent
+[finite configuration handoff](../../handoff/midi-config-v1/README.md) approves
+only selected clauses of REQ-MIDI-USER-002/003/010/013 for master, cue and
+crossfader assignments, with 54 independently authored cases. It does not
+release the full requirements or this broader matrix. No application code or
+original-versus-candidate comparison has run.

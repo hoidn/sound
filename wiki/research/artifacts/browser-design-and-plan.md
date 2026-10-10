@@ -135,3 +135,42 @@ validates retained cleanup records; it does not inspect current process state.
 Independent [scope review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-selected-scope-review-v1.json)
 and [quality review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-selected-quality-review-v1.json)
 passed on the pinned code/view revision. No new visual-browser pass is claimed.
+
+## Linker-declared starts amendment
+
+Add an optional navigation card for the sealed `derived/function-starts-v1`
+capture after its schema is established. Validate the complete manifest and
+payload hashes, pinned target identity and captured method identity before
+publishing its declared count and direct TSV, summary and provenance links.
+Malformed, incomplete or unsealed captures do not publish result links. Do not
+embed the large address list in the page.
+
+Linker-declared starts are a separate evidence category: they are not an
+analyzer-discovered inventory, recovered bodies or decompiled code. Their count
+does not become an export-coverage denominator. Preserve the selected-entry and
+default-profile sections and the `#python` address.
+
+Plan: adopt the exporter author's sealed schema; add the smallest read-only
+projection and card; test valid, absent, tampered and identity-mismatch captures;
+regenerate against retained output and verify links/digests; submit scope and
+quality review. This amendment performs no native analysis.
+
+Implemented in [the read-only projection](../../../tools/function_starts_browser.py)
+and existing generator. The retained
+[capture summary](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/summary.json)
+reports 413,794 declared starts. Publication checks the exact payload set,
+manifest sizes and hashes, pinned target, captured method digest, TSV columns,
+strict address ordering, row count and first/last entries. TSV rows are streamed
+for validation and remain outside the generated HTML.
+
+All 26 browser tests pass, including six new
+[declared-starts projection tests](../../../tools/tests/test_function_starts_browser.py)
+for valid links/counts, absent metadata, optional missing capture, tampering,
+identity/count mismatch and symlink rejection. The
+[author validation record](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-function-starts-author-check-v1.json)
+pins the code and checks 134 browser links and 170 input/output hashes; all 24
+selected outcomes and `#python` remain available. No browser or native process
+was launched for this amendment. Independent
+[scope review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-function-starts-scope-review-v1.json)
+and [quality review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/browser-function-starts-quality-review-v1.json)
+passed on the pinned production code and generated view.

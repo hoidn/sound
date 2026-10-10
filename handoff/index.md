@@ -8,11 +8,13 @@ access: handoff
 
 # Reviewed implementation handoffs
 
-No handoff has been released. There are no approved behavioral requirements or
-fixtures for compatibility implementation yet.
+The first finite release covers three MIDI configuration assignments. Approval
+is limited to explicitly partial requirement clauses; runtime compatibility is
+unverified. A fresh restricted implementation workspace remains required.
 
 | Release | Target scope | Spec revisions | Review record | Manifest SHA-256 | Supersedes |
 | --- | --- | --- | --- | --- | --- |
+| [midi-config-v1](midi-config-v1/README.md) | Master/cue/crossfader configuration interpretation | SPEC-MIDI-USER-MAPPING r1, partial REQ-002/003/010/013 only | [Approved review](midi-config-v1/REVIEW.md) | `9e3ab46efba170f61bcd7b9fce5d579c263aefd90097dc06695339594308b6ee` | None |
 
 ## Release contract
 

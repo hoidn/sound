@@ -9,8 +9,9 @@ access: implementation
 # Architecture candidates
 
 No technology stack or application architecture has been selected. These are
-candidate project design choices, not recovered Ableton internals. No released
-specification currently authorizes a compatibility claim.
+candidate project design choices, not recovered Ableton internals. The
+[finite configuration contract](../../handoff/midi-config-v1/spec.md) does not
+select an application architecture or establish reference compatibility.
 
 ## Proposed responsibilities
 

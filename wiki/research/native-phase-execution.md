@@ -52,10 +52,17 @@ the controller and all owned descendants every second, stopping above 6 GiB
 for two consecutive samples. Provider log capture remains every 30 seconds
 and on a stop. The user freed disk space; record fresh capacity before retry.
 Set `JAVA_TOOL_OPTIONS=-XX:ActiveProcessorCount=2 -Dcpu.core.override=2`
-only for the owned process tree. The retained
+in the transport environment. The retained
 [pool probe](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/thread-pool-probe-v1/report.json)
 observed a default Ghidra pool size of two with both settings, versus nine
-without them. This is a per-pool limit, not a total-process bound. A sustained memory excess across two samples or a disk-floor breach
+without them. This is a per-pool limit in the standalone probe, not a
+validated REA launch setting. The active retry later exposed empty
+`cpu.core.override` and no `ActiveProcessorCount` in its actual JVM arguments;
+nine decompiler workers appeared. Thus the intended pool constraint did not
+reach this provider launch. Aggregate monitoring remains the operative guard.
+The retained [launch investigation](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/launch-pool-correction-v1/report.json)
+establishes that REA clears the requested environment flags before launching
+Java. Do not claim this run has two-worker default pools. A sustained memory excess across two samples or a disk-floor breach
 stops new work, retains available logs/checkpoints and terminates only owned
 analysis processes if graceful shutdown cannot finish. Do not clear unrelated
 files to make space. Capture provider logs before normal ephemeral cleanup.
@@ -129,12 +136,24 @@ Generated view files are replaceable; captured provider outputs are versioned.
 | M1 Main analysis/pilot | Selected pilot exported 17 of 24 entries; seven explicit failures; full inventory unavailable | Identified main functions and actual exported pseudocode |
 | M2 Reliable export | REA importer reviewed with 31 tests; selected route exercised with sealed manifests; default corpus recovery pending | Scope/quality reviews, tests, recovery demonstration |
 | M3 Systematic export | Not started | Frozen inventory with all eligible functions attempted |
-| M4 Browser | Both views scope/quality reviewed; 20 browser tests pass; real-browser rendering unverified | Human navigation/filter checks and working text fallback |
-| M5 Behavior/teaching | Method, atlas and bytecode lesson reviewed; two native lessons written, reader review pending | Two native packets, walkthroughs and reviewed atlas |
-| M6 Handoff/report | Finite MIDI configuration candidate being drafted; no release yet | Released finite contract plus honest coverage report |
+| M4 Browser | Selected, default and declared-start navigation reviewed; 26 browser tests pass; real-browser rendering unverified | Human navigation/filter checks and working text fallback |
+| M5 Behavior/teaching | Two native packets and lessons reader-reviewed; external native contract unresolved | Two native packets, walkthroughs and reviewed atlas |
+| M6 Handoff/report | MIDI fallback handoff released; full phase report awaits native outcome | Released finite contract plus honest coverage report |
+
+The current [combined tool check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v1.json)
+records 71 passing analyst-tool tests with exact source hashes. These cover
+transport, ingestion, selected export, metadata extraction and browser projection,
+not original Live behavior.
 
 This ledger must be updated with actual results. Runtime compatibility is unknown
 until comparison evidence exists, regardless of export or documentation success.
+
+The [recovery design](native-analysis-recovery.md) specifies a persistent,
+separately profiled route if the current retry fails. It is designed, not
+implemented or tested. Its saved database would retain completed facts, not
+resume an interrupted analyzer queue. The current run must close before any
+recovery target launch; actual JVM verification and measured disk admission
+remain required.
 
 ## Execution evidence
 
@@ -156,12 +175,16 @@ cleanup result and a checksum manifest. These are selected-entry results,
 not a discovered inventory or default-profile corpus. The three manifests
 were independently verified (27, 75 and 35 files respectively).
 
-The additional capacity and reduced pool size justify one full-analysis retry
-with a new spool and resource record; the previous failure remains immutable.
+The additional disk capacity and aggregate resource guard support one
+full-analysis retry with a new spool and resource record; the previous failure
+remains immutable. The intended reduced pool size did not take effect.
 The retry is active in `transport-retry-v3`: target open succeeded and one
 full-inventory request is in flight.
 [Retry preflight](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/retry-v3.json)
-pins 12.1 GiB available disk, scoped CPU settings, tooling and review hashes.
+pins 12.1 GiB available disk, requested CPU settings, tooling and review hashes.
+The actual JVM [command capture](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/diagnostics/command-line-v1.json)
+and [properties](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/diagnostics/system-properties-v1.json)
+show those requested CPU settings were not effective.
 [Monitor scope](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/monitor-aggregate-scope-review-v1.json)
 and [quality review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/monitor-aggregate-quality-review-v1.json)
 passed before launch. The historical sample replay does not establish that

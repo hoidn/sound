@@ -51,9 +51,9 @@ source; static addresses are tied to image identity and architecture.
 | --- | --- | --- | --- |
 | L1 | Create index, method glossary and initial atlas from retained package/MIDI evidence | Links resolve; atlas separates package containment from traced code relationships | Written; independent reader review passed |
 | L2 | Add a bytecode companion illustrating a supported rule and an unresolved boundary | Reader can locate `parse_int`, explain the sentinel/range check, and avoid generalizing it to pads | Written; independent reader review passed |
-| L3 | Explain the first actual main-Live export | Link real pseudocode, provider warnings, input identity and exact function; no invented success | Written from selected no-analysis export; independent reader review pending |
-| L4 | Update atlas and add persistence/transport walkthroughs with the native packets | At least two native lessons, including a limitation; relationships match cited evidence | Two native lessons and atlas updates written; packets remain partial; independent reader review pending |
-| L5 | Independent reader review and corrections | Reviewer reproduces navigation, states one supported conclusion and one limitation, and distinguishes containment from code structure | Planned |
+| L3 | Explain the first actual main-Live export | Link real pseudocode, provider warnings, input identity and exact function; no invented success | Written from selected no-analysis export; independent reader review passed |
+| L4 | Update atlas and add persistence/transport walkthroughs with the native packets | At least two native lessons, including a limitation; relationships match cited evidence | Two native lessons and atlas updates reader-reviewed; behavior packets remain partial |
+| L5 | Independent reader review and corrections | Reviewer reproduces navigation, states one supported conclusion and one limitation, and distinguishes containment from code structure | Passed for current native lessons/method/atlas |
 
 L1 and L2 execute immediately from existing retained evidence. L3 follows the
 coordinator's main-image export; it is not replaced by the helper or bytecode
@@ -91,3 +91,11 @@ A [method follow-up review](../../../analysis/ableton-live-12.4.3/native-live-ar
 checks the explanation of opening, analysis, export and interpretation. The atlas
 now also links the reviewed schema recapture as a declared document relationship;
 it does not promote that relationship to a native object graph.
+
+The [native reader review](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/learning-native-reader-review-v1.json)
+pins eight pages and verifies 195 links/anchors, eleven packet artifact hashes,
+three retained findings excerpts and four lesson excerpts. It records supported
+conclusions and limits for both native lessons and confirms the selected browser
+route distinguishes seventeen exports from seven failed entries. This closes
+L3–L5 for the current materials; it does not close the native behavior questions
+or establish complete program understanding.

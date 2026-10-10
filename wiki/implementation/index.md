@@ -9,8 +9,10 @@ access: implementation
 # Implementation documentation
 
 This is the implementation-only entry point. Read the [handoff catalog](../../handoff/index.md)
-and pin a released specification before compatibility implementation. No release
-exists yet, and no application code has been written.
+and pin a released specification before compatibility implementation. The
+[first configuration release](../../handoff/midi-config-v1/README.md) is available
+for its explicit partial scope. No application code has been written and no
+restricted implementation workspace has been provisioned.
 
 | Page | Purpose |
 | --- | --- |

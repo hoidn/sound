@@ -45,7 +45,10 @@ native executable or launching Live.
 The [case matrix](../../analysis/ableton-live-12.4.3/midi-user-mapping-v1/acceptance-cases.json)
 is a structured plan, not an executable harness. Expectations identify their
 documentary/static provenance; unresolved cases cannot pass. Every case remains
-unexecuted. No app implementation or released handoff exists.
+unexecuted. No app implementation exists. A subsequent
+[finite configuration handoff](../../handoff/midi-config-v1/README.md) releases
+only four partial clauses with a separate 54-case fixture set; the broader
+draft and its matrix remain unreleased.
 
 Questions [Q-008–Q-010](../questions.md#q-008-midi-profile-parsing-and-host-errors)
 retain host errors, numerical modes, timing/feedback and lifecycle gaps.

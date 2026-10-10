@@ -26,7 +26,9 @@ The three layers follow the user-supplied LLM Wiki pattern:
 - `AGENTS.md` plus `wiki/schema.md`: routing and maintenance rules.
 
 `handoff/` adds an immutable, reviewed specification boundary between analysis
-and independent implementation. No handoff has been released. Directory names
+and independent implementation. The [first finite release](handoff/midi-config-v1/README.md)
+covers three MIDI configuration assignments; its expected results remain
+unexecuted against the reference. Directory names
 alone do not enforce clean-room isolation.
 
 Open this directory as an Obsidian vault if useful. Standard relative Markdown

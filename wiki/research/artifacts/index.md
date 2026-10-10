@@ -47,6 +47,7 @@ retained output.
 | Inspect that function's machine instructions | [Push2 assembly](../../../analysis/ableton-live-12.4.3/browse/push2-entry-assembly.txt) | 1,590 retained assembly lines with static addresses |
 | Follow its calls or strings | [Callee table](../../../analysis/ableton-live-12.4.3/browse/push2-entry-callees.tsv), [string table](../../../analysis/ableton-live-12.4.3/browse/push2-entry-strings.tsv) | 77 callee records and 47 referenced strings; incomplete indirect-flow coverage |
 | Find a Live C++ symbol | [Symbol index](../../../analysis/ableton-live-12.4.3/live-arm64-symbols.tsv) | Address, mangled name and demangled name; about 34 MB |
+| Inspect linker-declared entry addresses | [Declared-starts browser shelf](../../../analysis/ableton-live-12.4.3/browse/index.html#declared-starts), [address TSV](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/addresses.tsv), [summary](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/summary.json) | 413,794 starts declared by `LC_FUNCTION_STARTS`; separate from analyzer inventory, bodies and code |
 | Browse binaries by component | [Searchable browser](../../../analysis/ableton-live-12.4.3/browse/index.html), [native candidates JSON](../../../analysis/ableton-live-12.4.3/native-targets.json) | 1,093 format-detected occurrences, including unvalidated candidates |
 | Read decoded controller logic | [Python module directory](#python-module-directory) | Seventeen bytecode disassemblies, organized by responsibility |
 | Understand what that logic means | [MIDI research](../midi-user-mapping.md), [draft contract](../../specs/midi-user-mapping.md) | Evidence interpretations and proposed behavior; cases remain unexecuted |
@@ -79,6 +80,7 @@ process addresses. Canonical identities and limitations are in the
 | [Push2 full dossier](../../../analysis/ableton-live-12.4.3/evidence/push2-entry-dossier.json) | JSON / 9.2 MB | Exact function evidence, including block/reference detail omitted from readable extracts |
 | [Push2 analysis snapshot](../../../analysis/ableton-live-12.4.3/evidence/push2-analysis-snapshot.json) | JSON / 10.3 MB | Eligible cached queries for resuming REA; not a full Ghidra project |
 | [Slice provenance](../../../analysis/ableton-live-12.4.3/derived/manifest.json) | JSON | Original hashes, extraction commands and slice byte identity |
+| [Declared-starts summary](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/summary.json), [sealed provenance](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/manifest.json) | JSON and TSV | Linker metadata decoded with a captured extraction method; adjacent starts do not establish function sizes |
 | [Live arm64 input](../../../analysis/ableton-live-12.4.3/derived/Live.arm64) | Mach-O binary / 149.7 MB | Prepared analyzer input, not a readable report |
 | [Selected native run 1](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/run-status.json), [manifest](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/manifest.json) | Custom Ghidra capture / JSON and code | First main Live selected entry; sealed identities, method and outcomes |
 | [Selected native run 2](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v2/run-status.json), [manifest](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v2/manifest.json) | Custom Ghidra capture / JSON and code | Remaining selected pilot entries, including explicit failed body-recovery outcomes |
@@ -165,6 +167,11 @@ listed without publishing their function artifacts. Run counts are selected
 outcomes, and can repeat an address across captures; they never become a
 whole-image discovery denominator. These custom-script artifacts are not
 ingested into the REA default-profile corpus.
+
+The optional declared-starts shelf validates its sealed capture, target and
+method hashes, and TSV row count before linking the table. It keeps the large
+address list outside the HTML. Declared starts never become an export-coverage
+denominator or evidence that those functions were analyzed or decompiled.
 
 `analysis/` is intentionally ignored by Git. Its artifact links resolve in this
 workspace, but a fresh checkout will need the retained evidence copied back to

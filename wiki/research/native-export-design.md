@@ -40,9 +40,18 @@ kill. Initial budget: Java heap 4GiB, aggregate owned-process RSS 6GiB, disk sto
 3GiB free; coordinator must set/monitor these before launching analysis. Java RSS
 alone misses native decompiler children. Following the first resource stop,
 [target-free source inspection and a JVM probe](native-export-execution.md#thread-pool-resource-correction-for-a-possible-retry)
-established that owned `JAVA_TOOL_OPTIONS='-XX:ActiveProcessorCount=2 -Dcpu.core.override=2'`
-sets the default Ghidra pools to two workers each. The processor flag alone yields
-three. Pool sizing supplements the resource monitor; it is not an OS quota.
+established how JVM processor/property settings affect default pools in isolation.
+The actual REA retry subsequently showed that REA clears those environment options;
+the proposed environment setting did **not** limit its pools. The [launch-path
+correction](native-export-execution.md#actual-rea-launch-correction) supersedes that
+recommendation. A future separately reviewed standalone headless driver can pass
+explicit supported arguments; installed REA and the active run remain unchanged.
+Pool sizing supplements the resource monitor; it is not an OS quota.
+
+The proposed [persistent recovery route](native-analysis-recovery.md) separates
+saved import, bounded analysis and read-only exports. It requires its own
+reviewed controller and scripts; no persistence or queue-resume capability is
+established by that design.
 
 ## Corpus integrity
 

@@ -115,3 +115,14 @@ pin target identity, retained method and all output hashes. They use a bounded
 no-autoanalysis profile; their pseudocode is generated analysis, not recovered
 original C++ source. The [execution ledger](../native-phase-execution.md)
 records outcomes and the separate default-analysis failure.
+
+The [linker metadata index](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/summary.json)
+decodes the pinned thin image's `LC_FUNCTION_STARTS` payload at file offset
+137,089,496 (560,280 bytes). It contains 413,794 linker-declared start addresses
+from `0x100002000` through `0x1054d20c4`. The
+[sealed manifest](../../../analysis/ableton-live-12.4.3/derived/function-starts-v1/manifest.json)
+retains the extractor copy and output hashes. Independent scope review streamed
+all entries against the original payload. These are declared starts, not
+Ghidra-discovered functions, body ranges or decompiled code; neighboring starts
+do not define function sizes. The [design](../function-starts-design.md) records
+format checks, resource measurement and review status.

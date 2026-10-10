@@ -18,6 +18,7 @@ from urllib.parse import quote
 import native_browser
 import export_native_corpus
 import selected_browser
+import function_starts_browser
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / "analysis/ableton-live-12.4.3"
@@ -149,6 +150,14 @@ def _build() -> dict:
     corpus = ARTIFACTS / 'native-live-arm64-v1'
     native_coverage, native_rows, native_inputs = native_browser.project(corpus, href)
     selected_runs, selected_inputs = selected_browser.project(ARTIFACTS, href)
+    declared_starts, starts_inputs = function_starts_browser.project(ARTIFACTS / 'derived/function-starts-v1', href)
+    starts_content = '<p>No sealed linker-declared starts capture is available in this snapshot.</p>'
+    if declared_starts:
+        if declared_starts['state'] == 'sealed':
+            starts_links = ' · '.join(f'<a href="{escape(url)}">{escape(label)}</a>' for label, url in declared_starts['links'])
+            starts_content = f'<p><strong>{declared_starts["count"]:,} linker-declared starts</strong> in the pinned arm64 executable. <code>LC_FUNCTION_STARTS</code> status: {escape(declared_starts["status"])}. The sealed payload hashes, target/method identity and table count were checked when building this view.</p><p>{starts_links}</p>'
+        else:
+            starts_content = f'<p class="notice">{escape(declared_starts["state"])}: {escape(declared_starts["error"])}</p>'
     selected_successful = sum(run['successful'] for run in selected_runs)
     selected_sections = []
     for run in selected_runs:
@@ -228,7 +237,7 @@ def _build() -> dict:
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Ableton 12.4.3 · Artifact browser</title><style>{STYLE}</style></head>
 <body><a class="skip" href="#inventory">Skip to package inventory</a><main>
 <header><div class="eyebrow">Analyst workspace · Offline artifact browser</div><h1>Ableton: structure and recovered code</h1><p class="lead">Reference build <strong>{escape(version)}</strong>. Open the retained evidence below, or search the package inventory by path, format or SHA-256. This page is a navigation view of existing captures; it makes no new behavioral or compatibility claims.</p>
-<nav aria-label="Page navigation">{link(ROOT / 'wiki/research/artifacts/index.md', 'Artifact guide (wiki)')}<a href="#learning">Learn the method and structure</a><a href="#selected-native">Selected main Live pseudocode</a><a href="#native">Default-profile corpus</a><a href="#inventory">Package inventory</a><a href="#python">Python disassembly</a><a href="#provenance">Provenance</a></nav></header>
+<nav aria-label="Page navigation">{link(ROOT / 'wiki/research/artifacts/index.md', 'Artifact guide (wiki)')}<a href="#learning">Learn the method and structure</a><a href="#selected-native">Selected main Live pseudocode</a><a href="#native">Default-profile corpus</a><a href="#declared-starts">Linker-declared starts</a><a href="#inventory">Package inventory</a><a href="#python">Python disassembly</a><a href="#provenance">Provenance</a></nav></header>
 <div class="cards">
 <article class="card"><span class="badge">{escape(native_badge)}</span><h2>Live core</h2><p>The main executable has x86_64 and arm64 slices. The arm64 symbol index contains {summary['symbol_counts']['exports']:,} merged export/symbol entries; this is not a function count.</p><p><a href="#selected-native">Read selected main Live pseudocode and assembly</a></p><p><a href="#native">Default-profile corpus status and functions</a></p><p>{link(ARTIFACTS / 'live-arm64-symbols.tsv', 'Open symbol index (32 MiB TSV)')}</p><p>{link(ARTIFACTS / 'native-summary.json', 'Native summary and dependencies (JSON)')}</p><p>{link(ARTIFACTS / 'derived/manifest.json', 'Derived arm64 slice manifest')}</p></article>
 <article class="card"><span class="badge">One entry procedure · Pseudocode</span><h2>Push 2 display helper</h2><p>Ghidra representation of <code>entry</code> at <code>{escape(addr)}</code>. Warnings and incomplete indirect-call recovery remain; this is not original source.</p><p>{link(ARTIFACTS / 'push2-entry-pseudocode.c', 'Read entry pseudocode (C text)')}</p><p>{link(OUT / 'push2-entry-assembly.txt', f'Assembly ({len(dossier["assembly"]):,} lines)')} · {link(OUT / 'push2-entry-callees.tsv', f'Callees ({len(dossier["callees"]):,})')} · {link(OUT / 'push2-entry-strings.tsv', f'String references ({len(dossier["referenced_strings"]):,})')}</p><p>{link(ARTIFACTS / 'evidence/push2-entry-dossier.json', 'Full entry dossier')} · {link(ARTIFACTS / 'push2-decompilation-summary.json', 'Warnings and summary')}</p></article>
@@ -237,6 +246,7 @@ def _build() -> dict:
 <section id="learning"><h2>Understand the investigation</h2><p>Follow the method, read worked examples, and explore the application structure as evidence accumulates. These wiki pages separate observations, interpretations and unknowns.</p><ul>{learning}</ul></section>
 <section id="selected-native"><h2>Selected main Live functions</h2><p>These bounded captures decompile chosen entries with whole-image auto-analysis disabled. They use a separate custom Ghidra profile, are not REA evidence records, and do not provide a whole-program inventory. Successful entries are available below even when the default-profile corpus is unavailable. Retained attempts across runs can repeat an address; counts describe outcomes, not unique whole-program functions.</p><label for="selected-search">Search selected names, addresses, runs or outcomes</label><input id="selected-search" type="search" placeholder="For example: ALoopOn or 0x10276e5d4"><p id="selected-count" role="status" aria-live="polite"></p><noscript><p>All selected outcomes remain visible; use your browser's Find command.</p></noscript>{selected_content}</section>
 <section id="native"><h2>Default-profile main Live corpus</h2>{native_content}</section>
+<section id="declared-starts"><h2>Linker-declared function starts</h2>{starts_content}<p>This address index comes from linker metadata. It is separate from analyzer-discovered functions, recovered bodies and decompiled code. Adjacent addresses do not establish function sizes. Its count is not an export-coverage denominator; open the TSV directly without loading its rows into this page.</p></section>
 <section id="inventory"><h2>Package inventory</h2><p class="notice"><strong>{len(targets):,} native-format candidate records, not {len(targets):,} verified native binaries.</strong> The inventory includes {false_positives} paths ending in <code>.class</code>, a Java bytecode extension whose header can collide with the universal Mach-O classifier. Their native-format labels are unvalidated; they remain visible and separately grouped. Other candidate labels have not all been individually validated. Hash verification describes captured bytes, not format correctness.</p><p>Groups are derived from package paths; they do not establish internal subsystem boundaries. Paths identify captured package locations and do not link to a possibly changed installed application.</p>
 <noscript><p>JavaScript is disabled. All grouped records and artifact links remain available; use your browser’s Find command to search.</p></noscript>
 <div class="controls"><div><label for="search">Search path, format or digest</label><input id="search" type="search" placeholder="For example: Push2, libusb, .class" aria-describedby="search-help"></div><div><label for="category">Package group</label><select id="category"><option value="">All groups</option>{options(groups)}</select></div><div><label for="format">Reported format</label><select id="format"><option value="">All formats</option>{options(formats)}</select></div><button id="reset" type="button">Clear filters</button></div>
@@ -247,12 +257,13 @@ def _build() -> dict:
 </main><script src="native-index.js"></script><script>{SCRIPT}\n{native_browser.SCRIPT}\n{selected_browser.SCRIPT}</script></body></html>
 '''
     (OUT / 'index.html').write_text(page, encoding='utf-8', newline='')
-    input_paths = [ARTIFACTS / name for name in SOURCE_NAMES] + modules + native_inputs + selected_inputs
+    input_paths = [ARTIFACTS / name for name in SOURCE_NAMES] + modules + native_inputs + selected_inputs + starts_inputs
     manifest = {
         "schema": "analyst-artifact-browser-v1",
         "generator": {"path": "tools/build_artifact_browser.py", "sha256": digest(Path(__file__))},
         "helper": {"path": "tools/native_browser.py", "sha256": digest(Path(native_browser.__file__))},
         "selected_helper": {"path": "tools/selected_browser.py", "sha256": digest(Path(selected_browser.__file__))},
+        "starts_helper": {"path": "tools/function_starts_browser.py", "sha256": digest(Path(function_starts_browser.__file__))},
         "lock_provider": {"path": "tools/export_native_corpus.py", "sha256": digest(Path(export_native_corpus.__file__))},
         "command": "python3 tools/build_artifact_browser.py",
         "scope": "Deterministic navigation and text extraction from retained evidence; no new target analysis.",
@@ -261,6 +272,7 @@ def _build() -> dict:
                    "callees": len(dossier['callees']), "string_references": len(dossier['referenced_strings'])},
         "native_coverage": native_coverage,
         "selected_runs": [{k: v for k, v in run.items() if k not in ('rows', 'links')} for run in selected_runs],
+        "linker_declared_starts": {k: v for k, v in declared_starts.items() if k != 'links'} if declared_starts else None,
         "inputs": [{"path": p.relative_to(ROOT).as_posix(), "sha256": digest(p)} for p in input_paths],
         "outputs": [{"path": (OUT / name).relative_to(ROOT).as_posix(), "sha256": digest(OUT / name)}
                     for name in sorted(["index.html", *generated])],
