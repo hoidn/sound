@@ -224,3 +224,15 @@ python3 tools/corpus_demo.py            # writes analysis/ableton-live-12.4.3/de
 python3 -m unittest tools/tests/test_corpus_demo.py -v
 # self-test: open demos/corpus/index.html#selftest (also works in headless Chromium --dump-dom)
 ```
+
+## Requirements browser
+
+[spec_browser.py](spec_browser.py) collects every requirement of the draft specs (`type: spec`
+pages in `wiki/specs/`, from `### REQ-…` headings or `| REQ-… |` table rows) and every row under
+a `## Candidate requirements …` heading in `wiki/research/`, and writes one searchable static page
+with links back to each source section. Rerun it after a spec or packet changes.
+
+```sh
+python3 tools/spec_browser.py    # writes analysis/ableton-live-12.4.3/browse/specs/index.html
+python3 -m unittest tools/tests/test_spec_browser.py -v
+```

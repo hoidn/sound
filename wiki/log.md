@@ -1325,3 +1325,18 @@ presets, the full label order still inferred. Updated FEAT-DEVICES, Q-005 and Q-
 and linked the page from the [Corpus demo](research/learning/demos/corpus-resonator.md).
 Evidence: `analysis/ableton-live-12.4.3/r2/h4-devices-v1/`. Gaps: Live-side index
 mapping and value conversion; labels; defaults for Amp, Cabinet and Corpus.
+
+## [2026-10-17] maintenance | Requirements browser and spec index catalog
+
+The user could not find the requirements derived from the static and decompilation
+work: they existed only as candidate tables in five research pages. Added
+`tools/spec_browser.py` (2 unit tests), which generates the
+[requirements browser](../analysis/ableton-live-12.4.3/browse/specs/index.html):
+66 rows, made up of 13 draft REQs from SPEC-MIDI-USER-MAPPING and 53 candidates (C-, T-, PD-, BI-C,
+DEV-C), each linked to its source section. Added a one-row-per-target
+"Candidate specifications" table and the browser link to the
+[spec index](specs/index.md). README now routes to the learning
+route, requirements browser and corpus browsers, and corrects three stale claims:
+the current release is midi-config-v2, there is a public `origin`, and `analysis/`
+tracks decompiled code. Lint: links and anchors on edited pages resolve, the 67
+generated-page links resolve, and `git diff --check` is clean.
