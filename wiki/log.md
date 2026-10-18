@@ -1054,4 +1054,3 @@ AppleDouble-doubled document counts on [package structure](research/ableton-pack
 and the roadmap; the coordinator re-counted and confirmed. Gaps: accepted version range,
 error handling and save-time values remain unknown pending the saved Ghidra project;
 `.alp` encoding unknown. Lint: links resolve; `git diff --check` clean.
-
