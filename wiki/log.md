@@ -1126,3 +1126,16 @@ the supersession change list. Author checks passed: model cross-check, hashes,
 isolated links, sanitization. Updated the feature-map and coverage rows and
 Q-008 to Q-010 progress. Gaps: separate review pending; bytecode digest match to
 the v1 pins unknown until G0.2; no reference or candidate run.
+
+## [2026-10-17] ingest | Helper executables analyzed in parallel
+
+Ran `tools/r2_helper_batch.sh` to use idle CPUs while the serial Live analysis
+continues: 16 Ableton-authored helper executables analyzed in separate projects,
+eight at a time, results in the [package structure](research/ableton-package-structure.md#helper-executables-analyzed--2026-10-17)
+section and the helper manifest. The `Ableton Live Engine` bundle is x86_64-only
+in substance (35 KB arm64 stub). Editing the batch script while its first run was
+still executing caused a bash parse error after the last job; no job was lost, and
+running scripts are no longer edited in place. Started a full analysis of Live's
+x86_64 slice (SHA-256 `1bae9a97…be999b0`) as a second compile of the same source
+for cross-checking arm64 readings; this is a revision 1 backlog item using spare
+capacity, not a revision 2 gate. No behavior or compatibility claim.

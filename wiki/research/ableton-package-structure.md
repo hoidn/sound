@@ -129,3 +129,31 @@ Correction 2026-10-17: the first version of this paragraph counted the 56,603
 [inventory correction](document-container-static.md#inventory-correction). `Schema/` holds 203 versioned
 descriptions. Core Library and Builtin total about 4.3 GiB. Counts are file
 inventory, not parsed or validated documents.
+
+## Helper executables analyzed — 2026-10-17
+
+`tools/r2_helper_batch.sh` analyzed Ableton-authored native executables other than
+`Live`, each in its own Ghidra 12.1.4 project under `/var/tmp/sound-analysis/helpers/`
+with the default analysis profile (four CPUs, 8 GiB heap, eight jobs at once).
+Max, Qt and third-party frameworks were not included. Slice identities, timings
+and summaries are in the [helper manifest](../../analysis/ableton-live-12.4.3/r2/helpers-v1/manifest.json).
+Function counts are Ghidra's discovered functions, not original source functions.
+
+| Executable | Analyzed slice | Functions | Strings | Wall |
+| --- | --- | --- | --- | --- |
+| Push3 helper | arm64, 39.3 MB | 104,161 | 102,587 | 18:04 |
+| Ableton Live Engine bundle | x86_64, 42.3 MB | 75,348 | 175,539 | 15:59 |
+| Ableton Web Connector | arm64, 19.5 MB | 44,501 | 56,791 | 15:42 |
+| Ableton Index | arm64, 16.6 MB | 43,737 | 46,005 | 15:54 |
+| Ableton AddOns | arm64, 16.5 MB | 43,564 | 45,837 | 15:16 |
+| Ableton Plugin Scanner | arm64, 13.6 MB | 36,879 | 38,991 | 12:57 |
+| Ableton Swapper | arm64, 9.8 MB | 25,073 | 26,622 | 10:20 |
+| MultiF0 library | x86_64 only, 4.8 MB | 1,896 | 3,250 | 3:51 |
+| Device bundles: Amp, Cabinet, Tension, Analog, Collision, Electric, Corpus | arm64, 0.2–1.8 MB each | 644–1,795 each | 550–4,161 each | 0:31–3:49 |
+
+Observed: the `Ableton Live Engine` bundle's arm64 slice is 35,056 bytes with no
+functions; all of its code is in the x86_64 slice. The MultiF0 library and the
+ReWire bundle have no arm64 slice. ReWire was not analyzed. Inferred, not
+established: an engine body that exists only for x86_64 is not used by native
+arm64 Live. Which process loads it, and when, is unknown. Project sizes were
+about 13 times the slice size, from 4 MB to 610 MB.
