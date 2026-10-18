@@ -226,6 +226,9 @@ conversions for Amp, Cabinet, Electric and Corpus) is in
 Corpus "XML-only ranges" statement in this page: the Corpus bundle's setter
 converts exactly those ranges.
 
+Correction 2026-10-17: [device tables](device-tables-native.md) records corrections to this page's
+Analog and Tension range statements; Live-side ranges for those devices match the stored ranges.
+
 ## Parameter inventory in shipped documents
 
 Observed (`out/scan.json`, `out/param_summary.json`): 599 of the 3,634 scanned documents

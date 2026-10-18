@@ -95,6 +95,11 @@ no experimental contradiction has been established yet.
 - Progress 2026-10-17: [SPEC-ALS-CONTAINER](specs/als-container.md) r2 makes six untraced
   steps explicit assumptions (I1 to I6); the catch site, integer converter, gzip stream and
   empty-string representation remain open.
+- Progress 2026-10-17: [device tables](research/device-tables-native.md) completes the Analog, Tension and
+  Collision index and conversion tables (472 entries, cross-checked against the bundles and
+  disassembly) and their constructor defaults; [SPEC-BUNDLED-DEVICE-PARAMETERS](specs/bundled-device-parameters.md)
+  r1 drafts the storage contract for all seven devices. The device create path on load,
+  new-instance defaults and the position contradiction (P4-N5-01, P4-N6-01) remain open.
 
 ## Q-007 Reference behavior and timing
 

@@ -1735,3 +1735,17 @@ or at or after the note's Duration (semantics untraced) and removes lists left e
 most lists in one shipped demo. Corrections: integer trailing spaces, the MN-20 drop rule, and the
 PRB-S7-02 variant B expectation. The coordinator retained d4-0001 in
 `analysis/ableton-live-12.4.3/r2/d4-midi-notes-v1/`. Not reviewed; nothing executed.
+
+## [2026-10-17] spec | SPEC-BUNDLED-DEVICE-PARAMETERS r1 (N6)
+
+Recovered the Analog, Tension and Collision parameter vectors (472 entries) by reading the
+builders under both branch assumptions, naming members from class registrations and resolving two
+virtual getters through vtables (24 dossiers, n6-0001 to 0003). Constructor defaults for 417
+parameters; 412 of 426 calls re-read from disassembly. Cross-check against the bundles' own tables:
+402 exact, 65 within range, 3 Collision mismatches, 1 unused index, 1 unrecovered row. Filed
+[device tables](research/device-tables-native.md) and drafted
+[SPEC-BUNDLED-DEVICE-PARAMETERS](specs/bundled-device-parameters.md) r1 (15 requirements, tables
+for all 502 stored parameters of the seven devices, 37 cases). Collision's position parameters show
+the same half-range pattern as Corpus (P4-N6-01). Updated the spec index (candidate row replaced),
+feature map, coverage, Q-006, the device-bundles page and the Phase 4 note. Gaps: enumeration labels
+for three devices, the device create path on load, Amp and Cabinet DryWet ranges. Nothing executed.
