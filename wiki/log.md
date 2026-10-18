@@ -2,7 +2,7 @@
 id: LOG-WIKI
 type: log
 status: active
-updated: 2026-10-10
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -983,3 +983,17 @@ zero errors; git diff --check passed. The [repair packet](../analysis/ableton-li
 retains final reader/archive checks, browser case and independent scope review.
 No binary behavior or compatibility pass is inferred from navigation/tool tests.
 The final post-log lint is retained separately in that packet before sealing.
+
+## [2026-10-17] maintenance | Record current location of the Ableton bundle
+
+The [installed source page](research/sources/ableton-live-12.4.3.md) now records
+that the reference bundle lives at `/home/ollie/Ableton Live 12 Suite.app` on the
+Linux analyst workstation. The historical `/Applications` capture path is kept as
+the observation it was. The copy's `Live` executable matches the recorded original
+SHA-256 and its `Info.plist` version string is unchanged. The REA directory digest
+was not recomputed, no retained evidence under `analysis/` was edited, and nothing
+was executed. Lint: wiki-internal links on both edited pages resolve and
+`git diff --check` is clean. Gap: the `analysis/` evidence directory is absent
+from this workstation, so every evidence link on the source page and in earlier
+log entries is unresolved here. This predates the change; the source page now
+states it. Evidence hash checks against `analysis/` are `unknown` on this host.

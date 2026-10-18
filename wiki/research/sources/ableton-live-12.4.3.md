@@ -2,15 +2,24 @@
 id: SRC-ABLETON-12-4-3
 type: source
 status: current
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
 
 # Ableton Live 12.4.3 installed package
 
-Observed source: `/Applications/Ableton Live 12 Suite.app`, selected by the user.
+Observed source at capture: `/Applications/Ableton Live 12 Suite.app` on the
+macOS capture host, selected by the user.
 Capture date: 2026-10-09 America/Los_Angeles (2026-10-10 UTC).
+Current local copy (2026-10-17): `/home/ollie/Ableton Live 12 Suite.app` on the
+Linux analyst workstation. Its `Contents/MacOS/Live` universal executable
+(313,453,600 bytes) hashes to the recorded original SHA-256 below, and its
+`Info.plist` reports the same version string. Only the executable and plist were
+reverified; the REA directory digest was not recomputed for the copy. The copy is
+not runnable on this host. The retained evidence directory `analysis/` linked
+throughout this page is absent from this workstation (2026-10-17); those links
+resolve only where that directory has been restored.
 `Contents/Info.plist` reports `12.4.3 (2026-07-07_e3d8be4d07)`, bundle ID
 `com.ableton.live`, executable `Live`, minimum macOS `11`.
 
