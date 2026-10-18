@@ -21,7 +21,7 @@ requirements to candidate code and tests.
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
 | FEAT-AUDIO | None; candidates MX-01 to MX-15 for SPEC-MIXER-VALUES ([mixer values](../research/mixer-values.md)) | Not started | Unknown | Logic-to-engine volume and send port domain (Q-019); PRB-S9-01 to 08; routing and DSP paths; flag latency for later measurement |
 | FEAT-MIDI | None; candidates MN-01 to MN-24 in [MIDI note storage](../research/midi-note-storage.md) | Not started | Unknown | Draft SPEC-MIDI-NOTE-STORAGE; PRB-S7-01 to 10; scheduling and note-state logic |
-| FEAT-AUTOMATION | None | Not started | Unknown | Curve/override schemas, interpolation and undo paths |
+| FEAT-AUTOMATION | None; 17 candidates in [automation envelopes](../research/automation-envelopes.md) | Not started | Unknown; 7 probe records not run | PRB-S6-01 to 07; per-parameter value converter; override, recording and undo paths |
 | FEAT-DEVICES | None | Not started | Unknown | Preset/state schemas and bounded DSP derivations |
 | FEAT-HOSTING | Draft [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md) r1 (discovery only); no handoff | Not started | Unknown; 42 draft cases not run | PRB-H1-01 to 08, PRB-N4-01, 02, 05; lifecycle, state, latency |
 | FEAT-WARP | None | Not started | Unknown | Mode/settings and algorithm analysis; flag numerical comparisons |

@@ -331,3 +331,16 @@ no experimental contradiction has been established yet.
   automation interpolates in gain or in fader position (shared with S6).
 - Next action: trace the logic-to-engine path for the volume and send parameters; otherwise
   run PRB-S9-01 to 08.
+
+## Q-020 Automation envelope load robustness
+
+- State: open; owner: analyst.
+- Affects: FEAT-AUTOMATION, FEAT-PERSISTENCE, the proposed SPEC-AUTOMATION-ENVELOPES.
+- Evidence: [automation envelopes](research/automation-envelopes.md).
+- Gap: an envelope whose `PointeeId` matches no target makes Live log `Invalid Pointee ID`,
+  fail an assertion and abort when it is accessed; what opening such a set does in a
+  release build is unknown. Unsorted events, missing attributes and duplicate event Ids are
+  also untraced. A specification must not require a crash; these inputs need exclusion or
+  a defined safe behavior chosen by the project.
+- Next action: trace which load path dereferences envelope targets; otherwise exclude
+  these inputs from releases and run PRB-S6 probes on a disposable app copy.

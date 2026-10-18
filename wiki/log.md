@@ -1661,3 +1661,16 @@ the payload into [handoff/als-container-v1](../handoff/als-container-v1/README.m
 all 40 payload hashes against manifest `f5ca758d…62d1de`, added the catalog row, and recorded
 the I1 and I3 outcome in [SPEC-ALS-CONTAINER](specs/als-container.md) r2. No compatibility
 claim; isolated implementation workspace still unprovisioned. Not pushed.
+
+## [2026-10-17] query | Automation envelopes (S6)
+
+Filed [automation envelopes](research/automation-envelopes.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/s6-automation-v1/` (24 dossiers in three rounds, 72 corpus
+records). In 4,365 shipped envelopes every target resolves, events are time-ordered (at most two
+per time) and start at −63,072,000 with the next event's value. Natively: a post-load walk
+rejects empty envelopes and a first event at neither −63,072,000 nor 0; non-monotone curves reset
+to linear; 0.5 curve controls are not written; a dangling `PointeeId` aborts on access; float
+evaluation is hold, constant, cubic Bezier or linear (float32), and Bool and Enum envelopes step.
+Also found the generic create-and-load entry point, which narrows the transport-state page's
+"top-level load not traced" gap. Candidates AE-C01 to C17 and PRB-S6-01 to 07. Opened
+[Q-020](questions.md#q-020-automation-envelope-load-robustness). Nothing executed.

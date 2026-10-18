@@ -23,6 +23,7 @@ to the isolated implementation workspace.
 | [Clip launch](clip-launch.md) | S5: clip and set launch fields over 203 schemas and 4,130 shipped clips; enum values; constructor and preference defaults; load normalization and migration; quantization grid and launch-boundary rule; candidates CL-01 to CL-23; PRB-S5-01 to 11 |
 | [MIDI note storage](midi-note-storage.md) | S7: KeyTrack and MidiNoteEvent shape and schema evolution, values in 1,368 shipped clips, reader (reused note object, defaults, clamps, 1/3,843,840 grid, NoteId uniqueness and renumbering, per-note expression and group checks) and writer; MN-01 to MN-24, PRB-S7-01 to 10 |
 | [Mixer values](mixer-values.md) | S9: track mixer storage across schemas and 376 shipped sets; defaults and ranges; seven fader curves, dB and pan text, engine −∞ floor (gain ≤ 0.00032 becomes 0), pan law, crossfade assign; candidates MX-01 to MX-15; PRB-S9-01 to 08 |
+| [Automation envelopes](automation-envelopes.md) | S6: envelope storage (track AutomationEnvelopes, ClipEnvelope, PointeeId targets), invariants over 4,365 shipped envelopes, load checks, curve rules, float, Bool and Enum evaluation; AE-C01 to C17, PRB-S6-01 to 07 |
 | [Linker function-start index design](function-starts-design.md) | Bounded Mach-O metadata navigation, distinct from analyzer-discovered functions |
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |
 | [Native export task plan](native-export-execution.md) | Implementation tasks and tool-validation state |

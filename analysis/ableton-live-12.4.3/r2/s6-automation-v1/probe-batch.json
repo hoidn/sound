@@ -1,0 +1,98 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet S6 (automation envelopes)",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Pin the Live executable and preferences hash before the sitting; fresh preferences",
+  "Retain every input file, its SHA-256, Log.txt, crash reports, screen captures of the automation lane, and any re-saved file",
+  "Disable Link, external sync and MIDI mappings; arrangement automation enabled (no override)"
+ ],
+ "probes": [
+  {
+   "id": "PRB-S6-01",
+   "requirements": [
+    "AE-C07"
+   ],
+   "question": "Does a set open when an envelope's first event is at neither -63072000 nor 0, or when an envelope has no events, and what does the user see?",
+   "existing_evidence": "AListAutomation validate 0x102561a28 (s6-0001 disassembly: fcmp with 0xc18e133800000000 and #0.0; strings 0x105bcba6c/0x105bcba86) reached from AAutomationEnvelope +0x100 0x1024050d8 and AClipEnvelope +0x100 0x10245194c (s6-0003) in the post-load walk 0x101487198 started by 0x101486fe4 (s6-0002); error thrown through 0x101488e64 -> 0x10148229c",
+   "why_static_insufficient": "The catch site and dialog after a load-time throw were not traced (shared with PRB-N2)",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variants: E with events (-63072000,1),(4,0.5) [control]; E with first event at Time 4 only; E with first event Time 0 then (4,0.5); E with empty <Events/>",
+   "discriminating_observation": "Control and Time-0 variants open; first-at-4 and empty variants are refused as corrupt; capture dialog text and Log.txt",
+   "stopping_condition": "Four opens captured; stop"
+  },
+  {
+   "id": "PRB-S6-02",
+   "requirements": [
+    "AE-C09"
+   ],
+   "question": "What happens when an envelope's PointeeId matches no target in the set?",
+   "existing_evidence": "APtr lookup 0x101535e0c (s6-0003): unresolved id logs 'Invalid Pointee ID {} in APtr' then calls 0x1054147b8, which asserts 'mpObject' (APtr.cpp line 0xab) and calls abort",
+   "why_static_insufficient": "Whether anything dereferences the target during load (and so aborts), or the envelope is dropped first, was not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variant: E with PointeeId 99999 (absent) and events (-63072000,1),(4,0.5)",
+   "discriminating_observation": "Live terminates while opening (crash report) versus opens with the envelope dropped or ignored; capture Log.txt and any crash report; re-save if it opens",
+   "stopping_condition": "One open attempt (plus one re-save if it opens); stop"
+  },
+  {
+   "id": "PRB-S6-03",
+   "requirements": [
+    "AE-C08"
+   ],
+   "question": "Are events whose Time order is not ascending sorted on load, kept as written, or rejected?",
+   "existing_evidence": "No sort found: AListAutomation post-load +0xd0 is the generic 0x101486fa8 and +0x100 the no-op 0x101487c3c (vtable-reads.txt); OnEventsChanged 0x102565f84 only widens the changed range; search 0x102565a48/0x1025669d8 walks assuming ascending order",
+   "why_static_insufficient": "An insert path that sorts was not excluded; effective playback of an unsorted list is runtime behaviour",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variant: E with events written (-63072000,1),(8,0.25),(4,0.75)",
+   "discriminating_observation": "Re-saved order of the events and the Volume value shown at song positions 2, 6 and 10 beats with transport stopped",
+   "stopping_condition": "One open, three readings, one re-save; stop"
+  },
+  {
+   "id": "PRB-S6-04",
+   "requirements": [
+    "AE-C11",
+    "AE-C12"
+   ],
+   "question": "Do linear and curved float segments evaluate as derived statically (linear in value, cubic Bezier through normalized controls), and is the value clamped to the parameter range?",
+   "existing_evidence": "0x1024095b4 linear branch (s6-0001 0x1024099b4-0x102409a34), curve branch via 0x102404218 / 0x102403c88 / 0x101212e30; curve-check.json implements the derivation",
+   "why_static_insufficient": "The value converter supplied by each parameter (0x101574bb0 on the provider's converter) was not resolved for Volume; display and audio paths not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variants: E with (-63072000,1),(0,1),(4,0) linear; same with CurveControl1X=0.1 CurveControl1Y=0 CurveControl2X=0.7 CurveControl2Y=1 on the Time-0 event",
+   "discriminating_observation": "Volume value displayed (or read through the Live Object Model) at beats 1, 2 and 3 with transport stopped; compare with curve_check.segment_value",
+   "stopping_condition": "Two opens, six readings; stop"
+  },
+  {
+   "id": "PRB-S6-05",
+   "requirements": [
+    "AE-C10"
+   ],
+   "question": "Are non-monotone curve controls reset to linear on load?",
+   "existing_evidence": "AFloatEvent post-load hook 0x102778870 (s6-0001): X=(0,x1,x2,1) or Y=(0,y1,y2,1) failing 0x1012132d8 resets all four controls to 0.5; writer omits a control equal to 0.5 (0x102778828)",
+   "why_static_insufficient": "Whether the load-context flag that enables post-load hooks is set when opening a Live Set was not established",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variant: E with (-63072000,1),(0,1),(4,0) and CurveControl1X=0.2 CurveControl1Y=1.5 CurveControl2X=0.8 CurveControl2Y=-0.5 on the Time-0 event",
+   "discriminating_observation": "Re-saved Time-0 event has no CurveControl attributes and the segment draws straight",
+   "stopping_condition": "One open and one re-save; stop"
+  },
+  {
+   "id": "PRB-S6-06",
+   "requirements": [
+    "AE-C13",
+    "AE-C14"
+   ],
+   "question": "At a time where two events coincide, which value applies, and do Bool envelopes switch exactly at event times?",
+   "existing_evidence": "Float search 0x102565974 and discrete search 0x102565e10 take a mode flag selecting the first or last event at an equal time; discrete value 0x10240a84c steps back one event in mode 0",
+   "why_static_insufficient": "Which mode each consumer (display, playback, LOM) passes was not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variants: E (Volume, PointeeId 324) with (-63072000,1),(4,1),(4,0.25); E2 (Speaker, PointeeId 322) with BoolEvents (-63072000,true),(4,false),(8,true)",
+   "discriminating_observation": "Volume displayed at beats 3.99, 4 and 4.01; track activator state at beats 3.99, 4, 7.99, 8",
+   "stopping_condition": "Two opens, seven readings; stop"
+  },
+  {
+   "id": "PRB-S6-07",
+   "requirements": [
+    "AE-C04"
+   ],
+   "question": "How are an event without Time, a FloatEvent without Value and duplicate event Ids handled?",
+   "existing_evidence": "Event base ctor 0x1024deba8 sets Time DBL_MAX; AFloatEvent ctor 0x1027785a0 sets Value FLT_MAX ('Invalid' when written); loader stores only present attributes (N1 0x101487310)",
+   "why_static_insufficient": "Effect of an Invalid value on evaluation and save; Id uniqueness enforcement in lists not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip. Track 1-Audio (AudioTrack Id 0): Mixer/Volume AutomationTarget Id 324 (Manual 1), Mixer/Speaker AutomationTarget Id 322; NextPointeeId 2776. 'Add envelope E' means: append to that track's AutomationEnvelopes/Envelopes an <AutomationEnvelope Id=\"0\"> with EnvelopeTarget/PointeeId 324 and the stated Events, plus <AutomationTransformViewState><IsTransformPending Value=\"false\"/><TimeAndValueTransforms/></AutomationTransformViewState>; variants: E with (-63072000,1),(4,0.5) where the second event lacks Time; lacks Value; both events carry Id=\"0\"",
+   "discriminating_observation": "Opens or refused; re-saved text of the edited events (Time 'Invalid', Value 'Invalid', renumbered Ids)",
+   "stopping_condition": "Three opens and re-saves; stop"
+  }
+ ]
+}
