@@ -145,6 +145,12 @@ no experimental contradiction has been established yet.
   pairing, step sizes, clamping and takeover arithmetic ([native transforms](research/midi-transforms-native.md)).
   Open: takeover preference default and labels, the on/off threshold gate, ordering and
   deferral timing (PRB-N7-01 to 05); feedback bytes and seek and nudge timing are unchanged.
+- Progress 2026-10-17 (spec r3): [SPEC-MIDI-USER-MAPPING](specs/midi-user-mapping.md) revision 3 adopts the
+  N7 transforms as static clauses (with the None label inferred) and static-conditional clauses
+  for Pick-Up, Value Scaling and on/off parameters, with cases MT-01 to MT-23. Open: PRB-N7-01 to
+  05; feedback bytes and seek and nudge timing unchanged. A narrow midi-config-v3 candidate
+  (REQ-005 static value clauses, the crossfader opt-out, MT-01 to 16, 22, 23) is justified but
+  not started.
 
 ## Q-010 MIDI discovery, lifecycle and interaction
 

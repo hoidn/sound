@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-17
 access: analysis
-revision: 2
+revision: 3
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -27,11 +27,14 @@ draft until evidence contradictions, required unknowns and separate review are
 resolved. [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits this
 static-first draft without a prior runtime capture. Revision 2 applies the
 [S4 closure assessment](../research/midi-closure-r2.md) after re-checking each
-new clause against its listing.
+new clause against its listing. Revision 3 adds the value transforms of the
+[native transform packet](../research/midi-transforms-native.md), each clause
+re-checked against its kept disassembly or extracted constants.
 
 Excluded: arbitrary control-surface scripts, MIDI Learn, other controller
-profiles, exact device-bank contents, numerical parameter curves, audio output,
-quantization, sample timing, SysEx, MPE, MIDI clock, and the wider behavior of the
+profiles, exact device-bank contents, parameter display curves, audio output,
+quantization other than stepped-parameter rounding (REQ-MIDI-USER-005), sample
+timing, SysEx, MPE, MIDI clock, and the wider behavior of the
 targeted mixer/device/transport commands. Mapping a transport button does not
 specify the complete transport engine. No controller hardware is assumed.
 
@@ -40,9 +43,9 @@ specify the complete transport engine. No controller hardware is assumed.
 | Label | Meaning |
 | --- | --- |
 | D | Observed text of a shipped document (D1–D7); documentation, not an observed run |
-| S | Static derivation from shipped bytecode (S1–S3, E1–E9), conditional on host initialization and MIDI delivery; not executed |
-| S-cond | Static Python handler logic whose observable effect passes through a named native property; open until traced or probed |
-| N / R | Unknown: needs native tracing (N) or a runtime probe (R); PRB IDs refer to the [S4 probe batch](../research/midi-closure-r2.md#phase-4-probe-batch) |
+| S | Static derivation from shipped bytecode (S1–S3, E1–E9) or from native disassembly and image constants of the pinned executable (E10–E14), conditional on host initialization and MIDI delivery; not executed |
+| S-cond | Static handler logic whose observable effect passes through a named native property, an inferred native link or an untraced setting; open until traced or probed |
+| N / R | Unknown: needs native tracing (N) or a runtime probe (R); PRB-S4 IDs refer to the [S4 probe batch](../research/midi-closure-r2.md#phase-4-probe-batch), PRB-N7 IDs to the [N7 probe records](../research/midi-transforms-native.md#probe-records) |
 
 Only D and S clauses can enter a release. S-cond, N and R clauses have no
 expected output and block release of the affected behavior.
@@ -68,6 +71,11 @@ The interface has 103 ordinary CC number keys (28 in `DeviceControls`, 61 in
 `MixerControls`, 14 in `TransportControls`), 16 pad note keys and 16 pad
 channel keys in `Globals`, 27 per-control channel keys, `GlobalChannel`, four
 map-mode keys and two Boolean keys (E1).
+
+Value cases (REQ-MIDI-USER-005 and 010) also need the takeover preference set
+and recorded explicitly, because its default is unknown. They need a target
+parameter of known kind, range, stepped state and current value, and a MIDI
+input opened before the case with no other message on the case's controllers.
 
 ## Requirements
 
@@ -144,10 +152,89 @@ map-mode keys and two Boolean keys (E1).
   crossfader (E1 L170–171, L245–252; E2 L132–134, L140, L188–212, L289–293).
   `Absolute14Bit` becomes `Absolute` for any continuous control whose CC number
   exceeds 95 (E6 EncoderElement L27, L53–56).
+- **S. Value mapping (revision 3).** Each assigned continuous control (encoder,
+  track volume, send knob, master volume, cue volume or crossfader) maps its
+  effective channel and CC number, with its map mode, to its target parameter.
+  The range is the parameter's reported minimum and maximum (min, max), except
+  for on/off parameters below. Parameters are of four kinds: continuous, on/off,
+  enumerated and other. A parameter is *stepped* when it reports quantized. The
+  rules below give a target value per message, applied once, with no smoothing
+  before it is set (E10, E13).
+- **S. Absolute.** Data value v gives min + (max − min) × v/127. A stepped
+  parameter takes the nearest integer, with halves rounded away from zero (E12).
+- **S. Absolute14Bit.** CC n carries the most significant and CC n + 32 the
+  least significant 7 bits, on the same channel. A received half is held until
+  the other half arrives, in either order. A newer half replaces a held half of
+  the same kind; a lone half changes nothing. When both halves are held, the
+  target value is min + (max − min) × (128 × MSB + LSB)/16383, rounded as for
+  Absolute, and both halves are discarded (E11).
+- **S. Relative.** In the eight relative modes, data value v decodes to a
+  signed step d by the table below. A parameter that is not stepped becomes
+  clamp(current + (max − min) × d/256, min, max). A stepped parameter moves one
+  unit per message, up when d > 0 and down otherwise, so a decoded 0 moves it
+  down. The result is clamped to [min, max] and rounded as for Absolute (E12, E13).
+
+  | Mode | d for data value v |
+  | --- | --- |
+  | `LinearSignedBit` | v ≤ 64: +v; v ≥ 65: −(v − 64) |
+  | `LinearSignedBit2` | v ≤ 64: −v; v ≥ 65: +(v − 64) |
+  | `LinearTwoCompliment` | v ≤ 64: +v; v ≥ 65: v − 128 |
+  | `LinearBinaryOffset` | v − 64 |
+  | `AccelSignedBit` | v ≤ 64: +A(v); v ≥ 65: −A(v − 64) |
+  | `AccelSignedBit2` | v ≤ 64: −B(v); v ≥ 65: +B(v − 64) |
+  | `AccelTwoCompliment` | v ≤ 65: +B(v); v ≥ 66: −B(128 − v) |
+  | `AccelBinaryOffset` | v ≥ 64: +B(v − 64); v ≤ 63: −B(64 − v) |
+
+  A(k) is 1, 2, 3, 4, 5, 8, 10, 20, 50 for k = 1…9 and 20 for any other k,
+  including 0. B(k) is 1, 2, 3, 4, 5, 8, 20, 50 for k = 1…8 and 50 for any
+  other k, including 0. Hence `AccelSignedBit` 10–64 gives +20,
+  `AccelBinaryOffset` 64 gives +50 and `AccelTwoCompliment` 65 gives +50.
+- **S. Takeover exemptions.** Takeover can act only on absolute target values
+  (`Absolute` messages and completed `Absolute14Bit` pairs) of continuous
+  parameters. Relative messages, the other parameter kinds and the crossfader
+  are never subject to it, whatever the takeover preference; their target value
+  applies directly. With the takeover preference set to None, every absolute
+  target value applies. The correspondence of the label None to this behavior
+  is inferred from the order of the preference's three settings (E10, E14).
+- **S-cond. Pick-Up and Value Scaling.** For an absolute target value n subject
+  to takeover, let c be the current value clamped to [min, max] and
+  w = (max − min)/64. Let p be the target value that the previous data value
+  received on the same input, channel and controller number would have produced.
+  For a 14-bit pair, use the previous data values on both controller numbers.
+  Any earlier message counts, whether or not it was mapped.
+  - An `Absolute` message with no previous data value on its controller since
+    the input opened keeps c.
+  - When |p − c| ≤ (max − min)/256, n applies.
+  - Otherwise, Pick-Up applies n only when c lies in
+    [min(n, p) − w, max(n, p) + w]; else it keeps c.
+  - Otherwise, Value Scaling applies n when |n − c| ≤ w and keeps c when p = n.
+    Else it moves c by the travelled fraction of the remaining distance:
+    c + (max − c)(n − p)/(max − p) when n > p, and c − (c − min)(p − n)/(p − min)
+    when n < p.
+  - The result is clamped to [min, max]. These tolerances also apply to 14-bit
+    pairs (E14). Open: the label correspondence and the reset of previous
+    values other than at input open (PRB-N7-03).
+- **S-cond. On/off parameters.** An absolute data value v turns an on/off
+  parameter on exactly when v lies between the parameter's stored MIDI CC on/off
+  thresholds, minimum and maximum inclusive. The result is inverted when the
+  minimum exceeds the maximum. A completed 14-bit pair is compared as
+  (128 × MSB + LSB)/129. A relative message turns the parameter on when d > 0
+  and off otherwise. Neither takeover nor rounding applies (E13). Open: that the
+  bounds are the stored thresholds is inferred, and an unexplained host check
+  can substitute the parameter's ordinary range (PRB-N7-04).
 - **Unknown.** A present token outside the ten reaches the host as a plain
   string instead of a mode value (E1 L52); no Absolute fallback is promised.
-  N and R: PRB-S4-04. Numeric transforms, 14-bit pairing, acceleration and
-  pickup: PRB-S4-05.
+  N and R: PRB-S4-04. Also unknown:
+  - the takeover preference default (PRB-N7-03);
+  - delivery ordering, coalescing and deferred application of back-to-back
+    messages (PRB-N7-05);
+  - displayed values and any processing after a value is set (PRB-N7-01);
+  - the first 14-bit pair after the input opens, or a pair with a half lacking
+    a previous value, under Pick-Up or Value Scaling (PRB-N7-01, PRB-N7-03);
+  - which parameters belong to each kind, and which are stepped without
+    reporting quantized (PRB-N7-04);
+  - several assignments on one channel and controller number. Each appears to
+    receive every message, but this is inferred.
 
 ### REQ-MIDI-USER-006 — drum pads
 
@@ -213,9 +300,14 @@ map-mode keys and two Boolean keys (E1).
   master volume, cue/preview volume and the crossfader (D6).
 - **S.** Released v1 clauses, plus mode scope: `VolumeMapMode` covers master and
   cue (E2 L140, L188–203); `CrossfaderMapMode` covers the crossfader (E2
-  L205–212). The crossfader control disables takeover (E2 L216); the effect is N.
-- **Unknown.** Scaling, clipping, smoothing and values for absent targets:
-  PRB-S4-05.
+  L205–212). Values follow REQ-MIDI-USER-005. The crossfader is the only
+  continuous control with takeover disabled (E2 L216), so its absolute values
+  apply whatever the takeover preference; see the
+  [takeover exemptions](#req-midi-user-005--map-modes) (E10, E13). Master and
+  cue volume are subject to takeover like other continuous controls.
+- **Unknown.** Reported ranges and kinds of these three parameters, displayed
+  values, processing after a value is set and values for absent targets:
+  PRB-N7-01, which refines PRB-S4-05.
 
 ### REQ-MIDI-USER-011 — mixer buttons and feedback
 
@@ -270,14 +362,19 @@ map-mode keys and two Boolean keys (E1).
 ## Timing and state
 
 MIDI channels and control numbers are zero-based integer identifiers; MIDI data
-values in these cases are integer bytes in 0–127. No wall-clock, musical-clock,
-latency, jitter or numerical parameter tolerance is established. Do not use an
-arbitrary timeout as evidence of a no-action result. A later execution harness
-must establish a bounded completion/observation method before claiming pass.
+values in these cases are integer bytes in 0–127. Value cases compare a
+parameter value on its own scale within an absolute tolerance of 1e-6. No
+wall-clock, musical-clock, latency, jitter or other numerical tolerance is
+established. Do not use an arbitrary timeout as evidence of a no-action result.
+A later execution harness must establish a bounded completion/observation
+method before claiming pass.
 
 Relevant state includes selected and locked device, device bank, mixer bank,
-track states and transport states. Documented state changes are confined to the
-requirements above. Selection retention, simultaneous-message ordering, duplicate
+track states, transport states, the takeover preference and held 14-bit halves.
+It also includes, per input, the last data value received on each channel and
+controller number, which is empty when the input opens. Documented state
+changes are confined to the requirements above. Selection retention,
+simultaneous-message ordering, delivery coalescing (PRB-N7-05), duplicate
 address priority, missing targets and focus interaction are unknown. Tests use
 one assignment at a time except explicit conflict cases.
 
@@ -307,27 +404,73 @@ are unknown (PRB-S4-15). These are applicable gaps, not omitted passing cases.
 
 ## Acceptance cases
 
-Three case sets exist; none has run against a reference or candidate.
+Four case sets exist; none has run against a reference or candidate.
 
 | Set | Cases | Status |
 | --- | --- | --- |
 | Revision 1 matrix `acceptance-cases.json` (MIDI-USER-001–046) | 46 groups over all requirements, including unresolved ones | Retained in the macOS `midi-user-mapping-v1` evidence tree, which is absent on this host |
 | [S4 draft cases](../../analysis/ableton-live-12.4.3/r2/s4-midi-v1/draft-cases-v2.json) (S4-MIDI-001–055) | 55 configuration-interpretation cases | Analyst draft. S4-MIDI-030 expected Send B for a lone `Send2Knob1`, which fails the REQ-009 check; corrected in the staged candidate |
-| [Staged midi-config-v2](../../analysis/ableton-live-12.4.3/handoff-staging/midi-config-v2/README.md) (MIDI-CONFIG-001–109) | 54 v1 cases restated plus 55 new | Unreviewed candidate; see the [v2 plan](midi-config-v2-handoff-plan.md) |
+| [Staged midi-config-v2](../../analysis/ableton-live-12.4.3/handoff-staging/midi-config-v2/README.md) (MIDI-CONFIG-001–109) | 54 v1 cases restated plus 55 new | Released on 2026-10-17 as [midi-config-v2](../../handoff/midi-config-v2/README.md), approved with narrowing; see the [v2 plan](midi-config-v2-handoff-plan.md) |
+| [N7 transform cases](../../analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/out/acceptance-cases.json) (MT-01–MT-23) | 23 value sequences for REQ-005 and REQ-010 | Static derivations, listed below |
 
 Logical comparisons use exact integer/channel/target identifiers or exact Boolean
-state where an expected state is supported. Numerical parameter curves, bank
-contents and feedback bytes have no oracle yet and must not be graded as passes.
+state where an expected state is supported. Value cases compare the parameter
+value after each message within 1e-6. Display curves, bank contents and
+feedback bytes have no oracle yet and must not be graded as passes.
 An unknown expected result has comparator `unresolved`, never an invented
 golden output. Documentation provenance is not an observed reference result.
+
+### Value transform cases MT-01 to MT-23
+
+These cases test REQ-MIDI-USER-005; MT-22 also tests REQ-MIDI-USER-010. Unless a
+row says otherwise, the assignment is CC 20 on channel 0, sent as `B0 14 vv`.
+For `Absolute14Bit` the least significant half is CC 52 (`B0 34 vv`), written
+L:vv. The target is a continuous parameter, not stepped, with min 0, max 1 and
+current value 0.5. Nothing has been received on CC 20 or CC 52 since the input
+opened. Data bytes are hexadecimal. Relative cases MT-06 to MT-14, MT-16 and
+MT-23 hold under any takeover setting. MT-22 assumes the crossfader reports
+the range 0–1; for another range its values are min + (max − min) × v/127.
+
+S rows are static expected outputs. S-cond rows give static predictions, not
+expected outputs; their comparator stays `unresolved` until the named probe
+has run. Rows with None depend on the inferred None label (REQ-MIDI-USER-005,
+takeover exemptions). Reference measurements: PRB-N7-01 (MT-01–05), PRB-N7-02
+(MT-06–14), PRB-N7-03 (MT-19–23), PRB-N7-04 (MT-15–18) and PRB-N7-05
+(ordering). None has run.
+
+| Case  | Label  | Map mode and condition                                              | Data bytes              | Value after each message                                           |
+| ----- | ------ | ------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------ |
+| MT-01 | S      | Absolute; None                                                      | 00 40 7F                | 0, 0.503937, 1                                                     |
+| MT-02 | S      | Absolute14Bit; None; MSB first                                      | 64 L:32                 | 0.5, 0.78435                                                       |
+| MT-03 | S      | Absolute14Bit; None; LSB first                                      | L:32 64                 | 0.5, 0.78435                                                       |
+| MT-04 | S      | Absolute14Bit; None; newer MSB replaces the held one; lone LSB held | 10 64 L:32 L:00         | 0.5, 0.5, 0.78435, 0.78435                                         |
+| MT-05 | S      | Absolute14Bit; None; full scale                                     | 7F L:7F 00 L:00         | 0.5, 1, 1, 0                                                       |
+| MT-06 | S      | LinearSignedBit                                                     | 01 41 40 7F             | 0.503906, 0.5, 0.75, 0.503906                                      |
+| MT-07 | S      | LinearSignedBit2                                                    | 01 41 40                | 0.496094, 0.5, 0.25                                                |
+| MT-08 | S      | LinearTwoCompliment                                                 | 01 7F 41 40             | 0.503906, 0.5, 0.253906, 0.503906                                  |
+| MT-09 | S      | LinearBinaryOffset                                                  | 41 3F 40 00             | 0.503906, 0.5, 0.5, 0.25                                           |
+| MT-10 | S      | AccelSignedBit; 10 falls back to 20                                 | 01 07 09 0A 41 49 00    | 0.503906, 0.542969, 0.738281, 0.816406, 0.8125, 0.617188, 0.695312 |
+| MT-11 | S      | AccelSignedBit2                                                     | 01 41 07 47 00          | 0.496094, 0.5, 0.421875, 0.5, 0.304688                             |
+| MT-12 | S      | AccelTwoCompliment; 65 counts up                                    | 01 7F 08 41 42 00       | 0.503906, 0.5, 0.695312, 0.890625, 0.695312, 0.890625              |
+| MT-13 | S      | AccelBinaryOffset; 64 gives +50                                     | 41 3F 46 39 40          | 0.503906, 0.5, 0.53125, 0.453125, 0.648438                         |
+| MT-14 | S      | LinearBinaryOffset; clamping at max and min                         | 7F 7F 7F 00 00 00 00 00 | 0.746094, 0.992188, 1, 0.75, 0.5, 0.25, 0, 0                       |
+| MT-15 | S      | Absolute; None; stepped, range 0–3, from 1                          | 15 16 3F 40 7F          | 0, 1, 1, 2, 3                                                      |
+| MT-16 | S      | LinearSignedBit; stepped, range 0–3, from 1                         | 05 01 41 46 46 46       | 2, 3, 2, 1, 0, 0                                                   |
+| MT-17 | S-cond | Absolute; on/off, thresholds 64–127, from off                       | 3F 40 7F 00             | off, on, on, off                                                   |
+| MT-18 | S-cond | LinearSignedBit; on/off as MT-17                                    | 01 41 03                | on, off, on                                                        |
+| MT-19 | S-cond | Absolute; Pick-Up                                                   | 0A 0B 0C 3F 46          | 0.5, 0.5, 0.5, 0.496063, 0.551181                                  |
+| MT-20 | S-cond | Absolute; Value Scaling                                             | 0A 14 1E                | 0.5, 0.542735, 0.58547                                             |
+| MT-21 | S-cond | Absolute; Pick-Up; first message                                    | 64                      | 0.5                                                                |
+| MT-22 | S      | Absolute; Pick-Up; crossfader (takeover disabled)                   | 0A 64                   | 0.07874, 0.787402                                                  |
+| MT-23 | S      | LinearSignedBit; Pick-Up                                            | 01                      | 0.503906                                                           |
 
 ## Open questions
 
 See the canonical [question register](../questions.md): Q-008 covers parser/host
-error recovery and unknown-mode outcomes; Q-009 covers numeric transforms,
-takeover, timing and feedback; Q-010 covers discovery/reload, disconnect,
-persistence, undo and the send-position refinement. The 16 probe records name
-the remaining runtime questions. Prefer a focused static trace for material
+error recovery and unknown-mode outcomes; Q-009 covers the open transform
+points (PRB-N7-01 to 05), timing and feedback; Q-010 covers discovery/reload,
+disconnect, persistence, undo and the send-position refinement. The 16 S4 and
+five N7 probe records name the remaining runtime questions. Prefer a focused static trace for material
 gaps; use a bounded runtime probe when static evidence cannot resolve the
 question or the probe is clearly cheaper, under ADR 0002. Concrete expected
 outcomes absent from this draft remain unknown and block release of the
@@ -395,6 +538,33 @@ until G0.2. `L` numbers are source-line metadata in the listings.
 | E8 | [native anchors](../../analysis/ableton-live-12.4.3/r2/s4-midi-v1/native-anchors.json) | `3.11.6` beside the interpreter version format (inferred version); discovery strings; adjacency only, not call edges |
 | E9 | [S4 draft cases](../../analysis/ableton-live-12.4.3/r2/s4-midi-v1/draft-cases-v2.json) `rules` | Rule IDs R-CC … R-INT map each draft case to the locators above |
 
+Revision 3 native evidence is the
+[N7 packet](../../analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/notes.md)
+([manifest](../../analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/manifest.json)).
+It is a static reading of the arm64 slice `Live.arm64`, SHA-256
+`3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad`, recomputed
+on this host on 2026-10-17. Live was not run. Addresses below are in that image.
+Dossiers are the kept results `results/n7-0001`–`n7-0004`, printed with
+`scripts/dis.py`. "Decompiler only" marks text from `out/corpus-excerpts.jsonl`.
+Python locators are the S4 listings above.
+
+| Label | Locator | What was checked for revision 3 / limitation |
+| --- | --- | --- |
+| E10 | `_Framework/ControlSurface` `_install_mapping` L735–743 (offsets 814–1044); `InputControlElement.__init__` L191 `_needs_takeover = True`, L197 `_mapping_sensitivity = 1.0`; `GenericScript` L216; enum `TControllerMapMode` (`elements_base` L27–47, registration 0x103b4ca90, decompiler only); wrapper 0x103b4d744 (n7-0004); install 0x102593258 (n7-0001); validation 0x1025931ac (n7-0003); receiver init 0x101b7f32c (n7-0003); dispatch 0x101b69248 → 0x101b65b68 (n7-0002) → 0x101b7842c (n7-0004) | Python passes channel, CC, mode, `not needs_takeover()` and sensitivity 1.0; only the crossfader clears takeover within the decoded S4 listings. Install passes Zoom 1.0 and stores avoid at +0x44 and sensitivity at +0x48. The previous-value table is −129.0 filled (0x105849f70, re-read), read as PriorCValue and then overwritten. Every handler on a (channel, CC) list is called. Inferred: the registry 0x101b84798/0x10260535c is the MidiMap handler lookup, and entry+0x30 is the map mode. Reset 0x101b65c1c is decompiler only; its trigger is unknown. Install refusals 0x1026f9488 and MidiMap +0x30 are uninterpreted |
+| E11 | 14-bit install 0x1026094e0 (`mov w3,#0x0` at 0x102609548); MSB store 0x101b8028c, LSB store 0x101b802bc, combine 0x101b7fcc0 (all n7-0002); constructor 0x101b7fc28 (decompiler only) | Each store overwrites its own half and prior, then combines when both value slots are not FLT_MAX. Combine computes (MSB<<7 \| LSB)/129.0 (0x10584a8b4, re-read 129.0), passes MapMode 0 and sensitivity 1.0, then resets all four slots to FLT_MAX. With the avoid flag clear, −129 priors give (−1)/129, not the no-prior sentinel, so the first pair is left open |
+| E12 | Value function 0x101b76bf0 (n7-0002); decoder 0x101b7b96c (n7-0001); table init 0x101b842cc (n7-0003); divisor 0x1011afc2c (decompiler only: 127.0, or 8191.0 for −2) | Absolute: t = v/127, lo·(1−t)+hi·t by `fmadd`. Relative: (hi−lo)·(1/256)·d·s or ±1 when quantized, then clamp. `frinta` at 0x101b76cd4 rounds when quantized. Decoder branches were checked against the table above. Vectors at 0x106fba2a8 (B, 8 floats from 0x10584a580) and 0x106fba2c0 (A, 8 floats from 0x10584a5a0 plus 50.0 stored at +0x20) were re-read with `scripts/readvm.py` and match `out/native-constants.json` |
+| E13 | Details 0x1026fa5c8 → 0x1026fa684 and 0x1024dd61c (n7-0003); apply 0x101b7fde4 (n7-0001); CC receiver 0x101b7f894 (n7-0002); Python `DeviceParameter` getters 0x103afe2cc/3c0/3d0 (decompiler only); [on/off thresholds](../../analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/out/onoff-thresholds.json) | Type is 1 `ATimeableFloat`, 2 `ATimeableBool`, 3 `ATimeableEnum` or 0 for other. Min/Max come from vtable +0x2f0/+0x2f8, or from the +0x388 range object when the Bool flag is set; registry 0x1011aeb80 can clear that flag and is unexplained. Quantized is +0x2e0, or an internal byte equal to 2. Apply, with Zoom ≤ 1: Type 2 absolute uses lower ≤ v ≤ upper XOR (Min > Max), and Type 2 relative uses d·s > 0. Other types use the value function; takeover runs only for MapMode 0/5, Type 1 and prior ≠ FLT_MAX. When 0x1011c0ee8(0x100500) ≠ 0, the fields are posted as `OChangeControllerDataCommand` (timing unknown). Setter 0x101b0d328 was not traced. The receiver blanks the prior when avoid is set and Zoom = 1.0. Quantized relative accumulates ±s and fires at \|acc\| ≥ 1. Shipped sets carry Min 64/Max 127 in 22,059 of 22,303 threshold pairs |
+| E14 | Takeover 0x101b7c508 and Pick-Up 0x101b7c344 (n7-0001); preference setter 0x101b83750 (n7-0003); UI entry order 0x1022df424 (decompiler only) | The global mode at 0x106fb2110 has three cases. 0 returns clamp(new). Otherwise a prior equal to −129.0 keeps c, and \|p − c\| ≤ (hi−lo)·0.5/128 applies new. Mode 2 uses w = (hi−lo)·2/128 and proportional scaling. Mode 1 uses the [min(n,p) − w, max(n,p) + w] window and posts a pick-up notification. Inferred: index 0/1/2 = None/Pick-Up/Value Scaling, from the declaration order and the notification. The default was not found |
+
+Case derivation: `scripts/derive_cases.py` (SHA-256
+`b7fe6ce1c176a0b5f1a518c499f1661c534977eb7562598b9e034204de88c717`) regenerated
+`out/acceptance-cases.json` byte-identically (SHA-256
+`bffc375a1aacf278b8dda6426049e70941e0f049c7df4c7b6fdc8b53efe19d27`) on
+2026-10-17. It is a float32 model, not an oracle. The revision 3 author
+independently recomputed MT-02 to MT-05, MT-10, MT-12, MT-13, MT-16 and MT-19
+to MT-22 in exact rational arithmetic from the checks above. All agree within
+1e-6. That spot-check script was not retained.
+
 The `Layer` wiring from control to component setter is assumed for every target
 association, as in revision 1; that module was not decoded. Requirements
 translate these documented contracts into candidate observable obligations. No
@@ -431,3 +601,24 @@ from re-checking the closure's draft case S4-MIDI-030, which this revision
 does not adopt. A [midi-config-v2 candidate](midi-config-v2-handoff-plan.md) is
 staged for separate review. midi-config-v1 remains the only released contract.
 No application code or original-versus-candidate comparison has run.
+
+Revision 3, 2026-10-17: applied the
+[N7 native transform packet](../research/midi-transforms-native.md) after
+re-checking each clause against the kept dossier disassembly and the image
+constants. REQ-MIDI-USER-005 gains the S clauses value mapping, Absolute,
+Absolute14Bit, relative step table and takeover exemptions. It also gains the
+S-cond clauses Pick-Up and Value Scaling, and on/off parameters, with evidence
+labels E10–E14. Its "numeric transforms" unknown is replaced by explicit open
+items, PRB-N7-01 to 05. REQ-MIDI-USER-010 now points at the crossfader takeover
+opt-out. The timing/state section adds the per-input previous-value record and
+the 1e-6 value tolerance. Acceptance cases MT-01 to MT-23 were added: 18 S
+and 5 S-cond. This revision departs from the packet's proposal in four ways.
+Takeover None and the exemptions are S, with the None label stated as an
+inference; the packet's takeover clause, including None, was S-cond. The rule that a message
+without a previous value keeps the value is limited to `Absolute`, because 14-bit
+priors combine to a value that is not the no-prior marker. Transforms are stated
+for enumerated and other parameter kinds, whose path differs only by having no
+takeover. MT-15/16 are labelled S, with parameter selection left to PRB-N7-04.
+The [midi-config-v2](../../handoff/midi-config-v2/README.md) release of
+2026-10-17 is recorded in the case-set table. Requirements released there are
+unchanged. No application code or original-versus-candidate comparison has run.

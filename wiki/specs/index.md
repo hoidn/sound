@@ -26,7 +26,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [Browser index](browser-index.md) | Revision 1 draft: 13 requirements (content kinds, tag sidecar read and write format and names, previews, change handling, rebuild); 52 unexecuted cases (24 static-derived, 28 unknown); probes PRB-BI-01 to 05 (proposed), PRB-H2-03 to 06, 09 |
 | [Clip launch](clip-launch.md) | Revision 1 draft: 23 requirements (3 documented with static parts, 5 static-derived, 10 static with unknown parts, 5 unknown), 56 unexecuted cases (4 not graded, 2 without a fixture) for stored launch fields, values, load corrections, migration, quantization grid and launch boundary; launch modes, Legato, velocity and follow-action timing open |
 | [Transport-state handoff plan](transport-state-handoff-plan.md) | Staged transport-state-v1 candidate (18 unexecuted cases): scope, exclusions, traceability, review gates |
-| [MIDI user mapping](midi-user-mapping.md)                      | Revision 2 draft: documented, static, static-conditional and unknown clauses; static expectations, unexecuted cases |
+| [MIDI user mapping](midi-user-mapping.md) | Revision 3 draft: documented, static, static-conditional and unknown clauses; REQ-005 now carries the native value transforms for all ten map modes; cases MT-01 to MT-23 added (18 static, 5 static-conditional); unexecuted |
 
 **Browse every requirement in one place:** the
 [requirements browser](../../analysis/ableton-live-12.4.3/browse/specs/index.html)

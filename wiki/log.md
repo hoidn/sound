@@ -1710,3 +1710,16 @@ the [transport transitions](research/transport-transitions-native.md) readings, 
 Stop transfers, and adds a reflection branch present in both builds. Updated Q-013 and the
 helper-launch page. Gaps: user-visible ReWire remnants, the Engine arm64 stub, MultiF0 time units;
 PRB-N8-01 to 05.
+
+## [2026-10-17] spec | SPEC-MIDI-USER-MAPPING revision 3 (N7 transforms)
+
+[SPEC-MIDI-USER-MAPPING](specs/midi-user-mapping.md) REQ-005 gains static clauses (value mapping,
+Absolute, Absolute14Bit, the relative step table, takeover exemptions) and static-conditional
+clauses (Pick-Up and Value Scaling, on/off parameters); REQ-010 points at the crossfader's takeover
+opt-out; evidence labels E10 to E14 added; cases MT-01 to MT-23 (18 static, 5 static-conditional).
+Clauses were rechecked against kept dossiers n7-0001 to 0004 and re-read image constants;
+`derive_cases.py` reproduced the cases byte for byte and 12 cases were recomputed exactly. One
+clause is weaker than the packet: "no previous value keeps the current value" applies only to
+Absolute. Updated the spec index, feature map, coverage and Q-009. A narrow midi-config-v3
+candidate is justified but was not started, because no new work is being dispatched. Gaps:
+PRB-N7-01 to 05.
