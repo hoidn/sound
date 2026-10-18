@@ -1810,3 +1810,20 @@ hard-linked query copies remain under `/var/tmp/sound-analysis/query*` and can b
 with the commands in [query route](research/r2-query-route.md). Natural next steps, not started:
 separate reviews and handoff candidates for the new drafts, a midi-config-v3 candidate, merging the
 post-consolidation probes into the Phase 4 batch, and the Phase 4 sitting on the macOS host.
+
+## [2026-10-17] maintenance | Bundled audio samples for the traced Corpus demo
+
+Added `tools/demo_samples.py` and six clips as sources for the traced demo: bongos
+and a funk drum loop (both seamless loops), djembe, acoustic guitar, piano chords
+and a LibriVox reading. All are CC0 or public domain on Wikimedia Commons; the
+script refuses other licences and checks each download's SHA-1. The clips are
+packaged as `analysis/ableton-live-12.4.3/demos/corpus-traced/samples.js`
+(801 KB) with `samples-manifest.json`. No Ableton content is included.
+
+The page gained a Sample menu, a Play/Stop button and credits. Checks: a
+real-time headless Chromium run over CDP passes the full self-test (all six
+clips decode at the expected lengths, key wiring, String at 261.5 Hz), and the
+8 Node tests pass.
+
+Finding: headless virtual time skips past off-thread audio decoding, so the
+self-test needs real time (or a pending timer) to finish.

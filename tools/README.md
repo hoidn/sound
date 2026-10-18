@@ -236,3 +236,16 @@ with links back to each source section. Rerun it after a spec or packet changes.
 python3 tools/spec_browser.py    # writes analysis/ableton-live-12.4.3/browse/specs/index.html
 python3 -m unittest tools/tests/test_spec_browser.py -v
 ```
+
+## Demo audio samples
+
+[demo_samples.py](demo_samples.py) packages short clips from Wikimedia Commons as sources for the
+offline Corpus demos. It refuses any file whose Commons licence is not CC0 or public domain and
+checks each download against Commons' SHA-1. Each clip is trimmed and loudness-normalized, with
+fades except on seamless loops, then encoded as Ogg Opus. The script writes `samples.js` (a
+`file://` page can load a script but cannot fetch sibling files) and `samples-manifest.json`,
+which records source, author, licence and hashes. It needs an ffmpeg with libopus.
+
+```sh
+python3 -I tools/demo_samples.py --ffmpeg PATH/TO/ffmpeg --downloads EMPTY_DOWNLOAD_DIR
+```

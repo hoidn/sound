@@ -118,7 +118,11 @@ computes. A port of it runs in a second page, the
 That page is derived from recovered third-party code; it was published by the
 user's decision on 2026-10-17 and must never seed the reimplementation.
 Comparing the two pages is the lesson: which textbook guesses held, and which
-didn't.
+didn't. The traced page also bundles six short recordings as sources: bongos, a
+funk drum loop, djembe, acoustic guitar, piano chords and a LibriVox reading.
+All are CC0 or public domain from Wikimedia Commons, credited on the page and
+listed with hashes in its
+[samples manifest](../../../../analysis/ableton-live-12.4.3/demos/corpus-traced/samples-manifest.json).
 
 | Topic | Textbook stand-in (this page) | Traced device |
 | --- | --- | --- |
