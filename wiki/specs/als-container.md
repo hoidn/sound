@@ -50,14 +50,14 @@ not establish. A clause that rests on one names it, for example
 "Static-derived (assumes I1)". If an assumption fails, the clauses naming it
 become unknown. The IDs match the analyst traceability records (appendix).
 
-| ID | Assumption | What rests on it |
-| --- | --- | --- |
-
 Review update 2026-10-17 (als-container-v1, RVA-01): the separate reviewer established I1
 statically (a handler-level catch of the thrown type stores the message, stops the parser,
 sets the error flag and leads to the post-parse classification) and confirmed I3 (the
 converter is a base-10 conversion that stops at the first non-digit). I2, I4, I5 and I6
 remain assumptions.
+
+| ID | Assumption | What rests on it |
+| --- | --- | --- |
 
 | I1 | A refusal raised while the root element or the document element is read stops parsing there and is classified after parsing, by the same decision that reports XML errors | The class of each such refusal (corrupt-document or newer-version); never whether the file is refused |
 | I2 | A Live Set's document element is subject to the version checks of REQ-ALS-CONTAINER-003 | Refusals by checks 1–4 (REQ-ALS-CONTAINER-003 to 005) |
