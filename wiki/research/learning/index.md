@@ -46,7 +46,11 @@ explains the outside-in route using the static halves of the
 [container packet](../document-container-static.md) and the
 [transport-state packet](../transport-state-static.md). The
 [MIDI closure assessment](../midi-closure-r2.md) re-established the bytecode
-evidence behind the first lesson and classified every draft MIDI clause.
+evidence behind the first lesson and classified every draft MIDI clause. Its
+supportable clauses shipped as [midi-config-v2](../../../handoff/midi-config-v2/README.md),
+which supersedes v1. To read whole decompiled programs, use the
+[revision 2 corpus browsers](../../../analysis/ableton-live-12.4.3/browse/r2/r2-index.html):
+Push2 and 15 helper executables so far, with main Live to follow.
 
 ## Continue exploring
 

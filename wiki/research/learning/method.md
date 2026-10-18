@@ -111,9 +111,11 @@ That is why we measured startup cost separately from per-function export speed,
 and why the corpus stores durable text and provenance outside the session.
 Revision 2 changes the route. Ghidra analyzes `Live.arm64` once into a saved
 project (gate G0.3, still running on 2026-10-17), and bulk decompilation reads
-that project without changing it. Whether REA can answer selected questions
-against the same project is still being measured. These are properties of our
-tool route, not of how Ableton's source is organized.
+that project without changing it. Investigators query it through a read-only
+Ghidra dossier server, not REA, because REA 6.5.0 cannot open a saved project
+and has to re-analyze the binary in every session
+([query route](../r2-query-route.md)). These are properties of our tool route,
+not of how Ableton's source is organized.
 
 We also have a bounded selected-function route. After the default analysis hit
 its disk floor, a custom Ghidra script imported the same binary with automatic

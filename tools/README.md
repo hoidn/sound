@@ -194,3 +194,21 @@ python3 -m unittest discover -s tools/tests -p 'test_r2_*.py' -v
 The chunk corpus is not the `export_native_corpus.py` layout and cannot be
 ingested by it: that ingester accepts only REA `ev_` evidence records. The page
 gives the conversion path.
+
+## Revision 2 corpus browser (C3)
+
+[r2_browser.py](r2_browser.py) builds one offline browser per verified C1 corpus and its C2
+indexes, and refreshes an `r2-index.html` catalog of every browser in the same output directory.
+It runs both `r2_corpus.py` checks first and writes nothing if either fails or the two describe
+different programs. It reads JSONL only, never a Ghidra project, and streams chunks one at a time:
+the page loads a function index, and each function's code, callers, callees, string references
+and indirect sites load from its `chunks/chunk-NNNNN.js` file when opened. OUT is replaced as a
+whole and must be absent or an earlier r2 browser.
+
+```sh
+python3 tools/r2_browser.py CORPUS INDEXES analysis/ableton-live-12.4.3/browse/r2/<slug> [--title TEXT]
+python3 -m unittest discover -s tools/tests -p 'test_r2_browser.py' -v
+```
+
+Write output under `analysis/` in the home directory: the snap-packaged Chromium and Firefox on
+the Linux workstation cannot open `file:///var/tmp/...` pages.

@@ -2,7 +2,7 @@
 id: NAV-ABLETON-ARTIFACTS
 type: index
 status: active
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -34,6 +34,17 @@ Refresh the browser after regeneration; it is a snapshot, not a live process
 monitor. The [browser design and plan](browser-design-and-plan.md) describes
 the update mechanism and navigation limits.
 
+**Revision 2, Linux workstation.** The browser and readers above are built
+from the macOS `analysis/` tree, which has not been copied to this host, so
+their links don't resolve here.
+**[Open the revision 2 corpus browsers](../../../analysis/ableton-live-12.4.3/browse/r2/r2-index.html)**:
+one offline browser per verified decompiled corpus, with function search,
+pseudocode, callers, callees, referenced strings and indirect sites. It
+currently covers the Push2 tooling corpus and 15 helper executables (395,764
+functions). Main Live is added once its corpus exists. See the
+[revision 2 amendment](browser-design-and-plan.md#revision-2-corpus-browser-amendment--2026-10-17)
+and the [corpus tooling page](../r2-corpus-tooling.md).
+
 In the current reader, “Read revisions” brings the selected function into view.
 Code appears before expandable provenance; use “Back to function list” to return.
 The [interaction repair](../native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
@@ -57,6 +68,7 @@ retained output.
 | Inspect actual target recovery results | [Current execution report](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-execution-v2/README.md), [first failed language gate](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-execution-v1/README.md) | Exact commands, diagnostics, project hashes and readable limits; both jobs remain incomplete |
 | Compare bounded selected-entry captures | [Selected-entry browser](../../../analysis/ableton-live-12.4.3/browse/index.html#selected-native), [first selected ALoopOn factory](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/functions/0x10276e5d4/pseudocode.c) | Separate no-auto-analysis profile with code, assembly and metadata; failed attempts remain visible |
 | Read helper pseudocode | [Push2 entry pseudocode](../../../analysis/ableton-live-12.4.3/push2-entry-pseudocode.c) | One Ghidra-decompiled helper entry, with warnings |
+| Browse whole decompiled helper executables (revision 2) | [Corpus browser catalog](../../../analysis/ableton-live-12.4.3/browse/r2/r2-index.html) | Every function of Push2, Push3, the x86_64 Live Engine, the Index, Plugin Scanner, Web Connector, AddOns and Swapper helpers, the multiF0 library and the device bundles; failures stay visible |
 | Inspect that function's machine instructions | [Push2 assembly](../../../analysis/ableton-live-12.4.3/browse/push2-entry-assembly.txt) | 1,590 retained assembly lines with static addresses |
 | Follow its calls or strings | [Callee table](../../../analysis/ableton-live-12.4.3/browse/push2-entry-callees.tsv), [string table](../../../analysis/ableton-live-12.4.3/browse/push2-entry-strings.tsv) | 77 callee records and 47 referenced strings; incomplete indirect-flow coverage |
 | Find a Live C++ symbol | [Symbol index](../../../analysis/ableton-live-12.4.3/live-arm64-symbols.tsv) | Address, mangled name and demangled name; about 34 MB |

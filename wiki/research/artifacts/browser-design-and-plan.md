@@ -2,7 +2,7 @@
 id: RESEARCH-BROWSER-DESIGN
 type: research
 status: current
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -272,3 +272,43 @@ No real browser rendering, accessibility or visual verification is claimed.
 Loading the full index still has material memory cost; the revision token guards
 against mixed generated snapshots, not hostile JavaScript. Current export counts
 and stage outcomes remain in the [phase execution ledger](../native-phase-execution.md).
+
+## Revision 2 corpus browser amendment — 2026-10-17
+
+Revision 2 produces one chunked JSONL corpus per program (C1) plus derived
+indexes (C2), described on the [corpus tooling page](../r2-corpus-tooling.md).
+The generator above reads revision 1 inputs that are absent on the Linux
+workstation, and its exporter accepts only REA `ev_` records. Revision 2 corpora
+therefore get a separate per-corpus generator,
+[`r2_browser.py`](../../../tools/r2_browser.py), with the same styling and
+safety rules: text renders through `textContent`, data scripts escape `<`, `>`
+and `&`, and no fetch or server is needed.
+
+- **Verify first.** It runs both `r2_corpus.py` checks and refuses a corpus whose
+  indexes name a different program. A failed check writes nothing.
+- **Lazy code.** The page loads one function index (entry, name, state, chunk,
+  warning count, unmangled aliases). Code and relations load per chunk when a
+  function is opened. Pending chunks are counted, not listed.
+- **Relations.** Callers, callees (with thunk targets), referenced strings and
+  indirect sites come from the C2 files, capped at 200 per list with the total
+  shown. They are static references, not observed execution.
+- **Catalog.** Each build refreshes `r2-index.html` beside its output.
+- **Location.** Output goes to the ignored `analysis/ableton-live-12.4.3/browse/r2/`.
+  Observed: headless snap Chromium returned `ERR_ACCESS_DENIED` for a page under
+  `/var/tmp`, and Firefox here is also a snap.
+
+**Validation.** Seven unit tests cover relations on both call ends, hostile text,
+a tampered corpus, mismatched programs, refusal to replace an unrelated
+directory, a pending chunk, deterministic rebuilds and the catalog. Rebuilding
+Push2 twice gave a byte-identical manifest. A headless Chromium check on the
+Push2 browser opened `0x100004bb0`, rendered its pseudocode and 26 callees
+including a link to `0x10005957c`, then opened `0x10005957c` and found
+`FUN_100004bb0` among its callers with a link back. The same check rendered
+functions in the Push3 and x86_64 Live Engine browsers. These are DOM dumps
+after a bounded virtual-time budget, not a recorded click-through session.
+
+**Published views.** Sixteen browsers: the Push2 C1 tooling corpus and the 15
+helper corpora, 395,764 listed functions and 1.2 GB in total. The Live corpus
+will be added when it verifies. Limits: the function index is one file
+(14.5 MB for the 75,348-function x86_64 engine); shard it if Live's index is
+too large to load comfortably. Vtables are not yet shown.

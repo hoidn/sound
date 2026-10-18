@@ -1173,3 +1173,21 @@ and reconciled [spec revision 2](specs/midi-user-mapping.md) with RV2-01 to RV2-
 Review evidence: `analysis/ableton-live-12.4.3/handoff-staging/midi-config-v2-analysis/review/`.
 Open: no reference or candidate execution; RV2-07 coverage notes; isolated
 implementation workspace not provisioned.
+
+## [2026-10-17] maintenance | Revision 2 corpus browsers (C3) and doc refresh
+
+Added [`tools/r2_browser.py`](../tools/r2_browser.py) and seven unit tests. It
+builds one offline browser per verified C1 corpus plus C2 indexes and refuses
+unverified or mismatched inputs. Function code and relations load per chunk.
+Generated 16 browsers under the ignored `analysis/ableton-live-12.4.3/browse/r2/`
+(Push2 tooling corpus plus 15 helper corpora, 395,764 functions, 1.2 GB), with
+an `r2-index.html` catalog. Observed: snap Chromium cannot open `file:///var/tmp`
+pages, so output stays under `/home`. Headless Chromium navigation check on Push2
+(callee link and caller back-link) passed. Recorded in the
+[browser design amendment](research/artifacts/browser-design-and-plan.md#revision-2-corpus-browser-amendment--2026-10-17),
+[artifact catalog](research/artifacts/index.md) and `tools/README.md`. Learning
+pages: the method guide now cites the [query route](research/r2-query-route.md)
+decision (Ghidra dossier server, not REA); the learning index links midi-config-v2
+and the browsers. The C1–C3 gate row is left to the coordinator. The Live
+browser waits on the Live corpus. Lint: links and anchors on edited pages
+resolve; `git diff --check` clean; `test_r2_*.py` 17 tests pass.
