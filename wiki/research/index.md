@@ -32,6 +32,7 @@ to the isolated implementation workspace.
 | [Installed Ableton source](sources/ableton-live-12.4.3.md) | Pinned build, retained evidence, hashes and environment |
 | [Package structure](ableton-package-structure.md) | Observed native/resource boundaries and coverage limits |
 | [x86_64-only bundles](x86-only-bundles.md) | Live Engine is a ReWire device build of the engine; ReWire 1.8.7 install chain is x86_64-only; MultiF0 audio-to-note API; engine as symbol donor for S3 |
+| [Plug-in scanner (static)](plugin-scanner-static.md) | H1: scanner options, VST3 and VST2 enumeration, scan-state database, crash and limit derivation, messages to Live, 14 candidate requirements, 8 probes |
 | [Browser index (static)](browser-index-static.md) | H2: index helper launch and messages, files database schema and versioning, scan pipeline, XMP tag sidecars, previews, `filerefmap.db`; 12 candidate requirements, 9 probes |
 | [Push 3 helper (static)](push3-helper-static.md) | H5: Push3.app identity, launch options and watchdog, USB and MIDI hardware interfaces, nanomsg, document-sync and shared-memory links to Live, Push 2 comparison, nine probes |
 | [Web connector, add-ons, swapper (static)](web-addons-swapper-static.md) | H6: helper roles, launch and messages, service endpoints, `.asu` and xdelta update with swap and rollback, add-on backends; scope classification |

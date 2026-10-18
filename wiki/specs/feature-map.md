@@ -21,7 +21,7 @@ manuals, package inventory, API surfaces, and observed user workflows.
 | FEAT-MIDI | MIDI engine | Scheduling, note state, expression, recording, MPE; audio-to-MIDI conversion | Unspecified; audio-to-note library identified in [x86_64-only bundles](../research/x86-only-bundles.md) |
 | FEAT-AUTOMATION | Automation and modulation | Curves, overrides, interpolation, recording, undo | Unspecified |
 | FEAT-DEVICES | Devices and racks | Chains, macros, state, mapping, signal behavior | Unspecified |
-| FEAT-HOSTING | Plug-in hosting | Discovery, lifecycle, state, latency, failures | Unspecified |
+| FEAT-HOSTING | Plug-in hosting | Discovery, lifecycle, state, latency, failures | Unspecified; static discovery evidence in [plug-in scanner](../research/plugin-scanner-static.md) |
 | FEAT-WARP | Warping | Markers, modes, tempo/pitch behavior, boundaries | Unspecified |
 | FEAT-PERSISTENCE | Files and recovery | Sets, presets, media references, migration, recovery | Unspecified; static envelope evidence in [document container](../research/document-container-static.md); schema still declares `ReWireDeviceMidiTargetId`; XMP tag sidecars and `filerefmap.db` in [browser index](../research/browser-index-static.md) |
 | FEAT-UI | Desktop interface | Browser, selection, shortcuts, drag/drop, focus, undo | Unspecified; static browser-index evidence in [browser index](../research/browser-index-static.md) |

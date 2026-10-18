@@ -235,3 +235,18 @@ no experimental contradiction has been established yet.
   installation; which side binds each Push nanomsg channel and what Live sends.
 - Next action: trace `StartWebConnector`, `AddOns: start process` and the three
   Push channel names in the saved Live project.
+
+## Q-016 Plug-in discovery Live-side contract
+
+- State: open; owner: analyst.
+- Affects: FEAT-HOSTING.
+- Evidence: [plug-in scanner](research/plugin-scanner-static.md).
+- Gap: which folders and domain IDs Live passes and how Rescan maps to `--reset`;
+  where Audio Units are scanned; any timeout or kill policy; the meaning of the
+  watchdog constants; the message framing; the database folder; the
+  `dev_identifier` format; how duplicate class IDs appear in the browser. The crash
+  and limit derivations (PD-10, PD-12) must not be released without probes
+  PRB-H1-02 and PRB-H1-04.
+- Next action: trace the Live callers of `Plugins: start scanner process`, `--cid`,
+  `TPluginScannerMediator` and `APluginSettingsPreferencesModel` in the saved Live
+  project.

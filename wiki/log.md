@@ -1251,3 +1251,15 @@ non-database files now serves dossiers to three native investigators (N1 transpo
 state, N2 document container, N3 transport transitions), and the bulk decompile is
 running on the main project. The coordinator's automatic launcher failed because its
 `pgrep -f` pattern matched its own command line; the stage was launched by hand.
+
+## [2026-10-17] query | Plug-in scanner (H1)
+
+Filed [plug-in scanner (static)](research/plugin-scanner-static.md) from the scanner's
+corpus (slice `6ce847b0…`; 36,873 of 36,879 functions decompiled) with evidence in
+`analysis/ableton-live-12.4.3/r2/h1-plugin-scanner-v1/`. Recovered the option set,
+`ID=PATH` scan-root syntax, VST3-then-VST2 enumeration rules, a size-and-mtime
+fingerprint, a five-state scan database, the per-session limit and three message
+topics to Live. No Audio Unit or CLAP scanning code is in the scanner. The crash
+handling and limit behavior are derivations that need probes before release. Updated
+the FEAT-HOSTING row; opened [Q-016](questions.md#q-016-plug-in-discovery-live-side-contract).
+Nothing executed.
