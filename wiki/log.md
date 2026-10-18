@@ -1263,3 +1263,18 @@ topics to Live. No Audio Unit or CLAP scanning code is in the scanner. The crash
 handling and limit behavior are derivations that need probes before release. Updated
 the FEAT-HOSTING row; opened [Q-016](questions.md#q-016-plug-in-discovery-live-side-contract).
 Nothing executed.
+
+## [2026-10-17] maintenance | Interactive Corpus resonator demo
+
+Added the [Corpus resonator demo](research/learning/demos/corpus-resonator.md),
+built by `tools/corpus_demo.py` and `tools/corpus_demo.html` into the ignored
+`analysis/ableton-live-12.4.3/demos/corpus/`. Controls, ranges and the 26 presets
+come from the Corpus class of `Schema/12.0_12402.txt` and the shipped `.adv`
+presets. The sound is a labelled textbook modal-resonator stand-in, not decompiled
+code. Resonance type labels are assumed; two preset titles agree with the order.
+Checks: 3 unit tests pass. A headless Chromium offline self-test found the String
+peak at 220.0 Hz and a membrane ratio of 1.59334, and the normal page rendered
+26 presets and 38 controls. Live audio in a desktop browser was not checked.
+Linked from the [learning index](research/learning/index.md) and learning plan
+row L7. Gap: tracing `SetParameterA`/`CalcA` for a faithful version.
+Lint: links and anchors resolve; `git diff --check` clean.

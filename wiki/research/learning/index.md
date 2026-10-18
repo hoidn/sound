@@ -52,6 +52,12 @@ which supersedes v1. To read whole decompiled programs, use the
 [revision 2 corpus browsers](../../../analysis/ableton-live-12.4.3/browse/r2/r2-index.html):
 Push2 and 15 helper executables so far, with main Live to follow.
 
+## Interactive demos
+
+| Demo | What you can do | Evidence boundary |
+| --- | --- | --- |
+| [Corpus resonator](demos/corpus-resonator.md) | Excite a resonator with clicks, noise, a drum loop, a file or a microphone; change type, decay, strike and pickup positions; load the 26 shipped presets; see the modes and the spectrum | Controls, ranges and presets observed in shipped files; the sound is a labelled textbook stand-in, not Corpus's algorithm |
+
 ## Continue exploring
 
 - [Learning design and task plan](design-and-plan.md): deliverables, review checks and current status.

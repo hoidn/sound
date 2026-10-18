@@ -55,6 +55,7 @@ source; static addresses are tied to image identity and architecture.
 | L4 | Update atlas and add persistence/transport walkthroughs with the native packets | At least two native lessons, including a limitation; relationships match cited evidence | Two native lessons and atlas updates reader-reviewed; behavior packets remain partial |
 | L5 | Independent reader review and corrections | Reviewer reproduces navigation, states one supported conclusion and one limitation, and distinguishes containment from code structure | Passed for current native lessons/method/atlas |
 | L6 | Revision 2: explain the outside-in route; add one lesson per packet once its native half traces code | Method guide teaches the route from real packet evidence; each packet lesson links its research page; atlas follows supported relationships | 2026-10-17: method guide, index, atlas revision 8 and MIDI lesson updated from S1, S2 and S4 static evidence; no packet lesson yet; these changes are not reader-reviewed |
+| L7 | Interactive demos that pair a playable model with its evidence boundary | Each control states observed, stand-in or not modelled; a self-test checks the model | [Corpus resonator](demos/corpus-resonator.md) built 2026-10-17 with a stand-in sound; faithful version and reader review open |
 
 L1 and L2 execute immediately from existing retained evidence. L3 follows the
 coordinator's main-image export; it is not replaced by the helper or bytecode

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
+<title>Corpus resonator · interactive stand-in</title>
+<style>/*STYLE*/
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.param{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper)}
+.param input[type=range]{width:100%;padding:0}.param .row{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.param .val{font-variant-numeric:tabular-nums;font-weight:600}.param p{margin:4px 0 0;font-size:.82rem;color:var(--muted)}
+.b-obs{background:#e3f1e6;border-color:#9cc8a6}.b-std{background:#fff1d6;border-color:#e0bf7a}.b-not{background:#eee;border-color:#bbb}
+canvas{width:100%;height:190px;background:#0f2230;border-radius:8px;display:block}
+.buttons{display:flex;flex-wrap:wrap;gap:10px;align-items:center}fieldset{border:1px solid var(--line);border-radius:8px;padding:8px 12px 12px}
+legend{font-weight:700;padding:0 6px}</style></head>
+<body><main>
+<header><div class="eyebrow">Analyst workspace · Learning demo · Not a compatibility claim</div>
+<h1>Corpus resonator: real controls, stand-in sound</h1>
+<p class="lead">The controls, their ranges and the 26 presets come from files shipped with Live 12.4.3. The sound does <strong>not</strong>: it is a textbook modal resonator built from Web Audio filters, because Corpus's own processing code has not been traced yet. Each control says which parts are observed and which are stand-in.</p>
+<p class="notice">Analyst-only. This page repeats Ableton's device name, parameter names and preset values. Keep it local; do not publish it.</p></header>
+
+<section id="play"><h2>Play</h2>
+<div class="buttons"><button id="hit" type="button">Hit (click)</button><button id="noise" type="button">Noise burst</button>
+<button id="loop" type="button" aria-pressed="false">Drum loop: off</button><label class="buttons" style="font-weight:600">Audio file <input id="file" type="file" accept="audio/*"></label>
+<button id="mic" type="button" aria-pressed="false">Microphone: off</button>
+<label for="volume">Volume</label><input id="volume" type="range" min="0" max="1" step="0.01" value="0.6" style="width:140px">
+<label for="preset">Preset</label><select id="preset"></select></div>
+<p id="status" role="status" aria-live="polite" class="muted">Press a source to start audio.</p>
+<h3>Resonator modes (stand-in model)</h3><canvas id="modes" width="1200" height="190" aria-label="Mode frequencies and amplitudes for left and right listening points"></canvas>
+<p class="muted">Bars are the model's modes: horizontal position is frequency (log scale), height is amplitude at the left (blue) and right (orange) listening points, faint bars decay faster.</p>
+<h3>Output spectrum</h3><canvas id="spectrum" width="1200" height="190" aria-label="Live output spectrum"></canvas></section>
+
+<section id="controls"><h2>Controls</h2><p>Labels are schema field names from <code>Schema/12.0_12402.txt</code>; the on-screen names Live uses are not in our evidence. <span class="badge b-obs">observed</span> means the field and its range come from shipped files. <span class="badge b-std">stand-in</span> describes what our textbook model does with the value. <span class="badge b-not">not modelled</span> controls are shown for completeness.</p>
+<div id="groups"></div></section>
+
+<section id="evidence"><h2>Where this comes from</h2><div id="evidence-body"></div>
+<pre id="selftest-result" hidden></pre></section>
+</main>
+<script>
+const CORPUS = /*CORPUS_DATA*/null;
+</script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const el = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
+const TYPES = ['Beam', 'Marimba', 'String', 'Membrane', 'Plate', 'Pipe', 'Tube'];  // assumed order; see evidence
+const QUALITY_MODES = [8, 16, 28, 40], MAX_MODES = 40;
+const LFO_SHAPES = ['sine', 'square', 'triangle', 'sawtooth', 'sawtooth', 'random', 'random'];
+
+// Stand-in descriptions; every parameter without one is "not modelled".
+const STANDIN = {
+  ResonanceType: 'Chooses a textbook mode-ratio set. Index labels are assumed: Beam, Marimba, String, Membrane, Plate, Pipe, Tube.',
+  ResonatorQuality: 'Number of modes: 8, 16, 28 or 40.',
+  Frequency: 'Fundamental, mapped exponentially to 30–3,000 Hz (Live\'s mapping is unknown).',
+  Transpose: 'Semitones added to the fundamental.', FineTranspose: 'Cents added to the fundamental.',
+  Detune: 'Left and right resonators are detuned in opposite directions by up to 50 cents.',
+  Decay: 'Decay time (T60) of the lowest mode, 0.05–10 s exponentially.',
+  FreqDamping: 'How much faster high modes decay: −1 none (metallic) to +1 strong (wooden).',
+  Radius: 'Pipe and Tube only: extra high-frequency damping for wider bores.',
+  AmpFreq: 'Tilts mode amplitudes: negative darker, positive brighter.',
+  Inharmonics: 'Stretches (+) or compresses (−) the mode ratios.',
+  TubeOpening: 'Pipe only: blends odd-only modes (closed end) toward all modes (open end) by amplitude.',
+  Ratio: 'Plate only: side-length ratio of a simply supported rectangular plate.',
+  ExcitationX: 'Strike position along the body; modes with a node there are not excited.',
+  ListeningXL: 'Left pickup position; scales each mode by its shape there.', ListeningXR: 'Right pickup position.',
+  LfoOnOff: 'Turns the pitch LFO on.', LfoType: 'Shape: 0 sine, 1 square, 2 triangle, 3–4 sawtooth, 5–6 random steps (assumed).',
+  LfoRate: 'LFO rate, 0.01–30 Hz exponentially.', LfoAmount: 'LFO depth, up to ±1,200 cents.',
+  LfoSpin: 'Right LFO runs faster than the left by this fraction.',
+  FilterOn: 'Band-pass filter on the input before the resonator.', FilterMidFreq: 'Filter centre frequency in Hz.',
+  FilterBandWidth: 'Filter bandwidth in octaves.', Drive: 'tanh saturation of the excitation.',
+  StereoWidth: 'Mixes the resonator outputs toward mono as it falls.', Bleed: 'Adds the unresonated excitation to the output.',
+  DryWet: 'Balance between the dry input and the resonator.',
+};
+const GROUPS = [
+  ['Resonator', ['ResonanceType', 'ResonatorQuality', 'Frequency', 'Transpose', 'FineTranspose', 'Detune']],
+  ['Body', ['Decay', 'FreqDamping', 'Radius', 'AmpFreq', 'Inharmonics', 'TubeOpening', 'Ratio']],
+  ['Excitation and listening', ['ExcitationX', 'ListeningXL', 'ListeningXR']],
+  ['LFO', ['LfoOnOff', 'LfoType', 'LfoRate', 'LfoAmount', 'LfoSpin', 'LfoSync', 'LfoSyncRate', 'LfoStereoMode', 'LfoPhase', 'LfoOffset']],
+  ['Filter', ['FilterOn', 'FilterMidFreq', 'FilterBandWidth']],
+  ['Output', ['Drive', 'StereoWidth', 'Bleed', 'DryWet']],
+  ['MIDI', ['MidiPitch', 'MidiMode', 'PitchBendRange', 'MidiGate', 'DecayOnNoteOff']],
+];
+const INTEGER = new Set(['ResonanceType', 'ResonatorQuality', 'LfoType', 'LfoSync', 'LfoSyncRate', 'LfoStereoMode', 'MidiMode', 'Transpose']);
+
+// Bessel J_m(x) by the integral (1/pi) * integral_0^pi cos(m t - x sin t) dt, Simpson's rule.
+function besselJ(m, x) {
+  const n = 400, h = Math.PI / n; let s = 0;
+  for (let i = 0; i <= n; i++) { const t = i * h, w = i === 0 || i === n ? 1 : i % 2 ? 4 : 2; s += w * Math.cos(m * t - x * Math.sin(t)); }
+  return s * h / 3 / Math.PI;
+}
+const MEMBRANE = (() => {  // sorted zeros j_mn of J_0..J_14 below 60, as ratios to j_01
+  const zeros = [];
+  for (let m = 0; m < 15; m++) {
+    let prev = besselJ(m, m + 0.5);  // J_m has no zeros below x = m, where it is too small to integrate reliably
+    for (let x = m + 0.55; x < 60; x += 0.05) {
+      const cur = besselJ(m, x);
+      if (prev * cur < 0) { let a = x - 0.05, b = x; for (let k = 0; k < 40; k++) { const c = (a + b) / 2; (besselJ(m, a) * besselJ(m, c) <= 0) ? b = c : a = c; } zeros.push((a + b) / 2); }
+      prev = cur;
+    }
+  }
+  zeros.sort((p, q) => p - q);
+  return zeros.map(z => z / zeros[0]);
+})();
+const BEAM = Array.from({length: MAX_MODES}, (_, n) => n < 5 ? [4.7300, 7.8532, 10.9956, 14.1372, 17.2788][n] : (2 * n + 3) * Math.PI / 2).map((b, _, a) => (b / 4.7300) ** 2);
+
+function modeRatios(p) {
+  const N = MAX_MODES, type = Math.round(p.ResonanceType);
+  let r;
+  if (type === 0) r = BEAM.slice(0, N);
+  else if (type === 1) r = [1, 4, 10, ...BEAM.slice(3, N).map(x => x * 10 / BEAM[2])];
+  else if (type === 3) r = MEMBRANE.slice(0, N);
+  else if (type === 4) {
+    const b = 0.5 + p.Ratio, v = [];
+    for (let m = 1; m <= 8; m++) for (let n = 1; n <= 8; n++) v.push(m * m + (n / b) ** 2);
+    v.sort((x, y) => x - y); r = v.slice(0, N).map(x => x / v[0]);
+  } else r = Array.from({length: N}, (_, n) => n + 1);  // String, Pipe, Tube: harmonic series; Pipe amplitudes pick odd vs all
+  return r.map((x, n) => n ? x ** (1 + 0.1 * p.Inharmonics) : x);
+}
+
+function modes(p) {
+  const count = QUALITY_MODES[Math.round(p.ResonatorQuality)] || 16, type = Math.round(p.ResonanceType);
+  const f0 = 30 * 100 ** p.Frequency * 2 ** ((p.Transpose + p.FineTranspose / 100) / 12);
+  const t0 = 0.05 * 200 ** p.Decay, k = 0.75 * (1 + p.FreqDamping) + (type >= 5 ? p.Radius : 0);
+  return modeRatios(p).slice(0, count).map((ratio, n) => {
+    const shape = x => Math.abs(Math.sin((n + 1) * Math.PI * x));
+    let amp = shape(p.ExcitationX) * (n + 1) ** (p.AmpFreq - 0.5);
+    if (type === 5 && n % 2 === 1) amp *= p.TubeOpening;  // closed end suppresses even modes
+    return {f: f0 * ratio, t60: t0 * ratio ** -k, ampL: amp * shape(p.ListeningXL), ampR: amp * shape(p.ListeningXR)};
+  });
+}
+
+class Engine {
+  constructor(ctx) {
+    this.ctx = ctx; const c = ctx;
+    this.input = c.createGain(); this.output = c.createGain();
+    this.filter = c.createBiquadFilter(); this.filter.type = 'bandpass';
+    this.filterPath = c.createGain(); this.bypass = c.createGain(); this.shaper = c.createWaveShaper(); this.excite = c.createGain();
+    this.input.connect(this.filter).connect(this.filterPath).connect(this.shaper);
+    this.input.connect(this.bypass).connect(this.shaper); this.shaper.connect(this.excite);
+    this.dry = c.createGain(); this.input.connect(this.dry).connect(this.output);
+    this.bleed = c.createGain(); this.excite.connect(this.bleed).connect(this.output);
+    this.merger = c.createChannelMerger(2); this.wet = c.createGain(); this.merger.connect(this.wet).connect(this.output);
+    this.lfo = [0, 1].map(() => ({depth: c.createGain(), osc: null, step: c.createConstantSource()}));
+    this.sums = [0, 1].map(() => c.createGain()); this.cross = [0, 1].map(() => c.createGain()); this.direct = [0, 1].map(() => c.createGain());
+    this.sums.forEach((s, ch) => { s.connect(this.direct[ch]).connect(this.merger, 0, ch); s.connect(this.cross[ch]).connect(this.merger, 0, 1 - ch); });
+    this.bank = [0, 1].map(ch => Array.from({length: MAX_MODES}, () => {
+      const f = c.createBiquadFilter(), g = c.createGain(); f.type = 'bandpass';
+      this.excite.connect(f).connect(g).connect(this.sums[ch]); this.lfo[ch].depth.connect(f.detune); return {f, g};
+    }));
+    this.lfo.forEach(l => { l.step.offset.value = 0; l.step.start(); });
+    this.timer = null; this.shapeKey = '';
+  }
+  set(p, immediate) {
+    const c = this.ctx, now = c.currentTime;
+    const at = immediate ? (param, v) => param.setValueAtTime(v, now) : (param, v) => param.setTargetAtTime(v, now, 0.015);
+    const ms = modes(p), nyq = c.sampleRate / 2, cents = 50 * p.Detune;
+    for (let ch = 0; ch < 2; ch++) this.bank[ch].forEach((m, n) => {
+      const mode = ms[n], f = mode ? mode.f * 2 ** ((ch ? cents : -cents) / 1200) : 0;
+      if (!mode || f > 0.45 * c.sampleRate || f < 10) { at(m.g.gain, 0); return; }
+      const q = Math.min(4000, Math.max(0.7, Math.PI * f * mode.t60 / 6.91));
+      at(m.f.frequency, f); at(m.f.Q, q); at(m.g.gain, (ch ? mode.ampR : mode.ampL) * Math.sqrt(q) * 0.35);
+    });
+    at(this.filter.frequency, p.FilterMidFreq);
+    const bw = 2 ** p.FilterBandWidth; at(this.filter.Q, Math.sqrt(bw) / (bw - 1));
+    at(this.filterPath.gain, p.FilterOn ? 1 : 0); at(this.bypass.gain, p.FilterOn ? 0 : 1);
+    const key = p.Drive.toFixed(3);
+    if (key !== this.shapeKey) {
+      const k = 1 + 20 * p.Drive, curve = new Float32Array(1024);
+      for (let i = 0; i < 1024; i++) { const x = i / 511.5 - 1; curve[i] = Math.tanh(k * x) / Math.tanh(k); }
+      this.shaper.curve = curve; this.shapeKey = key;
+    }
+    const w = p.StereoWidth; this.direct.forEach(g => at(g.gain, (1 + w) / 2)); this.cross.forEach(g => at(g.gain, (1 - w) / 2));
+    at(this.dry.gain, 1 - p.DryWet); at(this.wet.gain, p.DryWet); at(this.bleed.gain, 0.5 * p.Bleed * p.DryWet);
+    this.setLfo(p);
+  }
+  setLfo(p) {
+    const c = this.ctx, on = p.LfoOnOff, shape = LFO_SHAPES[Math.round(p.LfoType)] || 'sine', rate = 0.01 * 3000 ** p.LfoRate;
+    this.lfo.forEach((l, ch) => {
+      l.depth.gain.setTargetAtTime(on ? 1200 * p.LfoAmount : 0, c.currentTime, 0.02);
+      const r = rate * (1 + (ch ? p.LfoSpin : 0));
+      if (l.osc) { l.osc.disconnect(); l.osc.stop(); l.osc = null; }
+      l.step.disconnect();
+      if (!on) return;
+      if (shape === 'random') { l.step.connect(l.depth); l.rate = r; }
+      else { l.osc = c.createOscillator(); l.osc.type = shape; l.osc.frequency.value = r; l.osc.connect(l.depth); l.osc.start(); }
+    });
+    clearInterval(this.timer);
+    if (on && shape === 'random' && c instanceof AudioContext) {
+      this.timer = setInterval(() => this.lfo.forEach(l => l.step.offset.setValueAtTime(Math.random() * 2 - 1, c.currentTime)), 1000 / Math.max(0.1, rate));
+    }
+  }
+}
+
+// ---------- sources ----------
+function clickBuffer(c) { const b = c.createBuffer(1, Math.round(c.sampleRate * 0.004), c.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.sin(Math.PI * i / d.length); return b; }
+function noiseBuffer(c, seconds, decay) { const b = c.createBuffer(1, Math.round(c.sampleRate * seconds), c.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (decay * c.sampleRate)); return b; }
+function loopBuffer(c) {  // two bars at 110 BPM: kick, snare, hats
+  const sr = c.sampleRate, beat = 60 / 110, b = c.createBuffer(1, Math.round(sr * beat * 8), sr), d = b.getChannelData(0);
+  const add = (t, len, fn) => { const s = Math.round(t * sr); for (let i = 0; i < len * sr && s + i < d.length; i++) d[s + i] += fn(i / sr); };
+  for (let k = 0; k < 8; k++) {
+    if (k % 4 === 0 || k === 6) add(k * beat, 0.35, t => Math.sin(2 * Math.PI * (45 * t + 105 * (1 - Math.exp(-t * 30)) / 30)) * Math.exp(-t * 9) * 0.9);
+    if (k % 4 === 2) add(k * beat, 0.2, t => ((Math.random() * 2 - 1) * 0.6 + Math.sin(2 * Math.PI * 185 * t) * 0.4) * Math.exp(-t * 18));
+    add((k + 0.5) * beat, 0.04, t => (Math.random() * 2 - 1) * 0.25 * Math.exp(-t * 90));
+  }
+  return b;
+}
+
+// ---------- state, controls, presets ----------
+const presets = CORPUS.presets, ranges = CORPUS.ranges;
+const numeric = v => v === 'true' ? 1 : v === 'false' ? 0 : Number(v);
+const params = {}; const inputs = {};
+function loadPreset(i) { for (const [k, v] of Object.entries(presets[i].values)) params[k] = numeric(v); for (const k in inputs) inputs[k].sync(); update(); }
+
+function control(name) {
+  const box = el('div', undefined, 'param'), head = el('div', undefined, 'row'), label = el('label', name), valueText = el('span', '', 'val');
+  const id = 'p-' + name; label.htmlFor = id; head.append(label, valueText); box.append(head);
+  const range = ranges[name], isBool = !range;
+  const input = el('input'); input.id = id;
+  if (isBool) { input.type = 'checkbox'; } else { input.type = 'range'; input.min = range[0]; input.max = range[1]; input.step = INTEGER.has(name) ? 1 : (range[1] - range[0]) / 500; }
+  box.append(input);
+  const badges = el('p'); const obs = el('span', isBool ? 'observed: on/off field' : `observed range ${range[0]} to ${range[1]}`, 'badge b-obs');
+  badges.append(obs, ' ', el('span', STANDIN[name] ? 'stand-in' : 'not modelled', 'badge ' + (STANDIN[name] ? 'b-std' : 'b-not')));
+  box.append(badges); if (STANDIN[name]) box.append(el('p', STANDIN[name]));
+  const show = () => { const v = params[name]; valueText.textContent = isBool ? (v ? 'on' : 'off') :
+    name === 'ResonanceType' ? `${v} (assumed ${TYPES[v]})` : String(Number.isInteger(v) ? v : v.toFixed(3)); };
+  inputs[name] = {sync: () => { if (isBool) input.checked = !!params[name]; else input.value = params[name]; show(); }};
+  input.addEventListener('input', () => { params[name] = isBool ? (input.checked ? 1 : 0) : Number(input.value); show(); update(); });
+  return box;
+}
+
+let ctx = null, engine = null, analyser = null, master = null, loopSource = null, micSource = null;
+function start() {
+  if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+  ctx = new AudioContext(); engine = new Engine(ctx); master = ctx.createGain(); master.gain.value = Number($('volume').value);
+  const limiter = ctx.createDynamicsCompressor(); limiter.threshold.value = -6; limiter.ratio.value = 20;
+  analyser = ctx.createAnalyser(); analyser.fftSize = 4096;
+  engine.output.connect(master).connect(limiter).connect(analyser).connect(ctx.destination);
+  engine.set(params, true); $('status').textContent = `Audio running at ${ctx.sampleRate} Hz.`; drawSpectrum();
+}
+function play(buffer, loop) { const s = ctx.createBufferSource(); s.buffer = buffer; s.loop = !!loop; s.connect(engine.input); s.start(); return s; }
+function update() { drawModes(); if (engine) engine.set(params); }
+
+function drawModes() {
+  const cv = $('modes'), g = cv.getContext('2d'), W = cv.width, H = cv.height; g.clearRect(0, 0, W, H);
+  const x = f => W * Math.log(f / 20) / Math.log(1000), ms = modes(params), top = Math.max(1e-9, ...ms.map(m => Math.max(m.ampL, m.ampR)));
+  g.fillStyle = '#5f7d8f'; g.font = '20px system-ui'; for (const f of [50, 100, 200, 500, 1000, 2000, 5000, 10000]) { g.fillRect(x(f), 0, 1, H); g.fillText(f >= 1000 ? f / 1000 + 'k' : f, x(f) + 4, H - 6); }
+  for (const m of ms) { if (m.f < 20 || m.f > 20000) continue; const a = Math.min(1, 0.25 + m.t60);
+    g.fillStyle = `rgba(110,180,255,${a})`; g.fillRect(x(m.f) - 3, H - 24 - (H - 40) * m.ampL / top, 3, (H - 40) * m.ampL / top);
+    g.fillStyle = `rgba(255,170,90,${a})`; g.fillRect(x(m.f), H - 24 - (H - 40) * m.ampR / top, 3, (H - 40) * m.ampR / top); }
+}
+function drawSpectrum() {
+  const cv = $('spectrum'), g = cv.getContext('2d'), W = cv.width, H = cv.height, data = new Float32Array(analyser.frequencyBinCount);
+  const frame = () => { analyser.getFloatFrequencyData(data); g.clearRect(0, 0, W, H); g.strokeStyle = '#8fd3ff'; g.beginPath();
+    for (let i = 1; i < data.length; i++) { const f = i * ctx.sampleRate / analyser.fftSize; if (f < 20) continue; const px = W * Math.log(f / 20) / Math.log(1000), py = H * (-data[i] - 10) / 100;
+      i === 1 ? g.moveTo(px, py) : g.lineTo(px, py); } g.stroke(); requestAnimationFrame(frame); };
+  frame();
+}
+
+// ---------- page wiring ----------
+for (const [title, names] of GROUPS) {
+  const fs = el('fieldset'); fs.append(el('legend', title)); const grid = el('div', undefined, 'grid');
+  names.forEach(n => grid.append(control(n))); fs.append(grid); $('groups').append(fs);
+}
+presets.forEach((p, i) => { const o = el('option', p.name); o.value = i; $('preset').append(o); });
+const initial = presets.findIndex(p => p.name === 'Pipe Resonator');
+$('preset').value = initial; loadPreset(initial);
+$('preset').addEventListener('change', () => loadPreset(Number($('preset').value)));
+$('hit').addEventListener('click', () => { start(); play(clickBuffer(ctx)); });
+$('noise').addEventListener('click', () => { start(); play(noiseBuffer(ctx, 0.25, 0.05)); });
+$('loop').addEventListener('click', () => { start(); const b = $('loop');
+  if (loopSource) { loopSource.stop(); loopSource = null; b.textContent = 'Drum loop: off'; b.setAttribute('aria-pressed', 'false'); }
+  else { loopSource = play(loopBuffer(ctx), true); b.textContent = 'Drum loop: on'; b.setAttribute('aria-pressed', 'true'); } });
+$('file').addEventListener('change', async () => { start(); const f = $('file').files[0]; if (!f) return;
+  try { if (loopSource) loopSource.stop(); loopSource = play(await ctx.decodeAudioData(await f.arrayBuffer()), true); $('loop').textContent = 'Stop file/loop'; }
+  catch (e) { $('status').textContent = `Could not decode that file: ${e.message}`; } });
+$('mic').addEventListener('click', async () => { start(); const b = $('mic');
+  if (micSource) { micSource.mediaStream.getTracks().forEach(t => t.stop()); micSource.disconnect(); micSource = null; b.textContent = 'Microphone: off'; b.setAttribute('aria-pressed', 'false'); return; }
+  try { micSource = ctx.createMediaStreamSource(await navigator.mediaDevices.getUserMedia({audio: true})); micSource.connect(engine.input); b.textContent = 'Microphone: on (use headphones)'; b.setAttribute('aria-pressed', 'true'); }
+  catch (e) { $('status').textContent = `Microphone unavailable: ${e.message}`; } });
+$('volume').addEventListener('input', () => { if (master) master.gain.value = Number($('volume').value); });
+
+// ---------- evidence ----------
+(() => {
+  const body = $('evidence-body'), names = CORPUS.type_index_from_preset_names;
+  const p1 = el('p'); p1.append('Fields: the ', el('code', 'Corpus'), ` class in `, el('code', CORPUS.schema.path), ` (SHA-256 ${CORPUS.schema.sha256.slice(0, 12)}…, ${CORPUS.schema.fields.length} fields). Values and ranges: each parameter's `,
+    el('code', 'Manual'), ' and ', el('code', 'MidiControllerRange'), ` in the ${presets.length} shipped presets under `, el('code', 'Core Library/Devices/Audio Effects/Corpus'), '; every preset gives the same range for a parameter.');
+  const p2 = el('p', `Resonance type labels are assumed, not observed: no shipped file maps Corpus's indices 0–6 to names. Two preset titles agree with the assumed order (${Object.entries(names).map(([w, v]) => `“${w}” → ${v.join(', ')}`).join('; ')}), and five of the labels sit together in Live's string pool beside resonator parameter names that look like Collision's.`);
+  const p3 = el('p', 'Not used: Corpus\'s decompiled code. The device bundle exports a small host interface (CreateInstanceU, SetSampleRateU, SetParameterA, CalcA, ResetA); tracing SetParameterA and CalcA is the next step and would replace the stand-in model. Units for normalized values such as Frequency and Decay are unknown, so the stand-in mappings are guesses.');
+  const details = el('details'); details.append(el('summary', 'Preset files and SHA-256'));
+  const ul = el('ul'); presets.forEach(p => ul.append(el('li', `${p.name}: ${p.sha256}`))); details.append(ul);
+  body.append(p1, p2, p3, details);
+})();
+
+// ---------- self-test (#selftest): offline render, no audio device ----------
+async function selftest() {
+  const out = $('selftest-result'); out.hidden = false;
+  const p = {...params, ResonanceType: 2, ResonatorQuality: 3, Frequency: Math.log(220 / 30) / Math.log(100), Transpose: 0, FineTranspose: 0, Detune: 0,
+    Decay: 0.6, FreqDamping: 0, AmpFreq: 0, Inharmonics: 0, ExcitationX: 0.3, ListeningXL: 0.3, ListeningXR: 0.7, LfoOnOff: 0, FilterOn: 0, Drive: 0, StereoWidth: 1, Bleed: 0, DryWet: 1};
+  const sr = 48000, off = new OfflineAudioContext(2, sr * 1.2, sr), e = new Engine(off);
+  e.output.connect(off.destination); e.set(p, true);
+  const s = off.createBufferSource(); s.buffer = clickBuffer(off); s.connect(e.input); s.start(0.05);
+  const data = (await off.startRendering()).getChannelData(0).slice(sr * 0.1, sr * 1.1);
+  const power = f => { const w = 2 * Math.PI * f / sr, cw = 2 * Math.cos(w); let a = 0, b = 0;
+    for (let i = 0; i < data.length; i++) { const c = data[i] + cw * a - b; b = a; a = c; } return a * a + b * b - cw * a * b; };
+  let best = 0, bestF = 0; for (let f = 150; f <= 300; f += 0.25) { const v = power(f); if (v > best) { best = v; bestF = f; } }
+  const finite = data.every(Number.isFinite), energy = data.reduce((acc, v) => acc + v * v, 0);
+  const membrane = MEMBRANE[1], result = {peak_hz: bestF, expected_hz: 220, finite, energy, membrane_ratio_2: membrane,
+    controls: Object.keys(inputs).length, presets: presets.length};
+  result.pass = Math.abs(bestF - 220) < 2 && finite && energy > 1e-6 && Math.abs(membrane - 1.5933) < 0.002;
+  out.textContent = JSON.stringify(result); out.dataset.pass = String(result.pass);
+}
+if (location.hash === '#selftest') selftest().catch(err => { const out = $('selftest-result'); out.hidden = false; out.textContent = 'ERROR ' + err.message; out.dataset.pass = 'false'; });
+})();
+</script></body></html>

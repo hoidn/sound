@@ -212,3 +212,15 @@ python3 -m unittest discover -s tools/tests -p 'test_r2_browser.py' -v
 
 Write output under `analysis/` in the home directory: the snap-packaged Chromium and Firefox on
 the Linux workstation cannot open `file:///var/tmp/...` pages.
+
+## Corpus resonator demo
+
+[corpus_demo.py](corpus_demo.py) extracts the Corpus field list, preset values and ranges from the
+shipped schema and presets, then fills [corpus_demo.html](corpus_demo.html) into an offline page.
+The page's sound is a labelled textbook stand-in, not decompiled code. Output is ignored and local.
+
+```sh
+python3 tools/corpus_demo.py            # writes analysis/ableton-live-12.4.3/demos/corpus/
+python3 -m unittest tools/tests/test_corpus_demo.py -v
+# self-test: open demos/corpus/index.html#selftest (also works in headless Chromium --dump-dom)
+```
