@@ -1697,3 +1697,16 @@ lattice sentinels were re-read from the image. Clauses that rest on uninterprete
 assumptions A1 to A6. Correction added to [clip launch](research/clip-launch.md): the default set
 falls under scene migration step 12203. REQ-017's near-boundary clause stays unknown until
 PRB-S5-01. Updated the spec index (candidate row replaced), feature map, coverage and Q-017.
+
+## [2026-10-17] query | x86_64 ReWire, MultiF0 and transport cross-check (N8)
+
+Filed [Live x86_64 paths](research/x86-live-paths.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/n8-x86-paths-v1/` (dossiers n8-0001 and n8-0002 on the x86_64
+project). The ReWire install and host open are unreachable in 12.4.3 (constant-false predicates in
+Live and the Engine), which supersedes the [x86_64-only bundles](research/x86-only-bundles.md)
+inference that ReWire works under Rosetta. The x86_64 MultiF0 default is built-in; Convert Drums
+uses a separate drum task; MultiF0 record fields are mapped. The x86_64 transport code corroborates
+the [transport transitions](research/transport-transitions-native.md) readings, including both
+Stop transfers, and adds a reflection branch present in both builds. Updated Q-013 and the
+helper-launch page. Gaps: user-visible ReWire remnants, the Engine arm64 stub, MultiF0 time units;
+PRB-N8-01 to 05.

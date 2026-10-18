@@ -247,6 +247,13 @@ no experimental contradiction has been established yet.
   `InstallPropellerheadDlls: `, `Ableton Live Engine_64`,
   `Audio2Midi: Use builtin MultiF0 lib` and `MultiF0: No MultiF0 library found at `.
 - Progress 2026-10-17 (N4): arm64 uses the built-in MultiF0 unless a developer option is set; the x86_64 default and ReWire wait for the x86_64 analysis. See [helper launch](research/helper-launch-live-side.md).
+- Progress 2026-10-17 (N8): the x86_64 install (ReWire.bundle via ditto, alias `Ableton Live Engine_64`
+  via MakeAlias) runs only from one LReWireHost method during song-agent construction, behind a
+  predicate that returns 0; host open and the Engine's device open are likewise disabled, so
+  12.4.3 offers no working ReWire (inferred). The x86_64 MultiF0 default is built-in; Convert Drums
+  uses a separate drum task; result fields mapped (start, end, Hz, trajectory, amplitude; inferred).
+  Open: user-visible ReWire remnants, the Engine arm64 stub, time units. See
+  [Live x86_64 paths](research/x86-live-paths.md).
 
 ## Q-014 Browser index behavior
 

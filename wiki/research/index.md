@@ -39,6 +39,7 @@ to the isolated implementation workspace.
 | [Installed Ableton source](sources/ableton-live-12.4.3.md) | Pinned build, retained evidence, hashes and environment |
 | [Package structure](ableton-package-structure.md) | Observed native/resource boundaries and coverage limits |
 | [x86_64-only bundles](x86-only-bundles.md) | Live Engine is a ReWire device build of the engine; ReWire 1.8.7 install chain is x86_64-only; MultiF0 audio-to-note API; engine as symbol donor for S3 |
+| [Live x86_64 paths](x86-live-paths.md) | N8: ReWire install chain gated off by constant-false checks in Live and the Engine; MultiF0 built-in by default; Convert Drums uses a separate drum task; MultiF0 record fields as Live reads them; x86_64 transport matches arm64 including both Stop transfers; PRB-N8-01 to 05 |
 | [Plug-in scanner (static)](plugin-scanner-static.md) | H1: scanner options, VST3 and VST2 enumeration, scan-state database, crash and limit derivation, messages to Live, 14 candidate requirements, 8 probes |
 | [Browser index (static)](browser-index-static.md) | H2: index helper launch and messages, files database schema and versioning, scan pipeline, XMP tag sidecars, previews, `filerefmap.db`; 12 candidate requirements, 9 probes |
 | [Device bundles (static)](device-bundles-static.md) | H4: seven device bundles share one 7-function C interface with three implementations; Live owns parameter names and stored domains; 502-parameter inventory over 1,064 shipped occurrences; 5 probes |

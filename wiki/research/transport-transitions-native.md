@@ -217,6 +217,11 @@ not when Start or Stop is requested.
 **Unknown:** how the interface `LoopOn` value is updated after the request, and
 how a loop change moves the playback position while playing.
 
+The x86_64 build corroborates these readings, including both Stop transfers (`0x1028a0584`,
+`0x1028a05db`); in both builds, when `+0x900` = 1 the reflection writes `+0x788` through a separate
+function and returns without writing `mpStart`
+([Live x86_64 paths](x86-live-paths.md#transport-cross-check-with-arm64)).
+
 ## Transition table
 
 Preconditions for rows T-01 to T-08:

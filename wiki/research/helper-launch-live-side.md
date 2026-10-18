@@ -393,7 +393,7 @@ and requires `mf0p_GetApiRevision` = 10.
 
 **Inferred.** arm64 Live uses the built-in copy by default; the shipped x86_64
 dylib can only be selected by a developer option, and an arm64 process could not
-load it. **Unknown:** the x86_64 slice's default (pending that analysis); the
+load it. The x86_64 slice also defaults to the built-in copy ([Live x86_64 paths](x86-live-paths.md#multif0)). **Unknown:** the
 callers of `0x10307c060` (no direct callers).
 
 ## Remaining unknowns
@@ -405,7 +405,7 @@ callers of `0x10307c060` (no direct callers).
 - Index database prefix, folder and version; consumption of index events.
 - Wire format received from helpers beyond the shared framing (parse side not
   traced).
-- ReWire install and Engine alias (x86_64 slice, pending).
+- ReWire install and Engine alias: resolved as unreachable in 12.4.3 ([Live x86_64 paths](x86-live-paths.md#rewire)).
 
 ## Phase 4 probe records
 

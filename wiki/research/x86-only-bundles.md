@@ -24,7 +24,10 @@ them and when, and what follows for a native arm64 Live?
   the dynamically loaded alternative to a MultiF0 copy built into Live for Convert
   Harmony/Melody to New MIDI Track.
 - Native arm64 Live contains none of the strings that locate, install or open the
-  Engine or ReWire bundles. Inferred: ReWire works only when Live runs as x86_64.
+  Engine or ReWire bundles. Superseded 2026-10-17: the earlier inference that ReWire
+  works when Live runs as x86_64 is wrong. `SIsReWireDeviceEnabled` and
+  `SIsReWireHostEnabled` return 0 in the Engine and in Live x86_64, so `_RWDEFOpenDevice`
+  always returns 5 and the install chain is unreachable; see [Live x86_64 paths](x86-live-paths.md).
 - Native arm64 Live keeps the MultiF0 loader code but cannot load the x86_64-only
   dylib. Inferred: it uses the built-in copy.
 
