@@ -1525,3 +1525,14 @@ refused with a class; all 23 static-derived r1 cases kept (some narrowed), 4 unk
 cases excluded, 12 new cases for clauses without one. Refusal classes for root-attribute
 errors rest on an inferred catch step (I1). Findings F1 to F5 propose r2 corrections,
 including an overbroad precedence clause. Hashes and links verified in an export copy.
+
+## [2026-10-17] spec | SPEC-TRANSPORT-STATE revision 2
+
+Applied the transport-state-v1 handoff author's corrections to
+[SPEC-TRANSPORT-STATE](specs/transport-state.md). REQ-006 narrowed: spellings with spaces
+on both sides, `+` with trailing spaces, and the `-` sign are unknown. TS-010 is
+unresolved; TS-023 is withdrawn as out of scope. REQ-011 says positive zero; negative
+zero is unknown. TS-008 and TS-020 judge the automation event text only if it is
+written. The appendix maps the N1 probe file's older requirement IDs. Corrected the
+integer row on [transport-state native](research/transport-state-native.md). Gaps: no
+N1 probe covers TS-010 or a missing `TimeSignature/Manual`. Nothing executed.

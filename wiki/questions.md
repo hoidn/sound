@@ -222,6 +222,10 @@ no experimental contradiction has been established yet.
   envelope writer (declaration, attribute order, MajorVersion 5) and its gzip level
   handling; the Live Set save call site and level remain unknown (PRB-N2-01 in
   [SPEC-ALS-CONTAINER](specs/als-container.md)).
+- Progress 2026-10-17: [SPEC-TRANSPORT-STATE](specs/transport-state.md) r2 makes the
+  both-sides-space, `+`-with-trailing-space and `-` meter spellings and negative zero on
+  save unknown. A probe is still needed for TS-010 and for a missing
+  `TimeSignature/Manual` (PRB-N1-04 has no such variant).
 
 ## Q-013 x86_64-only ReWire and MultiF0 paths
 

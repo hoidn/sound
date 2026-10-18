@@ -121,7 +121,7 @@ This resolves the "mapping rule is unknown" note on the static page. The
 | Bool (`LoopOn/@Value`) | exactly `true` or `1` gives true; exactly `false` or `0` gives false | anything else, including `TRUE`, `True`, `""`, ` true`, `yes` |
 | Double (`LoopStart`, `LoopLength`, `CurrentTime`) | `Invalid` gives the largest double; a 17-character `#` plus 16 hex digits gives raw IEEE bits; otherwise C `strtod`, accepted when at least one character is consumed, so trailing text is ignored and leading whitespace, exponents, hex floats, `inf` and `nan` are accepted | text with no numeric prefix, such as `""` or `abc` |
 | Float (`Tempo/Manual/@Value`) | as Double, but `#` plus 8 hex digits, `Invalid` gives the largest float, and the parsed double is rounded to float32 (`fcvt s0,d0`) | as Double |
-| Int (`TimeSignature/Manual/@Value`) | ASCII decimal after trimming spaces, optional sign (an explicit `+` is handled; `+-` is rejected), the whole remainder consumed, fewer than 64 characters | `201.0`, `2e2`, `0x10`, `""`, non-ASCII bytes |
+| Int (`TimeSignature/Manual/@Value`) | ASCII decimal; leading spaces and an explicit `+` are skipped, but trailing spaces are kept whenever a leading space or `+` was present (see [document container native](document-container-native.md)); `+-` is rejected; the `-` sign is passed to an untraced converter; fewer than 64 characters after the skipped prefix. Corrected 2026-10-17 from "after trimming spaces, optional sign"; see [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2 | `201.0`, `2e2`, `0x10`, `""`, non-ASCII bytes |
 
 The float32 rounding answers the static page's question: tempo is held as float32
 after load. **Unknown:** whether `strtod` follows the user's locale on macOS (for
