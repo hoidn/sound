@@ -2,7 +2,7 @@
 id: RESEARCH-PLUGIN-SCANNER-STATIC
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -166,6 +166,20 @@ draft check: the VST2 `.vst` match ignores letter case (the VST3 `.vst3` match i
 case-sensitive), and the crash-state update runs once per format pass, so with both
 formats searched a crashed module is disabled within the next session rather than
 the one after; the outcome (never examined again) is unchanged.
+
+Corrections 2026-10-18 from the plugin-discovery-v1 staging and review (findings
+F2 to F5 on the [handoff plan](../specs/plugin-discovery-handoff-plan.md#findings-while-staging)):
+
+- Both walks test the extension of the resolved path, so PD-02's `*.vst3` entries
+  and `*.vst` directories are judged by the resolved name; for a symbolic link the
+  target's name decides.
+- In the VST3 walk a listing error ends the rest of that root, so PD-03's
+  "skipped" can cover more than the unreadable folder. Whether an unreadable
+  subfolder raises that error depends on the unresolved option value 5.
+- The VST2 lister skips only `.` and `..`, so names beginning with a period are
+  seen. How the extension of such a name is taken is unresolved (`0x1006c4724`).
+- "VST3, then VST2" holds within one session. Beyond the session limit, VST2
+  modules are examined before the remaining VST3 modules.
 
 | Aspect | VST3 | VST2 |
 | --- | --- | --- |

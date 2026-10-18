@@ -2,7 +2,7 @@
 id: RESEARCH-MIDI-TRANSFORMS-NATIVE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64 (Live.arm64 SHA-256 3a99ceea…383cfad)
 ---
@@ -113,6 +113,16 @@ AccelSignedBit gives 20 rather than 50 for magnitudes of 10 and above;
 AccelBinaryOffset 64 gives +50; AccelTwoCompliment 65 counts as positive; and a
 zero delta moves a quantized parameter down.
 
+Correction 2026-10-18 (midi-config-v3 review, F2/RV3-03): the quantized rule
+above, and the matching proposed clause below, hold only when Min < Max. Apply
+(0x101b80148) passes the value function the sorted bounds and a flag that is
+set when Max < Min. With the flag set, the absolute branch uses t = (127 − v)/127
+and the relative step is negated. The Absolute and non-quantized formulas
+therefore hold for either order, clamped to the interval between the bounds.
+A quantized parameter moves one unit toward Max when d·s > 0, which is down for
+a reversed range. "Zero delta moves down" likewise means toward Min.
+[Spec revision 4](../specs/midi-user-mapping.md) states this rule.
+
 ## Takeover
 
 Takeover is evaluated (0x101b7c508) only when all of the following hold: the
@@ -146,6 +156,15 @@ declared in the order None, Pick-Up, Value Scaling. The preference default, the
 trigger that resets the prior table, and the first 14-bit pair are **Unknown**.
 For that first pair the −129 priors combine to −1/129, which a static reading
 treats as a prior near min; this is not proposed as a clause.
+
+Correction 2026-10-18 (midi-config-v3 review, F1/RV3-02): the answer above and
+the proposed S clause below say that the crossfader opts out of takeover. That
+holds only for its non-14-bit mappings. Install 0x102593258 passes the opt-out
+only to the CC receiver; its 14-bit call (0x10259338c) passes no opt-out, and the
+pair receiver's flag is fixed at false, as stated above. A crossfader
+`Absolute14Bit` pair therefore reaches takeover like any other control's pair.
+[Spec revision 4](../specs/midi-user-mapping.md) narrows the exemption to
+`Absolute` values.
 
 ## Proposed clauses for SPEC-MIDI-USER-MAPPING revision 3
 

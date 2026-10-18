@@ -310,6 +310,12 @@ A rescale specific to these parameters was not found. P4-N5-01 settles it: log t
 index 14 for stored `ExcitationX` 0 and 1, expecting 0/1 on this chain or −1/1 on the port's
 assumption.
 
+Note (2026-10-18): P4-N5-01 will not run ([ADR 0003](../decisions/adr-0003-no-reference-execution.md)).
+The contradiction stays open. A static route remains: trace the value the float parameter unit
+created by `0x10319c4dc` emits.
+[SPEC-BUNDLED-DEVICE-PARAMETERS](../specs/bundled-device-parameters.md) r2 REQ-015 records it
+as unknown.
+
 ### Amp: complete, 7 indices; Cabinet: complete, 3 indices
 
 | Device | Index | Stored parameter | Domain (labels) | Default | Value passed |
@@ -370,6 +376,16 @@ in a handoff.
 | DEV-M08 | Amp and Cabinet `DualMono` and `DryWet` are host features. Live runs two engine instances for these mono engines | Selector 4 path, parameter vectors, processor handlers | Observed structure; feeding of `DryWet`/`DualMono` is Inferred |
 | DEV-M09 | Corpus `DecayOnNoteOff` acts inverted (1 − v), and Corpus `MidiMode` is not handled by the engine | Vector entry mode 6; bundle index bound | Observed |
 | DEV-M10 | When a device's engine cannot be loaded, Live posts a load-failure notice (`sErrorTextPluginLoadFailed`) | `0x103198c80` | Inferred; the text and the device state are unknown |
+
+Correction (2026-10-18): DEV-M05 overstates two label lists, as the
+[bundled-device-parameters-v1 plan](../specs/bundled-device-parameters-handoff-plan.md#findings-while-staging)
+found (F4, F5; re-read in corpus chunks `chunk-02352` and `chunk-02351`). Electric `Polyphony` has
+the labels `2` … `32` and a separate `Voices` text (`FUN_1030e9578`), so "2…32 voices" is not
+an established display text. For Corpus `LfoType`, `LfoSync` and `LfoStereoMode`,
+`FUN_1030e3830` holds a second name list after each label list (`ModulationSine` …,
+`ModulationHertz`/`ModulationBeat`, `Phi`/`Spin`), so the displayed form is uncertain. The
+observed strings stand; their use as display labels is unknown. The Cabinet switch order is
+corrected under the Amp and Cabinet table above.
 
 ## Unknowns
 

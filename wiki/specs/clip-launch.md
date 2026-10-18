@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-18
 access: analysis
-revision: 1
+revision: 2
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -28,14 +28,17 @@ the quantization grid. This draft specifies:
 
 The launch offset near a grid line, launching with the transport stopped, the Gate,
 Toggle and Repeat press and release behavior, Legato, velocity scaling and
-follow-action timing are **open**. They are listed as unknown requirements with
-their probes.
+follow-action timing are **open**. They are listed as unknown requirements. Each
+names the probe that would have settled it and, where one exists, a static route
+that could still settle it.
 
 Every requirement is a **proposed contract** supported by a static derivation from the
 12.4.3 program, by shipped bytes, or explicitly unknown. Nothing was run against Live.
 [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a static-first
-draft. Target: 12.4.3, documents with `MinorVersion="12.0_12402"` unless a clause
-says otherwise. The gzip/XML envelope belongs to the draft
+draft. Under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) nothing will
+be: no reference observation is available, and no probe will run. Target: 12.4.3,
+documents with `MinorVersion="12.0_12402"` unless a clause says otherwise. The
+gzip/XML envelope belongs to the draft
 [SPEC-ALS-CONTAINER](als-container.md); value text rules and the time-signature code
 come from the draft [SPEC-TRANSPORT-STATE](transport-state.md). All document
 examples are fragments of the decoded XML.
@@ -53,8 +56,8 @@ other than the API setters in REQ-011, and the exact text of error messages.
 | Label | Meaning |
 | --- | --- |
 | D | Documented in shipped bytes: the schema files or the Live Sets and clips in the 12.4.3 bundle. These were written by Live 12.4d1 or 12.1d1, not by a 12.4.3 save |
-| S | Static derivation from the 12.4.3 executable or shipped bytes; not an observed run. An assumption is named beside the clause (A1–A6 below) |
-| U | Unknown; no expected result, or only a static expectation that must not be graded. The PRB ID names the Phase 4 probe that would settle it |
+| S | Static derivation from the 12.4.3 executable or shipped bytes; not an observed run. An assumption is named beside the clause (A1–A7 below) |
+| U | Unknown; no expected result, or only a static expectation that must not be graded. A PRB ID names the Phase 4 probe that would have settled it; under ADR 0003 no probe will run, so no reference observation is available. A static route, where named, is a static reading that could still settle it |
 
 Only D and S clauses may enter a release. U clauses block the behavior they name.
 "The set does not open" means the document reader stops with a read error, as in
@@ -63,16 +66,18 @@ SPEC-TRANSPORT-STATE.
 ## Assumptions
 
 Each assumption is supported by the evidence but not established. If one fails, the
-clauses that name it become unknown.
+clauses that name it become unknown. No reference observation will test them
+(ADR 0003).
 
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
-| A1 | A press on a session clip's launch button while the transport plays reaches the launch-time computation without an explicit target time; the program then uses the clip's own grid when its launch quantization is not Global, and the set's global quantization otherwise, which equals the loaded `GlobalQuantisation` | REQ-016, REQ-017, REQ-018 |
-| A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document, stored as read, without range checks | REQ-009, REQ-010, REQ-011 |
+| A1 | A press on a session clip's launch button while the transport plays reaches the launch-time computation without an explicit target time; the program then uses the clip's own grid when its launch quantization is not Global, and the set's global quantization otherwise, which equals the loaded `GlobalQuantisation`. Static route: interpreting the slot-state test behind the grid choice (appendix, REQ-016) | REQ-016, REQ-017, REQ-018 |
+| A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document. A present value inside its stated range is kept as read: the values of REQ-004, REQ-005 and REQ-007 for launch mode, launch quantization and follow actions; the bounds of REQ-009 for velocity amount, loop iterations, chances and jump indices; 0 to below 1,000,000 for follow time. A present launch mode, launch quantization or follow action outside its values is accepted without a range check | REQ-009 to REQ-013 |
 | A3 | The load-time corrections of REQ-012 and REQ-013 run for every clip read from a Live Set | REQ-012, REQ-013 |
 | A4 | In a set whose time signature never changes, the grid is anchored at song beat 0 | REQ-017 and the grid cases |
 | A5 | Opening a document whose `MinorVersion` has translator number c applies, in increasing order and before the values are loaded, every migration step numbered above c | REQ-014 |
 | A6 | Each value label below is the text the user interface shows for that value | Display comparators in the cases |
+| A7 | The chance values that the rescaling of REQ-012 writes are kept as computed. Static route: the follow-action chance controller, not read | REQ-012 |
 
 ## Requirements
 
@@ -104,9 +109,12 @@ clauses that name it become unknown.
   open. Two elements with the same name under one clip make the set not open
   (as in REQ-TRANSPORT-STATE-008).
 - **S.** On save, each field is written as an element carrying one `Value`
-  attribute, in the order above, with the stored value.
-- **U.** Number text written on save for these fields (whether
-  REQ-TRANSPORT-STATE-011 applies), and indentation.
+  attribute, in the order above. A written Boolean, or a written number whose value
+  has at most six significant decimal digits, reads back with the rules above as the
+  stored value.
+- **U.** Whether a written number with more significant digits reads back exactly;
+  the number text written on save for these fields (whether REQ-TRANSPORT-STATE-011
+  applies), and indentation.
 
 ### REQ-CLIP-LAUNCH-002 — follow-action compound
 
@@ -157,8 +165,9 @@ clauses that name it become unknown.
 | 13 | 12 | 1/16T | `q_sixteenth_triplet` | `q_sixtenth_triplet` |
 | 14 | 13 | 1/32 | `q_thirtysecond` | `q_thirtytwoth` |
 
-- **S.** Clip value k ≥ 1 means the setting of global value k − 1; clip value 0
-  means "use the global setting". The API spellings are as shown, including
+- **S.** Clip value k ≥ 1 denotes the same setting as global value k − 1, with the
+  same label; clip value 0 (Global) denotes the set's global setting. Which setting a
+  launch uses is REQ-016. The API spellings are as shown, including
   `q_eight`, `q_sixtenth` and `q_thirtytwoth`. The clip property
   `launch_quantization` returns the stored clip value; the song property is
   `clip_trigger_quantization`.
@@ -183,7 +192,9 @@ clauses that name it become unknown.
 - **S.** A set object starts with global quantization 1 Bar (4) and record
   quantization None (0). The shipped default template stores the same values.
 - **U.** That a document without `GlobalQuantisation` or `AutoQuantisation` opens
-  with these values (static expectation; no probe yet), and what File > New uses.
+  with these values (static expectation), and what File > New uses. No reference
+  observation is available (ADR 0003). Static route for the missing fields: the song
+  loader, not read.
 
 ### REQ-CLIP-LAUNCH-009 — clip initial values and missing clip fields
 
@@ -207,40 +218,64 @@ clauses that name it become unknown.
 - **S (assumes A2).** A clip element without `LaunchMode` or `LaunchQuantisation`
   opens with those preference values, not with 0.
 - **U.** Which Preferences controls these are, their factory values, whether their
-  values use the numbering of REQ-004 and REQ-005, and which creation paths keep them
-  (PRB-S5-10).
+  values use the numbering of REQ-004 and REQ-005, and which creation paths keep them.
+  No reference observation is available (ADR 0003; PRB-S5-10). Static route: the
+  preference object's constructor and registry for the factory values and numbering,
+  and the callers of the clip constructor for the creation paths.
 
 ### REQ-CLIP-LAUNCH-011 — out-of-range values
 
 - **S (assumes A2).** Any integer that passes REQ-TRANSPORT-STATE-006 in
   `LaunchMode`, `LaunchQuantisation`, `FollowActionA` or `FollowActionB` does not make
   the set fail to open, including values outside REQ-004, REQ-005 and REQ-007.
-- **U.** The value then displayed, the launch timing and the value written on save
-  (PRB-S5-09). Static expectation for timing: no grid (REQ-015). Whether an
-  out-of-range `GlobalQuantisation` or `AutoQuantisation` opens (no probe yet).
+- **U.** The value then held, displayed or written on save, and the launch timing.
+  Static expectations: the value held is the value as read, since the loader stores
+  the index directly; timing has no grid (REQ-015). No reference observation is
+  available (ADR 0003; PRB-S5-09). Static route for the saved value: the generic
+  writer.
+- **U.** Whether an out-of-range `GlobalQuantisation` or `AutoQuantisation` opens.
+  Static route: the song loader, not read.
+- **U.** A velocity amount, loop-iteration count, chance or jump index outside the
+  bounds of REQ-009, or a follow time below 0 or from 1,000,000: whether the set
+  opens and which value is held. A2 does not cover these values. Static route: the
+  load path of the bounded members, not read.
 - **S.** Live API: assigning `launch_mode` a value outside 0–3, or
-  `launch_quantization` a value outside 0–14, raises an error whose message begins
-  `Invalid launch mode` or `Invalid launch quantization`; the stored value does not
-  change. Values inside the ranges are accepted.
+  `launch_quantization` a value outside 0–14, raises an error, and the stored value
+  does not change. Values inside the ranges are accepted.
+- **U.** The message text of that error and the form in which a script receives it.
+  The program builds a message, but the kept evidence does not show how the error
+  reaches a script, and message text is outside this scope. Static route: the
+  scripting binding's error translation.
 
 ### REQ-CLIP-LAUNCH-012 — follow-chance rescaling on load
 
-- **S (assumes A2, A3).** After a clip's follow action is read, with A and B its
-  stored chances (32-bit floats):
+- **S (assumes A2, A3, A7).** After a clip's follow action is read, with A and B its
+  stored chances (32-bit floats, each from 0 to 100):
   - if A = 0 and B = 0: chance A becomes 100, chance B stays 0, and follow actions
     become disabled;
   - otherwise: chance A becomes round(A ÷ ((A + B) ÷ 100)) and chance B becomes
     100 − chance A. The arithmetic is 32-bit float, and halves round away from zero.
-- Examples: 30/30 → 50/50; 1/2 → 33/67; 1/7 → 13/87; 150/50 → 75/25; 1/0 → 100/0.
-- **U.** Whether a further adjustment applies to the new chance values (none is
-  expected for results inside 0–100), and negative chances (PRB-S5-10).
+- Examples: 30/30 → 50/50; 1/2 → 33/67; 1/7 → 13/87; 1/0 → 100/0.
+- **U.** Chances below 0 or above 100: A2 does not cover them, so the values the
+  rescaling starts from are unknown (REQ-011).
+- **U.** Whether the rescaling also runs for scene follow actions. It is the
+  follow-action correction made after loading, but A3 covers clips only. Static
+  route: whether scene loading runs the same post-load step. No case depends on it,
+  because the scene chances in the cases are 100 and 0.
 
 ### REQ-CLIP-LAUNCH-013 — follow-time rounding on load
 
-- **S (assumes A2, A3).** After load, `FollowTime` is the nearest multiple of
-  1/3,843,840 beat, halves rounded away from zero. Examples: 2.0000001 → 2;
-  3.0000002 → 11,531,521/3,843,840 (≈ 3.00000026); 1e-8 → 0. 3,843,840 =
-  2⁸·3·5·7·11·13, so every triplet and bar length of REQ-015 is a whole multiple.
+- **S (assumes A2, A3).** After load, a clip's `FollowTime` from 0 to below
+  1,000,000 is the nearest multiple of 1/3,843,840 beat, halves rounded away from
+  zero; the held value is the 64-bit float nearest that multiple. Examples:
+  2.0000001 → 2; 3.0000002 → 11,531,521/3,843,840 (≈ 3.00000026); 1e-8 → 0.
+  3,843,840 = 2⁸·3·5·7·11·13, so every triplet and bar length of REQ-015 is a whole
+  multiple.
+- **U.** A value within about 10⁻⁹ beat of a point halfway between two multiples:
+  floating error in the rounding steps can give a result other than exact
+  halves-away rounding.
+- **U.** Follow times below 0 or from 1,000,000 (REQ-011), and whether the rounding
+  runs for scene follow actions (as in REQ-012).
 
 ### REQ-CLIP-LAUNCH-014 — migration of older documents
 
@@ -252,7 +287,7 @@ older shipped schema.
 | Number | Effect |
 | --- | --- |
 | 17 | Old 11-value clip `LaunchQuantisation` k mapped to 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 14 for k = 0…10 (the triplet values are inserted); k ≥ 11 or negative is a read error |
-| 406 | Clip `FollowTime`, `FollowActionA/B` and `FollowChanceA/B` move into a new clip `FollowAction`; absent values become follow time 1, chance A 1 and chance B 0. A clip that already has `FollowAction` is a read error |
+| 406 | Clip `FollowTime`, `FollowActionA/B` and `FollowChanceA/B` move into a new clip `FollowAction`; absent values become follow time 1, chance A 1 and chance B 0. A clip that already has `FollowAction` is unknown (below) |
 | 417 | If `FollowActionEnabled` is absent: enabled = (A ≠ 0 and chance A ≠ 0) or (B ≠ 0 and chance B ≠ 0), absent values counting as 0 |
 | 421 | `IsLinked` = true, and A := Next, when follow actions are disabled, A = 0, B = 0 and follow time = 4 exactly; otherwise `IsLinked` = false |
 | 12008 | `LoopIterations` changes declared type only; no value changes |
@@ -260,6 +295,18 @@ older shipped schema.
 
 - **S (assumes A3, A5).** REQ-012 and REQ-013 apply after migration, so chances
   stored as fractions become percentages (1 and 0 → 100/0; 0.25 and 0.75 → 25/75).
+- **S.** Other conversion steps also apply to older documents. Of the steps numbered
+  above 405, none outside the table changes a launch field, a follow-action member,
+  `GlobalQuantisation` or `AutoQuantisation`. The other steps are outside this
+  requirement.
+- **U.** Whether a step numbered 405 or below, other than 17, changes these items in
+  documents older than `11.0_405` (not checked).
+- **U.** Step 406 for a clip that already has `FollowAction`. The program reports an
+  error and does not return; the kept evidence does not show whether opening refuses
+  the document or the application stops. Static route: the error-report routine and
+  how the document reader handles it.
+- **U.** What a save writes for a scene: the scene writer was not read. Static route:
+  reading it.
 - **U.** Whether step 17 is reachable. Every opened document names a shipped schema
   (REQ-ALS-CONTAINER-005), and the oldest is `8.1_220`, so under A5 step 17 never runs
   for a Live Set.
@@ -291,6 +338,8 @@ to the nearest multiple of 1/3,843,840 beat.
 | 0, negative, ≥ 14 | None or out of range | no grid | | | | |
 
 - **S.** Note values (q ≥ 5) do not depend on the signature: 1/2 is 2 beats in 6/8.
+- Not proposed for release: a grid length is observable only by launching (REQ-016 to
+  018), and the launch path rests on A1, which is open under Q-017.
 
 ### REQ-CLIP-LAUNCH-016 — which grid a launch uses
 
@@ -299,7 +348,7 @@ to the nearest multiple of 1/3,843,840 beat.
 - **S (assumes A1).** A clip with launch quantization k ≥ 1 uses grid value k − 1
   with the clip's own time signature (`TimeSignature/TimeSignatures/RemoteableTimeSignature`
   `Numerator` and `Denominator`, truncated to integers). Example: a 6/8 clip set to
-  1 Bar uses 3 beats in a 4/4 song (PRB-S5-03 confirms).
+  1 Bar uses 3 beats in a 4/4 song.
 - **S.** Clip values 1 (None), negative or ≥ 15 give no grid.
 - **U.** Which entry is used when a clip has several time-signature entries.
 
@@ -316,46 +365,60 @@ and anchor a:
   tempo-dependent offset o is computed at the press; when B − t < o, with the
   transport playing and a further track condition met, the clip starts at B + g
   instead. The size of o, the track condition, and the result for a press exactly
-  on a grid line are unknown (PRB-S5-01). This near-boundary clause must not be
-  released before PRB-S5-01.
+  on a grid line are unknown. No reference observation is available (ADR 0003;
+  PRB-S5-01), so this near-boundary clause must not be released unless a static
+  reading settles it. Static route: resolving the target of the offset call and
+  interpreting the track condition.
 - **U.** After a time-signature change, a is the start of the current
   time-signature segment, and not less than 0. Static expectation: with 4/4 changing
-  to 3/4 at beat 8, 1 Bar, a press at beat 9 starts at beat 11 (PRB-S5-02).
+  to 3/4 at beat 8, 1 Bar, a press at beat 9 starts at beat 11. No reference
+  observation is available (ADR 0003; PRB-S5-02). Static route: the layout of the
+  time-signature entry that the anchor reads.
 
 ### REQ-CLIP-LAUNCH-018 — launches without a grid
 
 - **S (assumes A1).** When REQ-016 gives no grid (clip None; Global with global None;
   out-of-range values), the launch is not moved to a grid line.
-- **U.** The delay between press and start, in beats (PRB-S5-04).
+- **U.** The delay between press and start, in beats. No reference observation is
+  available (ADR 0003; PRB-S5-04). It depends on the offset of REQ-017 and has the
+  same static route.
 
 ### REQ-CLIP-LAUNCH-019 — launch with the transport stopped
 
 - **U.** Where playback and the clip start when a clip is launched with the transport
-  stopped (PRB-S5-05). Static note: the grid computation can return "no grid" when the
-  song is not playing.
+  stopped. No reference observation is available (ADR 0003; PRB-S5-05). Static note:
+  the grid computation can return "no grid" when the song is not playing. Static
+  route: the transport start path and the engine's immediate-launch branch.
 
 ### REQ-CLIP-LAUNCH-020 — Gate, Toggle and Repeat
 
 - **U.** Start, stop and retrigger timing on press and release for launch modes 1–3,
-  and for Trigger on release (PRB-S5-06). Only the stored values and labels
-  (REQ-004) are specified.
+  and for Trigger on release. No reference observation is available (ADR 0003;
+  PRB-S5-06). Static route: the launch state machine's branches on launch mode,
+  request kind and release flag, not yet interpreted. Only the stored values and
+  labels (REQ-004) are specified.
 
 ### REQ-CLIP-LAUNCH-021 — Legato
 
-- **U.** Where in the clip playback begins when a Legato clip is launched, and when
-  (PRB-S5-07). Only the stored value (REQ-001, REQ-009) is specified.
+- **U.** Where in the clip playback begins when a Legato clip is launched, and when.
+  No reference observation is available (ADR 0003; PRB-S5-07). Static route: the
+  engine's use of the Legato flag sent at launch. Only the stored value (REQ-001,
+  REQ-009) is specified.
 
 ### REQ-CLIP-LAUNCH-022 — velocity amount
 
-- **U.** How velocity amount scales clip volume by launch velocity (PRB-S5-08). Only
-  the stored value and its bounds 0–1 (REQ-009) are specified.
+- **U.** How velocity amount scales clip volume by launch velocity. No reference
+  observation is available (ADR 0003; PRB-S5-08). Static route: the engine code that
+  reads the velocity amount, not located. Only the stored value and its bounds 0–1
+  (REQ-009) are specified.
 
 ### REQ-CLIP-LAUNCH-023 — follow-action execution
 
 - **U.** When a follow action fires for linked and unlinked follow actions, the role
-  of `LoopIterations`, `FollowTime` and the jump indices, and chance selection
-  (PRB-S5-11). Static note: the loop-iteration count is passed on for playback only
-  for linked follow actions; the follow time always is.
+  of `LoopIterations`, `FollowTime` and the jump indices, and chance selection. No
+  reference observation is available (ADR 0003; PRB-S5-11). Static note: the
+  loop-iteration count is passed on for playback only for linked follow actions; the
+  follow time always is. Static route: the engine code that receives these values.
 
 ## Timing and state
 
@@ -369,15 +432,16 @@ and anchor a:
   and press position. Follow-action chance selection is random and out of scope.
 - Timing tolerance for the grid cases (proposed, pending
   [Q-001](../questions.md#q-001-compatibility-targets)): the measured start beat must
-  lie within ±1/64 beat of the expected value, the PRB-S5-01 jitter limit.
+  lie within ±1/64 beat of the expected value, the jitter limit of the PRB-S5-01
+  design. Under ADR 0003 only a candidate is measured.
 - Undo, edits in the user interface, and cancellation of a pending launch are out of
   scope.
 
 ## Acceptance cases
 
-All expectations are static derivations; none has been run. Kinds: P positive,
-N negative/malformed, B boundary, M missing, S save, G grid timing, U unresolved
-(not graded).
+All expectations are static derivations; none has been run, and under ADR 0003 none
+will be compared with Live. Kinds: P positive, N negative/malformed, B boundary,
+M missing, S save, G grid timing, U unresolved (not graded).
 
 ### Fixtures
 
@@ -388,7 +452,7 @@ N negative/malformed, B boundary, M missing, S save, G grid timing, U unresolved
 | B4 | `Core Library/Lessons/Sets/Driver Error Compensation.als` | `7459839acddcd42d4eb5b3d8f2c73e1ba3d04f29f764974081ad6850d9185c98` | record 5 |
 | B5 | `Core Library/Lessons/Demo Songs/Chuck Sutton - Patience (Live 12 Suite Demo).als` | `3f1c0f924b750c2adba2525838f2bc00856e52faea09d43b9279c6a0fe40952b` | 90 arrangement and take-lane clips with launch quantization 1 |
 | B6 | `Builtin/Templates/DefaultLiveSet.als` | `aeec3f07599da0a61cc86fd9ddeb78a5ce61fe473f676d50c1ae3e281c289a1f` | `12.0_12117`; global 4, record 0; 8 scenes with follow action (4, true, 1, 4, 0, 100, 0, 0, 0, false) |
-| B2 | `Core Library/MIDI Clips/Tonal/Single Chords/Staggered/Chord C Minor9 Staggered.alc` | `1dc59e9759cc9bf381e3df8717d550c443e0c770d2af454311f000841e3f7dc9` | clip launch mode 2, launch quantization 5; input to PRB-S5-09 and 10 only |
+| B2 | `Core Library/MIDI Clips/Tonal/Single Chords/Staggered/Chord C Minor9 Staggered.alc` | `1dc59e9759cc9bf381e3df8717d550c443e0c770d2af454311f000841e3f7dc9` | clip launch mode 2, launch quantization 5; input to PRB-S5-09 and 10 only, which will not run (ADR 0003); no case uses it |
 
 Paths are relative to `Contents/App-Resources/` of the 12.4.3 bundle. A fixture is
 decoded, changed only as stated, and re-encoded as gzip. "Slide" means B1's slot-1
@@ -412,33 +476,34 @@ clip. A song time-signature edit sets `TimeSignature/Manual/@Value` and the
 | CLC-010 | 007 | P | Slide `FollowActionA` 9, `FollowActionB` 2; open | A Jump, B Play Again or Again (A6) | B1 edit |
 | CLC-011 | 009 | M | Delete Slide's `Legato`, `VelocityAmount` and `FollowAction`; open, save | Opens; saved Slide has `Legato` false, `VelocityAmount` 0 and `FollowAction` (4, true, 1, 4, 0, 100, 0, 1, 1, false) | B1 edit |
 | CLC-012 | 009 | M | Delete Slide's `FollowAction/JumpIndexA`; open, save | Saved `JumpIndexA` 1 | B1 edit |
-| CLC-013 | 010 | M | Delete Slide's `LaunchMode` and `LaunchQuantisation`; open | Opens; values equal the default-launch preferences; unresolved until PRB-S5-10 | B1 edit |
-| CLC-014 | 011 | N | Slide `<LaunchQuantisation Value="15" />`; open | Opens; display, timing and saved value unresolved (PRB-S5-09) | B1 edit |
-| CLC-015 | 011 | N | Slide `<LaunchMode Value="4" />`; open | Opens; display and saved value unresolved (PRB-S5-09) | B1 edit |
-| CLC-016 | 011 | N | API: `clip.launch_mode = 4` on Slide | Error, message begins `Invalid launch mode`; value stays 0 | B1 |
-| CLC-017 | 011 | N | API: `clip.launch_quantization = 15` on Slide | Error, message begins `Invalid launch quantization`; value stays 0 | B1 |
+| CLC-013 | 010 | M | Delete Slide's `LaunchMode` and `LaunchQuantisation`; open | Opens; values equal the default-launch preferences; the preference values are unresolved (REQ-010) | B1 edit |
+| CLC-014 | 011 | N | Slide `<LaunchQuantisation Value="15" />`; open | Opens; held, displayed and saved value and timing unresolved (REQ-011) | B1 edit |
+| CLC-015 | 011 | N | Slide `<LaunchMode Value="4" />`; open | Opens; held, displayed and saved value unresolved (REQ-011) | B1 edit |
+| CLC-016 | 011 | N | API: `clip.launch_mode = 4` on Slide | Error (its form and message text are not graded, REQ-011); value stays 0 | B1 |
+| CLC-017 | 011 | N | API: `clip.launch_quantization = 15` on Slide | Error (its form and message text are not graded, REQ-011); value stays 0 | B1 |
 | CLC-018 | 011 | B | API: `clip.launch_mode = 3`, then `clip.launch_quantization = 14` | Both accepted; Repeat and 1/32 | B1 |
 | CLC-019 | 012 | P | Slide chances 30 and 30; open, save | Saved chances 50 and 50 | B1 edit |
 | CLC-020 | 012 | B | Slide chances 0 and 0, `FollowActionEnabled` true; open, save | Saved chances 100 and 0, enabled false | B1 edit |
 | CLC-021 | 012 | B | Slide chances 1 and 7; open, save | Saved chances 13 and 87 (half rounds away from zero) | B1 edit |
 | CLC-022 | 012 | P | Slide chances 1 and 2; open, save | Saved 33 and 67 | B1 edit |
-| CLC-023 | 012 | N | Slide chances 150 and 50; open, save | Saved 75 and 25 | B1 edit |
+| CLC-023 | 012 | U | Slide chances 150 and 50; open, save | Not graded: a chance above 100 is unknown (REQ-012, A2) | B1 edit |
 | CLC-024 | 013 | B | Slide `<FollowTime Value="2.0000001" />`; open, save | Saved follow time parses to exactly 2 | B1 edit |
-| CLC-025 | 013 | B | Slide `<FollowTime Value="3.0000002" />`; open, save | Saved follow time parses to exactly 11531521/3843840 | B1 edit |
-| CLC-026 | 014 | P | First scene (`Id="0"`) `<IsLinked Value="false" />`, `MinorVersion` unchanged; open, save | Saved first scene `IsLinked` true | B6 edit |
-| CLC-027 | 014 | P | Second scene (`Id="1"`) `<FollowTime Value="8" />`; open, save | Saved second scene `IsLinked` false, follow time 8 | B6 edit |
-| CLC-028 | 014 | P | A clip saved at `11.0_405` with clip-level follow time 4, A 0, B 0, chance A 1, chance B 0; open | Follow action: time 4, linked, A Next, chances 100/0, disabled | None shipped; needs an authentic 11.0_405 document |
-| CLC-029 | 014 | P | As CLC-028 with A 3, chance A 0.5, B 1, chance B 0.5, follow time 8 | Enabled, unlinked, A Previous, B Stop, chances 50/50 | As CLC-028 |
+| CLC-025 | 013 | B | Slide `<FollowTime Value="3.0000002" />`; open | Held follow time is the 64-bit float nearest 11531521/3843840 (3.00000026015651); saved text not graded (REQ-001) | B1 edit |
+| CLC-026 | 014 | P | First scene (`Id="0"`) `<IsLinked Value="false" />`, `MinorVersion` unchanged; open | First scene `IsLinked` true after opening; the saved scene form is unknown (REQ-014) | B6 edit |
+| CLC-027 | 014 | P | Second scene (`Id="1"`) `<FollowTime Value="8" />`; open | Second scene `IsLinked` false and follow time 8 after opening | B6 edit |
+| CLC-028 | 014 | P | A clip saved at `11.0_405` with clip-level follow time 4, A 0, B 0, chance A 1, chance B 0; open | Follow action: time 4, linked, A Next, chances 100/0, disabled | Authored minimal `11.0_405` document with the old clip form after `VelocityAmount`, as clip-launch-v1 `CLIP-LAUNCH-041`; no authentic set ships, and none will be observed (ADR 0003) |
+| CLC-029 | 014 | P | As CLC-028 with A 3, chance A 0.5, B 1, chance B 0.5, follow time 8 | Enabled, unlinked, A Previous, B Stop, chances 50/50 | Authored as for CLC-028 (clip-launch-v1 `CLIP-LAUNCH-042`) |
 | CLC-030 | 008 | U | Delete `GlobalQuantisation` and `AutoQuantisation`; open | Static expectation 1 Bar and None; not graded | B1 edit |
 
 ### Grid cases
 
 Common setup: the stated fixture edit; transport playing from beat 0 at 90 BPM;
 Slide is launched once by a press at song beat t (clock-locked MIDI note mapped to its
-launch button, as in PRB-S5-01). Comparator: the song beat at which Slide's playback
-begins, within ±1/64 beat. Every press precedes B by at least 0.12 beat (80 ms). A
-start at exactly B + g is not graded here and goes to PRB-S5-01; any other result
-fails. Global value 4 and Slide value 0 unless stated.
+launch button, the method of the PRB-S5-01 design). Comparator: the song beat at which
+Slide's playback begins, within ±1/64 beat. Every press precedes B by at least 0.12
+beat (80 ms). A start at exactly B + g is not graded, because the near-boundary rule
+is unknown (REQ-017); any other result fails. Global value 4 and Slide value 0 unless
+stated. Every grid case rests on A1.
 
 | Case ID | Requirement | Kind | Setup/action | Expected result/comparator | Fixture |
 | --- | --- | --- | --- | --- | --- |
@@ -461,18 +526,18 @@ fails. Global value 4 and Slide value 0 unless stated.
 | CLC-047 | 015–017 | G | Global 12 (1/16T); t = 0.2 | 1/3 | B1 edit |
 | CLC-048 | 015–017 | G | Global 13 (1/32); t = 0.13 | 1/4 | B1 edit |
 | CLC-049 | 016, 017 | G | Slide value 8 (1/4); t = 2.1 | 3 (not 4: the clip's value wins) | B1 edit |
-| CLC-050 | 016, 017 | G | Slide signature 6/8 (`Numerator` 6, `Denominator` 8), value 5 (1 Bar); t = 1.2, then a second run with t = 4.2 | 3, then 6 (PRB-S5-03 confirms) | B1 edit |
+| CLC-050 | 016, 017 | G | Slide signature 6/8 (`Numerator` 6, `Denominator` 8), value 5 (1 Bar); t = 1.2, then a second run with t = 4.2 | 3, then 6 | B1 edit |
 | CLC-051 | 016, 017 | G | Slide signature 6/8, value 0; t = 1.2 | 4 (Global uses the song's 4/4) | B1 edit |
-| CLC-052 | 018 | N | Slide value 1 (None); t = 5.3 | Starts before beat 6 (not moved to 8); exact delay unresolved (PRB-S5-04) | B1 edit |
+| CLC-052 | 018 | N | Slide value 1 (None); t = 5.3 | Starts before beat 6 (not moved to 8); exact delay unresolved (REQ-018) | B1 edit |
 | CLC-053 | 018 | N | Global 0 (None); t = 5.3 | Starts before beat 6 | B1 edit |
-| CLC-054 | 017 | U | t = 3.99, and t = 4.0 exactly | Unresolved: 4 or 8 (PRB-S5-01) | B1 |
-| CLC-055 | 017 | U | 3/4 from beat 8 (second time-signature event); t = 9 | Static expectation 11; not graded (PRB-S5-02) | B1 edit |
-| CLC-056 | 019 | U | Transport stopped at beat 5.3; launch Slide | Unresolved (PRB-S5-05) | B1 |
+| CLC-054 | 017 | U | t = 3.99, and t = 4.0 exactly | Unresolved: 4 or 8 (REQ-017) | B1 |
+| CLC-055 | 017 | U | 3/4 from beat 8 (second time-signature event); t = 9 | Static expectation 11; not graded (REQ-017) | B1 edit |
+| CLC-056 | 019 | U | Transport stopped at beat 5.3; launch Slide | Unresolved (REQ-019) | B1 |
 
 Omitted kinds: cancellation and teardown (a pending launch that is cancelled or
 replaced is out of scope); U-only requirements REQ-019 to 023 have no graded cases,
-and their probes define the observation. The global-value table rows for 0 and ≥ 14
-are covered by CLC-053 and REQ-011's unresolved cases.
+and under ADR 0003 no probe will supply the observation. The global-value table rows
+for 0 and ≥ 14 are covered by CLC-053 and REQ-011's unresolved cases.
 
 ## Open questions
 
@@ -480,16 +545,26 @@ are covered by CLC-053 and REQ-011's unresolved cases.
 items: the boundary offset and track condition (REQ-017), the anchor after a meter
 change, unquantized latency, the stopped-transport launch, Gate, Toggle and Repeat,
 Legato, the velocity law, follow-action timing, and the default-launch preferences.
-New in this draft:
+Added in revision 1:
 
 - Missing or out-of-range `GlobalQuantisation` and `AutoQuantisation` (REQ-008,
-  REQ-011): no S5 probe covers them; PRB-S5-09 or 10 needs a set-level variant.
+  REQ-011): no S5 probe covered them. Static route: the song loader.
 - Reachability of migration step 17 (REQ-014).
 - A clip with several time-signature entries (REQ-016).
 
+Added in revision 2, from the clip-launch-v1 staging and review:
+
+- Values outside their stated ranges: bounded values, chances and follow times
+  (REQ-011 to 013, A2).
+- The message text and form of the scripting-interface error (REQ-011).
+- Whether the opening corrections run for scenes (REQ-012, REQ-013).
+- A step-406 clip that has both follow-action forms, and the saved form of a scene
+  (REQ-014).
+- The kept chance values (A7).
+
 The [probe batch](../../analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/probe-batch.json)
-(PRB-S5-01–11) supplies inputs, a discriminating observation and a stop condition for
-each probe.
+(PRB-S5-01–11) is kept as the record of what observation would have settled. Under
+ADR 0003 it will not run.
 
 ## Analyst evidence appendix
 
@@ -498,11 +573,16 @@ Analysis-only. Do not copy into a handoff. Canonical evidence:
 `analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/` (image `Live.arm64` SHA-256
 `3a99ceea…d1c383cfad`, base `0x100000000`). Dossiers are cited by query result
 (`s5-0001` … `s5-0004`); "C1" marks a pseudocode record in `corpus-excerpts.jsonl`.
-No new query was issued for this draft.
+No new query was issued for this draft. F1 to F9 are the
+[staging findings](clip-launch-handoff-plan.md#findings-while-staging) and RVC-01 to 13
+the [review findings](../../handoff/clip-launch-v1/REVIEW.md#findings). Revision 2
+re-checked them against the kept dossiers, the staging byte check
+[fp_opcodes.py](../../analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v1-analysis/fp_opcodes.py) and the reviewer's
+[checks](../../analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v1-analysis/review/review-checks.txt), without a new query.
 
 | Requirement | Candidate | Evidence | Strength |
 | --- | --- | --- | --- |
-| 001 | CL-01 | `static-survey.json` `field_order_latest`, `homonyms_latest`, `classes_with_launch_fields_latest`; 4,130 rows of `clip-records.tsv`; paths re-read from B1, B5, B6 and the Driver Error set; `registry-order-check.txt` (28 AClip registrations = schema order); AClip vtable `0x1067b6cc0` slots `+0x140` loader `0x101487310`, `+0x138` writer `0x101486cdc` (`read_ptrs.py`); text conversion `0x10152bfb8` and add-member `0x101472624` from N1 | D; S for save and text rules |
+| 001 | CL-01 | `static-survey.json` `field_order_latest`, `homonyms_latest`, `classes_with_launch_fields_latest`; 4,130 rows of `clip-records.tsv`; paths re-read from B1, B5, B6 and the Driver Error set; `registry-order-check.txt` (28 AClip registrations = schema order); AClip vtable `0x1067b6cc0` slots `+0x140` loader `0x101487310`, `+0x138` writer `0x101486cdc` (`read_ptrs.py`); text conversion `0x10152bfb8` and add-member `0x101472624` from N1; read-back limited to Booleans and numbers of at most six significant digits (RVC-02): shipped written forms are `true`, `false` and plain digits only | D; S for save and text rules |
 | 002 | CL-01 | Schema FollowAction order; AFollowAction registry `0x1025037a4` (C1, offsets `0x70`…`0x148`); `checks` in `static-survey.json` | D |
 | 003 | CL-02 | Schema `LiveSet` positions 13–15; 376 documents | D |
 | 004 | CL-03 | Label list `0x102438b44` (C1); Python enum `0x103abc6e8` (s5-0002, disassembly; strings `trigger` … `repeat`); getter `0x103ac1e94` reads `[clip,#0x270]` | S |
@@ -512,10 +592,10 @@ No new query was issued for this draft.
 | 008 | CL-08 | `0x10266f738`: `0x101567bfc([+0x388],4,…)`, `([+0x3c0],0,…)` (s5-0001); ASong loader not read | S; missing-field U |
 | 009 | CL-09 | AClip ctor `0x102436fc4` (s5-0001): Legato `param_1[0xd]` (+0x68) false, VelocityAmount `0x1015743b0(0, 1.0, 0)`; AFollowAction ctor `0x102505030` (s5-0001): FollowTime 4.0, IsLinked 1, LoopIterations `0x10155afc8(…,1,0x3fffffff00000001)`; `0x102505724` chance `0x10157432c(0,100,default)`, jump `(-1.0, 8388608.0, 1.0)`; FollowActionEnabled 0; UserFloat init (s5-0004) | S; A2 |
 | 010 | CL-10, CL-16 | `0x102436fc4`: LaunchMode from `0x1026ab2ec` (`+0x700`, `ClipDefaultLaunchMode`), LaunchQuantisation from `0x1026ab2f4` (`+0x6e8`, `ClipDefaultQuantisation`) on `0x102676cf0()`; 0 when `0x101849958()` is null; registry `0x1026a292c` (C1, registrations `0x6f8`, `0x6e0`); callback `AClip::UpdateEngineForLaunchParameters` | S; A2; preference mapping U |
-| 011 | CL-15 | N1: loader stores enum index directly, setter `0x10156675c` not called; API setters `0x1033bbe98` (`cmp w1,#0x4; b.cs`) and `0x1033bc00c` (`cmp w1,#0xf; b.cs`) (s5-0004) | S (A2) / U |
-| 012 | CL-17 | `0x1025044b4` (s5-0003, disassembly `frinta s8,s0` at `0x102504550`; members `+0xf0` ChanceA, `+0x108` ChanceB, `+0x120` Enabled per registry); AFollowAction post-load at vtable `0x1067c8830` `+0xd0`; setter slot `+0x280`, chance controller `0x10652b4d8` not read | S; A3 |
-| 013 | CL-18 | `0x101565624(…,1,1)` in `0x102505030` sets flag `+0x70`; hook `0x10156580c` (C1; N1) rounds | S; A3 |
-| 014 | CL-19 | Registry `0x10148ec98` (C1); `0x101493140` (s5-0002; table `0x105815e9c` re-read from `Live.arm64` on 2026-10-17: 0,1,2,3,4,5,6,8,10,12,14; `b.cs` at `0x1014931a0`; body ends at the throw `0x1014931d8`); `0x1014b6d14`, `0x1014b82d8` (s5-0003); `0x1014b8b00` (s5-0002, `mov w1,#0x4` at `0x1014b8be4`); `0x1014bb048` (C1); `0x1014c04d0` (s5-0004, pseudocode read) | S; A5; step 17 reachability U |
+| 011 | CL-15 | N1: loader stores enum index directly, setter `0x10156675c` not called; API setters `0x1033bbe98` (`cmp w1,#0x4; b.cs`) and `0x1033bc00c` (`cmp w1,#0xf; b.cs`) (s5-0004) throw `std::invalid_argument` with a built message, but its translation for scripts is not in the kept evidence (F2, RVC-10); the load path of the bounded members (UserFloat, ranged integer) was not read (F4, RVC-03) | S (A2) / U; API message U |
+| 012 | CL-17 | `0x1025044b4` (s5-0003, disassembly `frinta s8,s0` at `0x102504550`; members `+0xf0` ChanceA, `+0x108` ChanceB, `+0x120` Enabled per registry); AFollowAction post-load at vtable `0x1067c8830` `+0xd0`; setter slot `+0x280`, chance controller `0x10652b4d8` not read (A7, RVC-11); the correction is a follow-action hook, so it may also run for scenes (F9) | S; A2, A3, A7 |
+| 013 | CL-18 | `0x101565624(…,1,1)` in `0x102505030` sets flag `+0x70`; hook `0x10156580c` (C1; N1) rounds; bytes `0x101565860`–`0x1015658ac` re-read with `fp_opcodes.py` on 2026-10-18 (F5): sign select, `fmadd` x + s·0.5/3,843,840, `fabs`, `fmul` 3,843,840, `frintm`, `fdiv`, sign, the same sequence as the grid rounding in `0x101aaae44`; reviewer re-check (RVC-09) | S; A2, A3; near-tie U |
+| 014 | CL-19 | Registry `0x10148ec98` (C1); `0x101493140` (s5-0002; table `0x105815e9c` re-read from `Live.arm64` on 2026-10-17: 0,1,2,3,4,5,6,8,10,12,14; `b.cs` at `0x1014931a0`; body ends at the throw `0x1014931d8`); `0x1014b6d14`, `0x1014b82d8` (s5-0003); `0x1014b8b00` (s5-0002, `mov w1,#0x4` at `0x1014b8be4`); `0x1014bb048` (C1); `0x1014c04d0` (s5-0004, pseudocode read; the reviewer re-read its retained disassembly and confirmed every condition and default, F7, RVC-08). Step 406 with an existing `FollowAction`: error report `0x101471a98`, then a no-return trap (`0x1014b6d14.c`, F6). Steps above 405 for clip, follow-action, scene, track and song elements checked by the reviewer: none outside the table touches these items (RVC-04). Scene writer not read (F7) | S; A5; step 17 reachability, both-forms clip and saved scenes U |
 | 015 | CL-11 | `0x101aaae44` (s5-0001): `sub w8,w1,#1; cmp w8,#0xc; b.hi`; jump table `0x105846ef8` = `00 7a 37 61 2f a4 aa 76 ae 33 ac 2b 31` and sentinels `0x1055d9680` re-read from `Live.arm64` on 2026-10-17; constants 3843840.0 (`0x414d538000000000`), 4/3, 2/3, 1/3, 1/6 | S |
 | 016 | CL-12 | `0x102442998` (s5-0001; clip TimeSignature registered at `0x1d0`, value `+0x1d8`); `0x1026e3698` `fcvtzs` (s5-0003); `0x10245efa0` passes `0x102442998(clip,0)` (s5-0002); `0x101acffa4` (s5-0002): override `cmp w6,#0xd; b.ls`, precomputed grid when `[slot,#0x38]`=1 and `[slot,#0x20]`≥2, else global `0x101b0e1c0` when `w7` (requested time = DBL_MAX) | S; A1 (slot test uninterpreted) |
 | 017 | CL-13 | `0x101ad0130` (s5-0001) `0x101ad06cc`–`0x101ad0924`: `fcmp d12,#0.0; b.le` skips the ceiling; `0x101abf294` anchor `fmaxnm([sig,#8],0)` (s5-0002); `0x1011be6c8` mode 1 `frintp` then lattice (s5-0001); offset `0x101ad1418` virtual call (s5-0004); condition `0x101acfe68` (s5-0003) | S ceiling; A1, A4; near-boundary U |
@@ -537,22 +617,37 @@ Corrections and contradictions:
   REQ-ALS-CONTAINER-005 it cannot run for an opened Live Set. Recorded as U.
 - Two corpus readings were wrong, as the research page records: the lattice and
   chance roundings round to nearest in disassembly.
+- Revision 1 graded the API message prefixes, although its scope excludes the text
+  of error messages (F2). Revision 2 marks the text unknown.
 
 Downgrades from the research candidates: CL-12's engine use of the clip grid now names
 A1, because the slot-state test in `0x101acffa4` is uninterpreted. CL-08 is split: the
 initial value is S, a missing set field is U (the ASong loader was not read). CL-15 and
 CL-16 load clauses carry A2 (research: inferred); CL-16's resulting values remain U.
 Dropped: the velocity-amount API range error (`0x1033bc1a4`, pseudocode only) and the
-"no application object" default of 0 (not user-observable).
+"no application object" default of 0 (not user-observable). Revision 2 limits A2 to
+values inside their stated ranges (RVC-03) and marks CL-15's API message unknown
+(RVC-10).
 
 ## Revision and handoff
 
 | Revision | Date | Change |
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from S5 (CL-01 to CL-23): 23 requirements (3 D with S parts, 5 S only, 10 S with U parts, 5 U only); 56 unexecuted cases: 4 not graded (CLC-030, 054–056), 3 with unresolved parts (CLC-013–015), 2 without a fixture (CLC-028, 029) |
+| 2 | 2026-10-18 | Staging and review findings of clip-launch-v1 applied; none rejected. F1, RVC-01: release proposal for REQ-015 to 018 dropped. F2, RVC-10: REQ-011 API message text U; CLC-016, 017 grade no text. F3, RVC-02: REQ-001 read-back limited to Booleans and numbers of at most six significant digits; CLC-025 grades the held value. F4, RVC-03: A2 limited to the stated ranges; out-of-range bounded values, chances and follow times U; 150/50 example removed; CLC-023 relabelled U. F5, RVC-09: REQ-013 byte evidence; near-tie values U. F6: both-forms clip U. F7, RVC-08: CLC-026, 027 grade held scene values; saved scene form U. F8: CLC-028, 029 use authored `11.0_405` fixtures. F9: scene corrections U. RVC-04: other conversion steps stated. RVC-05: REQ-005 worded as meaning. RVC-11: A7 named. RVC-13 coverage proposals deferred (no error). ADR 0003: probe references now say that no reference observation is available, with static routes. 23 requirements (3 D with S parts, 4 S only, 11 S with U parts, 5 U only); 56 unexecuted cases: 5 not graded (CLC-023, 030, 054–056), 3 with unresolved parts (CLC-013–015), all with a fixture |
 
-Before the 2026-10-18 review, a first handoff could carry REQ-001 to 007, 009, 012,
-013, 015, 016 and the S clauses of 011, 014, 017 and 018, without REQ-017's
-near-boundary clause.
+Revision 1 proposed that a first handoff could carry REQ-001 to 007, 009, 012, 013,
+015, 016 and the S clauses of 011, 014, 017 and 018, without REQ-017's near-boundary
+clause. Revision 2 drops REQ-015 to 018 from that proposal (F1, RVC-01): REQ-015's
+grid lengths are observable only by launching, and REQ-016 to 018 rest on A1, which
+is open under Q-017.
 
-Released 2026-10-18: [clip-launch-v1](../../handoff/clip-launch-v1/README.md), 50 cases, approved with narrowing by a separate review agent (partial REQ-001 to 007, 009, 011 to 014 only; 008, 010, 015 to 023 unreleased). The review findings to apply in the next revision are on the [handoff plan](clip-launch-handoff-plan.md#review-outcome). This revision's text is unchanged.
+Released 2026-10-18: [clip-launch-v1](../../handoff/clip-launch-v1/README.md), 50 cases, approved with narrowing by a separate review agent (partial REQ-001 to 007, 009, 011 to 014 only; 008, 010, 015 to 023 unreleased). The review findings to apply in the next revision are on the [handoff plan](clip-launch-handoff-plan.md#review-outcome). Revision 2 applies them; the revision table lists each one.
+
+clip-launch-v1 stays pinned to revision 1, and its manifest's partial scopes define
+what was released. These draft clauses are broader than the release and unreleased:
+clips in take lanes and the groove pool, and repeated clip children other than
+launch elements (REQ-001); API names (REQ-004 to 006) and the API setters (REQ-011);
+bounds as behavior, shipped jump indices and creation paths (REQ-009); the old-form
+defaults for absent chances, steps 17 and 12008, and versions other than `11.0_405`,
+`12.0_12117` and `12.0_12402` (REQ-014).

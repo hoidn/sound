@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-18
 access: analysis
-revision: 1
+revision: 2
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -18,7 +18,7 @@ application find them, and see them listed as instruments or effects. Later scan
 should reflect added, changed and removed plug-ins without re-examining everything.
 This draft specifies:
 
-- which folders are searched, and in what order;
+- which folders are searched, and the order between the two formats;
 - which bundles count as plug-in modules, and what each module contributes;
 - how unchanged, changed, removed and failing modules are treated across scans;
 - what Rescan and the modifier Rescan do.
@@ -26,8 +26,10 @@ This draft specifies:
 Every clause is a **proposed contract**. Each is documented, supported by a static
 derivation, or explicitly unknown. Nothing was run against Live.
 [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a static-first
-draft. Target: 12.4.3 on macOS. The arm64 build was analyzed; the x86_64 build was
-compared by strings only.
+draft. Under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) no
+reference run will happen: static evidence is the only source, and an unknown
+stays unknown unless a static route settles it. Target: 12.4.3 on macOS. The arm64
+build was analyzed; the x86_64 build was compared by strings only.
 
 Excluded:
 
@@ -44,7 +46,7 @@ Excluded:
 | --- | --- |
 | D | Documented in text shipped with the application |
 | S | Static derivation from the 12.4.3 executables; not an observed run |
-| U | Unknown; no expected result. PRB IDs name the Phase 4 probe that would settle it |
+| U | Unknown; no expected result. No reference observation is available (ADR 0003). A former Phase 4 probe ID (PRB) records what observation would have settled; a static route is named where one exists |
 
 Only D and S clauses may enter a release. U clauses block the behavior they name.
 
@@ -53,6 +55,13 @@ Terms used below:
 - A **folder** is a search root.
 - A **module** is one bundle found under a folder.
 - A **plug-in** is one listed entry contributed by a module.
+- A **candidate** is an entry that a scan examines as a module of a format.
+- The **resolved location** of an entry is its path with symbolic links and the
+  `.` and `..` components resolved, letter case unchanged. For an entry with no
+  symbolic link in its path, it is the entry's own path.
+- The **extension** of a name is the part from its last period to the end:
+  `A.b.vst3` has `.vst3`, `B.vst3.bak` has `.bak`, and a name without a period has
+  none. For names that begin with a period, see REQ-004 and 005.
 - **Examining** a module means loading its executable to enumerate its plug-ins.
 - **Listed** means the plug-in appears in the application's plug-in browser.
 - A **scan** is one discovery run, from its start until all candidates are handled.
@@ -68,59 +77,99 @@ Terms used below:
   application. A module that crashes while it is examined does not terminate the
   application.
 - **S.** Bundles with the extension `.clap` are not discovered, in any folder.
-- **U.** Where, when and how Audio Units (v2 and v3) are discovered and listed:
-  PRB-H1-06.
+- **U.** Where, when and how Audio Units (v2 and v3) are discovered and listed.
+  No reference observation is available (ADR 0003; formerly PRB-H1-06). Static
+  route: Live's Audio Unit format handlers (appendix row 001).
 
 ### REQ-PLUGIN-DISCOVERY-002 — searched folders
 
 - **S.** Each format has two independent source switches. One adds the format's
-  pair of system folders; the other adds the custom folder.
-- **S.** VST3 system folders, in this order: `~/Library/Audio/Plug-Ins/VST3`,
-  then `/Library/Audio/Plug-Ins/VST3`.
-- **S.** VST2 system folders, in this order: `~/Library/Audio/Plug-Ins/VST`, then
-  `/Library/Audio/Plug-Ins/VST`. A VST2 system folder that does not exist
-  contributes nothing.
+  pair of system folders; the other adds the custom folder. The switches of one
+  format do not affect the other format.
+- **S.** VST3 system folders: `~/Library/Audio/Plug-Ins/VST3` and
+  `/Library/Audio/Plug-Ins/VST3`.
+- **S.** VST2 system folders: `~/Library/Audio/Plug-Ins/VST` and
+  `/Library/Audio/Plug-Ins/VST`.
 - **S.** With its switch on and a custom folder set, the format's custom folder is
-  searched after the system folders. If both switches of a format are off, no
-  module of that format is examined.
+  searched, in addition to the system folders when their switch is on. With the
+  switch off, a set custom folder is not searched; with the switch on and no
+  folder set, no custom folder is searched. If both switches of a format are off,
+  no module of that format is examined.
+- **S.** No other folder is searched for VST3 or VST2 modules.
+- **S.** A searched folder that does not exist contributes nothing, and the other
+  folders are still searched. This holds for all six folders. A VST2 system
+  folder path that names a plain file also contributes nothing.
 - **U.** Which labelled control is which switch. Inferred labels: "Use VST3/VST2
   Plug-In System Folders" and "... Custom Folder". Also unknown: the defaults on
   first launch, and whether turning a switch off hides that source's plug-ins at
-  once: PRB-H1-01, PRB-N4-01.
+  once. No reference observation is available (ADR 0003; formerly PRB-H1-01,
+  PRB-N4-01). Static route: the preference model that owns the switches, its
+  defaults and its label references (appendix row 002).
 - **U.** A custom folder path that contains a comma. The derivation predicts that
-  nothing is found there: PRB-N4-01.
+  nothing is found there. No reference observation is available (ADR 0003;
+  formerly PRB-N4-01). Static route: whether Live's custom-folder setting accepts
+  such a path and passes it unchanged.
 
 ### REQ-PLUGIN-DISCOVERY-003 — order of examination
 
-- **S.** In a scan, all VST3 candidates are handled before any VST2 candidate.
-- **S.** VST2 handling does not depend on the outcome of the VST3 part.
+- **S.** In a scan that examines at most 50 VST3 modules, none of which crashes,
+  all VST3 candidates are handled before any VST2 candidate.
+- **S.** Unless a module crashes while it is examined (REQ-012), the VST2
+  candidates are handled whatever the result of the VST3 part.
+- **U.** The order between the formats when more than 50 VST3 modules are
+  examined (REQ-014) or a module crashes (REQ-012). With more than 50, the
+  derivation has the VST2 candidates handled once 51 VST3 modules have loaded and
+  before the remaining VST3 candidates. No reference observation is available
+  (ADR 0003). This rests on the REQ-012 and REQ-014 derivations; no further static
+  route is known.
 - **U.** The order within a format, both between folders and within one folder.
   The derivation gives no defined order. Implementations are not graded on it.
 
 ### REQ-PLUGIN-DISCOVERY-004 — VST3 candidates
 
-- **S.** Under each VST3 folder, at any depth, every entry whose name ends in
-  `.vst3` is a candidate. The match is exact and case-sensitive: `X.VST3` is not
-  a candidate. Directories and plain files both qualify.
+- **S.** Under each VST3 folder, at any depth, every entry whose resolved
+  location's name has the extension `.vst3` is a candidate. For an entry with no
+  symbolic link in its path, that is the entry's own name, letter case unchanged.
+  The match is exact and case-sensitive: `X.VST3` and `X.Vst3` are not candidates,
+  `Multi.Dot.vst3` is one, and `B.vst3.bak` and `B.vst3x` are not. Directories and
+  plain files both qualify.
 - **S.** A candidate is not searched inside, so a `.vst3` nested in another
-  `.vst3` is not a candidate.
+  `.vst3` is not a candidate. Every other directory is searched, whatever its
+  name, subject to the U clauses below.
 - **S.** Within one folder, a directory reached twice (same resolved location) is
-  searched once. Paths that resolve to the same location count as one candidate.
+  searched once. Entries that resolve to the same location count as one
+  candidate; for a symbolic link, the name of its target decides.
 - **U.** Whether symbolic links to directories are followed, and whether an
-  unreadable subfolder ends the search of the rest of that folder. No probe has
-  been filed; propose adding both to the PRB-H1-08 session.
+  unreadable subfolder ends the search of the rest of that folder. No reference
+  observation is available (ADR 0003). Static route: the meaning of the listing
+  options the scanner uses (appendix row 004).
+- **U.** How the extension of a name that begins with a period is taken, and so
+  whether an entry such as `.vst3` is a candidate. No reference observation is
+  available (ADR 0003). Static route: the machine code of the extension test,
+  whose decompiled form hides the branch for such names (appendix row 004).
 
 ### REQ-PLUGIN-DISCOVERY-005 — VST2 candidates
 
-- **S.** Under each VST2 folder, folders are searched level by level:
-  - a directory whose name ends in `.vst`, in any letter case (`.vst`, `.VST`), is
-    a candidate and is not searched inside;
-  - every other directory is searched, including one named `*.vst3`;
+- **S.** Under each VST2 folder, at any depth, entries are judged by the name of
+  their resolved location, which for an entry with no symbolic link in its path
+  is its own name:
+  - a directory whose extension is `.vst` in any letter case (`.vst`, `.VST`,
+    `.Vst`) is a candidate and is not searched inside; `Two.Dots.vst` is one, and
+    `Old.vst.bak` and `Inst.vsti` are not;
+  - every other directory is searched, including one whose extension is `.vst3`;
   - plain files are ignored, even ones named `*.vst`.
+- **S.** Entries whose names begin with a period are included in the search; only
+  a folder's `.` and `..` references are left out.
 - **S.** Each resolved folder is searched once. A folder that cannot be read is
-  skipped, and the search continues with the remaining folders.
+  skipped, and the search continues with the remaining folders. This includes a
+  VST2 system folder that cannot be read.
+- **U.** How the extension of a name that begins with a period is taken, and so
+  whether a directory such as `.vst` is a candidate. No reference observation is
+  available (ADR 0003). Static route: as in REQ-004.
 - **U.** Whether the folder structure below a VST2 folder is presented to the user.
-  Inferred: it feeds folder-structured browsing. No probe has been filed.
+  Inferred: it feeds folder-structured browsing. No reference observation is
+  available (ADR 0003). Static route: how Live uses the stored relative folder of
+  each VST2 module (appendix row 005).
 
 ### REQ-PLUGIN-DISCOVERY-006 — what a VST3 module contributes
 
@@ -173,8 +222,10 @@ Terms used below:
 - **S.** A change in either property causes one new examination at the next scan.
   The module's previous plug-ins are replaced by the result: a removed class is no
   longer listed and an added class is listed.
-- **U.** Confirmation of the above, and a change within the same second:
-  PRB-H1-05.
+- **U.** A change to the executable within the same whole second that keeps its
+  size. The derivation predicts that it is not detected. No reference observation
+  is available (ADR 0003; formerly PRB-H1-05), and no further static route is
+  known.
 
 ### REQ-PLUGIN-DISCOVERY-009 — removed modules and unavailable folders
 
@@ -198,9 +249,11 @@ Terms used below:
   formats. Every module found is then examined, whatever its earlier outcome.
   Results for folders not being searched are kept.
 - **U.** Which modifier key (inferred: Option), and whether the control's label
-  changes while the key is held: PRB-N4-01. When scans start without Rescan, for
-  example at application start or on a switch or custom-folder change:
-  PRB-H1-01, PRB-N4-01.
+  changes while the key is held. When scans start without Rescan, for example at
+  application start or on a switch or custom-folder change. No reference
+  observation is available (ADR 0003; formerly PRB-N4-01, PRB-H1-01). Static
+  route: Live's mapping of the modifier mask to keys, and the callers that request
+  a scan (appendix row 010).
 
 ### REQ-PLUGIN-DISCOVERY-011 — progress and scan states
 
@@ -213,13 +266,15 @@ Terms used below:
 
   A scan ends either complete or interrupted.
 - **U.** Where and how the user sees this: status text, any animation of the
-  Rescan control, the end state. No probe has been filed; propose a screen capture
-  during PRB-H1-04.
+  Rescan control, the end state. No reference observation is available
+  (ADR 0003). Static route: the listener that receives this information in Live
+  and the preference view that shows it (appendix row 011).
 
 ### REQ-PLUGIN-DISCOVERY-012 — crashing module
 
-- **U.** PRB-H1-02 and PRB-N4-02, then PRB-H1-05. Only REQ-001's survival clause
-  applies until those run.
+- **U.** No reference observation is available (ADR 0003; formerly PRB-H1-02,
+  PRB-N4-02 and PRB-H1-05), and no further static route is known. Only REQ-001's
+  survival clause applies.
 - The static derivation, which is not a requirement:
   - the application relaunches discovery without user action and without a retry
     limit;
@@ -232,12 +287,16 @@ Terms used below:
 ### REQ-PLUGIN-DISCOVERY-013 — hanging module
 
 - **U.** No time limit on examining a module was found, so a module that never
-  returns may stall discovery indefinitely. Settled by PRB-H1-03 and PRB-N4-05.
+  returns may stall discovery indefinitely. No reference observation is available
+  (ADR 0003; formerly PRB-H1-03, PRB-N4-05). Static route: what the scanner's
+  watchdog constants govern (appendix row 013).
 
 ### REQ-PLUGIN-DISCOVERY-014 — many new modules
 
 - **U.** Whether one scan with more than 50 new modules lists all of them without
-  further user action. Settled by PRB-H1-04 and PRB-N4-02.
+  further user action. No reference observation is available (ADR 0003; formerly
+  PRB-H1-04, PRB-N4-02), and no further static route is known. REQ-003's order
+  between the formats depends on it.
 - The derivation splits discovery into batches of at most 51 newly examined modules
   per format, restarted automatically. Batching is not a requirement.
 
@@ -245,7 +304,9 @@ Terms used below:
 
 - **U.** Two cases are unresolved: the same bundle present in two folders, and two
   modules declaring the same plug-in class ID. Unknown: whether each appears once or
-  twice, and which one is used. Settled by PRB-H1-08.
+  twice, and which one is used. No reference observation is available (ADR 0003;
+  formerly PRB-H1-08). Static route: how Live builds the plug-in list from the
+  stored results (appendix row 015).
 
 ### REQ-PLUGIN-DISCOVERY-016 — quitting during a scan
 
@@ -253,19 +314,21 @@ Terms used below:
   completion.
 - **S.** At the next scan, modules whose examination completed before the quit are
   not examined again, and the remaining ones are examined.
-- **U.** How long examination continues after the quit. No probe has been filed.
+- **U.** How long examination continues after the quit. No reference observation
+  is available (ADR 0003). Static route: the interval of the scanner's check for
+  its parent process (appendix row 016).
 
 ## Timing and state
 
 - **Units.** The only time quantity is the modification time used by REQ-008, in
   whole seconds.
-- **Ordering.** VST3 before VST2 (REQ-003). Order within a format is undefined and
-  not compared.
+- **Ordering.** VST3 before VST2 within the limits of REQ-003. Otherwise, and
+  within a format, the order is unknown and not compared.
 - **Persistent state.** For each module of each searched folder: whether its
   examination completed and with what result, the executable size and modification
   time at that examination, and its plug-ins.
-- **Out of scope.** Undo does not apply. The cache location (PRB-H1-07) and format
-  are out of scope.
+- **Out of scope.** Undo does not apply. The cache location (unknown; formerly
+  PRB-H1-07) and format are out of scope.
 - **Cancellation.** No user control to cancel a scan was found. A repeated Rescan is
   ignored (REQ-010). Teardown is REQ-016.
 - **Nondeterminism.** Which module is in progress when the application quits.
@@ -290,12 +353,13 @@ Terms used below:
 - **V2Q.** A V2 that also writes the host's answers to its version, vendor,
   product, can-do (`shellCategory`, `sendVstEvents`) and sample-rate requests.
 - **Clean start.** No previous discovery results (for the reference, a new macOS
-  user or its cache removed; location: PRB-H1-07). All plug-in folders are empty
+  user or its cache removed; location unknown). All plug-in folders are empty
   except as stated. VST3 and VST2 system switches are on, custom switches off,
   unless stated. The load log is cleared before the measured action.
 
 "Rescan" means the preference action; "reset rescan" is REQ-010's modifier variant.
-Expectations are static derivations or documented; none has been run.
+Expectations are static derivations or documented; none has been run, and under
+ADR 0003 none will be run against the reference.
 
 Case kinds:
 
@@ -326,7 +390,7 @@ Case kinds:
 | PD-013 | 005 | B | `~/Library/Audio/Plug-Ins/VST/L.VST` (valid bundle); Rescan | L listed | V2 |
 | PD-014 | 005 | M | Plain file `~/Library/Audio/Plug-Ins/VST/M.vst`; Rescan | M not loaded, not listed | none |
 | PD-015 | 005 | B | `N.vst3` (valid VST3) placed only in `~/Library/Audio/Plug-Ins/VST`; Rescan | N not loaded, not listed | V3 |
-| PD-016 | 005 | B | `~/Library/Audio/Plug-Ins/VST/Locked/` (mode 000) and `.../VST/Open/O.vst`; Rescan | O listed; scan completes | V2 |
+| PD-016 | 005 | B | `~/Library/Audio/Plug-Ins/VST/Locked/Q.vst`, then `Locked` set to mode 000; `.../VST/Open/O.vst`; Rescan | O listed; Q not loaded, not listed; scan completes | V2 |
 | PD-017 | 006 | P | `P.vst3` with two processor classes, subcategories `Instrument\|Synth` and `Fx\|Delay`, plus controllers; Rescan | Exactly two plug-ins from P; the first shown as instrument (piano-key icon), the second as effect | V3 variant |
 | PD-018 | 006 | B | `Q.vst3` with processor subcategories `Fx\|Instrument`; `R.vst3` with `instrument`; Rescan | Q instrument; R effect | V3 variant |
 | PD-019 | 006 | M | `S.vst3` whose executable exports no plug-in factory; Rescan, then Rescan again | Not listed; log S exactly once over both scans | V3 variant |
@@ -345,7 +409,7 @@ Case kinds:
 | PD-032 | 009 | B | Custom folder as in PD-003; rename the folder away; Rescan; rename back; Rescan | After the first: C not listed. After the second: log C once; C listed | V3 |
 | PD-033 | 010 | P | After PD-019 and PD-027; reset rescan | Every module in the searched folders loaded once, including S; listing as before | V3 |
 | PD-034 | 010 | C | Clean start; 30 V3 variants each sleeping 1 s on load; Rescan; click Rescan again after 5 s | Each module loaded exactly once; no second scan | V3 variant |
-| PD-035 | 011 | U | During PD-034, record what the user sees | Unresolved; record text and location | as PD-034 |
+| PD-035 | 011 | U | During PD-034, record what the user sees | Unresolved; not graded (no reference observation, ADR 0003) | as PD-034 |
 | PD-036 | 001 | N | `K1.vst3` whose factory calls `abort()`, plus A; Rescan | The application keeps running | V3 variant |
 | PD-037 | 012 | U | Continue PD-036; Rescan twice more | Unresolved (derivation: A listed; K1 loaded once in total, never listed) | V3 variant |
 | PD-038 | 013 | U | `H1.vst3` whose factory blocks forever; Rescan; wait 15 min | Unresolved | V3 variant |
@@ -353,6 +417,26 @@ Case kinds:
 | PD-040 | 015 | U | A copied into both VST3 system folders; separately, two bundles with the same class ID; Rescan | Unresolved | V3 |
 | PD-041 | 001 | N | A valid `.clap` bundle in `~/Library/Audio/Plug-Ins/CLAP` and in the user VST3 folder; Rescan | Not listed | CLAP sample |
 | PD-042 | 016 | T | Clean start; the 30 sleeping V3 variants of PD-034; quit the application 10 s into the scan; relaunch; Rescan | Modules logged before the quit are not logged again; each other module logged once | V3 variant |
+| PD-043 | 002 | P | Clean start; A and B as in PD-001; VST3 custom switch on at `/Users/Shared/PDC` holding `C.vst3`; Rescan | A, B and C listed; log A, B, C once each | V3 |
+| PD-044 | 002 | N | Clean start; A as in PD-001; VST3 custom folder `/Users/Shared/PDC` holding `C.vst3` set, custom switch off; Rescan | A listed; C not loaded | V3 |
+| PD-045 | 002 | B | Clean start; A as in PD-001; `/Users/Shared/PDC/C.vst3`; VST3 custom switch on, no custom folder set; Rescan | A listed; C not loaded | V3 |
+| PD-046 | 002 | B | Clean start; `~/Library/Audio/Plug-Ins/VST3` absent; B as in PD-001; Rescan | B listed | V3 |
+| PD-047 | 002 | B | Clean start; A as in PD-001; VST3 custom switch on at `/Users/Shared/PDMissing`, which does not exist; Rescan | A listed | V3 |
+| PD-048 | 002 | N | Clean start; D and E as in PD-005; both VST2 switches off; Rescan | D, E not loaded and not listed | V2 |
+| PD-049 | 002 | P | Clean start; D as in PD-005; VST2 system switch off, custom on at `/Users/Shared/PDV` holding `P.vst`; Rescan | P listed; D not loaded | V2 |
+| PD-050 | 002 | P | Clean start; D and E as in PD-005; VST2 custom switch on at `/Users/Shared/PDV` holding `P.vst`; Rescan | D, E and P listed | V2 |
+| PD-051 | 002 | B | Clean start; D as in PD-005; VST2 custom switch on at `/Users/Shared/PDVMissing`, which does not exist; Rescan | D listed | V2 |
+| PD-052 | 002 | P | Clean start; A as in PD-001 and D as in PD-005; both VST3 switches off; Rescan | D listed; A not loaded | V3, V2 |
+| PD-053 | 002 | N | Clean start; V3 bundles `~/Library/Audio/Plug-Ins/Components/X1.vst3`, `~/Library/Audio/Plug-Ins/X2.vst3` and `/Users/Shared/PDC/X5.vst3`; V2 bundles `~/Library/Audio/Plug-Ins/X3.vst`, `/Library/Audio/Plug-Ins/Components/X4.vst` and `/Users/Shared/PDV/X6.vst`; no custom folder set; Rescan | Nothing loaded or listed | V3, V2 |
+| PD-054 | 004 | P | `/Library/Audio/Plug-Ins/VST3/L1/L2/L3/L4/L5/Deep.vst3`; Rescan | Deep listed | V3 |
+| PD-055 | 004 | B | In the user VST3 folder: V3(Multi.Dot), V3(Space Name), and V3(Bk), V3(Sx) and V3(Mx) renamed to `Backup.vst3.bak`, `Suffix.vst3x` and `Mixed.Vst3`; Rescan | Log exactly Multi.Dot and Space Name, once each | V3 variants |
+| PD-056 | 001, 004 | P | In the user VST3 folder, ordinary directories `Wrap.vst`, `Wrap.component`, `Wrap.clap` and `Backup.vst3.bak`, holding `Wrap.vst/Contents/W1.vst3`, `Wrap.component/W2.vst3`, `Wrap.clap/W3.vst3` and `Backup.vst3.bak/W4.vst3`; Rescan | W1 to W4 listed | V3 |
+| PD-057 | 005 | P | `/Library/Audio/Plug-Ins/VST/L1/L2/L3/L4/L5/Deep.vst`; Rescan | Deep listed | V2 |
+| PD-058 | 005 | B | `~/Library/Audio/Plug-Ins/VST/Mixed.Vst` and `.../VST/Odd.vSt` (valid bundles); Rescan | Both listed | V2 |
+| PD-059 | 005 | B | Ordinary directory `~/Library/Audio/Plug-Ins/VST/N2.vst3` holding `Contents/Y.vst`; Rescan | Y listed | V2 |
+| PD-060 | 005 | B | `~/Library/Audio/Plug-Ins/VST/Outer.vst` with a valid `Inner.vst` inside `Outer.vst/Contents/`; Rescan | Outer listed; Inner not loaded | V2 |
+| PD-061 | 005 | B | In the user VST folder: V2(Two.Dots), V2(Space Name), V2(In) renamed to `Inst.vsti`, and an ordinary directory `Old.vst.bak` holding `Z.vst`; Rescan | Log exactly Two.Dots, Space Name and Z, once each | V2 variants |
+| PD-062 | 005 | B | `/Library/Audio/Plug-Ins/VST/R.vst`, then `/Library/Audio/Plug-Ins/VST` set to mode 000; D as in PD-005; Rescan | D listed; R not loaded | V2 |
 
 Comparators:
 
@@ -360,8 +444,12 @@ Comparators:
   ends.
 - Load counts come from the fixtures' load log, compared exactly.
 - Instrument versus effect is judged by the browser icon (REQ-006 D clause).
+- A plain file cannot record a load. Whether PD-011's `J.vst3` or PD-014's `M.vst`
+  was examined is therefore not observable through the load log; for them only
+  the listing is compared.
 
-Cases marked U must not be graded. Malformed coverage is the M cases: broken
+Cases marked U must not be graded; no reference observation will be made for them
+(ADR 0003). Malformed coverage is the M cases: broken
 bundles, files posing as bundles and invalid signatures. Cancellation is limited to
 the ignored repeat Rescan (PD-034), because no cancel control is known.
 
@@ -372,18 +460,25 @@ items:
 
 - Audio Unit discovery;
 - scan triggers and source-switch effects;
-- the crash, hang and batch behavior (REQ-012 to 014);
+- the crash, hang and batch behavior (REQ-012 to 014), and with it the order
+  between the formats beyond REQ-003's limits;
 - duplicates;
 - the presentation of progress;
 - VST2 classification, vendor version and language;
-- symbolic links and unreadable subfolders in VST3 folders.
+- symbolic links and unreadable subfolders in VST3 folders;
+- the extension of names that begin with a period (REQ-004, 005);
+- the plain-file observation gap. A plain file cannot record its own load, so
+  only progress counts or stored results, both unspecified, could show whether
+  one was examined. No reference observation will happen (ADR 0003). Plain-file
+  candidacy is already decided statically (a VST3 folder's plain files named
+  `*.vst3` are candidates; a VST2 folder's plain files never are), so those
+  expectations stay static-derived and are not blocked.
 
-The probes are in the
+The former probes are in the
 [H1 probe batch](../../analysis/ableton-live-12.4.3/r2/h1-plugin-scanner-v1/probe-batch.json)
 (PRB-H1-01–08) and in [helper launch](../research/helper-launch-live-side.md#phase-4-probe-records)
-(PRB-N4-01, 02, 05). Both are merged into the
-[Phase 4 batch](../research/phase4-probe-batch.md). The REQ-004, 005, 011 and 016
-unknowns have no probe yet; additions are proposed in those requirements.
+(PRB-N4-01, 02, 05), merged into the [Phase 4 batch](../research/phase4-probe-batch.md).
+Under ADR 0003 none will run. Each U clause names its static route, if any.
 
 ## Analyst evidence appendix
 
@@ -409,24 +504,36 @@ first time from the C1 corpora, which are not retained in the repository:
 | Live `0x10317ad9c` | `chunk-02395` | `cd20f10a…` |
 | Scanner `0x1006ad5c8` → `0x1006b4f14`, `0x100679138` | helper corpus | — |
 
+**Revision 2 (2026-10-18).** Where a finding and r1 disagreed, the evidence was
+re-read: pc `0x1001308e0` lines 870–935 (F2), `0x1005e8cb4` and `0x1005aad10`
+lines 160–300 (F3, F4), and Live `0x1030adbbc` (`chunk-02343`, `95d65a93…`) and
+`0x103e89910` (`chunk-03246`, `1484a935…`) from the C1 corpus (F4). All agree with
+the findings. F3's resolution helper and F5's lister and extension readings are
+taken from the reviewer's
+[record](../../analysis/ableton-live-12.4.3/handoff-staging/plugin-discovery-v1-analysis/review/review-checks.txt);
+the scanner helper corpus was not re-read. PD-043 to 062 are the release's new
+cases 004–008, 011–016, 018, 022, 023, 025, 027, 030–032 and 034, in that order;
+their sources are in the staging
+[traceability](../../analysis/ableton-live-12.4.3/handoff-staging/plugin-discovery-v1-analysis/traceability.json).
+
 | Requirement | Evidence | Strength |
 | --- | --- | --- |
-| 001 | Lessons `1-Live Basics Category/4-Playing Software Instruments Lessons/LessonsEN.txt` lines 113, 116 (SHA-256 `0834f8fc…`, via `app-resources.json`); separate executable launched by Live `0x103179e68` (n4-0001); module loading for discovery is in that executable (pc `0x100146ae4`, `0x100145d24`); C2 strings index: no string containing `.clap` in Live arm64, no CLAP option in the scanner (`options.json`) | D; S; CLAP by static absence |
-| 002 | VST3 `0x1031c0f28` (`user` = home + `Library/Audio/Plug-Ins/VST3` at `0x105be7c71`, `local` = `/Library/Audio/Plug-Ins/VST3` at `0x105be7c92`), custom `0x1031c0144` (non-empty only), switches `0x1031c0d2c`; VST2 `0x1031b8e5c`: `0x1030ad96c` selector 2 → `FSFindFolder(kUserDomain 0xffff8005, 'aplg')`, 3 → `kLocalDomain 0xffff8003`, + `VST`, empty path unless the existence check `0x103e970a4` passes (new this pass); switches `0x1031b8c68`; preference keys `Vst3UseSystemFolders` etc. at slice offset `0x5ab40ad`; label string `Use VST2 Plug-In System Folders` at `0x105b02974` (single reference `0x100782730`, role unknown); comma split pc `0x1001332fc` vs Live join (n4-0001) | S; switch-to-label mapping inferred |
-| 003 | pc `0x1001308e0` (VST3 driver, then VST2 driver regardless of VST3 result); per-format candidate map ordered by folder ID, per-folder hash set (pc `0x1005e9fd8`) | S; within-format order U (map comparator unread; would give `custom`, `local`, `user`) |
-| 004 | pc `0x1005e8cb4`: recursive iterator option 5, visited set of canonical directories, extension compare `0x100679138` (component-wise `memcmp`) against `.vst3`, recursion disabled on a match | S; option 5 and status-type 3 semantics (boost-like?) unresolved |
-| 005 | pc `0x1005aad10`: FIFO queue, visited set, `FUN_1006ad5c8` lowercases the extension (`0x1006b4f14` is a Unicode lower-case map) before the 4-byte `.vst` compare, files ignored, folder error logs `Failed to scan folder` and continues the queue | S (case-insensitivity new this pass) |
+| 001 | Lessons `1-Live Basics Category/4-Playing Software Instruments Lessons/LessonsEN.txt` lines 113, 116 (SHA-256 `0834f8fc…`, via `app-resources.json`); separate executable launched by Live `0x103179e68` (n4-0001); module loading for discovery is in that executable (pc `0x100146ae4`, `0x100145d24`); C2 strings index: no string containing `.clap` in Live arm64, no CLAP option in the scanner (`options.json`) | D; S; CLAP by static absence; AU route: Live's format handlers for keys 4 and 32, untraced ([helper launch](../research/helper-launch-live-side.md#plug-in-scanner)) |
+| 002 | VST3 `0x1031c0f28` (`user` = home + `Library/Audio/Plug-Ins/VST3` at `0x105be7c71`, `local` = `/Library/Audio/Plug-Ins/VST3` at `0x105be7c92`), custom `0x1031c0144` (non-empty only), switches `0x1031c0d2c`; VST2 `0x1031b8e5c`: `0x1030ad96c` selector 2 → `FSFindFolder(kUserDomain 0xffff8005, 'aplg')`, 3 → `kLocalDomain 0xffff8003`, + `VST`, empty path unless the existence check `0x103e970a4` passes (new this pass); switches `0x1031b8c68`; preference keys `Vst3UseSystemFolders` etc. at slice offset `0x5ab40ad`; label string `Use VST2 Plug-In System Folders` at `0x105b02974` (single reference `0x100782730`, role unknown); comma split pc `0x1001332fc` vs Live join (n4-0001). r2: no order stated (F1): the stated order was at most the argument order (n4-0001), and the candidate map is keyed by folder ID (row 003). Missing folders (F4): a VST3 listing error ends that root (`0x1005e8cb4`), a VST2 folder that fails to open is skipped (`0x1005aad10`), and an empty VST2 system path fails before opening (reviewer); a VST2 system path is kept only when `0x103e89910` finds a directory (status type 3) | S; switch-to-label mapping inferred; route for the U parts: `APluginSettingsPreferencesModel`, its key defaults and the label string's referrer |
+| 003 | pc `0x1001308e0` (VST3 driver, then VST2 driver regardless of VST3 result); per-format candidate map ordered by folder ID, per-folder hash set (pc `0x1005e9fd8`) | S; within-format order U (map comparator unread; would give `custom`, `local`, `user`). r2 (F2): the VST2 pass runs whatever the VST3 result (pc `0x1001308e0` lines 878–930); a session stops when limit 50 < loaded count (pc `0x100138504`), so at most 51 VST3 modules load per session; Live relaunches after `interrupted` (n4-0001) |
+| 004 | pc `0x1005e8cb4`: recursive iterator option 5, visited set of canonical directories, extension compare `0x100679138` (component-wise `memcmp`) against `.vst3`, recursion disabled on a match. r2 (F3): the extension is that of the resolved path (`0x100674264`, `3e78d677`: resolves `.`, `..` and links only, no case change; reviewer) via `0x1006c4724` (`c6b040ef`) and `0x100679138` (`0f1ef4e8`). r2 (F5): `0x1006c4724`'s leading-period branch is rendered unreachable. Status type 3 is a directory (`0x10066f1e4`, `8ec6565d`; reviewer). Route for links and unreadable subfolders: option value 5 matches Boost 1.72 or later `skip_permission_denied` with `skip_dangling_symlinks` (reviewer lead; Boost version unconfirmed) | S; option 5 unresolved; leading period U |
+| 005 | pc `0x1005aad10`: FIFO queue, visited set, `FUN_1006ad5c8` lowercases the extension (`0x1006b4f14` is a Unicode lower-case map) before the 4-byte `.vst` compare, files ignored, folder error logs `Failed to scan folder` and continues the queue. r2 (F3): extension of the resolved path (pc lines 219–257). r2 (F5): lister `0x1006606b0` → `0x1006b90f0` (`cc809c67`) skips only `.` and `..`, an empty path fails before opening, and a mode-000 folder fails to open and is skipped (reviewer). r2 (F6): queue order not stated. Folder-structure route: Live's use of the stored `relpath`, untraced | S (case-insensitivity new in r1; names beginning with a period new in r2); leading period U |
 | 006 | pc `0x1005e91fc` (`Audio Module Class` compare, length 0x12; reject state 3; confirm), `0x100145768` (exact 10-byte `Instrument` token), skip rule pc `0x1005e9fd8` (equal fingerprint and stored state ≠ 0); lessons line 118 | S; D |
 | 007 | pc `0x100145d24`, `0x10075325c` (flags 9, `-67062` = unsigned accepted), entry points `main_macho` → `VSTPluginMain`; host callback pc `0x100140cb8` (opcode 1 → 0x960, 32 `Ableton`, 33 `Live`, 37 `shellCategory` → 10, 2 shell ID, 34 vendor version, 38 language, default 0) | S; synth flag inferred |
-| 008 | Fingerprint `0x1001458a4` (`CFBundleCopyExecutableURL`, size and seconds mtime); skip pc `0x1005e9fd8`; Rescan branch `0x1005a55c8` deletes the module's plug-in rows (Retry branch keeps them), sets new fingerprint and state 0 | S; probe PRB-H1-05 |
+| 008 | Fingerprint `0x1001458a4` (`CFBundleCopyExecutableURL`, size and seconds mtime); skip pc `0x1005e9fd8`; Rescan branch `0x1005a55c8` deletes the module's plug-in rows (Retry branch keeps them), sets new fingerprint and state 0 | S; same-second change U (formerly PRB-H1-05; ADR 0003) |
 | 009 | pc `0x1005e9fd8` (stored path not a candidate → `RemoveModules` `0x1005a9534`); empty or failed enumeration gives zero candidates; Live adds custom without an existence check (`0x1031c0144`) | S |
 | 010 | `OnRescanPlugins` `0x10035e3fc` and identical `0x100345b2c` → `0x10316a4c0` (the only direct callers) with reset = modifier mask bit value 2 (`0x1012946e8`, `0x101294398`); busy check `0x103179994`; `--reset all` only (n4-0001 `0x10317a6dc`); `ResetScanData` `0x1005a87f0` per passed domain plus orphans; reset flag cleared before relaunch (`0x10317bcf0`) | S; key identity and other triggers U |
 | 011 | `update` and `current-plugin` builders pc `0x10013e06c`, `0x10013e284`, `0x100138588`; Live stores name/current/total `0x10317ad9c` and notifies a listener only; `scan` = `done` or `interrupted` (pc `0x1001308e0`); UI strings `mpRescanAnim`, `mpRescanState` | S content; presentation U |
 | 012 | `0x1005a8258`; Live died branch `0x10317bcf0` without a counter | U (see contradiction) |
-| 013 | No timeout in the scan path; observer table (helper launch page) has no connected-state timeout | U |
+| 013 | No timeout in the scan path; observer table (helper launch page) has no connected-state timeout; route: the watchdog constants at `0x1009a8ff0`, unmapped | U |
 | 014 | Run state pc `0x100138504` (2 when limit < count), count `0x100138578` incremented only after a confirmed module, per-format adapter (`0x100133aa0`, `0x100134018`) | U |
-| 015 | Per-folder canonical dedup only; `AddModuleCandidate` keyed by path and folder | U |
-| 016 | Run state 1 (channel gone or orphaned) checked before each candidate (`0x100138504`, `0x1001806e4` throttled); completed modules persist as REQ-008 | S; timing U |
+| 015 | Per-folder canonical dedup only; `AddModuleCandidate` keyed by path and folder; route: Live's reading of stored results, untraced | U |
+| 016 | Run state 1 (channel gone or orphaned) checked before each candidate (`0x100138504`, `0x1001806e4` throttled); completed modules persist as REQ-008; route: the orphan-check throttle, half of the first watchdog constant | S; timing U |
 
 **Contradiction with the research page.** The state-update transaction
 `0x1005a8258` runs at the start of every format pass (VST3 `0x1005e9fd8`, VST2
@@ -459,12 +566,14 @@ details limit the derivation:
 | Revision | Date | Change |
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from the H1 scanner and N4 Live-side evidence: 16 requirements (2 D and S with U parts, 10 S with U parts, 4 U only) and 42 unexecuted cases (36 graded, 6 unresolved) |
+| 2 | 2026-10-18 | Applies the plugin-discovery-v1 review findings ([plan](plugin-discovery-handoff-plan.md#findings-while-staging)). Applied: F1 (REQ-002 order words dropped); F2 (REQ-003 clause 1 limited to scans examining at most 50 VST3 modules without a crash, clause 2 conditioned on REQ-012, the order beyond that U); F3 (REQ-004 and 005 judge the resolved location's name); F4 (missing-folder rule for all six folders, and a VST2 system path naming a plain file); F5 (the VST2 search includes names beginning with a period; their extension U in REQ-004 and 005); F6 ("level by level" dropped); F7 (PD-016 holds `Q.vst` in the locked folder; the 20 new release cases adopted as PD-043 to 062). Also: REQ-002 states that no other folder is searched; the comparators name the plain-file cases (RVP-04); U clauses cite ADR 0003 and name static routes. Rejected: none. 16 requirements (counts by label unchanged) and 62 unexecuted cases (56 graded, 6 unresolved) |
 
 Before the 2026-10-18 review, a handoff candidate could carry:
 
 - the D and S clauses of REQ-001 to 011 and 016;
 - the graded cases.
 
-REQ-012 to 015 and every U clause stay out until their probes run.
+REQ-012 to 015 and every U clause stay out. Under ADR 0003 no probe will run, so
+they stay out unless a static route settles them.
 
-Released 2026-10-18: [plugin-discovery-v1](../../handoff/plugin-discovery-v1/README.md), 35 cases, approved with clarifications by a separate review agent (partial REQ-001, 002, 004, 005 only; 003, 006 to 016 unreleased). The review findings to apply in the next revision are on the [handoff plan](plugin-discovery-handoff-plan.md#review-outcome). This revision's text is unchanged.
+Released 2026-10-18: [plugin-discovery-v1](../../handoff/plugin-discovery-v1/README.md), 35 cases, approved with clarifications by a separate review agent (partial REQ-001, 002, 004, 005 only; 003, 006 to 016 unreleased). The review findings are on the [handoff plan](plugin-discovery-handoff-plan.md#review-outcome). Revision 2 applies them. The release stays pinned to revision 1, and its clauses keep their meaning here. Clauses on symbolic links, resolved locations, names beginning with a period, folder paths that name a plain file, and letter case beyond ASCII are broader than the release, which excludes those inputs.

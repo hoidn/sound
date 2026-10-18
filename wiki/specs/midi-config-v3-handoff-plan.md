@@ -23,6 +23,8 @@ assumption. Findings F1 (the crossfader takeover exemption holds for Absolute
 values only) and F2 (the stepped rule with a reversed range) are confirmed for
 the draft spec.
 
+Applied in revision 4 (2026-10-18): F1 (RV3-02), F2 (RV3-03) and RV3-04 (F3, MT-22 stated as holding under any setting); rejected: RV3-07 (a coverage proposal, not an error); RV3-01, 05, 06 and 08 needed no spec change.
+
 ## Decision and boundary
 
 Stage a third finite candidate, midi-config-v3, from

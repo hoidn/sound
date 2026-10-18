@@ -30,6 +30,8 @@ plain-file observation gap under Q-016. The VST2 folder listing does return
 hidden entries, so F5's only open point is how the extension of a name starting
 with a period is taken.
 
+Applied in revision 2 (2026-10-18); rejected: none.
+
 ## Decision and boundary
 
 Stage a finite candidate, plugin-discovery-v1, from

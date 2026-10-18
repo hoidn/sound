@@ -34,6 +34,8 @@ makes r1 cases BI-040 and BI-041 wrong. REQ-006's "other numeric entries are
 ignored" is too broad. The draft must also add that entries naming no file are
 dropped and the sidecar is marked changed.
 
+Applied in revision 2 (2026-10-18); rejected: F7 (a candidate narrowing, not a draft error) and RVB-05, RVB-08, RVB-09 and RVB-10 (release status, evidence identity, accepted assumptions and fixtures; no draft text depends on them).
+
 ## Decision and boundary
 
 Stage a finite candidate, browser-index-v1, from

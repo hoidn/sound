@@ -37,6 +37,8 @@ The draft spec needs these changes:
 - Mark the REQ-012 and REQ-013 labels as inferred.
 - Note that TransientEnvelope is created at 100 without a clamp.
 
+Applied in revision 2 (2026-10-18); rejected: F2 (the review's corpus check shows creation stores `TransientEnvelope` 100 without a clamp, so the default stays static-derived) and RVW-09 (release status text only).
+
 ## Decision and boundary
 
 Stage a finite candidate, warp-markers-v1, from

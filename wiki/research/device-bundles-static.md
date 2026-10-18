@@ -2,7 +2,7 @@
 id: RESEARCH-DEVICE-BUNDLES-STATIC
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -267,6 +267,14 @@ value.
 - All occurrences of a device carry an identical parameter path list (one path set per
   device), and every Timeable field the schema declares occurs.
 
+Correction (2026-10-18): documents store 20 of the 21 envelope fields. None of the 1,064
+occurrences stores `RemoteSelectionKeyMidi` (analyst re-check of the H4 `out/occurrences.jsonl`
+documents, script not retained; the v1 review's intersection of member names over all
+occurrences is 20). Inferred: the writer skips an unassigned key-MIDI member
+([transport-state native](transport-state-native.md)). DEV-C02's "21-field device envelope" and
+"Writers emit every field" are corrected accordingly
+([SPEC-BUNDLED-DEVICE-PARAMETERS](../specs/bundled-device-parameters.md) r2 REQ-002).
+
 **Parameter wrappers (Observed, schema class plus documents).**
 
 | Class | Children in schema order | Stored value | Range child |
@@ -313,6 +321,10 @@ rack macro *n*, and its range is the mapping range.
 - Corpus `SideChain/RoutedInput/Routable` is always `MidiIn/None`, `No Output`, MPE
   channels 1–15, zone type 0.
 - Amp, Cabinet and Electric have no such fields.
+
+Correction (2026-10-18): the Corpus bullet above names five of the seven side-chain fields. It omits
+`SideChain/RoutedInput/Routable/LowerDisplayString` (empty) and `MpePitchBendUsesTuning`
+(`true`); all 36 occurrences store them (`out/fields.json`; v1 review `corpus_sidechain`).
 
 **Amp and Cabinet (complete).** Observed min and max are over all occurrences. The
 engine column comes from the bundle.

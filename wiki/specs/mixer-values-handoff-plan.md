@@ -33,6 +33,8 @@ The draft spec needs three fixes:
    10^(6/20).
 3. Drop or define the `EnabledByUser` clause in MV-001. No case grades it.
 
+Applied in revision 2 (2026-10-18); rejected: none.
+
 ## Decision and boundary
 
 Stage a finite candidate, mixer-values-v1, from

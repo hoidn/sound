@@ -2,7 +2,7 @@
 id: RESEARCH-CLIP-LAUNCH
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -133,6 +133,13 @@ for example `q_eight`, `q_sixtenth` and `q_thirtytwoth` in `Song.Quantization`.
 (`0x1033bc00c`). The velocity-amount setter `0x1033bc1a4` throws `Clip velocity amount … is
 out of range` outside the float's bounds; this was read in pseudocode only.
 
+Correction 2026-10-18 from the [clip-launch-v1 review](../../handoff/clip-launch-v1/REVIEW.md#findings)
+(RVC-10; plan finding F2): the API check above was read in the setters'
+disassembly, not observed in a run. The setters build these messages and throw
+before storing, but the kept evidence does not show how the error reaches a script,
+so the text a script receives is unknown. [SPEC-CLIP-LAUNCH](../specs/clip-launch.md)
+revision 2 marks it unknown.
+
 ## Defaults, loading and migration
 
 ### Constructor defaults
@@ -175,6 +182,12 @@ AFollowAction registrations equal the FollowAction fields. **Inferred** from
   accepted on load.
 - The writer emits each field as a child element with a `Value` attribute.
 
+Correction 2026-10-18 (clip-launch-v1 review RVC-03 and RVC-11; plan finding F4):
+storage without a range check is supported only for list values, whose index the
+loader stores directly. The load path of the bounded members themselves (the UserFloat
+velocity amount, chances and jump indices, and the ranged `LoopIterations`) was not
+read, so the result for a value outside its bounds is unknown.
+
 The [lexical rules](transport-state-native.md#lexical-acceptance-on-load) for Int, Bool,
 Float and Double apply.
 
@@ -204,6 +217,14 @@ The schema has `FollowActionEnabled` from 11.0_413, but the translator is number
 (417). It only acts when the field is absent. **Inferred:** documents saved by 413–416
 already carry it. No shipped document is older than `12.0_12117`, so none of these paths is
 exercised by shipped content.
+
+Correction 2026-10-18 (clip-launch-v1 plan findings F6 and F7, review RVC-08): the
+step-12203 row was read in pseudocode, not in disassembly as the ✓ suggests. The
+clip-launch-v1 reviewer re-read the retained s5-0004 disassembly and confirmed every
+condition and default value. Step 406 on a clip that already has `FollowAction`
+reports `Unexpected member FollowAction` (`0x101471a98`) and does not return; whether
+opening then refuses the document or the application stops is unknown. The scene
+writer was not read, so the saved form of a scene is not established.
 
 ## From a quantization value to a launch boundary
 

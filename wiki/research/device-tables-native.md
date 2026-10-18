@@ -2,7 +2,7 @@
 id: RESEARCH-DEVICE-TABLES-NATIVE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -159,6 +159,10 @@ shape (64 + 31.5v; N5). Two devices with the same pattern make an unmodelled Liv
 likely than an engine that uses a quarter of its range, but nothing found in the code supports either.
 P4-N5-01 and P4-N6-01 settle it.
 
+Note (2026-10-18): neither probe will run ([ADR 0003](../decisions/adr-0003-no-reference-execution.md)).
+The contradiction stays open; the static route is the Live-side float parameter unit
+([device parameter mapping](device-parameter-mapping-native.md#corpus-cross-check-with-the-bundle-side-trace)).
+
 ## Defaults and non-parameter fields
 
 - **Constructor defaults (Observed).** All 417 stored parameters of the three devices have one
@@ -173,6 +177,20 @@ P4-N5-01 and P4-N6-01 settle it.
   `*RelativePosition` to −1073741824, Analog `SelectedFinger` to 7, Tension and Collision `CurrentTab` to
   0, Collision `ResonatorNumber` to 1 and 2, and the `*On` MPE flags to 0. These equal H4's shipped
   values, so DEV-C09's values are now also constructor values for these three devices.
+
+  Correction (2026-10-18): the comparison above holds only for the fields documents store.
+  Collision `PitchBendRangeRelativePosition`, `Lfo1/SyncRateRelative`, `Lfo2/SyncRateRelative`
+  and `Resonator1/2/ResonatorNumber`, and the `*On` flags, are set by the constructors but are
+  absent from schema `12.0_12402` (H4 `out/schema_devices.json` `current`) and from every
+  shipped document. The v1 review counted 0 documents with the first three
+  (`review-check.json` `draft_claimed_fields_found`); for the others, an analyst re-check on
+  2026-10-18 (script not retained) found that all 1,064 occurrences hold exactly the schema
+  members. They are runtime members. Also, "every `*RelativePosition`" means those in
+  `out/nonparam_fields.tsv`: the Analog `SignalChain1/2/Oscillator*RelativePosition` fields
+  are not set there. The
+  [plan](../specs/bundled-device-parameters-handoff-plan.md#findings-while-staging) found this
+  as F1; [SPEC-BUNDLED-DEVICE-PARAMETERS](../specs/bundled-device-parameters.md) r2 REQ-011
+  is corrected.
 - **Runtime-only members.** `ToggleDummy`, `IsChain2` and `DummyPerNotePitchBendRange` are registered
   but absent from the schema; they are not stored.
 
@@ -194,6 +212,13 @@ P4-N5-01 and P4-N6-01 settle it.
   ([automation envelopes](automation-envelopes.md#native-reading-defaults-and-load-checks)). What Live then
   displays, sends and re-saves for an out-of-range value is unknown (P4-H4-02); the converters clamp
   what reaches the engine (N5).
+
+Correction (2026-10-18): `out/loader_slots.txt` does not support the first bullet for `AAmp`; it
+reads "typeinfo name not found once". The claim holds: `SNewCompound<AAmp>` (`0x1030b42e8`)
+calls `FUN_1030b4934`, which stores vtable `0x1068bff78`, and that vtable's `+0x140` word is
+`0x101487310` and its `+0xd0` word `0x1023a3b14`, as for the other devices. The two words were
+read on 2026-10-18 with `extract_nested.Image` on `Live.arm64` (plan F6, re-read the same day);
+the call to the vtable store is from the plan's reading and was not re-read.
 
 ## Corrections to earlier pages
 

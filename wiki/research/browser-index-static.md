@@ -2,7 +2,7 @@
 id: RESEARCH-BROWSER-INDEX-STATIC
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -443,6 +443,20 @@ requires one.
 | BI-C10 | A reference matching a `filerefmap.db` source triple resolves to its destination | Schema and query | Needs PRB-H2-07 |
 | BI-C11 | The index records per-file color and use count, settable from the UI | Columns and commands `SetColor(s)`, `IncreaseUseCount` | Persistence location unknown |
 | BI-C12 | Search matches tags and system text with prefix indexing | FTS4 `(sys, tags)`, `prefix="2,4,6"` | Matching rules unknown |
+
+**Correction 2026-10-18** (browser-index-v1 review, findings RVB-01 and RVB-02;
+[SPEC-BROWSER-INDEX](../specs/browser-index.md) revision 2). BI-C01's binding
+rule is too broad for user folders. That item paths resolve relative to the
+folder containing `Ableton Folder Info` is a fact about the shipped sidecars,
+and the reader matches at any depth only for pack sidecars. A user folder's
+sidecar (resource `folder`) binds only the files directly inside that folder,
+by name. Entries that contain `/` or name a folder match nothing. Entries that
+match nothing are removed from the helper's copy of the sidecar, which is
+marked changed; whether the file is then rewritten is untraced. Evidence:
+reader `0x1006d2624`, item queries `0x1002af190` (direct children, folders
+excluded) and `0x1002af23c` (any depth), apply step `0x1006dbf98`
+([reviewer's checks](../../analysis/ableton-live-12.4.3/handoff-staging/browser-index-v1-analysis/review/review-checks.txt),
+section 3). The table above is kept as written.
 
 ## Live-side questions (main Live project)
 

@@ -2,7 +2,7 @@
 id: RESEARCH-AUTOMATION-ENVELOPES
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -249,6 +249,20 @@ clamp; the code shows a clamp only for curved segments, so AE-C12 is unknown.
 **Unknown:** the converter used for ordinary track and clip envelopes, so whether
 some parameters interpolate in a non-linear domain.
 
+Correction 2026-10-18 from [SPEC-AUTOMATION-ENVELOPES](../specs/automation-envelopes.md)
+revision 2 (handoff finding F1): the conversion is not limited to the linear step.
+In the disassembly of `0x1024095b4` ✓ the end-of-list, event-time and equal-value
+branches also call `0x102778f50` and `0x101574bb0` (calls at `0x10240973c`,
+`0x1024097dc` and `0x10240997c`). Every Float value therefore depends on the
+converter, which the Float entry `0x1024094c0` requests from the automation's
+slot +0x238; steps 1 to 3 give stored values only if it leaves them unchanged. The
+Bool and Enum path has no such step. The discrete entry `0x10240a83c` tail-calls
+`0x10240a84c` ✓, which requests no converter and returns the selected event's
+slot +0x1f0. That slot returns the stored value as a float (`ABoolEvent`
+`0x102777cfc`, `AEnumEvent` `0x102778168`). The entry, the slot reads and the two getters come from
+scratch corpus and image lookups on 2026-10-18 that are not retained; the spec's
+appendix lists them.
+
 **Static derivations** (computed with `curve_check.py`, never observed in Live):
 
 - Chuck Sutton Lite Demo (`07091ab2…`), track envelope Id 1 → `Gain` (PointeeId 85599),
@@ -291,6 +305,11 @@ Static fixture expectations (document values only): the Chuck Sutton Suite Demo
 (`3f1c0f92…`) holds 83 track envelopes and 1,071 curved envelope events;
 `DefaultLiveSet.als` (`aeec3f07…`) holds only the two one-event main-track envelopes.
 Full hashes are in `inputs-documents.tsv`.
+
+Added 2026-10-18 from the spec's withdrawn cases AEN-001 and AEN-002 (handoff
+finding F3): the Suite Demo also holds 468 clip envelopes (`per_document`), and
+`Recording Audio.als` (`af57ff8f…`) holds only the main track's two one-event
+envelopes, tempo `120` and time-signature code `201` (decoded shipped file).
 
 ## Unknowns
 

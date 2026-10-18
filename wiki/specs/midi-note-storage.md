@@ -2,7 +2,7 @@
 id: SPEC-MIDI-NOTE-STORAGE
 type: spec
 status: draft
-revision: 1
+revision: 2
 updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -25,7 +25,10 @@ how the clip's notes are stored in the document and how they are read and writte
 
 Every requirement is a **proposed contract**. Each clause is documented by shipped files,
 supported by a static derivation, or explicitly unknown. Nothing was run against Live.
-[ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a static-first draft.
+[ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a static-first draft. Under
+[ADR 0003](../decisions/adr-0003-no-reference-execution.md) nothing will be run against Live:
+no reference observation is available, so a U clause is settled only by a static route or
+stays U.
 The target is documents with `MinorVersion="12.0_12402"`. The gzip and XML envelope belongs
 to [SPEC-ALS-CONTAINER](als-container.md). Value text follows
 [SPEC-TRANSPORT-STATE](transport-state.md) REQ-003, 004, 005 and 011. Both are dependencies.
@@ -37,16 +40,18 @@ All examples are fragments of decoded XML.
 | --- | --- |
 | D | Documented: present in the shipped schema for `12.0_12402` or in shipped documents. Those documents were written by 12.4d1 or older, not by 12.4.3 |
 | S | Static derivation from the 12.4.3 executable; not an observed run |
-| U | Unknown; no expected result. PRB IDs name the Phase 4 probe that would settle it |
+| U | Unknown; no expected result. A PRB ID names the Phase 4 probe that would have settled it. No probe will run (ADR 0003); where a static route could still settle a clause, the clause names it |
 
 Only D and S clauses may enter a release. U clauses block the behavior they name.
 
-Static clauses rest on two stated assumptions:
+Static clauses rest on these assumptions. A1 is now established statically. A2 and A3 remain
+stated assumptions, which the review accepted as such (RVN-11):
 
 | ID | Assumption | Affects |
 | --- | --- | --- |
-| A1 | The per-item normalization step of the document reader (REQ-005) runs when a Live Set or clip file is loaded. This is inferred, not traced | REQ-005 |
-| A2 | The acceptance procedure, which places a loaded clip file into a set and saves the set, does not itself change the notes, their ids or the clip's next id. This is not traced; PRB-S7-09 checks it | Every case that compares saved values |
+| A1 | **Established statically** (review RVN-01). Every step applied after an item's text is read runs when a Live Set is opened: the value limits (REQ-005), the NoteId check, the next-id raise and numbering (REQ-008, 009), the per-note list rules (REQ-014) and the group check (REQ-015). One load-context flag gates them all. Every context constructor sets it, and only undo-history streams clear it. For a clip file the same survey applies, but that read path was not traced. The defaults (REQ-003) and the time grid (REQ-006) are not gated. Revision 1 called A1 inferred and tied it to REQ-005 only | REQ-005, 008, 009, 014, 015 |
+| A2 | Opening the document and saving it without other changes does not itself change the notes, their ids or the clip's next id. This covers the draft's procedure (a loaded clip file placed into a set, then the set saved) and the release's (an authored set opened, then saved). Not traced. No reference observation is available (ADR 0003), and no static route short of tracing every path between load and save is known | Every case that compares saved values |
+| A3 | `MidiKey`, `CC` and the `Id` attributes are read by the integer parser of Int fields, the parser of REQ-TRANSPORT-STATE-006. A per-note list's `NoteId` is read by the Int64 parser of REQ-002. Inferred from the schema types and the type dispatch of the text conversion; not traced per field | REQ-002 (other integer fields); every case, since each reads `MidiKey` |
 
 **Refused** means that the document reader stops with a read error of the corrupt-document
 class. That is the class of SPEC-ALS-CONTAINER; for a duplicate attribute it is the XML
@@ -105,7 +110,8 @@ fixtures avoid them.
 
 - **S.** Attributes are accepted in any order.
 - **S.** Value text follows SPEC-TRANSPORT-STATE:
-  - 64-bit values follow REQ-TRANSPORT-STATE-004;
+  - 64-bit values follow REQ-TRANSPORT-STATE-004. The text `Invalid` reads as the largest
+    finite value 1.7976931348623157e308; MNS-017 and MNS-051 rely on it;
   - 32-bit values follow the 32-bit form of REQ-TRANSPORT-STATE-005;
   - `IsEnabled` follows REQ-TRANSPORT-STATE-003: exactly `true` or `1` for true, and `false`
     or `0` for false. Any other text makes the document refused.
@@ -116,14 +122,22 @@ fixtures avoid them.
   - digits followed only by spaces, when nothing precedes the digits (`7 `).
 
   After the leading spaces and sign, the part up to the last digit must be at most 63
-  characters. The value must fit in 64 bits.
+  characters, counting leading zeros. The value must be at most 9,223,372,036,854,775,807,
+  the largest signed 64-bit integer.
 - **S.** Any other integer text makes the document refused. This includes an empty or
-  all-space value, `7.0`, `0x10`, `+-7`, a non-ASCII byte and an overflowing number.
+  all-space value, `7.0`, `0x10`, `+-7`, a non-ASCII byte, 64 digits and a value above the
+  maximum, such as `9223372036854775808`.
 - **S.** A repeated attribute is malformed XML, and the document is refused.
+- **S (A3).** `MidiKey`, `CC` and the `Id` attributes of KeyTracks and per-note lists have the
+  schema type `Int`. A per-note list's `NoteId` has the type `Int64`. Plain decimal text reads
+  as its value: `0`, or ASCII digits without a leading zero. `CC` text may also start with one
+  `-` (`-2`, `-1`, `-3`).
 - **U.** These integer spellings are unknown:
   - spaces on both sides of the digits, or a `+` with trailing spaces (` 7 `, `+7 `).
     The static reading is refused;
-  - a `-` sign (see Exclusions).
+  - a `-` sign (see Exclusions);
+  - any other spelling of `MidiKey`, `CC`, a list's `NoteId` or an `Id`, such as spaces, a
+    `+`, leading zeros, or a `-` outside `CC`.
 
 ### REQ-MIDI-NOTE-STORAGE-003 — optional note attributes
 
@@ -145,13 +159,14 @@ fixtures avoid them.
 
 ### REQ-MIDI-NOTE-STORAGE-005 — value normalization on load
 
-- **S (A1).** After a note's attributes are read:
+- **S.** After a note's attributes are read (A1, established):
   - `Velocity` below 1 becomes 1, and above 127 becomes 127;
   - `OffVelocity` below 0 becomes 0, and above 127 becomes 127;
   - `Probability` below 0 becomes 0, and above 1 becomes 1;
   - a `Duration` below 0, or equal to the largest finite 64-bit value, becomes 0.
 
-  These values do not make the document refused.
+  A value set to 0 by these rules is positive zero. These values do not make the document
+  refused.
 - **S.** `Time`, `VelocityDeviation` and `NoteId` are not range-checked. A negative `Time` is
   kept.
 - **S.** A fractional `Velocity` is kept, for example 80.578949.
@@ -212,26 +227,28 @@ fixtures avoid them.
 - **S.** After the notes load, the clip's next id N becomes the larger of:
   - the stored `NoteIdGenerator/NextId`;
   - the largest non-zero NoteId plus 1, or 1 when no note has a non-zero NoteId.
-- **S.** Then each note with NoteId 0 receives N, and N increases by 1 after each. Notes are
-  taken KeyTrack by KeyTrack, and within a KeyTrack in document order. For a clip whose
-  KeyTracks are in ascending key order, KeyTracks are taken in ascending key order.
+- **S.** Then each note with NoteId 0 receives N, and N increases by 1 after each. For a clip
+  whose KeyTracks are stored in ascending key order, the KeyTracks are taken in that stored
+  order, and the notes of each KeyTrack in document order.
 - **S.** A save writes every note's NoteId and the final N as `NoteIdGenerator/NextId`.
 - **S.** When `NoteId` is absent from every note of the clip, every note counts as NoteId 0
   and is numbered as above.
-- **U.** The next id when `NoteIdGenerator` is missing, and the order for KeyTracks that are
-  not in ascending key order (REQ-010).
-- Excluded: a negative next id. The reference compares it as unsigned (PRB-S7-10).
+- **U.** The next id when `NoteIdGenerator` is missing, and the numbering order for KeyTracks
+  not stored in ascending key order (REQ-010).
+- Excluded: a negative next id, which the reference compares as unsigned.
 
 ### REQ-MIDI-NOTE-STORAGE-010 — note and KeyTrack order
 
 - **S.** Take a clip whose KeyTracks are in ascending key order and whose notes in each
-  KeyTrack are in strictly ascending `Time` order after rounding. Load and save keep both
-  orders. No load step reorders notes or KeyTracks.
+  KeyTrack are in strictly ascending `Time` order after rounding, with no note starting before
+  the previous note of its key ends. Load and save keep both orders. No load step reorders
+  notes or KeyTracks.
 - **S.** Notes of one key that overlap in time, or that share a `Time`, do not make the
   document refused.
 - **D.** Every shipped clip has ascending key order and strictly ascending times within each
   key. 261 shipped notes start before the previous note on the same key ends.
-- **U.** These outcomes are unknown (PRB-S7-06):
+- **U.** These outcomes are unknown. No reference observation is available (ADR 0003). A
+  static search of the paths after load for a sort could narrow the first:
   - whether notes or KeyTracks stored out of order are re-sorted before a later save;
   - whether overlapping notes are kept, trimmed or merged after load, and how they play.
 
@@ -244,15 +261,18 @@ fixtures avoid them.
 
   The reference handles them without a range or duplicate check, so the outcome may be
   memory corruption rather than defined behavior. No reference outcome may be treated as
-  required. See [Q-018](../questions.md#q-018-midi-note-key-range-and-ordering-after-load)
-  and PRB-S7-05, which runs in a disposable session.
+  required. See [Q-018](../questions.md#q-018-midi-note-key-range-and-ordering-after-load).
+  No reference observation is available (ADR 0003). A static trace of the key-map store's
+  callers for a range guard is the remaining route.
 
 ### REQ-MIDI-NOTE-STORAGE-012 — list ids and empty KeyTracks
 
 - **D.** Shipped KeyTrack `Id`s are unique within a clip and need not follow key order. They
   are ascending in 719 of 1,368 clips. Per-note lists also carry an `Id`.
 - **S.** A save writes an `Id` attribute on each KeyTrack and each per-note list.
-- **U.** These are unknown (PRB-S7-09):
+- **U.** These are unknown. No reference observation is available (ADR 0003). The static
+  routes are the reader's handling of `Id` and the gate of the empty-KeyTrack removal
+  (appendix):
   - the meaning of these Ids;
   - whether loaded Ids are written back unchanged;
   - how repeated Ids are read;
@@ -268,6 +288,9 @@ fixtures avoid them.
   - An event has `TimeOffset` (64-bit) and `Value` (32-bit). It may also have
     `CurveControl1X`, `CurveControl1Y`, `CurveControl2X` and `CurveControl2Y` (64-bit).
   - Shipped `CC` values are −2, −1 and 74.
+- **S.** Event value text follows REQ-002: `TimeOffset` and the curve controls as 64-bit
+  values, `Value` as a 32-bit value. A `TimeOffset` of `Invalid` reads as the largest finite
+  value.
 - **S.** An omitted curve control loads as 0.5, independently for each event.
 - **S.** On save, a curve control equal to 0.5 is omitted. `TimeOffset` and `Value` are always
   written. `TimeOffset` is rounded on load (REQ-006).
@@ -275,6 +298,8 @@ fixtures avoid them.
   - that `TimeOffset` is measured from the note's start;
   - that CC −2 is per-note pitch bend in 14-bit units, −1 is per-note pressure and 74 is
     slide.
+- **U.** The saved order of per-note lists and the attribute order of a saved event. Neither
+  is compared.
 - Excluded: omitted `TimeOffset` or `Value` (see Exclusions).
 
 ### REQ-MIDI-NOTE-STORAGE-014 — per-note expression validation on load
@@ -298,8 +323,9 @@ fixtures avoid them.
 - **U.** Lists with an event at or before offset 0, or at or after the note's `Duration`. The
   reference adjusts such lists in a way that was not traced, and may remove or re-sample
   events outside the note. Whether such a list ends up empty, and so removed, follows from
-  that adjustment. Shipped lists often start at offset 0, so this gap matters (proposed
-  PRB-S7-07 variants).
+  that adjustment. Shipped lists often start at offset 0, so this gap matters. No reference
+  observation is available (ADR 0003). A static trace of the adjustment call (appendix) is
+  the remaining route.
 
 ### REQ-MIDI-NOTE-STORAGE-015 — probability groups
 
@@ -312,7 +338,9 @@ fixtures avoid them.
   document is refused.
 - **S.** A group's note ids are not checked against the clip's notes. A group naming a missing
   note does not make the document refused.
-- **U.** These are unknown (PRB-S7-08):
+- **U.** These are unknown. No reference observation is available (ADR 0003). A static
+  reading of the group class registration and of its writer could settle the shape and the
+  saved text:
   - the XML shape of a group, including whether `GroupId` is an attribute;
   - the group type values;
   - what a group naming a missing note does after load;
@@ -323,8 +351,8 @@ fixtures avoid them.
 
 ### REQ-MIDI-NOTE-STORAGE-016 — number and Boolean text on save
 
-- **S.** Values are written as held after REQ-005 and REQ-006. The writer does not round
-  again.
+- **S.** Values are written as held after REQ-005, REQ-006 and REQ-014. The writer does not
+  round again.
 - **S.** Number text follows REQ-TRANSPORT-STATE-011:
   - `Time`, `Duration`, `TimeOffset` and the curve controls use the 64-bit rule;
   - `Velocity`, `VelocityDeviation`, `OffVelocity`, `Probability` and `Value` use the 32-bit
@@ -350,7 +378,9 @@ fixtures avoid them.
   errors that carry a detail text.
 - **U.** What the user sees is unknown, including whether the detail is shown, as for
   REQ-ALS-CONTAINER-009. It is also unknown whether the whole set or clip file is rejected or
-  only the clip is dropped, and what remains loaded (PRB-S7-02).
+  only the clip is dropped, and what remains loaded. No reference observation is available
+  (ADR 0003). A static trace of the top-level catch, shared with REQ-ALS-CONTAINER-009, could
+  settle part of it.
 
 ## Timing and state
 
@@ -383,15 +413,23 @@ from 0 to 8.
 **Construction.** Decode B0, replace the clip's `MidiClip/Notes` element with the case
 fragment, and re-encode as gzip.
 
-**Procedure.** This is the common procedure of the S7 probe batch:
+**Procedure.** This was the common procedure of the S7 probe batch. Under ADR 0003 it will
+not be run; it defines what a saved comparison means:
 
 1. Start with fresh preferences.
 2. Drag the file into an empty MIDI track.
 3. Save as a new set.
 4. Compare the clip's `Notes` element in the saved set.
 
-**Comparators.** Attribute values are compared as exact text. KeyTrack and list `Id` values
-are not compared (REQ-012). Assumption A2 applies to every saved comparison.
+The release builds each case instead as an authored Live Set. Its one MIDI track has a first
+session clip that loops from 0 to 8 and holds the case fragment. The set is opened and then
+saved. Review RVN-12 accepted this because shipped content cannot travel. Under A2 the
+expected results are the same for both constructions.
+
+**Comparators.** Attribute values are compared as exact text. Not compared: KeyTrack and list
+`Id` values (REQ-012), the content of `NoteProbabilityGroups` and the group generator's
+`NextId` (REQ-015), and the order of per-note lists and of an event's attributes (REQ-013).
+Assumption A2 applies to every saved comparison.
 
 **Fragment F0.** Its notes are called n1, n2 (key 36) and n3 (key 38):
 
@@ -440,17 +478,19 @@ called e1 and e2:
 ```
 
 **Fragment G.** The probability-group cases replace F0's `<NoteProbabilityGroups />`. The
-group shape is unknown, so they are marked "blocked" until PRB-S7-08 records one.
+group shape is unknown, so they are marked "blocked". No reference observation will record it
+(ADR 0003). A static derivation of the shape (REQ-015) would unblock them.
 
 **Case kinds.** P positive, N negative (refused), B boundary, M missing input, S save text,
-U unresolved. All expected results are static derivations or shipped-document facts; none
-has been run. Unless stated otherwise, the other values are unchanged from F0 or F1.
+U unresolved. All expected results are static derivations or shipped-document facts. None
+has been run, and none will be (ADR 0003). Unless stated otherwise, the other values are
+unchanged from F0 or F1.
 
 | Case ID | Requirement | Kind | Setup (edit of F0 or F1) | Expected result | Fixture |
 | --- | --- | --- | --- | --- | --- |
-| MNS-001 | 001, 004, 010, 016 | S | F0 unchanged | Loads. The saved `Notes` equals F0 apart from Ids: KeyTracks 36 then 38, the same note order and attribute text, `NextId` 4 | B0+F0 |
+| MNS-001 | 001, 004, 010, 016 | S | F0 unchanged | Loads. The saved `Notes` equals F0 apart from Ids, `NoteProbabilityGroups` and the group generator: KeyTracks 36 then 38, the same note order and attribute text, `NextId` 4 | B0+F0 |
 | MNS-002 | 003, 004 | P | n1 adds `VelocityDeviation="0" Probability="1" IsEnabled="true"` | Saved n1 has none of these three attributes | B0+F0 |
-| MNS-003 | 004, 016 | S | n1 adds `VelocityDeviation="3" Probability="0.5" IsEnabled="false"` | Saved n1 is exactly `Time="0" Duration="0.25" Velocity="85" VelocityDeviation="3" OffVelocity="64" Probability="0.5" IsEnabled="false" NoteId="1"` | B0+F0 |
+| MNS-003 | 003, 004, 016 | S | n1 adds `VelocityDeviation="3" Probability="0.5" IsEnabled="false"` | Saved n1 is exactly `Time="0" Duration="0.25" Velocity="85" VelocityDeviation="3" OffVelocity="64" Probability="0.5" IsEnabled="false" NoteId="1"`; saved n2 unchanged, with none of these three attributes | B0+F0 |
 | MNS-004 | 002, 003 | B | n1 written as `<MidiNoteEvent Duration="0.25" IsEnabled="false" NoteId="1" OffVelocity="64" Probability="0.5" Time="0" Velocity="85" VelocityDeviation="3" />` | Saved n1 as in MNS-003 | B0+F0 |
 | MNS-005 | 002, 004 | P | n1 `IsEnabled="0"`, n2 `IsEnabled="1"` | Saved n1 has `IsEnabled="false"`; saved n2 has no `IsEnabled` | B0+F0 |
 | MNS-006 | 002 | N | n1 `IsEnabled="TRUE"` | Refused | B0+F0 |
@@ -464,7 +504,7 @@ has been run. Unless stated otherwise, the other values are unchanged from F0 or
 | MNS-014 | 005, 016 | B | n1 `Velocity="0"`, n2 `Velocity="300"`, n3 `Velocity="0.5"` | Loads; saved Velocity `1`, `127`, `1` | B0+F0 |
 | MNS-015 | 005 | B | n1 `OffVelocity="-5"`, n2 `OffVelocity="200"` | Saved OffVelocity `0`, `127` | B0+F0 |
 | MNS-016 | 005, 004 | B | n1 `Probability="1.5"`, n2 `Probability="-1"` | Saved n1 has no `Probability`; n2 has `Probability="0"` | B0+F0 |
-| MNS-017 | 005 | B | n1 `Duration="-2"`, n2 `Duration="Invalid"` | Saved `Duration="0"` for both | B0+F0 |
+| MNS-017 | 002, 005 | B | n1 `Duration="-2"`, n2 `Duration="Invalid"` | Saved `Duration="0"` for both | B0+F0 |
 | MNS-018 | 005, 007 | B | n1 `Time="-3" VelocityDeviation="-500"` | Saved n1 `Time="-3"` and `VelocityDeviation="-500"` | B0+F0 |
 | MNS-019 | 005, 016 | P | n1 `Velocity="80.578949"`, n2 `Velocity="33.3"` | Saved Velocity `80.578949`, `33.2999992` | B0+F0 |
 | MNS-020 | 006, 016 | B | n1 `Time="0.123456789" Duration="0.3333333333"` | Saved n1 `Time="0.123456751581751581" Duration="0.333333333333333315"` | B0+F0 |
@@ -481,33 +521,44 @@ has been run. Unless stated otherwise, the other values are unchanged from F0 or
 | MNS-031 | 009 | B | `NoteIdGenerator/NextId` `Value="1"` | Saved `NextId` 4 | B0+F0 |
 | MNS-032 | 009 | B | `NoteIdGenerator/NextId` `Value="100"` | Saved `NextId` 100 | B0+F0 |
 | MNS-033 | 009 | B | n1 to n3 `NoteId="0"`, `NextId` `Value="100"` | Saved NoteIds 100, 101, 102; `NextId` 103 | B0+F0 |
-| MNS-034 | 009 | U | `NoteIdGenerator/NextId` `Value="-5"` | Unresolved (PRB-S7-10) | B0+F0 |
-| MNS-035 | 010 | U | Key 36 lists n2 before n1 | Saved order unresolved (PRB-S7-06) | B0+F0 |
-| MNS-036 | 010 | B | n1 `Duration="2"`, overlapping n2 | Loads (not refused); saved n1 and n2 unresolved (PRB-S7-06) | B0+F0 |
-| MNS-037 | 011 | U | Key 38's MidiKey (a) `128`, (b) `-1`, (c) removed; (d) both KeyTracks `36` | Not graded; excluded; disposable session only (PRB-S7-05) | B0+F0 |
+| MNS-034 | 009 | U | `NoteIdGenerator/NextId` `Value="-5"` | Unresolved; a negative next id is excluded (REQ-009) | B0+F0 |
+| MNS-035 | 010 | U | Key 36 lists n2 before n1 | Saved order unresolved; no reference observation (ADR 0003) | B0+F0 |
+| MNS-036 | 010 | B | n1 `Duration="2"`, overlapping n2 | Loads (not refused); saved n1 and n2 unresolved; no reference observation (ADR 0003) | B0+F0 |
+| MNS-037 | 011 | U | Key 38's MidiKey (a) `128`, (b) `-1`, (c) removed; (d) both KeyTracks `36` | Not graded; excluded; no reference observation (ADR 0003) | B0+F0 |
 | MNS-038 | 012 | U | Both KeyTracks `Id="5"` | Load outcome and saved Ids unresolved | B0+F0 |
 | MNS-039 | 013, 014, 016 | S | F1 unchanged | Loads; saved L1 with e1 `TimeOffset="0.0625" Value="100"` and e2 `TimeOffset="0.125" Value="-200"`, no curve attributes | B0+F1 |
 | MNS-040 | 013, 016 | S | e1 adds `CurveControl1X="0.5" CurveControl1Y="0.2"` | Saved e1 has no `CurveControl1X` and has `CurveControl1Y="0.200000000000000011"` | B0+F1 |
-| MNS-041 | 014 | N | Add a second list `NoteId="1" CC="-2"` with one event at 0.0625 | Refused | B0+F1 |
+| MNS-041 | 014 | N | Add a second list `NoteId="1" CC="-2"` with one event `TimeOffset="0.0625" Value="1"` | Refused | B0+F1 |
 | MNS-042 | 014 | P | Add a list `NoteId="1" CC="74"` with one event `TimeOffset="0.0625" Value="64"` | Both lists saved | B0+F1 |
 | MNS-043 | 014 | B | L1 `CC` set to (a) `0`, (b) `32`, (c) `120`, (d) `128`, (e) `129`, (f) `-3` | Loads; L1 not saved | B0+F1 |
 | MNS-044 | 014 | B | L1 `CC` set to (a) `1`, (b) `119`, (c) `-1` | Loads; L1 saved with e1 `Value="100"` and e2 `Value="0"` | B0+F1 |
 | MNS-045 | 014 | B | L1 `NoteId` set to (a) `0`, (b) `99` | Loads; L1 not saved | B0+F1 |
-| MNS-046 | 014 | B | L1 `NoteId="99"`, plus a second list `NoteId="99" CC="-2"` | Refused (duplicate pair, although NoteId 99 names no note) | B0+F1 |
+| MNS-046 | 014 | B | L1 `NoteId="99"`, plus a second list `NoteId="99" CC="-2"` with one event `TimeOffset="0.0625" Value="1"` | Refused (duplicate pair, although NoteId 99 names no note) | B0+F1 |
 | MNS-047 | 014 | B | e1 `Value="9000"`, e2 `Value="-9000"` | Saved Value `8191`, `-8192` | B0+F1 |
 | MNS-048 | 014 | B | L1 `CC="74"`, e1 `Value="200"`, e2 `Value="-1"` | Saved Value `127`, `0` | B0+F1 |
 | MNS-049 | 014 | B | (a) e2 listed before e1; (b) a third event `TimeOffset="0.0625" Value="5"` after e2 | (a) saved e1, e2; (b) saved e1, the third event, then e2 | B0+F1 |
 | MNS-050 | 014 | B | L1 `<Events />` | Loads; L1 not saved | B0+F1 |
-| MNS-051 | 014 | B | (a) e2 `TimeOffset="Invalid"`; (b) e1 and e2 `TimeOffset="Invalid"` | (a) L1 saved with e1 only; (b) L1 not saved | B0+F1 |
+| MNS-051 | 002, 014 | B | (a) e2 `TimeOffset="Invalid"`; (b) e1 and e2 `TimeOffset="Invalid"` | (a) L1 saved with e1 only; (b) L1 not saved | B0+F1 |
 | MNS-052 | 014, 009 | B | n2 `NoteId="0"`; add a list `NoteId="4" CC="-2"` with one event `TimeOffset="0.0625" Value="1"` | Loads; n2 saved with `NoteId="4"`; the added list not saved | B0+F1 |
-| MNS-053 | 014 | U | (a) e1 `TimeOffset="0"`; (b) e2 `TimeOffset="0.25"` (equal to n1's Duration); (c) e2 `TimeOffset="0.5"`; (d) e1 `TimeOffset="-0.1"` | Unresolved (proposed PRB-S7-07 variants) | B0+F1 |
+| MNS-053 | 014 | U | (a) e1 `TimeOffset="0"`; (b) e2 `TimeOffset="0.25"` (equal to n1's Duration); (c) e2 `TimeOffset="0.5"`; (d) e1 `TimeOffset="-0.1"` | Unresolved; no reference observation (ADR 0003); static route in REQ-014 | B0+F1 |
 | MNS-054 | 015 | N | G: one group, `GroupId` 0, notes 1 and 2; group `NextId` 1 | Refused (blocked) | B0+F0+G |
 | MNS-055 | 015 | N | G: one group, `GroupId` 5; group `NextId` 1 | Refused (blocked) | B0+F0+G |
 | MNS-056 | 015 | N | G: two groups, `GroupId` 2 then 1; group `NextId` 3 | Refused (blocked) | B0+F0+G |
 | MNS-057 | 015 | N | G: two groups, `GroupId` 1 then 1; group `NextId` 2 | Refused (blocked) | B0+F0+G |
 | MNS-058 | 015 | P | G: one group, `GroupId` 1, notes 1 and 2; group `NextId` 2 | Loads (blocked); saved group text unresolved | B0+F0+G |
 | MNS-059 | 015 | B | G: one group, `GroupId` 1, naming note 99; group `NextId` 2 | Loads (not refused; blocked); later effect unresolved | B0+F0+G |
-| MNS-060 | 017 | U | MNS-026 | User-visible outcome unresolved (PRB-S7-02) | B0+F0 |
+| MNS-060 | 017 | U | MNS-026 | User-visible outcome unresolved; no reference observation (ADR 0003) | B0+F0 |
+| MNS-061 | 002 | P | n1 `NoteId=" 1"`, n2 `NoteId="+2"`, n3 `NoteId="3 "` | Loads; saved NoteIds `1`, `2`, `3`; `NextId` 4 | B0+F0 |
+| MNS-062 | 002 | N | n3 `NoteId="+-3"` | Refused | B0+F0 |
+| MNS-063 | 002 | N | n3 `NoteId` of three spaces | Refused | B0+F0 |
+| MNS-064 | 002 | N | n3 `NoteId="３"` (U+FF13, a fullwidth digit) | Refused | B0+F0 |
+| MNS-065 | 002 | N | n3 `NoteId` of 64 digits: 63 zeros, then `3` | Refused | B0+F0 |
+| MNS-066 | 002 | N | n3 `NoteId="9223372036854775808"` (2^63) | Refused | B0+F0 |
+| MNS-067 | 002, 016 | B | n3 `Time=" 0.5abc"` | Loads; saved n3 `Time="0.5"` | B0+F0 |
+| MNS-068 | 002 | N | n1 `Velocity="abc"` | Refused | B0+F0 |
+| MNS-069 | 006, 013, 016 | B | e1 `TimeOffset="0.123456789"` | Saved e1 `TimeOffset="0.123456751581751581"`, before e2 | B0+F1 |
+| MNS-070 | 010 | B | n2 `Time="0"`, the same Time as n1 | Loads (not refused); saved n1 and n2 unresolved; no reference observation (ADR 0003) | B0+F0 |
+| MNS-071 | 014 | B | L1 `CC` set to (a) `31`, (b) `33` | Loads; L1 saved with e1 `Value="100"` and e2 `Value="0"` | B0+F1 |
 
 Cases marked unresolved or blocked must not be graded as passes. The omitted case kinds:
 
@@ -520,16 +571,19 @@ Cases marked unresolved or blocked must not be graded as passes. The omitted cas
 - [Q-018](../questions.md#q-018-midi-note-key-range-and-ordering-after-load) covers
   REQ-011, re-sorting after load (REQ-010), and list Ids and empty KeyTracks (REQ-012).
 - **Refusal presentation** (REQ-017) is shared with REQ-ALS-CONTAINER-009.
-- **New in this revision:** the adjustment of per-note lists with events at or outside the
-  note's span (REQ-014, MNS-053). PRB-S7-07 needs the four MNS-053 variants added.
-- **Probability groups:** the group XML shape and saved text (REQ-015, PRB-S7-08).
+- **Per-note lists at the note's edges:** the untraced adjustment of lists with events at or
+  outside the note's span (REQ-014, MNS-053).
+- **Probability groups:** the group XML shape and saved text (REQ-015).
 - **Negative values and other spellings:** negative ids and next ids, negative zero, and the
   integer spellings of REQ-002.
-- **Assumptions:** A1 (PRB-S7-03 tests it) and A2 (PRB-S7-09).
+- **Assumptions:** A1 is established statically (review RVN-01). A2 and A3 remain stated
+  assumptions.
 
-The [probe batch](../../analysis/ableton-live-12.4.3/r2/s7-midi-notes-v1/probe-batch.json)
-(PRB-S7-01 to 10) gives an input, a discriminating observation and a stop condition for each
-probe. Its PRB-S7-02 variant B expectation needs the correction noted in the appendix.
+No reference observation will settle any of these (ADR 0003). Each stays U unless the static
+route named in its requirement settles it. The
+[probe batch](../../analysis/ableton-live-12.4.3/r2/s7-midi-notes-v1/probe-batch.json)
+(PRB-S7-01 to 10) will not run. It is kept as the record of what observation would have
+settled, together with the appendix's corrections to PRB-S7-02 and PRB-S7-07.
 
 ## Analyst evidence appendix
 
@@ -540,9 +594,21 @@ Analysis-only. Do not copy into a handoff. The canonical evidence is
 `Live.arm64`, SHA-256 `3a99ceea…d1c383cfad`, base `0x100000000`. ✓ marks a branch this
 author re-read in the dossier disassembly while drafting.
 
+Revision 2 also cites the evidence of the midi-note-storage-v1 review (2026-10-18, a separate
+review agent):
+[review-checks.txt](../../analysis/ableton-live-12.4.3/handoff-staging/midi-note-storage-v1-analysis/review/review-checks.txt),
+whose sections follow the findings, and
+[corpus-excerpts.jsonl](../../analysis/ableton-live-12.4.3/handoff-staging/midi-note-storage-v1-analysis/review/corpus-excerpts.jsonl),
+29 corpus records with chunk, offset, line SHA-256 and code SHA-256. "Review excerpts" below
+means that file.
+
 Drafting added one query round, **d4-0001**, with dossiers `0x10292b9ec` and `0x10292c960`.
-It sits in `/var/tmp/sound-analysis/query-spool-2/results/d4-0001/` and is not yet copied
-into the retained run. File hashes:
+Its results stayed in `/var/tmp/sound-analysis/query-spool-2/results/d4-0001/` and were
+**not retained**. The review re-hashed them, and all five matched the table below. It then
+re-established both functions from retained records (RVN-02). The review excerpts hold the
+corpus records of `0x10292b9ec` (chunk-02023, offset 170246) and `0x10292c960` (chunk-02023,
+offset 201797), whose code SHA-256 equal the d4-0001 `.c` files. Revision 2 cites those
+records, not d4-0001. The d4-0001 file hashes recorded in revision 1:
 
 | File | SHA-256 prefix |
 | --- | --- |
@@ -555,19 +621,19 @@ into the retained run. File hashes:
 | Requirement | Evidence (function entry, result) | Strength |
 | --- | --- | --- |
 | 001 | Schema `12.0_12402` and 1,252 12.x clips (`static-survey.json` `schema.segments`, `midinotes_child_orders`). MidiNotes registration `0x1028f3afc`; KeyTrack registration `0x1028ab80c`, `0x1028ab9f4` (s7-0004). Array loader `0x101560424` ✓ (s7-0001): `Class mismatch for array member` leads to the corrupt throw `0x10148229c` | D; save order S via the generic writer (n1) |
-| 002 | Registration `0x1028e26c0` (s7-0004), flag 4. Text conversion `0x10152bfb8` (n1-0006). Int64 parser `0x101533e14` ✓ (s7-0004): leading-space scan, trailing-space count, optional `+`, converted length `min(len − start, end)` (the same computation as the transport-state integer parser, RV1-01), `< 0x40`, `+-` check, ASCII check, then a whole-span conversion `0x101524d8c`. Its failure is `Unexpected value for int64 node` | S; both-sides spaces and `-` U |
+| 002 | Registration `0x1028e26c0` (s7-0004), flag 4. Text conversion `0x10152bfb8` (n1-0006). Int64 parser `0x101533e14` ✓ (s7-0004): leading-space scan, trailing-space count, optional `+`, converted length `min(len − start, end)` (the same computation as the transport-state integer parser, RV1-01), `< 0x40`, `+-` check, ASCII check, then a whole-span conversion `0x101524d8c`. Its failure is `Unexpected value for int64 node`. The conversion `0x101524d8c` (review excerpts, chunk-00813 offset 61888) is signed 64-bit: it skips leading zeros, accepts `-`, and fails with errc 0x22 above 9,223,372,036,854,775,807 (plan F7). `Invalid`: an exact seven-character compare, then DBL_MAX, at `0x10152c058`–`0x10152c088` (review-checks section 4, RVN-09). Int fields (type 0x11 in `0x10152bfb8`, plan F3) use the parser `0x1002fd908`. Its converter `0x1002fda78` (review excerpts, chunk-00132 offset 138125) accepts one leading `-` (RVN-11). REQ-TRANSPORT-STATE-006 still keeps `-` U for that parser; this reading bears on it | S; both-sides spaces and `-` U; other integer fields S (A3) |
 | 003 | Reset slot `+0xc8` = `0x1028e2fcc` ✓ (s7-0002) sets only VelocityDeviation 0, Probability 1, IsEnabled 1. Per-item sequence `0x101487284` ✓ (s7-0001) | S |
 | 004 | Omit predicate `0x1028e2fe4` ✓ (s7-0001). Generic writer `0x101486cdc` (n1-0008). Array writer `0x101560258` (s7-0003). Copy-out `0x1028e2f90` (s7-0004) copies every field, so no state carries between written notes. Shipped: 12.4d1 attribute sets and `veldev_present_equal_0` / `probability_present_equal_1` only in older writers | S; corroborated |
-| 005 | Post-load `0x1028e2c80` ✓ (s7-0001, disassembly). Duration: `fcmp d0,#0.0; fccmp d0,DBL_MAX,#4,pl; b.ne`, so a negative value or DBL_MAX is zeroed and NaN is kept. Velocity: `fcsel gt` then `fcsel mi`, NaN kept. OffVelocity and Probability: vector `fcmlt`/`fcmgt`/`bit`/`bic` against `0x105896fa8` = (127.0, 1.0). The Ghidra pseudocode wrongly shows NaN zeroed for Duration and set to 1 for Velocity; the disassembly governs. The flag `+0x2c` is inferred set for documents (A1) | S (A1) |
+| 005 | Post-load `0x1028e2c80` ✓ (s7-0001, disassembly). Duration: `fcmp d0,#0.0; fccmp d0,DBL_MAX,#4,pl; b.ne`, so a negative value or DBL_MAX is zeroed and NaN is kept. Velocity: `fcsel gt` then `fcsel mi`, NaN kept. OffVelocity and Probability: vector `fcmlt`/`fcmgt`/`bit`/`bic` against `0x105896fa8` = (127.0, 1.0). The Ghidra pseudocode wrongly shows NaN zeroed for Duration and set to 1 for Velocity; the disassembly governs. Every slot `+0xd0` post-load runs only when the load-context flag `+0x2c` is set. Review RVN-01 established that it is set for a Live Set read (review-checks section 2). The gate sites are `0x101487284`, `0x101487310`, `0x101486fe4` and `0x1014868c0`. Every context constructor stores 1. The only clear, `0x1015192b8`, is called from the undo-history streams `0x101546518` and `0x101547ef4`. The reader `0x101484108` builds its context through `0x101478258` and `0x10151e0d8`. Residual, accepted in review: an inlined clear elsewhere is not excluded | S (A1 established) |
 | 006 | Quantizer `0x1028e2e24` ✓ (s7-0001): `fcsel ge` sign, `fmadd` with h × 0.5, `fabs`, `fmul` by 3843840, `frintm`, `fdiv`, `fmul` sign. Sentinels `0x1055d9680` = (−1.7976931348623155e308, 1.7976931348623155e308, DBL_MAX, +inf) (`vtable-reads.txt`). Event quantizer `0x1025c7a0c` (s7-0003). Examples recomputed with a scratch script (not retained) and equal to PRB-S7-04 | S |
 | 007 | `static-survey.json` `documents.checks`: `time_negative` 330, `time_before_loopstart` 45,068, `time_at_or_after_loopend` 52,740, `duration_nonpositive` 4 | D; meanings U |
 | 008 | MidiNotes post-load `0x1028f5864` ✓ (s7-0001). Id collection `0x1028f6154` (s7-0002) skips 0 and sorts as unsigned 64-bit. Adjacent-equal scan, log `Note IDs are not unique in {}: {}{}`, throw `Note IDs are not unique` | S |
-| 009 | Next-id raise `0x102920db4` (s7-0002): `max` by unsigned compare, argument 1 when there are no ids. Zero-id pass `0x1028f6664` (s7-0002) walks the KeyTrack list, then the array. Id allocation `0x1028db9b8` (s7-0003). The all-absent case needs only the constructor value 0 (`0x1028e2af4` ✓) and a reset that does not touch NoteId; it does not depend on the inheritance mechanism | S |
+| 009 | Next-id raise `0x102920db4` (s7-0002): `max` by unsigned compare, argument 1 when there are no ids. Zero-id pass `0x1028f6664` (s7-0002) walks the KeyTrack list, then the array. Id allocation `0x1028db9b8` (s7-0003). Because the pass follows the stored KeyTrack list, ascending key order holds only for KeyTracks stored that way (RVN-03). The all-absent case needs only the constructor value 0 (`0x1028e2af4` ✓) and a reset that does not touch NoteId; it does not depend on the inheritance mechanism | S |
 | 010 | No sort found after load (generic post-load `0x101486fa8` on KeyTrack and array). `documents.checks`: `keytracks_sorted_by_key` 1,368, `order_time_decreasing` 0, `order_time_equal` 0, `overlap_same_key` 261 | S (negative result) / D / U |
 | 011 | Key-map store without a range check: `str x23,[x19,w0,SXTW #3]` in `0x1028f5f74` (s7-0003) and `0x1028f5420` (s7-0004). The map has 128 slots; the constructor sets MidiKey −1 | U, excluded |
 | 012 | List writer `0x101468408` (pseudocode) writes the stored id. The reader's handling of `Id` was not traced. Empty-KeyTrack removal at the start of `0x1028f5864` is gated by global `DAT_106f54e20`+0x350 and `0x10185138c` | D / S / U |
 | 013 | Event constructor `0x1025c77fc`, reset `0x1025c7b04`, omit predicate `0x1025c7b10` (s7-0004) | D / S |
-| 014 | List post-load `0x10292b730` ✓ (s7-0002): `CC + 2 > 0x82` skip, `0x1011afdac`, DBL_MAX drop, clamp `0x1011afc18`/`0x1011afc2c` (−8192/8191 for −2, else 0/127), stable sort `0x1029307b8`. Store post-load `0x10292cd70` ✓ (s7-0002): erase when NoteId is 0 or CC is out of range or invalid; a (NoteId, CC) set size different from the list count throws `Multiple sets of per-note controller change events with the same note ID and CC number`. Orphans `0x1028f64d0` (s7-0003) use the pre-assignment id list. **New (d4-0001 ✓):** in `0x1028f5864` at `0x1028f5bec`–`0x1028f5c0c`, each note's NoteId and Duration go to `0x10292c960`. That function calls `0x10292b9ec` for each list of that NoteId, then removes lists whose event count is 0 (`0x10292caa4`, `0x10292cb58`). `0x10292b9ec` returns early when the list is empty, or when the first offset is > 0 (`fcmp; b.le`) and the last is < Duration (`b.mi`). Otherwise it builds an envelope (`0x1025c442c`, `0x1025c4708`) and calls vtable `+0x308` with the ranges [−1.7976931348623155e308, 0.0] (`0x105847020`, read with `read_consts.py`) and [rounded Duration, 1.7976931348623155e308]. That call's semantics were not traced. In the Chuck Sutton Intro demo, 3,204 of 5,491 non-empty lists start at an offset ≤ 0 and 1,012 end at or after the note's Duration (ad-hoc count, not retained) | S; boundary adjustment U |
+| 014 | List post-load `0x10292b730` ✓ (s7-0002): `CC + 2 > 0x82` skip, `0x1011afdac`, DBL_MAX drop, clamp `0x1011afc18`/`0x1011afc2c` (−8192/8191 for −2, else 0/127), stable sort `0x1029307b8`. Store post-load `0x10292cd70` ✓ (s7-0002): erase when NoteId is 0 or CC is out of range or invalid; a (NoteId, CC) set size different from the list count throws `Multiple sets of per-note controller change events with the same note ID and CC number`. Orphans `0x1028f64d0` (s7-0003) use the pre-assignment id list. **Boundary step** (found in d4-0001 ✓; re-established in review RVN-02): in `0x1028f5864` at `0x1028f5bec`–`0x1028f5c0c` (retained S7 disassembly), each note's NoteId (`0x1028da61c`) and Duration (`0x1028dea48`) go to `0x10292c960`. That function (review excerpts) calls `0x10292b9ec` for each list of that NoteId, then removes lists whose event count is 0 (`0x10292caa4`, `0x10292cb58`). `0x10292b9ec` (review excerpts; early return decoded from the image, review-checks section 3) returns early when the list is empty, or when the first offset is > 0 (`fcmp; b.le`) and the last is < Duration (`b.mi`). Otherwise it builds an envelope (`0x1025c442c`, `0x1025c4708`) and calls vtable `+0x308` with the ranges [−1.7976931348623155e308, 0.0] (`0x105847020`, read with `read_consts.py`) and [rounded Duration, 1.7976931348623155e308]. That call's semantics were not traced. In the Chuck Sutton Intro demo, 3,204 of 5,491 non-empty lists start at an offset ≤ 0 and 1,012 end at or after the note's Duration (ad-hoc count, not retained) | S; boundary adjustment U |
 | 015 | Group check `0x1028f5640` ✓ (s7-0002): id 0 or id ≤ previous (signed, starting at 0) fails. `0x102920ecc` (corpus) is `id < NextId` unsigned. Registration `0x1028f5770` (corpus) does not check the note. The failure throws `Note-group ids are corrupt.` | S; shape U |
 | 016 | `0x10152205c` ✓ (s7-0001): Double `0x101520dbc`, Float `0x101520c70`, Int64 plain, Bool. Rule in REQ-TRANSPORT-STATE-011. `documents.checks` `fmt_ok` 2,054,618 | S; corroborated |
 | 017 | Throws through `0x101488e64` and `0x10148229c`; the top-level catch was not traced | S / U |
@@ -580,21 +646,28 @@ come from the constructor `0x1028e2af4` ✓: Time DBL_MAX (not rounded), Duratio
 then limited), Velocity and OffVelocity 127 (FLT_MAX, then limited) and NoteId 0. A NoteId
 omitted after a non-zero id therefore duplicates it and makes the document refused. Per-note
 events behave the same way: one object per list, and a reset of the curve controls only.
-PRB-S7-01 and PRB-S7-02 test this reading.
+PRB-S7-01 and PRB-S7-02 would have tested this reading. Under ADR 0003 it stays a static
+reading.
 
 **Corrections to the source packet:**
 
 - **MN-23.** The research says "leading or trailing spaces … are accepted". Trailing spaces
-  are accepted only with no leading space or `+`; spaces on both sides are U (REQ-002).
+  are accepted only with no leading space or `+`; spaces on both sides are U (REQ-002). The
+  value limit is signed (plan F7).
 - **MN-20.** It says events "lacking TimeOffset" are dropped. Only an event whose TimeOffset
   is DBL_MAX is dropped, which for an omitted value is only the first event. The excluded
   inheritance applies to the others.
 - **New step.** Neither MN-19 nor MN-20 records the boundary adjustment and empty-list
-  removal (d4-0001).
+  removal (d4-0001, re-established in review RVN-02). A dated correction is now on the
+  research page.
+- **Context flag (review RVN-01).** The research calls the load-context flag inferred and
+  ties it to the clamps only. It gates every post-read step of A1 and is established
+  statically for a Live Set read. A dated correction is on the research page.
 - **PRB-S7-02 variant B.** It expects "NoteIds 1..n". With every NoteId removed from the 909
   file, whose `NextId` is 59, the static result is 59 to 99 in KeyTrack document order
-  (keys 36, 38, 39, 44, 45, 46), then note order, with `NextId` 100.
-- **PRB-S7-07.** It should add the MNS-053 variants.
+  (keys 36, 38, 39, 44, 45, 46), then note order, with `NextId` 100. Kept as record; the
+  probe will not run (ADR 0003).
+- **PRB-S7-07.** It should add the MNS-053 variants. Moot under ADR 0003.
 
 **Dropped or downgraded from MN-01 to MN-24:**
 
@@ -612,9 +685,10 @@ PRB-S7-01 and PRB-S7-02 test this reading.
 | Revision | Date | Change |
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from packet S7 (MN-01 to MN-24) plus one verification round (d4-0001). 17 requirements: 4 without unknown parts (003, 004, 005, 008), 12 with D or S clauses and unknown parts, 1 unknown and excluded (011). 60 unexecuted cases: 45 gradable (MNS-036 in part), 6 blocked by the group shape, 9 unresolved |
+| 2 | 2026-10-18 | Applies the staging and review findings of midi-note-storage-v1 ([plan](midi-note-storage-handoff-plan.md#review-outcome), [review](../../handoff/midi-note-storage-v1/REVIEW.md)) and ADR 0003. Applied: RVN-01 (A1 widened to every gated post-read step and established statically); RVN-02 and F10 (the REQ-014 boundary step cited from the review excerpts); RVN-03 (REQ-009 precondition: KeyTracks stored in ascending key order); RVN-04 and F2 (MNS-001 and the comparators no longer cover probability groups or the group `NextId`); RVN-09 and F4 (`Invalid` stated in REQ-002 and REQ-013; MNS-017 and MNS-051 list 002); RVN-11 (A2 restated for both constructions; A3 added); RVN-12 and F1 in part (the release's authored-set construction noted); F3 (plain decimal text for `MidiKey`, `CC`, list `NoteId` and `Id`); F5 (REQ-010 order clause excludes overlap); F6 (list order and event attribute order U and not compared); F7 (signed 64-bit limit; leading zeros counted); F8 (MNS-061 to MNS-071 added); F9 (MNS-003 judges n2 and lists 003); the plan's case disposition (unstated event `Value` 1 in MNS-041 and MNS-046); release alignment (positive zero in REQ-005; REQ-014 in REQ-016). Rejected: copying d4-0001 into the retained run, since the review excerpts carry identical code and this revision edits wiki pages only; F1's PRB-S7-09 extension, since no probe will run (ADR 0003). No change needed: RVN-05 to RVN-08 and RVN-10, which concern only the release package or confirm the draft. Probe wording replaced under ADR 0003. 17 requirements: 4 without unknown parts, 12 with D or S clauses and unknown parts, 1 unknown and excluded (011). 71 unexecuted cases: 56 gradable (MNS-036 and MNS-070 for the outcome only), 6 blocked by the group shape, 9 unresolved |
 
 Before the 2026-10-18 review, a first release candidate could
 contain the gradable cases of REQ-002 to 009, REQ-014 and REQ-016, under assumptions A1
 and A2.
 
-Released 2026-10-18: [midi-note-storage-v1](../../handoff/midi-note-storage-v1/README.md), 67 cases, approved with narrowing by a separate review agent (partial REQ-001 to 010, 013, 014, 016 only; 011, 012, 015, 017 unreleased). The review findings to apply in the next revision are on the [handoff plan](midi-note-storage-handoff-plan.md#review-outcome). This revision's text is unchanged.
+Released 2026-10-18: [midi-note-storage-v1](../../handoff/midi-note-storage-v1/README.md), 67 cases, approved with narrowing by a separate review agent (partial REQ-001 to 010, 013, 014, 016 only; 011, 012, 015, 017 unreleased). The review findings are on the [handoff plan](midi-note-storage-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1.

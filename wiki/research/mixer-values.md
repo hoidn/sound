@@ -2,7 +2,7 @@
 id: RESEARCH-MIXER-VALUES
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -323,6 +323,14 @@ Correction 2026-10-17 from the [SPEC-MIXER-VALUES](../specs/mixer-values.md) dra
 of 0.33 read as float32 displays as `17R`, not the `16R` listed in `curves.txt`; the −69.7 dB
 display boundary is within rounding error of the platform `log10`, so cases avoid it. The pan input
 order and the crossfade-assign default of 1 (None) are static-derived, not inferred.
+
+Correction 2026-10-18 from the mixer-values-v1 review (RVM-02,
+[REVIEW.md](../../handoff/mixer-values-v1/REVIEW.md)): MX-02 equates the volume range
+10^(−70/20)…10^(6/20) with `0x39a5cb5f`…`0x3fff64c2`. The lower bits are the float32
+nearest to 10^(−70/20). The upper bits are not: the nearest float32 to 10^(6/20) is
+`0x3fff64c1` (1.9952622652). `0x3fff64c2` (1.99526238) is one step above it and equals
+the curve's top gain, float32(10^(float32(0.3))). [SPEC-MIXER-VALUES](../specs/mixer-values.md)
+revision 2 carries the corrected wording.
 
 ## Unknowns
 

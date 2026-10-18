@@ -1897,3 +1897,34 @@ coverage, gate table, transport-state and container specs carry the change.
 The same day, nine agents began applying the review findings to the draft
 specs, and a pilot agent began building the harness. The harness is checked
 against released mixer, MIDI and browser-index or transport cases.
+
+## [2026-10-18] spec | Review findings applied to the nine draft specs
+
+At the user's request ("fix such errors"), nine agents each applied the
+staging and review findings to one draft spec. Each rejection gives a
+reason. Where a finding and the draft disagreed, the agent re-checked the
+cited evidence. Clauses that waited on a probe now cite ADR 0003 and name the
+static route that remains, if any. Requirement and case IDs are stable;
+withdrawn cases are marked, not deleted.
+
+| Spec | Revision | Main corrections | Rejected |
+| --- | --- | --- | --- |
+| [MIDI user mapping](specs/midi-user-mapping.md) | 4 | Crossfader exemption limited to Absolute values; reversed-range stepped rule stated; reversed-range takeover unknown | RV3-07 (adds cases, no error) |
+| [Clip launch](specs/clip-launch.md) | 2 | F1 to F9 and seven review findings; REQ-015 to 018 release proposal dropped; new assumption A7 | None |
+| [MIDI note storage](specs/midi-note-storage.md) | 2 | A1 widened and established; key-order precondition; 64-bit signed; A3 for integer reading; MNS-061 to 071 | Copying d4-0001 (review excerpts cited instead) |
+| [Mixer values](specs/mixer-values.md) | 2 | REQ-008 and 009 citations; REQ-002 upper bound; MV-020 to 022 and 027 ungraded; MV-046 (pan 0.33 gives 17R) | None |
+| [Automation envelopes](specs/automation-envelopes.md) | 2 | A1 covers every Float value; AEN-001 and 002 withdrawn; AEN-003 reworded; AEN-032 and 033 | Probe route for Bool and Enum |
+| [Bundled device parameters](specs/bundled-device-parameters.md) | 2 | Cabinet microphone labels corrected; DryWet 0..1; unstored Collision fields removed; Corpus side-chain fields; tables in document order | None |
+| [Browser index](specs/browser-index.md) | 2 | Sidecars bind to direct files only (BI-040 and 041 withdrawn, BI-045 and 046 added); low-32-bit colour rule; unmatched entries dropped | F7 (narrows the candidate, not an error) |
+| [Plug-in discovery](specs/plugin-discovery.md) | 2 | F1 to F7; release cases adopted as PD-043 to 062 | None |
+| [Warp markers](specs/warp-markers.md) | 2 | A2 split into opening (A2) and saving (A4); REQ-015 inclusive bounds; tie band; WMK-036 | F2 (the review showed TransientEnvelope is created at 100) |
+
+Research pages carry dated correction notes. The handoff plans record what each
+revision applied. Released payloads are unchanged. The question register
+(Q-006, 009, 014, 016 to 021), spec index, feature map, coverage and project
+page are updated. Two gaps were found. First, the automation spec's claim that
+Bool and Enum values skip conversion rests partly on scratch lookups that were
+not retained; the spec says so, and the claim should be re-established and
+retained. Second, the note-storage review found that the integer reader
+accepts a leading `-`. REQ-TRANSPORT-STATE-006 still marks `-` as unknown, so
+check whether it is the same reader.

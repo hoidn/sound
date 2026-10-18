@@ -24,6 +24,8 @@ are kept, and the reviewer's independently written model agrees with every one. 
 
 For the draft spec: remove the REQ-011 prefixes and the 150/50 chance example, or mark them unknown. Grade the saved 3.0000002 follow time as a held value, mark the both-forms clip unknown, and drop the proposal to release REQ-015 to 018. The tables below describe the staged candidate.
 
+Applied in revision 2 (2026-10-18); rejected: none (RVC-13's proposed coverage cases correct no error and are deferred).
+
 ## Decision and boundary
 
 Stage a finite candidate, clip-launch-v1, from

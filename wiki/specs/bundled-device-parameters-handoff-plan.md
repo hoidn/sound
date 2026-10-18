@@ -25,6 +25,8 @@ research page's Cabinet default "Dynamic" has the same error); the Amp and Cabin
 reaches a case: the stored-field claims in REQ-011, the Corpus side-chain list and
 the inexact labels.
 
+Applied in revision 2 (2026-10-18); rejected: none (RVB-03 and RVB-07 to RVB-09 concern only the release text).
+
 ## Decision and boundary
 
 Stage a finite candidate, bundled-device-parameters-v1, from

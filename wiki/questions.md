@@ -2,7 +2,7 @@
 id: RESEARCH-QUESTIONS
 type: questions
 status: active
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 ---
 
@@ -100,6 +100,7 @@ no experimental contradiction has been established yet.
   disassembly) and their constructor defaults; [SPEC-BUNDLED-DEVICE-PARAMETERS](specs/bundled-device-parameters.md)
   r1 drafts the storage contract for all seven devices. The device create path on load,
   new-instance defaults and the position contradiction (P4-N5-01, P4-N6-01) remain open.
+- Progress 2026-10-18 (r2): [SPEC-BUNDLED-DEVICE-PARAMETERS](specs/bundled-device-parameters.md) r2 applies the v1 review. Under ADR 0003 the position contradiction, the create path (A1), new-instance defaults and save output stay unknown. Static routes: the float parameter unit; the list-item factory.
 
 ## Q-007 Reference behavior and timing
 
@@ -156,6 +157,7 @@ no experimental contradiction has been established yet.
   05; feedback bytes and seek and nudge timing unchanged. A narrow midi-config-v3 candidate
   (REQ-005 static value clauses, the crossfader opt-out, MT-01 to 16, 22, 23) is justified but
   not started.
+- Progress 2026-10-18 (r4): midi-config-v3 released (127 cases). [SPEC-MIDI-USER-MAPPING](specs/midi-user-mapping.md) r4 narrows the crossfader exemption to Absolute, states the reversed-range stepped rule, and adds reversed-range takeover as unknown. PRB-N7-01 to 05 will not run (ADR 0003); static or extracted-execution routes remain.
 
 ## Q-010 MIDI discovery, lifecycle and interaction
 
@@ -274,7 +276,7 @@ no experimental contradiction has been established yet.
 - Gap: Live's spawn site and arguments for the index helper; the real database
   prefix and directory; whether version 12300 is what is written; how the browser
   queries the database; who consults `filerefmap.db` and what its type values mean;
-  how XMP sidecar names are derived; user-visible handling of missing, corrupt or
+  user-visible handling of missing, corrupt or
   unsupported files. Runtime facts are in probes PRB-H2-01 to 09.
 - Next action: query the saved Live project for references to `live->index`,
   `ipc-channel`, `{}-files-{}.db` and `fileref-map-path`.
@@ -282,7 +284,8 @@ no experimental contradiction has been established yet.
 - Progress 2026-10-17 (D2): [SPEC-BROWSER-INDEX](specs/browser-index.md) r1 drafted; sidecar names,
   the type-to-kind map and the item `colors` field resolved from the helper corpus. Still open: the
   `<n>` folder, write timing, which kinds are listed, preview playback and `hideKeywords`
-  (PRB-BI-01 to 05 proposed; PRB-H2-03 to 06, 09).
+  (no probe will run, ADR 0003; static routes in the spec's open questions).
+- Progress 2026-10-18 (r2): [SPEC-BROWSER-INDEX](specs/browser-index.md) r2 applies the browser-index-v1 review. Still open: whether a sidecar is rewritten after reading, which edits empty a sidecar, and how built-in and plug-in entries bind.
 
 ## Q-015 Helper launch and update handling in Live
 
@@ -306,14 +309,13 @@ no experimental contradiction has been established yet.
 - Gap: which folders and domain IDs Live passes and how Rescan maps to `--reset`;
   where Audio Units are scanned; any timeout or kill policy; the meaning of the
   watchdog constants; the message framing; the database folder; the
-  `dev_identifier` format; how duplicate class IDs appear in the browser. The crash
-  and limit derivations (PD-10, PD-12) must not be released without probes
-  PRB-H1-02 and PRB-H1-04.
+  `dev_identifier` format; how duplicate class IDs appear in the browser. The crash and limit derivations (PD-10, PD-12) stay unreleased; under ADR 0003 no probe will run.
 - Next action: trace the Live callers of `Plugins: start scanner process`, `--cid`,
   `TPluginScannerMediator` and `APluginSettingsPreferencesModel` in the saved Live
   project.
 - Progress 2026-10-17 (N4): argv, domain IDs, the Rescan-to-`--reset all` mapping, relaunch policy, Live-side timeouts and message framing answered in [helper launch](research/helper-launch-live-side.md#plug-in-scanner); Audio Unit path, `dev_identifier`, duplicates and the database folder still open; probes PRB-N4-01, 02, 05.
 - Progress 2026-10-17 (D1): drafted [SPEC-PLUGIN-DISCOVERY](specs/plugin-discovery.md) r1; PD-10 and PD-12 kept unknown (REQ-012, REQ-014). Resolved statically: VST2 system folders `~/Library/Audio/Plug-Ins/VST` and `/Library/Audio/Plug-Ins/VST`. Still open: Audio Units, scan triggers, source-switch effects, hang, duplicates, progress display, VST3 symlink and unreadable-subfolder handling.
+- Progress 2026-10-18 (r2): [SPEC-PLUGIN-DISCOVERY](specs/plugin-discovery.md) r2 applies findings F1 to F7. A plain file cannot record its own load (release cases 021 `J.vst3` and 028); with no observation (ADR 0003), plain-file candidacy stays static-derived. Still statically decidable: the extension of names beginning with a period, VST3 links and unreadable subfolders, Audio Units, switch labels and defaults, scan triggers, duplicates, progress display. Crash, hang and over-limit order have no further static route.
 
 ## Q-017 Clip launch timing and launch modes
 
@@ -322,15 +324,14 @@ no experimental contradiction has been established yet.
 - Evidence: [clip launch](research/clip-launch.md).
 - Gap: the boundary offset (an unresolved virtual call), the track condition in the
   launch path, launching with the transport stopped, Gate, Toggle and Repeat behavior,
-  Legato, the velocity law and follow-action timing. Do not release CL-13's
-  near-boundary clause before PRB-S5-01.
-- Next action: resolve the virtual target through the fire manager's vtable stores;
-  otherwise run PRB-S5-01 to 11.
+  Legato, the velocity law and follow-action timing. CL-13's near-boundary clause stays unreleased unless a static reading settles it (ADR 0003).
+- Next action: resolve the offset call's target and interpret the slot-state test (A1); PRB-S5-01 to 11 will not run (ADR 0003).
 - Progress 2026-10-17 (D3): [SPEC-CLIP-LAUNCH](specs/clip-launch.md) r1 keeps REQ-017's near-boundary clause
   and REQ-018 to 023 unknown with these probes. New gaps: missing or out-of-range
   `GlobalQuantisation` and `AutoQuantisation` (no S5 probe; extend PRB-S5-09 or 10), reachability of
   migration step 17, clips with several time-signature entries, and the uninterpreted slot-state
   test behind the clip-grid choice (assumption A1).
+- Progress 2026-10-18 (r2): [SPEC-CLIP-LAUNCH](specs/clip-launch.md) r2 applies the clip-launch-v1 review and drops the REQ-015 to 018 release proposal. New gaps: out-of-range bounded values, the script-side API error text, opening corrections for scenes, the step-406 clip with both forms, the saved scene form, and A7.
 
 ## Q-018 MIDI note key range and ordering after load
 
@@ -340,13 +341,13 @@ no experimental contradiction has been established yet.
 - Gap: a `MidiKey` outside 0 to 127, a missing `MidiKey`, or two KeyTracks with the same
   key reach a 128-slot table store with no range check, so the outcome may be memory
   corruption; whether notes are re-sorted after load is untraced.
-- Next action: trace the table store's callers for a range guard; otherwise exclude
-  these inputs from any release and run the matching PRB-S7 probes.
+- Next action: under ADR 0003 PRB-S7-05 and 06 will not run. Trace the key-map store's callers for a range guard, the per-note list adjustment call, and the empty-KeyTrack gate; otherwise these stay U and excluded.
 - Progress 2026-10-17 (D4): [SPEC-MIDI-NOTE-STORAGE](specs/midi-note-storage.md) r1 excludes MidiKey outside 0
   to 127, a missing MidiKey and repeated keys (REQ-011), and keeps re-sorting after load (REQ-010),
   list Id meaning (REQ-012) and refusal presentation (REQ-017) open. No range guard was traced;
   PRB-S7-05 and 06 remain the next action. Also open: an untraced adjustment of per-note lists
   with events at or outside the note span (REQ-014).
+- Progress 2026-10-18 (r2): [SPEC-MIDI-NOTE-STORAGE](specs/midi-note-storage.md) r2 applies the midi-note-storage-v1 review.
 
 ## Q-019 Mixer volume and send values sent to the engine
 
@@ -357,14 +358,14 @@ no experimental contradiction has been established yet.
   position), where sends get their curve and silence floor, out-of-range values after load,
   the meaning of SoloSink, which formatter each UI surface uses, and whether volume
   automation interpolates in gain or in fader position (shared with S6).
-- Next action: trace the logic-to-engine path for the volume and send parameters; otherwise
-  run PRB-S9-01 to 08.
+- Next action: trace the logic-to-engine path for volume and sends statically. No reference observation is available (ADR 0003), so PRB-S9-01 to 08 will not run; anything not settled statically stays unknown.
 - Progress 2026-10-17 (D8): narrowed, not settled. On both track-mixer wiring variants the volume
   port output is converted from fader position to gain with the volume curve and then floored; pan,
   split and volume ports share one class bound to their parameters; their pan-law input order is
   confirmed. Open: where the stored gain becomes that position; the send path. Evidence:
   [SPEC-MIXER-VALUES](specs/mixer-values.md) appendix; queries retained in
   `analysis/ableton-live-12.4.3/r2/d8-mixer-v1/`.
+- Progress 2026-10-18 (r2): [SPEC-MIXER-VALUES](specs/mixer-values.md) r2 applies the mixer-values-v1 review. New gap: what `EnabledByUser` changes (REQ-003). SPEC-AUTOMATION-ENVELOPES r2: every Float envelope value passes through the same unresolved per-target converter.
 
 ## Q-020 Automation envelope load robustness
 
@@ -376,13 +377,13 @@ no experimental contradiction has been established yet.
   release build is unknown. Unsorted events, missing attributes and duplicate event Ids are
   also untraced. A specification must not require a crash; these inputs need exclusion or
   a defined safe behavior chosen by the project.
-- Next action: trace which load path dereferences envelope targets; otherwise exclude
-  these inputs from releases and run PRB-S6 probes on a disposable app copy.
+- Next action: trace which load path dereferences envelope targets (static only); keep these inputs excluded. PRB-S6 probes will not run (ADR 0003).
 - Progress 2026-10-17 (D6): draft [SPEC-AUTOMATION-ENVELOPES](specs/automation-envelopes.md) r1 excludes
   dangling `PointeeId` input (REQ-002) and evaluation before an envelope's first event, possible
   when it is at 0 and unguarded in the reference (REQ-010, REQ-011). Unsorted events, missing
   attributes and duplicate Ids stay unknown pending PRB-S6-03 and 07. Probe follow-ups: PRB-S6-04
   needs a Pan variant (Volume 0 is below its stored minimum) and PRB-S6-07 a variant without `Id`.
+- Progress 2026-10-18 (r2): [SPEC-AUTOMATION-ENVELOPES](specs/automation-envelopes.md) r2 applies the automation-envelopes-v1 review; dangling-target inputs remain excluded.
 
 ## Q-021 Warp playback mapping and load handling
 
@@ -392,5 +393,6 @@ no experimental contradiction has been established yet.
 - Gap: whether playback uses the same piecewise-linear mapping as the scripting conversion;
   load handling of malformed marker lists, missing or out-of-range values; the Transient
   Envelope range; the warp mode an audio clip gets when the element is absent; the spec's
-  assumptions A1 to A3.
-- Next action: run PRB-S8-01 to 11, PRB-S8-08 first for playback.
+  assumptions A1 to A4 (A2 opening, A4 saving).
+- Next action: no reference observation is available (ADR 0003). Static routes: trace the other callers of the scripting interpolation into playback; the open-path check flag (A1) and the auto-warp trigger (A2); the save path (A4); the TransientEnvelope curve; the preference store at load. Per-mode audio stays unknown.
+- Progress 2026-10-18 (r2): [SPEC-WARP-MARKERS](specs/warp-markers.md) r2 applies the warp-markers-v1 review: A2 split into opening (A2) and saving (A4); REQ-015 restated as inclusive bounds.

@@ -2,7 +2,7 @@
 id: RESEARCH-WARP-MARKERS
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -304,6 +304,36 @@ scripting interface's sample-to-beat and beat-to-sample calls is piecewise linea
 marker list, extends the first segment before the first marker and the shadow segment from the
 last visible marker on, and does not clamp. The mapping used for playback remains unknown
 (PRB-S8-08).
+
+Correction 2026-10-18, from the [warp-markers-v1 review](../../handoff/warp-markers-v1/REVIEW.md)
+(RVW-02, RVW-03, RVW-05), the [handoff plan](../specs/warp-markers-handoff-plan.md#findings-while-staging)
+(F4, F5) and [SPEC-WARP-MARKERS](../specs/warp-markers.md) revision 2. The text above is kept
+as written.
+
+- **Labels.** The `TransientResolution` labels and the `WarpMode` label "5 REX" in the
+  enumeration table come only from stored code lists (`0x1027b279c`, `0x1026a9ef8`). The same
+  kind of list holds the internal loop-mode names `LoopOs`, `LoopFwd` and `LoopAlt`, so these
+  labels are not established as display text. Only the six chooser labels (`0x1026aa13c`) are.
+  The "UI label" column of the UserFloat table gives the names the constructor assigns; that
+  Live displays them is not established.
+- **Edit limits.** `0x1027afd40` returns inclusive beat bounds, the neighbour's beat plus
+  Δs × 5/60 and plus Δs × 999/60, and the add compares the rounded beat with them. This equals
+  a 5–999 BPM segment tempo except at 64-bit edges (found within about 0.000004 BPM of a limit
+  for gaps of at least 0.0005 s) and at zero distance, where both bounds equal the
+  neighbour's beat. Before the first marker the add has no left neighbour and skips both left
+  checks. The add's rounding differs from exact rounding only within about 0.0002 grid step of
+  a tie.
+- **Accepted edits.** An accepted add or remove can leave the list unchanged: the insertion
+  `0x1027baad8` returns when a marker with an equal `SecTime` or `BeatTime` exists, and the
+  delete `0x1027c6eec` returns when the list has fewer than three markers (C1). The move
+  `0x1033bfb94` tests only that the clip is an audio clip; like the remove, it does not
+  require a warped clip.
+- **TransientEnvelope.** Creation stores the initial value 100 without a clamp
+  (`0x1015743b0` → `0x101568960`, C1), so a new clip holds 100 despite the maximum 1.0. Only
+  the range stays open.
+- **Probes.** Under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) the probes in
+  the table above will not run. They record what observation would have settled; "PRB-S8-08
+  measures it" above no longer holds.
 
 ## Unknowns
 

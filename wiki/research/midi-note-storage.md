@@ -2,7 +2,7 @@
 id: RESEARCH-MIDI-NOTE-STORAGE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -157,7 +157,7 @@ or after LoopEnd, so notes outside the loop are stored too.
    clamped to 1…127, OffVelocity to 0…127 and Probability to 0…1. NaN survives every clamp, and
    Time, VelocityDeviation and NoteId are not checked. This runs only when the load context flag
    `+0x2c` is set. **Inferred** set for document loads: eleven context constructors set it, and only two
-   binary-stream paths clear it.
+   binary-stream paths clear it. Corrected 2026-10-18: see [Corrections](#corrections).
 5. The copy into the in-memory note `0x1028e2e24` ✓ rounds Time and Duration half away from
    zero to the nearest multiple of 1/3,843,840 beat. Four sentinels are left unchanged:
    ±1.7976931348623155e308, DBL_MAX and +∞.
@@ -321,11 +321,47 @@ Fixture: `909 Core Kit House 127 bpm.alc`, edited.
   binary grooves (memcpy path in `0x101560424`).
 - Whether 12.4.3 writes exactly what 12.4d1 wrote (PRB-S7-09).
 
+## Corrections
+
+Dated notes. The text above is kept as written. The evidence is the midi-note-storage-v1
+review directory:
+[review-checks.txt](../../analysis/ableton-live-12.4.3/handoff-staging/midi-note-storage-v1-analysis/review/review-checks.txt)
+and
+[corpus-excerpts.jsonl](../../analysis/ableton-live-12.4.3/handoff-staging/midi-note-storage-v1-analysis/review/corpus-excerpts.jsonl)
+("review excerpts").
+
+- **2026-10-18, load-context flag (review RVN-01).** Reader step 4, MN-09 and the Limitations
+  call the flag `+0x2c` inferred and tie it to the note clamps only. It gates every post-load
+  slot `+0xd0`. That covers the note clamps `0x1028e2c80`, the `AMidiNotes` post-load
+  `0x1028f5864` (NoteId check, NextId raise, orphan removal, zero-id numbering, groups), the
+  store `0x10292cd70` and the list `0x10292b730`. The reviewer established statically that the
+  flag is set when a Live Set is read. Every context constructor stores 1. The only clear,
+  `0x1015192b8`, is reached from the undo-history streams `0x101546518` and `0x101547ef4`. The
+  general XML reader `0x101484108` builds a fresh context through `0x101478258` and
+  `0x10151e0d8` (review-checks section 2). Residual: an inlined clear elsewhere is not
+  excluded. A clip-file read was not traced separately.
+- **2026-10-18, per-note list boundary step (review RVN-02).** The per-note expression
+  section omits one load step. After the orphan removal, `0x1028f5864` passes each note's
+  NoteId and Duration to `0x10292c960` (`0x1028f5bec`–`0x1028f5c0c`, retained S7
+  disassembly). That function calls `0x10292b9ec` on each list of that NoteId and then
+  removes lists left with no events. `0x10292b9ec` leaves a list unchanged when it has
+  events, its first TimeOffset is above 0 and its last is below the Duration. Otherwise it
+  adjusts the list through a call whose semantics were not traced. The step was found in
+  query round d4-0001, which was not retained. The review re-established it from the review
+  excerpts (chunk-02023, offsets 170246 and 201797, code hashes equal to the d4-0001 files)
+  and an image decode (review-checks section 3).
+- **2026-10-18, NoteId text (spec r1 MN-23; plan F7).** In the missing and malformed items
+  table, trailing spaces are accepted only when no space or `+` precedes the digits; spaces
+  on both sides are unknown. "Overflow" means a value above 9,223,372,036,854,775,807. The
+  conversion `0x101524d8c` is signed 64-bit (review excerpts, chunk-00813 offset 61888), and
+  the 63-character limit counts leading zeros.
+
 ## Limitations
 
 Static evidence only. A traced store or throw does not prove that the path runs for a given file.
 The top-level load, its catch and undo or editor behaviour were not traced. The post-load clamps
-depend on an inferred context flag. Ghidra `FUN_` names are generated. Demangled names come from the
-symbol table and are evidence, not proof. Pseudocode was checked against disassembly only where
-marked ✓. Shipped documents are not 12.4.3 saves, and 103 binary grooves were not parsed. Document
-text and recovered strings are treated as data.
+depend on an inferred context flag (corrected 2026-10-18: see [Corrections](#corrections)).
+Ghidra `FUN_` names are generated. Demangled names come from the symbol table and are
+evidence, not proof. Pseudocode was checked against disassembly only where marked ✓. Shipped
+documents are not 12.4.3 saves, and 103 binary grooves were not parsed. Document text and
+recovered strings are treated as data.

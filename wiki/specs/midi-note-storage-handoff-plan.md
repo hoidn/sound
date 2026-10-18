@@ -39,6 +39,8 @@ For the draft spec:
 
 The tables below describe the staged candidate.
 
+Applied in revision 2 (2026-10-18); rejected: copying d4-0001 into the retained run (the review excerpts are cited instead) and F1's PRB-S7-09 extension (no probe will run, ADR 0003).
+
 ## Decision and boundary
 
 Stage a finite candidate, midi-note-storage-v1, from

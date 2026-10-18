@@ -23,6 +23,8 @@ Findings for the spec author: widen A1 to cover every Float value, not only
 interior times; back the Bool and Enum claim with evidence (PRB-S6-04 plus a Pan
 variant); reword AEN-003. The tables below describe the staged candidate.
 
+Applied in revision 2 (2026-10-18); rejected: F3's reference-comparison obligation and PRB-S6-04 as the route for F1 and for the Bool and Enum claim (no reference observation, ADR 0003), and RVE-04, 06 and 07 (release-only).
+
 ## Decision and boundary
 
 Stage a finite candidate, automation-envelopes-v1, from
