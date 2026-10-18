@@ -573,6 +573,17 @@ with inputs, discriminating observation and stopping condition per
 sitting on the macOS host with retained captures. It is not a gate for Phases
 1–3.
 
+### Scope extension — 2026-10-17
+
+By user direction ("do it", accepting the coordinator's recommendation), Phase 2
+was extended beyond S1 to S5. Follow-ups of finished packets: draft
+SPEC-PLUGIN-DISCOVERY and SPEC-BROWSER-INDEX, the Analog, Tension and Collision
+parameter tables with SPEC-BUNDLED-DEVICE-PARAMETERS, and the MIDI numeric
+transforms behind Q-009. New feature families with outside-in packets: S6
+automation envelopes, S7 MIDI note storage, S8 warp markers and modes, S9 mixer
+value conversions. The packet format, evidence rules and handoff boundary are
+unchanged. Progress is tracked in the [gate table](native-phase-execution.md#gate-ledger).
+
 ### Accounting and policy
 
 The four dashboards in the coverage policy above are unchanged. Phase 1 reports

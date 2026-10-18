@@ -1480,3 +1480,24 @@ of Corpus.
 Whether Live itself gates Corpus when no MIDI is routed to it is not established.
 Checks: 8 Node tests pass; the headless self-test passes; the default loads as
 type 3.
+
+## [2026-10-17] query | Phase 4 probe batch prepared
+
+Merged every probe and escalation record into `analysis/ableton-live-12.4.3/r2/phase4-batch-v1/`
+(batch, fixture plan, manifest, builder) and the run sheet
+[Phase 4 probe batch](research/phase4-probe-batch.md): 79 records (75 original IDs, 4
+assigned), 7 merge groups, 3 incomplete, about 24 h of sessions; the handoff blockers
+take about 7 h. Found that the requirement IDs in N1's probe file predate spec r1; the
+batch follows the spec. Gaps: no probe covers TS-010 or P1-F; an N2-019 variant without
+`Creator` is missing; the LOM, debugger, USB-capture and MIDI-sender tools are
+unverified. Nothing was run. The run sheet lists decisions for the user (sitting length,
+isolation, debugging, hardware, test plug-ins, network, evidence transfer).
+
+## [2026-10-17] decision | Phase 2 scope extended
+
+By user direction, eight more agents started: draft SPEC-PLUGIN-DISCOVERY and
+SPEC-BROWSER-INDEX; the remaining device tables with SPEC-BUNDLED-DEVICE-PARAMETERS;
+MIDI numeric transforms (Q-009); and new outside-in packets S6 automation, S7 MIDI
+notes, S8 warp, S9 mixer values. Recorded in the
+[roadmap](research/native-decompilation-roadmap.md#scope-extension--2026-10-17) and
+gate table. A second hard-linked query copy and server were started for S6 to S9.

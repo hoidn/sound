@@ -105,6 +105,8 @@ no experimental contradiction has been established yet.
 - Next action: derive the bounded [spec preparation cases](research/ableton-decompilation-preparation.md#proposed-first-specification-work)
   from resources and code first. Identify which remaining claims actually need
   execution, then retain minimal probes with exact inputs, outputs and environment.
+- Progress 2026-10-17: runtime questions from all revision 2 packets are merged
+  into the [Phase 4 run sheet](research/phase4-probe-batch.md); nothing has run.
 
 ## Q-008 MIDI profile parsing and host errors
 

@@ -26,6 +26,7 @@ to the isolated implementation workspace.
 | [Investigator query route](r2-query-route.md) | REA 6.5.0 versus saved projects, Push2 measurements, the R2FunctionDossier query server and concurrency choice |
 | [R2 corpus tooling](r2-corpus-tooling.md) | C1 bulk decompile and C2 index scripts: design, Push2 measurements, Live projection and run command |
 | [Next major phase roadmap](native-decompilation-roadmap.md) | Main Live code export, method/structure atlas and first handoff milestones; [revision 2](native-decompilation-roadmap.md#revision-2-proposal--2026-10-17) adopted 2026-10-17 |
+| [Phase 4 probe batch](phase4-probe-batch.md) | Run sheet for the macOS sitting: 79 runtime records from S4, N1 to N5, H1, H2, H4 and H5 in 11 sessions by prerequisite; 7 merge groups, 3 incomplete; fixture plan and safety measures |
 | [Binary and decompilation artifacts](artifacts/index.md) | Start here: searchable browser, package map, pseudocode, symbols and decoded modules |
 | [LLM Wiki source](sources/llm-wiki.md) | User-supplied documentation pattern and its project adaptation |
 | [REA reading list](sources/rea-reading-list.md) | External methodology references with explicit archival limitations |
