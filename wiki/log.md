@@ -1760,3 +1760,20 @@ retained s6 dossiers and corpus excerpts. Corrected [automation envelopes](resea
 the path without a converter does not clamp. Proposed PRB-S6-08 to 11 and a Pan variant of PRB-S6-04;
 not yet in the Phase 4 batch. Updated the spec index (candidate row replaced), feature map, coverage
 and Q-020. Nothing executed.
+
+## [2026-10-17] maintenance | Traced Corpus demo: playable keys
+
+The user reported that the on-screen MIDI keys did nothing. Root cause: the keys
+only sent bare MIDI notes. Those act only through MidiPitch or MidiGate, which
+are off in 25 of 26 presets. A note also makes no sound on an effect without an
+input. The engine path itself works: with MidiPitch on, note 72 moves a String's
+ring from 261.5 Hz to 523 Hz.
+
+Fix: a "Keys play notes" page feature, on by default. A key press turns on
+MidiPitch (shown in the MIDI section), sends the note and strikes the resonator
+10 ms later, after its coefficients retune. Release sends note-off. The computer
+keys A S D F G H J K map to the eight notes. Unticking the option restores bare
+MIDI notes.
+
+The page self-test now checks this wiring against the offline node and passes
+3 of 3 runs; the 8 Node tests pass.

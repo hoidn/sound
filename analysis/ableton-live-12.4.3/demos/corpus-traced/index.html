@@ -40,7 +40,8 @@ legend{font-weight:700;padding:0 6px}.keys button{min-width:42px}</style></head>
 <button id="mic" type="button" aria-pressed="false">Microphone: off</button>
 <label for="volume">Volume</label><input id="volume" type="range" min="0" max="1" step="0.01" value="0.5" style="width:140px">
 <label for="preset">Preset</label><select id="preset"></select></div>
-<p class="buttons keys" aria-label="MIDI keyboard for MidiPitch and MidiGate">MIDI notes:</p>
+<p class="buttons keys" aria-label="MIDI keyboard for MidiPitch and MidiGate">MIDI notes (or keys A S D F G H J K):</p>
+<p><label style="font-weight:600"><input id="keys-play" type="checkbox" checked> Keys play notes</label> <span class="muted">Page feature: a key press turns on MidiPitch and strikes the resonator, so each key sounds its pitch. Untick to send bare MIDI notes only.</span></p>
 <p id="keys-status" class="muted" role="status" aria-live="polite"></p>
 <p id="status" role="status" aria-live="polite" class="muted">Press a source to start audio.</p>
 <h3>Resonator modes</h3><canvas id="modes" width="1200" height="190" aria-label="Active modes of the left and right resonators"></canvas>
@@ -484,6 +485,7 @@ const hz = v => { const c = v <= 0.5 ? 128 * v : 126 * v + 1, n = (c > 63.9999 &
 let ctx = null, node = null, analyser = null, master = null, loopSource = null, micSource = null, modeInfo = [[], []];
 function send(name) { if (node) node.port.postMessage({set: name, value: params[name]}); }
 function keysStatus() {  // the keys only matter through MidiPitch and MidiGate; say which, if either, is on
+  if ($('keys-play').checked) { $('keys-status').textContent = 'Keys play notes: each key sets the pitch through MidiPitch and strikes the resonator.' + (params.MidiGate ? ' MidiGate is on, so releasing a key cuts the ring to DecayOnNoteOff.' : ''); return; }
   const pitch = !!params.MidiPitch, gate = !!params.MidiGate;
   $('keys-status').textContent = pitch || gate
     ? `Active: ${[pitch && 'held notes set the pitch (highest wins; Transpose and Fine apply)', gate && 'a held note keeps the gate open; with none held the ring is cut to DecayOnNoteOff'].filter(Boolean).join('; ')}. The keys make no sound on their own; play a source too.`
@@ -540,7 +542,7 @@ async function makeNode(c) {
   }
 }
 async function start() {
-  if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+  if (ctx) { if (ctx.state === 'suspended' && ctx instanceof AudioContext) ctx.resume(); return; }
   ctx = new AudioContext();
   node = await makeNode(ctx);
   node.port.onmessage = ({data}) => { if (data.modes) { modeInfo = data.modes; drawModes(); } };
@@ -600,10 +602,27 @@ $('mic').addEventListener('click', async () => { await start(); const b = $('mic
   try { micSource = ctx.createMediaStreamSource(await navigator.mediaDevices.getUserMedia({audio: true})); micSource.connect(node); b.textContent = 'Microphone: on (use headphones)'; b.setAttribute('aria-pressed', 'true'); }
   catch (e) { $('status').textContent = `Microphone unavailable: ${e.message}`; } });
 $('volume').addEventListener('input', () => { if (master) master.gain.value = Number($('volume').value); });
-const keys = document.querySelector('.keys');
+const keys = document.querySelector('.keys'), down = new Set();
+async function noteDown(note, button) {
+  if (down.has(note)) return; down.add(note); if (button) button.setAttribute('aria-pressed', 'true');
+  await start();
+  if ($('keys-play').checked && !params.MidiPitch) { params.MidiPitch = 1; inputs.MidiPitch.sync(); send('MidiPitch'); }
+  node.port.postMessage({on: note});
+  // Strike slightly later than the note so the resonator has retuned (coefficients update every 200 samples).
+  if ($('keys-play').checked) { const s = ctx.createBufferSource(); s.buffer = clickBuffer(ctx); s.connect(node); s.start(ctx.currentTime + 0.01); }
+  keysStatus();
+}
+function noteUp(note, button) { if (!down.delete(note)) return; if (button) button.setAttribute('aria-pressed', 'false'); if (node) node.port.postMessage({off: note}); }
+const LETTERS = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k'], buttons = {};
 ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'].forEach((name, i) => { const note = 60 + [0, 2, 4, 5, 7, 9, 11, 12][i], b = el('button', name); b.type = 'button';
-  const on = async () => { await start(); node.port.postMessage({on: note}); }, off = () => node && node.port.postMessage({off: note});
-  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointerleave', off); keys.append(b); });
+  b.setAttribute('aria-pressed', 'false'); b.title = `Note ${note} (key ${LETTERS[i].toUpperCase()})`; buttons[LETTERS[i]] = [note, b];
+  b.addEventListener('pointerdown', () => noteDown(note, b)); b.addEventListener('pointerup', () => noteUp(note, b)); b.addEventListener('pointerleave', () => noteUp(note, b));
+  b.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); noteDown(note, b); } });
+  b.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') noteUp(note, b); });
+  keys.append(b); });
+window.addEventListener('keydown', e => { const k = buttons[e.key.toLowerCase()]; if (!k || e.repeat || e.ctrlKey || e.metaKey || e.altKey || e.target.tagName === 'SELECT') return; noteDown(...k); });
+window.addEventListener('keyup', e => { const k = buttons[e.key.toLowerCase()]; if (k) noteUp(...k); });
+$('keys-play').addEventListener('change', keysStatus);
 (() => { const body = $('evidence-body');
   body.append(el('p', 'Engine: a JavaScript port of the device\'s signal chain, written from the decompiled Corpus bundle in Live 12.4.3 (module graph, 37 host parameters and their conversions, the ab_resonator modal and waveguide models, filter, gain, panpot, width, LFO and pitch hub). Parameter values are quantized as the device quantizes them.'),
     el('p', 'Live\'s side (the N5 mapping): stored values pass unchanged except FilterMidFreq (Hz to 0–1 on a log scale); MidiMode is sent but ignored. Open: the position range (probe P4-N5-01). Not compared with Corpus\'s real output.'),
@@ -622,9 +641,14 @@ async function selftest() {
   const power = f => { const w = 2 * Math.PI * f / sr, cw = 2 * Math.cos(w); let a = 0, b = 0; for (let i = 0; i < data.length; i++) { const c = data[i] + cw * a - b; b = a; a = c; } return a * a + b * b - cw * a * b; };
   let best = 0, bestF = 0; for (let f = 200; f <= 320; f += 0.25) { const v = power(f); if (v > best) { best = v; bestF = f; } }
   const expected = hz(0.5), finite = data.every(Number.isFinite), energy = data.reduce((a, v) => a + v * v, 0);
-  const c = new OfflineAudioContext(2, 128, sr), audioPath = (await makeNode(c)).kind;
-  const result = {peak_hz: bestF, expected_hz: Number(expected.toFixed(2)), finite, energy, controls: Object.keys(inputs).length, presets: presets.length, audio_path: audioPath};
-  result.pass = Math.abs(bestF - expected) < 2 && finite && energy > 1e-6;
+  const c = new OfflineAudioContext(2, 128, sr), testNode = await makeNode(c), audioPath = testNode.kind;
+  // Key wiring on the offline node (a real-time context may not start in headless runs): with "Keys play
+  // notes", a key press must turn MidiPitch on, send the note and strike.
+  ctx = c; node = testNode; const sent = [], post = node.port.postMessage.bind(node.port); node.port.postMessage = m => { sent.push(m); post(m); };
+  params.MidiPitch = 0; inputs.MidiPitch.sync(); await noteDown(72, null); noteUp(72, null); ctx = null; node = null;
+  const keys_ok = sent.some(m => m.set === 'MidiPitch' && m.value === 1) && sent.some(m => m.on === 72) && sent.some(m => m.off === 72) && params.MidiPitch === 1;
+  const result = {peak_hz: bestF, expected_hz: Number(expected.toFixed(2)), finite, energy, controls: Object.keys(inputs).length, presets: presets.length, audio_path: audioPath, keys_ok};
+  result.pass = Math.abs(bestF - expected) < 2 && finite && energy > 1e-6 && keys_ok;
   out.textContent = JSON.stringify(result); out.dataset.pass = String(result.pass);
 }
 if (location.hash === '#selftest') selftest().catch(e => { const out = $('selftest-result'); out.hidden = false; out.textContent = 'ERROR ' + e.message; out.dataset.pass = 'false'; });
