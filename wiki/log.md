@@ -1928,3 +1928,38 @@ not retained; the spec says so, and the claim should be re-established and
 retained. Second, the note-storage review found that the integer reader
 accepts a leading `-`. REQ-TRANSPORT-STATE-006 still marks `-` as unknown, so
 check whether it is the same reader.
+
+## [2026-10-18] analysis | X1 extracted-execution pilot passes
+
+[Extracted execution](research/extracted-execution.md) records the method,
+limits and results. `tools/xexec/xexec.c` maps the Mach-O segments of the
+original x86_64 slice into a Linux process and applies its fixups. It binds 57
+libm functions and a few libc functions to glibc, and traps every other import.
+It then calls one function with System V arguments. `xexec.py` runs each call
+in a subprocess. Evidence, with `run.sh` and a manifest, is in
+`analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/`.
+
+There were 476 runs with no trap or fault. Results against released cases:
+
+| Target | Agreement |
+| --- | --- |
+| Mixer dB and pan text | 44 of 44 released texts and 23 spec examples |
+| MIDI map-mode values | 18 of 18 midi-config-v3 value cases, all ten modes, 14-bit pairing via gdb |
+| Transport number writer and time-signature parser | 8 of 8 checks and 22 examples |
+
+The colour parse lives in the index helper and was not run. Findings:
+
+- REQ-TRANSPORT-STATE-011 step 1 is imprecise next to powers of ten. The code
+  takes k from the binary64 `log10`, so 1000.0000000000001 is written
+  `1000.00000000000011`. Released transport-state-v1 states that rule, so it
+  needs a corrected release.
+- Negative zero is written `-0`.
+- The integer parser accepts `-201` and refuses padded or signed-padded forms.
+- Pan ties round to even: 0.25 gives `12R`.
+- arm64 computes the Absolute map mode with a fused multiply-add. Results
+  differ from x86_64 by one binary32 ulp when min is not 0. No released case is
+  affected, but the 1e-6 tolerance is too tight for wide ranges.
+- Maths and formatting come from glibc, not Apple's libraries. This is
+  recorded as a limit.
+
+The page lists the probes and questions this route can settle.

@@ -1,0 +1,114 @@
+{
+ "slice": "/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64",
+ "image_base": "0x100000000",
+ "functions": [
+  {
+   "x86": "0x1014206e0",
+   "role": "shared empty Live string (nifty counter: count, allocate 8, make empty)",
+   "arm64": null,
+   "how": "writer of the global read by the string-assign helper 0x1011a7c70 (decompiled corpus); setup only"
+  },
+  {
+   "x86": "0x10142c000",
+   "arm64": "0x101431c6c",
+   "role": "number to Live string with %*.*f, zero test, trailing-zero trim",
+   "how": "only x86 reference to the string \"%*.*f\" (0x1060f506b); arm64 sole reference 0x105b8f310"
+  },
+  {
+   "x86": "0x101433f60",
+   "arm64": "0x10143a290",
+   "role": "pan text",
+   "how": "same position (25th) among callers of the int-format wrapper 0x10142bfd0 (arm64 0x101431c60) in the formatter cluster; constants -0.01, 0.01, -50, 50; strings \"C\", \"L\", \"R\""
+  },
+  {
+   "x86": "0x101431530",
+   "arm64": "0x101437334",
+   "role": "dB formatter slot +0x28",
+   "how": "calls 0x10142c000; \"-inf\", \" dB\"; constant 0.3, fields +0x18..+0x2a as the arm64 ctor 0x1014371e0 stores them; vtable 0x106bb33b8 slot +0x28"
+  },
+  {
+   "x86": "0x101431380",
+   "arm64": "0x1014371e0",
+   "role": "dB formatter ctor (twin 0x1014313f0)",
+   "how": "stores vtable 0x106bb33b8 and the same fields"
+  },
+  {
+   "x86": "0x1022735b0",
+   "arm64": "0x102183abc",
+   "role": "gain-text holder ctor",
+   "how": "only caller pattern (-70.0 at 0x105ddca88, formatter ctor 0x1014313f0); holder vtable 0x106cb8ce8"
+  },
+  {
+   "x86": "0x1024fb0b0",
+   "arm64": "0x1023e06fc",
+   "role": "make holder (allocate 0x20, ctor via 0x1022736a0)",
+   "how": "ATrackDevice ctor 0x10284e830 (arm64 0x10271b660) calls it under a guard with (3, 1, 1, 1) right before \"Track Volume\""
+  },
+  {
+   "x86": "0x1022736b0",
+   "arm64": "0x102183bf4",
+   "role": "gain to text",
+   "how": "holder vtable slot +0x28; log10f, x 20.0f, slot +0x28 of the formatter; -140.0 for gain <= 0"
+  },
+  {
+   "x86": "0x101bb27b0",
+   "arm64": "0x101b76bf0",
+   "role": "map-mode value function",
+   "how": "mode test 0 or 5 (7.00649e-45), guarded 127 from 0x1011899c0 (arm64 0x1011afc2c), calls the decoder, 1/256 step"
+  },
+  {
+   "x86": "0x101bb7ff0",
+   "arm64": "0x101b7b96c",
+   "role": "relative delta decoder",
+   "how": "same switch over modes 1-9, vector tables, defaults 20 and 50"
+  },
+  {
+   "x86": "0x101bc1360",
+   "arm64": null,
+   "role": "static initializer (mod_init_func index 728) filling accel tables B (8) and A (9) at 0x107443db8 / 0x107443dd0",
+   "how": "only writer of the tables the decoder reads; values equal arm64 tables 0x10584a580 / 0x10584a5a0 + 50 (n7 native-constants.json)"
+  },
+  {
+   "x86": "0x101bbc830",
+   "arm64": "0x101b8028c",
+   "role": "14-bit MSB setter",
+   "how": "stores +0x34/+0x3c, FLT_MAX tests, jumps to the combiner"
+  },
+  {
+   "x86": "0x101bbc980",
+   "arm64": "0x101b802bc",
+   "role": "14-bit LSB setter",
+   "how": "stores +0x38/+0x40, as above"
+  },
+  {
+   "x86": "0x101bbc870",
+   "arm64": "0x101b7fcc0",
+   "role": "14-bit combiner",
+   "how": "(MSB<<7|LSB)/129.0f, data {v, prior, mode 0, 1.0f}, calls Apply, resets halves to FLT_MAX"
+  },
+  {
+   "x86": "0x101bbc9c0",
+   "arm64": "0x101b7fde4",
+   "role": "Apply (skipped under gdb)",
+   "how": "called by the combiner; calls the value function"
+  },
+  {
+   "x86": "0x10142b6c0",
+   "arm64": "0x101431584",
+   "role": "writer text, P = 9",
+   "how": "x86 references to \"%.*lf\" (0x1060f5424) are exactly these two; constants 9/8 here, 17/16 in the other"
+  },
+  {
+   "x86": "0x10142b980",
+   "arm64": "0x101431788",
+   "role": "writer text, P = 17",
+   "how": "as above"
+  },
+  {
+   "x86": "0x100375650",
+   "arm64": "0x1002fd908",
+   "role": "Int attribute text parse",
+   "how": "decompiled shape (space trim, \"+\", < 0x40, \"+-\", ASCII test, from_chars 0x100375790 = arm64 0x1002fda78) and \"string_view::substr\"; 7 callers in both slices"
+  }
+ ]
+}

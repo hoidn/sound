@@ -2,7 +2,7 @@
 id: NAV-RESEARCH
 type: index
 status: active
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 ---
 
@@ -58,6 +58,7 @@ to the isolated implementation workspace.
 | [MIDI mapping investigation](midi-user-mapping.md) | Parser/mapping findings and unresolved native/host boundaries |
 | [MIDI closure assessment (S4)](midi-closure-r2.md) | Clause-level static/native/runtime classification of the 13 MIDI requirements, 55 draft v2 cases, 16 Phase 4 probes |
 | [MIDI map-mode transforms (native)](midi-transforms-native.md) | N7: native path from the user script to the parameter value; per-mode table for all ten modes, 14-bit pairing, relative step and acceleration tables, quantized and on/off handling, takeover arithmetic, 23 derived cases, PRB-N7-01 to 05 |
+| [Extracted execution (X1)](extracted-execution.md) | Harness that runs original x86_64 Live functions on this host (ADR 0003, label X); pilot agrees with all 70 released checks (mixer text, MIDI values, transport number text); finds REQ-TRANSPORT-STATE-011 imprecise next to powers of ten and an arm64 FMA in Absolute mode; triage of probes it can settle |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

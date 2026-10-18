@@ -1,0 +1,35 @@
+mixer: 37 cases, 44/44 checks agree; spec examples 23/23
+midi: 18 cases, 18/18 checks agree; spec examples 0/0
+transport: 6 cases, 8/8 checks agree; spec examples 22/22
+probe pan -0.75 -> '38L'
+probe pan -0.25 -> '12L'
+probe pan 0.25 -> '12R'
+probe pan 0.75 -> '38R'
+probe db_text -69.69999694824219 -> '-69.7 dB'
+probe db_text -69.70000457763672 -> '-inf dB'
+probe int '000000000000000000000000000000000000000000000000000000000000201' -> 201
+probe int ' 201 ' -> None
+probe int '+201 ' -> None
+probe int '-201' -> -201
+probe int '- 201' -> None
+probe int '+' -> None
+probe int '-' -> None
+probe int '2147483648' -> None
+probe int '4294967497' -> None
+probe writer-double 10.000000000000002 -> '10.0000000000000018'  (spec rule, exact log10: '10.000000000000002')
+probe writer-double 1000.0000000000001 -> '1000.00000000000011'  (spec rule, exact log10: '1000.0000000000001')
+probe writer-double 1000000.0000000001 -> '1000000.00000000012'  (spec rule, exact log10: '1000000.0000000001')
+probe writer-double 0.09999999999999999 -> '0.099999999999999992'  (spec rule, exact log10: '0.0999999999999999917')
+probe writer-double 0.009999999999999998 -> '0.0099999999999999985'  (spec rule, exact log10: '0.00999999999999999847')
+probe writer-double 0.9999999999999999 -> '0.999999999999999889'  (spec rule, exact log10: '0.999999999999999889')
+probe writer-float 100.00000762939453 -> '100.000008'  (spec rule, exact log10: '100.000008')
+probe writer-float 0.09999999403953552 -> '0.09999999404'  (spec rule, exact log10: '0.09999999404')
+probe writer-double -0.0 -> '-0'  (spec rule, exact log10: 'undefined (log10 of 0)')
+probe writer-float -0.0 -> '-0'  (spec rule, exact log10: 'undefined (log10 of 0)')
+control {'what': 'AccelSignedBit v=1 from 0.5 without 0x101bc1360', 'with_init': 0.50390625, 'without_init': 0.578125}
+fma: x86 model = X for 128/128; arm64 fmadd model differs for 0 data values (min -1.0, max 1.0, max |diff| 0.0)
+fma: x86 model = X for 128/128; arm64 fmadd model differs for 35 data values (min 20.0, max 999.0, max |diff| 6.103515625e-05)
+mixer: runs {'count': 97, 'not_ok': 0}; replaced imports called: __Znwm, ___cxa_atexit, ___cxa_guard_acquire, ___cxa_guard_release, ___exp10, _log10f, _malloc, _newlocale, _strchr, _strlen, _vsnprintf_l
+midi: runs {'count': 330, 'not_ok': 0}; replaced imports called: __Znwm, ___cxa_atexit, ___cxa_guard_acquire, ___cxa_guard_release, _pthread_getspecific, _pthread_key_create
+transport: runs {'count': 49, 'not_ok': 0}; replaced imports called: __Znwm, ___cxa_atexit, ___cxa_guard_acquire, ___cxa_guard_release, _log10, _malloc, _newlocale, _strchr, _strlen, _vsnprintf_l
+log10f: glibc correctly rounded for 12/14 gains; text stable within 1 ulp for 14/14
