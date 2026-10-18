@@ -438,7 +438,7 @@ against the publishers' published values and pinned in the retained
 | --- | --- | --- |
 | Ghidra | 12.1.4 (`ghidra_12.1.4_PUBLIC_20260921.zip`, SHA-256 `ddac49f9…d2d4db`) | Same version as the macOS captures |
 | JDK | Eclipse Temurin `jdk-21.0.12.1+1` | Same version as the macOS JDK; the system package is a JRE without `javac` |
-| REA | `rea-agents` 6.5.0 on Node 22.23.2 via nvm | macOS used 6.3.0; 6.5.0 source not inspected |
+| REA | `rea-agents` 6.5.0 on Node 22.23.2 via nvm | macOS used 6.3.0; 6.5.0 source inspected 2026-10-17, see [query route](r2-query-route.md#rea-650-cannot-open-a-saved-project); startup deadline now defaults to 330 s |
 
 `rea doctor --provider ghidra` reports the provider available: installation,
 headless script, `linux_x86_64` native decompiler and JDK all accepted. Hopper,

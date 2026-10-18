@@ -1097,3 +1097,17 @@ path. Two edges were checked directly against `12.0_12402.txt` lines 4116 and
 each waits for its packet's native half. Not reader-reviewed. Lint: relative
 links and anchors on edited pages resolve except 14 pre-existing links into the
 absent macOS `analysis/` tree; `git diff --check` clean.
+
+## [2026-10-17] query | Investigator query route (e-rea)
+
+Inspected REA 6.5.0 installed source: it has no saved-project open path, every
+session re-imports, and `--snapshot` replays exact queries only. Measured on Push2:
+REA cold 80.9 s, exact replay 1.35 s, a different function 79.4 s; our MCP transport
+handshake and function calls still work on 6.5.0. Added
+`tools/ghidra/R2FunctionDossier.java` (read-only dossiers, reference and string
+queries, deterministic manifests, spool server). A second read-only open is blocked
+by the project lock; hard-linked copies cost about 0 bytes. Recommended one query
+server on a hard-linked LiveR2 copy; filed as [query route](research/r2-query-route.md)
+and recorded the decision in the roadmap's provider-routing paragraph, the export
+guide and the provisioning table. Evidence: `analysis/ableton-live-12.4.3/r2/e-rea-v1/`.
+Gaps: Live open time, RAM and project size; `str:` scan cost on Live.

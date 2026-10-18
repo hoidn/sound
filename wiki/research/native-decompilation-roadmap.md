@@ -475,7 +475,7 @@ and how to turn decompilation into specifications faster than the first pass did
 | Ephemeral REA session on a 16 GiB macOS host; bulk export in capacity-gated 1,000-entry MCP stages | 125 GiB RAM, 32 CPUs, 36 GiB free on the root filesystem; durable project storage undecided; Live cannot execute on this host |
 | Retained corpus, inventory and coverage ledger available locally | Absent here; restore from the macOS host or regenerate as a new inventory revision |
 | Semantic work seeded from factory symbols outward | Two transport packets reached an indirect dispatch and produced no external contract |
-| REA 6.3.0 lifecycle observations | REA 6.5.0 installed; its source is uninspected |
+| REA 6.3.0 lifecycle observations | REA 6.5.0 installed and inspected; it cannot open a saved project ([query route](r2-query-route.md#rea-650-cannot-open-a-saved-project)) |
 
 New observations in [package structure](ableton-package-structure.md#serialization-vocabulary-strings-and-shipped-documents--2026-10-17):
 the image contains exact strings for the document vocabulary (`LoopOn`,
@@ -534,9 +534,12 @@ Phase 2 dossiers use REA's native operations (`function`, `xrefs`,
 `ev_` records, and S3's blocker is the call-target resolution they address.
 This applies only if REA 6.5.0 can serve the saved project or a measured fresh
 REA session on Live is affordable. Otherwise a read-only headless dossier script
-supplies the same fields. That condition is decided in
-`wiki/research/r2-query-route.md` (in preparation). The check runs on scratch
-copies or after the G0.3 writer exits, and it does not gate Phase 1. Non-native
+supplies the same fields. That condition is decided in the
+[query route](r2-query-route.md). **Decided 2026-10-17:** REA 6.5.0 cannot open
+a saved project and re-imports on every session ([details](r2-query-route.md#rea-650-cannot-open-a-saved-project)), so S1–S3
+dossiers use `tools/ghidra/R2FunctionDossier.java` served from a hard-linked
+copy of LiveR2. A long-lived REA MCP session on Live remains an option for S3
+call-target resolution, at the cost of one fresh analysis and its disk. Non-native
 REA analyzers serve the outside-in anchors where a shipped artifact fits:
 `inspect-sqlite-database` for bundled databases such as
 `App-Resources/Database/filerefmap.db`, and `execute-rizin-command` as an

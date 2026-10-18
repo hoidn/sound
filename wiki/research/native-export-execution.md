@@ -83,9 +83,10 @@ NATIVE_REA_ENTRY=$HOME/.nvm/versions/node/v22.23.2/lib/node_modules/rea-agents/s
 node tools/run_native_analysis.mjs <spool-directory>
 ```
 
-REA 6.5.0 replaces the 6.3.0 build the earlier captures used; its installed
-source has not been re-inspected, so the lifecycle observations above are not
-re-verified for 6.5.0. REA places its ephemeral Ghidra project under `TMPDIR`
+REA 6.5.0 replaces the 6.3.0 build the earlier captures used. Its installed
+source was inspected on 2026-10-17 and this transport still works with it; which
+lifecycle observations above still hold is recorded in the
+[query route](r2-query-route.md#rea-650-cannot-open-a-saved-project). REA places its ephemeral Ghidra project under `TMPDIR`
 or `/tmp`, which on this host is the root filesystem, not `/home`.
 
 Publish complete request JSON files by rename into its `requests/` directory.
