@@ -2,7 +2,7 @@
 id: SPEC-ALS-CONTAINER
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 2
 target: Ableton Live 12 Suite 12.4.3 arm64 (macOS)
@@ -530,9 +530,10 @@ Corrections relative to the packet's `cases.json`:
 | 1 | 2026-10-17 | First draft from packet N2, written from the retained evidence after the investigator was interrupted; 9 requirements, 27 unexecuted cases |
 | 2 | 2026-10-17 | Handoff-author corrections (F1 to F5). REQ-004: general precedence clause replaced by first-refusal-wins with the newer conditions listed; `MajorVersion="6"` with an empty or absent MinorVersion unknown. REQ-003: integer refusals at the root, before the numbered checks. REQ-005: the check is a file-existence lookup; only letters-only values are refused, other non-schema values unknown. REQ-001: start refusals have no specified class (N2-003 to N2-005). Uncompressed fixtures depend on PRB-N2-02. Assumptions I1 to I6 named beside each clause and case that rests on them. Same 27 cases |
 
-Not reviewed; no handoff exists. REQ-ALS-CONTAINER-007 to 009 and the unknown
-clauses block release of the affected behavior. Revision 1 noted that a
-candidate would need PRB-N2-03 and PRB-N2-05, or equivalent static traces. The
-staged candidate als-container-v1 ([handoff plan](als-container-handoff-plan.md))
-was built from revision 1 and instead excludes the outcomes that depend on
-them; its review decides that narrowing.
+Revision 2 itself is not reviewed. The released
+[als-container-v1](../../handoff/als-container-v1/README.md) (approved with
+narrowing, 35 cases; [handoff plan](als-container-handoff-plan.md)) was built
+from revision 1 with these corrections carried. It releases partial
+REQ-ALS-CONTAINER-001 to 006 only. REQ-ALS-CONTAINER-007 to 009 and the unknown
+clauses stay unreleased until PRB-N2-03 and PRB-N2-05, or equivalent static
+traces, settle them.

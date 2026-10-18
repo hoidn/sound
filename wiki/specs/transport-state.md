@@ -2,7 +2,7 @@
 id: SPEC-TRANSPORT-STATE
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 2
 target: Ableton Live 12 Suite 12.4.3 / macOS arm64
@@ -308,7 +308,9 @@ The [Phase 4 batch](../research/phase4-probe-batch.md) follows the spec.
 | 1 | 2026-10-17 | First draft from the S1 static half and the N1 native half; 12 requirements (5 S only, 6 S with U parts, 1 U only), 23 unexecuted cases |
 | 2 | 2026-10-17 | Handoff-author corrections. REQ-006: trailing spaces accepted only without a leading space or `+`; both-sides and `-` spellings U. TS-010 relabelled B, unresolved. TS-023 withdrawn (UI edit, out of scope); edits after load added to the exclusions. REQ-011: "positive zero"; negative zero U. TS-008, TS-020: event text only if written. Probe references checked; appendix notes the probe file's older IDs. 12 requirements (3 S only, 8 S with U parts, 1 U only); 22 cases, 4 of them unresolved (TS-010, TS-017–019) |
 
-Not reviewed and not released. The staged candidate transport-state-v1
-([handoff plan](transport-state-handoff-plan.md)) was built from revision 1 with
-these corrections already applied. It carries 18 cases: TS-001–009, TS-011–016
-and TS-020–022. TS-010, TS-017–019 and REQ-012 stay out until probes settle them.
+Revision 2 itself is not reviewed. The released
+[transport-state-v1](../../handoff/transport-state-v1/README.md) (approved with
+narrowing; [handoff plan](transport-state-handoff-plan.md)) was built from
+revision 1 with these corrections applied. It carries 18 cases: TS-001–009,
+TS-011–016 and TS-020–022. TS-010, TS-017–019, REQ-009 and REQ-012 stay out
+until probes settle them.
