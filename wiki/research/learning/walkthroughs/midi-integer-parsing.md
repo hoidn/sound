@@ -2,7 +2,7 @@
 id: LESSON-MIDI-INTEGER-PARSING
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / shipped CPython 3.11 bytecode
 ---
@@ -41,6 +41,13 @@ decoder provenance remain in the source record. The exact claim locator is
 PARSE-01 in the [parser findings](../../../../analysis/ableton-live-12.4.3/midi-user-mapping-v1/parser-findings.json).
 “Source metadata lines” means numbers carried by the bytecode; we do not have
 the original `.py` file at the embedded build path.
+
+That capture is not present on the Linux workstation. The
+[S4 re-decode](../../midi-closure-r2.md#evidence-re-established) used CPython
+3.11.13's own `dis` module instead of xdis. It reproduces every instruction
+quoted below at the same offsets, in a slightly different layout. To follow
+along there, open its [listing](../../../../analysis/ableton-live-12.4.3/r2/s4-midi-v1/listings/_UserScript/__init__.dis.txt)
+and search for `## code parse_int`.
 
 ## Read the branch
 
@@ -121,8 +128,18 @@ Those are not results of an executed Live test. Now ask what a pad note containi
 the same nonnumeric string does: it propagates a conversion error at the traced
 boundary, and the user's eventual experience remains unknown.
 
+On the ordinary-identifier path, conversion happens before the range check, and
+Python's `int()` accepts more spellings than you might expect. The
+[S4 classification](../../midi-closure-r2.md#clause-classification) derives that
+`+20` and `0021` are accepted, `1_0` is read as 10, and `0x14` and
+`20.0` disable the assignment. This assumes the embedded 3.11.6 interpreter is
+unmodified, and none of it was executed in Live.
+
 The next discriminating check would follow the outer loader's exception handling,
 or run a bounded malformed-profile probe if that host outcome becomes necessary
-for a contract. Repeating the same helper disassembly would not answer it.
+for a contract. S4 found that `create_instance` has no exception table, so the
+outcome depends on native host code. It prepared that probe as PRB-S4-03 in its
+[probe batch](../../midi-closure-r2.md#phase-4-probe-batch). Repeating the same
+helper disassembly would not answer it.
 
 Return to the [learning index](../index.md) or follow the [program atlas](../../program-structure.md#one-code-path-we-have-traced-user-controller-configuration).

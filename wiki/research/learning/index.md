@@ -2,7 +2,7 @@
 id: NAV-RE-LEARNING
 type: index
 status: active
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -31,6 +31,22 @@ learned about relationships in its code.
 The native lesson uses actual main-image code; the bytecode companion remains a
 separate kind of evidence. To inspect current code immediately, use the [artifact catalog](../artifacts/index.md),
 including its warnings and coverage labels.
+
+On the Linux workstation, most evidence links in these lessons point into the
+macOS `analysis/` tree, which has not been copied here (gate G0.2 in the
+[execution ledger](../native-phase-execution.md#gate-ledger)). The linked
+findings pages still say what was observed. The bytecode lesson also links a
+re-decode that is present on this host.
+
+## Revision 2 so far
+
+There is no new lesson yet. Each revision 2 packet gets its lesson once its
+native half has traced code. Until then, the [method guide](method.md#start-from-what-live-stores-or-shows)
+explains the outside-in route using the static halves of the
+[container packet](../document-container-static.md) and the
+[transport-state packet](../transport-state-static.md). The
+[MIDI closure assessment](../midi-closure-r2.md) re-established the bytecode
+evidence behind the first lesson and classified every draft MIDI clause.
 
 ## Continue exploring
 

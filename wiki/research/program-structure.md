@@ -2,10 +2,10 @@
 id: ATLAS-ABLETON-STRUCTURE
 type: research
 status: current
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
-revision: 7
+revision: 8
 ---
 
 # An evolving map of Live
@@ -47,7 +47,7 @@ unresolved loads and partial coverage remain in the [package findings](ableton-p
 | Main Live | [First selected function and explanation](learning/walkthroughs/first-native-loop-factory.md), plus [symbols and provenance](artifacts/index.md#native-evidence-shelf) | Complete subsystem boundaries, thread ownership or audio graph |
 | Push2 display helper | [Entry pseudocode and references](artifacts/index.md#choose-a-starting-point) | Complete display behavior, or main Live's implementation |
 | MIDI scripts | [Seventeen decoded modules](artifacts/index.md#python-module-directory) and selected traced paths | Every controller, native arithmetic or host lifecycle |
-| Schemas and sets | [Resource findings](../../analysis/ableton-live-12.4.3/resource-findings.txt) | A complete accepted-file grammar or runtime defaults |
+| Schemas and sets | [Resource findings](../../analysis/ableton-live-12.4.3/resource-findings.txt); on this host, the [container](document-container-static.md) and [transport-state](transport-state-static.md) packets | A complete accepted-file grammar or runtime defaults |
 | QML and other GUI resources | [Package resource inventory](ableton-package-structure.md#resources-that-can-ground-specifications) | All widget behavior, native bindings or exact rendering |
 
 ## A linker-provided navigation index
@@ -115,6 +115,52 @@ investigation question. It does not yet establish which text tokens the native
 reader accepts, what happens when a field is missing, or whether changing that
 state participates in undo. The prepared file variants test those distinctions
 once a supported observation or traced parser path supplies expectations.
+
+### Which schema a document names
+
+The [container packet](document-container-static.md#schema-directory-and-version-cross-check)
+compared every shipped document's root attributes with the 203 shipped schema
+files. These arrows mean **this value equals that file's name or header value**.
+They do not mean Live reads the schema file when it loads the document. Whether
+12.4.3 reads `Schema/*.txt` at runtime is unknown.
+
+```mermaid
+flowchart LR
+    A[Shipped document] -->|gzip or plain XML| B[Ableton root element]
+    B -->|MinorVersion value equals file name| C[Schema family_translator file]
+    B -->|MajorVersion equals schema Version| C
+```
+
+All 12 MinorVersion values in shipped documents match a schema file name
+exactly, and 191 schema files have no shipped document. Shipped 12.4 content
+uses `12.0_12402`, the newest schema.
+
+### Where song tempo is stored
+
+The [transport-state packet](transport-state-static.md#where-tempo-and-time-signature-live)
+followed declared fields and found that no schema version puts tempo under
+`Transport`. In `12.0_12402` the path runs through the main track's mixer
+device. Arrows mean **declares a field of this class**, as above. The two
+middle edges were also checked directly in `12.0_12402.txt`: `MainTrack`'s
+`DeviceChain` field (line 4116) and `MainTrackDeviceChain`'s `Mixer` field
+(line 4177).
+
+```mermaid
+flowchart LR
+    A[LiveSet] -->|MainTrack field| B[MainTrack]
+    B -->|DeviceChain field| C[MainTrackDeviceChain]
+    C -->|Mixer field| D[MainTrackDevice]
+    D -->|Tempo field| E[TimeableSongTempo]
+    E -->|Manual field| F[RemoteableFloat]
+    F -->|Value field| G[Float]
+```
+
+Time signature hangs off `MainTrackDevice` the same way, through
+`TimeableTimeSignature`. The path changed across versions: the main track was
+`MasterTrack` until the 12.0_12013–12.0_12017 transition. Image strings such as `Transport/Bpm/Value`
+suggest older documents kept tempo under `Transport`, but no shipped schema or
+document has that path. This is document structure only. It does not show
+which code reads tempo, the default for a missing value, or its accepted range.
 
 ## First main native call edges
 

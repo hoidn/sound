@@ -1080,3 +1080,20 @@ anchors and 10 follow-up queries. All four prior hashes matched. Corrected the
 the coordinator re-checked by Mach-O section. Opened [Q-012](questions.md#q-012-transport-state-load-and-save-semantics).
 Gaps: defaults, malformed and out-of-range handling, precedence and the 12.4.3
 write format remain unknown. Lint: links and anchors resolve; `git diff --check` clean.
+
+## [2026-10-17] maintenance | Learning pages updated for revision 2
+
+Method guide: added the outside-in route (shipped artifacts, declared schema
+structure, string anchors) with S1/S2 examples and three cautions (AppleDouble
+counts, pooled strings, shipped is not loaded), marked the REA session paragraph
+as revision 1, and added three glossary terms. [Learning index](research/learning/index.md):
+a revision 2 section and a note that most lesson evidence links point into the
+absent macOS tree. [MIDI lesson](research/learning/walkthroughs/midi-integer-parsing.md):
+pointed to the S4 re-decode, which reproduces every quoted offset, plus S4's
+`int()` spellings and PRB-S4-03. [Atlas](research/program-structure.md)
+revision 8: document-to-schema correspondence and the 12.0_12402 tempo field
+path. Two edges were checked directly against `12.0_12402.txt` lines 4116 and
+4177. [Learning plan](research/learning/design-and-plan.md) row L6. No packet walkthrough was written:
+each waits for its packet's native half. Not reader-reviewed. Lint: relative
+links and anchors on edited pages resolve except 14 pre-existing links into the
+absent macOS `analysis/` tree; `git diff --check` clean.
