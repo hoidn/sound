@@ -149,11 +149,13 @@ defines them). M1–M6 above remain the revision 1 record.
 | G0.2 Evidence | Not restorable from this host: no SSH route to the macOS host is configured. Revision 1 counts remain historical until the tree is copied | Verified copy or recorded loss |
 | G0.3 Persistent project | **Passed 2026-10-17.** Import 26 s with `AARCH64:LE:64:AppleSilicon:default`; full default analysis 1:14:30 wall, 14.6 GB peak RSS (24 CPUs allowed, 32 GiB heap, other jobs running); saved project 2.03 GB; cold read-only reopen 2:54, 4.47 GB RSS, executable SHA-256 matches; 418,417 non-external functions, 20,059 thunks, 2,053 external, 452,752 strings. Revision 1's inventory had 418,418 and 2,054; the one-entry differences are unexplained. Evidence: [g03-v1](../../analysis/ableton-live-12.4.3/r2/g03-v1/manifest.json) | Saved project, cold reopen, measured cost |
 | C1–C3 Corpus | **C1 and C2 passed 2026-10-17.** Every one of 418,417 eligible Live functions has an outcome: 320,967 exported, 97,387 with warnings, 63 failed; indexes verified ([Live measurements](r2-corpus-tooling.md#measured-on-live--2026-10-17)). Revision 1 had exported 2,028. 15 helper corpora also complete. C3 browsers built for the helpers; the Live browser is being built | Every eligible row has an outcome |
-| S1, S2 Static halves | Filed: [transport-state static](transport-state-static.md), [document container static](document-container-static.md). Native halves N1 and N2 in progress via the query server | Draft research pages with evidence |
-| S3 Transitions | N3 in progress via the query server, with the x86_64 engine bundle as a symbol donor | Transition table or escalation record |
+| S1, S2 | **Draft specs filed 2026-10-17:** [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r1 (12 requirements, 23 cases) and [SPEC-ALS-CONTAINER](../specs/als-container.md) r1 (9 requirements, 27 cases), from static and native halves | Draft research pages with evidence |
+| S3 Transitions | **Done:** dispatch resolved and static transition table T-01 to T-13 with an escalation record in [transport transitions](transport-transitions-native.md) | Transition table or escalation record |
 | S4 MIDI closure | Done: [closure assessment](midi-closure-r2.md), spec revision 2, [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Clause classification |
-| H2, H3 Handoffs | Pending | Reviewed releases |
-| Phase 4 probe batch | Collecting | Prepared probe records |
+| H2, H3 Handoffs | Candidates being staged from SPEC-TRANSPORT-STATE and SPEC-ALS-CONTAINER; separate review follows | Reviewed releases |
+| Phase 4 probe batch | Being consolidated from all packet probe records into one run sheet | Prepared probe records |
+| S5 Clip launch | Started 2026-10-17 | Research page with candidate requirements |
+| Helper and device Live sides | Done: [helper launch](helper-launch-live-side.md), [device parameter mapping](device-parameter-mapping-native.md) | Research pages |
 
 The current [combined tool check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json)
 records 84 passing analyst-tool tests with exact source hashes. These cover
