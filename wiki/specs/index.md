@@ -25,6 +25,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [Plug-in discovery](plugin-discovery.md) | Revision 1 draft: 16 requirements (12 documented or static with unknown parts, 4 unknown), 42 unexecuted cases (6 unresolved) for VST3 and VST2 folders, candidates, change detection and Rescan; crash, hang and batch limit unknown |
 | [Browser index](browser-index.md) | Revision 1 draft: 13 requirements (content kinds, tag sidecar read and write format and names, previews, change handling, rebuild); 52 unexecuted cases (24 static-derived, 28 unknown); probes PRB-BI-01 to 05 (proposed), PRB-H2-03 to 06, 09 |
 | [Clip launch](clip-launch.md) | Revision 1 draft: 23 requirements (3 documented with static parts, 5 static-derived, 10 static with unknown parts, 5 unknown), 56 unexecuted cases (4 not graded, 2 without a fixture) for stored launch fields, values, load corrections, migration, quantization grid and launch boundary; launch modes, Legato, velocity and follow-action timing open |
+| [MIDI note storage](midi-note-storage.md) | Revision 1 draft: 17 requirements (4 without unknown parts, 12 with unknown parts, 1 unknown and excluded) for note structure, load defaults, clamping, time grid, NoteIds, per-note expression and probability groups; 60 unexecuted cases (45 gradable, 6 blocked, 9 unresolved); probes PRB-S7-01 to 10 |
 | [Transport-state handoff plan](transport-state-handoff-plan.md) | Staged transport-state-v1 candidate (18 unexecuted cases): scope, exclusions, traceability, review gates |
 | [MIDI user mapping](midi-user-mapping.md) | Revision 3 draft: documented, static, static-conditional and unknown clauses; REQ-005 now carries the native value transforms for all ten map modes; cases MT-01 to MT-23 added (18 static, 5 static-conditional); unexecuted |
 
@@ -45,7 +46,6 @@ target spec:
 | --- | --- | --- | --- |
 | SPEC-WARP-MARKERS | WM-01–WM-16 (16) | [Warp markers](../research/warp-markers.md#candidate-requirements-for-spec-warp-markers) | PRB-S8-01 to 11; locate the sample-to-beat conversion routine |
 | SPEC-MIXER-VALUES | MX-01–MX-15 (15) | [Mixer values](../research/mixer-values.md#candidate-requirements-for-spec-mixer-values) | Trace logic-to-engine volume and send port values (Q-019); PRB-S9-01 to 08 |
-| SPEC-MIDI-NOTE-STORAGE | MN-01–MN-24 (24) | [MIDI note storage](../research/midi-note-storage.md#candidate-requirements-for-spec-midi-note-storage) | Draft spec; PRB-S7-01 to 10 on the macOS host |
 | SPEC-AUTOMATION-ENVELOPES | AE-C01–AE-C17 (17) | [Automation envelopes](../research/automation-envelopes.md#candidate-requirements-for-spec-automation-envelopes) | Draft storage and load clauses; evaluation after PRB-S6-04 and 06 |
 | Per-device parameter specs | DEV-C01–DEV-C10 (10) | [Device bundles](../research/device-bundles-static.md#candidate-requirements-for-per-device-parameter-specs) | Per-device parameter mapping |
 | SPEC-CORPUS-DEVICE | CD-C01–CD-C08 (8) | [Corpus DSP (decompiled)](../research/corpus-dsp-static.md#candidate-requirements-for-spec-corpus-device) | Live-side conversion (N5), then Phase 4 measurements |

@@ -337,6 +337,11 @@ no experimental contradiction has been established yet.
   corruption; whether notes are re-sorted after load is untraced.
 - Next action: trace the table store's callers for a range guard; otherwise exclude
   these inputs from any release and run the matching PRB-S7 probes.
+- Progress 2026-10-17 (D4): [SPEC-MIDI-NOTE-STORAGE](specs/midi-note-storage.md) r1 excludes MidiKey outside 0
+  to 127, a missing MidiKey and repeated keys (REQ-011), and keeps re-sorting after load (REQ-010),
+  list Id meaning (REQ-012) and refusal presentation (REQ-017) open. No range guard was traced;
+  PRB-S7-05 and 06 remain the next action. Also open: an untraced adjustment of per-note lists
+  with events at or outside the note span (REQ-014).
 
 ## Q-019 Mixer volume and send values sent to the engine
 

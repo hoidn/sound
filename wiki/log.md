@@ -1723,3 +1723,15 @@ clause is weaker than the packet: "no previous value keeps the current value" ap
 Absolute. Updated the spec index, feature map, coverage and Q-009. A narrow midi-config-v3
 candidate is justified but was not started, because no new work is being dispatched. Gaps:
 PRB-N7-01 to 05.
+
+## [2026-10-17] spec | SPEC-MIDI-NOTE-STORAGE revision 1 (D4)
+
+Drafted [SPEC-MIDI-NOTE-STORAGE](specs/midi-note-storage.md) r1 from packet S7 (MN-01 to MN-24)
+and query round d4-0001 (2 dossiers): 17 requirements, 60 unexecuted cases (45 gradable, 6
+blocked by the unknown group shape, 9 unresolved). Missing note attributes are an explicit
+exclusion, except NoteId absent from every note; MidiKey range and duplicate keys are excluded
+(Q-018). New static result: the reader adjusts per-note lists with events at or before offset 0
+or at or after the note's Duration (semantics untraced) and removes lists left empty; this affects
+most lists in one shipped demo. Corrections: integer trailing spaces, the MN-20 drop rule, and the
+PRB-S7-02 variant B expectation. The coordinator retained d4-0001 in
+`analysis/ableton-live-12.4.3/r2/d4-midi-notes-v1/`. Not reviewed; nothing executed.
