@@ -29,6 +29,7 @@ learned about relationships in its code.
 | [Learning from a transport export failure](walkthroughs/transport-wrapper-boundary.md) | Read a retained branch when a selected body fails acceptance; separate batch completion from successful decompilation | Two wrapper branch targets, with handler semantics and playback effects unresolved |
 | [Resolving an indirect call](walkthroughs/transport-dispatch.md) | Resolve a `blr` through constructor-stored vtables and RTTI; name functions from a donor build; find a message consumer through its registration | Static; donor names are inferred matches; runtime timing unresolved |
 | [Following LoopOn Value="true" into Live](walkthroughs/transport-state-reader.md) | Find a parser by its error message, read an exact-match branch, follow a value to an object offset through a member registry | Parser, loader and constructor traced statically; top-level load, error dialog and engine use unresolved |
+| [Following one attribute: how Live decides a set's version is acceptable](walkthroughs/document-version-check.md) | Trace MajorVersion from the root reader through the integer parser and version check to the post-parse decision; check a notes summary against disassembly | Static reading of retained disassembly; the catch step, dialog text and File > Open's reading path are unresolved |
 
 The native lesson uses actual main-image code; the bytecode companion remains a
 separate kind of evidence. To inspect current code immediately, use the [artifact catalog](../artifacts/index.md),
@@ -42,8 +43,9 @@ re-decode that is present on this host.
 
 ## Revision 2 so far
 
-There is no new lesson yet. Each revision 2 packet gets its lesson once its
-native half has traced code. Until then, the [method guide](method.md#start-from-what-live-stores-or-shows)
+Native lessons now exist for the transport fields, the version check and the
+transport dispatch (rows above). Each revision 2 packet gets its lesson once its
+native half has traced code. For the outside-in route itself, the [method guide](method.md#start-from-what-live-stores-or-shows)
 explains the outside-in route using the static halves of the
 [container packet](../document-container-static.md) and the
 [transport-state packet](../transport-state-static.md). The

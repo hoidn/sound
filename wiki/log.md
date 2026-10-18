@@ -1369,3 +1369,18 @@ replaced), feature map, coverage, Q-012, atlas and learning index; the spec
 browser is regenerated after the container draft lands. Evidence: `analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/`.
 Gaps: precedence, post-load clamping, time-signature default, error presentation;
 PRB-N1-01 to 08.
+
+## [2026-10-17] spec | Document container native half (N2) and SPEC-ALS-CONTAINER r1
+
+A fresh writer produced [document container native](research/document-container-native.md),
+the draft [SPEC-ALS-CONTAINER](specs/als-container.md) revision 1 (9 requirements, 27
+unexecuted cases, 7 probes) and the [version-check walkthrough](research/learning/walkthroughs/document-version-check.md)
+from the N2 evidence after the investigator was interrupted. Nothing was executed.
+12.4.3 reads `Schema/<MinorVersion>.txt` on the version-check path; MajorVersion 4 and 5
+are accepted, 6 and above gives the newer-version error, other values the
+corrupt-document error; `Revision` is never read. The writer's check against the
+disassembly relabelled case N2-014 unknown and N2-015's message inferred; notes
+claims missing from the kept evidence are listed on the page. Updated the spec index
+(candidate row replaced), feature map, coverage, Q-006, Q-012, atlas and learning
+index, and regenerated the spec browser. Gaps: Live Set save call site and
+compression level, which reading path File > Open uses, dialog texts.

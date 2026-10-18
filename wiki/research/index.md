@@ -39,6 +39,7 @@ to the isolated implementation workspace.
 | [Push 3 helper (static)](push3-helper-static.md) | H5: Push3.app identity, launch options and watchdog, USB and MIDI hardware interfaces, nanomsg, document-sync and shared-memory links to Live, Push 2 comparison, nine probes |
 | [Web connector, add-ons, swapper (static)](web-addons-swapper-static.md) | H6: helper roles, launch and messages, service endpoints, `.asu` and xdelta update with swap and rollback, add-on backends; scope classification |
 | [Document container (static)](document-container-static.md) | S2 static half: gzip/XML envelope, root attributes, schema-version cross-check, native loader anchors |
+| [Document container (native)](document-container-native.md) | S2 native half (N2): stream detection, root and version checks, newer-version versus corrupt paths, runtime `Schema/*.txt` lookup, save writer; 27 cases, 7 probes |
 | [Transport-state fields (static)](transport-state-static.md) | S1 static half: Transport, tempo and time-signature schema evolution, values in 376 shipped sets and clips, candidate SPEC-TRANSPORT-STATE statements, native anchors and queries |
 | [Transport-state fields (native)](transport-state-native.md) | S1 native half: reader, member registry, loader and writer for tempo, time signature and loop fields; tokens, defaults, duplicates, save number format, time-signature code; PRB-N1 probes |
 | [Decompilation preparation](ableton-decompilation-preparation.md) | Validated helper pipeline, core targets and prioritized spec work |

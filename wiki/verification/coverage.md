@@ -25,7 +25,7 @@ requirements to candidate code and tests.
 | FEAT-DEVICES | None | Not started | Unknown | Preset/state schemas and bounded DSP derivations |
 | FEAT-HOSTING | None | Not started | Unknown | Host interfaces, lifecycle and error paths |
 | FEAT-WARP | None | Not started | Unknown | Mode/settings and algorithm analysis; flag numerical comparisons |
-| FEAT-PERSISTENCE | None | Not started | Unknown | Packaged files, schema and loader/migration paths |
+| FEAT-PERSISTENCE | Draft [SPEC-ALS-CONTAINER](../specs/als-container.md) r1 (envelope only); no handoff | Not started | Unknown; 27 draft cases not run | PRB-N2-01 to 07; Live Set save call site; set content, migration, recovery |
 | FEAT-UI | None | Not started | Unknown | UI resources, bindings and command/focus dispatch |
 | FEAT-MIDI-USER-MAPPING | [Revision 2 draft](../specs/midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md); [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Not started | Unknown; 109 v2 release cases (54 restated from v1), 46 broader draft groups and 16 probe records not run | Independently observe released routes; PRB-S4-01–16 on the macOS host |
 | FEAT-ECOSYSTEM | None | Not started | Unknown | Shipped integration contracts and protocol handlers |

@@ -121,14 +121,17 @@ once a supported observation or traced parser path supplies expectations.
 The [container packet](document-container-static.md#schema-directory-and-version-cross-check)
 compared every shipped document's root attributes with the 203 shipped schema
 files. These arrows mean **this value equals that file's name or header value**.
-They do not mean Live reads the schema file when it loads the document. Whether
-12.4.3 reads `Schema/*.txt` at runtime is unknown.
+They do not by themselves mean Live reads the schema file. The
+[native packet](document-container-native.md) found code on the version-check path
+that opens `Schema/<MinorVersion>.txt` and refuses the document when it is
+missing; a static reading, not an executed load.
 
 ```mermaid
 flowchart LR
     A[Shipped document] -->|gzip or plain XML| B[Ableton root element]
     B -->|MinorVersion value equals file name| C[Schema family_translator file]
     B -->|MajorVersion equals schema Version| C
+    B -.->|version check opens file, static reading| C
 ```
 
 All 12 MinorVersion values in shipped documents match a schema file name

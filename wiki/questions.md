@@ -83,6 +83,10 @@ no experimental contradiction has been established yet.
 - Next action: choose a bounded feature question, validate the matching decoder or
   trace its prepared native symbol; derive the contract and escalate only material
   gaps under [ADR 0002](decisions/adr-0002-static-first-analysis.md).
+- Progress 2026-10-17: [document container native](research/document-container-native.md) traced stream
+  detection, root and version checks and the save writer statically; 12.4.3 reads
+  `Schema/<MinorVersion>.txt` on the version-check path (code read, not executed).
+  `.alp` and the Live Set save call site remain unknown.
 
 ## Q-007 Reference behavior and timing
 
@@ -207,6 +211,10 @@ no experimental contradiction has been established yet.
   tokens, defaults, duplicates, save number format and the time-signature code are
   derived; precedence, post-load clamping, the time-signature default and error
   presentation remain; probes PRB-N1-01 to 08.
+- Progress 2026-10-17: [document container native](research/document-container-native.md) found the single
+  envelope writer (declaration, attribute order, MajorVersion 5) and its gzip level
+  handling; the Live Set save call site and level remain unknown (PRB-N2-01 in
+  [SPEC-ALS-CONTAINER](specs/als-container.md)).
 
 ## Q-013 x86_64-only ReWire and MultiF0 paths
 
