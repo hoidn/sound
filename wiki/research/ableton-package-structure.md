@@ -106,11 +106,17 @@ and no handoff has been released. See the [next-stage plan](ableton-decompilatio
 ## Serialization vocabulary strings and shipped documents — 2026-10-17
 
 Observed on the Linux workstation against the re-derived `Live.arm64`
-(SHA-256 `3a99cee…383cfad`) with `strings -n 4 | grep -x`: the image contains
-exactly one null-terminated instance each of `LoopOn`, `LoopStart`, `LoopLength`,
-`Tempo`, `SchemaChangeCount`, `MajorVersion`, `MinorVersion` and `Creator`,
-four of `LiveSet` and five of `Transport`. These names match the schema and
-ALS vocabulary in the [transport study](native-transport-study.md#evidence-already-available).
+(SHA-256 `3a99cee…383cfad`): `__TEXT,__cstring` holds one NUL-delimited copy each
+of `LoopOn`, `LoopStart`, `LoopLength`, `Tempo`, `Transport`, `SchemaChangeCount`,
+`MajorVersion`, `MinorVersion` and `Creator`, and none of `LiveSet`. Correction
+2026-10-17: the first version of this paragraph reported four `LiveSet` and five
+`Transport` from `strings | grep -x`, which also matched `__LINKEDIT` export-trie
+fragments; the coordinator re-checked by Mach-O section. `LiveSet` occurs only as
+a suffix and as UTF-16. The ASCII `LoopOn`, `LoopLength` and `Manual` copies sit
+among clip, sample and help strings, so they are not established as document
+vocabulary; see [transport-state static](transport-state-static.md#native-anchors).
+These names match the schema and ALS vocabulary in the
+[transport study](native-transport-study.md#evidence-already-available).
 Their presence is a fact about bytes; which code references them, and whether
 that code reads or writes documents, is unknown until cross-references are
 resolved in an analyzed project.

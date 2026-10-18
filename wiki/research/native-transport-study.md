@@ -2,7 +2,7 @@
 id: RESEARCH-NATIVE-TRANSPORT-STUDY
 type: research
 status: draft
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -87,6 +87,10 @@ addresses or evidence that Ghidra recognizes an eligible function there.
 The full demangled names in the retained selection identify the callback
 templates. A wrapper bearing `OnStart` is not automatically the handler body or
 the path taken by a GUI Play action. Resolve both connections separately.
+
+Further factory, RTTI, member-name and value-message anchors for LoopStart,
+LoopLength, CurrentTime, tempo and time signature are in
+[transport-state static](transport-state-static.md#native-anchors).
 
 ## First native findings
 

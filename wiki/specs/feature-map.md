@@ -14,7 +14,7 @@ manuals, package inventory, API surfaces, and observed user workflows.
 
 | Feature ID | Area | Initial questions | Spec state |
 | --- | --- | --- | --- |
-| FEAT-TRANSPORT | Transport and timing | Tempo, meter, looping, launch boundaries, clock changes | Unspecified |
+| FEAT-TRANSPORT | Transport and timing | Tempo, meter, looping, launch boundaries, clock changes | Unspecified; static field evidence in [transport-state static](../research/transport-state-static.md) |
 | FEAT-SESSION | Session View | Clips, scenes, follow actions, recording, Arrangement override | Unspecified |
 | FEAT-ARRANGEMENT | Arrangement | Editing, comping, fades, clip boundaries, recording | Unspecified |
 | FEAT-AUDIO | Audio engine | Mixing, routing, monitoring, latency, device changes | Unspecified |

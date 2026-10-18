@@ -479,7 +479,8 @@ and how to turn decompilation into specifications faster than the first pass did
 
 New observations in [package structure](ableton-package-structure.md#serialization-vocabulary-strings-and-shipped-documents--2026-10-17):
 the image contains exact strings for the document vocabulary (`LoopOn`,
-`Tempo`, `SchemaChangeCount` and others) and the bundle ships thousands of
+`Tempo`, `SchemaChangeCount` and others; which copies are document vocabulary is
+qualified on that page) and the bundle ships thousands of
 `.als`/`.alc`/`.adv`/`.adg` documents plus 203 schema versions (counts corrected to 26 sets and 350 clips after
 excluding AppleDouble companions). Both support
 an outside-in method that was not used in the first pass.

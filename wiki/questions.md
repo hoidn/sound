@@ -161,3 +161,18 @@ no experimental contradiction has been established yet.
 - Proposal 2026-10-17: [roadmap revision 2](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
   sequences the storage decision, a persistent project, one measured corpus
   batch and outside-in specification packets; adopted and executing 2026-10-17.
+
+## Q-012 Transport-state load and save semantics
+
+- State: open; owner: analyst (S1 native half).
+- Affects: FEAT-TRANSPORT, FEAT-PERSISTENCE, the proposed SPEC-TRANSPORT-STATE.
+- Evidence: [transport-state static](research/transport-state-static.md) and
+  [document container static](research/document-container-static.md).
+- Gap: defaults when a field is absent; handling of malformed tokens, duplicates
+  and out-of-range values; clamping; precedence between `Manual` values, the
+  one-event envelopes and scene values; the meaning of `Time=-63072000`; and the
+  exact format 12.4.3 writes.
+- Next action: once the saved project exists, trace the callers of
+  `Member "{}" of Class {} is missing` and of the `Value … out of range for '`
+  message; reserve the 12.4.3 write format for a Phase 4 save capture if static
+  tracing cannot fix it.

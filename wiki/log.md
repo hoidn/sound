@@ -1067,3 +1067,16 @@ layer of all 13 requirements is statically supportable; discovery, host errors, 
 transforms, pad playback, feedback and timing need native tracing or Phase 4 probes.
 Drafted 55 unexecuted v2 cases and 16 probe records. No spec or handoff page was edited.
 Next: spec revision 2 and a midi-config-v2 candidate for separate review.
+
+## [2026-10-17] ingest | S1 transport-state static evidence
+
+Recomputed from the read-only bundle into `analysis/ableton-live-12.4.3/r2/s1-static-v1/`
+(deterministic `run.sh`, outputs identical over two runs) and filed
+[transport-state static](research/transport-state-static.md): Transport evolution over
+203 schemas; tempo and time signature live on the main-track mixer, never under
+Transport; values across 376 shipped sets and clips; 9 candidate statements; native
+anchors and 10 follow-up queries. All four prior hashes matched. Corrected the
+`LiveSet`/`Transport` string counts on [package structure](research/ableton-package-structure.md);
+the coordinator re-checked by Mach-O section. Opened [Q-012](questions.md#q-012-transport-state-load-and-save-semantics).
+Gaps: defaults, malformed and out-of-range handling, precedence and the 12.4.3
+write format remain unknown. Lint: links and anchors resolve; `git diff --check` clean.

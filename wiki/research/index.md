@@ -30,6 +30,7 @@ to the isolated implementation workspace.
 | [Installed Ableton source](sources/ableton-live-12.4.3.md) | Pinned build, retained evidence, hashes and environment |
 | [Package structure](ableton-package-structure.md) | Observed native/resource boundaries and coverage limits |
 | [Document container (static)](document-container-static.md) | S2 static half: gzip/XML envelope, root attributes, schema-version cross-check, native loader anchors |
+| [Transport-state fields (static)](transport-state-static.md) | S1 static half: Transport, tempo and time-signature schema evolution, values in 376 shipped sets and clips, candidate SPEC-TRANSPORT-STATE statements, native anchors and queries |
 | [Decompilation preparation](ableton-decompilation-preparation.md) | Validated helper pipeline, core targets and prioritized spec work |
 | [MIDI mapping source capture](sources/midi-user-mapping-12.4.3.md) | Pinned documents, bytecode and static decoder provenance |
 | [MIDI mapping investigation](midi-user-mapping.md) | Parser/mapping findings and unresolved native/host boundaries |
