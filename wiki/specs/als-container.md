@@ -537,3 +537,5 @@ from revision 1 with these corrections carried. It releases partial
 REQ-ALS-CONTAINER-001 to 006 only. REQ-ALS-CONTAINER-007 to 009 and the unknown
 clauses stay unreleased until PRB-N2-03 and PRB-N2-05, or equivalent static
 traces, settle them.
+
+Status note, 2026-10-18 (editorial; requirements unchanged): under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) the probes cited here (PRB-N2-01 to 07) will not run on a macOS host. Clauses waiting on them stay unknown until extracted execution of the original x86_64 code or further static work settles them.

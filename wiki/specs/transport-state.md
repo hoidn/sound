@@ -314,3 +314,5 @@ narrowing; [handoff plan](transport-state-handoff-plan.md)) was built from
 revision 1 with these corrections applied. It carries 18 cases: TS-001–009,
 TS-011–016 and TS-020–022. TS-010, TS-017–019, REQ-009 and REQ-012 stay out
 until probes settle them.
+
+Status note, 2026-10-18 (editorial; requirements unchanged): under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) the probes cited here (PRB-N1-01 to 08) will not run on a macOS host. Clauses waiting on them stay unknown until extracted execution of the original x86_64 code or further static work settles them.

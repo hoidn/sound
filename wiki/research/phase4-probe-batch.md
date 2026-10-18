@@ -9,6 +9,14 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Phase 4 reference observation batch
 
+> **Will not run as planned (2026-10-18).** No macOS host will be available
+> ([ADR 0003](../decisions/adr-0003-no-reference-execution.md)). This page is kept as the record of what
+> reference observation would have settled. Each record's question is now an
+> extracted-execution target (original x86_64 functions run on this host), a
+> static investigation target, or a permanent unknown. See
+> [extracted execution](extracted-execution.md) for the method and the first
+> triage.
+
 Phase 4 of [roadmap revision 2](native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
 collects every runtime-dependent question into one prepared batch for the macOS
 host, under the [ADR 0002 escalation rule](../decisions/adr-0002-static-first-analysis.md#runtime-escalation-rule).

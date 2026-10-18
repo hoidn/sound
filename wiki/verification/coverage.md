@@ -14,6 +14,12 @@ families remain unimplemented and unverified. This
 matrix is an analyst view; the implementer has a separate mapping of released
 requirements to candidate code and tests.
 
+Since 2026-10-18 no run of the whole reference application is possible
+([ADR 0003](../decisions/adr-0003-no-reference-execution.md)). "Not run" for reference comparison is
+therefore permanent, and the probe IDs in the last column will not run as
+planned. Each probe's question is re-routed to extracted execution of original
+x86_64 functions, to static investigation, or to a permanent unknown.
+
 | Feature ID | Spec/handoff | Implementation | Verification | Next evidence |
 | --- | --- | --- | --- | --- |
 | FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2; [transport-state-v1](../../handoff/transport-state-v1/README.md) released (18 cases) | Not started | Unknown; 18 release cases and 22 draft cases not run | PRB-N1-01 to 08; transition logic |

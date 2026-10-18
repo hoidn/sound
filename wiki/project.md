@@ -44,10 +44,15 @@ for restarting on the Linux workstation was adopted on 2026-10-17 and is executi
 2. Establish the whole-app feature matrix and explicit compatibility dimensions.
 3. Derive bounded behavioral specifications from static evidence; resolve only
    material gaps with targeted reference probes under [ADR 0002](decisions/adr-0002-static-first-analysis.md).
+   Since 2026-10-18 no whole-application reference run is possible; gaps are
+   closed by extracted execution of original functions or stay unknown
+   ([ADR 0003](decisions/adr-0003-no-reference-execution.md)).
 4. Release the first reviewed behavioral specification and fixture package.
 5. Provision an isolated implementation workspace and build a candidate.
 6. Compare reference and candidate; revise specifications and implementation
    through reviewed handoffs until the declared cases meet their criteria.
+   Under ADR 0003 the comparison is against released expectations, which are
+   static-derived or from extracted execution, never a run of Live itself.
 
 The proposed first integrated scenario is two audio tracks, quantized clip
 launching, recording into Arrangement, editing, save/reopen, and audio export.

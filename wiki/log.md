@@ -1879,3 +1879,21 @@ new broken links. The 33 it reports are older links into the macOS-host
 analysis tree, which is absent here (G0.2). The untracked
 `r2/n1-transport-state-v1/.entry-map.pickle` (11 MB) is a cache and is left
 uncommitted.
+
+## [2026-10-18] decision | ADR 0003: no Mac observation; extracted execution instead
+
+User direction: "mac observation not possible; we are finishing the proj on this
+x86 machine". A follow-up added: "integration test style observation is still
+possible if you can compile portions of the original program on this machine".
+[ADR 0003](decisions/adr-0003-no-reference-execution.md) records both. Live as a
+whole will not run, and the Phase 4 batch will not run as planned. The shipped
+x86_64 machine code can still be loaded on this host and individual
+self-contained functions called. That counts as a new evidence class, X
+(extracted execution). Its limits are that the harness supplies setup and
+stubs, results bind to the x86_64 slice, and equivalence with the arm64 target
+is inferred. ADR 0002 points to it. The probe batch, roadmap, project milestones,
+coverage, gate table, transport-state and container specs carry the change.
+
+The same day, nine agents began applying the review findings to the draft
+specs, and a pilot agent began building the harness. The harness is checked
+against released mixer, MIDI and browser-index or transport cases.

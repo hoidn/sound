@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-DECOMPILATION
 type: research
 status: current
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 revision: 2
@@ -572,6 +572,11 @@ with inputs, discriminating observation and stopping condition per
 [ADR 0002](../decisions/adr-0002-static-first-analysis.md), to run in a single
 sitting on the macOS host with retained captures. It is not a gate for Phases
 1–3.
+
+*Superseded 2026-10-18 by [ADR 0003](../decisions/adr-0003-no-reference-execution.md):* no macOS host will be
+available. Phase 4 becomes triage of the batch into extracted execution of
+original x86_64 functions on this host, static investigation, or permanent
+unknowns.
 
 ### Scope extension — 2026-10-17
 

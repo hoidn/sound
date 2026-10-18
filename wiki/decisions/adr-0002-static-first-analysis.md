@@ -2,7 +2,7 @@
 id: ADR-0002
 type: decision
 status: adopted
-updated: 2026-10-09
+updated: 2026-10-18
 access: neutral
 ---
 
@@ -18,6 +18,10 @@ Use versioned documentation, shipped resources, schemas, scripts, saved examples
 and focused decompilation as the default inputs to behavioral specifications.
 Do not require a reference execution before beginning each feature or drafting
 its specification. Prefer bounded analysis over whole-binary decompilation.
+
+> Narrowed 2026-10-18 by [ADR 0003](adr-0003-no-reference-execution.md): no whole-application reference
+> execution is available; extracted execution of original x86_64 functions
+> replaces it where possible.
 
 ## Runtime escalation rule
 
