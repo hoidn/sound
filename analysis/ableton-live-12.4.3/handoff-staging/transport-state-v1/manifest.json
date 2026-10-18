@@ -1,0 +1,192 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "transport-state-v1",
+ "release_status": "staged candidate; not reviewed; not released",
+ "release_date": null,
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+ "specification": {
+  "id": "SPEC-TRANSPORT-STATE",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-TRANSPORT",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-TRANSPORT-STATE-001": "Locations and value types of the six values; homonymous elements elsewhere are different values. Units unreleased",
+  "REQ-TRANSPORT-STATE-002": "Empty single-Value element shape for the four Transport values and both Manual elements; the four always written once; relative order of the 33 known Transport children",
+  "REQ-TRANSPORT-STATE-003": "Exact Boolean tokens true/1/false/0; all other text refused",
+  "REQ-TRANSPORT-STATE-004": "Decimal-prefix reading with leading spaces skipped and trailing text ignored; nearest binary64; no prefix refused",
+  "REQ-TRANSPORT-STATE-005": "Tempo read as REQ-004 then rounded to nearest binary32",
+  "REQ-TRANSPORT-STATE-006": "Accepted and refused integer spellings listed in spec.md only",
+  "REQ-TRANSPORT-STATE-007": "Missing element or Value for the four Transport values and tempo Manual reads off/8/16/0/120",
+  "REQ-TRANSPORT-STATE-008": "Duplicate known non-KeyMidi Transport children or Manual refused; unknown Transport child skipped and not saved",
+  "REQ-TRANSPORT-STATE-010": "Code meaning (n-1)+99*log2(d) only; no acceptance case",
+  "REQ-TRANSPORT-STATE-011": "Boolean and integer text; fixed-precision decimal text with P=17 or 9 for in-range finite nonzero values; positive zero"
+ },
+ "unreleased_requirements": [
+  "REQ-TRANSPORT-STATE-009",
+  "REQ-TRANSPORT-STATE-012"
+ ],
+ "compatibility_dimensions": {
+  "project-files": "static-derived expectations for the listed document values; reference execution not-run",
+  "behavior": "effective transport state after opening excluded",
+  "audio": "excluded",
+  "ui": "excluded",
+  "timing": "excluded"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "number text starting (after spaces and sign) with 0x, inf or nan; Invalid; text starting with #; leading whitespace other than U+0020",
+   "values outside the spec.md ranges; non-finite, largest finite and negative-zero values; saved values whose log10 is within 1e-12 of a non-exact integer",
+   "time-signature text with spaces on both sides, or + with trailing spaces; any - sign",
+   "missing TimeSignature/Manual or its value; missing Transport, Tempo, TimeSignature, Mixer, DeviceChain or MainTrack",
+   "unknown attributes; repeated unknown children; any *KeyMidi child in the input; LoopIsSongStart other than false",
+   "automation events or scene values that disagree with Manual",
+   "other envelopes, format versions, compressed containers and document kinds"
+  ],
+  "behavior": [
+   "effective tempo and time signature after opening; whether a code other than 201 takes effect",
+   "editing after opening (UI, remote control, MIDI)",
+   "whether automation or other known Transport children are written; byte layout of saved documents",
+   "playback, timing, Link and external sync; undo",
+   "refusal text, presentation and state after refusal"
+  ],
+  "parent_cases_not_released": [
+   "TS-010",
+   "TS-017",
+   "TS-018",
+   "TS-019",
+   "TS-023"
+  ]
+ },
+ "fixture_origin": "independently authored minimal XML documents and expected logical results",
+ "approved_public_sources": [],
+ "review": {
+  "status": "pending",
+  "reviewers": [],
+  "date": null,
+  "findings": [],
+  "disposition": null,
+  "record": null
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 18,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "b15488d793ff29622fbe74c31260ce854cf134bed067448d10e75b15505e20e6",
+   "bytes": 1408
+  },
+  {
+   "path": "README.md",
+   "sha256": "1dd5cb6ba76b43261e58641b09d18f0ba8353125f9e06f510c871d8caf90d052",
+   "bytes": 1291
+  },
+  {
+   "path": "cases.json",
+   "sha256": "bc506c416e344fecf0d0e9b345f371f7dbbd86d108bc78d16554b4c5f23ecb48",
+   "bytes": 12141
+  },
+  {
+   "path": "fixtures/TS-001.xml",
+   "sha256": "d3ef550633afb99c4d9da8bb7f8fb7032185489da79d4a19fc9d6232c918023d",
+   "bytes": 791
+  },
+  {
+   "path": "fixtures/TS-002.xml",
+   "sha256": "87f15704b21f0af6f6ee61eff679d709e2deffaf490f91fca43d15205db9ec29",
+   "bytes": 788
+  },
+  {
+   "path": "fixtures/TS-003.xml",
+   "sha256": "1666a988dece0bd72da40861940569ce865695bb9a9806b82e0dc522eaf7a039",
+   "bytes": 788
+  },
+  {
+   "path": "fixtures/TS-004.xml",
+   "sha256": "7b89400953f05a7fca4e42d7ed186634d2fd8b7e57a693f6b8037991f3b326e0",
+   "bytes": 791
+  },
+  {
+   "path": "fixtures/TS-005.xml",
+   "sha256": "a4e6d83c28a15acb4bafc0dcfff367112e13a486d4cc6af66dcd3b0e33354e8d",
+   "bytes": 787
+  },
+  {
+   "path": "fixtures/TS-006.xml",
+   "sha256": "35d40d2be7e559dd628301e6cb76eb43646e4997c96f00e954b5b9786bdc8ce9",
+   "bytes": 797
+  },
+  {
+   "path": "fixtures/TS-007.xml",
+   "sha256": "ae305de00e898d70b0d9dd75dfe0250b282f368005123731b6931052e381aa8a",
+   "bytes": 793
+  },
+  {
+   "path": "fixtures/TS-008.xml",
+   "sha256": "0e9a04ae97cf2524d8ffd3827440de088f7cf6b4c34922b5b98658e668690b46",
+   "bytes": 799
+  },
+  {
+   "path": "fixtures/TS-009.xml",
+   "sha256": "d56abf09fdcba7e1f8c153348813183a34aac3a6bee45d745679e6e75758fd5c",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-011.xml",
+   "sha256": "8960ca7a218ab4873d4558f58a12364464a457d5cbe6c639378f22d9f06fe5df",
+   "bytes": 762
+  },
+  {
+   "path": "fixtures/TS-012.xml",
+   "sha256": "cf79510d3eec9a37638f3cbed5c9d13ec61a03964aaf4cee436e29fb6c151694",
+   "bytes": 781
+  },
+  {
+   "path": "fixtures/TS-013.xml",
+   "sha256": "6d316879ede93085c10dff1a4e2cc29d92d41445409b539a894d9f8a04e47da6",
+   "bytes": 729
+  },
+  {
+   "path": "fixtures/TS-014.xml",
+   "sha256": "c5f0f561ae46ca223180d941f1bd16cfbd99981c81bc91a233da86e2d4ec3766",
+   "bytes": 780
+  },
+  {
+   "path": "fixtures/TS-015.xml",
+   "sha256": "b4a9af98012df2b5c2469796dc4c8a95ee06fc845d9a7ca3a1e806df10f9d9af",
+   "bytes": 822
+  },
+  {
+   "path": "fixtures/TS-016.xml",
+   "sha256": "b59e969a07419b18272d47ca91574965c86228aba5162d16fe951647e60de0be",
+   "bytes": 816
+  },
+  {
+   "path": "fixtures/TS-020.xml",
+   "sha256": "a17b072685054751c547458bdead92057769f1f0f1b4a6945868099024847947",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-021.xml",
+   "sha256": "06e89984059ee98da3ec0886742cbabe8a16462edf81cbc683a532663d56b0a3",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-022.xml",
+   "sha256": "e65309b0496b3497b80210158fd34e0ed07ec2a034dc09ad57068f0929040e2b",
+   "bytes": 792
+  },
+  {
+   "path": "spec.md",
+   "sha256": "38224786e8f1c267b8b446ebddc2e003463bc73dde4eb630c412c4229bc3b8d8",
+   "bytes": 15092
+  }
+ ]
+}

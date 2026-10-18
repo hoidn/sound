@@ -21,6 +21,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [Feature map](feature-map.md)                                  | Whole-app planning inventory and stable feature IDs                         |
 | [ALS container](als-container.md) | Revision 1 draft: container recognition, root and version envelope, save envelope; 9 requirements, 27 unexecuted cases, 7 probes |
 | [Transport state](transport-state.md) | Revision 1 draft: 12 requirements (5 static-derived, 6 static with unknown parts, 1 unknown), 23 unexecuted cases for tempo, time signature and loop fields |
+| [Transport-state handoff plan](transport-state-handoff-plan.md) | Staged transport-state-v1 candidate (18 unexecuted cases): scope, exclusions, traceability, review gates |
 | [MIDI user mapping](midi-user-mapping.md)                      | Revision 2 draft: documented, static, static-conditional and unknown clauses; static expectations, unexecuted cases |
 
 **Browse every requirement in one place:** the

@@ -1,0 +1,394 @@
+{
+ "schema": "transport-state-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+ "scope": "transport-state-v1 partial requirement clauses only (see spec.md)",
+ "status": "staged candidate; not reviewed; not released",
+ "fixture_origin": "Independently authored minimal XML documents; no shipped file copied or excerpted",
+ "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+ "representation": {
+  "paths": "relative to /Ableton/LiveSet",
+  "state": "loop_on Boolean; loop_start, loop_length, current_time binary64; tempo binary32 compared after exact widening",
+  "saved": "values: path -> exact Value text; absent: paths; transport_order: REQ-002 order",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "TS-001",
+   "kind": "positive",
+   "purpose": "Loop switch text true opens loop on and saves as true",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003",
+    "REQ-TRANSPORT-STATE-002",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "input": "fixtures/TS-001.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "loop_on": true
+    },
+    "saved": {
+     "values": {
+      "Transport/LoopOn": "true"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  },
+  {
+   "id": "TS-002",
+   "kind": "positive",
+   "purpose": "Loop switch text 1 opens loop on",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "input": "fixtures/TS-002.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "loop_on": true
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-003",
+   "kind": "positive",
+   "purpose": "Loop switch text 0 opens loop off",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "input": "fixtures/TS-003.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "loop_on": false
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-004",
+   "kind": "negative",
+   "purpose": "Loop switch text TRUE is refused (case-sensitive)",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "input": "fixtures/TS-004.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-005",
+   "kind": "negative",
+   "purpose": "Empty loop switch text is refused",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "input": "fixtures/TS-005.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-006",
+   "kind": "boundary",
+   "purpose": "Loop start text after the numeric prefix is ignored",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "input": "fixtures/TS-006.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "loop_start": 4.5
+    },
+    "saved": {
+     "values": {
+      "Transport/LoopStart": "4.5"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  },
+  {
+   "id": "TS-007",
+   "kind": "negative",
+   "purpose": "Loop length text without a numeric prefix is refused",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004"
+   ],
+   "input": "fixtures/TS-007.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-008",
+   "kind": "positive",
+   "purpose": "Tempo text is held as binary32 and saved with nine-digit precision",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-005",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "input": "fixtures/TS-008.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "tempo": 93.33333587646484
+    },
+    "saved": {
+     "values": {
+      "MainTrack/DeviceChain/Mixer/Tempo/Manual": "93.3333359"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  },
+  {
+   "id": "TS-009",
+   "kind": "negative",
+   "purpose": "Time-signature code text with a fraction is refused",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "input": "fixtures/TS-009.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-011",
+   "kind": "missing",
+   "purpose": "Missing LoopStart element reads as 8",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "input": "fixtures/TS-011.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "loop_start": 8.0
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-012",
+   "kind": "missing",
+   "purpose": "LoopLength element without Value reads as 16",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "input": "fixtures/TS-012.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "loop_length": 16.0
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-013",
+   "kind": "missing",
+   "purpose": "Missing CurrentTime and LoopOn elements read as 0 and off",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "input": "fixtures/TS-013.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "current_time": 0.0,
+     "loop_on": false
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-014",
+   "kind": "missing",
+   "purpose": "Tempo Manual without Value reads as 120",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "input": "fixtures/TS-014.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "tempo": 120.0
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-015",
+   "kind": "negative",
+   "purpose": "Two LoopOn elements in Transport are refused",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-008"
+   ],
+   "input": "fixtures/TS-015.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 equality)"
+  },
+  {
+   "id": "TS-016",
+   "kind": "boundary",
+   "purpose": "Unknown Transport child is skipped and not saved",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-008"
+   ],
+   "input": "fixtures/TS-016.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "absent": [
+      "Transport/Foo"
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  },
+  {
+   "id": "TS-020",
+   "kind": "save",
+   "purpose": "Tempo 121.2 is saved as 121.199997",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "input": "fixtures/TS-020.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "values": {
+      "MainTrack/DeviceChain/Mixer/Tempo/Manual": "121.199997"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  },
+  {
+   "id": "TS-021",
+   "kind": "save",
+   "purpose": "Loop start 0.3 is saved with seventeen-digit precision",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "input": "fixtures/TS-021.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "values": {
+      "Transport/LoopStart": "0.299999999999999989"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  },
+  {
+   "id": "TS-022",
+   "kind": "save",
+   "purpose": "Unchanged values round-trip and Transport children keep their order",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-002",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "input": "fixtures/TS-022.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "transport_order": true,
+     "values": {
+      "Transport/LoopOn": "false",
+      "Transport/LoopStart": "8",
+      "Transport/LoopLength": "16",
+      "Transport/CurrentTime": "0"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact; saved document compared as parsed XML for listed values (exact Value text, single empty element), absent paths and Transport order only"
+  }
+ ]
+}

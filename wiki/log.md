@@ -1501,3 +1501,16 @@ MIDI numeric transforms (Q-009); and new outside-in packets S6 automation, S7 MI
 notes, S8 warp, S9 mixer values. Recorded in the
 [roadmap](research/native-decompilation-roadmap.md#scope-extension--2026-10-17) and
 gate table. A second hard-linked query copy and server were started for S6 to S9.
+
+## [2026-10-17] spec | transport-state-v1 handoff candidate staged
+
+Staged a finite candidate from SPEC-TRANSPORT-STATE r1 under
+`analysis/ableton-live-12.4.3/handoff-staging/transport-state-v1/` (18 cases, authored
+XML fixtures, draft manifest `45c60b41…ac4202`); plan and traceability in
+[transport-state handoff plan](specs/transport-state-handoff-plan.md). Partial
+REQ-001, 002, 004 to 008, 010 and 011 and full REQ-003; REQ-009 and REQ-012 unreleased;
+TS-010, TS-017 to 019 and TS-023 withheld. Found: REQ-006 and TS-010 contradict the
+container reading of the integer parser (trailing space kept); TS-023 conflicts with
+the draft's own exclusion of edits; TS-008 and TS-020 narrowed to `Manual`. Checks:
+cross-check model 18 of 18, hashes and links in an exported copy, deny lists clean.
+Not reviewed, not released, nothing executed.
