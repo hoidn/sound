@@ -33,6 +33,8 @@ to the isolated implementation workspace.
 | [Package structure](ableton-package-structure.md) | Observed native/resource boundaries and coverage limits |
 | [x86_64-only bundles](x86-only-bundles.md) | Live Engine is a ReWire device build of the engine; ReWire 1.8.7 install chain is x86_64-only; MultiF0 audio-to-note API; engine as symbol donor for S3 |
 | [Browser index (static)](browser-index-static.md) | H2: index helper launch and messages, files database schema and versioning, scan pipeline, XMP tag sidecars, previews, `filerefmap.db`; 12 candidate requirements, 9 probes |
+| [Push 3 helper (static)](push3-helper-static.md) | H5: Push3.app identity, launch options and watchdog, USB and MIDI hardware interfaces, nanomsg, document-sync and shared-memory links to Live, Push 2 comparison, nine probes |
+| [Web connector, add-ons, swapper (static)](web-addons-swapper-static.md) | H6: helper roles, launch and messages, service endpoints, `.asu` and xdelta update with swap and rollback, add-on backends; scope classification |
 | [Document container (static)](document-container-static.md) | S2 static half: gzip/XML envelope, root attributes, schema-version cross-check, native loader anchors |
 | [Transport-state fields (static)](transport-state-static.md) | S1 static half: Transport, tempo and time-signature schema evolution, values in 376 shipped sets and clips, candidate SPEC-TRANSPORT-STATE statements, native anchors and queries |
 | [Decompilation preparation](ableton-decompilation-preparation.md) | Validated helper pipeline, core targets and prioritized spec work |

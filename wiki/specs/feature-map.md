@@ -26,8 +26,8 @@ manuals, package inventory, API surfaces, and observed user workflows.
 | FEAT-PERSISTENCE | Files and recovery | Sets, presets, media references, migration, recovery | Unspecified; static envelope evidence in [document container](../research/document-container-static.md); schema still declares `ReWireDeviceMidiTargetId`; XMP tag sidecars and `filerefmap.db` in [browser index](../research/browser-index-static.md) |
 | FEAT-UI | Desktop interface | Browser, selection, shortcuts, drag/drop, focus, undo | Unspecified; static browser-index evidence in [browser index](../research/browser-index-static.md) |
 | FEAT-MIDI-USER-MAPPING | User-defined controller mapping (ecosystem subset) | Configuration, channels, banks, buttons and native/host gaps | [Revision 2 draft](midi-user-mapping.md) with S4 closure applied; [finite configuration release](../../handoff/midi-config-v1/README.md), partial clauses only; [midi-config-v2](../../handoff/midi-config-v2/README.md) released, partial REQ-002/003/005–013 |
-| FEAT-ECOSYSTEM | Integrations | Link, controllers, Push, Max for Live, Packs, ReWire | Unspecified; ReWire mixer and device modes appear x86_64-only ([x86_64-only bundles](../research/x86-only-bundles.md)) |
-| FEAT-DELIVERY | Delivery and export | Preferences, install, audio export, teardown, crash handling | Unspecified |
+| FEAT-ECOSYSTEM | Integrations | Link, controllers, Push, Max for Live, Packs, ReWire | Unspecified; ReWire mixer and device modes appear x86_64-only ([x86_64-only bundles](../research/x86-only-bundles.md)); Push 3 helper interfaces in [Push 3 helper](../research/push3-helper-static.md); add-on and extension helper in [web, add-ons, swapper](../research/web-addons-swapper-static.md); Packs remain in Live |
+| FEAT-DELIVERY | Delivery and export | Preferences, install, audio export, teardown, crash handling | Unspecified; self-update (`.asu`, xdelta, swap with rollback) static evidence in [web, add-ons, swapper](../research/web-addons-swapper-static.md) |
 
 Split these families into bounded feature pages as evidence arrives. Require
 separate statuses for documentation, implementation, and verification; do not

@@ -58,6 +58,10 @@ no experimental contradiction has been established yet.
   and full native-format expectations are not bounded.
 - Next action: expand the feature families into explicit required/optional/deferred
   contracts while keeping every deferred obligation visible.
+- Evidence 2026-10-17: Push 3 support needs a separate helper process with a USB
+  display protocol, the Push sysex protocol and a document-sync API with 369 message
+  names ([Push 3 helper](research/push3-helper-static.md)). Decide whether Push
+  support is required, optional or deferred before drafting a Push spec.
 
 ## Q-006 Native analysis and resource decoding
 
@@ -218,3 +222,16 @@ no experimental contradiction has been established yet.
   unsupported files. Runtime facts are in probes PRB-H2-01 to 09.
 - Next action: query the saved Live project for references to `live->index`,
   `ipc-channel`, `{}-files-{}.db` and `fileref-map-path`.
+
+## Q-015 Helper launch and update handling in Live
+
+- State: open; owner: analyst.
+- Affects: FEAT-DELIVERY, FEAT-ECOSYSTEM.
+- Evidence: [web, add-ons, swapper](research/web-addons-swapper-static.md),
+  [Push 3 helper](research/push3-helper-static.md).
+- Gap: how Live writes the web connector's configuration and the add-ons `--cid`;
+  start conditions such as the auto-update setting and free space; Live's UI for
+  each update event; use of the swapper's sentinel file; Pack and `.alp`
+  installation; which side binds each Push nanomsg channel and what Live sends.
+- Next action: trace `StartWebConnector`, `AddOns: start process` and the three
+  Push channel names in the saved Live project.

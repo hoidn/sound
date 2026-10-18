@@ -147,11 +147,11 @@ defines them). M1–M6 above remain the revision 1 record.
 | --- | --- | --- |
 | G0.1 Storage | Decided: `/var/tmp/sound-analysis` on the root filesystem; see [Linux paths](native-analysis-recovery.md#linux-workstation-paths--2026-10-17) | Path and measured free bytes |
 | G0.2 Evidence | Not restorable from this host: no SSH route to the macOS host is configured. Revision 1 counts remain historical until the tree is copied | Verified copy or recorded loss |
-| G0.3 Persistent project | Import passed in 26 s with `AARCH64:LE:64:AppleSilicon:default`; full analysis running | Saved project, cold reopen, measured cost |
-| C1–C3 Corpus | Tooling in preparation on the Push2 slice | Every eligible row has an outcome |
-| S1, S2 Static halves | In progress from shipped schemas and documents | Draft research pages with evidence |
-| S3 Transitions | Waits on G0.3 | Transition table or escalation record |
-| S4 MIDI closure | In progress | Clause classification |
+| G0.3 Persistent project | **Passed 2026-10-17.** Import 26 s with `AARCH64:LE:64:AppleSilicon:default`; full default analysis 1:14:30 wall, 14.6 GB peak RSS (24 CPUs allowed, 32 GiB heap, other jobs running); saved project 2.03 GB; cold read-only reopen 2:54, 4.47 GB RSS, executable SHA-256 matches; 418,417 non-external functions, 20,059 thunks, 2,053 external, 452,752 strings. Revision 1's inventory had 418,418 and 2,054; the one-entry differences are unexplained. Evidence: [g03-v1](../../analysis/ableton-live-12.4.3/r2/g03-v1/manifest.json) | Saved project, cold reopen, measured cost |
+| C1–C3 Corpus | [Tooling](r2-corpus-tooling.md) committed. 15 helper corpora complete and verified. Live A/B samples, then the full C1 and C2 run, in progress on `projects/LiveR2`. Browsers (C3) built for the helper corpora by the session that owns them | Every eligible row has an outcome |
+| S1, S2 Static halves | Filed: [transport-state static](transport-state-static.md), [document container static](document-container-static.md). Native halves N1 and N2 in progress via the query server | Draft research pages with evidence |
+| S3 Transitions | N3 in progress via the query server, with the x86_64 engine bundle as a symbol donor | Transition table or escalation record |
+| S4 MIDI closure | Done: [closure assessment](midi-closure-r2.md), spec revision 2, [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Clause classification |
 | H2, H3 Handoffs | Pending | Reviewed releases |
 | Phase 4 probe batch | Collecting | Prepared probe records |
 

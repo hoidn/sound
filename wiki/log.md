@@ -1217,3 +1217,37 @@ opened [Q-014](questions.md#q-014-browser-index-behavior). Evidence:
 `analysis/ableton-live-12.4.3/r2/h2-index-v1/`. The agent also confirmed that
 `decomp.time` is created at job start and is not a completion signal; the coordinator
 had already corrected that rule. Gaps: Live-side spawn and queries; runtime probes.
+
+## [2026-10-17] query | Push 3 helper interfaces (H5)
+
+Filed [Push 3 helper (static)](research/push3-helper-static.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/h5-push3-v1/` (12 self-checks pass). The helper
+(arm64 `8a2b77c9…`) is the Push application: embedded Python 3.11 running its own
+`Push2` script, Skia display, libusb with vendor `0x2982` and Push 3 product
+`0x1969`, CoreMIDI, and three nanomsg channels plus a document-sync model and
+shared memory linking it to Live. Added a Q-005 evidence line. Static only; socket
+roles, message bytes and pixel format remain open; probes P5-01 to P5-09 need a
+Push 3 on the macOS host.
+
+## [2026-10-17] ingest | Web connector, add-ons, swapper (H6)
+
+Filed [web, add-ons, swapper (static)](research/web-addons-swapper-static.md) from
+three verified helper corpora and 45 shipped Python modules decoded statically;
+evidence in `analysis/ableton-live-12.4.3/r2/h6-web-v1/` (64 outputs, deterministic).
+The web connector is an embedded Python auto-updater and usage uploader talking to
+Live over nanomsg; updates are `.asu` ZIPs whose `.alp` files are patched with
+xdelta3; the swapper renames the app with rollback after Live exits; add-ons serves
+the Extensions and Splice backends, not Packs. No service was contacted and no
+credential value is recorded. Updated the feature map and opened
+[Q-015](questions.md#q-015-helper-launch-and-update-handling-in-live).
+
+## [2026-10-17] maintenance | G0.3 passed; next stage started
+
+The persistent Live project passed G0.3: full analysis 1:14:30, saved project
+2.03 GB, cold read-only reopen 2:54, 418,417 non-external functions; recorded in the
+[gate table](research/native-phase-execution.md#gate-ledger) with evidence in
+`analysis/ableton-live-12.4.3/r2/g03-v1/`. A hard-linked query copy with private
+non-database files now serves dossiers to three native investigators (N1 transport
+state, N2 document container, N3 transport transitions), and the bulk decompile is
+running on the main project. The coordinator's automatic launcher failed because its
+`pgrep -f` pattern matched its own command line; the stage was launched by hand.
