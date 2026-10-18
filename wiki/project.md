@@ -2,7 +2,7 @@
 id: PROJECT-OVERVIEW
 type: overview
 status: active
-updated: 2026-10-09
+updated: 2026-10-12
 access: neutral
 ---
 
@@ -20,7 +20,7 @@ documentation structure is not completion of the application.
 | --- | --- |
 | Documentation routing and schema | Established in this workspace |
 | Reference target | Ableton Live 12 Suite 12.4.3; identity and static evidence retained locally (see research index) |
-| Research | Methodology sources, investigation plan, and cataloged package-analysis/decompilation-preparation records |
+| Research | Package evidence, browsable native pseudocode, method/structure guides and reviewed recovery tooling; target reopening is capacity-blocked (see research index) |
 | Behavioral specifications | Broader MIDI mapping draft; first finite configuration handoff released |
 | Implementation | No application code; architecture choices remain proposals |
 | Verification | No retained original-versus-candidate compatibility results |

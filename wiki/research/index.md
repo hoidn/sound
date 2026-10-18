@@ -2,7 +2,7 @@
 id: NAV-RESEARCH
 type: index
 status: active
-updated: 2026-10-09
+updated: 2026-10-12
 access: analysis
 ---
 
@@ -16,8 +16,8 @@ to the isolated implementation workspace.
 | [Learning route](learning/index.md) | Human-readable method, glossary and worked investigations |
 | [Program structure atlas](program-structure.md) | Observed package boundaries, traced relationships and explicit unknowns |
 | [Phase execution plan](native-phase-execution.md) | Authorized sequence, resource envelope and actual milestone ledger |
-| [Compact artifacts and continuation](native-compact-storage.md) | Exact compressed archives, offline code access and durable-analysis execution tasks |
-| [Native analysis recovery design](native-analysis-recovery.md) | Proposed persistent checkpoints, verified JVM settings and bounded analysis stages |
+| [Compact artifacts and continuation](native-compact-storage.md) | Exact compressed archives, current offline reader, interaction repair and durable-analysis tasks |
+| [Native analysis recovery design](native-analysis-recovery.md) | Persistent checkpoint tooling, reviewed proofs, resource gates, disk inventory and target recovery status |
 | [Native transport study](native-transport-study.md) | Loop-enable persistence and Start/Stop investigation design, exact seeds and case boundaries |
 | [Linker function-start index design](function-starts-design.md) | Bounded Mach-O metadata navigation, distinct from analyzer-discovered functions |
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |

@@ -2,7 +2,7 @@
 id: SRC-ABLETON-12-4-3
 type: source
 status: current
-updated: 2026-10-10
+updated: 2026-10-12
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -154,3 +154,16 @@ pins the final provider-neutral observation snapshot, close receipts and process
 reconciliation. It preserves evidence, not a durable Ghidra database. The source
 digest was reverified after shutdown; subsequent bulk work must satisfy the
 capacity and recovery gates in the execution ledger.
+
+The [compact mirror experiment](../native-compact-storage.md#measured-mirror--2026-10-10)
+retains a separate hashed representation of committed default-profile artifacts
+and source envelopes. All original member bytes and source files were unchanged;
+its manifest and execution packet pin exact provenance. It adds no decompilation
+coverage and does not replace the closed session with a persistent database.
+
+The separately profiled [recovery route](../native-analysis-recovery.md#corrected-import-passes-reopen-capacity-stop--2026-10-12)
+now retains actual target language/JVM verification and a saved import. Its first
+reopen was refused by fresh-launch capacity, so neither incomplete job is an
+accepted checkpoint. Source bytes and the default-profile exports remain
+unchanged; these tool-side captures add no application behavior or compatibility
+result. Use the linked report for exact commands, hashes and current next steps.

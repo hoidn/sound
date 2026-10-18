@@ -571,3 +571,415 @@ passed the revised lesson's clarity for its exact retained page hash. Root
 reverified all five payload pins, and all 27 sealed quality-review payload pins.
 These are documentation/review results, not archive execution, database recovery
 or behavioral compatibility results.
+
+## [2026-10-10] query | Compact tool approved; execution wrapper corrected
+
+Author revision 3 passed independent [scope](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-scope-review-v3/scope-review.json)
+and [quality](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-quality-review-v2/quality-review.json)
+rereviews, including the shared evidence authority and explicit completion commit.
+The 63 compact/exporter tests and independently replayed failure/contradiction
+cases name their exact method pins. Root verified the 23 scope and 37 quality
+payload pins. No real-corpus mirror has run yet.
+
+A narrow [execution-wrapper review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-mirror-runner-review-v1/runner-review.json)
+found missing cleanup on monitoring exceptions and wrapper-exit ambiguity. Root
+retained that method and authored a separate `run-mirror-v2.py` using a direct
+Python child and finally-based closure, now awaiting rereview. Fresh target/host
+capture remains distinct from earlier capacity records. Assigned a fresh offline
+viewer author with fixture-only execution; real generation stays under root after
+both reviews. Existing source captures and handoff releases remain unchanged.
+
+
+## [2026-10-10] query | Real compact mirror and preserved source evidence
+
+The execution wrapper required a further revision after repeated interruption
+could abandon cleanup. Retained revision 3 passed independent
+[scope](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-mirror-runner-review-v3/runner-review.json)
+and [quality](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-mirror-runner-quality-v1/quality-review.json)
+replays. Root reverified 225 review payload pins before fresh admission.
+
+The [actual mirror packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-mirror-v1/manifest-v1.json)
+records successful build, check and named extraction. All 6,135 members match
+original bytes; source hashes, sizes, modification times and allocation remain
+unchanged. The [canonical storage page](research/native-compact-storage.md#measured-mirror--2026-10-10)
+owns the measured representation sizes and resource limits. Originals were
+retained: the experiment adds storage and generates no additional code. All
+three owned workers closed without survivors.
+
+Updated the phase ledger, source record, artifact catalog, storage lesson, Q-011
+and coverage distinction. The offline viewer author passed 43 synthetic browser
+tests and entered fresh scope review; actual viewer generation and durable
+native database recovery remain pending. Compatibility remains unknown.
+
+
+## [2026-10-10] query | Compact reader scope pass and quality type gap
+
+The [independent scope review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-scope-v1/scope-review.json)
+passed revision 1, including exact payload comparisons, publication failure
+windows and Node DOM callback/download cases. Separate quality review then
+reproduced malformed array profile/identity values accepted by JavaScript while
+Python rejected them. Returned the finding to the same author for explicit type
+validation and regression cases, then scope/quality rereview on new pins.
+Actual viewer generation remains pending; original artifacts and archive remain
+unchanged. These are analyst tooling results, not application behavior results.
+
+
+## [2026-10-10] query | Real reader build rejects composed-workflow provenance
+
+Final reader revision 2 passed [scope](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-scope-v2/scope-review.json)
+and [quality](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-quality-v2/quality-review.json)
+rereviews, including 44 browser tests. Root verified 435 final review payload
+pins and admitted real generation from fresh host measurements. The build
+rejected a valid composed-workflow profile because the reader compared original
+revision profile metadata directly with the resolved native run profile.
+
+The [sealed failure](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-execution-v1/manifest-v1.json)
+retains the exact metadata/member locator, command, resources and closure.
+Source, archive and prior browser bytes/mtimes were reverified unchanged. The
+worker exited cleanly, and no reader was published. Returned the mismatch to
+the same author for source-authority alignment, original/effective profile
+provenance and representative regressions. Paused the new persistent-driver
+author to keep coding ownership sequential; no JVM fixtures had launched.
+
+## [2026-10-11] query | Reader source profiles and scalar-type correction
+
+Reader revision 3 preserves the original workflow profile and derives the native
+profile from the exact retained record provider. Its
+[scope review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-scope-v3/scope-review.json)
+passed 48 browser tests and independent source-binding cases. Root verified all
+23 author and 99 scope payload pins. A bounded
+[real-schema projection](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-execution-v2/real-profile-projection.json)
+passed all 2,028 revisions without viewer publication or inventory parsing.
+
+Separate [quality review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-quality-v3/quality-review.json)
+found that Python profile equality accepts a boolean replaced by numeric `1`
+against unchanged source data. Root verified its 418 sealed payload pins and
+returned the blocker to the same author for typed JSON equality and paired
+regressions. The completed test session was confirmed closed; the unrelated REA
+MCP server remained untouched. Actual publication and Task 3 coding remain
+pending. The [storage lesson](research/learning/walkthroughs/artifact-storage-and-recovery.md)
+documents the real workflow-profile failure; an independent pedagogy review is
+checking its frozen bytes and navigation.
+
+## [2026-10-11] query | Offline native code reader published and checked
+
+Final reader revision 4 passed independent
+[scope](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-scope-v4/scope-review.json)
+and [quality](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-quality-v4/quality-review.json)
+rereviews, with 51 browser tests and independently reproduced correction of the
+raw-profile boolean/number gap. Root reverified all 152 final author/review
+payload pins before fresh admission. The
+[actual execution](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-execution-v2/manifest-v1.json)
+passed build, independent check and main-browser regeneration. All monitored
+workers and verifier sessions closed. Original source/archive bytes and
+modification times remained unchanged.
+
+The [canonical publication record](research/native-compact-storage.md#measured-reader--2026-10-11)
+owns sizes, resource measurements, 2,239 hash checks, 6,223 local links and all
+2,028 exact code downloads under the DOM stub. The main browser preserves its
+`#python` and other native anchors and links the new reader. Actual browser
+rendering/accessibility remains untested; no additional code or compatibility
+coverage is claimed.
+
+The [pedagogy review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/storage-learning-review-v3/report.md)
+found no misleading claim in its frozen lesson/navigation snapshot. Root verified
+its nine payload pins, then applied the optional first-function example and
+current-status link, and added actual publication evidence. Its review does not
+certify the later page bytes. Updated the catalog, browser plan, learning index,
+phase ledger, Q-011, source date and coverage distinction. The persistent-driver
+author resumed as sole code author; fixture launches are conditional on fresh
+four-GiB admission and the verified closure of reader workers. Live target
+admission remains root-owned after code/fixture scope and quality reviews.
+
+## [2026-10-11] query | Historical recovery fixtures and teaching review
+
+The [recovery design](research/native-analysis-recovery.md#preparation-observations--2026-10-11)
+now records actual historical JDK-version/attach failures and tiny baseline/finite
+analysis save-reopen successes under their captured method revisions. Controller
+acceptance rules are still being hardened; these runs do not certify final tools
+or a Live checkpoint. The design accounts for all four retained project
+representations and retains the original resource minimums. No Live target stage
+has been launched.
+
+The [storage/recovery lesson](research/learning/walkthroughs/artifact-storage-and-recovery.md)
+explains the small raw fixture, measured JVM settings, closed source checkpoint,
+disposable copies and the separate coverage obligations. The independent
+[first readability review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/recovery-learning-review-v1/report.md)
+found stale blanket pending wording despite historical successes. Its own first
+path-check failure is retained as a reviewer-method error, not a pipeline failure.
+Root corrected the wording and labeled the earlier source-only review.
+The [narrow rereview](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/recovery-learning-review-v2/report.md)
+passed 60 locators and 112 current input pins. Root reverified all ten rereview
+payloads and all 112 current pins; the nine-payload first packet remains unchanged.
+This is documentation/evidence review, not final controller, target, browser or
+application certification.
+
+## [2026-10-11] query | Persistent driver frozen for independent review
+
+The [canonical recovery design](research/native-analysis-recovery.md#frozen-driver-and-proof-packet--2026-10-11)
+now links the readable author guide, exact CLI and proof matrix. Root reverified
+all 4,766 sealed payloads and 11 current source captures. The retained proofs
+distinguish the historical full suite, publication replay and affected final-code
+replays; no complete historical suite is claimed under the final controller.
+Independent scope review is underway; separate quality review and actual Live
+admission remain required. Production methods are frozen.
+
+The [immutable artifact recheck](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5/immutable-artifact-check-v2.json)
+passed 6,135 original corpus files, 12 archive files, 59 released handoff payloads
+and the retained arm64 source. Its first comparison incorrectly treated an extra
+measured allocation field as an archive mismatch; that failed method record is
+preserved. The corrected comparison checks each recorded field exactly and
+found no changed field. Updated the artifact catalog, tools guide, phase ledger,
+compact plan and Q-011. No Live target stage, new default export, installation or
+application implementation occurred.
+
+## [2026-10-11] query | Recovery scope review blocks target launch
+
+Independent scope review reproduced two failures against the frozen v1 controller:
+[unregistered launch after identity lookup failure](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-scope-v1/results/launch-identity-failure.json)
+and [successful checkpoint commit after the whole-job deadline](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-scope-v1/results/expired-checkpoint-commit.json).
+The first probe uses a mocked termination-ignoring child; the second uses a
+retained fixture checkpoint and a mocked expired clock while exercising its
+actual evidence/commit validation. Neither probe launched a JVM or Live.
+The 43 frozen tests pass but do not cover these failures. Returned both blockers
+to the sole author for regression tests and a new immutable packet. Live launch
+remains blocked pending fresh scope and separate quality reviews. The
+[recovery page](research/native-analysis-recovery.md#frozen-driver-and-proof-packet--2026-10-11)
+records these failures without rewriting the successful historical fixture cases.
+
+The [failed scope packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-scope-v1/scope-review.json)
+is now sealed; root verified all 259 payload pins. Its 27 passing offline checks
+cover accepted historical checkpoints/inventories/exports, negative acceptance
+cases and resource-formula boundaries, alongside the two reproduced blockers.
+The narrow [teaching clarification](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/recovery-learning-review-v4/report.md)
+passes documentation readability while explicitly retaining failed tooling
+approval and unknown Live persistence. Root verified all 15 payloads across its
+v3/v4 packets. Later status edits are not covered by those page-snapshot hashes.
+
+## [2026-10-12] query | Cancellation during process construction
+
+Before sealing the corrected recovery driver, a scoped
+[actual Python probe](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-author-v2/popen-interrupt-probe/result.json)
+reproduced cancellation after a child was created but before its `Popen`
+constructor returned and ownership was registered. The owner incorrectly
+reported empty clean closure; the probe's cleanup safely killed and reaped the
+exact child. This is a concrete failure under the captured candidate methods,
+not a Live failure. The sole author is adding deferred cancellation across
+process creation/registration and retaining new regression proofs. Earlier
+51-test and positive-replay successes remain historical for their methods.
+No Live stage is admitted before the final correction and fresh scope/quality
+reviews. The [recovery page](research/native-analysis-recovery.md) tracks the gap.
+
+## [2026-10-12] query | Corrected recovery driver and final fixture replay
+
+The [author-v2 packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-author-v2/README.md)
+is sealed; root verified all 2,635 payloads and the final controller/test pins.
+It retains the original review failures, intermediate positive replays, actual
+constructor-interruption failure and final corrections without rewriting v1.
+The final controller passes 52 tests and nine actual synthetic Ghidra launches;
+three actual constructor-cancellation children were tracked and closed/reaped.
+The existing-output ownership regression and non-JVM cancellation/late-publication
+proofs are retained separately. No complete historical negative JVM matrix is
+claimed under the final methods.
+
+Updated the [canonical recovery page](research/native-analysis-recovery.md#corrected-driver-ready-for-review--2026-10-12),
+tools guide and artifact catalog. Fresh scope review is underway; separate
+quality and root target admission remain pending. The
+[post-fixture host check](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5/host-after-fixtures.json)
+found no native analyzer processes and reverified the target bytes. Its free disk
+is a timestamped observation, not permission for a later analysis stage.
+
+## [2026-10-12] query | Recovery deadline still paused during reporting
+
+Fresh scope review of the frozen v2 controller reproduced a
+[paused non-cleanup tail](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-scope-v2/results/paused-stage-tail.json).
+After mocked process cleanup completed, a real 0.3-second job alarm could not
+cancel a 1.1-second injected target-hashing wait because the guard remained
+paused through hashing and stage publication. No JVM ran, no success was accepted
+and the incomplete marker remained, but the job exceeded its cancellation bound.
+Returned this concrete remaining deadline gap to the same author for a narrow
+correction, regression and concise new immutable packet. V2 successful tests
+and fixture captures remain valid for their recorded cases; Live launch remains
+blocked pending fresh scope and separate quality review.
+
+## [2026-10-12] maintenance | Recovery deadline correction sealed
+
+The same author froze the [revision-3 delta packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-author-v3/README.md).
+Root rehashed all 253 payloads and all 45 sealed scope-v2 payloads. The new
+controller passes 54 tests and three actual fixture import/reopen launches;
+real alarm probes cancel delayed hashing and failure reporting within their
+0.3-second bounds. Prior v2 workflow proofs retain their original method lineage.
+Updated the canonical recovery page and tools guide. Fresh scope review is
+underway; separate quality and Live admission remain pending.
+
+## [2026-10-12] query | Recovery scope passes; complete tooling suite passes
+
+The independent [scope-v3 review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-scope-v3/scope-review.json)
+passes the frozen controller, two independently reproduced real-alarm probes and
+retained final fixture import/reopen evidence. Root rehashed all 42 review
+payloads. A fresh separate quality reviewer is auditing the public route before
+Live admission. Root also ran the full analyst-tool suite: 196 tests pass;
+[command receipt and logs](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5/full-tool-suite-command.json)
+retain the actual invocation. Added the rejection-versus-cancellation distinction
+to the storage/recovery lesson; earlier documentation reviews apply only to their
+captured versions. No application compatibility status changed.
+
+## [2026-10-12] query | Reviewed first Live import rejected its language assumption
+
+The sealed [quality-v1 review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-quality-v1/README.md)
+passes revision 3 with 54 tests and 22 additional checks. Root verified all 39
+review payloads, then freshly rehashed the target and installed methods, checked
+host resources and obtained both writer locks nonblocking before admission.
+The direct CLI imported the pinned target with analysis disabled; the loader
+selected AppleSilicon while the profile expected generic v8A. The strict gate
+rejected the mismatch. [Execution evidence](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-execution-v1/README.md)
+and the failed job are sealed; root verified seven packet and 57 failed-job
+payloads. Owned identities are closed/reaped with no survivors, target bytes
+unchanged; incomplete output and failed project locks remain intact.
+
+Updated canonical recovery, plan, phase ledger, catalog and coverage. Returned
+the concrete target-versus-fixture profile error to the sole author for a narrow
+revision, installed-source evidence, regression and three fixture launches.
+New reviews precede a fresh-directory retry. No target checkpoint, bounded
+analysis, new pseudocode or application compatibility result was accepted.
+
+## [2026-10-12] maintenance | Loader-matched profile correction frozen
+
+Root verified all 255 payloads in the [author-v4 delta packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-author-v4/README.md).
+Installed loader opinions and language/compiler definitions explain the observed
+AppleSilicon choice. Immutable target and raw-fixture profiles now have distinct
+IDs and canonical hashes; exact Java checks and original budgets are unchanged.
+The new controller passes 56 tests and three actual raw-fixture import/reopen
+launches. The config-only target routing case is explicitly digest-stubbed,
+not a positive Live proof. Fresh scope is underway, then quality before root
+retry. Updated canonical profile/design status, tools guide, artifact catalog
+and lesson; first failed target evidence remains immutable.
+
+## [2026-10-12] query | Loader correction scope passes
+
+The [scope-v4 packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-scope-v4/scope-review.json)
+passes 56 tests, installed-source agreement, config routing and checkpoint
+profile binding. Root verified its 46 payloads and all 11 current method source
+pins. The final full tooling suite passes 198 tests; [receipt](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5/full-tool-suite-v4-command.json)
+retains the rerun required by the profile code change. Separate narrow quality
+review is underway. The first failed target job remains sealed and untouched;
+no retry, accepted checkpoint, new pseudocode or application compatibility pass.
+
+## [2026-10-12] query | Actual target settings and save pass; reopen capacity stops
+
+The [quality-v2 review](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-quality-v2/quality-review.json)
+passes the narrow profile correction with 56 tests and 18 cases. Root rehashed
+all 27 review payloads, rechecked fresh host/method/target hashes and writer locks,
+then used the original direct CLI into a new output. The actual Live import stage
+passes exact AppleSilicon/default language, external JVM/pool diagnostics,
+controller acknowledgment, save and normal owned closure. Its closed project is
+345,047,040 allocated bytes. First reopen is refused before JVM startup at
+6,116,376,576 free bytes against 6,442,450,944 required. No accepted checkpoint,
+analysis or new pseudocode results. Both incomplete jobs and all evidence remain.
+
+The [second execution packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-execution-v2/README.md)
+is sealed; root verified nine packet and 81 failed-job payloads, copied-project
+byte agreement and absence of every retained owned identity. A root verifier
+initially passed a job path to a child-path helper; its setup error is retained,
+and the correctly addressed public checkpoint reader rejects incomplete output.
+No production code changed. Updated canonical recovery/resource/next-step status,
+plan, phase ledger, artifact catalog, source guidance, lesson, coverage and Q-011.
+Recommended 10 GiB fresh import headroom is additional planning capacity; tool
+limits stay unchanged. The provisional analysis reserve is 13.54 GiB after an
+accepted baseline, which remains unproved. No further retry or repair is authorized
+by unchanged available capacity. All application compatibility rows remain unknown.
+
+## [2026-10-12] lint | Reviewed continuation closed at the capacity gate
+
+The [final validation packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5/README.md)
+records scope/quality PASS, final 198-test tooling PASS, two real static target
+attempts and the blocked cold-reopen milestone. Root verified current installed
+methods and source pins, retained failed-job manifests, 6,135 default payloads,
+12 compact files, 59 released handoff payloads, 24 reader and six main-browser
+outputs, target bytes and 48 legacy source/disassembly pins. Recorded metadata
+fields agree where checked. No code/browser output or application compatibility
+coverage was added. Existing #python navigation remains byte-identical.
+
+Mechanical lint covered 50 live pages, frontmatter/IDs/index coverage, relative
+file/heading links and evidence paths, with no errors; git diff --check is clean.
+Final lint output after this entry is retained in the packet. Semantic review
+keeps observed fixture/import/save facts separate from unknown reopen/analyzed
+recovery and every application compatibility row. Raw captures and the released
+handoff remain unchanged; logs were appended. The final host snapshot contains
+no analyzer and 6.70 GiB free, below proposed 10 GiB fresh-import headroom.
+More capacity precedes a fresh import; B's 13.54 GiB estimate is provisional
+until a baseline is accepted and remeasured. No commit or external publication.
+
+## [2026-10-12] maintenance | Final continuation evidence sealed
+
+The [final packet manifest](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5/manifest-v1.json)
+is SHA `2e3ca1c9cd905f1929be619ba64d9616ff3ed13c2d836c99e273b16e875fb771`;
+root independently verified all 66 payloads. It includes 17 exact documentation
+snapshots, final 198-test logs, current method/target pins, review/actual-execution
+checks, preserved-artifact checks and the 50-page/878-link zero-error lint.
+This seal entry follows that snapshot; it does not silently revise the packet.
+The [independent manifest receipt](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/final-validation-v5-manifest-check.json)
+records the final hash check. Current target status remains import/save proved,
+first cold reopen capacity-blocked, no new pseudocode or accepted checkpoint.
+
+## [2026-10-12] maintenance | Read revisions now reveals its code
+
+The [reader interaction repair](research/native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
+records the actual local-file reproduction: code loaded below the visible
+viewport. Added focus/scroll, reader height before asynchronous loading, code
+before collapsed provenance and return navigation. Published a fresh v2 and
+regenerated the main browser with existing anchors; v1 and compact archive remain
+byte/hash/mtime unchanged. No code exports or compatibility coverage were added.
+Three regressions were first observed failing; the initial 54-test browser suite
+passed and the final CSS-inclusive 26-test independent scope review passed.
+Chrome 153.0.8010.53 at 1280x900 verifies mouse/Enter selection, visible code, focus,
+return link and exact 134-byte Blob download for one case. Root inspected its
+screenshot and verified 38 review payloads, 37 original archive/reader files,
+seven previous-browser backup files and 2,239 main-browser input/output hashes.
+Earlier candidate and harness failures remain retained in the repair packet.
+Updated canonical storage page, artifact guide/design, learning lesson, phase
+ledger, research index, analyst navigation coverage and tool instructions.
+
+## [2026-10-12] query | Disk cleanup candidates with Trash excluded
+
+The [read-only storage inventory](research/native-analysis-recovery.md#disk-cleanup-inventory--2026-10-12)
+records Downloads, separate Live Trial and tool-managed caches as capacity
+candidates. User explicitly forbids emptying Trash; revised recommendations
+exclude it. Root verified 23 initial and two revised audit payloads. No user
+files were moved/deleted, no cleanup command ran, and protected reference/evidence
+remains intact. Directory allocation is an upper bound, not exclusive reclaim.
+Capacity remains below proposed 10 GiB fresh-import headroom; existing launch and
+analysis gates are unchanged. Updated Q-011 and the canonical recovery page.
+
+## [2026-10-12] query | Incoming register in the first browsed function
+
+The [incoming-register lesson](research/learning/walkthroughs/incoming-registers.md)
+answers why FUN_100002000 declares and tests in_w5. A bounded LLVM decode of
+seven instructions in the pinned arm64 image confirms an incoming w5 test,
+subsequent x5 address setup and direct branches to two targets. The C-like
+capture omits that setup and displays inferred void/no-argument interfaces.
+Caller/prototype/target semantics remain unknown; no Live or decompiler launch,
+original capture edit, new pseudocode or compatibility claim. Linked the lesson
+from the learning index and method guide, with retained command/assembly and
+primary Ghidra/ARM references. Empty retained warnings are not completeness proof.
+
+## [2026-10-12] query | Decompilation-to-specification progress
+
+The [phase ledger](research/native-phase-execution.md#decompilation-to-specification-status--2026-10-12)
+now distinguishes retained code counts from semantic findings and reviewed
+contracts. Native default exports remain 2,028/418,418 eligible entries; no native
+handoff is released. The earlier MIDI work has 13 broader draft IDs/46 unexecuted
+groups and one four-partial-clause/54-unexecuted-case release. No candidate or
+reference compatibility result exists. The next milestone is a finite native
+behavior contract, not a larger toolkit. Saved-import/cold-reopen and capacity
+gaps remain explicit. Updated the program atlas with a link to the new register
+study; facts remain canonical in its lesson rather than copied into a spec.
+
+## [2026-10-12] lint | Reader repair and teaching updates
+
+The pre-log mechanical pass covered 51 pages, 914
+relative links and 48 retained MIDI source/disassembly pins with
+zero errors; git diff --check passed. The [repair packet](../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/read-revisions-fix-v1/README.md)
+retains final reader/archive checks, browser case and independent scope review.
+No binary behavior or compatibility pass is inferred from navigation/tool tests.
+The final post-log lint is retained separately in that packet before sealing.

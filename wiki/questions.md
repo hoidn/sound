@@ -2,7 +2,7 @@
 id: RESEARCH-QUESTIONS
 type: questions
 status: active
-updated: 2026-10-10
+updated: 2026-10-12
 access: analysis
 ---
 
@@ -134,7 +134,18 @@ no experimental contradiction has been established yet.
   The two bounded samples do not establish full-corpus fit; the capacity review
   stopped further bulk expansion. The current provider uses an ephemeral database.
 - Next action: execute the [compact/archive and recovery plan](research/native-compact-storage.md),
-  measure exact round-trip/storage results, then establish database recovery
-  before admitting a larger stage. The
+  establish database recovery after the [published offline viewer](research/native-compact-storage.md#measured-reader--2026-10-11), before
+  admitting a larger stage. The [real mirror](research/native-compact-storage.md#measured-mirror--2026-10-10)
+  passed exact-member preservation and measured allocation; it adds no exports
+  and does not establish full-corpus fit. The
   [persistent recovery design](research/native-analysis-recovery.md) is reviewed
-  but unimplemented. Keep selected, linker and default-profile evidence separate.
+  and its loader-matched correction passes scope/quality reviews and 198 tooling
+  tests. Actual [target import/save](research/native-analysis-recovery.md#corrected-import-passes-reopen-capacity-stop--2026-10-12)
+  passes, but first reopen is capacity-blocked. Retain both incomplete jobs;
+  additional capacity precedes a fresh import and accepted cold-reopen proof,
+  then measured bounded-analysis admission. No new pseudocode was added.
+  Keep selected, linker and default-profile evidence separate.
+  The [storage inventory](research/native-analysis-recovery.md#disk-cleanup-inventory--2026-10-12)
+  identifies Downloads, the separate Trial app and package caches as reviewable
+  capacity candidates. Trash is explicitly excluded; no cleanup was performed
+  and suggested allocation is not guaranteed reclaimed space.

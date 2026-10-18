@@ -2,7 +2,7 @@
 id: GUIDE-RE-METHOD
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-12
 access: analysis
 ---
 
@@ -94,6 +94,13 @@ Warnings deserve inspection because they may affect recovered flow or types.
 Keep unedited output and put explanatory names in separate annotations. The
 existing [Push2 entry](../../../analysis/ableton-live-12.4.3/push2-entry-pseudocode.c)
 is a real example with warnings; it belongs to the display helper, not main Live.
+
+An apparent uninitialized `in_w5` can stand for an incoming register value.
+The [incoming-register lesson](walkthroughs/incoming-registers.md) checks this
+against seven actual instructions and finds outgoing register setup omitted
+from the C-like display. Neither an exported state nor an empty warning list
+certifies recovered parameters. Check the machine representation before fixing
+what looks like a source-code bug.
 
 A call through a named address is easier to follow than a call through a pointer.
 For a pointer call, the target may depend on an object, table or runtime state we

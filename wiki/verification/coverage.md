@@ -2,7 +2,7 @@
 id: VAL-COVERAGE
 type: coverage
 status: planned
-updated: 2026-10-10
+updated: 2026-10-12
 access: analysis
 ---
 
@@ -61,6 +61,27 @@ above remain unchanged.
 The [artifact catalog](../research/artifacts/index.md) exposes retained binary,
 pseudocode and disassembly coverage. Readable extracts and the offline browser
 change discoverability only; every compatibility status remains unknown.
+
+The [compact mirror](../research/native-compact-storage.md#measured-mirror--2026-10-10)
+passed exact-byte preservation and named extraction against retained static
+artifacts. This validates an analyst storage representation, not original
+behavior, cold analyzer recovery or candidate compatibility.
+
+The [original offline reader publication](../research/native-compact-storage.md#measured-reader--2026-10-11)
+passed exact actual-code downloads under a DOM stub and browser link/hash checks.
+The [v2 interaction repair](../research/native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
+adds a bounded Chrome local-file check of visible code, focus, mouse/keyboard
+activation, return navigation and exact downloaded bytes. This verifies analyst
+navigation for the captured case, not broad accessibility, cross-browser behavior
+or Ableton/candidate compatibility. Application compatibility remains unknown.
+
+The [current persistent driver](../research/native-analysis-recovery.md#loader-matched-profiles--2026-10-12)
+retains scoped synthetic persistence, timeout and export proofs. Independent
+scope and quality reviews pass the loader-matched revision. Actual target
+language/JVM verification, import/save and owned closure pass; first reopen is
+blocked before launch by capacity. Cold persistence and decompilation remain
+unverified. Synthetic tooling results
+are separate from every application compatibility row above.
 
 ## Static preparation evidence — 2026-10-09
 

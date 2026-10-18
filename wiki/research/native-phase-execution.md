@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-PHASE-EXECUTION
 type: research
 status: current
-updated: 2026-10-10
+updated: 2026-10-12
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
@@ -345,13 +345,63 @@ reverified target bytes and the absence of an owned analyzer/transport lock.
 Free disk remains variable; earlier resource decisions are retained for their
 measured states.
 
-One author is correcting the archive task after separate scope and quality
-reviews; the [canonical plan](native-compact-storage.md#status) records the retained
-fixture findings. The separate persistent-design audit is complete without a JVM
+The archive tool and corrected execution wrapper passed scope and quality reviews.
+The [real mirror](native-compact-storage.md#measured-mirror--2026-10-10) preserves
+all original member bytes with measured smaller representation allocation; old
+captures remain intact. The [offline reader publication](native-compact-storage.md#measured-reader--2026-10-11)
+passed final scope/quality reviews, actual build/check and exact code-byte
+checks; the main browser and its stable `#python` anchor were regenerated. The
+[canonical plan](native-compact-storage.md#status) records findings and task state.
+The later [Read revisions repair](native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
+publishes v2 with final scoped review and one real Chrome interaction check.
+It changes navigation, preserves v1 and the archive, and adds no exported code.
+The separate persistent-design audit is complete without a JVM
 launch; its [preparation packet](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-preparation-v2/preparation-report.md)
-defines the controller, scripts and synthetic proof matrix. Each code task requires
-scope review then separate quality review. Actual archive savings and cold database recovery
-are not yet established. Existing export counts and compatibility statuses do
+defines the controller, scripts and synthetic proof matrix. The
+[current recovery revision](native-analysis-recovery.md#loader-matched-profiles--2026-10-12)
+now retains actual synthetic persistence/timeout/export proofs and their exact
+method lineage. The loader-matched correction passes fresh scope and quality
+reviews and the full 198-test tooling suite. Its
+[actual Live import/save](native-analysis-recovery.md#corrected-import-passes-reopen-capacity-stop--2026-10-12)
+passes; the first disposable reopen is refused before a JVM for insufficient
+fresh-launch capacity. Both incomplete target attempts remain sealed, with
+positive owned closure. No accepted cold Live database or new pseudocode results.
+Next: additional capacity, a fresh original import and accepted reopen proof,
+then separately measured bounded-analysis admission. Existing export counts and compatibility statuses do
 not change when mirrored or compressed. The
 [storage/recovery lesson](learning/walkthroughs/artifact-storage-and-recovery.md)
 links the measured payload allocation and explains the separate proof obligations.
+
+## Decompilation to specification status — 2026-10-12
+
+The [default-profile ledger](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/coverage.json)
+retains 2,028 code exports out of 418,418 eligible inventoried entries, about
+0.485% by function count: 1,716 without warnings, 312 with warnings, and 416,390
+pending. This is export coverage, not feature understanding or whole-app progress.
+Separate selected-entry evidence does not change this denominator. The
+[reader repair](native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
+adds access to the same code, not new decompilation.
+
+Native semantic work has reached bounded factory/callee, transport-wrapper and
+record-building findings in the [transport study](native-transport-study.md).
+Its load/save, state and timing questions remain unresolved. The
+[incoming-register lesson](learning/walkthroughs/incoming-registers.md)
+additionally demonstrates why even a warning-free export needs interface checks.
+These studies have not yielded a released native behavioral contract.
+
+The broader [MIDI draft](../specs/midi-user-mapping.md) has 13 requirement IDs
+and 46 unexecuted acceptance groups. Its [finite release](../../handoff/midi-config-v1/README.md)
+approves four explicitly partial clauses for master/cue/crossfader configuration,
+with 54 unexecuted static-derived cases. This release comes from the earlier
+configuration/documentation and Python-bytecode investigation; it is not the
+conversion of the main native corpus into specs. Other feature families have
+no released contracts, candidate implementation or compatibility results in the
+[coverage matrix](../verification/coverage.md).
+
+The next specification milestone is a finite native behavior contract grounded
+in the retained [transport study](native-transport-study.md), after its material
+interface/data-flow gaps are resolved. Existing artifacts can support selective
+investigation without exporting the whole inventory. Large persistent analysis
+still requires changed [disk capacity](native-analysis-recovery.md#disk-cleanup-inventory--2026-10-12)
+and accepted cold recovery; saved import alone has not established that milestone.
+Tooling and pedagogy are useful deliverables, but do not close native spec coverage.

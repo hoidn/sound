@@ -2,10 +2,10 @@
 id: ATLAS-ABLETON-STRUCTURE
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-12
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
-revision: 6
+revision: 7
 ---
 
 # An evolving map of Live
@@ -197,6 +197,15 @@ external meaning of its values remain unknown. This is a local code map, not
 a recovered application-wide command architecture. Default-profile pseudocode
 also preserves warnings at Stop's two computed transfers; the earlier selected
 failure remains valid. The linked study owns the exact evidence and limits.
+
+## Reading an inferred native interface
+
+The [incoming-register study](learning/walkthroughs/incoming-registers.md)
+checks the first browsable entry, `0x100002000`, against its instructions.
+It is another example of why a recovered function name and C-like prototype do
+not establish the original interface. The lesson owns the exact register/branch
+findings; caller and target responsibilities remain unknown. This entry has not
+been assigned to a DAW subsystem or used as a behavioral contract.
 
 ## Broader native structure remains open
 

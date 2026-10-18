@@ -2,7 +2,7 @@
 id: RESEARCH-BROWSER-DESIGN
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-12
 access: analysis
 ---
 
@@ -12,6 +12,26 @@ The browser is the reader's stable entry point while analysis proceeds. The
 existing `browse/index.html#python` address remains valid. Its Python listings
 continue to mean bytecode disassembly; native pseudocode has its own section.
 The [artifact catalog](index.md) owns the coverage explanation.
+
+The [compact-reader continuation](../native-compact-storage.md#task-2-offline-code-access)
+adds a separate local-file reader for exact archived revisions. Its final
+[author packet](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/compact-viewer-author-v4/report.json)
+records 51 browser tests; scope and quality reviews passed. Earlier reviews and
+actual generation exposed malformed-type and workflow-profile gaps, corrected
+before the [successful publication](../native-compact-storage.md#measured-reader--2026-10-11).
+The [canonical status](../native-compact-storage.md#status) owns the retained
+failure/correction history and actual evidence. Main-page
+metadata navigation stays separate from on-demand code chunks;
+mirrored counts do not increase export coverage. The original per-revision text
+files remain accessible through existing native links.
+
+The [reader interaction repair](../native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
+publishes a fresh v2 reader. Function selection reveals and focuses its heading,
+with viewport height reserved before asynchronous code arrives. Code precedes
+collapsed provenance, and a return link reaches the function list. The generator
+prefers v2; it reports invalid v2 evidence and uses current-method v1 only if v2
+is absent. Original v1 publication bytes remain retained. The main browser's
+stable path and anchors continue to route readers to the current snapshot.
 
 ## Design
 

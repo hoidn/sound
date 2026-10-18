@@ -2,7 +2,7 @@
 id: NAV-RE-LEARNING
 type: index
 status: active
-updated: 2026-10-10
+updated: 2026-10-12
 access: analysis
 ---
 
@@ -24,7 +24,8 @@ learned about relationships in its code.
 | --- | --- | --- |
 | [Why an invalid controller number is sometimes ignored](walkthroughs/midi-integer-parsing.md) | Follow a real branch and exception handler in decoded Python bytecode; check the caller before generalizing | Static parser result; no Live execution or native audio/MIDI inference |
 | [Reading the first main Live function](walkthroughs/first-native-loop-factory.md) | Compare actual pseudocode with ARM64 instructions; distinguish a setup hypothesis from a loop-default claim | One selected function under an explicit no-analysis profile; native callees and persistence behavior unresolved |
-| [Why code archives and analysis databases differ](walkthroughs/artifact-storage-and-recovery.md) | Compare text length with disk allocation, exact archive round trips, and saved observations with reusable analysis | Measured retained payloads; compact archives and durable recovery require their own execution proof |
+| [Why a decompiled variable looks uninitialized](walkthroughs/incoming-registers.md) | Recognize an incoming register, check branch instructions and notice hidden outgoing arguments | Seven instructions from one arm64 entry; callers, prototypes and feature meaning unresolved |
+| [Why code archives and analysis databases differ](walkthroughs/artifact-storage-and-recovery.md) | Disk allocation, exact archives, evidence/commit boundaries, cancellation and fixture limits | Mirror and reader delivered; actual target import/save passes, reopening capacity-blocked |
 | [Learning from a transport export failure](walkthroughs/transport-wrapper-boundary.md) | Read a retained branch when a selected body fails acceptance; separate batch completion from successful decompilation | Two wrapper branch targets, with handler semantics and playback effects unresolved |
 
 The native lesson uses actual main-image code; the bytecode companion remains a

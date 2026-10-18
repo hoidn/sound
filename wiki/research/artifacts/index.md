@@ -2,7 +2,7 @@
 id: NAV-ABLETON-ARTIFACTS
 type: index
 status: active
-updated: 2026-10-10
+updated: 2026-10-12
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -27,9 +27,17 @@ remains stable. Selected main Live code is now available under
 [`#selected-native`](../../../analysis/ableton-live-12.4.3/browse/index.html#selected-native);
 the default-profile corpus retains its separate
 [`#native`](../../../analysis/ableton-live-12.4.3/browse/index.html#native) section.
+The [offline native code reader](../../../analysis/ableton-live-12.4.3/native-compact-view-v2/index.html)
+adds revision selection, code previews, warnings/provenance and exact code downloads
+for the same retained exports; the main browser links it at `#compact-native`.
 Refresh the browser after regeneration; it is a snapshot, not a live process
 monitor. The [browser design and plan](browser-design-and-plan.md) describes
 the update mechanism and navigation limits.
+
+In the current reader, “Read revisions” brings the selected function into view.
+Code appears before expandable provenance; use “Back to function list” to return.
+The [interaction repair](../native-compact-storage.md#read-revisions-interaction-fix--2026-10-12)
+retains the original reader and the bounded real-browser checks.
 
 Read the [learning route](../learning/index.md), [method](../learning/method.md)
 and [program atlas](../program-structure.md) alongside the artifacts. The
@@ -43,6 +51,10 @@ retained output.
 | --- | --- | --- |
 | Understand the application bundle | [Package map and findings](../ableton-package-structure.md#bundle-map) | Core, helpers, dependencies and resource boundaries |
 | Read default-profile main Live pseudocode | [Native corpus browser](../../../analysis/ableton-live-12.4.3/browse/index.html#native), [coverage ledger](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/coverage.json) | Retained exports appear immediately; optionally load all inventoried addresses for search |
+| Preview or download an exact native revision | [Offline code reader](../../../analysis/ableton-live-12.4.3/native-compact-view-v2/index.html), [interaction and publication checks](../native-compact-storage.md#read-revisions-interaction-fix--2026-10-12) | 2,028 retained revisions with exact code bytes, original/resolved profiles and warnings; 100 rows per page, code loaded on selection |
+| Audit or extract compact native artifacts | [Mirror manifest](../../../analysis/ableton-live-12.4.3/native-compact-mirror-v1/manifest.json), [measured experiment](../native-compact-storage.md#measured-mirror--2026-10-10) | Exact archived revisions and source envelopes; original files remain available |
+| Understand persistent analysis outputs and commands | [Recovery design](../native-analysis-recovery.md), [driver guide](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-author-v4/README.md) | Reviewed tooling; actual import/save passes; first reopen capacity-blocked |
+| Inspect actual target recovery results | [Current execution report](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-execution-v2/README.md), [first failed language gate](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/persistent-execution-v1/README.md) | Exact commands, diagnostics, project hashes and readable limits; both jobs remain incomplete |
 | Compare bounded selected-entry captures | [Selected-entry browser](../../../analysis/ableton-live-12.4.3/browse/index.html#selected-native), [first selected ALoopOn factory](../../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/functions/0x10276e5d4/pseudocode.c) | Separate no-auto-analysis profile with code, assembly and metadata; failed attempts remain visible |
 | Read helper pseudocode | [Push2 entry pseudocode](../../../analysis/ableton-live-12.4.3/push2-entry-pseudocode.c) | One Ghidra-decompiled helper entry, with warnings |
 | Inspect that function's machine instructions | [Push2 assembly](../../../analysis/ableton-live-12.4.3/browse/push2-entry-assembly.txt) | 1,590 retained assembly lines with static addresses |
@@ -204,7 +216,9 @@ catalog and generate new views while preserving source bytes and old manifests.
 This catalog is not part of a clean implementation handoff.
 
 The [2026-10-10 browser checkpoint](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/browser-checkpoint-2026-10-10-v1/report.json)
-verifies the current generated files, local links, stable section anchors and
-attempted/full inventory agreement. It is a structural check, not visual browser
-QA. See the [phase report](../native-phase-execution.md#stratified-checkpoint-and-phase-report--2026-10-10)
+verifies that historical generated snapshot. The
+[2026-10-11 reader publication](../native-compact-storage.md#measured-reader--2026-10-11)
+owns the current browser/reader hashes, links and executed code-byte checks.
+These checks do not establish visual browser QA. See the
+[phase report](../native-phase-execution.md#stratified-checkpoint-and-phase-report--2026-10-10)
 for current export coverage and the capacity decision.
