@@ -6,8 +6,9 @@ SPEC-TRANSPORT-STATE revision 1. Release: transport-state-v1. Only the clauses
 explicitly included below are in scope. No other clause of a listed requirement
 is implicitly approved. This document is self-contained.
 
-**Status: staged candidate, not reviewed, not released.** It is not an
-implementation input until a separate review approves it and it is published.
+**Status: reviewed local release.** A separate review approved the clauses
+below with the narrowing recorded in [the review disposition](REVIEW.md).
+Implementation requires a fresh, restricted implementation workspace.
 
 ## What the contract means
 
@@ -126,8 +127,8 @@ rounded to the nearest binary32 value, ties to even, which is the tempo.
 - Refused: text that is empty or only spaces; text with any byte outside ASCII;
   text in which, after leading spaces and one leading `+`, the rest is empty,
   starts with `-` after that `+`, contains a character other than an ASCII digit
-  (apart from a single leading `-` and trailing spaces), or is longer than 63
-  characters.
+  (apart from a single leading `-` and trailing spaces), or, when the text does
+  not end in a space, is longer than 63 characters.
   Examples: `201.0`, `2e2`, `0x10`, `abc`.
 
 ### REQ-TRANSPORT-STATE-007 — partial: missing values
@@ -205,16 +206,18 @@ case kinds are omitted.
 
 A later comparison against the original application needs a full Live Set per
 case. The validation analyst builds it from an otherwise unchanged set of the
-same format version by replacing its `Transport` element with the fixture's
-and each `Manual` child of `Tempo` and `TimeSignature` with the fixture's
-(removing it where the fixture has none). In that set, the tempo and
-time-signature automation of the main track holds a single event equal to the
-fixture's `Manual` text, or `120` when the fixture's tempo `Manual` has no
-value; every scene has its tempo and time-signature overrides disabled; the
-application uses its factory default set, not a user template; and the host
-locale uses `.` as the decimal separator. The observation channel is chosen by
-the validation analyst. A channel that rounds must be compared at its rounding.
-None of this has been run.
+same format version, whose root carries the fixture's `MajorVersion`,
+`MinorVersion` and `SchemaChangeCount` values, by replacing its `Transport`
+element with the fixture's and each `Manual` child of `Tempo` and
+`TimeSignature` with the fixture's (removing it where the fixture has none). In
+that set, the tempo and time-signature automation of the main track holds a
+single event equal to the fixture's `Manual` text, or `120` when the fixture's
+tempo `Manual` has no value; for TS-009 the time-signature event holds `201`,
+so that only `Manual` holds the refused text. Every scene has its tempo and
+time-signature overrides disabled; the application uses its factory default
+set, not a user template; and the host locale uses `.` as the decimal
+separator. The observation channel is chosen by the validation analyst. A
+channel that rounds must be compared at its rounding. None of this has been run.
 
 ## Exclusions and deferred obligations
 
@@ -232,7 +235,8 @@ Inputs with **no expectation** in this release:
   finite values and negative zero; saved values whose base-10 logarithm lies
   within 1e-12 of an integer without being an exact power of ten;
 - time-signature text with spaces both before and after the digits, or with a
-  `+` and trailing spaces (for example ` +201 `); text with a `-` sign;
+  `+` and trailing spaces (for example ` +201 `); text with a `-` sign; text
+  longer than 63 characters that ends in a space;
 - a missing `TimeSignature/Manual` element or value; a missing `Transport`,
   `Tempo`, `TimeSignature`, `Mixer`, `DeviceChain` or `MainTrack` element;
 - an unknown attribute on any element this release reads; repeated unknown
@@ -269,4 +273,5 @@ release carry fixed values (`PhaseNudgeTempo` 10, `MetronomeTickDuration` 0,
 the others `false`) only to give the element its usual shape; they are not
 interpreted. Expected results are newly authored static-derived behavioral data.
 No public source or dependency is approved or included. Review status is
-recorded in [the manifest](manifest.json).
+recorded in [the manifest](manifest.json) and
+[the review disposition](REVIEW.md).

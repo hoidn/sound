@@ -1,10 +1,11 @@
 # Transport state in Live Set documents, release 1
 
-**Staged candidate, not reviewed, not released.** Read [the contract](spec.md),
-[cases](cases.json), [role instructions](AGENTS.md) and [the manifest](manifest.json).
-This package is not an implementation input until a separate review approves
-it and it is published. Even then, implementation requires a fresh, restricted
-implementation workspace, which this package does not provision.
+**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
+[role instructions](AGENTS.md), [the manifest](manifest.json) and
+[the review disposition](REVIEW.md). The stated partial scope, narrowed as
+recorded in the review, is approved as a contract for a fresh, restricted
+implementation workspace. Such a workspace has not been provisioned by this
+release.
 
 The finite scope is how the decoded XML of one Live Set format version stores
 the arrangement loop switch, loop start, loop length, playback position, tempo
@@ -19,3 +20,4 @@ The 18 cases use independently authored minimal XML fixtures. All expected
 outputs are static-derived and unexecuted, not captured reference behavior. The
 representation is a comparison convention, not an API claimed to exist in Live
 or a required architecture. No compatibility claim is made.
+After publication the release is immutable; corrections require a new revision.

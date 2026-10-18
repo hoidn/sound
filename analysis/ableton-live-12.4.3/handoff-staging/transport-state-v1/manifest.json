@@ -1,8 +1,8 @@
 {
  "schema": "handoff-manifest-v1",
  "release_id": "transport-state-v1",
- "release_status": "staged candidate; not reviewed; not released",
- "release_date": null,
+ "release_status": "released",
+ "release_date": "2026-10-17",
  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
  "specification": {
   "id": "SPEC-TRANSPORT-STATE",
@@ -40,9 +40,9 @@
   "inputs_without_expectation": [
    "number text starting (after spaces and sign) with 0x, inf or nan; Invalid; text starting with #; leading whitespace other than U+0020",
    "values outside the spec.md ranges; non-finite, largest finite and negative-zero values; saved values whose log10 is within 1e-12 of a non-exact integer",
-   "time-signature text with spaces on both sides, or + with trailing spaces; any - sign",
+   "time-signature text with spaces on both sides, or + with trailing spaces; any - sign; text longer than 63 characters that ends in a space",
    "missing TimeSignature/Manual or its value; missing Transport, Tempo, TimeSignature, Mixer, DeviceChain or MainTrack",
-   "unknown attributes; repeated unknown children; any *KeyMidi child in the input; LoopIsSongStart other than false",
+   "unknown attributes on any element this release reads; repeated unknown children; any *KeyMidi child in the input; LoopIsSongStart other than false",
    "automation events or scene values that disagree with Manual",
    "other envelopes, format versions, compressed containers and document kinds"
   ],
@@ -51,7 +51,8 @@
    "editing after opening (UI, remote control, MIDI)",
    "whether automation or other known Transport children are written; byte layout of saved documents",
    "playback, timing, Link and external sync; undo",
-   "refusal text, presentation and state after refusal"
+   "refusal text, presentation and state after refusal",
+   "locale-dependent reading: host locales whose decimal separator is not '.'"
   ],
   "parent_cases_not_released": [
    "TS-010",
@@ -64,12 +65,22 @@
  "fixture_origin": "independently authored minimal XML documents and expected logical results",
  "approved_public_sources": [],
  "review": {
-  "status": "pending",
-  "reviewers": [],
-  "date": null,
-  "findings": [],
-  "disposition": null,
-  "record": null
+  "status": "approved",
+  "reviewers": [
+   "separate review subagent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-17",
+  "findings": [
+   "RV1-01 low: REQ-006 length refusal counted trailing spaces; narrowed, long text ending in a space excluded",
+   "RV1-02 low: TS-009 comparison obligation could not isolate Manual; time-signature event held at 201, expectation unchanged",
+   "RV1-03 editorial: full-set root version attributes named in the comparison obligation",
+   "RV1-04 editorial: manifest exclusions aligned with the contract (locale, unknown attributes)",
+   "RV1-05 editorial: payload status wording set to reviewed release; review record added",
+   "RV1-06 info: unknown-child rule beyond TS-016 rests on an accepted inference",
+   "RV1-07 info: coverage notes for a later revision; no defect"
+  ],
+  "disposition": "Approved with listed narrowing, only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
  },
  "supersedes": null,
  "entrypoint": "README.md",
@@ -80,18 +91,23 @@
  "files": [
   {
    "path": "AGENTS.md",
-   "sha256": "b15488d793ff29622fbe74c31260ce854cf134bed067448d10e75b15505e20e6",
-   "bytes": 1408
+   "sha256": "313e056ec5f13481dba4cfdd5a3e7d044cda5821007b65a805d9503af4fdac83",
+   "bytes": 1334
   },
   {
    "path": "README.md",
-   "sha256": "1dd5cb6ba76b43261e58641b09d18f0ba8353125f9e06f510c871d8caf90d052",
-   "bytes": 1291
+   "sha256": "f71f2df324b4f18db0b779832991f7703ba94b076b9498ce9451906dbd5a337c",
+   "bytes": 1362
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "1c62604e7768228f619820e796db124ad99b188b20e417f2329540bc23a174bd",
+   "bytes": 6054
   },
   {
    "path": "cases.json",
-   "sha256": "bc506c416e344fecf0d0e9b345f371f7dbbd86d108bc78d16554b4c5f23ecb48",
-   "bytes": 12141
+   "sha256": "7456dcab714edef726ad61aa070d086c894e5b44c4b9afaa9187d0b14d254573",
+   "bytes": 12114
   },
   {
    "path": "fixtures/TS-001.xml",
@@ -185,8 +201,8 @@
   },
   {
    "path": "spec.md",
-   "sha256": "38224786e8f1c267b8b446ebddc2e003463bc73dde4eb630c412c4229bc3b8d8",
-   "bytes": 15092
+   "sha256": "6cd57729c0b4d5f642db988911a55d35a3b0c72410a2f215e936e2b5a6f21286",
+   "bytes": 15489
   }
  ]
 }

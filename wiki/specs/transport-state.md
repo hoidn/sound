@@ -107,8 +107,9 @@ Applies to `LoopStart`, `LoopLength` and `CurrentTime`.
 - **S.** `TimeSignature/Manual/@Value` loads when it is ASCII decimal digits
   preceded by any number of U+0020 spaces and then at most one `+`, with nothing
   after the digits (`201`, ` 201`, `+201`, `  +201`), or ASCII digits followed
-  only by spaces (`201 `). The part after leading spaces and `+` must be at most
-  63 characters.
+  only by spaces (`201 `). The part after leading spaces and `+`, not counting
+  trailing spaces, must be at most 63 characters (corrected in review RV1-01 of
+  transport-state-v1: the parser's length check excludes trailing spaces).
 - **S.** An empty or all-space value, any byte outside ASCII, a `+` followed by
   `-`, and `201.0`, `2e2` or `0x10` make the set not open.
 - **U.** Spaces on both sides of the digits, or a `+` and trailing spaces
@@ -219,7 +220,7 @@ run. Case kinds: P positive, N negative/malformed, B boundary, M missing, S save
 | TS-007 | 004 | N | `<LoopLength Value="abc" />`; open | Set does not open | B0 edit |
 | TS-008 | 005, 011 | P | Tempo `<Manual Value="93.3333333" />` and `FloatEvent` `Value="93.3333333"`; open, save | Opens; saved Manual `93.3333359`, and the event `93.3333359` if written (REQ-002) | B0 edit |
 | TS-009 | 006 | N | Time signature `<Manual Value="201.0" />`; open | Set does not open | B0 edit |
-| TS-010 | 006 | B | Time signature `<Manual Value=" +201 " />`; open | Unresolved; static reading: set does not open (REQ-006 U) | B0 edit |
+| TS-010 | 006 | B | Time signature `<Manual Value=" +201 " />`; open | Static reading strengthened by review: the digit converter accepts no whitespace, so the kept trailing spaces make the set fail to open; still excluded from transport-state-v1 until a later revision grades it | B0 edit |
 | TS-011 | 007 | M | Delete the `LoopStart` element; open | Opens; loop start 8 | B0 edit |
 | TS-012 | 007 | M | Replace with `<LoopLength />`; open | Opens; loop length 16 | B0 edit |
 | TS-013 | 007 | M | Delete the `CurrentTime` and `LoopOn` elements; open | Opens; position 0; loop off | B0 edit |

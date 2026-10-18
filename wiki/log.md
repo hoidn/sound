@@ -1594,3 +1594,17 @@ helper-corpus records (43 functions) in `analysis/ableton-live-12.4.3/r2/d2-brow
 and added an update note to [browser index](research/browser-index-static.md). Deferred
 BI-C04, C10 and C12; dropped the use count. PRB-BI-01 to 05 proposed but not yet in the
 Phase 4 batch. Not reviewed; nothing executed.
+
+## [2026-10-17] release | transport-state-v1
+
+A separate review subagent approved transport-state-v1 with narrowing (RV1-01: the REQ-006
+length refusal applies only to text not ending in a space, because the parser's length check
+excludes trailing spaces). It also clarified the TS-009 embedding event and the full-set root
+attributes, aligned the manifest exclusions, and confirmed the author's residual inferences by
+reading the uncited vtables, the default-tempo store, the digit converter, the report sink and
+the save formatter. The coordinator copied the payload into
+[handoff/transport-state-v1](../handoff/transport-state-v1/README.md), re-verified all 23 payload
+hashes against manifest `b2fdf029…5baba`, added the catalog row, and carried RV1-01 and the
+strengthened TS-010 reading into [SPEC-TRANSPORT-STATE](specs/transport-state.md) r2. 18 cases,
+static-derived and unexecuted; no compatibility claim. Isolated implementation workspace still
+unprovisioned. Not pushed.

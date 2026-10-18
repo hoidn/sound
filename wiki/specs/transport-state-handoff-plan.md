@@ -20,6 +20,8 @@ a static-supported contract may be reviewed without a reference run. Every
 expected outcome is static-derived and unexecuted, and no compatibility is
 claimed.
 
+**Released 2026-10-17** as [transport-state-v1](../../handoff/transport-state-v1/README.md), approved with narrowing.
+
 This page is the analyst-side plan and traceability record. It is not an
 implementation input. The candidate is **staged, not reviewed and not
 released**. Nothing has been published into `handoff/`.
@@ -110,6 +112,15 @@ and [s1-static-v1](../../analysis/ableton-live-12.4.3/r2/s1-static-v1/manifest.j
 | 010 | Encoder `0x101abea70`, list builder `0x1026e10a8` loops 5 × 99 (n1-0008) | None for the formula |
 | 011 | Formatters `0x101520c70`, `0x101520dbc` (`Invalid`, `#%8.8X`/`#%16.16llX`), `0x101431584`/`0x101431788` disassembly (precision 9/17 − k, `frintm`/`frintp` on `log10`, zero precision 8/16, `%.*lf`, trailing-zero strip); `0x10143157c` widens float; bool `0x101520b08`; `number-format-check.txt` 376/376 per field | libm `log10` near powers of ten; printf rounding of exact binaries |
 | Refusal outcome | Throws carry the corrupt-document key (`0x10148229c`) | Catch step inferred, shared with the container packet |
+
+Review additions 2026-10-17: the separate reviewer read the vtables the author had
+not (ACurrentTime `0x106803378`, ALoopLength `0x106803af0`, tempo `Manual`
+`0x10667df30`, time-signature `Manual` `0x10667dc40`, ATimeableTimeSignature
+`0x1067fca90`); all use loader `0x101487310`, writer `0x101486cdc` and skip
+`0x100249f88`. The default-tempo store `0x101568960`, the digit converter
+`0x1002fda78` (from_chars-shaped, no whitespace or `+`), the report sink
+`0x1014528e4` for "Unexpected node" and the save formatter's C-locale `vsnprintf_l`
+(`0x1011bfe14`, `0x1011a7790`) are recorded in the release's REVIEW.md.
 
 ## Deliverables
 

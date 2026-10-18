@@ -26,7 +26,7 @@ documentation structure is not completion of the application.
 | Implementation | No application code; architecture choices remain proposals |
 | Verification | No retained original-versus-candidate compatibility results |
 | Clean implementation workspace | Not provisioned; this checkout contains analyst material |
-| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases; [midi-config-v2](../handoff/midi-config-v2/README.md): partial REQ-002/003/005–013, 109 unexecuted cases, supersedes v1 |
+| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases; [midi-config-v2](../handoff/midi-config-v2/README.md): partial REQ-002/003/005–013, 109 unexecuted cases, supersedes v1; [transport-state-v1](../handoff/transport-state-v1/README.md): transport values in Live Sets, 18 unexecuted cases |
 
 ## Current phase
 
