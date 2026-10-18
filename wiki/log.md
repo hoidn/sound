@@ -1536,3 +1536,12 @@ zero is unknown. TS-008 and TS-020 judge the automation event text only if it is
 written. The appendix maps the N1 probe file's older requirement IDs. Corrected the
 integer row on [transport-state native](research/transport-state-native.md). Gaps: no
 N1 probe covers TS-010 or a missing `TimeSignature/Manual`. Nothing executed.
+
+## [2026-10-17] maintenance | Live x86_64 cross-check corpus complete
+
+Live's x86_64 slice finished analysis (1:39:43, 414,791 functions) and bulk decompile
+(17:17; 317,021 exported, 97,725 with warnings, 45 failed; indexes verified), recorded in
+[corpus tooling](research/r2-corpus-tooling.md#live-x86_64-cross-check-corpus--2026-10-17)
+with evidence in `analysis/ableton-live-12.4.3/r2/c1-live-x86-v1/`. It is a cross-check
+build; specifications stay derived from arm64. Investigator N8 now uses it for the
+ReWire and MultiF0 questions in Q-013 and to cross-check the arm64 transport readings.

@@ -339,6 +339,17 @@ strings, 1,599,830 direct call edges, 268,015 indirect call sites, 420,470 alias
 and only 80 symbol-named vtables, so vtable recovery in Live needs constructor and
 vtable-store tracing.
 
+## Live x86_64 cross-check corpus — 2026-10-17
+
+Live's x86_64 slice (SHA-256 `1bae9a97…be999b0`) was analyzed in its own project
+(1:39:43 wall, 33.8 GB peak RSS; 414,791 non-external functions, 557,145 strings)
+and decompiled with the same settings in 17:17: 317,021 exported, 97,725 with
+warnings, 45 failed; indexes verified (1,572,950 call edges, 271,501 indirect
+sites, 80 symbol-named vtables). Evidence:
+[c1-live-x86-v1 manifest](../../analysis/ableton-live-12.4.3/r2/c1-live-x86-v1/manifest.json).
+This is a second compile of the same source for cross-checking arm64 readings; the
+specifications are derived from the arm64 build.
+
 ## Limitations and unknowns
 
 - **Untested paths.** The decompiler start-failure and I/O abort paths were not
