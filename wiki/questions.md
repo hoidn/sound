@@ -233,6 +233,7 @@ no experimental contradiction has been established yet.
 - Next action: once the Live x86_64 analysis finishes, query the callers of
   `InstallPropellerheadDlls: `, `Ableton Live Engine_64`,
   `Audio2Midi: Use builtin MultiF0 lib` and `MultiF0: No MultiF0 library found at `.
+- Progress 2026-10-17 (N4): arm64 uses the built-in MultiF0 unless a developer option is set; the x86_64 default and ReWire wait for the x86_64 analysis. See [helper launch](research/helper-launch-live-side.md).
 
 ## Q-014 Browser index behavior
 
@@ -246,6 +247,7 @@ no experimental contradiction has been established yet.
   unsupported files. Runtime facts are in probes PRB-H2-01 to 09.
 - Next action: query the saved Live project for references to `live->index`,
   `ipc-channel`, `{}-files-{}.db` and `fileref-map-path`.
+- Progress 2026-10-17 (N4): spawn site, options-file argument and keys, and the 100-launch restart cap answered in [helper launch](research/helper-launch-live-side.md#index); database prefix, folder, version and queries still open.
 
 ## Q-015 Helper launch and update handling in Live
 
@@ -259,6 +261,7 @@ no experimental contradiction has been established yet.
   installation; which side binds each Push nanomsg channel and what Live sends.
 - Next action: trace `StartWebConnector`, `AddOns: start process` and the three
   Push channel names in the saved Live project.
+- Progress 2026-10-17 (N4): web connector config keys and commands, the 3 GiB free-space rule, update-event states, add-ons `--cid` and restart cap, the swapper startup guard (exit 42), sentinel only via a debug option, and Push channel roles answered in [helper launch](research/helper-launch-live-side.md); Pack and `.alp` handling and the `+0x720` gate open.
 
 ## Q-016 Plug-in discovery Live-side contract
 
@@ -274,3 +277,4 @@ no experimental contradiction has been established yet.
 - Next action: trace the Live callers of `Plugins: start scanner process`, `--cid`,
   `TPluginScannerMediator` and `APluginSettingsPreferencesModel` in the saved Live
   project.
+- Progress 2026-10-17 (N4): argv, domain IDs, the Rescan-to-`--reset all` mapping, relaunch policy, Live-side timeouts and message framing answered in [helper launch](research/helper-launch-live-side.md#plug-in-scanner); Audio Unit path, `dev_identifier`, duplicates and the database folder still open; probes PRB-N4-01, 02, 05.

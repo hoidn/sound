@@ -1450,3 +1450,16 @@ Applied the [device parameter mapping](research/device-parameter-mapping-native.
   traced-engine page (`analysis/ableton-live-12.4.3/demos/corpus-traced/index.html`)
   now shows 37 controls traced, 3 unresolved and 1 ignored.
 - **Checks:** 8 Node tests pass; the repository copy's headless self-test passes.
+
+## [2026-10-17] query | Live-side helper contracts (N4)
+
+Traced Live arm64's launch and supervision of six helpers from the C2 indexes and 46
+dossiers and filed [helper launch, Live side](research/helper-launch-live-side.md) with
+evidence in `analysis/ableton-live-12.4.3/r2/n4-helper-contracts-v1/`. One process
+controller supervises the index, scanner, add-ons and Push 3 (20 s launch timeout,
+60 s unsynced kill); Live binds every channel except `live-to-push-midi`; named events
+use a type-byte, length-prefixed frame. Per-helper arguments, start conditions and
+restart caps are recorded; Live exits with code 42 if the swapper is running at start.
+Added progress to Q-013 through Q-016 and Live-side cross-links on the five helper
+pages; the Push 3 page's emulator-flag guess is superseded. Gaps: Audio Unit handler,
+debug-option names (stored as digests), index database naming, ReWire (x86_64 pending).

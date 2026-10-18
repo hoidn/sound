@@ -83,6 +83,9 @@ Caveats:
 - Ghidra drops exception handlers, so catch paths are inferred.
 - Addresses are arm64 image addresses unless stated otherwise.
 
+Live side: argv, domain IDs, the reset mapping and the relaunch policy are in
+[helper launch, Live side](helper-launch-live-side.md#plug-in-scanner).
+
 ## Invocation
 
 **Observed.** `entry` `0x1001308e0` registers these boost::program_options

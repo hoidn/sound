@@ -76,6 +76,11 @@ otherwise.
   standalone-device features: D-Bus, Wi-Fi, a local web service, Linux syslog and
   avahi, and `.swu` software updates. Which of these are active on macOS is unknown.
 
+Live side: argument conditions, channel roles and the 1.5 s relaunch are in
+[helper launch, Live side](helper-launch-live-side.md#push-3); the `--emulator` and
+`--show-developer-window` guess on this page is superseded there (debug and
+developer options only).
+
 ## Launch and process model
 
 **Command line** (`entry` at `0x1001bdfa0`; boost::program_options group `Push 3

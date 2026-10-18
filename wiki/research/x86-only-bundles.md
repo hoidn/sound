@@ -152,6 +152,9 @@ directly on S3 (transport transitions). Equivalence between the compiles is not
 established. The Engine corpus can also be browsed through
 [the helper catalog](../../analysis/ableton-live-12.4.3/browse/r2/r2-index.html).
 
+arm64 MultiF0 selection (built in unless a developer option selects the dylib)
+is in [helper launch, Live side](helper-launch-live-side.md#multif0-q-013-arm64-only).
+
 ## ReWire.bundle, MakeAlias and the install path
 
 **Observed:**

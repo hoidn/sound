@@ -74,6 +74,10 @@ for example pack-database query names in the Swapper and authorization URL build
 the Web Connector. A string that appears in a helper therefore does not show
 that the helper uses the feature.
 
+Live side: the web connector's config file and commands, update states, the
+add-ons `--cid` and the swapper startup guard are in
+[helper launch, Live side](helper-launch-live-side.md#web-connector).
+
 ## Roles at a glance
 
 | Helper | Role (evidence) | Launched by / CLI | Talks to Live through |

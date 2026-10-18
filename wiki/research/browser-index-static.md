@@ -30,6 +30,9 @@ code structure, not runtime behavior. A `FUN_` name is Ghidra's label.
 Function addresses below are entries in this slice. String addresses are the
 defined-string addresses in `out/strings-*.tsv`.
 
+Live side: the options-file argument, its keys and the restart cap are in
+[helper launch, Live side](helper-launch-live-side.md#index).
+
 ## Process role and communication with Live
 
 **Observed.**
