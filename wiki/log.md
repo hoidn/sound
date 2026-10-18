@@ -1827,3 +1827,21 @@ clips decode at the expected lengths, key wiring, String at 261.5 Hz), and the
 
 Finding: headless virtual time skips past off-thread audio decoding, so the
 self-test needs real time (or a pending timer) to finish.
+
+## [2026-10-18] analysis | Phase 4 batch extended with the post-consolidation probes
+
+The user resumed work after the dispatch pause. The
+[Phase 4 batch](research/phase4-probe-batch.md) now merges 67 newer records:
+S5 11, S6 7 plus proposals 08 to 11, S7 10, S8 11, S9 8, N6 1, N7 5, N8 5 and
+PRB-BI 5. That makes 146 records, 142 with their original IDs, in sessions
+totalling about 39 h (2,325 min). New sessions K to Q run after I; J stays last.
+There are two new merge groups, M-MIDI-ABS and M-WARP-RENDER, and M-SAVE now also
+takes S9-07 and S7-09. Deferred as incomplete: S6-08 to 11, BI-01 to 05 and
+S8-11. Eleven records cite requirements that disagree with their specs (for
+example S9-04 still says 16R, against the corrected 17R). These are flagged on
+the page, not fixed. `batch.json` still holds the original 79 records. Source
+hashes are in `analysis/ableton-live-12.4.3/r2/phase4-batch-v1/sources-2026-10-18.json`.
+
+Separately, the spec index and the transport-state and container specs now
+record the two releases (cc64caf). Nine handoff candidates are being staged in
+parallel, each followed by a separate review.
