@@ -4,7 +4,7 @@
 import ghidra.app.script.GhidraScript;
 import ghidra.program.model.listing.Data;
 import ghidra.program.model.listing.Function;
-import ghidra.program.util.DefinedDataIterator;
+import ghidra.program.util.DefinedStringIterator;
 import ghidra.program.util.GhidraProgramUtilities;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +19,7 @@ public class R2ProjectSummary extends GhidraScript {
             if (f.isThunk()) thunks++;
         }
         for (Function f : currentProgram.getFunctionManager().getExternalFunctions()) external++;
-        for (Data d : DefinedDataIterator.definedStrings(currentProgram)) strings++;
+        for (Data d : DefinedStringIterator.forProgram(currentProgram)) strings++;
         String json = String.format(
             "{\"program\":\"%s\",\"language\":\"%s\",\"compiler\":\"%s\",\"image_base\":\"%s\","
             + "\"executable_sha256\":\"%s\",\"analyzed\":%b,\"functions_nonexternal\":%d,"
