@@ -1191,3 +1191,15 @@ decision (Ghidra dossier server, not REA); the learning index links midi-config-
 and the browsers. The C1–C3 gate row is left to the coordinator. The Live
 browser waits on the Live corpus. Lint: links and anchors on edited pages
 resolve; `git diff --check` clean; `test_r2_*.py` 17 tests pass.
+
+## [2026-10-17] ingest | x86_64-only bundles (H3)
+
+Identified the [x86_64-only bundles](research/x86-only-bundles.md) from their
+helper corpora and Mach-O headers, without executing anything: the Live Engine
+bundle is a ReWire device build of the audio engine; ReWire.bundle is
+Propellerhead ReWire 1.8.7; MultiF0 is an audio-to-note library. arm64 Live has
+no ReWire install or loader strings, and it carries MultiF0 built in. The engine's
+x86_64 slice names 297 `OEngine` methods that Live leaves unnamed, a candidate
+symbol donor for S3. Updated the package-structure helper section and feature map;
+opened [Q-013](questions.md#q-013-x86_64-only-rewire-and-multif0-paths).
+Evidence: `analysis/ableton-live-12.4.3/r2/h3-x86-bundles-v1/`. No behavior claim.

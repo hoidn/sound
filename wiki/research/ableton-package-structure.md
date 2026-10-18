@@ -153,7 +153,10 @@ Function counts are Ghidra's discovered functions, not original source functions
 
 Observed: the `Ableton Live Engine` bundle's arm64 slice is 35,056 bytes with no
 functions; all of its code is in the x86_64 slice. The MultiF0 library and the
-ReWire bundle have no arm64 slice. ReWire was not analyzed. Inferred, not
-established: an engine body that exists only for x86_64 is not used by native
-arm64 Live. Which process loads it, and when, is unknown. Project sizes were
+ReWire bundle have no arm64 slice. The [x86_64-only bundles](x86-only-bundles.md)
+page identifies them: the engine bundle is a ReWire device build of Live's audio
+engine; ReWire.bundle is Propellerhead ReWire 1.8.7; MultiF0 is an audio-to-note
+library that arm64 Live also carries built in. The ReWire install and loader
+strings appear only in Live's x86_64 slice, and `MakeAlias` belongs to that
+install path. Project sizes were
 about 13 times the slice size, from 4 MB to 610 MB.

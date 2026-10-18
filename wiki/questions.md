@@ -192,3 +192,16 @@ no experimental contradiction has been established yet.
   `Member "{}" of Class {} is missing` and of the `Value … out of range for '`
   message; reserve the 12.4.3 write format for a Phase 4 save capture if static
   tracing cannot fix it.
+
+## Q-013 x86_64-only ReWire and MultiF0 paths
+
+- State: open; owner: analyst.
+- Affects: FEAT-ECOSYSTEM, FEAT-MIDI audio-to-MIDI conversion, FEAT-PERSISTENCE.
+- Evidence: [x86_64-only bundles](research/x86-only-bundles.md).
+- Gap: when the ReWire install runs and what alias it creates; whether 12.4.3
+  still offers ReWire to users; the default choice between built-in and dynamic
+  MultiF0; whether Convert Drums uses MultiF0; the meaning of MultiF0 result
+  fields; why the engine bundle's arm64 stub exists.
+- Next action: once the Live x86_64 analysis finishes, query the callers of
+  `InstallPropellerheadDlls: `, `Ableton Live Engine_64`,
+  `Audio2Midi: Use builtin MultiF0 lib` and `MultiF0: No MultiF0 library found at `.

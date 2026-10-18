@@ -31,6 +31,7 @@ to the isolated implementation workspace.
 | [Ableton analysis intake](sources/ableton-analysis-intake.md) | Historical intake record; superseded by the installed Ableton source page |
 | [Installed Ableton source](sources/ableton-live-12.4.3.md) | Pinned build, retained evidence, hashes and environment |
 | [Package structure](ableton-package-structure.md) | Observed native/resource boundaries and coverage limits |
+| [x86_64-only bundles](x86-only-bundles.md) | Live Engine is a ReWire device build of the engine; ReWire 1.8.7 install chain is x86_64-only; MultiF0 audio-to-note API; engine as symbol donor for S3 |
 | [Document container (static)](document-container-static.md) | S2 static half: gzip/XML envelope, root attributes, schema-version cross-check, native loader anchors |
 | [Transport-state fields (static)](transport-state-static.md) | S1 static half: Transport, tempo and time-signature schema evolution, values in 376 shipped sets and clips, candidate SPEC-TRANSPORT-STATE statements, native anchors and queries |
 | [Decompilation preparation](ableton-decompilation-preparation.md) | Validated helper pipeline, core targets and prioritized spec work |
