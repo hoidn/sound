@@ -1463,3 +1463,20 @@ restart caps are recorded; Live exits with code 42 if the swapper is running at 
 Added progress to Q-013 through Q-016 and Live-side cross-links on the five helper
 pages; the Push 3 page's emulator-flag guess is superseded. Gaps: Audio Unit handler,
 debug-option names (stored as digests), index database naming, ReWire (x86_64 pending).
+
+## [2026-10-17] maintenance | Traced Corpus demo: key status, default preset, output limiter
+
+The on-screen MIDI keys only act through MidiPitch or MidiGate. Only one of the
+26 presets (Pipe Resonator, the previous default) turns on MidiGate, and none
+turns on MidiPitch. With MidiGate on and no note held, a click's ring fell to
+−60 dB in 56 ms instead of 1.2 s.
+
+The page now shows below the keys whether they do anything with the current
+settings. It opens on Metallic Rezo (Membrane, MidiGate off, 0.43 s ring), and a
+safety limiter on the page output protects against presets that peak far above
+full scale (Loop Move about 22×). The limiter is labelled as page-only, not part
+of Corpus.
+
+Whether Live itself gates Corpus when no MIDI is routed to it is not established.
+Checks: 8 Node tests pass; the headless self-test passes; the default loads as
+type 3.

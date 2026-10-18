@@ -40,7 +40,8 @@ legend{font-weight:700;padding:0 6px}.keys button{min-width:42px}</style></head>
 <button id="mic" type="button" aria-pressed="false">Microphone: off</button>
 <label for="volume">Volume</label><input id="volume" type="range" min="0" max="1" step="0.01" value="0.5" style="width:140px">
 <label for="preset">Preset</label><select id="preset"></select></div>
-<p class="buttons keys" aria-label="MIDI keyboard for MidiPitch and MidiGate">MIDI notes (used when MidiPitch or MidiGate is on):</p>
+<p class="buttons keys" aria-label="MIDI keyboard for MidiPitch and MidiGate">MIDI notes:</p>
+<p id="keys-status" class="muted" role="status" aria-live="polite"></p>
 <p id="status" role="status" aria-live="polite" class="muted">Press a source to start audio.</p>
 <h3>Resonator modes</h3><canvas id="modes" width="1200" height="190" aria-label="Active modes of the left and right resonators"></canvas>
 <p class="muted">Bars: each active mode's frequency (log scale) and its pickup weight for the left (blue) and right (orange) resonator, as the engine reports them. Waveguide types (Pipe, Tube) have no discrete mode list.</p>
@@ -482,8 +483,14 @@ const hz = v => { const c = v <= 0.5 ? 128 * v : 126 * v + 1, n = (c > 63.9999 &
 
 let ctx = null, node = null, analyser = null, master = null, loopSource = null, micSource = null, modeInfo = [[], []];
 function send(name) { if (node) node.port.postMessage({set: name, value: params[name]}); }
+function keysStatus() {  // the keys only matter through MidiPitch and MidiGate; say which, if either, is on
+  const pitch = !!params.MidiPitch, gate = !!params.MidiGate;
+  $('keys-status').textContent = pitch || gate
+    ? `Active: ${[pitch && 'held notes set the pitch (highest wins; Transpose and Fine apply)', gate && 'a held note keeps the gate open; with none held the ring is cut to DecayOnNoteOff'].filter(Boolean).join('; ')}. The keys make no sound on their own; play a source too.`
+    : 'Inactive with this setting: turn on MidiPitch or MidiGate (MIDI section below) to make the keys do something. The keys make no sound on their own.';
+}
 function loadPreset(i) { for (const [k, v] of Object.entries(presets[i].values)) params[k] = numeric(v); for (const k in inputs) inputs[k].sync();
-  if (node) node.port.postMessage({all: params}); }
+  keysStatus(); if (node) node.port.postMessage({all: params}); }
 function control(name) {
   const box = el('div', undefined, 'param'), head = el('div', undefined, 'row'), label = el('label', name), valueText = el('span', '', 'val');
   label.htmlFor = 'p-' + name; head.append(label, valueText); box.append(head);
@@ -497,7 +504,7 @@ function control(name) {
   const show = () => { const v = params[name]; valueText.textContent = isBool ? (v ? 'on' : 'off') : name === 'ResonanceType' ? `${v} · ${TYPES[v]}` :
     name === 'Frequency' ? `${v.toFixed(3)} · ${hz(v).toFixed(1)} Hz` : String(Number.isInteger(v) ? v : v.toFixed(3)); };
   inputs[name] = {sync: () => { if (isBool) input.checked = !!params[name]; else input.value = params[name]; show(); }};
-  input.addEventListener('input', () => { params[name] = isBool ? (input.checked ? 1 : 0) : Number(input.value); show(); send(name); });
+  input.addEventListener('input', () => { params[name] = isBool ? (input.checked ? 1 : 0) : Number(input.value); show(); send(name); if (name === 'MidiPitch' || name === 'MidiGate') keysStatus(); });
   return box;
 }
 const WORKLET = `${document.scripts[0].textContent}
@@ -539,8 +546,10 @@ async function start() {
   node.port.onmessage = ({data}) => { if (data.modes) { modeInfo = data.modes; drawModes(); } };
   node.port.postMessage({all: params});
   master = ctx.createGain(); master.gain.value = Number($('volume').value);
+  // Page protection, not part of Corpus: some presets peak far above full scale (Loop Move about 22x).
+  const limiter = ctx.createDynamicsCompressor(); limiter.threshold.value = -3; limiter.knee.value = 0; limiter.ratio.value = 20; limiter.attack.value = 0.001;
   analyser = ctx.createAnalyser(); analyser.fftSize = 4096;
-  node.connect(master).connect(analyser).connect(ctx.destination);
+  node.connect(master).connect(limiter).connect(analyser).connect(ctx.destination);
   $('status').textContent = `Traced engine running at ${ctx.sampleRate} Hz via ${node.kind}.`; drawSpectrum();
 }
 function play(buffer, loop) { const s = ctx.createBufferSource(); s.buffer = buffer; s.loop = !!loop; s.connect(node); s.start(); return s; }
@@ -575,7 +584,8 @@ function drawSpectrum() {
 }
 for (const [title, names] of GROUPS) { const fs = el('fieldset'); fs.append(el('legend', title)); const grid = el('div', undefined, 'grid'); names.forEach(n => grid.append(control(n))); fs.append(grid); $('groups').append(fs); }
 presets.forEach((p, i) => { const o = el('option', p.name); o.value = i; $('preset').append(o); });
-const initial = presets.findIndex(p => p.name === 'Pipe Resonator'); $('preset').value = initial; loadPreset(initial);
+// Default: a ringing preset with MidiGate off, so the first hit is not cut short (Pipe Resonator gates with no note held).
+const initial = presets.findIndex(p => p.name === 'Metallic Rezo'); $('preset').value = initial; loadPreset(initial);
 $('preset').addEventListener('change', () => loadPreset(Number($('preset').value)));
 $('hit').addEventListener('click', async () => { await start(); play(clickBuffer(ctx)); });
 $('noise').addEventListener('click', async () => { await start(); play(noiseBuffer(ctx)); });
@@ -597,6 +607,7 @@ const keys = document.querySelector('.keys');
 (() => { const body = $('evidence-body');
   body.append(el('p', 'Engine: a JavaScript port of the device\'s signal chain, written from the decompiled Corpus bundle in Live 12.4.3 (module graph, 37 host parameters and their conversions, the ab_resonator modal and waveguide models, filter, gain, panpot, width, LFO and pitch hub). Parameter values are quantized as the device quantizes them.'),
     el('p', 'Live\'s side (the N5 mapping): stored values pass unchanged except FilterMidFreq (Hz to 0–1 on a log scale); MidiMode is sent but ignored. Open: the position range (probe P4-N5-01). Not compared with Corpus\'s real output.'),
+    el('p', 'Page-only additions that are not part of Corpus: the on-screen MIDI keys, the sound sources, and a safety limiter on the page output (some presets peak far above full scale).'),
     el('p', 'Checks: a Node test of the engine (mode ratios, String at 261.62 Hz, Beam partial, Pipe and Tube resonances at the frequencies the traced loop predicts, all 26 presets stable) and this page\'s #selftest render.')); })();
 async function selftest() {
   const out = $('selftest-result'); out.hidden = false;
