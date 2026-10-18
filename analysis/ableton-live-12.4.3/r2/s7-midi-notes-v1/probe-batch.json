@@ -1,0 +1,140 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet S7 (MIDI note storage)",
+ "target": "Ableton Live 12 Suite 12.4.3, macOS host only",
+ "common_prerequisites": [
+  "Pin the Live executable and preferences hash before the sitting; fresh preferences",
+  "Retain every input file, its SHA-256, Log.txt, a capture of the clip's note editor and any re-saved file",
+  "Load each clip by dragging the .alc into an empty MIDI track; save as a new set to obtain the re-saved notes"
+ ],
+ "probes": [
+  {
+   "id": "PRB-S7-01",
+   "candidates": [
+    "MN-12"
+   ],
+   "question": "Does a MidiNoteEvent that omits Time, Duration, Velocity or OffVelocity take the previous note's value in the same KeyTrack?",
+   "existing_evidence": "Array loader 0x101560424 reuses one AMidiNoteEvent (s7-0001); reset 0x1028e2fcc touches only VelocityDeviation, Probability, IsEnabled (s7-0002)",
+   "why_static_insufficient": "Static derivation of a surprising inheritance; the re-saved values show the effective result",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; KeyTrack MidiKey 36: remove Velocity from its 2nd note; variant: remove Duration; variant: remove Velocity from the 1st note",
+   "discriminating_observation": "Re-saved 2nd note Velocity equals the 1st note's (85), not 100 or 127; 1st-note variant re-saves 127 (FLT_MAX clamped)",
+   "stopping_condition": "Three opens and saves; stop"
+  },
+  {
+   "id": "PRB-S7-02",
+   "candidates": [
+    "MN-13",
+    "MN-14"
+   ],
+   "question": "Does a NoteId omitted after a non-zero NoteId make the clip fail as corrupt, while a clip with every NoteId omitted opens with fresh ids?",
+   "existing_evidence": "Inheritance as PRB-S7-01; duplicate check and throw in 0x1028f5864 (s7-0001); zero ids collected out (0x1028f6154) and reassigned (0x1028f6664)",
+   "why_static_insufficient": "Top-level catch and user-visible outcome not traced",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; variant A: remove NoteId from the 2nd note of KeyTrack 36; variant B: remove every NoteId; variant C: give two notes NoteId 7",
+   "discriminating_observation": "A and C: error, clip not loaded, capture dialog; B: opens, re-saved NoteIds 1..n in KeyTrack order then time order and NextId n+1 (or the original NextId if larger)",
+   "stopping_condition": "Three opens; stop"
+  },
+  {
+   "id": "PRB-S7-03",
+   "candidates": [
+    "MN-09",
+    "MN-10"
+   ],
+   "question": "Are out-of-range note values clamped on load and saved clamped?",
+   "existing_evidence": "Post-load 0x1028e2c80 (s7-0001); clamps act only when the load-context flag +0x2c is set (inferred set for documents)",
+   "why_static_insufficient": "Flag value for document loads inferred, not traced",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; one note each: Velocity 0, Velocity 300, OffVelocity -5, OffVelocity 200, Probability 1.5, Probability -1, Duration -2",
+   "discriminating_observation": "Re-saved 1, 127, 0, 127, attribute omitted (1), 0, 0",
+   "stopping_condition": "One open and save; stop"
+  },
+  {
+   "id": "PRB-S7-04",
+   "candidates": [
+    "MN-08"
+   ],
+   "question": "Is an off-grid Time or Duration re-saved on the 1/3,843,840 grid?",
+   "existing_evidence": "Quantizer 0x1028e2e24 (s7-0001); all shipped values are on the grid",
+   "why_static_insufficient": "Round-trip text depends on writer and grid together",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; first note Time 0.123456789 and Duration 0.3333333333; second note Time -0.0000002; third note Time -0.0000001",
+   "discriminating_observation": "Re-saved text 0.123456751581751581, 0.333333333333333315, -0.000000260156510156510156 and -0 (static derivation from 0x1028e2e24 and the n1 writer rule); any other text falsifies the derivation",
+   "stopping_condition": "One open and save; stop"
+  },
+  {
+   "id": "PRB-S7-05",
+   "candidates": [
+    "MN-16",
+    "MN-02"
+   ],
+   "question": "What happens with MidiKey outside 0..127, a missing MidiKey, or two KeyTracks with the same MidiKey?",
+   "existing_evidence": "Key map writes without a range check: 0x1028f5f74 and 0x1028f5420 (s7-0003, s7-0004); ctor MidiKey -1",
+   "why_static_insufficient": "Out-of-bounds store in the reference; outcome may be a crash or silent corruption",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; variants: MidiKey 128; MidiKey -1; MidiKey element removed; two KeyTracks both MidiKey 36. Run in a disposable session",
+   "discriminating_observation": "Open succeeds or fails or crashes; for duplicates, which notes are shown and re-saved",
+   "stopping_condition": "Four opens or first crash; stop"
+  },
+  {
+   "id": "PRB-S7-06",
+   "candidates": [
+    "MN-17"
+   ],
+   "question": "Are notes in a KeyTrack re-sorted when the document lists them out of time order, and are same-key overlaps kept?",
+   "existing_evidence": "No sort found after load (generic post-load on AKeyTrack and the array); writer emits array order (0x101560258)",
+   "why_static_insufficient": "A sort elsewhere (editor or playback model) cannot be excluded statically",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; reverse the note order of KeyTrack 36; add a note overlapping its neighbour on the same key",
+   "discriminating_observation": "Re-saved order (document order or time order); overlap kept or trimmed; playback of the overlap",
+   "stopping_condition": "One open, playback, save; stop"
+  },
+  {
+   "id": "PRB-S7-07",
+   "candidates": [
+    "MN-19",
+    "MN-20"
+   ],
+   "question": "Per-note expression load: invalid CC, NoteId 0, orphan, duplicate (NoteId, CC), unsorted events, out-of-range Value",
+   "existing_evidence": "0x10292cd70, 0x10292b730, 0x1028f64d0 (s7-0002, s7-0003)",
+   "why_static_insufficient": "User-visible error and re-saved content not observed",
+   "minimal_input": "Chuck Sutton - Patience (Live 12 Intro Demo).als (SHA-256 f78a98f5dfa1e7bfb334309cb71904d8c4b5b2b0287f9ff1e827abc105fdaea6) or the PRB-S7-01 fixture with one added PerNoteEventList; variants: CC 0; CC 200; NoteId 0; NoteId absent from the clip; two lists with the same NoteId and CC; events in reverse TimeOffset order; CC -2 Value 9000",
+   "discriminating_observation": "Lists dropped silently (CC 0, CC 200, NoteId 0, orphan); duplicate pair fails to load; events re-saved ascending; Value re-saved 8191",
+   "stopping_condition": "Seven opens; stop"
+  },
+  {
+   "id": "PRB-S7-08",
+   "candidates": [
+    "MN-21"
+   ],
+   "question": "Do invalid probability-group ids fail the load?",
+   "existing_evidence": "0x1028f5640 and throw at 0x1028f5d0c (s7-0001, s7-0002); no shipped document contains a group",
+   "why_static_insufficient": "No shipped group exists; group XML shape is schema-only",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; add one NoteProbabilityGroup (GroupType 0, Notes NoteId 1 and 2, Probability 0.5) with GroupId 0, then 5 with ProbabilityGroupIdGenerator NextId 1, then 1 with NextId 2",
+   "discriminating_observation": "First two fail with an error; third opens; re-saved group text",
+   "stopping_condition": "Three opens; stop"
+  },
+  {
+   "id": "PRB-S7-09",
+   "candidates": [
+    "MN-04",
+    "MN-11",
+    "MN-15",
+    "MN-17",
+    "MN-18"
+   ],
+   "question": "What does a real 12.4.3 save write for notes?",
+   "existing_evidence": "Writer 0x101486cdc with omit predicate 0x1028e2fe4; number formatters (n1); 12.4d1 shipped files",
+   "why_static_insufficient": "Shipped files were written by 12.4d1, not 12.4.3",
+   "minimal_input": "New MIDI clip drawn in 12.4.3: one muted note, one note with probability 50 %, one with velocity deviation +10, one with release velocity 100, one MPE note with pitch-bend and slide envelopes; save",
+   "discriminating_observation": "Attribute presence and order, number text, KeyTrack order and Ids, NextId value",
+   "stopping_condition": "One save; stop"
+  },
+  {
+   "id": "PRB-S7-10",
+   "candidates": [
+    "MN-15"
+   ],
+   "question": "NextId behaviour: smaller than the largest NoteId, larger, negative",
+   "existing_evidence": "0x102920db4 raises NextId to max+1 with an unsigned compare (s7-0002)",
+   "why_static_insufficient": "Effective NextId visible only through a later new note",
+   "minimal_input": "909 Core Kit House 127 bpm.alc (App-Resources/Core Library/MIDI Clips/Drums/Drum Machines, SHA-256 79c6ed2f5a46d8ce139e2dae5261285c6894d196e289835f455906e4a901ff59, MinorVersion 12.0_12402, Creator Ableton Live 12.4d1), decompressed, edited as stated, recompressed with gzip; NoteIdGenerator NextId 1; variant 100000; variant -5",
+   "discriminating_observation": "Re-saved NextId: max+1, 100000, -5 kept (unsigned -5 is larger) ; a new note drawn after load gets that id",
+   "stopping_condition": "Three opens with one drawn note each; stop"
+  }
+ ]
+}

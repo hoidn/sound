@@ -18,7 +18,7 @@ manuals, package inventory, API surfaces, and observed user workflows.
 | FEAT-SESSION | Session View | Clips, scenes, follow actions, recording, Arrangement override | Candidates CL-01 to CL-23 in [clip launch](../research/clip-launch.md#candidate-requirements-for-spec-clip-launch); no draft spec |
 | FEAT-ARRANGEMENT | Arrangement | Editing, comping, fades, clip boundaries, recording | Unspecified |
 | FEAT-AUDIO | Audio engine | Mixing, routing, monitoring, latency, device changes | Unspecified |
-| FEAT-MIDI | MIDI engine | Scheduling, note state, expression, recording, MPE; audio-to-MIDI conversion | Unspecified; audio-to-note library identified in [x86_64-only bundles](../research/x86-only-bundles.md) |
+| FEAT-MIDI | MIDI engine | Scheduling, note state, expression, recording, MPE; audio-to-MIDI conversion | Unspecified; clip note storage (KeyTracks, MidiNoteEvent, NoteIds, per-note expression) in [MIDI note storage](../research/midi-note-storage.md), candidates MN-01 to MN-24; audio-to-note library identified in [x86_64-only bundles](../research/x86-only-bundles.md) |
 | FEAT-AUTOMATION | Automation and modulation | Curves, overrides, interpolation, recording, undo | Unspecified |
 | FEAT-DEVICES | Devices and racks | Chains, macros, state, mapping, signal behavior | Unspecified; static interface and parameter inventory for the seven bundled devices in [device bundles](../research/device-bundles-static.md) |
 | FEAT-HOSTING | Plug-in hosting | Discovery, lifecycle, state, latency, failures | Draft [SPEC-PLUGIN-DISCOVERY](plugin-discovery.md) r1 (VST3 and VST2 discovery only); evidence in [plug-in scanner](../research/plugin-scanner-static.md) and [helper launch](../research/helper-launch-live-side.md#plug-in-scanner) |

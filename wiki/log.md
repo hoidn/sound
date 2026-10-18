@@ -1608,3 +1608,17 @@ hashes against manifest `b2fdf029…5baba`, added the catalog row, and carried R
 strengthened TS-010 reading into [SPEC-TRANSPORT-STATE](specs/transport-state.md) r2. 18 cases,
 static-derived and unexecuted; no compatibility claim. Isolated implementation workspace still
 unprovisioned. Not pushed.
+
+## [2026-10-17] query | MIDI note storage in clips (S7)
+
+Surveyed note storage in 203 schemas and 1,368 shipped clips (235,756 notes) and traced the
+12.4.3 reader and writer in four rounds of 8 dossiers; filed
+[MIDI note storage](research/midi-note-storage.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/s7-midi-notes-v1/`. Notes sit in one KeyTrack per key;
+12.4d1 omits VelocityDeviation 0, Probability 1 and IsEnabled true. The reader reuses one
+note object per KeyTrack, so an absent Time, Duration, Velocity, OffVelocity or NoteId repeats
+the previous note's value; it rounds times to 1/3,843,840 beat, clamps velocities and
+probability, fails on repeated non-zero NoteIds, numbers NoteId-0 notes from NextId, and cleans
+or rejects per-note expression lists and probability groups. Candidates MN-01 to MN-24 and
+PRB-S7-01 to 10. Opened [Q-018](questions.md#q-018-midi-note-key-range-and-ordering-after-load)
+for the unchecked key-table store and ordering after load. Nothing executed.

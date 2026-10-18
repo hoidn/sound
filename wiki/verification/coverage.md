@@ -20,7 +20,7 @@ requirements to candidate code and tests.
 | FEAT-SESSION | Candidates CL-01 to CL-23 ([clip launch](../research/clip-launch.md)); no draft; no handoff | Not started | Unknown | PRB-S5-01 to 11; launch-mode branches |
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
 | FEAT-AUDIO | None | Not started | Unknown | Routing and DSP paths; flag latency for later measurement |
-| FEAT-MIDI | None | Not started | Unknown | Event formats, scheduling and note-state logic |
+| FEAT-MIDI | None; candidates MN-01 to MN-24 in [MIDI note storage](../research/midi-note-storage.md) | Not started | Unknown | Draft SPEC-MIDI-NOTE-STORAGE; PRB-S7-01 to 10; scheduling and note-state logic |
 | FEAT-AUTOMATION | None | Not started | Unknown | Curve/override schemas, interpolation and undo paths |
 | FEAT-DEVICES | None | Not started | Unknown | Preset/state schemas and bounded DSP derivations |
 | FEAT-HOSTING | Draft [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md) r1 (discovery only); no handoff | Not started | Unknown; 42 draft cases not run | PRB-H1-01 to 08, PRB-N4-01, 02, 05; lifecycle, state, latency |

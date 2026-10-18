@@ -304,3 +304,14 @@ no experimental contradiction has been established yet.
   near-boundary clause before PRB-S5-01.
 - Next action: resolve the virtual target through the fire manager's vtable stores;
   otherwise run PRB-S5-01 to 11.
+
+## Q-018 MIDI note key range and ordering after load
+
+- State: open; owner: analyst.
+- Affects: FEAT-MIDI, the proposed SPEC-MIDI-NOTE-STORAGE (MN-16, MN-17).
+- Evidence: [MIDI note storage](research/midi-note-storage.md).
+- Gap: a `MidiKey` outside 0 to 127, a missing `MidiKey`, or two KeyTracks with the same
+  key reach a 128-slot table store with no range check, so the outcome may be memory
+  corruption; whether notes are re-sorted after load is untraced.
+- Next action: trace the table store's callers for a range guard; otherwise exclude
+  these inputs from any release and run the matching PRB-S7 probes.
