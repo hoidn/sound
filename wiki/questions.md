@@ -205,3 +205,16 @@ no experimental contradiction has been established yet.
 - Next action: once the Live x86_64 analysis finishes, query the callers of
   `InstallPropellerheadDlls: `, `Ableton Live Engine_64`,
   `Audio2Midi: Use builtin MultiF0 lib` and `MultiF0: No MultiF0 library found at `.
+
+## Q-014 Browser index behavior
+
+- State: open; owner: analyst.
+- Affects: FEAT-UI (browser), FEAT-PERSISTENCE (tags and sample references).
+- Evidence: [browser index](research/browser-index-static.md).
+- Gap: Live's spawn site and arguments for the index helper; the real database
+  prefix and directory; whether version 12300 is what is written; how the browser
+  queries the database; who consults `filerefmap.db` and what its type values mean;
+  how XMP sidecar names are derived; user-visible handling of missing, corrupt or
+  unsupported files. Runtime facts are in probes PRB-H2-01 to 09.
+- Next action: query the saved Live project for references to `live->index`,
+  `ipc-channel`, `{}-files-{}.db` and `fileref-map-path`.

@@ -83,7 +83,7 @@ provides detailed locators and per-sample limitations.
 | MIDI `_Tools` | Readable INI configuration plus mapping documentation | Runtime validation, relative-encoder arithmetic and error behavior |
 | Push2 QML | 153 readable QML files; Qt tree adds 192 | Native model bindings, controller correspondence and actual display behavior |
 | `App-Resources/JS` | Three minified WebView scripts, 21,316 bytes | Native host endpoints and observed messaging lifecycle |
-| `Database/filerefmap.db` | SQLite header and read-only schema inspection | Resource-resolution precedence and missing-file handling |
+| `Database/filerefmap.db` | SQLite header and read-only schema inspection; 37,617 mappings and 81 pack names recorded in [browser index](browser-index-static.md) | Consumer, type semantics, resolution precedence and missing-file handling |
 | GUI/Graphics/Languages ALP; sampled AGR | Opaque binary signatures | Container encoding/compression; encryption is not established |
 
 The shipped default ALS identifies its creator as Live 12.1d1 even though the

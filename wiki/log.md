@@ -1203,3 +1203,17 @@ x86_64 slice names 297 `OEngine` methods that Live leaves unnamed, a candidate
 symbol donor for S3. Updated the package-structure helper section and feature map;
 opened [Q-013](questions.md#q-013-x86_64-only-rewire-and-multif0-paths).
 Evidence: `analysis/ableton-live-12.4.3/r2/h3-x86-bundles-v1/`. No behavior claim.
+
+## [2026-10-17] query | Browser index helper (H2)
+
+Filed [browser index (static)](research/browser-index-static.md) from the index
+helper's corpus and project (slice `3390bd4b…`) and the shipped metadata: launch
+modes and option keys, the `ipc://` channel with 25 Live-to-helper commands and 12
+helper events, the SQLite files-database schema with FTS4 search, version 12300 with
+upgrade and rebuild rules, an 80-entry file-type table, file-event-driven updates,
+162 XMP tag sidecars and 2,563 previews, and the read-only `filerefmap.db` with 37,617
+sample-path mappings. Updated the feature map and the package-structure database row;
+opened [Q-014](questions.md#q-014-browser-index-behavior). Evidence:
+`analysis/ableton-live-12.4.3/r2/h2-index-v1/`. The agent also confirmed that
+`decomp.time` is created at job start and is not a completion signal; the coordinator
+had already corrected that rule. Gaps: Live-side spawn and queries; runtime probes.
