@@ -316,6 +316,29 @@ Each run directory gets `time.txt`, `stdout.txt` (with the `R2_INVOCATION` and
 thread in each sample. Every later run on the same output must keep `chunk=100`,
 because the chunk size is part of `run.json`.
 
+## Measured on Live — 2026-10-17
+
+The coordinator ran the command above through
+[`c1-live-v1/run.sh`](../../analysis/ableton-live-12.4.3/r2/c1-live-v1/run.sh) against
+`projects/LiveR2`, while a query server held a hard-linked copy and other analyses
+ran. Evidence and timings: [c1-live-v1 manifest](../../analysis/ableton-live-12.4.3/r2/c1-live-v1/manifest.json).
+
+| Run | Functions | Wall | Peak group RSS | Rate between first and last chunk |
+| --- | --- | --- | --- | --- |
+| Sample, 1 instance, shard 0/40 | about 10,500 | 1:09 | 10.8 GB | about 181 per second |
+| Sample, 14 instances, shard 1/40 | about 10,500 | 2:18 | 14.4 GB | about 82 per second |
+| Full, 14 instances, plus C2 | 418,417 (sampled chunks validated and skipped) | 13:13 | 29.0 GB | about 848 per second over a two-minute window |
+
+The short samples reversed the Push2 result, but the full run with 14 instances
+sustained about 4.7 times the one-instance sample rate. Inferred, not measured:
+the 14-instance sample was dominated by per-instance cache warm-up over a small
+slice. Outcome: 320,967 exported, 97,387 exported with warnings, 63 failed;
+`r2_corpus.py` reports the corpus complete with no stale temporary files and the
+indexes consistent. Sizes: corpus 755 MB, indexes 679 MB. Index counts: 452,752
+strings, 1,599,830 direct call edges, 268,015 indirect call sites, 420,470 aliases
+and only 80 symbol-named vtables, so vtable recovery in Live needs constructor and
+vtable-store tracing.
+
 ## Limitations and unknowns
 
 - **Untested paths.** The decompiler start-failure and I/O abort paths were not

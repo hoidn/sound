@@ -1299,3 +1299,15 @@ demo being built in this checkout from decompiled Corpus code. That demo is
 therefore decompilation-derived and is not a clean input to the independent
 application. The waiver is temporary and covers only this work; the rule is
 otherwise unchanged. Nothing has been pushed to the public `origin` remote.
+
+## [2026-10-17] maintenance | Live corpus complete (C1, C2)
+
+The bulk decompile of `Live.arm64` finished in 13:13 with 14 program instances in
+one JVM: all 418,417 eligible functions have an outcome (320,967 exported, 97,387
+with warnings, 63 failed), and the C2 indexes verify. The short A/B samples had
+favored one instance, but the full run sustained about 848 functions per second.
+Recorded in the [gate table](research/native-phase-execution.md#gate-ledger) and
+[corpus tooling](research/r2-corpus-tooling.md#measured-on-live--2026-10-17), with
+evidence in `analysis/ableton-live-12.4.3/r2/c1-live-v1/`. The corpus and indexes
+stay on `/var/tmp/sound-analysis/corpus` and are not in Git. The four native
+investigators were told the indexes are ready.
