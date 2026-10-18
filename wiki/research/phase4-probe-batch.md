@@ -54,8 +54,9 @@ audio under FEAT-AUDIO, which is verification work.
 
 Added after consolidation: S5 contributed PRB-S5-01 to 11 (11 records) on the
 [clip launch](clip-launch.md) page; they are not yet merged into `batch.json` or the run
-sheet. S7 contributed PRB-S7-01 to 10 on [MIDI note storage](midi-note-storage.md). Later
-packets (S6, S8, S9, N6 to N8) will add more.
+sheet. S7 contributed PRB-S7-01 to 10 on [MIDI note storage](midi-note-storage.md), and N7
+contributed PRB-N7-01 to 05 on [MIDI transforms](midi-transforms-native.md), refining
+PRB-S4-05. Later packets (S6, S8, S9, N6, N8) will add more.
 
 ## Merged and duplicate records
 

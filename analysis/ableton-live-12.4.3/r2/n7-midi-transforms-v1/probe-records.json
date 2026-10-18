@@ -1,0 +1,63 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; refines PRB-S4-05 after the N7 native trace",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Reuse the PRB-S4 common prerequisites (pinned executable, verified virtual MIDI port, fresh preferences, retained Log.txt)",
+  "Read parameter values through a read-only observer whose own latency is characterised first; never use an arbitrary sleep as evidence of no change",
+  "Record the Takeover Mode preference before each probe and set it explicitly; its default is unknown",
+  "Open the MIDI input (Remote on) before the first message and send nothing else on the probed channel/controller, so the prior-value table starts at its -129 fill"
+ ],
+ "probes": [
+  {
+   "id": "PRB-N7-01",
+   "clauses": ["REQ-MIDI-USER-005 proposed n7-c, n7-d"],
+   "question": "Do Absolute and Absolute14Bit produce min + (max-min) * v/127 and v14/16383 on a continuous parameter, and is the 14-bit value applied only when both halves have arrived?",
+   "existing_evidence": "0x101b76bf0 absolute branch; pairing 0x101b8028c/0x101b802bc/0x101b7fcc0 (kept results n7-0002); cases MT-01 to MT-05",
+   "why_static_insufficient": "Static trace ends at the parameter setter 0x101b0d328; display rounding, smoothing and deferred application (OChangeControllerDataCommand) are unmeasured",
+   "minimal_input": "EncoderMapMode Absolute then Absolute14Bit, Encoder1: 20, a device with a continuous parameter in slot 1; send the MT-01 to MT-05 byte sequences",
+   "discriminating_observation": "Parameter value after each message; in particular no change after a lone MSB",
+   "stopping_condition": "All MT-01 to MT-05 readings taken once; stop"
+  },
+  {
+   "id": "PRB-N7-02",
+   "clauses": ["REQ-MIDI-USER-005 proposed n7-e, n7-f"],
+   "question": "Do the eight relative modes produce the per-message deltas of MT-06 to MT-14, including the table fallbacks (AccelSignedBit 10..64 -> 20, AccelBinaryOffset 64 -> +50, AccelTwoCompliment 0 -> +50)?",
+   "existing_evidence": "Decoder 0x101b7b96c and tables 0x10584a580/0x10584a5a0 (n7-0001, out/native-constants.json)",
+   "why_static_insufficient": "Numerical fidelity at the parameter requires measurement under ADR 0002",
+   "minimal_input": "One continuous parameter with min 0 and max 1 at 0.5; each mode in turn; MT-06 to MT-14 sequences",
+   "discriminating_observation": "Value after each message, tolerance 1e-6 on the LOM value",
+   "stopping_condition": "One pass per mode; stop at the first mismatch and record it"
+  },
+  {
+   "id": "PRB-N7-03",
+   "clauses": ["REQ-MIDI-USER-005 proposed n7-g"],
+   "question": "With Takeover Mode Pick-Up and Value Scaling, do MT-19 to MT-23 hold, including the unchanged value on the first message after the input opens?",
+   "existing_evidence": "0x101b7c508, 0x101b7c344, prior table 0x101b65b68 with -129 fill (n7-0001, n7-0002)",
+   "why_static_insufficient": "The preference default, the reset trigger of the prior table (0x101b68f98) and status-bar side effects are untraced",
+   "minimal_input": "Volume slider and crossfader assignments; MT-19 to MT-23 sequences; reopen the input between cases",
+   "discriminating_observation": "Value after each message; whether an unrelated earlier CC on the same input changes the prior",
+   "stopping_condition": "Five cases once each; stop"
+  },
+  {
+   "id": "PRB-N7-04",
+   "clauses": ["REQ-MIDI-USER-005 proposed n7-h, n7-i"],
+   "question": "Do quantized and on/off parameters follow MT-15 to MT-18 (round half away from zero; one step per relative message; on inside MidiCCOnOffThresholds)?",
+   "existing_evidence": "0x101b76bf0 frinta, 0x101b7f894 accumulator, 0x101b7fde4 Type 2 branch, 0x1026fa684 threshold range; shipped sets carry Min 64 Max 127 in 22,059 of 22,303 occurrences",
+   "why_static_insufficient": "The registry lookup 0x1011aeb80 that can disable the threshold range is unexplained; per-parameter class membership (ATimeableBool/Enum/Float) is not listed",
+   "minimal_input": "A device with an on/off and a quantized parameter in the first two encoder slots; MT-15 to MT-18 sequences",
+   "discriminating_observation": "Parameter value after each message",
+   "stopping_condition": "One pass; stop"
+  },
+  {
+   "id": "PRB-N7-05",
+   "clauses": ["REQ-MIDI-USER-005 proposed n7-d, timing"],
+   "question": "Ordering and coalescing: is every message applied in arrival order when sent back to back (including MSB, unrelated CC, LSB interleaving), or can deferred application drop or merge messages?",
+   "existing_evidence": "0x101b7fde4 posts OChangeControllerDataCommand when not on the expected thread; dispatch 0x101b7842c calls every handler on a channel/controller",
+   "why_static_insufficient": "Thread and queue behaviour are runtime properties",
+   "minimal_input": "Absolute14Bit and LinearSignedBit mappings; bursts of 100 messages at the port's maximum rate",
+   "discriminating_observation": "Final value equals the derived sum or last pair; any intermediate drop",
+   "stopping_condition": "Three bursts per mapping; stop"
+  }
+ ]
+}

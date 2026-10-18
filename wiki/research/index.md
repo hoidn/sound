@@ -52,6 +52,7 @@ to the isolated implementation workspace.
 | [MIDI mapping source capture](sources/midi-user-mapping-12.4.3.md) | Pinned documents, bytecode and static decoder provenance |
 | [MIDI mapping investigation](midi-user-mapping.md) | Parser/mapping findings and unresolved native/host boundaries |
 | [MIDI closure assessment (S4)](midi-closure-r2.md) | Clause-level static/native/runtime classification of the 13 MIDI requirements, 55 draft v2 cases, 16 Phase 4 probes |
+| [MIDI map-mode transforms (native)](midi-transforms-native.md) | N7: native path from the user script to the parameter value; per-mode table for all ten modes, 14-bit pairing, relative step and acceleration tables, quantized and on/off handling, takeover arithmetic, 23 derived cases, PRB-N7-01 to 05 |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

@@ -1622,3 +1622,16 @@ probability, fails on repeated non-zero NoteIds, numbers NoteId-0 notes from Nex
 or rejects per-note expression lists and probability groups. Candidates MN-01 to MN-24 and
 PRB-S7-01 to 10. Opened [Q-018](questions.md#q-018-midi-note-key-range-and-ordering-after-load)
 for the unchecked key-table store and ordering after load. Nothing executed.
+
+## [2026-10-17] query | MIDI map-mode transforms, native (N7)
+
+Filed [MIDI map-mode transforms](research/midi-transforms-native.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/` (27 dossiers, n7-0001 to n7-0004).
+Static only; every material branch was checked in disassembly. Traced the native path from
+the user script's mapping call to the parameter value for all ten map modes: absolute scaling,
+14-bit pairing in either order, relative step size (max − min) × d/256, one-step moves for
+quantized parameters, round-half-away-from-zero (the decompiler's truncating cast was wrong),
+the two acceleration tables with three confirmed oddities, on/off thresholds, and the takeover
+arithmetic for None, Pick-Up and Value Scaling. Proposed SPEC-MIDI-USER-MAPPING revision 3
+clauses with cases MT-01 to MT-23; PRB-N7-01 to 05 refine PRB-S4-05. Gaps: takeover preference
+default, prior-table reset trigger, registry gate, the parameter setter, delivery timing.

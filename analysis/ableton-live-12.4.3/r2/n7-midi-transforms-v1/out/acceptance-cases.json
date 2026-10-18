@@ -1,0 +1,511 @@
+{
+ "schema": "n7-acceptance-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 arm64",
+ "note": "static derivations from native disassembly; no reference or candidate run",
+ "cases": [
+  {
+   "id": "MT-01",
+   "title": "Absolute: v/127 of the range, jump (Takeover None)",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode None",
+   "input": [
+    "B0 14 00",
+    "B0 14 40",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    0.0,
+    0.503937,
+    1.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-02",
+   "title": "Absolute14Bit: MSB then LSB",
+   "map_mode": "Absolute14Bit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode None",
+   "input": [
+    "B0 14 64",
+    "B0 34 32"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.78435
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-03",
+   "title": "Absolute14Bit: LSB then MSB",
+   "map_mode": "Absolute14Bit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode None",
+   "input": [
+    "B0 34 32",
+    "B0 14 64"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.78435
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-04",
+   "title": "Absolute14Bit: latest MSB wins; a pair is consumed",
+   "map_mode": "Absolute14Bit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode None",
+   "input": [
+    "B0 14 10",
+    "B0 14 64",
+    "B0 34 32",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5,
+    0.78435,
+    0.78435
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-05",
+   "title": "Absolute14Bit: full scale",
+   "map_mode": "Absolute14Bit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode None",
+   "input": [
+    "B0 14 7F",
+    "B0 34 7F",
+    "B0 14 00",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    1.0,
+    1.0,
+    0.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-06",
+   "title": "LinearSignedBit: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "LinearSignedBit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 01",
+    "B0 14 41",
+    "B0 14 40",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    0.503906,
+    0.5,
+    0.75,
+    0.503906
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-07",
+   "title": "LinearSignedBit2: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "LinearSignedBit2",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 01",
+    "B0 14 41",
+    "B0 14 40"
+   ],
+   "expected_after_each_message": [
+    0.496094,
+    0.5,
+    0.25
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-08",
+   "title": "LinearTwoCompliment: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "LinearTwoCompliment",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 01",
+    "B0 14 7F",
+    "B0 14 41",
+    "B0 14 40"
+   ],
+   "expected_after_each_message": [
+    0.503906,
+    0.5,
+    0.253906,
+    0.503906
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-09",
+   "title": "LinearBinaryOffset: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "LinearBinaryOffset",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 41",
+    "B0 14 3F",
+    "B0 14 40",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.503906,
+    0.5,
+    0.5,
+    0.25
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-10",
+   "title": "AccelSignedBit: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "AccelSignedBit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 01",
+    "B0 14 07",
+    "B0 14 09",
+    "B0 14 0A",
+    "B0 14 41",
+    "B0 14 49",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.503906,
+    0.542969,
+    0.738281,
+    0.816406,
+    0.8125,
+    0.617188,
+    0.695312
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-11",
+   "title": "AccelSignedBit2: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "AccelSignedBit2",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 01",
+    "B0 14 41",
+    "B0 14 07",
+    "B0 14 47",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.496094,
+    0.5,
+    0.421875,
+    0.5,
+    0.304688
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-12",
+   "title": "AccelTwoCompliment: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "AccelTwoCompliment",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 01",
+    "B0 14 7F",
+    "B0 14 08",
+    "B0 14 41",
+    "B0 14 42",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.503906,
+    0.5,
+    0.695312,
+    0.890625,
+    0.695312,
+    0.890625
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-13",
+   "title": "AccelBinaryOffset: per-message steps of (max-min)/256 x decoded delta",
+   "map_mode": "AccelBinaryOffset",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 41",
+    "B0 14 3F",
+    "B0 14 46",
+    "B0 14 39",
+    "B0 14 40"
+   ],
+   "expected_after_each_message": [
+    0.503906,
+    0.5,
+    0.53125,
+    0.453125,
+    0.648438
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-14",
+   "title": "Relative clamp at max and min",
+   "map_mode": "LinearBinaryOffset",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; any Takeover Mode",
+   "input": [
+    "B0 14 7F",
+    "B0 14 7F",
+    "B0 14 7F",
+    "B0 14 00",
+    "B0 14 00",
+    "B0 14 00",
+    "B0 14 00",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.746094,
+    0.992188,
+    1.0,
+    0.75,
+    0.5,
+    0.25,
+    0.0,
+    0.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-15",
+   "title": "Quantized absolute: round half away from zero",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "quantized parameter (is_quantized true), min 0, max 3, value 1; Takeover Mode None; no prior CC 20",
+   "input": [
+    "B0 14 15",
+    "B0 14 16",
+    "B0 14 3F",
+    "B0 14 40",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    0.0,
+    1.0,
+    1.0,
+    2.0,
+    3.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-16",
+   "title": "Quantized relative: one step per message, sign only",
+   "map_mode": "LinearSignedBit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "quantized parameter (is_quantized true), min 0, max 3, value 1; Takeover Mode None; no prior CC 20",
+   "input": [
+    "B0 14 05",
+    "B0 14 01",
+    "B0 14 41",
+    "B0 14 46",
+    "B0 14 46",
+    "B0 14 46"
+   ],
+   "expected_after_each_message": [
+    2.0,
+    3.0,
+    2.0,
+    1.0,
+    0.0,
+    0.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-17",
+   "title": "On/off absolute: on inside the threshold interval",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "on/off parameter with MidiCCOnOffThresholds Min 64 Max 127, value off (0)",
+   "input": [
+    "B0 14 3F",
+    "B0 14 40",
+    "B0 14 7F",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.0,
+    1.0,
+    1.0,
+    0.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-18",
+   "title": "On/off relative: on for a positive delta, off otherwise",
+   "map_mode": "LinearSignedBit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "on/off parameter with MidiCCOnOffThresholds Min 64 Max 127, value off (0)",
+   "input": [
+    "B0 14 01",
+    "B0 14 41",
+    "B0 14 03"
+   ],
+   "expected_after_each_message": [
+    1.0,
+    0.0,
+    1.0
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-19",
+   "title": "Takeover Pick-Up: no move until the controller passes the value",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode Pick-Up",
+   "input": [
+    "B0 14 0A",
+    "B0 14 0B",
+    "B0 14 0C",
+    "B0 14 3F",
+    "B0 14 46"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5,
+    0.5,
+    0.496063,
+    0.551181
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-20",
+   "title": "Takeover Value Scaling: proportional approach",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode Value Scaling",
+   "input": [
+    "B0 14 0A",
+    "B0 14 14",
+    "B0 14 1E"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.542735,
+    0.58547
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-21",
+   "title": "Takeover enabled: first message with unknown prior leaves the value",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode Pick-Up",
+   "input": [
+    "B0 14 64"
+   ],
+   "expected_after_each_message": [
+    0.5
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-22",
+   "title": "Avoid-takeover control (crossfader): jumps despite Pick-Up",
+   "map_mode": "Absolute",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "crossfader-like mapping with takeover disabled by the script; continuous parameter min 0.0 max 1.0 value 0.5; Takeover Mode Pick-Up",
+   "input": [
+    "B0 14 0A",
+    "B0 14 64"
+   ],
+   "expected_after_each_message": [
+    0.07874,
+    0.787402
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  },
+  {
+   "id": "MT-23",
+   "title": "Relative modes ignore takeover",
+   "map_mode": "LinearSignedBit",
+   "controller": 20,
+   "channel": 0,
+   "preconditions": "continuous parameter, is_quantized false, min 0.0, max 1.0, value 0.5; no CC 20/52 received on this input since it was opened; Takeover Mode Pick-Up",
+   "input": [
+    "B0 14 01"
+   ],
+   "expected_after_each_message": [
+    0.503906
+   ],
+   "tolerance": 1e-06,
+   "provenance": "static derivation (N7); unexecuted"
+  }
+ ]
+}

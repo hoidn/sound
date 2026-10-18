@@ -141,6 +141,10 @@ no experimental contradiction has been established yet.
   mute-feedback default and feedback eligibility. Transforms, feedback bytes and
   timing remain PRB-S4-05/06/07/13; bank contents need `_Generic/Devices` traced
   before PRB-S4-09.
+- Progress 2026-10-17 (N7): native transforms traced statically for all ten modes, 14-bit
+  pairing, step sizes, clamping and takeover arithmetic ([native transforms](research/midi-transforms-native.md)).
+  Open: takeover preference default and labels, the on/off threshold gate, ordering and
+  deferral timing (PRB-N7-01 to 05); feedback bytes and seek and nudge timing are unchanged.
 
 ## Q-010 MIDI discovery, lifecycle and interaction
 
