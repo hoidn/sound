@@ -234,12 +234,13 @@ not recovered original names.
 flowchart LR
     A[Shared helper 0x101a4abd8] -->|BL at 0x101a4ac24| B[Append eight bytes 0x101a9c600]
     A -->|Three BL instructions| C[Append one byte 0x101a9c504]
-    A -.->|BLR at 0x101a4ac58| D[Unresolved indirect operation]
+    A -->|BLR at 0x101a4ac58, vtable slot 0x10| D[OSendThreadMessage::Finish 0x101ab7898]
+    D -.->|queued OSetPlayingCommand| E[Handler 0x101a524b8 then 0x101a4ac8c]
 ```
 
 The helper builds a local structure and passes its address to the indirect
-operation. Record assembly is supported; queuing, dispatch, ownership and the
-external meaning of its values remain unknown. This is a local code map, not
+operation. Record assembly is supported. Dispatch is resolved on the
+[transitions page](transport-transitions-native.md); queue ordering remains unknown. This is a local code map, not
 a recovered application-wide command architecture. Default-profile pseudocode
 also preserves warnings at Stop's two computed transfers; the earlier selected
 failure remains valid. The linked study owns the exact evidence and limits.

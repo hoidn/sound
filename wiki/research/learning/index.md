@@ -27,6 +27,7 @@ learned about relationships in its code.
 | [Why a decompiled variable looks uninitialized](walkthroughs/incoming-registers.md) | Recognize an incoming register, check branch instructions and notice hidden outgoing arguments | Seven instructions from one arm64 entry; callers, prototypes and feature meaning unresolved |
 | [Why code archives and analysis databases differ](walkthroughs/artifact-storage-and-recovery.md) | Disk allocation, exact archives, evidence/commit boundaries, cancellation and fixture limits | Mirror and reader delivered; actual target import/save passes, reopening capacity-blocked |
 | [Learning from a transport export failure](walkthroughs/transport-wrapper-boundary.md) | Read a retained branch when a selected body fails acceptance; separate batch completion from successful decompilation | Two wrapper branch targets, with handler semantics and playback effects unresolved |
+| [Resolving an indirect call](walkthroughs/transport-dispatch.md) | Resolve a `blr` through constructor-stored vtables and RTTI; name functions from a donor build; find a message consumer through its registration | Static; donor names are inferred matches; runtime timing unresolved |
 
 The native lesson uses actual main-image code; the bytecode companion remains a
 separate kind of evidence. To inspect current code immediately, use the [artifact catalog](../artifacts/index.md),

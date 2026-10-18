@@ -1,0 +1,33 @@
+engine_name	engine_x86_64_entry	live_arm64_entry	evidence	confidence
+OSendThreadMessage::OSendThreadMessage(OMessage::TId const&, AThreadManager::TId, AThreadManager::TId, TProcessMethod)	0x110d30	0x101ab7348	Same field writes (+8=0, +0x10 from, +0x14 to, +0x18=-1, +0x1c method), queue-pool create, STypeId fallback to a static dummy; stores vtable 0x106756188 whose RTTI name is 18OSendThreadMessage (binary-reads.json)	high
+OSendThreadMessage vtable (slots D1, D0, Finish)	0x175b408	0x106756178	RTTI name 18OSendThreadMessage at typeinfo 0x1067562d8; slot words 0x101ab786c, 0x101ab787c, 0x101ab7898 (binary-reads.json); engine vtables.jsonl slots ~OSendThreadMessage, ~OSendThreadMessage, Finish	high
+OSendThreadMessage::Finish()	0x111350	0x101ab7898	Third vtable slot (+0x10 from address point); skips the static dummy, then pool Finish and SendThisMessage(msg, from, to, -1), then clears +8	high
+OSendThreadMessage::~OSendThreadMessage() (D1)	0x111310	0x101ab786c	First vtable slot; rewrites vtable pointer only; called after every send	high
+OEngine::SendRequestForSetPlaying(AThreadManager::TId, bool, bool, bool)	0x9fbf0	0x101a4abd8	Descriptor 0x106f55ea8 initialised to {-1, "OSetPlayingCommand"} in 0x101a8effc; appends this (8 bytes) and three bools; to-thread 0x10100; only code user of the descriptor	high
+OEngineController::SRegisterMessagesO()	0xa6110	0x101a50bd4	Registers the same message names in the same order with the same members (OSetPlayingCommand: Engine, Playing, ByUser, AllowCountIn)	high
+static message-descriptor initialiser (unnamed)	0xe68d0	0x101a8effc	Same {-1, name} sequence (OSetLoopOnCommand ... OSetPlayingCommand, OSetPlaySelectionCommand, OEngine.ScheduleBeatTimeJump ... RootUnit.NotifyPlaying)	high
+OEngineController::SOnSetPlayingCommand(OThreadMessage&)	0xa7a30	0x101a524b8	Registered handler for OSetPlayingCommand; reads pointer and three bools; calls 0x101a4ac8c	high
+OEngine::RequestForSetPlaying(bool, bool, bool)	0x9fc90	0x101a4ac8c	Same offsets (+0x8e0/+0x8e1 flags, +0x9b0 deferred-play object, +0x30 domain manager), same play/stop callback-or-default test, same counter reset; disassembly n3-0002	high
+OEngine::SetPlaying(bool, bool)	0x9fdc0	0x101a4adec	Same structure: +0x9b0 slot 0x10, domain-manager SetPlaying, stop counter with 3500 ms window (cmp #0xdad) and count 3, three panic callbacks or two all-notes-off callbacks; disassembly n3-0002	high
+OEngineDomainManager::SetPlaying(bool)	0x9ff20	0x101a4af58	Compares byte +0x60; sends descriptor 0x106f56018 (RootUnit.NotifyPlaying) from 0x10100 to 0x100500; loops domains	high
+OEngineDomain::SetPlaying(bool)	0xa9920	0x101a54364	Only call position inside the domain loop of 0x101a4af58; body not inspected	low
+OEngine::ExternSyncOn() const	0x9ce70	0x101a48488	One-byte getter at the same offset 0x960 on the pointer returned by 0x102336410; no string evidence	medium
+OEngine::IsCountInRunning() const	0x9fbb0	0x101a4abac	One-byte getter at the same offset 0x9b8; sits immediately before the SendRequestForSetPlaying match, as in the engine	medium
+OEngine::CurrentCountInPosition() const	0x9fbc0	0x101a4abb4	Address between the two matches above; used where the engine's OBeatTimeForwarderEvent uses CurrentCountInPosition	medium
+OEngine::SEngine()	(engine call target)	0x101a45218	Call position in the StatusChanged/Process matches	medium
+OEngine::SendRequestForSetBeatTime(AThreadManager::TId, double)	0xa0160	0x101a4b1d0	Builds TTimeSignatureChange from 0x8000000080000000 and DBL_MAX, then calls the ScheduleBeatTimeJump sender with jump 0, 0, false	high
+OEngine::SendRequestForScheduleBeatTimeJump(TId, double, TBeatTimeJump, int, TTimeSignatureChange const&, bool)	0xa0710	0x101a4b74c	Descriptor 0x106f55ec8 = OEngine.ScheduleBeatTimeJump; same member order	high
+OEngine::SendSetStartBeatTime(TStartBeatTime)	0xa1310	0x101a4c38c	Descriptor 0x106f55ef8 (OSetStartBeatTimeCommand position in the initialiser); sends two doubles and two bools	high
+OEngine::TStartBeatTime::TStartBeatTime(double, double, bool, bool)	0xa1180	0x101a4c224	Identical field writes (+0, +8, +0x10, +0x11)	high
+OEngine::TStartBeatTime::DownbeatForPlayingVisibleSessionIfNotLocator() const	0xa1260	0x101a4c2dc	Identical selection logic on +0x10/+0x11	high
+OEngine::SendRequestForSetLoopOn(bool)	0x9f390	0x101a4a3b4	Descriptor 0x106f55e68 = OSetLoopOnCommand; current-thread id; appends pointer and one bool	high
+OEngineController::SOnSetLoopOnCommand(OThreadMessage&)	0xa7840	0x101a522c8	Registered handler for OSetLoopOnCommand; same loop-callback test; calls 0x101a4a4d4	high
+OEngineDomainManager::SetLoopOn(bool)	0x9f4c0	0x101a4a4d4	Compares byte +0x61; per-domain scheduler SetLoop with +0x68/+0x70; play-selection verify on change	high
+OScheduler::SetLoop(bool, double, double)	0x10cb20	0x101ab3594	Call position in 0x101a4a4d4 only	low
+TransportEngineStateChanged sender (unnamed)	0x91b90	0x101a3d6d8	Descriptor 0x106f55d00 = TransportEngineStateChanged; audio thread to 0x100500; same member order (unit, playing, beat, count-in, two bools, stamp)	high
+OBeatTimeForwarderEvent::StatusChanged()	0x91af0	0x101a3d638	Compares current/last scheduler status (+0x68 playing, +0x70 beat); sends with (beat changed, IsAtSongLoopJump)	high
+OBeatTimeForwarderEvent::Process()	0x91c80	0x101a3d7d0	Periodic resend when beat or count-in position changed; reschedules itself	high
+OMessage operator<< (TAddrBase) / operator<< (bool)	0xf4d00 / 0xf4bc0	0x101a9c600 / 0x101a9c504	Append helpers used in the same positions; 16-bit cursor at +2 (default-transport-packet-v1 description)	medium
+OMessage operator>> (TAddrBase) / operator>> (bool) / operator>> (int)	0xf51d0 / 0xf5090 / 0xf50d0	0x101a9caac / 0x101a9c98c / 0x101a9c9cc	Read helpers in the handler positions; cursor at +2	medium
+OQueuePool::SQueuePool / CreateMessage / SendThisMessage	(engine call targets)	0x101aae14c / 0x101aac7cc / 0x101aaca84	Call positions in the constructor and Finish matches	medium
+ORegisterThreadMessage::ORegisterThreadMessage / DefineMember	(engine call targets)	0x101aaf0e8 / 0x101aaeffc	Call positions in the registration functions	medium

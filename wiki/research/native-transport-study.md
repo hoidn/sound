@@ -371,6 +371,7 @@ notes stay in the analyst workspace; only reviewed external contracts cross the
 | Native reader/writer and handler tracing | Four follow-up destinations inspected: three exports and one computed-transfer failure; shared guarded transport call identified; field/action connections remain unresolved |
 | Fixture byte retention and mutations | Complete for 12 P1-A–D inputs; both original resources match prior hashes; XML syntax/gzip round trips checked; reference acceptance unknown |
 | Native walkthroughs, evidence review and contracts | Two native lessons reader-reviewed; behavioral contracts unresolved |
+| Shared helper and Stop transfers | Resolved statically in [transport transitions](transport-transitions-native.md); runtime timing escalated |
 | Reference comparison | Unknown; no candidate or comparison run |
 
 The [independent preparation review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/behavior-preparation/independent-review-v1.json)
@@ -441,3 +442,11 @@ The [independent semantic review](../../analysis/ableton-live-12.4.3/native-live
 verified the packet's source/profile identities, instruction excerpts and linked
 lesson/atlas wording. It supports these static findings only; no external
 Start/Stop behavior or LoopOn default was established.
+
+## Shared helper resolved (S3, 2026-10-17)
+
+The [transitions page](transport-transitions-native.md) resolves the indirect
+operation (`OSendThreadMessage::Finish`) and both Stop computed transfers (slot
+`0x248` on `mpIsTempoFollowerInControl` and `mpCurrentTime`). T1-A to F map to
+its table rows T-01 to T-13; outcomes are static derivations or unknown, with a
+runtime escalation record.

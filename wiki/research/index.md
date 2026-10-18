@@ -19,6 +19,7 @@ to the isolated implementation workspace.
 | [Compact artifacts and continuation](native-compact-storage.md) | Exact compressed archives, current offline reader, interaction repair and durable-analysis tasks |
 | [Native analysis recovery design](native-analysis-recovery.md) | Persistent checkpoint tooling, reviewed proofs, resource gates, disk inventory and target recovery status |
 | [Native transport study](native-transport-study.md) | Loop-enable persistence and Start/Stop investigation design, exact seeds and case boundaries |
+| [Transport transitions (native)](transport-transitions-native.md) | S3: Start/Stop dispatch resolved (OSetPlayingCommand to the engine, reflected by TransportEngineStateChanged), engine-donor symbol matches, static transition table T-01 to T-13, ADR 0002 escalation record |
 | [Linker function-start index design](function-starts-design.md) | Bounded Mach-O metadata navigation, distinct from analyzer-discovered functions |
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |
 | [Native export task plan](native-export-execution.md) | Implementation tasks and tool-validation state |

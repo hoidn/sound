@@ -1340,3 +1340,18 @@ route, requirements browser and corpus browsers, and corrects three stale claims
 the current release is midi-config-v2, there is a public `origin`, and `analysis/`
 tracks decompiled code. Lint: links and anchors on edited pages resolve, the 67
 generated-page links resolve, and `git diff --check` is clean.
+
+## [2026-10-17] query | Transport transitions, native (S3, N3)
+
+Filed [transport transitions](research/transport-transitions-native.md) and the
+[dispatch lesson](research/learning/walkthroughs/transport-dispatch.md). The indirect
+call at `0x101a4ac58` is `OSendThreadMessage::Finish` (`0x101ab7898`; RTTI-named vtable
+`0x106756188`), queuing `OSetPlayingCommand` to handler `0x101a524b8`. Start and Stop
+post requests; the interface mirrors engine reports through
+`TransportEngineStateChanged`. Static transition table T-01 to T-13; 31 engine-donor
+symbol matches (26 high confidence). Updated the atlas edge, transport study,
+learning index and FEAT-TRANSPORT in the same change. Evidence:
+`analysis/ableton-live-12.4.3/r2/n3-transitions-v1/`. Gaps: position after Stop,
+report timing, control-to-entry routing, undo; runtime escalation record filed.
+Each `str:` dossier query took about 4 to 6 minutes on Live; the strings index is
+the faster route.
