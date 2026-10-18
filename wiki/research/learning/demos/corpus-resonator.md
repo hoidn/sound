@@ -113,10 +113,12 @@ The page describes each mapping beside its control. The excitation is mono.
 ## Stand-in versus traced
 
 The [Corpus DSP trace](../../corpus-dsp-static.md) now describes what the device
-computes. A port of it runs in a second, local-only page,
-`~/Documents/sound-local/corpus-faithful/index.html`, outside this repository
-because the code is derived from third-party DSP. Comparing the two pages is the
-lesson: which textbook guesses held, and which didn't.
+computes. A port of it runs in a second page, the
+[traced-engine demo](../../../../analysis/ableton-live-12.4.3/demos/corpus-traced/index.html).
+That page is derived from recovered third-party code; it was published by the
+user's decision on 2026-10-17 and must never seed the reimplementation.
+Comparing the two pages is the lesson: which textbook guesses held, and which
+didn't.
 
 | Topic | Textbook stand-in (this page) | Traced device |
 | --- | --- | --- |

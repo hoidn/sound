@@ -1405,3 +1405,17 @@ self-test puts String at 261.5 Hz, and it uses at most 9% of one core. The
 stand-in-versus-traced comparison. Gaps: Live-side value conversion (N5),
 inferred Live names for three host indices, and no runtime comparison.
 Lint: links and anchors on edited pages resolve; `git diff --check` clean.
+
+## [2026-10-17] maintenance | Traced Corpus demo published in the repository
+
+By the user's direction, the built traced-engine page now lives at
+`analysis/ableton-live-12.4.3/demos/corpus-traced/index.html` and is committed
+and pushed to the public origin. It embeds the JavaScript port of Corpus's
+decompiled signal chain. This reverses the earlier choice to keep the port out of
+the repository. The page banner, [Corpus DSP page](research/corpus-dsp-static.md),
+[Corpus demo](research/learning/demos/corpus-resonator.md) and
+[learning index](research/learning/index.md) now say so. The page is labelled as
+derived from recovered code, never to seed the reimplementation. Its sources
+(engine, tests, build script) stay in `~/Documents/sound-local/corpus-faithful/`.
+Checks before commit: 8 Node tests pass; the repository copy passes its headless
+Chromium self-test (String peak at 261.5 Hz through an AudioWorklet).

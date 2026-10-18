@@ -221,10 +221,13 @@ untraced Live-side conversion, it says so.
 
 ## Port checks
 
-A JavaScript port of this chain was written from the reports. It is kept
-outside the repository, in `~/Documents/sound-local/corpus-faithful/`, because
-it is code derived from third-party DSP and this repository has a public
-remote. Its checks:
+A JavaScript port of this chain was written from the reports. Its built page
+is the [traced-engine demo](../../analysis/ableton-live-12.4.3/demos/corpus-traced/index.html),
+published here by the user's decision on 2026-10-17. The page embeds the
+engine. Its sources (engine, Node tests, build script) remain in
+`~/Documents/sound-local/corpus-faithful/`. The code is derived from
+third-party DSP and must never seed the independent reimplementation. Its
+checks:
 - **Node tests (8 passing):**
   - the 2^x approximation;
   - all four mode tables against the traced ratios;

@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">
+<title>Corpus · traced engine (local)</title>
+<style>
+:root{color-scheme:light;--ink:#182d3b;--muted:#425c6c;--line:#c9d6df;--accent:#075d85;--paper:#fff;--wash:#edf3f6}
+*{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
+main{max-width:1240px;margin:auto;padding:28px 24px 64px}a{color:var(--accent);text-underline-offset:.17em}
+a:hover{text-decoration-thickness:2px}h1{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.18;margin:.5em 0}h2{font-size:1.4rem}h3{font-size:1.1rem}
+.eyebrow{text-transform:uppercase;font-size:.78rem;letter-spacing:.09em;color:var(--muted)}.lead{max-width:85ch;color:var(--muted)}
+nav{display:flex;flex-wrap:wrap;gap:12px 24px;margin:22px 0}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card,section{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px;margin:20px 0}.card{margin:0}
+.card h2{margin-top:8px}.badge{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:2px 7px;font-size:.78rem;background:var(--wash)}
+.notice{border-left:4px solid #956009;padding:10px 16px;background:#fff6e2}.muted,small{color:var(--muted)}
+code{font-family:ui-monospace,monospace;font-size:.88em;overflow-wrap:anywhere}.controls{display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin:16px 0}
+label{display:block;font-weight:600}input,select,button{font:inherit;border:1px solid #7a909d;border-radius:5px;padding:9px;background:white;color:var(--ink);max-width:100%}
+input{width:340px}button{cursor:pointer}button:hover{background:var(--wash)}:focus-visible{outline:3px solid #ad6100;outline-offset:3px}
+.table-wrap{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:.9rem;text-align:left}caption{text-align:left;padding:10px 0;color:var(--muted)}
+th,td{border-bottom:1px solid var(--line);padding:11px 10px;vertical-align:top}th{background:var(--wash)}.group th{background:#dce8ee;padding:9px 10px}.path{min-width:320px;max-width:530px;overflow-wrap:anywhere}.size{white-space:nowrap}.hash{max-width:150px;font-size:.78rem}.flag{color:#83500a;font-weight:600}
+#count{font-weight:600}#empty{padding:20px;background:var(--wash)}.modules{columns:2;column-gap:32px}.modules li{break-inside:avoid;margin:6px 0;overflow-wrap:anywhere}
+summary{cursor:pointer;font-weight:600;padding:5px 0}.provenance td{overflow-wrap:anywhere}.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:8px;background:white;padding:10px;z-index:1}
+[hidden]{display:none!important}@media(max-width:780px){main{padding:18px 14px 40px}.cards{grid-template-columns:1fr}.modules{columns:1}.controls{display:block}.controls>div,button{margin:10px 0}input,select{width:100%}section,.card{padding:16px}}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.param{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper)}
+.param input[type=range]{width:100%;padding:0}.param .row{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.param .val{font-variant-numeric:tabular-nums;font-weight:600}.param p{margin:4px 0 0;font-size:.82rem;color:var(--muted)}
+.b-tr{background:#e3f1e6;border-color:#9cc8a6}.b-as{background:#fff1d6;border-color:#e0bf7a}.b-not{background:#eee;border-color:#bbb}
+canvas{width:100%;height:190px;background:#0f2230;border-radius:8px;display:block}
+.buttons{display:flex;flex-wrap:wrap;gap:10px;align-items:center}fieldset{border:1px solid var(--line);border-radius:8px;padding:8px 12px 12px}
+legend{font-weight:700;padding:0 6px}.keys button{min-width:42px}</style></head>
+<body><main>
+<header><div class="eyebrow">Analyst workspace · Learning demo · Derived from decompiled Corpus code</div>
+<h1>Corpus: the traced engine</h1>
+<p class="lead">This page runs a JavaScript port of Corpus's signal chain as traced from the device's decompiled code: the dry/wet panpot, gain, band filter, two linked resonators (five modal body types and two waveguides), stereo width, LFO and pitch hub. Controls and presets are Live 12.4.3's own. How Live converts its stored values before calling the device is not traced yet; this page assumes they pass through unchanged, except where a control says otherwise.</p>
+<p class="notice">Analyst learning material, published by the user's decision on 2026-10-17. Not compared with Corpus's actual output (Live cannot run on this host). It is derived from recovered code and must never seed the independent reimplementation.</p></header>
+
+<section id="play"><h2>Play</h2>
+<div class="buttons"><button id="hit" type="button">Hit (click)</button><button id="noise" type="button">Noise burst</button>
+<button id="loop" type="button" aria-pressed="false">Drum loop: off</button><label class="buttons" style="font-weight:600">Audio file <input id="file" type="file" accept="audio/*"></label>
+<button id="mic" type="button" aria-pressed="false">Microphone: off</button>
+<label for="volume">Volume</label><input id="volume" type="range" min="0" max="1" step="0.01" value="0.5" style="width:140px">
+<label for="preset">Preset</label><select id="preset"></select></div>
+<p class="buttons keys" aria-label="MIDI keyboard for MidiPitch and MidiGate">MIDI notes (used when MidiPitch or MidiGate is on):</p>
+<p id="status" role="status" aria-live="polite" class="muted">Press a source to start audio.</p>
+<h3>Resonator modes</h3><canvas id="modes" width="1200" height="190" aria-label="Active modes of the left and right resonators"></canvas>
+<p class="muted">Bars: each active mode's frequency (log scale) and its pickup weight for the left (blue) and right (orange) resonator, as the engine reports them. Waveguide types (Pipe, Tube) have no discrete mode list.</p>
+<h3>Output spectrum</h3><canvas id="spectrum" width="1200" height="190" aria-label="Live output spectrum"></canvas></section>
+
+<section id="controls"><h2>Controls</h2><p><span class="badge b-tr">traced</span> the device-side path for this parameter is read from the decompiled code. <span class="badge b-as">Live-side assumed</span> also needs a guessed conversion inside Live. <span class="badge b-not">not sent</span> never reaches the device.</p>
+<div id="groups"></div></section>
+<section id="evidence"><h2>Where this comes from</h2><div id="evidence-body"></div><pre id="selftest-result" hidden></pre></section>
+</main>
+<script>// Derived from decompiled code of Live 12.4.3's bundled Corpus device (ab_resonator and its signal
+// chain). Analyst learning material, published by the user's decision 2026-10-17; never seed the
+// independent reimplementation. Spec notes: report-resonator.md / report-chain.md (scratchpad).
+'use strict';
+
+const LN2 = Math.LN2;
+// Engine's 2^x approximation (cubic in the fractional part), used throughout the resonator.
+function pow2(x) {
+  const n = Math.floor(x), t = (x - n) * LN2;
+  return (1 + t + t * t * (0.5 + 0.200064 * t)) * 2 ** n;
+}
+const W0 = 1643.807;            // 2*pi*261.62 rad/s
+const MODES = [4, 16, 30, 70];  // quality 0..3; >= 4 gives 30
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+// Controller (0..127, integer for the resonator) -> value curves.
+const curve = {
+  lin: (c, lo, hi) => lo + (c === 64 ? 0.5 : c / 127) * (hi - lo),
+  exp: (c, lo, hi) => lo * (hi / lo) ** (c / 127),
+  cubic: (c, lo, hi) => lo + (c === 64 ? 0.125 : (c / 127) ** 3) * (hi - lo),
+};
+
+// ---------------------------------------------------------------- mode tables
+function modeTable(type, N, ratio) {
+  if (type === 4 || type === 5) {                       // membrane / plate: 2-D grid
+    const R = ratio, fix = (a) => { let x = Math.floor(Math.sqrt(a)); if ((x + 1) ** 2 === a) x++; return x; };
+    const Mx = fix(R * N), My = fix(N / R), list = [];
+    for (let m = 1; m <= Mx + 1; m++) for (let n = 1; n <= My + 1; n++) {
+      const r = type === 4 ? Math.sqrt(m * m + (R * n) ** 2) / Math.sqrt(1 + R * R) : (m * m + (R * n) ** 2) / (1 + R * R);
+      list.push({r, m, n});
+    }
+    list.sort((a, b) => a.r - b.r);                     // stable in JS, like the engine's bubble sort
+    const G = Math.floor(Math.sqrt(N)) + 3;
+    return {dims: 2, G, modes: list.slice(0, N)};
+  }
+  const G = N + 2, modes = [];
+  for (let k = 0; k < N; k++) {
+    let r;
+    if (type === 1) { const b = k < 3 ? [4.730, 7.853, 10.996][k] : (k + 1.5) * Math.PI; r = (b / 4.730) ** 2; }
+    else if (type === 2) { const b = k < 5 ? [4.730, 9.413, 15.450, 20.710, 24.580][k] : (1.4142 * k + 2.1213) * Math.PI; r = (b / 4.730) ** 2; }
+    else r = k + 1;                                     // string (internal 0 and 3)
+    const T = new Float64Array(G);
+    for (let j = 0; j < G; j++) T[j] = Math.sin(Math.PI * (k + 1) * j / (N + 1));
+    modes.push({r, T});
+  }
+  return {dims: 1, G, modes};
+}
+function shape1(T, G, x) { const q = x * (G - 1), i = Math.min(G - 2, Math.floor(q)), f = q - i; return 0.5 * (T[i] + f * (T[i + 1] - T[i])); }
+function shape2(mode, G, x, y) {
+  const s = (k, u) => Math.sin(Math.PI * k * u / (G - 1));
+  const qx = x * (G - 1), qy = y * (G - 1), i = Math.min(G - 2, Math.floor(qx)), j = Math.min(G - 2, Math.floor(qy)), fx = qx - i, fy = qy - j;
+  const v = (a, b) => s(mode.m, a) * s(mode.n, b);
+  return 0.5 * ((1 - fy) * ((1 - fx) * v(i, j) + fx * v(i + 1, j)) + fy * ((1 - fx) * v(i, j + 1) + fx * v(i + 1, j + 1)));
+}
+
+// ---------------------------------------------------------------- ab_resonator (one channel, mono pickup)
+class Resonator {
+  constructor(fs) {
+    this.fs = fs;
+    this.c = {decay: 64, tone: 64, inharm: 64, ratio: 64, radius: 64, ampFreq: 64, exci: 64, listen: 64, decayMuted: 64, opening: 127, bleed: 0};
+    this.type = 1; this.quality = 2; this.pipeLatched = true;
+    this.dl1 = new Float32Array(2048); this.dl2 = new Float32Array(2048); this.w1i = 0; this.w2i = 0;
+    this.applyAll(); this.rebuild(true);
+  }
+  set(name, controller) {                              // resonator truncates every value to an integer controller
+    const c = clamp(Math.trunc(controller), 0, 127);
+    if (name === 'type') { this.type = controller; this.rebuild(true); return; }
+    if (name === 'quality') { this.quality = controller; this.rebuildPending = true; return; }
+    this.c[name] = c; this.applyAll();
+    if (name === 'ratio') this.rebuildPending = true;
+    if (name === 'exci') this.exciDirty = true;
+    if (name === 'listen') this.startRamp();
+    this.coefDirty = true; this.wgDirty = true;
+  }
+  applyAll() {
+    const c = this.c;
+    this.decay = curve.exp(c.decay, 0.05, 35); this.tone = curve.lin(c.tone, -1, 1); this.inharm = curve.lin(c.inharm, -1, 1);
+    this.ratio = curve.exp(c.ratio, 1, 20); this.radius = curve.exp(c.radius, 0.005, 0.4); this.opening = curve.lin(c.opening, 0.005, 1);
+    this.ampFreq = curve.lin(c.ampFreq, -1, 1); this.exciX = curve.lin(c.exci, 0.05, 0.95); this.listenTarget = curve.lin(c.listen, 0.01, 0.99);
+    this.decayMuted = curve.cubic(c.decayMuted, 0, 1); this.ampHp = curve.exp(c.bleed, 0.01, 1);
+    this.amp = curve.exp(64, 0.25, 4);                  // forced controller 64 -> 1.01098
+    if (this.listen === undefined) this.listen = this.listenTarget;
+    this.reflection();
+  }
+  startRamp() { this.rampFrom = this.listen; this.rampStepN = 0; }
+  rebuild(reset) {
+    const N = MODES[this.quality] ?? 30;
+    if (this.type === 6 || this.type === 7) { this.pipe = this.type === 7; this.pipeLatched = this.pipe; this.reflection(); this.wgDirty = true; }
+    else {
+      this.table = modeTable(this.type, N, this.ratio);
+      const n = this.table.modes.length;
+      if (reset || !this.y1 || this.y1.length !== n) { this.y1 = new Float64Array(n); this.y2 = new Float64Array(n); this.Wold = new Float64Array(n); this.activeN = 0; }
+      this.a1 = new Float64Array(n); this.a2 = new Float64Array(n); this.g = new Float64Array(n);
+      this.exc = new Float64Array(n); this.pick = new Float64Array(n);
+      this.listen = this.listenTarget; this.rampStepN = 200;  // rebuilds snap the pickup ramp
+    }
+    if (reset) { this.dl1.fill(0); this.dl2.fill(0); this.h1 = this.h2 = 0; this.cnt200 = 200; this.cnt20 = 0; this.cnt10 = 0; this.first = true; }
+    this.rebuildPending = false; this.coefDirty = this.exciDirty = true; this.pPrev = NaN;
+  }
+  shapeAt(k, x) {
+    const t = this.table;
+    return t.dims === 1 ? shape1(t.modes[k].T, t.G, x) : shape2(t.modes[k], t.G, x, 0.44375);
+  }
+  coefs(p, gateLo) {
+    const fs = this.fs, n = this.table.modes.length, inh = clamp(this.inharm ** 3, -1, 1);
+    const denom = gateLo ? 0.05 + (this.decay - 0.05) * this.decayMuted : this.decay;
+    let active = n; this.bleedOn = true; let last = null;
+    for (let k = 0; k < n; k++) {
+      const r = this.table.modes[k].r, L = Math.log2(r);
+      const w = pow2(p) * W0 * r * pow2(inh * L);
+      if (w >= fs * 2.6179938) { active = k; this.bleedOn = false; break; }
+      if (k < this.activeN && this.Wold[k] > 0) { const s = this.Wold[k] / w; this.y2[k] += this.y1[k] * s - this.y1[k]; this.y1[k] *= s; }
+      else { this.y1[k] = 0; this.y2[k] = 0; }
+      this.Wold[k] = w;
+      const t = this.tone, e = t >= 0 ? (5 - L) * Math.min(t, 1) : -Math.max(t, -1) * L;
+      const d = 8 * pow2(e) / denom, th = w / fs;
+      const alpha = (Math.PI / (Math.PI - th)) * Math.sin(th) * d / w;
+      const tilt = pow2((L - 2) * this.ampFreq);
+      this.g[k] = alpha * this.amp * tilt / (2 * d * (1 + alpha));
+      this.a1[k] = -2 * Math.cos(th) / (1 + alpha); this.a2[k] = (1 - alpha) / (1 + alpha);
+      last = {w, th, d, tilt};
+    }
+    if (this.bleedOn && last) {                          // bleed high-pass from the last mode
+      const {w, th, d, tilt} = last, aH = 32 * (Math.PI / (Math.PI - th)) * Math.sin(th) * d / w;
+      const wasOn = this.bH !== undefined;
+      this.bH = ((1 + Math.cos(th)) / 2) * this.amp * tilt / ((1 + aH) * w);
+      this.a1H = -2 * Math.cos(th) / (1 + aH); this.a2H = (1 - aH) / (1 + aH);
+      if (!wasOn) this.h1 = this.h2 = 0;
+    } else this.bH = undefined;
+    this.activeN = active; this.coefDirty = false;
+  }
+  excitation() {
+    const x = clamp(clamp(this.exciX, 0, 1), 0.02, 0.98);
+    for (let k = 0; k < this.table.modes.length; k++) this.exc[k] = this.shapeAt(k, x);
+    this.exciDirty = false;
+  }
+  pickups() { for (let k = 0; k < this.table.modes.length; k++) this.pick[k] = this.shapeAt(k, this.listen); }
+  rampStep() {
+    if (this.rampStepN < 200) { this.rampStepN++; this.listen = this.rampFrom + (this.listenTarget - this.rampFrom) * this.rampStepN / 200; }
+  }
+  // in: excitation samples; pitch: octaves relative to 261.62 Hz (in3); gate: in1. Returns output samples.
+  process(input, pitch, gate, out) {
+    if (this.type === 6 || this.type === 7) return this.processWaveguide(input, pitch, gate, out);
+    const n0 = input.length, p = clamp(pitch, -5, 67 / 12), gateLo = gate <= 0.1;
+    for (let i = 0; i < n0; i++) {
+      const rising = this.first; this.first = false;
+      const tick = this.cnt200 < 1 || rising;
+      if (this.rebuildPending && tick) { this.rebuild(false); }
+      if (gateLo !== this.prevGateLo || (tick && (!(Math.abs(p - this.pPrev) <= 0.00083) || this.coefDirty))) { this.coefs(p, gateLo); this.pPrev = p; }
+      this.prevGateLo = gateLo;
+      if (rising || (this.cnt200 < 1 && this.exciDirty)) this.excitation();
+      this.cnt200 = this.cnt200 > 0 ? this.cnt200 - 1 : 199;
+      if (this.cnt20 < 1) { this.rampStep(); this.pickups(); this.cnt20 = 20; }
+      this.cnt20--;
+      const x = input[i]; let s = 0;
+      const {a1, a2, g, exc, pick, y1, y2} = this;
+      for (let k = 0; k < this.activeN; k++) {
+        const y = exc[k] * x + 1e-22 - (y1[k] * a1[k] + y2[k] * a2[k]);
+        s += pick[k] * (y - y2[k]) * g[k];
+        y2[k] = y1[k]; y1[k] = y;
+      }
+      if (this.bH !== undefined) {
+        const w = x - (this.a1H * this.h1 + this.a2H * this.h2);
+        s += this.bH * this.ampHp * (w - 2 * this.h1 + this.h2); this.h2 = this.h1; this.h1 = w;
+      }
+      out[i] = 3000 * s;
+    }
+    return out;
+  }
+  reflection() {
+    const fs = this.fs, k = Math.min(344 / (fs * this.radius), 2.8274333), o = this.pipeLatched ? this.opening : 1;
+    const A = (k + o) * o, B = (k - o) * o;
+    this.ra1 = (B - 1) / (A + 1); this.rb0 = (1 - A) / (1 + A); this.rb1 = -(B + 1) / (A + 1);
+    const t = Math.tan(94.24799 / fs); this.hpG = 1 / (1 + t); this.hpA = (t - 1) / (t + 1);
+  }
+  waveguideCoefs(p, gateLo) {
+    const fs = this.fs, Td = gateLo ? 0.05 + this.decayMuted * (this.decay - 0.05) : this.decay;
+    this.loss = Math.exp(-4 / (Td * 261.62 * pow2(p)));
+    this.wgGain = this.amp * pow2(-p);                  // amp_mod 0: pow2((amp_mod-1)*in3)
+    const Lf = fs / (pow2(p) * (this.pipe ? 523.24 : 1046.48)) - 0.75;
+    let D = Math.trunc(Lf), d = Lf - D;
+    if (D < 2 || D > 2046) { D = clamp(D, 2, 2046); d = 0; }
+    this.D = D;
+    this.lc = [ (d-.5)*(d-2.5)*(d-1.5)*(d+.5)/24, -(d-.5)*(d-2.5)*(d-1.5)*(d+1.5)/6, (d-2.5)*(d-1.5)*(d+1.5)*(d+.5)/4,
+                -(d-.5)*(d-2.5)*(d+1.5)*(d+.5)/6, (d-1.5)*(d-.5)*(d+1.5)*(d+.5)/24 ];
+    this.wgDirty = false;
+  }
+  processWaveguide(input, pitch, gate, out) {
+    const p = clamp(pitch, -5, 67 / 12), gateLo = gate <= 0.1, dl1 = this.dl1, dl2 = this.dl2;
+    for (let i = 0; i < input.length; i++) {
+      const rising = this.first; this.first = false;
+      if ((!(Math.abs(p - this.pPrev) <= 0.00083) || this.wgDirty) && (this.cnt10 === 0 || rising)) { this.waveguideCoefs(p, gateLo); this.pPrev = p; }
+      else if (gateLo !== this.prevGateLo && this.loss !== undefined) this.waveguideCoefs(this.pPrev, gateLo);
+      this.prevGateLo = gateLo; this.cnt10 = (this.cnt10 + 1) % 10;
+      const c = this.lc, D = this.D;
+      const tap = (line, w) => c[0] * line[(w - D) & 2047] + c[1] * line[(w - D - 1) & 2047] + c[2] * line[(w - D - 2) & 2047]
+                              + c[3] * line[(w - D - 3) & 2047] + c[4] * line[(w - D - 4) & 2047];
+      const x = input[i], s2 = tap(dl2, this.w2i + 1), w = x - this.hpA * (this.wv1 || 0);  // newest DL2 tap is D samples old
+      this.w1i = (this.w1i + 1) & 2047; dl1[this.w1i] = -0.999 * s2 + this.hpG * (w - (this.wv1 || 0)); this.wv1 = w;
+      const s = tap(dl1, this.w1i);
+      const yR = this.rb0 * s + this.rb1 * (this.sPrev || 0) - this.ra1 * (this.yRPrev || 0); this.sPrev = s; this.yRPrev = yR;
+      const v = this.pipe ? yR : -yR;
+      this.w2i = (this.w2i + 1) & 2047; dl2[this.w2i] = v * this.loss;
+      out[i] = v * this.wgGain;
+    }
+    return out;
+  }
+  modeInfo(pitch) {                                     // for plotting: frequency and pickup weight of each active mode
+    if (!this.table || this.type >= 6) return [];
+    const inh = clamp(this.inharm ** 3, -1, 1);
+    return this.table.modes.slice(0, this.activeN || this.table.modes.length).map((m, k) => ({
+      f: pow2(clamp(pitch, -5, 67 / 12)) * 261.62 * m.r * pow2(inh * Math.log2(m.r)), exc: this.exc[k], pick: this.pick[k]}));
+  }
+}
+
+
+// ---------------------------------------------------------------- engine framework
+class Smoother {                                        // {cur, tgt, step, count, N}: linear ramp over N samples
+  constructor(v, N) { this.cur = this.tgt = v; this.step = 0; this.count = 0; this.N = Math.max(1, N); }
+  set(t) { if (t === this.tgt && this.count === 0) return; this.tgt = t; this.step = (t - this.cur) / this.N; this.count = this.N; }
+  next() { if (this.count > 0) { this.count--; this.cur = this.count ? this.cur + this.step : this.tgt; } return this.cur; }
+}
+const driver = {                                        // module parameter drivers: ctl (0..127 float) -> value
+  lin: (c, lo, hi) => lo + ((c > 63.9999 && c < 64.0001) ? 0.5 : c / 127) * (hi - lo),
+  exp: (c, lo, hi) => lo * (hi / lo) ** (c / 127),
+  int: (c, lo, hi) => { const k = Math.min(Math.round(c), hi - lo); return lo + (k === 64 ? 63 : k); },
+  cube: (c, lo, hi) => lo + (Math.trunc(c) === 64 ? 0.125 : (c / 127) ** 3) * (hi - lo),
+};
+
+// Host conversions in the wrapper's SetParameter (host value v -> controller).
+const D = v => { v = Math.min(v, 1); return v <= 0.5 ? 128 * v : 126 * v + 1; };
+const B = v => v < 0 ? 63.5 * v + 63.5 : 63 * v + 64;
+const RINV = v => { const u = 1 - v; return u <= 0.5 ? 127 * u : 126 * u + 1; };
+const DEG = v => v < 180 ? v * 127 / 360 : 0.35 * v + 1;
+const POS = v => 31.5 * v + 64;
+const TYPE_REMAP = [1, 2, 3, 4, 5, 7, 6];               // Live ResonanceType -> internal type (0x2a450)
+
+// Live stored value -> host value. ASSUMED until the Live-side conversion is traced (N5): stored values
+// pass through unchanged, except FilterMidFreq (Hz -> normalized for the exponential 50..18000 curve) and
+// the three positions (0..1 -> -1..1 so that 0.5 is the centre).
+const toHost = {
+  FilterMidFreq: f => Math.log(f / 50) / Math.log(360),
+  ExcitationX: v => 2 * v - 1, ListeningXL: v => 2 * v - 1, ListeningXR: v => 2 * v - 1,
+};
+const ASSUMED = new Set(['FilterMidFreq', 'ExcitationX', 'ListeningXL', 'ListeningXR']);
+
+// ---------------------------------------------------------------- other modules
+class Lfo {
+  constructor(fs) { this.fs = fs; this.phL = 0; this.phR = 0; this.rL = this.cL = Math.random() * 2 - 1; this.rR = this.cR = this.cL;
+    this.on = 0; this.wave = 0; this.sync = 0; this.rate = 1; this.syncIndex = 13; this.phaseMode = 1; this.spin = 0; this.rel = 0.5; this.offset = 0;
+    this.amount = new Smoother(0, Math.round(fs / 1000)); this.bpm = 120; }
+  wave1(p, prev, cur) {
+    switch (this.wave) {
+      case 0: return 6.094263*p + 6.094263*p*p - 85.31969*p**3 + 121.88526*p**4 - 48.754105*p**5;
+      case 1: return p < 0.5 ? -1 : 1; case 2: return p < 0.5 ? 4*p - 1 : 3 - 4*p;
+      case 3: return 2*p - 1; case 4: return 1 - 2*p; case 5: return cur; default: return prev + p * (cur - prev);
+    }
+  }
+  next() {
+    const amt = this.amount.next();
+    if (!this.on) return [0, 0];
+    const bars = [8,6,4,3,2,1.5,1,3/4,1/2,3/8,1/3,5/16,1/4,3/16,1/6,1/8,1/12,1/16,1/24,1/32,1/48,1/64][this.syncIndex] || 1/4;
+    let inc = this.sync ? this.bpm / (240 * bars * this.fs) : this.rate / this.fs;
+    if (this.wave === 5) inc *= 2;
+    const incR = this.phaseMode || this.sync ? inc : inc * (1 + this.spin);
+    const adv = (ph, d, side) => { ph += d; if (ph >= 1) { ph -= 1; if (side === 'L') { this.rL = this.cL; this.cL = Math.random() * 2 - 1; } else { this.rR = this.cR; this.cR = Math.random() * 2 - 1; } } return ph; };
+    this.phL = adv(this.phL, inc, 'L');
+    let pR;
+    if (this.phaseMode) { pR = (this.phL + this.rel) % 1; this.rR = this.rL; this.cR = this.cL; } else { this.phR = adv(this.phR, incR, 'R'); pR = this.phR; }
+    return [amt * this.wave1(this.phL, this.rL, this.cL), amt * this.wave1(pR, this.rR, this.cR)];
+  }
+}
+class Biquad {                                          // RBJ low- or high-pass, Q 0.707, coefficients ramp over 30 samples
+  constructor(high) { this.high = high; this.k = [1, 0, 0, 0, 0]; this.tk = this.k.slice(); this.n = 0; this.x1 = this.x2 = this.y1 = this.y2 = 0; }
+  design(f, fs) {
+    const w = clamp(2 * Math.PI * f / fs, 0.0006 * Math.PI, 0.9 * Math.PI), cs = Math.cos(w), a = Math.sin(w) / 1.414, a0 = 1 + a;
+    const b0 = this.high ? (1 + cs) / 2 : (1 - cs) / 2, b1 = this.high ? -(1 + cs) : 1 - cs;
+    this.tk = [b0 / a0, b1 / a0, b0 / a0, -2 * cs / a0, (1 - a) / a0]; this.n = 30;
+  }
+  next(x) {
+    if (this.n > 0) { for (let i = 0; i < 5; i++) this.k[i] += (this.tk[i] - this.k[i]) / this.n; this.n--; }
+    const [b0, b1, b2, a1, a2] = this.k, y = b0 * (x + 1e-22) + b1 * this.x1 + b2 * this.x2 - a1 * this.y1 - a2 * this.y2;
+    this.x2 = this.x1; this.x1 = x; this.y2 = this.y1; this.y1 = y; return y;
+  }
+}
+class CorpusFilter {
+  constructor(fs) { this.fs = fs; this.lp = new Biquad(false); this.hp = new Biquad(true); this.mix = new Smoother(0, Math.floor(fs / 100)); this.f0 = 1000; this.bw = 4; this.design(); }
+  design() { const k = pow2(this.bw / 2); this.lp.design(clamp(this.f0 * k, 50, 18000), this.fs); this.hp.design(clamp(this.f0 / k, 50, 18000), this.fs); }
+  next(x) { const g = this.mix.next(); if (g === 0 && this.mix.count === 0) return x; return x + g * (this.hp.next(this.lp.next(x)) - x); }
+}
+
+// ---------------------------------------------------------------- CorpusSynth: graph and host parameters
+const HOST = {   // Live name -> [host index, host->ctl conversion, kind]
+  ResonanceType: [0], Decay: [1, D], FreqDamping: [2, B], Inharmonics: [3, B], Ratio: [4, D], Radius: [5, RINV],
+  Frequency: [6, D], Transpose: [7], FineTranspose: [8, v => 1.27 * v + 63.5], Detune: [9, B], PitchBendRange: [10],
+  AmpFreq: [11, B], MidiPitch: [12, D], MidiGate: [13, D], ExcitationX: [14, POS], ListeningXL: [15, POS], ListeningXR: [16, POS],
+  LfoOnOff: [17], LfoType: [18], LfoSync: [19, D], LfoRate: [20, D], LfoSyncRate: [21], LfoStereoMode: [22],
+  LfoSpin: [23, v => v <= 0.5 ? 127 * v : 126 * v + 1], LfoPhase: [24, DEG], LfoOffset: [25, DEG], LfoAmount: [26, D],
+  FilterOn: [27], FilterMidFreq: [28, D], FilterBandWidth: [29, v => 14.941176 * v - 7.470588], Drive: [30, D],
+  StereoWidth: [31, D], DryWet: [32, D], ResonatorQuality: [33], DecayOnNoteOff: [34, D], TubeOpening: [35, D], Bleed: [36, D],
+};
+class CorpusEngine {
+  constructor(fs) {
+    this.fs = fs; this.res = [new Resonator(fs), new Resonator(fs)]; this.lfo = new Lfo(fs);
+    this.filt = [new CorpusFilter(fs), new CorpusFilter(fs)];
+    this.gain = new Smoother(1, Math.floor(fs / 100)); this.width = new Smoother(1, Math.floor(fs / 100));
+    this.fixed = new Smoother(0, Math.round(fs / 1000)); this.fine = new Smoother(0, Math.round(fs / 1000)); this.detune = new Smoother(0, Math.round(fs / 1000));
+    this.transpose = 0; this.midiPitch = false; this.midiGate = false; this.held = []; this.note = 60 - 60; // MIDI pitch starts at -5 oct
+    this.midiP = -5;
+    this.pan = {a: 0.5, dry: 0, wet: 0, dryStep: 0, wetStep: 0, n: 0, cnt: 0};
+    this.live = {}; this.bufIn = [new Float32Array(128), new Float32Array(128)];
+    this.bufOut = [new Float32Array(128), new Float32Array(128)];
+  }
+  setLive(name, stored) {                               // stored Live value as in a preset (numbers; booleans as 0/1)
+    this.live[name] = stored;
+    const h = HOST[name]; if (!h) return;               // MidiMode is never sent to the device
+    const v = toHost[name] ? toHost[name](stored) : stored, idx = h[0], conv = h[1], R = this.res, rs = (k, c) => R.forEach(r => r.set(k, c));
+    const c = conv ? conv(v) : v;
+    switch (idx) {
+      case 0: { const t = TYPE_REMAP[Math.trunc(v)] ?? 0; R.forEach(r => r.set('type', t)); break; }
+      case 33: R.forEach(r => r.set('quality', Math.min(Math.trunc(v), 3))); break;
+      case 1: rs('decay', c); break; case 2: rs('tone', c); break; case 3: rs('inharm', c); break; case 4: rs('ratio', c); break;
+      case 5: rs('radius', c); break; case 11: rs('ampFreq', c); break; case 14: rs('exci', c); break;
+      case 15: R[0].set('listen', c); break; case 16: R[1].set('listen', c); break;   // Resonator_1 swaps L/R listening
+      case 34: rs('decayMuted', c); break; case 35: rs('opening', c); break; case 36: rs('bleed', c); break;
+      case 6: this.fixed.set(driver.lin(c, -4, 4)); break;
+      case 7: this.transpose = driver.int(Math.trunc(v) + 48, -48, 48); break;
+      case 8: this.fine.set(driver.lin(c, -0.5, 0.5)); break;
+      case 9: this.detune.set(driver.lin(c, -1 / 12, 1 / 12)); break;
+      case 12: this.midiPitch = driver.int(c, 0, 1) === 1; break;
+      case 13: this.midiGate = driver.int(c, 0, 1) === 1; break;
+      case 17: this.lfo.on = v ? 1 : 0; break;
+      case 18: this.lfo.wave = Math.min(Math.trunc(v), 6); break;
+      case 19: this.lfo.sync = driver.int(c, 0, 1); break;
+      case 20: this.lfo.rate = driver.exp(c, 0.01, 10); break;
+      case 21: this.lfo.syncIndex = Math.min(Math.trunc(v), 21); break;
+      case 22: this.lfo.phaseMode = v !== 0 ? 0 : 1; break;              // engine 0 = Spin, 1 = Phase; Live 0 = Phase
+      case 23: this.lfo.spin = driver.lin(c, 0, 1); break;
+      case 24: this.lfo.rel = driver.lin(c, 0, 1); break;
+      case 25: { const o = driver.lin(c, 0, 1); this.lfo.phL = (this.lfo.phL + o - this.lfo.offset + 1) % 1; this.lfo.offset = o; break; }
+      case 26: this.lfo.amount.set(driver.lin(c, 0, 1)); break;
+      case 27: this.filt.forEach(f => f.mix.set(v ? 1 : 0)); break;
+      case 28: this.filt.forEach(f => { f.f0 = driver.exp(c, 50, 18000); f.design(); }); break;
+      case 29: this.filt.forEach(f => { f.bw = driver.lin(c, 0.5, 9); f.design(); }); break;
+      case 30: this.gain.set(driver.exp(c, 0.17783, 5.6234)); break;
+      case 31: this.width.set(driver.lin(c, 0, 1)); break;
+      case 32: this.pan.a = c / 127; break;
+    }
+  }
+  noteOn(n) { this.held.push(n); this.midiP = (Math.max(...this.held) - 60) / 12; }
+  noteOff(n) { this.held = this.held.filter(x => x !== n); if (this.held.length) this.midiP = (Math.max(...this.held) - 60) / 12; }
+  panNext() {                                           // panpot: targets every 100 samples, gains ramp over 100 samples
+    const P = t => t * (10.392633 - 31.177902 * t + 20.785267 * t * t), s = this.pan;
+    if (s.cnt-- <= 0) { s.cnt = 99; const x = s.a / 4; s.wetStep = (P(x) - s.wet) / 100; s.dryStep = (P(0.25 - x) - s.dry) / 100; s.n = 100; }
+    if (s.n > 0) { s.n--; s.wet += s.wetStep; s.dry += s.dryStep; }
+    return s;
+  }
+  process(inL, inR, outL, outR) {                       // one host block; messages are applied between blocks
+    const n = inL.length, ins = [inL, inR], wet = this.bufIn.map(b => b.length >= n ? b : new Float32Array(n)), dry = [new Float32Array(n), new Float32Array(n)];
+    const pitch = [new Float32Array(n), new Float32Array(n)];
+    const gate = this.midiGate ? (this.held.length ? 1 : 0) : 1;
+    for (let i = 0; i < n; i++) {
+      const [lL, lR] = this.lfo.next(), det = this.detune.next(), fixed = this.fixed.next(), fine = this.fine.next();
+      const P = this.midiPitch ? this.midiP + (fine + this.transpose) / 12 : fixed;
+      pitch[0][i] = lL + det + P; pitch[1][i] = lR - det + P;
+      const s = this.panNext(), g = this.gain.next();
+      for (let ch = 0; ch < 2; ch++) { const x = ins[ch][i]; dry[ch][i] = s.dry * x; wet[ch][i] = this.filt[ch].next(g * s.wet * x); }
+    }
+    // The resonator reads its pitch input once per coefficient tick; pass the block's per-sample pitch through.
+    const r = [this.bufOut[0].length >= n ? this.bufOut[0] : new Float32Array(n), this.bufOut[1].length >= n ? this.bufOut[1] : new Float32Array(n)];
+    for (let ch = 0; ch < 2; ch++) this.resBlock(this.res[ch], wet[ch], pitch[ch], gate, r[ch], n);
+    for (let i = 0; i < n; i++) {
+      const w = this.width.next(), A = 0.5 + 0.5 * w, Bc = 0.5 - 0.5 * w;
+      outL[i] = A * r[0][i] + Bc * r[1][i] + 1e-22 + dry[0][i];
+      outR[i] = A * r[1][i] + Bc * r[0][i] + 1e-22 + dry[1][i];
+    }
+  }
+  resBlock(res, x, pitch, gate, out, n) {               // feed per-sample pitch: process one sample at a time
+    const one = this._one || (this._one = new Float32Array(1)), o = this._o || (this._o = new Float32Array(1));
+    for (let i = 0; i < n; i++) { one[0] = x[i]; res.process(one, pitch[i], gate, o); out[i] = o[0]; }
+  }
+  modes() { return this.res.map((r, ch) => r.modeInfo(ch ? this.lastPitchR || 0 : this.lastPitchL || 0)); }
+}
+
+if (typeof module !== 'undefined') module.exports = {pow2, curve, driver, modeTable, Resonator, CorpusEngine, HOST, ASSUMED, TYPE_REMAP};
+</script>
+<script>const CORPUS = {"presets": [{"name": "Bright Snare", "path": "Core Library/Devices/Audio Effects/Corpus/Bright Snare.adv", "sha256": "80843625cd6812bcaddb08d43da634efbb433fb0508fd7d882da27f2243fb86e", "values": {"AmpFreq": "-0.3650794029", "Bleed": "1", "Decay": "0.5634920597", "DecayOnNoteOff": "0", "Detune": "1", "Drive": "0.5238095522", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "8.46875", "FilterMidFreq": "18000", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "0.4920635223", "Frequency": "0.2222222239", "Inharmonics": "0.125", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.6349206567", "ListeningXR": "0.7460317612", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5", "Ratio": "1", "ResonanceType": "3", "ResonatorQuality": "3", "StereoWidth": "0.4841269851", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Drum Rezo Gate", "path": "Core Library/Devices/Audio Effects/Corpus/Drum Rezo Gate.adv", "sha256": "e4b2395977cf1a0bf3fbc44d07faa3090bea05438437fd4e64cf09025a9b8a54", "values": {"AmpFreq": "0", "Bleed": "1", "Decay": "1", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.5158730149", "DryWet": "1", "ExcitationX": "0.6428571343", "FilterBandWidth": "7.87109375", "FilterMidFreq": "12459.5811", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "-1", "Frequency": "0.5", "Inharmonics": "0", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "12", "LfoType": "1", "ListeningXL": "0.75", "ListeningXR": "0.4285714328", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.3359375", "Ratio": "0.6825397015", "ResonanceType": "6", "ResonatorQuality": "2", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.4444444478"}}, {"name": "Drum to Bass Synth", "path": "Core Library/Devices/Audio Effects/Corpus/Drum to Bass Synth.adv", "sha256": "7a8b7d21d16e3b29fde524bfcf0877996b113da3d18067a5b15ea70aa7516610", "values": {"AmpFreq": "0", "Bleed": "1", "Decay": "0.8024691343", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.7142857313", "DryWet": "1", "ExcitationX": "0.6904761791", "FilterBandWidth": "2.69140625", "FilterMidFreq": "173.057343", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "-0.6049382687", "Frequency": "0.25", "Inharmonics": "0", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "0.706349194", "ListeningXR": "0.6640625", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.9753086567", "Ratio": "0.6825397015", "ResonanceType": "2", "ResonatorQuality": "0", "StereoWidth": "0", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Kick Loose", "path": "Core Library/Devices/Audio Effects/Corpus/Kick Loose.adv", "sha256": "af1b1453c14678468e0ddcd74aea6e4a117f957ffb38d2982cd04db1df24b781", "values": {"AmpFreq": "0", "Bleed": "1", "Decay": "0.6640625", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0", "DryWet": "1", "ExcitationX": "0.722222209", "FilterBandWidth": "4", "FilterMidFreq": "1000", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.515625", "Frequency": "0.190476194", "Inharmonics": "0", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.3015873134", "ListeningXR": "0.3015873134", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5", "Ratio": "1", "ResonanceType": "3", "ResonatorQuality": "2", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Kick Medium", "path": "Core Library/Devices/Audio Effects/Corpus/Kick Medium.adv", "sha256": "af2c138f15d69f951805c410fab98749dccb4d82adb0136229a1eb89c1dfeb07", "values": {"AmpFreq": "0", "Bleed": "1", "Decay": "0.328125", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0", "DryWet": "1", "ExcitationX": "0", "FilterBandWidth": "4", "FilterMidFreq": "1000", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "-0.1587301493", "Frequency": "0.190476194", "Inharmonics": "0", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.1587301642", "ListeningXR": "0.3015873134", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5", "Ratio": "1", "ResonanceType": "3", "ResonatorQuality": "2", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Kick Tight", "path": "Core Library/Devices/Audio Effects/Corpus/Kick Tight.adv", "sha256": "2640a0fbfefbf3a2a56a672b136df088be1279a1b5080b3dc7b24dc61c281b76", "values": {"AmpFreq": "0", "Bleed": "1", "Decay": "0.4920634925", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0", "DryWet": "1", "ExcitationX": "0", "FilterBandWidth": "4", "FilterMidFreq": "1000", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.8730158806", "Frequency": "0.190476194", "Inharmonics": "0", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.1587301642", "ListeningXR": "0.3015873134", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5", "Ratio": "1", "ResonanceType": "3", "ResonatorQuality": "2", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Hollow", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Hollow.adv", "sha256": "d696af319b1e8add3eb86015dfb3b2f559c5be44308990998e7a28140108aac1", "values": {"AmpFreq": "0.8571429253", "Bleed": "0", "Decay": "0.4814814925", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.3888888955", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "7.87109375", "FilterMidFreq": "789.290527", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "-0.3580246866", "Frequency": "0.2539682686", "Inharmonics": "-0.777777791", "LfoAmount": "0.4047619104", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "6", "LfoType": "5", "ListeningXL": "0", "ListeningXR": "0", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0", "Ratio": "0.007936508395", "ResonanceType": "1", "ResonatorQuality": "3", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.5396825671"}}, {"name": "Loop Metal Needle", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Metal Needle.adv", "sha256": "9744336d0967c1059c24be1cbd6ca26f6209ecb0c2004282e85f9291e541aefa", "values": {"AmpFreq": "1", "Bleed": "0", "Decay": "0.2592592537", "DecayOnNoteOff": "0", "Detune": "1", "Drive": "0.4365079403", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "7866.70068", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.1111111119", "Frequency": "0.3730158806", "Inharmonics": "0", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "131.428574", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "1", "ListeningXR": "0.6587301493", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5185185075", "Ratio": "0.007936508395", "ResonanceType": "2", "ResonatorQuality": "3", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Move", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Move.adv", "sha256": "a187bddfb763801237e42d52bd5d4e3dc515018399d0bf6ba5a8dc83138f7a2b", "values": {"AmpFreq": "-0.6190476418", "Bleed": "1", "Decay": "0.5476190448", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.4841269851", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "826.433228", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.8412698507", "Frequency": "0.25", "Inharmonics": "1", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "0.4682539701", "ListeningXR": "0.8174602985", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.9753086567", "Ratio": "1", "ResonanceType": "4", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Percussifier", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Percussifier.adv", "sha256": "7984f238c182c6a2fb5b9339a74216433263e2c234bc647d92f91d38b6ebe01a", "values": {"AmpFreq": "0.6825397015", "Bleed": "1", "Decay": "0.5952380896", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.8412698507", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "173.057343", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.6349205971", "Frequency": "0.25", "Inharmonics": "1", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.9753086567", "Ratio": "0.6825397015", "ResonanceType": "2", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Phase", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Phase.adv", "sha256": "d7451bcdfffc568abd4c1b1d370f0f9d95f4315fe6d4d8b1bd3b1f3aaa433e60", "values": {"AmpFreq": "-1", "Bleed": "1", "Decay": "0.706349194", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.4365079403", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "826.433228", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.8412698507", "Frequency": "0.25", "Inharmonics": "1", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "2", "ListeningXL": "1", "ListeningXR": "0", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.9753086567", "Ratio": "0.007936508395", "ResonanceType": "3", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Ping Pong", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Ping Pong.adv", "sha256": "ab957ea15c6b128b16a98ccd9ad54ae53eaa2d01b2983921c43ec08ae35bd72e", "values": {"AmpFreq": "0.6507936716", "Bleed": "1", "Decay": "0.2380952388", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.7142857313", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "50", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "1", "Frequency": "0.3730158806", "Inharmonics": "0.8730158806", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "0", "ListeningXR": "0.6640625", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.9753086567", "Ratio": "0.6825397015", "ResonanceType": "6", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Random", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Random.adv", "sha256": "f6248dd4d0a412e5fca8caa900f50afe096998037a73d83fc96c4d7f8586d98d", "values": {"AmpFreq": "-0.8888888955", "Bleed": "0", "Decay": "0.5634920597", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.6031746268", "DryWet": "1", "ExcitationX": "0", "FilterBandWidth": "7.9375", "FilterMidFreq": "2491.80737", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.04761910439", "Frequency": "0.396825403", "Inharmonics": "-1", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "6", "LfoType": "5", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.4761904776", "Ratio": "0.9682539701", "ResonanceType": "5", "ResonatorQuality": "1", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.8968253732"}}, {"name": "Loop Rhythmic Changer", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Rhythmic Changer.adv", "sha256": "4248980a04b5c15f01496362f3e186988fc72270103b0e1c0769648de122ed9d", "values": {"AmpFreq": "0.8412698507", "Bleed": "0", "Decay": "0.4320987761", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.4365079403", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "7866.70068", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "-0.5396825671", "Frequency": "0.3730158806", "Inharmonics": "-0.78125", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "6", "LfoType": "5", "ListeningXL": "0.05555555597", "ListeningXR": "0", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.9506173134", "Ratio": "0.007936508395", "ResonanceType": "0", "ResonatorQuality": "3", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.2142857164"}}, {"name": "Loop Robotifier", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Robotifier.adv", "sha256": "72a5e391f70cd9f9c0c097c9d1c6f55a4b1169e335517cf74fe8c0414423bf2d", "values": {"AmpFreq": "-1", "Bleed": "1", "Decay": "0.2301587313", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.4365079403", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "826.433228", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.8412698507", "Frequency": "0.25", "Inharmonics": "1", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "1", "ListeningXR": "0", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.8412698507", "Ratio": "0.007936508395", "ResonanceType": "6", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Loop Tablamaker", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Tablamaker.adv", "sha256": "ca1e7d74fd19a4f673012c33b9e3c451830b9bb80ba2460799c2eff913307579", "values": {"AmpFreq": "0.03174602985", "Bleed": "1", "Decay": "0.4444444478", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.6031746268", "DryWet": "1", "ExcitationX": "0.2539682686", "FilterBandWidth": "7.9375", "FilterMidFreq": "2491.80737", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.04761910439", "Frequency": "0.3730158806", "Inharmonics": "1", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "12", "LfoType": "1", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.8095238209", "Ratio": "0", "ResonanceType": "3", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.7539682388"}}, {"name": "Loop Ticking", "path": "Core Library/Devices/Audio Effects/Corpus/Loop Ticking.adv", "sha256": "7af8e38e6b68e31131167dac9ec24b8df8c3baca2cc18eb324d6804c815f43f3", "values": {"AmpFreq": "0.6507936716", "Bleed": "1", "Decay": "0.6190476418", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.9206349254", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "7.9375", "FilterMidFreq": "2491.80737", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "1", "Frequency": "0.3730158806", "Inharmonics": "0.8730158806", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "0", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "12", "LfoType": "1", "ListeningXL": "0", "ListeningXR": "0.6640625", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.8095238209", "Ratio": "0.6825397015", "ResonanceType": "2", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.7539682388"}}, {"name": "Metallic Rezo", "path": "Core Library/Devices/Audio Effects/Corpus/Metallic Rezo.adv", "sha256": "7f05da4e272d560d5d96f35483116f8aace095ebfc85be42e99fde911ee8db80", "values": {"AmpFreq": "-0.3650794029", "Bleed": "1", "Decay": "0.6269841194", "DecayOnNoteOff": "0", "Detune": "1", "Drive": "0.5634920597", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "8.46875", "FilterMidFreq": "18000", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "0.4920635223", "Frequency": "0.9523809552", "Inharmonics": "0.125", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.6349206567", "ListeningXR": "0.7460317612", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5", "Ratio": "1", "ResonanceType": "3", "ResonatorQuality": "3", "StereoWidth": "0.4841269851", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Panning Rezo", "path": "Core Library/Devices/Audio Effects/Corpus/Panning Rezo.adv", "sha256": "0dd79418c48454e358f24320bcbd0edc6771a895a84543e2f52a93b330a42ac0", "values": {"AmpFreq": "-0.8888888955", "Bleed": "0", "Decay": "0.1111111119", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.6031746268", "DryWet": "1", "ExcitationX": "0", "FilterBandWidth": "7.9375", "FilterMidFreq": "2491.80737", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.04761910439", "Frequency": "0.2460317463", "Inharmonics": "-1", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "6", "LfoType": "5", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.8095238209", "Ratio": "0.9682539701", "ResonanceType": "5", "ResonatorQuality": "1", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.7539682388"}}, {"name": "Phasing Flange", "path": "Core Library/Devices/Audio Effects/Corpus/Phasing Flange.adv", "sha256": "7f44c20078378b51e7d125223e87cd28c1bf1534d2afb70a2243dbe7ea59074d", "values": {"AmpFreq": "1", "Bleed": "1", "Decay": "0.3730158806", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.6666666865", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "7.9375", "FilterMidFreq": "2491.80737", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.4320987761", "Frequency": "0.625", "Inharmonics": "-0.03174602985", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "2", "LfoType": "0", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.4761904776", "Ratio": "0.9682539701", "ResonanceType": "5", "ResonatorQuality": "1", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "0.8333333135"}}, {"name": "Pipe Resonator", "path": "Core Library/Devices/Audio Effects/Corpus/Pipe Resonator.adv", "sha256": "d402e8f81caeb3bf708033878c02063ba61cc7ff2ad31a9d3226237d26eff184", "values": {"AmpFreq": "0", "Bleed": "0", "Decay": "0.6031746268", "DecayOnNoteOff": "0.25", "Detune": "0.046875", "Drive": "0.4047619104", "DryWet": "0.6963492036", "ExcitationX": "0.5", "FilterBandWidth": "4", "FilterMidFreq": "1000", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0", "Frequency": "0.4603174627", "Inharmonics": "0", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.1000000015", "ListeningXR": "0.8999999762", "MidiGate": "true", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.8641975522", "Ratio": "0.5", "ResonanceType": "5", "ResonatorQuality": "3", "StereoWidth": "1", "Transpose": "12", "TubeOpening": "1"}}, {"name": "Punchy Snare", "path": "Core Library/Devices/Audio Effects/Corpus/Punchy Snare.adv", "sha256": "724cd2f60fdb7c7e097ee49837603352484902747b94940d27e9c82f88381ca1", "values": {"AmpFreq": "-0.3650794029", "Bleed": "1", "Decay": "0.571428597", "DecayOnNoteOff": "0", "Detune": "1", "Drive": "0.7539682388", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "8.46875", "FilterMidFreq": "18000", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "1", "Frequency": "0.5", "Inharmonics": "0.125", "LfoAmount": "0", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "0", "LfoSyncRate": "4", "LfoType": "0", "ListeningXL": "0.6349206567", "ListeningXR": "0.7460317612", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5", "Ratio": "1", "ResonanceType": "3", "ResonatorQuality": "3", "StereoWidth": "0.4841269851", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Sub Boom", "path": "Core Library/Devices/Audio Effects/Corpus/Sub Boom.adv", "sha256": "4dd28330bda740995ef326eace3fbfad02c85da6f07e6106d0dd7f4a47996f97", "values": {"AmpFreq": "0.06349205971", "Bleed": "0", "Decay": "0.190476194", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.5317460299", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "1.89453125", "FilterMidFreq": "181.201233", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "-0.06349205971", "Frequency": "0.2460317463", "Inharmonics": "-0.9375", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "14", "LfoType": "0", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0", "Ratio": "1", "ResonanceType": "0", "ResonatorQuality": "3", "StereoWidth": "0.722222209", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Sub Filter Boost", "path": "Core Library/Devices/Audio Effects/Corpus/Sub Filter Boost.adv", "sha256": "2ee4c3efec42457bd2ed74e18bc647e9ad6ca29d5a0aeb6e8a8101dcdb09e91e", "values": {"AmpFreq": "1", "Bleed": "1", "Decay": "0.396825403", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.6269841194", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "1.89453125", "FilterMidFreq": "82.9186554", "FilterOn": "true", "FineTranspose": "0", "FreqDamping": "-0.06349205971", "Frequency": "0.2460317463", "Inharmonics": "1", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "14", "LfoType": "0", "ListeningXL": "0.6904761791", "ListeningXR": "0.5396825671", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0", "Ratio": "1", "ResonanceType": "6", "ResonatorQuality": "3", "StereoWidth": "0.07142857462", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Sub Kick Maker", "path": "Core Library/Devices/Audio Effects/Corpus/Sub Kick Maker.adv", "sha256": "53e54c5d9dc1874210725fbb8b470b8a5792eb6f72ff4f12094d4fddba115683", "values": {"AmpFreq": "0", "Bleed": "1", "Decay": "0.4444444478", "DecayOnNoteOff": "0", "Detune": "0", "Drive": "0.5", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "1.89453125", "FilterMidFreq": "181.201233", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "-0.06349205971", "Frequency": "0.2460317463", "Inharmonics": "-0.9375", "LfoAmount": "0.9841269851", "LfoOffset": "0", "LfoOnOff": "false", "LfoPhase": "180", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "14", "LfoType": "0", "ListeningXL": "1", "ListeningXR": "1", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0", "Ratio": "0.9682539701", "ResonanceType": "3", "ResonatorQuality": "1", "StereoWidth": "0.722222209", "Transpose": "0", "TubeOpening": "1"}}, {"name": "Tubular Pan", "path": "Core Library/Devices/Audio Effects/Corpus/Tubular Pan.adv", "sha256": "c24d7daef3beb8ba1ab5ae3130e21b6251525c2a1d3be65a51b392c83e36418a", "values": {"AmpFreq": "-1", "Bleed": "1", "Decay": "0.814814806", "DecayOnNoteOff": "0", "Detune": "1", "Drive": "0.4365079403", "DryWet": "1", "ExcitationX": "1", "FilterBandWidth": "2.69140625", "FilterMidFreq": "826.433228", "FilterOn": "false", "FineTranspose": "0", "FreqDamping": "0.8412698507", "Frequency": "0.3730158806", "Inharmonics": "1", "LfoAmount": "1", "LfoOffset": "0", "LfoOnOff": "true", "LfoPhase": "131.428574", "LfoRate": "0.5", "LfoSpin": "0", "LfoStereoMode": "0", "LfoSync": "1", "LfoSyncRate": "8", "LfoType": "1", "ListeningXL": "1", "ListeningXR": "0", "MidiGate": "false", "MidiMode": "0", "MidiPitch": "false", "On": "true", "PitchBendRange": "5", "Radius": "0.5185185075", "Ratio": "0.007936508395", "ResonanceType": "6", "ResonatorQuality": "0", "StereoWidth": "1", "Transpose": "0", "TubeOpening": "1"}}], "ranges": {"AmpFreq": [-1.0, 1.0], "Bleed": [0.0, 1.0], "Decay": [0.0, 1.0], "DecayOnNoteOff": [0.0, 1.0], "Detune": [-1.0, 1.0], "Drive": [0.0, 1.0], "DryWet": [0.0, 1.0], "ExcitationX": [0.0, 1.0], "FilterBandWidth": [0.5, 9.0], "FilterMidFreq": [50.0, 18000.0], "FineTranspose": [-50.0, 50.0], "FreqDamping": [-1.0, 1.0], "Frequency": [0.0, 1.0], "Inharmonics": [-1.0, 1.0], "LfoAmount": [0.0, 1.0], "LfoOffset": [0.0, 360.0], "LfoPhase": [0.0, 360.0], "LfoRate": [0.0, 1.0], "LfoSpin": [0.0, 0.5], "LfoStereoMode": [0.0, 1.0], "LfoSync": [0.0, 1.0], "LfoSyncRate": [0.0, 21.0], "LfoType": [0.0, 6.0], "ListeningXL": [0.0, 1.0], "ListeningXR": [0.0, 1.0], "MidiMode": [0.0, 1.0], "PitchBendRange": [0.0, 24.0], "Radius": [0.0, 1.0], "Ratio": [0.0, 1.0], "ResonanceType": [0.0, 6.0], "ResonatorQuality": [0.0, 3.0], "StereoWidth": [0.0, 1.0], "Transpose": [-48.0, 48.0], "TubeOpening": [0.0, 1.0]}, "schema": {"fields": [{"class": "Int", "name": "LomId"}, {"class": "Int", "name": "LomIdView"}, {"class": "RemoteableBool", "name": "IsExpanded"}, {"class": "RemoteableBool", "name": "BreakoutIsExpanded"}, {"class": "TimeableBool", "name": "On"}, {"class": "RemoteableInt", "name": "ModulationSourceCount"}, {"class": "PythonListWrapper", "name": "ParametersListWrapper"}, {"class": "Pointee", "name": "Pointee"}, {"class": "Int", "name": "LastSelectedTimeableIndex"}, {"class": "Int", "name": "LastSelectedClipEnvelopeIndex"}, {"class": "RemoteableSlot", "name": "LastPresetRef"}, {"class": "RemoteableList", "name": "LockedScripts"}, {"class": "RemoteableBool", "name": "IsFolded"}, {"class": "RemoteableBool", "name": "ShouldShowPresetName"}, {"class": "RemoteableString", "name": "UserName"}, {"class": "RemoteableString", "name": "Annotation"}, {"class": "RemoteableKeyMidi", "name": "RemoteSelectionKeyMidi"}, {"class": "RemoteableSlot", "name": "SourceContext"}, {"class": "RemoteableBool", "name": "MpePitchBendUsesTuning"}, {"class": "RemoteableViewData", "name": "ViewData"}, {"class": "Int", "name": "OverwriteProtectionNumber"}, {"class": "MidiSideChain", "name": "SideChain"}, {"class": "TimeableEnum", "name": "ResonanceType"}, {"class": "TimeableEnum", "name": "ResonatorQuality"}, {"class": "TimeableFloat", "name": "Frequency"}, {"class": "TimeableFloat", "name": "Transpose"}, {"class": "TimeableFloat", "name": "FineTranspose"}, {"class": "TimeableFloat", "name": "Detune"}, {"class": "TimeableFloat", "name": "Decay"}, {"class": "TimeableFloat", "name": "FreqDamping"}, {"class": "TimeableFloat", "name": "Radius"}, {"class": "TimeableFloat", "name": "AmpFreq"}, {"class": "TimeableFloat", "name": "Inharmonics"}, {"class": "TimeableFloat", "name": "TubeOpening"}, {"class": "TimeableFloat", "name": "Ratio"}, {"class": "TimeableFloat", "name": "ExcitationX"}, {"class": "TimeableFloat", "name": "ListeningXL"}, {"class": "TimeableFloat", "name": "ListeningXR"}, {"class": "TimeableBool", "name": "LfoOnOff"}, {"class": "TimeableEnum", "name": "LfoType"}, {"class": "TimeableEnum", "name": "LfoSync"}, {"class": "TimeableFloat", "name": "LfoRate"}, {"class": "TimeableFloat", "name": "LfoSyncRate"}, {"class": "TimeableEnum", "name": "LfoStereoMode"}, {"class": "TimeableFloat", "name": "LfoSpin"}, {"class": "TimeableFloat", "name": "LfoPhase"}, {"class": "TimeableFloat", "name": "LfoOffset"}, {"class": "TimeableFloat", "name": "LfoAmount"}, {"class": "TimeableBool", "name": "FilterOn"}, {"class": "TimeableFloat", "name": "FilterMidFreq"}, {"class": "TimeableFloat", "name": "FilterBandWidth"}, {"class": "TimeableBool", "name": "MidiPitch"}, {"class": "TimeableEnum", "name": "MidiMode"}, {"class": "TimeableFloat", "name": "PitchBendRange"}, {"class": "TimeableBool", "name": "MidiGate"}, {"class": "TimeableFloat", "name": "DecayOnNoteOff"}, {"class": "TimeableFloat", "name": "Drive"}, {"class": "TimeableFloat", "name": "StereoWidth"}, {"class": "TimeableFloat", "name": "Bleed"}, {"class": "TimeableFloat", "name": "DryWet"}], "path": "Schema/12.0_12402.txt", "sha256": "b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299"}, "type_index_from_preset_names": {"Pipe": [5], "Tube": [6]}};</script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const el = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
+const TYPES = ['Beam', 'Marimba', 'String', 'Membrane', 'Plate', 'Pipe', 'Tube'];
+const TRACED = {
+  ResonanceType: 'Remapped to internal types Beam, Marimba, String, Membrane, Plate (modal) and Pipe, Tube (two-line waveguides). The order is confirmed by each type builder.',
+  ResonatorQuality: 'Number of modes for the modal types: 4, 16, 30 or 70. No effect on Pipe or Tube.',
+  Frequency: 'Pitch hub fixed pitch: −4…+4 octaves around 261.62 Hz, ramped over 1 ms.',
+  Transpose: 'Used only when MidiPitch is on (added to the MIDI note).', FineTranspose: 'Used only when MidiPitch is on; ±0.5 semitone.',
+  Detune: '±1/12 octave, added to the left resonator\'s pitch and subtracted from the right\'s.',
+  Decay: 'Decay time 0.05·700^(c/127) s, quantized to 128 controller steps.',
+  FreqDamping: 'Resonator tone: shifts decay toward low (−) or high (+) modes.',
+  Radius: 'Pipe and Tube: reflection-filter radius 0.005–0.4 (inverted mapping); lowers the pitch slightly as the filter darkens.',
+  AmpFreq: 'Amplitude tilt across modes.', Inharmonics: 'Mode ratios become r^(1 + inh³).',
+  TubeOpening: 'Pipe only: opening of the reflection filter.', Ratio: 'Membrane and Plate: grid aspect ratio, 1–20.',
+  ExcitationX: 'Strike position 0.05–0.95 on the mode-shape grid.', ListeningXL: 'Pickup of the left resonator; moves over 4,000 samples.',
+  ListeningXR: 'Pickup of the right resonator.', LfoOnOff: 'Pitch LFO on/off.',
+  LfoType: 'Sine, Square, Triangle, Ramp Up, Ramp Down, Sample and Hold, Random Ramp.', LfoSync: 'Tempo sync (this page runs at 120 BPM).',
+  LfoRate: 'Free rate 0.01·1000^(c/127) Hz.', LfoSyncRate: 'Bars from 8 down to 1/64.', LfoStereoMode: 'Phase (fixed offset) or Spin (right runs faster).',
+  LfoSpin: 'Right LFO speed-up in Spin mode.', LfoPhase: 'Right LFO phase offset in Phase mode.', LfoOffset: 'Start phase.',
+  LfoAmount: 'Pitch modulation depth: 1 means ±1 octave.', FilterOn: 'Band filter before the resonators.',
+  FilterMidFreq: 'Centre: an RBJ low-pass at f·2^(bw/2) into an RBJ high-pass at f/2^(bw/2), Q 0.707.', FilterBandWidth: 'Bandwidth in octaves, 0.5–9.',
+  Drive: 'Linear gain −15…+15 dB before the filter. No saturation.', StereoWidth: 'Crossfades the two resonator outputs toward mono.',
+  Bleed: 'High-pass of the excitation added to the resonated sound.', DryWet: 'Panpot curve; the dry signal is added after the width stage.',
+  MidiPitch: 'Pitch from MIDI notes (highest note wins) instead of Frequency.', MidiGate: 'Gate from held MIDI notes; when no note is held the resonator uses DecayOnNoteOff.',
+  PitchBendRange: 'Pitch-bend range in semitones (no bend control on this page).', DecayOnNoteOff: 'Decay factor while the MIDI gate is closed.',
+};
+const GROUPS = [
+  ['Resonator', ['ResonanceType', 'ResonatorQuality', 'Frequency', 'Transpose', 'FineTranspose', 'Detune']],
+  ['Body', ['Decay', 'FreqDamping', 'Radius', 'AmpFreq', 'Inharmonics', 'TubeOpening', 'Ratio']],
+  ['Excitation and listening', ['ExcitationX', 'ListeningXL', 'ListeningXR']],
+  ['LFO', ['LfoOnOff', 'LfoType', 'LfoRate', 'LfoAmount', 'LfoSync', 'LfoSyncRate', 'LfoStereoMode', 'LfoSpin', 'LfoPhase', 'LfoOffset']],
+  ['Filter', ['FilterOn', 'FilterMidFreq', 'FilterBandWidth']],
+  ['Output', ['Drive', 'StereoWidth', 'Bleed', 'DryWet']],
+  ['MIDI', ['MidiPitch', 'MidiGate', 'MidiMode', 'PitchBendRange', 'DecayOnNoteOff']],
+];
+const INTEGER = new Set(['ResonanceType', 'ResonatorQuality', 'LfoType', 'LfoSync', 'LfoSyncRate', 'LfoStereoMode', 'MidiMode', 'Transpose', 'PitchBendRange']);
+const presets = CORPUS.presets, ranges = CORPUS.ranges, params = {}, inputs = {};
+const numeric = v => v === 'true' ? 1 : v === 'false' ? 0 : Number(v);
+const hz = v => { const c = v <= 0.5 ? 128 * v : 126 * v + 1, n = (c > 63.9999 && c < 64.0001) ? 0.5 : c / 127; return 261.62 * 2 ** (-4 + 8 * n); };
+
+let ctx = null, node = null, analyser = null, master = null, loopSource = null, micSource = null, modeInfo = [[], []];
+function send(name) { if (node) node.port.postMessage({set: name, value: params[name]}); }
+function loadPreset(i) { for (const [k, v] of Object.entries(presets[i].values)) params[k] = numeric(v); for (const k in inputs) inputs[k].sync();
+  if (node) node.port.postMessage({all: params}); }
+function control(name) {
+  const box = el('div', undefined, 'param'), head = el('div', undefined, 'row'), label = el('label', name), valueText = el('span', '', 'val');
+  label.htmlFor = 'p-' + name; head.append(label, valueText); box.append(head);
+  const range = ranges[name], isBool = !range, input = el('input'); input.id = 'p-' + name;
+  if (isBool) input.type = 'checkbox'; else { input.type = 'range'; input.min = range[0]; input.max = range[1]; input.step = INTEGER.has(name) ? 1 : (range[1] - range[0]) / 500; }
+  box.append(input);
+  const sent = name in HOST, badges = el('p');
+  badges.append(el('span', sent ? 'traced' : 'not sent', 'badge ' + (sent ? 'b-tr' : 'b-not')));
+  if (ASSUMED.has(name)) badges.append(' ', el('span', 'Live-side assumed', 'badge b-as'));
+  box.append(badges, el('p', TRACED[name] || (sent ? '' : 'Not part of the device\'s 37 host parameters; Live handles it.')));
+  const show = () => { const v = params[name]; valueText.textContent = isBool ? (v ? 'on' : 'off') : name === 'ResonanceType' ? `${v} · ${TYPES[v]}` :
+    name === 'Frequency' ? `${v.toFixed(3)} · ${hz(v).toFixed(1)} Hz` : String(Number.isInteger(v) ? v : v.toFixed(3)); };
+  inputs[name] = {sync: () => { if (isBool) input.checked = !!params[name]; else input.value = params[name]; show(); }};
+  input.addEventListener('input', () => { params[name] = isBool ? (input.checked ? 1 : 0) : Number(input.value); show(); send(name); });
+  return box;
+}
+const WORKLET = `${document.scripts[0].textContent}
+class CorpusProcessor extends AudioWorkletProcessor {
+  constructor() { super(); this.e = new CorpusEngine(sampleRate); this.t = 0;
+    this.port.onmessage = ({data}) => { if (data.all) for (const [k, v] of Object.entries(data.all)) this.e.setLive(k, v);
+      if (data.set) this.e.setLive(data.set, data.value); if (data.on !== undefined) this.e.noteOn(data.on); if (data.off !== undefined) this.e.noteOff(data.off); }; }
+  process(inputs, outputs) {
+    const i = inputs[0], o = outputs[0], n = o[0].length, z = new Float32Array(n);
+    this.e.process(i[0] || z, i[1] || i[0] || z, o[0], o[1] || new Float32Array(n));
+    if ((this.t += n) >= 9600) { this.t = 0; this.port.postMessage({modes: this.e.res.map(r => r.modeInfo(0).map(m => [m.f, m.pick]))}); }
+    return true;
+  }
+}
+registerProcessor('corpus-traced', CorpusProcessor);`;
+// A worklet module from a data: URL works where the browser allows it on file:// pages; otherwise the
+// same engine runs on the main thread in a ScriptProcessorNode with a port-like message shim.
+async function makeNode(c) {
+  try {
+    await c.audioWorklet.addModule('data:text/javascript;base64,' + btoa(unescape(encodeURIComponent(WORKLET))));
+    const n = new AudioWorkletNode(c, 'corpus-traced', {numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [2], channelCount: 2, channelCountMode: 'explicit'});
+    n.kind = 'AudioWorklet'; return n;
+  } catch (_) {
+    const sp = c.createScriptProcessor(1024, 2, 2), e = new CorpusEngine(c.sampleRate);
+    let t = 0;
+    sp.port = {onmessage: null, postMessage: data => { if (data.all) for (const [k, v] of Object.entries(data.all)) e.setLive(k, v);
+      if (data.set) e.setLive(data.set, data.value); if (data.on !== undefined) e.noteOn(data.on); if (data.off !== undefined) e.noteOff(data.off); }};
+    sp.onaudioprocess = ev => { const a = ev.inputBuffer, b = ev.outputBuffer;
+      for (let o = 0; o < a.length; o += 128) { const s = x => x.subarray(o, o + 128);
+        e.process(s(a.getChannelData(0)), s(a.getChannelData(1)), s(b.getChannelData(0)), s(b.getChannelData(1))); }
+      if ((t += a.length) >= 9600) { t = 0; sp.port.onmessage && sp.port.onmessage({data: {modes: e.res.map(r => r.modeInfo(0).map(m => [m.f, m.pick]))}}); } };
+    sp.kind = 'ScriptProcessor (main thread)'; return sp;
+  }
+}
+async function start() {
+  if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+  ctx = new AudioContext();
+  node = await makeNode(ctx);
+  node.port.onmessage = ({data}) => { if (data.modes) { modeInfo = data.modes; drawModes(); } };
+  node.port.postMessage({all: params});
+  master = ctx.createGain(); master.gain.value = Number($('volume').value);
+  analyser = ctx.createAnalyser(); analyser.fftSize = 4096;
+  node.connect(master).connect(analyser).connect(ctx.destination);
+  $('status').textContent = `Traced engine running at ${ctx.sampleRate} Hz via ${node.kind}.`; drawSpectrum();
+}
+function play(buffer, loop) { const s = ctx.createBufferSource(); s.buffer = buffer; s.loop = !!loop; s.connect(node); s.start(); return s; }
+function clickBuffer(c) { const b = c.createBuffer(2, Math.round(c.sampleRate * 0.004), c.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); for (let i = 0; i < d.length; i++) d[i] = 0.8 * Math.sin(Math.PI * i / d.length); } return b; }
+function noiseBuffer(c) { const b = c.createBuffer(2, Math.round(c.sampleRate * 0.25), c.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.5 * Math.exp(-i / (0.05 * c.sampleRate)); } return b; }
+function loopBuffer(c) {
+  const sr = c.sampleRate, beat = 60 / 110, b = c.createBuffer(2, Math.round(sr * beat * 8), sr), d = b.getChannelData(0);
+  const add = (t, len, fn) => { const s = Math.round(t * sr); for (let i = 0; i < len * sr && s + i < d.length; i++) d[s + i] += fn(i / sr); };
+  for (let k = 0; k < 8; k++) {
+    if (k % 4 === 0 || k === 6) add(k * beat, 0.35, t => Math.sin(2 * Math.PI * (45 * t + 105 * (1 - Math.exp(-t * 30)) / 30)) * Math.exp(-t * 9) * 0.9);
+    if (k % 4 === 2) add(k * beat, 0.2, t => ((Math.random() * 2 - 1) * 0.6 + Math.sin(2 * Math.PI * 185 * t) * 0.4) * Math.exp(-t * 18));
+    add((k + 0.5) * beat, 0.04, t => (Math.random() * 2 - 1) * 0.25 * Math.exp(-t * 90));
+  }
+  b.getChannelData(1).set(d); return b;
+}
+function drawModes() {
+  const cv = $('modes'), g = cv.getContext('2d'), W = cv.width, H = cv.height; g.clearRect(0, 0, W, H);
+  const x = f => W * Math.log(f / 20) / Math.log(1000);
+  g.fillStyle = '#5f7d8f'; g.font = '20px system-ui'; for (const f of [50, 100, 200, 500, 1000, 2000, 5000, 10000]) { g.fillRect(x(f), 0, 1, H); g.fillText(f >= 1000 ? f / 1000 + 'k' : f, x(f) + 4, H - 6); }
+  const top = Math.max(1e-9, ...modeInfo.flat().map(m => Math.abs(m[1])));
+  modeInfo.forEach((list, ch) => { g.fillStyle = ch ? 'rgba(255,170,90,.9)' : 'rgba(110,180,255,.9)';
+    for (const [f, w] of list) { if (f < 20 || f > 20000) continue; const h = (H - 40) * Math.abs(w) / top; g.fillRect(x(f) + (ch ? 0 : -3), H - 24 - h, 3, h); } });
+}
+function drawSpectrum() {
+  const cv = $('spectrum'), g = cv.getContext('2d'), W = cv.width, H = cv.height, data = new Float32Array(analyser.frequencyBinCount);
+  const frame = () => { analyser.getFloatFrequencyData(data); g.clearRect(0, 0, W, H); g.strokeStyle = '#8fd3ff'; g.beginPath();
+    for (let i = 1; i < data.length; i++) { const f = i * ctx.sampleRate / analyser.fftSize; if (f < 20) continue; const px = W * Math.log(f / 20) / Math.log(1000), py = H * (-data[i] - 10) / 100; i === 1 ? g.moveTo(px, py) : g.lineTo(px, py); }
+    g.stroke(); requestAnimationFrame(frame); };
+  frame();
+}
+for (const [title, names] of GROUPS) { const fs = el('fieldset'); fs.append(el('legend', title)); const grid = el('div', undefined, 'grid'); names.forEach(n => grid.append(control(n))); fs.append(grid); $('groups').append(fs); }
+presets.forEach((p, i) => { const o = el('option', p.name); o.value = i; $('preset').append(o); });
+const initial = presets.findIndex(p => p.name === 'Pipe Resonator'); $('preset').value = initial; loadPreset(initial);
+$('preset').addEventListener('change', () => loadPreset(Number($('preset').value)));
+$('hit').addEventListener('click', async () => { await start(); play(clickBuffer(ctx)); });
+$('noise').addEventListener('click', async () => { await start(); play(noiseBuffer(ctx)); });
+$('loop').addEventListener('click', async () => { await start(); const b = $('loop');
+  if (loopSource) { loopSource.stop(); loopSource = null; b.textContent = 'Drum loop: off'; b.setAttribute('aria-pressed', 'false'); }
+  else { loopSource = play(loopBuffer(ctx), true); b.textContent = 'Drum loop: on'; b.setAttribute('aria-pressed', 'true'); } });
+$('file').addEventListener('change', async () => { await start(); const f = $('file').files[0]; if (!f) return;
+  try { if (loopSource) loopSource.stop(); loopSource = play(await ctx.decodeAudioData(await f.arrayBuffer()), true); $('loop').textContent = 'Stop file/loop'; }
+  catch (e) { $('status').textContent = `Could not decode that file: ${e.message}`; } });
+$('mic').addEventListener('click', async () => { await start(); const b = $('mic');
+  if (micSource) { micSource.mediaStream.getTracks().forEach(t => t.stop()); micSource.disconnect(); micSource = null; b.textContent = 'Microphone: off'; b.setAttribute('aria-pressed', 'false'); return; }
+  try { micSource = ctx.createMediaStreamSource(await navigator.mediaDevices.getUserMedia({audio: true})); micSource.connect(node); b.textContent = 'Microphone: on (use headphones)'; b.setAttribute('aria-pressed', 'true'); }
+  catch (e) { $('status').textContent = `Microphone unavailable: ${e.message}`; } });
+$('volume').addEventListener('input', () => { if (master) master.gain.value = Number($('volume').value); });
+const keys = document.querySelector('.keys');
+['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'].forEach((name, i) => { const note = 60 + [0, 2, 4, 5, 7, 9, 11, 12][i], b = el('button', name); b.type = 'button';
+  const on = async () => { await start(); node.port.postMessage({on: note}); }, off = () => node && node.port.postMessage({off: note});
+  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointerleave', off); keys.append(b); });
+(() => { const body = $('evidence-body');
+  body.append(el('p', 'Engine: a JavaScript port of the device\'s signal chain, written from the decompiled Corpus bundle in Live 12.4.3 (module graph, 37 host parameters and their conversions, the ab_resonator modal and waveguide models, filter, gain, panpot, width, LFO and pitch hub). Parameter values are quantized as the device quantizes them.'),
+    el('p', 'Not established: how Live converts its stored values before calling the device (assumed unchanged except FilterMidFreq, converted to the device\'s normalized scale, and the three positions, mapped from 0..1 to −1..1). Not compared with Corpus\'s real output. MidiMode is not a device parameter.'),
+    el('p', 'Checks: a Node test of the engine (mode ratios, String at 261.62 Hz, Beam partial, Pipe and Tube resonances at the frequencies the traced loop predicts, all 26 presets stable) and this page\'s #selftest render.')); })();
+async function selftest() {
+  const out = $('selftest-result'); out.hidden = false;
+  // Runs the engine directly (no audio device): a click through String at Frequency 0.5.
+  const sr = 48000, e = new CorpusEngine(sr), total = Math.round(sr * 1.2), outL = new Float32Array(total);
+  const p = {...params, ResonanceType: 2, ResonatorQuality: 3, Frequency: 0.5, Detune: 0, LfoOnOff: 0, FilterOn: 0, Drive: 0.5, DryWet: 1, ExcitationX: 0.3, ListeningXL: 0.3, ListeningXR: 0.7, MidiPitch: 0, MidiGate: 0, Decay: 0.5};
+  for (const [k, v] of Object.entries(p)) e.setLive(k, v);
+  const inL = new Float32Array(128), inR = new Float32Array(128), oL = new Float32Array(128), oR = new Float32Array(128);
+  for (let b = 0; b * 128 < total; b++) { inL.fill(0); inR.fill(0); if (b === 19) { inL[0] = inR[0] = 0.8; }
+    e.process(inL, inR, oL, oR); outL.set(oL.subarray(0, Math.min(128, total - b * 128)), b * 128); }
+  const data = outL.slice(sr * 0.1, sr * 1.1);
+  const power = f => { const w = 2 * Math.PI * f / sr, cw = 2 * Math.cos(w); let a = 0, b = 0; for (let i = 0; i < data.length; i++) { const c = data[i] + cw * a - b; b = a; a = c; } return a * a + b * b - cw * a * b; };
+  let best = 0, bestF = 0; for (let f = 200; f <= 320; f += 0.25) { const v = power(f); if (v > best) { best = v; bestF = f; } }
+  const expected = hz(0.5), finite = data.every(Number.isFinite), energy = data.reduce((a, v) => a + v * v, 0);
+  const c = new OfflineAudioContext(2, 128, sr), audioPath = (await makeNode(c)).kind;
+  const result = {peak_hz: bestF, expected_hz: Number(expected.toFixed(2)), finite, energy, controls: Object.keys(inputs).length, presets: presets.length, audio_path: audioPath};
+  result.pass = Math.abs(bestF - expected) < 2 && finite && energy > 1e-6;
+  out.textContent = JSON.stringify(result); out.dataset.pass = String(result.pass);
+}
+if (location.hash === '#selftest') selftest().catch(e => { const out = $('selftest-result'); out.hidden = false; out.textContent = 'ERROR ' + e.message; out.dataset.pass = 'false'; });
+})();
+</script></body></html>
