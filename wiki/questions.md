@@ -87,6 +87,11 @@ no experimental contradiction has been established yet.
   detection, root and version checks and the save writer statically; 12.4.3 reads
   `Schema/<MinorVersion>.txt` on the version-check path (code read, not executed).
   `.alp` and the Live Set save call site remain unknown.
+- Progress 2026-10-17: [device parameter mapping](research/device-parameter-mapping-native.md)
+  traces the Live side of the device boundary: bundle loading, `GetPlugInfoU`
+  selectors, and index and conversion tables for 4 of 7 devices. The Analog,
+  Tension and Collision tables, the document reader and a Corpus position-range
+  contradiction (probe P4-N5-01) remain open.
 
 ## Q-007 Reference behavior and timing
 

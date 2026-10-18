@@ -220,6 +220,12 @@ The bundles also contain engine-internal value formatters (Analog `0x1c280`: uni
 `1/16`-style sync rates. Whether these are reachable from the seven exports was not
 traced, and whether Live displays these strings is unknown.
 
+The Live side of this boundary (bundle loading, selector use, and per-index
+conversions for Amp, Cabinet, Electric and Corpus) is in
+[device parameter mapping](device-parameter-mapping-native.md). It qualifies the
+Corpus "XML-only ranges" statement in this page: the Corpus bundle's setter
+converts exactly those ranges.
+
 ## Parameter inventory in shipped documents
 
 Observed (`out/scan.json`, `out/param_summary.json`): 599 of the 3,634 scanned documents

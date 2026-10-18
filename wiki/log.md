@@ -1419,3 +1419,16 @@ derived from recovered code, never to seed the reimplementation. Its sources
 (engine, tests, build script) stay in `~/Documents/sound-local/corpus-faithful/`.
 Checks before commit: 8 Node tests pass; the repository copy passes its headless
 Chromium self-test (String peak at 261.5 Hz through an AudioWorklet).
+
+## [2026-10-17] query | Device bundles: Live-side mapping (N5)
+
+Traced bundle loading, `GetPlugInfoU` use and the parameter path in Live 12.4.3 and
+filed [device parameter mapping](research/device-parameter-mapping-native.md) with
+evidence in `analysis/ableton-live-12.4.3/r2/n5-device-mapping-v1/`. Complete index and
+value-conversion tables for Amp, Cabinet, Electric and Corpus (82 rows): every stored
+range equals Live's constructor range, and the Corpus bundle's setter override confirms
+the index map. Corrections: the [device bundles](research/device-bundles-static.md)
+"XML-only ranges" statement is qualified, and Corpus index 37 is sent but ignored, not
+never sent. Open contradiction: the three Corpus position parameters arrive as 0..1 on
+Live's traced side, while the bundle's mapping fits -1..1 (probe P4-N5-01). Gaps:
+Analog, Tension and Collision tables; the document reader; `Defaults` presets.
