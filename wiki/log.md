@@ -1789,3 +1789,24 @@ excluded. The coordinator retained the d7 queries in `analysis/ableton-live-12.4
 added an update note to [warp markers](research/warp-markers.md), and opened
 [Q-021](questions.md#q-021-warp-playback-mapping-and-load-handling). Updated the spec index
 (candidate row replaced), feature map and coverage. Nothing executed.
+
+## [2026-10-17] spec | SPEC-MIXER-VALUES revision 1 (D8)
+
+Drafted [SPEC-MIXER-VALUES](specs/mixer-values.md) from MX-01 to MX-15 and two query rounds
+(d8-0001 with 8 dossiers, d8-0002 with 6): 15 requirements, 45 unexecuted cases (11 audio renders
+need measurement). Q-019 narrowed: volume consumers apply the volume curve and the silence floor on
+every traced path; the gain-to-position conversion and the send path remain open. Upgraded to
+static: the pan input order and the crossfade-assign default of 1. Corrections added to
+[mixer values](research/mixer-values.md): pan 0.33 displays as `17R` for float32, and the −69.7 dB
+boundary is excluded as rounding-sensitive. The coordinator retained the d8 queries in
+`analysis/ableton-live-12.4.3/r2/d8-mixer-v1/`. Updated the spec index (candidate row replaced),
+feature map, coverage, Q-019 and the gate table.
+
+## [2026-10-17] maintenance | Dispatch paused; query servers stopped
+
+By user direction, no further work was dispatched after the running agents returned. All agents
+have returned and their results are committed. Both dossier query servers were stopped; the
+hard-linked query copies remain under `/var/tmp/sound-analysis/query*` and can be served again
+with the commands in [query route](research/r2-query-route.md). Natural next steps, not started:
+separate reviews and handoff candidates for the new drafts, a midi-config-v3 candidate, merging the
+post-consolidation probes into the Phase 4 batch, and the Phase 4 sitting on the macOS host.

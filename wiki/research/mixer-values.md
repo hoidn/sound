@@ -319,6 +319,11 @@ Statically derived fixture expectations (document values only):
 `6.0 dB` and audio volume `0.03548133373` → `-29.0 dB`. Full hashes are in
 `inputs-documents.tsv`.
 
+Correction 2026-10-17 from the [SPEC-MIXER-VALUES](../specs/mixer-values.md) draft check: a stored pan
+of 0.33 read as float32 displays as `17R`, not the `16R` listed in `curves.txt`; the −69.7 dB
+display boundary is within rounding error of the platform `log10`, so cases avoid it. The pan input
+order and the crossfade-assign default of 1 (None) are static-derived, not inferred.
+
 ## Unknowns
 
 - Which value the logic layer puts on the engine `Volume` and send ports (position

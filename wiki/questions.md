@@ -359,6 +359,12 @@ no experimental contradiction has been established yet.
   automation interpolates in gain or in fader position (shared with S6).
 - Next action: trace the logic-to-engine path for the volume and send parameters; otherwise
   run PRB-S9-01 to 08.
+- Progress 2026-10-17 (D8): narrowed, not settled. On both track-mixer wiring variants the volume
+  port output is converted from fader position to gain with the volume curve and then floored; pan,
+  split and volume ports share one class bound to their parameters; their pan-law input order is
+  confirmed. Open: where the stored gain becomes that position; the send path. Evidence:
+  [SPEC-MIXER-VALUES](specs/mixer-values.md) appendix; queries retained in
+  `analysis/ableton-live-12.4.3/r2/d8-mixer-v1/`.
 
 ## Q-020 Automation envelope load robustness
 

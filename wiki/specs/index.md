@@ -29,6 +29,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [Bundled device parameters](bundled-device-parameters.md) | Revision 1 draft: 15 requirements (1 documented only, 2 documented and static, 12 with unknown parts) and tables for the 502 stored parameters of Amp, Cabinet, Analog, Tension, Collision, Electric and Corpus; 37 unexecuted cases (4 not graded); new-instance defaults, out-of-range handling and save output open |
 | [Automation envelopes](automation-envelopes.md) | Revision 1 draft: 13 requirements (1 documented and static, 1 static only, 10 with unknown parts, 1 unknown only) for envelope storage, targets, load checks, curves and Float, Bool and Enum evaluation; 31 unexecuted cases (10 unresolved, 1 partly); dangling targets excluded (Q-020); PRB-S6-01 to 07, proposed 08 to 11 |
 | [Warp markers](warp-markers.md) | Revision 1 draft: 16 requirements (3 without unknown parts, 11 with unknown parts, 2 unknown): marker storage, shadow marker, empty-list refusal, enumerations, setting domains, scripting sample/beat conversion and edit limits; 35 unexecuted cases (28 gradable, 7 unresolved); probes PRB-S8-01 to 11 |
+| [Mixer values](mixer-values.md) | Revision 1 draft: 15 requirements (3 documented and static only, 9 with unknown parts, 1 conditional on Q-019, 2 unknown) for mixer storage, fader curves, dB and pan text, crossfade assign and save text; 45 unexecuted cases (27 static or documented, 11 renders needing measurement, 7 unresolved); probes PRB-S9-01 to 08 |
 | [Transport-state handoff plan](transport-state-handoff-plan.md) | Staged transport-state-v1 candidate (18 unexecuted cases): scope, exclusions, traceability, review gates |
 | [MIDI user mapping](midi-user-mapping.md) | Revision 3 draft: documented, static, static-conditional and unknown clauses; REQ-005 now carries the native value transforms for all ten map modes; cases MT-01 to MT-23 added (18 static, 5 static-conditional); unexecuted |
 
@@ -47,7 +48,6 @@ target spec:
 
 | Target | Candidates | Source section | Next step |
 | --- | --- | --- | --- |
-| SPEC-MIXER-VALUES | MX-01–MX-15 (15) | [Mixer values](../research/mixer-values.md#candidate-requirements-for-spec-mixer-values) | Trace logic-to-engine volume and send port values (Q-019); PRB-S9-01 to 08 |
 | SPEC-CORPUS-DEVICE | CD-C01–CD-C08 (8) | [Corpus DSP (decompiled)](../research/corpus-dsp-static.md#candidate-requirements-for-spec-corpus-device) | Live-side conversion (N5), then Phase 4 measurements |
 
 When a candidate set becomes a draft under this directory, replace its row
