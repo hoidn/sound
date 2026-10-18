@@ -61,7 +61,7 @@ Push2 and 15 helper executables so far, with main Live to follow.
 | Demo | What you can do | Evidence boundary |
 | --- | --- | --- |
 | [Corpus resonator](demos/corpus-resonator.md) | Excite a resonator with clicks, noise, a drum loop, a file or a microphone; change type, decay, strike and pickup positions; load the 26 shipped presets; see the modes and the spectrum | Controls, ranges and presets observed in shipped files; the sound is a labelled textbook stand-in, not Corpus's algorithm |
-| [Corpus traced engine](../../../analysis/ableton-live-12.4.3/demos/corpus-traced/index.html) | The same controls and presets driving a port of Corpus's own signal chain, traced from the decompiled bundle; compare it with the stand-in | Derived from recovered code; not compared with Corpus's real output; how Live converts four controls is assumed ([DSP page](../corpus-dsp-static.md)) |
+| [Corpus traced engine](../../../analysis/ableton-live-12.4.3/demos/corpus-traced/index.html) | The same controls and presets driving a port of Corpus's own signal chain, traced from the decompiled bundle; compare it with the stand-in | Derived from recovered code; not compared with Corpus's real output; the range of three position controls is open ([DSP page](../corpus-dsp-static.md)) |
 
 ## Continue exploring
 

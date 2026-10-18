@@ -25,13 +25,14 @@ Corpus's real sound.
   with fixed mode-ratio tables. Pipe and Tube are two-line waveguides.
 - **Pitch.** Pitch arrives in octaves around 261.62 Hz from a pitch hub, which
   adds the LFO and Detune.
-- **Parameters.** Live drives 37 numbered parameters. Resonator values are
+- **Parameters.** Live sends 38 numbered parameters, and the device uses the
+  first 37. Resonator values are
   quantized to 128 controller steps.
 
-The decompiled bundle carries no Live parameter names. The host-index → Live
-name mapping below is inferred from what each target does. How Live converts
-its stored values before calling the device is not traced; that is the
-coordinator's N5 packet.
+Live's side is traced in the [device parameter mapping](device-parameter-mapping-native.md)
+(N5). It confirms the Live names for host indices 0–36 below. Live passes each
+stored Corpus value unchanged, except FilterMidFreq, which it maps from Hz to
+0–1 on a log10 scale over 50–18,000.
 
 ## Evidence
 
@@ -73,7 +74,7 @@ The conversions in the table:
 - **B:** `v < 0 ? 63.5v+63.5 : 63v+64`
 - **P:** `64 + 31.5v`
 
-| Host | Live parameter (inferred) | Target | Conversion → value |
+| Host | Live parameter (confirmed by N5) | Target | Conversion → value |
 | --- | --- | --- | --- |
 | 0 | ResonanceType | resonator type | table `0x2a450` = [1,2,3,4,5,7,6] |
 | 1 | Decay | resonator decay | D → 0.05·700^(c/127) s |
@@ -100,10 +101,17 @@ The conversions in the table:
 | 35 | TubeOpening | resonator tube_opening | D → 0.005…1 |
 | 36 | Bleed | resonator amp_hp | D → 0.01…1 (exp) |
 
-MidiMode is the only Live parameter that is never sent to the device.
-Several mappings fit Live's stored ranges exactly: the bipolar parameters,
-Transpose ±48, Fine ±50, BandWidth 0.5–9 and the phase angles 0–360. That
-supports Live passing those values through unchanged.
+MidiMode is sent as host index 37 and ignored, because the device's default
+path accepts only indices below 37 (N5). Several mappings fit Live's stored
+ranges exactly: the bipolar parameters, Transpose ±48, Fine ±50, BandWidth
+0.5–9 and the phase angles 0–360. N5 confirms that Live passes those values
+through unchanged.
+
+**Open: position range.** The positions' conversion 64 + 31.5v fits an input
+of −1 to 1. Live passes ExcitationX, ListeningXL and ListeningXR as 0–1 with
+no remap (N5), so as traced they reach only from the centre to 0.72 of the
+body. N5's evidence stops at Live's float parameter unit, which is inferred.
+Probe P4-N5-01 should settle it.
 
 ## Module graph
 
@@ -211,13 +219,13 @@ untraced Live-side conversion, it says so.
 | ID | Statement | Evidence | Strength |
 | --- | --- | --- | --- |
 | CD-C01 | ResonanceType 0–6 selects Beam, Marimba, String, Membrane, Plate, Pipe, Tube | Remap `0x2a450` and the type builders | Static (bundle) |
-| CD-C02 | With MidiPitch off, the fundamental spans 261.62·2^(−4…+4) Hz as Frequency moves over its range | Hub fixed pitch `0x27278` | Static; Live-side conversion assumed |
+| CD-C02 | With MidiPitch off, the fundamental spans 261.62·2^(−4…+4) Hz as Frequency moves over 0–1; stored 0.5 gives 261.62 Hz | Hub fixed pitch `0x27278`; Live side (N5) | Static (bundle and Live) |
 | CD-C03 | Modal partials follow the ratio tables above (String harmonic; Beam 1, 2.756, 5.404…; Marimba 1, 3.96, 10.67…; Membrane and Plate set by Ratio) | Builders; the port's mode-table check | Static (bundle) |
 | CD-C04 | ResonatorQuality 0–3 gives at most 4, 16, 30 or 70 partials; partials at or above 5/12 of the sample rate are absent | `0x2ab90`, `0x1f3f8` | Static (bundle) |
 | CD-C05 | Drive changes level by −15 to +15 dB before the filter and adds no harmonics | corpus_gain `0x271cc` | Static (bundle) |
 | CD-C06 | LfoAmount 1 modulates the resonance pitch by ±1 octave; the LfoType order is the seven shapes above | LFO `0x1d1b4`, hub `0x2764c` | Static (bundle) |
 | CD-C07 | Pipe and Tube resonances sit below the Frequency setting, by more as the device's tube radius widens. Live's Radius is mapped inverted, so a lower Radius means a wider tube. The drop is about 4% and 8% at the default radius and Opening, 48 kHz | Waveguide `0x23670`; port measurement | Static derivation; unmeasured |
-| CD-C08 | MidiMode is not a device parameter; Live applies it before the device | 37-entry table `0xc40c` | Static (bundle) |
+| CD-C08 | MidiMode reaches the device as host index 37 and has no effect there | Table `0xc40c`; default path `0x50c0`; Live side (N5) | Static (bundle and Live) |
 
 ## Port checks
 
@@ -248,11 +256,9 @@ its textbook stand-in. That page compares the two.
 
 ## Unknowns
 
-- **Live-side conversion.** How Live converts stored values to host values (N5).
-  The port assumes they pass through unchanged, except FilterMidFreq (Hz to the
-  device's normalized scale) and the three positions (0–1 mapped to −1–1).
-- **Parameter names.** The host-index → name mapping for FreqDamping (tone),
-  Drive (gain) and Bleed (amp_hp) rests on what each target does.
+- **Position range.** See [the open question above](#host-parameters): the
+  device expects −1 to 1, but Live is traced passing 0 to 1 (probe P4-N5-01).
+  The port follows Live's traced side.
 - **Unconnected inputs.** Resonator inputs 4 and 5 are assumed to read zero.
 - **Runtime comparison.** None exists. Live cannot run on this host; see
   Phase 4 of the [roadmap](native-decompilation-roadmap.md#proposed-sequencing).

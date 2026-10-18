@@ -1432,3 +1432,21 @@ the index map. Corrections: the [device bundles](research/device-bundles-static.
 never sent. Open contradiction: the three Corpus position parameters arrive as 0..1 on
 Live's traced side, while the bundle's mapping fits -1..1 (probe P4-N5-01). Gaps:
 Analog, Tension and Collision tables; the document reader; `Defaults` presets.
+
+## [2026-10-17] maintenance | Corpus port and page updated with N5's Live-side mapping
+
+Applied the [device parameter mapping](research/device-parameter-mapping-native.md)
+(N5, 7b611bd) to the Corpus work.
+- **Conversions confirmed:** Live passes stored values unchanged, and
+  FilterMidFreq's log10 Hz to 0–1 conversion matches the earlier assumption. The
+  host names for indices 0–36 are confirmed.
+- **Corrections:** MidiMode is sent as index 37 and ignored, not "never sent".
+  The three position controls now follow Live's traced pass-through of 0–1.
+  Their range stays open (probe P4-N5-01): the device's 64+31.5v fits a −1–1
+  input.
+- **Pages updated:** the [Corpus DSP page](research/corpus-dsp-static.md),
+  including CD-C02 and CD-C08, the research index row, and the
+  [learning index](research/learning/index.md). The rebuilt
+  traced-engine page (`analysis/ableton-live-12.4.3/demos/corpus-traced/index.html`)
+  now shows 37 controls traced, 3 unresolved and 1 ignored.
+- **Checks:** 8 Node tests pass; the repository copy's headless self-test passes.
