@@ -2,7 +2,7 @@
 id: DESIGN-NATIVE-ANALYSIS-RECOVERY
 type: research
 status: draft
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
@@ -459,6 +459,29 @@ Package tools can preview/prune caches through their supported commands; see the
 audit's retained [official guidance](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/storage-audit-v1/sources-v1.json).
 No cleanup action is authorized by this inventory. Remeasure capacity after any
 user-directed change before retrying; launch and analysis gates remain unchanged.
+
+## Linux workstation paths — 2026-10-17
+
+The recipe above names the macOS host. The same Ghidra 12.1.4 and JDK 21.0.12.1
+builds now exist on the Linux workstation (Ubuntu 24.04, x86_64, 32 logical CPUs,
+125 GiB RAM), installed without root under `~/.local/opt`; identities are pinned
+in the [execution ledger](native-phase-execution.md#linux-workstation-provisioning--2026-10-17).
+Substitute:
+
+```sh
+RECOVERY_GHIDRA=$HOME/.local/opt/ghidra_12.1.4_PUBLIC
+RECOVERY_JDK=$HOME/.local/opt/jdk-21.0.12.1+1
+RECOVERY_TARGET=$HOME/Documents/sound/analysis/ableton-live-12.4.3/derived/Live.arm64
+```
+
+`RECOVERY_ROOT` has no durable home yet. `/home` had 2.7 GiB free after the
+toolchain install, below the 10 GiB fresh-import headroom and the 13.54 GiB
+measured upper bound above. The root filesystem had 37 GiB free, but its only
+user-writable locations without `sudo` are `/tmp` and `/var/tmp`, which do not
+preserve a multi-hour project across reboots or periodic cleanup. A persistent
+Live import therefore waits on one of: `sudo`-created root-filesystem directory
+owned by the user, or freed `/home` capacity. The earlier incomplete macOS jobs
+are not present on this host; a fresh import is the only route here.
 
 ## Resource admission and stop conditions
 

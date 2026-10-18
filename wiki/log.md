@@ -997,3 +997,19 @@ was executed. Lint: wiki-internal links on both edited pages resolve and
 from this workstation, so every evidence link on the source page and in earlier
 log entries is unresolved here. This predates the change; the source page now
 states it. Evidence hash checks against `analysis/` are `unknown` on this host.
+
+## [2026-10-17] maintenance | Linux analysis workstation provisioned
+
+Installed Ghidra 12.1.4, Temurin JDK 21.0.12.1+1 and REA 6.5.0 under the user
+home without root, verified archive digests, and re-derived both arm64 slices
+byte-identically from the local bundle. REA doctor accepts the Ghidra provider;
+a Push2 `rea analyze` smoke test reproduced the macOS procedure and string
+counts. Recorded in the [execution ledger](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17),
+[source page](research/sources/ableton-live-12.4.3.md), [export guide](research/native-export-execution.md#coordinator-commands),
+[recovery page](research/native-analysis-recovery.md#linux-workstation-paths--2026-10-17),
+[Q-011](questions.md#q-011-main-live-export-capacity-and-recovery) and
+[project status](project.md). Added `.gitignore` for `analysis/`. Gaps: the
+macOS `analysis/` evidence tree is absent, persistent-project storage is
+undecided, REA 6.5.0 source is uninspected, and no Live analysis ran.
+Lint: relative links on all edited pages resolve except the pre-existing
+`analysis/` references noted on 2026-10-17; `git diff --check` clean.

@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-EXPORT-EXECUTION
 type: research
 status: draft
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -70,6 +70,23 @@ GHIDRA_INSTALL_DIR=/opt/homebrew/opt/ghidra/libexec \
 JAVA_HOME=/opt/homebrew/Cellar/openjdk@21/21.0.12.1/libexec/openjdk.jdk/Contents/Home \
 node tools/run_native_analysis.mjs analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-pilot-v2
 ```
+
+Those paths are the original macOS host. On the Linux workstation provisioned on
+2026-10-17 (see the [execution ledger](native-phase-execution.md#linux-workstation-provisioning--2026-10-17))
+the equivalent environment is:
+
+```sh
+source ~/.nvm/nvm.sh && nvm use 22
+GHIDRA_INSTALL_DIR=$HOME/.local/opt/ghidra_12.1.4_PUBLIC \
+JAVA_HOME=$HOME/.local/opt/jdk-21.0.12.1+1 \
+NATIVE_REA_ENTRY=$HOME/.nvm/versions/node/v22.23.2/lib/node_modules/rea-agents/scripts/rea.mjs \
+node tools/run_native_analysis.mjs <spool-directory>
+```
+
+REA 6.5.0 replaces the 6.3.0 build the earlier captures used; its installed
+source has not been re-inspected, so the lifecycle observations above are not
+re-verified for 6.5.0. REA places its ephemeral Ghidra project under `TMPDIR`
+or `/tmp`, which on this host is the root filesystem, not `/home`.
 
 Publish complete request JSON files by rename into its `requests/` directory.
 They use `method: tools/call`, `params: {name, arguments}`, and optional

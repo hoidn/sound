@@ -20,6 +20,15 @@ reverified; the REA directory digest was not recomputed for the copy. The copy i
 not runnable on this host. The retained evidence directory `analysis/` linked
 throughout this page is absent from this workstation (2026-10-17); those links
 resolve only where that directory has been restored.
+
+On 2026-10-17 both arm64 slices were re-derived on the Linux workstation from
+the local copy by reading the universal `FAT_MAGIC` header with Python 3.13.9
+and copying the `CPU_TYPE_ARM64` (`0x100000c`) member bytes. Live: offset
+163741696, 149711904 bytes. Push2DisplayProcess: offset 3899392, 3563808 bytes.
+Both SHA-256 digests equal the retained slice digests in the table below, so the
+new `analysis/ableton-live-12.4.3/derived/Live.arm64` and
+`Push2DisplayProcess.arm64` are byte-identical to the originally analyzed inputs.
+`analysis/` is now listed in `.gitignore`; no `lipo` was available or needed.
 `Contents/Info.plist` reports `12.4.3 (2026-07-07_e3d8be4d07)`, bundle ID
 `com.ableton.live`, executable `Live`, minimum macOS `11`.
 

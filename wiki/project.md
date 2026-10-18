@@ -2,7 +2,7 @@
 id: PROJECT-OVERVIEW
 type: overview
 status: active
-updated: 2026-10-12
+updated: 2026-10-17
 access: neutral
 ---
 
@@ -19,7 +19,8 @@ documentation structure is not completion of the application.
 | Area | State |
 | --- | --- |
 | Documentation routing and schema | Established in this workspace |
-| Reference target | Ableton Live 12 Suite 12.4.3; identity and static evidence retained locally (see research index) |
+| Reference target | Ableton Live 12 Suite 12.4.3; identity pinned and arm64 slices re-derived on the current host; the earlier static evidence tree is absent here (see research index) |
+| Analysis workstation | Linux host provisioned 2026-10-17 with Ghidra 12.1.4, JDK 21 and REA 6.5.0; Push2 smoke test reproduced prior counts; persistent Live project storage undecided (see [execution ledger](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17)) |
 | Research | Package evidence, browsable native pseudocode, method/structure guides and reviewed recovery tooling; target reopening is capacity-blocked (see research index) |
 | Behavioral specifications | Broader MIDI mapping draft; first finite configuration handoff released |
 | Implementation | No application code; architecture choices remain proposals |

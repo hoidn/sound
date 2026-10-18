@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-PHASE-EXECUTION
 type: research
 status: current
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
@@ -405,3 +405,53 @@ investigation without exporting the whole inventory. Large persistent analysis
 still requires changed [disk capacity](native-analysis-recovery.md#disk-cleanup-inventory--2026-10-12)
 and accepted cold recovery; saved import alone has not established that milestone.
 Tooling and pedagogy are useful deliverables, but do not close native spec coverage.
+
+## Linux workstation provisioning — 2026-10-17
+
+The analysis moved to a Linux workstation: Ubuntu 24.04, kernel 7.0.0-38-generic,
+x86_64, 32 logical CPUs, 125 GiB RAM. `/home` (1.8 TiB) had 4.4 GiB free before
+and 2.7 GiB after the installs; the root filesystem had 37 GiB free but is not
+user-writable outside `/tmp` and `/var/tmp` because `sudo` requires a password.
+The [installed source page](sources/ableton-live-12.4.3.md) records the bundle's
+new location and the byte-identical re-derivation of both arm64 slices.
+
+Installed without root under `~/.local/opt`, with archive digests verified
+against the publishers' published values and pinned in the retained
+[provisioning manifest](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/manifest.json):
+
+| Component | Identity | Note |
+| --- | --- | --- |
+| Ghidra | 12.1.4 (`ghidra_12.1.4_PUBLIC_20260921.zip`, SHA-256 `ddac49f9…d2d4db`) | Same version as the macOS captures |
+| JDK | Eclipse Temurin `jdk-21.0.12.1+1` | Same version as the macOS JDK; the system package is a JRE without `javac` |
+| REA | `rea-agents` 6.5.0 on Node 22.23.2 via nvm | macOS used 6.3.0; 6.5.0 source not inspected |
+
+`rea doctor --provider ghidra` reports the provider available: installation,
+headless script, `linux_x86_64` native decompiler and JDK all accepted. Hopper,
+IDA and JADX are absent and no agent-client MCP registration was created; the
+coordinator and CLI do not need one. The [doctor output](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/rea-doctor-ghidra.json)
+is retained.
+
+**Smoke test.** `rea analyze` on the re-derived Push2 slice with an 8 GiB heap
+completed in 71.22 s wall with 2.32 GB peak resident memory and reported 13,611
+procedures and 14,769 strings, the same counts the macOS pipeline check
+recorded in [decompilation preparation](ableton-decompilation-preparation.md).
+Retained as [analyze.json](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/push2-smoke/analyze.json)
+(evidence `ev_8906461b71a01f3f5d418748146c914915b7ac77fd8f11b086a166e162415baf`).
+The ephemeral project left no measurable residue on the root filesystem. This
+proves the Linux toolchain reproduces provider inventory counts for a small
+target; it does not establish Live analysis duration, storage or any behavior.
+
+**Not present here.** The retained `analysis/` evidence tree from the macOS host
+(full inventory, 2,028 default-profile exports, coverage ledger, compact archive
+and reader, both incomplete persistent jobs) was not transferred. Every evidence
+link in this ledger and its sibling pages is unresolved on this host. The counts
+and statuses above remain the record of that work, not re-verified facts.
+
+**Next.** (1) Decide where a persistent Live project lives; see the
+[Linux paths](native-analysis-recovery.md#linux-workstation-paths--2026-10-17).
+(2) Restore the macOS `analysis/` tree or record it as lost. (3) Fresh
+`-noanalysis` import of `Live.arm64`, then measure a full analysis on this host;
+the macOS run needed 3,016 s of analysis under a 4 GiB heap and two CPUs, and
+those gates should be re-measured rather than reused. (4) Resume the
+[transport study](native-transport-study.md) questions against the new project.
+No Live import, new pseudocode or compatibility claim was produced today.

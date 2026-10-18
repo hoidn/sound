@@ -2,7 +2,7 @@
 id: RESEARCH-QUESTIONS
 type: questions
 status: active
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -149,3 +149,11 @@ no experimental contradiction has been established yet.
   identifies Downloads, the separate Trial app and package caches as reviewable
   capacity candidates. Trash is explicitly excluded; no cleanup was performed
   and suggested allocation is not guaranteed reclaimed space.
+- Progress 2026-10-17: the work moved to a Linux workstation with the same
+  Ghidra/JDK versions, REA 6.5.0 and far larger RAM/CPU; both arm64 slices were
+  re-derived byte-identically. See the [provisioning record](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17).
+- Gap 2026-10-17: the entire retained `analysis/` evidence tree (full inventory,
+  2,028 exports, coverage ledger, incomplete persistent jobs) is absent here, so
+  every linked capture is unavailable until restored from the macOS host. The
+  persistent-project storage location is undecided; see the
+  [Linux paths](research/native-analysis-recovery.md#linux-workstation-paths--2026-10-17).
