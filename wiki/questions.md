@@ -203,6 +203,10 @@ no experimental contradiction has been established yet.
   `Member "{}" of Class {} is missing` and of the `Value … out of range for '`
   message; reserve the 12.4.3 write format for a Phase 4 save capture if static
   tracing cannot fix it.
+- Progress 2026-10-17: native half filed in [transport-state native](research/transport-state-native.md);
+  tokens, defaults, duplicates, save number format and the time-signature code are
+  derived; precedence, post-load clamping, the time-signature default and error
+  presentation remain; probes PRB-N1-01 to 08.
 
 ## Q-013 x86_64-only ReWire and MultiF0 paths
 

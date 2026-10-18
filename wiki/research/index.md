@@ -40,6 +40,7 @@ to the isolated implementation workspace.
 | [Web connector, add-ons, swapper (static)](web-addons-swapper-static.md) | H6: helper roles, launch and messages, service endpoints, `.asu` and xdelta update with swap and rollback, add-on backends; scope classification |
 | [Document container (static)](document-container-static.md) | S2 static half: gzip/XML envelope, root attributes, schema-version cross-check, native loader anchors |
 | [Transport-state fields (static)](transport-state-static.md) | S1 static half: Transport, tempo and time-signature schema evolution, values in 376 shipped sets and clips, candidate SPEC-TRANSPORT-STATE statements, native anchors and queries |
+| [Transport-state fields (native)](transport-state-native.md) | S1 native half: reader, member registry, loader and writer for tempo, time signature and loop fields; tokens, defaults, duplicates, save number format, time-signature code; PRB-N1 probes |
 | [Decompilation preparation](ableton-decompilation-preparation.md) | Validated helper pipeline, core targets and prioritized spec work |
 | [MIDI mapping source capture](sources/midi-user-mapping-12.4.3.md) | Pinned documents, bytecode and static decoder provenance |
 | [MIDI mapping investigation](midi-user-mapping.md) | Parser/mapping findings and unresolved native/host boundaries |

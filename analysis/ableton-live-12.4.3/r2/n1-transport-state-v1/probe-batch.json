@@ -1,0 +1,110 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet S1 native half (N1)",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Pin the Live executable and preferences hash before the sitting; fresh preferences with the factory default set template",
+  "Retain every input file, its SHA-256, Log.txt, a screen capture of the transport bar and loop brace, and any re-saved file",
+  "Disable Link, external sync and tempo follower; no MIDI mappings"
+ ],
+ "probes": [
+  {
+   "id": "PRB-N1-01",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "question": "Does a LoopOn Value token outside true/false/1/0 stop the set from opening, and are 1 and 0 accepted as on/off?",
+   "existing_evidence": "0x10152bfb8 bool branch (n1-0006 disassembly 0x10152c1c8-0x10152c988); exception class 0x106661270",
+   "why_static_insufficient": "The top-level catch and user-visible outcome were not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; variants: LoopOn Value=\"1\", \"0\", \"TRUE\", \"\"",
+   "discriminating_observation": "Set opens with loop switch on (1) / off (0); TRUE and empty produce an error and the set does not open; capture dialog text",
+   "stopping_condition": "Four opens captured; stop"
+  },
+  {
+   "id": "PRB-N1-02",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "question": "Does an absent transport element or Value attribute open with the new-document default?",
+   "existing_evidence": "Loader 0x101487310 visits only members present; ATransport ctor 0x102760d88 defaults 8/16/false/0; tempo 120 from 0x1026f4d98",
+   "why_static_insufficient": "The top-level load object creation was not traced; a user default template might be applied",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; first set LoopStart 4 and LoopLength 8 to make a delta visible, then variants: delete <LoopStart .../>; delete only its Value attribute; delete <Manual Value=\"120\"/> after setting tempo 90 in the envelope event too",
+   "discriminating_observation": "Loop brace starts at beat 8 (bar 3 in 4/4) and spans 16 beats; tempo 120; re-save writes 8/16/120",
+   "stopping_condition": "Three opens plus one re-save each; stop"
+  },
+  {
+   "id": "PRB-N1-03",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-009"
+   ],
+   "question": "What effective values result from well-formed but out-of-range loop, position and tempo values?",
+   "existing_evidence": "Loader stores base values directly; ATransport post-load only sets LoopEnd; controllers clamp LoopStart>=0, LoopLength>=1 only on controlled sets",
+   "why_static_insufficient": "Engine, display and later normalisation paths not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; variants: LoopStart -8; LoopLength 0.25; LoopLength -4; CurrentTime -1; Tempo Manual and its FloatEvent 5; 2000",
+   "discriminating_observation": "Opens or not; displayed loop start/length, position and tempo; values written by an immediate re-save",
+   "stopping_condition": "Six opens and re-saves; stop"
+  },
+  {
+   "id": "PRB-N1-04",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-012"
+   ],
+   "question": "On load, which wins for the song time signature: Manual or the one-event envelope, and does a loaded 6/8 survive?",
+   "existing_evidence": "LTimeableTimeSignature init 0x1026f7420 sets 201; ordering against load unknown; envelope evaluation not traced",
+   "why_static_insufficient": "Order of logic-layer initialisation and automation evaluation not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; variants: Manual 302 with EnumEvent 302; Manual 302 with EnumEvent 201; Manual 201 with EnumEvent 302",
+   "discriminating_observation": "Displayed time signature (6/8 or 4/4) and the Manual/EnumEvent values written by re-save",
+   "stopping_condition": "Three opens and re-saves; stop"
+  },
+  {
+   "id": "PRB-N1-05",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-012"
+   ],
+   "question": "On load, which wins for song tempo: Manual or the one-event envelope? Does an enabled scene tempo change the song tempo at load?",
+   "existing_evidence": "Manual stored at load; envelope evaluation and scene launch logic not traced",
+   "why_static_insufficient": "Automation evaluation not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; variants: Manual 90 with FloatEvent 120; Manual 120 with FloatEvent 90; first Scene Tempo 140 IsTempoEnabled true with Manual and FloatEvent 120",
+   "discriminating_observation": "Displayed tempo before any scene launch; re-saved Manual and FloatEvent",
+   "stopping_condition": "Three opens and re-saves; stop"
+  },
+  {
+   "id": "PRB-N1-06",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-010"
+   ],
+   "question": "What happens with a time-signature code outside 0-494 or a non-integer code?",
+   "existing_evidence": "Int parser 0x1002fd908; direct store bypasses the range-checked setter 0x10156675c",
+   "why_static_insufficient": "Downstream use of an out-of-list index not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; Manual and EnumEvent both set to 495; -1; 201.0",
+   "discriminating_observation": "Opens or not; displayed signature; Log.txt lines containing 'out of range'; re-saved code",
+   "stopping_condition": "Three opens; stop"
+  },
+  {
+   "id": "PRB-N1-07",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-011",
+    "REQ-TRANSPORT-STATE-013"
+   ],
+   "question": "What does 12.4.3 write for the transport fields after a save?",
+   "existing_evidence": "Writer 0x101486cdc, formatters 0x101431584/0x101431788; root attributes owned by packet N2",
+   "why_static_insufficient": "Confirms the derived formatting and KeyMidi omission on a real save; supplies the current SchemaChangeCount",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip unmodified; in Live set tempo 121.2, time signature 7/8, loop start 0.5 beat, loop length 3.3 beats, save as new file",
+   "discriminating_observation": "Decoded XML: Manual 121.199997; Manual code 303; LoopStart 0.5; LoopLength 3.2999999999999998; child order; no *KeyMidi; envelopes present; root SchemaChangeCount",
+   "stopping_condition": "One save captured; stop"
+  },
+  {
+   "id": "PRB-N1-08",
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007",
+    "REQ-TRANSPORT-STATE-008"
+   ],
+   "question": "Do a duplicated transport child, an unknown child and an unknown attribute stop the set from opening?",
+   "existing_evidence": "0x101472624 duplicate-member error; 0x1015299e0 skips unknown member elements; 0x10152b77c unknown attribute fatal only in a versioned read whose SchemaChangeCount equals the ChangeCount of the document's schema",
+   "why_static_insufficient": "Top-level outcome, versioned mode for Live Sets and the in-memory schema ChangeCount not established",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402, SchemaChangeCount 1), decompressed, edited as stated, recompressed with gzip; variants: two <LoopOn> elements (false, true); <Foo Value=\"1\"/> inside Transport; <LoopOn Value=\"false\" Foo=\"1\"/> with SchemaChangeCount 1 and with the value from PRB-N1-07",
+   "discriminating_observation": "Opens or not, error text, loop state",
+   "stopping_condition": "Four opens; stop"
+  }
+ ]
+}

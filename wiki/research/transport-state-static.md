@@ -364,6 +364,10 @@ FEAT-PERSISTENCE.
 | T-08 | Tags `LoopOn`, `LoopStart`, `LoopLength`, `TimeSignature` and `Tempo` also name unrelated clip, sampler, scene and groove fields; transport meaning depends on the path | Homonyms and census | Observed |
 | T-09 | Float values are written with ≤9 and Double values with ≤17 significant digits, trailing zeros dropped (`120`, `121.199997`, `508.86889646811522`) | 376/376 per field; 5 discriminating values | Inferred for shipped writers; unknown for 12.4.3 |
 
+T-09 is superseded by [REQ-TRANSPORT-STATE-011](../specs/transport-state.md#req-transport-state-011--number-text-on-save):
+the native writer uses fixed precision, and 4,803 shipped values contradict the
+`%.9g` reading.
+
 Statically derived fixture expectations (document values only, no behavior):
 `DefaultLiveSet.als` → `false`/`8`/`16`/`0`, tempo `120`, code `201`; `Quick
 Start Song.als` (SHA-256 `3b9a87d6…`) → `true`/`0`/`128`, tempo `74`, scene code

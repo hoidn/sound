@@ -16,7 +16,7 @@ requirements to candidate code and tests.
 
 | Feature ID | Spec/handoff | Implementation | Verification | Next evidence |
 | --- | --- | --- | --- | --- |
-| FEAT-TRANSPORT | None | Not started | Unknown | Transport schema and native transition/boundary logic |
+| FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r1; no handoff | Not started | Unknown; 23 draft cases not run | PRB-N1-01 to 08; transition logic |
 | FEAT-SESSION | None | Not started | Unknown | Launch/follow-action and override control flow |
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
 | FEAT-AUDIO | None | Not started | Unknown | Routing and DSP paths; flag latency for later measurement |

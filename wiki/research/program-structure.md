@@ -254,6 +254,23 @@ not establish the original interface. The lesson owns the exact register/branch
 findings; caller and target responsibilities remain unknown. This entry has not
 been assigned to a DAW subsystem or used as a behavioral contract.
 
+## How a stored loop value reaches its object
+
+Arrows mean static call or data flow, not observed execution. Evidence and
+limits are on the [transport-state native](transport-state-native.md) page.
+
+```mermaid
+flowchart LR
+    A["LoopOn/@Value text"] --> B[Boolean conversion 0x10152bfb8]
+    B --> C[Document node]
+    C --> D[Generic loader 0x101487310]
+    D --> E["ALoopOn mValue byte, registered by 0x101564330"]
+    F[ATransport constructor 0x102760d88] -.->|value kept when the element is missing| E
+```
+
+On save, `0x101486cdc` writes registry members, and `0x101520c70` and
+`0x101520dbc` format the numbers.
+
 ## Broader native structure remains open
 
 Names such as `ATransport`, `ASongAgent` and `AAudioClip` in the retained symbol

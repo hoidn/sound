@@ -19,6 +19,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [MIDI configuration handoff plan](midi-config-handoff-plan.md) | Finite static-supported release candidate and review gates                  |
 | [MIDI configuration v2 handoff plan](midi-config-v2-handoff-plan.md) | Released midi-config-v2 (109 cases): scope, narrowing, traceability |
 | [Feature map](feature-map.md)                                  | Whole-app planning inventory and stable feature IDs                         |
+| [Transport state](transport-state.md) | Revision 1 draft: 12 requirements (5 static-derived, 6 static with unknown parts, 1 unknown), 23 unexecuted cases for tempo, time signature and loop fields |
 | [MIDI user mapping](midi-user-mapping.md)                      | Revision 2 draft: documented, static, static-conditional and unknown clauses; static expectations, unexecuted cases |
 
 **Browse every requirement in one place:** the
@@ -37,7 +38,6 @@ target spec:
 | Target | Candidates | Source section | Next step |
 | --- | --- | --- | --- |
 | SPEC-ALS-CONTAINER | C-01–C-08 (8) | [Document container, static half](../research/document-container-static.md#candidate-requirements-for-spec-als-container) | Native loader half, then a draft spec |
-| SPEC-TRANSPORT-STATE | T-01–T-09 (9) | [Transport-state fields, static half](../research/transport-state-static.md#candidate-requirements-for-spec-transport-state) | Native reader/writer half, then a draft spec |
 | SPEC-PLUGIN-DISCOVERY | PD-01–PD-14 (14) | [Plug-in scanner](../research/plugin-scanner-static.md#candidate-requirements-for-spec-plugin-discovery) | Live-side contract ([Q-016](../questions.md#q-016-plug-in-discovery-live-side-contract)) |
 | SPEC-BROWSER-INDEX | BI-C01–BI-C12 (12) | [Browser index](../research/browser-index-static.md#candidate-requirements-for-a-future-spec-browser-index) | Draft spec when scoped |
 | Per-device parameter specs | DEV-C01–DEV-C10 (10) | [Device bundles](../research/device-bundles-static.md#candidate-requirements-for-per-device-parameter-specs) | Per-device parameter mapping |

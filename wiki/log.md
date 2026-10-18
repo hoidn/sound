@@ -1355,3 +1355,17 @@ learning index and FEAT-TRANSPORT in the same change. Evidence:
 report timing, control-to-entry routing, undo; runtime escalation record filed.
 Each `str:` dossier query took about 4 to 6 minutes on Live; the strings index is
 the faster route.
+
+## [2026-10-17] spec | Transport-state native half (N1); SPEC-TRANSPORT-STATE r1
+
+Filed [transport-state native](research/transport-state-native.md), the draft
+[SPEC-TRANSPORT-STATE](specs/transport-state.md) revision 1 (12 requirements, 23
+unexecuted cases) and the [reader walkthrough](research/learning/walkthroughs/transport-state-reader.md).
+Four query rounds (34 dossiers) plus corpus reads. Derived: Boolean token
+acceptance, constructor defaults, duplicate and unknown-element handling, the save
+number format (reproduces all 149,716 shipped float values) and the time-signature
+code; static candidate T-09 is superseded. Updated the spec index (candidate row
+replaced), feature map, coverage, Q-012, atlas and learning index; the spec
+browser is regenerated after the container draft lands. Evidence: `analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/`.
+Gaps: precedence, post-load clamping, time-signature default, error presentation;
+PRB-N1-01 to 08.
