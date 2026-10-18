@@ -23,7 +23,7 @@ requirements to candidate code and tests.
 | FEAT-MIDI | None | Not started | Unknown | Event formats, scheduling and note-state logic |
 | FEAT-AUTOMATION | None | Not started | Unknown | Curve/override schemas, interpolation and undo paths |
 | FEAT-DEVICES | None | Not started | Unknown | Preset/state schemas and bounded DSP derivations |
-| FEAT-HOSTING | None | Not started | Unknown | Host interfaces, lifecycle and error paths |
+| FEAT-HOSTING | Draft [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md) r1 (discovery only); no handoff | Not started | Unknown; 42 draft cases not run | PRB-H1-01 to 08, PRB-N4-01, 02, 05; lifecycle, state, latency |
 | FEAT-WARP | None | Not started | Unknown | Mode/settings and algorithm analysis; flag numerical comparisons |
 | FEAT-PERSISTENCE | Draft [SPEC-ALS-CONTAINER](../specs/als-container.md) r1 (envelope only); no handoff | Not started | Unknown; 27 draft cases not run | PRB-N2-01 to 07; Live Set save call site; set content, migration, recovery |
 | FEAT-UI | None | Not started | Unknown | UI resources, bindings and command/focus dispatch |

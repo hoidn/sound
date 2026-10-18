@@ -1545,3 +1545,15 @@ Live's x86_64 slice finished analysis (1:39:43, 414,791 functions) and bulk deco
 with evidence in `analysis/ableton-live-12.4.3/r2/c1-live-x86-v1/`. It is a cross-check
 build; specifications stay derived from arm64. Investigator N8 now uses it for the
 ReWire and MultiF0 questions in Q-013 and to cross-check the arm64 transport readings.
+
+## [2026-10-17] spec | SPEC-PLUGIN-DISCOVERY r1 (D1)
+
+Drafted [SPEC-PLUGIN-DISCOVERY](specs/plugin-discovery.md) revision 1 from the H1
+scanner and N4 Live-side evidence: 16 requirements, 42 unexecuted cases (6 unresolved).
+Nothing was executed. Every static clause was rechecked against retained pseudocode.
+New: the VST2 system folders, case-insensitive `.vst` matching, deletion of a changed
+module's old plug-ins on re-examination, and host answers defaulting to 0. The crash-state
+update runs once per format pass, which corrects the scanner page's crash timing
+(outcome unchanged); correction notes added there and on the helper-launch page. PD-10
+and PD-12 stay unknown pending PRB-H1-02 and PRB-H1-04. Updated the spec index (candidate
+row replaced), feature map, coverage and Q-016, and regenerated the spec browser.

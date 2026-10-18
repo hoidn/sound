@@ -131,6 +131,10 @@ from the 1000 increments).
 
 ## Plug-in scanner
 
+Addition 2026-10-17 from the [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md)
+draft check: the VST2 system folders are `~/Library/Audio/Plug-Ins/VST` and
+`/Library/Audio/Plug-Ins/VST`.
+
 Mediator `TPluginScannerMediator` (anonymous namespace; listener lambda RTTI
 referenced from `0x10317c884`).
 

@@ -161,6 +161,12 @@ passes it is unknown (PRB-H1-01).
 
 ## Formats, enumeration and loading
 
+Corrections 2026-10-17 from the [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md)
+draft check: the VST2 `.vst` match ignores letter case (the VST3 `.vst3` match is
+case-sensitive), and the crash-state update runs once per format pass, so with both
+formats searched a crashed module is disabled within the next session rather than
+the one after; the outcome (never examined again) is unchanged.
+
 | Aspect | VST3 | VST2 |
 | --- | --- | --- |
 | Candidate walk | `0x1005e8cb4`: recursive iterator (options value 5, meaning unresolved). Each entry is canonicalized; a directory seen before is not descended again; a `.vst3` entry is a candidate and is not descended into. Candidates are a set of canonical paths per domain. Failures log `Can't resolve path:` and `Reading directory failed:` | `0x1005aad10`: breadth-first walk with a visited-folder set. A directory named `*.vst` (exact 4-byte `.vst` suffix) is a candidate. Other directories are queued with a relative path. Plain files are ignored. Failures log `VST2: Failed to scan folder:` |
