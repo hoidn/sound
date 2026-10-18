@@ -1687,3 +1687,13 @@ enumerations and the setting ranges and defaults are recorded; the piecewise-lin
 inferred. Candidates WM-01 to WM-16; probes PRB-S8-01 to 11. Gaps: the conversion routine, load
 handling of malformed lists and values, the Transient Envelope range, and the stretching
 algorithms. Nothing executed.
+
+## [2026-10-17] spec | SPEC-CLIP-LAUNCH r1 (D3)
+
+Drafted [SPEC-CLIP-LAUNCH](specs/clip-launch.md) revision 1 from the S5 evidence: 23 requirements,
+56 unexecuted cases (4 not graded, 2 without a fixture). No query was issued; every static clause
+was rechecked against the retained s5 dossiers, and the grid jump table, migration table and
+lattice sentinels were re-read from the image. Clauses that rest on uninterpreted steps name
+assumptions A1 to A6. Correction added to [clip launch](research/clip-launch.md): the default set
+falls under scene migration step 12203. REQ-017's near-boundary clause stays unknown until
+PRB-S5-01. Updated the spec index (candidate row replaced), feature map, coverage and Q-017.

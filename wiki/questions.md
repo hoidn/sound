@@ -308,6 +308,11 @@ no experimental contradiction has been established yet.
   near-boundary clause before PRB-S5-01.
 - Next action: resolve the virtual target through the fire manager's vtable stores;
   otherwise run PRB-S5-01 to 11.
+- Progress 2026-10-17 (D3): [SPEC-CLIP-LAUNCH](specs/clip-launch.md) r1 keeps REQ-017's near-boundary clause
+  and REQ-018 to 023 unknown with these probes. New gaps: missing or out-of-range
+  `GlobalQuantisation` and `AutoQuantisation` (no S5 probe; extend PRB-S5-09 or 10), reachability of
+  migration step 17, clips with several time-signature entries, and the uninterpreted slot-state
+  test behind the clip-grid choice (assumption A1).
 
 ## Q-018 MIDI note key range and ordering after load
 

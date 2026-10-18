@@ -17,7 +17,7 @@ requirements to candidate code and tests.
 | Feature ID | Spec/handoff | Implementation | Verification | Next evidence |
 | --- | --- | --- | --- | --- |
 | FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2; [transport-state-v1](../../handoff/transport-state-v1/README.md) released (18 cases) | Not started | Unknown; 18 release cases and 22 draft cases not run | PRB-N1-01 to 08; transition logic |
-| FEAT-SESSION | Candidates CL-01 to CL-23 ([clip launch](../research/clip-launch.md)); no draft; no handoff | Not started | Unknown | PRB-S5-01 to 11; launch-mode branches |
+| FEAT-SESSION | Draft [SPEC-CLIP-LAUNCH](../specs/clip-launch.md) r1; no handoff | Not started | Unknown; 56 draft cases not run | PRB-S5-01 to 11; set-level variant for missing or out-of-range global quantization; launch-mode branches |
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
 | FEAT-AUDIO | None; candidates MX-01 to MX-15 for SPEC-MIXER-VALUES ([mixer values](../research/mixer-values.md)) | Not started | Unknown | Logic-to-engine volume and send port domain (Q-019); PRB-S9-01 to 08; routing and DSP paths; flag latency for later measurement |
 | FEAT-MIDI | None; candidates MN-01 to MN-24 in [MIDI note storage](../research/midi-note-storage.md) | Not started | Unknown | Draft SPEC-MIDI-NOTE-STORAGE; PRB-S7-01 to 10; scheduling and note-state logic |

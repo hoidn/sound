@@ -83,6 +83,10 @@ Observed (`evolution`). Ordering is by file name, as in S1.
 The integer domains and their meanings are not in the schema. They come from the
 native code below.
 
+Correction 2026-10-17 from the [SPEC-CLIP-LAUNCH](../specs/clip-launch.md) draft check: `DefaultLiveSet.als`
+(schema `12.0_12117`) falls under scene migration step 12203, so a shipped document does run a
+migration step; migration step 17 predates every shipped schema and its reachability is unknown.
+
 ## Values in shipped documents
 
 Observed over 376 LiveSet documents: 375 written by `12.4d1` at `12.0_12402` and one,
