@@ -151,3 +151,46 @@ condition. Preparation is the default; actual target import requires `--execute`
 after the coordinator has stopped the unsuccessful default-profile run. This
 route is not a replacement for full-inventory coverage. Compilation and synthetic
 model tests do not establish native-output correctness.
+
+## Revision 2 saved-project scripts (C1/C2 and queries)
+
+All three scripts open a saved, analyzed project read-only (`-process PROGRAM
+-noanalysis -readOnly`) and never re-run analysis. Ghidra lets only one process
+hold a project, even read-only, so the bulk jobs hold `projects/LiveR2` while the
+dossier server holds its own copy under `/var/tmp/sound-analysis/query/`.
+
+- [R2FunctionDossier.java](ghidra/R2FunctionDossier.java) answers investigator
+  queries (address, symbol or `str:` string) with function dossiers, pseudocode
+  and reference reports, one-shot or as a spool-directory server; its header
+  comment gives the usage line. See the [query route](../wiki/research/r2-query-route.md).
+
+[R2BulkDecompile.java](ghidra/R2BulkDecompile.java) decompiles every non-external
+function in one headless JVM with one decompiler per worker thread and a
+60-second per-function timeout. It writes
+`run.json`, fixed-size `chunks/chunk-NNNNN.jsonl` files (one record per function:
+entry, name, body ranges, signature, state, warnings/error, code bytes, SHA-256
+and the exact code) and `coverage.json`. Reruns validate and skip committed
+chunks; `instances=K` spreads threads over K read-only program instances in the
+same JVM to avoid the program database lock; `shard=i/n` selects every n-th
+chunk for a spread sample or for several JVMs on separate project copies
+writing into the same output.
+[R2ExportIndexes.java](ghidra/R2ExportIndexes.java) writes deterministic
+`strings`, `calls`, `indirect`, `vtables` and `aliases` JSONL files plus a
+manifest; it can be a second `-postScript` in the same invocation.
+[r2_corpus.py](r2_corpus.py) verifies both outputs without running Ghidra.
+The [corpus tooling page](../wiki/research/r2-corpus-tooling.md) records the
+design, Push2 measurements, Live projection and the exact Live command.
+
+```sh
+analyzeHeadless PROJECT_DIR PROJECT -process PROGRAM -noanalysis -readOnly \
+  -scriptPath tools/ghidra \
+  -postScript R2BulkDecompile.java out=CORPUS threads=N [instances=K] [chunk=200] [shard=i/n] \
+  -postScript R2ExportIndexes.java out=INDEXES
+python3 tools/r2_corpus.py corpus CORPUS
+python3 tools/r2_corpus.py indexes INDEXES
+python3 -m unittest discover -s tools/tests -p 'test_r2_*.py' -v
+```
+
+The chunk corpus is not the `export_native_corpus.py` layout and cannot be
+ingested by it: that ingester accepts only REA `ev_` evidence records. The page
+gives the conversion path.

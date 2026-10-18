@@ -1139,3 +1139,19 @@ running scripts are no longer edited in place. Started a full analysis of Live's
 x86_64 slice (SHA-256 `1bae9a97…be999b0`) as a second compile of the same source
 for cross-checking arm64 readings; this is a revision 1 backlog item using spare
 capacity, not a revision 2 gate. No behavior or compatibility claim.
+
+## [2026-10-17] maintenance | R2 C1/C2 corpus tooling
+
+Added `tools/ghidra/R2BulkDecompile.java`, `tools/ghidra/R2ExportIndexes.java`,
+`tools/r2_corpus.py` with 10 tests, and a tools README section; filed
+[corpus tooling](research/r2-corpus-tooling.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/c-tooling-v1/`. On Push2 (`5988ef09…`): 12,626
+eligible functions, one 60 s timeout failure, output byte-identical across 11
+thread, instance, JVM and kill-and-resume configurations; C2 deterministic. A single
+program instance serializes on the program lock (35% of 16-thread samples); separate
+instances in one JVM remove it. Chunked JSONL chosen (0.62 GB projected versus 9.4 GB
+per-function layout); the roadmap's C1 ingest line was revised. The coordinator
+re-ran the tests and compiled all R2 scripts against Ghidra 12.1.4. The agent's
+report of a renamed roadmap heading was checked and is wrong; the anchor resolves.
+Gaps: not yet run on Live; scaling measured under load 12 to 36; hard-linked project
+copies share `project.prp` and `user/~index.dat`, so query copies must privatize them.

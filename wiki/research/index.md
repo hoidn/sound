@@ -23,6 +23,7 @@ to the isolated implementation workspace.
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |
 | [Native export task plan](native-export-execution.md) | Implementation tasks and tool-validation state |
 | [Investigator query route](r2-query-route.md) | REA 6.5.0 versus saved projects, Push2 measurements, the R2FunctionDossier query server and concurrency choice |
+| [R2 corpus tooling](r2-corpus-tooling.md) | C1 bulk decompile and C2 index scripts: design, Push2 measurements, Live projection and run command |
 | [Next major phase roadmap](native-decompilation-roadmap.md) | Main Live code export, method/structure atlas and first handoff milestones; [revision 2](native-decompilation-roadmap.md#revision-2-proposal--2026-10-17) adopted 2026-10-17 |
 | [Binary and decompilation artifacts](artifacts/index.md) | Start here: searchable browser, package map, pseudocode, symbols and decoded modules |
 | [LLM Wiki source](sources/llm-wiki.md) | User-supplied documentation pattern and its project adaptation |

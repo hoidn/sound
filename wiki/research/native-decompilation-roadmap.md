@@ -506,8 +506,10 @@ M2–M4 as separate milestones.
   `RecoveryNativeExport.java` (DecompInterface, 60 s timeout) running parallel
   decompiler instances across cores against the saved project. Sample 10,000
   functions first to measure latency spread, bytes per function and failure
-  rate; then attempt every eligible row. Ingest through
-  `export_native_corpus.py check` into the layout above.
+  rate; then attempt every eligible row. Revised 2026-10-17: output is chunked
+  JSONL checked by `tools/r2_corpus.py`, because `export_native_corpus.py`
+  ingests only REA evidence records and its per-function layout would take about
+  9.4 GB; see [corpus tooling](r2-corpus-tooling.md#storage-choice).
 - C2 Derived indexes the spec work needs: string-to-reference table, call-graph
   edges, indirect-call and vtable candidates, symbol aliases. JSONL, rebuilt
   from the project, never hand-edited.
