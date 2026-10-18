@@ -2,7 +2,7 @@
 id: RESEARCH-ABLETON-STRUCTURE
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -101,3 +101,21 @@ Decompilation readiness: proven for the smaller Push2 helper; core Live is
 prepared and accepted by Ghidra but not deeply analyzed. Behavioral spec readiness:
 concrete evidence seeds and acceptance-case plans exist; no behavior is verified
 and no handoff has been released. See the [next-stage plan](ableton-decompilation-preparation.md).
+
+## Serialization vocabulary strings and shipped documents — 2026-10-17
+
+Observed on the Linux workstation against the re-derived `Live.arm64`
+(SHA-256 `3a99cee…383cfad`) with `strings -n 4 | grep -x`: the image contains
+exactly one null-terminated instance each of `LoopOn`, `LoopStart`, `LoopLength`,
+`Tempo`, `SchemaChangeCount`, `MajorVersion`, `MinorVersion` and `Creator`,
+four of `LiveSet` and five of `Transport`. These names match the schema and
+ALS vocabulary in the [transport study](native-transport-study.md#evidence-already-available).
+Their presence is a fact about bytes; which code references them, and whether
+that code reads or writes documents, is unknown until cross-references are
+resolved in an analyzed project.
+
+Observed with `find` over `Contents/App-Resources`: 52 `.als` sets, 700 `.alc`
+clips, 5,114 `.adv` presets, 2,144 `.adg` racks, 438 `.agr` grooves, 6 `.alp`
+packs, 4,378 `.xml` and 1,160 `.txt` files; `Schema/` holds 203 versioned
+descriptions. Core Library and Builtin total about 4.3 GiB. Counts are file
+inventory, not parsed or validated documents.

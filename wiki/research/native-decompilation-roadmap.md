@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-DECOMPILATION
 type: research
 status: current
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 revision: 1
@@ -457,3 +457,103 @@ Main-image scale/export recovery is tracked as Q-011. Choose an evidence retenti
 destination before treating local ignored artifacts as durable beyond this host.
 The operational defaults in this draft can be tuned by the pilot; target build,
 architecture, phase scope and evidence boundaries must remain explicit.
+
+## Revision 2 proposal — 2026-10-17
+
+**Status: proposed, not adopted.** Revision 1 above remains the authorized plan
+until the user decides. This section proposes how to restart on the Linux
+workstation recorded in the [provisioning record](native-phase-execution.md#linux-workstation-provisioning--2026-10-17)
+and how to turn decompilation into specifications faster than the first pass did.
+
+### What changed since revision 1
+
+| Revision 1 assumption | Situation now |
+| --- | --- |
+| Ephemeral REA session on a 16 GiB macOS host; bulk export in capacity-gated 1,000-entry MCP stages | 125 GiB RAM, 32 CPUs, 36 GiB free on the root filesystem; durable project storage undecided; Live cannot execute on this host |
+| Retained corpus, inventory and coverage ledger available locally | Absent here; restore from the macOS host or regenerate as a new inventory revision |
+| Semantic work seeded from factory symbols outward | Two transport packets reached an indirect dispatch and produced no external contract |
+| REA 6.3.0 lifecycle observations | REA 6.5.0 installed; its source is uninspected |
+
+New observations in [package structure](ableton-package-structure.md#serialization-vocabulary-strings-and-shipped-documents--2026-10-17):
+the image contains exact strings for the document vocabulary (`LoopOn`,
+`Tempo`, `SchemaChangeCount` and others) and the bundle ships thousands of
+`.als`/`.alc`/`.adv`/`.adg` documents plus 203 schema versions. Both support
+an outside-in method that was not used in the first pass.
+
+### Proposed sequencing
+
+**Phase 0 — Restart gates.**
+
+| Gate | Work | Exit | Owner |
+| --- | --- | --- | --- |
+| G0.1 Storage | Choose a durable, user-owned location with at least 40 GiB for project, corpus and indexes: a `sudo`-created root-filesystem directory or freed `/home` capacity | Path recorded in the ledger with measured free bytes | User |
+| G0.2 Evidence | Copy the macOS `analysis/` tree and verify its checksum manifests; otherwise record it as lost on the source page and treat ledger counts as historical | Links resolve, or the loss is recorded | Analyst |
+| G0.3 Persistent project | `analyzeHeadless` import of `Live.arm64` with `-noanalysis`, one measured full analysis, save, hash `.gpr`/`.rep`, cold reopen proof | Reopen succeeds; duration, heap, CPU and bytes recorded; discovered-function count compared with 418,418 as a new inventory revision | Analyst |
+
+G0.3 starts as soon as G0.1 is decided; it does not wait for G0.2. Gates such
+as the two-thread pin in `RecoveryLaunchGate.java` and the 4 GiB heap were
+measured on the macOS host and must be re-measured here, not inherited.
+
+**Phase 1 — Corpus as one measured batch job.** Replaces the remainder of
+M2–M4 as separate milestones.
+
+- C1 Bulk decompile: a headless post-script derived from
+  `RecoveryNativeExport.java` (DecompInterface, 60 s timeout) running parallel
+  decompiler instances across cores against the saved project. Sample 10,000
+  functions first to measure latency spread, bytes per function and failure
+  rate; then attempt every eligible row. Ingest through
+  `export_native_corpus.py check` into the layout above.
+- C2 Derived indexes the spec work needs: string-to-reference table, call-graph
+  edges, indirect-call and vtable candidates, symbol aliases. JSONL, rebuilt
+  from the project, never hand-edited.
+- C3 Browser regeneration and one real-browser navigation check.
+
+Exit: every inventory row has an outcome, failures stay failures,
+`coverage.json` is regenerated and every index checks against the project.
+
+**Phase 2 — Specification packets, anchored from the outside in.** The method
+change: begin at externally observable artifacts (document fields, shipped
+documents, user-visible strings) and trace into code through references, instead
+of from factories outward. Keep the revision 1 packet format, the eight-dossier
+budget and retained negative results.
+
+| Packet | Bounded question | Anchors | Deliverable |
+| --- | --- | --- | --- |
+| S1 Transport-state fields | How are `Tempo`, `LoopOn`, `LoopStart`, `LoopLength` and time signature read, defaulted and written? | Field-name string references; schema declarations across 203 versions; value statistics over the 52 sets and 700 clips; the twelve prepared P1 inputs | `SPEC-TRANSPORT-STATE` draft; first native-backed handoff candidate, unchanged from revision 1 |
+| S2 Container and version envelope | What gzip/XML envelope, root attributes and schema versions does the 12.4.3 loader accept? | `MajorVersion`/`MinorVersion`/`SchemaChangeCount`/`Creator` references; schema deltas | `SPEC-ALS-CONTAINER` draft supporting the save/reopen scenario |
+| S3 Transport transitions | What does Start, Stop and loop toggling change observably? | Resume from the shared helper's indirect target using the C2 call and vtable index | Transition table, or an ADR 0002 escalation record for Phase 4 |
+| S4 MIDI mapping closure | Which further clauses of the 13-requirement draft are supportable? | Existing research and Q-008–Q-010 | Release more clauses or freeze; fallback remains |
+| S5 Clip launch and quantization | After S1–S3 | Session/clip references and schemas | Queued |
+
+Each packet yields a draft page under `wiki/specs/` with requirement IDs, a
+feature-map link, statically derived acceptance cases and explicit unknowns.
+
+**Phase 3 — Handoffs.** H2 releases the transport-state document subset from S1
+(with S2 if supportable) under the release workflow; H3 releases the container
+and version contract. The MIDI fallback is used only if H2 cannot be supported,
+and the report states which path shipped.
+
+**Phase 4 — Reference observation batch.** This host cannot run Live. Collect
+every runtime-dependent question left by S1–S3 into one prepared probe batch
+with inputs, discriminating observation and stopping condition per
+[ADR 0002](../decisions/adr-0002-static-first-analysis.md), to run in a single
+sitting on the macOS host with retained captures. It is not a gate for Phases
+1–3.
+
+### Accounting and policy
+
+The four dashboards in the coverage policy above are unchanged. Phase 1 reports
+attempted/eligible and succeeded/eligible separately. The 25% free-disk headroom
+rule stays. The single-native-worker rule becomes a single project writer;
+parallel decompiler threads inside that one process are allowed once measured.
+Pedagogy continues as one lesson per packet rather than a separate gate.
+
+### Routing effect if adopted
+
+Before: M1 passed, M2 partial, M3 at 0.485%, M4 partial, M5 partial, M6
+shipped the fallback. After: G0.1–G0.3, C1–C3, S1–S5, H2–H3 and the Phase 4
+batch are all pending; G0.1 is blocked on the user. Next item: G0.1, then G0.3
+immediately. Nothing here changes ADR 0002, the handoff boundary, evidence
+rules or the prohibition on implementation in this checkout. Export remains a
+deliverable, delivered as one measured job rather than as the gate for
+specification work.

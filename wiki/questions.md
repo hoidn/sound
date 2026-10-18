@@ -157,3 +157,6 @@ no experimental contradiction has been established yet.
   every linked capture is unavailable until restored from the macOS host. The
   persistent-project storage location is undecided; see the
   [Linux paths](research/native-analysis-recovery.md#linux-workstation-paths--2026-10-17).
+- Proposal 2026-10-17: [roadmap revision 2](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
+  sequences the storage decision, a persistent project, one measured corpus
+  batch and outside-in specification packets; pending decision.

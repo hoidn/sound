@@ -2,7 +2,7 @@
 id: NAV-RESEARCH
 type: index
 status: active
-updated: 2026-10-12
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -22,7 +22,7 @@ to the isolated implementation workspace.
 | [Linker function-start index design](function-starts-design.md) | Bounded Mach-O metadata navigation, distinct from analyzer-discovered functions |
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |
 | [Native export task plan](native-export-execution.md) | Implementation tasks and tool-validation state |
-| [Next major phase roadmap](native-decompilation-roadmap.md) | Main Live code export, human-readable method/structure atlas and first handoff milestones |
+| [Next major phase roadmap](native-decompilation-roadmap.md) | Main Live code export, method/structure atlas and first handoff milestones; [revision 2 restart proposal](native-decompilation-roadmap.md#revision-2-proposal--2026-10-17) pending decision |
 | [Binary and decompilation artifacts](artifacts/index.md) | Start here: searchable browser, package map, pseudocode, symbols and decoded modules |
 | [LLM Wiki source](sources/llm-wiki.md) | User-supplied documentation pattern and its project adaptation |
 | [REA reading list](sources/rea-reading-list.md) | External methodology references with explicit archival limitations |

@@ -1013,3 +1013,15 @@ macOS `analysis/` evidence tree is absent, persistent-project storage is
 undecided, REA 6.5.0 source is uninspected, and no Live analysis ran.
 Lint: relative links on all edited pages resolve except the pre-existing
 `analysis/` references noted on 2026-10-17; `git diff --check` clean.
+
+## [2026-10-17] maintenance | Roadmap revision 2 proposal
+
+Appended a proposed, not adopted, [revision 2](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
+to the decompilation roadmap: restart gates (storage, evidence restoration,
+persistent project), corpus export as one measured batch, outside-in
+specification packets anchored on document vocabulary strings and shipped
+documents, handoffs, and a macOS-only probe batch. Recorded the supporting
+[string and document observations](research/ableton-package-structure.md#serialization-vocabulary-strings-and-shipped-documents--2026-10-17).
+Updated the research index, [project status](project.md) and Q-011. Revision 1
+remains authorized; frontmatter revision is unchanged. Lint: relative links and
+anchors on edited pages resolve; `git diff --check` clean.

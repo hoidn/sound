@@ -35,7 +35,8 @@ systematic main Live decompilation, browsable function exports, an accessible
 method guide and evolving program-structure atlas, native behavior studies and
 a first reviewed handoff. The [execution plan](research/native-phase-execution.md)
 records actual progress and resource limits. Current implementation and
-verification states remain unchanged.
+verification states remain unchanged. A [revision 2 proposal](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
+for restarting on the Linux workstation awaits the user's decision.
 
 ## Milestones
 
