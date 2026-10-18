@@ -1,0 +1,82 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet N2 (S2 native half)",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Pin the Live executable and Contents/App-Resources/Schema digests before the sitting; do not modify the bundle",
+  "Use copies of the case files from cases/ (cases.json gives SHA-256); open each with File > Open Live Set from a fresh launch with no unsaved set",
+  "Retain Log.txt, a screen capture of every dialog, and the bytes of every saved file; record whether the previously open set is still open after a failed load"
+ ],
+ "probes": [
+  {
+   "id": "PRB-N2-01",
+   "requirements": ["REQ-ALS-CONTAINER-007", "REQ-ALS-CONTAINER-008"],
+   "question": "What exact bytes does 12.4.3 write when saving a new Live Set?",
+   "existing_evidence": "Writer 0x101485240: declaration constant 0x105b9b2b2, root 'Ableton', MajorVersion literal 5, MinorVersion '12.0' + '_' + newest translator (12402 from registry 0x10148ec98), SchemaChangeCount when > 0, Creator 'Ableton ' + 'Live 12.4.3', Revision e3d8be4d07c71dbd4de9e4183bf90652f680375b; gzip via deflateInit2_(level, 8, 31, 9, 0) in 0x1014338b0",
+   "why_static_insufficient": "The Live Set save reaches 0x101485c50 through a virtual call whose site and compression-level argument were not identified; SchemaChangeCount comes from a startup comparison with Schema/12.0_12402.txt; whitespace comes from writer virtual methods",
+   "minimal_input": "Fresh launch, File > New Live Set, File > Save Live Set As 'n2-probe-01.als'",
+   "discriminating_observation": "First 10 bytes (gzip or not; XFL 0/2/4; OS byte; MTIME; FLG), decompressed first two lines byte-for-byte, attribute order and values, line terminator and indentation of the third line",
+   "stopping_condition": "One saved file captured and hashed; stop"
+  },
+  {
+   "id": "PRB-N2-02",
+   "requirements": ["REQ-ALS-CONTAINER-001"],
+   "question": "Does File > Open accept an uncompressed .als, and does a later save keep it uncompressed?",
+   "existing_evidence": "Dispatchers 0x10148389c and 0x10146c258 route a stream starting with '<?' to the XML reader without an extension check",
+   "why_static_insufficient": "The open command's own checks before the dispatcher are not traced",
+   "minimal_input": "cases/N2-002.als (plain), then Save",
+   "discriminating_observation": "Set opens or not; saved file magic 1f 8b versus '<?'",
+   "stopping_condition": "One open and one save; stop"
+  },
+  {
+   "id": "PRB-N2-03",
+   "requirements": ["REQ-ALS-CONTAINER-001", "REQ-ALS-CONTAINER-002", "REQ-ALS-CONTAINER-003", "REQ-ALS-CONTAINER-005", "REQ-ALS-CONTAINER-009"],
+   "question": "What does the user see for each corrupt-document case, and does the previous set stay open?",
+   "existing_evidence": "Corrupt errors use localized key sErrorDocumentCorruptWhileReading (0x10148229c) with the document and a detail string formatted '{} (at line {}, column {})' (0x101247760); Languages.alp is opaque",
+   "why_static_insufficient": "Localized text, dialog layout and whether the detail is shown cannot be read statically",
+   "minimal_input": "cases N2-003, N2-005, N2-006, N2-008, N2-010, N2-011, N2-015, N2-017, N2-025, N2-026",
+   "discriminating_observation": "Dialog text for each; Log.txt lines; whether a set remains open",
+   "stopping_condition": "Ten opens captured; stop at the first case that opens instead of failing and record it as a contradiction"
+  },
+  {
+   "id": "PRB-N2-04",
+   "requirements": ["REQ-ALS-CONTAINER-004"],
+   "question": "What newer-version message is shown, and is the version text taken from Creator?",
+   "existing_evidence": "0x101528c84 chooses sErrorDocumentIsFromNewerVersion (empty Creator-derived version) or sErrorDocumentIsFromSpecificNewerVersion with the Creator remainder; 0x1015289c8 falls back to '<a>.<b>' from MinorVersion for a newer family",
+   "why_static_insufficient": "Localized texts are opaque; the general reader entry sets no expected Creator prefix, so the remainder may be the whole Creator",
+   "minimal_input": "cases N2-013 (MajorVersion 6), N2-019 (12.0_12403); then N2-019 with Creator removed",
+   "discriminating_observation": "Dialog text and whether it contains '12.4d1', 'Ableton Live 12.4d1' or no version",
+   "stopping_condition": "Three opens captured; stop"
+  },
+  {
+   "id": "PRB-N2-05",
+   "requirements": ["REQ-ALS-CONTAINER-004", "REQ-ALS-CONTAINER-005"],
+   "question": "Which reader entry does File > Open use, as shown by unknown MinorVersion families and gap translators?",
+   "existing_evidence": "With the Creator-aware entry 0x10146c0d4 the current version is (12, 4): 13.0_13000 is newer and 12.0_12050 is corrupt; the general entry 0x101484108 never sets those fields",
+   "why_static_insufficient": "Uninitialized comparison operands on the general path",
+   "minimal_input": "cases N2-018 (12.0_12050) and N2-020 (13.0_13000)",
+   "discriminating_observation": "Corrupt versus newer-version dialog for each",
+   "stopping_condition": "Two opens captured; stop"
+  },
+  {
+   "id": "PRB-N2-06",
+   "requirements": ["REQ-ALS-CONTAINER-003", "REQ-ALS-CONTAINER-005", "REQ-ALS-CONTAINER-006"],
+   "question": "Do the statically accepted envelope variants open?",
+   "existing_evidence": "Version check 0x101529024 accepts MajorVersion 4 or 5 and any MinorVersion naming a Schema file; Revision is never read; Creator and SchemaChangeCount are optional; unknown root attributes are not examined",
+   "why_static_insufficient": "Whole-set loading after the envelope check was not traced",
+   "minimal_input": "cases N2-012, N2-014, N2-021, N2-022, N2-023, N2-024",
+   "discriminating_observation": "Each opens without a dialog, or the dialog text",
+   "stopping_condition": "Six opens captured; stop"
+  },
+  {
+   "id": "PRB-N2-07",
+   "requirements": ["REQ-ALS-CONTAINER-001"],
+   "question": "What happens with a truncated gzip .als?",
+   "existing_evidence": "Gzip is reopened by file path through a gzip stream object (0x10146208c); its error handling was not traced",
+   "why_static_insufficient": "Gzip stream read errors were not traced",
+   "minimal_input": "cases/N2-027.als",
+   "discriminating_observation": "Dialog text and Log.txt",
+   "stopping_condition": "One open captured; stop"
+  }
+ ]
+}
