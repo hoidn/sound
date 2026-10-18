@@ -95,6 +95,12 @@ no experimental contradiction has been established yet.
   but host diagnostics, profile recovery and invalid-mode outcome remain unknown.
 - Next action: trace the relevant host/loader exception boundary; only if that
   cannot resolve a selected contract, design a minimal malformed-profile probe.
+- Progress 2026-10-17: [spec revision 2](specs/midi-user-mapping.md) fixes statically
+  which inputs raise out of profile construction (noninteger pad values,
+  interpolation, duplicates, pre-section text, invalid Booleans; no handler) and
+  how an unknown mode token is passed on. Host outcomes remain open as PRB-S4-03/04
+  in the [S4 probe batch](research/midi-closure-r2.md#phase-4-probe-batch); the
+  [midi-config-v2 candidate](specs/midi-config-v2-handoff-plan.md) excludes them.
 
 ## Q-009 MIDI numerical modes, timing and feedback
 
@@ -105,6 +111,11 @@ no experimental contradiction has been established yet.
   feedback bytes, seek/nudge timing and remaining bank/lock boundaries.
 - Next action: select a single mode or boundary and trace its native dependency;
   reserve actual timing/audio assertions for measured comparisons.
+- Progress 2026-10-17: revision 2 adds static map-mode scope, the 14-bit label
+  threshold and, as open S-cond clauses, crossfader takeover off, the absent
+  mute-feedback default and feedback eligibility. Transforms, feedback bytes and
+  timing remain PRB-S4-05/06/07/13; bank contents need `_Generic/Devices` traced
+  before PRB-S4-09.
 
 ## Q-010 MIDI discovery, lifecycle and interaction
 
@@ -116,6 +127,11 @@ no experimental contradiction has been established yet.
   bank/lock persistence, automation and undo membership.
 - Next action: trace discovery/teardown and persistence entry points for one
   selected lifecycle case before deciding whether runtime capture is necessary.
+- Progress 2026-10-17: discovery, reload, teardown, encoding and strip-to-track
+  ordering remain PRB-S4-01/02/11/14/15/16; native strings are adjacency only.
+  Revision 2 adds a routing refinement pending review: a `Send2Knob`*N* without
+  a valid `Send1Knob`*N* reaches the strip's first send, contrary to a literal
+  reading of the template (D5) and to S4 draft case S4-MIDI-030.
 
 ## Q-011 Main Live export capacity and recovery
 

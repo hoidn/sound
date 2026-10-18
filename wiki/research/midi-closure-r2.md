@@ -101,6 +101,12 @@ oracle. Every case is unexecuted for both reference and candidate. Excluded:
 raising inputs, unknown tokens, collisions, non-ASCII and every behavioral
 transition.
 
+Correction 2026-10-17: draft case S4-MIDI-030 expected a lone `Send2Knob1` to
+target Send B. The spec revision 2 check found that send knobs are compacted per
+strip and connected by position, so a lone Send2 knob reaches Send A. The v2
+candidate excludes the lone-Send2 input and uses MIDI-CONFIG-084, which enables
+both knobs of strip 1; see [spec revision 2](../specs/midi-user-mapping.md).
+
 ## Phase 4 probe batch
 
 [probe-batch.json](../../analysis/ableton-live-12.4.3/r2/s4-midi-v1/probe-batch.json)

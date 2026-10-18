@@ -2,7 +2,7 @@
 id: NAV-SPECS
 type: index
 status: active
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -16,8 +16,9 @@ only four explicitly partial clauses; the wider MIDI draft remains unreleased.
 | Page                                                           | Purpose                                                                     |
 | -------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | [MIDI configuration handoff plan](midi-config-handoff-plan.md) | Finite static-supported release candidate and review gates                  |
+| [MIDI configuration v2 handoff plan](midi-config-v2-handoff-plan.md) | Staged midi-config-v2 candidate (109 cases), traceability and review gates |
 | [Feature map](feature-map.md)                                  | Whole-app planning inventory and stable feature IDs                         |
-| [MIDI user mapping](midi-user-mapping.md)                      | Draft configuration/routing contract; static expectations, unexecuted cases |
+| [MIDI user mapping](midi-user-mapping.md)                      | Revision 2 draft: documented, static, static-conditional and unknown clauses; static expectations, unexecuted cases |
 
 Author bounded contracts with the [spec template](../../templates/spec.md).
 Each future spec gets requirement IDs, a feature-map link, original-side evidence,

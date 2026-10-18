@@ -1111,3 +1111,18 @@ server on a hard-linked LiveR2 copy; filed as [query route](research/r2-query-ro
 and recorded the decision in the roadmap's provider-routing paragraph, the export
 guide and the provisioning table. Evidence: `analysis/ableton-live-12.4.3/r2/e-rea-v1/`.
 Gaps: Live open time, RAM and project size; `str:` scan cost on Live.
+
+## [2026-10-17] spec | MIDI user mapping revision 2 and midi-config-v2 candidate
+
+Applied the S4 closure assessment to [spec revision 2](specs/midi-user-mapping.md),
+re-checking each new clause against the S4 listings. Each requirement is split into
+documented, static, static-conditional and unknown clauses with locators and probe
+IDs. The check rejected draft case S4-MIDI-030: send knobs are compacted per strip,
+so a lone Send2 knob reaches Send A; recorded as an unreviewed refinement and noted
+on the [closure page](research/midi-closure-r2.md). Staged the
+[midi-config-v2 candidate](specs/midi-config-v2-handoff-plan.md): 109 unexecuted
+cases (54 restated from v1, 55 new), a draft manifest of 113 files, exclusions and
+the supersession change list. Author checks passed: model cross-check, hashes,
+isolated links, sanitization. Updated the feature-map and coverage rows and
+Q-008 to Q-010 progress. Gaps: separate review pending; bytecode digest match to
+the v1 pins unknown until G0.2; no reference or candidate run.
