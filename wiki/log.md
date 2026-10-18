@@ -1777,3 +1777,15 @@ MIDI notes.
 
 The page self-test now checks this wiring against the offline node and passes
 3 of 3 runs; the 8 Node tests pass.
+
+## [2026-10-17] spec | SPEC-WARP-MARKERS revision 1 (D7)
+
+Drafted [SPEC-WARP-MARKERS](specs/warp-markers.md) r1 from packet S8 (WM-01 to WM-16) plus query
+rounds d7-0001 and d7-0002 (16 dossiers): 16 requirements, 35 unexecuted cases (28 gradable, 7
+unresolved). New static result: the scripting sample/beat conversion is piecewise linear over the
+stored list, extending the first segment and the shadow segment, unclamped; playback mapping stays
+unknown (PRB-S8-08). Edit limits are narrowed to the scripting add. WM-04 and WM-15 dropped, WM-16
+excluded. The coordinator retained the d7 queries in `analysis/ableton-live-12.4.3/r2/d7-warp-v1/`,
+added an update note to [warp markers](research/warp-markers.md), and opened
+[Q-021](questions.md#q-021-warp-playback-mapping-and-load-handling). Updated the spec index
+(candidate row replaced), feature map and coverage. Nothing executed.

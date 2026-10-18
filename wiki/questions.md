@@ -377,3 +377,14 @@ no experimental contradiction has been established yet.
   when it is at 0 and unguarded in the reference (REQ-010, REQ-011). Unsorted events, missing
   attributes and duplicate Ids stay unknown pending PRB-S6-03 and 07. Probe follow-ups: PRB-S6-04
   needs a Pan variant (Volume 0 is below its stored minimum) and PRB-S6-07 a variant without `Id`.
+
+## Q-021 Warp playback mapping and load handling
+
+- State: open; owner: analyst.
+- Affects: FEAT-WARP, the draft [SPEC-WARP-MARKERS](specs/warp-markers.md).
+- Evidence: [warp markers](research/warp-markers.md).
+- Gap: whether playback uses the same piecewise-linear mapping as the scripting conversion;
+  load handling of malformed marker lists, missing or out-of-range values; the Transient
+  Envelope range; the warp mode an audio clip gets when the element is absent; the spec's
+  assumptions A1 to A3.
+- Next action: run PRB-S8-01 to 11, PRB-S8-08 first for playback.

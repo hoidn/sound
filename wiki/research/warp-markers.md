@@ -298,6 +298,13 @@ the discriminating observation and a stop condition.
 | PRB-S8-10 | Defaults when settings are absent, and the Default Warp Mode preference |
 | PRB-S8-11 | Per-mode renders kept for later candidate comparison |
 
+Update 2026-10-17 from the [SPEC-WARP-MARKERS](../specs/warp-markers.md) draft (queries d7-0001 and
+d7-0002, retained in `analysis/ableton-live-12.4.3/r2/d7-warp-v1/`): the conversion behind the
+scripting interface's sample-to-beat and beat-to-sample calls is piecewise linear over the stored
+marker list, extends the first segment before the first marker and the shadow segment from the
+last visible marker on, and does not clamp. The mapping used for playback remains unknown
+(PRB-S8-08).
+
 ## Unknowns
 
 - The user-visible outcome of the empty-list error, and whether the post-load hook
