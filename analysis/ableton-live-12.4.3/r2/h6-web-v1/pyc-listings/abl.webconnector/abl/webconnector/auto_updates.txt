@@ -1,0 +1,457 @@
+# source abl.webconnector/abl/webconnector/auto_updates.pyc
+# co_filename output/Live/mac_universal_64_static/Release/python-bundle/Python/abl.webconnector/abl/webconnector/auto_updates.py
+== <module> line 1 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_CONST                   0     0
+       4 LOAD_CONST                   1     ('standard_library',)
+       6 IMPORT_NAME                  0     future
+       8 IMPORT_FROM                  1     standard_library
+      10 STORE_NAME                   1     standard_library
+      12 POP_TOP                      0
+      14 PUSH_NULL                    0
+      16 LOAD_NAME                    1     standard_library
+      18 LOAD_ATTR                    2     install_aliases
+      28 PRECALL                      0
+      32 CALL                         0
+      42 POP_TOP                      0
+      44 LOAD_CONST                   0     0
+      46 LOAD_CONST                   2     None
+      48 IMPORT_NAME                  3     logging
+      50 STORE_NAME                   3     logging
+      52 LOAD_CONST                   0     0
+      54 LOAD_CONST                   2     None
+      56 IMPORT_NAME                  4     time
+      58 STORE_NAME                   4     time
+      60 LOAD_CONST                   0     0
+      62 LOAD_CONST                   3     ('Empty',)
+      64 IMPORT_NAME                  5     queue
+      66 IMPORT_FROM                  6     Empty
+      68 STORE_NAME                   6     Empty
+      70 POP_TOP                      0
+      72 LOAD_CONST                   4     1
+      74 LOAD_CONST                   5     ('EventTypes',)
+      76 IMPORT_NAME                  7     reporting
+      78 IMPORT_FROM                  8     EventTypes
+      80 STORE_NAME                   9     et
+      82 POP_TOP                      0
+      84 LOAD_CONST                   4     1
+      86 LOAD_CONST                   6     ('DownloadTask', 'PrepareAutoUpdateTask')
+      88 IMPORT_NAME                  10    tasks
+      90 IMPORT_FROM                  11    DownloadTask
+      92 STORE_NAME                   11    DownloadTask
+      94 IMPORT_FROM                  12    PrepareAutoUpdateTask
+      96 STORE_NAME                   12    PrepareAutoUpdateTask
+      98 POP_TOP                      0
+     100 LOAD_CONST                   4     1
+     102 LOAD_CONST                   7     ('assert_',)
+     104 IMPORT_NAME                  13    util
+     106 IMPORT_FROM                  14    assert_
+     108 STORE_NAME                   14    assert_
+     110 POP_TOP                      0
+     112 PUSH_NULL                    0
+     114 LOAD_NAME                    3     logging
+     116 LOAD_ATTR                    15    getLogger
+     126 LOAD_NAME                    16    __name__
+     128 PRECALL                      1
+     132 CALL                         1
+     142 STORE_NAME                   17    logger
+     144 LOAD_CONST                   8     <code check_and_process_auto_updates>
+     146 MAKE_FUNCTION                0
+     148 STORE_NAME                   18    check_and_process_auto_updates
+     150 LOAD_CONST                   11    (False,)
+     152 LOAD_CONST                   10    <code wait_for_confirmation_from_live>
+     154 MAKE_FUNCTION                1
+     156 STORE_NAME                   19    wait_for_confirmation_from_live
+     158 LOAD_CONST                   2     None
+     160 RETURN_VALUE                 0
+== check_and_process_auto_updates line 18 args ['connector', 'tags', 'current_version', 'usage_reporter'] flags 0x3
+       0 MAKE_CELL                    19    deltas
+       2 MAKE_CELL                    20    versions_to_deltas
+       4 RESUME                       0
+       6 LOAD_FAST                    0     connector
+       8 LOAD_METHOD                  0     cleanup_residue
+      30 PRECALL                      0
+      34 CALL                         0
+      44 POP_TOP                      0
+      46 LOAD_GLOBAL                  2     logger
+      58 LOAD_METHOD                  2     info
+      80 LOAD_CONST                   1     'Checking for auto updates from %s with tags %s'
+      82 LOAD_FAST                    2     current_version
+      84 LOAD_FAST                    1     tags
+      86 PRECALL                      3
+      90 CALL                         3
+     100 POP_TOP                      0
+     102 LOAD_FAST                    3     usage_reporter
+     104 LOAD_METHOD                  3     log
+     126 LOAD_GLOBAL                  8     et
+     138 LOAD_ATTR                    5     CHECK_FOR_UPDATES
+     148 LOAD_FAST                    2     current_version
+     150 LOAD_FAST                    1     tags
+     152 KW_NAMES                     2     ('current_version', 'tags')
+     154 PRECALL                      3
+     158 CALL                         3
+     168 POP_TOP                      0
+     170 LOAD_FAST                    0     connector
+     172 LOAD_METHOD                  6     check_for_auto_updates
+     194 LOAD_FAST                    1     tags
+     196 LOAD_FAST                    2     current_version
+     198 LOAD_CONST                   0     None
+     200 PRECALL                      3
+     204 CALL                         3
+     214 STORE_DEREF                  20    versions_to_deltas
+     216 LOAD_GLOBAL                  2     logger
+     228 LOAD_METHOD                  2     info
+     250 LOAD_CONST                   3     'Deltas found %s'
+     252 LOAD_DEREF                   20    versions_to_deltas
+     254 PRECALL                      2
+     258 CALL                         2
+     268 POP_TOP                      0
+     270 LOAD_DEREF                   20    versions_to_deltas
+     272 POP_JUMP_FORWARD_IF_TRUE     59
+     274 LOAD_GLOBAL                  2     logger
+     286 LOAD_METHOD                  2     info
+     308 LOAD_CONST                   4     'No update found; terminating'
+     310 PRECALL                      1
+     314 CALL                         1
+     324 POP_TOP                      0
+     326 LOAD_FAST                    3     usage_reporter
+     328 LOAD_METHOD                  3     log
+     350 LOAD_GLOBAL                  8     et
+     362 LOAD_ATTR                    7     NO_UPDATES_AVAILABLE
+     372 PRECALL                      1
+     376 CALL                         1
+     386 POP_TOP                      0
+     388 BUILD_LIST                   0
+     390 RETURN_VALUE                 0
+     392 LOAD_GLOBAL                  17    assert_
+     404 LOAD_CLOSURE                 20    versions_to_deltas
+     406 BUILD_TUPLE                  1
+     408 LOAD_CONST                   5     <code check_and_process_auto_updates.<locals>.<lambda>>
+     410 MAKE_FUNCTION                8
+     412 LOAD_CONST                   6     'more than one version to upgrade to returned!'
+     414 PRECALL                      2
+     418 CALL                         2
+     428 POP_TOP                      0
+     430 LOAD_GLOBAL                  19    list
+     442 LOAD_DEREF                   20    versions_to_deltas
+     444 LOAD_METHOD                  10    keys
+     466 PRECALL                      0
+     470 CALL                         0
+     480 PRECALL                      1
+     484 CALL                         1
+     494 LOAD_CONST                   7     0
+     496 BINARY_SUBSCR                0
+     506 STORE_FAST                   4     to_version
+     508 LOAD_GLOBAL                  2     logger
+     520 LOAD_METHOD                  2     info
+     542 LOAD_CONST                   8     'Found update to %s'
+     544 LOAD_FAST                    4     to_version
+     546 PRECALL                      2
+     550 CALL                         2
+     560 POP_TOP                      0
+     562 LOAD_FAST                    3     usage_reporter
+     564 LOAD_METHOD                  3     log
+     586 LOAD_GLOBAL                  8     et
+     598 LOAD_ATTR                    11    UPDATE_FOUND
+     608 LOAD_FAST                    4     to_version
+     610 KW_NAMES                     9     ('version',)
+     612 PRECALL                      2
+     616 CALL                         2
+     626 POP_TOP                      0
+     628 LOAD_FAST                    0     connector
+     630 LOAD_ATTR                    12    live_ipc_channel
+     640 STORE_FAST                   5     ipc_channel
+     642 LOAD_FAST                    5     ipc_channel
+     644 POP_JUMP_FORWARD_IF_FALSE    74
+     646 LOAD_FAST                    5     ipc_channel
+     648 LOAD_METHOD                  13    send
+     670 LOAD_CONST                   10    'update_available'
+     672 LOAD_FAST                    4     to_version
+     674 PRECALL                      2
+     678 CALL                         2
+     688 POP_TOP                      0
+     690 LOAD_FAST                    0     connector
+     692 LOAD_ATTR                    14    wait_for_confirmation
+     702 POP_JUMP_FORWARD_IF_FALSE    45
+     704 LOAD_GLOBAL                  2     logger
+     716 LOAD_METHOD                  2     info
+     738 LOAD_CONST                   11    "Queued 'update_available' message. Waiting for response from Live..."
+     740 PRECALL                      1
+     744 CALL                         1
+     754 POP_TOP                      0
+     756 LOAD_GLOBAL                  31    wait_for_confirmation_from_live
+     768 LOAD_FAST                    5     ipc_channel
+     770 PRECALL                      1
+     774 CALL                         1
+     784 STORE_FAST                   6     update_confirmed
+     786 LOAD_FAST                    6     update_confirmed
+     788 POP_JUMP_FORWARD_IF_TRUE     2
+     790 BUILD_LIST                   0
+     792 RETURN_VALUE                 0
+     794 LOAD_GLOBAL                  2     logger
+     806 LOAD_METHOD                  2     info
+     828 LOAD_CONST                   12    'Update confirmed. Starting download...'
+     830 PRECALL                      1
+     834 CALL                         1
+     844 POP_TOP                      0
+     846 LOAD_FAST                    0     connector
+     848 LOAD_METHOD                  16    load_update_info
+     870 PRECALL                      0
+     874 CALL                         0
+     884 STORE_FAST                   7     update_info
+     886 LOAD_CONST                   0     None
+     888 LOAD_FAST                    7     update_info
+     890 LOAD_CONST                   13    'prepared_version'
+     892 STORE_SUBSCR                 0
+     896 LOAD_FAST                    7     update_info
+     898 LOAD_METHOD                  17    setdefault
+     920 LOAD_CONST                   14    'versions'
+     922 BUILD_MAP                    0
+     924 PRECALL                      2
+     928 CALL                         2
+     938 STORE_FAST                   8     from_versions
+     940 LOAD_FAST                    7     update_info
+     942 LOAD_METHOD                  17    setdefault
+     964 LOAD_CONST                   15    'delta_infos'
+     966 BUILD_MAP                    0
+     968 PRECALL                      2
+     972 CALL                         2
+     982 STORE_FAST                   9     delta_infos
+     984 LOAD_FAST                    8     from_versions
+     986 LOAD_METHOD                  17    setdefault
+    1008 LOAD_FAST                    2     current_version
+    1010 BUILD_MAP                    0
+    1012 PRECALL                      2
+    1016 CALL                         2
+    1026 STORE_FAST                   10    to_versions
+    1028 LOAD_FAST                    4     to_version
+    1030 LOAD_FAST                    10    to_versions
+    1032 CONTAINS_OP                  0
+    1034 POP_JUMP_FORWARD_IF_FALSE    22
+    1036 LOAD_FAST                    10    to_versions
+    1038 LOAD_FAST                    4     to_version
+    1040 BINARY_SUBSCR                0
+    1050 STORE_FAST                   11    vi
+    1052 LOAD_FAST                    11    vi
+    1054 LOAD_CONST                   16    'status'
+    1056 BINARY_SUBSCR                0
+    1066 LOAD_CONST                   17    'skipped'
+    1068 COMPARE_OP                   2     ==
+    1074 POP_JUMP_FORWARD_IF_FALSE    2
+    1076 BUILD_LIST                   0
+    1078 RETURN_VALUE                 0
+    1080 LOAD_DEREF                   20    versions_to_deltas
+    1082 LOAD_FAST                    4     to_version
+    1084 BINARY_SUBSCR                0
+    1094 STORE_DEREF                  19    deltas
+    1096 LOAD_GLOBAL                  17    assert_
+    1108 LOAD_CLOSURE                 19    deltas
+    1110 BUILD_TUPLE                  1
+    1112 LOAD_CONST                   18    <code check_and_process_auto_updates.<locals>.<lambda>>
+    1114 MAKE_FUNCTION                8
+    1116 LOAD_CONST                   19    'There must really be deltas associated with a version'
+    1118 PRECALL                      2
+    1122 CALL                         2
+    1132 POP_TOP                      0
+    1134 LOAD_GLOBAL                  37    dict
+    1146 LOAD_CONST                   20    <code check_and_process_auto_updates.<locals>.<listcomp>>
+    1148 MAKE_FUNCTION                0
+    1150 LOAD_DEREF                   19    deltas
+    1152 GET_ITER                     0
+    1154 PRECALL                      0
+    1158 CALL                         0
+    1168 LOAD_CONST                   21    'downloading'
+    1170 KW_NAMES                     22    ('deltas', 'status')
+    1172 PRECALL                      2
+    1176 CALL                         2
+    1186 LOAD_FAST                    10    to_versions
+    1188 LOAD_FAST                    4     to_version
+    1190 STORE_SUBSCR                 0
+    1194 BUILD_LIST                   0
+    1196 STORE_FAST                   12    download_tasks
+    1198 LOAD_FAST                    0     connector
+    1200 LOAD_METHOD                  19    auto_updates_base
+    1222 PRECALL                      0
+    1226 CALL                         0
+    1236 LOAD_CONST                   23    'deltas'
+    1238 BINARY_OP                    11
+    1242 STORE_FAST                   13    delta_dir
+    1244 LOAD_FAST                    13    delta_dir
+    1246 LOAD_METHOD                  20    exists
+    1268 PRECALL                      0
+    1272 CALL                         0
+    1282 POP_JUMP_FORWARD_IF_TRUE     20
+    1284 LOAD_FAST                    13    delta_dir
+    1286 LOAD_METHOD                  21    mkdir
+    1308 PRECALL                      0
+    1312 CALL                         0
+    1322 POP_TOP                      0
+    1324 LOAD_DEREF                   19    deltas
+    1326 GET_ITER                     0
+    1328 FOR_ITER                     224
+    1330 STORE_FAST                   14    d
+    1332 LOAD_FAST                    14    d
+    1334 LOAD_METHOD                  22    pop
+    1356 LOAD_CONST                   24    'name'
+    1358 PRECALL                      1
+    1362 CALL                         1
+    1372 STORE_FAST                   15    deltaname
+    1374 LOAD_FAST                    14    d
+    1376 LOAD_CONST                   25    'checksum'
+    1378 BINARY_SUBSCR                0
+    1388 LOAD_FAST                    14    d
+    1390 LOAD_CONST                   26    'version'
+    1392 BINARY_SUBSCR                0
+    1402 STORE_FAST                   17    version
+    1404 STORE_FAST                   16    checksum
+    1406 LOAD_FAST                    14    d
+    1408 LOAD_FAST                    9     delta_infos
+    1410 LOAD_FAST                    15    deltaname
+    1412 STORE_SUBSCR                 0
+    1416 LOAD_FAST                    13    delta_dir
+    1418 LOAD_FAST                    15    deltaname
+    1420 BINARY_OP                    11
+    1424 STORE_FAST                   18    delta
+    1426 LOAD_FAST                    18    delta
+    1428 LOAD_METHOD                  20    exists
+    1450 PRECALL                      0
+    1454 CALL                         0
+    1464 POP_JUMP_FORWARD_IF_FALSE    52
+    1466 LOAD_FAST                    18    delta
+    1468 LOAD_METHOD                  23    md5
+    1490 PRECALL                      0
+    1494 CALL                         0
+    1504 LOAD_FAST                    16    checksum
+    1506 COMPARE_OP                   2     ==
+    1512 POP_JUMP_FORWARD_IF_FALSE    28
+    1514 LOAD_GLOBAL                  2     logger
+    1526 LOAD_METHOD                  24    debug
+    1548 LOAD_CONST                   27    'Found and verified %r'
+    1550 LOAD_FAST                    18    delta
+    1552 PRECALL                      2
+    1556 CALL                         2
+    1566 POP_TOP                      0
+    1568 JUMP_BACKWARD                121
+    1570 LOAD_GLOBAL                  2     logger
+    1582 LOAD_METHOD                  24    debug
+    1604 LOAD_CONST                   28    'Task to download %r'
+    1606 LOAD_FAST                    18    delta
+    1608 PRECALL                      2
+    1612 CALL                         2
+    1622 POP_TOP                      0
+    1624 LOAD_FAST                    18    delta
+    1626 LOAD_METHOD                  20    exists
+    1648 PRECALL                      0
+    1652 CALL                         0
+    1662 POP_JUMP_FORWARD_IF_FALSE    20
+    1664 LOAD_FAST                    18    delta
+    1666 LOAD_METHOD                  25    remove
+    1688 PRECALL                      0
+    1692 CALL                         0
+    1702 POP_TOP                      0
+    1704 LOAD_FAST                    12    download_tasks
+    1706 LOAD_METHOD                  26    append
+    1728 LOAD_GLOBAL                  55    DownloadTask
+    1740 LOAD_FAST                    0     connector
+    1742 LOAD_FAST                    18    delta
+    1744 LOAD_FAST                    16    checksum
+    1746 PRECALL                      3
+    1750 CALL                         3
+    1760 PRECALL                      1
+    1764 CALL                         1
+    1774 POP_TOP                      0
+    1776 JUMP_BACKWARD                225
+    1778 LOAD_FAST                    0     connector
+    1780 LOAD_METHOD                  28    save_update_info
+    1802 LOAD_FAST                    7     update_info
+    1804 PRECALL                      1
+    1808 CALL                         1
+    1818 POP_TOP                      0
+    1820 LOAD_FAST                    12    download_tasks
+    1822 LOAD_GLOBAL                  59    PrepareAutoUpdateTask
+    1834 LOAD_FAST                    0     connector
+    1836 LOAD_FAST                    2     current_version
+    1838 LOAD_FAST                    4     to_version
+    1840 LOAD_FAST                    12    download_tasks
+    1842 PRECALL                      4
+    1846 CALL                         4
+    1856 BUILD_LIST                   1
+    1858 BINARY_OP                    0
+    1862 RETURN_VALUE                 0
+== check_and_process_auto_updates.<locals>.<lambda> line 40 args [] flags 0x13
+       0 COPY_FREE_VARS               1
+       2 RESUME                       0
+       4 LOAD_GLOBAL                  1     len
+      16 LOAD_GLOBAL                  3     list
+      28 LOAD_DEREF                   0     versions_to_deltas
+      30 LOAD_METHOD                  2     keys
+      52 PRECALL                      0
+      56 CALL                         0
+      66 PRECALL                      1
+      70 CALL                         1
+      80 PRECALL                      1
+      84 CALL                         1
+      94 LOAD_CONST                   1     1
+      96 COMPARE_OP                   2     ==
+     102 RETURN_VALUE                 0
+== check_and_process_auto_updates.<locals>.<lambda> line 82 args [] flags 0x13
+       0 COPY_FREE_VARS               1
+       2 RESUME                       0
+       4 LOAD_GLOBAL                  1     len
+      16 LOAD_DEREF                   0     deltas
+      18 PRECALL                      1
+      22 CALL                         1
+      32 RETURN_VALUE                 0
+== check_and_process_auto_updates.<locals>.<listcomp> line 89 args ['.0'] flags 0x13
+       0 RESUME                       0
+       2 BUILD_LIST                   0
+       4 LOAD_FAST                    0     .0
+       6 FOR_ITER                     10
+       8 STORE_FAST                   1     delta
+      10 LOAD_FAST                    1     delta
+      12 LOAD_CONST                   0     'name'
+      14 BINARY_SUBSCR                0
+      24 LIST_APPEND                  2
+      26 JUMP_BACKWARD                11
+      28 RETURN_VALUE                 0
+== wait_for_confirmation_from_live line 120 args ['ipc_channel', 'process'] flags 0x3
+       0 RESUME                       0
+       2 NOP                          0
+       4 NOP                          0
+       6 LOAD_GLOBAL                  1     time
+      18 LOAD_ATTR                    1     sleep
+      28 LOAD_CONST                   2     1.0
+      30 PRECALL                      1
+      34 CALL                         1
+      44 POP_TOP                      0
+      46 LOAD_FAST                    1     process
+      48 POP_JUMP_FORWARD_IF_FALSE    20
+      50 LOAD_FAST                    0     ipc_channel
+      52 LOAD_METHOD                  2     process
+      74 PRECALL                      0
+      78 CALL                         0
+      88 POP_TOP                      0
+      90 LOAD_FAST                    0     ipc_channel
+      92 LOAD_METHOD                  3     receive_message
+     114 PRECALL                      0
+     118 CALL                         0
+     128 STORE_FAST                   2     message
+     130 LOAD_FAST                    2     message
+     132 LOAD_CONST                   3     'cancel'
+     134 COMPARE_OP                   2     ==
+     140 POP_JUMP_FORWARD_IF_FALSE    28
+     142 LOAD_GLOBAL                  8     logger
+     154 LOAD_METHOD                  5     info
+     176 LOAD_CONST                   4     'Update canceled by Live; terminating'
+     178 PRECALL                      1
+     182 CALL                         1
+     192 POP_TOP                      0
+     194 LOAD_CONST                   5     False
+     196 RETURN_VALUE                 0
+     198 LOAD_FAST                    2     message
+     200 LOAD_CONST                   6     'continue'
+     202 COMPARE_OP                   2     ==
+     208 POP_JUMP_FORWARD_IF_FALSE    2
+     210 LOAD_CONST                   1     True
+     212 RETURN_VALUE                 0
+     214 JUMP_BACKWARD                105

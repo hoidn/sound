@@ -19,8 +19,8 @@ checksum manifests are preserved. Missing captures must be restored locally;
 the generator does not launch Ableton, download evidence or run a decompiler.
 
 Use the [artifact catalog](../wiki/research/artifacts/index.md) to browse outputs
-and understand analysis coverage. The generated files are local and ignored by
-Git; the generator and wiki navigation are maintained in the repository.
+and understand analysis coverage. Generated browsers are tracked in Git since
+2026-10-17; extracted binaries and raw corpora are not (see `.gitignore`).
 
 
 ## Native decompilation transport and corpus
@@ -217,7 +217,7 @@ the Linux workstation cannot open `file:///var/tmp/...` pages.
 
 [corpus_demo.py](corpus_demo.py) extracts the Corpus field list, preset values and ranges from the
 shipped schema and presets, then fills [corpus_demo.html](corpus_demo.html) into an offline page.
-The page's sound is a labelled textbook stand-in, not decompiled code. Output is ignored and local.
+The page's sound is a labelled textbook stand-in, not decompiled code. Output is tracked with the rest of `analysis/`.
 
 ```sh
 python3 tools/corpus_demo.py            # writes analysis/ableton-live-12.4.3/demos/corpus/

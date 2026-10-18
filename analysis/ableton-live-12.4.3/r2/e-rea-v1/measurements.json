@@ -1,0 +1,58 @@
+{
+ "schema": "r2-query-route-measurements-v1",
+ "date": "2026-10-17",
+ "host": "Linux x86_64, 32 CPUs, 125 GiB RAM; work pinned with taskset to CPUs 24-31 (26-31 for the first import); the coordinator's Live analysis and other agents ran concurrently, load average 30.6 at 19:18 local, so wall times are upper bounds under contention",
+ "target": {"path": "analysis/ableton-live-12.4.3/derived/Push2DisplayProcess.arm64", "sha256": "5988ef09f5ff69ab916a7b399d81b28b401bb2a170fd1eb4505394f2527d5465", "bytes": 3563808},
+ "toolchain": {"ghidra": "12.1.4", "jdk": "Temurin 21.0.12.1+1", "rea": "rea-agents 6.5.0 on Node 22.23.2", "heap": "GHIDRA_HEADLESS_MAXMEM=8G", "environment": "scripts/ghidra-env.sh (isolated user.home, java.io.tmpdir, XDG dirs under the scratch area)"},
+ "script": {"path": "tools/ghidra/R2FunctionDossier.java", "final_sha256": "2f7a6dc72473a9004e46f5f725e3f41c3880048f11c2aef97faa772e53bbe945", "note": "q1, q2a/q2b, f/n serve and i-* concurrency runs used the preceding revision, which lacked only the per-query IllegalArgumentException record; the final revision reproduced q2 byte-identically (p-q2c) and the n-serve manifests (q-serve)"},
+ "ghidra_saved_project": {
+  "import_analyze_save": {"command": "analyzeHeadless <scratch>/projects Push2E -import <target> -max-cpu 6", "wall_s": 66.69, "max_rss_kb": 1781916, "ghidra_analysis_total_s": 60, "project_bytes": 52479067, "log": "logs/a-import-analyze.*"},
+  "unanalyzed_import": {"wall_s": 5.43, "max_rss_kb": 952460, "project_bytes": 10863707, "analyzed_to_unanalyzed_ratio": 4.83, "log": "logs/j-noan.*"},
+  "second_readonly_open_while_first_holds_project": {"outcome": "rejected", "error": "ghidra.framework.store.LockException: Unable to lock project!", "note": "-readOnly does not relax the project lock", "log": "logs/c-hold2.stdout:42"},
+  "readonly_session_side_effects": {"content_changed": false, "metadata": "each -readOnly session replaced Push2E.rep/idata/~index.dat,~index.bak and versioned/~index.dat,~index.bak with new inodes and mtimes but identical bytes", "log": "logs/g-orig-before.*, logs/g-orig-after.*"},
+  "writable_save_with_hardlinked_copy": {"outcome": "save wrote db.2.gbf and removed db.1.gbf; the hardlinked copy was byte-identical before and after", "note": "one probe, not exhaustive", "scripts": "scripts/RenameOne.java"}
+ },
+ "dossier_one_shot": {
+  "q1": {"queries": "queries/q1.txt", "wall_s": 7.98, "max_rss_kb": 551596},
+  "q2a": {"queries": "queries/q2.txt", "wall_s": 8.71, "max_rss_kb": 890164},
+  "q2b": {"queries": "queries/q2.txt", "wall_s": 7.42, "max_rss_kb": 929984, "identical_to_q2a": true},
+  "p-q2c_final_script": {"wall_s": 21.2, "max_rss_kb": 846904, "identical_to_q2a": true, "output": "dossier-push2/"},
+  "p-q3_edge_queries": {"wall_s": 24.11, "max_rss_kb": 930864, "outcomes": {"std::clog": "refs report", "0xZZ": "per-query NumberFormatException record", "0x1": "no match", "str:no such string value": "no match"}, "output": "dossier-push2-edge/"}
+ },
+ "concurrency_options": {
+  "a_one_server_jvm": {
+   "run_n_serve": {"startup_to_serving_s": 4.93, "three_simultaneous_requests_end_to_end_s": [2.85, 3.19, 5.23], "served_s": [2.75, 0.343, 2.056], "repeat_function_served_s": 0.041, "max_rss_kb": 963204, "log": "logs/n-serve.*"},
+   "run_q_serve_final_script_under_load": {"startup_to_serving_s": 8.64, "three_simultaneous_requests_end_to_end_s": [14.72, 15.4, 26.4], "served_s": [14.552, 0.657, 10.997], "max_rss_kb": 925760, "load_average_1m": 29.5, "output": "serve-push2/", "log": "logs/q-serve.*"},
+   "extra_disk_per_investigator_bytes": 0
+  },
+  "b_project_copies": {
+   "full_copy_cp_a": {"wall_s": 0.12, "bytes": 52479030, "note": "page cache warm"},
+   "hardlink_copy_cp_al": {"wall_s": 0.0, "additional_physical_bytes": 360},
+   "three_concurrent_one_shot_runs_original_full_link": {"wall_s": [12.42, 12.52, 12.69], "max_rss_kb": [1017124, 930540, 935440], "cpus_each": 2, "outputs_identical": true, "original_content_unchanged": true, "log": "logs/i-*"}
+  },
+  "c_packed_gzf": {"pack_wall_s": 7.58, "pack_max_rss_kb": 530336, "gzf_bytes": 15755036, "gzf_to_project_ratio": 0.30, "import_gzf_wall_s": 4.25, "import_max_rss_kb": 490912, "imported_project_bytes": 52478987, "scripts": "scripts/PackProgram.java", "log": "logs/h-*"}
+ },
+ "rea_cli": {
+  "auto_provider": {"outcome": "rejected: Multiple analysis providers support this target (ghidra, hopper, ida)", "wall_s": 1.02, "remedy": "--provider ghidra", "files": "rea-cli/k0-ambiguous.*"},
+  "cold_function_with_snapshot": {"command": "rea function <target> 0x100005058 --provider ghidra --snapshot <abs>/snap.json --format json", "wall_s": 80.92, "max_rss_kb": 2456844, "runtime_tmp_peak_bytes": 80277338, "runtime_tmp_after_bytes": 0, "snapshot_bytes": 4536807, "files": "rea-cli/k1.*"},
+  "same_function_replay": {"wall_s": 1.35, "max_rss_kb": 301856, "ghidra_started": false, "result": "same evidence_id, semantically equal JSON (key order differs)", "files": "rea-cli/k2.*"},
+  "different_function_same_snapshot": {"wall_s": 79.43, "max_rss_kb": 2343760, "outcome": "full re-import and re-analysis", "snapshot_bytes_after": 6559897, "files": "rea-cli/k3.*"},
+  "saved_project_paths": {"Push2E.gpr": "target_unavailable: truncated or unsupported binary header", "Push2E.rep": "target_unavailable: directory target", "Push2.gzf": "target_unavailable: unsupported binary format", "wall_s_each": 0.95, "files": "rea-cli/k4-*"}
+ },
+ "transport_run_native_analysis_mjs": {
+  "environment": "NATIVE_REA_ENTRY=~/.nvm/versions/node/v22.23.2/lib/node_modules/rea-agents/scripts/rea.mjs, TMPDIR=<scratch>/rea-tmp, GHIDRA_HEADLESS_MAXMEM=8G",
+  "handshake_s": 1.51, "protocol": "2024-11-05", "server": "rea 6.5.0", "tools": 207, "tools_json_bytes": 8764080,
+  "requests_ms": {"001-open_binary": 48, "002-analyze_function_0x100005058": 68736, "003-analyze_function_0x10000ca78": 282, "004-xrefs_0x10028100a": 4, "005-close_binary_with_snapshot": 1438},
+  "result_envelope_bytes": {"002": 5058000, "003": 2253388},
+  "shutdown": "spooled shutdown, server exit, transport-stop; runtime TMPDIR empty afterwards",
+  "files": "transport-v1/"
+ },
+ "live_scaling_inference": {
+  "label": "inferred, not measured",
+  "live_binary_bytes": 149711904,
+  "live_unanalyzed_project_bytes": 690029852,
+  "live_unanalyzed_source": "/var/tmp/sound-analysis/g03/samples.tsv during step b (pre-save)",
+  "analyzed_project_estimate_bytes": "about 2.2e9 (binary ratio 42 x 52.5 MB) to 3.3e9 (Push2 analyzed/unanalyzed ratio 4.83)",
+  "measure_from": "/var/tmp/sound-analysis/g03/project-bytes.txt and c-reopen timing once G0.3 completes"
+ }
+}

@@ -1,0 +1,347 @@
+{
+ "schema": "evidence-manifest-v1",
+ "packet": "H5 Push 3 helper role and external interfaces (FEAT-ECOSYSTEM), roadmap revision 2",
+ "created": "2026-10-17",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07)",
+ "bundle": "/home/ollie/Ableton Live 12 Suite.app (read-only; nothing imported or executed)",
+ "inputs": {
+  "helper_universal": {
+   "path": "Contents/Helpers/Push3.app/Contents/MacOS/Push3",
+   "sha256": "32e6f87b39627a4db98ba90916ac13a759cab9e44fd8f0b0e2eaeae081ae22be"
+  },
+  "helper_arm64_slice": {
+   "path": "/var/tmp/sound-analysis/helpers/Push3/Push3.arm64",
+   "offset": 42811392,
+   "bytes": 39286192,
+   "sha256": "8a2b77c9d5b381ec175d8250b6c0035adc07114e4f13563195a72902c079b7ec"
+  },
+  "helper_corpus_coverage": {
+   "path": "/var/tmp/sound-analysis/helpers/Push3/corpus/decomp/coverage.json",
+   "sha256": "6c1ad30f6099f779ff112ea925f1de03c0755626c0d88b847f4a7a2846a254f9"
+  },
+  "helper_indexes_manifest": {
+   "path": "/var/tmp/sound-analysis/helpers/Push3/corpus/indexes/manifest.json",
+   "sha256": "b317c3c1a8a75ff4e0ec1fecdd8757f5e38c60d656bed404da3a7706fad9b576"
+  },
+  "live_arm64": {
+   "path": "analysis/ableton-live-12.4.3/derived/Live.arm64",
+   "sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad"
+  },
+  "push2_indexes_manifest": {
+   "path": "analysis/ableton-live-12.4.3/r2/c-tooling-v1/push2-indexes/manifest.json",
+   "sha256": "8c72d6df39ad8610203d4ee0c897736e6e5994662415fafb59d0b76982b55f08"
+  }
+ },
+ "tools": "Ghidra 12.1.4 corpus (R2BulkDecompile/R2ExportIndexes, run by tools/r2_helper_batch.sh); CPython 3.13 for extract.py; CPython 3.11.13 (~/.local/bin/python3.11) for pyc_summary.py; all run with -I",
+ "commands": [
+  "python3 -I extract.py out",
+  "~/.local/bin/python3.11 -I pyc_summary.py > out/pyc-summary.txt"
+ ],
+ "notes": [
+  "out/functions/*.c are verbatim corpus pseudocode copies (code_sha256 in each header); Ghidra pseudocode is analysis output, not source",
+  "out/checks.txt holds the 12 assertions extract.py enforces; all PASS",
+  "out/live-strings.json gives file offsets in the thin Live arm64 slice; no Live references were traced",
+  "manifest.json written by an inline python3 -I snippet hashing every other file in this directory",
+  "R2FunctionDossier was not needed; all queries were answered from the corpus, indexes and slice bytes"
+ ],
+ "excludes": [
+  "manifest.json (self)"
+ ],
+ "files": [
+  {
+   "path": "extract.py",
+   "bytes": 16066,
+   "sha256": "51969d5ee25be44526db48cd5ab559f5b53f47ec39205d911d5e050f1d1fc04a"
+  },
+  {
+   "path": "out/anchors.json",
+   "bytes": 243696,
+   "sha256": "50a6e015b4cbc90d5c9a1ecf8637ed259f8afd5720a3c63a50cb1ab694b31c80"
+  },
+  {
+   "path": "out/bundle.json",
+   "bytes": 4573,
+   "sha256": "883a60be547c31ee2ae5997c76d3a97afe15d9582e0b56c4259e87532d1103f8"
+  },
+  {
+   "path": "out/checks.txt",
+   "bytes": 402,
+   "sha256": "5b42d56e3e6cd873f7990912117ff6100d149ee0f7debe9384355b425195fbf9"
+  },
+  {
+   "path": "out/constants.json",
+   "bytes": 1242,
+   "sha256": "b28880f5c53c78e6aa3be726608f81783c29634c670bc5e4a95eece040f8705e"
+  },
+  {
+   "path": "out/flip-messages.tsv",
+   "bytes": 16222,
+   "sha256": "115da3b9a1f9828fd3efff811e24e7448d4488057912f131d2e7ef5f5c97fcc7"
+  },
+  {
+   "path": "out/functions/0x10017cfa0.c",
+   "bytes": 21372,
+   "sha256": "f54316c23277586c380630cef82d43396fa94a62ed37e640f5c2d8f25940d6fe"
+  },
+  {
+   "path": "out/functions/0x10017eabc.c",
+   "bytes": 1755,
+   "sha256": "96291e2a832b21fd499c0ac3d1350d4a1aca158d600589c2050c753ba83be1ae"
+  },
+  {
+   "path": "out/functions/0x10017f084.c",
+   "bytes": 4439,
+   "sha256": "8b79c7df4e02bae502e90c9c4330a83183a87bcd78e7b77a6678691d625f2220"
+  },
+  {
+   "path": "out/functions/0x10017f52c.c",
+   "bytes": 5523,
+   "sha256": "e291ad1361e11144ec7ca6f1d8816c25ab8a56721abfb4397d22132151d70024"
+  },
+  {
+   "path": "out/functions/0x10017ff30.c",
+   "bytes": 1099,
+   "sha256": "5d4237c2e4a62c19b63b68a10184873ae9c73d8c38de157f6707afe85b1371ee"
+  },
+  {
+   "path": "out/functions/0x100180a80.c",
+   "bytes": 3751,
+   "sha256": "d53c2cfeee6e6ec86b7f82e54fb3a897a67d6f5eab6a06b25e20d31f67440fdb"
+  },
+  {
+   "path": "out/functions/0x100180e34.c",
+   "bytes": 702,
+   "sha256": "de772df296aa4701959a6803395901ae8be343352b17487b698af4e91c31a9ce"
+  },
+  {
+   "path": "out/functions/0x100181150.c",
+   "bytes": 1090,
+   "sha256": "64f745c151525f28235d9b566b505b6698caf52395358931fe1f37ce308bd620"
+  },
+  {
+   "path": "out/functions/0x1001b015c.c",
+   "bytes": 9640,
+   "sha256": "64041f3b7c5643b992d62fe66c62f340356e6a0b7a733dca61621ae9c103bc4d"
+  },
+  {
+   "path": "out/functions/0x1001bdfa0.c",
+   "bytes": 17000,
+   "sha256": "9429de408e6dda17687a7e0b457d50d585ee1730d52cb1ce94156587f6e9525b"
+  },
+  {
+   "path": "out/functions/0x1001cbfec.c",
+   "bytes": 1993,
+   "sha256": "b0b5672460e7ef8b142c60e0369b9eb869bdeed4954905523ddb8b22809be2f2"
+  },
+  {
+   "path": "out/functions/0x1001ccc6c.c",
+   "bytes": 1877,
+   "sha256": "72837592062ac4eb42464aed20c4abdd1df68b92aa7267ad01a0c6825e178317"
+  },
+  {
+   "path": "out/functions/0x100220998.c",
+   "bytes": 1454,
+   "sha256": "93ff13af6f446a3d2a593f13d63732559f9d3ea4ca3b4c0dc25a63d8dfa8722c"
+  },
+  {
+   "path": "out/functions/0x100220ad0.c",
+   "bytes": 811,
+   "sha256": "8adac44bbe907a7b84859e08d8ab9354d1787e079546f6d94455d19fa8793127"
+  },
+  {
+   "path": "out/functions/0x100220f38.c",
+   "bytes": 2053,
+   "sha256": "786ffc4628f16b202ce97ef7354474a162999ff54293669a0bf4531d093efd5e"
+  },
+  {
+   "path": "out/functions/0x10022142c.c",
+   "bytes": 1087,
+   "sha256": "9c6351ea67aff75d839e9239027de085cee1570138fd6736bf3bcbfd2c20f40a"
+  },
+  {
+   "path": "out/functions/0x10022cb04.c",
+   "bytes": 3311,
+   "sha256": "f004a66778fd3dcf9fe51b84eaa5aa2fc9549c778d9422c462d959467cc4cead"
+  },
+  {
+   "path": "out/functions/0x100230ab8.c",
+   "bytes": 4383,
+   "sha256": "7da16a186952d3de43479bfd4228534c4a419e25a59ec7c7c8c8363938e066ad"
+  },
+  {
+   "path": "out/functions/0x1002313d8.c",
+   "bytes": 4946,
+   "sha256": "f1c93aa05b57f8470ca7c947c46f40ec6f366976f1f20f4b35027cf973b0a63c"
+  },
+  {
+   "path": "out/functions/0x1002776a4.c",
+   "bytes": 7951,
+   "sha256": "678d2b922ffd6cf2600615f75908483c75258e84dbab9014e77e5e65688027ff"
+  },
+  {
+   "path": "out/functions/0x100277ddc.c",
+   "bytes": 1866,
+   "sha256": "c6b96e55d5f5f75d467f2866cbffe91e1393d2c5e1032707f445bc869a705e3b"
+  },
+  {
+   "path": "out/functions/0x1002867e0.c",
+   "bytes": 17133,
+   "sha256": "cfceb46603667fbe2e7d586768192f895b5117b3947edca41c3ea6e82cf4c5dd"
+  },
+  {
+   "path": "out/functions/0x1002ad94c.c",
+   "bytes": 1698,
+   "sha256": "9d9fdc66d539a7ddc3ca4b28043df76dfc3d74557d85113469b84ad00b6ff581"
+  },
+  {
+   "path": "out/functions/0x10031ce0c.c",
+   "bytes": 1098,
+   "sha256": "cf95c8f7b40e05b6ebc23845e1ca28085db804560c9df5dea803633bfce43cec"
+  },
+  {
+   "path": "out/functions/0x10063e970.c",
+   "bytes": 2349,
+   "sha256": "1b6e28d289dd7bb6371a78147e410b0eef90661b74b740efbd8897e0c1f0436d"
+  },
+  {
+   "path": "out/functions/0x1006677a8.c",
+   "bytes": 455,
+   "sha256": "779905aca434705f85cefd3c9390634e31b1592c93cd1468011de94b036216b6"
+  },
+  {
+   "path": "out/functions/0x1006678a0.c",
+   "bytes": 5025,
+   "sha256": "1479852c8212984100440c37e8474935dda1b67ccc0c163ebce008b696a10238"
+  },
+  {
+   "path": "out/functions/0x100668408.c",
+   "bytes": 419,
+   "sha256": "34dd378654948fb587360626ecc2211320e195a932000c1c6cbd86bcd9277e17"
+  },
+  {
+   "path": "out/functions/0x100668448.c",
+   "bytes": 2151,
+   "sha256": "32d2f0a94b0fca7e6f2d8cefd7b3ef5cc45c15f2f39a63c835f8a6357169f3b9"
+  },
+  {
+   "path": "out/functions/0x100668c58.c",
+   "bytes": 1455,
+   "sha256": "0235e050621ccc033e140a9ce3a24a89468522e75104e197fed272692f68fc8a"
+  },
+  {
+   "path": "out/functions/0x100668d74.c",
+   "bytes": 881,
+   "sha256": "e40d6fad523fdbd8b78f0eb9e498f6d92d2f4cdae829d0540a46800c78e9396f"
+  },
+  {
+   "path": "out/functions/0x10066df0c.c",
+   "bytes": 295,
+   "sha256": "d494b4a2b94b0c89d873c911f91d5ed5c688c3a1faa4cd8704592211e813fc50"
+  },
+  {
+   "path": "out/functions/0x100a1fe48.c",
+   "bytes": 918,
+   "sha256": "a464f80d8871c8f4f1ea1635cda796490028efc6b93f5f3409544633efb44528"
+  },
+  {
+   "path": "out/functions/0x100a20064.c",
+   "bytes": 925,
+   "sha256": "7cfb5ba988e20e69c45747dd018e4648bbd82053c17949524e05d3ea5117a380"
+  },
+  {
+   "path": "out/functions/0x1013e5b58.c",
+   "bytes": 14059,
+   "sha256": "ff92ac199bc0934efe0e3aed68270214b6e049223d85509f4490f9d454e3172d"
+  },
+  {
+   "path": "out/functions/0x1013e70cc.c",
+   "bytes": 12961,
+   "sha256": "d7175f0897eaf6b18d1b71b7fcd0b88b7fa429937e6976cdae29bf9c0db07f4c"
+  },
+  {
+   "path": "out/functions/0x1013ebf50.c",
+   "bytes": 1736,
+   "sha256": "c20137779afa6f6cf084db87bdfe2786ff54037c8371e3f6d936c50931266f8b"
+  },
+  {
+   "path": "out/functions/0x1013ec2f8.c",
+   "bytes": 2542,
+   "sha256": "28322c92a7d9cd377f98b3b5fc4c939196d1bca2a1b2d87b3fbd3dc05d17dd9a"
+  },
+  {
+   "path": "out/functions/0x1013ec734.c",
+   "bytes": 1680,
+   "sha256": "003f54d0a4a3a6cb05339af13ee2bd65fbaf02efdb145ed798724e2ce0ffeeb8"
+  },
+  {
+   "path": "out/functions/0x1013ed848.c",
+   "bytes": 261,
+   "sha256": "2583d3e282627e12b6767664eee71b245303ff4dff181f018c9f340300daa799"
+  },
+  {
+   "path": "out/functions/0x1013eff5c.c",
+   "bytes": 832,
+   "sha256": "dca38fb8e5fe25bf8d5b5e932684923c937f793a257c9b2f8432fb5f55492cce"
+  },
+  {
+   "path": "out/functions/0x1013f0008.c",
+   "bytes": 868,
+   "sha256": "d7f6ee44d87ef4c8bb73f9397fed41345e8b534481b67fa08cc5c9317fc13240"
+  },
+  {
+   "path": "out/functions/0x1013f00c8.c",
+   "bytes": 2146,
+   "sha256": "bb21d1af34b50dae02ba3ef58c97c724a97fc9a37fa0ac6bf98481f0d52ec0f0"
+  },
+  {
+   "path": "out/functions/0x1013f0ae4.c",
+   "bytes": 2160,
+   "sha256": "40d7644d3d4ee7375fc521d2633596b8b3d66de8a18d7be670e8324a2f185e9f"
+  },
+  {
+   "path": "out/functions/0x1013f1be0.c",
+   "bytes": 941,
+   "sha256": "7e700050e090fb6ba11e27b84a6a978a7c938d1586f73b66d347f564a14b7c6c"
+  },
+  {
+   "path": "out/functions/0x1013f1ca4.c",
+   "bytes": 2832,
+   "sha256": "57ecc09b96e474e4333a2f0f2b659a64ddb81063dd0eb3ed12d8b3ba5878d6a4"
+  },
+  {
+   "path": "out/imports.json",
+   "bytes": 19217,
+   "sha256": "3ccaac11af4f56a4a49c26a01c2a431a5d3513e991e72650ad1dc5ab6bbe141f"
+  },
+  {
+   "path": "out/live-strings.json",
+   "bytes": 1156,
+   "sha256": "65a41353991759e4df09ab4e4622f8269edcd7ca9fb490a29686df4573bfd271"
+  },
+  {
+   "path": "out/macho.json",
+   "bytes": 2023,
+   "sha256": "c4b5a141cc2bbfe1786e4828eb37854f77352dc76b79521ac474c26b208173b1"
+  },
+  {
+   "path": "out/namespaces.json",
+   "bytes": 521,
+   "sha256": "34cf7eb06bb9c6a5199b7ac9ae795fbcae50fc67a8ccbefe8e099f8251a926ac"
+  },
+  {
+   "path": "out/push2-comparison.json",
+   "bytes": 4051,
+   "sha256": "203668713ed0fac23bd3b3489a8df9bde7c11bf4bdaa8a8c609799a800e64125"
+  },
+  {
+   "path": "out/pyc-summary.txt",
+   "bytes": 67290,
+   "sha256": "1da1258f7011b87f45fba2c079e67fc26250157fb33bd206992b08b9617c38f1"
+  },
+  {
+   "path": "pyc_summary.py",
+   "bytes": 2343,
+   "sha256": "e7e7121f57a6c19dd7b1edff4fb14bd04ab9d3ab8983f9d0ed2ad58ee7102cf4"
+  }
+ ]
+}

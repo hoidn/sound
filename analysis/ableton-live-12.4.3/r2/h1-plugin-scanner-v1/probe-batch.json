@@ -1,0 +1,80 @@
+{
+ "id": "H1-PROBE-BATCH-V1",
+ "target": "Ableton Live 12 Suite 12.4.3, arm64, macOS host (not this Linux host)",
+ "policy": "ADR-0002 runtime escalation; run in one Phase 4 sitting; retain captures; no scanner or Live execution on the analysis host",
+ "shared_setup": "Fresh macOS user account or a moved-aside Live preferences folder; Live 12.4.3 arm64; process-argument capture by a tool whose availability is established first (for example `ps -axww -o pid,ppid,args` polling or the Endpoint Security `eslogger exec`); sqlite3 for read-only copies of the plug-in database; test plug-ins built from the public VST3 SDK samples and a minimal VST2-compatible bundle only if a licensed VST2 SDK is available",
+ "probes": [
+  {
+   "id": "PRB-H1-01",
+   "question": "Exact argv Live passes to Ableton Plugin Scanner: --db path, --cid form, --vst2/--vst3 ID=PATH lists and domain IDs, --reset value, --limit, --lang, and whether --au is ever passed",
+   "existing_evidence": "Scanner options at 0x1001308e0 (cid, db, vst3, vst2, reset, lang, limit, verbose); Live arm64 strings --db/--cid/--reset/--au/--vst2/--vst3 at slice offsets near 0x5be57e4; scanner registers no au option",
+   "why_static_insufficient": "Argument assembly is Live-side code not yet traced; the domain IDs are runtime strings",
+   "minimal_input": "One VST3 in /Library/Audio/Plug-Ins/VST3, one in ~/Library/Audio/Plug-Ins/VST3; Plug-In Sources toggled through: system VST3 on/off, custom VST3 folder on/off, VST2 system on/off; Rescan with and without the Option modifier (whether a modifier changes the scan is itself unverified)",
+   "discriminating_observation": "Captured argv per configuration; presence or absence of --au; --reset value per rescan kind",
+   "stop_condition": "One capture per configuration listed, or 30 minutes"
+  },
+  {
+   "id": "PRB-H1-02",
+   "question": "What happens observably when a module crashes the scanner: restart count, module scanstate sequence, browser listing",
+   "existing_evidence": "Static derivation: crashed module stays scanstate 0; next session UpdateUnconfirmedPluginsAndModulesState (0x1005a8258) sets it to 4 (on-retry) and the unchanged-fingerprint skip at 0x1005e9fd8 skips it; the following session sets 4 to 2 (disabled). Live string 'Plugins: scanner process stopped prematurely.  Restart'",
+   "why_static_insufficient": "Live-side restart policy and whether another session follows within the same rescan are not traced; the derivation may miss exception handlers",
+   "minimal_input": "VST3 sample whose GetPluginFactory calls abort(); one healthy VST3 alongside",
+   "discriminating_observation": "Number of scanner launches; plugin_modules.scanstate for the crashing module after each launch and after a second manual Rescan; whether the healthy plug-in is listed; any user-visible message",
+   "stop_condition": "Crashing module reaches scanstate 2, or three manual rescans without change"
+  },
+  {
+   "id": "PRB-H1-03",
+   "question": "Hang handling: does Live time out or kill a scanner stuck in a plug-in load, and after how long",
+   "existing_evidence": "No timeout or alarm in the scanner scan path; helper watchdog constants 5000/20000/20000/1000/2000/4000 at 0x1009a8ff0 whose meaning is unmapped",
+   "why_static_insufficient": "Timeout ownership is Live-side or in the shared IPC state machine",
+   "minimal_input": "VST3 sample whose factory blocks forever",
+   "discriminating_observation": "Time from scanner start to its termination, the terminating signal, the module's scanstate afterwards, Live log lines",
+   "stop_condition": "Scanner exits, or 15 minutes"
+  },
+  {
+   "id": "PRB-H1-04",
+   "question": "Chunking: modules loaded per scanner session and restart behaviour with more than 50 new modules",
+   "existing_evidence": "limit default 50 (0x32 in 0x1001308e0); run state 2 when limit < count (0x100138504); count increments only after a module is confirmed; main sends scan=interrupted; Live string 'finished a chunk of work.  Continue'",
+   "why_static_insufficient": "Whether Live passes --limit, and the exact boundary (static derivation gives up to 51 confirmed modules per format per session)",
+   "minimal_input": "60 copies of the VST3 sample with distinct bundle names and class IDs",
+   "discriminating_observation": "Scanner launch count and modules confirmed per launch (scanstate=1 rows over time, or --verbose log if available)",
+   "stop_condition": "All 60 listed"
+  },
+  {
+   "id": "PRB-H1-05",
+   "question": "Does changing a module's executable size or modification time trigger a re-check, including for a disabled module",
+   "existing_evidence": "VST3 fingerprint = hex(st_size):hex(st_mtime) of the bundle executable (0x1001458a4); skip requires equal fingerprint and scanstate != 0; PrepareModuleForRescan resets scanstate to 0",
+   "why_static_insufficient": "Confirms the derivation and the user-visible effect",
+   "minimal_input": "The disabled module from PRB-H1-02 with its crash removed and the executable replaced; separately `touch` of a healthy module's executable",
+   "discriminating_observation": "plugin_modules.fingerprint and scanstate before and after Rescan; browser listing",
+   "stop_condition": "One Rescan per case"
+  },
+  {
+   "id": "PRB-H1-06",
+   "question": "Where Audio Units are discovered (in Live or in a helper) and where their results are stored",
+   "existing_evidence": "Scanner architecture table includes AU (1) but no AU scan code or option was found; Live has UseAUv2/UseAUv3 preferences and a --au string",
+   "why_static_insufficient": "Live-side; static tracing not yet done",
+   "minimal_input": "One AU v2 effect installed; Use Audio Units v2 on",
+   "discriminating_observation": "Whether any helper process starts with AU arguments; rows with arch=1 in the plugin database",
+   "stop_condition": "One rescan"
+  },
+  {
+   "id": "PRB-H1-07",
+   "question": "Location and lifetime of the plug-in database and of the scanner's optional PluginScanner.txt log configuration",
+   "existing_evidence": "Default name Live-plugins-{}.db formatted with 1 (0x1005a2b84) in a folder from an unresolved path service (0x1001c5f40); PluginScanner.txt parsed for log.level and log.categories (0x10019a9d8)",
+   "why_static_insufficient": "The path service resolves at run time",
+   "minimal_input": "Default install; one Rescan",
+   "discriminating_observation": "--db argument from PRB-H1-01; file listing of the Live preferences and cache folders before and after",
+   "stop_condition": "Path identified"
+  },
+  {
+   "id": "PRB-H1-08",
+   "question": "Duplicates: the same bundle reachable from two scan roots, and two bundles exposing the same VST3 class ID",
+   "existing_evidence": "Candidates deduplicated by canonical path per domain (0x1005e8cb4); modules keyed by (path, domain) in AddModuleCandidate (0x1005a4318); no class-ID dedup found in the scanner",
+   "why_static_insufficient": "Browser presentation is Live-side",
+   "minimal_input": "A VST3 in both system and user folders (copy, then symlink); two different bundles with identical class IDs",
+   "discriminating_observation": "plugin_modules/plugin_domains/plugins rows; browser entries",
+   "stop_condition": "One rescan per case"
+  }
+ ]
+}

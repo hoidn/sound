@@ -1,0 +1,61 @@
+{
+ "schema": "midi-config-v2-review-checks",
+ "date": "2026-10-17",
+ "status": "analyst-side review evidence; never part of the payload",
+ "reviewer": "separate review subagent (Claude Opus 5.5)",
+ "commands": [
+  "python3 -I signature_chain.py '/home/ollie/Ableton Live 12 Suite.app' analysis/ableton-live-12.4.3/r2/s4-midi-v1/hashes.json",
+  "python3 -I verify_copy.py /var/tmp/sound-analysis/scratch/review-v2/midi-config-v2",
+  "/var/tmp/sound-analysis/scratch/d-midi/py/cpython-3.11.13-linux-x86_64-gnu/bin/python3.11 -I reviewer_model.py /var/tmp/sound-analysis/scratch/review-v2/midi-config-v2"
+ ],
+ "signature_chain": [
+  "exe sha256 52289af638f1b26590c84a9bc08eabdc35127883087057add909d2718a7a35ef",
+  "cpu 16777223 ident com.ableton.live hashType 2 slot-3 matches CodeResources: True",
+  "cpu 16777228 ident com.ableton.live hashType 2 slot-3 matches CodeResources: True",
+  "BOUND UserConfiguration.txt 52ec71be0a51",
+  "BOUND InstantMappings-HowTo.txt 6d710bba5610",
+  "BOUND __init__.pyc 811de9edf8f1",
+  "BOUND DeviceComponent.pyc eb1788745c4b",
+  "BOUND GenericScript.pyc 2e9f7343cbdc",
+  "BOUND SpecialMixerComponent.pyc 0baa9675fa9d",
+  "BOUND SelectChanStripComponent.pyc 207cb60ce170",
+  "BOUND InputControlElement.pyc ed38a8fe1dbf",
+  "BOUND EncoderElement.pyc feb70fcd42e7",
+  "BOUND ButtonElement.pyc 5da364161e36",
+  "BOUND ButtonMatrixElement.pyc 6ccaa1ab7af9",
+  "BOUND DeviceComponent.pyc fa34b94aab13",
+  "BOUND ChannelStripComponent.pyc 0c8bdf756fd2",
+  "BOUND TransportComponent.pyc 3f0c2d2b3fb7",
+  "BOUND ToggleComponent.pyc 30eb5c3f1616",
+  "BOUND MixerComponent.pyc 5f3c8df778ef",
+  "BOUND ControlSurface.pyc dd5ef7d3777c",
+  "BOUND __init__.pyc 16c975dd9490",
+  "BOUND elements_base.pyc af12b61a81c5",
+  "BOUND configparser.pyc 586fa1dd64a4"
+ ],
+ "isolated_copy_verification": {
+  "symlinks": [],
+  "inventory_diff": [],
+  "hash_or_size_mismatch": [],
+  "markdown_links": 13,
+  "unresolved_links": [],
+  "cases": 109,
+  "manifest_case_count": 109,
+  "missing_inputs": [],
+  "fixture_format_problems": [],
+  "deny_hits": {},
+  "decompil_mentions": {
+   "AGENTS.md": 1
+  },
+  "manifest_sha256": "889b52fa3b7f19c1bd085f26db39e0f62f00cbf7dc85be050e32207f012eb4d7",
+  "payload_files": 114
+ },
+ "reviewer_model": "109 cases, 0 disagreements",
+ "draft_manifest_sha256": "e1e74176c0030c0990d3bba59cb94b6e2dcd5be4d29bee26e1dc46b20cdd4994",
+ "draft_reconstruction": "payload-changes.diff applies the recorded review edits; reversing them reproduced every draft file digest, including the draft manifest",
+ "notes": [
+  "signature_chain.py: both Mach-O slices of Contents/MacOS/Live (sha256 52289af6..., the recorded target identity) carry a CodeDirectory whose resource-directory special slot (-3) equals SHA-256 of Contents/_CodeSignature/CodeResources; that plist's files2 hash2 values equal the current digests of all 18 decoded modules and both shipped documents. Hash chain only; the CMS signature was not verified and is not needed for identity.",
+  "Shipped configparser _read compared with host 3.11.13 at optimize=2: only difference is the host's try/finally join on the raising path.",
+  "int(): '1_0_0' -> 100; '1__0', '_10', '10_' fail; strings over 4300 digits (leading zeros counted) raise ValueError under the default limit; the configurable minimum is 640."
+ ]
+}

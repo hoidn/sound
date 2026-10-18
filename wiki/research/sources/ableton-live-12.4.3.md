@@ -28,7 +28,8 @@ and copying the `CPU_TYPE_ARM64` (`0x100000c`) member bytes. Live: offset
 Both SHA-256 digests equal the retained slice digests in the table below, so the
 new `analysis/ableton-live-12.4.3/derived/Live.arm64` and
 `Push2DisplayProcess.arm64` are byte-identical to the originally analyzed inputs.
-`analysis/` is now listed in `.gitignore`; no `lipo` was available or needed.
+The extracted slices are excluded from Git (`derived/` in `.gitignore`); the rest
+of `analysis/` is tracked since 2026-10-17. No `lipo` was available or needed.
 `Contents/Info.plist` reports `12.4.3 (2026-07-07_e3d8be4d07)`, bundle ID
 `com.ableton.live`, executable `Live`, minimum macOS `11`.
 

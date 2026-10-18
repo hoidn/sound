@@ -176,7 +176,7 @@ Run from the repository root. These commands read retained text only:
 # Match C++ names; -m limits the output from the large symbol index.
 rg -n -m 20 'ATransport|AAudioClip|ASongAgent' analysis/ableton-live-12.4.3/live-arm64-symbols.tsv
 
-# Locate named functions in decoded MIDI modules, even though analysis/ is ignored.
+# Locate named functions in decoded MIDI modules.
 rg --no-ignore -n -m 10 'parse_int|parse_map_mode|_bank_value' analysis/ableton-live-12.4.3/midi-user-mapping-v1/disassembly
 ```
 
@@ -220,9 +220,11 @@ method hashes, and TSV row count before linking the table. It keeps the large
 address list outside the HTML. Declared starts never become an export-coverage
 denominator or evidence that those functions were analyzed or decompiled.
 
-`analysis/` is intentionally ignored by Git. Its artifact links resolve in this
-workspace, but a fresh checkout will need the retained evidence copied back to
-the same paths. The generator requires that evidence and does not reacquire it.
+Since 2026-10-17 the `analysis/` tree is tracked in Git except extracted
+binaries (`derived/`, `*.arm64`, `*.x86_64`), raw decompiled corpora and index
+dumps, and the `r2-large` link to `/var/tmp/sound-analysis` (Ghidra projects and
+corpora); see `.gitignore`. Links to excluded binaries and to
+revision 1 evidence from the macOS host resolve only where those files exist. The generator requires that evidence and does not reacquire it.
 Do not move or rename captured payloads to tidy the directory: update this
 catalog and generate new views while preserving source bytes and old manifests.
 This catalog is not part of a clean implementation handoff.

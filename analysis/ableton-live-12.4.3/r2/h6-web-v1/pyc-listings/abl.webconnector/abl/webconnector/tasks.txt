@@ -1,0 +1,365 @@
+# source abl.webconnector/abl/webconnector/tasks.pyc
+# co_filename output/Live/mac_universal_64_static/Release/python-bundle/Python/abl.webconnector/abl/webconnector/tasks.py
+== <module> line 1 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_CONST                   0     0
+       4 LOAD_CONST                   1     ('object',)
+       6 IMPORT_NAME                  0     builtins
+       8 IMPORT_FROM                  1     object
+      10 STORE_NAME                   1     object
+      12 POP_TOP                      0
+      14 LOAD_CONST                   0     0
+      16 LOAD_CONST                   2     None
+      18 IMPORT_NAME                  2     logging
+      20 STORE_NAME                   2     logging
+      22 LOAD_CONST                   0     0
+      24 LOAD_CONST                   3     ('datetime',)
+      26 IMPORT_NAME                  3     datetime
+      28 IMPORT_FROM                  3     datetime
+      30 STORE_NAME                   3     datetime
+      32 POP_TOP                      0
+      34 LOAD_CONST                   4     1
+      36 LOAD_CONST                   5     ('DownloadsNotFinished', 'WrongChecksum')
+      38 IMPORT_NAME                  4     errors
+      40 IMPORT_FROM                  5     DownloadsNotFinished
+      42 STORE_NAME                   5     DownloadsNotFinished
+      44 IMPORT_FROM                  6     WrongChecksum
+      46 STORE_NAME                   6     WrongChecksum
+      48 POP_TOP                      0
+      50 LOAD_CONST                   4     1
+      52 LOAD_CONST                   6     ('EventTypes',)
+      54 IMPORT_NAME                  7     reporting
+      56 IMPORT_FROM                  8     EventTypes
+      58 STORE_NAME                   9     et
+      60 POP_TOP                      0
+      62 LOAD_CONST                   4     1
+      64 LOAD_CONST                   7     ('time_delta_ms',)
+      66 IMPORT_NAME                  7     reporting
+      68 IMPORT_FROM                  10    time_delta_ms
+      70 STORE_NAME                   10    time_delta_ms
+      72 POP_TOP                      0
+      74 PUSH_NULL                    0
+      76 LOAD_NAME                    2     logging
+      78 LOAD_ATTR                    11    getLogger
+      88 LOAD_NAME                    12    __name__
+      90 PRECALL                      1
+      94 CALL                         1
+     104 STORE_NAME                   13    logger
+     106 PUSH_NULL                    0
+     108 LOAD_BUILD_CLASS             0
+     110 LOAD_CONST                   8     <code DownloadTask>
+     112 MAKE_FUNCTION                0
+     114 LOAD_CONST                   9     'DownloadTask'
+     116 LOAD_NAME                    1     object
+     118 PRECALL                      3
+     122 CALL                         3
+     132 STORE_NAME                   14    DownloadTask
+     134 PUSH_NULL                    0
+     136 LOAD_BUILD_CLASS             0
+     138 LOAD_CONST                   10    <code PrepareAutoUpdateTask>
+     140 MAKE_FUNCTION                0
+     142 LOAD_CONST                   11    'PrepareAutoUpdateTask'
+     144 LOAD_NAME                    1     object
+     146 PRECALL                      3
+     150 CALL                         3
+     160 STORE_NAME                   15    PrepareAutoUpdateTask
+     162 LOAD_CONST                   2     None
+     164 RETURN_VALUE                 0
+== DownloadTask line 15 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_NAME                    0     __name__
+       4 STORE_NAME                   1     __module__
+       6 LOAD_CONST                   0     'DownloadTask'
+       8 STORE_NAME                   2     __qualname__
+      10 LOAD_CONST                   1     <code DownloadTask.__init__>
+      12 MAKE_FUNCTION                0
+      14 STORE_NAME                   3     __init__
+      16 LOAD_CONST                   2     <code DownloadTask.perform>
+      18 MAKE_FUNCTION                0
+      20 STORE_NAME                   4     perform
+      22 LOAD_CONST                   3     None
+      24 RETURN_VALUE                 0
+== DownloadTask.__init__ line 16 args ['self', 'connector', 'delta', 'checksum'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_FAST                    1     connector
+       4 LOAD_FAST                    0     self
+       6 STORE_ATTR                   0     connector
+      16 LOAD_FAST                    3     checksum
+      18 LOAD_FAST                    0     self
+      20 STORE_ATTR                   1     checksum
+      30 LOAD_FAST                    2     delta
+      32 LOAD_FAST                    0     self
+      34 STORE_ATTR                   2     delta
+      44 LOAD_FAST                    2     delta
+      46 LOAD_CONST                   1     '.part'
+      48 BINARY_OP                    0
+      52 LOAD_FAST                    0     self
+      54 STORE_ATTR                   3     in_progress
+      64 LOAD_CONST                   2     False
+      66 LOAD_FAST                    0     self
+      68 STORE_ATTR                   4     finished
+      78 LOAD_CONST                   0     None
+      80 RETURN_VALUE                 0
+== DownloadTask.perform line 23 args ['self', 'usage_reporter'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_GLOBAL                  0     logger
+      14 LOAD_METHOD                  1     info
+      36 LOAD_CONST                   1     'Retrieving delta %s'
+      38 LOAD_FAST                    0     self
+      40 LOAD_ATTR                    2     delta
+      50 LOAD_METHOD                  3     basename
+      72 PRECALL                      0
+      76 CALL                         0
+      86 PRECALL                      2
+      90 CALL                         2
+     100 POP_TOP                      0
+     102 LOAD_FAST                    1     usage_reporter
+     104 LOAD_METHOD                  4     log
+     126 LOAD_GLOBAL                  10    et
+     138 LOAD_ATTR                    6     RETRIEVE_DELTA
+     148 LOAD_FAST                    0     self
+     150 LOAD_ATTR                    2     delta
+     160 LOAD_METHOD                  3     basename
+     182 PRECALL                      0
+     186 CALL                         0
+     196 KW_NAMES                     2     ('basename',)
+     198 PRECALL                      2
+     202 CALL                         2
+     212 POP_TOP                      0
+     214 LOAD_GLOBAL                  15    datetime
+     226 LOAD_ATTR                    8     now
+     236 PRECALL                      0
+     240 CALL                         0
+     250 STORE_FAST                   2     start
+     252 LOAD_FAST                    0     self
+     254 LOAD_ATTR                    9     connector
+     264 LOAD_METHOD                  10    retrieve_delta_into
+     286 LOAD_FAST                    0     self
+     288 LOAD_ATTR                    2     delta
+     298 LOAD_METHOD                  3     basename
+     320 PRECALL                      0
+     324 CALL                         0
+     334 LOAD_FAST                    0     self
+     336 LOAD_ATTR                    11    in_progress
+     346 PRECALL                      2
+     350 CALL                         2
+     360 STORE_FAST                   3     checksum
+     362 LOAD_FAST                    0     self
+     364 LOAD_ATTR                    12    checksum
+     374 LOAD_FAST                    3     checksum
+     376 COMPARE_OP                   3     !=
+     382 POP_JUMP_FORWARD_IF_FALSE    7
+     384 LOAD_GLOBAL                  26    WrongChecksum
+     396 RAISE_VARARGS                1
+     398 LOAD_FAST                    0     self
+     400 LOAD_ATTR                    11    in_progress
+     410 LOAD_METHOD                  14    move
+     432 LOAD_FAST                    0     self
+     434 LOAD_ATTR                    2     delta
+     444 PRECALL                      1
+     448 CALL                         1
+     458 POP_TOP                      0
+     460 LOAD_CONST                   3     True
+     462 LOAD_FAST                    0     self
+     464 STORE_ATTR                   15    finished
+     474 LOAD_GLOBAL                  33    time_delta_ms
+     486 LOAD_GLOBAL                  15    datetime
+     498 LOAD_ATTR                    8     now
+     508 PRECALL                      0
+     512 CALL                         0
+     522 LOAD_FAST                    2     start
+     524 BINARY_OP                    10
+     528 PRECALL                      1
+     532 CALL                         1
+     542 STORE_FAST                   4     time_elapsed
+     544 LOAD_GLOBAL                  0     logger
+     556 LOAD_METHOD                  1     info
+     578 LOAD_CONST                   4     'Delta retrieved, elapsed time: %dms'
+     580 LOAD_FAST                    4     time_elapsed
+     582 PRECALL                      2
+     586 CALL                         2
+     596 POP_TOP                      0
+     598 LOAD_FAST                    1     usage_reporter
+     600 LOAD_METHOD                  4     log
+     622 LOAD_GLOBAL                  10    et
+     634 LOAD_ATTR                    17    RETRIEVED_DELTA
+     644 LOAD_FAST                    4     time_elapsed
+     646 KW_NAMES                     5     ('elapsed_ms',)
+     648 PRECALL                      2
+     652 CALL                         2
+     662 POP_TOP                      0
+     664 LOAD_CONST                   0     None
+     666 RETURN_VALUE                 0
+== PrepareAutoUpdateTask line 44 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_NAME                    0     __name__
+       4 STORE_NAME                   1     __module__
+       6 LOAD_CONST                   0     'PrepareAutoUpdateTask'
+       8 STORE_NAME                   2     __qualname__
+      10 LOAD_CONST                   1     <code PrepareAutoUpdateTask.__init__>
+      12 MAKE_FUNCTION                0
+      14 STORE_NAME                   3     __init__
+      16 LOAD_CONST                   2     <code PrepareAutoUpdateTask.perform>
+      18 MAKE_FUNCTION                0
+      20 STORE_NAME                   4     perform
+      22 LOAD_CONST                   3     None
+      24 RETURN_VALUE                 0
+== PrepareAutoUpdateTask.__init__ line 45 args ['self', 'connector', 'from_v', 'to_v', 'download_tasks'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_FAST                    1     connector
+       4 LOAD_FAST                    0     self
+       6 STORE_ATTR                   0     connector
+      16 LOAD_FAST                    2     from_v
+      18 LOAD_FAST                    0     self
+      20 STORE_ATTR                   1     from_v
+      30 LOAD_FAST                    3     to_v
+      32 LOAD_FAST                    0     self
+      34 STORE_ATTR                   2     to_v
+      44 LOAD_FAST                    4     download_tasks
+      46 LOAD_FAST                    0     self
+      48 STORE_ATTR                   3     download_tasks
+      58 LOAD_CONST                   0     None
+      60 RETURN_VALUE                 0
+== PrepareAutoUpdateTask.perform line 51 args ['self', 'usage_reporter'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_GLOBAL                  0     logger
+      14 LOAD_METHOD                  1     info
+      36 LOAD_CONST                   1     'Preparing auto-update tasks'
+      38 PRECALL                      1
+      42 CALL                         1
+      52 POP_TOP                      0
+      54 LOAD_FAST                    1     usage_reporter
+      56 LOAD_METHOD                  2     log
+      78 LOAD_GLOBAL                  6     et
+      90 LOAD_ATTR                    4     PREPARE
+     100 LOAD_FAST                    0     self
+     102 LOAD_ATTR                    5     from_v
+     112 LOAD_FAST                    0     self
+     114 LOAD_ATTR                    6     to_v
+     124 KW_NAMES                     2     ('from_version', 'to_version')
+     126 PRECALL                      3
+     130 CALL                         3
+     140 POP_TOP                      0
+     142 LOAD_GLOBAL                  15    all
+     154 LOAD_CONST                   3     <code PrepareAutoUpdateTask.perform.<locals>.<genexpr>>
+     156 MAKE_FUNCTION                0
+     158 LOAD_FAST                    0     self
+     160 LOAD_ATTR                    8     download_tasks
+     170 GET_ITER                     0
+     172 PRECALL                      0
+     176 CALL                         0
+     186 PRECALL                      1
+     190 CALL                         1
+     200 POP_JUMP_FORWARD_IF_TRUE     14
+     202 LOAD_GLOBAL                  19    DownloadsNotFinished
+     214 PRECALL                      0
+     218 CALL                         0
+     228 RAISE_VARARGS                1
+     230 LOAD_FAST                    0     self
+     232 LOAD_ATTR                    10    connector
+     242 LOAD_METHOD                  11    load_update_info
+     264 PRECALL                      0
+     268 CALL                         0
+     278 STORE_FAST                   2     info
+     280 LOAD_FAST                    2     info
+     282 LOAD_CONST                   4     'versions'
+     284 BINARY_SUBSCR                0
+     294 LOAD_FAST                    0     self
+     296 LOAD_ATTR                    5     from_v
+     306 BINARY_SUBSCR                0
+     316 LOAD_FAST                    0     self
+     318 LOAD_ATTR                    6     to_v
+     328 BINARY_SUBSCR                0
+     338 STORE_FAST                   3     to_version_info
+     340 LOAD_FAST                    3     to_version_info
+     342 LOAD_CONST                   5     'status'
+     344 BINARY_SUBSCR                0
+     354 LOAD_CONST                   6     'downloading'
+     356 COMPARE_OP                   2     ==
+     362 POP_JUMP_FORWARD_IF_FALSE    5
+     364 LOAD_CONST                   7     'available'
+     366 LOAD_FAST                    3     to_version_info
+     368 LOAD_CONST                   5     'status'
+     370 STORE_SUBSCR                 0
+     374 LOAD_FAST                    0     self
+     376 LOAD_ATTR                    10    connector
+     386 LOAD_METHOD                  12    save_update_info
+     408 LOAD_FAST                    2     info
+     410 PRECALL                      1
+     414 CALL                         1
+     424 POP_TOP                      0
+     426 LOAD_FAST                    3     to_version_info
+     428 LOAD_CONST                   5     'status'
+     430 BINARY_SUBSCR                0
+     440 POP_JUMP_FORWARD_IF_FALSE    38
+     442 LOAD_FAST                    0     self
+     444 LOAD_ATTR                    10    connector
+     454 LOAD_METHOD                  13    prepare_available_auto_update
+     476 LOAD_FAST                    0     self
+     478 LOAD_ATTR                    5     from_v
+     488 LOAD_FAST                    0     self
+     490 LOAD_ATTR                    6     to_v
+     500 LOAD_FAST                    1     usage_reporter
+     502 PRECALL                      3
+     506 CALL                         3
+     516 POP_TOP                      0
+     518 LOAD_FAST                    0     self
+     520 LOAD_ATTR                    10    connector
+     530 LOAD_METHOD                  14    pending_update_available
+     552 PRECALL                      0
+     556 CALL                         0
+     566 POP_JUMP_FORWARD_IF_FALSE    105
+     568 LOAD_FAST                    0     self
+     570 LOAD_ATTR                    10    connector
+     580 LOAD_METHOD                  11    load_update_info
+     602 PRECALL                      0
+     606 CALL                         0
+     616 STORE_FAST                   2     info
+     618 LOAD_FAST                    2     info
+     620 LOAD_CONST                   4     'versions'
+     622 BINARY_SUBSCR                0
+     632 LOAD_FAST                    0     self
+     634 LOAD_ATTR                    5     from_v
+     644 BINARY_SUBSCR                0
+     654 LOAD_FAST                    0     self
+     656 LOAD_ATTR                    6     to_v
+     666 BINARY_SUBSCR                0
+     676 STORE_FAST                   3     to_version_info
+     678 LOAD_CONST                   8     'prepared'
+     680 LOAD_FAST                    3     to_version_info
+     682 LOAD_CONST                   5     'status'
+     684 STORE_SUBSCR                 0
+     688 LOAD_FAST                    0     self
+     690 LOAD_ATTR                    5     from_v
+     700 LOAD_FAST                    0     self
+     702 LOAD_ATTR                    6     to_v
+     712 BUILD_LIST                   2
+     714 LOAD_FAST                    2     info
+     716 LOAD_CONST                   9     'prepared_version'
+     718 STORE_SUBSCR                 0
+     722 LOAD_FAST                    0     self
+     724 LOAD_ATTR                    10    connector
+     734 LOAD_METHOD                  12    save_update_info
+     756 LOAD_FAST                    2     info
+     758 PRECALL                      1
+     762 CALL                         1
+     772 POP_TOP                      0
+     774 LOAD_CONST                   0     None
+     776 RETURN_VALUE                 0
+     778 LOAD_CONST                   0     None
+     780 RETURN_VALUE                 0
+== PrepareAutoUpdateTask.perform.<locals>.<genexpr> line 55 args ['.0'] flags 0x33
+       0 RETURN_GENERATOR             0
+       2 POP_TOP                      0
+       4 RESUME                       0
+       6 LOAD_FAST                    0     .0
+       8 FOR_ITER                     11
+      10 STORE_FAST                   1     dt
+      12 LOAD_FAST                    1     dt
+      14 LOAD_ATTR                    0     finished
+      24 YIELD_VALUE                  0
+      26 RESUME                       1
+      28 POP_TOP                      0
+      30 JUMP_BACKWARD                12
+      32 LOAD_CONST                   0     None
+      34 RETURN_VALUE                 0

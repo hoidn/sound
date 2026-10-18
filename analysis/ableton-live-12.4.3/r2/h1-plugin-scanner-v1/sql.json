@@ -1,0 +1,194 @@
+[
+ {
+  "address": "0x100a1b042",
+  "sql": "CREATE TEMPORARY TABLE unavail_places ( file_id INTEGER PRIMARY KEY, UNIQUE (file_id) ON CONFLICT IGNORE ); CREATE TEMPORARY VIEW used_places AS SELECT file_id, folder_kind FROM places WHERE level = 0 UNION SELECT file_id, 13 FROM unavail_places UNION SELECT file_id, 10 FROM files WHERE name = '<plugins>' UNION SELECT file_id, 14 FROM files WHERE name = '<keywords>' UNION SELECT file_id, 15 FROM files WHERE name = '<packs>'; "
+ },
+ {
+  "address": "0x100a1c612",
+  "sql": "CREATE TABLE plugin_modules ( module_id INTEGER PRIMARY KEY, path TEXT, arch INTEGER DEFAULT 0, scanstate INTEGER DEFAULT 0 ); "
+ },
+ {
+  "address": "0x100a1c6b8",
+  "sql": "CREATE TABLE plugin_domains ( id TEXT, module_id INTEGER DEFAULT 0, enabled INTEGER DEFAULT 0 ); "
+ },
+ {
+  "address": "0x100a1c738",
+  "sql": "CREATE TABLE plugins ( plugin_id INTEGER PRIMARY KEY, module_id INTEGER DEFAULT 0, dev_identifier TEXT, name TEXT, vendor TEXT, version TEXT, device_type TEXT, scanstate INTEGER DEFAULT 0, enabled INTEGER DEFAULT 0 ); "
+ },
+ {
+  "address": "0x100a1c857",
+  "sql": "ALTER TABLE plugin_modules ADD COLUMN fingerprint TEXT; "
+ },
+ {
+  "address": "0x100a1d940",
+  "sql": "CREATE TABLE _tmpplugins ( plugin_id INTEGER PRIMARY KEY, module_id INTEGER DEFAULT 0, dev_identifier TEXT, name TEXT, vendor TEXT, version TEXT, scanstate INTEGER DEFAULT 0, enabled INTEGER DEFAULT 0 ); INSERT INTO _tmpplugins (plugin_id, module_id, dev_identifier, name, vendor, version, scanstate, enabled) SELECT p.plugin_id, p.module_id, p.dev_identifier, p.name, p.vendor, p.version, p.scanstate, p.enabled FROM plugins AS p; DROP TABLE plugins; ALTER TABLE _tmpplugins RENAME TO plugins; "
+ },
+ {
+  "address": "0x100a1db96",
+  "sql": "ALTER TABLE plugin_domains ADD COLUMN relpath TEXT; "
+ },
+ {
+  "address": "0x100a1dbcd",
+  "sql": "ALTER TABLE plugins ADD COLUMN sdk_version TEXT; ALTER TABLE plugins ADD COLUMN flags INTEGER DEFAULT 0; "
+ },
+ {
+  "address": "0x100a1f7fd",
+  "sql": "CREATE TABLE _tmpplugins ( plugin_id INTEGER PRIMARY KEY AUTOINCREMENT, module_id INTEGER DEFAULT 0, dev_identifier TEXT, name TEXT, vendor TEXT, version TEXT, sdk_version TEXT, flags INTEGER DEFAULT 0, scanstate INTEGER DEFAULT 0, enabled INTEGER DEFAULT 0 ); INSERT INTO _tmpplugins (plugin_id, module_id, dev_identifier, name, vendor, version, sdk_version, flags, scanstate, enabled) SELECT plugin_id, module_id, dev_identifier, name, vendor, version, sdk_version, flags, scanstate, enabled FROM plugins; DROP TABLE plugins; ALTER TABLE _tmpplugins RENAME TO plugins; "
+ },
+ {
+  "address": "0x100a1fab2",
+  "sql": "CREATE TABLE _tmp_plugin_modules ( module_id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT, arch INTEGER DEFAULT 0, scanstate INTEGER DEFAULT 0, fingerprint TEXT ); INSERT INTO _tmp_plugin_modules (module_id, path, arch, scanstate, fingerprint) SELECT module_id, path, arch, scanstate, fingerprint FROM plugin_modules; DROP TABLE plugin_modules; ALTER TABLE _tmp_plugin_modules RENAME TO plugin_modules; "
+ },
+ {
+  "address": "0x100a1ff14",
+  "sql": "ALTER TABLE plugin_modules ADD COLUMN processor INTEGER DEFAULT 0; "
+ },
+ {
+  "address": "0x100a1ff5a",
+  "sql": "DELETE FROM plugin_domains"
+ },
+ {
+  "address": "0x100a1ffaf",
+  "sql": "ALTER TABLE plugins ADD COLUMN subcategories TEXT; "
+ },
+ {
+  "address": "0x100a22022",
+  "sql": "DROP TABLE plugins; DROP TABLE plugin_modules; DROP TABLE plugin_domains; "
+ },
+ {
+  "address": "0x100a48936",
+  "sql": "UPDATE plugins SET dev_identifier = :devid, name = :name, version = :version, vendor = :vendor, sdk_version = :sdkversion, scanstate = 1, flags = :flags, subcategories = :subcategories WHERE plugin_id = :plugin_id"
+ },
+ {
+  "address": "0x100a48a41",
+  "sql": "SELECT pm.module_id, pd.id = :domain_id, pd.relpath, pm.scanstate FROM plugin_modules AS pm JOIN plugin_domains as pd ON (pm.module_id = pd.module_id) WHERE pm.path = :path AND pd.id = :domain_id AND pm.processor & :processor_mask <> 0"
+ },
+ {
+  "address": "0x100a48b3d",
+  "sql": "INSERT INTO plugin_domains (id, module_id, relpath, enabled) VALUES (:id, :module_id, :relpath, 1)"
+ },
+ {
+  "address": "0x100a48ba4",
+  "sql": "INSERT INTO plugin_modules (path, arch, scanstate, fingerprint, processor) VALUES (:path, :arch, :scanstate, :fingerprint, :processor)"
+ },
+ {
+  "address": "0x100a48c2f",
+  "sql": "INSERT INTO plugin_modules (module_id, path, arch, scanstate, fingerprint, processor) VALUES (:module_id, :path, :arch, :scanstate, :fingerprint, :processor)"
+ },
+ {
+  "address": "0x100a48cd1",
+  "sql": "INSERT INTO plugins (module_id, name, scanstate) VALUES (:module_id, :name, :scanstate)"
+ },
+ {
+  "address": "0x100a48d2d",
+  "sql": "INSERT INTO plugins (plugin_id, module_id, dev_identifier, name, vendor, version, sdk_version, flags, scanstate, enabled, subcategories) VALUES (:plugin_id, :module_id, :devid, :name, :vendor, :version, :sdkversion, :flags, :scanstate, :enabled, :subcategories)"
+ },
+ {
+  "address": "0x100a48e58",
+  "sql": "SELECT id, module_id, relpath, enabled FROM plugin_domains"
+ },
+ {
+  "address": "0x100a48e94",
+  "sql": "SELECT module_id, path, arch, processor, scanstate, fingerprint FROM plugin_modules"
+ },
+ {
+  "address": "0x100a48ee9",
+  "sql": "SELECT plugin_id, module_id, dev_identifier, name, vendor, version, sdk_version, flags, scanstate, subcategories, enabled FROM plugins"
+ },
+ {
+  "address": "0x100a48f79",
+  "sql": "SELECT p.plugin_id, p.module_id, pm.path, pd.relpath, p.name, p.vendor, p.scanstate, p.version, p.sdk_version, p.dev_identifier, p.enabled, pd.id, p.flags, pm.processor, p.subcategories FROM plugins AS p JOIN plugin_modules AS pm ON (p.module_id = pm.module_id) JOIN plugin_domains AS pd ON (p.module_id = pd.module_id) WHERE pm.module_id = :module_id "
+ },
+ {
+  "address": "0x100a490f9",
+  "sql": "SELECT pm.module_id, pm.path, pd.relpath, pm.scanstate, pd.id, pm.fingerprint, pm.processor FROM plugin_modules AS pm JOIN plugin_domains AS pd ON (pm.module_id = pd.module_id) WHERE pm.arch = :arch AND pd.id = :domain_id AND pm.processor & :processor_mask <> 0"
+ },
+ {
+  "address": "0x100a49218",
+  "sql": "DELETE FROM plugins"
+ },
+ {
+  "address": "0x100a4922c",
+  "sql": "DELETE FROM plugin_domains WHERE module_id = :module_id AND id = :domain_id"
+ },
+ {
+  "address": "0x100a4927c",
+  "sql": "DELETE FROM plugin_modules WHERE module_id IN (SELECT pm.module_id FROM plugin_modules AS pm LEFT JOIN plugin_domains AS pd ON (pd.module_id = pm.module_id) WHERE pd.id IS NULL)"
+ },
+ {
+  "address": "0x100a49358",
+  "sql": "DELETE FROM plugins WHERE plugin_id IN (SELECT p.plugin_id FROM plugins AS p LEFT JOIN plugin_modules AS pm ON (p.module_id = pm.module_id) WHERE pm.module_id IS NULL)"
+ },
+ {
+  "address": "0x100a4942a",
+  "sql": "DELETE FROM plugin_domains WHERE module_id IN (SELECT pm.module_id FROM plugin_modules AS pm WHERE pm.arch = :arch AND pm.processor & :processor_mask <> 0) AND id = :domain_id"
+ },
+ {
+  "address": "0x100a49503",
+  "sql": "DELETE FROM plugins WHERE module_id = :module_id"
+ },
+ {
+  "address": "0x100a49535",
+  "sql": "SELECT p.plugin_id, p.module_id, pm.path, pd.relpath, p.name, p.vendor, p.scanstate, p.version, p.sdk_version, p.dev_identifier, p.enabled, pd.id, p.flags, pm.processor, p.subcategories FROM plugins AS p JOIN plugin_modules AS pm ON (p.module_id = pm.module_id) JOIN plugin_domains AS pd ON (p.module_id = pd.module_id) WHERE pd.enabled = 1 AND pm.processor & :processor_mask <> 0"
+ },
+ {
+  "address": "0x100a496d4",
+  "sql": "SELECT p.plugin_id, p.module_id, pm.path, pd.relpath, p.name, p.vendor, p.scanstate, p.version, p.sdk_version, p.dev_identifier, p.enabled, pd.id, p.flags, pm.processor, p.subcategories FROM plugins AS p JOIN plugin_modules AS pm ON (p.module_id = pm.module_id) JOIN plugin_domains AS pd ON (p.module_id = pd.module_id) WHERE pm.arch = :arch AND pm.processor & :processor_mask <> 0 AND pd.enabled = 1"
+ },
+ {
+  "address": "0x100a4988a",
+  "sql": "SELECT p.plugin_id, p.module_id, pm.path, pd.relpath, p.name, p.vendor, p.scanstate, p.version, p.sdk_version, p.dev_identifier, p.enabled, pd.id, p.flags, pm.processor, p.subcategories FROM plugins AS p JOIN plugin_modules AS pm ON (p.module_id = pm.module_id) JOIN plugin_domains AS pd ON (p.module_id = pd.module_id) WHERE pd.enabled = 1"
+ },
+ {
+  "address": "0x100a499fe",
+  "sql": "SELECT p.plugin_id, p.module_id, pm.path, pd.relpath, p.name, p.vendor, p.scanstate, p.version, p.sdk_version, p.dev_identifier, p.enabled, pd.id, p.flags, pm.processor, p.subcategories FROM plugins AS p JOIN plugin_modules AS pm ON (p.module_id = pm.module_id) JOIN plugin_domains AS pd ON (p.module_id = pd.module_id) WHERE pm.arch = :arch AND pm.processor & :processor_mask <> 0 AND pd.enabled = 1 AND pm.scanstate = 1 AND p.scanstate = 1"
+ },
+ {
+  "address": "0x100a49be4",
+  "sql": "UPDATE plugin_domains SET enabled = :enabled WHERE id = :domain_id AND module_id IN (SELECT pm.module_id FROM plugin_domains AS pd JOIN plugin_modules AS pm ON pd.module_id = pm.module_id WHERE pm.arch = :arch AND pm.processor & :processor_mask <> 0)"
+ },
+ {
+  "address": "0x100a49d23",
+  "sql": "UPDATE plugins SET enabled = :enabled WHERE plugin_id = :plugin_id"
+ },
+ {
+  "address": "0x100a49d6c",
+  "sql": "UPDATE plugin_domains SET relpath = :relpath WHERE module_id = :module_id AND id = :id"
+ },
+ {
+  "address": "0x100a49dca",
+  "sql": "UPDATE plugin_modules SET scanstate = 2 WHERE scanstate IN (0, 4) AND module_ID IN (SELECT module_id FROM plugins WHERE scanstate IN (2, 3) EXCEPT SELECT module_id FROM plugins WHERE scanstate IN (1, 0)) AND processor & :processor_mask <> 0"
+ },
+ {
+  "address": "0x100a49f49",
+  "sql": "UPDATE plugin_modules SET fingerprint = :fingerprint, scanstate = 0 WHERE module_id = :module_id"
+ },
+ {
+  "address": "0x100a49fb5",
+  "sql": "UPDATE plugin_modules SET scanstate = :scanstate WHERE module_id = :module_id"
+ },
+ {
+  "address": "0x100a4a007",
+  "sql": "UPDATE plugin_modules SET scanstate = 4 WHERE module_id IN (SELECT module_id FROM plugin_modules WHERE scanstate = 0 LIMIT 1) AND module_id NOT IN (SELECT module_id FROM plugins) AND processor & :processor_mask <> 0"
+ },
+ {
+  "address": "0x100a4a12c",
+  "sql": "UPDATE plugins SET scanstate = 4 WHERE plugin_id IN (SELECT plugin_id FROM plugins WHERE scanstate = 0 AND module_id IN (SELECT module_id FROM plugin_modules WHERE processor & :processor_mask <> 0) LIMIT 1)"
+ },
+ {
+  "address": "0x100a4a2b1",
+  "sql": "UPDATE plugin_modules SET scanstate = 2 WHERE scanstate = 4 AND module_id NOT IN (SELECT module_id FROM plugins) AND processor & :processor_mask <> 0"
+ },
+ {
+  "address": "0x100a4a351",
+  "sql": "UPDATE plugins SET scanstate = 2 WHERE scanstate = 4 AND module_id IN (SELECT module_id FROM plugin_modules WHERE processor & :processor_mask <> 0)"
+ },
+ {
+  "address": "0x100a4a7c2",
+  "sql": "DELETE FROM plugin_modules"
+ },
+ {
+  "address": "0x100a4acaa",
+  "sql": "CREATE TABLE plugin_domains ( id TEXT, module_id INTEGER DEFAULT 0, relpath TEXT, enabled INTEGER DEFAULT 0 ); CREATE TABLE plugin_modules ( module_id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT, arch INTEGER DEFAULT 0, processor INTEGER DEFAULT 0, scanstate INTEGER DEFAULT 0, fingerprint TEXT ); CREATE TABLE plugins ( plugin_id INTEGER PRIMARY KEY AUTOINCREMENT, module_id INTEGER DEFAULT 0, dev_identifier TEXT, name TEXT, vendor TEXT, version TEXT, sdk_version TEXT, flags INTEGER DEFAULT 0, scanstate INTEGER DEFAULT 0, subcategories TEXT, enabled INTEGER DEFAULT 0 ); "
+ }
+]

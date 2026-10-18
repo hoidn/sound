@@ -1278,3 +1278,15 @@ peak at 220.0 Hz and a membrane ratio of 1.59334, and the normal page rendered
 Linked from the [learning index](research/learning/index.md) and learning plan
 row L7. Gap: tracing `SetParameterA`/`CalcA` for a faithful version.
 Lint: links and anchors resolve; `git diff --check` clean.
+
+## [2026-10-17] maintenance | Track analysis evidence and browsers in Git
+
+By user direction, the `analysis/` tree is now tracked in Git: evidence directories,
+scripts, staged handoff payloads, the helper and Push2 corpus browsers, and the
+Corpus demo output. Excluded by `.gitignore`: extracted binaries (`derived/`,
+`*.arm64`, `*.x86_64`), the raw Push2 corpus and index dumps, and the `r2-large`
+link to `/var/tmp/sound-analysis` (Ghidra projects and corpora). A credential
+pattern scan found nothing. Statements that `analysis/` is ignored were corrected
+on the artifact catalog, tools README, installed-source page and Q-002. Evidence
+directories of agents still running (H4, N1 to N4) were committed as snapshots and
+will change. The `origin` remote is public; nothing was pushed.

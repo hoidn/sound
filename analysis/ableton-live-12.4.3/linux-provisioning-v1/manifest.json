@@ -1,0 +1,70 @@
+{
+ "schema": "linux-provisioning-manifest-v1",
+ "date": "2026-10-17",
+ "host": {
+  "os": "Ubuntu 24.04",
+  "kernel": "7.0.0-38-generic",
+  "arch": "x86_64",
+  "cpus": 32,
+  "ram_bytes": 134217728000
+ },
+ "toolchain": {
+  "ghidra": {
+   "version": "12.1.4",
+   "archive": "ghidra_12.1.4_PUBLIC_20260921.zip",
+   "archive_sha256": "ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db",
+   "archive_bytes": 569649598,
+   "release_page_sha256": "ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db",
+   "install_dir": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC"
+  },
+  "jdk": {
+   "vendor": "Eclipse Temurin",
+   "release": "jdk-21.0.12.1+1",
+   "archive": "OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+   "archive_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+   "adoptium_api_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+   "archive_bytes": 207473347,
+   "install_dir": "/home/ollie/.local/opt/jdk-21.0.12.1+1"
+  },
+  "rea": {
+   "package": "rea-agents",
+   "version": "6.5.0",
+   "node": "22.23.2",
+   "entry": "/home/ollie/.nvm/versions/node/v22.23.2/lib/node_modules/rea-agents/scripts/rea.mjs"
+  }
+ },
+ "inputs": {
+  "Live.arm64": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad",
+  "Push2DisplayProcess.arm64": "5988ef09f5ff69ab916a7b399d81b28b401bb2a170fd1eb4505394f2527d5465"
+ },
+ "push2_smoke": {
+  "command": "rea analyze <Push2DisplayProcess.arm64> --provider ghidra --json",
+  "env": {
+   "GHIDRA_HEADLESS_MAXMEM": "8G",
+   "REA_GHIDRA_STARTUP_TIMEOUT_MS": "1800000"
+  },
+  "wall_seconds": 71.22,
+  "max_rss_kbytes": 2319232,
+  "procedure_count": 13611,
+  "string_count": 14769,
+  "evidence_id": "ev_8906461b71a01f3f5d418748146c914915b7ac77fd8f11b086a166e162415baf",
+  "macos_reference_counts": {
+   "procedures": 13611,
+   "strings": 14769
+  }
+ },
+ "files": {
+  "host.txt": "2b5823c4877d4b6e57dcdbdfbce97f573b52af5e3d94e06e31a408dd88f68ec0",
+  "push2-smoke/analyze.err": "f030d0fa338c03cd4e92d94651cde1675cce6030cce8d44661ba78b115e90547",
+  "push2-smoke/analyze.json": "d22092e38600c458cbd7b2510cb7f04be48a16b784549a7b4de022bef119e925",
+  "push2-smoke/root-avail-after.txt": "0bc7a1cbecfcdb9efdfccebb01bd0c6738aa0005057a8de389a8b984e3f9ba76",
+  "push2-smoke/root-avail-before.txt": "81be1c201e80c67c6804fed03a56d99c8dcf48bfc81d9e68454776f0dd8f797f",
+  "rea-doctor-ghidra.json": "5f33b2610d5c0a0310e4dead9e6e2adb8d4aaaed6743cafefbf02e5b8cbffe8c"
+ },
+ "not_done": [
+  "no Live import or analysis",
+  "no new pseudocode",
+  "REA 6.5.0 source not inspected",
+  "prior analysis/ evidence tree absent on this host"
+ ]
+}

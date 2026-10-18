@@ -1,0 +1,2353 @@
+{
+ "schema": "midi-config-cases-v2-draft",
+ "status": "analyst-draft; not reviewed; not released",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+ "representation": {
+  "assignment_fields": "section, control (canonical template key), target, message_type (control-change|note), number, channel; map_mode for continuous controls; button_kind (momentary|toggle) for buttons",
+  "device_parameter_banks": "1 or 2 when at least one encoder assignment is enabled, else null",
+  "note": "project comparison representation, not a Live API or recovered structure; derivation IDs are analyst-only and must be removed for a handoff"
+ },
+ "rules": {
+  "R-CC": "_UserScript/__init__ parse_int L56-66 (range 128 bound L96); GenericScript is_valid_midi_identifier L24-25",
+  "R-GCH": "create_instance L182-184 parse_channel; GenericScript.__init__ L83-95: valid GlobalChannel else 0",
+  "R-PCH": "per-control channel tuples: listcomp L148-155, L285-291; GenericScript L239-249, L368-378, L147-155",
+  "R-GONLY": "buttons/sends use global_channel only: GenericScript L136-137, L158-166, L274-283 (int not tuple), L313-316, L399-405",
+  "R-ENC": "valid encoders compacted in slot order: GenericScript L366-388; width>8 -> 2 banks: _UserScript/DeviceComponent L16",
+  "R-BANK": "valid Bank1-8 buttons compacted in slot order: GenericScript L339-363; DeviceComponent._bank_value L397",
+  "R-MODE": "MapMode tokens elements_base L27-47; map_modes dictcomp L17; parse_map_mode L51-53 (absent -> Absolute)",
+  "R-MSCOPE": "EncoderMapMode L170-171 -> encoders; VolumeMapMode L245-246 -> track/master/cue volume (make_mixer_encoder default L140); SendsMapMode L248-249 -> sends L293; CrossfaderMapMode L251-252 -> crossfader L205-212",
+  "R-14": "EncoderElement MAX_14_BIT_CC=95 L27; __init__ L53-56: Absolute14Bit with CC>95 -> Absolute",
+  "R-MBK": "MixerButtonsToggle: create_instance L255-258 (getboolean False -> NOTOGGLE); GenericScript L129-137: NOTOGGLE -> momentary else toggle; applies to strip and mixer bank buttons L158-166, L218-224",
+  "R-DBK": "device and transport buttons momentary: GenericScript L312-313, L399-420 (NORELEASE never a key, L409)",
+  "R-TGT": "target wiring: create_instance L159-171, L176-178, L224-269, L272-317; GenericScript L37-55, L183-302, L321-363, L412-425",
+  "R-PAD": "pads read from [Globals] only: create_instance L188-220; note in range(128) L200; channel only read after valid note L201-204; -1 -> raw global L206-207; range(16) L209; (col,row)=(n%4,n//4) L210-211",
+  "R-SEC": "sections tested with has_section (exact): create_instance L146, L175, L182, L223, L276, L283",
+  "R-OPT": "configparser optionxform lower (L890); unknown keys never queried by create_instance",
+  "R-LEX": "configparser defaults L611-616: delimiters = :, full-line # ; comments, no inline comments, DEFAULT section inherited via has_option/get; values stripped",
+  "R-BOOL": "configparser BOOLEAN_STATES L608 via getboolean (case-insensitive)",
+  "R-INT": "configparser getint -> int(); embedded CPython 3.11.6 int() string rules (Inferred: version string in Live.arm64 @95776493)",
+  "D2": "_Tools/UserConfiguration.txt L18-27 message types/channels; L34-46 mode list",
+  "D3": "_Tools/UserConfiguration.txt L59-66 pad geometry",
+  "D4": "_Tools/UserConfiguration.txt L107-171 device controls",
+  "D5": "_Tools/UserConfiguration.txt L175-267 mixer controls",
+  "D6": "_Tools/UserConfiguration.txt L269-292 master/cue/crossfader, modes, toggle",
+  "D7": "_Tools/UserConfiguration.txt L296-340 transport"
+ },
+ "cases": [
+  {
+   "id": "S4-MIDI-001",
+   "purpose": "Single encoder uses global channel and default Absolute mode",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-005",
+    "REQ-MIDI-USER-007"
+   ],
+   "input": "fixtures/S4-MIDI-001/UserConfiguration.txt",
+   "input_sha256": "a17e4f04b115cc6547e7145d8f3e19724e5542726a1c5c6ce406c7d1605ffdae",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-CC",
+    "R-GCH",
+    "R-PCH",
+    "R-ENC",
+    "R-MODE",
+    "D4"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-002",
+   "purpose": "Sparse encoder slots are compacted in slot order",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-007"
+   ],
+   "input": "fixtures/S4-MIDI-002/UserConfiguration.txt",
+   "input_sha256": "8a41da6e39001afb69f518dd3b2266334ba12c71ab2fd1daa34c4042004029ad",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder3",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 12,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder7",
+      "target": "device-parameter:2",
+      "message_type": "control-change",
+      "number": 14,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-ENC",
+    "D4"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-003",
+   "purpose": "Nine valid encoders select the two-bank span",
+   "requirements": [
+    "REQ-MIDI-USER-007"
+   ],
+   "input": "fixtures/S4-MIDI-003/UserConfiguration.txt",
+   "input_sha256": "6d2a5e0814421ed2a5f3f1237a44db80ac8424a72c5570ec5e1f46d5e4f94f46",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder2",
+      "target": "device-parameter:2",
+      "message_type": "control-change",
+      "number": 21,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder3",
+      "target": "device-parameter:3",
+      "message_type": "control-change",
+      "number": 22,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder4",
+      "target": "device-parameter:4",
+      "message_type": "control-change",
+      "number": 23,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder5",
+      "target": "device-parameter:5",
+      "message_type": "control-change",
+      "number": 24,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder6",
+      "target": "device-parameter:6",
+      "message_type": "control-change",
+      "number": 25,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder7",
+      "target": "device-parameter:7",
+      "message_type": "control-change",
+      "number": 26,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder8",
+      "target": "device-parameter:8",
+      "message_type": "control-change",
+      "number": 27,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder9",
+      "target": "device-parameter:9",
+      "message_type": "control-change",
+      "number": 28,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 2
+   },
+   "derivation": [
+    "R-ENC",
+    "D4"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-004",
+   "purpose": "Eight valid encoders in slots 9-16 keep the one-bank span",
+   "requirements": [
+    "REQ-MIDI-USER-007"
+   ],
+   "input": "fixtures/S4-MIDI-004/UserConfiguration.txt",
+   "input_sha256": "8709d2e763bc0f858c0a2db7c75fd9c82c654784ede349337bca25435882ee59",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder9",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 30,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder10",
+      "target": "device-parameter:2",
+      "message_type": "control-change",
+      "number": 31,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder11",
+      "target": "device-parameter:3",
+      "message_type": "control-change",
+      "number": 32,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder12",
+      "target": "device-parameter:4",
+      "message_type": "control-change",
+      "number": 33,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder13",
+      "target": "device-parameter:5",
+      "message_type": "control-change",
+      "number": 34,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder14",
+      "target": "device-parameter:6",
+      "message_type": "control-change",
+      "number": 35,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder15",
+      "target": "device-parameter:7",
+      "message_type": "control-change",
+      "number": 36,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder16",
+      "target": "device-parameter:8",
+      "message_type": "control-change",
+      "number": 37,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-CC",
+    "R-ENC",
+    "D4"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-005",
+   "purpose": "Encoder channel endpoints and fallbacks",
+   "requirements": [
+    "REQ-MIDI-USER-003"
+   ],
+   "input": "fixtures/S4-MIDI-005/UserConfiguration.txt",
+   "input_sha256": "4190dd05c1e578ade730edf5b6b114bcf97ca88f595b7bebe5905b987e288122",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 0,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder2",
+      "target": "device-parameter:2",
+      "message_type": "control-change",
+      "number": 11,
+      "channel": 15,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder3",
+      "target": "device-parameter:3",
+      "message_type": "control-change",
+      "number": 12,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder4",
+      "target": "device-parameter:4",
+      "message_type": "control-change",
+      "number": 13,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder5",
+      "target": "device-parameter:5",
+      "message_type": "control-change",
+      "number": 14,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-PCH",
+    "R-GCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-006",
+   "purpose": "Invalid encoder numbers are disabled and excluded from compaction",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-007"
+   ],
+   "input": "fixtures/S4-MIDI-006/UserConfiguration.txt",
+   "input_sha256": "25e1ab5a0c897f5cb8e4e46988159e37bd75ebbbf314d08f56f1002832db6d57",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder4",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 127,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-CC",
+    "R-ENC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-007",
+   "purpose": "EncoderMapMode token LinearTwoCompliment",
+   "requirements": [
+    "REQ-MIDI-USER-005"
+   ],
+   "input": "fixtures/S4-MIDI-007/UserConfiguration.txt",
+   "input_sha256": "aff32834c6044924fce24a0d053563f2843d05faef787033a8b803543a670161",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 5,
+      "map_mode": "LinearTwoCompliment"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-MODE",
+    "R-MSCOPE",
+    "D2"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-008",
+   "purpose": "Absolute14Bit retained through CC95 and replaced by Absolute at CC96",
+   "requirements": [
+    "REQ-MIDI-USER-005"
+   ],
+   "input": "fixtures/S4-MIDI-008/UserConfiguration.txt",
+   "input_sha256": "c65dede702a1a156275ab01b51a0f8ea20ebc5356d0e9270a75f96cb63fb6976",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 95,
+      "channel": 5,
+      "map_mode": "Absolute14Bit"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Encoder2",
+      "target": "device-parameter:2",
+      "message_type": "control-change",
+      "number": 96,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-MODE",
+    "R-14"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-009",
+   "purpose": "Four mode keys with four distinct tokens (set A)",
+   "requirements": [
+    "REQ-MIDI-USER-005",
+    "REQ-MIDI-USER-009",
+    "REQ-MIDI-USER-010"
+   ],
+   "input": "fixtures/S4-MIDI-009/UserConfiguration.txt",
+   "input_sha256": "662eebbbe21e665f4b6bb76a92722237d125a3c487041aa423d512adf869b218",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 5,
+      "map_mode": "AccelSignedBit2"
+     },
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider1",
+      "target": "track-volume:1",
+      "message_type": "control-change",
+      "number": 11,
+      "channel": 5,
+      "map_mode": "LinearSignedBit"
+     },
+     {
+      "section": "MixerControls",
+      "control": "Send1Knob1",
+      "target": "track-send-a:1",
+      "message_type": "control-change",
+      "number": 12,
+      "channel": 5,
+      "map_mode": "AccelBinaryOffset"
+     },
+     {
+      "section": "MixerControls",
+      "control": "CrossfaderSlider",
+      "target": "crossfader",
+      "message_type": "control-change",
+      "number": 13,
+      "channel": 5,
+      "map_mode": "LinearSignedBit2"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-MODE",
+    "R-MSCOPE",
+    "R-GONLY",
+    "R-TGT",
+    "D5",
+    "D6"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-010",
+   "purpose": "Four mode keys with four distinct tokens (set B)",
+   "requirements": [
+    "REQ-MIDI-USER-005",
+    "REQ-MIDI-USER-009",
+    "REQ-MIDI-USER-010"
+   ],
+   "input": "fixtures/S4-MIDI-010/UserConfiguration.txt",
+   "input_sha256": "52372acb7c5d64db4d789c713f1d882f4d81cac8edf952995c8f707ca3284e7b",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 5,
+      "map_mode": "AccelTwoCompliment"
+     },
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider1",
+      "target": "track-volume:1",
+      "message_type": "control-change",
+      "number": 11,
+      "channel": 5,
+      "map_mode": "LinearBinaryOffset"
+     },
+     {
+      "section": "MixerControls",
+      "control": "Send1Knob1",
+      "target": "track-send-a:1",
+      "message_type": "control-change",
+      "number": 12,
+      "channel": 5,
+      "map_mode": "AccelSignedBit"
+     },
+     {
+      "section": "MixerControls",
+      "control": "CrossfaderSlider",
+      "target": "crossfader",
+      "message_type": "control-change",
+      "number": 13,
+      "channel": 5,
+      "map_mode": "Absolute14Bit"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-MODE",
+    "R-MSCOPE",
+    "R-14",
+    "R-TGT"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-011",
+   "purpose": "Only Bank8Button configured selects the first compacted bank slot",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-008"
+   ],
+   "input": "fixtures/S4-MIDI-011/UserConfiguration.txt",
+   "input_sha256": "71f3d8708f83192c348bb48f20b4b7bdf3bc1ffc67e58796aafa30bcc6587f70",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Bank8Button",
+      "target": "device-bank:1",
+      "message_type": "control-change",
+      "number": 40,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BANK",
+    "R-GONLY",
+    "R-DBK",
+    "D4"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-012",
+   "purpose": "Bank buttons compacted; noninteger slot disabled",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-008"
+   ],
+   "input": "fixtures/S4-MIDI-012/UserConfiguration.txt",
+   "input_sha256": "8f52f48ac5cf154001a78ee11e32ea0f314f9eee6a0741de58bf63e3c5d14d3b",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Bank2Button",
+      "target": "device-bank:1",
+      "message_type": "control-change",
+      "number": 41,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "Bank5Button",
+      "target": "device-bank:2",
+      "message_type": "control-change",
+      "number": 42,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-CC",
+    "R-BANK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-013",
+   "purpose": "Device navigation, lock and activator targets",
+   "requirements": [
+    "REQ-MIDI-USER-008"
+   ],
+   "input": "fixtures/S4-MIDI-013/UserConfiguration.txt",
+   "input_sha256": "0e3ef8ecd236810ab559d2b901b37b5a77d9b0c659d564eb82ae703442d2faee",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "NextBankButton",
+      "target": "device-bank-next",
+      "message_type": "control-change",
+      "number": 50,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "PrevBankButton",
+      "target": "device-bank-previous",
+      "message_type": "control-change",
+      "number": 51,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "LockButton",
+      "target": "device-lock",
+      "message_type": "control-change",
+      "number": 52,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "DeviceControls",
+      "control": "OnOffButton",
+      "target": "device-on-off",
+      "message_type": "control-change",
+      "number": 53,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-TGT",
+    "R-DBK",
+    "D4"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-014",
+   "purpose": "Invented per-control channel keys are ignored for buttons and sends",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-014/UserConfiguration.txt",
+   "input_sha256": "494080db8044742fd8b2364bfed93a7458eace0863405a1ee9c0f1df568cb097",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "LockButton",
+      "target": "device-lock",
+      "message_type": "control-change",
+      "number": 52,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton1",
+      "target": "track-mute:1",
+      "message_type": "control-change",
+      "number": 30,
+      "channel": 5,
+      "button_kind": "toggle"
+     },
+     {
+      "section": "MixerControls",
+      "control": "Send1Knob1",
+      "target": "track-send-a:1",
+      "message_type": "control-change",
+      "number": 12,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "TransportControls",
+      "control": "PlayButton",
+      "target": "transport-play",
+      "message_type": "control-change",
+      "number": 61,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-GONLY",
+    "R-OPT",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-015",
+   "purpose": "Track volume explicit and inherited channel",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-009"
+   ],
+   "input": "fixtures/S4-MIDI-015/UserConfiguration.txt",
+   "input_sha256": "85ac281f274dceaabe9f54ba9a098aa62243fb955d433e83fbef1a987a82bcdb",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider1",
+      "target": "track-volume:1",
+      "message_type": "control-change",
+      "number": 7,
+      "channel": 3,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider8",
+      "target": "track-volume:8",
+      "message_type": "control-change",
+      "number": 127,
+      "channel": 4,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PCH",
+    "R-TGT",
+    "D5"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-016",
+   "purpose": "Invalid slider channels with invalid global fall back to channel 0",
+   "requirements": [
+    "REQ-MIDI-USER-003"
+   ],
+   "input": "fixtures/S4-MIDI-016/UserConfiguration.txt",
+   "input_sha256": "6d64d7c78052f27d69bb0f99be585677a812b5e911b8489209a0809adb05e041",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider2",
+      "target": "track-volume:2",
+      "message_type": "control-change",
+      "number": 8,
+      "channel": 0,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider3",
+      "target": "track-volume:3",
+      "message_type": "control-change",
+      "number": 9,
+      "channel": 0,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PCH",
+    "R-GCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-017",
+   "purpose": "Send A and B knobs use SendsMapMode and global channel",
+   "requirements": [
+    "REQ-MIDI-USER-005",
+    "REQ-MIDI-USER-009"
+   ],
+   "input": "fixtures/S4-MIDI-017/UserConfiguration.txt",
+   "input_sha256": "9ceed10bf1076c69feb8f005ba162f2506c10dd3c31a01e112b925491ebf6abd",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "Send1Knob2",
+      "target": "track-send-a:2",
+      "message_type": "control-change",
+      "number": 21,
+      "channel": 5,
+      "map_mode": "AccelSignedBit"
+     },
+     {
+      "section": "MixerControls",
+      "control": "Send2Knob2",
+      "target": "track-send-b:2",
+      "message_type": "control-change",
+      "number": 22,
+      "channel": 5,
+      "map_mode": "AccelSignedBit"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-GONLY",
+    "R-MSCOPE",
+    "R-TGT",
+    "D5"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-018",
+   "purpose": "MixerButtonsToggle False makes strip and mixer bank buttons momentary",
+   "requirements": [
+    "REQ-MIDI-USER-009",
+    "REQ-MIDI-USER-011"
+   ],
+   "input": "fixtures/S4-MIDI-018/UserConfiguration.txt",
+   "input_sha256": "f80ab2bae0403c15c058fb6c9cc365316a36cafe0ec877776b8bbac0d9d8d098",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton1",
+      "target": "track-mute:1",
+      "message_type": "control-change",
+      "number": 30,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackSoloButton1",
+      "target": "track-solo:1",
+      "message_type": "control-change",
+      "number": 31,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackSelectButton1",
+      "target": "track-select:1",
+      "message_type": "control-change",
+      "number": 32,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackArmButton1",
+      "target": "track-arm:1",
+      "message_type": "control-change",
+      "number": 33,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "NextBankButton",
+      "target": "mixer-bank-next",
+      "message_type": "control-change",
+      "number": 34,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "PrevBankButton",
+      "target": "mixer-bank-previous",
+      "message_type": "control-change",
+      "number": 35,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-MBK",
+    "R-TGT",
+    "D5",
+    "D6"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-019",
+   "purpose": "MixerButtonsToggle True makes mixer buttons toggle",
+   "requirements": [
+    "REQ-MIDI-USER-009",
+    "REQ-MIDI-USER-011"
+   ],
+   "input": "fixtures/S4-MIDI-019/UserConfiguration.txt",
+   "input_sha256": "77929dcbc7eb845c5fc52f3b50129610fa06bd9ed5909852a52e621273cc6923",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton8",
+      "target": "track-mute:8",
+      "message_type": "control-change",
+      "number": 40,
+      "channel": 5,
+      "button_kind": "toggle"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackArmButton8",
+      "target": "track-arm:8",
+      "message_type": "control-change",
+      "number": 41,
+      "channel": 5,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-MBK",
+    "R-TGT"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-020",
+   "purpose": "Absent MixerButtonsToggle acts as toggle",
+   "requirements": [
+    "REQ-MIDI-USER-011"
+   ],
+   "input": "fixtures/S4-MIDI-020/UserConfiguration.txt",
+   "input_sha256": "5bdc3410d45e465a8d693dd737e5fbf6c873254cfb637eb2e847f514e47ada3c",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackSoloButton4",
+      "target": "track-solo:4",
+      "message_type": "control-change",
+      "number": 44,
+      "channel": 5,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-021",
+   "purpose": "MixerButtonsToggle Boolean spelling 'off'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-021/UserConfiguration.txt",
+   "input_sha256": "92e2578094c783a4a32c2912a1f36c1b287e30fe64b968dfe3b83f21ae69d713",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-022",
+   "purpose": "MixerButtonsToggle Boolean spelling 'No'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-022/UserConfiguration.txt",
+   "input_sha256": "5e7ffb55e17a8a5ac3c6bcb33e2325ec2d8f8d06ff4737ca4157516ed06bc512",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-023",
+   "purpose": "MixerButtonsToggle Boolean spelling '0'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-023/UserConfiguration.txt",
+   "input_sha256": "dd94ca410be953889c8b4824a5d796edfdb69b38cb974f0c94b2cee6dc3be88c",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-024",
+   "purpose": "MixerButtonsToggle Boolean spelling 'FaLsE'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-024/UserConfiguration.txt",
+   "input_sha256": "8b4a7f444ddc73d44e7633e9eee1a2d60257721ba3d60787ee0c21313ae6d024",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-025",
+   "purpose": "MixerButtonsToggle Boolean spelling 'on'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-025/UserConfiguration.txt",
+   "input_sha256": "34874a689415df9119fea0a128d3e76c9fdc59ae1a08dbe60ac0b09995a124f1",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-026",
+   "purpose": "MixerButtonsToggle Boolean spelling 'YES'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-026/UserConfiguration.txt",
+   "input_sha256": "cade35e98d02d057afde57ddfacc172faac75c24df50c3f1d2cc89f60d7efdc0",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-027",
+   "purpose": "MixerButtonsToggle Boolean spelling '1'",
+   "requirements": [
+    "REQ-MIDI-USER-011",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-027/UserConfiguration.txt",
+   "input_sha256": "7ed3d191686308fcb5da9e182c31c40165341378b4637a2b6763c36c1a1d4e7c",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton2",
+      "target": "track-mute:2",
+      "message_type": "control-change",
+      "number": 45,
+      "channel": 5,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-BOOL",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-028",
+   "purpose": "Device and mixer NextBankButton are distinct keys with distinct button kinds",
+   "requirements": [
+    "REQ-MIDI-USER-008",
+    "REQ-MIDI-USER-009",
+    "REQ-MIDI-USER-011"
+   ],
+   "input": "fixtures/S4-MIDI-028/UserConfiguration.txt",
+   "input_sha256": "2c0130e07df01682b108df39c91e3e5a77776b8936d5c29014b72600267cd7bc",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "NextBankButton",
+      "target": "device-bank-next",
+      "message_type": "control-change",
+      "number": 50,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "MixerControls",
+      "control": "NextBankButton",
+      "target": "mixer-bank-next",
+      "message_type": "control-change",
+      "number": 51,
+      "channel": 5,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-TGT",
+    "R-DBK",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-029",
+   "purpose": "VolumeMapMode Absolute14Bit with CC above 95 on master",
+   "requirements": [
+    "REQ-MIDI-USER-005",
+    "REQ-MIDI-USER-010"
+   ],
+   "input": "fixtures/S4-MIDI-029/UserConfiguration.txt",
+   "input_sha256": "c6a8f569a2d44bc0f8e34912888c193de78c72a0fe37a42633031c4655ade983",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "VolumeSlider1",
+      "target": "track-volume:1",
+      "message_type": "control-change",
+      "number": 95,
+      "channel": 5,
+      "map_mode": "Absolute14Bit"
+     },
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 100,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "MixerControls",
+      "control": "CueVolumeSlider",
+      "target": "cue-volume",
+      "message_type": "control-change",
+      "number": 31,
+      "channel": 5,
+      "map_mode": "Absolute14Bit"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-14",
+    "R-MSCOPE"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-030",
+   "purpose": "Mode scope: VolumeMapMode on master/cue, CrossfaderMapMode on crossfader, default sends",
+   "requirements": [
+    "REQ-MIDI-USER-005",
+    "REQ-MIDI-USER-010"
+   ],
+   "input": "fixtures/S4-MIDI-030/UserConfiguration.txt",
+   "input_sha256": "4bb34f4dfb1f7efd4d84c65b94df28a30fea830234613f10f595cea8afe64a76",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 5,
+      "map_mode": "AccelTwoCompliment"
+     },
+     {
+      "section": "MixerControls",
+      "control": "CueVolumeSlider",
+      "target": "cue-volume",
+      "message_type": "control-change",
+      "number": 21,
+      "channel": 5,
+      "map_mode": "AccelTwoCompliment"
+     },
+     {
+      "section": "MixerControls",
+      "control": "CrossfaderSlider",
+      "target": "crossfader",
+      "message_type": "control-change",
+      "number": 22,
+      "channel": 5,
+      "map_mode": "LinearBinaryOffset"
+     },
+     {
+      "section": "MixerControls",
+      "control": "Send2Knob1",
+      "target": "track-send-b:1",
+      "message_type": "control-change",
+      "number": 23,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-MSCOPE",
+    "R-MODE",
+    "D6"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-031",
+   "purpose": "All fourteen transport buttons",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-012"
+   ],
+   "input": "fixtures/S4-MIDI-031/UserConfiguration.txt",
+   "input_sha256": "e943679d0ed0359ca9118883b028a466775699b008865c7b0ff1b9f13e5677d6",
+   "expected": {
+    "assignments": [
+     {
+      "section": "TransportControls",
+      "control": "StopButton",
+      "target": "transport-stop",
+      "message_type": "control-change",
+      "number": 60,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "PlayButton",
+      "target": "transport-play",
+      "message_type": "control-change",
+      "number": 61,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "RecButton",
+      "target": "arrangement-record",
+      "message_type": "control-change",
+      "number": 62,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "SessionRecButton",
+      "target": "session-record",
+      "message_type": "control-change",
+      "number": 63,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "OverButton",
+      "target": "arrangement-overdub",
+      "message_type": "control-change",
+      "number": 64,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "MetroButton",
+      "target": "metronome",
+      "message_type": "control-change",
+      "number": 65,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "LoopButton",
+      "target": "arrangement-loop",
+      "message_type": "control-change",
+      "number": 66,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "RwdButton",
+      "target": "rewind",
+      "message_type": "control-change",
+      "number": 67,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "FfwdButton",
+      "target": "fast-forward",
+      "message_type": "control-change",
+      "number": 68,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "PunchInButton",
+      "target": "punch-in",
+      "message_type": "control-change",
+      "number": 69,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "PunchOutButton",
+      "target": "punch-out",
+      "message_type": "control-change",
+      "number": 70,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "NudgeUpButton",
+      "target": "nudge-up",
+      "message_type": "control-change",
+      "number": 71,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "NudgeDownButton",
+      "target": "nudge-down",
+      "message_type": "control-change",
+      "number": 72,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "TransportControls",
+      "control": "TapTempoButton",
+      "target": "tap-tempo",
+      "message_type": "control-change",
+      "number": 73,
+      "channel": 5,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-TGT",
+    "R-GONLY",
+    "R-DBK",
+    "D7"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-032",
+   "purpose": "FwdButton from the template comment is not a recognized key",
+   "requirements": [
+    "REQ-MIDI-USER-012",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-032/UserConfiguration.txt",
+   "input_sha256": "55a8d1230cea6515beff8f7756cdb0673f059cbb285ae78039ee00925f791145",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-TGT",
+    "R-OPT",
+    "D7"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-033",
+   "purpose": "Transport button with invalid GlobalChannel uses channel 0",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-012"
+   ],
+   "input": "fixtures/S4-MIDI-033/UserConfiguration.txt",
+   "input_sha256": "bf41578e9e838a0c03e4f95f393378435f690a4444a658c1ce494a16b8069a21",
+   "expected": {
+    "assignments": [
+     {
+      "section": "TransportControls",
+      "control": "PlayButton",
+      "target": "transport-play",
+      "message_type": "control-change",
+      "number": 61,
+      "channel": 0,
+      "button_kind": "momentary"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-GCH",
+    "R-GONLY"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-034",
+   "purpose": "Pad note inherits valid global channel",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-006"
+   ],
+   "input": "fixtures/S4-MIDI-034/UserConfiguration.txt",
+   "input_sha256": "25958de23bf2077ec99c29d2c5c634fca05c454c16f6bb93bc061c71c6793160",
+   "expected": {
+    "assignments": [
+     {
+      "section": "Globals",
+      "control": "Pad1Note",
+      "target": "drum-pad:1",
+      "message_type": "note",
+      "number": 36,
+      "channel": 9
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD",
+    "D3"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-035",
+   "purpose": "Pad note and channel endpoints",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-006"
+   ],
+   "input": "fixtures/S4-MIDI-035/UserConfiguration.txt",
+   "input_sha256": "995d32ef34ccd71c54d21292179b2bc7e628433aa00f93c7651d9dd00ed85889",
+   "expected": {
+    "assignments": [
+     {
+      "section": "Globals",
+      "control": "Pad16Note",
+      "target": "drum-pad:16",
+      "message_type": "note",
+      "number": 127,
+      "channel": 15
+     },
+     {
+      "section": "Globals",
+      "control": "Pad2Note",
+      "target": "drum-pad:2",
+      "message_type": "note",
+      "number": 0,
+      "channel": 0
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-036",
+   "purpose": "Out-of-range pad notes and channels omit the pad",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-006"
+   ],
+   "input": "fixtures/S4-MIDI-036/UserConfiguration.txt",
+   "input_sha256": "45f45e3219788369bc50e5feffb34f33ce7c35a92c5e16c04d7b0440b39cdd08",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-037",
+   "purpose": "Invalid global channel omits pads lacking a valid explicit channel but not ordinary CCs",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-006",
+    "REQ-MIDI-USER-010"
+   ],
+   "input": "fixtures/S4-MIDI-037/UserConfiguration.txt",
+   "input_sha256": "a267cc651de9b240b1def3806a8fd22c4778da640f8935c0cc757642a687b753",
+   "expected": {
+    "assignments": [
+     {
+      "section": "Globals",
+      "control": "Pad6Note",
+      "target": "drum-pad:6",
+      "message_type": "note",
+      "number": 42,
+      "channel": 3
+     },
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 0,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD",
+    "R-GCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-038",
+   "purpose": "Pad channel is not read when the note is invalid",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-006"
+   ],
+   "input": "fixtures/S4-MIDI-038/UserConfiguration.txt",
+   "input_sha256": "5010724516261827399cda2ac4a8a004c5d118982d2aa57406a93e8cd644e0e7",
+   "expected": {
+    "assignments": [
+     {
+      "section": "Globals",
+      "control": "Pad8Note",
+      "target": "drum-pad:8",
+      "message_type": "note",
+      "number": 44,
+      "channel": 5
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-039",
+   "purpose": "Missing GlobalChannel key omits channel-less pads; ordinary CC uses 0",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-006"
+   ],
+   "input": "fixtures/S4-MIDI-039/UserConfiguration.txt",
+   "input_sha256": "acfc5e908d1f5783b8dc15c99e4876e70f777bba08228f559534b58da3107ed9",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 0,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD",
+    "R-GCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-040",
+   "purpose": "Pad keys outside [Globals] are ignored",
+   "requirements": [
+    "REQ-MIDI-USER-006",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-040/UserConfiguration.txt",
+   "input_sha256": "d265c264e8b377159197501d9bbee5e2833a8055be851e2ba5d62456ae78a0b9",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-PAD",
+    "R-SEC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-041",
+   "purpose": "Absent [Globals] section: ordinary CC on channel 0",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-041/UserConfiguration.txt",
+   "input_sha256": "73328ebb6deba3b7a00a84294a145b989747403edab400caacf85995e185fcf0",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 0,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-SEC",
+    "R-GCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-042",
+   "purpose": "Equals-sign delimiter",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-042/UserConfiguration.txt",
+   "input_sha256": "c57c63a906bdfef041632b1acd40951e40716a065e4de7bf73a5ad7975d6016a",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 3,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-LEX",
+    "R-PCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-043",
+   "purpose": "Full-line comments and blank lines are ignored",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-043/UserConfiguration.txt",
+   "input_sha256": "b7b76962fb3e8a9d721a205da5525d8c1d608441ea63b8ec6fe31f5fbccb75a9",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-LEX"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-044",
+   "purpose": "Inline comment is part of the value and disables the CC",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-044/UserConfiguration.txt",
+   "input_sha256": "29d4f2823d83b0295cd1883c1e5487e417425be65d3749332b3c959c6b01cea7",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-LEX",
+    "R-CC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-045",
+   "purpose": "Empty value disables the CC",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-045/UserConfiguration.txt",
+   "input_sha256": "928413ad5d8138509866cba63cc198656edab5a2010450aaccd8b8bb807361c6",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-LEX",
+    "R-CC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-046",
+   "purpose": "Surrounding whitespace is stripped from values",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-046/UserConfiguration.txt",
+   "input_sha256": "30760d79810acc644d8f365e97dcf2283ae493bbe1ad170ad782a6c6ae8d54c8",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-LEX"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-047",
+   "purpose": "Section names are case-sensitive",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-047/UserConfiguration.txt",
+   "input_sha256": "9a0b73bb47f82d5ff64ba6832eec406bd83512b80e4ae27fda43281814f37b64",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-SEC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-048",
+   "purpose": "DEFAULT section values are inherited by named sections",
+   "requirements": [
+    "REQ-MIDI-USER-003",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-048/UserConfiguration.txt",
+   "input_sha256": "da18ea7dd8b00e3df270ce51b5ab468eab7670f49a5589fa008ed7847358523e",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 3,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-LEX",
+    "R-GCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-049",
+   "purpose": "Ordinary key in the wrong section is ignored",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-049/UserConfiguration.txt",
+   "input_sha256": "0b9eae92796923f879efeccdb935eacd218a103cfceb02427c8e3b743232f110",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-SEC",
+    "R-TGT"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-050",
+   "purpose": "Sign and leading zeros accepted by integer conversion",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-050/UserConfiguration.txt",
+   "input_sha256": "e7a2a0c84b429c04e052225ceb92329b62c59cb69df33931ea0fda50b3ad5ab5",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 20,
+      "channel": 5,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "MixerControls",
+      "control": "CueVolumeSlider",
+      "target": "cue-volume",
+      "message_type": "control-change",
+      "number": 21,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-INT",
+    "R-CC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-051",
+   "purpose": "Hexadecimal and decimal-point text are conversion failures",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-051/UserConfiguration.txt",
+   "input_sha256": "697ae22b53e7ff8b66060c86aaedb1daa1146424582d965841c2865dce7990cf",
+   "expected": {
+    "assignments": [],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-INT",
+    "R-CC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-052",
+   "purpose": "Underscore digit grouping accepted by integer conversion",
+   "requirements": [
+    "REQ-MIDI-USER-002",
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-052/UserConfiguration.txt",
+   "input_sha256": "22dbf97e71ccaa7c6a4d156c3a1cb232492c0e5ac223ba09f2d6726425d808f7",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "MasterVolumeSlider",
+      "target": "master-volume",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-INT",
+    "R-CC"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-053",
+   "purpose": "Mixed-case option names across device, mixer, transport and pad keys",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-053/UserConfiguration.txt",
+   "input_sha256": "19071e78a3002364edc1a8526972cbd841834a4266bf6031a89ba3c94840e233",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 2,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton1",
+      "target": "track-mute:1",
+      "message_type": "control-change",
+      "number": 30,
+      "channel": 5,
+      "button_kind": "toggle"
+     },
+     {
+      "section": "TransportControls",
+      "control": "PlayButton",
+      "target": "transport-play",
+      "message_type": "control-change",
+      "number": 61,
+      "channel": 5,
+      "button_kind": "momentary"
+     },
+     {
+      "section": "Globals",
+      "control": "Pad1Note",
+      "target": "drum-pad:1",
+      "message_type": "note",
+      "number": 36,
+      "channel": 5
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-OPT",
+    "R-PAD",
+    "R-PCH"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-054",
+   "purpose": "Unknown option alongside a known option",
+   "requirements": [
+    "REQ-MIDI-USER-013"
+   ],
+   "input": "fixtures/S4-MIDI-054/UserConfiguration.txt",
+   "input_sha256": "23e62d35e7e656d6fd3c6524c695ac91c3087395c7c77fca83cc672c6c58696e",
+   "expected": {
+    "assignments": [
+     {
+      "section": "MixerControls",
+      "control": "CueVolumeSlider",
+      "target": "cue-volume",
+      "message_type": "control-change",
+      "number": 21,
+      "channel": 5,
+      "map_mode": "Absolute"
+     }
+    ],
+    "device_parameter_banks": null
+   },
+   "derivation": [
+    "R-OPT"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  },
+  {
+   "id": "S4-MIDI-055",
+   "purpose": "Noninteger GlobalChannel: ordinary buttons and encoders on channel 0",
+   "requirements": [
+    "REQ-MIDI-USER-003"
+   ],
+   "input": "fixtures/S4-MIDI-055/UserConfiguration.txt",
+   "input_sha256": "3e8da65a752c603a52a7249e91bb98f7a8f7e3c0722609a2fec163d7155a61cc",
+   "expected": {
+    "assignments": [
+     {
+      "section": "DeviceControls",
+      "control": "Encoder1",
+      "target": "device-parameter:1",
+      "message_type": "control-change",
+      "number": 10,
+      "channel": 0,
+      "map_mode": "Absolute"
+     },
+     {
+      "section": "MixerControls",
+      "control": "TrackMuteButton1",
+      "target": "track-mute:1",
+      "message_type": "control-change",
+      "number": 30,
+      "channel": 0,
+      "button_kind": "toggle"
+     }
+    ],
+    "device_parameter_banks": 1
+   },
+   "derivation": [
+    "R-GCH",
+    "R-GONLY",
+    "R-MBK"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "exact assignment set over all present fields; order immaterial; device_parameter_banks exact"
+  }
+ ],
+ "check": {
+  "cases": 55,
+  "problems": {}
+ }
+}

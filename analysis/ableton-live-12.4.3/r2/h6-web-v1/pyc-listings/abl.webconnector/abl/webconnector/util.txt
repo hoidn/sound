@@ -1,0 +1,159 @@
+# source abl.webconnector/abl/webconnector/util.pyc
+# co_filename output/Live/mac_universal_64_static/Release/python-bundle/Python/abl.webconnector/abl/webconnector/util.py
+== <module> line 1 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_CONST                   0     0
+       4 LOAD_CONST                   1     ('with_statement',)
+       6 IMPORT_NAME                  0     __future__
+       8 IMPORT_FROM                  1     with_statement
+      10 STORE_NAME                   1     with_statement
+      12 POP_TOP                      0
+      14 LOAD_CONST                   0     0
+      16 LOAD_CONST                   2     None
+      18 IMPORT_NAME                  2     os
+      20 STORE_NAME                   2     os
+      22 LOAD_CONST                   0     0
+      24 LOAD_CONST                   2     None
+      26 IMPORT_NAME                  3     subprocess
+      28 STORE_NAME                   3     subprocess
+      30 LOAD_CONST                   0     0
+      32 LOAD_CONST                   2     None
+      34 IMPORT_NAME                  4     sys
+      36 STORE_NAME                   4     sys
+      38 LOAD_CONST                   3     <code relpath>
+      40 MAKE_FUNCTION                0
+      42 STORE_NAME                   5     relpath
+      44 LOAD_CONST                   4     <code assert_>
+      46 MAKE_FUNCTION                0
+      48 STORE_NAME                   6     assert_
+      50 LOAD_CONST                   5     <code check_exe_running>
+      52 MAKE_FUNCTION                0
+      54 STORE_NAME                   7     check_exe_running
+      56 LOAD_CONST                   2     None
+      58 RETURN_VALUE                 0
+== relpath line 8 args ['base', 'path'] flags 0x3
+       0 RESUME                       0
+       2 NOP                          0
+       4 BUILD_LIST                   0
+       6 STORE_FAST                   2     parts
+       8 LOAD_FAST                    1     path
+      10 LOAD_FAST                    0     base
+      12 COMPARE_OP                   3     !=
+      18 POP_JUMP_FORWARD_IF_FALSE    65
+      20 LOAD_FAST                    2     parts
+      22 LOAD_METHOD                  0     append
+      44 LOAD_FAST                    1     path
+      46 LOAD_METHOD                  1     basename
+      68 PRECALL                      0
+      72 CALL                         0
+      82 PRECALL                      1
+      86 CALL                         1
+      96 POP_TOP                      0
+      98 LOAD_FAST                    1     path
+     100 LOAD_METHOD                  2     directory
+     122 PRECALL                      0
+     126 CALL                         0
+     136 STORE_FAST                   1     path
+     138 LOAD_FAST                    1     path
+     140 LOAD_FAST                    0     base
+     142 COMPARE_OP                   3     !=
+     148 POP_JUMP_BACKWARD_IF_TRUE    65
+     150 LOAD_GLOBAL                  6     os
+     162 LOAD_ATTR                    4     sep
+     172 LOAD_METHOD                  5     join
+     194 LOAD_GLOBAL                  13    reversed
+     206 LOAD_FAST                    2     parts
+     208 PRECALL                      1
+     212 CALL                         1
+     222 PRECALL                      1
+     226 CALL                         1
+     236 RETURN_VALUE                 0
+== assert_ line 25 args ['condition', 'message'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_CONST                   0     None
+       4 RETURN_VALUE                 0
+== check_exe_running line 29 args ['exe'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_GLOBAL                  0     sys
+      14 LOAD_ATTR                    1     platform
+      24 LOAD_CONST                   1     'darwin'
+      26 COMPARE_OP                   2     ==
+      32 POP_JUMP_FORWARD_IF_FALSE    91
+      34 LOAD_GLOBAL                  5     subprocess
+      46 LOAD_ATTR                    3     Popen
+      56 LOAD_CONST                   2     '/bin/ps'
+      58 LOAD_CONST                   3     '-x'
+      60 BUILD_LIST                   2
+      62 LOAD_GLOBAL                  4     subprocess
+      74 LOAD_ATTR                    4     PIPE
+      84 LOAD_CONST                   4     True
+      86 KW_NAMES                     5     ('stdout', 'text')
+      88 PRECALL                      3
+      92 CALL                         3
+     102 STORE_FAST                   1     p
+     104 LOAD_FAST                    1     p
+     106 LOAD_METHOD                  5     communicate
+     128 PRECALL                      0
+     132 CALL                         0
+     142 UNPACK_SEQUENCE              2
+     146 STORE_FAST                   2     stdout
+     148 STORE_FAST                   3     _
+     150 LOAD_FAST                    2     stdout
+     152 LOAD_METHOD                  6     split
+     174 LOAD_CONST                   6     '\n'
+     176 PRECALL                      1
+     180 CALL                         1
+     190 GET_ITER                     0
+     192 FOR_ITER                     9
+     194 STORE_FAST                   4     line
+     196 LOAD_FAST                    0     exe
+     198 LOAD_FAST                    4     line
+     200 CONTAINS_OP                  0
+     202 POP_JUMP_FORWARD_IF_FALSE    3
+     204 POP_TOP                      0
+     206 LOAD_CONST                   4     True
+     208 RETURN_VALUE                 0
+     210 JUMP_BACKWARD                10
+     212 LOAD_CONST                   7     False
+     214 RETURN_VALUE                 0
+     216 NOP                          0
+     218 LOAD_GLOBAL                  15    open
+     230 LOAD_FAST                    0     exe
+     232 LOAD_CONST                   8     'a'
+     234 PRECALL                      2
+     238 CALL                         2
+     248 BEFORE_WITH                  0
+     250 POP_TOP                      0
+     252 NOP                          0
+     254 LOAD_CONST                   0     None
+     256 LOAD_CONST                   0     None
+     258 LOAD_CONST                   0     None
+     260 PRECALL                      2
+     264 CALL                         2
+     274 POP_TOP                      0
+     276 JUMP_FORWARD                 11
+     278 PUSH_EXC_INFO                0
+     280 WITH_EXCEPT_START            0
+     282 POP_JUMP_FORWARD_IF_TRUE     4
+     284 RERAISE                      2
+     286 COPY                         3
+     288 POP_EXCEPT                   0
+     290 RERAISE                      1
+     292 POP_TOP                      0
+     294 POP_EXCEPT                   0
+     296 POP_TOP                      0
+     298 POP_TOP                      0
+     300 LOAD_CONST                   7     False
+     302 RETURN_VALUE                 0
+     304 PUSH_EXC_INFO                0
+     306 LOAD_GLOBAL                  16    IOError
+     318 CHECK_EXC_MATCH              0
+     320 POP_JUMP_FORWARD_IF_FALSE    4
+     322 POP_TOP                      0
+     324 POP_EXCEPT                   0
+     326 LOAD_CONST                   4     True
+     328 RETURN_VALUE                 0
+     330 RERAISE                      0
+     332 COPY                         3
+     334 POP_EXCEPT                   0
+     336 RERAISE                      1

@@ -1,0 +1,219 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet S4",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Pin Live executable SHA-256 52289af638f1b26590c84a9bc08eabdc35127883087057add909d2718a7a35ef before the sitting",
+  "Establish, before relying on it, a virtual MIDI loopback port on the macOS host (for example the IAC Driver); availability is unverified",
+  "Fresh Live preferences copy per probe or record the preferences file hash before/after; retain Log.txt, the profile bytes and a screen capture for every probe",
+  "Assign each profile to a fresh User Remote Scripts directory; record how the surface was selected (Preferences > Link, Tempo & MIDI) and that Live was restarted after writing it"
+ ],
+ "probes": [
+  {
+   "id": "PRB-S4-01",
+   "clauses": [
+    "REQ-MIDI-USER-001 a"
+   ],
+   "question": "Is a User Remote Scripts directory containing UserConfiguration.txt listed as a Control Surface, under exactly which displayed name, and is a restart required?",
+   "existing_evidence": "D1 HowTo L13-22; _UserScript get_name_for_script L30-47 builds a class name (spaces -> underscores, SyntaxError -> GenericScript); Live.arm64 strings 'MidiRemoteScripts: Scanning for scripts in folder ' @96219912 region, 'UserScripts: ' and 'HIDE_SCRIPT' @96220482 region",
+   "why_static_insufficient": "Enumeration and list display live in native AMidiRemoteScriptPackages/TMidiRemoteScript code; the Python name is a class name, not proven to be the displayed name",
+   "minimal_input": "Two directories: 'S4 Probe' and 'S4Probe2', each with a UserConfiguration.txt containing only [Globals] GlobalChannel: 0",
+   "discriminating_observation": "Displayed entries 'S4 Probe' vs 'S4_Probe' (and presence of S4Probe2) in the Control Surface menu before and after a restart",
+   "stopping_condition": "One launch without restart after creating the folders and one after restart, both captured; stop"
+  },
+  {
+   "id": "PRB-S4-02",
+   "clauses": [
+    "REQ-MIDI-USER-001 b"
+   ],
+   "question": "Are directories whose names start with a digit, underscore or non-ASCII letter listed, and in what order?",
+   "existing_evidence": "D1 L17-18 advises a leading letter; no code path traced",
+   "why_static_insufficient": "Name filtering and sort order are native (same boundary as PRB-S4-01)",
+   "minimal_input": "Directories '1Probe', '_Probe', '\u00c9probe', 'Aprobe', 'bprobe' each with the PRB-S4-01 file",
+   "discriminating_observation": "Which of the five appear and their order in the menu",
+   "stopping_condition": "One restart-and-capture; stop. Run only after PRB-S4-01 shows listing works"
+  },
+  {
+   "id": "PRB-S4-03",
+   "clauses": [
+    "REQ-MIDI-USER-002 c",
+    "REQ-MIDI-USER-002 d",
+    "REQ-MIDI-USER-003 e",
+    "REQ-MIDI-USER-011 b (invalid Boolean)",
+    "REQ-MIDI-USER-013 d"
+   ],
+   "question": "What does the host do when profile construction raises (any assignment from that profile active, surface listed/selectable, message shown)?",
+   "existing_evidence": "create_instance L75-339 has no exception table, so configparser read_file errors (DuplicateOptionError, MissingSectionHeaderError), getboolean ValueError and pad getint ValueError propagate (re-decoded); Live.arm64 string \"Script could not be loaded.\" adjacent to 'create_instance' @96257008",
+   "why_static_insufficient": "The caller of create_instance is native TMidiRemoteScript; its recovery and UI are not in Python",
+   "minimal_input": "Profile with [MixerControls] MasterVolumeSlider: 20 and a duplicated line 'MasterVolumeSlider: 21'; control profile identical without the duplicate",
+   "discriminating_observation": "Log.txt entry text, any on-screen message, whether CC20/CC21 on channel 0 moves master volume, whether the surface stays selected",
+   "stopping_condition": "Duplicate-option variant first; add 'Pad1Note: abc' and 'MixerButtonsToggle: maybe' variants only if the first outcome is not a uniform load failure; stop after three variants"
+  },
+  {
+   "id": "PRB-S4-04",
+   "clauses": [
+    "REQ-MIDI-USER-005 c"
+   ],
+   "question": "What happens to a control whose mode token is unrecognized (for example lowercase 'absolute')?",
+   "existing_evidence": "parse_map_mode L52 returns the string 'Absolute' (not the MapMode value) for unknown tokens; EncoderElement.__init__ L53-56 stores it as the map mode",
+   "why_static_insufficient": "The string reaches native Live.MidiMap mapping installation; type handling is native",
+   "minimal_input": "[MixerControls] VolumeMapMode: absolute, MasterVolumeSlider: 20, TrackMuteButton1: 30 (mode-independent witness); send CC20 = 0 then 127 and CC30 = 127 on channel 0",
+   "discriminating_observation": "Master volume moves (as if Absolute) or not; track 1 mute toggles or not (whole profile failed vs one control); Log.txt errors",
+   "stopping_condition": "One profile, two values; stop"
+  },
+  {
+   "id": "PRB-S4-05",
+   "clauses": [
+    "REQ-MIDI-USER-005 d",
+    "REQ-MIDI-USER-010 d"
+   ],
+   "question": "For Absolute mode, which displayed master-volume value results from CC values 0, 64 and 127?",
+   "existing_evidence": "Mapping mode is passed to native MidiMap (ButtonElement.message_map_mode L113-116, EncoderElement L60-62); no Python arithmetic for Absolute",
+   "why_static_insufficient": "Value-to-parameter scaling is native MidiMap code; numerical fidelity requires measurement under ADR 0002",
+   "minimal_input": "[MixerControls] MasterVolumeSlider: 20; send CC20 = 0, 64, 127 on channel 0, one at a time",
+   "discriminating_observation": "Master volume display string after each value",
+   "stopping_condition": "Three readings; stop. Relative/14-bit modes only after a separate decision"
+  },
+  {
+   "id": "PRB-S4-06",
+   "clauses": [
+    "REQ-MIDI-USER-004 a",
+    "REQ-MIDI-USER-012 c (toggles)"
+   ],
+   "question": "Do Play, Stop, Rec, Loop and Metro buttons change the named transport states as the static path predicts, including repeated positive values and zero?",
+   "existing_evidence": "ToggleComponent._on_button_value L93-100; TransportComponent.__init__ L63-81 binds song properties; D7",
+   "why_static_insufficient": "Property setters (is_playing, record_mode, loop, metronome) are native Live API; dispatch of MIDI to the script is native",
+   "minimal_input": "[TransportControls] PlayButton: 61, StopButton: 60, LoopButton: 66, MetroButton: 65; sequence 127,0,127 on each; empty set",
+   "discriminating_observation": "Transport play state, Loop and Metronome switch states after each message",
+   "stopping_condition": "One pass of the sequence per button; stop"
+  },
+  {
+   "id": "PRB-S4-07",
+   "clauses": [
+    "REQ-MIDI-USER-004 b",
+    "REQ-MIDI-USER-012 c (seek, nudge, tap)"
+   ],
+   "question": "What seek rate does a held Rwd/Ffwd produce, what does a held Nudge do, and how does TapTempo estimate tempo?",
+   "existing_evidence": "TransportComponent _ffwd_value/_rwd_value L193-222 use Task-based progression; BC-08",
+   "why_static_insufficient": "Scheduler cadence and the time unit of song time moves are runtime properties",
+   "minimal_input": "FfwdButton: 68 held (127) for 2.0 s then 0, from song position 1.1.1, tempo 120",
+   "discriminating_observation": "Song position after release; repeat once to estimate jitter",
+   "stopping_condition": "Two holds; stop. Nudge and tap only if a contract needs them"
+  },
+  {
+   "id": "PRB-S4-08",
+   "clauses": [
+    "REQ-MIDI-USER-006 b",
+    "REQ-MIDI-USER-006 c"
+   ],
+   "question": "Does a configured pad note play the visible Drum Rack pad at the documented position, and what happens on note-off?",
+   "existing_evidence": "create_instance L210-213 builds (col,row,note,channel); ControlSurface.build_midi_map L372-373 hands it to c_instance.set_pad_translation; 'OMidiPadTranslator' strings in Live.arm64 near @96256717",
+   "why_static_insufficient": "Translation to Drum Rack pads is native",
+   "minimal_input": "[Globals] GlobalChannel: 0, Pad1Note: 60, Pad16Note: 75; Drum Rack with distinct samples on the visible 16 pads; send note-on 60 vel 100 then note-off",
+   "discriminating_observation": "Which pad lights/plays (top-left vs bottom-left) for Pad1 and Pad16",
+   "stopping_condition": "Two notes; stop"
+  },
+  {
+   "id": "PRB-S4-09",
+   "clauses": [
+    "REQ-MIDI-USER-007 c",
+    "REQ-MIDI-USER-007 d"
+   ],
+   "question": "Which parameters do encoders 1-8 address on one built-in device, and what happens with fewer parameters than encoders?",
+   "existing_evidence": "_Framework/DeviceComponent imports _Generic.Devices bank tables (Python, untraced in S4)",
+   "why_static_insufficient": "Not yet insufficient: trace _Generic/Devices first; probe only if name-to-parameter resolution (native) remains material",
+   "minimal_input": "Encoder1-8: 10-17 with Auto Filter selected; send CC10..17 = 127 in turn",
+   "discriminating_observation": "Which parameter moves for each CC",
+   "stopping_condition": "Eight messages; stop. Deferred until the static trace is done"
+  },
+  {
+   "id": "PRB-S4-10",
+   "clauses": [
+    "REQ-MIDI-USER-008 b",
+    "REQ-MIDI-USER-008 c",
+    "REQ-MIDI-USER-008 d",
+    "REQ-MIDI-USER-008 f"
+   ],
+   "question": "Do Next/Prev bank, OnOff and Lock act as statically derived on a device with a known bank count, and what does Lock do on release and device deletion?",
+   "existing_evidence": "_UserScript/DeviceComponent L20-64; _Framework/DeviceComponent _on_off_value L380-388, _lock_value L371-378, _bank_value L394-408",
+   "why_static_insufficient": "Bank count comes from device definitions plus native parameters; lock goes through native c_instance",
+   "minimal_input": "Encoder1: 10, NextBankButton: 50 (no PrevBankButton), OnOffButton: 53, LockButton: 52; device with 3 banks",
+   "discriminating_observation": "Bank shown after 4 Next presses (wrap expected), activator state after OnOff, encoder target after Lock then selecting another device",
+   "stopping_condition": "One sequence; stop"
+  },
+  {
+   "id": "PRB-S4-11",
+   "clauses": [
+    "REQ-MIDI-USER-009 b"
+   ],
+   "question": "Which tracks do mixer strips 1-8 control with return, group and hidden tracks present, and what does mixer bank Next do at the end?",
+   "existing_evidence": "GenericScript L233-302 builds 8 strips; MixerComponent track list not traced in S4",
+   "why_static_insufficient": "Track ordering source is a native song property; MixerComponent may be traceable first",
+   "minimal_input": "Set with 9 audio tracks (one folded group of 2), 2 returns; TrackSelectButton1-8: 30-37, NextBankButton: 38",
+   "discriminating_observation": "Selected track names after each select CC, before and after one Next press",
+   "stopping_condition": "Two bank positions; stop"
+  },
+  {
+   "id": "PRB-S4-12",
+   "clauses": [
+    "REQ-MIDI-USER-011 c",
+    "REQ-MIDI-USER-011 f",
+    "REQ-MIDI-USER-009 c (arm selects)"
+   ],
+   "question": "Do toggle-kind mixer buttons act on value 0, and do solo/arm exclusivity and arm-triggered track selection occur?",
+   "existing_evidence": "ChannelStripComponent _mute_value L367-370, _select_value L357-361; SelectChanStripComponent._arm_value L16-27 selects the track when arming succeeds and select_instrument returns true",
+   "why_static_insufficient": "Exclusivity preferences and select_instrument are native",
+   "minimal_input": "MixerButtonsToggle: True, TrackMuteButton1: 30, TrackArmButton2: 31; send 127 then 0 on each",
+   "discriminating_observation": "Mute state after each message (two inversions expected); track 2 armed and selected",
+   "stopping_condition": "One pass; repeat with MixerButtonsToggle: False only if outcome differs from prediction"
+  },
+  {
+   "id": "PRB-S4-13",
+   "clauses": [
+    "REQ-MIDI-USER-011 e"
+   ],
+   "question": "What MIDI bytes does Live send to a mute button for unmuted and muted tracks, with InvertMuteButtonFeedback True and False?",
+   "existing_evidence": "ChannelStripComponent._on_mute_changed L464-475 calls turn_on/turn_off; send path native",
+   "why_static_insufficient": "Output message construction is native; needs an output port capture",
+   "minimal_input": "TrackMuteButton1: 30, output port routed to a MIDI monitor; toggle mute in the UI",
+   "discriminating_observation": "CC30 value bytes for each mute state and each invert setting",
+   "stopping_condition": "Two settings x two states; stop"
+  },
+  {
+   "id": "PRB-S4-14",
+   "clauses": [
+    "Timing and state: activation/reload (Q-010)"
+   ],
+   "question": "Does editing UserConfiguration.txt take effect without restart, on surface reselection, or only after restart?",
+   "existing_evidence": "create_instance opens and parses the file once per construction (L85-94); when the host constructs is native",
+   "why_static_insufficient": "Construction triggers are native",
+   "minimal_input": "Active profile MasterVolumeSlider: 20; edit to 21 while running",
+   "discriminating_observation": "Which CC moves master volume after edit, after reselect, after restart",
+   "stopping_condition": "Three observations; stop"
+  },
+  {
+   "id": "PRB-S4-15",
+   "clauses": [
+    "Errors, cancellation and teardown (Q-010)"
+   ],
+   "question": "What happens to a held momentary transport button or held pad note when the MIDI port disconnects or the surface is deselected?",
+   "existing_evidence": "ButtonElement/ControlSurface disconnect paths exist; port lifecycle native",
+   "why_static_insufficient": "Port lifecycle and note cleanup are native and runtime",
+   "minimal_input": "NudgeUpButton: 71 held at 127; deselect the surface",
+   "discriminating_observation": "Whether nudge stops; Log.txt",
+   "stopping_condition": "One hold per teardown kind (deselect, port removal); stop"
+  },
+  {
+   "id": "PRB-S4-16",
+   "clauses": [
+    "REQ-MIDI-USER-013 h (encoding)"
+   ],
+   "question": "Which text encoding does the embedded interpreter use to read UserConfiguration.txt?",
+   "existing_evidence": "create_instance L87 calls open(user_path) without encoding; embedded CPython 3.11.6",
+   "why_static_insufficient": "Locale/UTF-8 mode of the embedded interpreter is set by native startup code",
+   "minimal_input": "UTF-8 file with a comment line containing '\u00e9' and MasterVolumeSlider: 20; then the same with a UTF-8 BOM",
+   "discriminating_observation": "Whether CC20 maps master volume in each file; Log.txt decode errors",
+   "stopping_condition": "Two files; stop. Low priority"
+  }
+ ]
+}

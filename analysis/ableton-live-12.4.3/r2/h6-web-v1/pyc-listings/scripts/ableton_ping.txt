@@ -1,0 +1,350 @@
+# source scripts/ableton_ping.pyc
+# co_filename output/Live/mac_universal_64_static/Release/python-bundle/Python/scripts/ableton_ping.py
+== <module> line 1 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_CONST                   0     0
+       4 LOAD_CONST                   1     ('with_statement',)
+       6 IMPORT_NAME                  0     __future__
+       8 IMPORT_FROM                  1     with_statement
+      10 STORE_NAME                   1     with_statement
+      12 POP_TOP                      0
+      14 LOAD_CONST                   0     0
+      16 LOAD_CONST                   2     None
+      18 IMPORT_NAME                  2     logging
+      20 STORE_NAME                   2     logging
+      22 LOAD_CONST                   0     0
+      24 LOAD_CONST                   2     None
+      26 IMPORT_NAME                  3     os
+      28 STORE_NAME                   3     os
+      30 LOAD_CONST                   0     0
+      32 LOAD_CONST                   2     None
+      34 IMPORT_NAME                  4     sys
+      36 STORE_NAME                   4     sys
+      38 LOAD_CONST                   0     0
+      40 LOAD_CONST                   3     ('load',)
+      42 IMPORT_NAME                  5     json
+      44 IMPORT_FROM                  6     load
+      46 STORE_NAME                   6     load
+      48 POP_TOP                      0
+      50 LOAD_CONST                   0     0
+      52 LOAD_CONST                   2     None
+      54 IMPORT_NAME                  7     AbletonWebConnector
+      56 STORE_NAME                   8     live_api_connector
+      58 LOAD_CONST                   0     0
+      60 LOAD_CONST                   4     ('WEBCONNECTOR_EXT', 'UsageReporter')
+      62 IMPORT_NAME                  9     abl.webconnector
+      64 IMPORT_FROM                  10    WEBCONNECTOR_EXT
+      66 STORE_NAME                   10    WEBCONNECTOR_EXT
+      68 IMPORT_FROM                  11    UsageReporter
+      70 STORE_NAME                   11    UsageReporter
+      72 POP_TOP                      0
+      74 LOAD_CONST                   0     0
+      76 LOAD_CONST                   5     ('main',)
+      78 IMPORT_NAME                  12    abl.webconnector.main
+      80 IMPORT_FROM                  13    main
+      82 STORE_NAME                   14    real_main
+      84 POP_TOP                      0
+      86 LOAD_CONST                   9     (None, 1000000)
+      88 LOAD_CONST                   7     <code main>
+      90 MAKE_FUNCTION                1
+      92 STORE_NAME                   13    main
+      94 LOAD_NAME                    15    __name__
+      96 LOAD_CONST                   8     '__main__'
+      98 COMPARE_OP                   2     ==
+     104 POP_JUMP_FORWARD_IF_FALSE    12
+     106 PUSH_NULL                    0
+     108 LOAD_NAME                    13    main
+     110 PRECALL                      0
+     114 CALL                         0
+     124 POP_TOP                      0
+     126 LOAD_CONST                   2     None
+     128 RETURN_VALUE                 0
+     130 LOAD_CONST                   2     None
+     132 RETURN_VALUE                 0
+== main line 15 args ['param_file', 'max_bytes'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_FAST                    0     param_file
+       4 POP_JUMP_FORWARD_IF_NOT_NONE 18
+       6 LOAD_GLOBAL                  0     sys
+      18 LOAD_ATTR                    1     argv
+      28 LOAD_CONST                   1     1
+      30 BINARY_SUBSCR                0
+      40 STORE_FAST                   0     param_file
+      42 LOAD_GLOBAL                  5     load
+      54 LOAD_GLOBAL                  7     open
+      66 LOAD_FAST                    0     param_file
+      68 PRECALL                      1
+      72 CALL                         1
+      82 PRECALL                      1
+      86 CALL                         1
+      96 STORE_FAST                   2     param_json
+      98 LOAD_FAST                    2     param_json
+     100 LOAD_METHOD                  4     get
+     122 LOAD_CONST                   2     'logging'
+     124 BUILD_MAP                    0
+     126 PRECALL                      2
+     130 CALL                         2
+     140 STORE_FAST                   3     logging_params
+     142 LOAD_FAST                    3     logging_params
+     144 LOAD_METHOD                  4     get
+     166 LOAD_CONST                   3     'log_level'
+     168 LOAD_CONST                   4     'DEBUG'
+     170 PRECALL                      2
+     174 CALL                         2
+     184 LOAD_METHOD                  5     upper
+     206 PRECALL                      0
+     210 CALL                         0
+     220 STORE_FAST                   4     c_level
+     222 LOAD_FAST                    4     c_level
+     224 LOAD_CONST                   5     ('ERROR', 'CRITICAL', 'WARNING', 'WARN', 'INFO', 'DEBUG')
+     226 CONTAINS_OP                  1
+     228 POP_JUMP_FORWARD_IF_FALSE    2
+     230 LOAD_CONST                   4     'DEBUG'
+     232 STORE_FAST                   4     c_level
+     234 LOAD_FAST                    4     c_level
+     236 LOAD_FAST                    3     logging_params
+     238 LOAD_CONST                   3     'log_level'
+     240 STORE_SUBSCR                 0
+     244 LOAD_CONST                   6     'file_path'
+     246 LOAD_FAST                    3     logging_params
+     248 CONTAINS_OP                  1
+     250 POP_JUMP_FORWARD_IF_FALSE    51
+     252 LOAD_GLOBAL                  0     sys
+     264 LOAD_ATTR                    6     stderr
+     274 LOAD_METHOD                  7     write
+     296 LOAD_CONST                   7     'You must provide a logging.file_path'
+     298 PRECALL                      1
+     302 CALL                         1
+     312 POP_TOP                      0
+     314 LOAD_GLOBAL                  1     sys
+     326 LOAD_ATTR                    8     exit
+     336 LOAD_CONST                   1     1
+     338 PRECALL                      1
+     342 CALL                         1
+     352 POP_TOP                      0
+     354 LOAD_GLOBAL                  19    logging
+     366 LOAD_ATTR                    10    Formatter
+     376 LOAD_CONST                   8     '%(levelname)s:%(asctime)s:%(name)s:%(message)s'
+     378 PRECALL                      1
+     382 CALL                         1
+     392 STORE_FAST                   5     formatter
+     394 LOAD_FAST                    3     logging_params
+     396 LOAD_CONST                   6     'file_path'
+     398 BINARY_SUBSCR                0
+     408 STORE_FAST                   6     file_path
+     410 LOAD_GLOBAL                  22    os
+     422 LOAD_ATTR                    12    path
+     432 LOAD_METHOD                  13    exists
+     454 LOAD_FAST                    6     file_path
+     456 PRECALL                      1
+     460 CALL                         1
+     470 POP_JUMP_FORWARD_IF_FALSE    232
+     472 LOAD_GLOBAL                  22    os
+     484 LOAD_ATTR                    12    path
+     494 LOAD_METHOD                  14    getsize
+     516 LOAD_FAST                    6     file_path
+     518 PRECALL                      1
+     522 CALL                         1
+     532 LOAD_FAST                    1     max_bytes
+     534 COMPARE_OP                   4     >
+     540 POP_JUMP_FORWARD_IF_FALSE    197
+     542 LOAD_GLOBAL                  23    os
+     554 LOAD_ATTR                    15    rename
+     564 LOAD_FAST                    6     file_path
+     566 LOAD_FAST                    6     file_path
+     568 LOAD_CONST                   9     '.old'
+     570 BINARY_OP                    0
+     574 PRECALL                      2
+     578 CALL                         2
+     588 POP_TOP                      0
+     590 LOAD_GLOBAL                  7     open
+     602 LOAD_FAST                    6     file_path
+     604 LOAD_CONST                   9     '.old'
+     606 BINARY_OP                    0
+     610 LOAD_CONST                   10    'rb'
+     612 PRECALL                      2
+     616 CALL                         2
+     626 BEFORE_WITH                  0
+     628 STORE_FAST                   7     inf
+     630 LOAD_FAST                    7     inf
+     632 LOAD_METHOD                  16    seek
+     654 LOAD_GLOBAL                  35    int
+     666 LOAD_FAST                    1     max_bytes
+     668 UNARY_NEGATIVE               0
+     670 LOAD_CONST                   11    2
+     672 BINARY_OP                    11
+     676 PRECALL                      1
+     680 CALL                         1
+     690 LOAD_GLOBAL                  22    os
+     702 LOAD_ATTR                    18    SEEK_END
+     712 PRECALL                      2
+     716 CALL                         2
+     726 POP_TOP                      0
+     728 LOAD_GLOBAL                  7     open
+     740 LOAD_FAST                    6     file_path
+     742 LOAD_CONST                   12    'wb'
+     744 PRECALL                      2
+     748 CALL                         2
+     758 BEFORE_WITH                  0
+     760 STORE_FAST                   8     outf
+     762 LOAD_FAST                    7     inf
+     764 LOAD_METHOD                  19    read
+     786 PRECALL                      0
+     790 CALL                         0
+     800 STORE_FAST                   9     content
+     802 LOAD_FAST                    8     outf
+     804 LOAD_METHOD                  7     write
+     826 LOAD_FAST                    9     content
+     828 PRECALL                      1
+     832 CALL                         1
+     842 POP_TOP                      0
+     844 LOAD_CONST                   0     None
+     846 LOAD_CONST                   0     None
+     848 LOAD_CONST                   0     None
+     850 PRECALL                      2
+     854 CALL                         2
+     864 POP_TOP                      0
+     866 JUMP_FORWARD                 11
+     868 PUSH_EXC_INFO                0
+     870 WITH_EXCEPT_START            0
+     872 POP_JUMP_FORWARD_IF_TRUE     4
+     874 RERAISE                      2
+     876 COPY                         3
+     878 POP_EXCEPT                   0
+     880 RERAISE                      1
+     882 POP_TOP                      0
+     884 POP_EXCEPT                   0
+     886 POP_TOP                      0
+     888 POP_TOP                      0
+     890 LOAD_CONST                   0     None
+     892 LOAD_CONST                   0     None
+     894 LOAD_CONST                   0     None
+     896 PRECALL                      2
+     900 CALL                         2
+     910 POP_TOP                      0
+     912 JUMP_FORWARD                 11
+     914 PUSH_EXC_INFO                0
+     916 WITH_EXCEPT_START            0
+     918 POP_JUMP_FORWARD_IF_TRUE     4
+     920 RERAISE                      2
+     922 COPY                         3
+     924 POP_EXCEPT                   0
+     926 RERAISE                      1
+     928 POP_TOP                      0
+     930 POP_EXCEPT                   0
+     932 POP_TOP                      0
+     934 POP_TOP                      0
+     936 LOAD_GLOBAL                  19    logging
+     948 LOAD_ATTR                    20    FileHandler
+     958 LOAD_FAST                    6     file_path
+     960 PRECALL                      1
+     964 CALL                         1
+     974 STORE_FAST                   10    handler
+     976 LOAD_FAST                    10    handler
+     978 LOAD_METHOD                  21    setLevel
+    1000 LOAD_GLOBAL                  45    getattr
+    1012 LOAD_GLOBAL                  18    logging
+    1024 LOAD_FAST                    4     c_level
+    1026 PRECALL                      2
+    1030 CALL                         2
+    1040 PRECALL                      1
+    1044 CALL                         1
+    1054 POP_TOP                      0
+    1056 LOAD_FAST                    10    handler
+    1058 LOAD_METHOD                  23    setFormatter
+    1080 LOAD_FAST                    5     formatter
+    1082 PRECALL                      1
+    1086 CALL                         1
+    1096 POP_TOP                      0
+    1098 LOAD_GLOBAL                  19    logging
+    1110 LOAD_ATTR                    24    getLogger
+    1120 PRECALL                      0
+    1124 CALL                         0
+    1134 STORE_FAST                   11    root_logger
+    1136 LOAD_FAST                    11    root_logger
+    1138 LOAD_METHOD                  25    addHandler
+    1160 LOAD_FAST                    10    handler
+    1162 PRECALL                      1
+    1166 CALL                         1
+    1176 POP_TOP                      0
+    1178 LOAD_FAST                    11    root_logger
+    1180 LOAD_METHOD                  21    setLevel
+    1202 LOAD_GLOBAL                  45    getattr
+    1214 LOAD_GLOBAL                  18    logging
+    1226 LOAD_FAST                    4     c_level
+    1228 PRECALL                      2
+    1232 CALL                         2
+    1242 PRECALL                      1
+    1246 CALL                         1
+    1256 POP_TOP                      0
+    1258 LOAD_CONST                   0     None
+    1260 STORE_FAST                   12    usage_log_file
+    1262 LOAD_CONST                   13    'usage_report_prefix'
+    1264 LOAD_FAST                    2     param_json
+    1266 CONTAINS_OP                  0
+    1268 POP_JUMP_FORWARD_IF_FALSE    90
+    1270 LOAD_CONST                   14    'aip_usage_data_dir'
+    1272 LOAD_FAST                    2     param_json
+    1274 CONTAINS_OP                  0
+    1276 POP_JUMP_FORWARD_IF_FALSE    86
+    1278 LOAD_GLOBAL                  7     open
+    1290 LOAD_GLOBAL                  22    os
+    1302 LOAD_ATTR                    12    path
+    1312 LOAD_METHOD                  26    join
+    1334 LOAD_FAST                    2     param_json
+    1336 LOAD_CONST                   14    'aip_usage_data_dir'
+    1338 BINARY_SUBSCR                0
+    1348 LOAD_FAST                    2     param_json
+    1350 LOAD_CONST                   13    'usage_report_prefix'
+    1352 BINARY_SUBSCR                0
+    1362 FORMAT_VALUE                 1
+    1364 LOAD_GLOBAL                  54    WEBCONNECTOR_EXT
+    1376 FORMAT_VALUE                 1
+    1378 BUILD_STRING                 2
+    1380 PRECALL                      2
+    1384 CALL                         2
+    1394 LOAD_METHOD                  28    encode
+    1416 LOAD_CONST                   15    'utf-8'
+    1418 PRECALL                      1
+    1422 CALL                         1
+    1432 LOAD_CONST                   12    'wb'
+    1434 PRECALL                      2
+    1438 CALL                         2
+    1448 STORE_FAST                   12    usage_log_file
+    1450 LOAD_GLOBAL                  59    UsageReporter
+    1462 LOAD_FAST                    12    usage_log_file
+    1464 PRECALL                      1
+    1468 CALL                         1
+    1478 STORE_FAST                   13    usage_reporter
+    1480 LOAD_FAST                    13    usage_reporter
+    1482 BEFORE_WITH                  0
+    1484 POP_TOP                      0
+    1486 LOAD_GLOBAL                  61    real_main
+    1498 LOAD_FAST                    2     param_json
+    1500 LOAD_GLOBAL                  62    live_api_connector
+    1512 LOAD_FAST                    13    usage_reporter
+    1514 KW_NAMES                     16    ('usage_reporter',)
+    1516 PRECALL                      3
+    1520 CALL                         3
+    1530 POP_TOP                      0
+    1532 LOAD_CONST                   0     None
+    1534 LOAD_CONST                   0     None
+    1536 LOAD_CONST                   0     None
+    1538 PRECALL                      2
+    1542 CALL                         2
+    1552 POP_TOP                      0
+    1554 LOAD_CONST                   0     None
+    1556 RETURN_VALUE                 0
+    1558 PUSH_EXC_INFO                0
+    1560 WITH_EXCEPT_START            0
+    1562 POP_JUMP_FORWARD_IF_TRUE     4
+    1564 RERAISE                      2
+    1566 COPY                         3
+    1568 POP_EXCEPT                   0
+    1570 RERAISE                      1
+    1572 POP_TOP                      0
+    1574 POP_EXCEPT                   0
+    1576 POP_TOP                      0
+    1578 POP_TOP                      0
+    1580 LOAD_CONST                   0     None
+    1582 RETURN_VALUE                 0

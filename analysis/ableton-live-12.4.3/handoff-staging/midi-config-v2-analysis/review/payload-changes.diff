@@ -1,0 +1,309 @@
+--- draft/AGENTS.md
++++ reviewed/AGENTS.md
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This directory is a staged release candidate. Use it for implementation only
+-after a separate review approves it and it is published as an immutable
+-release. Even then, implementation requires a fresh, restricted implementation
+-workspace containing only permitted materials. Do not begin clean
+-implementation in an analyst checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace containing
++only permitted materials. Publication of this package does not provision one.
++Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -18,7 +17,7 @@
+ structure is specified. A candidate adapter may expose the comparison labels;
+ this does not impose an internal architecture.
+ 
+-Do not extend unknown or excluded behavior. Request a reviewed revision for
+-gaps. Record candidate-only tests separately from reference comparisons, with
+-exact package and candidate hashes. Nothing here authorizes package
+-installation, network publication or messages.
++Preserve this release unchanged. Do not extend unknown or excluded behavior.
++Request a reviewed revision for gaps. Record candidate-only tests separately
++from reference comparisons, with exact package and candidate hashes. Nothing
++here authorizes package installation, network publication or messages.
+--- draft/README.md
++++ reviewed/README.md
+@@ -1,8 +1,11 @@
+-# MIDI configuration interpretation release candidate 2
++# MIDI configuration interpretation release 2
+ 
+-**Staged candidate: not reviewed and not released.** It is not an
+-implementation input. Read [the contract](spec.md), [cases](cases.json),
+-[role instructions](AGENTS.md) and [the draft manifest](manifest.json).
++**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
++[role instructions](AGENTS.md), [the manifest](manifest.json) and
++[the review disposition](REVIEW.md). The stated partial scope, narrowed as
++recorded in the review, is approved as a contract for a fresh, restricted
++implementation workspace. Such a workspace has not been provisioned by this
++release.
+ 
+ The finite scope is how a user configuration file is interpreted: which
+ assignments are enabled, their MIDI addresses, the device, mixer, transport and
+@@ -12,7 +15,7 @@
+ unreleased. No application source, shipped file or public dependency is
+ included.
+ 
+-When published, this release supersedes midi-config-v1 as a strict superset.
++This release supersedes midi-config-v1 as a strict superset.
+ Its 54 cases keep their IDs, fixture bytes and logical expectations in a wider
+ representation; 55 cases are new, for 109 in total. The spec lists the changes.
+ 
+--- draft/spec.md
++++ reviewed/spec.md
+@@ -1,14 +1,15 @@
+-# MIDI configuration interpretation — release candidate 2
++# MIDI configuration interpretation — release 2
+ 
+ Target: Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS.
+ Feature: FEAT-MIDI-USER-MAPPING. Parent specification identity:
+-SPEC-MIDI-USER-MAPPING revision 2. Release candidate: midi-config-v2, which
+-supersedes midi-config-v1 as a strict superset when published. Only the
++SPEC-MIDI-USER-MAPPING revision 2. Release: midi-config-v2, which
++supersedes midi-config-v1 as a strict superset. Only the
+ clauses explicitly included below are in scope. No other clause of a listed
+ requirement is implicitly approved. This document is self-contained.
+ 
+-**Status: staged candidate, not reviewed, not released.** It is not an
+-implementation input until a separate review approves it and it is published.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the narrowing recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -49,11 +50,11 @@
+ ## Value interpretation
+ 
+ **Integer text.** After trimming, a value is integer text when it is an
+-optional `+` or `-` followed by ASCII decimal digits, where a single underscore
+-may separate two digits. Leading zeros are allowed. Examples: `+20` is 20,
+-`0021` is 21, `1_0` is 10. Any other value is a **conversion failure**,
+-including an empty value, `abc`, `0x14`, `20.0` and `20 ; fader` (text after
+-the number is part of the value).
++optional `+` or `-` followed by ASCII decimal digits, in which an underscore
++may appear only singly between two digits. Leading zeros are allowed.
++Examples: `+20` is 20, `0021` is 21, `1_0` is 10. Any other value is a
++**conversion failure**, including an empty value, `abc`, `0x14`, `20.0` and
++`20 ; fader` (text after the number is part of the value).
+ 
+ **Number fields.** A CC number or pad note field enables its assignment when it
+ is integer text with a value from 0 through 127. A missing key, `-1`, any other
+@@ -214,12 +215,14 @@
+ These inputs have **no expectation** in this release: duplicate sections;
+ duplicate option names after case folding; text before the first section
+ header; option lines without a delimiter; indented or continuation lines; `%`
+-in any value; non-ASCII bytes or CR line endings; a noninteger pad note, or a
+-noninteger pad channel for an enabled pad note; a `MixerButtonsToggle` value
+-that is not a listed Boolean; any `InvertMuteButtonFeedback` key; a map-mode
+-value that is not exactly one of the ten tokens, including case variants; two
+-enabled assignments with the same MIDI address; and `Send2Knob`*N* enabled
+-while `Send1Knob`*N* is not.
++in any value; non-ASCII bytes, CR line endings, or ASCII control characters
++other than the LF line ending, including tabs; a noninteger pad note, or a
++noninteger pad channel for an enabled pad note; integer text longer than 640
++characters in a pad note, or in a pad channel for an enabled pad note; a
++`MixerButtonsToggle` value that is not a listed Boolean; any
++`InvertMuteButtonFeedback` key; a map-mode value that is not exactly one of the
++ten tokens, including case variants; two enabled assignments with the same MIDI
++address; and `Send2Knob`*N* enabled while `Send1Knob`*N* is not.
+ 
+ Excluded behavior: how the application reports or recovers from inputs that
+ fail to load; profile discovery, naming, activation and reload; numeric
+@@ -260,4 +263,5 @@
+ configuration field names and simple values. They contain no shipped file
+ content, program code or assets. Expected JSON is newly authored
+ static-derived behavioral data. No public source or dependency is approved or
+-included. Review status is recorded in [the manifest](manifest.json).
++included. Review status is recorded in [the manifest](manifest.json) and
++[the review disposition](REVIEW.md).
+--- draft/cases.json
++++ reviewed/cases.json
+@@ -2,7 +2,7 @@
+  "schema": "midi-config-cases-v2",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "scope": "midi-config-v2 partial requirement clauses only (see spec.md)",
+- "status": "staged candidate; not reviewed; not released",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal ASCII inputs; no shipped file copied",
+  "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+  "representation": {
+@@ -2730,6 +2730,7 @@
+    "origin": "new in midi-config-v2",
+    "requirements": [
+     "REQ-MIDI-USER-005",
++    "REQ-MIDI-USER-009",
+     "REQ-MIDI-USER-010"
+    ],
+    "input": "fixtures/MIDI-CONFIG-084/UserConfiguration.txt",
+--- draft/manifest.json
++++ reviewed/manifest.json
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "midi-config-v2",
+- "release_status": "staged-candidate; not reviewed; not released",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-17",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "specification": {
+   "id": "SPEC-MIDI-USER-MAPPING",
+@@ -45,8 +45,9 @@
+    "option lines without a delimiter",
+    "indented or continuation lines",
+    "% in any value",
+-   "non-ASCII bytes or CR line endings",
++   "non-ASCII bytes, CR line endings, or ASCII control characters other than the LF line ending, including tabs",
+    "noninteger pad note; noninteger pad channel for an enabled pad note",
++   "integer text longer than 640 characters in a pad note, or in a pad channel for an enabled pad note",
+    "MixerButtonsToggle value that is not a listed Boolean",
+    "any InvertMuteButtonFeedback key",
+    "map-mode value that is not exactly one of the ten tokens",
+@@ -72,12 +73,22 @@
+  "fixture_origin": "independently authored ASCII configuration inputs and expected logical assignments",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review subagent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-17",
++  "findings": [
++   "RV2-01 low: very long pad integer text is not a plain out-of-range value; narrowed by exclusion",
++   "RV2-02 low: trimming of tabs and other ASCII control characters was unstated; narrowed by exclusion",
++   "RV2-03 editorial: underscore rule in integer text made unambiguous",
++   "RV2-04 editorial: MIDI-CONFIG-084 requirement list gains REQ-MIDI-USER-009",
++   "RV2-05 editorial: payload status wording set to reviewed release; review record added",
++   "RV2-06 info: evidence identity established through the pinned build's signed resource inventory",
++   "RV2-07 info: coverage notes for a later revision; no defect"
++  ],
++  "disposition": "Approved with listed narrowing, only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "midi-config-v1",
+  "supersession": {
+@@ -100,18 +111,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "dc7ee5059123a328ccb524485b058a45ef3a81d2dc8d61114134feed9afdf732",
+-   "bytes": 1332
++   "sha256": "b2160b8471f8a555e67f5ffdbc8aa88cf3d3ab67cd0bcc86f2e9ca698408b79b",
++   "bytes": 1325
+   },
+   {
+    "path": "README.md",
+-   "sha256": "7f2c27bffd6234fc608da588abde4cb0e3c45b642e7052aaf68d0195563c3c62",
+-   "bytes": 1273
++   "sha256": "1dac257b637500cfe79fd3dbd9b16b8be5713666fc0e1d5fb2fd96462e40ced6",
++   "bytes": 1415
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "0984437b07956805a63ff35151fed9c41cb0955dc9ea8d8c57fe4db9f04babaa",
++   "bytes": 5457
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "69cb070b80025e8b7d4ee3073d7c6c6c7968218865ebffc63f216b45243f1eca",
+-   "bytes": 106687
++   "sha256": "43111792ee4952c78d37206215ff54bb0807236b41bc2f1aabcc42b9eb4c6466",
++   "bytes": 106685
+   },
+   {
+    "path": "fixtures/MIDI-CONFIG-001/UserConfiguration.txt",
+@@ -660,8 +676,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "667e5afb52ef9cc092f9218e9e743a9211bd832bdf179e182042896b9785df3b",
+-   "bytes": 15740
++   "sha256": "8381f4476c144449a681fea3df307c0a2e4eac2beab7d3fe21b4f8be3319b712",
++   "bytes": 16003
+   }
+  ]
+ }
+--- /dev/null
++++ reviewed/REVIEW.md
+@@ -0,0 +1,69 @@
++# Review disposition
++
++Release: midi-config-v2, 2026-10-17.
++
++Reviewer: a separate review subagent (Claude Opus 5.5) launched by the
++coordinator in its own handoff-review context. It did not author this candidate
++and will not implement it. The one reviewer performed the scope, quality and
++sanitization, evidence-identity and fixture-sharing checks. Publication
++metadata outside this package is left to the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of REQ-MIDI-USER-002, 003
++and 005 to 013 in [the contract](spec.md). REQ-MIDI-USER-001 and 004 remain
++unreleased.
++
++- Every included clause was checked against the reviewed package evidence: the
++  two shipped configuration documents and the static analysis behind them. The
++  new rules received individual checks: send-knob position (Send B only with
++  Send A on the same strip; a lone second send stays excluded), pad channel
++  rules, `[DEFAULT]` applying only to sections present in the file, the integer
++  text forms, the 14-bit label cutoff above CC 95, encoder and bank-button
++  compaction, and the bank span.
++- All 55 new cases, MIDI-CONFIG-055 to 109, were read one by one against that
++  evidence, including MIDI-CONFIG-084. The reviewer's own executable restatement
++  of the evidence also agreed with all 109 expected outputs. The author's
++  cross-check was not relied on.
++- The 54 restated cases keep their IDs, fixture bytes and logical
++  expectations. The added fields follow from the explicit `Absolute` mode keys
++  in each of those fixtures.
++- Sanitization was checked by the reviewer's own scan of every payload file. No
++  source code, recovered program text, internal program identifiers, analyst
++  paths, private evidence links or per-case evidence fields are present. Public field names
++  describe the external configuration interface. The only flagged word is in
++  the forbidden-inputs list of `AGENTS.md`, worded as in midi-config-v1.
++- Exclusions appear in both the contract and the manifest. Every expectation
++  is labeled static-derived, with reference and candidate execution not run.
++  No compatibility is claimed. Supersession and a change list are present.
++- In a copy outside the analyst checkout, every Markdown link and case input
++  resolves inside the package and every listed hash matches. Fixtures are
++  ASCII with LF endings and a final newline, contain no tabs, use public key
++  names and three invented comment lines, and have distinct MIDI addresses.
++  The 109 case paths hold 107 distinct inputs; MIDI-CONFIG-003, 010 and 017
++  share bytes inherited from midi-config-v1.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RV2-01 | Low | The pad rules said that any out-of-range integer disables a pad. Integer text longer than a configurable conversion length limit, never below 640 characters, fails conversion instead, and a failed conversion in a pad field has no expectation. | Narrowed: such text in a pad note, or in a pad channel for an enabled pad note, is excluded in the contract and the manifest. No case is affected. |
++| RV2-02 | Low | The contract trimmed spaces around keys and values but did not state how tabs and other ASCII control characters are handled; the reference trimming removes some of them as whitespace. | Narrowed: ASCII control characters other than the LF line ending, including tabs, are excluded. No fixture contains one. midi-config-v1 already limited its grammar to single spaces. |
++| RV2-03 | Editorial | "A single underscore may separate two digits" could be read as allowing only one underscore in a value. | Reworded: an underscore may appear only singly between two digits. `1_0` is still 10. No case changed. |
++| RV2-04 | Editorial | MIDI-CONFIG-084 exercises the Send B position clause but did not list REQ-MIDI-USER-009. | Added to its requirement list. Input and expected output are unchanged. |
++| RV2-05 | Editorial | README, AGENTS, contract, cases and manifest described an unreviewed candidate. | Status set to reviewed local release; this record added to the package and linked. |
++| RV2-06 | Info | Evidence identity: the digests recorded at the first release for the reviewed configuration-reader files are not available on this host, so a direct comparison is unknown. | Not blocking. Those files and both shipped documents appear, with matching digests, in the pinned application's signed resource inventory. That inventory's digest is embedded in the main executable, whose digest matches the recorded target identity. The reviewed evidence is therefore from the pinned build. |
++| RV2-07 | Info | No case exercises `[DEFAULT]` with an absent section, more than one underscore, or the 14-bit cutoff on a send knob or the crossfader above CC 95. | These clauses are supported; cases are proposed for a later revision. No expectation was invented. |
++
++## Disposition
++
++**Approved with listed narrowing** (RV2-01 and RV2-02), only for the explicit
++partial clauses in the contract. All expected results remain static-derived.
++Neither reference nor candidate application cases have run, and no
++compatibility pass is claimed. Candidate-only checks cannot replace
++independent reference observations. An isolated implementation workspace
++remains a prerequisite.
++
++This disposition concerns the local reviewed-handoff workflow; it does not
++authorize external publication. midi-config-v1 remains valid for its narrower
++scope. Preserve this release unchanged.

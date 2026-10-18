@@ -32,7 +32,9 @@ no experimental contradiction has been established yet.
   are recorded in the [execution ledger](research/native-phase-execution.md);
   systematic export coverage and cold recovery remain open in Q-011.
 - Retention limitation: installed resources remain mutable external originals;
-  local ignored evidence is not an off-machine backup. Q-003 remains open.
+  evidence tracked in local Git since 2026-10-17 is not an off-machine backup
+  until pushed, and the `origin` remote is a public GitHub repository, so pushing
+  would publish decompiled material. Q-003 remains open.
 
 ## Q-003 Isolation and evidence retention
 

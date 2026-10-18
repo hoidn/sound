@@ -1,0 +1,816 @@
+# source abl.webconnector/abl/installer/xdelta.pyc
+# co_filename output/Live/mac_universal_64_static/Release/python-bundle/Python/abl.webconnector/abl/installer/xdelta.py
+== <module> line 1 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_CONST                   0     0
+       4 LOAD_CONST                   1     ('with_statement',)
+       6 IMPORT_NAME                  0     __future__
+       8 IMPORT_FROM                  1     with_statement
+      10 STORE_NAME                   1     with_statement
+      12 POP_TOP                      0
+      14 LOAD_CONST                   0     0
+      16 LOAD_CONST                   2     ('str',)
+      18 IMPORT_NAME                  2     builtins
+      20 IMPORT_FROM                  3     str
+      22 STORE_NAME                   3     str
+      24 POP_TOP                      0
+      26 LOAD_CONST                   0     0
+      28 LOAD_CONST                   3     None
+      30 IMPORT_NAME                  4     logging
+      32 STORE_NAME                   4     logging
+      34 LOAD_CONST                   0     0
+      36 LOAD_CONST                   3     None
+      38 IMPORT_NAME                  5     os
+      40 STORE_NAME                   5     os
+      42 LOAD_CONST                   0     0
+      44 LOAD_CONST                   3     None
+      46 IMPORT_NAME                  6     platform
+      48 STORE_NAME                   6     platform
+      50 LOAD_CONST                   0     0
+      52 LOAD_CONST                   3     None
+      54 IMPORT_NAME                  7     subprocess
+      56 STORE_NAME                   7     subprocess
+      58 LOAD_CONST                   0     0
+      60 LOAD_CONST                   3     None
+      62 IMPORT_NAME                  8     sys
+      64 STORE_NAME                   8     sys
+      66 LOAD_CONST                   0     0
+      68 LOAD_CONST                   3     None
+      70 IMPORT_NAME                  9     tempfile
+      72 STORE_NAME                   9     tempfile
+      74 LOAD_CONST                   0     0
+      76 LOAD_CONST                   4     ('memoized',)
+      78 IMPORT_NAME                  10    abl.util
+      80 IMPORT_FROM                  11    memoized
+      82 STORE_NAME                   11    memoized
+      84 POP_TOP                      0
+      86 PUSH_NULL                    0
+      88 LOAD_NAME                    4     logging
+      90 LOAD_ATTR                    12    getLogger
+     100 LOAD_NAME                    13    __name__
+     102 PRECALL                      1
+     106 CALL                         1
+     116 STORE_NAME                   14    logger
+     118 PUSH_NULL                    0
+     120 LOAD_BUILD_CLASS             0
+     122 LOAD_CONST                   5     <code XDeltaApplicationError>
+     124 MAKE_FUNCTION                0
+     126 LOAD_CONST                   6     'XDeltaApplicationError'
+     128 LOAD_NAME                    15    Exception
+     130 PRECALL                      3
+     134 CALL                         3
+     144 STORE_NAME                   16    XDeltaApplicationError
+     146 PUSH_NULL                    0
+     148 LOAD_NAME                    11    memoized
+     150 PRECALL                      0
+     154 CALL                         0
+     164 LOAD_CONST                   7     <code xdelta_command>
+     166 MAKE_FUNCTION                0
+     168 PRECALL                      0
+     172 CALL                         0
+     182 STORE_NAME                   17    xdelta_command
+     184 LOAD_CONST                   8     <code create_xdelta>
+     186 MAKE_FUNCTION                0
+     188 STORE_NAME                   18    create_xdelta
+     190 LOAD_CONST                   9     <code apply_xdelta>
+     192 MAKE_FUNCTION                0
+     194 STORE_NAME                   19    apply_xdelta
+     196 LOAD_CONST                   3     None
+     198 RETURN_VALUE                 0
+== XDeltaApplicationError line 18 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_NAME                    0     __name__
+       4 STORE_NAME                   1     __module__
+       6 LOAD_CONST                   0     'XDeltaApplicationError'
+       8 STORE_NAME                   2     __qualname__
+      10 LOAD_CONST                   1     None
+      12 RETURN_VALUE                 0
+== xdelta_command line 22 args [] flags 0x3
+       0 RESUME                       0
+       2 LOAD_CONST                   1     'xdelta3'
+       4 STORE_FAST                   0     xdelta3
+       6 LOAD_GLOBAL                  1     platform
+      18 LOAD_ATTR                    1     system
+      28 PRECALL                      0
+      32 CALL                         0
+      42 LOAD_CONST                   2     'Windows'
+      44 COMPARE_OP                   2     ==
+      50 POP_JUMP_FORWARD_IF_FALSE    5
+      52 LOAD_FAST                    0     xdelta3
+      54 LOAD_CONST                   3     '.exe'
+      56 BINARY_OP                    13
+      60 STORE_FAST                   0     xdelta3
+      62 LOAD_GLOBAL                  4     os
+      74 LOAD_ATTR                    3     path
+      84 LOAD_METHOD                  4     join
+     106 LOAD_GLOBAL                  4     os
+     118 LOAD_ATTR                    3     path
+     128 LOAD_METHOD                  5     dirname
+     150 LOAD_GLOBAL                  12    sys
+     162 LOAD_ATTR                    7     executable
+     172 PRECALL                      1
+     176 CALL                         1
+     186 LOAD_FAST                    0     xdelta3
+     188 PRECALL                      2
+     192 CALL                         2
+     202 RETURN_VALUE                 0
+== create_xdelta line 31 args ['old', 'new', 'xdelta'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_CONST                   0     None
+       4 COPY                         1
+       6 STORE_FAST                   3     old_temp
+       8 COPY                         1
+      10 STORE_FAST                   4     new_temp
+      12 STORE_FAST                   5     xdelta_temp
+      14 BUILD_LIST                   0
+      16 STORE_FAST                   6     fileargs
+      18 NOP                          0
+      20 LOAD_FAST                    0     old
+      22 LOAD_ATTR                    0     scheme
+      32 LOAD_CONST                   1     'memory'
+      34 COMPARE_OP                   2     ==
+      40 POP_JUMP_FORWARD_IF_FALSE    165
+      42 LOAD_GLOBAL                  3     tempfile
+      54 LOAD_ATTR                    2     mktemp
+      64 PRECALL                      0
+      68 CALL                         0
+      78 STORE_FAST                   3     old_temp
+      80 LOAD_FAST                    0     old
+      82 LOAD_METHOD                  3     open
+     104 LOAD_CONST                   2     'rb'
+     106 PRECALL                      1
+     110 CALL                         1
+     120 BEFORE_WITH                  0
+     122 STORE_FAST                   7     inf
+     124 LOAD_GLOBAL                  7     open
+     136 LOAD_FAST                    3     old_temp
+     138 LOAD_CONST                   3     'wb'
+     140 PRECALL                      2
+     144 CALL                         2
+     154 BEFORE_WITH                  0
+     156 STORE_FAST                   8     outf
+     158 LOAD_FAST                    8     outf
+     160 LOAD_METHOD                  4     write
+     182 LOAD_FAST                    7     inf
+     184 LOAD_METHOD                  5     read
+     206 PRECALL                      0
+     210 CALL                         0
+     220 PRECALL                      1
+     224 CALL                         1
+     234 POP_TOP                      0
+     236 LOAD_CONST                   0     None
+     238 LOAD_CONST                   0     None
+     240 LOAD_CONST                   0     None
+     242 PRECALL                      2
+     246 CALL                         2
+     256 POP_TOP                      0
+     258 JUMP_FORWARD                 11
+     260 PUSH_EXC_INFO                0
+     262 WITH_EXCEPT_START            0
+     264 POP_JUMP_FORWARD_IF_TRUE     4
+     266 RERAISE                      2
+     268 COPY                         3
+     270 POP_EXCEPT                   0
+     272 RERAISE                      1
+     274 POP_TOP                      0
+     276 POP_EXCEPT                   0
+     278 POP_TOP                      0
+     280 POP_TOP                      0
+     282 LOAD_CONST                   0     None
+     284 LOAD_CONST                   0     None
+     286 LOAD_CONST                   0     None
+     288 PRECALL                      2
+     292 CALL                         2
+     302 POP_TOP                      0
+     304 JUMP_FORWARD                 11
+     306 PUSH_EXC_INFO                0
+     308 WITH_EXCEPT_START            0
+     310 POP_JUMP_FORWARD_IF_TRUE     4
+     312 RERAISE                      2
+     314 COPY                         3
+     316 POP_EXCEPT                   0
+     318 RERAISE                      1
+     320 POP_TOP                      0
+     322 POP_EXCEPT                   0
+     324 POP_TOP                      0
+     326 POP_TOP                      0
+     328 LOAD_FAST                    6     fileargs
+     330 LOAD_METHOD                  6     append
+     352 LOAD_FAST                    3     old_temp
+     354 PRECALL                      1
+     358 CALL                         1
+     368 POP_TOP                      0
+     370 JUMP_FORWARD                 26
+     372 LOAD_FAST                    6     fileargs
+     374 LOAD_METHOD                  6     append
+     396 LOAD_FAST                    0     old
+     398 LOAD_ATTR                    7     path
+     408 PRECALL                      1
+     412 CALL                         1
+     422 POP_TOP                      0
+     424 LOAD_FAST                    1     new
+     426 LOAD_ATTR                    0     scheme
+     436 LOAD_CONST                   1     'memory'
+     438 COMPARE_OP                   2     ==
+     444 POP_JUMP_FORWARD_IF_FALSE    165
+     446 LOAD_GLOBAL                  3     tempfile
+     458 LOAD_ATTR                    2     mktemp
+     468 PRECALL                      0
+     472 CALL                         0
+     482 STORE_FAST                   4     new_temp
+     484 LOAD_FAST                    1     new
+     486 LOAD_METHOD                  3     open
+     508 LOAD_CONST                   2     'rb'
+     510 PRECALL                      1
+     514 CALL                         1
+     524 BEFORE_WITH                  0
+     526 STORE_FAST                   7     inf
+     528 LOAD_GLOBAL                  7     open
+     540 LOAD_FAST                    4     new_temp
+     542 LOAD_CONST                   3     'wb'
+     544 PRECALL                      2
+     548 CALL                         2
+     558 BEFORE_WITH                  0
+     560 STORE_FAST                   8     outf
+     562 LOAD_FAST                    8     outf
+     564 LOAD_METHOD                  4     write
+     586 LOAD_FAST                    7     inf
+     588 LOAD_METHOD                  5     read
+     610 PRECALL                      0
+     614 CALL                         0
+     624 PRECALL                      1
+     628 CALL                         1
+     638 POP_TOP                      0
+     640 LOAD_CONST                   0     None
+     642 LOAD_CONST                   0     None
+     644 LOAD_CONST                   0     None
+     646 PRECALL                      2
+     650 CALL                         2
+     660 POP_TOP                      0
+     662 JUMP_FORWARD                 11
+     664 PUSH_EXC_INFO                0
+     666 WITH_EXCEPT_START            0
+     668 POP_JUMP_FORWARD_IF_TRUE     4
+     670 RERAISE                      2
+     672 COPY                         3
+     674 POP_EXCEPT                   0
+     676 RERAISE                      1
+     678 POP_TOP                      0
+     680 POP_EXCEPT                   0
+     682 POP_TOP                      0
+     684 POP_TOP                      0
+     686 LOAD_CONST                   0     None
+     688 LOAD_CONST                   0     None
+     690 LOAD_CONST                   0     None
+     692 PRECALL                      2
+     696 CALL                         2
+     706 POP_TOP                      0
+     708 JUMP_FORWARD                 11
+     710 PUSH_EXC_INFO                0
+     712 WITH_EXCEPT_START            0
+     714 POP_JUMP_FORWARD_IF_TRUE     4
+     716 RERAISE                      2
+     718 COPY                         3
+     720 POP_EXCEPT                   0
+     722 RERAISE                      1
+     724 POP_TOP                      0
+     726 POP_EXCEPT                   0
+     728 POP_TOP                      0
+     730 POP_TOP                      0
+     732 LOAD_FAST                    6     fileargs
+     734 LOAD_METHOD                  6     append
+     756 LOAD_FAST                    4     new_temp
+     758 PRECALL                      1
+     762 CALL                         1
+     772 POP_TOP                      0
+     774 JUMP_FORWARD                 26
+     776 LOAD_FAST                    6     fileargs
+     778 LOAD_METHOD                  6     append
+     800 LOAD_FAST                    1     new
+     802 LOAD_ATTR                    7     path
+     812 PRECALL                      1
+     816 CALL                         1
+     826 POP_TOP                      0
+     828 LOAD_FAST                    2     xdelta
+     830 LOAD_ATTR                    0     scheme
+     840 LOAD_CONST                   1     'memory'
+     842 COMPARE_OP                   2     ==
+     848 POP_JUMP_FORWARD_IF_FALSE    41
+     850 LOAD_GLOBAL                  3     tempfile
+     862 LOAD_ATTR                    2     mktemp
+     872 PRECALL                      0
+     876 CALL                         0
+     886 STORE_FAST                   5     xdelta_temp
+     888 LOAD_FAST                    6     fileargs
+     890 LOAD_METHOD                  6     append
+     912 LOAD_FAST                    5     xdelta_temp
+     914 PRECALL                      1
+     918 CALL                         1
+     928 POP_TOP                      0
+     930 JUMP_FORWARD                 26
+     932 LOAD_FAST                    6     fileargs
+     934 LOAD_METHOD                  6     append
+     956 LOAD_FAST                    2     xdelta
+     958 LOAD_ATTR                    7     path
+     968 PRECALL                      1
+     972 CALL                         1
+     982 POP_TOP                      0
+     984 LOAD_GLOBAL                  17    xdelta_command
+     996 PRECALL                      0
+    1000 CALL                         0
+    1010 LOAD_CONST                   4     '-e'
+    1012 LOAD_CONST                   5     '-s'
+    1014 BUILD_LIST                   3
+    1016 LOAD_FAST                    6     fileargs
+    1018 BINARY_OP                    0
+    1022 STORE_FAST                   9     cmd
+    1024 LOAD_GLOBAL                  18    logger
+    1036 LOAD_METHOD                  10    debug
+    1058 LOAD_CONST                   6     'creating xdelta with command'
+    1060 PRECALL                      1
+    1064 CALL                         1
+    1074 POP_TOP                      0
+    1076 LOAD_GLOBAL                  18    logger
+    1088 LOAD_METHOD                  10    debug
+    1110 LOAD_CONST                   7     ' '
+    1112 LOAD_METHOD                  11    join
+    1134 LOAD_FAST                    9     cmd
+    1136 PRECALL                      1
+    1140 CALL                         1
+    1150 PRECALL                      1
+    1154 CALL                         1
+    1164 POP_TOP                      0
+    1166 LOAD_GLOBAL                  25    subprocess
+    1178 LOAD_ATTR                    13    call
+    1188 LOAD_FAST                    9     cmd
+    1190 PRECALL                      1
+    1194 CALL                         1
+    1204 POP_TOP                      0
+    1206 LOAD_FAST                    5     xdelta_temp
+    1208 POP_JUMP_FORWARD_IF_FALSE    124
+    1210 LOAD_GLOBAL                  7     open
+    1222 LOAD_FAST                    5     xdelta_temp
+    1224 LOAD_CONST                   2     'rb'
+    1226 PRECALL                      2
+    1230 CALL                         2
+    1240 BEFORE_WITH                  0
+    1242 STORE_FAST                   7     inf
+    1244 LOAD_FAST                    2     xdelta
+    1246 LOAD_METHOD                  3     open
+    1268 LOAD_CONST                   3     'wb'
+    1270 PRECALL                      1
+    1274 CALL                         1
+    1284 BEFORE_WITH                  0
+    1286 STORE_FAST                   8     outf
+    1288 LOAD_FAST                    8     outf
+    1290 LOAD_METHOD                  4     write
+    1312 LOAD_FAST                    7     inf
+    1314 LOAD_METHOD                  5     read
+    1336 PRECALL                      0
+    1340 CALL                         0
+    1350 PRECALL                      1
+    1354 CALL                         1
+    1364 POP_TOP                      0
+    1366 LOAD_CONST                   0     None
+    1368 LOAD_CONST                   0     None
+    1370 LOAD_CONST                   0     None
+    1372 PRECALL                      2
+    1376 CALL                         2
+    1386 POP_TOP                      0
+    1388 JUMP_FORWARD                 11
+    1390 PUSH_EXC_INFO                0
+    1392 WITH_EXCEPT_START            0
+    1394 POP_JUMP_FORWARD_IF_TRUE     4
+    1396 RERAISE                      2
+    1398 COPY                         3
+    1400 POP_EXCEPT                   0
+    1402 RERAISE                      1
+    1404 POP_TOP                      0
+    1406 POP_EXCEPT                   0
+    1408 POP_TOP                      0
+    1410 POP_TOP                      0
+    1412 LOAD_CONST                   0     None
+    1414 LOAD_CONST                   0     None
+    1416 LOAD_CONST                   0     None
+    1418 PRECALL                      2
+    1422 CALL                         2
+    1432 POP_TOP                      0
+    1434 JUMP_FORWARD                 11
+    1436 PUSH_EXC_INFO                0
+    1438 WITH_EXCEPT_START            0
+    1440 POP_JUMP_FORWARD_IF_TRUE     4
+    1442 RERAISE                      2
+    1444 COPY                         3
+    1446 POP_EXCEPT                   0
+    1448 RERAISE                      1
+    1450 POP_TOP                      0
+    1452 POP_EXCEPT                   0
+    1454 POP_TOP                      0
+    1456 POP_TOP                      0
+    1458 LOAD_FAST                    3     old_temp
+    1460 LOAD_FAST                    4     new_temp
+    1462 LOAD_FAST                    5     xdelta_temp
+    1464 BUILD_TUPLE                  3
+    1466 GET_ITER                     0
+    1468 FOR_ITER                     56
+    1470 STORE_FAST                   10    fn
+    1472 LOAD_FAST                    10    fn
+    1474 POP_JUMP_FORWARD_IF_NONE     31
+    1476 LOAD_GLOBAL                  28    os
+    1488 LOAD_ATTR                    7     path
+    1498 LOAD_METHOD                  15    exists
+    1520 LOAD_FAST                    10    fn
+    1522 PRECALL                      1
+    1526 CALL                         1
+    1536 POP_JUMP_FORWARD_IF_TRUE     1
+    1538 JUMP_BACKWARD                36
+    1540 LOAD_GLOBAL                  29    os
+    1552 LOAD_ATTR                    16    remove
+    1562 LOAD_FAST                    10    fn
+    1564 PRECALL                      1
+    1568 CALL                         1
+    1578 POP_TOP                      0
+    1580 JUMP_BACKWARD                57
+    1582 LOAD_CONST                   0     None
+    1584 RETURN_VALUE                 0
+    1586 PUSH_EXC_INFO                0
+    1588 LOAD_FAST                    3     old_temp
+    1590 LOAD_FAST                    4     new_temp
+    1592 LOAD_FAST                    5     xdelta_temp
+    1594 BUILD_TUPLE                  3
+    1596 GET_ITER                     0
+    1598 FOR_ITER                     56
+    1600 STORE_FAST                   10    fn
+    1602 LOAD_FAST                    10    fn
+    1604 POP_JUMP_FORWARD_IF_NONE     31
+    1606 LOAD_GLOBAL                  28    os
+    1618 LOAD_ATTR                    7     path
+    1628 LOAD_METHOD                  15    exists
+    1650 LOAD_FAST                    10    fn
+    1652 PRECALL                      1
+    1656 CALL                         1
+    1666 POP_JUMP_FORWARD_IF_TRUE     1
+    1668 JUMP_BACKWARD                36
+    1670 LOAD_GLOBAL                  29    os
+    1682 LOAD_ATTR                    16    remove
+    1692 LOAD_FAST                    10    fn
+    1694 PRECALL                      1
+    1698 CALL                         1
+    1708 POP_TOP                      0
+    1710 JUMP_BACKWARD                57
+    1712 RERAISE                      0
+    1714 COPY                         3
+    1716 POP_EXCEPT                   0
+    1718 RERAISE                      1
+== apply_xdelta line 77 args ['old', 'xdelta', 'new'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_CONST                   0     None
+       4 COPY                         1
+       6 STORE_FAST                   3     old_temp
+       8 COPY                         1
+      10 STORE_FAST                   4     new_temp
+      12 STORE_FAST                   5     xdelta_temp
+      14 BUILD_LIST                   0
+      16 STORE_FAST                   6     fileargs
+      18 NOP                          0
+      20 LOAD_FAST                    0     old
+      22 LOAD_ATTR                    0     scheme
+      32 LOAD_CONST                   1     'memory'
+      34 COMPARE_OP                   2     ==
+      40 POP_JUMP_FORWARD_IF_FALSE    165
+      42 LOAD_GLOBAL                  3     tempfile
+      54 LOAD_ATTR                    2     mktemp
+      64 PRECALL                      0
+      68 CALL                         0
+      78 STORE_FAST                   3     old_temp
+      80 LOAD_FAST                    0     old
+      82 LOAD_METHOD                  3     open
+     104 LOAD_CONST                   2     'rb'
+     106 PRECALL                      1
+     110 CALL                         1
+     120 BEFORE_WITH                  0
+     122 STORE_FAST                   7     inf
+     124 LOAD_GLOBAL                  7     open
+     136 LOAD_FAST                    3     old_temp
+     138 LOAD_CONST                   3     'wb'
+     140 PRECALL                      2
+     144 CALL                         2
+     154 BEFORE_WITH                  0
+     156 STORE_FAST                   8     outf
+     158 LOAD_FAST                    8     outf
+     160 LOAD_METHOD                  4     write
+     182 LOAD_FAST                    7     inf
+     184 LOAD_METHOD                  5     read
+     206 PRECALL                      0
+     210 CALL                         0
+     220 PRECALL                      1
+     224 CALL                         1
+     234 POP_TOP                      0
+     236 LOAD_CONST                   0     None
+     238 LOAD_CONST                   0     None
+     240 LOAD_CONST                   0     None
+     242 PRECALL                      2
+     246 CALL                         2
+     256 POP_TOP                      0
+     258 JUMP_FORWARD                 11
+     260 PUSH_EXC_INFO                0
+     262 WITH_EXCEPT_START            0
+     264 POP_JUMP_FORWARD_IF_TRUE     4
+     266 RERAISE                      2
+     268 COPY                         3
+     270 POP_EXCEPT                   0
+     272 RERAISE                      1
+     274 POP_TOP                      0
+     276 POP_EXCEPT                   0
+     278 POP_TOP                      0
+     280 POP_TOP                      0
+     282 LOAD_CONST                   0     None
+     284 LOAD_CONST                   0     None
+     286 LOAD_CONST                   0     None
+     288 PRECALL                      2
+     292 CALL                         2
+     302 POP_TOP                      0
+     304 JUMP_FORWARD                 11
+     306 PUSH_EXC_INFO                0
+     308 WITH_EXCEPT_START            0
+     310 POP_JUMP_FORWARD_IF_TRUE     4
+     312 RERAISE                      2
+     314 COPY                         3
+     316 POP_EXCEPT                   0
+     318 RERAISE                      1
+     320 POP_TOP                      0
+     322 POP_EXCEPT                   0
+     324 POP_TOP                      0
+     326 POP_TOP                      0
+     328 LOAD_FAST                    6     fileargs
+     330 LOAD_METHOD                  6     append
+     352 LOAD_FAST                    3     old_temp
+     354 PRECALL                      1
+     358 CALL                         1
+     368 POP_TOP                      0
+     370 JUMP_FORWARD                 26
+     372 LOAD_FAST                    6     fileargs
+     374 LOAD_METHOD                  6     append
+     396 LOAD_FAST                    0     old
+     398 LOAD_ATTR                    7     path
+     408 PRECALL                      1
+     412 CALL                         1
+     422 POP_TOP                      0
+     424 LOAD_FAST                    1     xdelta
+     426 LOAD_ATTR                    0     scheme
+     436 LOAD_CONST                   1     'memory'
+     438 COMPARE_OP                   2     ==
+     444 POP_JUMP_FORWARD_IF_FALSE    165
+     446 LOAD_GLOBAL                  3     tempfile
+     458 LOAD_ATTR                    2     mktemp
+     468 PRECALL                      0
+     472 CALL                         0
+     482 STORE_FAST                   5     xdelta_temp
+     484 LOAD_FAST                    1     xdelta
+     486 LOAD_METHOD                  3     open
+     508 LOAD_CONST                   2     'rb'
+     510 PRECALL                      1
+     514 CALL                         1
+     524 BEFORE_WITH                  0
+     526 STORE_FAST                   7     inf
+     528 LOAD_GLOBAL                  7     open
+     540 LOAD_FAST                    5     xdelta_temp
+     542 LOAD_CONST                   3     'wb'
+     544 PRECALL                      2
+     548 CALL                         2
+     558 BEFORE_WITH                  0
+     560 STORE_FAST                   8     outf
+     562 LOAD_FAST                    8     outf
+     564 LOAD_METHOD                  4     write
+     586 LOAD_FAST                    7     inf
+     588 LOAD_METHOD                  5     read
+     610 PRECALL                      0
+     614 CALL                         0
+     624 PRECALL                      1
+     628 CALL                         1
+     638 POP_TOP                      0
+     640 LOAD_CONST                   0     None
+     642 LOAD_CONST                   0     None
+     644 LOAD_CONST                   0     None
+     646 PRECALL                      2
+     650 CALL                         2
+     660 POP_TOP                      0
+     662 JUMP_FORWARD                 11
+     664 PUSH_EXC_INFO                0
+     666 WITH_EXCEPT_START            0
+     668 POP_JUMP_FORWARD_IF_TRUE     4
+     670 RERAISE                      2
+     672 COPY                         3
+     674 POP_EXCEPT                   0
+     676 RERAISE                      1
+     678 POP_TOP                      0
+     680 POP_EXCEPT                   0
+     682 POP_TOP                      0
+     684 POP_TOP                      0
+     686 LOAD_CONST                   0     None
+     688 LOAD_CONST                   0     None
+     690 LOAD_CONST                   0     None
+     692 PRECALL                      2
+     696 CALL                         2
+     706 POP_TOP                      0
+     708 JUMP_FORWARD                 11
+     710 PUSH_EXC_INFO                0
+     712 WITH_EXCEPT_START            0
+     714 POP_JUMP_FORWARD_IF_TRUE     4
+     716 RERAISE                      2
+     718 COPY                         3
+     720 POP_EXCEPT                   0
+     722 RERAISE                      1
+     724 POP_TOP                      0
+     726 POP_EXCEPT                   0
+     728 POP_TOP                      0
+     730 POP_TOP                      0
+     732 LOAD_FAST                    6     fileargs
+     734 LOAD_METHOD                  6     append
+     756 LOAD_FAST                    5     xdelta_temp
+     758 PRECALL                      1
+     762 CALL                         1
+     772 POP_TOP                      0
+     774 JUMP_FORWARD                 26
+     776 LOAD_FAST                    6     fileargs
+     778 LOAD_METHOD                  6     append
+     800 LOAD_FAST                    1     xdelta
+     802 LOAD_ATTR                    7     path
+     812 PRECALL                      1
+     816 CALL                         1
+     826 POP_TOP                      0
+     828 LOAD_FAST                    2     new
+     830 LOAD_ATTR                    0     scheme
+     840 LOAD_CONST                   1     'memory'
+     842 COMPARE_OP                   2     ==
+     848 POP_JUMP_FORWARD_IF_FALSE    41
+     850 LOAD_GLOBAL                  3     tempfile
+     862 LOAD_ATTR                    2     mktemp
+     872 PRECALL                      0
+     876 CALL                         0
+     886 STORE_FAST                   4     new_temp
+     888 LOAD_FAST                    6     fileargs
+     890 LOAD_METHOD                  6     append
+     912 LOAD_FAST                    4     new_temp
+     914 PRECALL                      1
+     918 CALL                         1
+     928 POP_TOP                      0
+     930 JUMP_FORWARD                 26
+     932 LOAD_FAST                    6     fileargs
+     934 LOAD_METHOD                  6     append
+     956 LOAD_FAST                    2     new
+     958 LOAD_ATTR                    7     path
+     968 PRECALL                      1
+     972 CALL                         1
+     982 POP_TOP                      0
+     984 LOAD_GLOBAL                  17    xdelta_command
+     996 PRECALL                      0
+    1000 CALL                         0
+    1010 LOAD_CONST                   4     '-d'
+    1012 LOAD_CONST                   5     '-s'
+    1014 BUILD_LIST                   3
+    1016 LOAD_FAST                    6     fileargs
+    1018 BINARY_OP                    0
+    1022 STORE_FAST                   9     cmd
+    1024 LOAD_GLOBAL                  18    logger
+    1036 LOAD_METHOD                  10    debug
+    1058 LOAD_CONST                   6     'applying xdelta with command'
+    1060 PRECALL                      1
+    1064 CALL                         1
+    1074 POP_TOP                      0
+    1076 LOAD_GLOBAL                  18    logger
+    1088 LOAD_METHOD                  10    debug
+    1110 LOAD_CONST                   7     ' '
+    1112 LOAD_METHOD                  11    join
+    1134 LOAD_FAST                    9     cmd
+    1136 PRECALL                      1
+    1140 CALL                         1
+    1150 PRECALL                      1
+    1154 CALL                         1
+    1164 POP_TOP                      0
+    1166 LOAD_GLOBAL                  25    subprocess
+    1178 LOAD_ATTR                    13    call
+    1188 LOAD_FAST                    9     cmd
+    1190 PRECALL                      1
+    1194 CALL                         1
+    1204 STORE_FAST                   10    retcode
+    1206 LOAD_FAST                    10    retcode
+    1208 POP_JUMP_FORWARD_IF_FALSE    7
+    1210 LOAD_GLOBAL                  28    XDeltaApplicationError
+    1222 RAISE_VARARGS                1
+    1224 LOAD_FAST                    4     new_temp
+    1226 POP_JUMP_FORWARD_IF_FALSE    124
+    1228 LOAD_GLOBAL                  7     open
+    1240 LOAD_FAST                    4     new_temp
+    1242 LOAD_CONST                   2     'rb'
+    1244 PRECALL                      2
+    1248 CALL                         2
+    1258 BEFORE_WITH                  0
+    1260 STORE_FAST                   7     inf
+    1262 LOAD_FAST                    2     new
+    1264 LOAD_METHOD                  3     open
+    1286 LOAD_CONST                   3     'wb'
+    1288 PRECALL                      1
+    1292 CALL                         1
+    1302 BEFORE_WITH                  0
+    1304 STORE_FAST                   8     outf
+    1306 LOAD_FAST                    8     outf
+    1308 LOAD_METHOD                  4     write
+    1330 LOAD_FAST                    7     inf
+    1332 LOAD_METHOD                  5     read
+    1354 PRECALL                      0
+    1358 CALL                         0
+    1368 PRECALL                      1
+    1372 CALL                         1
+    1382 POP_TOP                      0
+    1384 LOAD_CONST                   0     None
+    1386 LOAD_CONST                   0     None
+    1388 LOAD_CONST                   0     None
+    1390 PRECALL                      2
+    1394 CALL                         2
+    1404 POP_TOP                      0
+    1406 JUMP_FORWARD                 11
+    1408 PUSH_EXC_INFO                0
+    1410 WITH_EXCEPT_START            0
+    1412 POP_JUMP_FORWARD_IF_TRUE     4
+    1414 RERAISE                      2
+    1416 COPY                         3
+    1418 POP_EXCEPT                   0
+    1420 RERAISE                      1
+    1422 POP_TOP                      0
+    1424 POP_EXCEPT                   0
+    1426 POP_TOP                      0
+    1428 POP_TOP                      0
+    1430 LOAD_CONST                   0     None
+    1432 LOAD_CONST                   0     None
+    1434 LOAD_CONST                   0     None
+    1436 PRECALL                      2
+    1440 CALL                         2
+    1450 POP_TOP                      0
+    1452 JUMP_FORWARD                 11
+    1454 PUSH_EXC_INFO                0
+    1456 WITH_EXCEPT_START            0
+    1458 POP_JUMP_FORWARD_IF_TRUE     4
+    1460 RERAISE                      2
+    1462 COPY                         3
+    1464 POP_EXCEPT                   0
+    1466 RERAISE                      1
+    1468 POP_TOP                      0
+    1470 POP_EXCEPT                   0
+    1472 POP_TOP                      0
+    1474 POP_TOP                      0
+    1476 LOAD_FAST                    3     old_temp
+    1478 LOAD_FAST                    4     new_temp
+    1480 LOAD_FAST                    5     xdelta_temp
+    1482 BUILD_TUPLE                  3
+    1484 GET_ITER                     0
+    1486 FOR_ITER                     56
+    1488 STORE_FAST                   11    fn
+    1490 LOAD_FAST                    11    fn
+    1492 POP_JUMP_FORWARD_IF_NONE     31
+    1494 LOAD_GLOBAL                  30    os
+    1506 LOAD_ATTR                    7     path
+    1516 LOAD_METHOD                  16    exists
+    1538 LOAD_FAST                    11    fn
+    1540 PRECALL                      1
+    1544 CALL                         1
+    1554 POP_JUMP_FORWARD_IF_TRUE     1
+    1556 JUMP_BACKWARD                36
+    1558 LOAD_GLOBAL                  31    os
+    1570 LOAD_ATTR                    17    remove
+    1580 LOAD_FAST                    11    fn
+    1582 PRECALL                      1
+    1586 CALL                         1
+    1596 POP_TOP                      0
+    1598 JUMP_BACKWARD                57
+    1600 LOAD_CONST                   0     None
+    1602 RETURN_VALUE                 0
+    1604 PUSH_EXC_INFO                0
+    1606 LOAD_FAST                    3     old_temp
+    1608 LOAD_FAST                    4     new_temp
+    1610 LOAD_FAST                    5     xdelta_temp
+    1612 BUILD_TUPLE                  3
+    1614 GET_ITER                     0
+    1616 FOR_ITER                     56
+    1618 STORE_FAST                   11    fn
+    1620 LOAD_FAST                    11    fn
+    1622 POP_JUMP_FORWARD_IF_NONE     31
+    1624 LOAD_GLOBAL                  30    os
+    1636 LOAD_ATTR                    7     path
+    1646 LOAD_METHOD                  16    exists
+    1668 LOAD_FAST                    11    fn
+    1670 PRECALL                      1
+    1674 CALL                         1
+    1684 POP_JUMP_FORWARD_IF_TRUE     1
+    1686 JUMP_BACKWARD                36
+    1688 LOAD_GLOBAL                  31    os
+    1700 LOAD_ATTR                    17    remove
+    1710 LOAD_FAST                    11    fn
+    1712 PRECALL                      1
+    1716 CALL                         1
+    1726 POP_TOP                      0
+    1728 JUMP_BACKWARD                57
+    1730 RERAISE                      0
+    1732 COPY                         3
+    1734 POP_EXCEPT                   0
+    1736 RERAISE                      1

@@ -1,0 +1,259 @@
+# source abl.webconnector/abl/webconnector/ipc_channel.pyc
+# co_filename output/Live/mac_universal_64_static/Release/python-bundle/Python/abl.webconnector/abl/webconnector/ipc_channel.py
+== <module> line 1 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_CONST                   0     0
+       4 LOAD_CONST                   1     ('standard_library',)
+       6 IMPORT_NAME                  0     future
+       8 IMPORT_FROM                  1     standard_library
+      10 STORE_NAME                   1     standard_library
+      12 POP_TOP                      0
+      14 PUSH_NULL                    0
+      16 LOAD_NAME                    1     standard_library
+      18 LOAD_ATTR                    2     install_aliases
+      28 PRECALL                      0
+      32 CALL                         0
+      42 POP_TOP                      0
+      44 LOAD_CONST                   0     0
+      46 LOAD_CONST                   2     ('object',)
+      48 IMPORT_NAME                  3     builtins
+      50 IMPORT_FROM                  4     object
+      52 STORE_NAME                   4     object
+      54 POP_TOP                      0
+      56 LOAD_CONST                   0     0
+      58 LOAD_CONST                   3     None
+      60 IMPORT_NAME                  5     weakref
+      62 STORE_NAME                   5     weakref
+      64 LOAD_CONST                   0     0
+      66 LOAD_CONST                   4     ('Empty', 'Queue')
+      68 IMPORT_NAME                  6     queue
+      70 IMPORT_FROM                  7     Empty
+      72 STORE_NAME                   7     Empty
+      74 IMPORT_FROM                  8     Queue
+      76 STORE_NAME                   8     Queue
+      78 POP_TOP                      0
+      80 LOAD_CONST                   0     0
+      82 LOAD_CONST                   5     ('create_ipc_channel',)
+      84 IMPORT_NAME                  9     AbletonIPC
+      86 IMPORT_FROM                  10    create_ipc_channel
+      88 STORE_NAME                   10    create_ipc_channel
+      90 POP_TOP                      0
+      92 PUSH_NULL                    0
+      94 LOAD_BUILD_CLASS             0
+      96 LOAD_CONST                   6     <code IPCChannel>
+      98 MAKE_FUNCTION                0
+     100 LOAD_CONST                   7     'IPCChannel'
+     102 LOAD_NAME                    4     object
+     104 PRECALL                      3
+     108 CALL                         3
+     118 STORE_NAME                   11    IPCChannel
+     120 LOAD_CONST                   3     None
+     122 RETURN_VALUE                 0
+== IPCChannel line 16 args [] flags 0x0
+       0 RESUME                       0
+       2 LOAD_NAME                    0     __name__
+       4 STORE_NAME                   1     __module__
+       6 LOAD_CONST                   0     'IPCChannel'
+       8 STORE_NAME                   2     __qualname__
+      10 NOP                          0
+      12 BUILD_LIST                   0
+      14 BUILD_TUPLE                  1
+      16 LOAD_CONST                   1     <code IPCChannel.__init__>
+      18 MAKE_FUNCTION                1
+      20 STORE_NAME                   3     __init__
+      22 LOAD_CONST                   2     <code IPCChannel.receive_message>
+      24 MAKE_FUNCTION                0
+      26 STORE_NAME                   4     receive_message
+      28 LOAD_CONST                   3     <code IPCChannel.process>
+      30 MAKE_FUNCTION                0
+      32 STORE_NAME                   5     process
+      34 LOAD_CONST                   8     (False,)
+      36 LOAD_CONST                   5     <code IPCChannel.send>
+      38 MAKE_FUNCTION                1
+      40 STORE_NAME                   6     send
+      42 LOAD_CONST                   6     <code IPCChannel.register_event>
+      44 MAKE_FUNCTION                0
+      46 STORE_NAME                   7     register_event
+      48 LOAD_CONST                   7     None
+      50 RETURN_VALUE                 0
+== IPCChannel.__init__ line 21 args ['self', 'channel_id', 'events'] flags 0x3
+       0 RESUME                       0
+       2 LOAD_GLOBAL                  1     create_ipc_channel
+      14 LOAD_FAST                    1     channel_id
+      16 PRECALL                      1
+      20 CALL                         1
+      30 LOAD_FAST                    0     self
+      32 STORE_ATTR                   1     _channel
+      42 LOAD_FAST                    2     events
+      44 GET_ITER                     0
+      46 FOR_ITER                     23
+      48 STORE_FAST                   3     event
+      50 LOAD_FAST                    0     self
+      52 LOAD_METHOD                  2     register_event
+      74 LOAD_FAST                    3     event
+      76 PRECALL                      1
+      80 CALL                         1
+      90 POP_TOP                      0
+      92 JUMP_BACKWARD                24
+      94 LOAD_GLOBAL                  7     Queue
+     106 PRECALL                      0
+     110 CALL                         0
+     120 LOAD_FAST                    0     self
+     122 STORE_ATTR                   4     _outgoing_messages
+     132 LOAD_GLOBAL                  7     Queue
+     144 PRECALL                      0
+     148 CALL                         0
+     158 LOAD_FAST                    0     self
+     160 STORE_ATTR                   5     _incoming_messages
+     170 LOAD_CONST                   0     None
+     172 RETURN_VALUE                 0
+== IPCChannel.receive_message line 32 args ['self'] flags 0x3
+       0 RESUME                       0
+       2 NOP                          0
+       4 LOAD_FAST                    0     self
+       6 LOAD_ATTR                    0     _incoming_messages
+      16 LOAD_METHOD                  1     get_nowait
+      38 PRECALL                      0
+      42 CALL                         0
+      52 STORE_FAST                   1     message
+      54 LOAD_FAST                    0     self
+      56 LOAD_ATTR                    0     _incoming_messages
+      66 LOAD_METHOD                  2     task_done
+      88 PRECALL                      0
+      92 CALL                         0
+     102 POP_TOP                      0
+     104 LOAD_FAST                    1     message
+     106 RETURN_VALUE                 0
+     108 PUSH_EXC_INFO                0
+     110 LOAD_GLOBAL                  6     Empty
+     122 CHECK_EXC_MATCH              0
+     124 POP_JUMP_FORWARD_IF_FALSE    4
+     126 POP_TOP                      0
+     128 POP_EXCEPT                   0
+     130 LOAD_CONST                   0     None
+     132 RETURN_VALUE                 0
+     134 RERAISE                      0
+     136 COPY                         3
+     138 POP_EXCEPT                   0
+     140 RERAISE                      1
+== IPCChannel.process line 40 args ['self'] flags 0x3
+       0 RESUME                       0
+       2 NOP                          0
+       4 LOAD_FAST                    0     self
+       6 LOAD_ATTR                    0     _outgoing_messages
+      16 LOAD_METHOD                  1     empty
+      38 PRECALL                      0
+      42 CALL                         0
+      52 POP_JUMP_FORWARD_IF_TRUE     123
+      54 NOP                          0
+      56 LOAD_FAST                    0     self
+      58 LOAD_ATTR                    0     _outgoing_messages
+      68 LOAD_METHOD                  2     get_nowait
+      90 PRECALL                      0
+      94 CALL                         0
+     104 UNPACK_SEQUENCE              2
+     108 STORE_FAST                   1     name
+     110 STORE_FAST                   2     payload
+     112 LOAD_FAST                    0     self
+     114 LOAD_ATTR                    3     _channel
+     124 LOAD_METHOD                  4     send
+     146 LOAD_FAST                    1     name
+     148 LOAD_FAST                    2     payload
+     150 PRECALL                      2
+     154 CALL                         2
+     164 POP_TOP                      0
+     166 LOAD_FAST                    0     self
+     168 LOAD_ATTR                    0     _outgoing_messages
+     178 LOAD_METHOD                  5     task_done
+     200 PRECALL                      0
+     204 CALL                         0
+     214 POP_TOP                      0
+     216 JUMP_FORWARD                 16
+     218 PUSH_EXC_INFO                0
+     220 LOAD_GLOBAL                  12    Empty
+     232 CHECK_EXC_MATCH              0
+     234 POP_JUMP_FORWARD_IF_FALSE    3
+     236 POP_TOP                      0
+     238 POP_EXCEPT                   0
+     240 JUMP_FORWARD                 29
+     242 RERAISE                      0
+     244 COPY                         3
+     246 POP_EXCEPT                   0
+     248 RERAISE                      1
+     250 LOAD_FAST                    0     self
+     252 LOAD_ATTR                    0     _outgoing_messages
+     262 LOAD_METHOD                  1     empty
+     284 PRECALL                      0
+     288 CALL                         0
+     298 POP_JUMP_BACKWARD_IF_FALSE   123
+     300 LOAD_FAST                    0     self
+     302 LOAD_ATTR                    3     _channel
+     312 LOAD_METHOD                  7     poll
+     334 PRECALL                      0
+     338 CALL                         0
+     348 POP_TOP                      0
+     350 LOAD_CONST                   0     None
+     352 RETURN_VALUE                 0
+== IPCChannel.send line 54 args ['self', 'event', 'payload', 'immediate'] flags 0x3
+       0 RESUME                       0
+       2 NOP                          0
+       4 LOAD_FAST                    0     self
+       6 LOAD_ATTR                    0     _outgoing_messages
+      16 LOAD_METHOD                  1     put
+      38 LOAD_FAST                    1     event
+      40 LOAD_FAST                    2     payload
+      42 BUILD_TUPLE                  2
+      44 PRECALL                      1
+      48 CALL                         1
+      58 POP_TOP                      0
+      60 LOAD_FAST                    3     immediate
+      62 POP_JUMP_FORWARD_IF_FALSE    22
+      64 LOAD_FAST                    0     self
+      66 LOAD_METHOD                  2     process
+      88 PRECALL                      0
+      92 CALL                         0
+     102 POP_TOP                      0
+     104 LOAD_CONST                   0     None
+     106 RETURN_VALUE                 0
+     108 LOAD_CONST                   0     None
+     110 RETURN_VALUE                 0
+== IPCChannel.register_event line 68 args ['self', 'event'] flags 0x3
+       0 MAKE_CELL                    3     channel
+       2 RESUME                       0
+       4 NOP                          0
+       6 LOAD_GLOBAL                  1     weakref
+      18 LOAD_ATTR                    1     ref
+      28 LOAD_FAST                    0     self
+      30 PRECALL                      1
+      34 CALL                         1
+      44 STORE_DEREF                  3     channel
+      46 LOAD_CLOSURE                 3     channel
+      48 BUILD_TUPLE                  1
+      50 LOAD_CONST                   1     <code IPCChannel.register_event.<locals>.queue_message>
+      52 MAKE_FUNCTION                8
+      54 STORE_FAST                   2     queue_message
+      56 LOAD_FAST                    0     self
+      58 LOAD_ATTR                    2     _channel
+      68 LOAD_METHOD                  3     register_event
+      90 LOAD_FAST                    1     event
+      92 LOAD_FAST                    2     queue_message
+      94 PRECALL                      2
+      98 CALL                         2
+     108 POP_TOP                      0
+     110 LOAD_CONST                   0     None
+     112 RETURN_VALUE                 0
+== IPCChannel.register_event.<locals>.queue_message line 76 args ['message', 'payload'] flags 0x13
+       0 COPY_FREE_VARS               1
+       2 RESUME                       0
+       4 PUSH_NULL                    0
+       6 LOAD_DEREF                   2     channel
+       8 PRECALL                      0
+      12 CALL                         0
+      22 LOAD_ATTR                    0     _incoming_messages
+      32 LOAD_METHOD                  1     put
+      54 LOAD_FAST                    0     message
+      56 PRECALL                      1
+      60 CALL                         1
+      70 POP_TOP                      0
+      72 LOAD_CONST                   0     None
+      74 RETURN_VALUE                 0

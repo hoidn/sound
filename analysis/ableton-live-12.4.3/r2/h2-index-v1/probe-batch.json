@@ -1,0 +1,97 @@
+{
+ "id": "H2-PROBE-BATCH-V1",
+ "created": "2026-10-17",
+ "policy": "ADR-0002 runtime escalation; Phase 4 single sitting on the macOS host; not a gate for static work",
+ "probes": [
+  {
+   "id": "PRB-H2-01",
+   "question": "How and when does Live start Ableton Index, with which arguments and options file contents?",
+   "existing_evidence": "entry 0x1001308e0 modes slave/standalone/os-notifications; options-file keys from 0x100673f10; Live.arm64 contains 'Ableton Index', 'live->index', option-key strings (out/live-arm64-index-strings.txt)",
+   "why_static_insufficient": "Spawn site, argv and option values are composed in Live, whose call sites are unresolved",
+   "minimal_input": "Start Live once with an empty user library",
+   "discriminating_observation": "argv of the 'Ableton Index' process; contents of each file named by --options-file (keys only plus value kinds); parent pid matches Live",
+   "stopping_condition": "One launch captured; also stop if the process is absent within 60 s of the main window appearing",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-02",
+   "question": "What is the database file name and version recorded on disk?",
+   "existing_evidence": "name format '{}-files-{}.db' (0x10073559c); version getter returns 0x300c (0x100735594); version table (version, platform)",
+   "why_static_insufficient": "Prefix value and directory come from Live (db-path); the getter-to-file binding is inferred",
+   "minimal_input": "After probe 1, list the db-path directory",
+   "discriminating_observation": "File name equals <prefix>-files-12300.db or not; SELECT version, platform FROM version on a copy",
+   "stopping_condition": "One listing and one query",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-03",
+   "question": "Are new, renamed and deleted files in an indexed user folder reflected without restart, and how fast?",
+   "existing_evidence": "OsEvents strings (FSEvents streams, volume mount/unmount); 'Folders to be scanned fully, since they don't support OSEvents'; task phases change detection/extraction/update/remove",
+   "why_static_insufficient": "Event delivery, debounce and UI refresh are runtime behavior",
+   "minimal_input": "One user folder with three WAV files; add one, rename one, delete one while Live runs",
+   "discriminating_observation": "Browser listing and the files table after each step, with timestamps",
+   "stopping_condition": "All three changes visible, or 5 minutes elapsed per change",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-04",
+   "question": "Where is a user tag assignment persisted?",
+   "existing_evidence": "export of pending metadata (flags|32), XMP writer messages for folder/pack/plugin/app-builtin, 'No UserLibrary. Can't write factory pack metadata', file-name patterns c55d131f\u2026/b20da5c2\u2026([-_]suffix)?.xmp",
+   "why_static_insufficient": "Target directory, file name and whether writes are immediate are runtime choices",
+   "minimal_input": "Tag one sample in a user folder and one preset in Core Library",
+   "discriminating_observation": "New or changed *.xmp files under any 'Ableton Folder Info' (path, name, ablFR:resource, item filePath and keywords)",
+   "stopping_condition": "Both writes located, or 2 minutes and a Live quit elapsed with no XMP change",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-05",
+   "question": "What happens to an indexed file that is moved, deleted, or on an unmounted volume?",
+   "existing_evidence": "'Index: Observed File is gone', DELETE FROM files with descendants, unavail_places (folder_kind 13), UpdateUnavailablePacks, RelocateFolder, RebindSafeUserData",
+   "why_static_insufficient": "Whether tags and colors survive a move and how unavailable places are shown is runtime behavior",
+   "minimal_input": "Tagged and colored sample on a removable volume; unmount, remount; move it within a user folder",
+   "discriminating_observation": "Browser state and keywords/colors rows before and after each step",
+   "stopping_condition": "Each step observed once",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-06",
+   "question": "How does Live react to a corrupt or foreign-version database?",
+   "existing_evidence": "'database corrupted; must be fixed on next start-up', corrupted-database indicator file, version outcomes 1 upgrade / 2,3,4 recreate (0x10023344c, 0x100232eb4), copy of older '{}-files-' versions (0x10023af84, 0x10023b614)",
+   "why_static_insufficient": "User-visible messages are localized resources; rebuild timing and preservation of user data need execution",
+   "minimal_input": "(a) truncate a copy of the database file; (b) set version.version to 99999 on a copy; (c) set platform to another value; start Live each time",
+   "discriminating_observation": "Message shown (if any), indicator file presence, new file created, keywords restored from XMP or lost",
+   "stopping_condition": "Each variant observed through one restart cycle",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-07",
+   "question": "Does Live use filerefmap.db to redirect legacy sample references when loading a set?",
+   "existing_evidence": "Index opens fileref-map-path read-only (0x100132970 -> 0x1005284c4); sample_mapping lookup by (src_type, src_packid, src_ref); shipped rows 37,617",
+   "why_static_insufficient": "Which component consults the map during document load, and the meaning of type values, are not established",
+   "minimal_input": "A set whose sample FileRef matches one shipped src row (type 2, empty pack id) with the destination pack installed",
+   "discriminating_observation": "Whether the sample loads from the dst_ref location and what the saved set then records",
+   "stopping_condition": "One set opened and re-saved",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-08",
+   "question": "When is sound-similarity data computed and what enables it?",
+   "existing_evidence": "options sound-analyzer and auto-keywords; SetEnableSoundAnalyzer; fe_values with fe_version; Features.json in Core Library 'Ableton Folder Info'; feature-file validation messages (0x10017e380)",
+   "why_static_insufficient": "Scheduling, model inputs and preference wiring are runtime",
+   "minimal_input": "Fresh database; one user sample folder; toggle the relevant preference",
+   "discriminating_observation": "fe_values row count and ReportSoundAnalysisStatus-driven UI status before/after",
+   "stopping_condition": "Counts stable for 5 minutes after each toggle",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  },
+  {
+   "id": "PRB-H2-09",
+   "question": "How are unsupported or corrupt media files presented?",
+   "existing_evidence": "file-type registry (80 entries, out/file-type-registry.tsv), restricted-* file kinds, audio_decoding_failed and corrupt_document strings",
+   "why_static_insufficient": "Whether such files are listed, greyed or hidden is UI behavior",
+   "minimal_input": "A user folder with a truncated WAV, a zero-byte .als, a .xyz file and a .wma",
+   "discriminating_observation": "Browser listing and files rows for each",
+   "stopping_condition": "One scan completed",
+   "environment": "macOS host with Live 12 Suite 12.4.3 (pinned identity); fresh macOS user account or a copied-aside Live preferences/database directory; capture ps output, the database directory listing and SQLite reads on a copy"
+  }
+ ]
+}
