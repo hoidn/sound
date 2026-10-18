@@ -1,0 +1,112 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet S9 (mixer values)",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Pin the Live executable and preferences hash; fresh preferences; 48 kHz, 24-bit export with dither off and normalization off; Main and Cue at 0 dB"
+ ],
+ "probes": [
+  {
+   "id": "PRB-S9-01",
+   "requirements": [
+    "MX-05",
+    "MX-06"
+   ],
+   "question": "Is the track at its stored minimum gain (Volume Manual 0.0003162277571, display \"-inf dB\") exactly silent in the output, and is a stored gain just above the 0.00032 floor audible at its dB value?",
+   "existing_evidence": "0x101aede40 and 0x101aee5e8: gain <= 0.00032 (0x39a7c5ac) becomes 0 after the curve; derive_curves.py",
+   "why_static_insufficient": "The logic-to-engine value of the Volume port (normalized position, inferred) was not traced; audio output needs measurement",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip, plus one audio track playing a mono, full-scale 1 kHz test tone clip (to be generated on the analysis host and hashed before the sitting; not a shipped file); track Volume Manual variants 0.0003162277571, 0.000323594 (-69.8 dB), 0.001 (-60 dB), 1",
+   "discriminating_observation": "Export Audio (or a recorded resampling track) peak and RMS: exact digital zero for the minimum; -69.8 dB and -60 dB within 0.05 dB of the tone level minus the stored dB",
+   "stopping_condition": "Four renders captured; stop"
+  },
+  {
+   "id": "PRB-S9-02",
+   "requirements": [
+    "MX-08"
+   ],
+   "question": "Does the Stereo pan mode apply the constant-power law with 0 dB at centre, +3.01 dB on the near side and -100 dB (1e-5) on the far side at hard pan?",
+   "existing_evidence": "0x101b3b95c disassembly (s9-0002); derive_curves.py matrix table",
+   "why_static_insufficient": "Static code fixes the coefficients but not which input index each mixer control feeds",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip, plus one audio track playing a mono, full-scale 1 kHz test tone clip (to be generated on the analysis host and hashed before the sitting; not a shipped file) (identical left and right); Pan Manual -1, -0.5, 0, 0.5, 1; PanMode 0",
+   "discriminating_observation": "Per-channel output level relative to pan 0: hard left L +3.01 dB, R about -100 dB (not digital zero); pan -0.5 L +2.32 dB, R -5.33 dB",
+   "stopping_condition": "Five renders; stop"
+  },
+  {
+   "id": "PRB-S9-03",
+   "requirements": [
+    "MX-09"
+   ],
+   "question": "In Split Stereo mode, does each input channel pan independently with sin/cos gains and no +3 dB lift?",
+   "existing_evidence": "0x101b3b95c (w = 1 branch); PanMode entries 0x10271c734",
+   "why_static_insufficient": "Index-to-control mapping inferred from port order",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip, test tone on the left channel only; PanMode 1; (SplitStereoPanL, SplitStereoPanR) = (-1, 1), (0, 0), (1, 1)",
+   "discriminating_observation": "Left-input tone: (-1,1) only in L at 0 dB; (0,0) in both at -3.01 dB; (1,1) only in R at 0 dB",
+   "stopping_condition": "Three renders; stop"
+  },
+  {
+   "id": "PRB-S9-04",
+   "requirements": [
+    "MX-10",
+    "MX-11"
+   ],
+   "question": "Do the volume, send and pan displays show the statically derived text?",
+   "existing_evidence": "0x101437334, 0x101431c6c, 0x102183bf4, 0x10143a290 disassembly; derive_curves.py",
+   "why_static_insufficient": "Which converter slot (+0x28 or +0x40) each UI element uses was not traced",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip; Volume Manual 0.0003273407 (-69.7 dB), 0.00032359365 (-69.8 dB), 0.2494 (-12.062 dB), 1.99526238; Send Manual 0.0003162277571; Pan 0.0101, -0.01, 0.33, -1",
+   "discriminating_observation": "Mixer and Info View text: \"-69.7 dB\", \"-inf dB\", \"-12.062 dB\", \"6.0 dB\", \"-inf dB\", \"1R\", \"C\", \"16R\" (printf rounding of 16.4999\u2026), \"50L\"; any other digit count refutes MX-10",
+   "stopping_condition": "One screenshot per variant; stop"
+  },
+  {
+   "id": "PRB-S9-05",
+   "requirements": [
+    "MX-01",
+    "MX-12"
+   ],
+   "question": "What happens to out-of-range stored mixer values (Volume 3.0, 0, -1; Send 1.5; Pan 2; PanMode 2; CrossFadeState 3)?",
+   "existing_evidence": "N1 loader stores base values directly (transport-state-native); control clamps only on controlled changes (0x10255d9e0)",
+   "why_static_insufficient": "The load path for these classes was not re-traced; effect on display, audio and re-save unknown",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip; one variant per open",
+   "discriminating_observation": "Set opens or not; displayed value; output level; value written by Save As",
+   "stopping_condition": "Seven opens; stop"
+  },
+  {
+   "id": "PRB-S9-06",
+   "requirements": [
+    "MX-13"
+   ],
+   "question": "Does the crossfader attenuate A/B-assigned tracks by the selected curve and leave None tracks untouched?",
+   "existing_evidence": "0x101aede40, 0x101aedff0, 0x101aee124, 0x101aed36c; curve helpers 0x101aee8b8\u20260x101aeedb8",
+   "why_static_insufficient": "Curve formulas are pseudocode except Dipped; audio needs measurement",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip, plus one audio track playing a mono, full-scale 1 kHz test tone clip (to be generated on the analysis host and hashed before the sitting; not a shipped file) on three tracks assigned A, None, B; LiveSet CrossfadeCurve 2 then 0; MainTrack CrossFade -1, 0, 1",
+   "discriminating_observation": "Constant Power at centre: A and B at -3.01 dB, None 0 dB; at -1: A 0 dB, B silent; Dipped at centre: A and B -6.02 dB",
+   "stopping_condition": "Six renders; stop"
+  },
+  {
+   "id": "PRB-S9-07",
+   "requirements": [
+    "MX-02",
+    "MX-03",
+    "MX-04",
+    "MX-14"
+   ],
+   "question": "What does a real 12.4.3 save write for a new audio track, a new return track and their sends?",
+   "existing_evidence": "Shipped documents are 12.4d1/12.1d1 writes; constructors 0x10271b660, 0x102658f54",
+   "why_static_insufficient": "No 12.4.3 save exists",
+   "minimal_input": "Fresh preferences, File > New Live Set, insert one audio track and one return track, Save",
+   "discriminating_observation": "Volume Manual 1, ranges 0.0003162277571..1.99526238 and 0.0003162277571..1, Send Manual 0.0003162277571, Pan 0, Split -1/1, PanMode 0, CrossFadeState 1, Speaker true, SoloSink false; one holder per return; return holders EnabledByUser false",
+   "stopping_condition": "One save; stop"
+  },
+  {
+   "id": "PRB-S9-08",
+   "requirements": [
+    "MX-05"
+   ],
+   "question": "Is volume automation between two breakpoints interpolated in gain or in fader position?",
+   "existing_evidence": "Engine volume input passes through curve 1 (0x101aede40); automation storage is in gain (static-survey envelopes)",
+   "why_static_insufficient": "The automation-to-engine path belongs to S6 and was not traced here",
+   "minimal_input": "Recording Audio.als (App-Resources/Core Library/Lessons/Sets, SHA-256 af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043, MinorVersion 12.0_12402), decompressed, edited as stated, recompressed with gzip, plus one audio track playing a mono, full-scale 1 kHz test tone clip (to be generated on the analysis host and hashed before the sitting; not a shipped file); arrangement Volume envelope from 1.0 (0 dB) to 0.0003162277571 over 4 bars",
+   "discriminating_observation": "Level at the midpoint: about -12 dB if gain-linear in fader position (normalized 0.425), about -6 dB if gain-linear",
+   "stopping_condition": "One render; stop"
+  }
+ ]
+}

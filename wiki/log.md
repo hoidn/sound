@@ -1635,3 +1635,15 @@ the two acceleration tables with three confirmed oddities, on/off thresholds, an
 arithmetic for None, Pick-Up and Value Scaling. Proposed SPEC-MIDI-USER-MAPPING revision 3
 clauses with cases MT-01 to MT-23; PRB-N7-01 to 05 refine PRB-S4-05. Gaps: takeover preference
 default, prior-table reset trigger, registry gate, the parameter setter, delivery timing.
+
+## [2026-10-17] query | Mixer value conversions (S9)
+
+Filed [mixer values](research/mixer-values.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/s9-mixer-v1/` (29 dossiers in four rounds, 90 corpus records).
+Static: mixer fields and history over 203 schemas and a per-track-type census of 1,340 mixers
+in 376 shipped sets; volume and sends are stored as linear gain. Native: constructor defaults
+and ranges, seven 101-point fader curves (0 dB at position 0.85), dB and pan text rules, the
+engine silence floor (gain ≤ 0.00032 becomes 0), the pan law and crossfade assign. Candidates
+MX-01 to MX-15 and probes PRB-S9-01 to 08. Opened
+[Q-019](questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine) for the
+logic-to-engine port values. No audio claim is measured. Nothing was run.

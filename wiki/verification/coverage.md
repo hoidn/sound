@@ -19,7 +19,7 @@ requirements to candidate code and tests.
 | FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2; [transport-state-v1](../../handoff/transport-state-v1/README.md) released (18 cases) | Not started | Unknown; 18 release cases and 22 draft cases not run | PRB-N1-01 to 08; transition logic |
 | FEAT-SESSION | Candidates CL-01 to CL-23 ([clip launch](../research/clip-launch.md)); no draft; no handoff | Not started | Unknown | PRB-S5-01 to 11; launch-mode branches |
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
-| FEAT-AUDIO | None | Not started | Unknown | Routing and DSP paths; flag latency for later measurement |
+| FEAT-AUDIO | None; candidates MX-01 to MX-15 for SPEC-MIXER-VALUES ([mixer values](../research/mixer-values.md)) | Not started | Unknown | Logic-to-engine volume and send port domain (Q-019); PRB-S9-01 to 08; routing and DSP paths; flag latency for later measurement |
 | FEAT-MIDI | None; candidates MN-01 to MN-24 in [MIDI note storage](../research/midi-note-storage.md) | Not started | Unknown | Draft SPEC-MIDI-NOTE-STORAGE; PRB-S7-01 to 10; scheduling and note-state logic |
 | FEAT-AUTOMATION | None | Not started | Unknown | Curve/override schemas, interpolation and undo paths |
 | FEAT-DEVICES | None | Not started | Unknown | Preset/state schemas and bounded DSP derivations |

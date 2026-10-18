@@ -319,3 +319,15 @@ no experimental contradiction has been established yet.
   corruption; whether notes are re-sorted after load is untraced.
 - Next action: trace the table store's callers for a range guard; otherwise exclude
   these inputs from any release and run the matching PRB-S7 probes.
+
+## Q-019 Mixer volume and send values sent to the engine
+
+- State: open; owner: analyst.
+- Affects: FEAT-AUDIO, the proposed SPEC-MIXER-VALUES (MX-05 and the send clauses).
+- Evidence: [mixer values](research/mixer-values.md).
+- Gap: the value actually sent on the engine's volume and send ports (stored gain or fader
+  position), where sends get their curve and silence floor, out-of-range values after load,
+  the meaning of SoloSink, which formatter each UI surface uses, and whether volume
+  automation interpolates in gain or in fader position (shared with S6).
+- Next action: trace the logic-to-engine path for the volume and send parameters; otherwise
+  run PRB-S9-01 to 08.
