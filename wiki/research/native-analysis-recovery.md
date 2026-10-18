@@ -474,14 +474,18 @@ RECOVERY_JDK=$HOME/.local/opt/jdk-21.0.12.1+1
 RECOVERY_TARGET=$HOME/Documents/sound/analysis/ableton-live-12.4.3/derived/Live.arm64
 ```
 
-`RECOVERY_ROOT` has no durable home yet. `/home` had 2.7 GiB free after the
-toolchain install, below the 10 GiB fresh-import headroom and the 13.54 GiB
-measured upper bound above. The root filesystem had 37 GiB free, but its only
-user-writable locations without `sudo` are `/tmp` and `/var/tmp`, which do not
-preserve a multi-hour project across reboots or periodic cleanup. A persistent
-Live import therefore waits on one of: `sudo`-created root-filesystem directory
-owned by the user, or freed `/home` capacity. The earlier incomplete macOS jobs
-are not present on this host; a fresh import is the only route here.
+`/home` had 2.7 GiB free after the toolchain install, below the 10 GiB
+fresh-import headroom and the 13.54 GiB measured upper bound above. **Decision
+2026-10-17 (G0.1):** `RECOVERY_ROOT=/var/tmp/sound-analysis`, mode 700, on the
+root filesystem with 38.6 GB free at creation. Observed: this host's tmpfiles
+rule for `/var/tmp` is commented out (`#q /var/tmp 1777 root root 30d`), so the
+directory is not age-cleaned and survives reboot; the user already keeps large
+work directories there. Limitation: it is a single local disk, not a backup.
+The repository reaches it through the ignored symlink
+`analysis/ableton-live-12.4.3/r2-large`. The earlier incomplete macOS jobs are
+not present on this host; a fresh import is the only route here. The Linux
+driver is `tools/r2_persistent_live.sh`, which replaces the macOS-only
+`run_persistent_native.py` gate (it requires libproc).
 
 ## Resource admission and stop conditions
 

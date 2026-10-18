@@ -5,7 +5,7 @@ status: current
 updated: 2026-10-17
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
-revision: 1
+revision: 2
 ---
 
 # Next phase: decompiled code corpus and behavioral handoffs
@@ -25,7 +25,9 @@ another round of package inventories or helper-only demonstrations. Here,
 “decompiled source” means a decompiler representation, not original C++ source,
 original filenames, a buildable application or proof of runtime behavior.
 
-**Status: execution authorized by the user on 2026-10-09.** The
+**Revision 2 adopted 2026-10-17.** The remaining milestones are replaced by the
+[revision 2 sequence](#revision-2-proposal--2026-10-17); text below is retained as
+revision 1. **Status: execution authorized by the user on 2026-10-09.** The
 [associated execution plan](native-phase-execution.md) tracks actual gates and
 resources; authorization is not milestone completion. The original reviewed
 revision is retained with the planning artifacts. The
@@ -460,8 +462,9 @@ architecture, phase scope and evidence boundaries must remain explicit.
 
 ## Revision 2 proposal — 2026-10-17
 
-**Status: proposed, not adopted.** Revision 1 above remains the authorized plan
-until the user decides. This section proposes how to restart on the Linux
+**Status: adopted by user direction on 2026-10-17 ("execute plan. use many
+parallel subagents").** It replaces revision 1's remaining milestones; revision 1
+stays above as history. This section sets how to restart on the Linux
 workstation recorded in the [provisioning record](native-phase-execution.md#linux-workstation-provisioning--2026-10-17)
 and how to turn decompilation into specifications faster than the first pass did.
 

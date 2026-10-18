@@ -159,4 +159,4 @@ no experimental contradiction has been established yet.
   [Linux paths](research/native-analysis-recovery.md#linux-workstation-paths--2026-10-17).
 - Proposal 2026-10-17: [roadmap revision 2](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
   sequences the storage decision, a persistent project, one measured corpus
-  batch and outside-in specification packets; pending decision.
+  batch and outside-in specification packets; adopted and executing 2026-10-17.

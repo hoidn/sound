@@ -140,6 +140,21 @@ Generated view files are replaceable; captured provider outputs are versioned.
 | M5 Behavior/teaching | Native packets, profile comparison and shared-helper follow-up reviewed; external native contract unresolved | Two native packets, walkthroughs and reviewed atlas |
 | M6 Handoff/report | MIDI fallback handoff released; checkpoint report below records partial native delivery and remaining gates | Released finite contract plus honest coverage report |
 
+Revision 2 gates (adopted 2026-10-17; the [roadmap](native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
+defines them). M1–M6 above remain the revision 1 record.
+
+| Gate | Current state | Evidence needed |
+| --- | --- | --- |
+| G0.1 Storage | Decided: `/var/tmp/sound-analysis` on the root filesystem; see [Linux paths](native-analysis-recovery.md#linux-workstation-paths--2026-10-17) | Path and measured free bytes |
+| G0.2 Evidence | Not restorable from this host: no SSH route to the macOS host is configured. Revision 1 counts remain historical until the tree is copied | Verified copy or recorded loss |
+| G0.3 Persistent project | Import passed in 26 s with `AARCH64:LE:64:AppleSilicon:default`; full analysis running | Saved project, cold reopen, measured cost |
+| C1–C3 Corpus | Tooling in preparation on the Push2 slice | Every eligible row has an outcome |
+| S1, S2 Static halves | In progress from shipped schemas and documents | Draft research pages with evidence |
+| S3 Transitions | Waits on G0.3 | Transition table or escalation record |
+| S4 MIDI closure | In progress | Clause classification |
+| H2, H3 Handoffs | Pending | Reviewed releases |
+| Phase 4 probe batch | Collecting | Prepared probe records |
+
 The current [combined tool check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json)
 records 84 passing analyst-tool tests with exact source hashes. These cover
 transport, ingestion, selected export, metadata extraction and browser projection,

@@ -20,7 +20,7 @@ documentation structure is not completion of the application.
 | --- | --- |
 | Documentation routing and schema | Established in this workspace |
 | Reference target | Ableton Live 12 Suite 12.4.3; identity pinned and arm64 slices re-derived on the current host; the earlier static evidence tree is absent here (see research index) |
-| Analysis workstation | Linux host provisioned 2026-10-17 with Ghidra 12.1.4, JDK 21 and REA 6.5.0; Push2 smoke test reproduced prior counts; persistent Live project storage undecided (see [execution ledger](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17)) |
+| Analysis workstation | Linux host provisioned 2026-10-17 with Ghidra 12.1.4, JDK 21 and REA 6.5.0; Push2 smoke test reproduced prior counts; persistent Live project at `/var/tmp/sound-analysis`, analysis running (see [execution ledger](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17)) |
 | Research | Package evidence, browsable native pseudocode, method/structure guides and reviewed recovery tooling; target reopening is capacity-blocked (see research index) |
 | Behavioral specifications | Broader MIDI mapping draft; first finite configuration handoff released |
 | Implementation | No application code; architecture choices remain proposals |
@@ -36,7 +36,7 @@ method guide and evolving program-structure atlas, native behavior studies and
 a first reviewed handoff. The [execution plan](research/native-phase-execution.md)
 records actual progress and resource limits. Current implementation and
 verification states remain unchanged. A [revision 2 proposal](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
-for restarting on the Linux workstation awaits the user's decision.
+for restarting on the Linux workstation was adopted on 2026-10-17 and is executing.
 
 ## Milestones
 
