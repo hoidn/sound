@@ -470,3 +470,24 @@ the macOS run needed 3,016 s of analysis under a 4 GiB heap and two CPUs, and
 those gates should be re-measured rather than reused. (4) Resume the
 [transport study](native-transport-study.md) questions against the new project.
 No Live import, new pseudocode or compatibility claim was produced today.
+
+### REA analyzer dependencies — 2026-10-17
+
+Installed at user request, without root, under `/var/tmp/sound-tools` on the
+root filesystem so `/home` keeps at least 1.5 GB for evidence writes; about
+1.1 GB used. Source [`tools/rea-env.sh`](../../tools/rea-env.sh) before `rea`.
+Observed: without `JAVA_HOME` and `GHIDRA_INSTALL_DIR`, `rea providers` reports
+Ghidra unavailable. Retained outputs and full package digests are in
+[`linux-provisioning-v1/rea-analyzers/`](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/rea-analyzers/manifest.sha256).
+
+| Component | Identity | Observed result |
+| --- | --- | --- |
+| Hopper | 6.4.2 Linux demo `.deb`, 35,755,772 bytes, SHA-1 `e4f79dff…0dc65`, matching REA 6.5.0's pinned values. Launcher SHA-256 `0294ced1…e7ded` is in REA's supported set. Extracted with `dpkg-deb -x`; Ubuntu `libqt6printsupport6t64` 6.4.2+dfsg-21.1build5 added to its `lib/`; linked from `~/.local/share/rea/hopper` | `available` in `providers.json`; no analysis run. Demo limits on Live are unmeasured |
+| Node | 24.22.0 linux-x64, SHASUMS256 verified; runs the Node 22-installed REA 6.5.0 | `inspect-sqlite-database` on a scratch copy of `App-Resources/Database/filerefmap.db` (SHA-256 `97b29374…67897`): evidence `ev_8d5e74b0…77b57`, `filerefmap-sqlite.json` |
+| rizin | 0.9.1 static x86_64; release digest `9102249a…7e8cf` verified | `execute-rizin-command … iI` on the Push2 slice reported `mach0`, `arm`, 64-bit: evidence `ev_17166e37…5c2b2`, `push2-rizin-iI.json` |
+| GNU objdump | Ubuntu `binutils-multiarch` 2.42 tried, then removed | Its BFD has no Mach-O targets (`invalid bfd target` for `mach-o-arm64`), so REA's objdump analyzer cannot read the slices |
+| IDA | Not installed | REA needs an `ida-pro-mcp` registration (`REA_IDA_MCP_CONFIG`) and a licensed Hex-Rays installer; neither is obtainable from this host |
+
+Not installed: the Android, browser, packet-capture, signal, firmware and Frida
+dependencies. The bundle has no such targets, and Live cannot execute here.
+Routing is decided in the [roadmap](native-decompilation-roadmap.md#proposed-sequencing).

@@ -520,6 +520,29 @@ documents, user-visible strings) and trace into code through references, instead
 of from factories outward. Keep the revision 1 packet format, the eight-dossier
 budget and retained negative results.
 
+**Provider routing (decided 2026-10-17).** Bulk work does not go through REA.
+G0.3, C1 and C2 run `analyzeHeadless` and this repository's Ghidra scripts
+against the one saved project. In revision 1, REA snapshots kept eligible
+queries rather than a saved Ghidra database (see Queue and recovery above),
+REA 6.3.0 cleared the requested JVM CPU options ([recovery](native-analysis-recovery.md))
+and large results exceeded MCP response limits ([source page](sources/ableton-live-12.4.3.md)).
+Phase 2 dossiers use REA's native operations (`function`, `xrefs`,
+`resolve-native-call-targets`, `trace-native-values`,
+`inspect-native-dispatch-metadata`) because they return provenance-bearing
+`ev_` records, and S3's blocker is the call-target resolution they address.
+This applies only if REA 6.5.0 can serve the saved project or a measured fresh
+REA session on Live is affordable. Otherwise a read-only headless dossier script
+supplies the same fields. That condition is decided in
+`wiki/research/r2-query-route.md` (in preparation). The check runs on scratch
+copies or after the G0.3 writer exits, and it does not gate Phase 1. Non-native
+REA analyzers serve the outside-in anchors where a shipped artifact fits:
+`inspect-sqlite-database` for bundled databases such as
+`App-Resources/Database/filerefmap.db`, and `execute-rizin-command` as an
+independent Mach-O cross-check. The Hopper demo may give a second-opinion
+decompilation of a selected S3 function once its limits on Live are measured.
+It is never a corpus source. IDA is unavailable. Installed state is in the
+[execution ledger](native-phase-execution.md#rea-analyzer-dependencies--2026-10-17).
+
 | Packet | Bounded question | Anchors | Deliverable |
 | --- | --- | --- | --- |
 | S1 Transport-state fields | How are `Tempo`, `LoopOn`, `LoopStart`, `LoopLength` and time signature read, defaulted and written? | Field-name string references; schema declarations across 203 versions; value statistics over the 52 sets and 700 clips; the twelve prepared P1 inputs | `SPEC-TRANSPORT-STATE` draft; first native-backed handoff candidate, unchanged from revision 1 |

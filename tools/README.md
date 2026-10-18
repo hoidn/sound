@@ -35,6 +35,8 @@ resource limits, recovery and exact launch commands.
   be explicitly requested by the coordinator after resource preflight. It needs
   the installed Ghidra and JDK paths in its environment. Use the coordinator's
   [resource monitor](monitor_native_run.py) for owned-process limits/log capture.
+- [rea-env.sh](rea-env.sh) sets the Linux workstation environment for the `rea`
+  CLI: Ghidra/JDK paths, Node 24 and rizin. Source it before running `rea`.
 - [export_native_corpus.py](export_native_corpus.py) ingests retained evidence
   without running an analyzer. `init` freezes the target/profile/inventory,
   `ingest` writes immutable function revisions, `queue` lists pending addresses,

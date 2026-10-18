@@ -1025,3 +1025,20 @@ documents, handoffs, and a macOS-only probe batch. Recorded the supporting
 Updated the research index, [project status](project.md) and Q-011. Revision 1
 remains authorized; frontmatter revision is unchanged. Lint: relative links and
 anchors on edited pages resolve; `git diff --check` clean.
+
+## [2026-10-17] maintenance | REA provider routing and analyzer dependencies
+
+Query: does roadmap revision 2 invoke REA analyzers, and should it? Observed:
+revision 2 named no REA operation. G0.3 and C1/C2 call `analyzeHeadless` and
+repository scripts directly, and Phase 2 kept the dossier budget without a
+route. Added a [provider routing](research/native-decompilation-roadmap.md#proposed-sequencing)
+paragraph: bulk stays on direct Ghidra; Phase 2 dossiers use REA native
+operations only if the coordinator's query-route check (planned
+`wiki/research/r2-query-route.md`) shows REA can serve the saved project
+affordably; non-native REA analyzers serve outside-in anchors. At user request,
+installed Hopper 6.4.2 demo, Node 24.22.0 and rizin 0.9.1 without root under
+`/var/tmp/sound-tools` and added `tools/rea-env.sh`. Recorded in the
+[execution ledger](research/native-phase-execution.md#rea-analyzer-dependencies--2026-10-17).
+GNU multiarch objdump lacks Mach-O and was removed. IDA needs a licensed
+installer. No Live analysis ran; Hopper was not exercised on any target. Lint:
+relative links and anchors on edited pages resolve; `git diff --check` clean.
