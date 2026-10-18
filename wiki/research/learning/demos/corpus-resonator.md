@@ -27,7 +27,7 @@ local; it repeats Ableton's device name, parameter names and preset values.
 | 1 Extract | [`tools/corpus_demo.py`](../../../../tools/corpus_demo.py) reads the Corpus class from the schema and every shipped Corpus preset, recording input SHA-256s | Done |
 | 2 Build | One offline page from [`tools/corpus_demo.html`](../../../../tools/corpus_demo.html): generated controls, preset menu, click/noise/drum-loop/file/microphone sources, mode plot, spectrum, an evidence badge on every control | Done |
 | 3 Check | Extractor unit tests and a headless Chromium self-test of the audio graph | Passed (below) |
-| 4 Faithful version | Trace `SetParameterA` and `CalcA` in the Corpus corpus and replace the stand-in model, kept local | Not started |
+| 4 Faithful version | Trace `SetParameterA` and `CalcA` in the Corpus corpus and port the traced chain, kept outside the repository | Done 2026-10-17; see [Stand-in versus traced](#stand-in-versus-traced) |
 
 ## What is observed
 
@@ -110,8 +110,33 @@ The page describes each mapping beside its control. The excitation is mono.
   as type 5. No script errors in Chromium's log.
 - **Not checked:** live audio output and interactive use in a desktop browser.
 
+## Stand-in versus traced
+
+The [Corpus DSP trace](../../corpus-dsp-static.md) now describes what the device
+computes. A port of it runs in a second, local-only page,
+`~/Documents/sound-local/corpus-faithful/index.html`, outside this repository
+because the code is derived from third-party DSP. Comparing the two pages is the
+lesson: which textbook guesses held, and which didn't.
+
+| Topic | Textbook stand-in (this page) | Traced device |
+| --- | --- | --- |
+| Type order | Assumed Beam, Marimba, String, Membrane, Plate, Pipe, Tube | Confirmed by the remap table and type builders |
+| Body models | Seven filter banks with textbook ratios | Five modal banks with the same broad ratio families; Pipe and Tube are delay-line waveguides, not filter banks |
+| Marimba | 1 : 4 : 10 | 1 : 3.96 : 10.67, from tuned-bar constants |
+| Quality | 8, 16, 28 or 40 modes | 4, 16, 30 or 70 modes; partials above 5/12 of the sample rate dropped |
+| Frequency | Guessed 30–3,000 Hz | −4 to +4 octaves around 261.62 Hz (16–4,186 Hz) |
+| Transpose, Fine | Always applied | Applied only when MidiPitch is on |
+| Drive | tanh saturation | A clean gain, −15 to +15 dB |
+| LFO | ±1,200 cents per unit of Amount | ±1 octave per unit of Amount, so the guess happened to agree; shapes are Sine, Square, Triangle, Ramp Up, Ramp Down, Sample and Hold, Random Ramp |
+| Hit and pickups | Analytic mode shapes | A coarse shape table with interpolation; pickups glide over 4,000 samples |
+| Parameter resolution | Continuous | Resonator values move in 128 steps; filter updates at most every 200 samples |
+| Pipe and Tube pitch | On the nominal pitch | Below it, because the reflection filter adds delay (about 4% and 8% at default settings) |
+
+Neither page has been compared with Corpus's real output.
+
 ## Next lesson
 
-Trace how `SetParameterA` maps a parameter index to an internal module, and
-what `CalcA` does per sample. Then compare the result with the stand-in, mode
-by mode. That trace is analyst-side and stays local.
+Measure the real device on the macOS host. The candidate requirements on the
+[DSP page](../../corpus-dsp-static.md#candidate-requirements-for-spec-corpus-device)
+say what each measurement should show, such as partial frequencies, the pitch
+range and the waveguide pitch drop. That would test both pages.

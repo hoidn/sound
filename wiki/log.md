@@ -1384,3 +1384,24 @@ claims missing from the kept evidence are listed on the page. Updated the spec i
 (candidate row replaced), feature map, coverage, Q-006, Q-012, atlas and learning
 index, and regenerated the spec browser. Gaps: Live Set save call site and
 compression level, which reading path File > Open uses, dialog texts.
+
+## [2026-10-17] spec | Corpus signal chain traced from the decompiled bundle
+
+Traced Corpus.bundle (arm64, `29df4582…`) from Live's parameter call down to each
+output sample, under the user's waiver of the analyst/implementation separation
+for this work (recorded earlier in this log). Two read-only subagents traced the
+resonator and the rest of the chain; their reports are retained in
+`analysis/ableton-live-12.4.3/r2/corpus-dsp-v1/`. New page:
+[Corpus DSP (decompiled)](research/corpus-dsp-static.md), covering 37 host
+parameters with conversions, the module graph, five modal and two waveguide
+resonator models, quirks, and candidates CD-C01–CD-C08 (listed in the
+[spec index](specs/index.md) and the requirements browser, rerun at 95 rows).
+It confirms the ResonanceType order the demo had assumed. A JavaScript port with
+an interactive page lives outside the repository in
+`~/Documents/sound-local/corpus-faithful/` and is not committed, because the
+remote is public. Its checks: 8 Node tests pass, a headless Chromium AudioWorklet
+self-test puts String at 261.5 Hz, and it uses at most 9% of one core. The
+[Corpus demo](research/learning/demos/corpus-resonator.md) gained a
+stand-in-versus-traced comparison. Gaps: Live-side value conversion (N5),
+inferred Live names for three host indices, and no runtime comparison.
+Lint: links and anchors on edited pages resolve; `git diff --check` clean.

@@ -41,6 +41,7 @@ target spec:
 | SPEC-PLUGIN-DISCOVERY | PD-01–PD-14 (14) | [Plug-in scanner](../research/plugin-scanner-static.md#candidate-requirements-for-spec-plugin-discovery) | Live-side contract ([Q-016](../questions.md#q-016-plug-in-discovery-live-side-contract)) |
 | SPEC-BROWSER-INDEX | BI-C01–BI-C12 (12) | [Browser index](../research/browser-index-static.md#candidate-requirements-for-a-future-spec-browser-index) | Draft spec when scoped |
 | Per-device parameter specs | DEV-C01–DEV-C10 (10) | [Device bundles](../research/device-bundles-static.md#candidate-requirements-for-per-device-parameter-specs) | Per-device parameter mapping |
+| SPEC-CORPUS-DEVICE | CD-C01–CD-C08 (8) | [Corpus DSP (decompiled)](../research/corpus-dsp-static.md#candidate-requirements-for-spec-corpus-device) | Live-side conversion (N5), then Phase 4 measurements |
 
 When a candidate set becomes a draft under this directory, replace its row
 here with the draft's catalog row above.
