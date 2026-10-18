@@ -1,0 +1,333 @@
+als-container-v1 handoff review: reviewer checks (analyst-side; not payload). 2026-10-17.
+Reviewer: separate review subagent (Claude Opus 5.5). Scripts in this directory; run with python3 -I from any directory.
+Image: /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/derived/Live.arm64 sha256 3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad
+
+Mapping to the plan's IDs: RVA-01 = I1 established; RVA-09 = I3 confirmed, I2/I4/I5/I6 accepted; RVA-02/03 new narrowing;
+RVA-04 rename 'translator number' -> 'suffix number' (TranslatorNumber is schema-file vocabulary); F1-F5 confirmed;
+RVA-10 = 12 new cases + exclusion substitute for PRB-N2-03/05 accepted.
+
+== 1. Unwind LSDA presence near the Expat wrapper (start-element trampoline 0x10124714c has none) ==
+$ python3 -I lsda.py IMG 0x101246f00 0x101247d40
+base 0x100000000 lsda entries 116954
+0x101246f4c LSDA at 0x105df5730
+0x1012475a8 LSDA at 0x105df5744
+0x101247760 LSDA at 0x105df577c
+0x101247828 LSDA at 0x105df579c
+0x1012479e4 LSDA at 0x105df57cc
+0x101247b50 LSDA at 0x105df57e4
+0x101247c30 LSDA at 0x105df57f8
+0x101247d40 LSDA at 0x105df5854
+
+== 2. LSDA call-site/action tables: trampoline, parse loop, parser slot +0x40, post-parse, XML reader, start-element handler ==
+Reading: loop 0x1012475a8 catch-all sites only guard string releases (landing pads call 0x10017b398, terminate);
+post-parse 0x1015289c8 has cleanups only (no type table). Handler 0x1015299e0 has catch clauses.
+$ python3 -I lsda2.py IMG 0x10124714c 0x1012475a8 0x10145f2d0 0x1015289c8 0x101484108 0x1015299e0
+0x10124714c no LSDA
+0x1012475a8 ttenc 0x9b csenc 1 sites:
+    ('0x1012475a8', 152, 0, 0)
+    ('0x101247640', 16, '0x10124774c', 0)
+    ('0x101247650', 56, 0, 0)
+    ('0x101247688', 16, '0x101247738', 0)
+    ('0x1012476b0', 4, '0x101247730', 1)
+    ('0x1012476b4', 92, 0, 0)
+    ('0x101247710', 4, '0x101247734', 1)
+    ('0x101247714', 76, 0, 0)
+    action 1 filters [1]
+      type filter 1 raw 0x0 enc 0x9b
+0x10145f2d0 no LSDA
+0x1015289c8 ttenc 0xff csenc 1 sites:
+    ('0x101528a00', 4, '0x101528c7c', 0)
+    ('0x101528a28', 16, '0x101528c6c', 0)
+    ('0x101528a60', 8, '0x101528c64', 0)
+    ('0x101528aac', 24, '0x101528c74', 0)
+    ('0x101528aec', 44, '0x101528c7c', 0)
+    ('0x101528b1c', 12, '0x101528c5c', 0)
+    ('0x101528b44', 24, '0x101528c34', 0)
+    ('0x101528b5c', 16, 0, 0)
+    ('0x101528b6c', 8, '0x101528c3c', 0)
+    ('0x101528b74', 8, '0x101528c24', 0)
+    ('0x101528b7c', 8, '0x101528c04', 0)
+    ('0x101528b84', 8, '0x101528bf0', 0)
+    ('0x101528b90', 64, '0x101528be0', 0)
+    ('0x101528bd4', 8, '0x101528c64', 0)
+    ('0x101528bdc', 168, 0, 0)
+0x101484108 ttenc 0x9b csenc 1 sites:
+    ('0x101484108', 80, 0, 0)
+    ('0x101484158', 16, '0x10148457c', 0)
+    ('0x10148416c', 8, '0x101484574', 0)
+    ('0x101484178', 8, '0x101484564', 0)
+    ('0x101484180', 8, '0x101484550', 0)
+    ('0x1014841b4', 4, '0x1014844e0', 0)
+    ('0x1014841c8', 8, '0x101484548', 0)
+    ('0x1014841f4', 20, '0x101484540', 0)
+    ('0x10148420c', 8, '0x101484538', 0)
+    ('0x101484220', 4, '0x101484530', 0)
+    ('0x101484244', 36, '0x1014845a4', 0)
+    ('0x101484274', 12, '0x1014845a0', 0)
+    ('0x101484298', 48, '0x1014845a4', 0)
+    ('0x1014842d0', 8, '0x101484520', 0)
+    ('0x1014842fc', 4, '0x1014844d4', 5)
+    ('0x101484318', 4, '0x1014844dc', 5)
+    ('0x101484334', 4, '0x1014844d8', 5)
+    ('0x10148439c', 4, '0x101484590', 5)
+    ('0x1014843e8', 4, '0x10148451c', 5)
+    ('0x101484404', 4, '0x1014844d0', 5)
+    ('0x101484430', 4, '0x101484518', 5)
+    ('0x10148444c', 4, '0x1014844cc', 5)
+    ('0x101484488', 48, '0x1014845a4', 0)
+    ('0x1014844b8', 12, '0x1014844f0', 0)
+    ('0x1014844c4', 72, 0, 0)
+    ('0x10148450c', 4, '0x101484514', 5)
+    ('0x101484510', 224, 0, 0)
+    action 5 filters [1, 0, 0]
+      type filter 1 raw 0x0 enc 0x9b
+0x1015299e0 ttenc 0x9b csenc 1 sites:
+    ('0x1015299e0', 120, 0, 0)
+    ('0x101529a58', 8, '0x10152a1f8', 5)
+    ('0x101529aa4', 12, '0x10152a1e0', 5)
+    ('0x101529ab0', 16, '0x10152a208', 5)
+    ('0x101529aec', 12, '0x10152a1b4', 5)
+    ('0x101529af8', 12, '0x10152a1a4', 5)
+    ('0x101529b1c', 4, '0x10152a110', 9)
+    ('0x101529b50', 4, '0x10152a19c', 5)
+    ('0x101529b60', 48, '0x10152a1b8', 5)
+    ('0x101529ba8', 28, '0x10152a13c', 5)
+    ('0x101529bc4', 12, '0x10152a128', 5)
+    ('0x101529bd0', 8, '0x10152a114', 5)
+    ('0x101529be8', 64, '0x10152a1bc', 5)
+    ('0x101529c40', 4, '0x10152a104', 9)
+    ('0x101529c98', 12, '0x10152a1fc', 7)
+    ('0x101529ca8', 8, '0x10152a1dc', 5)
+    ('0x101529cbc', 16, '0x10152a1cc', 5)
+    ('0x101529cf0', 4, '0x10152a14c', 9)
+    ('0x101529d0c', 4, '0x10152a148', 9)
+    ('0x101529d24', 8, '0x10152a1fc', 7)
+    ('0x101529d30', 12, '0x10152a1b0', 5)
+    ('0x101529d68', 16, '0x10152a1a8', 5)
+    ('0x101529d90', 4, '0x10152a10c', 9)
+    ('0x101529d98', 12, '0x10152a1ac', 5)
+    ('0x101529da4', 20, '0x10152a1a0', 5)
+    ('0x101529dd0', 4, '0x10152a108', 9)
+    ('0x101529de0', 12, '0x10152a1fc', 7)
+    ('0x101529df0', 8, '0x10152a180', 5)
+    ('0x101529e04', 16, '0x10152a17c', 5)
+    ('0x101529e38', 4, '0x10152a0e4', 9)
+    ('0x101529e54', 4, '0x10152a0e0', 9)
+    ('0x101529e84', 28, '0x10152a208', 5)
+    ('0x101529eb8', 4, '0x10152a144', 9)
+    ('0x101529ebc', 16, 0, 0)
+    ('0x101529ecc', 24, '0x10152a1e4', 5)
+    ('0x101529eec', 8, '0x10152a184', 5)
+    ('0x101529ef4', 8, '0x10152a150', 5)
+    ('0x101529efc', 8, '0x10152a0e8', 5)
+    ('0x101529f04', 8, '0x10152a0c0', 5)
+    ('0x101529f0c', 8, '0x10152a0a0', 5)
+    ('0x101529f18', 60, '0x10152a08c', 5)
+    ('0x101529f54', 16, 0, 0)
+    ('0x101529f64', 24, '0x10152a198', 5)
+    ('0x101529f7c', 8, '0x10152a174', 5)
+    ('0x101529f84', 8, '0x10152a100', 5)
+    ('0x101529f8c', 8, '0x10152a0d8', 5)
+    ('0x101529f94', 8, '0x10152a0b8', 5)
+    ('0x101529f9c', 8, '0x10152a084', 5)
+    ('0x101529fa8', 60, '0x10152a080', 5)
+    ('0x101529fe4', 16, 0, 0)
+    ('0x101529ff4', 24, '0x10152a178', 5)
+    ('0x10152a00c', 8, '0x10152a140', 5)
+    ('0x10152a014', 8, '0x10152a0dc', 5)
+    ('0x10152a01c', 8, '0x10152a0bc', 5)
+    ('0x10152a024', 8, '0x10152a088', 5)
+    ('0x10152a02c', 8, '0x10152a07c', 5)
+    ('0x10152a038', 60, '0x10152a078', 5)
+    ('0x10152a074', 436, 0, 0)
+    ('0x10152a228', 8, '0x10152a278', 0)
+    ('0x10152a238', 12, '0x10152a268', 0)
+    ('0x10152a244', 56, 0, 0)
+    ('0x10152a27c', 4, '0x10152a288', 9)
+    ('0x10152a280', 12, 0, 0)
+    action 5 filters [1, 0, 0]
+      type filter 1 raw 0x6c3a98 enc 0x9b
+    action 7 filters [1]
+      type filter 1 raw 0x6c3a98 enc 0x9b
+    action 9 filters [2]
+      type filter 2 raw 0x0 enc 0x9b
+
+== 3. Catch type of filter 1 in handler 0x1015299e0 = typeinfo 0x106661270 (DYLD_CHAINED_PTR_64 rebase, low 36 bits = vmaddr;
+   the script's '+base' column is wrong for this format; read the raw value). Same type passed to __cxa_throw by
+   0x1015299e0, 0x10152a900, 0x101529024, 0x10152a570 (kept pseudocode, n2-0002/0003/0005).
+$ python3 -I tt.py IMG 0x1015299e0
+filter 1 GOT slot 0x64f8000 raw 0x106661270 rebase target(low36)+base 0x206661270
+filter 2 catch-all
+
+== 4. Handler call sites covered by catch actions 5/7: MajorVersion read bl 0x10152a900 @0x101529ca0 (site 0x101529c98+12 act 7),
+   SchemaChangeCount read @0x101529de8 (0x101529de0+12 act 7), version check bl 0x101529024 and 0x10152a570 @0x101529e88/9c
+   (0x101529e84+28 act 5), root-name throw block 0x101529ec4-0x101529f50 incl. __cxa_throw (0x101529f18+60 act 5).
+$ python3 -I bl.py IMG 0x101529c40 0x10152a078 | grep -E 'bl |blr|ret'
+0x101529c40 97fc80af bl 0x101449efc
+0x101529c58 d65f03c0 ret
+0x101529ca0 94000318 bl 0x10152a900
+0x101529cac 97f286a2 bl 0x1011cb734
+0x101529cc8 9400038f bl 0x10152ab04
+0x101529cf0 97fc8083 bl 0x101449efc
+0x101529d0c 97fc807c bl 0x101449efc
+0x101529d28 d63f0100 blr x8
+0x101529d38 94000155 bl 0x10152a28c
+0x101529d74 940001ff bl 0x10152a570
+0x101529d90 97fc805b bl 0x101449efc
+0x101529da0 9400013b bl 0x10152a28c
+0x101529db4 940001ef bl 0x10152a570
+0x101529dd0 97fc804b bl 0x101449efc
+0x101529de8 940002c6 bl 0x10152a900
+0x101529df4 97f28650 bl 0x1011cb734
+0x101529e10 9400033d bl 0x10152ab04
+0x101529e38 97fc8031 bl 0x101449efc
+0x101529e54 97fc802a bl 0x101449efc
+0x101529e74 d65f03c0 ret
+0x101529e88 97fffc67 bl 0x101529024
+0x101529e9c 940001b5 bl 0x10152a570
+0x101529eb8 97fc8011 bl 0x101449efc
+0x101529ec4 94feada5 bl 0x1054d5558
+0x101529ee0 97fc74aa bl 0x101447188
+0x101529ef0 97fc218c bl 0x101432520
+0x101529ef8 97f2860f bl 0x1011cb734
+0x101529f00 97f2860d bl 0x1011cb734
+0x101529f08 97f2860b bl 0x1011cb734
+0x101529f10 97f28609 bl 0x1011cb734
+0x101529f34 97f4636d bl 0x101242ce8
+0x101529f50 94feada9 bl 0x1054d55f4
+0x101529f5c 94fead7f bl 0x1054d5558
+0x101529f78 97fc7484 bl 0x101447188
+0x101529f80 97f285ed bl 0x1011cb734
+0x101529f88 97f285eb bl 0x1011cb734
+0x101529f90 97f285e9 bl 0x1011cb734
+0x101529f98 97f285e7 bl 0x1011cb734
+0x101529fa0 97f285e5 bl 0x1011cb734
+0x101529fc4 97f46349 bl 0x101242ce8
+0x101529fe0 94fead85 bl 0x1054d55f4
+0x101529fec 94fead5b bl 0x1054d5558
+0x10152a008 97fc7460 bl 0x101447188
+0x10152a010 97f285c9 bl 0x1011cb734
+0x10152a018 97f285c7 bl 0x1011cb734
+0x10152a020 97f285c5 bl 0x1011cb734
+0x10152a028 97f285c3 bl 0x1011cb734
+0x10152a030 97f285c1 bl 0x1011cb734
+0x10152a054 97f46325 bl 0x101242ce8
+0x10152a070 94fead61 bl 0x1054d55f4
+
+== 5. Catch body: selector==1 -> __cxa_begin_catch (0x1054d5588), message via 0x101241f58, this->vtable[+0x48](this,&msg)
+   (= 0x10145f2dc -> 0x10124790c: store message at wrapper +0x50, clear +0x58, XML_StopParser(p,0)), __cxa_end_catch
+   (0x1054d55a0), return. Loop 0x1012475a8 then sees error 0x23 with +0x58 clear and reports +0x50 via slot +0x68
+   (0x101529970 sets +0x28); post-parse 0x1015289c8 runs steps 1-6. Unmatched selector resumes (0x1054d30f8).
+$ python3 -I bl.py IMG 0x10152a1fc 0x10152a290
+0x10152a1fc aa0103f4 mov x20,x1
+0x10152a200 aa0003f5 mov x21,x0
+0x10152a204 14000005 b 0x10152a218
+0x10152a208 aa0103f4 mov x20,x1
+0x10152a20c aa0003f5 mov x21,x0
+0x10152a210 9100c3e0 add x0,x31,#0x30
+0x10152a214 97b4288c bl 0x100234444
+0x10152a218 7100069f 
+0x10152a21c 54000321 b.cond 0x10152a280
+0x10152a220 aa1503e0 mov x0,x21
+0x10152a224 94feacd9 bl 0x1054d5588
+0x10152a228 9100a3e8 add x8,x31,#0x28
+0x10152a22c 97f45f4b bl 0x101241f58
+0x10152a230 f9400268 ldr x8,[x19,#0x0]
+0x10152a234 f9402508 ldr x8,[x8,#0x48]
+0x10152a238 9100a3e1 add x1,x31,#0x28
+0x10152a23c aa1303e0 mov x0,x19
+0x10152a240 d63f0100 blr x8
+0x10152a244 9100a3e0 add x0,x31,#0x28
+0x10152a248 97b4287f bl 0x100234444
+0x10152a24c 94feacd5 bl 0x1054d55a0
+0x10152a250 a9487bfd 
+0x10152a254 a9474ff4 
+0x10152a258 a94657f6 
+0x10152a25c a9455ff8 
+0x10152a260 910243ff add x31,x31,#0x90
+0x10152a264 d65f03c0 ret
+0x10152a268 aa0003f5 mov x21,x0
+0x10152a26c 9100a3e0 add x0,x31,#0x28
+0x10152a270 97b42875 bl 0x100234444
+0x10152a274 14000002 b 0x10152a27c
+0x10152a278 aa0003f5 mov x21,x0
+0x10152a27c 94feacc9 bl 0x1054d55a0
+0x10152a280 aa1503e0 mov x0,x21
+0x10152a284 94fea39d bl 0x1054d30f8
+0x10152a288 97b14444 bl 0x10017b398
+0x10152a28c d10203ff 
+
+== 6. I3: converter 0x1002fda78 read in the C1 corpus (/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-00132.jsonl;
+   corpus index manifest executable_sha256 = image above): libc++-style from_chars<int> base 10: optional '-', leading
+   zeros skipped, stops at first non-digit, EINVAL (0x16) when no digit, ERANGE (0x22) on overflow. Caller 0x1002fd908
+   requires end==substring end and ec==0, so a trailing space kept in the substring fails.
+
+== 7. Evidence identity ==
+3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad  derived/Live.arm64
+8faab9dccf6a69e8b4e596488e77932908174fadb06658987c047d0f667eafbf  r2/n2-container-v1/manifest.json
+ee13b55cd382af2d220a366598fc96286f6b3d98b657ac3e847c0c790829ccf2  r2/s2-static-v1/out/schemas.json
+n2-container-v1 manifest: 247 listed files re-hashed, 0 mismatches
+
+== 8. Export verification of the final package (copy at /var/tmp/sound-analysis/scratch/review-als1/als-container-v1) ==
+$ python3 -I ../build_als.py verify COPY
+{
+ "dir": "/var/tmp/sound-analysis/scratch/review-als1/als-container-v1",
+ "payload_files": 40,
+ "files_including_manifest": 41,
+ "manifest_sha256": "f5ca758dd3785a14a5b8f2384fc7a1038d3ed1649eeb63f6b67446577e62d1de",
+ "hash_or_size_mismatches": [],
+ "inventory_differences": [],
+ "markdown_links": {
+  "AGENTS.md": 0,
+  "spec.md": 5,
+  "REVIEW.md": 1,
+  "README.md": 5
+ },
+ "unresolved_links": {},
+ "missing_case_inputs": [],
+ "deny_list_hits": {},
+ "allowed_hits": {
+  "AGENTS.md": [
+   "decompil"
+  ]
+ }
+}
+$ python3 -I inspect.py COPY
+inventory equal: True 40
+hash/size mismatches: []
+ALS-CONTAINER-001 gzip 177 4 {'outcome': 'envelope-accepted'} | template
+ALS-CONTAINER-002 unco 220 4 {'outcome': 'envelope-accepted'} | template
+ALS-CONTAINER-003 unco 223 4 {'outcome': 'refused', 'refusal_class': 'unspecified'} | prefix='\ufeff'
+ALS-CONTAINER-004 unco 221 5 {'outcome': 'refused', 'refusal_class': 'unspecified'} | prefix='\n'
+ALS-CONTAINER-005 unco 181 3 {'outcome': 'refused', 'refusal_class': 'unspecified'} | prefix='<Ableton'
+ALS-CONTAINER-006 gzip 184 4 {'outcome': 'refused', 'refusal_class': 'unspecified'} | prefix='\ufeff'
+ALS-CONTAINER-007 unco 0 0 {'outcome': 'refused', 'refusal_class': 'unspecified'} | attrs -['MajorVersion="5"', 'MinorVersion="12.0_12402"', 'SchemaChangeCount="1"', 'Creator="Ableton Live 12.4.3"', 'Revision="0123456789abcdef0123456789abcdef01234567"'] +[]
+ALS-CONTAINER-008 gzip 173 3 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | no end tag
+ALS-CONTAINER-009 gzip 176 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | root=Live
+ALS-CONTAINER-010 gzip 178 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | root=ableton
+ALS-CONTAINER-011 gzip 168 3 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | no LiveSet
+ALS-CONTAINER-012 gzip 171 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MajorVersion="5"'] +[]
+ALS-CONTAINER-013 gzip 176 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MajorVersion="5"'] +['MajorVersion="0"']
+ALS-CONTAINER-014 gzip 180 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MajorVersion="5"'] +['MajorVersion="five"']
+ALS-CONTAINER-015 gzip 179 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MajorVersion="5"'] +['MajorVersion="3"']
+ALS-CONTAINER-016 gzip 177 4 {'outcome': 'envelope-accepted'} | attrs -['MajorVersion="5"'] +['MajorVersion="4"']
+ALS-CONTAINER-017 gzip 178 4 {'outcome': 'envelope-accepted'} | attrs -['MajorVersion="5"'] +['MajorVersion="+5"']
+ALS-CONTAINER-018 gzip 177 4 {'outcome': 'envelope-accepted'} | attrs -['MajorVersion="5"'] +['MajorVersion=" 5"']
+ALS-CONTAINER-019 gzip 177 4 {'outcome': 'envelope-accepted'} | attrs -['MajorVersion="5"'] +['MajorVersion="5 "']
+ALS-CONTAINER-020 gzip 178 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MajorVersion="5"'] +['majorversion="5"']
+ALS-CONTAINER-021 gzip 178 4 {'outcome': 'envelope-accepted'} | order=Revision,Creator,SchemaChangeCount,MinorVersion,MajorVersion
+ALS-CONTAINER-022 gzip 164 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MinorVersion="12.0_12402"'] +[]
+ALS-CONTAINER-023 gzip 170 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MinorVersion="12.0_12402"'] +['MinorVersion=""']
+ALS-CONTAINER-024 gzip 177 4 {'outcome': 'refused', 'refusal_class': 'newer-version'} | attrs -['MajorVersion="5"'] +['MajorVersion="6"']
+ALS-CONTAINER-025 gzip 177 4 {'outcome': 'refused', 'refusal_class': 'newer-version'} | attrs -['MinorVersion="12.0_12402"'] +['MinorVersion="12.0_12403"']
+ALS-CONTAINER-026 gzip 174 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['MinorVersion="12.0_12402"'] +['MinorVersion="garbage"']
+ALS-CONTAINER-027 gzip 177 4 {'outcome': 'envelope-accepted'} | attrs -['MinorVersion="12.0_12402"'] +['MinorVersion="12.0_12117"']
+ALS-CONTAINER-028 gzip 136 4 {'outcome': 'envelope-accepted'} | attrs -['Creator="Ableton Live 12.4.3"', 'Revision="0123456789abcdef0123456789abcdef01234567"'] +[]
+ALS-CONTAINER-029 gzip 168 4 {'outcome': 'envelope-accepted'} | attrs -['Creator="Ableton Live 12.4.3"', 'Revision="0123456789abcdef0123456789abcdef01234567"'] +['Creator="Somebody Else 1.0"', 'Revision="not-hex"']
+ALS-CONTAINER-030 gzip 170 4 {'outcome': 'envelope-accepted'} | attrs -['SchemaChangeCount="1"'] +['Extra="1"']
+ALS-CONTAINER-031 gzip 178 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['SchemaChangeCount="1"'] +['SchemaChangeCount="x"']
+ALS-CONTAINER-032 gzip 178 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['SchemaChangeCount="1"'] +['SchemaChangeCount=""']
+ALS-CONTAINER-033 gzip 181 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['SchemaChangeCount="1"'] +['SchemaChangeCount="+-1"']
+ALS-CONTAINER-034 gzip 186 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['SchemaChangeCount="1"'] +['SchemaChangeCount="１"']
+ALS-CONTAINER-035 gzip 182 4 {'outcome': 'refused', 'refusal_class': 'corrupt-document'} | attrs -['SchemaChangeCount="1"'] +['SchemaChangeCount="0000000000000000000000000000000000000000000000000000000000000001"']
+distinct inputs: 35 of 35

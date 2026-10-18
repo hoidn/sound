@@ -1,9 +1,11 @@
 # Live Set container and version envelope, release 1
 
-**Unreviewed candidate.** This package is not an implementation input until a
-separate review approves it and it is published as a release. Read
-[the contract](spec.md), [the cases](cases.json),
-[the role instructions](AGENTS.md) and [the manifest](manifest.json).
+**Reviewed local release.** Read [the contract](spec.md),
+[the cases](cases.json), [the role instructions](AGENTS.md),
+[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
+stated partial scope, narrowed as recorded in the review, is approved as a
+contract for a fresh, restricted implementation workspace. Such a workspace
+has not been provisioned by this release.
 
 The finite scope is the outer layer of a Live Set file: how its first bytes
 select a gzip or uncompressed XML container, the root element, the presence,

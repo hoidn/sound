@@ -1,8 +1,8 @@
 {
  "schema": "handoff-manifest-v1",
  "release_id": "als-container-v1",
- "release_status": "candidate-unreviewed",
- "release_date": null,
+ "release_status": "released",
+ "release_date": "2026-10-17",
  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
  "specification": {
   "id": "SPEC-ALS-CONTAINER",
@@ -16,7 +16,7 @@
   "REQ-ALS-CONTAINER-001": "Container from first bytes; gzip content classified again; listed malformed starts refused (class unspecified); not well-formed XML refused as corrupt-document",
   "REQ-ALS-CONTAINER-002": "Root named exactly Ableton; root without child element refused",
   "REQ-ALS-CONTAINER-003": "Exact attribute names in any order; integer rule table; MajorVersion range; MinorVersion absent or empty refused",
-  "REQ-ALS-CONTAINER-004": "MajorVersion 6 or more, and a schema name above its family's largest translator number in S, refused as newer-version",
+  "REQ-ALS-CONTAINER-004": "MajorVersion 6 or more, and a schema name above its family's largest suffix number in S, refused as newer-version",
   "REQ-ALS-CONTAINER-005": "MinorVersion in S passes; letters-only value refused as corrupt-document",
   "REQ-ALS-CONTAINER-006": "Creator and Revision free and optional; SchemaChangeCount optional but integer; other attributes ignored"
  },
@@ -36,11 +36,11 @@
  "exclusions": {
   "inputs_without_expectation": [
    "leading bytes other than those listed in REQ-ALS-CONTAINER-001, including other Live document formats",
-   "gzip other than one member with the fixtures' header, a valid trailer and no trailing bytes; damaged or truncated compressed data; header flags and optional fields",
-   "plain XML other than the fixtures' form: other declarations or encodings, a processing instruction first, document type declarations, references in root attributes, namespaces, carriage returns",
+   "gzip other than one member with the fixtures' header, a valid trailer and no trailing bytes; damaged or truncated compressed data; header flags and optional fields; gzip content that itself starts with 1F 8B",
+   "plain XML that differs from the fixtures' form in a way no rule names, for example other declarations or encodings, a processing instruction first, document type declarations, references in root attributes, namespaces, carriage returns, and comments, processing instructions or text other than the fixtures' whitespace outside LiveSet",
    "document element other than LiveSet; a second child of the root; content inside LiveSet",
    "integer values marked no expectation, including both leading and trailing decoration, a minus sign not preceded by plus, leading zeros, and ten or more digits within 63 characters",
-   "MinorVersion values outside REQ-ALS-CONTAINER-003 to 005, including families absent from S, names below their family's largest translator number but not in S, digit groups of ten or more digits, and non-letter values that are not schema names",
+   "MinorVersion values outside REQ-ALS-CONTAINER-003 to 005, including families absent from S, names below their family's largest suffix number but not in S, digit groups of ten or more digits, and non-letter values that are not schema names",
    "documents that break more than one rule"
   ],
   "behavior": [
@@ -56,12 +56,26 @@
  "fixture_origin": "independently authored minimal documents from a four-line template; no shipped file content, schema content or program code",
  "approved_public_sources": [],
  "review": {
-  "status": "pending",
-  "reviewers": [],
-  "date": null,
-  "findings": [],
-  "disposition": null,
-  "record": null
+  "status": "approved",
+  "reviewers": [
+   "separate review subagent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-17",
+  "findings": [
+   "RVA-01 medium: graded refusal classes of 20 cases rested on an untraced step; confirmed by the reviewer's own static check; classes stay graded, no case changed",
+   "RVA-02 low: gzip content that is itself gzip had an implied expectation without evidence; narrowed by exclusion",
+   "RVA-03 low: plain XML variations outside LiveSet were neither covered nor excluded; exclusion generalized",
+   "RVA-04 low: a term for the last digit group of a schema name came from shipped schema-file vocabulary; renamed 'suffix number'; no expectation changed",
+   "RVA-05 low: untraced assumptions behind some derived steps were unstated; one sentence added to the contract",
+   "RVA-06 editorial: comparison obligation for graded refusal classes added",
+   "RVA-07 editorial: payload status wording set to reviewed release; review record added; inventory re-hashed",
+   "RVA-08 info: evidence identity re-checked; all hashes matched",
+   "RVA-09 info: remaining stated assumptions accepted with reasons; integer conversion confirmed; no expectation invented",
+   "RVA-10 info: 12 new cases accepted; exclusion accepted in place of the two planned reference observations",
+   "RVA-11 info: sharing review of fixtures, product name and two schema identifiers; acceptable"
+  ],
+  "disposition": "Approved with listed narrowing (RVA-02, RVA-03), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
  },
  "supersedes": null,
  "entrypoint": "README.md",
@@ -72,18 +86,23 @@
  "files": [
   {
    "path": "AGENTS.md",
-   "sha256": "d7b53020b8bc7fa07dc10fb83e332037f0f5db75a57a3f1bfccc7e06ce7a2292",
-   "bytes": 1544
+   "sha256": "86308d41742cc13c613a8d0775397375969a0a2804b9d27885f82f141286d5d1",
+   "bytes": 1465
   },
   {
    "path": "README.md",
-   "sha256": "bd773066110228b0e94d33e80d9476d9b87c89dc76a00e79fd74193255230468",
-   "bytes": 1400
+   "sha256": "847b35234e8d5faa205142eeee072cae453ad511fe1150c53a30ab42e6e0f69b",
+   "bytes": 1522
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "c3c31410aaeffae4d60289946d21e5a8dfa7e88a2772a8614f5dc32deba08831",
+   "bytes": 9070
   },
   {
    "path": "cases.json",
-   "sha256": "5b438ecb50fde443f4fb99a1b6ebf4f50ba8dd64af4ec592a34e0e7d70b50974",
-   "bytes": 18349
+   "sha256": "956f7759ae631006c730f50d9c9af70622cc97445eee43f7cf59ba4b6c685540",
+   "bytes": 18342
   },
   {
    "path": "fixtures/ALS-CONTAINER-001.als",
@@ -262,8 +281,8 @@
   },
   {
    "path": "spec.md",
-   "sha256": "40d2fb176801bc31b4a25032939db4038722e9f4dc7381f566259344e677ed2b",
-   "bytes": 13006
+   "sha256": "b26a746424b9c7bc842fc67febe9578148d6727bc91e363e62f4dcd6e76f0d09",
+   "bytes": 13824
   }
  ]
 }

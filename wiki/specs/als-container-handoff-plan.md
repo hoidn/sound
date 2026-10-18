@@ -9,6 +9,8 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Container and version envelope handoff: candidate and review plan
 
+**Released 2026-10-17** as [als-container-v1](../../handoff/als-container-v1/README.md), approved with narrowing (RVA-02, RVA-03); the reviewer established I1 and confirmed I3. `author-validation.json` and `traceability.json` in the analyst staging directory predate the review.
+
 ## Decision and boundary
 
 Stage a finite candidate, als-container-v1, from

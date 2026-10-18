@@ -1,0 +1,606 @@
+{
+ "schema": "als-container-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "als-container-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored minimal documents; no shipped file copied",
+ "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+ "representation": {
+  "outcome": "envelope-accepted or refused",
+  "refusal_class": "refused only: corrupt-document, newer-version, or unspecified (not compared)",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "ALS-CONTAINER-001",
+   "purpose": "Template document in a gzip container",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-001.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-002",
+   "purpose": "Template document uncompressed",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-002.als",
+   "container": "uncompressed",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-003",
+   "purpose": "UTF-8 byte order mark before the XML declaration",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-003.als",
+   "container": "uncompressed",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "unspecified"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class not compared"
+  },
+  {
+   "id": "ALS-CONTAINER-004",
+   "purpose": "Line feed before the XML declaration",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-004.als",
+   "container": "uncompressed",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "unspecified"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class not compared"
+  },
+  {
+   "id": "ALS-CONTAINER-005",
+   "purpose": "No XML declaration: the file starts with the root element",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-005.als",
+   "container": "uncompressed",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "unspecified"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class not compared"
+  },
+  {
+   "id": "ALS-CONTAINER-006",
+   "purpose": "gzip container whose content starts with a UTF-8 byte order mark",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-006.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "unspecified"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class not compared"
+  },
+  {
+   "id": "ALS-CONTAINER-007",
+   "purpose": "Empty file",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-007.als",
+   "container": "uncompressed",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "unspecified"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class not compared"
+  },
+  {
+   "id": "ALS-CONTAINER-008",
+   "purpose": "gzip content truncated before the root end tag (not well-formed)",
+   "requirements": [
+    "REQ-ALS-CONTAINER-001"
+   ],
+   "input": "fixtures/ALS-CONTAINER-008.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-009",
+   "purpose": "Root element named Live",
+   "requirements": [
+    "REQ-ALS-CONTAINER-002"
+   ],
+   "input": "fixtures/ALS-CONTAINER-009.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-010",
+   "purpose": "Root element named ableton (letter case differs)",
+   "requirements": [
+    "REQ-ALS-CONTAINER-002"
+   ],
+   "input": "fixtures/ALS-CONTAINER-010.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-011",
+   "purpose": "Root with valid attributes and no child element",
+   "requirements": [
+    "REQ-ALS-CONTAINER-002"
+   ],
+   "input": "fixtures/ALS-CONTAINER-011.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-012",
+   "purpose": "MajorVersion absent",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-012.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-013",
+   "purpose": "MajorVersion \"0\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-013.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-014",
+   "purpose": "MajorVersion \"five\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-014.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-015",
+   "purpose": "MajorVersion \"3\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-015.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-016",
+   "purpose": "MajorVersion \"4\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-016.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-017",
+   "purpose": "MajorVersion \"+5\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-017.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-018",
+   "purpose": "MajorVersion \" 5\" (leading space)",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-018.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-019",
+   "purpose": "MajorVersion \"5 \" (trailing space)",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-019.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-020",
+   "purpose": "Attribute spelled majorversion instead of MajorVersion",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-020.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-021",
+   "purpose": "Root attributes in reverse order",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-021.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-022",
+   "purpose": "MinorVersion absent",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-022.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-023",
+   "purpose": "MinorVersion \"\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003"
+   ],
+   "input": "fixtures/ALS-CONTAINER-023.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-024",
+   "purpose": "MajorVersion \"6\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003",
+    "REQ-ALS-CONTAINER-004"
+   ],
+   "input": "fixtures/ALS-CONTAINER-024.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "newer-version"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-025",
+   "purpose": "MinorVersion \"12.0_12403\", above the largest family 12.0 suffix number in S",
+   "requirements": [
+    "REQ-ALS-CONTAINER-004",
+    "REQ-ALS-CONTAINER-005"
+   ],
+   "input": "fixtures/ALS-CONTAINER-025.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "newer-version"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-026",
+   "purpose": "MinorVersion \"garbage\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-005"
+   ],
+   "input": "fixtures/ALS-CONTAINER-026.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-027",
+   "purpose": "MinorVersion \"12.0_12117\", an older name in S",
+   "requirements": [
+    "REQ-ALS-CONTAINER-005"
+   ],
+   "input": "fixtures/ALS-CONTAINER-027.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-028",
+   "purpose": "Creator and Revision absent",
+   "requirements": [
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-028.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-029",
+   "purpose": "Creator \"Somebody Else 1.0\" and Revision \"not-hex\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-029.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-030",
+   "purpose": "SchemaChangeCount absent and an extra attribute Extra=\"1\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-030.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "envelope-accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "ALS-CONTAINER-031",
+   "purpose": "SchemaChangeCount \"x\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003",
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-031.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-032",
+   "purpose": "SchemaChangeCount \"\" (present and empty)",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003",
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-032.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-033",
+   "purpose": "SchemaChangeCount \"+-1\"",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003",
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-033.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-034",
+   "purpose": "SchemaChangeCount \"１\" (U+FF11 fullwidth digit one)",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003",
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-034.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  },
+  {
+   "id": "ALS-CONTAINER-035",
+   "purpose": "SchemaChangeCount of 64 ASCII digits: 63 zeros then 1",
+   "requirements": [
+    "REQ-ALS-CONTAINER-003",
+    "REQ-ALS-CONTAINER-006"
+   ],
+   "input": "fixtures/ALS-CONTAINER-035.als",
+   "container": "gzip",
+   "expected": {
+    "outcome": "refused",
+    "refusal_class": "corrupt-document"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_class exact"
+  }
+ ]
+}

@@ -1647,3 +1647,17 @@ engine silence floor (gain ≤ 0.00032 becomes 0), the pan law and crossfade ass
 MX-01 to MX-15 and probes PRB-S9-01 to 08. Opened
 [Q-019](questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine) for the
 logic-to-engine port values. No audio claim is measured. Nothing was run.
+
+## [2026-10-17] release | als-container-v1
+
+A separate review subagent approved als-container-v1 (SPEC-ALS-CONTAINER r1, partial REQ-001 to
+006, 35 static-derived unexecuted cases) with narrowing: RVA-02 excludes gzip content that is
+itself gzip, and RVA-03 excludes plain-XML differences outside `LiveSet` that no rule names.
+The reviewer established I1 statically (handler-level catch, stored message, error flag,
+post-parse classification), so refusal classes stay graded, and confirmed I3; I2, I4, I5 and
+I6 are now named in the contract. All 12 new cases accepted; excluding entry-dependent outcomes
+was accepted in place of PRB-N2-03 and 05 for this static release only. The coordinator copied
+the payload into [handoff/als-container-v1](../handoff/als-container-v1/README.md), re-verified
+all 40 payload hashes against manifest `f5ca758d…62d1de`, added the catalog row, and recorded
+the I1 and I3 outcome in [SPEC-ALS-CONTAINER](specs/als-container.md) r2. No compatibility
+claim; isolated implementation workspace still unprovisioned. Not pushed.

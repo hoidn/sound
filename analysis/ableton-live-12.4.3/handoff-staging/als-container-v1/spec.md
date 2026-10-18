@@ -6,8 +6,8 @@ SPEC-ALS-CONTAINER revision 1. Release: als-container-v1. Only the clauses
 explicitly included below are in scope. No other clause of a listed requirement
 is implicitly approved. This document is self-contained.
 
-**Status: unreviewed candidate.** This document is not an implementation input
-until a separate review approves it and it is published as a release.
+**Status: reviewed local release.** A separate review approved the clauses
+below with the narrowing recorded in [the review disposition](REVIEW.md).
 
 ## What the contract means
 
@@ -29,7 +29,12 @@ All rules and expected outcomes are **static-derived**: they were derived for
 the target build without running it. None is an observed execution of the
 original application, and none was run against a candidate. No compatibility
 result is established. The original application remains the authority for a
-later comparison.
+later comparison. A few derived steps rest on assumptions that were not traced
+to the end: that gzip files of the fixtures' form are decompressed in the
+standard way, that the version checks apply to a document whose document
+element is `LiveSet`, and that the checks of REQ-ALS-CONTAINER-004 and 005
+consult the schema names shipped with the target build. The comparison
+obligation below covers them.
 
 ## Terms
 
@@ -40,12 +45,12 @@ later comparison.
 | Plain XML | Bytes whose first two bytes are `3C 3F` (`<?`) |
 | Envelope | The XML declaration, the root element and the root attributes `MajorVersion`, `MinorVersion`, `SchemaChangeCount`, `Creator` and `Revision` |
 | Document element | The first child element of the root. In every case of this release it is an empty `LiveSet` element |
-| Schema name | A value `<a>.<b>_<c>` in which a, b and c are groups of one to nine ASCII decimal digits, for example `12.0_12402`. The pair (a, b) is its family and c its translator number |
+| Schema name | A value `<a>.<b>_<c>` in which a, b and c are groups of one to nine ASCII decimal digits, for example `12.0_12402`. The pair (a, b) is its family and c its suffix number |
 | S | The set of schema names shipped with the target build |
 
 This release does not supply S. The cases rely only on these facts about the
 target build: `12.0_12402` and `12.0_12117` are in S, and the largest
-translator number among the names of family 12.0 in S is 12402.
+suffix number among the names of family 12.0 in S is 12402.
 
 ## Outcomes and comparison convention
 
@@ -157,8 +162,8 @@ document as `corrupt-document`.
 1. An integer MajorVersion of 6 or more is refused as `newer-version`, not as
    `corrupt-document`.
 2. A MinorVersion that is a schema name not in S is refused as `newer-version`
-   when S contains names of its family (a, b) and its translator number c is
-   larger than the largest translator number of that family in S. Example:
+   when S contains names of its family (a, b) and its suffix number c is
+   larger than the largest suffix number of that family in S. Example:
    `12.0_12403`.
 
 ### REQ-ALS-CONTAINER-005: MinorVersion names a shipped schema (partial)
@@ -191,11 +196,15 @@ These inputs have **no expectation** in this release:
   formats of other Live documents;
 - gzip files other than a single member with the fixtures' header, a valid
   trailer and no trailing bytes; damaged or truncated compressed data; header
-  flags and optional header fields;
-- plain XML other than the fixtures' form: a declaration other than
+  flags and optional header fields; gzip content that itself starts with
+  `1F 8B`;
+- plain XML that differs from the fixtures' form in a way that no rule of this
+  release names, for example: a declaration other than
   `<?xml version="1.0" encoding="UTF-8"?>`, other encodings, a processing
   instruction in place of the declaration, document type declarations, entity
-  or character references in root attributes, namespaces, carriage returns;
+  or character references in root attributes, namespaces, carriage returns,
+  and comments, processing instructions or text other than the fixtures'
+  whitespace outside `LiveSet`;
 - a document element other than `LiveSet`, a second child element of the root,
   and any content inside `LiveSet`;
 - integer values marked "no expectation" above, including values with both
@@ -203,7 +212,7 @@ These inputs have **no expectation** in this release:
   preceded by `+`, leading zeros, and ten or more digits within 63 characters;
 - MinorVersion values not covered by REQ-ALS-CONTAINER-003 to 005, including
   schema names of a family absent from S (for example `13.0_13000`), schema
-  names below the largest translator number of their family but not in S (for
+  names below the largest suffix number of their family but not in S (for
   example `12.0_12050`), digit groups of ten or more digits, and values that
   contain characters other than ASCII letters but are not schema names;
 - documents that break more than one rule.
@@ -228,13 +237,15 @@ Excluded behavior:
 Before claiming reference compatibility, a separately designed bounded probe
 must run these cases, or a justified equivalent set, against the original. It
 must pin the original and candidate builds and the fixture bytes, retain
-independent observations, and report mismatches. Two obligations are specific
-to this release. An `envelope-accepted` observation must show that the file
-was not refused by these rules, which may need more than whether the set
-opens. A refusal of the uncompressed case ALS-CONTAINER-002 by a command,
-before the file is read, is inconclusive rather than a mismatch.
-Candidate-only success proves agreement with this contract, not with the
-running original.
+independent observations, and report mismatches. Three obligations are
+specific to this release. An `envelope-accepted` observation must show that
+the file was not refused by these rules, which may need more than whether the
+set opens. A graded `refusal_class` observation must show which of the two
+reports the original gives, without comparing wording; if its report does not
+distinguish them, that comparison is inconclusive. A refusal of the
+uncompressed case ALS-CONTAINER-002 by a command, before the file is read, is
+inconclusive rather than a mismatch. Candidate-only success proves agreement
+with this contract, not with the running original.
 
 ## Fixture provenance
 
@@ -256,4 +267,5 @@ trailer. Nothing follows the trailer.
 No fixture contains shipped file content, program code, schema content or
 assets. Expected outcomes are newly authored static-derived behavioral data.
 No public source or dependency is approved or included. Review status is
-recorded in [the manifest](manifest.json).
+recorded in [the manifest](manifest.json) and
+[the review disposition](REVIEW.md).

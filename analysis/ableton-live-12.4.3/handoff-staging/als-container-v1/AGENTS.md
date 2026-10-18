@@ -1,11 +1,9 @@
 # Package role and access instructions
 
-This package is an unreviewed release candidate. Until a separate review
-approves it and it is published, it is not an implementation input. After
-publication, application implementation requires a fresh, restricted
-implementation workspace that contains only permitted materials. Publication
-does not provision one. Do not begin clean implementation in an analyst
-checkout.
+This is a reviewed local release for its explicit partial scope. Application
+implementation requires a fresh, restricted implementation workspace that
+contains only permitted materials. Publication of this package does not
+provision one. Do not begin clean implementation in an analyst checkout.
 
 In an approved implementation workspace, the permitted inputs are the published
 release, neutral governance, approved public sources, and independently

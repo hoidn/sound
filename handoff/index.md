@@ -8,10 +8,11 @@ access: handoff
 
 # Reviewed implementation handoffs
 
-Three finite releases exist. midi-config-v2 is a strict superset of v1: CC and
+Four finite releases exist. midi-config-v2 is a strict superset of v1: CC and
 pad enablement, channels, map-mode labels, button kinds, bank span and device,
 mixer, transport and pad targets. transport-state-v1 covers how a Live Set's
-transport values are stored, read and saved. Approval is limited to explicitly
+transport values are stored, read and saved. als-container-v1 covers the Live Set
+container and version envelope. Approval is limited to explicitly
 partial requirement clauses; runtime compatibility is unverified. A fresh
 restricted implementation workspace remains required.
 
@@ -20,6 +21,7 @@ restricted implementation workspace remains required.
 | [midi-config-v1](midi-config-v1/README.md) | Master/cue/crossfader configuration interpretation | SPEC-MIDI-USER-MAPPING r1, partial REQ-002/003/010/013 only | [Approved review](midi-config-v1/REVIEW.md) | `9e3ab46efba170f61bcd7b9fce5d579c263aefd90097dc06695339594308b6ee` | None |
 | [midi-config-v2](midi-config-v2/README.md) | Configuration interpretation: CC and pad enablement, channels, device/mixer/transport/pad targets, map-mode labels, button kinds, bank span | SPEC-MIDI-USER-MAPPING r2, partial REQ-002/003/005–013 only; 001 and 004 unreleased | [Approved with narrowing](midi-config-v2/REVIEW.md) | `889b52fa3b7f19c1bd085f26db39e0f62f00cbf7dc85be050e32207f012eb4d7` | midi-config-v1 (strict superset) |
 | [transport-state-v1](transport-state-v1/README.md) | Live Set transport values: loop switch, loop start and length, position, tempo, time-signature code; locations, load text acceptance and refusal, missing, duplicate and unknown items, saved text | SPEC-TRANSPORT-STATE r1 (corrections carried into r2), partial REQ-001 to 008, 010, 011 only; 009 and 012 unreleased | [Approved with narrowing](transport-state-v1/REVIEW.md) | `b2fdf0294fb1209fd34b252fb83327edfb78ca466d22ff40cbd505a04045baba` | None |
+| [als-container-v1](als-container-v1/README.md) | Live Set container and version envelope: first-byte container, root element, version attributes and integer rule, newer-version and shipped-schema checks, optional root attributes | SPEC-ALS-CONTAINER r1 (corrections carried into r2), partial REQ-001 to 006 only; 007 to 009 unreleased | [Approved with narrowing](als-container-v1/REVIEW.md) | `f5ca758dd3785a14a5b8f2384fc7a1038d3ed1649eeb63f6b67446577e62d1de` | None |
 
 ## Release contract
 

@@ -52,6 +52,13 @@ become unknown. The IDs match the analyst traceability records (appendix).
 
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
+
+Review update 2026-10-17 (als-container-v1, RVA-01): the separate reviewer established I1
+statically (a handler-level catch of the thrown type stores the message, stops the parser,
+sets the error flag and leads to the post-parse classification) and confirmed I3 (the
+converter is a base-10 conversion that stops at the first non-digit). I2, I4, I5 and I6
+remain assumptions.
+
 | I1 | A refusal raised while the root element or the document element is read stops parsing there and is classified after parsing, by the same decision that reports XML errors | The class of each such refusal (corrupt-document or newer-version); never whether the file is refused |
 | I2 | A Live Set's document element is subject to the version checks of REQ-ALS-CONTAINER-003 | Refusals by checks 1–4 (REQ-ALS-CONTAINER-003 to 005) |
 | I3 | After the space and sign handling of REQ-ALS-CONTAINER-003, an integer value is converted as a whole-string base-10 integer | Accepted integer spellings; refusal of values such as `five` |
