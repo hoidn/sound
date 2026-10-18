@@ -57,7 +57,8 @@ Added after consolidation: S5 contributed PRB-S5-01 to 11 (11 records) on the
 sheet. S7 contributed PRB-S7-01 to 10 on [MIDI note storage](midi-note-storage.md), and N7
 contributed PRB-N7-01 to 05 on [MIDI transforms](midi-transforms-native.md), refining
 PRB-S4-05. S9 contributed PRB-S9-01 to 08 on [mixer values](mixer-values.md). S6 contributed PRB-S6-01 to 07 on
-[automation envelopes](automation-envelopes.md). Later packets (S8, N6, N8) will add more.
+[automation envelopes](automation-envelopes.md). S8 contributed PRB-S8-01 to 11 on [warp markers](warp-markers.md). Later packets (N6,
+N8) will add more.
 
 ## Merged and duplicate records
 

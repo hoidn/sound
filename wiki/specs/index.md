@@ -42,6 +42,7 @@ target spec:
 
 | Target | Candidates | Source section | Next step |
 | --- | --- | --- | --- |
+| SPEC-WARP-MARKERS | WM-01–WM-16 (16) | [Warp markers](../research/warp-markers.md#candidate-requirements-for-spec-warp-markers) | PRB-S8-01 to 11; locate the sample-to-beat conversion routine |
 | SPEC-MIXER-VALUES | MX-01–MX-15 (15) | [Mixer values](../research/mixer-values.md#candidate-requirements-for-spec-mixer-values) | Trace logic-to-engine volume and send port values (Q-019); PRB-S9-01 to 08 |
 | SPEC-MIDI-NOTE-STORAGE | MN-01–MN-24 (24) | [MIDI note storage](../research/midi-note-storage.md#candidate-requirements-for-spec-midi-note-storage) | Draft spec; PRB-S7-01 to 10 on the macOS host |
 | SPEC-AUTOMATION-ENVELOPES | AE-C01–AE-C17 (17) | [Automation envelopes](../research/automation-envelopes.md#candidate-requirements-for-spec-automation-envelopes) | Draft storage and load clauses; evaluation after PRB-S6-04 and 06 |

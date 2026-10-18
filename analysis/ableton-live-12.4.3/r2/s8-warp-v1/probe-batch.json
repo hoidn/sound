@@ -1,0 +1,150 @@
+{
+ "schema": "adr-0002-probe-batch-v1",
+ "status": "proposed; not run; Phase 4 input from packet S8 (warp markers and settings)",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS host only",
+ "common_prerequisites": [
+  "Pin the Live executable and preferences hash before the sitting; fresh preferences; record the Default Warp Mode preference value",
+  "Base input: Chuck Sutton - Patience (Live 12 Suite Demo).als (App-Resources/Core Library/Lessons/Demo Songs, SHA-256 3f1c0f924b750c2adba2525838f2bc00856e52faea09d43b9279c6a0fe40952b), first AudioClip 'Vocal Main' (markers (0,0),(0.0112275449101796407,0.03125), WarpMode 4); decompress, edit only the stated elements, recompress with gzip",
+  "Retain every input file, its SHA-256, Log.txt, a screen capture of the Clip View warp area (Seg. BPM, Warp Mode, mode settings, markers) and any re-saved file",
+  "Disable Link, external sync and tempo follower; no MIDI mappings"
+ ],
+ "probes": [
+  {
+   "id": "PRB-S8-01",
+   "candidates": [
+    "WM-07"
+   ],
+   "question": "Does an AudioClip with an empty WarpMarkers list stop the set from opening, and with what message?",
+   "existing_evidence": "AAudioClip post-load 0x1027c1c7c: empty list -> 'Empty warp marker array.' -> 0x101488e64 -> 0x10148229c (s8-0001, s8-0003)",
+   "why_static_insufficient": "The top-level catch and user-visible outcome were not traced; whether the post-load hook runs for every set load (context flag +0x2c) is unknown",
+   "minimal_input": "Base input with the Vocal Main <WarpMarkers> emptied (<WarpMarkers />)",
+   "discriminating_observation": "Error dialog and set not opened, versus set opens (and what markers the clip shows)",
+   "stopping_condition": "One open captured; stop"
+  },
+  {
+   "id": "PRB-S8-02",
+   "candidates": [
+    "WM-07",
+    "WM-09"
+   ],
+   "question": "What does a single-marker AudioClip load as (segment tempo, Seg. BPM display, re-saved markers)?",
+   "existing_evidence": "Post-load requires >= 1 marker only; segment and minimum-tempo helpers return -60 / DBL_MAX for degenerate lists (0x10261093c, 0x10261097c)",
+   "why_static_insufficient": "Clip tempo derivation for one marker was not traced",
+   "minimal_input": "Base input, Vocal Main WarpMarkers reduced to <WarpMarker Id=\"10\" SecTime=\"0\" BeatTime=\"0\" />",
+   "discriminating_observation": "Opens or not; Seg. BPM shown; marker list after re-save (shadow added or not)",
+   "stopping_condition": "One open and one re-save captured; stop"
+  },
+  {
+   "id": "PRB-S8-03",
+   "candidates": [
+    "WM-05"
+   ],
+   "question": "Are out-of-order or duplicate markers rejected, sorted, or kept in document order?",
+   "existing_evidence": "No sort or order check found on the load path; 0x1027b7cf0 and 0x1027c79d0 walk markers assuming ascending order; API add enforces ordering (0x1033bf42c)",
+   "why_static_insufficient": "RemoteableList child loading order was not traced",
+   "minimal_input": "Base input variants: (a) Vocal Main markers in reverse order; (b) a three-marker list whose middle marker has BeatTime below the first; (c) two markers with equal SecTime",
+   "discriminating_observation": "Error vs open; marker positions shown; order and values after re-save",
+   "stopping_condition": "Three variants captured; stop"
+  },
+  {
+   "id": "PRB-S8-04",
+   "candidates": [
+    "WM-03",
+    "WM-10"
+   ],
+   "question": "What happens when a WarpMarker lacks SecTime or BeatTime, or carries 'Invalid'?",
+   "existing_evidence": "AWarpMarker ctor sets both to DBL_MAX (0x1026105ec); loader stores attributes directly (n1 0x101487310); DBL_MAX is written as 'Invalid' (n1 writer)",
+   "why_static_insufficient": "Downstream use of DBL_MAX positions was not traced",
+   "minimal_input": "Base input variants: second Vocal Main marker without BeatTime; same with BeatTime=\"Invalid\"",
+   "discriminating_observation": "Error vs open; Seg. BPM; re-saved attribute text",
+   "stopping_condition": "Two variants captured; stop"
+  },
+  {
+   "id": "PRB-S8-05",
+   "candidates": [
+    "WM-12",
+    "WM-13"
+   ],
+   "question": "How are WarpMode codes 5 (REX on a WAV), 7 and -1 handled on load, display and re-save?",
+   "existing_evidence": "Stored list has 7 entries (0x1026a9ef8); loader stores the enum index directly (n1); ARemoteableEnum setter range check is not on the load path",
+   "why_static_insufficient": "Effective warper selection for an invalid index and the re-saved value are unknown",
+   "minimal_input": "Base input, Vocal Main <WarpMode Value=\"5\" />, \"7\", \"-1\"",
+   "discriminating_observation": "Error vs open; Warp Mode chooser text; audible mode; re-saved value",
+   "stopping_condition": "Three variants captured; stop"
+  },
+  {
+   "id": "PRB-S8-06",
+   "candidates": [
+    "WM-14"
+   ],
+   "question": "Are mode settings outside their constructor ranges clamped on load or on save?",
+   "existing_evidence": "Ranges from 0x1027b0e40 getters (getter-constants.txt); loader stores directly",
+   "why_static_insufficient": "Clamp behaviour of later reads/writes was not traced; TransientEnvelope range anomaly (0, 1.0, 100)",
+   "minimal_input": "Base input, Vocal Main: GranularityTones 5 and 500; GranularityTexture 300; FluctuationTexture -10; TransientEnvelope 150; ComplexProFormants 200; ComplexProEnvelope 4 and 300 and 100.5",
+   "discriminating_observation": "Values shown in Clip View (after selecting the matching Warp Mode) and re-saved text",
+   "stopping_condition": "One set with all edits, one re-save; stop"
+  },
+  {
+   "id": "PRB-S8-07",
+   "candidates": [
+    "WM-08"
+   ],
+   "question": "Does Live keep a trailing marker spacing other than 1/32 beat, and does it re-normalise it on edit or save?",
+   "existing_evidence": "Shadow placement +0.03125 beat (0x102612464, 0x102610bc4, 0x1027d304c); shipped exceptions at 1/16 and 1/64 beat (static-survey notable.last_step_not_1/32)",
+   "why_static_insufficient": "No load-time normalisation found",
+   "minimal_input": "Base input, Vocal Main second marker BeatTime=\"0.0625\" SecTime=\"0.022455089820359281\" (same 167 BPM)",
+   "discriminating_observation": "Re-saved markers unchanged vs moved to 0.03125; Seg. BPM",
+   "stopping_condition": "One open, one re-save, one re-save after nudging a marker; stop"
+  },
+  {
+   "id": "PRB-S8-08",
+   "candidates": [
+    "WM-09"
+   ],
+   "question": "Is warped playback position piecewise linear in markers, extrapolated with the first and last segment slopes?",
+   "existing_evidence": "Segment tempo 0x10261093c; shadow construction; 1 ms collinearity test 0x1027c724c; shipped OutMarker = extrapolated end beat 292/399, HiddenLoopStart = back-extrapolated start 330/399",
+   "why_static_insufficient": "The engine-side or API conversion routine was not located",
+   "minimal_input": "A 4-second 48 kHz WAV with short clicks every 0.5 s; one warped clip (Re-Pitch, then Beats) with markers (SecTime, BeatTime) (0,0), (1.0,2), (2.0,3) and shadow (2.015625,3.03125), i.e. segments of 120 and 60 BPM and 120 BPM after the last marker; first marker moved to (0.5,1) in a second variant to expose the region before it; song tempo 120; render 8 beats",
+   "discriminating_observation": "Click times in the render match the piecewise-linear prediction within one sample per click; clicks before the first and after the last marker follow the predicted extrapolation",
+   "stopping_condition": "Two renders measured; stop (algorithm output quality is out of scope)"
+  },
+  {
+   "id": "PRB-S8-09",
+   "candidates": [
+    "WM-15"
+   ],
+   "question": "For an unwarped AudioClip, are LoopStart/LoopEnd/HiddenLoop*/OutMarker interpreted in seconds of sample time?",
+   "existing_evidence": "Shipped unwarped clips: LoopEnd = HiddenLoopEnd = DefaultDuration/DefaultSampleRate 2479/2479; OutMarker matches seconds 1866, seconds x set tempo/60 432, other 181",
+   "why_static_insufficient": "OutMarker semantics differ in shipped files; the reader path was not traced",
+   "minimal_input": "Recording Audio.als (SHA-256 af57ff8f…c043) with one unwarped clip of a known-length WAV; variants LoopEnd half the length, OutMarker half the length",
+   "discriminating_observation": "Clip end/loop brace positions in seconds in the Clip View; played length",
+   "stopping_condition": "Two variants captured; stop"
+  },
+  {
+   "id": "PRB-S8-10",
+   "candidates": [
+    "WM-10",
+    "WM-12",
+    "WM-14"
+   ],
+   "question": "What defaults apply when warp setting elements are absent, and does the Default Warp Mode preference feed WarpMode?",
+   "existing_evidence": "AAudioClip ctor 0x1027b0e40 defaults (WarpMode = pref-mapped or 0; TransientResolution 6; TransientLoopMode 2; Tones 30; Texture 65; Fluctuation 25; Envelope 100; Formants 100; ComplexProEnvelope 128); pref map 0x105889f90 = 0,1,2,3,4,6",
+   "why_static_insufficient": "Construction order relative to load and the preference object (0x101849958) were not traced",
+   "minimal_input": "Base input, Vocal Main with WarpMode and the eight setting elements deleted; run twice with Default Warp Mode = Beats and = Complex Pro",
+   "discriminating_observation": "Values shown and re-saved",
+   "stopping_condition": "Two opens and re-saves; stop"
+  },
+  {
+   "id": "PRB-S8-11",
+   "candidates": [
+    "WM-16"
+   ],
+   "question": "Per warp mode, how does audio output compare with a candidate for fixed markers and settings?",
+   "existing_evidence": "Engine classes OWarperBeats, OWarperTones, OWarperTexture, OWarperRePitch, OWarperElastique, OWarperRex, OWarperUnWarped (symbols-warp.txt); no algorithm traced",
+   "why_static_insufficient": "Stretching algorithms are out of scope for this packet and need measured comparison",
+   "minimal_input": "Same WAV and markers as PRB-S8-08; one render per WarpMode 0-4 and 6 with shipped default settings",
+   "discriminating_observation": "Renders retained for later candidate comparison under declared metrics (Q-001)",
+   "stopping_condition": "Six renders retained; stop"
+  }
+ ]
+}

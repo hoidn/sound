@@ -1674,3 +1674,16 @@ evaluation is hold, constant, cubic Bezier or linear (float32), and Bool and Enu
 Also found the generic create-and-load entry point, which narrows the transport-state page's
 "top-level load not traced" gap. Candidates AE-C01 to C17 and PRB-S6-01 to 07. Opened
 [Q-020](questions.md#q-020-automation-envelope-load-robustness). Nothing executed.
+
+## [2026-10-17] query | Warp markers and settings (S8)
+
+Read 203 schemas and 4,005 shipped documents and traced Live arm64's warp-marker reader, helpers
+and enumerations (23 dossiers); filed [warp markers](research/warp-markers.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/s8-warp-v1/`. Markers are SecTime and BeatTime attributes. The
+last marker is a shadow marker 1/32 beat after the last real marker, carrying the tempo after it.
+An empty AudioClip list is a load error. Edits keep segment tempo within 5 to 999 BPM and snap
+beats to the 1/3,843,840-beat grid. The seven warp-mode codes and labels, the transient
+enumerations and the setting ranges and defaults are recorded; the piecewise-linear mapping is
+inferred. Candidates WM-01 to WM-16; probes PRB-S8-01 to 11. Gaps: the conversion routine, load
+handling of malformed lists and values, the Transient Envelope range, and the stretching
+algorithms. Nothing executed.
