@@ -1749,3 +1749,14 @@ for all 502 stored parameters of the seven devices, 37 cases). Collision's posit
 the same half-range pattern as Corpus (P4-N6-01). Updated the spec index (candidate row replaced),
 feature map, coverage, Q-006, the device-bundles page and the Phase 4 note. Gaps: enumeration labels
 for three devices, the device create path on load, Amp and Cabinet DryWet ranges. Nothing executed.
+
+## [2026-10-17] spec | SPEC-AUTOMATION-ENVELOPES revision 1 (D6)
+
+Drafted [SPEC-AUTOMATION-ENVELOPES](specs/automation-envelopes.md) from S6 (AE-C01 to C17, PRB-S6-01
+to 07, Q-020): 13 requirements, 31 unexecuted cases (20 gradable, 10 unresolved, 1 partly). Dropped
+AE-C09 (replaced by an exclusion), AE-C12 (now unknown) and AE-C16 (out of scope). Excluded dangling
+targets and evaluation before the first event (Q-020). No new queries; claims rechecked against the
+retained s6 dossiers and corpus excerpts. Corrected [automation envelopes](research/automation-envelopes.md):
+the path without a converter does not clamp. Proposed PRB-S6-08 to 11 and a Pan variant of PRB-S6-04;
+not yet in the Phase 4 batch. Updated the spec index (candidate row replaced), feature map, coverage
+and Q-020. Nothing executed.

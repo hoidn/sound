@@ -243,7 +243,9 @@ last event at or before t (mode 1) or strictly before t (mode 0).
 **Value conversion (partial).** Before the linear step, both values pass through the
 converter supplied by the automation's provider (`0x101574bb0`, a virtual call when
 a converter object exists). One construction site (`0x10275c5a0`) builds a provider
-without a converter object, so values stay in the raw domain, clamped to a range.
+without a converter object, so values stay in the raw domain. Correction 2026-10-17 from the
+[SPEC-AUTOMATION-ENVELOPES](../specs/automation-envelopes.md) draft check: that path does not
+clamp; the code shows a clamp only for curved segments, so AE-C12 is unknown.
 **Unknown:** the converter used for ordinary track and clip envelopes, so whether
 some parameters interpolate in a non-linear domain.
 

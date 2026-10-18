@@ -27,6 +27,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [Clip launch](clip-launch.md) | Revision 1 draft: 23 requirements (3 documented with static parts, 5 static-derived, 10 static with unknown parts, 5 unknown), 56 unexecuted cases (4 not graded, 2 without a fixture) for stored launch fields, values, load corrections, migration, quantization grid and launch boundary; launch modes, Legato, velocity and follow-action timing open |
 | [MIDI note storage](midi-note-storage.md) | Revision 1 draft: 17 requirements (4 without unknown parts, 12 with unknown parts, 1 unknown and excluded) for note structure, load defaults, clamping, time grid, NoteIds, per-note expression and probability groups; 60 unexecuted cases (45 gradable, 6 blocked, 9 unresolved); probes PRB-S7-01 to 10 |
 | [Bundled device parameters](bundled-device-parameters.md) | Revision 1 draft: 15 requirements (1 documented only, 2 documented and static, 12 with unknown parts) and tables for the 502 stored parameters of Amp, Cabinet, Analog, Tension, Collision, Electric and Corpus; 37 unexecuted cases (4 not graded); new-instance defaults, out-of-range handling and save output open |
+| [Automation envelopes](automation-envelopes.md) | Revision 1 draft: 13 requirements (1 documented and static, 1 static only, 10 with unknown parts, 1 unknown only) for envelope storage, targets, load checks, curves and Float, Bool and Enum evaluation; 31 unexecuted cases (10 unresolved, 1 partly); dangling targets excluded (Q-020); PRB-S6-01 to 07, proposed 08 to 11 |
 | [Transport-state handoff plan](transport-state-handoff-plan.md) | Staged transport-state-v1 candidate (18 unexecuted cases): scope, exclusions, traceability, review gates |
 | [MIDI user mapping](midi-user-mapping.md) | Revision 3 draft: documented, static, static-conditional and unknown clauses; REQ-005 now carries the native value transforms for all ten map modes; cases MT-01 to MT-23 added (18 static, 5 static-conditional); unexecuted |
 
@@ -47,7 +48,6 @@ target spec:
 | --- | --- | --- | --- |
 | SPEC-WARP-MARKERS | WM-01–WM-16 (16) | [Warp markers](../research/warp-markers.md#candidate-requirements-for-spec-warp-markers) | PRB-S8-01 to 11; locate the sample-to-beat conversion routine |
 | SPEC-MIXER-VALUES | MX-01–MX-15 (15) | [Mixer values](../research/mixer-values.md#candidate-requirements-for-spec-mixer-values) | Trace logic-to-engine volume and send port values (Q-019); PRB-S9-01 to 08 |
-| SPEC-AUTOMATION-ENVELOPES | AE-C01–AE-C17 (17) | [Automation envelopes](../research/automation-envelopes.md#candidate-requirements-for-spec-automation-envelopes) | Draft storage and load clauses; evaluation after PRB-S6-04 and 06 |
 | SPEC-CORPUS-DEVICE | CD-C01–CD-C08 (8) | [Corpus DSP (decompiled)](../research/corpus-dsp-static.md#candidate-requirements-for-spec-corpus-device) | Live-side conversion (N5), then Phase 4 measurements |
 
 When a candidate set becomes a draft under this directory, replace its row

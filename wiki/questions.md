@@ -372,3 +372,8 @@ no experimental contradiction has been established yet.
   a defined safe behavior chosen by the project.
 - Next action: trace which load path dereferences envelope targets; otherwise exclude
   these inputs from releases and run PRB-S6 probes on a disposable app copy.
+- Progress 2026-10-17 (D6): draft [SPEC-AUTOMATION-ENVELOPES](specs/automation-envelopes.md) r1 excludes
+  dangling `PointeeId` input (REQ-002) and evaluation before an envelope's first event, possible
+  when it is at 0 and unguarded in the reference (REQ-010, REQ-011). Unsorted events, missing
+  attributes and duplicate Ids stay unknown pending PRB-S6-03 and 07. Probe follow-ups: PRB-S6-04
+  needs a Pan variant (Volume 0 is below its stored minimum) and PRB-S6-07 a variant without `Id`.
