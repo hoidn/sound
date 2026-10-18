@@ -257,6 +257,10 @@ no experimental contradiction has been established yet.
 - Next action: query the saved Live project for references to `live->index`,
   `ipc-channel`, `{}-files-{}.db` and `fileref-map-path`.
 - Progress 2026-10-17 (N4): spawn site, options-file argument and keys, and the 100-launch restart cap answered in [helper launch](research/helper-launch-live-side.md#index); database prefix, folder, version and queries still open.
+- Progress 2026-10-17 (D2): [SPEC-BROWSER-INDEX](specs/browser-index.md) r1 drafted; sidecar names,
+  the type-to-kind map and the item `colors` field resolved from the helper corpus. Still open: the
+  `<n>` folder, write timing, which kinds are listed, preview playback and `hideKeywords`
+  (PRB-BI-01 to 05 proposed; PRB-H2-03 to 06, 09).
 
 ## Q-015 Helper launch and update handling in Live
 

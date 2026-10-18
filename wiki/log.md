@@ -1581,3 +1581,16 @@ values are refused, other non-schema values unknown. REQ-001: start refusals hav
 unspecified class. Uncompressed fixtures depend on PRB-N2-02. Assumptions I1 to I6 are
 labelled per clause. Gap: `MajorVersion="6"` with an empty or absent MinorVersion is
 unknown; the candidate's 12 new cases are not yet added to the draft. Nothing executed.
+
+## [2026-10-17] spec | SPEC-BROWSER-INDEX revision 1 (D2)
+
+Drafted [SPEC-BROWSER-INDEX](specs/browser-index.md) r1 from packet H2, the N4 index
+section and a bounded re-read of the helper corpus (no query-server rounds): 13
+requirements, 52 unexecuted cases (24 static-derived, 28 unknown). New static results:
+sidecar file names are UUIDv5 under the nil namespace, the fixed user-folder sidecar name,
+factory and built-in edits written to the User Library, the type-to-kind map, `colors` and
+`assetId` item fields, and the preview lookup order. The coordinator retained the cited
+helper-corpus records (43 functions) in `analysis/ableton-live-12.4.3/r2/d2-browser-index-v1/`
+and added an update note to [browser index](research/browser-index-static.md). Deferred
+BI-C04, C10 and C12; dropped the use count. PRB-BI-01 to 05 proposed but not yet in the
+Phase 4 batch. Not reviewed; nothing executed.

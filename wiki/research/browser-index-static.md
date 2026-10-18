@@ -106,6 +106,15 @@ Live side: the options-file argument, its keys and the restart cap are in
 **Unknown.** The spawn site, the argv, the option values, the socket directory,
 the restart policy and the payload schemas beyond the key names.
 
+Update 2026-10-17 from the [SPEC-BROWSER-INDEX](../specs/browser-index.md) draft's re-read of the
+helper corpus (retained in `analysis/ableton-live-12.4.3/r2/d2-browser-index-v1/`): sidecar file
+names are name-based UUIDs under the all-zero namespace (both shipped base names and 159 of 160
+legacy pack names match), a user folder's sidecar is always
+`dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp`, edits to factory and built-in content go to
+`<User Library>/Ableton Folder Info/<n>/`, the type-to-kind map is located, the default content
+set also excludes plug-ins, and items carry `ablFR:colors` (1 to 7) and `ablFR:assetId`. The
+naming unknown on this page is resolved by that re-read.
+
 ## What is indexed
 
 **Observed.**
