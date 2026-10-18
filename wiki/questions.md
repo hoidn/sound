@@ -64,6 +64,10 @@ no experimental contradiction has been established yet.
   display protocol, the Push sysex protocol and a document-sync API with 369 message
   names ([Push 3 helper](research/push3-helper-static.md)). Decide whether Push
   support is required, optional or deferred before drafting a Push spec.
+- Progress 2026-10-17: [device bundles](research/device-bundles-static.md) bounds
+  the seven natively bundled devices. The 63 other `.adv` root elements (3 are Max
+  for Live wrappers) have no bundle under `Devices/Mac`; where they are implemented
+  is not established.
 
 ## Q-006 Native analysis and resource decoding
 
@@ -74,6 +78,7 @@ no experimental contradiction has been established yet.
 - Gap: core Live auto-analysis, remaining Python modules, proprietary ALP/AGR
   formats, schema migration semantics and resource-to-runtime bindings remain unknown.
 - Progress: [MIDI mapping bytecode](research/midi-user-mapping.md) decoded and scoped paths traced; this does not cover all shipped Python.
+- Progress 2026-10-17: the bundle side of the device boundary is traced in [device bundles](research/device-bundles-static.md); the Live side (bundle loading, `GetPlugInfoU` use, index mapping, value conversion) is six open queries for the main Live project.
 - Progress 2026-10-17: [document container static](research/document-container-static.md) identified `.agr` encodings and the `.alp` header/trailer layout; `.alp` encoding and runtime use of `Schema/` remain unknown.
 - Next action: choose a bounded feature question, validate the matching decoder or
   trace its prepared native symbol; derive the contract and escalate only material

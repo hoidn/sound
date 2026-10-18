@@ -45,6 +45,7 @@ SHA-256 of every script and output). `python3 -I checks.py out <Devices/Mac>` re
 | `out/param_tables.json` | Bundle-side parameter index tables recovered from pseudocode, each row with its source line, and a range comparison with the documents |
 | `out/entry_points.jsonl`, `out/entry_compare.json` | Cited pseudocode records; normalized-hash families of the seven entry points |
 | `out/live_strings.json` | Interface anchors and every parameter name in the Live image (C string and UTF-16LE counts) |
+| `out/corpus_resonance.json` | Shipped documents for each Corpus `ResonanceType` value; the Live string run around `Beam` |
 
 Addresses in bundles are arm64-slice vmaddrs (image base 0, as Ghidra shows them).
 Addresses in Live are unslid vmaddrs of `Live.arm64`; thin-file offsets are in
@@ -323,6 +324,23 @@ engine column comes from the bundle.
 
 Inferred, not established: Live sends Amp's 0..10 values divided by 10, and the
 correspondence between Live parameters and Softube indices is the one shown.
+
+**Corpus `ResonanceType` labels (`out/corpus_resonance.json`).**
+
+- Observed: `Core Library/Devices/Audio Effects/Corpus/Pipe Resonator.adv` (SHA-256
+  `d402e8f8…eff184`) stores `ResonanceType` 5. `Tubular Pan.adv` in the same folder
+  (`c24d7dae…36418a`) stores 6. The 36 occurrences use all seven values 0–6; the JSON
+  lists the documents for each value.
+- Observed: Live's `__TEXT,__cstring` holds the adjacent strings `Res `, `Beam`
+  (`0x105be2dac`), `Marimba`, `Membrane`, `Plate`, `Pipe`, ` Type`. They sit among
+  filter and envelope labels. `String` and `Tube` are not in this run; identical
+  strings are pooled, so they may be stored elsewhere.
+- Inferred: the order Beam, Marimba, String, Membrane, Plate, Pipe, Tube for values
+  0–6. The preset names support only 5 = Pipe and 6 = Tube. The string run is not shown
+  to belong to Corpus rather than Collision, and no code reference was traced.
+- A [learning demo](learning/demos/corpus-resonator.md) drives a labelled textbook
+  modal-resonator stand-in with the shipped Corpus parameters. Its sound is not recovered
+  code and is not evidence of Corpus's behavior.
 
 **Schema history (Observed, `out/schema_devices.json`).** `UltraAnalog`, `StringStudio`,
 `Collision`, `LoungeLizard` and `Corpus` are declared in the oldest shipped schema,

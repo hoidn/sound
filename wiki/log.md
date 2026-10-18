@@ -1311,3 +1311,17 @@ Recorded in the [gate table](research/native-phase-execution.md#gate-ledger) and
 evidence in `analysis/ableton-live-12.4.3/r2/c1-live-v1/`. The corpus and indexes
 stay on `/var/tmp/sound-analysis/corpus` and are not in Git. The four native
 investigators were told the indexes are ready.
+
+## [2026-10-17] query | Native device bundles (H4)
+
+Filed [device bundles (static)](research/device-bundles-static.md) from the bundle
+plists and Mach-O headers, the seven helper corpora and 3,634 shipped documents,
+without executing anything. All seven bundles export one 7-function C interface
+with three implementations (Softube Amp and Cabinet, which check for the Live bundle
+ID; four Tassman-based instruments; Corpus). Live holds every parameter name and
+stored domain; bundles receive only an index and a float. 502-parameter inventory
+over 1,064 shipped occurrences; Corpus `ResonanceType` 5 and 6 confirmed from two
+presets, the full label order still inferred. Updated FEAT-DEVICES, Q-005 and Q-006,
+and linked the page from the [Corpus demo](research/learning/demos/corpus-resonator.md).
+Evidence: `analysis/ableton-live-12.4.3/r2/h4-devices-v1/`. Gaps: Live-side index
+mapping and value conversion; labels; defaults for Amp, Cabinet and Corpus.

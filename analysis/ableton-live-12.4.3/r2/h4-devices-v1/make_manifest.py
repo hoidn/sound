@@ -35,6 +35,7 @@ manifest = {
         "python3 -I param_tables.py /var/tmp/sound-analysis/helpers out",
         "python3 -I entry_points.py /var/tmp/sound-analysis/helpers out",
         "python3 -I live_strings.py analysis/ableton-live-12.4.3/derived/Live.arm64 out",
+        "python3 -I corpus_labels.py <App-Resources> analysis/ableton-live-12.4.3/derived/Live.arm64 out",
         "python3 -I checks.py out <App-Resources>/Devices/Mac",
         "python3 -I make_manifest.py . <App-Resources> <Live.arm64> /var/tmp/sound-analysis/helpers",
     ],

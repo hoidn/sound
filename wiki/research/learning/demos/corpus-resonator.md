@@ -51,8 +51,8 @@ local; it repeats Ableton's device name, parameter names and preset values.
   strings include `StereoAudioIn`, `Filters`, `Resonator`, `Gain`, `DryWet`,
   `StereoWidth`, `StereoLfo` and `StereoAudioOut`. Read the code in the
   [corpus browser](../../../../analysis/ableton-live-12.4.3/browse/r2/Corpus/index.html).
-  The coordinator's device-bundle packet (`wiki/research/device-bundles-static.md`,
-  in preparation) owns the host-interface findings.
+  The [device bundles](../../device-bundles-static.md) packet owns the
+  host-interface findings.
 
 ## What is assumed
 
