@@ -1,0 +1,269 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "als-container-v1",
+ "release_status": "candidate-unreviewed",
+ "release_date": null,
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-ALS-CONTAINER",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-ALS-CONTAINER-001": "Container from first bytes; gzip content classified again; listed malformed starts refused (class unspecified); not well-formed XML refused as corrupt-document",
+  "REQ-ALS-CONTAINER-002": "Root named exactly Ableton; root without child element refused",
+  "REQ-ALS-CONTAINER-003": "Exact attribute names in any order; integer rule table; MajorVersion range; MinorVersion absent or empty refused",
+  "REQ-ALS-CONTAINER-004": "MajorVersion 6 or more, and a schema name above its family's largest translator number in S, refused as newer-version",
+  "REQ-ALS-CONTAINER-005": "MinorVersion in S passes; letters-only value refused as corrupt-document",
+  "REQ-ALS-CONTAINER-006": "Creator and Revision free and optional; SchemaChangeCount optional but integer; other attributes ignored"
+ },
+ "unreleased_requirements": [
+  "REQ-ALS-CONTAINER-007",
+  "REQ-ALS-CONTAINER-008",
+  "REQ-ALS-CONTAINER-009"
+ ],
+ "compatibility_dimensions": {
+  "document-envelope-classification": "static-derived expectations; reference execution not-run",
+  "file-format-written": "excluded (REQ-ALS-CONTAINER-007, 008)",
+  "ui": "excluded (REQ-ALS-CONTAINER-009)",
+  "behavior-after-acceptance": "excluded",
+  "audio": "excluded",
+  "timing": "excluded"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "leading bytes other than those listed in REQ-ALS-CONTAINER-001, including other Live document formats",
+   "gzip other than one member with the fixtures' header, a valid trailer and no trailing bytes; damaged or truncated compressed data; header flags and optional fields",
+   "plain XML other than the fixtures' form: other declarations or encodings, a processing instruction first, document type declarations, references in root attributes, namespaces, carriage returns",
+   "document element other than LiveSet; a second child of the root; content inside LiveSet",
+   "integer values marked no expectation, including both leading and trailing decoration, a minus sign not preceded by plus, leading zeros, and ten or more digits within 63 characters",
+   "MinorVersion values outside REQ-ALS-CONTAINER-003 to 005, including families absent from S, names below their family's largest translator number but not in S, digit groups of ten or more digits, and non-letter values that are not schema names",
+   "documents that break more than one rule"
+  ],
+  "behavior": [
+   "refusal presentation: texts, dialogs, details, named versions, logging, state after refusal (REQ-ALS-CONTAINER-009)",
+   "container and envelope written on save (REQ-ALS-CONTAINER-007, 008)",
+   "whether a document with an accepted envelope opens; content; conversion of older documents",
+   "which user commands read a file and their filtering by name, extension or container, including uncompressed files",
+   "non-refusing effects of Creator",
+   "comparison of SchemaChangeCount with the named schema; unknown element names",
+   "progress, cancellation, timing and undo"
+  ]
+ },
+ "fixture_origin": "independently authored minimal documents from a four-line template; no shipped file content, schema content or program code",
+ "approved_public_sources": [],
+ "review": {
+  "status": "pending",
+  "reviewers": [],
+  "date": null,
+  "findings": [],
+  "disposition": null,
+  "record": null
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 35,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "d7b53020b8bc7fa07dc10fb83e332037f0f5db75a57a3f1bfccc7e06ce7a2292",
+   "bytes": 1544
+  },
+  {
+   "path": "README.md",
+   "sha256": "bd773066110228b0e94d33e80d9476d9b87c89dc76a00e79fd74193255230468",
+   "bytes": 1400
+  },
+  {
+   "path": "cases.json",
+   "sha256": "5b438ecb50fde443f4fb99a1b6ebf4f50ba8dd64af4ec592a34e0e7d70b50974",
+   "bytes": 18349
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-001.als",
+   "sha256": "d6547c5b4eb401b8654d2e13c48c341f495519fa18de248c2f2fa9eec99d50d3",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-002.als",
+   "sha256": "1f8b5ea82eba66e14e196a3d310def73e934070b22da764618fc4bd9057eb5a9",
+   "bytes": 220
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-003.als",
+   "sha256": "81aefd9afabd31f5917e4f2fad68f6d2f89e3c59edc185840beaf151b874997e",
+   "bytes": 223
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-004.als",
+   "sha256": "1132cbb305b3dacba1fe73a8936e96862daccde4c812596e3693f2143d909c5b",
+   "bytes": 221
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-005.als",
+   "sha256": "245df1c7389fafb2f0f749cbad0ff6ba45144e887953cbf2311f8471ebe9ff54",
+   "bytes": 181
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-006.als",
+   "sha256": "c23e97b4e1b0b63f1e1602a0bf78819be92f4f12b0fefec7a986e52fdbb706c4",
+   "bytes": 184
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-007.als",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bytes": 0
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-008.als",
+   "sha256": "b0c66eaa8f4a0ff2922ae88b3b3b543945efc816ce168fc0a8d14af75750d4c1",
+   "bytes": 173
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-009.als",
+   "sha256": "5478a8582b600561c1a4b9d84943967377c9157efcbaa03b156301807556aad4",
+   "bytes": 176
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-010.als",
+   "sha256": "5bce026784c614f8305fbe5879711f5b8c3371fbc547a9bdcf20ffc6f8049c75",
+   "bytes": 178
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-011.als",
+   "sha256": "70e1118f68f63c577e85b8751dab5fa7c045aa13921e52da72fedeab26ff2888",
+   "bytes": 168
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-012.als",
+   "sha256": "449ab8e4d3b083607bcefbc286ff9b00643c439aed530a53fae033996fd182ed",
+   "bytes": 171
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-013.als",
+   "sha256": "875d7ed8739c1b2c701b60f86ebaf077dede277b262eb7984447ea38ce294cb7",
+   "bytes": 176
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-014.als",
+   "sha256": "03dee48d7e09110e33b50a444751f02713cbe2ccb7614313aa32f32352ab7341",
+   "bytes": 180
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-015.als",
+   "sha256": "4ddbd94b478f6ff1ff344f83bc59f7a939266a8196e12157259e66e7d5b59338",
+   "bytes": 179
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-016.als",
+   "sha256": "8e8d0553d62ddece24547ecefccabfe0079f5394c11fa38090467d99940da95b",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-017.als",
+   "sha256": "d1ff9c79c7a37720a4eaf21492c8c79d302fb137fd42da94afdc5dfbc63186fc",
+   "bytes": 178
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-018.als",
+   "sha256": "d228cb7c4e461e81cd4fae4dab17a14150944d9a1601d98f4f396630a64a5d9b",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-019.als",
+   "sha256": "0f5e7b2e43c4878534ea81d519e5a6c2ad97a5a0a2ca95a9457c7401e78ad704",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-020.als",
+   "sha256": "c49da4ac1cc1f4ef8ac55931a3ae3e89c8e135963641ce6cdbb0d9ce1f84a09c",
+   "bytes": 178
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-021.als",
+   "sha256": "ec2b64d0ce2d442e26a505b014a33960ace8e174a599ca060bc88a2de2046b19",
+   "bytes": 178
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-022.als",
+   "sha256": "5110d205f5d70343744f80aa7c93e79052ff67fd421ab41777367ad2732812ae",
+   "bytes": 164
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-023.als",
+   "sha256": "a7f9b221d226283814752664923f542be814ea09e32a2a5abe5b03cf9b079535",
+   "bytes": 170
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-024.als",
+   "sha256": "3c5031c9a6f7acb958220c31ca56d9e1f71f81196305eb4686e065771ba53d63",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-025.als",
+   "sha256": "1058f9fb18f2a964d1cfec92c1490d77ef4ced52e5811a6879b6c3b68b77835e",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-026.als",
+   "sha256": "78348995bce8ff6a4380690e89e0e3060e9b506265f2073dc33c95f84e0d60f8",
+   "bytes": 174
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-027.als",
+   "sha256": "921a10b4e011f25bee9ebac0196cfb5f16828165e00ca454380e6f2908267b26",
+   "bytes": 177
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-028.als",
+   "sha256": "bedac537b258e065c7b6aef80633a2170fc7256c4759c7d14529432364b09453",
+   "bytes": 136
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-029.als",
+   "sha256": "2dff6d763b0b9111e27c16c06a630443453f383e5b2346ec1772c736f583f3b7",
+   "bytes": 168
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-030.als",
+   "sha256": "857cac843113c31f79ffdaaae62b22e9ad75105c6e5d4f7ed1349aee8a86672e",
+   "bytes": 170
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-031.als",
+   "sha256": "4affc42ddf4e1b3badd193f9c03ad71bc1a2b055bbe7b51b6e0de823e65ef09f",
+   "bytes": 178
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-032.als",
+   "sha256": "1e9a17914ae2ea5e7cde5b7d0f83781de12935cafd8494b367ec82cd97e6dbbe",
+   "bytes": 178
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-033.als",
+   "sha256": "21da531bc4d72288e3b4cd57784fb921672b2b67d2f0ed78ce8c57333d4819dd",
+   "bytes": 181
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-034.als",
+   "sha256": "889e510d625f65d47a5ccb9e65734602b1fca5dc97b14fa5071135d228f7c9d1",
+   "bytes": 186
+  },
+  {
+   "path": "fixtures/ALS-CONTAINER-035.als",
+   "sha256": "cb5276bf607df7d48702aca9d5f7b42ad698b04fcbc98c779051c7df941108c9",
+   "bytes": 182
+  },
+  {
+   "path": "spec.md",
+   "sha256": "40d2fb176801bc31b4a25032939db4038722e9f4dc7381f566259344e677ed2b",
+   "bytes": 13006
+  }
+ ]
+}

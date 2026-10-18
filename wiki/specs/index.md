@@ -20,6 +20,7 @@ explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain
 | [MIDI configuration v2 handoff plan](midi-config-v2-handoff-plan.md) | Released midi-config-v2 (109 cases): scope, narrowing, traceability |
 | [Feature map](feature-map.md)                                  | Whole-app planning inventory and stable feature IDs                         |
 | [ALS container](als-container.md) | Revision 1 draft: container recognition, root and version envelope, save envelope; 9 requirements, 27 unexecuted cases, 7 probes |
+| [ALS container handoff plan](als-container-handoff-plan.md) | Unreviewed als-container-v1 candidate: partial REQ-ALS-CONTAINER-001 to 006, 35 unexecuted cases; scope, exclusions, traceability, review gates |
 | [Transport state](transport-state.md) | Revision 1 draft: 12 requirements (5 static-derived, 6 static with unknown parts, 1 unknown), 23 unexecuted cases for tempo, time signature and loop fields |
 | [Transport-state handoff plan](transport-state-handoff-plan.md) | Staged transport-state-v1 candidate (18 unexecuted cases): scope, exclusions, traceability, review gates |
 | [MIDI user mapping](midi-user-mapping.md)                      | Revision 2 draft: documented, static, static-conditional and unknown clauses; static expectations, unexecuted cases |

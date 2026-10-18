@@ -1514,3 +1514,14 @@ container reading of the integer parser (trailing space kept); TS-023 conflicts 
 the draft's own exclusion of edits; TS-008 and TS-020 narrowed to `Manual`. Checks:
 cross-check model 18 of 18, hashes and links in an exported copy, deny lists clean.
 Not reviewed, not released, nothing executed.
+
+## [2026-10-17] spec | als-container-v1 handoff candidate staged
+
+Staged an unreviewed candidate from SPEC-ALS-CONTAINER r1 at
+`analysis/ableton-live-12.4.3/handoff-staging/als-container-v1/` (35 cases, 35 authored
+fixtures, draft manifest `62da834b…`) and filed the [plan](specs/als-container-handoff-plan.md).
+Scope: partial REQ-001 to 006; 007 to 009 unreleased. Outcomes are envelope-accepted or
+refused with a class; all 23 static-derived r1 cases kept (some narrowed), 4 unknown
+cases excluded, 12 new cases for clauses without one. Refusal classes for root-attribute
+errors rest on an inferred catch step (I1). Findings F1 to F5 propose r2 corrections,
+including an overbroad precedence clause. Hashes and links verified in an export copy.
