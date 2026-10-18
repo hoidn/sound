@@ -1054,3 +1054,16 @@ AppleDouble-doubled document counts on [package structure](research/ableton-pack
 and the roadmap; the coordinator re-counted and confirmed. Gaps: accepted version range,
 error handling and save-time values remain unknown pending the saved Ghidra project;
 `.alp` encoding unknown. Lint: links resolve; `git diff --check` clean.
+
+## [2026-10-17] query | MIDI user-mapping closure assessment (S4)
+
+Re-established the MIDI evidence from the local bundle into `analysis/ableton-live-12.4.3/r2/s4-midi-v1/`.
+Both shipped documents and the Live slice match their recorded digests; the 17 bytecode
+digests are unknown because their v1 manifests are absent here. Re-decoded 18 modules with
+CPython 3.11.13 `dis` via `marshal.loads` only (no import or execution); every locator the
+draft cites reproduced. The embedded interpreter is inferred to be 3.11.6. Classified every
+clause in [the closure page](research/midi-closure-r2.md): the configuration-interpretation
+layer of all 13 requirements is statically supportable; discovery, host errors, numeric
+transforms, pad playback, feedback and timing need native tracing or Phase 4 probes.
+Drafted 55 unexecuted v2 cases and 16 probe records. No spec or handoff page was edited.
+Next: spec revision 2 and a midi-config-v2 candidate for separate review.

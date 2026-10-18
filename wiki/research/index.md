@@ -33,6 +33,7 @@ to the isolated implementation workspace.
 | [Decompilation preparation](ableton-decompilation-preparation.md) | Validated helper pipeline, core targets and prioritized spec work |
 | [MIDI mapping source capture](sources/midi-user-mapping-12.4.3.md) | Pinned documents, bytecode and static decoder provenance |
 | [MIDI mapping investigation](midi-user-mapping.md) | Parser/mapping findings and unresolved native/host boundaries |
+| [MIDI closure assessment (S4)](midi-closure-r2.md) | Clause-level static/native/runtime classification of the 13 MIDI requirements, 55 draft v2 cases, 16 Phase 4 probes |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),
