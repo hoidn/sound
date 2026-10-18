@@ -1557,3 +1557,15 @@ update runs once per format pass, which corrects the scanner page's crash timing
 (outcome unchanged); correction notes added there and on the helper-launch page. PD-10
 and PD-12 stay unknown pending PRB-H1-02 and PRB-H1-04. Updated the spec index (candidate
 row replaced), feature map, coverage and Q-016, and regenerated the spec browser.
+
+## [2026-10-17] ingest | S5 clip launch settings and quantization
+
+Filed [clip launch](research/clip-launch.md) with evidence in
+`analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/` (four rounds of 8 dossiers).
+Enumerations, defaults (global quantization 1 Bar; a new clip's launch values from
+preferences), follow-chance normalization, six translators, the quantization grid
+function and the launch-boundary rule, read in disassembly with two corpus misreadings
+corrected. Candidates CL-01 to CL-23 and probes PRB-S5-01 to 11. Updated the feature map,
+coverage, spec index (candidate row), gate table and the Phase 4 page; opened
+[Q-017](questions.md#q-017-clip-launch-timing-and-launch-modes). Gaps: boundary offset,
+stopped launch, launch modes, legato, velocity law, follow-action timing. Nothing executed.

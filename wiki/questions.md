@@ -285,3 +285,15 @@ no experimental contradiction has been established yet.
   project.
 - Progress 2026-10-17 (N4): argv, domain IDs, the Rescan-to-`--reset all` mapping, relaunch policy, Live-side timeouts and message framing answered in [helper launch](research/helper-launch-live-side.md#plug-in-scanner); Audio Unit path, `dev_identifier`, duplicates and the database folder still open; probes PRB-N4-01, 02, 05.
 - Progress 2026-10-17 (D1): drafted [SPEC-PLUGIN-DISCOVERY](specs/plugin-discovery.md) r1; PD-10 and PD-12 kept unknown (REQ-012, REQ-014). Resolved statically: VST2 system folders `~/Library/Audio/Plug-Ins/VST` and `/Library/Audio/Plug-Ins/VST`. Still open: Audio Units, scan triggers, source-switch effects, hang, duplicates, progress display, VST3 symlink and unreadable-subfolder handling.
+
+## Q-017 Clip launch timing and launch modes
+
+- State: open; owner: analyst.
+- Affects: FEAT-SESSION, FEAT-TRANSPORT.
+- Evidence: [clip launch](research/clip-launch.md).
+- Gap: the boundary offset (an unresolved virtual call), the track condition in the
+  launch path, launching with the transport stopped, Gate, Toggle and Repeat behavior,
+  Legato, the velocity law and follow-action timing. Do not release CL-13's
+  near-boundary clause before PRB-S5-01.
+- Next action: resolve the virtual target through the fire manager's vtable stores;
+  otherwise run PRB-S5-01 to 11.

@@ -14,8 +14,8 @@ manuals, package inventory, API surfaces, and observed user workflows.
 
 | Feature ID | Area | Initial questions | Spec state |
 | --- | --- | --- | --- |
-| FEAT-TRANSPORT | Transport and timing | Tempo, meter, looping, launch boundaries, clock changes | Draft [SPEC-TRANSPORT-STATE](transport-state.md) r1 (document fields); evidence in [transport-state static](../research/transport-state-static.md) and [native](../research/transport-state-native.md); Start, Stop and loop request paths and a static transition table in [transport transitions](../research/transport-transitions-native.md) |
-| FEAT-SESSION | Session View | Clips, scenes, follow actions, recording, Arrangement override | Unspecified |
+| FEAT-TRANSPORT | Transport and timing | Tempo, meter, looping, launch boundaries, clock changes | Draft [SPEC-TRANSPORT-STATE](transport-state.md) r1 (document fields); evidence in [transport-state static](../research/transport-state-static.md) and [native](../research/transport-state-native.md); Start, Stop and loop request paths and a static transition table in [transport transitions](../research/transport-transitions-native.md); launch grid and boundary rule in [clip launch](../research/clip-launch.md#from-a-quantization-value-to-a-launch-boundary) |
+| FEAT-SESSION | Session View | Clips, scenes, follow actions, recording, Arrangement override | Candidates CL-01 to CL-23 in [clip launch](../research/clip-launch.md#candidate-requirements-for-spec-clip-launch); no draft spec |
 | FEAT-ARRANGEMENT | Arrangement | Editing, comping, fades, clip boundaries, recording | Unspecified |
 | FEAT-AUDIO | Audio engine | Mixing, routing, monitoring, latency, device changes | Unspecified |
 | FEAT-MIDI | MIDI engine | Scheduling, note state, expression, recording, MPE; audio-to-MIDI conversion | Unspecified; audio-to-note library identified in [x86_64-only bundles](../research/x86-only-bundles.md) |

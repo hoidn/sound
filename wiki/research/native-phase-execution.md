@@ -154,7 +154,7 @@ defines them). M1–M6 above remain the revision 1 record.
 | S4 MIDI closure | Done: [closure assessment](midi-closure-r2.md), spec revision 2, [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Clause classification |
 | H2, H3 Handoffs | Candidates being staged from SPEC-TRANSPORT-STATE and SPEC-ALS-CONTAINER; separate review follows | Reviewed releases |
 | Phase 4 probe batch | **Prepared 2026-10-17, not run:** [run sheet](phase4-probe-batch.md), 79 records in 11 sessions (about 24 h; handoff blockers in sessions A to D, about 7 h); 3 incomplete; awaiting user decisions | Prepared probe records |
-| S5 Clip launch | Started 2026-10-17 | Research page with candidate requirements |
+| S5 Clip launch | **Done 2026-10-17:** [clip launch](clip-launch.md), 23 candidates, 11 probes; SPEC-CLIP-LAUNCH draft started | Research page with candidate requirements |
 | Extension packets | Started 2026-10-17 by user direction: draft specs for plug-in discovery and browser index; remaining device tables and SPEC-BUNDLED-DEVICE-PARAMETERS; MIDI numeric transforms; new families S6 automation, S7 MIDI note storage, S8 warp, S9 mixer values. A second query server serves S6 to S9 | Research pages, candidate tables and draft specs |
 | Helper and device Live sides | Done: [helper launch](helper-launch-live-side.md), [device parameter mapping](device-parameter-mapping-native.md) | Research pages |
 

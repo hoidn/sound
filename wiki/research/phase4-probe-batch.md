@@ -52,6 +52,10 @@ and `wiki/specs` points at one of these records. The H4 section on device signal
 behavior is not a Phase 4 record. It asks for measured original-versus-candidate
 audio under FEAT-AUDIO, which is verification work.
 
+Added after consolidation: S5 contributed PRB-S5-01 to 11 (11 records) on the
+[clip launch](clip-launch.md) page; they are not yet merged into `batch.json` or the run
+sheet. Later packets (S6 to S9, N6 to N8) will add more.
+
 ## Merged and duplicate records
 
 All original IDs are kept. A record folded into another costs 0 minutes.

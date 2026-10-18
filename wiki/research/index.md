@@ -20,6 +20,7 @@ to the isolated implementation workspace.
 | [Native analysis recovery design](native-analysis-recovery.md) | Persistent checkpoint tooling, reviewed proofs, resource gates, disk inventory and target recovery status |
 | [Native transport study](native-transport-study.md) | Loop-enable persistence and Start/Stop investigation design, exact seeds and case boundaries |
 | [Transport transitions (native)](transport-transitions-native.md) | S3: Start/Stop dispatch resolved (OSetPlayingCommand to the engine, reflected by TransportEngineStateChanged), engine-donor symbol matches, static transition table T-01 to T-13, ADR 0002 escalation record |
+| [Clip launch](clip-launch.md) | S5: clip and set launch fields over 203 schemas and 4,130 shipped clips; enum values; constructor and preference defaults; load normalization and migration; quantization grid and launch-boundary rule; candidates CL-01 to CL-23; PRB-S5-01 to 11 |
 | [Linker function-start index design](function-starts-design.md) | Bounded Mach-O metadata navigation, distinct from analyzer-discovered functions |
 | [Native export design](native-export-design.md) | Owned transport, immutable ingestion and recovery design |
 | [Native export task plan](native-export-execution.md) | Implementation tasks and tool-validation state |

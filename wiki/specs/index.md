@@ -41,6 +41,7 @@ target spec:
 
 | Target | Candidates | Source section | Next step |
 | --- | --- | --- | --- |
+| SPEC-CLIP-LAUNCH | CL-01–CL-23 (23) | [Clip launch](../research/clip-launch.md#candidate-requirements-for-spec-clip-launch) | Draft the stored-field and grid subset (CL-01 to CL-20); runtime clauses wait for PRB-S5-01 to 11 |
 | SPEC-BROWSER-INDEX | BI-C01–BI-C12 (12) | [Browser index](../research/browser-index-static.md#candidate-requirements-for-a-future-spec-browser-index) | Draft spec when scoped |
 | Per-device parameter specs | DEV-C01–DEV-C10 (10) | [Device bundles](../research/device-bundles-static.md#candidate-requirements-for-per-device-parameter-specs) | Per-device parameter mapping |
 | SPEC-CORPUS-DEVICE | CD-C01–CD-C08 (8) | [Corpus DSP (decompiled)](../research/corpus-dsp-static.md#candidate-requirements-for-spec-corpus-device) | Live-side conversion (N5), then Phase 4 measurements |
