@@ -1,0 +1,785 @@
+{
+ "schema": "warp-markers-traceability-v1",
+ "spec": "SPEC-WARP-MARKERS r1",
+ "evidence": {
+  "schema": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/static-survey.json schema part (12.0_12402: AudioClip and SampleWarpProperties members, WarpMarker attributes; FluctuationTexture present, no FluxTexture)",
+  "shipped": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/static-survey.json documents part: distributions (2,878 AudioClip defaults, WarpMode codes), checks number_text_rule 44,058, *strictly_increasing 2,878 + 7,372, beat_on_1/3843840_grid 22,029, SampleWarpProperties count=0 4,244",
+  "paths": "decoded shipped demo set W0 (SHA-256 3f1c0f924b750c2a...) read 2026-10-18 for element paths only: Tracks/AudioTrack/DeviceChain/MainSequencer/ClipSlotList/ClipSlot/ClipSlot/Value/AudioClip and Tracks/MidiTrack/DeviceChain/DeviceChain/Devices/OriginalSimpler/Player/MultiSampleMap/SampleParts/MultiSamplePart/SampleWarpProperties; child order of both holders; no content copied",
+  "markerreg": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0001/functions/0x10260fdd8.* (mSecTime +0x50, mBeatTime +0x58, flags 4 attribute, type -4); registrations.txt",
+  "getters64": "/var/tmp/sound-analysis/query-spool-2/results/d7-0002/functions/0x102610264.*, 0x10261026c.* (64-bit Sec/Beat getters)",
+  "loader": "analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/results/n1-0008/functions/0x101487310.* (generic loader: walks members, skips absent ones, stores directly); analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/results/n1-0006/functions/0x10152bfb8.* (text conversion: bool, strtod with no-consumption throw); throws carry the corrupt-document key 0x10148229c",
+  "ctor": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0001/functions/0x1027b0e40.* (TransientResolution mov w1,#0x6; TransientLoopMode mov w1,#0x2; float parameter triples); getter-constants.txt; ComplexProEnvelope default 128 (0x10224e2e8 movi 0x43 lsl 24, spec appendix)",
+  "postread": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0001/functions/0x1027c1c7c.* (empty test; then 0x1027b3928, which sets owner and onset links of each marker without setting times: corpus 0x1027b3928, 0x1027b7cf0, 0x102610134)",
+  "swppostload": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0002/functions/0x10288538c.* (sample-part post-load: no empty test)",
+  "shadow": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0001/functions/0x1026102c0.* (is-shadow: marker is the list's last element)",
+  "convert": "/var/tmp/sound-analysis/query-spool-2/results/d7-0001/functions/0x1033bf160.c and 0x1033bf250.c (audio-clip class test, then slot +0x300 warped test; both throw for an unwarped clip before any table use)",
+  "add": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0001/functions/0x1033bf42c.* (class test; warped test; 0 <= p <= length, NaN refused; scan by SecTime stopping at the shadow; left check q < left.beat and right check right.beat < q on the unrounded q; right check skipped for the shadow; q() then bounds per neighbour)",
+  "bounds": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0002/functions/0x1027afd40.* (beat bounds nb.beat + ds*999/60 and nb.beat + ds*5/60; only caller the add)",
+  "remove": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0002/functions/0x1033bfa68.* (class test only; lookup; shadow refusal; no-such-marker refusal; delete 0x1027c6eec)",
+  "move": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0003/functions/0x1033bfb94.* (class test only; lookup; shadow and no-such-marker refusals before the untraced limits routine 0x1027b83bc)",
+  "lookup": "corpus 0x1027c79d0 (pseudocode only, in analysis/ableton-live-12.4.3/r2/s8-warp-v1/corpus-excerpts.jsonl): q() of the argument, scan in list order, return the first marker with an equal beat, stop once a beat exceeds it",
+  "insertdelete": "corpus 0x1027baad8 (insert: returns without change when a marker has an equal SecTime or BeatTime; no throw) and 0x1027c6eec (delete: returns without change below three markers; no throw); callees untraced; looked up 2026-10-18 with analysis/ableton-live-12.4.3/r2/s8-warp-v1/corpus_lookup.py",
+  "q": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0001/functions/0x1033bf42c.* q() block (|q +- step/2| * 3843840 truncated, sign restored; four sentinels skipped); results/s8-0003/functions/0x1026101b4.* (BeatTime setter rounds; not used by the loader's direct store)",
+  "codes": "analysis/ableton-live-12.4.3/r2/s8-warp-v1/results/s8-0002/functions/0x1026a9ef8.* (7 WarpMode labels), 0x1027b279c.* (7 TransientResolution labels), 0x1027b29e8.* (3 TransientLoopMode entries); vtable-reads.txt",
+  "length": "corpus 0x1027b6954 (sample length through the clip's sample object, slot +0x1b0; source untraced)"
+ },
+ "inferred_links": {
+  "I1": "SecTime and BeatTime are binary64 members read by the 64-bit branch of the text conversion (type -4 like other double members; 64-bit getters; shipped text matches the 64-bit writer rule). The spec labels this 'Double branch assumed'.",
+  "I2": "A conversion error while a nested value is read stops the open (same mechanism as the transport-state-v1 refused cases, whose review accepted it).",
+  "I3": "Nothing between reading the clip and the observation changes its markers or settings. The audio clip's post-read step only links markers (corpus); later steps are untraced. Spec A2 states this premise but scopes it to saved values (plan finding F1).",
+  "I4": "The sample length used by add_warp_marker is the duration in seconds of the clip's sample. Cases keep at least 0.5 s from the 3 s length.",
+  "I5": "After its checks pass, an add or remove raises no further error (insert and delete pseudocode contain no throw; callees untraced).",
+  "I6": "The marker lookup behaves as its corpus pseudocode reads (not dossier-confirmed).",
+  "I7": "The warped test of the conversions and of the add reflects the IsWarped value read from the document (slot +0x300 target not read in a dossier)."
+ },
+ "clauses": {
+  "001.1": {
+   "clause": "AudioClip warp children and empty single-Value form",
+   "support": "D",
+   "evidence": [
+    "schema",
+    "shipped"
+   ],
+   "inferred": []
+  },
+  "001.2": {
+   "clause": "Sampler/Simpler marker list and settings in SampleWarpProperties under MultiSamplePart",
+   "support": "D",
+   "evidence": [
+    "schema",
+    "shipped",
+    "paths"
+   ],
+   "inferred": []
+  },
+  "001.3": {
+   "clause": "FluctuationTexture name",
+   "support": "D",
+   "evidence": [
+    "schema"
+   ],
+   "inferred": []
+  },
+  "001.4": {
+   "clause": "IsWarped true/false",
+   "support": "S",
+   "evidence": [
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "002.1": {
+   "clause": "WarpMarker attributes Id, SecTime, BeatTime; binary64",
+   "support": "D; S",
+   "evidence": [
+    "schema",
+    "markerreg",
+    "getters64"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "002.2": {
+   "clause": "number text read by the released 64-bit prefix rule",
+   "support": "S",
+   "evidence": [
+    "loader"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "002.3": {
+   "clause": "no numeric prefix refused",
+   "support": "S",
+   "evidence": [
+    "loader"
+   ],
+   "inferred": [
+    "I2"
+   ]
+  },
+  "002.4": {
+   "clause": "loaded value kept without rounding, clamp or range check",
+   "support": "S",
+   "evidence": [
+    "loader",
+    "q"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "003.1": {
+   "clause": "strictly increasing list of two or more loads as read, in document order",
+   "support": "S; D",
+   "evidence": [
+    "loader",
+    "shipped",
+    "postread"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "004.1": {
+   "clause": "empty sample-part list not refused",
+   "support": "S; D",
+   "evidence": [
+    "swppostload",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "007.1": {
+   "clause": "last element of an audio clip list is the shadow marker",
+   "support": "S",
+   "evidence": [
+    "shadow"
+   ],
+   "inferred": []
+  },
+  "007.2": {
+   "clause": "scripting remove and move refuse the shadow marker",
+   "support": "S",
+   "evidence": [
+    "remove",
+    "move",
+    "shadow"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "008.1": {
+   "clause": "conversions refused on a clip that is not warped",
+   "support": "D; S",
+   "evidence": [
+    "convert"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "010.1": {
+   "clause": "absent or value-less settings take the creation defaults",
+   "support": "S",
+   "evidence": [
+    "ctor",
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "011.1": {
+   "clause": "WarpMode code table",
+   "support": "S",
+   "evidence": [
+    "codes"
+   ],
+   "inferred": []
+  },
+  "011.2": {
+   "clause": "WarpMode 0-4, 6 held as stored",
+   "support": "S",
+   "evidence": [
+    "loader",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "012.1": {
+   "clause": "TransientResolution codes, labels, default 6",
+   "support": "S",
+   "evidence": [
+    "codes",
+    "ctor"
+   ],
+   "inferred": []
+  },
+  "012.2": {
+   "clause": "TransientLoopMode codes 0-2, default 2",
+   "support": "S",
+   "evidence": [
+    "codes",
+    "ctor"
+   ],
+   "inferred": []
+  },
+  "012.3": {
+   "clause": "codes in the lists held as stored",
+   "support": "S",
+   "evidence": [
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "013.1": {
+   "clause": "ranges and defaults of five settings (TransientEnvelope excluded)",
+   "support": "S",
+   "evidence": [
+    "ctor"
+   ],
+   "inferred": []
+  },
+  "013.2": {
+   "clause": "integer values in range held as stored",
+   "support": "S",
+   "evidence": [
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "015.1": {
+   "clause": "add refused when not warped",
+   "support": "S",
+   "evidence": [
+    "add"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "015.2": {
+   "clause": "add refused when p < 0 or p > sample length",
+   "support": "S",
+   "evidence": [
+    "add",
+    "length"
+   ],
+   "inferred": [
+    "I4"
+   ]
+  },
+  "015.3": {
+   "clause": "insertion position and neighbours; shadow is never a right neighbour",
+   "support": "S",
+   "evidence": [
+    "add",
+    "shadow"
+   ],
+   "inferred": []
+  },
+  "015.4": {
+   "clause": "neighbour beat checks on q as given",
+   "support": "S",
+   "evidence": [
+    "add"
+   ],
+   "inferred": []
+  },
+  "015.5": {
+   "clause": "grid rounding, then 5-999 BPM per neighbour, none toward the shadow",
+   "support": "S",
+   "evidence": [
+    "add",
+    "q",
+    "bounds"
+   ],
+   "inferred": []
+  },
+  "015.6": {
+   "clause": "otherwise accepted (no error)",
+   "support": "S, inferred",
+   "evidence": [
+    "insertdelete"
+   ],
+   "inferred": [
+    "I5"
+   ]
+  },
+  "015.7": {
+   "clause": "remove/move lookup by rounded beat; no-such-marker and shadow refusals",
+   "support": "S",
+   "evidence": [
+    "remove",
+    "move",
+    "lookup"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "015.8": {
+   "clause": "remove accepted without the warped condition",
+   "support": "S",
+   "evidence": [
+    "remove",
+    "insertdelete"
+   ],
+   "inferred": [
+    "I5",
+    "I6"
+   ]
+  },
+  "016.1": {
+   "clause": "grid rounding definition, used by the add and the lookup",
+   "support": "S; D",
+   "evidence": [
+    "q",
+    "lookup",
+    "shipped"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "016.2": {
+   "clause": "load does not round",
+   "support": "S",
+   "evidence": [
+    "loader",
+    "q"
+   ],
+   "inferred": []
+  }
+ },
+ "cases": {
+  "WARP-MARKERS-001": {
+   "source": "WMK-001 and WMK-002, load part only (saved text excluded: A2); settings re-authored to non-default values",
+   "evidence": [
+    "schema",
+    "paths",
+    "loader",
+    "markerreg",
+    "getters64",
+    "codes",
+    "ctor"
+   ],
+   "inferred": [
+    "I1",
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-002": {
+   "source": "REQ-001 IsWarped clause, new; fixture shared with the scripting cases of WMK-020/028",
+   "evidence": [
+    "schema",
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-003": {
+   "source": "WMK-004, load part only",
+   "evidence": [
+    "loader",
+    "markerreg",
+    "getters64"
+   ],
+   "inferred": [
+    "I1",
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-004": {
+   "source": "REQ-002 reading rule (REQ-TRANSPORT-STATE-004 leading U+0020), new",
+   "evidence": [
+    "loader",
+    "markerreg",
+    "getters64"
+   ],
+   "inferred": [
+    "I1",
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-005": {
+   "source": "WMK-003, load part only",
+   "evidence": [
+    "loader",
+    "markerreg",
+    "getters64",
+    "q"
+   ],
+   "inferred": [
+    "I1",
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-006": {
+   "source": "REQ-002 reading rule (text after the prefix ignored), new",
+   "evidence": [
+    "loader",
+    "markerreg",
+    "getters64"
+   ],
+   "inferred": [
+    "I1",
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-007": {
+   "source": "WMK-005",
+   "evidence": [
+    "loader",
+    "markerreg",
+    "getters64"
+   ],
+   "inferred": [
+    "I1",
+    "I2"
+   ]
+  },
+  "WARP-MARKERS-008": {
+   "source": "REQ-002 no-prefix clause (empty text), new",
+   "evidence": [
+    "loader",
+    "markerreg",
+    "getters64"
+   ],
+   "inferred": [
+    "I1",
+    "I2"
+   ]
+  },
+  "WARP-MARKERS-009": {
+   "source": "WMK-021, load part only; TransientEnvelope dropped (finding F2)",
+   "evidence": [
+    "ctor",
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-010": {
+   "source": "REQ-010 'without its Value attribute', new",
+   "evidence": [
+    "ctor",
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-011": {
+   "source": "REQ-012 TransientResolution code, new (WMK-024 load part is in case 1)",
+   "evidence": [
+    "codes",
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-012": {
+   "source": "REQ-012 TransientLoopMode code, new",
+   "evidence": [
+    "codes",
+    "loader"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-013": {
+   "source": "WMK-023 code 0, load part only (display not graded)",
+   "evidence": [
+    "codes",
+    "loader",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-014": {
+   "source": "WMK-023 code 1, load part only (display not graded)",
+   "evidence": [
+    "codes",
+    "loader",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-015": {
+   "source": "WMK-023 code 2, load part only (display not graded)",
+   "evidence": [
+    "codes",
+    "loader",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-016": {
+   "source": "WMK-023 code 3, load part only (display not graded)",
+   "evidence": [
+    "codes",
+    "loader",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-017": {
+   "source": "WMK-023 code 6, load part only (display not graded)",
+   "evidence": [
+    "codes",
+    "loader",
+    "shipped"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-018": {
+   "source": "WMK-007 narrowed to one Simpler sample part, load only (saved text excluded: A2)",
+   "evidence": [
+    "swppostload",
+    "schema",
+    "shipped",
+    "paths"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-019": {
+   "source": "WMK-020 first call",
+   "evidence": [
+    "convert"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "WARP-MARKERS-020": {
+   "source": "WMK-020 second call",
+   "evidence": [
+    "convert"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "WARP-MARKERS-021": {
+   "source": "WMK-028 re-authored on list M1 with (0.5 s, beat 1)",
+   "evidence": [
+    "add"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "WARP-MARKERS-022": {
+   "source": "REQ-015 accepted counterpart of case 21, new",
+   "evidence": [
+    "add",
+    "bounds",
+    "q",
+    "insertdelete",
+    "length"
+   ],
+   "inferred": [
+    "I3",
+    "I4",
+    "I5"
+   ]
+  },
+  "WARP-MARKERS-023": {
+   "source": "WMK-029 first call",
+   "evidence": [
+    "add"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-024": {
+   "source": "WMK-029 second call (sample now 3 s)",
+   "evidence": [
+    "add",
+    "length"
+   ],
+   "inferred": [
+    "I4"
+   ]
+  },
+  "WARP-MARKERS-025": {
+   "source": "WMK-030",
+   "evidence": [
+    "add",
+    "shadow"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-026": {
+   "source": "REQ-015 'q, as given', new",
+   "evidence": [
+    "add",
+    "q"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-027": {
+   "source": "WMK-031",
+   "evidence": [
+    "add",
+    "shadow"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-028": {
+   "source": "WMK-032 first call",
+   "evidence": [
+    "add",
+    "q",
+    "bounds"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-029": {
+   "source": "WMK-032 second call",
+   "evidence": [
+    "add",
+    "q",
+    "bounds"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-030": {
+   "source": "REQ-015 upper tempo limit, new",
+   "evidence": [
+    "add",
+    "bounds"
+   ],
+   "inferred": [
+    "I3"
+   ]
+  },
+  "WARP-MARKERS-031": {
+   "source": "WMK-033",
+   "evidence": [
+    "add",
+    "q",
+    "bounds",
+    "insertdelete",
+    "length"
+   ],
+   "inferred": [
+    "I3",
+    "I4",
+    "I5"
+   ]
+  },
+  "WARP-MARKERS-032": {
+   "source": "WMK-034",
+   "evidence": [
+    "add",
+    "bounds",
+    "shadow",
+    "insertdelete",
+    "length"
+   ],
+   "inferred": [
+    "I3",
+    "I4",
+    "I5"
+   ]
+  },
+  "WARP-MARKERS-033": {
+   "source": "WMK-015 first call, re-authored on list M1",
+   "evidence": [
+    "remove",
+    "lookup",
+    "shadow"
+   ],
+   "inferred": [
+    "I3",
+    "I6"
+   ]
+  },
+  "WARP-MARKERS-034": {
+   "source": "WMK-015 second call, re-authored on list M1",
+   "evidence": [
+    "move",
+    "lookup",
+    "shadow"
+   ],
+   "inferred": [
+    "I3",
+    "I6"
+   ]
+  },
+  "WARP-MARKERS-035": {
+   "source": "WMK-035 first call",
+   "evidence": [
+    "remove",
+    "lookup",
+    "q",
+    "insertdelete"
+   ],
+   "inferred": [
+    "I3",
+    "I5",
+    "I6"
+   ]
+  },
+  "WARP-MARKERS-036": {
+   "source": "WMK-035 second call",
+   "evidence": [
+    "remove",
+    "lookup",
+    "q"
+   ],
+   "inferred": [
+    "I3",
+    "I6"
+   ]
+  },
+  "WARP-MARKERS-037": {
+   "source": "REQ-015 move with no matching marker, new",
+   "evidence": [
+    "move",
+    "lookup",
+    "q"
+   ],
+   "inferred": [
+    "I3",
+    "I6"
+   ]
+  },
+  "WARP-MARKERS-038": {
+   "source": "REQ-015 'the remove does not require the clip to be warped', new",
+   "evidence": [
+    "remove",
+    "lookup",
+    "insertdelete"
+   ],
+   "inferred": [
+    "I3",
+    "I5",
+    "I6"
+   ]
+  }
+ }
+}

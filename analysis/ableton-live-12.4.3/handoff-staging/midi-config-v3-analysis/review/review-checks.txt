@@ -1,0 +1,58 @@
+midi-config-v3 handoff review: reviewer checks (analyst-side; never payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts here; run with python3 -I. CPython 3.11.13 =
+/var/tmp/sound-analysis/scratch/d-midi/py/cpython-3.11.13-linux-x86_64-gnu/bin/python3.11 (host parser for the interpretation model).
+
+Mapping to plan IDs: RV3-01 = I1 ruling (cases 110-114, 124 kept); RV3-02 = F1 confirmed; RV3-03 = F2 confirmed;
+RV3-04 = F3 / `any` for MT-16 (case 125) and MT-22 (case 126) confirmed; RV3-05 = I2-I5 accepted; RV3-06 = gate 4.
+
+== Evidence identity ==
+sha256 analysis/ableton-live-12.4.3/derived/Live.arm64 = 3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad (matches target)
+N7 manifest 385d3ea604bc4c95e5002ca43fe7a1fdb9225f8bd9f97c1688daba3d378912ec: 77 files re-hashed, 0 mismatches
+readvm.py 10584a580 8 f32 -> B = 1,2,3,4,5,8,20,50 ; 10584a5a0 8 f32 -> A[0..7] = 1,2,3,4,5,8,10,20 (A[8]=50 stored by 0x101b842cc)
+readvm.py 10584a8b4 -> 129.0 ; 1055d1dd0 2 f32 -> 1.0, 0.0 (CC receiver +0x48 sensitivity, +0x4c accumulator start 0)
+0x1011afc2c(0) -> 0x42fe0000 = 127.0 (absolute divisor in 0x101b76bf0)
+
+== I1 (takeover choice 0 = None) — `dis.py 0x101b7c508`, 0x101b83750, corpus excerpt 0x1022df424 ==
+0x101b7c540 ldr w8,[DAT_106fb2110]; cbz w8 -> 0x101b7c6a8 clamp(new, lo, hi): choice 0 returns the new value (Observed).
+choice 1 -> 0x101b7c344 (pick-up window; PickUpNotification), choice 2 -> proportional scaling (Observed).
+0x101b83750 stores the deserialized int unchanged into DAT_106fb2110; the UI-position -> int map is not traced.
+0x1022df424 (decompiler only) declares sControlNoTakeOverEntry, sControlPickUpTakeOverEntry, sControlValueScalingTakeOverEntry in order.
+Ruling: expected values need only a never-acting choice (Observed); the None label rests on order + elimination; the payload
+defines `none` behaviorally and states the label as an assumption with a comparison obligation. Cases kept.
+
+== F1 (crossfader 14-bit not exempt) ==
+0x102593258: avoid w6 -> x24; used only on the CC branch (0x102593418 mov x3,x24 -> 0x101b7f32c, stores +0x44).
+Mode 5 branch 0x10259338c bl 0x1026094e0 with x0..x4 only (x4 = feedback rule at sp+0x18); no avoid argument.
+0x1026094e0: 0x102609548 mov w3,#0x0 -> 0x101b7fc74 (decompiler: param_4 -> +0x44). 0x101b7fcc0 reads +0x44: if set prior := FLT_MAX,
+else prior = (pMSB<<7|pLSB)/129 when both prior slots != FLT_MAX; stores always write the table prior (-129 or last value), so the
+prior is present and apply 0x101b7fde4 reaches takeover for Type 1 under choices 1/2. CC receiver 0x101b7f894: avoid && Zoom==1.0 ->
+prior := FLT_MAX -> no takeover. GenericScript L205-216: CrossfaderMapMode honoured, set_needs_takeover(False).
+value_check.py probes: crossfader Absolute choice 1 -> 0.251969 applied; crossfader Absolute14Bit choice 1 -> takeover reached.
+
+== F2 (reversed range) ==
+apply 0x101b80148: s12=Min, s11=Max, w2 = (Max < Min), lo = min(Min,Max), hi = max(Min,Max) -> 0x101b76bf0.
+0x101b76bf0: absolute t = (inv ? 127-v : v)/127, r = lo(1-t)+hi*t; relative step = quant ? sign(d) : (hi-lo)/256*d, negated when inv.
+Probes: min 1 max 0 Absolute 00,7F -> 1.0, 0.0 (formula holds); LinearSignedBit +1 -> 0.49609375 (formula holds);
+stepped min 3 max 0 from 1, +1 -> 0.0 (contract "+1" would give 2). min < max narrowing upheld.
+
+== Decoder 0x101b7b96c, transliterated in value_check.py decode(); agrees with the payload table over 8 x 128 values ==
+
+== Commands and results (export copy outside the checkout: $SCRATCH/export/midi-config-v3, byte-identical to staging) ==
+$ python3.11 -I ../build_v3.py verify <export>       -> 132 payload files + manifest, 0 hash/size mismatch, 0 inventory diff,
+                                                        22 links (README 6, spec 15, REVIEW 1) all resolve, 0 missing inputs, 0 deny hits
+  (note: verify reports same-file anchors unresolved when given a relative path; run it with an absolute path)
+$ python3 -I ../../midi-config-v2-analysis/review/verify_copy.py <export>  -> same; fixture format problems 0; decompil only in AGENTS.md
+$ python3.11 -I ../../midi-config-v2-analysis/review/reviewer_model.py <export> -> 127 cases, 0 disagreements
+$ python3 -I value_check.py <export> > value-check.json -> 18 value cases, 0 failing; contract restatement exact to 9 dp;
+                                                        transliteration max error 1.8e-8; `any` cases never reach takeover under choices 0-2
+Carry: cases 001-109 records == handoff/midi-config-v2 cases; fixture bytes equal; v2 manifest sha256
+889b52fa3b7f19c1bd085f26db39e0f62f00cbf7dc85be050e32207f012eb4d7 == catalog; every v2 listed hash matches.
+Extended scan of *.md, cases.json, manifest.json for addresses, internal names, analyst IDs (N7, MT-, I1-I6, E10-E14, F1-F3, PRB-, Q-0),
+"prior", "float", "129" (only byte sizes in manifest): no hits outside the AGENTS.md forbidden-inputs list.
+
+== Draft and review edits ==
+Draft manifest sha256 575af45d2340b5ad74a865d1be56145e2754be9039abc874bcb52a1b87dcd192 (matches the plan).
+payload-changes.diff (fixtures excluded; fixtures unchanged) applies the review edits; patch -R reproduces every draft file.
+Reviewed manifest sha256 2e7d93767bbb9fffa79cec191b242d7eec52aeb1d20f6f33f1bbdc0beff40458 (133 files with manifest).
+Cases unchanged, so build/seal were not re-run (build would regenerate cases.json and manifest.json from the draft metadata);
+author-validation.json, traceability.json and v2-to-v3-text.diff remain the author's draft-time records.

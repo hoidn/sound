@@ -1,0 +1,210 @@
+mixer-values-v1 handoff review: reviewer checks (analyst-side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I.
+Mapping to the plan's IDs: RVM-01 = F1, F2 confirmed, I3 established; RVM-07 = I5 established, I1/I2/I6 accepted, I4 not relied on;
+RVM-08 = F1-F9 confirmed; RVM-02 new (upper volume bound wording); RVM-03 = I6 named in the contract.
+Candidate manifest before review: c4ccc14b33f06b014df11104f223f0221f71dcb00c2800f21593d04e727ea3e4 (matches the plan).
+
+== 1. Evidence identity ==
+6a1686b3a273fb11a467a21c6a99c4200cd3373d9ab19222fb161ba111066871  r2/s9-mixer-v1/manifest.json
+8231ad126b3d952e4a5dbefdd8252adb39e636cab0f27fa1766d7bfde9b2aed7  r2/d8-mixer-v1/manifest.json
+3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad  derived/Live.arm64
+S9: 89 listed files re-hashed, 0 mismatches; D8: 30 listed files re-hashed, 0 mismatches, inventory equal.
+
+== 2. REQ-008 On/Off (F1): Speaker init passes the On/Off text object; its +0x28 text slot ==========
+s9-0001 0x10271b660.c lines 284-287: uVar7 = *(param_1+0x330); name 'Speaker On'; uVar5 = FUN_10143b884(); FUN_1026ec1cc(uVar7,1,&name,uVar5)
+registry 0x10271aa88 (kept corpus record): mpSpeaker at 0x328 (+8 = 0x330), as mpVolume 0x310 -> timeable +0x318 in the volume call.
+s9-0004 0x1026ec1cc.c: param_4 -> FUN_1026fc44c(param_1,param_4); s9-0001 0x1026f0bcc.c passes its formatter param_7 to the same FUN_1026fc44c.
+image-reads.txt: text-object vtables keep value->text at +0x28: 0x106670828+0x28=0x10143a290 (pan, confirmed), 0x106670140+0x28=0x101437334 (dB, confirmed), 0x106670bc8+0x28=0x10143ba28.
+$ python3 -I dis_site.py IMG 0x10271bcb0 0x10271bcc8   (call site)
+0x10271bcb0 97b47ef5 bl 0x10143b884
+0x10271bcb4 aa0003e3 mov x3,x0
+0x10271bcb8 9100a3e2 add x2,x31,#0x28
+0x10271bcbc aa1703e0 mov x0,x23
+0x10271bcc0 52800021 movz w1,#0x1,lsl 0
+0x10271bcc4 97ff4142 bl 0x1026ec1cc
+$ python3 -I dis_site.py IMG 0x10143ba28 0x10143ba44   (1e602008 = fcmp d0,#0.0; 9a890140 = csel x0,x10,x9,eq; then b to string ctor)
+0x10143ba28 90023ba9 adrp x9,0x105baf000
+0x10143ba2c 91319129 add x9,x9,#0xc64
+0x10143ba30 f00235ca adrp x10,0x105af6000
+0x10143ba34 911eb14a add x10,x10,#0x7ac
+0x10143ba38 1e602008 
+0x10143ba3c 9a890140 
+0x10143ba40 17ffaf10 
+$ read_mem.py IMG 0x105af67ac B 4 ; 0x105bafc64 B 3   (x10 -> "Off", x9 -> "On")
+0x105af67ac [0] __TEXT 79
+0x105af67ad [1] __TEXT 102
+0x105af67ae [2] __TEXT 102
+0x105af67af [3] __TEXT 0
+0x105bafc64 [0] __TEXT 79
+0x105bafc65 [1] __TEXT 110
+0x105bafc66 [2] __TEXT 0
+Result: value 0.0 -> 'Off', otherwise 'On'. Confirmed against machine code.
+
+== 3. REQ-009 curve names bound to LiveSet CrossfadeCurve (F2, I3) ==
+callers of the name list 0x102672204 (corpus calls index): 0x102672448 at 0x1026740d8 (LSong constructor; corpus-excerpts-review.jsonl), 0x102694b24 (accessor).
+s5-clip-launch-v1 results/s5-0002 0x101567bfc (kept, confirmed): enum init stores the value at +0xd8/+0xdc and the label list at +0x90/+0x98; its xrefs list a call from 0x1026740f8 in 0x102672448.
+$ python3 -I dis_site.py IMG 0x1026740b0 0x102674140   (x19 = this; [x19+0x1f0] gets list 0x10700c770, index 2; [x19+0x208] gets Off/PlayThrough/Strict with OnLatencyCompensation)
+0x1026740b0 d63f0100 
+0x1026740b4 f9400e60 ldr x0,[x19,#0x18]
+0x1026740b8 a9377fbc 
+0x1026740bc d10243a2 
+0x1026740c0 52800001 movz w1,#0x0,lsl 0
+0x1026740c4 97bbd4a2 bl 0x10156934c
+0x1026740c8 f9400e60 ldr x0,[x19,#0x18]
+0x1026740cc 52800021 movz w1,#0x1,lsl 0
+0x1026740d0 97bb9e75 bl 0x10155baa4
+0x1026740d4 f940fa77 ldr x23,[x19,#0x1f0]
+0x1026740d8 97fff84b bl 0x102672204
+0x1026740dc a9377fbc 
+0x1026740e0 90024cc2 adrp x2,0x10700c000
+0x1026740e4 911dc042 add x2,x2,#0x770
+0x1026740e8 d10243a4 
+0x1026740ec aa1703e0 mov x0,x23
+0x1026740f0 52800041 movz w1,#0x2,lsl 0
+0x1026740f4 d2800003 movz x3,#0x0,lsl 0
+0x1026740f8 97bbcec1 bl 0x101567bfc
+0x1026740fc 90024cc8 adrp x8,0x10700c000
+0x102674100 9112e108 add x8,x8,#0x4b8
+0x102674104 38bfc108 
+0x102674108 36005728 
+0x10267410c f9410660 ldr x0,[x19,#0x208]
+0x102674110 9001f608 adrp x8,0x106534000
+0x102674114 f9465908 ldr x8,[x8,#0xcb0]
+0x102674118 a9374fa8 
+0x10267411c 90024cc2 adrp x2,0x10700c000
+0x102674120 911e2042 add x2,x2,#0x788
+0x102674124 d10243a4 
+0x102674128 52800041 movz w1,#0x2,lsl 0
+0x10267412c d2800003 movz x3,#0x0,lsl 0
+0x102674130 97bbceb3 bl 0x101567bfc
+0x102674134 f9410660 ldr x0,[x19,#0x208]
+0x102674138 52800021 movz w1,#0x1,lsl 0
+0x10267413c 97bb9e5a bl 0x10155baa4
+$ python3 -I dis_site.py IMG 0x10266e148 0x10266e178   (LiveSet member registry 0x106e505b0: member at 0x1e8 named by the UTF-16 string at 0x1062c2cc2)
+0x10266e148 d0023f00 adrp x0,0x106e50000
+0x10266e14c 9116c000 add x0,x0,#0x5b0
+0x10266e150 9001e2a4 adrp x4,0x1062c2000
+0x10266e154 91330884 add x4,x4,#0xcc2
+0x10266e158 b001e1a6 adrp x6,0x1062a3000
+0x10266e15c 913280c6 add x6,x6,#0xca0
+0x10266e160 52803601 movz w1,#0x1b0,lsl 0
+0x10266e164 52800102 movz w2,#0x8,lsl 0
+0x10266e168 52803d03 movz w3,#0x1e8,lsl 0
+0x10266e16c 52800205 movz w5,#0x10,lsl 0
+0x10266e170 d2800007 movz x7,#0x0,lsl 0
+0x10266e174 97b841f8 bl 0x10147e954
+string at 0x1062c2cc2: mpCrossfadeCurve
+Same +8 convention in this registry and constructor: mpSoloInPlace 0x2d0 -> [this+0x2d8] OnSoloInPlace; mpLatencyCompensation 0x200 -> [this+0x208] OnLatencyCompensation (corpus record 0x10266de18, 0x102672448).
+Result: CrossfadeCurve is initialised with Dipped, Intermediate, Constant Power, Slow Fade, Slow Cut, Fast Cut, Transition (0x102672204, kept) and code 2. Confirmed against machine code.
+
+== 4. Split pans use the pan text object (I5) ==
+$ python3 -I dis.py s9-0001 0x10271c734.json: three blocks call 0x101439ec4 (singleton, vtable 0x106670828) and pass x0 as x3 = formatter to 0x1026f0bcc
+0x10271c844 ldr x21,[x19, #0x2d0]
+0x10271c878 bl 0x101439ec4
+0x10271c87c mov x22,x0
+0x10271c884 add x0,x0,#0x20e
+0x10271c8ac mov x3,x22
+0x10271c8b4 bl 0x1026f0bcc
+
+0x10271c8f0 ldr x21,[x19, #0x2e8]
+0x10271c924 bl 0x101439ec4
+0x10271c928 mov x22,x0
+0x10271c930 add x0,x0,#0x226
+0x10271c958 mov x3,x22
+0x10271c960 bl 0x1026f0bcc
+
+0x10271c99c ldr x21,[x19, #0x300]
+0x10271c9d0 bl 0x101439ec4
+0x10271c9d4 mov x22,x0
+0x10271c9dc add x0,x0,#0x24e
+0x10271ca04 mov x3,x22
+0x10271ca0c bl 0x1026f0bcc
+
+names at 0x105ad120e 'Track Panning', 0x105ad1226 'Left Split Stereo', 0x105ad124e 'Right Split Stereo'.
+
+== 5. Main mixer shares the track mixer setup (cases 003, 026) ==
+corpus 0x1025788b8 (called by SNewCompound<AMainTrackDevice>) first calls 0x10271b660 (ATrackDevice constructor), then adds Global Groove Amount and Crossfade 0x1026f0bcc(-1, 1, 0); no volume, pan or speaker override (corpus-excerpts-review.jsonl).
+
+== 6. Text rules re-read in kept disassembly ==
+0x102183bf4 (s9-0002): fcvt s0,d0; <=0 -> -140; log10f; fmul s0,s0,20.0f; fcvt d0,s0; tail call text object +0x28.
+0x101437334 (s9-0001): '-inf' when (floor -70.0 + 0x3fd3333333333333) >= dB; decimals from (3,1,1,1) = max 3, keep 3 for 10<=|dB|<100 (flag +0x28 = 1), min 1, ' dB' on.
+0x101431c6c (s9-0001): frinta(10^max * x) == 0 -> print 0.0; '%*.*f' at max decimals; strip '0' down to min decimals.
+0x10143a290 (s9-0002): fcmp d0, -0.01 (double); <= 0.01 -> 'C'; |p|*50.0 in double, 0 decimals, 'L'/'R'.
+
+== 7. Reviewer model on the exported copy ==
+cases 37 mismatches []
+graded gains: case, key, gain, exact dB, text, distance to -69.7 or +-0.0005, distance to a 3-decimal halfway point, text unchanged for log10 off by -3..+3 steps
+  ('MIXER-VALUES-001', 'audio/Volume', 1.0, 0.0, '0.0 dB', 0.0005, 0.0005, True)
+  ('MIXER-VALUES-001', 'audio/Send', 0.0003162277571391314, -70.0000002, '-inf dB', 0.3, 0.0005, True)
+  ('MIXER-VALUES-001', 'midi/Volume', 1.0, 0.0, '0.0 dB', 0.0005, 0.0005, True)
+  ('MIXER-VALUES-001', 'cue/Volume', 1.0, 0.0, '0.0 dB', 0.0005, 0.0005, True)
+  ('MIXER-VALUES-001', 'main/Volume', 1.0, 0.0, '0.0 dB', 0.0005, 0.0005, True)
+  ('MIXER-VALUES-001', 'midi/Send', 0.0003162277571391314, -70.0000002, '-inf dB', 0.3, 0.0005, True)
+  ('MIXER-VALUES-001', 'return/Volume', 1.0, 0.0, '0.0 dB', 0.0005, 0.0005, True)
+  ('MIXER-VALUES-002', 'audio/Volume', 0.5011872053146362, -6.0000005, '-6.0 dB', 5.9995, 0.0005, True)
+  ('MIXER-VALUES-003', 'main/Volume', 0.7367056608200073, -2.6541199, '-2.654 dB', 2.65362, 0.00038, True)
+  ('MIXER-VALUES-004', 'audio/Volume', 0.5, -6.0205999, '-6.021 dB', 6.0201, 0.0001, True)
+  ('MIXER-VALUES-005', 'audio/Volume', 0.25, -12.0411998, '-12.041 dB', 12.0407, 0.0003, True)
+  ('MIXER-VALUES-006', 'audio/Volume', 1.9952623844146729, 6.0000003, '6.0 dB', 5.9995, 0.0005, True)
+  ('MIXER-VALUES-007', 'audio/Volume', 0.0003162277571391314, -70.0000002, '-inf dB', 0.3, 0.0005, True)
+  ('MIXER-VALUES-008', 'audio/Volume', 0.9999899864196777, -8.7e-05, '0.0 dB', 0.000413, 0.000413, True)
+  ('MIXER-VALUES-009', 'audio/Volume', 0.0003311311302240938, -69.5999998, '-69.6 dB', 0.1, 0.0005, True)
+  ('MIXER-VALUES-010', 'audio/Volume', 0.00032359364558942616, -69.8000003, '-inf dB', 0.1, 0.0005, True)
+  ('MIXER-VALUES-011', 'audio/Volume', 0.3072499930858612, -10.2501624, '-10.25 dB', 10.249662, 0.000338, True)
+  ('MIXER-VALUES-012', 'midi/Volume', 0.03548133373260498, -29.0000013, '-29.0 dB', 28.999501, 0.000499, True)
+  ('MIXER-VALUES-013', 'return/Volume', 1.5, 3.5218252, '3.522 dB', 3.521325, 0.000325, True)
+  ('MIXER-VALUES-014', 'cue/Volume', 1.9952623844146729, 6.0000003, '6.0 dB', 5.9995, 0.0005, True)
+  ('MIXER-VALUES-015', 'audio/Send', 0.10000000149011612, -19.9999999, '-20.0 dB', 19.9995, 0.0005, True)
+  ('MIXER-VALUES-016', 'audio/Send', 1.0, 0.0, '0.0 dB', 0.0005, 0.0005, True)
+  ('MIXER-VALUES-017', 'midi/Send', 0.0003311311302240938, -69.5999998, '-69.6 dB', 0.1, 0.0005, True)
+closest to -69.7 or +-0.0005: 0.000413  closest to a halfway point: 0.0001  all stable: True
+decimal texts in fixtures and their distance from a binary32 midpoint (in steps): [('-0.0101', 0.0776), ('-0.25', 0.5), ('-0.5', 0.5), ('-0.6', 0.1), ('0.0003162277571', 0.4987), ('0.0003235936455', 0.4969), ('0.0003311311302', 0.4992), ('0.004999999888', 0.4995), ('0.01', 0.26), ('0.0101', 0.0776), ('0.03548133373', 0.4993), ('0.1', 0.3), ('0.2', 0.3), ('0.25', 0.5), ('0.30725', 0.268), ('0.33', 0.06), ('0.5', 0.5), ('0.5011872053', 0.4998), ('0.7367056608', 0.4997), ('0.99999', 0.2722), ('1.5', 0.5), ('1.99526238', 0.463)]
+REQ-006 examples wrong: []
+REQ-007 examples wrong: []
+pan 0.33: binary32 0.33000001311302185 x50 = 16.500000655651093 -> 17R ; decimal 0.33 x50 = 16.5 exactly (a tie)
+range end 0.0003162277571 = 0.0003162277571391314 ; nearest binary32 to 10^(-70/20) is 0.0003162277571391314 ; equal: True
+range end 1.99526238 = 1.9952623844146729 ; nearest binary32 to 10^(6/20) is 1.9952622652053833 ; equal: False
+
+== 8. Package checks on the exported copy ==
+inventory equal: True 42 + manifest
+hash/size mismatches: []
+symlinks: []
+manifest: released 2026-10-18 approved REVIEW.md case_count 37
+links checked in ['AGENTS.md', 'spec.md', 'REVIEW.md', 'README.md']
+fixtures: 37 distinct 37 ascii/LF/no-tab/final-newline True well-formed True
+statuses: {'not-run'} {'not-run'} {'static-derived; not observed reference output'} released-reviewed
+deny-list hits: {'AGENTS.md': ['analyst', 'decompil'], 'REVIEW.md': ['analyst'], 'spec.md': ['analyst', 'probe']}
+$ build_mv1.py verify <export>
+{'payload_files': 42, 'manifest_sha256': '5f6b8401b9324d0cf3d60da47d190e61b93e1935f96995128021f29c9f39cd60', 'hash_or_size_mismatches': [], 'inventory_differences': [], 'unresolved_links': {}, 'missing_case_inputs': [], 'deny_list_hits': {}}
+$ midi-config-v2 reviewer verify_copy.py <export>
+{
+ "symlinks": [],
+ "inventory_diff": [],
+ "hash_or_size_mismatch": [],
+ "markdown_links": 10,
+ "unresolved_links": [],
+ "cases": 37,
+ "manifest_case_count": 37,
+ "missing_inputs": [],
+ "fixture_format_problems": [],
+ "deny_hits": {
+  "manifest.json": [
+   "arm64"
+  ],
+  "cases.json": [
+   "arm64"
+  ],
+  "spec.md": [
+   "arm64"
+  ]
+ },
+ "decompil_mentions": {
+  "AGENTS.md": 1
+ },
+ "manifest_sha256": "5f6b8401b9324d0cf3d60da47d190e61b93e1935f96995128021f29c9f39cd60",
+ "payload_files": 42
+}
+export copy identical to staging:
+yes
+staging manifest sha256: 5f6b8401b9324d0cf3d60da47d190e61b93e1935f96995128021f29c9f39cd60
+Note: do not rerun build_mv1.py build or seal on the reviewed package; both regenerate candidate status and the unreviewed manifest.

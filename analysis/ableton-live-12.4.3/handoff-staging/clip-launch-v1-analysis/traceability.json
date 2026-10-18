@@ -1,0 +1,633 @@
+{
+ "schema": "clip-launch-traceability-v1",
+ "spec": "SPEC-CLIP-LAUNCH r1",
+ "evidence": {
+  "fields": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/static-survey.json schema.field_order_latest, homonyms_latest, evolution; clip-records.tsv (4,130 clips); registry-order-check.txt (28 AClip and 10 AFollowAction registrations = 12.0_12402 order)",
+  "io": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/notes.md 'Static checks run': AClip vtable 0x1067b6cc0 and AFollowAction 0x1067c8830 hold loader 0x101487310 (+0x140) and writer 0x101486cdc (+0x138) (read_ptrs.py)",
+  "text": "handoff/transport-state-v1 REQ-003/004/005/006 (released rules); analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/0x10152bfb8 Bool/Int/Float/Double branches; 0x1002fd908 integer acceptance (n1-0006)",
+  "dup": "analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/add-member 0x101472624 'already has member' (n1-0007)",
+  "enums": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/corpus 0x102438b44 (launch mode); results/s5-0002 0x102438d00 (15 clip values); results/s5-0001 0x10266f738 (14 global, 9 record labels by string-reference order); 0x102503ea0 and s5-0001 0x102505724 (follow actions, short 'Again')",
+  "clipgrid": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0001 0x102442998 (non-zero k -> grid(k - 1) with clip signature; 0 -> song grid)",
+  "init": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0001 0x102436fc4 (Legato false, VelocityAmount UserFloat 0..1 value 0), 0x102505030 (FollowTime 4.0, IsLinked true, LoopIterations 1, Enabled false), 0x102505724 (A 4 at 100, B 0 at 0, jump 1.0); s5-0004 0x1015743b0",
+  "absent": "wiki/research/transport-state-native.md 'How a set reaches the transport objects' (generic loader leaves absent members at constructor values; inferred for AClip/AFollowAction from the shared loader)",
+  "enumload": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/notes.md / spec appendix CL-15: loader stores the enum index directly, setter 0x10156675c not called (N1)",
+  "postload": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/notes.md: post-load slot +0xd0 AClip 0x102441a30, AFollowAction 0x1025044b4",
+  "chance": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0003 0x1025044b4 disassembly 0x1025044f0-0x102504584: fcmp A,B with 0; fadd; fdiv by 100.0f; fdiv A by it; frinta; setter +0x280; 100 - A; Enabled via 0x101564698(...,0) in the zero branch",
+  "ftround": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/s5-0001 0x102505030 calls 0x101565624(...,1,1) (sets +0x70); analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/corpus 0x10156580c; bytes 0x101565860-0x1015658ac re-read from Live.arm64 on 2026-10-18 with fp_opcodes.py: fcmp/fcsel sign, fmadd x + s*(1/3843840)*0.5, fabs, fmul 3843840.0, frintm, fdiv, fmul sign (same sequence as the grid rounding in 0x101aaae44)",
+  "registry": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/notes.md pre-round: translators registered in 0x10148ec98 (0x196, 0x1a1, 0x1a5, 0x2ee8, 0x2fab)",
+  "m406": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0003 0x1014b6d14.c: FollowTime default 1.0 when absent; FollowChanceA default 1.0, B 0; 'Unexpected member FollowAction' when present (excluded)",
+  "m417": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0003 0x1014b82d8.c: only when FollowActionEnabled absent; (A!=0 && chA!=0) || (B!=0 && chB!=0)",
+  "m421": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0002 0x1014b8b00 (disassembly mov w1,#0x4 at 0x1014b8be4): IsLinked := !Enabled && A==0 && B==0 && FT==4.0, then A := 4",
+  "m12203": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0004 0x1014c04d0.c (pseudocode; disassembly retained): default scene FollowAction (4.0, 1, 0, 0, 100, 0, false, 1, 1, IsLinked true); else IsLinked := !Enabled && FT==4 && A==4 && B==0 && chA==100 && chB==0",
+  "schemas": "analysis/ableton-live-12.4.3/r2/s2-static-v1/out/schemas.json: 11.0_405, 12.0_12117, 12.0_12402 in S; 11.0_405 MidiClip holds FollowTime..FollowChanceB after VelocityAmount; 11.0_405 LiveSet has no Scenes",
+  "grid": "analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/results/s5-0001 0x101aaae44: sub w8,w1,#1; cmp w8,#0xc; b.hi default 0; jump table 0x105846ef8; constants 8*bar, 2*bar (fadd), 2.0, 1/3, 1/6, 0.125 spot-checked in the dossier on 2026-10-18"
+ },
+ "assumptions": {
+  "A2": "A clip and its follow action read from a document start with the initial values and receive only the members present, stored as read without range checks (spec r1 A2). Payload: first bullet of 'What the contract means'.",
+  "A3": "The opening corrections run for every clip read from a Live Set (spec r1 A3). Payload: second bullet.",
+  "A5": "Conversion applies every step numbered above the suffix number, in increasing order, before values are read (spec r1 A5). Payload: fourth bullet.",
+  "A7": "The chance setter (+0x280) stores the computed values unchanged for integral results in 0..100; the chance controller 0x10652b4d8 was not read (spec r1 REQ-012 U clause). Payload: third bullet."
+ },
+ "cases": {
+  "CLIP-LAUNCH-001": {
+   "source": "CLC-002",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-002": {
+   "source": "CLC-001",
+   "evidence": [
+    "clipgrid",
+    "enums",
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-003": {
+   "source": "REQ-004/005 largest values (new; CLC-018 reached them through the scripting interface)",
+   "evidence": [
+    "clipgrid",
+    "enums"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-004": {
+   "source": "REQ-001 audio clip (new)",
+   "evidence": [
+    "clipgrid",
+    "enums",
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-005": {
+   "source": "CLC-009 (authored arrangement clip)",
+   "evidence": [
+    "clipgrid",
+    "enums",
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-006": {
+   "source": "CLC-006",
+   "evidence": [
+    "clipgrid",
+    "enums",
+    "fields",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-007": {
+   "source": "CLC-007",
+   "evidence": [
+    "clipgrid",
+    "enums",
+    "fields",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-008": {
+   "source": "REQ-005 boundary (new)",
+   "evidence": [
+    "clipgrid",
+    "enums",
+    "fields",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-009": {
+   "source": "CLC-008",
+   "evidence": [
+    "enums",
+    "fields",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-010": {
+   "source": "REQ-006 boundary (new)",
+   "evidence": [
+    "enums",
+    "fields",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-011": {
+   "source": "CLC-010",
+   "evidence": [
+    "enums",
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-012": {
+   "source": "REQ-001 Boolean and binary32 (new)",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-013": {
+   "source": "REQ-001 Boolean '1' (new)",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-014": {
+   "source": "REQ-001 binary32 rounding (new)",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-015": {
+   "source": "REQ-001 integer spellings (new)",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-016": {
+   "source": "REQ-002 decimal prefix (new)",
+   "evidence": [
+    "fields",
+    "ftround",
+    "io",
+    "postload",
+    "text"
+   ],
+   "assumptions": [
+    "A2",
+    "A3"
+   ]
+  },
+  "CLIP-LAUNCH-017": {
+   "source": "CLC-003",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-018": {
+   "source": "CLC-004",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-019": {
+   "source": "CLC-005",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-020": {
+   "source": "REQ-001 binary32 refusal (new)",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-021": {
+   "source": "REQ-003 integer refusal (new)",
+   "evidence": [
+    "fields",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-022": {
+   "source": "REQ-002 Boolean refusal (new)",
+   "evidence": [
+    "fields",
+    "io",
+    "text"
+   ],
+   "assumptions": []
+  },
+  "CLIP-LAUNCH-023": {
+   "source": "CLC-011",
+   "evidence": [
+    "absent",
+    "init",
+    "io"
+   ],
+   "assumptions": [
+    "A2"
+   ]
+  },
+  "CLIP-LAUNCH-024": {
+   "source": "CLC-012",
+   "evidence": [
+    "absent",
+    "init",
+    "io"
+   ],
+   "assumptions": [
+    "A2"
+   ]
+  },
+  "CLIP-LAUNCH-025": {
+   "source": "REQ-009 follow-action children (new)",
+   "evidence": [
+    "absent",
+    "init",
+    "io"
+   ],
+   "assumptions": [
+    "A2"
+   ]
+  },
+  "CLIP-LAUNCH-026": {
+   "source": "CLC-014 narrowed to outcome",
+   "evidence": [
+    "enumload",
+    "text"
+   ],
+   "assumptions": [
+    "A2"
+   ]
+  },
+  "CLIP-LAUNCH-027": {
+   "source": "CLC-015 narrowed to outcome",
+   "evidence": [
+    "enumload",
+    "text"
+   ],
+   "assumptions": [
+    "A2"
+   ]
+  },
+  "CLIP-LAUNCH-028": {
+   "source": "REQ-011 follow action (new)",
+   "evidence": [
+    "enumload",
+    "text"
+   ],
+   "assumptions": [
+    "A2"
+   ]
+  },
+  "CLIP-LAUNCH-029": {
+   "source": "CLC-019",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-030": {
+   "source": "CLC-020",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-031": {
+   "source": "CLC-021",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-032": {
+   "source": "CLC-022",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-033": {
+   "source": "REQ-012 zero A (new)",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-034": {
+   "source": "REQ-012/014 fraction example (new, at 12.0_12402)",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-035": {
+   "source": "REQ-012 enabled unchanged (new)",
+   "evidence": [
+    "chance",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-036": {
+   "source": "REQ-009 + REQ-012 (new)",
+   "evidence": [
+    "absent",
+    "chance",
+    "init",
+    "io",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-037": {
+   "source": "CLC-024",
+   "evidence": [
+    "ftround",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3"
+   ]
+  },
+  "CLIP-LAUNCH-038": {
+   "source": "CLC-025 (values instead of saved text)",
+   "evidence": [
+    "ftround",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3"
+   ]
+  },
+  "CLIP-LAUNCH-039": {
+   "source": "REQ-013 example 1e-8 (new)",
+   "evidence": [
+    "ftround",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3"
+   ]
+  },
+  "CLIP-LAUNCH-040": {
+   "source": "REQ-013 triplet lattice (new)",
+   "evidence": [
+    "ftround",
+    "postload"
+   ],
+   "assumptions": [
+    "A2",
+    "A3"
+   ]
+  },
+  "CLIP-LAUNCH-041": {
+   "source": "CLC-028 (authored 11.0_405 fixture)",
+   "evidence": [
+    "absent",
+    "chance",
+    "init",
+    "io",
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "postload",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-042": {
+   "source": "CLC-029 (authored 11.0_405 fixture)",
+   "evidence": [
+    "absent",
+    "chance",
+    "init",
+    "io",
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "postload",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-043": {
+   "source": "REQ-014 step 417 then 421 (new)",
+   "evidence": [
+    "chance",
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "postload",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5",
+    "A7"
+   ]
+  },
+  "CLIP-LAUNCH-044": {
+   "source": "REQ-014 step 421 FT != 4 (new)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  },
+  "CLIP-LAUNCH-045": {
+   "source": "REQ-014 step 406 default (new)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  },
+  "CLIP-LAUNCH-046": {
+   "source": "CLC-026 (authored 12.0_12117 fixture; values instead of saved)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  },
+  "CLIP-LAUNCH-047": {
+   "source": "CLC-027 (values instead of saved)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  },
+  "CLIP-LAUNCH-048": {
+   "source": "REQ-014 step 12203 default (new)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  },
+  "CLIP-LAUNCH-049": {
+   "source": "REQ-014 step 12203 enabled (new)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  },
+  "CLIP-LAUNCH-050": {
+   "source": "REQ-014 no conversion at 12402 (new)",
+   "evidence": [
+    "m12203",
+    "m406",
+    "m417",
+    "m421",
+    "registry",
+    "schemas"
+   ],
+   "assumptions": [
+    "A2",
+    "A3",
+    "A5"
+   ]
+  }
+ },
+ "parent_cases_not_released": {
+  "CLC-013": "REQ-010 unreleased (preference defaults, Q-017)",
+  "CLC-016, CLC-017": "scripting interface excluded",
+  "CLC-018": "API part excluded; values covered by case 003",
+  "CLC-023": "chance above the 0-100 bound (A2 for floats unestablished)",
+  "CLC-030": "REQ-008 unreleased (Q-017)",
+  "CLC-031 to CLC-056": "launch timing, REQ-016 to 019 unreleased (A1, A4, Q-017)"
+ }
+}

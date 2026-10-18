@@ -1,0 +1,133 @@
+plugin-discovery-v1 handoff review: reviewer checks (analyst-side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I from any directory.
+Scripts: getfn.py (print a corpus function with its code SHA-256), restate.py (independent restatement + fixture and
+package checks), evidence_hashes.py, apply_review_edits.py (payload text edits), finalize_manifest.py (status, review
+fields, re-hash).
+
+Mapping to the plan's IDs:
+ RVP-01 = new (obligation 3 attribution; cases 016, 035).
+ RVP-02 = F2 leak in manifest behavior exclusion ("including VST3 before VST2"); reworded.
+ RVP-03 = Q-016 observability ruling. RVP-04 = Q-016 residual: plain-file candidates (021 J.vst3, 028) unobservable by loads.
+ RVP-05 = F1-F7 all confirmed, no leak. RVP-06 = I3, I4, I5 confirmed by reviewer reading; I1, I2 accepted.
+ RVP-07 = 20 new cases + candidate-set representation + subset usefulness accepted (review gate 1).
+ RVP-09 = evidence identity (gate 3). RVP-10 = sharing (gate 4).
+
+== 1. Evidence read by the reviewer (code SHA-256 of each corpus function, all equal to traceability.json prefixes) ==
+Live C1 /var/tmp/sound-analysis/corpus:
+ 0x1030ad96c 8d034202 selector 2 -> FSFindFolder domain 0xffff8005, 3 -> 0xffff8003; not found -> empty path
+ 0x1030adbbc 95d65a93 FSFindFolder(domain,'aplg',kDontCreate) + "VST"; kept only if 0x103e970a4 (is-directory) passes
+ 0x103e970a4 9f7983f6 -> 0x103e89910 1484a935 status type == 3 (directory)
+ 0x103e9e3d8 bad54697 NSHomeDirectory UTF-8
+N4 corpus-code: 0x1031b8e5c adds user and local items ALWAYS (path may be empty); 0x1031b8c68 / 0x1031c0d2c two
+ Booleans per format gate system pair and custom; 0x1031c0144 custom only when non-empty; 0x1031c0f28 user = home +
+ Library/Audio/Plug-Ins/VST3 (non-empty home), local = /Library/Audio/Plug-Ins/VST3 always.
+Scanner H1 pseudocode / scanner corpus /var/tmp/sound-analysis/helpers/Ableton_Plugin_Scanner/corpus:
+ 0x1005e9fd8, 0x1005aca28: one root per walk call; results grouped per ID; missing root -> empty set, loop continues.
+ 0x1005e8cb4 VST3: boost recursive_directory_iterator (options 5); per-root error code reset; construct/increment error
+   -> "Reading directory failed", next root. Extension of canonical path == ".vst3" (exact); insert when status ok
+   (no type check: files and directories); match on a directory clears the recursion flag.
+ 0x1005aad10 VST2: FIFO; DirectoryIterator per popped folder (thunk 0x1006606b0 -> 0x1006b90f0 cc809c67 =
+   boost::filesystem::directory_iterator::construct): EMPTY PATH -> ENOENT error before opendir; opendir failure ->
+   errno error; options 0 so EACCES is reported (not silently skipped); walk logs "Failed to scan folder" and
+   continues with the queue. Iteration skips only "." and ".." (hidden entries are returned).
+ 0x100674264 3e78d677 canonical: resolves "."/".." and symlinks only; no realpath, no case change (I5 confirmed).
+ 0x10066f1e4 8ec6565d / 0x10066f240 d7b11c36 status type 3 (boost directory_file).
+ 0x1006c4724 c6b040ef extension from last '.'; "." and ".." empty. As decompiled, a leading-period name gets its
+   whole name as extension, but the guard for that branch is rendered unreachable -> unresolved, excluded (F5).
+ 0x100679138 0f1ef4e8 exact component compare. 0x1006ad5c8 006d11f7 per-code-point lower via 0x1006b4f14 c3a97fd4.
+Live C2 strings.jsonl (eca2037497cf83b5...): "clap" only in drum names (Hand Clap, Clap, Drums|Clap, DS Clap, claps).
+
+Weakest-provenance cases traced: 010 and the absent-or-empty rule (empty VST2 system path -> construct ENOENT ->
+nothing; other roots continue); 033/034 (mode 000: Live stat passes, opendir EACCES reported, skipped, continue);
+016 (argv items user/local/custom only, scanner has no folder path); 021 (status-only insert); 019/022/026/027
+(exact vs lowered compare); 035 (no CLAP option or string).
+
+Leads for the spec author (not released): VST3 iterator option value 5 matches Boost >=1.72 directory_options
+skip_permission_denied|skip_dangling_symlinks, suggesting an unreadable VST3 subfolder is skipped rather than ending
+the root; confirm the Boost version before any release. The VST2 lister returns hidden entries; the only open part of
+F5 is the extension of a leading-period name.
+
+== 2. Independent restatement and fixture checks (export copy) ==
+$ python3 -I restate.py COPY
+PLUGIN-DISCOVERY-001 {'vst3_candidates': 2, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-002 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 0, 'vst2': 2} agree
+PLUGIN-DISCOVERY-003 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 1, 'vst2': 2} agree
+PLUGIN-DISCOVERY-004 {'vst3_candidates': 3, 'vst2_candidates': 0} folders {'vst3': 3, 'vst2': 2} agree
+PLUGIN-DISCOVERY-005 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-006 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-007 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-008 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 3, 'vst2': 2} agree
+PLUGIN-DISCOVERY-009 {'vst3_candidates': 0, 'vst2_candidates': 2} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-010 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-011 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 0} agree
+PLUGIN-DISCOVERY-012 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 1} agree
+PLUGIN-DISCOVERY-013 {'vst3_candidates': 0, 'vst2_candidates': 3} folders {'vst3': 2, 'vst2': 3} agree
+PLUGIN-DISCOVERY-014 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 3} agree
+PLUGIN-DISCOVERY-015 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 0, 'vst2': 2} agree
+PLUGIN-DISCOVERY-016 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-017 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-018 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-019 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-020 {'vst3_candidates': 1, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-021 {'vst3_candidates': 2, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-022 {'vst3_candidates': 2, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-023 {'vst3_candidates': 4, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-024 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-025 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-026 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-027 {'vst3_candidates': 0, 'vst2_candidates': 2} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-028 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-029 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-030 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-031 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-032 {'vst3_candidates': 0, 'vst2_candidates': 3} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-033 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-034 {'vst3_candidates': 0, 'vst2_candidates': 1} folders {'vst3': 2, 'vst2': 2} agree
+PLUGIN-DISCOVERY-035 {'vst3_candidates': 0, 'vst2_candidates': 0} folders {'vst3': 2, 'vst2': 2} agree
+cases 35 distinct fixtures 35
+inventory equal: True 40
+hash/size mismatches: []
+symlinks: []
+problems: none
+
+== 3. Reviewer hygiene scan (broad deny list; payload incl. REVIEW.md) ==
+AGENTS.md:11:decompilation, source traces, research drafts, verification internals and
+(only hit expected: AGENTS.md forbidden-inputs list)
+
+== 4. Evidence identity ==
+bc605ee862281f4bbd590c4d59631fdf6fbc76a338b2e70008b986d571c98007  r2/h1-plugin-scanner-v1/manifest.json
+9970697396176e016eb4fe398602c4ec16043ab54c538a60833800ada581500f  r2/n4-helper-contracts-v1/manifest.json
+3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad  derived/Live.arm64
+6ce847b0f56d842d638ca638546636ecdba66f5942fa668f4d2d3403f2a97ad6  /var/tmp/sound-analysis/helpers/Ableton_Plugin_Scanner/Ableton_Plugin_Scanner.arm64
+h1-plugin-scanner-v1 listed 68 mismatches []
+n4-helper-contracts-v1 listed 190 mismatches []
+
+== 5. Export verification of the final package (copy at /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/review-pd1/plugin-discovery-v1) ==
+$ python3 -I -B ../build_pd.py verify COPY
+{
+ "dir": "/tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/review-pd1/plugin-discovery-v1",
+ "payload_files": 40,
+ "files_including_manifest": 41,
+ "manifest_sha256": "9c3c739b0cf624d793a18bff6c36f5677934863af4da6be61dcd4a55555f6113",
+ "hash_or_size_mismatches": [],
+ "inventory_differences": [],
+ "markdown_links": {
+  "AGENTS.md": 0,
+  "spec.md": 4,
+  "REVIEW.md": 1,
+  "README.md": 5
+ },
+ "unresolved_links": {},
+ "missing_case_inputs": [],
+ "deny_list_hits": {},
+ "symlinks": [],
+ "allowed_hits": {
+  "AGENTS.md": [
+   "decompil"
+  ]
+ }
+}
+$ sha256sum -c (manifest files[])
+all 40 OK
+copy byte-identical to staging
+manifest sha256: 9c3c739b0cf624d793a18bff6c36f5677934863af4da6be61dcd4a55555f6113

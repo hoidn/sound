@@ -1,0 +1,279 @@
+warp-markers-v1 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I from any directory.
+Corpus lookups: /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/s8-warp-v1/corpus_lookup.py with S8_CACHE outside the evidence run (session scratch); records relied on are retained in corpus-excerpts.jsonl (chunk, offset, line SHA-256).
+
+== 1. Evidence identity
+== image sha256
+3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad  derived/Live.arm64
+S8 manifest sha256 29df9ec709f9af6d20f0a28c72b18604074404d7a3c3fa7c1a71fd9ec607e793 files 76 mismatches []
+unretained query rounds (full SHA-256 of every file):
+7f82d9f51763f5c83e2e24076e3f472c7bcbb18c597b3009070988a770fb0536  d7-0001/functions/0x101b39d8c.c
+ccb51bdf37f68745f078d1515629c6a328ccb6904b43cf9a024ad8ca8e02fa92  d7-0001/functions/0x101b39d8c.json
+d5a242faeb6cceb3ab74864b116058a1ed660b32d4a35bc1a3b8cfa2b786ef3d  d7-0001/functions/0x101b39e20.c
+faa6c40090e2e8de34de64fd4f50b9f99b01777b2095a1fb7a3a36487f33da37  d7-0001/functions/0x101b39e20.json
+c3b41f46192626218114c2ebf716b2e496bec70e792d7ecbf053abb44511b3a9  d7-0001/functions/0x10277b71c.c
+e9edd575ebf936adbadc43041b055c43585a3f2e465e794b8a5b27b123d264c0  d7-0001/functions/0x10277b71c.json
+e9d76eaf95d2e4a480820b248af00f008a059f8d3d26b327db0908d3a35aba8d  d7-0001/functions/0x1027beb9c.c
+7281cbfa810f9b5eaa9ff16c14b20bda60cd3c37915e3922e604faeda4fdde3f  d7-0001/functions/0x1027beb9c.json
+30387e54fbbf1a40efac7f512239a8918f73f9933cdbd80a833863d944e619f2  d7-0001/functions/0x1028939a4.c
+3c6d2e839361bea9687301c642d79d0884d0baee31c0bf853337f6832ca4fab0  d7-0001/functions/0x1028939a4.json
+0298ac4a960f2547dd7c8e10de54134c86646bdcef401233c4cb188de93a37c7  d7-0001/functions/0x102893b1c.c
+49236b32f9d186d99c5907e10448cf9cd8d1476c903f0163b40edb733a52e796  d7-0001/functions/0x102893b1c.json
+36910f284be64bc63c2dbe88611215c2589b6eefd510e7ed3515df13b294e67f  d7-0001/functions/0x1033bf160.c
+b454af4327afd1639db83d57d3421a31e28468e64900a502979e1b5573eac9b9  d7-0001/functions/0x1033bf160.json
+e461c39301f6123e84a8d8208a92b3577d7196ace598e06fe38b677e865a9ed8  d7-0001/functions/0x1033bf250.c
+ea52917cec944adab7225a7733085c686315323ada9c0c7f11667aa20e444046  d7-0001/functions/0x1033bf250.json
+90af824c98c5bd729c167612e1eb42c6aa9f364bad157584ec9f60e21d7a3c07  d7-0001/manifest.json
+1dede799454897a1b6f52692457375e8a0740ff57cbf7ae1cbe3e0e3f26dfa1f  d7-0001/queries.json
+b04556dc4a8f351d68231648a83704f39fa016590342bfe0b984ba651fd896ad  d7-0002/functions/0x101b39d74.c
+6fbadd453b6831d5475a37b239098f9d0724fd7b7bd4b39930fe25d396733493  d7-0002/functions/0x101b39d74.json
+59a5508f37d188d9a7ec441cccbb61ca54576eca9c06b80007a57286ad5e4419  d7-0002/functions/0x101b39d80.c
+e1fbfcae28d4b6dbd7683a21229943552fa2766cff471ff95d6a87bae1a34e74  d7-0002/functions/0x101b39d80.json
+5c9b7c40008859c224e15dcd6ec8ecb238479e2abd9940d4f3ff57ec497490e6  d7-0002/functions/0x102610264.c
+db0642aba132efbbd037e1207d2901caaea7da96a379c6dd1d33e9ed6aa7602b  d7-0002/functions/0x102610264.json
+eb732ba50d62185d665e688b4ee731ed2a85388461c9b8c3a72cd7f5dcb796c6  d7-0002/functions/0x10261026c.c
+58e99e1c8f19e7dbc7896f8e32e3d6eaefbc6f2ee67d6a359e7918eb5eb3ebf2  d7-0002/functions/0x10261026c.json
+4dea2ad419d035cf6f3c92ba4da47f5306968eb322a1c26d65ce240bd7b655f0  d7-0002/functions/0x1027bec54.c
+7f281d309c72949db9a602b27eda4ae54d9feff6125016901611ba7569c2e98f  d7-0002/functions/0x1027bec54.json
+0007bc9700545fd87efe6ea7b6e6c428614f3988b3c631684e408f086321be86  d7-0002/functions/0x1027c6ec0.c
+0fb8f0c3f9237292a7be5e065456c0d6f11e5ca23bb06f4aa7e7271559ff5626  d7-0002/functions/0x1027c6ec0.json
+62f217eaf5c400a26886bf8da10d35ebc39d119511fbce5c1aab719f2f1f16ba  d7-0002/functions/0x1027c6ed0.c
+37c28040a23c2c4fd2686e2822c98e7cdb5bea3cc5326de032b854703e312cd2  d7-0002/functions/0x1027c6ed0.json
+d9442ea76c5f37be53c57c5159860b48dbfc26497652cabf2afd597f5e362a2f  d7-0002/functions/0x102883578.c
+01893217b8723ac4a3678c7562fe4c2fce01eeff4706883f7a43764954a846da  d7-0002/functions/0x102883578.json
+d55bc6f8e96deb0d6e1d1c46e2b1fd62a63802d35f95827f4a035354bd709312  d7-0002/manifest.json
+ce8a537e5103febbd6f023c23a032b53d99bc4e20d5ce37fbeb1514904fdc118  d7-0002/queries.json
+
+== 2. Image reads (vtable slots used by the conversions, the add and the completion step)
+== AAudioClip vtable 0x10680bea0 slot +0x300 (warped test used by conversions, add and post-read)
+0x10680c1a0 +0x000 raw=0x000000010243ea38 -> 0x10243ea38
+== slot +0x4b0 (marker list used by the add)
+0x10680c350 +0x000 raw=0x00000001027c6ed0 -> 0x1027c6ed0
+
+== 3. Automatic-warping facility present in the image (strings index)
+0x105890a78 "NSt3__110__function6__funcIZN10AAudioClip20SetupAutoWarpMarkersENS2_13TLoopBehaviorEbE3$_0NS_9allocatorIS4_EEFbvEEE" string []
+0x105890aec "ZN10AAudioClip20SetupAutoWarpMarkersENS_13TLoopBehaviorEbE3$_0" string [('0x1027ce7b8', 'FUN_1027ce7b8')]
+0x105adb2a3 "^(?:clip ([^\\s]+|\"[^\\\"]+\")|the clip) should( not)? have Auto-Warp pending$" TerminatedCString [('0x1004eac98', 'FUN_1004eac98')]
+0x105adf6f4 "ShouldAutoWarpBePending" TerminatedCString [('0x1004e4a44', 'FUN_1004e4a44')]
+0x105adf70c "pAudioClip->AutoWarpIsPending()" TerminatedCString [('0x1004e4a44', 'FUN_1004e4a44')]
+0x105bd1ca1 "SamplesToAutoWarp != NAutoWarper::TSamplesToAutoWarp::KInvalid" TerminatedCString [('0x1054240d4', 'FUN_1054240d4'), ('0x1054240f8', 'FUN_1054240f8')]
+0x105bd1ce0 "products/live/Live/IceSample/Exp/AutoWarperTypes.h" TerminatedCString [('0x1054240d4', 'FUN_1054240d4'), ('0x1054240f8', 'FUN_1054240f8')]
+0x1062c3da4 "mpLongClipAutoAutoWarp" unicode [('0x1026a292c', 'FUN_1026a292c')]
+0x1062c6dd4 "mpMarkersGenerated" unicode [('0x1027aff6c', 'FUN_1027aff6c'), ('0x10285d098', 'FUN_10285d098')]
+0x1062c85ac "mpSamplesToAutoWarp" unicode [('0x102875ec0', 'FUN_102875ec0')]
+0x108134dc7 "GuessClipLengthEN11NAutoWarper18TSamplesToAutoWarpE" string []
+0x108135204 "AreMarkersGeneratedEv" string []
+0x10813a254 "7SamplesToAutoWarpEv" string []
+0x108182f40 "SuggestsAutoWarpEv" string []
+0x108182fa2 "GuessSampleLengthEN7ableton4estd8optionalI14TTimeSignatureEEPK5ASongNS2_IfEEN11NAutoWarper18TSamplesToAutoWarpENS2_INS0_8datatype8DistanceINSB_4UnitINS0_4time5units10SecondKindENSt3__15ratioILl1ELl1EEEEEdEEEE" string []
+0x108183196 "SampleIsRatherLongERKN7ableton4estd8optionalI14TTimeSignatureEERKNS2_IfEEN11NAutoWarper18TSamplesToAutoWarpE" string []
+0x108183583 "4DetermineLoopAndAutoWarpPropertiesEN11NAutoWarper18TSamplesToAutoWarpE" string []
+
+== 4. Retained corpus records relied on by the review
+0x102441a30 chunk-01717.jsonl 75964 8a168087a6732afd0fc60368a62d033ab2b9d6b9e16933201da67aecdcc1ded7
+0x1024dece8 chunk-01760.jsonl 24054 603243ed319c2d6e25b308653c24692c9bc6f510581b07e8c5b253ac1cee9a6a
+0x1024dece0 chunk-01760.jsonl 23570 ad3f40df313cb6cb0dddc14e2aa12c6179edeee389c7990f111157918b32646a
+0x1015654e0 chunk-00832.jsonl 50328 d5d06ccedfe2a5008d56c96399bd1be45f7eb13f67629d47f7051fbb31c04433
+0x1015652f0 chunk-00832.jsonl 46282 8e5a2e7cb27de9823ba3c715becc8500a3605445c589b0c06d817d2be803774e
+0x1015692c0 chunk-00834.jsonl 28745 cdb314a03cf48b424813c6359e69d6079bb73be51fdb625b7b8411e4ac0435cd
+0x10155e55c chunk-00829.jsonl 54364 2b33c9bf672de1d192f507f7024036c47ee7366f087a22f98d1bbab754577e8b
+0x1027b3928 chunk-01943.jsonl 22611 aee4101e1bf3c81ffc931cae9c30a2ea44c0c96143029df282f4d69e2b1dac55
+0x102610134 chunk-01837.jsonl 52284 a0c88e1178076ee1c1a290be4abf21799f5be5a646893c057d365096da2df916
+0x1027b7cf0 chunk-01943.jsonl 111280 8bb94a2519351deaa8247655f05d6aea63dbe18d42d5f139f16aac4139f2030c
+0x102610290 chunk-01837.jsonl 58972 49c7352c895709664be9e604e63847b1b19d245d95197c642dbd8a21ded7a86d
+0x102610298 chunk-01837.jsonl 59456 353d997eb8eb1f4cb94ac8e6eff74811de88719d0acff9ad9b12bbf26a75dc8d
+0x10243afa0 chunk-01715.jsonl 78187 470f15cf9ac02659963ebb02e8d34caaee0327d8f472ec9a4a62a7cc3ebbce90
+0x10256d5ac chunk-01790.jsonl 95569 7a8f8792af4698d1c6408a1d2bece00b7e73717c5e30f55e85472fa649e27b52
+0x101565624 chunk-00832.jsonl 53282 ec36a6b9e7da3b1af59fd1bb7ddb441d73e5d2196f32934b3e27628dc38fa7f9
+0x10279b15c chunk-01936.jsonl 116476 c3e4ae9ac1283f4b2fd7971a5e94600eaa253296c716bd8db6f45368052bc9cc
+0x102440ff0 chunk-01717.jsonl 53788 a157e52987ce8670a8e3333ab2ba9683c698646c0deb137679dd3f6785f0c90a
+0x10283b098 chunk-01971.jsonl 54749 224177c0856ed8c1c6a45a3d3f3ee0bc3f47d1405ddd70dd90ff834d8e686751
+0x10283adb8 chunk-01971.jsonl 49250 c075bdd598558938eaaa234a0d8ee0b3bbe11d540639648a18a55cd84ab61f1b
+0x101505400 chunk-00807.jsonl 8425 5f917940db5479248128f43650d6a62e731a2f355596609904d35e90b7cd0c6c
+0x101506558 chunk-00807.jsonl 40008 6e7ad2a0d6a75df3c4baf346233bfa60c32a1c20492d4e4db13871256be1bab6
+0x1027b6954 chunk-01943.jsonl 84592 a9273a84a15a43dac5836ce148820dff0b0737e1b858958c6164efdde6c20521
+0x102884178 chunk-01988.jsonl 137911 dd04d689c5ad238639f50faec3b00b432f39a90da754ec8cbd79a66480bd8eb8
+0x101486fa8 chunk-00796.jsonl 122175 df096ebc7c917e521ab3b37e503ab95ef806d5b56105a8f8797e55b1e6a8ecbb
+0x10243ea38 chunk-01716.jsonl 105086 7db8e0e26d24a6a623f10310c6c1cd0ee728df65acd426b36e3ea642d608e2b1
+0x1015645a0 chunk-00832.jsonl 1737 e3ae03e71b6c9643100ef8c5651633ad823b8f30cae7e737dfcf45f30feb524e
+0x102435a28 chunk-01714.jsonl 98816 0f819d7f9f8f6af13c912ad11d340bdb923a1735340bfc7e92cabfb87dede4e5
+0x1027c79d0 chunk-01946.jsonl 4107 e622608601079a10c2d2094915ba0c1d83c65b365da5ba1473cc41f6c287faa9
+0x1021862f0 chunk-01549.jsonl 47960 8ab3d4e7ad96287777c52f8ce1a52ddbf8361ccd6b7419fe5361f0723b88d31b
+0x1027baad8 chunk-01943.jsonl 189026 c58f7c565664c329a80268a9c468eef3c5c38236407abed55839320890ab2cc8
+0x1027c6eec chunk-01945.jsonl 165512 1653fb461b6cad63b57882a925924a5a24b865c37606afddc4602def6042fa47
+0x1015743b0 chunk-00839.jsonl 0 65fda394526709bfe4d79dec3a4758b04ffabdf5c84523af6b410100c6c8b1fb
+0x101568960 chunk-00834.jsonl 4168 6ea591aa7dc4cd303628ee02b07e0e9f8d3d89d930462577de63a9527dd7ab49
+
+== 5. Rulings, mapped to the plan's IDs (plan page: wiki/specs/warp-markers-handoff-plan.md)
+Brief items:
+ (a) A1/A2/A3 (Q-021). No case grades saved values (no save action exists), conversion values (019/020 grade only the
+     not-warped refusal, decided before any table use in 0x1033bf160 / 0x1033bf250), or an empty audio-clip list (018 is
+     a sample part). Confirmed. F1 confirmed: the opening half of A2 is a premise of 001-006, 009-018 (held values),
+     022, 025-038 (list-dependent calls) and of 019-021, 023, 024 (IsWarped as read). Only 007 and 008 are decided
+     during reading. The traceability table omits I3 for 019-021 and 024; that is wrong but analyst-side only.
+     Hidden-dependence search per case: the shadow's SecTime in 001-006 (REQ-007's A2-tagged clause): M1 keeps the
+     standard 1/32 spacing; no completion step moves the last marker; 22 of 211 shipped clips with n>=3 also have a
+     shadow tempo that differs from the previous segment, so M1 is an application-written form. Add/remove outcomes do
+     not depend on the shadow's SecTime (scan reaches the shadow branch either way). 018: sample-part completion step =
+     owner links + warp mode copied to the display chooser (0x10288538c -> 0x102884178); 4,244 shipped empty lists.
+     002/038: an unwarped clip with four markers is not a shipped form (all 2,479 shipped unwarped clips have two
+     markers); the completion step only sets the list flag +0x31 = !IsWarped (0x10155e55c). Kept under RVW-01.
+     Ruling (RVW-01): read path established by the review's own trace of 0x1027c1c7c and its callees (0x102441a30,
+     0x1024dece8, 0x1024dece0, 0x1015654e0, 0x1015652f0, 0x10155e55c, 0x1027b3928 -> 0x102610134, 0x1027b7cf0 ->
+     0x102610290/0x102610298, 0x10243afa0, 0x10256d5ac -> 0x101565624, 0x10279b15c, 0x102440ff0, 0x10283b098,
+     0x10283adb8, 0x101505400/0x101506558) and of 0x10288538c / 0x102884178 and 0x101486fa8. Untraced: 0x10283b20c,
+     0x10283b344 (onset helpers), indirect calls +0x1e8 (param_1[0x24]), +0x2a0, +0x2b0, +0x248 (param_1[0x74]), +0x1b0
+     (sample). The rest of A2's opening half (deferred application activity; AAudioClip::SetupAutoWarpMarkers,
+     AutoWarpIsPending, MarkersGenerated, SamplesToAutoWarp exist; trigger on open untraced) is excluded by defining
+     "held after opening" as the read result; obligation keeps the saved SampleRef and MarkersGenerated, observes right
+     after opening, and uses 001/002 as controls. Reachability of the marker writers (setters 0x1026101a0/0x1026101b4,
+     insert 0x1027baad8, delete 0x1027c6eec, append 0x102612464, rescale 0x102610bc4) from opening was NOT bounded:
+     several callers are reached only through dispatch tables; not pursued further.
+ (b) F2 confirmed for the payload: no case grades TransientEnvelope; REQ-010's seven defaults re-derived from the
+     constructor triples (members 0x4e0, 0x4f8, 0x510, 0x528, 0x540 = registration offsets +8) and enum inits 6/2.
+     ComplexProFormants 100 = 0x10224e2dc, independent. TransientEnvelope (member 0x588): (0, 1.0, 100); 0x1015743b0 ->
+     0x101568960 stores the initial value 100 unclamped, so creation holds 100 (refines F2: only the range is open).
+     Payload text "any TransientEnvelope value" contradicted every fixture -> RVW-02.
+ (c) REQ-015 re-derived from the 0x1033bf42c disassembly (range test bVar1/bVar2; scan; left check skipped for the first
+     node; right check skipped for the shadow; q() block 0x1033bf774-0x1033bf7c0; FUN_10261025c(d0 = rounded beat,
+     d1 = p); bounds 0x1027afd40 returns d0 = min, d1 = max via fcsel; b.hi / b.lt make the bounds inclusive and refuse
+     NaN). 0x1021862f0 = (bpm/60)*ds. Lookup 0x1027c79d0 (corpus). Edge bands: see edges-output.txt (RVW-03). F3
+     confirmed. F4 confirmed (insert returns on equal SecTime/BeatTime; delete returns below three markers). F5
+     confirmed (0x1033bfb94 tests only the audio-clip class). Case 024 re-authored (RVW-04): under I4's unit doubt, 50 s
+     would be accepted with a 3,000 ms or 24,000-frame length (tempo 121.25 BPM).
+ (d) F6 confirmed and extended: payload already lacked LoopOs/LoopFwd/LoopAlt and the parameter-name column; the
+     TransientResolution labels (0x1027b279c stored list) and "REX" (0x1026a9ef8 stored list only; the chooser
+     0x1026aa13c omits it) are not established display text -> removed (RVW-05). The six chooser labels stay.
+ (e) WAV valid (section 8) and shareable: generated by the stdlib wave module, no LIST/INFO or other chunk. 8,000 Hz is
+     unusual for Live; nothing in the evidence says the application rejects it. A reference run must confirm the clip's
+     sample length is 3 s (I4); a 44.1 kHz regeneration would change no expectation.
+Inferred links: I1 accepted (getters 0x102610264/0x10261026c are ldr d0 at +0x50/+0x58; read branch still assumed).
+I2 accepted (as transport-state-v1). I3 -> RVW-01. I4 accepted, narrowed by RVW-04. I5 accepted (no throw in the
+insert/delete bodies; callees untraced; insert has a dedicated append-past-shadow path for 032). I6 accepted (corpus).
+I7 confirmed -> RVW-06: slot +0x300 = 0x10243ea38 -> 0x1015645a0 reads member +0xb0, registered as mpIsWarped at +0xa8
+by 0x102435a28 (pointee at +8, as for mpWarpMarkers 0x650 / list 0x658).
+12 new cases: all accepted (each exercises a static-derived clause). WMK-025 to 027 "opens" exclusion upheld.
+Gate 2: five public function names and seven refusal labels acceptable; no label reproduces a recovered message.
+Gate 3: unretained d7 rounds suffice for this release (hashes above); copy them into a retained run before revision 2.
+Spec-author corrections (also in REVIEW.md, behaviorally): split A2 (F1); REQ-015 bounds form, zero distance, before
+first marker, RVW-03 bands, F4, F5; REQ-011/012 labels inferred; TransientEnvelope creation value S; F7 stale text.
+
+== 6. Reviewer restatement (restate.py) on the export copy
+WARP-MARKERS-001 agree 
+WARP-MARKERS-002 agree 
+WARP-MARKERS-003 agree 
+WARP-MARKERS-004 agree 
+WARP-MARKERS-005 agree 
+WARP-MARKERS-006 agree 
+WARP-MARKERS-007 agree 
+WARP-MARKERS-008 agree 
+WARP-MARKERS-009 agree 
+WARP-MARKERS-010 agree 
+WARP-MARKERS-011 agree 
+WARP-MARKERS-012 agree 
+WARP-MARKERS-013 agree 
+WARP-MARKERS-014 agree 
+WARP-MARKERS-015 agree 
+WARP-MARKERS-016 agree 
+WARP-MARKERS-017 agree 
+WARP-MARKERS-018 agree 
+WARP-MARKERS-019 agree 
+WARP-MARKERS-020 agree 
+WARP-MARKERS-021 agree 
+WARP-MARKERS-022 agree {"tie_distance_steps": 0.5, "tempo_limit_distance_bpm": [115.0, 115.0], "neighbour_distance_s": [0.5, 0.5]}
+WARP-MARKERS-023 agree 
+WARP-MARKERS-024 agree 
+WARP-MARKERS-025 agree 
+WARP-MARKERS-026 agree 
+WARP-MARKERS-027 agree 
+WARP-MARKERS-028 agree {"tie_distance_steps": 0.10000000081936378, "tempo_limit_distance_bpm": [3.8000124875124897], "neighbour_distance_s": [0.5]}
+WARP-MARKERS-029 agree {"tie_distance_steps": 0.09999999996585984, "tempo_limit_distance_bpm": [233.8000124875125, 3.8000124875124897], "neighbour_distance_s": [0.5, 0.5]}
+WARP-MARKERS-030 agree {"tie_distance_steps": 0.5, "tempo_limit_distance_bpm": [59001.0], "neighbour_distance_s": [0.001]}
+WARP-MARKERS-031 agree {"tie_distance_steps": 0.5, "tempo_limit_distance_bpm": [55.0, 55.0], "neighbour_distance_s": [0.5, 0.5]}
+WARP-MARKERS-032 agree {"tie_distance_steps": 0.5, "tempo_limit_distance_bpm": [115.0], "neighbour_distance_s": [0.5]}
+WARP-MARKERS-033 agree {"tie_distance_steps": 0.5}
+WARP-MARKERS-034 agree {"tie_distance_steps": 0.5}
+WARP-MARKERS-035 agree {"tie_distance_steps": 0.11561600062907473}
+WARP-MARKERS-036 agree {"tie_distance_steps": 0.33999999957666205}
+WARP-MARKERS-037 agree {"tie_distance_steps": 0.33999999957666205}
+WARP-MARKERS-038 agree {"tie_distance_steps": 0.5}
+cases 38 disagreements 0
+
+== 7. Edge bands (edges.py)
+tempo: largest distance from 5 or 999 BPM at which the exact rule and the bounds disagree
+  gaps >= 0.001 s (author's band 0.000001 BPM): (600000, 2.0346037263360325e-06)
+  gaps >= 0.0005 s (review band 0.001 BPM):    (600000, 3.7280629385392923e-06)
+rounding: samples 600000 largest tie distance (grid steps) with a disagreement: 0.00018306076526641846 (author's band 0.000001, review band 0.001)
+
+== 8. Fixture, WAV, link, inventory and wide sanitization scan (inspect_wm.py) on the export copy
+inventory equal: True 24 files + manifest
+hash/size mismatches: []
+link README.md -> spec.md ok
+link README.md -> cases.json ok
+link README.md -> AGENTS.md ok
+link README.md -> manifest.json ok
+link README.md -> REVIEW.md ok
+link REVIEW.md -> spec.md ok
+link spec.md -> REVIEW.md ok
+link spec.md -> cases.json ok
+link spec.md -> manifest.json ok
+link spec.md -> REVIEW.md ok
+case inputs missing: []
+distinct XML inputs: 18 of 18 fixture names used
+base.xml 1535 form ok AudioClip (template)
+beattime-empty.xml 1534 form ok AudioClip [('-', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1')), 0), ('+', 'WarpMarker', (('BeatTime', ''), ('Id', '11'), ('SecTime', '1')), 0)]
+beattime-off-grid.xml 1543 form ok AudioClip [('-', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1')), 0), ('+', 'WarpMarker', (('BeatTime', '2.0000001'), ('Id', '11'), ('SecTime', '1')), 0)]
+beattime-trailing-text.xml 1539 form ok AudioClip [('-', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1')), 0), ('+', 'WarpMarker', (('BeatTime', '2junk'), ('Id', '11'), ('SecTime', '1')), 0)]
+not-warped.xml 1536 form ok AudioClip [('-', 'IsWarped', (('Value', 'true'),), 0), ('+', 'IsWarped', (('Value', 'false'),), 0)]
+sectime-exponent.xml 1539 form ok AudioClip [('-', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1')), 0), ('+', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1.0e0')), 0)]
+sectime-leading-space.xml 1536 form ok AudioClip [('-', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1')), 0), ('+', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', ' 1')), 0)]
+sectime-no-number.xml 1537 form ok AudioClip [('-', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', '1')), 0), ('+', 'WarpMarker', (('BeatTime', '2'), ('Id', '11'), ('SecTime', 'abc')), 0)]
+settings-absent.xml 1146 form ok AudioClip [('-', 'GranularityTones', (('Value', '40'),), 0), ('-', 'GranularityTexture', (('Value', '100'),), 0), ('-', 'FluctuationTexture', (('Value', '50'),), 0), ('-', 'TransientResolution', (('Value', '4'),), 0), ('-', 'TransientLoopMode', (('Value', '1'),), 0), ('-', 'ComplexProFormants', (('Value', '75'),), 0), ('-', 'ComplexProEnvelope', (('Value', '64'),), 0)]
+settings-no-value.xml 1459 form ok AudioClip [('-', 'GranularityTones', (('Value', '40'),), 0), ('-', 'GranularityTexture', (('Value', '100'),), 0), ('-', 'FluctuationTexture', (('Value', '50'),), 0), ('-', 'TransientResolution', (('Value', '4'),), 0), ('-', 'TransientLoopMode', (('Value', '1'),), 0), ('-', 'ComplexProFormants', (('Value', '75'),), 0), ('-', 'ComplexProEnvelope', (('Value', '64'),), 0), ('+', 'GranularityTones', (), 0), ('+', 'GranularityTexture', (), 0), ('+', 'FluctuationTexture', (), 0), ('+', 'TransientResolution', (), 0), ('+', 'TransientLoopMode', (), 0), ('+', 'ComplexProFormants', (), 0), ('+', 'ComplexProEnvelope', (), 0)]
+simpler-empty-markers.xml 1428 form ok SampleWarpProperties [('WarpMarkers', 'empty'), ('WarpMode', (('Value', '0'),), 0), ('GranularityTones', (('Value', '30'),), 0), ('GranularityTexture', (('Value', '65'),), 0), ('FluctuationTexture', (('Value', '25'),), 0), ('ComplexProFormants', (('Value', '100'),), 0), ('ComplexProEnvelope', (('Value', '128'),), 0), ('TransientResolution', (('Value', '6'),), 0), ('TransientLoopMode', (('Value', '2'),), 0), ('TransientEnvelope', (('Value', '100'),), 0), ('IsWarped', (('Value', 'false'),), 0)]
+transient-loop-mode-0.xml 1535 form ok AudioClip [('-', 'TransientLoopMode', (('Value', '1'),), 0), ('+', 'TransientLoopMode', (('Value', '0'),), 0)]
+transient-resolution-0.xml 1535 form ok AudioClip [('-', 'TransientResolution', (('Value', '4'),), 0), ('+', 'TransientResolution', (('Value', '0'),), 0)]
+warp-mode-0.xml 1535 form ok AudioClip [('-', 'WarpMode', (('Value', '4'),), 0), ('+', 'WarpMode', (('Value', '0'),), 0)]
+warp-mode-1.xml 1535 form ok AudioClip [('-', 'WarpMode', (('Value', '4'),), 0), ('+', 'WarpMode', (('Value', '1'),), 0)]
+warp-mode-2.xml 1535 form ok AudioClip [('-', 'WarpMode', (('Value', '4'),), 0), ('+', 'WarpMode', (('Value', '2'),), 0)]
+warp-mode-3.xml 1535 form ok AudioClip [('-', 'WarpMode', (('Value', '4'),), 0), ('+', 'WarpMode', (('Value', '3'),), 0)]
+warp-mode-6.xml 1535 form ok AudioClip [('-', 'WarpMode', (('Value', '4'),), 0), ('+', 'WarpMode', (('Value', '6'),), 0)]
+wav: b'RIFF' b'WAVE' riff size ok: True chunks: [(b'fmt ', 16), (b'data', 48000)] end ok: True
+wav fmt: PCM 1 ch 8000 Hz 16 bit byte rate ok: True align ok: True fmt size 16
+wav frames: 24000 seconds: 3.0 all zero: True other chunks: []
+scan REVIEW.md ['MarkersGenerated', 'Max for Live', 'slot']
+scan spec.md ['MarkersGenerated', 'Max for Live', 'slot']
+scan manifest.json ['setter']
+
+== 9. Author verify on the export copy (build_wm.py verify)
+{"payload_files": 24, "files_including_manifest": 25, "manifest_sha256": "f8546a3e95788074a2cf1cd99564637b8689af853db705fd9beba1af1764ef46", "hash_or_size_mismatches": [], "inventory_differences": [], "markdown_links": {"AGENTS.md": 0, "spec.md": 4, "REVIEW.md": 1, "README.md": 5}, "unresolved_links": {}, "missing_case_inputs": [], "deny_list_hits": {}, "allowed_hits": {"AGENTS.md": ["decompil"]}}
+
+== 10. Independent sha256sum -c of the manifest inventory
+  AGENTS.md: OK
+  README.md: OK
+  REVIEW.md: OK
+  cases.json: OK
+  fixtures/base.xml: OK
+  fixtures/beattime-empty.xml: OK
+  fixtures/beattime-off-grid.xml: OK
+  fixtures/beattime-trailing-text.xml: OK
+  fixtures/not-warped.xml: OK
+  fixtures/sample.wav: OK
+  fixtures/sectime-exponent.xml: OK
+  fixtures/sectime-leading-space.xml: OK
+  fixtures/sectime-no-number.xml: OK
+  fixtures/settings-absent.xml: OK
+  fixtures/settings-no-value.xml: OK
+  fixtures/simpler-empty-markers.xml: OK
+  fixtures/transient-loop-mode-0.xml: OK
+  fixtures/transient-resolution-0.xml: OK
+  fixtures/warp-mode-0.xml: OK
+  fixtures/warp-mode-1.xml: OK
+  fixtures/warp-mode-2.xml: OK
+  fixtures/warp-mode-3.xml: OK
+  fixtures/warp-mode-6.xml: OK
+  spec.md: OK
+manifest.json sha256: f8546a3e95788074a2cf1cd99564637b8689af853db705fd9beba1af1764ef46
+
+== 11. Change from the staged candidate
+cases changed: WARP-MARKERS-011 purpose; WARP-MARKERS-024 sample_time_seconds 50 -> 900000 and purpose. Fixtures byte-identical (diff -r against the pre-review copy). Draft manifest 302ee8de... -> f8546a3e95788074...

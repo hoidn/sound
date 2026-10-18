@@ -1,0 +1,628 @@
+{
+ "schema": "mixer-values-traceability-v1",
+ "spec": "SPEC-MIXER-VALUES r1",
+ "evidence": {
+  "doc-form": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/static-survey.json documents.tracks (1,340 mixers in 376 documents; children in schema order; no KeyMidi), returns_per_doc (sends minus returns = 0 for 588 mixers; main and cue none); schema 12.0_12402.txt TrackDevice, MainTrackDevice, TrackSendHolder, LiveSet lines 3802-3844",
+  "ctor": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0001/functions/0x10271b660 (volume 0x1026f0bcc(0,1,1) at 0x10271be44-0x10271be68; Speaker 0x1026ec1cc with formatter 0x10143b884 at .c lines 284-287; CrossFadeState entries A/None/B 0x1026ef060 at 0x10271bf38; dB formatter 0x1023e06fc(3,1,1,1) at 0x10271c138-0x10271c16c)",
+  "pan-ctor": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0001/functions/0x10271c734 (PanMode entries Stereo/Split Stereo via 0x101567ad8, index 0; Pan, Left, Right (-1,1,0/-1/1); pan text singleton 0x101439ec4)",
+  "send-ctor": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0002/functions/0x102658f54 (.c lines 72-96: own 0x1023e06fc(3,1,1,1) guard, 0x1026f0b58(0,1,curve(0)); control 0x1026605c8 mode 0)",
+  "ranges": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/image-reads.txt read_mem 0x10588302c/0x105883044 (mode 0 0x39a5cb5f-0x3f800000, mode 1 0x39a5cb5f-0x3fff64c2); results/s9-0002/functions/0x10255d93c",
+  "gain-db": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0002/functions/0x102183bf4 disassembly 0x102183c04-0x102183c3c (fcvt s0,d0; log10f; fmul 20.0f; fcvt d0,s0; g <= 0 -> -140.0); 0x102183abc (floor -70.0)",
+  "db-text": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0001/functions/0x101437334 (floor+0.3 -> -inf; decimals; ' dB'); 0x101431c6c disassembly 0x101431ca8-0x101431d38 (frinta(10^max*v)==0 -> 0.0; '%*.*f' via 0x1011bfe14; strip to min decimals); image-reads.txt vtable 0x106670140 (+0x28 0x101437334, +0x40 0x1014374b4 second form), 0x106774f60 (+0x28 0x102183bf4)",
+  "pan-text": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0002/functions/0x10143a290 (+-0.01 double compares, x+-50 double, C/L/R); analysis/ableton-live-12.4.3/r2/d8-mixer-v1/results/d8-0002/functions/0x101431c60 (max = min = 0 decimals); image-reads.txt vtable 0x106670828 (+0x28 0x10143a290)",
+  "speaker-text": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/corpus-excerpts.jsonl records 0x10143b884 (singleton with vtable 0x106670bc8) and 0x10143ba28 ('Off' when value == 0.0 else 'On'); image-reads.txt vtable 0x106670bc8 (+0x28 0x10143ba28)",
+  "enum": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/results/s9-0004/functions/0x101567ad8 (enum init stores index and entry list); analysis/ableton-live-12.4.3/r2/d8-mixer-v1/results/d8-0002/functions/0x1026ef0dc (index passed to 0x101567bfc)",
+  "curve-names": "analysis/ableton-live-12.4.3/r2/s9-mixer-v1/corpus-excerpts.jsonl record 0x102672204 (seven names Dipped ... Transition); results/s9-0003/functions/0x101aed36c (seven crossfade tables, same order); C1 corpus 0x102672448 (set constructor: 0x101567bfc(member 0x3e, 2, name list); not retained, corpus identity in analysis/ableton-live-12.4.3/r2/s9-mixer-v1/corpus-decomp-run.json); CrossfadeCurve in the 376 shipped LiveSet documents of analysis/ableton-live-12.4.3/r2/s9-mixer-v1/inputs-documents.tsv: 2 in 375, 6 in 1 (counted while staging, 2026-10-18)",
+  "c-locale": "wiki/specs/transport-state-handoff-plan.md#evidence-traceability review additions: 0x1011bfe14 is the C-locale vsnprintf_l; the display print 0x101431c6c calls it at 0x101431cdc",
+  "reading": "wiki/research/transport-state-native.md#writer-number-format (N1 loader and writer); analysis/ableton-live-12.4.3/r2/s9-mixer-v1/notes.md negative results ('by the N1 loader rule a direct store ... not re-traced for these classes'); results/s9-0001/functions/0x1026f0bcc (s2 -> Manual)"
+ },
+ "inferred_links": {
+  "I1": "Mixer value text is read by the generic loader: plain decimal -> nearest binary64 -> nearest binary32, Booleans true/false, codes decimal. Not re-traced for TimeableFloat, TimeableBool, TimeableEnum or RemoteableEnum; tempo (TimeableSongTempo) is a different class, so the transport-state-v1 check does not carry over by identity. Fixture numbers are chosen so single and double rounding agree.",
+  "I2": "The value text of an enumerated value is its entry name (PanMode, CrossFadeState, CrossfadeCurve); the enum text routine is not traced.",
+  "I3": "LiveSet/CrossfadeCurve is the set enum the set constructor initialises with the seven names and index 2 (corpus 0x102672448); member-to-element binding untraced; consistent with 375/376 shipped sets storing 2.",
+  "I4": "The platform log10f is within one binary32 step of the correctly rounded result; the 0.00005 dB margin and the two-step tolerance in model() cover it.",
+  "I5": "Split pans use the pan text converter: 0x10271c734 pseudocode passes singleton 0x101439ec4 for Pan and both splits; the confirmed branch is Pan's.",
+  "I6": "The primary text slot (+0x28: unit and -inf) is the value text a user sees in at least one place; the second slot (+0x40) form is excluded; covered by the comparison obligation."
+ },
+ "clauses": {
+  "REQ-MIXER-VALUES-001 location and elements": {
+   "evidence": [
+    "doc-form",
+    "ctor",
+    "pan-ctor"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "REQ-MIXER-VALUES-001 same rules for every track type": {
+   "evidence": [
+    "ctor",
+    "pan-ctor",
+    "send-ctor"
+   ],
+   "inferred": []
+  },
+  "REQ-MIXER-VALUES-002 volume binary32 gain and range": {
+   "evidence": [
+    "ctor",
+    "ranges"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "REQ-MIXER-VALUES-003 one send per return; main and cue none": {
+   "evidence": [
+    "doc-form"
+   ],
+   "inferred": []
+  },
+  "REQ-MIXER-VALUES-003 send binary32 gain and range": {
+   "evidence": [
+    "send-ctor",
+    "ranges"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "REQ-MIXER-VALUES-004 pan and split range; pan mode codes": {
+   "evidence": [
+    "pan-ctor",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2"
+   ]
+  },
+  "REQ-MIXER-VALUES-006 volume and send text": {
+   "evidence": [
+    "gain-db",
+    "db-text",
+    "ctor",
+    "send-ctor",
+    "c-locale"
+   ],
+   "inferred": [
+    "I4",
+    "I6"
+   ]
+  },
+  "REQ-MIXER-VALUES-007 pan text": {
+   "evidence": [
+    "pan-text",
+    "pan-ctor",
+    "c-locale"
+   ],
+   "inferred": [
+    "I5",
+    "I6"
+   ]
+  },
+  "REQ-MIXER-VALUES-008 track switch text": {
+   "evidence": [
+    "ctor",
+    "speaker-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "REQ-MIXER-VALUES-009 crossfade assignment codes": {
+   "evidence": [
+    "ctor",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2"
+   ]
+  },
+  "REQ-MIXER-VALUES-009 crossfader location and range": {
+   "evidence": [
+    "doc-form"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "REQ-MIXER-VALUES-009 crossfade curve codes and names": {
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  }
+ },
+ "cases": {
+  "MIXER-VALUES-001": {
+   "source": "MV-001 (narrowed: EnabledByUser meaning and the return track's own send dropped; MIDI track added)",
+   "evidence": [
+    "ctor",
+    "curve-names",
+    "db-text",
+    "doc-form",
+    "enum",
+    "gain-db",
+    "pan-ctor",
+    "pan-text",
+    "ranges",
+    "send-ctor",
+    "speaker-text"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I5",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-002": {
+   "source": "MV-002",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-003": {
+   "source": "MV-003",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-004": {
+   "source": "MV-004 first value",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-005": {
+   "source": "MV-004 second value",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-006": {
+   "source": "MV-005",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-007": {
+   "source": "MV-006",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-008": {
+   "source": "MV-007",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-009": {
+   "source": "MV-008",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-010": {
+   "source": "MV-009",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-011": {
+   "source": "new: REQ-006 trailing-zero clause with two remaining decimals",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-012": {
+   "source": "new: REQ-001 same rules on a MIDI track (value occurs in shipped APC40 Demo.als)",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-013": {
+   "source": "new: REQ-001 same rules on a return track, positive three decimals",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-014": {
+   "source": "new: REQ-001 same rules on the cue track (value occurs in 3 shipped cue mixers)",
+   "evidence": [
+    "ctor",
+    "db-text",
+    "gain-db",
+    "ranges"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-015": {
+   "source": "MV-010",
+   "evidence": [
+    "db-text",
+    "gain-db",
+    "ranges",
+    "send-ctor"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-016": {
+   "source": "MV-011",
+   "evidence": [
+    "db-text",
+    "gain-db",
+    "ranges",
+    "send-ctor"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-017": {
+   "source": "new: REQ-006 -inf limit applied to a send",
+   "evidence": [
+    "db-text",
+    "gain-db",
+    "ranges",
+    "send-ctor"
+   ],
+   "inferred": [
+    "I1",
+    "I4",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-018": {
+   "source": "MV-012",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-019": {
+   "source": "MV-013 first value",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-020": {
+   "source": "MV-013 second value",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-021": {
+   "source": "MV-014 first value",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-022": {
+   "source": "MV-014 second value",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-023": {
+   "source": "MV-015 first value",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-024": {
+   "source": "MV-015 second value",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-025": {
+   "source": "new: research correction 2026-10-17 (float32 0.33 -> 17R)",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-026": {
+   "source": "new: REQ-001 same pan rule on the main track",
+   "evidence": [
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-027": {
+   "source": "MV-016",
+   "evidence": [
+    "enum",
+    "pan-ctor",
+    "pan-text"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I5",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-028": {
+   "source": "MV-017 first value",
+   "evidence": [
+    "ctor",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2"
+   ]
+  },
+  "MIXER-VALUES-029": {
+   "source": "MV-017 second value",
+   "evidence": [
+    "ctor",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2"
+   ]
+  },
+  "MIXER-VALUES-030": {
+   "source": "MV-018",
+   "evidence": [
+    "ctor",
+    "speaker-text"
+   ],
+   "inferred": [
+    "I1",
+    "I6"
+   ]
+  },
+  "MIXER-VALUES-031": {
+   "source": "new: REQ-009 curve code 0",
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  },
+  "MIXER-VALUES-032": {
+   "source": "new: REQ-009 curve code 1",
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  },
+  "MIXER-VALUES-033": {
+   "source": "new: REQ-009 curve code 3",
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  },
+  "MIXER-VALUES-034": {
+   "source": "new: REQ-009 curve code 4",
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  },
+  "MIXER-VALUES-035": {
+   "source": "MV-019",
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  },
+  "MIXER-VALUES-036": {
+   "source": "new: REQ-009 curve code 6",
+   "evidence": [
+    "curve-names",
+    "enum"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3"
+   ]
+  },
+  "MIXER-VALUES-037": {
+   "source": "new: REQ-009 crossfader location and range",
+   "evidence": [
+    "doc-form"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  }
+ },
+ "draft_cases_not_released": {
+  "MV-020, MV-021, MV-022": "REQ-010: the graded output is what a 12.4.3 save writes, the U part (PRB-S9-07)",
+  "MV-023, MV-024, MV-025, MV-026": "REQ-005: fader positions not observable in scope; last-ulp platform values",
+  "MV-027": "track creation is an edit; new-mixer defaults and their save text (PRB-S9-07)",
+  "MV-028, MV-040 to MV-045": "U cases",
+  "MV-029 to MV-039": "audio renders needing measurement; MV-029 to 034 also conditional on Q-019"
+ }
+}

@@ -2,7 +2,7 @@
 id: PLAN-NATIVE-PHASE-EXECUTION
 type: research
 status: current
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
@@ -153,9 +153,10 @@ defines them). M1–M6 above remain the revision 1 record.
 | S3 Transitions | **Done:** dispatch resolved and static transition table T-01 to T-13 with an escalation record in [transport transitions](transport-transitions-native.md) | Transition table or escalation record |
 | S4 MIDI closure | Done: [closure assessment](midi-closure-r2.md), spec revision 2, [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Clause classification |
 | H2, H3 Handoffs | **Both released 2026-10-17:** [transport-state-v1](../../handoff/transport-state-v1/README.md) (18 cases) and [als-container-v1](../../handoff/als-container-v1/README.md) (35 cases), each approved with narrowing by a separate reviewer | Reviewed releases |
-| Phase 4 probe batch | **Prepared 2026-10-17, not run:** [run sheet](phase4-probe-batch.md), 79 records in 11 sessions (about 24 h; handoff blockers in sessions A to D, about 7 h); 3 incomplete; awaiting user decisions | Prepared probe records |
+| H4 Revision 1 draft handoffs | **Nine released 2026-10-18**, each staged by an author agent and approved by a separate review agent: [midi-config-v3](../../handoff/midi-config-v3/README.md) (127 cases, supersedes v2), clip-launch-v1 (50), midi-note-storage-v1 (67), mixer-values-v1 (37), automation-envelopes-v1 (21), bundled-device-parameters-v1 (82), browser-index-v1 (26), plugin-discovery-v1 (35), warp-markers-v1 (38); see the [catalog](../../handoff/index.md). Corrections owed to the draft specs are on each handoff plan | Reviewed releases |
+| Phase 4 probe batch | **Prepared, not run:** [run sheet](phase4-probe-batch.md), 79 records in 11 sessions on 2026-10-17; extended 2026-10-18 to 146 records in sessions A to Q (about 39 h); incomplete records flagged; awaiting user decisions | Prepared probe records |
 | S5 Clip launch | **Done 2026-10-17:** [clip launch](clip-launch.md), 23 candidates, 11 probes; SPEC-CLIP-LAUNCH draft started | Research page with candidate requirements |
-| Extension packets | **Done 2026-10-17:** draft specs SPEC-PLUGIN-DISCOVERY, SPEC-BROWSER-INDEX, SPEC-CLIP-LAUNCH, SPEC-MIDI-NOTE-STORAGE, SPEC-BUNDLED-DEVICE-PARAMETERS, SPEC-AUTOMATION-ENVELOPES, SPEC-WARP-MARKERS and SPEC-MIXER-VALUES r1, and SPEC-MIDI-USER-MAPPING r3; N8 x86_64 paths. None reviewed or released. Further dispatch paused by user direction | Research pages, candidate tables and draft specs |
+| Extension packets | **Done 2026-10-17:** draft specs SPEC-PLUGIN-DISCOVERY, SPEC-BROWSER-INDEX, SPEC-CLIP-LAUNCH, SPEC-MIDI-NOTE-STORAGE, SPEC-BUNDLED-DEVICE-PARAMETERS, SPEC-AUTOMATION-ENVELOPES, SPEC-WARP-MARKERS and SPEC-MIXER-VALUES r1, and SPEC-MIDI-USER-MAPPING r3; N8 x86_64 paths. Resumed 2026-10-18; first releases under H4 | Research pages, candidate tables and draft specs |
 | Helper and device Live sides | Done: [helper launch](helper-launch-live-side.md), [device parameter mapping](device-parameter-mapping-native.md) | Research pages |
 
 The current [combined tool check](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/tool-suite-v2.json)

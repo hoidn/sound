@@ -2,7 +2,7 @@
 id: SPEC-MIDI-USER-MAPPING
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 3
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -622,3 +622,5 @@ takeover. MT-15/16 are labelled S, with parameter selection left to PRB-N7-04.
 The [midi-config-v2](../../handoff/midi-config-v2/README.md) release of
 2026-10-17 is recorded in the case-set table. Requirements released there are
 unchanged. No application code or original-versus-candidate comparison has run.
+
+Released 2026-10-18: [midi-config-v3](../../handoff/midi-config-v3/README.md), 127 cases, approved by a separate review agent (partial REQ-002/003/005–013 only; 001 and 004 unreleased; MT-17 to 21 out). The review findings to apply in the next revision are on the [handoff plan](midi-config-v3-handoff-plan.md#review-outcome). This revision's text is unchanged.

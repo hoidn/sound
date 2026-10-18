@@ -1,0 +1,106 @@
+browser-index-v1 handoff review: reviewer checks (analyst-side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I from any directory.
+Helper slice: /var/tmp/sound-analysis/helpers/Ableton_Index/Ableton_Index.arm64 sha256 3390bd4b030c74080540d025b7688c8612d63a1abc89ea8f36162f2b9a289b62
+Corpus: /var/tmp/sound-analysis/helpers/Ableton_Index/corpus (decomp/run.json sha256 858745e5...6cf8c1f = H2 c1_run_json_sha256)
+As-received candidate: manifest sha256 5d821ca7aef3799acb992f502264617eedf243ac56fc8cc31ed7e22121606328 (= plan); author verify clean.
+Final package: manifest sha256 c47068980e7a10440f059acde5797b5760a2f18478ab97869c19340ead7225a5, 31 payload files + manifest, 26 cases.
+
+Mapping to the plan's IDs: RVB-01 = new (contradicts BI-040/BI-041 and r1 REQ-005 for folder resources; F8 consistent);
+RVB-02 = new (unmatched entries pruned; I3 confirmed); RVB-03 = brief item (c); RVB-06 = F3 confirmed; RVB-07 = F4
+confirmed, brief item (b); F2 confirmed (tables); F5 confirmed by reading 0x1006cce78; F1, F6, F7 accepted;
+RVB-09 = I1, I2, I4, I5, I6, I7 accepted (I4 no longer used); RVB-10 = brief item (d); RVB-11 = gate 1 rulings.
+
+== 1. Evidence identity ==
+- D2 files re-hashed = d2 manifest (cited-functions b3cd0db5...a654, README cd2e4ea8..., not-function de65db44...).
+- Addendum sha256 d0d2905d492326f97764e8bdb257ce55b5a0af7a3691220b6945c4fc44368485 (= plan).
+- H2 manifest: all 54 outputs re-hashed, no mismatch; registry af5b1f52...780a.
+- Source 'Ableton Index' sha256 f989be02...5138; slice (offset 18366464, size 16602976) = 3390bd4b...9b62.
+- Installed app Info.plist: 12.4.3 (2026-07-07_e3d8be4d07).
+- check_retained.py: all 48 retained records (43 D2 + 5 addendum) equal their corpus records except the added 'chunk'
+  locator. Output: check_retained.out.
+
+== 2. Colour entry rule (brief (a); F3) ==
+D2 0x1006ed324: empty string skipped; uVar5 = std::stoul(&s, nullptr, 10) (uint); if (uVar5 - 1 < 7) set bit uVar5.
+calls.jsonl: site 0x1006ed448 -> 0x100b7037c = /usr/lib/libc++.1.dylib::std::stoul (external).
+Machine words (insn_words.py 0x1006ed324 0x1006ed474), hand-decoded:
+  0x1006ed43c 910023e0 add x0, sp, #8       ; string
+  0x1006ed440 d2800001 mov x1, #0           ; idx = nullptr: no end check
+  0x1006ed444 52800142 mov w2, #10          ; base 10
+  0x1006ed448 94120bcd bl  stoul            ; returns unsigned long (64-bit) in x0
+  0x1006ed44c 51000408 sub w8, w0, #1       ; 32-bit: low 32 bits only
+  0x1006ed450 1ac02369 lsl w9, w27, w0      ; w27 = 1 (0x1006ed3b0 5280003b)
+  0x1006ed454 2a150129 orr w9, w9, w21
+  0x1006ed458 7100191f cmp w8, #6
+  0x1006ed45c 1a8982b5 csel w21, w21, w9, hi ; set bit only if (w0-1) <= 6 unsigned
+  empty test: 0x1006ed424..438 ldrb/sxtb/ldr/cmp/csel/cbz on the string length.
+=> '03' -> 3; '4294967298' = 2^32+2 -> low32 2 -> label 2; ' 3', '3x', '+3' -> 3; '-4294967295' -> 1;
+   '0', '8', '4294967296' ignored; non-numeric -> invalid_argument, > 2^64-1 -> out_of_range (effects untraced).
+colour_check.py models this and re-derives cases 019-021 from the fixtures. Output: colour_check.out.
+
+== 3. Item binding of a folder-resource sidecar (RVB-01, RVB-02) ==
+Reader 0x1006d2624 (D2), resource kind 1 (folder) branch: R = parent(parent(sidecar)); id = index->slot 0xb8(R);
+  index->slot 0x108 -> (obj, obj+0x28); (obj+0x28)->slot 0x38(id) -> list; each row path +0x18 normalized by
+  0x10071eb3c; apply 0x1006dbf98(ctx, list, classify(sidecar), 1).
+Kind 2 (pack) branch uses slot 0x40 instead.
+binding_check.py resolves the slots in the pinned slice (index vtable 0x100d92898 set by constructor 0x10027d7b4;
+interface vtable 0x100d92fd8 at object+0x28) and prints the queries. Output: binding_check.out:
+  slot 0x108 -> 0x100288010 (returns object and object + 0x28)
+  slot 0x38  -> 0x100288fc8 -> 0x1002af190: SELECT ... FROM files WHERE parent_id = :parentid AND file_kind & 0x300 = 0
+               (direct children of R only; 0x300 = 'all-folders' per bit names 0x10016b3e8: folders excluded)
+  slot 0x40  -> 0x1002890e0 -> 0x1002af23c: ... JOIN ancestors ... WHERE an.ancestor_id = :placeid (any depth)
+Row conversion 0x1002930ac reads columns file_id, parent_id, file_type, name, colors, value, key; the only text
+identifier is the name (emplace via 0x10029a564 with &name).
+Apply 0x1006dbf98: builds a map of the document's entries keyed by filePath (0x1006dd9a8: hash 0x100712fcc, path
+compare 0x1007132f4); for each listed row, looks up its normalized name (0x1006de554); found -> apply colours,
+keywords, hide flags, content source; not found -> clear existing state. After the loop, if fewer entries were
+matched than exist, each unmatched entry is removed from the document (0x1006e3fc8) and ctx+0x20 set to 1.
+=> F's sidecar applies only to files directly inside F, by name. 'sub/b.wav' (case 016) and 'kit' (folder, case 017)
+   are never matched: evidence points to no tags. Unmatched entries never affect others (I3 confirmed) and are
+   pruned from the held document, marked changed (write-back untraced).
+Classifier 0x1006e71c8 (third argument): 1 only for the Core Library/built-in sidecar name patterns or paths under
+'Legacy Pack Data/Ableton Folder Info'; 0 for F's sidecar, so colours are applied.
+Consistent with the folder writer 0x1006d03b8 keying entries by leaf name (F8): one sidecar per folder for its files.
+
+== 4. Kind table (cases 001-011) ==
+kinds_check.py: reviewer's hand transcription of the kind map 0x10016b758 (80 codes) joined with the H2 registry.
+Output: kinds_check.out: 85 registered extensions, 84 mapped, '.ablx' unmapped; 84 case extensions, all distinct;
+0 mismatches. The author's compiled evaluator was not used.
+
+== 5. Sidecar folder name, header, writers, names ==
+- 0x100237a58: DAT_100e2add0 = s_Ableton_Folder_Info_100c22278, length 0x13; cstr.py: 'Ableton Folder Info'.
+- Tables (read_ptrs.py + cstr.py, tables.out): format 0x100dbd650 ['', application/vnd.ableton.folder, ...factory-pack,
+  ...plugin-device, ...app-builtin]; resource 0x100dbd678 [folder, pack, plugin, app-builtin]; platform 0x100dbd698
+  [win, mac, linux]. New document 0x1006e4394 -> 0x1006f07c8(kind 1, platform 2) -> header 0x1006f09d8: format[1],
+  resource[0], platform[1] = folder/folder/mac (F2 confirmed).
+- Item writer 0x1006ef218: deletes colors/keywords/hideKeywords/assetId/contentHash; writes colors via 0x1006edbbc when
+  the mask is non-zero (bits 1..7 -> to_string(n), ascending, kXMP array 0x200 = Bag); keywords/hideKeywords bags
+  when the sets exist (possibly empty); assetId and contentHash when the content-source pointer is null or of a kind
+  other than 2/3 (likely written for a new user item) -> data model must ignore them (it does). F4 confirmed.
+- Serializer 0x1006e5140 adds xmp:CreatorTool/CreateDate/MetadataDate; options 0x10 (no packet wrapper).
+- File writer 0x1006cce78 (addendum): skips classified paths; empty document -> remove file and empty parent;
+  else create_directories(parent) then serialize. F5 confirmed.
+- Names recomputed with uuid.uuid5: user folder dc66a3fa..., namespace c55d131f..., Core Library b17d447d...,
+  built-in b769aafb.... Legacy Pack Data: 159 of 160 names = uuid5(namespace, packUniqueId) (exception
+  a1c28bb1... with www.ableton.com/280). Core Library sidecar packUniqueId www.ableton.com/0.
+- calls.jsonl: 0x1006cf614 dispatches to 0x1006cf838 (factory pack; uses 0x1006e5f48), 0x1006d03b8 (folder) and
+  0x1006d0ae4 (app-builtin: 'Read metadata for app-builtin from file', uses 0x1006e67dc). 0x1006d0ae4 is not in the
+  retained reads; recommend retaining it with 0x1002af190, 0x1002af23c, 0x100288fc8, 0x1002890e0 and 0x1006dbf98.
+
+== 6. Package edits and rebuild ==
+- build_bi.py: cases 16 and 17 removed (IDs not reused); scopes 003/005, excluded inputs and behavior, override
+  comparator updated. crosscheck_bi.py: model_read raises NoExpectation for filePath with '/' or naming a folder;
+  mutation 'nested entry not bound' (case 16) replaced by 'informational properties drop the tag' (case 14).
+  trace_bi.py: 16/17 removed; 'binding' evidence added (cases 12, 18); I3/I4 annotated.
+- spec.md, README.md, AGENTS.md hand-edited; REVIEW.md added.
+- Pipeline: build_bi.py build -> review/finalize_bi.py ../browser-index-v1 -> build_bi.py seal. Output: seal.out:
+  26 cases, no case problems, 10 mutations all rejected, no fixture problems, 31 payload files, no hash or
+  inventory differences, no unresolved links, no missing inputs, no deny-list hits.
+- Retained fixtures and case records are byte-identical to the as-received candidate apart from the removed cases,
+  the top-level status and the override comparator text.
+
+== 7. Export verification ==
+verify_export.py (reviewer's own) on a copy in the session scratchpad: 31 listed files, no hash/size mismatch, no
+inventory difference, no symlink, 10 links all inside the package, 16 case inputs present; copy byte-identical to
+staging. The author's verify on the same copy: no deny-list hits. Output: verify_export.out.
+
+Not checked: any reference or candidate execution.

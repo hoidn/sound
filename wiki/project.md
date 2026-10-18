@@ -2,7 +2,7 @@
 id: PROJECT-OVERVIEW
 type: overview
 status: active
-updated: 2026-10-17
+updated: 2026-10-18
 access: neutral
 ---
 
@@ -22,11 +22,11 @@ documentation structure is not completion of the application.
 | Reference target | Ableton Live 12 Suite 12.4.3; identity pinned and arm64 slices re-derived on the current host; the earlier static evidence tree is absent here (see research index) |
 | Analysis workstation | Linux host provisioned 2026-10-17 with Ghidra 12.1.4, JDK 21 and REA 6.5.0; Push2 smoke test reproduced prior counts; persistent Live project at `/var/tmp/sound-analysis`, analysis running (see [execution ledger](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17)) |
 | Research | Package evidence, browsable native pseudocode, method/structure guides and reviewed recovery tooling; target reopening is capacity-blocked (see research index) |
-| Behavioral specifications | MIDI mapping draft revision 2; midi-config-v1 and its superset midi-config-v2 released; transport-state and document-container static halves filed |
+| Behavioral specifications | Eleven draft specs (MIDI mapping r3, transport state r2, container r2 and eight r1 drafts); thirteen partial releases, eleven current (see [spec index](specs/index.md)) |
 | Implementation | No application code; architecture choices remain proposals |
 | Verification | No retained original-versus-candidate compatibility results |
 | Clean implementation workspace | Not provisioned; this checkout contains analyst material |
-| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases; [midi-config-v2](../handoff/midi-config-v2/README.md): partial REQ-002/003/005–013, 109 unexecuted cases, supersedes v1; [transport-state-v1](../handoff/transport-state-v1/README.md): transport values in Live Sets, 18 unexecuted cases; [als-container-v1](../handoff/als-container-v1/README.md): Live Set container and version envelope, 35 unexecuted cases |
+| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases; [midi-config-v2](../handoff/midi-config-v2/README.md): partial REQ-002/003/005–013, 109 unexecuted cases, supersedes v1; [transport-state-v1](../handoff/transport-state-v1/README.md): transport values in Live Sets, 18 unexecuted cases; [als-container-v1](../handoff/als-container-v1/README.md): Live Set container and version envelope, 35 unexecuted cases; on 2026-10-18 [midi-config-v3](../handoff/midi-config-v3/README.md) (127 cases, supersedes v2) and eight first releases: clip-launch-v1 (50), midi-note-storage-v1 (67), mixer-values-v1 (37), automation-envelopes-v1 (21), bundled-device-parameters-v1 (82), browser-index-v1 (26), plugin-discovery-v1 (35), warp-markers-v1 (38); all cases unexecuted ([catalog](../handoff/index.md)) |
 
 ## Current phase
 

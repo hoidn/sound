@@ -3,7 +3,7 @@ id: SPEC-WARP-MARKERS
 type: spec
 status: draft
 revision: 1
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -425,7 +425,7 @@ only, WMK-025 to 027 for opening only) and 7 unresolved (WMK-008 to 013, 022).
 
 ## Open questions
 
-No question-register entry exists for FEAT-WARP yet. Open items, each with its probe in the
+[Q-021](../questions.md#q-021-warp-playback-mapping-and-load-handling) tracks the playback mapping and load handling. Open items, each with its probe in the
 [S8 probe batch](../../analysis/ableton-live-12.4.3/r2/s8-warp-v1/probe-batch.json):
 
 - empty-list presentation and assumption A1 (PRB-S8-01);
@@ -529,6 +529,8 @@ default.
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from packet S8 (WM-01 to WM-16) plus two verification rounds (d7-0001, d7-0002) that located and confirmed the scripting conversion. 16 requirements: 3 without unknown parts (003, 012, 016), 11 with D or S clauses and unknown parts, 2 unknown (005, 009). 35 unexecuted cases: 28 gradable (4 in part), 7 unresolved |
 
-Not reviewed, not released, and no handoff plan exists. A first release candidate could
+Before the 2026-10-18 review, a first release candidate could
 contain the D and S clauses of REQ-001 to 004, 007, 008 and 010 to 016 with their gradable
 cases, under assumptions A1 to A3.
+
+Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). This revision's text is unchanged.

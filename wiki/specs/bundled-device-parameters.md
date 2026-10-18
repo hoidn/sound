@@ -2,7 +2,7 @@
 id: SPEC-BUNDLED-DEVICE-PARAMETERS
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 1
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -798,6 +798,8 @@ Corrections and contradictions:
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from H4 (DEV-C01 to C10), N5 (DEV-M01 to M10) and N6: 15 requirements (1 D only; 2 D and S; 12 with D or S clauses and U parts; none U only); 37 unexecuted cases, 4 not graded (BDP-017, 033, 034, 037), 4 with unresolved parts (BDP-014–016, 028) |
 
-Not reviewed and not released. A first handoff could carry REQ-001 to 008 and 011 with
+Before the 2026-10-18 review, a first handoff could carry REQ-001 to 008 and 011 with
 the parameter tables, the S and D clauses of REQ-010, 012 and 013, and REQ-014 for Amp,
 Cabinet, Electric and Corpus.
+
+Released 2026-10-18: [bundled-device-parameters-v1](../../handoff/bundled-device-parameters-v1/README.md), 82 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 006, 007, 011, 012, 014 only; 005, 008 to 010, 013, 015 unreleased). The review findings to apply in the next revision are on the [handoff plan](bundled-device-parameters-handoff-plan.md#review-outcome). This revision's text is unchanged.

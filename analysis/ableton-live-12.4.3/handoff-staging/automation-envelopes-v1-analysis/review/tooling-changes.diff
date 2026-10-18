@@ -1,0 +1,201 @@
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/analysis/build_aen.py	2026-10-18 12:42:21.656504231 -0700
++++ automation-envelopes-v1-analysis/build_aen.py	2026-10-18 12:49:10.444577611 -0700
+@@ -1,4 +1,4 @@
+-"""Stage the automation-envelopes-v1 release candidate (analyst side; not reviewed, not released).
++"""Stage the automation-envelopes-v1 release (analyst side). Narrowed by the 2026-10-18 handoff review (REVIEW.md).
+ 
+ Run with CPython 3.13 and -I, from any directory:
+   python3 -I build_aen.py build          # fixtures/ + cases.json + manifest.json (files[] empty)
+@@ -121,6 +121,10 @@
+ C11 = {1: {"CurveControl1X": "0.8", "CurveControl1Y": "0", "CurveControl2X": "0.2", "CurveControl2Y": "1"}}
+ E14 = [(L, "true"), ("4", "false"), ("8", "true")]
+ E15 = [(L, "1"), ("4", "0"), ("8", "2")]
++# Review: release case 021 keeps the leading value equal to the next value, so its saved text does not depend
++# on whether a save keeps a differing leading value; envelopes are listed against target order (REQ-002).
++E14S = [(L, "false"), ("4", "false"), ("8", "true")]
++E15S = [(L, "0"), ("4", "0"), ("8", "2")]
+ 
+ 
+ def saved(target, cls, rows):
+@@ -189,41 +193,16 @@
+     (20, "All four curve controls 0.5 on the event at 0; open, then save", ["008", "009"],
+      doc([track_env("Pan", events(F, E9P, curves={1: {k: "0.5" for k in CC}}))]), "open-save",
+      {"outcome": OPENS, "saved": {"envelopes": [saved("Pan", F, [tv(L, "-1"), tv("0", "-1"), tv("4", "1")])]}}),
+-    (21, "Speaker and CrossFadeState envelopes; open, then save", ["003", "012"],
+-     doc([track_env("Speaker", events(B, E14), 0), track_env("CrossFadeState", events(N, E15), 1)]), "open-save",
++    (21, "CrossFadeState envelope listed before the Speaker envelope; open, then save", ["002", "003", "012"],
++     doc([track_env("CrossFadeState", events(N, E15S), 0), track_env("Speaker", events(B, E14S), 1)]), "open-save",
+      {"outcome": OPENS, "saved": {"envelopes": [
+-         saved("Speaker", B, [tv(L, "true"), tv("4", "false"), tv("8", "true")]),
+-         saved("CrossFadeState", N, [tv(L, "1"), tv("4", "0"), tv("8", "2")])]}}),
+-    (22, "Pan envelope with three events at the lower bound, 4 and 8; values at 0, 2, 4, 12 and 100",
+-     ["005", "010"], doc([track_env("Pan", events(F, E1))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Pan", [(0, 0), (2, 0), (4, 0), (12, 1), (100, 1)])}),
+-    (23, "Leading event value 1 differs from the next event's value 0 at 4; value at 4", ["005", "010"],
+-     doc([track_env("Pan", events(F, [(L, "1"), ("4", "0")]))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Pan", [(4, 0)])}),
+-    (24, "Step at 4 from 1 to -1; values at 2, 6 and 10", ["006", "010"],
+-     doc([track_env("Pan", events(F, E8))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Pan", [(2, 1), (6, -1), (10, -1)])}),
+-    (25, "Curved event at 0 (controls 0.5, 0, 0.5, 0); values at 0, 4 and 6", ["008", "010"],
+-     doc([track_env("Pan", events(F, E9P, curves=C9))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Pan", [(0, -1), (4, 1), (6, 1)])}),
+-    (26, "Speaker envelope true, false at 4, true at 8; values at 0, 2, 6 and 10", ["011"],
+-     doc([track_env("Speaker", events(B, E14))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Speaker", [(0, True), (2, True), (6, False), (10, True)])}),
+-    (27, "CrossFadeState envelope 1, 0 at 4, 2 at 8; values at 2, 6 and 12", ["011"],
+-     doc([track_env("CrossFadeState", events(N, E15))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("CrossFadeState", [(2, 1), (6, 0), (12, 2)])}),
+-    (28, "Event Ids 2, 0, 1 in document order; values at 0, 2, 4, 12 and 100", ["004", "010"],
+-     doc([track_env("Pan", events(F, E1, ids=[2, 0, 1]))]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Pan", [(0, 0), (2, 0), (4, 0), (12, 1), (100, 1)])}),
+-    (29, "Pan envelope listed before the Speaker envelope; values of both", ["002", "010", "011"],
+-     doc([track_env("Pan", events(F, E1), 0), track_env("Speaker", events(B, E14), 1)]), "open-evaluate",
+-     {"outcome": OPENS, "values": vals("Pan", [(2, 0), (12, 1)]) + vals("Speaker", [(2, True), (6, False)])}),
++         saved("CrossFadeState", N, [tv(L, "0"), tv("4", "0"), tv("8", "2")]),
++         saved("Speaker", B, [tv(L, "false"), tv("4", "false"), tv("8", "true")])]}}),
+ ]
+ 
+ COMPARATOR = {
+     "open": "outcome exact",
+     "open-save": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared",
+-    "open-evaluate": "outcome exact; each value exact (Float as binary32, Bool, integer)",
+ }
+ 
+ DENY = [r"analysis/", r"wiki/", r"\.\./", r"0x[0-9a-fA-F]{5,}", r"FUN_", r"\bA(?:Float|Bool|Enum)Event\b",
+@@ -252,16 +231,13 @@
+ 
+ SCOPES = {
+     "REQ-AUTOMATION-ENVELOPES-001": "Track envelopes in a track's AutomationEnvelopes/Envelopes, clip envelopes in a clip's Envelopes/Envelopes; AutomationEnvelope and ClipEnvelope shape with EnvelopeTarget/PointeeId and Automation/Events; empty transform state",
+-    "REQ-AUTOMATION-ENVELOPES-002": "PointeeId names the Id of the target element; binding by Id, not by list position; fixture target relations only",
++    "REQ-AUTOMATION-ENVELOPES-002": "PointeeId names the Id of the target element; binding by Id, not by list position (judged through the saved envelope of each target); fixture target relations only",
+     "REQ-AUTOMATION-ENVELOPES-003": "FloatEvent, BoolEvent and EnumEvent by target kind; Id, Time (binary64) and Value (binary32, Boolean, integer) in the parameter's stored units",
+-    "REQ-AUTOMATION-ENVELOPES-004": "Event Ids, unique in their list, play no part in order or evaluation",
+-    "REQ-AUTOMATION-ENVELOPES-005": "The event at the lower bound is an ordinary event for evaluation",
+-    "REQ-AUTOMATION-ENVELOPES-006": "Document order with non-decreasing times; at most two events at one time; values around a step",
++    "REQ-AUTOMATION-ENVELOPES-005": "A list whose only event is at the lower bound is accepted",
++    "REQ-AUTOMATION-ENVELOPES-006": "Document order with non-decreasing times; at most two events at one time; a later event may have a negative time",
+     "REQ-AUTOMATION-ENVELOPES-007": "Empty event list refused; first event time other than the lower bound or 0 refused (binary64 comparison, -0 counts as 0); later times not checked; track and clip envelopes",
+     "REQ-AUTOMATION-ENVELOPES-008": "Curve control attribute names; a missing control reads as 0.5; four 0.5 controls mean no curve; on save each control equal to 0.5 is omitted and the others written as binary64 text",
+     "REQ-AUTOMATION-ENVELOPES-009": "Controls in [0, 1] whose pairs meet the stated monotonicity condition are kept on open",
+-    "REQ-AUTOMATION-ENVELOPES-010": "Float value after the last event, at a non-step event time, and between two events with equal values, for t >= 0 on track envelopes",
+-    "REQ-AUTOMATION-ENVELOPES-011": "Bool and Enum value at times that are not event times: the last earlier event's value, held after the last event",
+     "REQ-AUTOMATION-ENVELOPES-012": "Event text on open (Time and controls as decimal binary64, Float Value then binary32, Bool tokens, integer rule; refusal of rejected text) and on save (17 and 9 significant-digit rule, true or false, decimal integers)",
+ }
+ EXCL_INPUTS = [
+@@ -278,36 +254,53 @@
+     "documents that break more than one rule of this release",
+ ]
+ EXCL_BEHAVIOR = [
+-    "the value between two events with different values, on linear and curved segments, and any limiting of evaluated values to a range",
+-    "the value at the time of a step, and the Bool or Enum value at the time of an event",
+-    "evaluation of clip envelopes, evaluation at negative times, and evaluation before an envelope's first event when that event is at 0",
++    "the value an envelope supplies to its parameter at any time, for Float, Bool and Enum envelopes, track and clip envelopes alike (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the last event and between equal values, and whether event Ids affect it (REQ-AUTOMATION-ENVELOPES-004)",
+     "whether opening replaces controls that do not satisfy K by 0.5",
+-    "whether a save keeps or renumbers event and target Ids, the saved transform state, saved negative zero, and whether a save writes envelopes that hold a single event",
++    "whether a save keeps or renumbers event and target Ids, the saved transform state, saved negative zero, whether a save writes envelopes that hold a single event, and whether a save keeps a leading event whose value differs from the next event's value",
+     "editing, override, recording and undo (REQ-AUTOMATION-ENVELOPES-013)",
+     "texts, dialogs and logging of a refusal, and the state after it",
+     "audio rendering, smoothing, scheduling and timing",
+ ]
+ 
+ 
++REVIEW = {
++    "status": "approved",
++    "reviewers": ["separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"],
++    "date": "2026-10-18",
++    "findings": [
++        "RVE-01 high: every value case (022 to 029) rested on an untraced per-target conversion; withdrawn; REQ-010, 011 and 004 unreleased; REQ-005 and 006 narrowed",
++        "RVE-02 low: case 021 saved a leading value that differs from the next value; fixture aligned so the expectation does not depend on that untraced save rule; envelopes listed against target order",
++        "RVE-03 info: saved PointeeId judged only against the saved target Id; no case assumes a save keeps Ids",
++        "RVE-04 info: no shipped set and no dangling, unsorted, Id-less, Time-less, Value-less or duplicate-Id input; checked per fixture",
++        "RVE-05 info: stated assumptions (open reaches the envelope checks, Bool and Enum text rules, save keeps the binding) accepted",
++        "RVE-06 info: evidence identity re-checked; all hashes matched",
++        "RVE-07 editorial: payload status set to reviewed release; review record added; inventory re-hashed",
++    ],
++    "disposition": "Approved with listed narrowing (RVE-01, RVE-02), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
++    "record": "REVIEW.md",
++}
++
++
+ def manifest_meta():
+     return {
+-        "schema": "handoff-manifest-v1", "release_id": "automation-envelopes-v1", "release_status": "candidate-unreviewed",
+-        "release_date": None, "target": TARGET,
++        "schema": "handoff-manifest-v1", "release_id": "automation-envelopes-v1", "release_status": "released",
++        "release_date": "2026-10-18", "target": TARGET,
+         "specification": {"id": "SPEC-AUTOMATION-ENVELOPES", "parent_revision": 1, "release_revision": 1},
+         "feature_ids": ["FEAT-AUTOMATION", "FEAT-PERSISTENCE"],
+         "partial_requirement_scopes": SCOPES,
+-        "unreleased_requirements": ["REQ-AUTOMATION-ENVELOPES-013"],
++        "unreleased_requirements": ["REQ-AUTOMATION-ENVELOPES-004", "REQ-AUTOMATION-ENVELOPES-010",
++                                    "REQ-AUTOMATION-ENVELOPES-011", "REQ-AUTOMATION-ENVELOPES-013"],
+         "compatibility_dimensions": {
+             "envelope-storage-and-load-checks": "static-derived expectations; reference execution not-run",
+             "file-format-written": "saved event text only, static-derived; reference execution not-run",
+-            "envelope-value-at-time": "static-derived values at stated times only; not rendered output; reference execution not-run",
++            "envelope-value-at-time": "excluded (REQ-AUTOMATION-ENVELOPES-010 and 011 unreleased)",
+             "editing-and-ui": "excluded (REQ-AUTOMATION-ENVELOPES-013)",
+             "audio": "excluded", "timing": "excluded",
+         },
+         "exclusions": {"inputs_without_expectation": EXCL_INPUTS, "behavior": EXCL_BEHAVIOR},
+         "fixture_origin": "independently authored minimal Live Set XML documents from one template; no shipped file content, schema content or program code",
+         "approved_public_sources": [],
+-        "review": {"status": "pending", "reviewers": [], "date": None, "findings": [], "disposition": None, "record": None},
++        "review": REVIEW,
+         "supersedes": None, "entrypoint": "README.md", "case_count": len(CASES),
+         "inventory_excludes": ["manifest.json (self-hash recorded outside package)"],
+         "files": [],
+@@ -327,14 +320,13 @@
+                       "comparator": COMPARATOR[action]})
+     doc_ = {"schema": "automation-envelopes-cases-v1", "target": TARGET,
+             "scope": "automation-envelopes-v1 partial requirement clauses only (see spec.md)",
+-            "status": "candidate-unreviewed",
++            "status": "released-reviewed",
+             "fixture_origin": "Independently authored minimal documents; no shipped file copied",
+             "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+             "representation": {
+-                "action": "open, open-save or open-evaluate",
++                "action": "open or open-save",
+                 "outcome": "opens or refused",
+                 "saved": "open-save only: per listed target, the saved envelope's events in order with exact attribute text other than Id",
+-                "values": "open-evaluate only: envelope value at the stated time for the named target",
+                 "note": "project comparison representation, not an API of the original application or a required design"},
+             "cases": cases}
+     (STAGE / "cases.json").write_text(json.dumps(doc_, indent=1, ensure_ascii=True) + "\n")
+@@ -458,7 +450,7 @@
+     man["files"] = [{"path": str(p.relative_to(STAGE)), "sha256": sha(p.read_bytes()), "bytes": p.stat().st_size}
+                     for p in payload(STAGE)]
+     (STAGE / "manifest.json").write_text(json.dumps(man, indent=1) + "\n")
+-    report = {"schema": "author-validation-v1", "package": "automation-envelopes-v1 (staged candidate)",
++    report = {"schema": "author-validation-v1", "package": "automation-envelopes-v1 (reviewed staging copy)",
+               "python": sys.version.split()[0], "cases": len(cases), "case_problems": problems,
+               "mutated_expectations_detected": f"{mutants}/{len(cases)}",
+               "identical_fixture_inputs": [v for v in by_hash.values() if len(v) > 1],
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/analysis/trace_aen.py	2026-10-18 12:40:30.439284630 -0700
++++ automation-envelopes-v1-analysis/trace_aen.py	2026-10-18 12:49:10.444744852 -0700
+@@ -68,15 +68,7 @@
+     18: ("AEN-013", ["curve_save", "curve_load", "text_save"], ["I4", "I5"]),
+     19: ("new: REQ-008 missing control reads as 0.5", ["curve_save", "curve_load"], ["I4", "I5"]),
+     20: ("new: REQ-008 four 0.5 controls written as none", ["curve_save", "curve_load"], ["I4", "I5"]),
+-    21: ("new: REQ-012 Bool and integer text on save", ["classes", "text_save"], ["I3", "I4", "I5"]),
+-    22: ("AEN-015", ["eval_float", "leading"], ["I1", "I2", "I6"]),
+-    23: ("AEN-018, t = 4 only (t = 0 is U, PRB-S6-04)", ["eval_float", "leading"], ["I1", "I2", "I6"]),
+-    24: ("AEN-019", ["eval_float", "order"], ["I1", "I2", "I6"]),
+-    25: ("AEN-021", ["eval_float", "curve_load"], ["I1", "I2", "I6"]),
+-    26: ("AEN-023", ["eval_discrete"], ["I2", "I3", "I6"]),
+-    27: ("AEN-025", ["eval_discrete"], ["I2", "I3", "I6"]),
+-    28: ("new: REQ-004 S clause, Ids play no part in evaluation", ["ids", "eval_float"], ["I1", "I2", "I6"]),
+-    29: ("new: REQ-002 S clause, binding by Id not position", ["targets", "eval_float", "eval_discrete"], ["I1", "I2", "I3", "I6"]),
++    21: ("new: REQ-012 Bool and integer text on save; review: leading values equal next, listed against target order (REQ-002)", ["classes", "targets", "text_save"], ["I3", "I4", "I5"]),
+ }
+ NOT_RELEASED = {
+     "AEN-001": "open of a shipped demo set; document facts about shipped content cannot be shared as a fixture",
+@@ -86,4 +78,7 @@
+     "AEN-018 t = 0": "U (PRB-S6-04, A1)", "AEN-020": "U (PRB-S6-06)", "AEN-022": "U (PRB-S6-04, A1)",
+     "AEN-024": "U (PRB-S6-06)", "AEN-028": "U, Q-020 (PRB-S6-07)", "AEN-029": "U, Q-020 (PRB-S6-07)",
+     "AEN-030": "U, Q-020 (PRB-S6-03)", "AEN-031": "U, Q-020 (PRB-S6-07)",
++    "AEN-015, 018 (t = 4), 019, 021, 023, 025": "withdrawn by the 2026-10-18 handoff review (RVE-01): the value cases "
++        "rest on I1, the per-target conversion, which the kept evidence does not establish; the candidate's cases 022 "
++        "to 029, including new cases 028 and 029, were removed and REQ-004, 010 and 011 left unreleased",
+ }

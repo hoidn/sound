@@ -1,0 +1,138 @@
+diff -ru -x manifest.json /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/AGENTS.md handoff-staging/mixer-values-v1/AGENTS.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/AGENTS.md	2026-10-18 12:39:59.782862979 -0700
++++ handoff-staging/mixer-values-v1/AGENTS.md	2026-10-18 13:02:15.487978411 -0700
+@@ -1,11 +1,9 @@
+ # Package role and access instructions
+ 
+-This package is an unreviewed release candidate. Until a separate review
+-approves it and it is published, it is not an implementation input. After
+-publication, application implementation requires a fresh, restricted
+-implementation workspace that contains only permitted materials. Publication
+-does not provision one. Do not begin clean implementation in an analyst
+-checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
++contains only permitted materials. Publication of this package does not
++provision one. Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+diff -ru -x manifest.json /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/cases.json handoff-staging/mixer-values-v1/cases.json
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/cases.json	2026-10-18 12:42:21.358050984 -0700
++++ handoff-staging/mixer-values-v1/cases.json	2026-10-18 13:02:15.488235603 -0700
+@@ -2,7 +2,7 @@
+  "schema": "mixer-values-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "mixer-values-v1 partial requirement clauses only (see spec.md)",
+- "status": "candidate-unreviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal XML documents; no shipped file copied or excerpted",
+  "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+  "representation": {
+diff -ru -x manifest.json /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/README.md handoff-staging/mixer-values-v1/README.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/README.md	2026-10-18 12:39:59.785413905 -0700
++++ handoff-staging/mixer-values-v1/README.md	2026-10-18 13:02:15.488092972 -0700
+@@ -1,9 +1,11 @@
+ # Track mixer values in Live Set documents, release 1
+ 
+-**Unreviewed candidate.** This package is not an implementation input until a
+-separate review approves it and it is published as a release. Read
+-[the contract](spec.md), [the cases](cases.json),
+-[the role instructions](AGENTS.md) and [the manifest](manifest.json).
++**Reviewed local release.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md),
++[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
++stated partial scope, with the corrections recorded in the review, is approved
++as a contract for a fresh, restricted implementation workspace. Such a
++workspace has not been provisioned by this release.
+ 
+ The finite scope is how the decoded XML of one Live Set format version stores
+ each track's mixer values (volume, pan, pan mode, split-stereo pans, sends,
+Only in handoff-staging/mixer-values-v1: REVIEW.md
+diff -ru -x manifest.json /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/spec.md handoff-staging/mixer-values-v1/spec.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mv1-original/spec.md	2026-10-18 12:41:59.535130135 -0700
++++ handoff-staging/mixer-values-v1/spec.md	2026-10-18 13:07:02.550582259 -0700
+@@ -7,8 +7,8 @@
+ other clause of a listed requirement is implicitly approved. This document is
+ self-contained.
+ 
+-**Status: unreviewed candidate.** It is not an implementation input until a
+-separate review approves it and it is published.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the corrections recorded in [the review disposition](REVIEW.md).
+ 
+ ## What the contract means
+ 
+@@ -33,9 +33,9 @@
+ later comparison. A few derived steps rest on assumptions that were not traced
+ to the end: that a mixer value written as a plain decimal number is read as
+ the nearest binary32 number, as other binary32 values of a document are; that
+-the name of a code is its entry in the lists below; and that the set's curve
+-code selects from the seven curve names of REQ-MIXER-VALUES-009. The
+-application's base-10 logarithm may also differ from the correctly rounded
++the name of a code is its entry in the lists below; and that some part of the
++user interface shows the value texts below, computed from the value as read.
++The application's base-10 logarithm may also differ from the correctly rounded
+ result in the last binary32 digit, so inputs near a text boundary have no
+ expectation. The comparison obligation below covers these points.
+ 
+@@ -124,7 +124,9 @@
+ 
+ `Volume/Manual` is a linear gain (1 is 0 dB), held as binary32. Expectations
+ exist only for values from 0.0003162277571 to 1.99526238 inclusive, the
+-binary32 numbers nearest to 10^(−70/20) (−70 dB) and 10^(6/20) (+6 dB).
++binary32 values of these two texts. They lie within 0.000001 dB of −70 dB
++and +6 dB. The upper one is one binary32 step above the binary32 number
++nearest to 10^(6/20).
+ 
+ ### REQ-MIXER-VALUES-003 — partial: sends
+ 
+@@ -255,7 +257,8 @@
+   channel that rounds must be compared at its rounding.
+ - A `text` observation must come from a place where the application shows the
+   value text in the forms of this release: with ` dB` and `-inf dB` for
+-  volumes and sends, and with `C`, `L` or `R` for pans. An observation that
++  volumes and sends, with `C`, `L` or `R` for pans, and as `On` or `Off` for
++  the track switch. An observation that
+   shows another form, for example the digits without the unit, is
+   inconclusive, not a mismatch.
+ - A `name` observation must come from a place that shows the name of the code,
+@@ -345,4 +348,4 @@
+ No fixture contains shipped file content, program code or assets. Expected
+ results are newly authored static-derived behavioral data. No public source or
+ dependency is approved or included. Review status is recorded in
+-[the manifest](manifest.json).
++[the manifest](manifest.json) and [the review disposition](REVIEW.md).
+== manifest.json (without files[]) ==
+4,5c4,5
+<  "release_status": "candidate-unreviewed",
+<  "release_date": null,
+---
+>  "release_status": "released",
+>  "release_date": "2026-10-18",
+68,73c68,85
+<   "status": "pending",
+<   "reviewers": [],
+<   "date": null,
+<   "findings": [],
+<   "disposition": null,
+<   "record": null
+---
+>   "status": "approved",
+>   "reviewers": [
+>    "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+>   ],
+>   "date": "2026-10-18",
+>   "findings": [
+>    "RVM-01 medium: track switch On/Off text and the crossfade curve name binding lacked evidence citations; confirmed by the reviewer's own static check; clauses kept, curve-binding assumption removed from the contract, no case changed",
+>    "RVM-02 low: the upper volume bound was called the binary32 number nearest to 10^(6/20), but it is one step above it; wording corrected, no expectation changed",
+>    "RVM-03 low: the assumption that some display shows the texts, computed from the value as read, was unstated; named in the contract, no case changed",
+>    "RVM-04 editorial: comparison obligation now names the On and Off form for the track switch",
+>    "RVM-05 editorial: payload status wording set to reviewed release; review record added; inventory re-hashed",
+>    "RVM-06 info: evidence identity re-checked; all hashes matched",
+>    "RVM-07 info: author inferences ruled on; split pan text and curve binding confirmed; reading rule, code names and display accepted as stated assumptions; no graded text depends on the logarithm last digit",
+>    "RVM-08 info: the author's nine proposed parent-specification corrections confirmed",
+>    "RVM-09 info: sharing review of three bare numbers also found in shipped sets; acceptable"
+>   ],
+>   "disposition": "Approved with listed corrections (RVM-02 to RVM-04), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+>   "record": "REVIEW.md"

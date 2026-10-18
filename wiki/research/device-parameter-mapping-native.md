@@ -2,7 +2,7 @@
 id: RESEARCH-DEVICE-PARAMETER-MAPPING-NATIVE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -323,6 +323,12 @@ assumption.
 | Cabinet | 2 | `MicrophonePosition` | 0..2 (Near On-Axis, Near Off-Axis, Far) | 0 | index |
 | Cabinet | — | `DualMono`, `DryWet` | bool; 0..1 | false; 1 | not passed to the bundle |
 
+Correction (2026-10-18): the labels for `MicrophoneTypeSwitch` are listed in
+the wrong order. The [bundled-device-parameters-v1 review](../../handoff/bundled-device-parameters-v1/REVIEW.md)
+read the build: true shows Dynamic and false shows Condenser. The default, false, is
+therefore Condenser, not the Dynamic given under load handling below. The
+release leaves these labels out until the spec is corrected.
+
 Cross-check: the bundle side (H4) does the following.
 
 - Index 0 selects a model by (uint)(v + 0.5).
@@ -342,7 +348,7 @@ each `AmpType` label is unknown. Live's table entry is known for each.
 - **Enumerations.** No clamp was traced on the Live side. The Amp table lookup has no bounds check
   (`0x102faadb8`). The Corpus bundle guards `ResonanceType` (< 7, else engine type 0).
 - **Missing parameters.** Observed: the constructor defaults in the tables above, including Amp
-  (`AmpType` Blues, tone controls 5, `Volume` 9, `DualMono` off, `DryWet` 1), Cabinet (1x12, Dynamic,
+  (`AmpType` Blues, tone controls 5, `Volume` 9, `DualMono` off, `DryWet` 1), Cabinet (1x12, Dynamic [corrected above: false shows Condenser],
   Near On-Axis, `DualMono` off, `DryWet` 1) and Corpus. Inferred: an element absent from a document
   keeps the constructor default. Whether `Defaults/<Product>.adv` is applied to new instances is unknown.
 

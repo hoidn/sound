@@ -2,7 +2,7 @@
 id: SPEC-BROWSER-INDEX
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 1
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -532,7 +532,7 @@ Corrections relative to the research page:
 ## Revision and handoff
 
 Revision 1, 2026-10-17: first draft from packet H2, the N4 Index section and a
-bounded re-read of the helper corpus. Not reviewed; no handoff exists. A
+bounded re-read of the helper corpus. Before the 2026-10-18 review, a
 handoff candidate would need, at minimum:
 
 - the corpus reads marked † retained in kept evidence;
@@ -541,3 +541,5 @@ handoff candidate would need, at minimum:
 
 Until then REQ-BROWSER-INDEX-001, 007 and 008 can release only their read-side
 and naming clauses.
+
+Released 2026-10-18: [browser-index-v1](../../handoff/browser-index-v1/README.md), 26 cases, approved with narrowing by a separate review agent (partial REQ-001, 003 to 008 only; 002, 009 to 013 unreleased). The review findings to apply in the next revision are on the [handoff plan](browser-index-handoff-plan.md#review-outcome). This revision's text is unchanged.

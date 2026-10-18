@@ -2,7 +2,7 @@
 id: SPEC-CLIP-LAUNCH
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 1
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -551,6 +551,8 @@ Dropped: the velocity-amount API range error (`0x1033bc1a4`, pseudocode only) an
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from S5 (CL-01 to CL-23): 23 requirements (3 D with S parts, 5 S only, 10 S with U parts, 5 U only); 56 unexecuted cases: 4 not graded (CLC-030, 054–056), 3 with unresolved parts (CLC-013–015), 2 without a fixture (CLC-028, 029) |
 
-Not reviewed and not released. A first handoff could carry REQ-001 to 007, 009, 012,
+Before the 2026-10-18 review, a first handoff could carry REQ-001 to 007, 009, 012,
 013, 015, 016 and the S clauses of 011, 014, 017 and 018, without REQ-017's
 near-boundary clause.
+
+Released 2026-10-18: [clip-launch-v1](../../handoff/clip-launch-v1/README.md), 50 cases, approved with narrowing by a separate review agent (partial REQ-001 to 007, 009, 011 to 014 only; 008, 010, 015 to 023 unreleased). The review findings to apply in the next revision are on the [handoff plan](clip-launch-handoff-plan.md#review-outcome). This revision's text is unchanged.

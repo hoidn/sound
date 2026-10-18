@@ -1,0 +1,1733 @@
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/AGENTS.md automation-envelopes-v1/AGENTS.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/AGENTS.md	2026-10-18 12:37:46.522774218 -0700
++++ automation-envelopes-v1/AGENTS.md	2026-10-18 12:50:44.391700608 -0700
+@@ -1,11 +1,9 @@
+ # Package role and access instructions
+ 
+-This package is an unreviewed release candidate. Until a separate review
+-approves it and it is published, it is not an implementation input. After
+-publication, application implementation requires a fresh, restricted
+-implementation workspace that contains only permitted materials. Publication
+-does not provision one. Do not begin clean implementation in an analyst
+-checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
++contains only permitted materials. Publication of this package does not
++provision one. Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -16,9 +14,8 @@
+ 
+ Read README.md and spec.md before cases.json. Requirements apply only to their
+ explicit partial clauses. No source-code structure, parser entry point, data
+-structure or evaluation algorithm beyond the stated values is specified. A
+-candidate adapter may report the comparison labels; this does not impose an
+-internal architecture.
++structure or algorithm is specified. A candidate adapter may report the
++comparison labels; this does not impose an internal architecture.
+ 
+ Preserve this package unchanged. Do not extend excluded behavior or inputs
+ without an expectation. Request a reviewed revision for gaps. Record
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/cases.json automation-envelopes-v1/cases.json
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/cases.json	2026-10-18 12:42:21.725639307 -0700
++++ automation-envelopes-v1/cases.json	2026-10-18 12:49:26.611381412 -0700
+@@ -2,14 +2,13 @@
+  "schema": "automation-envelopes-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "automation-envelopes-v1 partial requirement clauses only (see spec.md)",
+- "status": "candidate-unreviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal documents; no shipped file copied",
+  "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+  "representation": {
+-  "action": "open, open-save or open-evaluate",
++  "action": "open or open-save",
+   "outcome": "opens or refused",
+   "saved": "open-save only: per listed target, the saved envelope's events in order with exact attribute text other than Id",
+-  "values": "open-evaluate only: envelope value at the stated time for the named target",
+   "note": "project comparison representation, not an API of the original application or a required design"
+  },
+  "cases": [
+@@ -532,8 +531,9 @@
+   },
+   {
+    "id": "AUTOMATION-ENVELOPES-021",
+-   "purpose": "Speaker and CrossFadeState envelopes; open, then save",
++   "purpose": "CrossFadeState envelope listed before the Speaker envelope; open, then save",
+    "requirements": [
++    "REQ-AUTOMATION-ENVELOPES-002",
+     "REQ-AUTOMATION-ENVELOPES-003",
+     "REQ-AUTOMATION-ENVELOPES-012"
+    ],
+@@ -544,53 +544,53 @@
+     "saved": {
+      "envelopes": [
+       {
+-       "target": "Speaker",
++       "target": "CrossFadeState",
+        "events": [
+         {
+-         "element": "BoolEvent",
++         "element": "EnumEvent",
+          "attributes": {
+           "Time": "-63072000",
+-          "Value": "true"
++          "Value": "0"
+          }
+         },
+         {
+-         "element": "BoolEvent",
++         "element": "EnumEvent",
+          "attributes": {
+           "Time": "4",
+-          "Value": "false"
++          "Value": "0"
+          }
+         },
+         {
+-         "element": "BoolEvent",
++         "element": "EnumEvent",
+          "attributes": {
+           "Time": "8",
+-          "Value": "true"
++          "Value": "2"
+          }
+         }
+        ]
+       },
+       {
+-       "target": "CrossFadeState",
++       "target": "Speaker",
+        "events": [
+         {
+-         "element": "EnumEvent",
++         "element": "BoolEvent",
+          "attributes": {
+           "Time": "-63072000",
+-          "Value": "1"
++          "Value": "false"
+          }
+         },
+         {
+-         "element": "EnumEvent",
++         "element": "BoolEvent",
+          "attributes": {
+           "Time": "4",
+-          "Value": "0"
++          "Value": "false"
+          }
+         },
+         {
+-         "element": "EnumEvent",
++         "element": "BoolEvent",
+          "attributes": {
+           "Time": "8",
+-          "Value": "2"
++          "Value": "true"
+          }
+         }
+        ]
+@@ -602,297 +602,6 @@
+    "reference_execution": "not-run",
+    "candidate_execution": "not-run",
+    "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-022",
+-   "purpose": "Pan envelope with three events at the lower bound, 4 and 8; values at 0, 2, 4, 12 and 100",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-005",
+-    "REQ-AUTOMATION-ENVELOPES-010"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-022.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Pan",
+-      "time": 0,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 2,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 4,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 12,
+-      "value": 1
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 100,
+-      "value": 1
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-023",
+-   "purpose": "Leading event value 1 differs from the next event's value 0 at 4; value at 4",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-005",
+-    "REQ-AUTOMATION-ENVELOPES-010"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-023.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Pan",
+-      "time": 4,
+-      "value": 0
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-024",
+-   "purpose": "Step at 4 from 1 to -1; values at 2, 6 and 10",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-006",
+-    "REQ-AUTOMATION-ENVELOPES-010"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-024.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Pan",
+-      "time": 2,
+-      "value": 1
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 6,
+-      "value": -1
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 10,
+-      "value": -1
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-025",
+-   "purpose": "Curved event at 0 (controls 0.5, 0, 0.5, 0); values at 0, 4 and 6",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-008",
+-    "REQ-AUTOMATION-ENVELOPES-010"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-025.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Pan",
+-      "time": 0,
+-      "value": -1
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 4,
+-      "value": 1
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 6,
+-      "value": 1
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-026",
+-   "purpose": "Speaker envelope true, false at 4, true at 8; values at 0, 2, 6 and 10",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-011"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-026.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Speaker",
+-      "time": 0,
+-      "value": true
+-     },
+-     {
+-      "target": "Speaker",
+-      "time": 2,
+-      "value": true
+-     },
+-     {
+-      "target": "Speaker",
+-      "time": 6,
+-      "value": false
+-     },
+-     {
+-      "target": "Speaker",
+-      "time": 10,
+-      "value": true
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-027",
+-   "purpose": "CrossFadeState envelope 1, 0 at 4, 2 at 8; values at 2, 6 and 12",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-011"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-027.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "CrossFadeState",
+-      "time": 2,
+-      "value": 1
+-     },
+-     {
+-      "target": "CrossFadeState",
+-      "time": 6,
+-      "value": 0
+-     },
+-     {
+-      "target": "CrossFadeState",
+-      "time": 12,
+-      "value": 2
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-028",
+-   "purpose": "Event Ids 2, 0, 1 in document order; values at 0, 2, 4, 12 and 100",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-004",
+-    "REQ-AUTOMATION-ENVELOPES-010"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-028.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Pan",
+-      "time": 0,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 2,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 4,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 12,
+-      "value": 1
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 100,
+-      "value": 1
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+-  },
+-  {
+-   "id": "AUTOMATION-ENVELOPES-029",
+-   "purpose": "Pan envelope listed before the Speaker envelope; values of both",
+-   "requirements": [
+-    "REQ-AUTOMATION-ENVELOPES-002",
+-    "REQ-AUTOMATION-ENVELOPES-010",
+-    "REQ-AUTOMATION-ENVELOPES-011"
+-   ],
+-   "input": "fixtures/AUTOMATION-ENVELOPES-029.xml",
+-   "action": "open-evaluate",
+-   "expected": {
+-    "outcome": "opens",
+-    "values": [
+-     {
+-      "target": "Pan",
+-      "time": 2,
+-      "value": 0
+-     },
+-     {
+-      "target": "Pan",
+-      "time": 12,
+-      "value": 1
+-     },
+-     {
+-      "target": "Speaker",
+-      "time": 2,
+-      "value": true
+-     },
+-     {
+-      "target": "Speaker",
+-      "time": 6,
+-      "value": false
+-     }
+-    ]
+-   },
+-   "expectation_provenance": "static-derived envelope value at the stated times; not observed reference output and not rendered output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; each value exact (Float as binary32, Bool, integer)"
+   }
+  ]
+ }
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-021.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-021.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-021.xml	2026-10-18 12:42:21.724297743 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-021.xml	2026-10-18 12:49:26.611192171 -0700
+@@ -8,13 +8,13 @@
+ 					<Envelopes>
+ 						<AutomationEnvelope Id="0">
+ 							<EnvelopeTarget>
+-								<PointeeId Value="21" />
++								<PointeeId Value="23" />
+ 							</EnvelopeTarget>
+ 							<Automation>
+ 								<Events>
+-									<BoolEvent Id="0" Time="-63072000" Value="true" />
+-									<BoolEvent Id="1" Time="4" Value="false" />
+-									<BoolEvent Id="2" Time="8" Value="true" />
++									<EnumEvent Id="0" Time="-63072000" Value="0" />
++									<EnumEvent Id="1" Time="4" Value="0" />
++									<EnumEvent Id="2" Time="8" Value="2" />
+ 								</Events>
+ 								<AutomationTransformViewState>
+ 									<IsTransformPending Value="false" />
+@@ -24,13 +24,13 @@
+ 						</AutomationEnvelope>
+ 						<AutomationEnvelope Id="1">
+ 							<EnvelopeTarget>
+-								<PointeeId Value="23" />
++								<PointeeId Value="21" />
+ 							</EnvelopeTarget>
+ 							<Automation>
+ 								<Events>
+-									<EnumEvent Id="0" Time="-63072000" Value="1" />
+-									<EnumEvent Id="1" Time="4" Value="0" />
+-									<EnumEvent Id="2" Time="8" Value="2" />
++									<BoolEvent Id="0" Time="-63072000" Value="false" />
++									<BoolEvent Id="1" Time="4" Value="false" />
++									<BoolEvent Id="2" Time="8" Value="true" />
+ 								</Events>
+ 								<AutomationTransformViewState>
+ 									<IsTransformPending Value="false" />
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-022.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-022.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-022.xml	2026-10-18 12:42:21.724395513 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-022.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,80 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="22" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="0" Time="-63072000" Value="0" />
+-									<FloatEvent Id="1" Time="4" Value="0" />
+-									<FloatEvent Id="2" Time="8" Value="1" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-023.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-023.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-023.xml	2026-10-18 12:42:21.724506334 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-023.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,79 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="22" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="0" Time="-63072000" Value="1" />
+-									<FloatEvent Id="1" Time="4" Value="0" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-024.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-024.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-024.xml	2026-10-18 12:42:21.724616954 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-024.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,81 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="22" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="0" Time="-63072000" Value="1" />
+-									<FloatEvent Id="1" Time="4" Value="1" />
+-									<FloatEvent Id="2" Time="4" Value="-1" />
+-									<FloatEvent Id="3" Time="8" Value="-1" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-025.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-025.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-025.xml	2026-10-18 12:42:21.724726054 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-025.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,80 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="22" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="0" Time="-63072000" Value="-1" />
+-									<FloatEvent Id="1" Time="0" Value="-1" CurveControl1X="0.5" CurveControl1Y="0" CurveControl2X="0.5" CurveControl2Y="0" />
+-									<FloatEvent Id="2" Time="4" Value="1" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-026.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-026.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-026.xml	2026-10-18 12:42:21.724848685 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-026.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,80 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="21" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<BoolEvent Id="0" Time="-63072000" Value="true" />
+-									<BoolEvent Id="1" Time="4" Value="false" />
+-									<BoolEvent Id="2" Time="8" Value="true" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-027.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-027.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-027.xml	2026-10-18 12:42:21.724966325 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-027.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,80 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="23" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<EnumEvent Id="0" Time="-63072000" Value="1" />
+-									<EnumEvent Id="1" Time="4" Value="0" />
+-									<EnumEvent Id="2" Time="8" Value="2" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-028.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-028.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-028.xml	2026-10-18 12:42:21.725081656 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-028.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,80 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="22" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="2" Time="-63072000" Value="0" />
+-									<FloatEvent Id="0" Time="4" Value="0" />
+-									<FloatEvent Id="1" Time="8" Value="1" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-029.xml automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-029.xml
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/fixtures/AUTOMATION-ENVELOPES-029.xml	2026-10-18 12:42:21.725208006 -0700
++++ automation-envelopes-v1/fixtures/AUTOMATION-ENVELOPES-029.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,96 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="40" />
+-		<Tracks>
+-			<AudioTrack Id="1">
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="22" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="0" Time="-63072000" Value="0" />
+-									<FloatEvent Id="1" Time="4" Value="0" />
+-									<FloatEvent Id="2" Time="8" Value="1" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-						<AutomationEnvelope Id="1">
+-							<EnvelopeTarget>
+-								<PointeeId Value="21" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<BoolEvent Id="0" Time="-63072000" Value="true" />
+-									<BoolEvent Id="1" Time="4" Value="false" />
+-									<BoolEvent Id="2" Time="8" Value="true" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<DeviceChain>
+-					<Mixer>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Pan>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</CrossFadeState>
+-					</Mixer>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<MidiTrack Id="2">
+-				<DeviceChain>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-							</ClipSlot>
+-						</ClipSlotList>
+-						<MidiControllers>
+-							<ControllerTargets.6 Id="31">
+-								<LockEnvelope Value="0" />
+-							</ControllerTargets.6>
+-						</MidiControllers>
+-					</MainSequencer>
+-				</DeviceChain>
+-			</MidiTrack>
+-		</Tracks>
+-	</LiveSet>
+-</Ableton>
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/manifest.json automation-envelopes-v1/manifest.json
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/manifest.json	2026-10-18 12:42:21.802625859 -0700
++++ automation-envelopes-v1/manifest.json	2026-10-18 12:51:48.063952802 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "automation-envelopes-v1",
+- "release_status": "candidate-unreviewed",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-AUTOMATION-ENVELOPES",
+@@ -15,25 +15,25 @@
+  ],
+  "partial_requirement_scopes": {
+   "REQ-AUTOMATION-ENVELOPES-001": "Track envelopes in a track's AutomationEnvelopes/Envelopes, clip envelopes in a clip's Envelopes/Envelopes; AutomationEnvelope and ClipEnvelope shape with EnvelopeTarget/PointeeId and Automation/Events; empty transform state",
+-  "REQ-AUTOMATION-ENVELOPES-002": "PointeeId names the Id of the target element; binding by Id, not by list position; fixture target relations only",
++  "REQ-AUTOMATION-ENVELOPES-002": "PointeeId names the Id of the target element; binding by Id, not by list position (judged through the saved envelope of each target); fixture target relations only",
+   "REQ-AUTOMATION-ENVELOPES-003": "FloatEvent, BoolEvent and EnumEvent by target kind; Id, Time (binary64) and Value (binary32, Boolean, integer) in the parameter's stored units",
+-  "REQ-AUTOMATION-ENVELOPES-004": "Event Ids, unique in their list, play no part in order or evaluation",
+-  "REQ-AUTOMATION-ENVELOPES-005": "The event at the lower bound is an ordinary event for evaluation",
+-  "REQ-AUTOMATION-ENVELOPES-006": "Document order with non-decreasing times; at most two events at one time; values around a step",
++  "REQ-AUTOMATION-ENVELOPES-005": "A list whose only event is at the lower bound is accepted",
++  "REQ-AUTOMATION-ENVELOPES-006": "Document order with non-decreasing times; at most two events at one time; a later event may have a negative time",
+   "REQ-AUTOMATION-ENVELOPES-007": "Empty event list refused; first event time other than the lower bound or 0 refused (binary64 comparison, -0 counts as 0); later times not checked; track and clip envelopes",
+   "REQ-AUTOMATION-ENVELOPES-008": "Curve control attribute names; a missing control reads as 0.5; four 0.5 controls mean no curve; on save each control equal to 0.5 is omitted and the others written as binary64 text",
+   "REQ-AUTOMATION-ENVELOPES-009": "Controls in [0, 1] whose pairs meet the stated monotonicity condition are kept on open",
+-  "REQ-AUTOMATION-ENVELOPES-010": "Float value after the last event, at a non-step event time, and between two events with equal values, for t >= 0 on track envelopes",
+-  "REQ-AUTOMATION-ENVELOPES-011": "Bool and Enum value at times that are not event times: the last earlier event's value, held after the last event",
+   "REQ-AUTOMATION-ENVELOPES-012": "Event text on open (Time and controls as decimal binary64, Float Value then binary32, Bool tokens, integer rule; refusal of rejected text) and on save (17 and 9 significant-digit rule, true or false, decimal integers)"
+  },
+  "unreleased_requirements": [
++  "REQ-AUTOMATION-ENVELOPES-004",
++  "REQ-AUTOMATION-ENVELOPES-010",
++  "REQ-AUTOMATION-ENVELOPES-011",
+   "REQ-AUTOMATION-ENVELOPES-013"
+  ],
+  "compatibility_dimensions": {
+   "envelope-storage-and-load-checks": "static-derived expectations; reference execution not-run",
+   "file-format-written": "saved event text only, static-derived; reference execution not-run",
+-  "envelope-value-at-time": "static-derived values at stated times only; not rendered output; reference execution not-run",
++  "envelope-value-at-time": "excluded (REQ-AUTOMATION-ENVELOPES-010 and 011 unreleased)",
+   "editing-and-ui": "excluded (REQ-AUTOMATION-ENVELOPES-013)",
+   "audio": "excluded",
+   "timing": "excluded"
+@@ -53,11 +53,9 @@
+    "documents that break more than one rule of this release"
+   ],
+   "behavior": [
+-   "the value between two events with different values, on linear and curved segments, and any limiting of evaluated values to a range",
+-   "the value at the time of a step, and the Bool or Enum value at the time of an event",
+-   "evaluation of clip envelopes, evaluation at negative times, and evaluation before an envelope's first event when that event is at 0",
++   "the value an envelope supplies to its parameter at any time, for Float, Bool and Enum envelopes, track and clip envelopes alike (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the last event and between equal values, and whether event Ids affect it (REQ-AUTOMATION-ENVELOPES-004)",
+    "whether opening replaces controls that do not satisfy K by 0.5",
+-   "whether a save keeps or renumbers event and target Ids, the saved transform state, saved negative zero, and whether a save writes envelopes that hold a single event",
++   "whether a save keeps or renumbers event and target Ids, the saved transform state, saved negative zero, whether a save writes envelopes that hold a single event, and whether a save keeps a leading event whose value differs from the next event's value",
+    "editing, override, recording and undo (REQ-AUTOMATION-ENVELOPES-013)",
+    "texts, dialogs and logging of a refusal, and the state after it",
+    "audio rendering, smoothing, scheduling and timing"
+@@ -66,34 +64,49 @@
+  "fixture_origin": "independently authored minimal Live Set XML documents from one template; no shipped file content, schema content or program code",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RVE-01 high: every value case (022 to 029) rested on an untraced per-target conversion; withdrawn; REQ-010, 011 and 004 unreleased; REQ-005 and 006 narrowed",
++   "RVE-02 low: case 021 saved a leading value that differs from the next value; fixture aligned so the expectation does not depend on that untraced save rule; envelopes listed against target order",
++   "RVE-03 info: saved PointeeId judged only against the saved target Id; no case assumes a save keeps Ids",
++   "RVE-04 info: no shipped set and no dangling, unsorted, Id-less, Time-less, Value-less or duplicate-Id input; checked per fixture",
++   "RVE-05 info: stated assumptions (open reaches the envelope checks, Bool and Enum text rules, save keeps the binding) accepted",
++   "RVE-06 info: evidence identity re-checked; all hashes matched",
++   "RVE-07 editorial: payload status set to reviewed release; review record added; inventory re-hashed"
++  ],
++  "disposition": "Approved with listed narrowing (RVE-01, RVE-02), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": null,
+  "entrypoint": "README.md",
+- "case_count": 29,
++ "case_count": 21,
+  "inventory_excludes": [
+   "manifest.json (self-hash recorded outside package)"
+  ],
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "e72cb12c324946ad82944ce60bcde6a4b017dfa9c2e51cb562249afe5f25b7d9",
+-   "bytes": 1489
++   "sha256": "da8cd192f3729de77682356336e8c8182ef09d5c616e741fe84a2df4feec4989",
++   "bytes": 1374
+   },
+   {
+    "path": "README.md",
+-   "sha256": "85b1123540d029c8966e9379a5ab91726a2fc2f7ff6e85a714325cdb33910571",
+-   "bytes": 1630
++   "sha256": "a4741038c72c8c12ad214f8809c6e6ee411e7b420384296661b86e06d129c229",
++   "bytes": 1642
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "2c6bcd2d470962addcb514782d0e93058c34b8bec33adef5dd4c67ffc1970f11",
++   "bytes": 8181
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "0abaa55d118f1723c59ba8a787b625f69d8ec2a980d47ef7f9c3fb4f5df6169a",
+-   "bytes": 24461
++   "sha256": "da2740f479d241a7e2e4f6559da3960f89fafa9b682db21e2745849998f7d355",
++   "bytes": 16924
+   },
+   {
+    "path": "fixtures/AUTOMATION-ENVELOPES-001.xml",
+@@ -197,53 +210,13 @@
+   },
+   {
+    "path": "fixtures/AUTOMATION-ENVELOPES-021.xml",
+-   "sha256": "98bc3dd7930fa3df1930e446a220045d3e79105df26c82678b80b830c4fc50fd",
+-   "bytes": 2630
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-022.xml",
+-   "sha256": "666f6417392d43a74fd51afead41114f322589f436ce503d3175420e646dc91f",
+-   "bytes": 2087
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-023.xml",
+-   "sha256": "c6b88b6b7c90503e86a8ab9b2e688fe1d5766c1ee1529608e801aaf088f761c7",
+-   "bytes": 2037
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-024.xml",
+-   "sha256": "a3137d946da4cddf9cc26c277698231287b0e014270adfe6b2b164f5d477e461",
+-   "bytes": 2139
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-025.xml",
+-   "sha256": "ae0d99bd469011c6a40da8bcf10193843c34a79d5d536f43ef1bdd06934c479a",
+-   "bytes": 2169
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-026.xml",
+-   "sha256": "e7541ea1388f94325329b9626079127b92142edec3e024555b913134a62c1a2b",
+-   "bytes": 2094
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-027.xml",
+-   "sha256": "88194f91a5976fdacb14f7a0bd0b86f895b909451dc433770a0a95cb28fd2beb",
+-   "bytes": 2084
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-028.xml",
+-   "sha256": "ba29f5b5fcb5f4c308f4075cf29c7500f95b363d93acd6a389855efd80620832",
+-   "bytes": 2087
+-  },
+-  {
+-   "path": "fixtures/AUTOMATION-ENVELOPES-029.xml",
+-   "sha256": "ccb9012e2407581c2ea5f548d899c2bfeec60103a4476a07a78d5e38c97f4d72",
+-   "bytes": 2633
++   "sha256": "9b09e46e258fe653db67846a24ea828bb3360644c1793834d8d8fb4ccc321fe9",
++   "bytes": 2631
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "b6e7b063e28a7dcb24e9d06f38f849a73876c194764b991c28792400abd0e651",
+-   "bytes": 23258
++   "sha256": "115d0a6b2278c9cc8452b60d416dfedc53a142152d3e4c875362646df9e547cc",
++   "bytes": 20483
+   }
+  ]
+ }
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/README.md automation-envelopes-v1/README.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/README.md	2026-10-18 12:37:42.726775346 -0700
++++ automation-envelopes-v1/README.md	2026-10-18 12:50:31.729444982 -0700
+@@ -1,26 +1,26 @@
+ # Automation envelopes in Live Set documents, release 1
+ 
+-**Unreviewed candidate.** This package is not an implementation input until a
+-separate review approves it and it is published as a release. Read
+-[the contract](spec.md), [the cases](cases.json),
+-[the role instructions](AGENTS.md) and [the manifest](manifest.json).
++**Reviewed local release.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md),
++[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
++stated partial scope, narrowed as recorded in the review, is approved as a
++contract for a fresh, restricted implementation workspace. Such a workspace
++has not been provisioned by this release.
+ 
+ The finite scope is how the decoded XML of one Live Set format version stores
+ track and clip automation envelopes: where envelopes are stored and how each
+ names its parameter, the event elements and their value kinds, the envelopes
+ that make a document refused when it is opened, how curve controls are kept and
+-written, the text read and written for event numbers, and the value an envelope
+-supplies at a stated time where that value follows exactly from the stored
+-events. Requirement IDs are retained with explicit partial clauses. Requirement
+-013 (editing, override, recording, undo and the precedence of a parameter's own
+-value over its envelope) is not released. Values between two events with
+-different values, steps, clip envelope timing and malformed or dangling
+-envelopes have no expectation. No application source, shipped file or public
+-dependency is included.
++written, and the text read and written for event numbers. Requirement IDs are
++retained with explicit partial clauses. Requirements 004 (event Ids), 010 and
++011 (the value an envelope supplies at a time) and 013 (editing, override,
++recording, undo and the precedence of a parameter's own value over its
++envelope) are not released. Envelope values at any time, clip envelope timing
++and malformed or dangling envelopes have no expectation. No application source,
++shipped file or public dependency is included.
+ 
+-The 29 cases use independently authored minimal XML fixtures. All expected
++The 21 cases use independently authored minimal XML fixtures. All expected
+ results are static-derived and unexecuted. They are not captured reference
+-behavior, and envelope values are not rendered output. The representation is a
+-comparison convention, not an API claimed to exist in Live and not a required
+-architecture. No compatibility claim is made. After publication the release is
+-immutable; corrections require a new revision.
++behavior. The representation is a comparison convention, not an API claimed to
++exist in Live and not a required architecture. No compatibility claim is made.
++Preserve this release unchanged; corrections require a new revision.
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/REVIEW.md automation-envelopes-v1/REVIEW.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/REVIEW.md	1969-12-31 16:00:00.000000000 -0800
++++ automation-envelopes-v1/REVIEW.md	2026-10-18 12:51:48.015858218 -0700
+@@ -0,0 +1,83 @@
++# Review disposition
++
++Release: automation-envelopes-v1, 2026-10-18.
++
++Reviewer: a separate review agent (Claude Opus 5.5) launched by the
++coordinator in its own handoff-review context. It did not author this
++candidate and will not implement it. The one reviewer performed the scope and
++evidence, quality and sanitization, evidence-identity and fixture-sharing
++checks. Publication metadata outside this package is left to the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of
++REQ-AUTOMATION-ENVELOPES-001 to 003, 005 to 009 and 012 in
++[the contract](spec.md), narrowed as listed below.
++REQ-AUTOMATION-ENVELOPES-004, 010, 011 and 013 remain unreleased.
++
++- The candidate had 29 cases. 21 are approved; the 8 cases that read an
++  envelope's value at a time were withdrawn (RVE-01). Cases 001 to 020 are
++  unchanged. Case 021 has a new input (RVE-02).
++- Every approved expectation was re-derived from the contract by the
++  reviewer's own restatement, written without the author's model. It agrees
++  with all 21 outcomes and every saved attribute text. The sample covers each
++  released requirement: storage locations and shape (001, 010), the binding by
++  Id (021), event elements by value kind (014, 015, 021), the one-event list
++  (002), a later negative time (009), every load check (002 to 012), curve
++  controls kept and written (017 to 020) and the number text on open and save
++  (006, 007, 013 to 016, 018). The reviewer checked the saved texts digit by
++  digit against the save rule, among them `-63072000`, `0.3000000119`,
++  `0.299999999999999989`, `0.800000000000000044` and `0.200000000000000011`.
++  It also checked that the stated condition on curve controls makes the curve
++  coordinate non-decreasing. Within [0, 1] with c1 > c2, that holds exactly
++  when c1² + c2² − c1·c2 − c1 ≤ 0.
++- The weakest cases were examined individually. Case 021 is new and is the only
++  save case for Bool and integer values. It was changed (RVE-02). Cases 014 and
++  015 refuse Bool and integer text. They rest on the stated assumption that
++  these values use the Boolean and integer rules, which are the same as in the
++  transport-state-v1 release. That assumption is accepted (RVE-05). Case 010 is
++  the clip-envelope counterpart of the refused clip cases. Case 019 relies on a
++  missing control reading as 0.5. Both are accepted.
++- The candidate's other new cases (002, 007, 010, 014, 015, 019 and 020) each
++  exercise a clause that had no case. All are accepted. New cases 028 and 029
++  were withdrawn with the other value cases.
++- Saved Ids: no case or comparison rule assumes that a save keeps or
++  renumbers Ids (RVE-03).
++- Inputs: no fixture is or contains a shipped set. No fixture holds an input
++  whose outcome this release leaves open. The reviewer checked each fixture
++  (RVE-04).
++- Sanitization was checked by the reviewer's own scan of every payload file,
++  wider than the author's deny list. No source code, recovered program text or
++  messages, internal identifiers or addresses, analyst paths, private evidence
++  links, planning identifiers or per-case evidence fields are present.
++  Remaining hits are public document element names, the refused text example
++  `0x1`, and neutral wording in the forbidden-inputs list of `AGENTS.md`.
++- Exclusions appear in both the contract and the manifest and agree. Every
++  expectation is labeled static-derived. Reference and candidate execution have
++  not run, and no compatibility is claimed.
++- In a copy outside the analyst checkout, every Markdown link and case input
++  resolves inside the package, and every listed hash and size matches.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RVE-01 | High | Every value case (022 to 029) assumed that a parameter's reported value is its stored event value, unchanged and in stored units. That covered event times, after the last event and between equal values. Whether the original reports a stored value unchanged was not established for the targets of this release; the static evidence leaves room for a per-parameter mapping of the value. The candidate stated this as an assumption, but nothing in the kept evidence supports it, so the Float expectations were not exact. The candidate treated the Bool and Enum values as free of that step. The reviewer could not confirm this. Those cases also assumed that a parameter follows its envelope after open and that envelope times are song positions in beats, and neither was traced. | Narrowed: cases 022 to 029 withdrawn. REQ-AUTOMATION-ENVELOPES-010 and 011 unreleased. REQ-AUTOMATION-ENVELOPES-004 unreleased, since its only case read values. REQ-005 narrowed to accepting a one-event list, and REQ-006 to document order and later negative times. The value an envelope supplies at any time is excluded in the contract and the manifest. The `open-evaluate` action, the `values` field and their comparison obligation were removed. |
++| RVE-02 | Low | Case 021 saved a Bool and an Enum envelope whose event at L has a value that differs from the next event's value. Whether a save keeps such a leading value is not established. In the other save cases the two values are equal. | Fixture changed: the event at L now has the next event's value (`false`; `0`). The saved texts `true`, `false`, `0` and `2` are still exercised. The envelopes are now listed in an order different from their targets' order. The binding by Id therefore keeps a case after case 029's withdrawal. The new behavior is excluded, and the contract states the fixture precondition. |
++| RVE-03 | Info | Saved target Ids. Every save case judges the saved `PointeeId` only against the `Id` of the saved target. Event Ids are present but not compared. | Confirmed. No case, comparison rule or obligation assumes that a save keeps or renumbers target or event Ids, and the contract excludes Id handling on save. Two assumptions remain stated: that a save keeps each envelope bound to its target, and that open reaches the envelope checks. |
++| RVE-04 | Info | Fixture inputs. | All 21 fixtures were written for this release from one template, and the reviewer compared each with it. Each is the template with exactly the envelopes its purpose states. No fixture copies a shipped set or contains shipped content. In every fixture, each `PointeeId` names exactly one of the four targets in its stated relation, and no two envelopes name one target. Times do not decrease, and no two events share a time. Every event has `Id`, `Time` and `Value`, with Ids distinct in their list. Values are in range and of the target's kind, there is no stored transform, and each `LockEnvelope` is `0`. The text is ASCII with LF endings, and the 21 inputs are distinct. |
++| RVE-05 | Info | Assumptions that stay stated in the contract. They are: opening a Live Set applies the envelope checks; Bool and Enum values use the Boolean and integer rules; a save keeps each envelope bound to its target. | Accepted. The format declares these values as Boolean and integer. The rules are the reviewed transport-state-v1 rules. The comparison obligation covers all three. |
++| RVE-06 | Info | Evidence identity. | The pinned program image and every file of the evidence run were re-hashed on 2026-10-18. All matched the recorded digests. |
++| RVE-07 | Editorial | README, AGENTS, contract, cases and manifest described an unreviewed candidate. The contract also noted two pairs of identical inputs, which no longer exist. | Status set to reviewed local release. This record was added and linked. Manifest review and status fields were filled, and the inventory was re-hashed. |
++
++## Disposition
++
++**Approved with listed narrowing** (RVE-01 and RVE-02), only for the explicit
++partial clauses in the contract. All expected outcomes remain static-derived.
++Neither reference nor candidate application cases have run, and no
++compatibility pass is claimed. Candidate-only checks cannot replace
++independent reference observations. An isolated implementation workspace
++remains a prerequisite.
++
++This disposition concerns the local reviewed-handoff workflow; it does not
++authorize external publication. Preserve this release unchanged.
+diff -ruN /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/spec.md automation-envelopes-v1/spec.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/aen-orig/payload/spec.md	2026-10-18 12:39:07.129142158 -0700
++++ automation-envelopes-v1/spec.md	2026-10-18 12:50:21.838346636 -0700
+@@ -7,8 +7,8 @@
+ scope. No other clause of a listed requirement is implicitly approved. This
+ document is self-contained.
+ 
+-**Status: unreviewed release candidate.** It is not an implementation input
+-until a separate review approves it and it is published as a release.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the narrowing recorded in [the review disposition](REVIEW.md).
+ 
+ ## What the contract means
+ 
+@@ -21,27 +21,23 @@
+ - the event elements, their attributes and value kinds;
+ - which envelopes make a document refused when it is opened;
+ - how curve controls are kept on open and written on save;
+-- the text read and written for event numbers;
+-- the value an envelope supplies at a stated time, where that value follows
+-  exactly from the stored events.
+-
+-It does not describe the value between two events with different values,
+-processed audio, editing, recording, undo, the user interface, or how a refusal
+-is reported.
++- the text read and written for event numbers.
++
++It does not describe the value an envelope supplies to its parameter at any
++time, processed audio, editing, recording, undo, the user interface, or how a
++refusal is reported.
+ 
+ All rules and expected results are **static-derived**: they were derived for the
+ target build without running it. None is an observed execution of the original
+-application, and none was run against a candidate. Expected envelope values are
+-exact consequences of the stored events at the stated times; they are not
+-rendered or measured output. No compatibility result is established, and the
+-original application remains the authority for a later comparison. Some derived
+-steps rest on assumptions that were not traced to the end: that opening a Live
+-Set applies the envelope checks of REQ-AUTOMATION-ENVELOPES-007; that `BoolEvent`
+-and `EnumEvent` values are read with the Boolean and integer rules of
+-REQ-AUTOMATION-ENVELOPES-012; that a parameter reports the values of
+-REQ-AUTOMATION-ENVELOPES-010 unchanged in its stored units; and that track
+-envelope times are song positions in beats. The
+-[comparison obligation](#reference-comparison-obligation-not-executed) covers them.
++application, and none was run against a candidate. No compatibility result is
++established, and the original application remains the authority for a later
++comparison. Some derived steps rest on assumptions that were not traced to the
++end: that opening a Live Set applies the envelope checks of
++REQ-AUTOMATION-ENVELOPES-007; that `BoolEvent` and `EnumEvent` values are read
++with the Boolean and integer rules of REQ-AUTOMATION-ENVELOPES-012; and that a
++save keeps each envelope bound to its target. The
++[comparison obligation](#reference-comparison-obligation-not-executed) covers
++them.
+ 
+ ## Document scope and preconditions
+ 
+@@ -72,9 +68,7 @@
+ | Term | Meaning |
+ | --- | --- |
+ | L | The lower time bound −63,072,000, written `-63072000` |
+-| Event | A `FloatEvent`, `BoolEvent` or `EnumEvent` child of an envelope's `Automation/Events`. e0 … en are the events in document order, with times t0 … tn and values v0 … vn |
+-| Step | Two adjacent events with the same time |
+-| E(t) | The value an envelope supplies to its parameter at time t. t is in the unit of the `Time` attribute |
++| Event | A `FloatEvent`, `BoolEvent` or `EnumEvent` child of an envelope's `Automation/Events`, taken in document order |
+ | Stored units | The units in which the parameter's `Manual` value and its event values are written |
+ 
+ ## Selected requirement clauses
+@@ -128,6 +122,9 @@
+    element, target Ids are distinct and smaller than `NextPointeeId`, each
+    target's `LockEnvelope` is `0`, and each parameter is named by at most one
+    envelope.
++4. The cases judge the binding only through the saved envelope of each target.
++   AUTOMATION-ENVELOPES-021 lists its envelopes in an order different from the
++   order of their targets.
+ 
+ ### REQ-AUTOMATION-ENVELOPES-003: event elements and value kinds (partial)
+ 
+@@ -139,29 +136,22 @@
+ | `CrossFadeState` | Enum | `EnumEvent` | integer | 0 to 2 |
+ 
+ Every event has an `Id` attribute and a `Time` attribute, an IEEE 754 binary64
+-number. A `FloatEvent` may also carry the curve controls of
+-REQ-AUTOMATION-ENVELOPES-008. Event values are in the parameter's stored units,
+-the same units as its `Manual` value.
+-
+-### REQ-AUTOMATION-ENVELOPES-004: event Ids (partial)
+-
+-Within one `Events` list, event Ids are distinct. They play no part in the order
+-of events or in E(t), which use document order.
++number. In every fixture, event Ids are distinct within their list. A
++`FloatEvent` may also carry the curve controls of REQ-AUTOMATION-ENVELOPES-008.
++Event values are in the parameter's stored units, the same units as its
++`Manual` value.
+ 
+ ### REQ-AUTOMATION-ENVELOPES-005: the event at the lower bound (partial)
+ 
+-An event at L is an ordinary event for E(t). When its value differs from the
+-next event's value, E(t) at the next event's time is the next event's value.
+ A list whose only event is at L is accepted (REQ-AUTOMATION-ENVELOPES-007).
++In every `open-save` fixture, the first event is at L and has the value of the
++next event.
+ 
+-### REQ-AUTOMATION-ENVELOPES-006: event order and steps (partial)
++### REQ-AUTOMATION-ENVELOPES-006: event order (partial)
+ 
+ 1. Events are taken in document order. In every fixture their times do not
+    decrease, and at most two events share a time.
+-2. The two events of a step are ordinary events for REQ-AUTOMATION-ENVELOPES-010:
+-   at a time before the step, the segment ends at the first event of the step,
+-   and at a time after it, the segment starts at the second.
+-3. An event after the first may have a negative time.
++2. An event after the first may have a negative time.
+ 
+ ### REQ-AUTOMATION-ENVELOPES-007: envelopes that refuse a document (partial)
+ 
+@@ -203,29 +193,6 @@
+ does not say whether they are kept or replaced by 0.5. The margin 10⁻⁶ is a scope
+ limit of this release.
+ 
+-### REQ-AUTOMATION-ENVELOPES-010: Float envelope value (partial)
+-
+-For a Float track envelope and a time t with t ≥ 0 and t ≥ t0, E(t) is a binary32
+-value defined by the first rule that applies:
+-
+-1. If t > tn, E(t) = vn.
+-2. If exactly one event has the time t, E(t) is that event's value.
+-3. Otherwise let a be the last event with a time below t and b the first event
+-   with a time above t. If va and vb are equal binary32 values, E(t) = va.
+-
+-No other time has an expectation. When va and vb differ, the value between them
+-is not part of this release, whether or not a carries a curve. The value at the
+-time of a step is not part of this release either. Curve controls on an event do
+-not change these rules: at the event's own time and after the last event the
+-rules above apply unchanged.
+-
+-### REQ-AUTOMATION-ENVELOPES-011: Bool and Enum envelope value (partial)
+-
+-Bool and Enum envelopes do not interpolate. For a track envelope and a time t
+-with t ≥ 0 and t ≥ t0 that is not the time of any event, E(t) is the value of the
+-last event with a time below t. After the last event, its value holds. At the
+-time of an event this release gives no expectation.
+-
+ ### REQ-AUTOMATION-ENVELOPES-012: event number text (partial)
+ 
+ On open:
+@@ -278,15 +245,14 @@
+ 
+ ## Acceptance representation and comparison
+ 
+-[cases.json](cases.json) lists 29 cases. Each has one input fixture, an action
++[cases.json](cases.json) lists 21 cases. Each has one input fixture, an action
+ and an expected result:
+ 
+ | Field | Meaning |
+ | --- | --- |
+-| `action` | `open`; `open-save`: open, then save without other changes; `open-evaluate`: open, then read E(t) at the listed times |
++| `action` | `open`; `open-save`: open, then save without other changes |
+ | `outcome` | `opens` or `refused` |
+ | `saved.envelopes` | `open-save` only. Per listed target (`Pan`, `Speaker` or `CrossFadeState` of the audio track), the saved envelope's events in order, each with its element name and its attributes other than `Id` |
+-| `values` | `open-evaluate` only. For each entry, the target, a time t and E(t) |
+ 
+ Comparison rules:
+ 
+@@ -301,16 +267,13 @@
+   text, plus an `Id` attribute whose presence and value are not compared.
+   Anything else is not judged, including other envelopes and elements, the
+   transform state and the parameters' `Manual` values.
+-- In `values`, times are JSON numbers in the unit of `Time`. Float values are
+-  JSON numbers and compare exactly as binary32 values. Bool values are JSON
+-  Booleans and Enum values JSON integers, both compared exactly.
+-- A refused case has no `saved` or `values` part.
++- A refused case has no `saved` part.
+ 
+ This is a **project comparison representation**, not an API claimed to exist in
+ Live and not a required design. A candidate adapter may translate its own result
+-into these labels. Each case starts from its fixture alone. Reading, saving and
+-evaluating a stored envelope have no timing tolerance, cancellation step or
+-teardown within this scope, so those case kinds are omitted.
++into these labels. Each case starts from its fixture alone. Reading and saving a
++stored envelope have no timing tolerance, cancellation step or teardown within
++this scope, so those case kinds are omitted.
+ 
+ ## Reference comparison obligation (not executed)
+ 
+@@ -333,14 +296,6 @@
+   The wording of a refusal is not compared.
+ - For `open-save`, the set is saved without other changes and its decoded XML is
+   compared under the rules above.
+-- For `open-evaluate`, the set is opened with the transport stopped and
+-  arrangement automation active, without any manual change to the parameter.
+-  The song position is moved to t, read as beats, and the parameter's value is
+-  read in its stored units through a channel chosen by the validation analyst.
+-  A channel that rounds is compared at its rounding. If the parameter does not
+-  follow its envelope after opening, for example because it shows its `Manual`
+-  value, the observation is inconclusive rather than a mismatch: the precedence
+-  between a parameter's `Manual` value and its envelope is excluded.
+ 
+ None of this has been run. Before claiming reference compatibility, run a
+ separately designed bounded probe for these cases or a justified equivalent set.
+@@ -350,10 +305,12 @@
+ 
+ ## Exclusions and deferred obligations
+ 
+-Requirement not released: **REQ-AUTOMATION-ENVELOPES-013** (editing envelopes,
+-automation override and re-enable, recording, undo, the precedence of a
+-parameter's `Manual` value over its envelope, and the meaning of `LockEnvelope`
+-and of stored transforms).
++Requirements not released: **REQ-AUTOMATION-ENVELOPES-004** (event Ids and their
++part in envelope values), **REQ-AUTOMATION-ENVELOPES-010** (Float envelope
++value), **REQ-AUTOMATION-ENVELOPES-011** (Bool and Enum envelope value) and
++**REQ-AUTOMATION-ENVELOPES-013** (editing envelopes, automation override and
++re-enable, recording, undo, the precedence of a parameter's `Manual` value over
++its envelope, and the meaning of `LockEnvelope` and of stored transforms).
+ 
+ Inputs with **no expectation** in this release:
+ 
+@@ -388,23 +345,23 @@
+ 
+ Excluded behavior:
+ 
+-- the value between two events with different values, on linear and curved
+-  segments, and any limiting of evaluated values to a range;
+-- the value at the time of a step, and the Bool or Enum value at the time of an
+-  event;
+-- evaluation of clip envelopes, evaluation at negative times, and evaluation
+-  before an envelope's first event when that event is at 0;
++- the value an envelope supplies to its parameter at any time, for Float, Bool
++  and Enum envelopes, track and clip envelopes alike
++  (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the
++  last event and between equal values, and whether event Ids affect it
++  (REQ-AUTOMATION-ENVELOPES-004);
+ - whether opening replaces controls that do not satisfy K by 0.5;
+ - whether a save keeps or renumbers event and target Ids, the saved transform
+-  state, saved negative zero, and whether a save writes envelopes that hold a
+-  single event;
++  state, saved negative zero, whether a save writes envelopes that hold a
++  single event, and whether a save keeps a leading event whose value differs
++  from the next event's value;
+ - editing, override, recording and undo (REQ-AUTOMATION-ENVELOPES-013);
+ - texts, dialogs and logging of a refusal, and the state after it;
+ - audio rendering, smoothing, scheduling and timing.
+ 
+ ## Fixture provenance
+ 
+-All 29 fixtures were authored for this release from one template written for
++All 21 fixtures were authored for this release from one template written for
+ it. The template is the declaration, the root element with the three attributes
+ above, and a `LiveSet` holding `NextPointeeId` with the value 40 and two tracks:
+ 
+@@ -420,10 +377,9 @@
+ `LoopSlot` and `ScrollerTimePreserver` values only give the elements their
+ usual shape; they are not judged. Each fixture is the template with the
+ envelopes that its purpose states. Text is ASCII with line-feed line endings
+-and tab indentation. Two pairs of cases share identical inputs with different
+-actions: AUTOMATION-ENVELOPES-001 and 022, and AUTOMATION-ENVELOPES-017 and 025.
++and tab indentation. The 21 inputs are distinct.
+ 
+ No fixture contains shipped file content, program code, schema content or
+ assets. Expected results are newly authored static-derived behavioral data. No
+ public source or dependency is approved or included. Review status is recorded
+-in [the manifest](manifest.json).
++in [the manifest](manifest.json) and [the review disposition](REVIEW.md).

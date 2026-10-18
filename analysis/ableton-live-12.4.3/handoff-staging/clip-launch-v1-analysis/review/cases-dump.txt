@@ -1,0 +1,102 @@
+CLIP-LAUNCH-001 save open-save ['001', '002', '003'] | Template: launch values held, written back unchanged and in order
+   {"outcome": "opens", "values": {"$S/LaunchMode": 0, "$S/LaunchQuantisation": 0, "$S/Legato": false, "$S/VelocityAmount": 0.0, "$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false, "GlobalQuantisation": 4, "AutoQuantisation": 0}, "saved": {"values": {"$S/LaunchMode": 0, "$S/LaunchQuantisation": 0, "$S/Legato": false, "$S/VelocityAmount": 0.0, "$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}, "clip_order": "$S"}}
+CLIP-LAUNCH-002 positive open-save ['001', '004', '005'] | Launch mode 2 (Toggle) and launch quantization 5 (1 Bar)
+   {"outcome": "opens", "values": {"$S/LaunchMode": 2, "$S/LaunchQuantisation": 5}, "saved": {"values": {"$S/LaunchMode": 2, "$S/LaunchQuantisation": 5}}}
+CLIP-LAUNCH-003 boundary open ['004', '005'] | Largest values: launch mode 3 (Repeat), launch quantization 14 (1/32)
+   {"outcome": "opens", "values": {"$S/LaunchMode": 3, "$S/LaunchQuantisation": 14}}
+CLIP-LAUNCH-004 positive open-save ['001', '004', '005'] | Session audio clip: launch mode 1 (Gate), quantization 1 (None)
+   {"outcome": "opens", "values": {"$A/LaunchMode": 1, "$A/LaunchQuantisation": 1}, "saved": {"values": {"$A/LaunchMode": 1, "$A/LaunchQuantisation": 1}, "clip_order": "$A"}}
+CLIP-LAUNCH-005 save open-save ['001', '005'] | Arrangement MIDI clip keeps launch quantization 1 (None) on save
+   {"outcome": "opens", "values": {"$R/LaunchQuantisation": 1}, "saved": {"values": {"$R/LaunchQuantisation": 1}, "clip_order": "$R"}}
+CLIP-LAUNCH-006 positive open ['003', '005'] | Global quantization 7 (1/4)
+   {"outcome": "opens", "values": {"GlobalQuantisation": 7}}
+CLIP-LAUNCH-007 boundary open ['003', '005'] | Global quantization 0 (None)
+   {"outcome": "opens", "values": {"GlobalQuantisation": 0}}
+CLIP-LAUNCH-008 boundary open ['003', '005'] | Global quantization 13 (1/32), the largest value
+   {"outcome": "opens", "values": {"GlobalQuantisation": 13}}
+CLIP-LAUNCH-009 positive open ['003', '006'] | Record quantization 5 (1/16)
+   {"outcome": "opens", "values": {"AutoQuantisation": 5}}
+CLIP-LAUNCH-010 boundary open ['003', '006'] | Record quantization 8 (1/32), the largest value
+   {"outcome": "opens", "values": {"AutoQuantisation": 8}}
+CLIP-LAUNCH-011 positive open-save ['002', '007'] | Follow action A 9 (Jump) and B 2 (Play Again)
+   {"outcome": "opens", "values": {"$S/FA/FollowActionA": 9, "$S/FA/FollowActionB": 2}, "saved": {"values": {"$S/FA/FollowActionA": 9, "$S/FA/FollowActionB": 2}}}
+CLIP-LAUNCH-012 positive open-save ['001'] | Legato on and velocity amount 0.5
+   {"outcome": "opens", "values": {"$S/Legato": true, "$S/VelocityAmount": 0.5}, "saved": {"values": {"$S/Legato": true, "$S/VelocityAmount": 0.5}}}
+CLIP-LAUNCH-013 positive open ['001'] | Legato text 1 reads as on
+   {"outcome": "opens", "values": {"$S/Legato": true}}
+CLIP-LAUNCH-014 boundary open ['001'] | Velocity amount 0.3 is held as the nearest binary32 value
+   {"outcome": "opens", "values": {"$S/VelocityAmount": 0.30000001192092896}}
+CLIP-LAUNCH-015 boundary open ['001'] | Integer text +2 and leading-space 5 are accepted
+   {"outcome": "opens", "values": {"$S/LaunchMode": 2, "$S/LaunchQuantisation": 5}}
+CLIP-LAUNCH-016 boundary open ['002', '013'] | Follow time text 4.5abc reads as 4.5
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 4.5}}
+CLIP-LAUNCH-017 negative open ['001'] | Legato text TRUE is refused (case-sensitive)
+   {"outcome": "refused"}
+CLIP-LAUNCH-018 negative open ['001'] | Launch mode text 2.0 is refused
+   {"outcome": "refused"}
+CLIP-LAUNCH-019 negative open ['001'] | Two LaunchMode elements in one clip are refused
+   {"outcome": "refused"}
+CLIP-LAUNCH-020 negative open ['001'] | Velocity amount text abc is refused
+   {"outcome": "refused"}
+CLIP-LAUNCH-021 negative open ['003'] | Global quantization text 4.0 is refused
+   {"outcome": "refused"}
+CLIP-LAUNCH-022 negative open ['002'] | Follow-action enabled text yes is refused
+   {"outcome": "refused"}
+CLIP-LAUNCH-023 missing open-save ['009'] | Clip without Legato, VelocityAmount and FollowAction opens with initial values
+   {"outcome": "opens", "values": {"$S/LaunchMode": 0, "$S/LaunchQuantisation": 0, "$S/Legato": false, "$S/VelocityAmount": 0.0, "$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}, "saved": {"values": {"$S/LaunchMode": 0, "$S/LaunchQuantisation": 0, "$S/Legato": false, "$S/VelocityAmount": 0.0, "$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}, "clip_order": "$S"}}
+CLIP-LAUNCH-024 missing open-save ['009'] | Follow action without JumpIndexA opens with jump index A 1
+   {"outcome": "opens", "values": {"$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 3.0}, "saved": {"values": {"$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 3.0}}}
+CLIP-LAUNCH-025 missing open-save ['009'] | Follow action without IsLinked, LoopIterations and FollowActionEnabled
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 8.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}, "saved": {"values": {"$S/FA/FollowTime": 8.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}}}
+CLIP-LAUNCH-026 negative open ['011'] | Launch quantization 15, outside the defined values, does not refuse the document
+   {"outcome": "opens"}
+CLIP-LAUNCH-027 negative open ['011'] | Launch mode 4, outside the defined values, does not refuse the document
+   {"outcome": "opens"}
+CLIP-LAUNCH-028 negative open ['011'] | Follow action A 10, outside the defined values, does not refuse the document
+   {"outcome": "opens"}
+CLIP-LAUNCH-029 positive open-save ['012'] | Chances 30 and 30 become 50 and 50
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 50.0, "$S/FA/FollowChanceB": 50.0}, "saved": {"values": {"$S/FA/FollowChanceA": 50.0, "$S/FA/FollowChanceB": 50.0}}}
+CLIP-LAUNCH-030 boundary open-save ['012'] | Chances 0 and 0 with follow actions enabled become 100 and 0, disabled
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/FollowActionEnabled": false}, "saved": {"values": {"$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/FollowActionEnabled": false}}}
+CLIP-LAUNCH-031 boundary open-save ['012'] | Chances 1 and 7 become 13 and 87 (an exact half rounds away from zero)
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 13.0, "$S/FA/FollowChanceB": 87.0}, "saved": {"values": {"$S/FA/FollowChanceA": 13.0, "$S/FA/FollowChanceB": 87.0}}}
+CLIP-LAUNCH-032 positive open-save ['012'] | Chances 1 and 2 become 33 and 67
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 33.0, "$S/FA/FollowChanceB": 67.0}, "saved": {"values": {"$S/FA/FollowChanceA": 33.0, "$S/FA/FollowChanceB": 67.0}}}
+CLIP-LAUNCH-033 boundary open-save ['012'] | Chances 0 and 50 become 0 and 100; follow actions stay disabled
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 0.0, "$S/FA/FollowChanceB": 100.0, "$S/FA/FollowActionEnabled": false}, "saved": {"values": {"$S/FA/FollowChanceA": 0.0, "$S/FA/FollowChanceB": 100.0}}}
+CLIP-LAUNCH-034 positive open-save ['012'] | Fractional chances 0.25 and 0.75 become 25 and 75
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 25.0, "$S/FA/FollowChanceB": 75.0}, "saved": {"values": {"$S/FA/FollowChanceA": 25.0, "$S/FA/FollowChanceB": 75.0}}}
+CLIP-LAUNCH-035 boundary open-save ['012'] | Chances 100 and 0 with follow actions enabled are unchanged and stay enabled
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/FollowActionEnabled": true}, "saved": {"values": {"$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/FollowActionEnabled": true}}}
+CLIP-LAUNCH-036 missing open-save ['009', '012'] | Chance A 30 without FollowChanceB becomes 100 and 0
+   {"outcome": "opens", "values": {"$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0}, "saved": {"values": {"$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0}}}
+CLIP-LAUNCH-037 boundary open-save ['013'] | Follow time 2.0000001 becomes exactly 2
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 2.0}, "saved": {"values": {"$S/FA/FollowTime": 2.0}}}
+CLIP-LAUNCH-038 boundary open ['013'] | Follow time 3.0000002 becomes 11531521/3843840
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 3.00000026015651}}
+CLIP-LAUNCH-039 boundary open-save ['013'] | Follow time 1e-8 becomes 0
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 0.0}, "saved": {"values": {"$S/FA/FollowTime": 0.0}}}
+CLIP-LAUNCH-040 positive open ['013'] | Follow time 1.3333333 becomes 4/3
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 1.3333333333333333}}
+CLIP-LAUNCH-041 positive open-save ['009', '012', '014'] | 11.0_405 clip, follow time 4, actions 0 and 0: linked, A becomes Next
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}, "saved": {"values": {"$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": true, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 4, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}, "absent": ["$S/FollowTime", "$S/FollowActionA", "$S/FollowActionB", "$S/FollowChanceA", "$S/FollowChanceB"], "clip_order": "$S"}}
+CLIP-LAUNCH-042 positive open-save ['009', '012', '014'] | 11.0_405 clip with A 3 at 0.5 and B 1 at 0.5: enabled, unlinked, 50/50
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 8.0, "$S/FA/IsLinked": false, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 3, "$S/FA/FollowActionB": 1, "$S/FA/FollowChanceA": 50.0, "$S/FA/FollowChanceB": 50.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": true}, "saved": {"values": {"$S/FA/FollowTime": 8.0, "$S/FA/IsLinked": false, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 3, "$S/FA/FollowActionB": 1, "$S/FA/FollowChanceA": 50.0, "$S/FA/FollowChanceB": 50.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": true}, "absent": ["$S/FollowTime", "$S/FollowActionA", "$S/FollowActionB", "$S/FollowChanceA", "$S/FollowChanceB"], "clip_order": "$S"}}
+CLIP-LAUNCH-043 positive open-save ['012', '014'] | 11.0_405 clip with A 2 at 0.25 and B 4 at 0.75, follow time 4: enabled, unlinked
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 4.0, "$S/FA/IsLinked": false, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 2, "$S/FA/FollowActionB": 4, "$S/FA/FollowChanceA": 25.0, "$S/FA/FollowChanceB": 75.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": true}, "saved": {"values": {"$S/FA/IsLinked": false, "$S/FA/FollowActionA": 2, "$S/FA/FollowChanceA": 25.0, "$S/FA/FollowActionEnabled": true}}}
+CLIP-LAUNCH-044 boundary open ['014'] | 11.0_405 clip, follow time 8, actions 0 and 0: unlinked, A stays No Action
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 8.0, "$S/FA/IsLinked": false, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 0, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}}
+CLIP-LAUNCH-045 missing open ['014'] | 11.0_405 clip without FollowTime: follow time 1, unlinked
+   {"outcome": "opens", "values": {"$S/FA/FollowTime": 1.0, "$S/FA/IsLinked": false, "$S/FA/LoopIterations": 1, "$S/FA/FollowActionA": 0, "$S/FA/FollowActionB": 0, "$S/FA/FollowChanceA": 100.0, "$S/FA/FollowChanceB": 0.0, "$S/FA/JumpIndexA": 1.0, "$S/FA/JumpIndexB": 1.0, "$S/FA/FollowActionEnabled": false}}
+CLIP-LAUNCH-046 positive open ['014'] | 12.0_12117 scene meeting the linked condition gets IsLinked true
+   {"outcome": "opens", "values": {"Scenes/Scene[1]/FA/IsLinked": true}}
+CLIP-LAUNCH-047 positive open ['014'] | 12.0_12117 scene with follow time 8 gets IsLinked false
+   {"outcome": "opens", "values": {"Scenes/Scene[1]/FA/IsLinked": false, "Scenes/Scene[1]/FA/FollowTime": 8.0}}
+CLIP-LAUNCH-048 missing open ['014'] | 12.0_12117 scene without FollowAction gets the conversion's follow action
+   {"outcome": "opens", "values": {"Scenes/Scene[1]/FA/FollowTime": 4.0, "Scenes/Scene[1]/FA/IsLinked": true, "Scenes/Scene[1]/FA/LoopIterations": 1, "Scenes/Scene[1]/FA/FollowActionA": 0, "Scenes/Scene[1]/FA/FollowActionB": 0, "Scenes/Scene[1]/FA/FollowChanceA": 100.0, "Scenes/Scene[1]/FA/FollowChanceB": 0.0, "Scenes/Scene[1]/FA/JumpIndexA": 1.0, "Scenes/Scene[1]/FA/JumpIndexB": 1.0, "Scenes/Scene[1]/FA/FollowActionEnabled": false}}
+CLIP-LAUNCH-049 negative open ['014'] | 12.0_12117 scene with follow actions enabled gets IsLinked false
+   {"outcome": "opens", "values": {"Scenes/Scene[1]/FA/IsLinked": false, "Scenes/Scene[1]/FA/FollowActionEnabled": true}}
+CLIP-LAUNCH-050 negative open ['014'] | 12.0_12402 scene is not converted: IsLinked false stays false
+   {"outcome": "opens", "values": {"Scenes/Scene[1]/FA/IsLinked": false}}
+{'candidate_execution', 'expected', 'requirements', 'reference_execution', 'id', 'action', 'purpose', 'kind', 'expectation_provenance', 'comparator', 'input'}
+{('static-derived; not observed reference output', 'not-run', 'not-run', "outcome exact; listed values exact; saved document compared as parsed XML for listed values (single element, only attribute Value, text read back with the release's rules), absent paths and clip_order only"), ('static-derived; not observed reference output', 'not-run', 'not-run', 'outcome exact; listed values exact (binary32 compared after exact widening)')}

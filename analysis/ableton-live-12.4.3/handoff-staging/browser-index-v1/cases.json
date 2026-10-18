@@ -1,0 +1,873 @@
+{
+ "schema": "browser-index-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "browser-index-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored minimal files; no shipped file copied",
+ "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+ "representation": {
+  "content_kind": "release label per file name, or none",
+  "tags": "set of tag texts assigned to an item",
+  "labels": "set of color label numbers 1 to 7",
+  "sidecar": "sidecar data model as defined in spec.md",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "BROWSER-INDEX-001",
+   "purpose": "Ten document and audio file names across seven kinds",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "a.wav",
+     "b.aif",
+     "c.alc",
+     "d.adg",
+     "e.adv",
+     "f.agr",
+     "g.amxd",
+     "h.rx2",
+     "i.mid",
+     "j.als"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "a.wav": "other audio",
+     "b.aif": "other audio",
+     "c.alc": "clips",
+     "d.adg": "live presets",
+     "e.adv": "live presets",
+     "f.agr": "grooves",
+     "g.amxd": "Max devices",
+     "h.rx2": "REX files",
+     "i.mid": "other files",
+     "j.als": "other files"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-002",
+   "purpose": "Text, data, analysis, sidecar, configuration and archive files have no kind",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "negative",
+   "input": {
+    "file_names": [
+     "k.txt",
+     "l.json",
+     "m.asd",
+     "n.xmp",
+     "o.cfg",
+     "p.zip"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "k.txt": "none",
+     "l.json": "none",
+     "m.asd": "none",
+     "n.xmp": "none",
+     "o.cfg": "none",
+     "p.zip": "none"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-003",
+   "purpose": "Plug-in program and bank files and preset bundles have no kind",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "negative",
+   "input": {
+    "file_names": [
+     "q.fxp",
+     "r.fxb",
+     "s.ablpresetbundle"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "q.fxp": "none",
+     "r.fxb": "none",
+     "s.ablpresetbundle": "none"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-004",
+   "purpose": "Remaining extensions of the other audio kind",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.aiff",
+     "item.ams",
+     "item.sd2",
+     "item.mp7",
+     "item.eflac",
+     "item.wv",
+     "item.bwf",
+     "item.rf64"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.aiff": "other audio",
+     "item.ams": "other audio",
+     "item.sd2": "other audio",
+     "item.mp7": "other audio",
+     "item.eflac": "other audio",
+     "item.wv": "other audio",
+     "item.bwf": "other audio",
+     "item.rf64": "other audio"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-005",
+   "purpose": "Compressed audio extensions in three kinds",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.mp3",
+     "item.ogg",
+     "item.flac",
+     "item.wma",
+     "item.m4a"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.mp3": "encoded audio",
+     "item.ogg": "encoded audio",
+     "item.flac": "encoded audio",
+     "item.wma": "Windows Media audio",
+     "item.m4a": "MPEG-4 audio"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-006",
+   "purpose": "Remaining Max device and REX extensions",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.amp",
+     "item.rex",
+     "item.rcy"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.amp": "Max devices",
+     "item.rex": "REX files",
+     "item.rcy": "REX files"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-007",
+   "purpose": "Video extensions",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.mov",
+     "item.avi",
+     "item.dv",
+     "item.mp4",
+     "item.m4v",
+     "item.wmv",
+     "item.mpg",
+     "item.m2v"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.mov": "video",
+     "item.avi": "video",
+     "item.dv": "video",
+     "item.mp4": "video",
+     "item.m4v": "video",
+     "item.wmv": "video",
+     "item.mpg": "video",
+     "item.m2v": "video"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-008",
+   "purpose": "Image extensions",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.bmp",
+     "item.pcx",
+     "item.tif",
+     "item.tiff",
+     "item.jpg",
+     "item.jpeg",
+     "item.png"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.bmp": "images",
+     "item.pcx": "images",
+     "item.tif": "images",
+     "item.tiff": "images",
+     "item.jpg": "images",
+     "item.jpeg": "images",
+     "item.png": "images"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-009",
+   "purpose": "Plug-in preset extensions",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.aupreset",
+     "item.vstpreset"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.aupreset": "plug-in presets",
+     "item.vstpreset": "plug-in presets"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-010",
+   "purpose": "Remaining extensions of the other files kind",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "file_names": [
+     "item.abl",
+     "item.ablbundle",
+     "item.alp",
+     "item.midi",
+     "item.scl",
+     "item.ascl",
+     "item.stacks",
+     "item.appc",
+     "item.sf",
+     "item.sf2",
+     "item.gig",
+     "item.exs",
+     "item.nki",
+     "item.toast",
+     "item.iso"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.abl": "other files",
+     "item.ablbundle": "other files",
+     "item.alp": "other files",
+     "item.midi": "other files",
+     "item.scl": "other files",
+     "item.ascl": "other files",
+     "item.stacks": "other files",
+     "item.appc": "other files",
+     "item.sf": "other files",
+     "item.sf2": "other files",
+     "item.gig": "other files",
+     "item.exs": "other files",
+     "item.nki": "other files",
+     "item.toast": "other files",
+     "item.iso": "other files"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-011",
+   "purpose": "Remaining extensions without a kind",
+   "requirements": [
+    "REQ-BROWSER-INDEX-001"
+   ],
+   "case_kind": "negative",
+   "input": {
+    "file_names": [
+     "item.ini",
+     "item.gz",
+     "item.py",
+     "item.log",
+     "item.lng",
+     "item.ask",
+     "item.auz",
+     "item.idx",
+     "item.db",
+     "item.lock",
+     "item.dmp",
+     "item.aad",
+     "item.ard",
+     "item.band",
+     "item.exe",
+     "item.com",
+     "item.xml"
+    ]
+   },
+   "expected": {
+    "content_kind": {
+     "item.ini": "none",
+     "item.gz": "none",
+     "item.py": "none",
+     "item.log": "none",
+     "item.lng": "none",
+     "item.ask": "none",
+     "item.auz": "none",
+     "item.idx": "none",
+     "item.db": "none",
+     "item.lock": "none",
+     "item.dmp": "none",
+     "item.aad": "none",
+     "item.ard": "none",
+     "item.band": "none",
+     "item.exe": "none",
+     "item.com": "none",
+     "item.xml": "none"
+    }
+   },
+   "comparator": "content_kind exact per file name",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-012",
+   "purpose": "Base sidecar in F's sidecar folder gives a.wav its tag",
+   "requirements": [
+    "REQ-BROWSER-INDEX-003",
+    "REQ-BROWSER-INDEX-004",
+    "REQ-BROWSER-INDEX-005",
+    "REQ-BROWSER-INDEX-006"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-012/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-013",
+   "purpose": "The same sidecar in a folder not named Ableton Folder Info is not read",
+   "requirements": [
+    "REQ-BROWSER-INDEX-003"
+   ],
+   "case_kind": "negative",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-013/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": []
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-014",
+   "purpose": "Base sidecar with informational xmp creator and date properties",
+   "requirements": [
+    "REQ-BROWSER-INDEX-004"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-014/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-015",
+   "purpose": "Sidecar truncated to the first half of the base sidecar's bytes (not well-formed)",
+   "requirements": [
+    "REQ-BROWSER-INDEX-004"
+   ],
+   "case_kind": "malformed",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-015/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": []
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-018",
+   "purpose": "An entry naming no file does not affect another entry",
+   "requirements": [
+    "REQ-BROWSER-INDEX-005"
+   ],
+   "case_kind": "negative",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-018/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-019",
+   "purpose": "Color label entries 2 and 5",
+   "requirements": [
+    "REQ-BROWSER-INDEX-006"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-019/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": [
+      2,
+      5
+     ]
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-020",
+   "purpose": "Color label entries 0, 8, 3 and an empty entry",
+   "requirements": [
+    "REQ-BROWSER-INDEX-006"
+   ],
+   "case_kind": "boundary",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-020/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": [
+      3
+     ]
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-021",
+   "purpose": "All seven color label entries, 1 to 7",
+   "requirements": [
+    "REQ-BROWSER-INDEX-006"
+   ],
+   "case_kind": "boundary",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-021/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ]
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-022",
+   "purpose": "Three tags on one item",
+   "requirements": [
+    "REQ-BROWSER-INDEX-006"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-022/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright",
+      "Character|Warm",
+      "Genres|Ambient"
+     ]
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-023",
+   "purpose": "The user sets the tags of a.wav to Character|Warm in a folder without a sidecar",
+   "requirements": [
+    "REQ-BROWSER-INDEX-004",
+    "REQ-BROWSER-INDEX-007"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-023/F"
+   },
+   "action": {
+    "item": "a.wav",
+    "set_tags": [
+     "Character|Warm"
+    ],
+    "set_labels": []
+   },
+   "expected": {
+    "sidecar_path": "Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+    "sidecar": {
+     "document": {
+      "dc:format": "application/vnd.ableton.folder",
+      "ablFR:resource": "folder",
+      "ablFR:platform": "mac"
+     },
+     "items": [
+      {
+       "filePath": "a.wav",
+       "keywords": [
+        "Character|Warm"
+       ],
+       "colors": [],
+       "hideKeywords": []
+      }
+     ]
+    },
+    "example_serialization": "fixtures/BROWSER-INDEX-023/expected-sidecar.xmp"
+   },
+   "comparator": "sidecar data model (spec.md); an absent file is inconclusive",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-024",
+   "purpose": "The user gives a.wav color label 3 in a folder without a sidecar",
+   "requirements": [
+    "REQ-BROWSER-INDEX-006",
+    "REQ-BROWSER-INDEX-007"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-024/F"
+   },
+   "action": {
+    "item": "a.wav",
+    "set_tags": [],
+    "set_labels": [
+     3
+    ]
+   },
+   "expected": {
+    "sidecar_path": "Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+    "sidecar": {
+     "document": {
+      "dc:format": "application/vnd.ableton.folder",
+      "ablFR:resource": "folder",
+      "ablFR:platform": "mac"
+     },
+     "items": [
+      {
+       "filePath": "a.wav",
+       "keywords": [],
+       "colors": [
+        "3"
+       ],
+       "hideKeywords": []
+      }
+     ]
+    },
+    "example_serialization": "fixtures/BROWSER-INDEX-024/expected-sidecar.xmp"
+   },
+   "comparator": "sidecar data model (spec.md); an absent file is inconclusive",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-025",
+   "purpose": "The user sets two tags and color labels 7 and 1 on a.wav in a folder without a sidecar",
+   "requirements": [
+    "REQ-BROWSER-INDEX-006",
+    "REQ-BROWSER-INDEX-007"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-025/F"
+   },
+   "action": {
+    "item": "a.wav",
+    "set_tags": [
+     "Genres|Ambient",
+     "Character|Warm"
+    ],
+    "set_labels": [
+     7,
+     1
+    ]
+   },
+   "expected": {
+    "sidecar_path": "Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+    "sidecar": {
+     "document": {
+      "dc:format": "application/vnd.ableton.folder",
+      "ablFR:resource": "folder",
+      "ablFR:platform": "mac"
+     },
+     "items": [
+      {
+       "filePath": "a.wav",
+       "keywords": [
+        "Character|Warm",
+        "Genres|Ambient"
+       ],
+       "colors": [
+        "1",
+        "7"
+       ],
+       "hideKeywords": []
+      }
+     ]
+    },
+    "example_serialization": "fixtures/BROWSER-INDEX-025/expected-sidecar.xmp"
+   },
+   "comparator": "sidecar data model (spec.md); an absent file is inconclusive",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-026",
+   "purpose": "The user changes the tags of one item of the installed Core Library",
+   "requirements": [
+    "REQ-BROWSER-INDEX-007"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "precondition": "the target's Core Library is installed and indexed; the User Library exists"
+   },
+   "action": {
+    "item": "one item of the Core Library",
+    "set_tags": [
+     "Character|Warm"
+    ],
+    "set_labels": []
+   },
+   "expected": {
+    "override_file_name": "b17d447d-894d-5b3e-96e9-a81dbf4d431c.xmp",
+    "override_parent": "a folder directly inside <User Library>/Ableton Folder Info/ whose name is the decimal text of an integer (not compared)",
+    "no_sidecar_written_inside": "the Core Library"
+   },
+   "comparator": "file name exact; parent depth exact; parent name not compared; content not compared; no sidecar file inside the named content created or changed; an absent file is inconclusive",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-027",
+   "purpose": "The user changes the tags of one item of the built-in content",
+   "requirements": [
+    "REQ-BROWSER-INDEX-007"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "precondition": "the target's built-in content is installed and indexed; the User Library exists"
+   },
+   "action": {
+    "item": "one item of the built-in content",
+    "set_tags": [
+     "Character|Warm"
+    ],
+    "set_labels": []
+   },
+   "expected": {
+    "override_file_name": "b769aafb-73f9-57e9-8dba-740d64be2541.xmp",
+    "override_parent": "a folder directly inside <User Library>/Ableton Folder Info/ whose name is the decimal text of an integer (not compared)",
+    "no_sidecar_written_inside": "the built-in content"
+   },
+   "comparator": "file name exact; parent depth exact; parent name not compared; content not compared; no sidecar file inside the named content created or changed; an absent file is inconclusive",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  },
+  {
+   "id": "BROWSER-INDEX-028",
+   "purpose": "A copy of the case 12 folder, with its sidecar folder, added on another installation",
+   "requirements": [
+    "REQ-BROWSER-INDEX-008"
+   ],
+   "case_kind": "positive",
+   "input": {
+    "folder": "fixtures/BROWSER-INDEX-028/F"
+   },
+   "action": "add F as a user folder in a fresh state and let indexing complete",
+   "expected": {
+    "tags": {
+     "a.wav": [
+      "Character|Bright"
+     ]
+    },
+    "labels": {
+     "a.wav": []
+    }
+   },
+   "comparator": "tags and labels as sets, for the listed items only",
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run"
+  }
+ ]
+}

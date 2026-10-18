@@ -1845,3 +1845,37 @@ hashes are in `analysis/ableton-live-12.4.3/r2/phase4-batch-v1/sources-2026-10-1
 Separately, the spec index and the transport-state and container specs now
 record the two releases (cc64caf). Nine handoff candidates are being staged in
 parallel, each followed by a separate review.
+
+## [2026-10-18] release | Nine handoffs released from the revision 1 drafts and MIDI r3
+
+Each candidate was staged by an author agent and checked by a separate review
+agent that did not author it and will not implement. The coordinator verified
+every payload hash, checked that the target directory did not already exist,
+copied the staging package to `handoff/`, and scanned it for restricted links and
+code identifiers. All cases remain unexecuted against Live.
+
+| Release | Cases (staged) | Disposition | Main narrowing |
+| --- | --- | --- | --- |
+| [midi-config-v3](../handoff/midi-config-v3/README.md) | 127 (127) | Approved | None. Supersedes v2; its 109 cases are carried byte-identical |
+| [clip-launch-v1](../handoff/clip-launch-v1/README.md) | 50 (50) | Approved with narrowing | REQ-015 removed; read-back limited to six significant digits |
+| [midi-note-storage-v1](../handoff/midi-note-storage-v1/README.md) | 67 (67) | Approved with narrowing | Key-track order precondition; the d4-0001 cases were re-established from the corpus |
+| [mixer-values-v1](../handoff/mixer-values-v1/README.md) | 37 (37) | Approved with corrections | Wording only |
+| [automation-envelopes-v1](../handoff/automation-envelopes-v1/README.md) | 21 (29) | Approved with narrowing | The 8 value cases removed (assumption A1 untraced) |
+| [bundled-device-parameters-v1](../handoff/bundled-device-parameters-v1/README.md) | 82 (82) | Approved with narrowing | Cabinet microphone labels found reversed and excluded; graded values of the position parameters removed |
+| [browser-index-v1](../handoff/browser-index-v1/README.md) | 26 (28) | Approved with narrowing | Sidecars bind only to files directly in their folder; 2 cases removed |
+| [plugin-discovery-v1](../handoff/plugin-discovery-v1/README.md) | 35 (35) | Approved with clarifications | Plain-file candidates named in the comparison obligation |
+| [warp-markers-v1](../handoff/warp-markers-v1/README.md) | 38 (38) | Approved with narrowing | Values graded as read; tolerance bands widened; inferred labels removed |
+
+Manifest digests are in the [catalog](../handoff/index.md). The corrections owed to
+each draft spec are on its handoff plan, under Review outcome. They are not
+applied yet: each spec page notes that its text is unchanged. One research
+correction was applied. In
+[device parameter mapping](research/device-parameter-mapping-native.md), the
+Cabinet `MicrophoneTypeSwitch` labels were reversed: true shows Dynamic. The
+index, feature map, coverage, project, gate table and catalog are updated. The
+two release-status lines for transport-state and the container went in at
+cc64caf. A link check of the changed pages and all release packages found no
+new broken links. The 33 it reports are older links into the macOS-host
+analysis tree, which is absent here (G0.2). The untracked
+`r2/n1-transport-state-v1/.entry-map.pickle` (11 MB) is a cache and is left
+uncommitted.

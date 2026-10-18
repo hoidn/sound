@@ -3,7 +3,7 @@ id: SPEC-MIDI-NOTE-STORAGE
 type: spec
 status: draft
 revision: 1
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -613,6 +613,8 @@ PRB-S7-01 and PRB-S7-02 test this reading.
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from packet S7 (MN-01 to MN-24) plus one verification round (d4-0001). 17 requirements: 4 without unknown parts (003, 004, 005, 008), 12 with D or S clauses and unknown parts, 1 unknown and excluded (011). 60 unexecuted cases: 45 gradable (MNS-036 in part), 6 blocked by the group shape, 9 unresolved |
 
-Not reviewed, not released, and no handoff plan exists. A first release candidate could
+Before the 2026-10-18 review, a first release candidate could
 contain the gradable cases of REQ-002 to 009, REQ-014 and REQ-016, under assumptions A1
 and A2.
+
+Released 2026-10-18: [midi-note-storage-v1](../../handoff/midi-note-storage-v1/README.md), 67 cases, approved with narrowing by a separate review agent (partial REQ-001 to 010, 013, 014, 016 only; 011, 012, 015, 017 unreleased). The review findings to apply in the next revision are on the [handoff plan](midi-note-storage-handoff-plan.md#review-outcome). This revision's text is unchanged.

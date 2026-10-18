@@ -2,7 +2,7 @@
 id: VAL-COVERAGE
 type: coverage
 status: planned
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 ---
 
@@ -17,17 +17,17 @@ requirements to candidate code and tests.
 | Feature ID | Spec/handoff | Implementation | Verification | Next evidence |
 | --- | --- | --- | --- | --- |
 | FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2; [transport-state-v1](../../handoff/transport-state-v1/README.md) released (18 cases) | Not started | Unknown; 18 release cases and 22 draft cases not run | PRB-N1-01 to 08; transition logic |
-| FEAT-SESSION | Draft [SPEC-CLIP-LAUNCH](../specs/clip-launch.md) r1; no handoff | Not started | Unknown; 56 draft cases not run | PRB-S5-01 to 11; set-level variant for missing or out-of-range global quantization; launch-mode branches |
+| FEAT-SESSION | Draft [SPEC-CLIP-LAUNCH](../specs/clip-launch.md) r1; [clip-launch-v1](../../handoff/clip-launch-v1/README.md) released (50 cases) | Not started | Unknown; 50 release cases and 56 draft cases not run | PRB-S5-01 to 11; set-level variant for missing or out-of-range global quantization; launch-mode branches |
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
-| FEAT-AUDIO | Draft [SPEC-MIXER-VALUES](../specs/mixer-values.md) r1; no handoff | Not started | Unknown; 45 draft cases not run (11 need audio measurement) | Q-019 (stored gain to fader position; send path); PRB-S9-01 to 08; routing and DSP paths; flag latency for later measurement |
-| FEAT-MIDI | Draft [SPEC-MIDI-NOTE-STORAGE](../specs/midi-note-storage.md) r1 (clip note storage only); no handoff | Not started | Unknown; 60 draft cases not run | PRB-S7-01 to 10 with the PRB-S7-07 boundary variants; scheduling and note-state logic |
-| FEAT-AUTOMATION | Draft [SPEC-AUTOMATION-ENVELOPES](../specs/automation-envelopes.md) r1; no handoff | Not started | Unknown; 31 draft cases not run | PRB-S6-01 to 07 (Pan variant for 04); proposed PRB-S6-08 to 11; per-parameter value conversion |
-| FEAT-DEVICES | Draft [SPEC-BUNDLED-DEVICE-PARAMETERS](../specs/bundled-device-parameters.md) r1; no handoff | Not started | Unknown; 37 draft cases not run | P4-H4-01 to 05, P4-N5-01 to 04, P4-N6-01; racks, chains and other devices; DSP derivations |
-| FEAT-HOSTING | Draft [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md) r1 (discovery only); no handoff | Not started | Unknown; 42 draft cases not run | PRB-H1-01 to 08, PRB-N4-01, 02, 05; lifecycle, state, latency |
-| FEAT-WARP | Draft [SPEC-WARP-MARKERS](../specs/warp-markers.md) r1; no handoff | Not started | Unknown; 35 draft cases not run | PRB-S8-01 to 11; assumptions A1 to A3 (Q-021); per-mode audio measurements |
+| FEAT-AUDIO | Draft [SPEC-MIXER-VALUES](../specs/mixer-values.md) r1; [mixer-values-v1](../../handoff/mixer-values-v1/README.md) released (37 cases) | Not started | Unknown; 37 release cases and 45 draft cases not run (11 need audio measurement) | Q-019 (stored gain to fader position; send path); PRB-S9-01 to 08; routing and DSP paths; flag latency for later measurement |
+| FEAT-MIDI | Draft [SPEC-MIDI-NOTE-STORAGE](../specs/midi-note-storage.md) r1 (clip note storage only); [midi-note-storage-v1](../../handoff/midi-note-storage-v1/README.md) released (67 cases) | Not started | Unknown; 67 release cases and 60 draft cases not run | PRB-S7-01 to 10 with the PRB-S7-07 boundary variants; scheduling and note-state logic |
+| FEAT-AUTOMATION | Draft [SPEC-AUTOMATION-ENVELOPES](../specs/automation-envelopes.md) r1; [automation-envelopes-v1](../../handoff/automation-envelopes-v1/README.md) released (21 cases) | Not started | Unknown; 21 release cases and 31 draft cases not run | PRB-S6-01 to 07 (Pan variant for 04); proposed PRB-S6-08 to 11; per-parameter value conversion |
+| FEAT-DEVICES | Draft [SPEC-BUNDLED-DEVICE-PARAMETERS](../specs/bundled-device-parameters.md) r1; [bundled-device-parameters-v1](../../handoff/bundled-device-parameters-v1/README.md) released (82 cases) | Not started | Unknown; 82 release cases and 37 draft cases not run | P4-H4-01 to 05, P4-N5-01 to 04, P4-N6-01; racks, chains and other devices; DSP derivations |
+| FEAT-HOSTING | Draft [SPEC-PLUGIN-DISCOVERY](../specs/plugin-discovery.md) r1 (discovery only); [plugin-discovery-v1](../../handoff/plugin-discovery-v1/README.md) released (35 cases) | Not started | Unknown; 35 release cases and 42 draft cases not run | PRB-H1-01 to 08, PRB-N4-01, 02, 05; lifecycle, state, latency |
+| FEAT-WARP | Draft [SPEC-WARP-MARKERS](../specs/warp-markers.md) r1; [warp-markers-v1](../../handoff/warp-markers-v1/README.md) released (38 cases) | Not started | Unknown; 38 release cases and 35 draft cases not run | PRB-S8-01 to 11; assumptions A1 to A3 (Q-021); per-mode audio measurements |
 | FEAT-PERSISTENCE | Draft [SPEC-ALS-CONTAINER](../specs/als-container.md) r2 (envelope only); [als-container-v1](../../handoff/als-container-v1/README.md) released (35 cases) | Not started | Unknown; 35 release cases and 27 draft cases not run | PRB-N2-01 to 07; Live Set save call site; set content, migration, recovery |
-| FEAT-UI | Draft [SPEC-BROWSER-INDEX](../specs/browser-index.md) r1 (browser index and tag sidecars); no handoff | Not started | Unknown; 52 draft cases not run | PRB-BI-01 to 05 (proposed), PRB-H2-03 to 06 and 09; UI bindings and command/focus dispatch |
-| FEAT-MIDI-USER-MAPPING | [Revision 3 draft](../specs/midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md); [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Not started | Unknown; 109 v2 release cases (54 restated from v1), 46 broader draft groups and 16 probe records not run | Independently observe released routes; PRB-S4-01–16 on the macOS host |
+| FEAT-UI | Draft [SPEC-BROWSER-INDEX](../specs/browser-index.md) r1 (browser index and tag sidecars); [browser-index-v1](../../handoff/browser-index-v1/README.md) released (26 cases) | Not started | Unknown; 26 release cases and 52 draft cases not run | PRB-BI-01 to 05 (proposed), PRB-H2-03 to 06 and 09; UI bindings and command/focus dispatch |
+| FEAT-MIDI-USER-MAPPING | [Revision 3 draft](../specs/midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md); [midi-config-v2](../../handoff/midi-config-v2/README.md) released; [midi-config-v3](../../handoff/midi-config-v3/README.md) released, supersedes v2 | Not started | Unknown; 127 v3 release cases (109 carried from v2, 54 of those restated from v1), 46 broader draft groups and 16 probe records not run | Independently observe released routes; PRB-S4-01–16 on the macOS host |
 | FEAT-ECOSYSTEM | None | Not started | Unknown | Shipped integration contracts and protocol handlers |
 | FEAT-DELIVERY | None | Not started | Unknown | Package/configuration and export/teardown paths |
 

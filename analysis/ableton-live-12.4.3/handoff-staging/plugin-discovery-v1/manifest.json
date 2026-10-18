@@ -1,0 +1,300 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "plugin-discovery-v1",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-PLUGIN-DISCOVERY",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-HOSTING"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-PLUGIN-DISCOVERY-001": "Bundles named *.clap are not VST3 or VST2 candidates in any folder",
+  "REQ-PLUGIN-DISCOVERY-002": "Two independent switches per format; VST3 and VST2 system folders; custom folder only with its switch on and a folder set; both off gives no candidates; no other folder searched; a missing folder contributes nothing; order not specified",
+  "REQ-PLUGIN-DISCOVERY-004": "VST3 candidates: entries at any depth whose name ends exactly in .vst3, directories and plain files; candidates not searched inside; every other directory searched",
+  "REQ-PLUGIN-DISCOVERY-005": "VST2 candidates: directories at any depth whose name ends in .vst in any ASCII letter case; not searched inside; every other directory searched, including *.vst3; plain files never; unreadable directories skipped and the search continues"
+ },
+ "unreleased_requirements": [
+  "REQ-PLUGIN-DISCOVERY-003",
+  "REQ-PLUGIN-DISCOVERY-006",
+  "REQ-PLUGIN-DISCOVERY-007",
+  "REQ-PLUGIN-DISCOVERY-008",
+  "REQ-PLUGIN-DISCOVERY-009",
+  "REQ-PLUGIN-DISCOVERY-010",
+  "REQ-PLUGIN-DISCOVERY-011",
+  "REQ-PLUGIN-DISCOVERY-012",
+  "REQ-PLUGIN-DISCOVERY-013",
+  "REQ-PLUGIN-DISCOVERY-014",
+  "REQ-PLUGIN-DISCOVERY-015",
+  "REQ-PLUGIN-DISCOVERY-016"
+ ],
+ "compatibility_dimensions": {
+  "discovery-candidate-selection": "static-derived expectations; reference execution not-run",
+  "examination-order": "excluded (REQ-PLUGIN-DISCOVERY-003)",
+  "plugin-listing-and-classification": "excluded (REQ-PLUGIN-DISCOVERY-006, 007)",
+  "persistence-change-and-rescan": "excluded (REQ-PLUGIN-DISCOVERY-008 to 010, 016)",
+  "ui": "excluded (REQ-PLUGIN-DISCOVERY-011; control labels and defaults)",
+  "failure-and-scale": "excluded (REQ-PLUGIN-DISCOVERY-012 to 015)",
+  "audio": "excluded",
+  "timing": "excluded"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "symbolic links anywhere in a tree or in a folder path; entries other than directories and plain files",
+   "names or folder paths with characters other than ASCII letters, digits, space, hyphen, underscore, period and the path separator, including a comma; names beginning with a period",
+   "custom folders that are not absolute or that end with a separator; folder paths that name a plain file",
+   "paths longer than 255 bytes once ~ is expanded",
+   "permissions other than the description form (normal access, or mode 000 on a directory as allowed)",
+   "in a VST3 folder, any directory that cannot be read; any permission change on an entry whose name ends in .vst3 or .vst in any letter case",
+   "folders of one format that are equal or nested, including a custom folder at or below a system folder of its format",
+   "more than 50 candidates of one format",
+   "a home folder other than the account's own, including a different HOME environment value; stored letter case of a folder path that differs from this release",
+   "trees changed while a scan runs"
+  ],
+  "behavior": [
+   "examination order, including any order between the formats and between folders (REQ-PLUGIN-DISCOVERY-003)",
+   "what a candidate contributes: listing, names, instrument or effect, code signatures, entry points (REQ-PLUGIN-DISCOVERY-006, 007)",
+   "later scans: unchanged, changed, removed and returning modules; Rescan and its reset variant; quitting during a scan (REQ-PLUGIN-DISCOVERY-008 to 010, 016)",
+   "progress information and its presentation (REQ-PLUGIN-DISCOVERY-011)",
+   "crashing and hanging modules, more than 50 new modules, duplicates (REQ-PLUGIN-DISCOVERY-012 to 015)",
+   "Audio Unit discovery; process isolation; activation of plug-in sources (REQ-PLUGIN-DISCOVERY-001 remainder)",
+   "control labels, defaults, effects of changing a switch or custom folder, when scans start, custom folders containing a comma (REQ-PLUGIN-DISCOVERY-002 remainder)",
+   "symbolic links and unreadable subfolders in VST3 folders; the folder structure presented to the user (REQ-PLUGIN-DISCOVERY-004, 005 remainder)"
+  ]
+ },
+ "fixture_origin": "independently authored scenario descriptions (settings and a tree of empty placeholder directories and empty files); no plug-in, executable, bundle content or shipped file",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RVP-01 low: comparison obligation 3 did not attribute loads of entries outside every searched folder (cases 016, 035); clarified; no expectation changed",
+   "RVP-02 low: manifest behavior exclusion restated an unreleased ordering clause (VST3 before VST2); reworded to the contract's neutral wording",
+   "RVP-03 info: candidate set ruled observable for directory entries; open application-side discovery items are excluded or concern only how a probe starts a scan",
+   "RVP-04 low: plain-file candidacy has no established reference observation; obligation 4 now names cases 021 (J.vst3) and 028; expectations unchanged",
+   "RVP-05 info: the author's seven proposed draft corrections confirmed; none leaks into the payload",
+   "RVP-06 info: three assumptions confirmed by the reviewer's reading, two accepted as stated assumptions; no expectation invented or changed",
+   "RVP-07 info: 20 new cases, the candidate-set representation and the subset's usefulness accepted",
+   "RVP-08 editorial: payload status wording set to reviewed release; review record added; inventory re-hashed",
+   "RVP-09 info: evidence identity re-checked on 2026-10-18; all hashes matched",
+   "RVP-10 info: sharing review of folder paths and invented names; acceptable"
+  ],
+  "disposition": "Approved with listed clarifications (RVP-01, RVP-02, RVP-04), only for the explicit partial clauses; no scope narrowed; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 35,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "a58bbec36adc7544e63e771cdb97ebe96aa22327351b5d64a9bca2689f4b7fa2",
+   "bytes": 1460
+  },
+  {
+   "path": "README.md",
+   "sha256": "4f84fbdf2a77bb0be529aaee6a635b4dfb81874a791f9415b1398739a2f9db78",
+   "bytes": 1700
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "0a15a6aca9de47b2dde0858e538a8a43a3d0acd8cc3d93322f7593ea9b61285e",
+   "bytes": 9528
+  },
+  {
+   "path": "cases.json",
+   "sha256": "d31f9d0f3586db4c35962347ea34d72e09be44b5bd181a7b27e5cc13aee844b1",
+   "bytes": 22222
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-001.json",
+   "sha256": "9ed3990bffd4100fea912b6f5cdef547e34a362f386bd856848bd09ccd9e8754",
+   "bytes": 481
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-002.json",
+   "sha256": "add6933c14050007aef8d1ac6c269da4f378b1dafa8a33c350561c68a35469ee",
+   "bytes": 482
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-003.json",
+   "sha256": "50469c2c4bb41c6e17db99a26a1e850a35a5d7810eb7baf64a308b027409debc",
+   "bytes": 485
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-004.json",
+   "sha256": "de3c57663584632c9212ac6d0cbdb2d3b570f51e79e86dcbd4bc30fa038e9b80",
+   "bytes": 566
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-005.json",
+   "sha256": "13fda92fab11a0cb66662da71e8c48d91914c1e0e2ec9984d54f35ff1a778328",
+   "bytes": 485
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-006.json",
+   "sha256": "1b3831946a3e5e8a1e752b3a5fb69247471e9f7454624b95a29d51fe5339d78f",
+   "bytes": 469
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-007.json",
+   "sha256": "2f1445121df884b779befdae8a06cbeedc8d094e8d0154bde933c58354b8d468",
+   "bytes": 434
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-008.json",
+   "sha256": "60bd2b7c6d82cb03dd24cf5a34448dc915ee190fefd60974f069202bb457c927",
+   "bytes": 449
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-009.json",
+   "sha256": "ba6c053a7429eb8ba38c07aaa8fd558357b22dda20cae578e8949c3046d51978",
+   "bytes": 477
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-010.json",
+   "sha256": "9bfa98fb41ec579b1fcb8d791543394f831eccb6bdaeb69d8be1ca04056df60f",
+   "bytes": 431
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-011.json",
+   "sha256": "4be7ff03d502dd8b2557650b976b2bf7bdde938c11022506c8b1ba7b90ed1426",
+   "bytes": 478
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-012.json",
+   "sha256": "3be00bb57196e568b4ded6abce0722870e3cd13b009013305558d6af441ddd19",
+   "bytes": 482
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-013.json",
+   "sha256": "3131b5fa29ee694018fe53da5445509e9c800afe013c4c39b22b76078cb02d84",
+   "bytes": 561
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-014.json",
+   "sha256": "5b93f7068049de9c96a25d8e1712e72ab5dc62dc4ac79e2bd7c88030a3bd1a9a",
+   "bytes": 449
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-015.json",
+   "sha256": "d316b328a71701007290ecdc0aa2c9dc0ad401176cd842083aa6f25557be014a",
+   "bytes": 481
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-016.json",
+   "sha256": "7c1e8bebdc238f46e7e753323a9001a40378bdc640b19891f395d2a11064c81c",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-017.json",
+   "sha256": "068cfb40a367056dcd08a2e51da0d0359afe9187907c68de24245a4f0353c4dd",
+   "bytes": 410
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-018.json",
+   "sha256": "630c76981c816d6cc008e57228b3ad020b85258d6d246196c8129e58fd788eef",
+   "bytes": 416
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-019.json",
+   "sha256": "6dc69ac453006971b44af8c43cb5e48a64e139b327a4c4669e9e6da96714cbe7",
+   "bytes": 399
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-020.json",
+   "sha256": "c5b9bcd3416ac1da38f28a8e206cb127b9fe866182e43acbcb82932a82800f45",
+   "bytes": 508
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-021.json",
+   "sha256": "c319b39d3df900e436b38f6ba578e91d036afcaf43f2e178bb8094fa8239ea33",
+   "bytes": 477
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-022.json",
+   "sha256": "1cd30b9d03672dfd9a2c9c2c475203309f9d20b70cb6712c652f051fec593261",
+   "bytes": 767
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-023.json",
+   "sha256": "af4883c61985b008ec58ff93048aa3fe51454dc61051a7fbd93583ae0803e018",
+   "bytes": 1065
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-024.json",
+   "sha256": "f1eb0dd66a4f2942685aeb66e33883551ada479db96176a4175543d0f53a1950",
+   "bytes": 404
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-025.json",
+   "sha256": "d96b7d19519243ebd51d4e3ccbbfeba374adc663218ee3585f4d21db730c2221",
+   "bytes": 414
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-026.json",
+   "sha256": "57316ca6933fcb278e60c4b60cc6170c259aa1116fcb2e86eb6f54166602d171",
+   "bytes": 397
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-027.json",
+   "sha256": "bfc9aa1f12f49461be8f74793bad722a5cc6fd2a64c6adf387c4a175ece2b38c",
+   "bytes": 484
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-028.json",
+   "sha256": "a4bf74700783c9f95c9034b522c6a927438756cc799951c8db5d1d5f07997d71",
+   "bytes": 392
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-029.json",
+   "sha256": "f377439bd0bff591df31175365f38009b8d4da3db7f8c76ddd1fb11ce65ee4d1",
+   "bytes": 398
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-030.json",
+   "sha256": "46f8bda4c8fd403c3747d8df6189b75d101830a7bdbf3afa229c8fd495937dfd",
+   "bytes": 497
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-031.json",
+   "sha256": "d9fe289438e27ef88585abc3f388d39d94a0620470e4108c20d5d3704407d273",
+   "bytes": 505
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-032.json",
+   "sha256": "1e8f605108c095b940d95fc1a18016c48069ff6c748190f4646625a23002fc2c",
+   "bytes": 759
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-033.json",
+   "sha256": "03b79e3757c7113fecfb05933cf3caff0c358ad2e33eaa1adda4584a1307ae96",
+   "bytes": 590
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-034.json",
+   "sha256": "f7ee07cca260b455513313f08c3d882e9236b59526e8e76378f85d5ad36f249b",
+   "bytes": 569
+  },
+  {
+   "path": "fixtures/PLUGIN-DISCOVERY-035.json",
+   "sha256": "00371a7a9a117e773117ed016503aa91014a3b588473a639ac14365a85d42149",
+   "bytes": 654
+  },
+  {
+   "path": "spec.md",
+   "sha256": "c6b0aa70d5a2396736e4818b3858b842e2a71445f777a0b2d30ee4a545e2b569",
+   "bytes": 14883
+  }
+ ]
+}

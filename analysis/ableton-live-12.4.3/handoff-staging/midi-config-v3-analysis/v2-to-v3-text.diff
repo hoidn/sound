@@ -1,0 +1,353 @@
+--- midi-config-v2/README.md
++++ midi-config-v3/README.md
+@@ -1,25 +1,49 @@
+-# MIDI configuration interpretation release 2
++# MIDI configuration interpretation and value transforms, release candidate 3
+ 
+-**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
+-[role instructions](AGENTS.md), [the manifest](manifest.json) and
+-[the review disposition](REVIEW.md). The stated partial scope, narrowed as
+-recorded in the review, is approved as a contract for a fresh, restricted
+-implementation workspace. Such a workspace has not been provisioned by this
+-release.
++**Staged candidate: not reviewed and not released.** It is not an
++implementation input. Read [the contract](spec.md), [cases](cases.json),
++[role instructions](AGENTS.md) and [the draft manifest](manifest.json).
+ 
+ The finite scope is how a user configuration file is interpreted: which
+ assignments are enabled, their MIDI addresses, the device, mixer, transport and
+ drum-pad targets they name, map-mode labels, button kinds and the device
+-parameter bank span. Existing requirement IDs are retained with explicit
+-partial clauses. Requirements 001 and 004 and every runtime effect remain
+-unreleased. No application source, shipped file or public dependency is
+-included.
+-
+-This release supersedes midi-config-v1 as a strict superset.
+-Its 54 cases keep their IDs, fixture bytes and logical expectations in a wider
+-representation; 55 cases are new, for 109 in total. The spec lists the changes.
++parameter bank span. New in this release is the parameter value that each
++Control Change message produces on an assigned continuous control, in each of
++the ten map modes. Takeover is specified only for the choice under which it
++never acts and for the values exempt from it. On/off parameters, Pick-Up,
++Value Scaling and value timing are excluded. Existing requirement IDs are
++retained with explicit partial clauses. Requirements 001 and 004 and every
++other runtime effect remain unreleased. No application source, shipped file or
++public dependency is included.
+ 
+ All expected outputs are static-derived and unexecuted, not captured reference
+ behavior. The representation is a comparison convention, not an API claimed to
+ exist in Live or a required architecture. No compatibility claim is made.
+ After publication the release is immutable; corrections require a new revision.
++
++## Supersession
++
++When published, this release supersedes midi-config-v2 as a strict superset.
++midi-config-v2 stays immutable and valid for its narrower scope. Its 109 cases
++keep their IDs, records and fixture bytes; 18 value cases are new, for 127 in
++total. [The manifest](manifest.json) records the relationship and the
++superseded manifest digest.
++
++## Changes from midi-config-v2
++
++1. REQ-MIDI-USER-005 gains the value transforms: `Absolute`, `Absolute14Bit`
++   pairing, the eight relative decode tables and step rules, rounding on
++   stepped parameters, the takeover choice `none` and the values exempt from
++   takeover.
++2. REQ-MIDI-USER-010 gains master, cue and crossfader values, with the
++   crossfader's `Absolute` values exempt from takeover.
++3. The midi-config-v2 exclusion of numeric transforms, 14-bit pairing, relative
++   arithmetic, pickup and takeover narrows to the value exclusions listed in
++   the contract.
++4. Value cases add a `stimulus` (takeover, parameter, messages) and
++   `expected.values`. The other case fields are unchanged.
++5. Cases MIDI-CONFIG-110 to 127 are new value cases.
++6. Every midi-config-v2 clause, case and fixture is carried unchanged, and
++   nothing in midi-config-v2 is contradicted. The sentences that left value
++   behavior unspecified, in the contract summary, REQ-MIDI-USER-005,
++   REQ-MIDI-USER-010 and the exclusions, now point to the new section.
+--- midi-config-v2/AGENTS.md
++++ midi-config-v3/AGENTS.md
+@@ -1,9 +1,10 @@
+ # Package role and access instructions
+ 
+-This is a reviewed local release for its explicit partial scope. Application
+-implementation requires a fresh, restricted implementation workspace containing
+-only permitted materials. Publication of this package does not provision one.
+-Do not begin clean implementation in an analyst checkout.
++This directory is a staged release candidate. Use it for implementation only
++after a separate review approves it and it is published as an immutable
++release. Even then, implementation requires a fresh, restricted implementation
++workspace containing only permitted materials. Do not begin clean
++implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -13,11 +14,12 @@
+ filesystem access. Report missing isolation.
+ 
+ Read README.md and spec.md before cases.json. Requirements apply only to their
+-explicit partial clauses. No source-code structure, parser entry point or data
+-structure is specified. A candidate adapter may expose the comparison labels;
+-this does not impose an internal architecture.
++explicit partial clauses. No source-code structure, parser entry point, data
++structure, MIDI input design or parameter model is specified. A candidate
++adapter may expose the comparison labels and supply the described test
++parameters; this does not impose an internal architecture.
+ 
+-Preserve this release unchanged. Do not extend unknown or excluded behavior.
+-Request a reviewed revision for gaps. Record candidate-only tests separately
+-from reference comparisons, with exact package and candidate hashes. Nothing
+-here authorizes package installation, network publication or messages.
++Do not extend unknown or excluded behavior. Request a reviewed revision for
++gaps. Record candidate-only tests separately from reference comparisons, with
++exact package and candidate hashes. Nothing here authorizes package
++installation, network publication or messages.
+--- midi-config-v2/spec.md
++++ midi-config-v3/spec.md
+@@ -1,15 +1,16 @@
+-# MIDI configuration interpretation — release 2
++# MIDI configuration interpretation and value transforms — release candidate 3
+ 
+ Target: Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS.
+ Feature: FEAT-MIDI-USER-MAPPING. Parent specification identity:
+-SPEC-MIDI-USER-MAPPING revision 2. Release: midi-config-v2, which
+-supersedes midi-config-v1 as a strict superset. Only the
++SPEC-MIDI-USER-MAPPING revision 3. Release candidate: midi-config-v3, which
++supersedes midi-config-v2 as a strict superset when published. Only the
+ clauses explicitly included below are in scope. No other clause of a listed
+ requirement is implicitly approved. This document is self-contained.
+ 
+-**Status: reviewed local release.** A separate review approved the clauses
+-below with the narrowing recorded in [the review disposition](REVIEW.md).
+-Implementation requires a fresh, restricted implementation workspace.
++**Status: staged candidate, not reviewed, not released.** It is not an
++implementation input until a separate review approves it and it is published.
++The clauses carried from midi-config-v2 keep the narrowing of that release's
++review.
+ 
+ ## What the contract means
+ 
+@@ -18,12 +19,14 @@
+ describes how that file is **interpreted**: which assignments are enabled, the
+ MIDI address of each (message type, number, channel), the user target it
+ names, its map-mode label (continuous controls) or button kind (buttons), and
+-the device parameter bank span. It does not specify what happens when a MIDI
+-message arrives, any parameter value, audio result, feedback, or when a
++the device parameter bank span. For continuous controls it also specifies the
++[value transforms](#value-transforms): the parameter value that each incoming
++Control Change message produces in each map mode. It does not specify what a
++button or pad does with a message, audio results, feedback, or when a
+ configuration takes effect.
+ 
+-All rules and expected results are **static-derived** from reviewed package
+-evidence before sanitization. None is an observed reference execution. No
++All rules and expected results are **static-derived** from evidence about the
++pinned build, before sanitization. None is an observed reference execution. No
+ compatibility result is established; the original application remains the
+ authority for a later comparison.
+ 
+@@ -129,8 +132,8 @@
+ spelling). A missing map-mode key gives `Absolute`. Each continuous control
+ takes the label of the key in the table. When that label is `Absolute14Bit`
+ and the control's CC number is 96–127, the label is `Absolute` instead;
+-numbers 0–95 keep `Absolute14Bit`. The label states the configured mode only;
+-no value transform is specified.
++numbers 0–95 keep `Absolute14Bit`. The label states the configured mode; its
++effect on parameter values is given under [value transforms](#value-transforms).
+ 
+ **REQ-MIDI-USER-006 — partial: pad identity.** Enabled pad *N* names visible
+ pad *N* of the documented 4×4 layout: pads 1–4 form the top row and 13–16 the
+@@ -157,7 +160,8 @@
+ **REQ-MIDI-USER-010 — partial: master, cue and crossfader.** The three keys
+ name their targets with the channel rules above. `VolumeMapMode` applies to
+ master and cue volume as well as track volume; `CrossfaderMapMode` applies to
+-the crossfader. Scaling, takeover, smoothing and audio results are excluded.
++the crossfader. Their values follow the [value transforms](#value-transforms),
++including the crossfader's takeover exemption. Audio results are excluded.
+ 
+ **REQ-MIDI-USER-011 — partial: mixer button kind.** Mixer strip buttons and
+ mixer bank buttons are `momentary` when `MixerButtonsToggle` is present with a
+@@ -184,6 +188,92 @@
+ is valid; otherwise the pad is disabled. Any other integer channel disables the
+ pad. Unlike ordinary controls, pads do not fall back to channel 0. When a pad
+ note is not enabled, its channel text has no effect.
++
++## Value transforms
++
++**REQ-MIDI-USER-005 — partial: value transforms.** An enabled continuous
++control turns incoming Control Change messages into values of its target
++parameter. Continuous controls are the keys whose kind in the
++[table](#interpreted-keys-and-targets) is a map mode: encoders, track volume,
++send knobs, master volume, cue volume and the crossfader. Each uses the
++channel, number and map-mode label of its interpreted assignment.
++
++**Messages.** A message is three bytes: hexadecimal B0 plus the channel *c*
++(a Control Change on channel 0–15), the controller number *n* and the data
++value *v* (0–127). Cases write them in hexadecimal, so `B0 14 40` is channel 0,
++number 20, data value 64. A control acts only on messages with its channel and
++number; an `Absolute14Bit` control also acts on number *n* + 32 on its
++channel. Each message produces at most one new value, applied once and without
++smoothing.
++
++**Target parameter.** The target is a parameter with a minimum *min*, a
++maximum *max*, a current value, a kind (continuous, on/off, enumerated or
++other) and a stepped property: a stepped parameter takes only whole-number
++values. This release requires *min* < *max*, a current value in [*min*,
++*max*], an integer *min*, *max* and current value for a stepped parameter, and
++a parameter that keeps exactly the value last set on it. A value set on a
++stepped parameter is rounded to the nearest integer, with halves away from
++zero. On/off parameters have no expectation. Which application parameter a
++target is, and its kind, range and stepping, are not specified.
++
++**Absolute.** Data value *v* sets *min* + (*max* − *min*) × *v*/127.
++
++**Absolute14Bit.** Number *n* carries the most significant seven bits (MSB)
++and number *n* + 32 the least significant seven bits (LSB), on the same
++channel. The label rule above keeps *n* at 95 or below. A received half is held
++until the other half arrives, in either order. A newer half replaces a held
++half of the same kind, and a lone half changes nothing. When both halves are
++held, the value becomes *min* + (*max* − *min*) × (128 × MSB + LSB)/16383, and
++both held halves are discarded.
++
++**Relative modes.** The eight other modes decode data value *v* into a signed
++step *d*:
++
++| Mode | *d* for data value *v* |
++| --- | --- |
++| `LinearSignedBit` | v ≤ 64: +v; v ≥ 65: −(v − 64) |
++| `LinearSignedBit2` | v ≤ 64: −v; v ≥ 65: +(v − 64) |
++| `LinearTwoCompliment` | v ≤ 64: +v; v ≥ 65: v − 128 |
++| `LinearBinaryOffset` | v − 64 |
++| `AccelSignedBit` | v ≤ 64: +A(v); v ≥ 65: −A(v − 64) |
++| `AccelSignedBit2` | v ≤ 64: −B(v); v ≥ 65: +B(v − 64) |
++| `AccelTwoCompliment` | v ≤ 65: +B(v); v ≥ 66: −B(128 − v) |
++| `AccelBinaryOffset` | v ≥ 64: +B(v − 64); v ≤ 63: −B(64 − v) |
++
++A(*k*) is 1, 2, 3, 4, 5, 8, 10, 20, 50 for *k* = 1 to 9, and 20 for any other
++*k*, including 0. B(*k*) is 1, 2, 3, 4, 5, 8, 20, 50 for *k* = 1 to 8, and 50
++for any other *k*, including 0. Hence `AccelSignedBit` 10 to 64 gives +20,
++`AccelBinaryOffset` 64 gives +50 and `AccelTwoCompliment` 65 gives +50.
++
++A parameter that is not stepped becomes clamp(current + (*max* − *min*) ×
++*d*/256, *min*, *max*). A stepped parameter moves one unit per message: +1
++when *d* > 0 and −1 otherwise, so a decoded 0 moves it down. The result is
++clamped to [*min*, *max*].
++
++**Takeover.** Live's preferences offer one application-wide takeover setting
++with three choices. This release specifies one of them, called `none` here:
++the choice under which takeover never acts. Under `none`, every value given by
++the rules above applies. Under every choice, three groups of values also apply
++directly: values of the eight relative modes; values for a parameter of kind
++enumerated or other; and `Absolute` values of the crossfader. Under the other
++two choices, any other value has no expectation. This includes `Absolute14Bit`
++values of the crossfader, which are not exempt.
++
++*Stated assumption.* `none` is believed to be the choice labelled None. That
++correspondence is inferred from the order of the setting's choices and has not
++been observed. Cases that name `none` depend on it; see the
++[comparison obligations](#exclusions-and-deferred-obligations).
++
++**REQ-MIDI-USER-010 — partial: master, cue and crossfader values.** Master
++volume, cue volume and the crossfader take values by these rules with their
++map modes. Master and cue volume are subject to takeover like the other
++controls; the crossfader's `Absolute` values are exempt.
++
++**Starting state and order.** A value case starts with the configuration
++active and the MIDI input just opened: nothing has been received on it, no
++14-bit half is held, and the parameter is at its initial value. Only the
++case's messages arrive on that input. They arrive one at a time, in order,
++and each is applied before the next arrives.
+ 
+ ## Acceptance representation and comparison
+ 
+@@ -209,6 +299,25 @@
+ Logical interpretation has no timing tolerance, and silence after a short wait
+ does not prove an assignment is disabled. The fixture set is not an executable
+ harness for the original application.
++
++### Value cases
++
++Cases MIDI-CONFIG-110 to 127 are value cases. Their fixture is interpreted and
++compared like any other case, and each adds a `stimulus`:
++
++| Field | Meaning |
++| --- | --- |
++| `takeover` | `none`, or `any`: the expected values hold under every takeover choice |
++| `parameter` | The target label and its description: `kind`, `stepped`, `min`, `max` and `initial_value` |
++| `messages` | Three-byte Control Change messages in hexadecimal, in the order they arrive |
++
++`expected.values` gives the parameter value after each message, on the
++parameter's own scale, including after messages that leave it unchanged.
++Values are exact results rounded to nine decimal places; compare each within
++an absolute tolerance of 1e-6. Every value case uses number 20 on channel 0,
++and the `Absolute14Bit` cases also send number 52. A candidate adapter may
++supply a test parameter with the given description at the target and feed the
++messages to the interpreted assignment.
+ 
+ ## Exclusions and deferred obligations
+ 
+@@ -224,10 +333,24 @@
+ ten tokens, including case variants; two enabled assignments with the same MIDI
+ address; and `Send2Knob`*N* enabled while `Send1Knob`*N* is not.
+ 
++Value behavior also has **no expectation** for: on/off target parameters in
++any map mode; a target parameter whose *min* is not below its *max*; a stepped
++parameter with a non-integer *min*, *max* or current value; a current value
++outside [*min*, *max*]; a parameter that changes a value after it is set;
++under a takeover choice other than `none`, `Absolute` and `Absolute14Bit`
++values for a continuous parameter, except `Absolute` values of the crossfader;
++another enabled assignment on number *n* + 32 and the channel of an
++`Absolute14Bit` control with number *n*; and other MIDI input during a value
++case, including running status.
++
+ Excluded behavior: how the application reports or recovers from inputs that
+-fail to load; profile discovery, naming, activation and reload; numeric
+-transforms of every map mode, 14-bit pairing, relative arithmetic, pickup and
+-takeover; what any button does with a data value, including toggling, held
++fail to load; profile discovery, naming, activation and reload; value behavior
++outside the [value transforms](#value-transforms), including Pick-Up and Value
++Scaling, the labels of the takeover choices other than `none`, the default
++choice and on/off parameter values; when a value is applied, and the ordering,
++coalescing and deferral of messages sent back to back; displayed values; which
++application parameter a target is, and its kind, range and stepping; what any
++button does with a data value, including toggling, held
+ seeking, nudge and tap timing; bank navigation, bank contents, lock and
+ activator effects; which tracks strips address; arm, solo and select
+ interactions; pad playback and note lifetime; MIDI feedback and mute feedback
+@@ -242,7 +365,26 @@
+ mismatches. Candidate-only success proves agreement with this contract, not
+ with the running original.
+ 
+-## Changes from midi-config-v1
++A reference comparison of value cases must also: confirm that the choice used
++for `none` cases is the one under which takeover never acts, believed to be
++None; record the choice used for `any` cases, since the exemptions are
++exercised only under another choice; use a target whose parameter matches the
++description, except that the crossfader's range cannot be chosen, so if it
++reports another range the expected values are *min* + (*max* − *min*) ×
++*v*/127 for the same data values, and if it is stepped or on/off the case does
++not apply; open the input immediately before the case; and read each value
++only after its message has been applied, by a bounded completion method and
++never from the display. Silence after a wait is not evidence that a value is
++unchanged.
++
++## Changes from midi-config-v2
++
++The change list and the supersession record are in
++[the README](README.md#changes-from-midi-config-v2) and
++[the manifest](manifest.json). No midi-config-v2 clause, case or fixture is
++changed.
++
++## Earlier changes: midi-config-v2 from midi-config-v1
+ 
+ 1. Scope widened from three mixer controls to every number key in the table,
+    16 pads, map-mode labels, button kinds and the device parameter bank span.
+@@ -263,5 +405,6 @@
+ configuration field names and simple values. They contain no shipped file
+ content, program code or assets. Expected JSON is newly authored
+ static-derived behavioral data. No public source or dependency is approved or
+-included. Review status is recorded in [the manifest](manifest.json) and
+-[the review disposition](REVIEW.md).
++included. The MIDI byte sequences and parameter descriptions of the value
++cases are also authored for this release. Review status is recorded in
++[the manifest](manifest.json).

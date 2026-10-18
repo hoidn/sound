@@ -1,0 +1,1035 @@
+{
+ "schema": "warp-markers-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "warp-markers-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored minimal documents and one generated silent WAV; no shipped file copied",
+ "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+ "representation": {
+  "paths": "relative to /Ableton/LiveSet; one AudioClip or one SampleWarpProperties per fixture",
+  "state": "values held after opening, by element name; WarpMarkers as [SecTime, BeatTime] pairs in list order",
+  "call": "one scripting call after opening; arguments are binary64",
+  "refusal_reason": "open-call refused only; see spec.md",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "WARP-MARKERS-001",
+   "kind": "positive",
+   "purpose": "Warped audio clip with three visible markers, a shadow marker, Complex mode and non-default settings",
+   "requirements": [
+    "REQ-WARP-MARKERS-001",
+    "REQ-WARP-MARKERS-002",
+    "REQ-WARP-MARKERS-003",
+    "REQ-WARP-MARKERS-011",
+    "REQ-WARP-MARKERS-012",
+    "REQ-WARP-MARKERS-013"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "IsWarped": true,
+      "WarpMode": 4,
+      "GranularityTones": 40,
+      "GranularityTexture": 100,
+      "FluctuationTexture": 50,
+      "TransientResolution": 4,
+      "TransientLoopMode": 1,
+      "ComplexProFormants": 75,
+      "ComplexProEnvelope": 64,
+      "WarpMarkers": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        1.0,
+        2.0
+       ],
+       [
+        2.0,
+        3.0
+       ],
+       [
+        2.015625,
+        3.03125
+       ]
+      ]
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-002",
+   "kind": "positive",
+   "purpose": "IsWarped false",
+   "requirements": [
+    "REQ-WARP-MARKERS-001",
+    "REQ-WARP-MARKERS-003"
+   ],
+   "input": "fixtures/not-warped.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "IsWarped": false,
+      "WarpMarkers": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        1.0,
+        2.0
+       ],
+       [
+        2.0,
+        3.0
+       ],
+       [
+        2.015625,
+        3.03125
+       ]
+      ]
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-003",
+   "kind": "boundary",
+   "purpose": "Second marker SecTime \"1.0e0\"",
+   "requirements": [
+    "REQ-WARP-MARKERS-002"
+   ],
+   "input": "fixtures/sectime-exponent.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMarkers": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        1.0,
+        2.0
+       ],
+       [
+        2.0,
+        3.0
+       ],
+       [
+        2.015625,
+        3.03125
+       ]
+      ]
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-004",
+   "kind": "boundary",
+   "purpose": "Second marker SecTime \" 1\" (leading space)",
+   "requirements": [
+    "REQ-WARP-MARKERS-002"
+   ],
+   "input": "fixtures/sectime-leading-space.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMarkers": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        1.0,
+        2.0
+       ],
+       [
+        2.0,
+        3.0
+       ],
+       [
+        2.015625,
+        3.03125
+       ]
+      ]
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-005",
+   "kind": "positive",
+   "purpose": "Second marker BeatTime \"2.0000001\", which is not on the beat grid",
+   "requirements": [
+    "REQ-WARP-MARKERS-002",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/beattime-off-grid.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMarkers": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        1.0,
+        2.0000001
+       ],
+       [
+        2.0,
+        3.0
+       ],
+       [
+        2.015625,
+        3.03125
+       ]
+      ]
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-006",
+   "kind": "boundary",
+   "purpose": "Second marker BeatTime \"2junk\" (text after the number)",
+   "requirements": [
+    "REQ-WARP-MARKERS-002"
+   ],
+   "input": "fixtures/beattime-trailing-text.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMarkers": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        1.0,
+        2.0
+       ],
+       [
+        2.0,
+        3.0
+       ],
+       [
+        2.015625,
+        3.03125
+       ]
+      ]
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-007",
+   "kind": "negative",
+   "purpose": "Second marker SecTime \"abc\"",
+   "requirements": [
+    "REQ-WARP-MARKERS-002"
+   ],
+   "input": "fixtures/sectime-no-number.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "WARP-MARKERS-008",
+   "kind": "negative",
+   "purpose": "Second marker BeatTime \"\" (empty)",
+   "requirements": [
+    "REQ-WARP-MARKERS-002"
+   ],
+   "input": "fixtures/beattime-empty.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "WARP-MARKERS-009",
+   "kind": "missing",
+   "purpose": "Seven setting elements absent; TransientEnvelope kept",
+   "requirements": [
+    "REQ-WARP-MARKERS-010",
+    "REQ-WARP-MARKERS-012",
+    "REQ-WARP-MARKERS-013"
+   ],
+   "input": "fixtures/settings-absent.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "GranularityTones": 30,
+      "GranularityTexture": 65,
+      "FluctuationTexture": 25,
+      "TransientResolution": 6,
+      "TransientLoopMode": 2,
+      "ComplexProFormants": 100,
+      "ComplexProEnvelope": 128
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-010",
+   "kind": "missing",
+   "purpose": "Seven setting elements present without a Value attribute",
+   "requirements": [
+    "REQ-WARP-MARKERS-010",
+    "REQ-WARP-MARKERS-012",
+    "REQ-WARP-MARKERS-013"
+   ],
+   "input": "fixtures/settings-no-value.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "GranularityTones": 30,
+      "GranularityTexture": 65,
+      "FluctuationTexture": 25,
+      "TransientResolution": 6,
+      "TransientLoopMode": 2,
+      "ComplexProFormants": 100,
+      "ComplexProEnvelope": 128
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-011",
+   "kind": "positive",
+   "purpose": "TransientResolution 0",
+   "requirements": [
+    "REQ-WARP-MARKERS-012"
+   ],
+   "input": "fixtures/transient-resolution-0.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "TransientResolution": 0
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-012",
+   "kind": "positive",
+   "purpose": "TransientLoopMode 0",
+   "requirements": [
+    "REQ-WARP-MARKERS-012"
+   ],
+   "input": "fixtures/transient-loop-mode-0.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "TransientLoopMode": 0
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-013",
+   "kind": "positive",
+   "purpose": "WarpMode 0 (Beats)",
+   "requirements": [
+    "REQ-WARP-MARKERS-011"
+   ],
+   "input": "fixtures/warp-mode-0.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMode": 0
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-014",
+   "kind": "positive",
+   "purpose": "WarpMode 1 (Tones)",
+   "requirements": [
+    "REQ-WARP-MARKERS-011"
+   ],
+   "input": "fixtures/warp-mode-1.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMode": 1
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-015",
+   "kind": "positive",
+   "purpose": "WarpMode 2 (Texture)",
+   "requirements": [
+    "REQ-WARP-MARKERS-011"
+   ],
+   "input": "fixtures/warp-mode-2.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMode": 2
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-016",
+   "kind": "positive",
+   "purpose": "WarpMode 3 (Re-Pitch)",
+   "requirements": [
+    "REQ-WARP-MARKERS-011"
+   ],
+   "input": "fixtures/warp-mode-3.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMode": 3
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-017",
+   "kind": "positive",
+   "purpose": "WarpMode 6 (Complex Pro)",
+   "requirements": [
+    "REQ-WARP-MARKERS-011"
+   ],
+   "input": "fixtures/warp-mode-6.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "AudioClip": {
+      "WarpMode": 6
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-018",
+   "kind": "positive",
+   "purpose": "Simpler sample part with an empty marker list",
+   "requirements": [
+    "REQ-WARP-MARKERS-001",
+    "REQ-WARP-MARKERS-004"
+   ],
+   "input": "fixtures/simpler-empty-markers.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "SampleWarpProperties": {
+      "WarpMarkers": []
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+  },
+  {
+   "id": "WARP-MARKERS-019",
+   "kind": "negative",
+   "purpose": "sample_to_beat_time on a clip that is not warped",
+   "requirements": [
+    "REQ-WARP-MARKERS-008"
+   ],
+   "input": "fixtures/not-warped.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "sample_to_beat_time",
+    "sample_frames": 0
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "not-warped"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-020",
+   "kind": "negative",
+   "purpose": "beat_to_sample_time on a clip that is not warped",
+   "requirements": [
+    "REQ-WARP-MARKERS-008"
+   ],
+   "input": "fixtures/not-warped.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "beat_to_sample_time",
+    "beat": 0
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "not-warped"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-021",
+   "kind": "negative",
+   "purpose": "Add at 0.5 s, beat 1 on a clip that is not warped",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/not-warped.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 0.5,
+    "beat": 1
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "not-warped"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-022",
+   "kind": "positive",
+   "purpose": "Add at 0.5 s, beat 1 (segment tempi 120 and 120 BPM)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 0.5,
+    "beat": 1
+   },
+   "expected": {
+    "outcome": "accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "WARP-MARKERS-023",
+   "kind": "negative",
+   "purpose": "Add at -0.1 s, beat 0 (before the sample start)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": -0.1,
+    "beat": 0
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "sample-time-out-of-range"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-024",
+   "kind": "negative",
+   "purpose": "Add at 900,000 s, beat 100 (after the sample end)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 900000,
+    "beat": 100
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "sample-time-out-of-range"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-025",
+   "kind": "negative",
+   "purpose": "Add at 1.5 s, beat 1.9 (below the left neighbour's beat 2)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 1.5,
+    "beat": 1.9
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "beat-below-left-neighbour"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-026",
+   "kind": "boundary",
+   "purpose": "Add at 1.5 s, beat 1.999999999: below the left neighbour's beat as given, equal to it after grid rounding",
+   "requirements": [
+    "REQ-WARP-MARKERS-015",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 1.5,
+    "beat": 1.999999999
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "beat-below-left-neighbour"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-027",
+   "kind": "negative",
+   "purpose": "Add at 1.5 s, beat 3.5 (above the right neighbour's beat 3)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 1.5,
+    "beat": 3.5
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "beat-above-right-neighbour"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-028",
+   "kind": "negative",
+   "purpose": "Add at 1.5 s, beat 2.01 (tempo to the left neighbour about 1.2 BPM)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 1.5,
+    "beat": 2.01
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "segment-tempo-out-of-range"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-029",
+   "kind": "negative",
+   "purpose": "Add at 0.5 s, beat 1.99 (tempo to the right neighbour about 1.2 BPM)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 0.5,
+    "beat": 1.99
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "segment-tempo-out-of-range"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-030",
+   "kind": "negative",
+   "purpose": "Add at 0.001 s, beat 1 (tempo to the left neighbour 60,000 BPM)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 0.001,
+    "beat": 1
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "segment-tempo-out-of-range"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-031",
+   "kind": "positive",
+   "purpose": "Add at 1.5 s, beat 2.5 (segment tempi 60 and 60 BPM)",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 1.5,
+    "beat": 2.5
+   },
+   "expected": {
+    "outcome": "accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "WARP-MARKERS-032",
+   "kind": "boundary",
+   "purpose": "Add at 2.5 s, beat 4: after the last visible marker, so only the left limit applies (120 BPM)",
+   "requirements": [
+    "REQ-WARP-MARKERS-007",
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "add_warp_marker",
+    "sample_time_seconds": 2.5,
+    "beat": 4
+   },
+   "expected": {
+    "outcome": "accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "WARP-MARKERS-033",
+   "kind": "negative",
+   "purpose": "Remove the shadow marker (beat 3.03125)",
+   "requirements": [
+    "REQ-WARP-MARKERS-007",
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "remove_warp_marker",
+    "beat": 3.03125
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "shadow-marker"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-034",
+   "kind": "negative",
+   "purpose": "Move the shadow marker (beat 3.03125, distance 1)",
+   "requirements": [
+    "REQ-WARP-MARKERS-007",
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "move_warp_marker",
+    "beat": 3.03125,
+    "distance": 1
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "shadow-marker"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-035",
+   "kind": "boundary",
+   "purpose": "Remove beat 2.0000001, which grid rounding maps to the second marker's beat 2",
+   "requirements": [
+    "REQ-WARP-MARKERS-015",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "remove_warp_marker",
+    "beat": 2.0000001
+   },
+   "expected": {
+    "outcome": "accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "WARP-MARKERS-036",
+   "kind": "negative",
+   "purpose": "Remove beat 2.001, which matches no marker after grid rounding",
+   "requirements": [
+    "REQ-WARP-MARKERS-015",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "remove_warp_marker",
+    "beat": 2.001
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "no-such-marker"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-037",
+   "kind": "negative",
+   "purpose": "Move beat 2.001, distance 1: no marker matches",
+   "requirements": [
+    "REQ-WARP-MARKERS-015",
+    "REQ-WARP-MARKERS-016"
+   ],
+   "input": "fixtures/base.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "move_warp_marker",
+    "beat": 2.001,
+    "distance": 1
+   },
+   "expected": {
+    "outcome": "refused",
+    "refusal_reason": "no-such-marker"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; refusal_reason exact"
+  },
+  {
+   "id": "WARP-MARKERS-038",
+   "kind": "positive",
+   "purpose": "Remove beat 2 on a clip that is not warped",
+   "requirements": [
+    "REQ-WARP-MARKERS-015"
+   ],
+   "input": "fixtures/not-warped.xml",
+   "sample": "fixtures/sample.wav",
+   "action": "open-call",
+   "call": {
+    "function": "remove_warp_marker",
+    "beat": 2
+   },
+   "expected": {
+    "outcome": "accepted"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  }
+ ]
+}

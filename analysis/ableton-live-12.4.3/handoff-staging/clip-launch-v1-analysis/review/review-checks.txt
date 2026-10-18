@@ -1,0 +1,67 @@
+clip-launch-v1 handoff review: reviewer checks (analyst-side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I.
+Image: analysis/ableton-live-12.4.3/derived/Live.arm64 sha256 3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad (matched)
+S5 run manifest sha256 a5758e8290ed4ab8547e623c73f492c5e9ad9c117e54da54080b5fd517fa0396; 87/87 listed files matched.
+Draft manifest before review: 91f46d7cee570f00b52320cca06dac85fc39e31b091400778b84057d2d4668e4 (baseline copy matched 54/54 files).
+Reviewed manifest: ecf755b1c4ea2d3356bd31ff3fdc0efc4034b05a6ecb11c08d8502c86d945bea (55 payload files + manifest).
+
+Mapping to plan IDs: RVC-01 = REQ-015 removed (review gate 1 question; plan F1 context); RVC-02 = F3 extended to the
+clause text; RVC-03 = F4 applied to the A2 payload sentence; RVC-04 new (other translators); RVC-05 new (A1 wording);
+RVC-08 = F7 resolved; RVC-09 = F5 confirmed; RVC-10 = F2 upheld; RVC-11 = A2/A3/A5/A7 rulings; RVC-13 = F6, F8, F9.
+
+== 1. Reviewer model (reviewer_model.py, written from the evidence, not from build_clip.py) ==
+before edits: reviewer-model-before.txt 50/50 agree; after edits: reviewer-model-after.txt 50/50 agree.
+Also checks every graded saved value has <= 6 significant digits (RVC-02): all pass.
+Worked examples REQ-012/013 (reviewer-examples.txt): 30/30 q=49.999996185302734 -> 50/50; 1/2 -> 33/67;
+1/7 q=12.5 exactly -> 13/87; 0/50 -> 0/100; 0.25/0.75 -> 25/75; 100/0 unchanged; 2.0000001 -> 2; 3.0000002 ->
+11531521/3843840 = 3.00000026015651; 1e-8 -> 0; 1.3333333 -> 5125120/3843840 = 4/3; f32(0.3) = 0.300000011920928955078125.
+
+== 2. Evidence re-read ==
+- 0x1014c04d0 (step 12203, s5-0004 retained disassembly, 201 instructions): no FollowAction -> w20=1, FollowTime 4.0
+  (0x4010000000000000), LoopIterations 1, A 0, B 0, ChanceA 0x42c80000, ChanceB 0, Enabled 0, JumpIndexA/B 0x3f800000,
+  IsLinked w20. With FollowAction: tbnz Enabled -> false; fcmp FollowTime,4.0; cmp A,#4; cbz B; fcmp ChanceA,100.0;
+  fcmp ChanceB,#0 cset eq; existing IsLinked removed (+0x70 test, +0xc0 remove), new IsLinked added. Pseudocode agrees.
+- 0x1014b6d14 (406), 0x1014b82d8 (417), 0x1014b8b00 (421): as the contract table (pseudocode; 421 mov w1,#4 per notes).
+- Registry 0x10148ec98 (C1 excerpt): 406 Clip/AudioClip/MidiClip, 417 FollowAction, 421 FollowAction, 12203 Scene.
+  Steps > 405 on clip/follow-action/scene/track/song classes: 407 411 413 414 415 416 418 419 423 425 427 430 434
+  11201 12002 12003 12007 12008 12011 12020..12117 (song/track) 12120 12204 12205 12401 12402 (+ device steps).
+  Code read via corpus_lookup.py (N1_CACHE pointed at the existing n1 pickle; no cache written): other-steps.c and
+  the clip/FA/scene steps 416 (TimeSelection class), 12007 (BankSelect/ProgramChange type), 12008 (LoopIterations
+  type), 12011 (NoteSpelling rename), 12120 (IsInKey added), 407/413 (scene tempo/name), 425/12002 (audio clip).
+  No step touches LaunchMode, LaunchQuantisation, Legato, VelocityAmount, FollowAction items, GlobalQuantisation or
+  AutoQuantisation (RVC-04). Max step number 12402 (MidiArpeggiator) -> 12.0_12402 documents get no step.
+- 0x1025044b4 chance post-load (s5-0003 disassembly): fcmp A,#0 / B,#0; zero branch ChanceA:=100 via +0x280,
+  Enabled false (0x101564698(...,0)); else fadd s, fdiv by 100.0f, fdiv A/s, frinta s, setter, fsub 100-A, setter.
+- 0x10156580c follow-time rounding (fp_opcodes.py over Live.arm64 0x10156580c, 60 words): ldrb flag +0x70 == 1;
+  sentinel compare (vector fcmeq) skip; fcmp d0,#0; fmov -1.0/1.0; fcsel (sign); const 0x3e9175746e8cba40 (1/3843840);
+  fmul; fmov 0.5; fmadd x + s*(1/N)*0.5; fabs; const 0x414d538000000000 (3843840.0); fmul; frintm; fdiv; fmul sign; str.
+- 0x102505030 / 0x102505724 / 0x102436fc4 (s5-0001): FollowTime 4.0 + quantize flag, IsLinked 1, LoopIterations
+  1 (bounds 1..0x3fffffff), A (enum 4, chance 100), B (enum 0, chance 0), jump (-1, 8388608, 1.0), Enabled 0,
+  FollowChanceController installed (A7 unread); Legato [0xd]=0; VelocityAmount (0, 1, 0).
+- Labels: 0x102438d00 string refs Global..1/32 (15); 0x10266f738 refs 0x102670e0c..f5c (14) and 0x10267102c..10fc (9);
+  0x102505724 short list with "Again".
+- Text rules and storage: N1 notes rounds 2-3 (0x10152bfb8 Bool/Int/Float/Double; generic loader 0x101487310 stores
+  base values directly, no setter/range check; duplicate member throw 0x101472624). Schema 12.0_12402: RemoteableEnum
+  Value Int, RemoteableBool Bool, UserFloat Float, RemoteableDouble Double, RangedRemoteableInt Int; GQ/AQ RemoteableEnum.
+  UserFloat's own load path not read -> RVC-03.
+- 11.0_405 schema: MidiClip/AudioClip hold FollowTime, FollowActionA/B, FollowChanceA/B after VelocityAmount; LiveSet
+  has SceneNames (renamed Scenes by step 414). 12.0_12117 FollowAction has all ten children; Scene has FollowAction.
+- REQ-011 API setters 0x1033bbe98/0x1033bc00c (s5-0004): param unsigned; throw std::invalid_argument with
+  "Invalid launch mode " / "Invalid launch quantization " + to_string(v). Callers 0x103ac1e9c/0x103ac1ed8 and
+  0x10384ec64; script-side exception translation not in kept evidence -> RVC-10.
+- Shipped clip-records.tsv (4,130 clips): written forms "true"/"false" and plain digits only; no fractional example.
+
+== 3. Payload checks ==
+- apply_review_edits.py and edit_manifest.py applied the edits; payload-changes.diff = baseline vs reviewed.
+- verify_copy.py --rehash on staging; build_clip.py check (author validator, no rewrite) on staging:
+  author-check-after-review.json: 50 cases, no case problems, mutations 50/50, 50 distinct inputs, 55 payload files,
+  no hash/size mismatch, no inventory difference, no unresolved link, no missing input, no deny-list hit.
+- Export copy in the session scratchpad (outside the checkout): export-verify.json: 55 listed, 0 mismatches,
+  11 Markdown links all resolved inside the package; independent sha256sum -c: 55 OK; copy byte-identical to staging.
+- Broader vocabulary scan (node, hook, member, class, loader, setter, translator, addresses, IDs, restricted paths):
+  hits only in AGENTS.md role text and REVIEW.md "internal identifiers" in the sanitization statement.
+- Fixtures: 50 well-formed, ASCII, LF, single final newline, no tabs, distinct; each differs from the template only
+  as its purpose states (diff against CLIP-LAUNCH-001.xml).
+
+Not done: no execution of the original or a candidate; build_clip.py build/seal not rerun (no case changed; build
+would regenerate cases.json status and the manifest skeleton without the review edits).

@@ -2,7 +2,7 @@
 id: SPEC-MIXER-VALUES
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 1
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -482,8 +482,10 @@ Not drafted from the candidates, or narrowed:
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from candidates MX-01–MX-15 and two D8 query rounds. 15 requirements: 3 D/S only (001, 004, 009); 9 D/S with U parts (002, 003, 005, 006, 007, 008, 010, 013, 014); 1 S/Q-019 with a U part (011); 2 U only (012, 015). 45 unexecuted cases: 27 static or documented, 11 renders needing measurement (6 also conditional on Q-019), 7 unresolved |
 
-Not reviewed and not released. A first release candidate could carry REQ-001, 002,
+Before the 2026-10-18 review, a first release candidate could carry REQ-001, 002,
 003, 004, 006, 007, 009 and 010 with MV-001–026, after REQ-010's 12.4.3 save question
 (PRB-S9-07) is accepted as a stated limitation or settled. REQ-005 is needed by any
 renderer. REQ-011, 013 and 014 must stay out until measurement (PRB-S9-01, 02, 03,
 06) and, for REQ-011, Q-019.
+
+Released 2026-10-18: [mixer-values-v1](../../handoff/mixer-values-v1/README.md), 37 cases, approved with corrections by a separate review agent (partial REQ-001 to 004, 006 to 009 only; 005, 010 to 015 unreleased). The review findings to apply in the next revision are on the [handoff plan](mixer-values-handoff-plan.md#review-outcome). This revision's text is unchanged.

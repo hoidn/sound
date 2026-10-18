@@ -1,0 +1,1095 @@
+{
+ "schema": "midi-config-v3-traceability",
+ "status": "analyst-only; never part of the payload",
+ "parent_spec": "SPEC-MIDI-USER-MAPPING revision 3 (wiki/specs/midi-user-mapping.md)",
+ "plan": "wiki/specs/midi-config-v3-handoff-plan.md",
+ "supersedes": "midi-config-v2",
+ "evidence_identity": {
+  "n7_manifest_sha256": "385d3ea604bc4c95e5002ca43fe7a1fdb9225f8bd9f97c1688daba3d378912ec",
+  "n7_target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), Live.arm64 sha256 3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad",
+  "n7_files_listed": 77,
+  "n7_file_mismatches": []
+ },
+ "evidence": {
+  "v2": "handoff/midi-config-v2/ (manifest sha256 889b52fa3b7f19c1bd085f26db39e0f62f00cbf7dc85be050e32207f012eb4d7, REVIEW.md); per-case sources in analysis/ableton-live-12.4.3/handoff-staging/midi-config-v2-analysis/traceability.json",
+  "E10": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0004 0x103b4d744 (wrapper forwards channel, CC, mode, avoid, sensitivity unchanged); results/n7-0001 0x102593258 (validation 0x1025931ac; mode 5 -> 0x1026094e0 called at 0x10259338c with x0-x4 only; other modes: CC receiver, init 0x101b7f32c stores avoid at +0x44); results/n7-0004 0x101b69248 -> results/n7-0002 0x101b65b68 (per-input prior table, -129 fill) -> results/n7-0004 0x101b7842c (every handler on the (channel, CC) list). S4 listings: _Framework/ControlSurface _install_mapping L735-743; InputControlElement L191, L197; _Generic/GenericScript L216 (crossfader set_needs_takeover(False))",
+  "E11": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0002 0x1026094e0 (keys (ch, n, 5) -> type 5 and (ch, n+32, 5) -> type 6; receiver flag `mov w3,#0x0` at 0x102609548), 0x101b8028c MSB store, 0x101b802bc LSB store, 0x101b7fcc0 combine ((MSB<<7|LSB)/129.0, constant 0x10584a8b4; MapMode 0, sensitivity 1.0; all four slots reset)",
+  "E12": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0002 0x101b76bf0 value function (absolute t = v/127, divisor 127.0; relative (hi-lo)/256*d*s or +-1 when quantized; clamp; frinta at 0x101b76cd4; step negated and t = (127-v)/127 when Max < Min); results/n7-0001 0x101b7b96c decoder; results/n7-0003 0x101b842cc table init; out/native-constants.json",
+  "E13": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0003 0x1026fa5c8, 0x1026fa684 (Type 1 ATimeableFloat, 2 Bool, 3 Enum, 0 other; Min/Max; Quantized); results/n7-0001 0x101b7fde4 apply (Type 2 branch; otherwise value function, then takeover only for MapMode 0/5, Type 1 and prior != FLT_MAX); results/n7-0002 0x101b7f894 CC receiver (prior := FLT_MAX when avoid and Zoom 1.0; quantized relative accumulator +-s, fires at |acc| >= 1)",
+  "E14": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0001 0x101b7c508 takeover (mode 0 returns clamp(new)), 0x101b7c344 Pick-Up; results/n7-0003 0x101b83750 preference setter; out/corpus-excerpts.jsonl 0x1022df424 UI entry order (decompiler only)"
+ },
+ "inferred": {
+  "I1": "Takeover index 0 is the preference choice labelled None: UI entries are declared in the order no takeover, pick-up, value scaling (0x1022df424, decompiler only) and index 1 posts the pick-up notification. Stated in the contract as an assumption with a comparison obligation.",
+  "I2": "The handler registry 0x101b84798/0x10260535c is the MidiMap handler lookup, and dispatch entry +0x30 holds the installed map mode (spec r3 E10 inference).",
+  "I3": "The parameter setter 0x101b0d328 (untraced) stores the value without further processing. The contract makes this a precondition and excludes parameters that change a value after it is set.",
+  "I4": "Messages are applied in arrival order, once each; the queued-command path taken when 0x1011c0ee8(0x100500) is nonzero has unknown timing. The contract applies messages one at a time and excludes back-to-back ordering, coalescing and deferral.",
+  "I5": "Layer wiring from control to component setter, assumed for every target association since spec revision 1."
+ },
+ "clauses": {
+  "midi-config-v2 clauses of REQ-002, 003, 005 (labels), 006 to 013, carried unchanged": {
+   "evidence": [
+    "v2"
+   ],
+   "inferred": []
+  },
+  "value: continuous controls act on their channel and number; Absolute14Bit also on n + 32": {
+   "evidence": [
+    "E10",
+    "E11"
+   ],
+   "inferred": [
+    "I2",
+    "I5"
+   ]
+  },
+  "value: each message applied once, no smoothing": {
+   "evidence": [
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I3",
+    "I4"
+   ]
+  },
+  "value: target parameter min, max, current value, stepped, four kinds": {
+   "evidence": [
+    "E13"
+   ],
+   "inferred": []
+  },
+  "value: min below max precondition (reversed ranges excluded; finding F2)": {
+   "evidence": [
+    "E12"
+   ],
+   "inferred": []
+  },
+  "value: Absolute": {
+   "evidence": [
+    "E12",
+    "E13"
+   ],
+   "inferred": []
+  },
+  "value: stepped rounding to nearest, halves away from zero": {
+   "evidence": [
+    "E12"
+   ],
+   "inferred": []
+  },
+  "value: Absolute14Bit pairing, replacement, lone half, 16383 scale": {
+   "evidence": [
+    "E11",
+    "E12"
+   ],
+   "inferred": []
+  },
+  "value: relative decode table and A, B": {
+   "evidence": [
+    "E12"
+   ],
+   "inferred": []
+  },
+  "value: relative application, not stepped and stepped": {
+   "evidence": [
+    "E12",
+    "E13"
+   ],
+   "inferred": []
+  },
+  "takeover: choice none applies every value": {
+   "evidence": [
+    "E14"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "takeover: relative values exempt": {
+   "evidence": [
+    "E13"
+   ],
+   "inferred": []
+  },
+  "takeover: enumerated and other kinds exempt": {
+   "evidence": [
+    "E13"
+   ],
+   "inferred": []
+  },
+  "takeover: crossfader Absolute values exempt (REQ-010)": {
+   "evidence": [
+    "E10",
+    "E13"
+   ],
+   "inferred": []
+  },
+  "exclusion: crossfader Absolute14Bit under choices other than none (finding F1)": {
+   "evidence": [
+    "E10",
+    "E11"
+   ],
+   "inferred": []
+  },
+  "exclusion: on/off parameters (spec S-cond, PRB-N7-04)": {
+   "evidence": [
+    "E13"
+   ],
+   "inferred": []
+  },
+  "exclusion: Pick-Up, Value Scaling, their labels and the default (spec S-cond, PRB-N7-03)": {
+   "evidence": [
+    "E14"
+   ],
+   "inferred": []
+  },
+  "exclusion: timing, ordering, coalescing, deferral (PRB-N7-05)": {
+   "evidence": [
+    "E13"
+   ],
+   "inferred": [
+    "I4"
+   ]
+  },
+  "exclusion: number n + 32 shared with another assignment; several assignments on one address": {
+   "evidence": [
+    "E10",
+    "E11"
+   ],
+   "inferred": [
+    "I2"
+   ]
+  }
+ },
+ "cases": {
+  "MIDI-CONFIG-001": {
+   "source": "midi-config-v2 MIDI-CONFIG-001 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-002": {
+   "source": "midi-config-v2 MIDI-CONFIG-002 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-003": {
+   "source": "midi-config-v2 MIDI-CONFIG-003 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-004": {
+   "source": "midi-config-v2 MIDI-CONFIG-004 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-005": {
+   "source": "midi-config-v2 MIDI-CONFIG-005 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-006": {
+   "source": "midi-config-v2 MIDI-CONFIG-006 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-007": {
+   "source": "midi-config-v2 MIDI-CONFIG-007 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-008": {
+   "source": "midi-config-v2 MIDI-CONFIG-008 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-009": {
+   "source": "midi-config-v2 MIDI-CONFIG-009 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-010": {
+   "source": "midi-config-v2 MIDI-CONFIG-010 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-011": {
+   "source": "midi-config-v2 MIDI-CONFIG-011 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-012": {
+   "source": "midi-config-v2 MIDI-CONFIG-012 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-013": {
+   "source": "midi-config-v2 MIDI-CONFIG-013 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-014": {
+   "source": "midi-config-v2 MIDI-CONFIG-014 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-015": {
+   "source": "midi-config-v2 MIDI-CONFIG-015 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-016": {
+   "source": "midi-config-v2 MIDI-CONFIG-016 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-017": {
+   "source": "midi-config-v2 MIDI-CONFIG-017 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-018": {
+   "source": "midi-config-v2 MIDI-CONFIG-018 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-019": {
+   "source": "midi-config-v2 MIDI-CONFIG-019 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-020": {
+   "source": "midi-config-v2 MIDI-CONFIG-020 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-021": {
+   "source": "midi-config-v2 MIDI-CONFIG-021 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-022": {
+   "source": "midi-config-v2 MIDI-CONFIG-022 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-023": {
+   "source": "midi-config-v2 MIDI-CONFIG-023 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-024": {
+   "source": "midi-config-v2 MIDI-CONFIG-024 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-025": {
+   "source": "midi-config-v2 MIDI-CONFIG-025 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-026": {
+   "source": "midi-config-v2 MIDI-CONFIG-026 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-027": {
+   "source": "midi-config-v2 MIDI-CONFIG-027 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-028": {
+   "source": "midi-config-v2 MIDI-CONFIG-028 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-029": {
+   "source": "midi-config-v2 MIDI-CONFIG-029 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-030": {
+   "source": "midi-config-v2 MIDI-CONFIG-030 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-031": {
+   "source": "midi-config-v2 MIDI-CONFIG-031 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-032": {
+   "source": "midi-config-v2 MIDI-CONFIG-032 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-033": {
+   "source": "midi-config-v2 MIDI-CONFIG-033 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-034": {
+   "source": "midi-config-v2 MIDI-CONFIG-034 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-035": {
+   "source": "midi-config-v2 MIDI-CONFIG-035 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-036": {
+   "source": "midi-config-v2 MIDI-CONFIG-036 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-037": {
+   "source": "midi-config-v2 MIDI-CONFIG-037 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-038": {
+   "source": "midi-config-v2 MIDI-CONFIG-038 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-039": {
+   "source": "midi-config-v2 MIDI-CONFIG-039 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-040": {
+   "source": "midi-config-v2 MIDI-CONFIG-040 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-041": {
+   "source": "midi-config-v2 MIDI-CONFIG-041 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-042": {
+   "source": "midi-config-v2 MIDI-CONFIG-042 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-043": {
+   "source": "midi-config-v2 MIDI-CONFIG-043 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-044": {
+   "source": "midi-config-v2 MIDI-CONFIG-044 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-045": {
+   "source": "midi-config-v2 MIDI-CONFIG-045 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-046": {
+   "source": "midi-config-v2 MIDI-CONFIG-046 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-047": {
+   "source": "midi-config-v2 MIDI-CONFIG-047 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-048": {
+   "source": "midi-config-v2 MIDI-CONFIG-048 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-049": {
+   "source": "midi-config-v2 MIDI-CONFIG-049 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-050": {
+   "source": "midi-config-v2 MIDI-CONFIG-050 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-051": {
+   "source": "midi-config-v2 MIDI-CONFIG-051 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-052": {
+   "source": "midi-config-v2 MIDI-CONFIG-052 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-053": {
+   "source": "midi-config-v2 MIDI-CONFIG-053 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-054": {
+   "source": "midi-config-v2 MIDI-CONFIG-054 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-055": {
+   "source": "midi-config-v2 MIDI-CONFIG-055 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-056": {
+   "source": "midi-config-v2 MIDI-CONFIG-056 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-057": {
+   "source": "midi-config-v2 MIDI-CONFIG-057 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-058": {
+   "source": "midi-config-v2 MIDI-CONFIG-058 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-059": {
+   "source": "midi-config-v2 MIDI-CONFIG-059 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-060": {
+   "source": "midi-config-v2 MIDI-CONFIG-060 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-061": {
+   "source": "midi-config-v2 MIDI-CONFIG-061 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-062": {
+   "source": "midi-config-v2 MIDI-CONFIG-062 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-063": {
+   "source": "midi-config-v2 MIDI-CONFIG-063 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-064": {
+   "source": "midi-config-v2 MIDI-CONFIG-064 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-065": {
+   "source": "midi-config-v2 MIDI-CONFIG-065 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-066": {
+   "source": "midi-config-v2 MIDI-CONFIG-066 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-067": {
+   "source": "midi-config-v2 MIDI-CONFIG-067 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-068": {
+   "source": "midi-config-v2 MIDI-CONFIG-068 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-069": {
+   "source": "midi-config-v2 MIDI-CONFIG-069 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-070": {
+   "source": "midi-config-v2 MIDI-CONFIG-070 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-071": {
+   "source": "midi-config-v2 MIDI-CONFIG-071 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-072": {
+   "source": "midi-config-v2 MIDI-CONFIG-072 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-073": {
+   "source": "midi-config-v2 MIDI-CONFIG-073 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-074": {
+   "source": "midi-config-v2 MIDI-CONFIG-074 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-075": {
+   "source": "midi-config-v2 MIDI-CONFIG-075 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-076": {
+   "source": "midi-config-v2 MIDI-CONFIG-076 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-077": {
+   "source": "midi-config-v2 MIDI-CONFIG-077 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-078": {
+   "source": "midi-config-v2 MIDI-CONFIG-078 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-079": {
+   "source": "midi-config-v2 MIDI-CONFIG-079 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-080": {
+   "source": "midi-config-v2 MIDI-CONFIG-080 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-081": {
+   "source": "midi-config-v2 MIDI-CONFIG-081 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-082": {
+   "source": "midi-config-v2 MIDI-CONFIG-082 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-083": {
+   "source": "midi-config-v2 MIDI-CONFIG-083 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-084": {
+   "source": "midi-config-v2 MIDI-CONFIG-084 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-085": {
+   "source": "midi-config-v2 MIDI-CONFIG-085 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-086": {
+   "source": "midi-config-v2 MIDI-CONFIG-086 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-087": {
+   "source": "midi-config-v2 MIDI-CONFIG-087 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-088": {
+   "source": "midi-config-v2 MIDI-CONFIG-088 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-089": {
+   "source": "midi-config-v2 MIDI-CONFIG-089 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-090": {
+   "source": "midi-config-v2 MIDI-CONFIG-090 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-091": {
+   "source": "midi-config-v2 MIDI-CONFIG-091 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-092": {
+   "source": "midi-config-v2 MIDI-CONFIG-092 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-093": {
+   "source": "midi-config-v2 MIDI-CONFIG-093 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-094": {
+   "source": "midi-config-v2 MIDI-CONFIG-094 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-095": {
+   "source": "midi-config-v2 MIDI-CONFIG-095 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-096": {
+   "source": "midi-config-v2 MIDI-CONFIG-096 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-097": {
+   "source": "midi-config-v2 MIDI-CONFIG-097 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-098": {
+   "source": "midi-config-v2 MIDI-CONFIG-098 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-099": {
+   "source": "midi-config-v2 MIDI-CONFIG-099 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-100": {
+   "source": "midi-config-v2 MIDI-CONFIG-100 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-101": {
+   "source": "midi-config-v2 MIDI-CONFIG-101 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-102": {
+   "source": "midi-config-v2 MIDI-CONFIG-102 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-103": {
+   "source": "midi-config-v2 MIDI-CONFIG-103 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-104": {
+   "source": "midi-config-v2 MIDI-CONFIG-104 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-105": {
+   "source": "midi-config-v2 MIDI-CONFIG-105 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-106": {
+   "source": "midi-config-v2 MIDI-CONFIG-106 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-107": {
+   "source": "midi-config-v2 MIDI-CONFIG-107 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-108": {
+   "source": "midi-config-v2 MIDI-CONFIG-108 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-109": {
+   "source": "midi-config-v2 MIDI-CONFIG-109 (record and fixture unchanged)",
+   "evidence": [
+    "v2"
+   ]
+  },
+  "MIDI-CONFIG-110": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-01 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13",
+    "E14"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "none"
+  },
+  "MIDI-CONFIG-111": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-02 (label S)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "none"
+  },
+  "MIDI-CONFIG-112": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-03 (label S)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "none"
+  },
+  "MIDI-CONFIG-113": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-04 (label S)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "none"
+  },
+  "MIDI-CONFIG-114": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-05 (label S)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "none"
+  },
+  "MIDI-CONFIG-115": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-06 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-116": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-07 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-117": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-08 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-118": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-09 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-119": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-10 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-120": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-11 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-121": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-12 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-122": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-13 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-123": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-14 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-124": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-15 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13",
+    "E14"
+   ],
+   "inferred": [
+    "I1",
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "none"
+  },
+  "MIDI-CONFIG-125": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-16 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-126": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-22 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  },
+  "MIDI-CONFIG-127": {
+   "source": "SPEC-MIDI-USER-MAPPING r3 MT-23 (label S)",
+   "evidence": [
+    "E10",
+    "E12",
+    "E13"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4"
+   ],
+   "takeover": "any"
+  }
+ },
+ "excluded_spec_cases": {
+  "MT-17": "S-cond: on/off parameter thresholds (PRB-N7-04)",
+  "MT-18": "S-cond: on/off parameter, relative (PRB-N7-04)",
+  "MT-19": "S-cond: Pick-Up arithmetic and label (PRB-N7-03)",
+  "MT-20": "S-cond: Value Scaling arithmetic and label (PRB-N7-03)",
+  "MT-21": "S-cond: Pick-Up first message without a previous value (PRB-N7-03)"
+ }
+}

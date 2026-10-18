@@ -1,0 +1,251 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "browser-index-v1",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-BROWSER-INDEX",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-UI",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-BROWSER-INDEX-001": "Content kind of a file from its lowercase extension, for the listed extensions only; listing excluded",
+  "REQ-BROWSER-INDEX-003": "Only a sidecar whose parent folder is named exactly Ableton Folder Info is read; the user-folder sidecar name in F's sidecar folder is read and describes files directly inside F",
+  "REQ-BROWSER-INDEX-004": "Folder-resource sidecar form of the fixtures; informational xmp properties ignored; a sidecar that is not well-formed gives no tags or labels",
+  "REQ-BROWSER-INDEX-005": "An entry whose filePath is exactly the name of a file directly inside F applies to that file; an entry naming nothing does not affect other entries",
+  "REQ-BROWSER-INDEX-006": "keywords entries give tags; colors entries 1 to 7 give labels, 0, 8 and empty entries are ignored; written encoding",
+  "REQ-BROWSER-INDEX-007": "User-folder sidecar name, location and data model of a new sidecar for an item directly in F; override file names for the Core Library and built-in content; timing and the override folder excluded",
+  "REQ-BROWSER-INDEX-008": "A folder copied with its sidecar folder keeps its tags when added on another installation"
+ },
+ "unreleased_requirements": [
+  "REQ-BROWSER-INDEX-002",
+  "REQ-BROWSER-INDEX-009",
+  "REQ-BROWSER-INDEX-010",
+  "REQ-BROWSER-INDEX-011",
+  "REQ-BROWSER-INDEX-012",
+  "REQ-BROWSER-INDEX-013"
+ ],
+ "compatibility_dimensions": {
+  "file-classification": "static-derived expectations; reference execution not-run; observation channel to be designed",
+  "sidecar-read": "static-derived expectations; reference execution not-run",
+  "sidecar-written": "static-derived name, location and data model; reference execution not-run; write timing excluded",
+  "ui": "excluded",
+  "index-storage": "excluded (internal)",
+  "audio": "excluded",
+  "timing": "excluded"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "extensions not in the REQ-BROWSER-INDEX-001 table, including other extensions the application recognizes; extensions with upper-case letters; names without an extension; folders, device folders and plug-ins",
+   "sidecar folders with another letter case; sidecar folders below F; files with any other name in F's sidecar folder; any other location of a sidecar; user folders inside the User Library",
+   "sidecar text in another form than REQ-BROWSER-INDEX-004 clause 1: a packet wrapper, an XML declaration, another encoding, attribute or other alternative RDF forms, carriage returns, unknown properties, document-level tags or labels, and hideKeywords, assetId or contentHash in input",
+   "a resource, format or platform other than folder, application/vnd.ableton.folder and mac",
+   "a filePath that differs from an item only in letter case, absolute paths, . or .. levels, \\ separators, or a trailing /; a filePath that contains / or names a folder; the tags and labels of items inside a subfolder of F",
+   "color entries other than exactly 1 to 7, 0, 8 or empty; keyword entries that are empty, repeated, of one level, or of four or more levels; leading or trailing spaces in any value",
+   "the tags and labels of items inside a tagged folder; more than one sidecar for the same folder",
+   "edits to items inside a subfolder of F; edits when F already has a sidecar folder; edits that leave an item with no tags and no labels; read-only volumes; a missing User Library",
+   "inputs that combine conditions this release excludes"
+  ],
+  "behavior": [
+   "whether and how files and folders are listed or offered in any browser view or category, including files without a content kind and the sidecar folder itself",
+   "how tags and color labels are presented, grouped, searched or filtered",
+   "when a sidecar is written after an edit, any batching, and what happens on quit",
+   "the name of the folder between Ableton Folder Info and the sidecars for factory and built-in content, their content, and how they are read",
+   "whether other entries of an existing sidecar are kept when it is rewritten, and whether the application rewrites a sidecar after reading it, for example without the entries that name no file",
+   "previews, changes on disk, missing or moved items, unavailable locations, unsupported or undecodable files, and the application's index (REQ-BROWSER-INDEX-002, 009 to 013, unreleased)",
+   "messages, logs and dialogs, undo, progress and timing"
+  ]
+ },
+ "fixture_origin": "independently authored minimal WAV files and sidecar texts from one template; no shipped file content or program code",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RVB-01 high: cases 016 and 017 expected tags from entries naming a file in a subfolder and a folder; the reviewer's static check shows a user folder's sidecar applies only to files directly inside the folder, by name; both cases removed, REQ-005 clause 1 and REQ-003 clause 2 narrowed, inputs excluded",
+   "RVB-02 low: an entry naming no file is never applied, and the application then treats the sidecar as changed without it; whether it rewrites the file is untraced; excluded behavior added; the no-interference assumption is now supported and removed from the assumption list",
+   "RVB-03 low: observation obligations did not say that absence from a view is not an observation; clarified, and an item not presented or offered makes the comparison inconclusive; no expectation changed",
+   "RVB-04 editorial: the factory and built-in cases now state how 'no sidecar written inside' is compared",
+   "RVB-05 editorial: payload status wording set to reviewed release; review record added; inventory re-hashed",
+   "RVB-06 info: colour entry rule re-derived from the retained evidence and the pinned build; only exactly 1 to 7, 0, 8 and empty are graded; cases 019 to 021 confirmed",
+   "RVB-07 info: written-sidecar comparison is by data model and tolerates extra item fields, empty bags, informational properties and any serialization; confirmed for cases 023 to 025",
+   "RVB-08 info: kind table, four sidecar names and evidence identity re-checked independently; all matched",
+   "RVB-09 info: remaining stated assumptions accepted with reasons; no expectation invented",
+   "RVB-10 info: fixture and sharing review; 26 authored fixture files, no shipped content; acceptable",
+   "RVB-11 info: scope rulings; kind table without a listing claim, override names, ten new cases and the exclusion in place of the two planned reference observations accepted"
+  ],
+  "disposition": "Approved with listed narrowing (RVB-01, RVB-02), only for the explicit partial clauses; 26 cases; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 26,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "d972ac38e16e033db4e0309515cb04bc4a8f58066b35e660e01202983418935e",
+   "bytes": 1530
+  },
+  {
+   "path": "README.md",
+   "sha256": "df7bf600585a1d2c76e476f4409c205a558585e7602634b047a4e8455ae67215",
+   "bytes": 1943
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "41d78b86e35679b9cd0ad5f80c12883c0bba65bd484eec146ea523a1fd31636f",
+   "bytes": 9796
+  },
+  {
+   "path": "cases.json",
+   "sha256": "bc32642a77bf5c42fb3afe66a3c4da3f7e39fe3fcb25794f3cf42f09c354da15",
+   "bytes": 22795
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-012/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "9bb7326a367b7d9da737c3b8411fcfc11729aff7bb48f4d8c3505b446b72d5eb",
+   "bytes": 704
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-012/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-013/F/Tags/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "9bb7326a367b7d9da737c3b8411fcfc11729aff7bb48f4d8c3505b446b72d5eb",
+   "bytes": 704
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-013/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-014/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "e85f0bb80753f568eee0b227d02c9034c1a28e3c1773ee64fc68934d8dbe4151",
+   "bytes": 922
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-014/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-015/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "6f16da69eb9090f71f75774056fd2fa4c76c76231bdfe773dbf77ca94c4b78da",
+   "bytes": 352
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-015/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-018/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "9edc29d57152aae65528f9a75d1a1bbb3cbec6900c9a4bae4f84897ae33f34ac",
+   "bytes": 906
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-018/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-019/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "602a246912359891992ed46e230e865fbdc47bbacf37d3ee5467da2a7a34d481",
+   "bytes": 810
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-019/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-020/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "46d1f2447c5bbb76dff4937387a1bcb7edc3a3f41cb35fc7026d0fe271bc7089",
+   "bytes": 845
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-020/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-021/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "71e8a6423800028efc135c8bfca2c1da8d56b68dcc14c448c330122ffe477648",
+   "bytes": 900
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-021/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-022/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "dcc4f7cafbfdb5bf8ffecf79cba2d33a2cbbc837b1c6f57f3e7a6f1f1a71e856",
+   "bytes": 766
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-022/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-023/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-023/expected-sidecar.xmp",
+   "sha256": "287185f75b81787204878331879f665f0e3914317b0c0657ef50136c1da7df5b",
+   "bytes": 702
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-024/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-024/expected-sidecar.xmp",
+   "sha256": "15af807a83c0ca6edb2c03bca5ae28fd13a1b99296da2c36d3e97c6b42ababb5",
+   "bytes": 685
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-025/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-025/expected-sidecar.xmp",
+   "sha256": "b4308b799e7717a160cb294c69c9c7a176aa00f6e9c7adb89d7e6d35fe37df26",
+   "bytes": 839
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-028/F/Ableton Folder Info/dc66a3fa-0fe1-5352-91cf-3ec237e9ee90.xmp",
+   "sha256": "9bb7326a367b7d9da737c3b8411fcfc11729aff7bb48f4d8c3505b446b72d5eb",
+   "bytes": 704
+  },
+  {
+   "path": "fixtures/BROWSER-INDEX-028/F/a.wav",
+   "sha256": "d7c71d5a04188668696e2557b6691dcb7de68cd9000c83f4ff7cb4ffaaae7823",
+   "bytes": 60
+  },
+  {
+   "path": "spec.md",
+   "sha256": "395214e8c70473928e5b9dd10dcb02a4604c2a29b9a0b3462cc980c7e22641fa",
+   "bytes": 20835
+  }
+ ]
+}

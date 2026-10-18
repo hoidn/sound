@@ -1,0 +1,386 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "clip-launch-v1",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-CLIP-LAUNCH",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-SESSION",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-CLIP-LAUNCH-001": "Launch elements of session MIDI and audio clips and arrangement MIDI clips: location, types, reading rules, refusal of refused text and of a repeated launch element, saved form, relative order, and read-back value for Booleans and numbers of at most six significant digits. Saved text not released",
+  "REQ-CLIP-LAUNCH-002": "Follow-action compound: ten children, types, reading rules; saved with exactly these children in order. Scene compound only as converted by REQ-014",
+  "REQ-CLIP-LAUNCH-003": "GlobalQuantisation and AutoQuantisation location, integer type and reading rule. Saved form not released",
+  "REQ-CLIP-LAUNCH-004": "Launch mode values 0-3 and their labels",
+  "REQ-CLIP-LAUNCH-005": "Clip launch quantization 0-14 and global quantization 0-13 with labels; clip value k>=1 denotes the setting of global value k-1, clip value 0 the set's global setting; use at launch excluded",
+  "REQ-CLIP-LAUNCH-006": "Record quantization values 0-8 and their labels; effect on recording excluded",
+  "REQ-CLIP-LAUNCH-007": "Follow-action values 0-9 and their labels",
+  "REQ-CLIP-LAUNCH-009": "Initial clip and follow-action values for absent Legato, VelocityAmount, FollowAction or follow-action children; written on save",
+  "REQ-CLIP-LAUNCH-011": "Out-of-range launch mode, launch quantization or follow-action values of at most nine digits do not refuse the document; nothing else",
+  "REQ-CLIP-LAUNCH-012": "Follow-chance rescaling on opening for chances 0-100 in binary32 arithmetic with halves away from zero",
+  "REQ-CLIP-LAUNCH-013": "Follow-time rounding on opening to the nearest multiple of 1/3,843,840, halves away from zero, for values 0 to below 1,000,000 not near a half-multiple",
+  "REQ-CLIP-LAUNCH-014": "Conversion steps 406, 417 and 421 for clips of 11.0_405 documents and 12203 for scenes of 12.0_12117 documents, applied before reading; no conversion at 12.0_12402; other conversion steps excluded"
+ },
+ "unreleased_requirements": [
+  "REQ-CLIP-LAUNCH-008",
+  "REQ-CLIP-LAUNCH-010",
+  "REQ-CLIP-LAUNCH-015",
+  "REQ-CLIP-LAUNCH-016",
+  "REQ-CLIP-LAUNCH-017",
+  "REQ-CLIP-LAUNCH-018",
+  "REQ-CLIP-LAUNCH-019",
+  "REQ-CLIP-LAUNCH-020",
+  "REQ-CLIP-LAUNCH-021",
+  "REQ-CLIP-LAUNCH-022",
+  "REQ-CLIP-LAUNCH-023"
+ ],
+ "compatibility_dimensions": {
+  "project-files": "static-derived expectations for the listed document values; reference execution not-run",
+  "behavior": "launching excluded: timing, grid placement, launch modes, legato, velocity, follow actions",
+  "ui": "excluded (labels define meaning; displayed text not graded)",
+  "audio": "excluded",
+  "timing": "excluded"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "a clip without LaunchMode or LaunchQuantisation; a LiveSet without GlobalQuantisation or AutoQuantisation",
+   "an item of the item table without a Value attribute, with other attributes or with child elements",
+   "GlobalQuantisation outside 0-13 and AutoQuantisation outside 0-8",
+   "VelocityAmount outside 0-1; chances negative or above 100; jump indices outside -1 to 8,388,608; LoopIterations outside 1 to 1,073,741,823; FollowTime negative, 1,000,000 or more, or within 1e-9 of a half-multiple of 1/3,843,840; non-finite values and negative zero",
+   "number text starting (after spaces and sign) with 0x, inf or nan; Invalid; text starting with #; leading whitespace other than U+0020",
+   "integer text with spaces both before and after the digits, a plus sign with trailing spaces, any minus sign, or ten or more digits within 63 characters",
+   "repeated or unknown children of FollowAction; unknown children or attributes of a clip element",
+   "clips other than at the named locations, including take lanes and the groove pool; more than one clip at a named location",
+   "in 11.0_405 documents: a clip that already has FollowAction, a clip without FollowActionA, FollowActionB, FollowChanceA or FollowChanceB, or with FollowActionEnabled or IsLinked; scenes",
+   "in 12.0_12117 documents: a scene FollowAction without all ten children",
+   "other envelopes, format versions, compressed containers and document kinds",
+   "documents that break more than one refusal rule"
+  ],
+  "behavior": [
+   "launching: start time, the grid length of a quantization value, grid placement, the time signature a launch uses, launches without a grid or with the transport stopped, Gate, Toggle and Repeat, Legato, velocity scaling, follow-action timing, loop iterations, jump indices and chance selection",
+   "displayed text, including where each follow-action label set is shown",
+   "value held, displayed or saved for an out-of-range launch mode, launch quantization or follow-action value",
+   "text written for numbers and Booleans, and exact read-back of a written number with more than six significant digits; layout; save container and envelope; saved form of set-level values and of scenes",
+   "initial launch mode and quantization of a new clip and the related preferences; set initial values; File > New; clip creation paths",
+   "conversion steps other than 406, 417, 421 and 12203; the conversion error for a clip that has both forms; documents older than 11.0_405",
+   "scripting interface names, properties and value assignment",
+   "effect of record quantization; scene follow actions other than their conversion; the key and MIDI assignment of the global quantization",
+   "editing after opening, undo, refusal text and presentation"
+  ]
+ },
+ "fixture_origin": "independently authored minimal XML documents from a template written for this release; no shipped file content",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RVC-01 medium: REQ-015 grid length has no observable outside launching, which is excluded and open; removed from the release, now unreleased",
+   "RVC-02 low: REQ-001 clause 6 claimed exact read-back of every written number although saved number text is unknown; narrowed to Booleans and numbers of at most six significant digits; no case affected",
+   "RVC-03 low: assumption 'present value kept as read, without adjustment to a range' implied unchecked storage of out-of-range floats; narrowed to values inside the precondition ranges; no case affected",
+   "RVC-04 low: REQ-014 clause 2 read as an exhaustive list of conversion steps; other steps apply to older documents; reworded, reviewer confirmed none changes an item of this release",
+   "RVC-05 low: REQ-005 said clip value 0 'uses' the global setting, a launch-behavior phrase; reworded as meaning; use at launch excluded",
+   "RVC-06 editorial: spec and manifest exclusions aligned (item shape, non-finite values, several clips, old clip-level FollowActionEnabled or IsLinked, loop iterations and jump indices at launch, global-quantization key assignment)",
+   "RVC-07 editorial: payload status wording set to reviewed release; review record added and linked",
+   "RVC-08 info: scene conversion step 12203 confirmed by the reviewer's own static check of the pinned build; scene cases stay graded",
+   "RVC-09 info: follow-time rounding re-read in the pinned build; nearest multiple, halves away from zero, confirmed",
+   "RVC-10 info: REQ-011 message prefixes not observable as established and outside scope; not carried; draft spec must be corrected",
+   "RVC-11 info: assumptions on absent and present values, corrections for every clip, conversion order and kept chance values accepted as stated; out-of-range chances carry no expectation",
+   "RVC-12 info: evidence identity re-hashed on 2026-10-18; run manifest, its 87 files and the program image matched",
+   "RVC-13 info: open author findings ruled on (clip with both forms excluded, scene corrections ungraded, authored 11.0_405 fixtures accepted); coverage proposals for a later revision"
+  ],
+  "disposition": "Approved with listed narrowing (RVC-01 to RVC-05), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 50,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "b6db2b8e2ad7a67389e77ff90b27976edd74e4ae09fc6330ad0f71daaeb9457c",
+   "bytes": 1365
+  },
+  {
+   "path": "README.md",
+   "sha256": "fcad8248cc730cff1b568b50704c2c83fbb98cfe2dff1f9c536a680ddc2d8402",
+   "bytes": 1503
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "1e3c09ba29cf94d1c644e75814e8d0dbe72b0309981af2e536b553c7b3317942",
+   "bytes": 11425
+  },
+  {
+   "path": "cases.json",
+   "sha256": "2c4cc6546d5caaf1aaac77175e2993bfc2963fcbb2cb8bf3724d9559227ca289",
+   "bytes": 66040
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-001.xml",
+   "sha256": "9a6cdf92f3f94790a44c1680462e582504e02306c6f7fd450fede7a51028d450",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-002.xml",
+   "sha256": "d42eabe049f361bc8364f3a03c81505d57aa5bad53e3a7ab4f63ca6fa35237af",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-003.xml",
+   "sha256": "0c8e204f8f866d01d129fe2505cf4bd1cd2a7388d91498fe8c9cbd98b02ee76f",
+   "bytes": 1489
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-004.xml",
+   "sha256": "4cacbfbc5334bbd6efecd581ba4d305199d6124640f9e17dfa107b86e390a261",
+   "bytes": 1492
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-005.xml",
+   "sha256": "fb935ae06eefba6ea0fb46cbc1b92db38fce208138661e595d4472be03c0656f",
+   "bytes": 1408
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-006.xml",
+   "sha256": "94dff6d7fe7cace4cf3d2fe7588f72817e7a67d4ace73074f0888e50064322f7",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-007.xml",
+   "sha256": "b4813890789c71afb1017673937d5f2eb477af7f2c1b95d7ba7e3fbfc89c2ecb",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-008.xml",
+   "sha256": "b804f63651d4699af173c56177d29dccc50ac9ef99e631896bcf3d6598a47279",
+   "bytes": 1489
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-009.xml",
+   "sha256": "c7ccc42595eaea9ac999caccb0d44ee9511962c954b53e4aa68e7393e9a3f539",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-010.xml",
+   "sha256": "4eda333305aaab87609bfd6ba2014abf52022129a13d527b05e48053431c3e26",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-011.xml",
+   "sha256": "02e92544c8d7c1b16993bdb867ee27119c66d7b28367088363b8a8394fe30dc5",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-012.xml",
+   "sha256": "6f48b16cae140375a17e34dca901fce01854eea96959275ccb1b3f924d283e6b",
+   "bytes": 1489
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-013.xml",
+   "sha256": "17cbafde20fabf97d5b5394e1c070d59256c4c9978f404a5adb3e6463172323d",
+   "bytes": 1484
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-014.xml",
+   "sha256": "7d405e67a1ba92423e04387688dcf544aabc1a7c35c1ed794901b585bf7ba84e",
+   "bytes": 1490
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-015.xml",
+   "sha256": "98b2e8ddf0596124bdf9e5265943d648670a2ea173b50bc25420e4afd75a66c9",
+   "bytes": 1490
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-016.xml",
+   "sha256": "31996861937174d79a193cea8e0d0280fe43ae4fd4eeaca34258d5a60a6eb0f1",
+   "bytes": 1493
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-017.xml",
+   "sha256": "c25f47c91605664f85cee57b4bc7ccedcb35c4d86ee1a7662e9d6be2a4ae3450",
+   "bytes": 1487
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-018.xml",
+   "sha256": "290fcfda7487198ba70b84101c196ee80434292ad87c22be9b546c8d3e54c413",
+   "bytes": 1490
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-019.xml",
+   "sha256": "98dbafdf1691054e82851bd37d9545f3e348c2f1a4f04ae27c50b6340e490cad",
+   "bytes": 1535
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-020.xml",
+   "sha256": "660e5aade3a5bdca0b7d9d84545c6f4103bccca071ba5cdd60cf12ddb0440685",
+   "bytes": 1490
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-021.xml",
+   "sha256": "6bac28b6ab06bb284c0fb9a9fecaa70056bd4ed0d82ae98589f53408da5ba40c",
+   "bytes": 1490
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-022.xml",
+   "sha256": "4d79edca0e3664d2cad744f9b0957a8614fce2c70c2ce4f3b3c315f3bfa23776",
+   "bytes": 1486
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-023.xml",
+   "sha256": "d6ecae72981b5a3f499f00871a7eb38d7dcc61f54bca7ef40ee04960b7dbb67d",
+   "bytes": 793
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-024.xml",
+   "sha256": "af1ab85b4b6a002236960c8f42893cda2ef7366680958368f95b4da8d51937dd",
+   "bytes": 1439
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-025.xml",
+   "sha256": "81ed64cd03bf06a192a8266e326b6c8450cc4154da10edc258aff0a393c82b04",
+   "bytes": 1323
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-026.xml",
+   "sha256": "5dcfe655c3862cf8d23b7133c994778da00839fb38f3528dc50c8f0ee5dd3601",
+   "bytes": 1489
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-027.xml",
+   "sha256": "f27afbc0cd3ac1b067fcae1d780255efb9218a100e41f74d2fc0ffb7e8d1feea",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-028.xml",
+   "sha256": "8dad24428a37156267809036de04de2aa27d9bc714d615ffd4c21df51a0b93b1",
+   "bytes": 1489
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-029.xml",
+   "sha256": "15b00229c9ed25da0dceb7523134a55081fb9a972bda3a7248123a54d61134e5",
+   "bytes": 1488
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-030.xml",
+   "sha256": "93fbdf8147b8b3ff7e0d6ef783608f02c71a9d9e9538a50a1c89cd25a2c0ad1a",
+   "bytes": 1485
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-031.xml",
+   "sha256": "5cdb199efe0e655a5749a1f588d1803072ee61c5dac6f2fca72fd790fed6e99a",
+   "bytes": 1486
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-032.xml",
+   "sha256": "ecb1c87e79d475a54eb0f5c2be02572f764181af52e5bfa7315522093fd43ec6",
+   "bytes": 1486
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-033.xml",
+   "sha256": "4934152d15711a889dd50c1d5e686ed42da23a0ef17154dba42cb7906633509d",
+   "bytes": 1487
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-034.xml",
+   "sha256": "6ba438fbafedfb24728c234f0515c99b480903e8ea7eee009d64074ffe75556a",
+   "bytes": 1492
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-035.xml",
+   "sha256": "9f11033bb00f3729e2bdebe7d9e627857ec6508592b8188f09e9d68cfd0c225c",
+   "bytes": 1487
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-036.xml",
+   "sha256": "04003af23edf49f7daec67d5512056ae8b9a1ae6d0ab4ea2d6fb978bd479c381",
+   "bytes": 1435
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-037.xml",
+   "sha256": "da521e4345d79ea5aa72001615f1d60607fb6b224f25f9c2c594742b2d7aed91",
+   "bytes": 1496
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-038.xml",
+   "sha256": "4d2661a6422e50b15ee7a09d467a551a7954851e35b301486e3b87bfddc1e50b",
+   "bytes": 1496
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-039.xml",
+   "sha256": "af0f1ac05b3475399bfa278c09b1872052d98ae30ff7e35ae816d359a2e28690",
+   "bytes": 1491
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-040.xml",
+   "sha256": "33a136b27154befacbfe7e9d2a54d7fd4e933a335b8893c59e18859367d09cc7",
+   "bytes": 1496
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-041.xml",
+   "sha256": "be0a9653ad22edc7f0280680869dfeed2bbc3c0fb60d5ef796de3254346cc872",
+   "bytes": 1136
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-042.xml",
+   "sha256": "942d97828dcf0878348b8ad6d01465f106d254a998936230236b918434de03d7",
+   "bytes": 1140
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-043.xml",
+   "sha256": "94b790bf0850fbdc20b10c1422d163ff7f0e28b9b01e75d51b780514bf8bf590",
+   "bytes": 1142
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-044.xml",
+   "sha256": "ef868217fcd63f09198baa767f355144209359f8bb2e2aded6d05c3a95614c6b",
+   "bytes": 1136
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-045.xml",
+   "sha256": "e560e3009a07d5eaccc6530efbe325b639f4fbf036ec5e3fc87ddb52335440e0",
+   "bytes": 1089
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-046.xml",
+   "sha256": "cc5315d4644f839239ff5fbf1a67b34ad2914bf37dffb0c7db6670bb503ae26f",
+   "bytes": 1981
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-047.xml",
+   "sha256": "dc2017d80e21c593ea0da226878f409aee2cbba2889d4b19d6dd1dc81a9c0fcd",
+   "bytes": 1980
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-048.xml",
+   "sha256": "1e70de4973046c6a8ba4dfbb561c337ab9ffd8f1bfcb5c4f7d6cd107cb5327c2",
+   "bytes": 1538
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-049.xml",
+   "sha256": "8db1913ee3647f0a36978b0025a7022d0a26f97e0a8b34f69a9a7b0768cfef2b",
+   "bytes": 1979
+  },
+  {
+   "path": "fixtures/CLIP-LAUNCH-050.xml",
+   "sha256": "8ce5ec8f147167eb471254d7b33d7a2ae13f1228320040e3ccbcb1cbf4a14789",
+   "bytes": 1981
+  },
+  {
+   "path": "spec.md",
+   "sha256": "f8c916129e5f0f96abd0590a818d8fabea63c8b99d56fd50eb9ba08d3143cbe0",
+   "bytes": 25791
+  }
+ ]
+}

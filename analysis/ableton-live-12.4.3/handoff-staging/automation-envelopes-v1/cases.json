@@ -1,0 +1,607 @@
+{
+ "schema": "automation-envelopes-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "automation-envelopes-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored minimal documents; no shipped file copied",
+ "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+ "representation": {
+  "action": "open or open-save",
+  "outcome": "opens or refused",
+  "saved": "open-save only: per listed target, the saved envelope's events in order with exact attribute text other than Id",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "AUTOMATION-ENVELOPES-001",
+   "purpose": "Pan envelope with three events at the lower bound, 4 and 8; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-001",
+    "REQ-AUTOMATION-ENVELOPES-002",
+    "REQ-AUTOMATION-ENVELOPES-003",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-001.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "Pan",
+       "events": [
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "0"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "0"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "8",
+          "Value": "1"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-002",
+   "purpose": "Pan envelope with a single event at the lower bound",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-005",
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-002.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-003",
+   "purpose": "Pan envelope whose only event is at 4",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-003.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-004",
+   "purpose": "Pan envelope with an empty event list",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-004.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-005",
+   "purpose": "Pan envelope whose first event is at 0",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-005.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-006",
+   "purpose": "Pan envelope whose first event Time is written \"-0\"",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-006.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-007",
+   "purpose": "Pan envelope whose first event Time is written \"-6.3072e7\", the lower bound in exponent form",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-007.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-008",
+   "purpose": "Pan envelope whose first event is at -63071999, one beat after the lower bound",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-008.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-009",
+   "purpose": "Pan envelope with a later event at the negative time -10",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-006",
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-009.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-010",
+   "purpose": "Clip envelope on MIDI controller target 6 with events at the lower bound and 0",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-001",
+    "REQ-AUTOMATION-ENVELOPES-002",
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-010.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-011",
+   "purpose": "Clip envelope whose only event is at 4",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-011.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-012",
+   "purpose": "Clip envelope with an empty event list",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-007"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-012.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-013",
+   "purpose": "FloatEvent Value \"abc\"",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-013.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-014",
+   "purpose": "BoolEvent Value \"TRUE\" on a Speaker envelope",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-003",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-014.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-015",
+   "purpose": "EnumEvent Value \"2.0\" on a CrossFadeState envelope",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-003",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-015.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-016",
+   "purpose": "Pan events with Value 0.3 and a second Time of 0.3; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-016.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "Pan",
+       "events": [
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "0.3000000119"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "0.299999999999999989",
+          "Value": "0.3000000119"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-017",
+   "purpose": "Curve controls 0.5, 0, 0.5, 0 on the event at 0; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-008",
+    "REQ-AUTOMATION-ENVELOPES-009"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-017.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "Pan",
+       "events": [
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "-1"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "0",
+          "Value": "-1",
+          "CurveControl1Y": "0",
+          "CurveControl2Y": "0"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "1"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-018",
+   "purpose": "Curve controls 0.8, 0, 0.2, 1 on the event at 0; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-008",
+    "REQ-AUTOMATION-ENVELOPES-009",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-018.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "Pan",
+       "events": [
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "-1"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "0",
+          "Value": "-1",
+          "CurveControl1X": "0.800000000000000044",
+          "CurveControl1Y": "0",
+          "CurveControl2X": "0.200000000000000011",
+          "CurveControl2Y": "1"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "1"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-019",
+   "purpose": "Only CurveControl1Y 0 and CurveControl2Y 0 present on the event at 0; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-008",
+    "REQ-AUTOMATION-ENVELOPES-009"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-019.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "Pan",
+       "events": [
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "-1"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "0",
+          "Value": "-1",
+          "CurveControl1Y": "0",
+          "CurveControl2Y": "0"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "1"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-020",
+   "purpose": "All four curve controls 0.5 on the event at 0; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-008",
+    "REQ-AUTOMATION-ENVELOPES-009"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-020.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "Pan",
+       "events": [
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "-1"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "0",
+          "Value": "-1"
+         }
+        },
+        {
+         "element": "FloatEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "1"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  },
+  {
+   "id": "AUTOMATION-ENVELOPES-021",
+   "purpose": "CrossFadeState envelope listed before the Speaker envelope; open, then save",
+   "requirements": [
+    "REQ-AUTOMATION-ENVELOPES-002",
+    "REQ-AUTOMATION-ENVELOPES-003",
+    "REQ-AUTOMATION-ENVELOPES-012"
+   ],
+   "input": "fixtures/AUTOMATION-ENVELOPES-021.xml",
+   "action": "open-save",
+   "expected": {
+    "outcome": "opens",
+    "saved": {
+     "envelopes": [
+      {
+       "target": "CrossFadeState",
+       "events": [
+        {
+         "element": "EnumEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "0"
+         }
+        },
+        {
+         "element": "EnumEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "0"
+         }
+        },
+        {
+         "element": "EnumEvent",
+         "attributes": {
+          "Time": "8",
+          "Value": "2"
+         }
+        }
+       ]
+      },
+      {
+       "target": "Speaker",
+       "events": [
+        {
+         "element": "BoolEvent",
+         "attributes": {
+          "Time": "-63072000",
+          "Value": "false"
+         }
+        },
+        {
+         "element": "BoolEvent",
+         "attributes": {
+          "Time": "4",
+          "Value": "false"
+         }
+        },
+        {
+         "element": "BoolEvent",
+         "attributes": {
+          "Time": "8",
+          "Value": "true"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; per listed target: one saved envelope naming it, events in order, attribute text exact, Id not compared"
+  }
+ ]
+}

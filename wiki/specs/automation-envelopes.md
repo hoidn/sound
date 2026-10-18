@@ -3,7 +3,7 @@ id: SPEC-AUTOMATION-ENVELOPES
 type: spec
 status: draft
 revision: 1
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -527,7 +527,9 @@ Not carried from the research candidates:
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from S6 (AE-C01 to AE-C17 except C09, C12 and C16): 13 requirements (1 D and S, 1 S only, 10 with U parts, 1 U only); 31 unexecuted cases, 10 unresolved and 1 partly unresolved; dangling targets and evaluation before the first event excluded (Q-020) |
 
-Not reviewed and not released. A first handoff could carry REQ-008 and 012, the D
+Before the 2026-10-18 review, a first handoff could carry REQ-008 and 012, the D
 and S clauses of REQ-001 to 007 (002 with its exclusion), REQ-009's rule with cases
 AEN-012 and 013, and the S clauses of 010 and 011 with the A2 cases (AEN-015, 019,
 021, 023, 025 and AEN-018 at t = 4).
+
+Released 2026-10-18: [automation-envelopes-v1](../../handoff/automation-envelopes-v1/README.md), 21 cases, approved with narrowing by a separate review agent (partial REQ-001 to 003, 005 to 009, 012 only; 004, 010, 011, 013 unreleased). The review findings to apply in the next revision are on the [handoff plan](automation-envelopes-handoff-plan.md#review-outcome). This revision's text is unchanged.

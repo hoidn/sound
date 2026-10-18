@@ -1,0 +1,87 @@
+bundled-device-parameters-v1 handoff review, 2026-10-18 (analyst side; never shipped)
+Reviewer: separate review agent (Claude Opus 5.5). Payload record: ../../bundled-device-parameters-v1/REVIEW.md
+
+Files here
+- review_check.py      reviewer's own reader (no author script imported): tables vs all shipped documents,
+                       whole-number marks vs N5/N6 conversions.tsv, draft-error fields, fixture form and
+                       deviations, every expectation re-derived, originality, deny-list scan.
+- review-check.json    full output of review_check.py on the final export copy
+- review-summary.txt   printed summary of the same run
+- export-verify.json   author's `build_bdp.py verify` on the export copy (scratchpad, outside the checkout)
+
+1. Evidence identity (re-hashed 2026-10-18)
+- derived/Live.arm64 sha256 3a99ceea...d1c383cfad: match.
+- H4 h4-devices-v1 manifest outputs: 27 checked, 0 mismatches. N5 n5-device-mapping-v1 files: 88, 0 mismatches.
+  N6 n6-device-tables-v1 files: 77, 0 mismatches. Author seal re-hash of its 8 EVIDENCE inputs: all match.
+- Draft manifest before review: a5783931f7ef2c34a8388597eda745d94bfff3c5935356c62c0d8e3df366c8a9 (as the plan
+  records); its 86 hashes matched the staged files.
+
+2. Shipped documents (review_check.py, App-Resources from the H4 manifest)
+- 8,010 documents scanned, 599 hold one of the seven devices; 268 .adv with the device as root's only child.
+- 20 shared members (intersection over all 7 devices) form a prefix in every occurrence.
+- Every .adv: members after the prefix == table rows in order; shape, LomId 0, target Id 0, LockEnvelope 0;
+  stored range == table domain (0 differences); Bool text true/false; no Manual outside the domain; whole-number
+  parameters hold integer text; plain values == table. Most frequent unmapped range == domain for every row.
+- Draft REQ-011 claims: Collision PitchBendRangeRelativePosition 0 and SyncRateRelative 0 occurrences in any doc.
+- Corpus side chain: all 36 occurrences carry 7 fields: Target MidiIn/None, UpperDisplayString No Output,
+  LowerDisplayString "", MpeSettings ZoneType 0, FirstNoteChannel 1, LastNoteChannel 15,
+  MpePitchBendUsesTuning true.
+- 22 of 59 Analog/Tension/Collision Enum parameters never store their upper bound (H4 param_table.tsv
+  manual_max < range max) -> RVB-06.
+
+3. Static re-derivation (decompiled corpus /var/tmp/sound-analysis/corpus, read 2026-10-18)
+- Amp FUN_1030b4934: labels Clean..Bass (7) -> AmpType; Bass..Volume via FUN_103197a6c: ALinear converter
+  FUN_101575868(0, 10.0, ...), internal 0..1 (FUN_1026f0bcc(0, 1.0, default)), default 5.0 (Volume 9.0).
+  DryWet via FUN_103197bf8: converter (0, 1.0), FUN_1026f0b58(0, 1.0, 1.0) -> 0..1 (also Cabinet line 182).
+- Cabinet FUN_1030c9c90: "1x12".."4x10 Bass" (5) CabinetType; "Near On-Axis","Near Off-Axis","Far" (3);
+  MicrophoneTypeSwitch: FUN_102a43394(&out, "Dynamic", "Condenser") -> FUN_10143bab0 stores first text at +0x18,
+  second at +0x20; vtable 0x106670c30 slot 5 FUN_10143bb10: value != 0 -> +0x18 text; slot 7 FUN_10143bb3c:
+  +0x20 text -> 0.0, +0x18 text -> 1.0. So true = "Dynamic", false = "Condenser".
+  Convention at the other FUN_102a43394 call sites: ("On","Off") x4, ("Inverted","Normal"), ("24 dB","12 dB"),
+  ("Log","Lin"), ("+","-"), ("Peak","RMS"), ("Earth","Space"), ("Hard","Soft"): first = true.
+  Shipped "Racks/Audio Effect Racks/Amp Simulation/Cabinet Mic Mixer.adg": macros mapped to the switch are
+  named "Con/Dyn" (low/first = Con = false). -> RVB-01.
+- Electric FUN_1030e9578: "Voices" list DAT_107027308 default 0x1e (excluded); "R","W" PickupModel;
+  KeyboardTranspose "Semitone" FUN_1026f0b58(0, 24.0, 12.0) with FUN_101577e1c(0, 24.0) legacy-int;
+  PerNotePitchBendRange (0, 48.0, 0); KeyboardStretch via FUN_103192720 -> FUN_103197830: (0, 1.0), default 0.5.
+- Corpus FUN_1030e277c: "Beam".."Tube" (7) Resonance Type; "Last","Low" MIDI Mode; "Eco","Low","Med","High"
+  Resonator Quality default 2; Transpose FUN_1026f0b58(-48, 48, 0) + FUN_101577e1c(-48, 48);
+  FineTranspose (-50, 50, 0); PitchBendRange (0, 24, 5.0).
+- Analog FUN_1031a3acc: Octave FUN_1026f0b58(-3.0, 3.0, 0) + FUN_101577e1c(-3, 3).
+- Tension FUN_103189a7c: PitchBendRange FUN_1026f0b58(0, 12.0, 2.0).
+- Collision FUN_1030d1d80: Noise Freq < Vel FUN_101575868(-8, 8) / FUN_1026f0b58(-8.0, 8.0, 0);
+  FUN_1030ccacc: Lfo Offset (Phase) (0, 360.0).
+- Value text reader FUN_10152bfb8: int node -> FUN_1002fd908; bool node -> FUN_10152bf4c compares;
+  float node -> _strtod then (float); length-7 and length-9 special forms (excluded in the payload).
+
+4. Expectations (review_check.py, own restatement of the payload rules)
+- Before narrowing: all 82 outcomes and every value agreed; the only difference was the MicrophoneTypeSwitch
+  label in cases 004, 070-074 against the reading in 3. Position keys judged: 013-015 (6 each), 019-021 (3 each),
+  062 (3) = 30 entries.
+- After narrowing (final export copy): 0 errors, 0 cases without a review expectation, no position key judged,
+  0 duplicate fixtures. Bound cases: every judged value equals its bound (0 mismatches).
+- Fixture diffs against the mid fixture of the same device: each non-complete case differs exactly as its
+  purpose states (1-line Manual change, duplicated element/group/Manual, repeated attribute, Foo insertion).
+- Originality: max share of equal parameter values vs any shipped .adv of the device: 0.415 (Analog bounds)
+  for the five large devices; Amp 0.444, Cabinet 0.8 (all-lower bounds).
+
+5. Changes made in staging (build_bdp.py, cases.py, spec/README/AGENTS prose; REVIEW.md added)
+- build_bdp.py: LABELS without MicrophoneTypeSwitch; POSITION set -> table note "position" and state keys
+  filtered; cases status released-reviewed.
+- cases.py: manifest scopes 006/014, behavior exclusions, release_status released, release_date 2026-10-18,
+  review block (RVB-01..09).
+- spec.md: status, "seven parameters", REQ-006 clause 2 exception, REQ-014 list and exclusion, REQ-015
+  exclusion, comparison obligation insertion point, excluded behavior. README/AGENTS status wording.
+- Rebuilt and resealed: 82 cases; fixtures 070, 072, 074 changed (switch now at its mid value); all others
+  byte-identical. Author seal: 0 case problems, 0 probe failures, 0 recheck failures, 0 deny hits.
+
+6. Final package
+- 87 payload files + manifest; manifest SHA-256 02927f0ec9ca68a7810f863a264c3d6de3607730d06c2b867a1e0369618b4f8e.
+- Export copy (scratchpad): inventory equal, 0 hash/size mismatches, 13 Markdown links all resolve inside the
+  package, all case inputs present, no symlinks; author verify agrees; copy byte-identical to staging.
+
+7. For the spec author (draft revision 2)
+- REQ-014: MicrophoneTypeSwitch is true = Dynamic, false = Condenser (section 3); the N5 page's Cabinet
+  default reading "Dynamic" for the false default follows the same error.
+- REQ-006 S: Amp and Cabinet DryWet ranges are traced (FUN_103197bf8, 0..1).
+- Carry F1-F8 as the plan lists; F1/F2 confirmed by section 2.

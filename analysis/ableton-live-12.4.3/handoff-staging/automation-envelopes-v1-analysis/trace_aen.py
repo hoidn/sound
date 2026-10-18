@@ -1,0 +1,84 @@
+"""Analyst-only traceability tables for automation-envelopes-v1 (never shipped).
+
+Release case -> SPEC-AUTOMATION-ENVELOPES r1 case or clause, evidence locators and inferred links.
+build_aen.py seal writes them to traceability.json.
+"""
+
+# Analyst-only traceability: release case -> SPEC-AUTOMATION-ENVELOPES r1 case, evidence keys, inferred links.
+R = "analysis/ableton-live-12.4.3/r2/s6-automation-v1/"
+N1 = "analysis/ableton-live-12.4.3/r2/n1-transport-state-v1/"
+EV = {
+    "containers": R + "schema-survey.json segments, holder_fields; documents-survey.json containers, transform_state",
+    "targets": R + "documents-survey.json target_resolution, target_same_track, duplicate_target_ids, "
+               "next_pointee_id_vs_max_target, target_lockenvelope; results/s6-0003/functions/0x101535e0c (lookup by Id)",
+    "classes": R + "documents-survey.json event_tag_vs_target_kind, bool_tokens, enum_value_is_int, minmax; notes.md "
+               "pre-round registries (AFloatEvent 0x1027782ec, event base 0x1024deaf8)",
+    "ids": R + "documents-survey.json event_id_present, event_id_unique, event_ids_increasing_with_order; "
+           "results/s6-0002/functions/0x102565974, 0x102565a48 (search by time over document order)",
+    "leading": R + "documents-survey.json first_time, low_elsewhere, multi_event_low_value_equals_next, one_event_params",
+    "order": R + "documents-survey.json sorted, max_events_same_time, equal_time_adjacent_pairs, negative_non_low",
+    "validate": R + "results/s6-0001/functions/0x102561a28.json disassembly 0x102561a68 (empty), 0x102561a9c-0x102561ab0 "
+                "(fcmp L), 0x102561ae0-0x102561ae4 (fcmp #0.0); results/s6-0003/functions/0x1024050d8, 0x10245194c; "
+                "results/s6-0002/functions/0x101486fe4; results/s6-0003/functions/0x101487198",
+    "curve_save": R + "results/s6-0001/functions/0x102778828 (control == 0.5); " + N1 + "results/n1-0008 writer "
+                  "0x101486cdc (member skipped when slot +0x150 true); results/s6-0002/functions/0x1027785a0 (0.5 x4 "
+                  "defaults), 0x1027778a4 (has-curve)",
+    "curve_load": R + "results/s6-0001/functions/0x102778870, 0x1012132d8; curve-check.json",
+    "eval_float": R + "results/s6-0001/functions/0x1024095b4 (hold, event time, equal values; branch order); "
+                  "results/s6-0002/functions/0x102565974, 0x102565a48",
+    "eval_discrete": R + "results/s6-0001/functions/0x10240a84c; results/s6-0002/functions/0x102565e10",
+    "text_load": N1 + "results/n1-0006 0x10152bfb8 (bool, double, float branches), 0x1002fd908 (int); transport-state-v1 "
+                 "released REQ-003 to 006 wording; " + N1 + "results/n1-0008 loader 0x101487310",
+    "text_save": N1 + "number-format-check.txt (149,716 FloatEvent values); transport-state-v1 released REQ-011 wording",
+}
+INF = {
+    "I1": "Event-time, hold and equal-value Float results pass through the per-target conversion (0x101574bb0, "
+          "converter slot +0x28 with the provider's range fields) whose form for mixer parameters is untraced; "
+          "assumed value-preserving for in-range stored values. The curve branch clamps to the same range "
+          "(0x102404218), which suggests a range operation. Bool and Enum use 0x10240a84c without conversion.",
+    "I2": "Spec A2: with arrangement automation active and not overridden, the parameter follows E(t) after open; "
+          "Manual precedence for non-tempo parameters is untraced (REQ-013 U, proposed PRB-S6-08). Governs the "
+          "reference observation of value cases, not the defined E(t).",
+    "I3": "BoolEvent and EnumEvent Value members are Bool and Int members read by the generic loader's Bool and Int "
+          "text rules (constructors 0x102777adc false, 0x102777f3c INT_MIN; their registries were not re-read).",
+    "I4": "A Live Set open reaches the post-order validation walk (0x101486fe4 caller 0x101484108, the XML reader of "
+          "the general document reader; document kinds per caller not traced in S6).",
+    "I5": "Save writes each envelope with the generic writer and keeps the binding to its target; whether target and "
+          "event Ids are kept or renumbered is untraced. Saved PointeeId is judged against the saved target Id.",
+    "I6": "Track envelope Time is song time in beats (inferred from shipped sets), used by the reference observation.",
+}
+TRACE = {
+    1: ("AEN-003 (PointeeId judged against the saved target Id, not literal 323)", ["containers", "targets", "classes", "text_save"], ["I4", "I5"]),
+    2: ("new: REQ-007 non-empty list with one event at L (boundary)", ["validate", "leading"], ["I4"]),
+    3: ("AEN-004", ["validate"], ["I4"]),
+    4: ("AEN-005", ["validate"], ["I4"]),
+    5: ("AEN-006 (opens = loading finishes; evaluation before t0 excluded)", ["validate"], ["I4"]),
+    6: ("AEN-007", ["validate", "text_load"], ["I4"]),
+    7: ("new: REQ-007 64-bit comparison after REQ-012 text conversion, exponent form", ["validate", "text_load"], ["I4"]),
+    8: ("AEN-008", ["validate"], ["I4"]),
+    9: ("AEN-009", ["validate", "order"], ["I4"]),
+    10: ("new: positive control for AEN-010/011 (shape of B1's ClipEnvelope Id 15, re-authored)", ["containers", "targets", "validate"], ["I4"]),
+    11: ("AEN-010 (re-authored without B1)", ["validate"], ["I4"]),
+    12: ("AEN-011 (re-authored without B1)", ["validate"], ["I4"]),
+    13: ("AEN-027", ["text_load"], ["I4"]),
+    14: ("new: REQ-012 BoolEvent text rule refusal", ["text_load", "classes"], ["I3", "I4"]),
+    15: ("new: REQ-012 EnumEvent text rule refusal", ["text_load", "classes"], ["I3", "I4"]),
+    16: ("AEN-026", ["text_load", "text_save"], ["I4", "I5"]),
+    17: ("AEN-012", ["curve_save", "curve_load"], ["I4", "I5"]),
+    18: ("AEN-013", ["curve_save", "curve_load", "text_save"], ["I4", "I5"]),
+    19: ("new: REQ-008 missing control reads as 0.5", ["curve_save", "curve_load"], ["I4", "I5"]),
+    20: ("new: REQ-008 four 0.5 controls written as none", ["curve_save", "curve_load"], ["I4", "I5"]),
+    21: ("new: REQ-012 Bool and integer text on save; review: leading values equal next, listed against target order (REQ-002)", ["classes", "targets", "text_save"], ["I3", "I4", "I5"]),
+}
+NOT_RELEASED = {
+    "AEN-001": "open of a shipped demo set; document facts about shipped content cannot be shared as a fixture",
+    "AEN-002": "open of a shipped lesson set; the main track's tempo and time-signature envelopes are excluded "
+               "(REQ-005 PRB-N1-07, REQ-TRANSPORT-STATE-012); one-event acceptance kept as release case 002",
+    "AEN-014": "U (PRB-S6-05; value A1)", "AEN-016": "U (PRB-S6-04, A1)", "AEN-017": "U (PRB-S6-04, A1)",
+    "AEN-018 t = 0": "U (PRB-S6-04, A1)", "AEN-020": "U (PRB-S6-06)", "AEN-022": "U (PRB-S6-04, A1)",
+    "AEN-024": "U (PRB-S6-06)", "AEN-028": "U, Q-020 (PRB-S6-07)", "AEN-029": "U, Q-020 (PRB-S6-07)",
+    "AEN-030": "U, Q-020 (PRB-S6-03)", "AEN-031": "U, Q-020 (PRB-S6-07)",
+    "AEN-015, 018 (t = 4), 019, 021, 023, 025": "withdrawn by the 2026-10-18 handoff review (RVE-01): the value cases "
+        "rest on I1, the per-target conversion, which the kept evidence does not establish; the candidate's cases 022 "
+        "to 029, including new cases 028 and 029, were removed and REQ-004, 010 and 011 left unreleased",
+}

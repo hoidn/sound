@@ -2,7 +2,7 @@
 id: SPEC-PLUGIN-DISCOVERY
 type: spec
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 revision: 1
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -460,9 +460,11 @@ details limit the derivation:
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from the H1 scanner and N4 Live-side evidence: 16 requirements (2 D and S with U parts, 10 S with U parts, 4 U only) and 42 unexecuted cases (36 graded, 6 unresolved) |
 
-Not reviewed and not released. A handoff candidate could carry:
+Before the 2026-10-18 review, a handoff candidate could carry:
 
 - the D and S clauses of REQ-001 to 011 and 016;
 - the graded cases.
 
 REQ-012 to 015 and every U clause stay out until their probes run.
+
+Released 2026-10-18: [plugin-discovery-v1](../../handoff/plugin-discovery-v1/README.md), 35 cases, approved with clarifications by a separate review agent (partial REQ-001, 002, 004, 005 only; 003, 006 to 016 unreleased). The review findings to apply in the next revision are on the [handoff plan](plugin-discovery-handoff-plan.md#review-outcome). This revision's text is unchanged.

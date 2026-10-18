@@ -1,0 +1,659 @@
+{
+ "schema": "plugin-discovery-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "plugin-discovery-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored scenario descriptions; no plug-in or shipped file",
+ "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+ "representation": {
+  "vst3_candidates": "sorted paths, in the description's form, of the entries examined as VST3 modules",
+  "vst2_candidates": "sorted paths, in the description's form, of the entries examined as VST2 modules",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "PLUGIN-DISCOVERY-001",
+   "purpose": "VST3 bundles in both VST3 system folders",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-001.json",
+   "expected": {
+    "vst3_candidates": [
+     "/Library/Audio/Plug-Ins/VST3/B.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/A.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-002",
+   "purpose": "Both VST3 switches off",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-002.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-003",
+   "purpose": "VST3 system-folder switch off, custom-folder switch on",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-003.json",
+   "expected": {
+    "vst3_candidates": [
+     "/Users/Shared/PDC/C.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-004",
+   "purpose": "VST3 system folders and custom folder both on",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-004.json",
+   "expected": {
+    "vst3_candidates": [
+     "/Library/Audio/Plug-Ins/VST3/B.vst3",
+     "/Users/Shared/PDC/C.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/A.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-005",
+   "purpose": "VST3 custom folder set but its switch off",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-005.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/A.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-006",
+   "purpose": "VST3 custom-folder switch on with no custom folder set",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-006.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/A.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-007",
+   "purpose": "User VST3 system folder absent",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-007.json",
+   "expected": {
+    "vst3_candidates": [
+     "/Library/Audio/Plug-Ins/VST3/B.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-008",
+   "purpose": "VST3 custom folder switched on but missing",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-008.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/A.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-009",
+   "purpose": "VST2 bundles in both VST2 system folders",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-009.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "/Library/Audio/Plug-Ins/VST/E.vst",
+     "~/Library/Audio/Plug-Ins/VST/D.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-010",
+   "purpose": "User VST2 system folder absent",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-010.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "/Library/Audio/Plug-Ins/VST/E.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-011",
+   "purpose": "Both VST2 switches off",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-011.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-012",
+   "purpose": "VST2 system-folder switch off, custom-folder switch on",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-012.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "/Users/Shared/PDV/P.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-013",
+   "purpose": "VST2 system folders and custom folder both on",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-013.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "/Library/Audio/Plug-Ins/VST/E.vst",
+     "/Users/Shared/PDV/P.vst",
+     "~/Library/Audio/Plug-Ins/VST/D.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-014",
+   "purpose": "VST2 custom folder switched on but missing",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-014.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/D.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-015",
+   "purpose": "Switches of one format do not affect the other",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-015.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/D.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-016",
+   "purpose": "Bundles in folders that are not searched",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-002"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-016.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-017",
+   "purpose": "VST3 bundle two levels below a VST3 folder",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-017.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/Vendor/Sub/F.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-018",
+   "purpose": "VST3 bundle six levels below a VST3 folder",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-018.json",
+   "expected": {
+    "vst3_candidates": [
+     "/Library/Audio/Plug-Ins/VST3/L1/L2/L3/L4/L5/Deep.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-019",
+   "purpose": "Directory named G.VST3 (letter case differs)",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-019.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-020",
+   "purpose": "VST3-named directory nested inside a VST3 candidate",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-020.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/H.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-021",
+   "purpose": "Empty plain file named J.vst3 beside a bundle",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-021.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/A.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/J.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-022",
+   "purpose": "Only the exact text after the last period counts (VST3)",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-022.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/Multi.Dot.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/Space Name.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-023",
+   "purpose": "Directories that are not candidates are searched inside (VST3)",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-001",
+    "REQ-PLUGIN-DISCOVERY-004"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-023.json",
+   "expected": {
+    "vst3_candidates": [
+     "~/Library/Audio/Plug-Ins/VST3/Backup.vst3.bak/W4.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/Wrap.clap/W3.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/Wrap.component/W2.vst3",
+     "~/Library/Audio/Plug-Ins/VST3/Wrap.vst/Contents/W1.vst3"
+    ],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-024",
+   "purpose": "VST2 bundle one level below a VST2 folder",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-024.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/Vendor/K.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-025",
+   "purpose": "VST2 bundle six levels below a VST2 folder",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-025.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "/Library/Audio/Plug-Ins/VST/L1/L2/L3/L4/L5/Deep.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-026",
+   "purpose": "Directory named L.VST",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-026.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/L.VST"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-027",
+   "purpose": "Other letter cases of .vst",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-027.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/Mixed.Vst",
+     "~/Library/Audio/Plug-Ins/VST/Odd.vSt"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-028",
+   "purpose": "Empty plain file named M.vst",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-028.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-029",
+   "purpose": "VST3-named directory only in a VST2 folder",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-029.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-030",
+   "purpose": "VST2 folder: a directory named *.vst3 is searched inside",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-030.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/N2.vst3/Contents/Y.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-031",
+   "purpose": "VST2-named directory nested inside a VST2 candidate",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-031.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/Outer.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-032",
+   "purpose": "Only the text after the last period counts (VST2)",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-032.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/Old.vst.bak/Z.vst",
+     "~/Library/Audio/Plug-Ins/VST/Space Name.vst",
+     "~/Library/Audio/Plug-Ins/VST/Two.Dots.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-033",
+   "purpose": "Unreadable directory beside a readable one (VST2)",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-033.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/Open/O.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-034",
+   "purpose": "Unreadable VST2 system folder",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-034.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": [
+     "~/Library/Audio/Plug-Ins/VST/D.vst"
+    ]
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  },
+  {
+   "id": "PLUGIN-DISCOVERY-035",
+   "purpose": "CLAP bundles in CLAP, VST3 and VST2 folders",
+   "requirements": [
+    "REQ-PLUGIN-DISCOVERY-001",
+    "REQ-PLUGIN-DISCOVERY-002",
+    "REQ-PLUGIN-DISCOVERY-004",
+    "REQ-PLUGIN-DISCOVERY-005"
+   ],
+   "input": "fixtures/PLUGIN-DISCOVERY-035.json",
+   "expected": {
+    "vst3_candidates": [],
+    "vst2_candidates": []
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "per format, set of candidate paths exact; order and examination count not compared"
+  }
+ ]
+}
