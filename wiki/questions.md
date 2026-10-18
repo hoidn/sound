@@ -92,6 +92,9 @@ no experimental contradiction has been established yet.
   selectors, and index and conversion tables for 4 of 7 devices. The Analog,
   Tension and Collision tables, the document reader and a Corpus position-range
   contradiction (probe P4-N5-01) remain open.
+- Progress 2026-10-17: [SPEC-ALS-CONTAINER](specs/als-container.md) r2 makes six untraced
+  steps explicit assumptions (I1 to I6); the catch site, integer converter, gzip stream and
+  empty-string representation remain open.
 
 ## Q-007 Reference behavior and timing
 

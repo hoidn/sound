@@ -1569,3 +1569,15 @@ corrected. Candidates CL-01 to CL-23 and probes PRB-S5-01 to 11. Updated the fea
 coverage, spec index (candidate row), gate table and the Phase 4 page; opened
 [Q-017](questions.md#q-017-clip-launch-timing-and-launch-modes). Gaps: boundary offset,
 stopped launch, launch modes, legato, velocity law, follow-action timing. Nothing executed.
+
+## [2026-10-17] spec | SPEC-ALS-CONTAINER revision 2
+
+Applied the als-container-v1 handoff author's findings F1 to F5 to
+[SPEC-ALS-CONTAINER](specs/als-container.md). REQ-004: the first refusal wins, and earlier
+refusals (illegal integer at the root, wrong root, absent or zero MajorVersion, no
+document) are corrupt-document even with newer versions. REQ-003 and 006: integer
+refusals happen when the root is read. REQ-005: a file-existence lookup; letters-only
+values are refused, other non-schema values unknown. REQ-001: start refusals have an
+unspecified class. Uncompressed fixtures depend on PRB-N2-02. Assumptions I1 to I6 are
+labelled per clause. Gap: `MajorVersion="6"` with an empty or absent MinorVersion is
+unknown; the candidate's 12 new cases are not yet added to the draft. Nothing executed.
