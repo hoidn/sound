@@ -1155,3 +1155,21 @@ re-ran the tests and compiled all R2 scripts against Ghidra 12.1.4. The agent's
 report of a renamed roadmap heading was checked and is wrong; the anchor resolves.
 Gaps: not yet run on Live; scaling measured under load 12 to 36; hard-linked project
 copies share `project.prp` and `user/~index.dat`, so query copies must privatize them.
+
+## [2026-10-17] release | midi-config-v2
+
+A separate review subagent reviewed the staged midi-config-v2 (109 cases) and
+approved it with listed narrowing: RV2-01 excludes pad integer text over 640
+characters; RV2-02 excludes tabs and other ASCII control characters. Editorial
+fixes RV2-03 to RV2-05 were applied in the payload. Evidence identity: the decoded
+modules and both documents are bound to the pinned Live executable `52289af6…`
+through its code signature and `CodeResources` hashes; the v1 pin comparison
+remains unknown and does not block, so G0.2 is not required. Checks: all 55 new
+cases read by hand; reviewer and author models each agree 109 of 109; isolated
+copy verified. The coordinator copied the payload into
+[handoff/midi-config-v2](../handoff/midi-config-v2/README.md), re-verified all 114
+payload hashes and the manifest SHA-256 `889b52fa…12eb4d7`, added the catalog row,
+and reconciled [spec revision 2](specs/midi-user-mapping.md) with RV2-01 to RV2-03.
+Review evidence: `analysis/ableton-live-12.4.3/handoff-staging/midi-config-v2-analysis/review/`.
+Open: no reference or candidate execution; RV2-07 coverage notes; isolated
+implementation workspace not provisioned.

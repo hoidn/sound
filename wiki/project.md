@@ -22,11 +22,11 @@ documentation structure is not completion of the application.
 | Reference target | Ableton Live 12 Suite 12.4.3; identity pinned and arm64 slices re-derived on the current host; the earlier static evidence tree is absent here (see research index) |
 | Analysis workstation | Linux host provisioned 2026-10-17 with Ghidra 12.1.4, JDK 21 and REA 6.5.0; Push2 smoke test reproduced prior counts; persistent Live project at `/var/tmp/sound-analysis`, analysis running (see [execution ledger](research/native-phase-execution.md#linux-workstation-provisioning--2026-10-17)) |
 | Research | Package evidence, browsable native pseudocode, method/structure guides and reviewed recovery tooling; target reopening is capacity-blocked (see research index) |
-| Behavioral specifications | MIDI mapping draft revision 2; midi-config-v1 released; midi-config-v2 staged, review pending; transport-state and document-container static halves filed |
+| Behavioral specifications | MIDI mapping draft revision 2; midi-config-v1 and its superset midi-config-v2 released; transport-state and document-container static halves filed |
 | Implementation | No application code; architecture choices remain proposals |
 | Verification | No retained original-versus-candidate compatibility results |
 | Clean implementation workspace | Not provisioned; this checkout contains analyst material |
-| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases |
+| Published handoffs | [midi-config-v1](../handoff/midi-config-v1/README.md): four partial clauses, 54 unexecuted cases; [midi-config-v2](../handoff/midi-config-v2/README.md): partial REQ-002/003/005–013, 109 unexecuted cases, supersedes v1 |
 
 ## Current phase
 

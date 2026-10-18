@@ -27,7 +27,7 @@ requirements to candidate code and tests.
 | FEAT-WARP | None | Not started | Unknown | Mode/settings and algorithm analysis; flag numerical comparisons |
 | FEAT-PERSISTENCE | None | Not started | Unknown | Packaged files, schema and loader/migration paths |
 | FEAT-UI | None | Not started | Unknown | UI resources, bindings and command/focus dispatch |
-| FEAT-MIDI-USER-MAPPING | [Revision 2 draft](../specs/midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md); [midi-config-v2 candidate](../specs/midi-config-v2-handoff-plan.md), staged and unreviewed | Not started | Unknown; 54 release cases, 109 staged candidate cases (54 of them restated), 46 broader draft groups and 16 probe records not run | Separate review of midi-config-v2; independently observe released routes; PRB-S4-01–16 on the macOS host |
+| FEAT-MIDI-USER-MAPPING | [Revision 2 draft](../specs/midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md); [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Not started | Unknown; 109 v2 release cases (54 restated from v1), 46 broader draft groups and 16 probe records not run | Independently observe released routes; PRB-S4-01–16 on the macOS host |
 | FEAT-ECOSYSTEM | None | Not started | Unknown | Shipped integration contracts and protocol handlers |
 | FEAT-DELIVERY | None | Not started | Unknown | Package/configuration and export/teardown paths |
 

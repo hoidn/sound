@@ -20,8 +20,9 @@ classifies as statically supportable. When published, the candidate supersedes
 [midi-config-v1](../../handoff/midi-config-v1/README.md) as a strict superset;
 v1 stays immutable and valid for its narrower scope.
 
-This page is an analyst-side proposal. The candidate is **staged, not reviewed
-and not released**. It is not an implementation input. No reference or
+This page is the analyst-side plan and traceability record. The candidate was
+**reviewed and released on 2026-10-17** as [midi-config-v2](../../handoff/midi-config-v2/README.md), approved with
+the narrowing listed in its review record. This page is not an implementation input. No reference or
 candidate execution has run and no compatibility is claimed.
 
 ## Scope
@@ -50,8 +51,9 @@ the v1 assignment set.
 Explicit exclusions, stated in the candidate spec and manifest: every S-cond
 clause; failed-parse outcomes; unknown map-mode tokens; MIDI address
 collisions; non-ASCII or CR input; numeric transforms; feedback; lifecycle,
-timing and teardown. The lone-`Send2Knob` case is also excluded because its
-static derivation is new and unreviewed.
+timing and teardown. The lone-`Send2Knob` case is also excluded. The review
+added two narrowings: pad integer text over 640 characters (RV2-01), and tabs
+or other ASCII control characters (RV2-02).
 
 ## Deliverables
 
@@ -140,5 +142,6 @@ unknown until roadmap gate G0.2. Bundle version and Live slice match.
 
 ## Current disposition
 
-Staged on 2026-10-17 and awaiting separate review. midi-config-v1 remains the
-only released MIDI contract.
+Released on 2026-10-17 as [midi-config-v2](../../handoff/midi-config-v2/README.md) after a separate review,
+approved with narrowing; manifest SHA-256 `889b52fa…12eb4d7`, 109 cases. It
+supersedes midi-config-v1 as a strict superset; v1 stays immutable.

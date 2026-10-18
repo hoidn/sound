@@ -129,8 +129,10 @@ unverified.
 
 ## Limitations and next steps
 
-The bytecode digest comparison is unknown until the macOS `analysis/` tree is
-restored (gate G0.2). Static paths are conditional on host initialization and
+The bytecode digest comparison with the v1 pins is unknown until the macOS
+`analysis/` tree is restored (gate G0.2). Identity is otherwise established: the
+midi-config-v2 review found that the pinned executable's code signature lists
+`CodeResources` hashes matching all 18 decoded modules and both documents (RV2-06). Static paths are conditional on host initialization and
 MIDI delivery. CPython `int()` behavior assumes the embedded 3.11.6 interpreter
 is unmodified. S-cond clauses need a state-transition representation before any
 release. The cheapest static follow-ups are `_Generic/Devices` (REQ-007) and

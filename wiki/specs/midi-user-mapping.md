@@ -89,9 +89,14 @@ map-mode keys and two Boolean keys (E1).
   missing key, `-1`, another out-of-range integer, or an ordinary conversion
   failure disables it (E1 L56–66, bound L96; E2 L24–25). Integer text follows
   the embedded interpreter's `int()` rules, inferred CPython 3.11.6 (E8):
-  `+20` and `0021` are accepted, `1_0` reads as 10, and `0x14`, `20.0`, empty
+  `+20` and `0021` are accepted, `1_0` reads as 10 (an underscore is accepted
+  only singly between two digits), and `0x14`, `20.0`, empty
   values and trailing comment text are conversion failures (E7). A pad note
   integer 0–127 enables the pad; another integer omits it (E1 L197–200).
+  Exception found in the midi-config-v2 review (RV2-01): integer text longer
+  than the interpreter's conversion length limit raises out of the pad fields
+  instead of disabling the pad. midi-config-v2 excludes pad note text over 640
+  characters, and pad channel text over 640 characters when the note is enabled.
 - **Unknown.** A noninteger pad note, and interpolation errors such as `%` or
   `%(missing)s` on either path, raise out of profile construction, which has
   no exception handler (E1). The host outcome is N and R: PRB-S4-03.
@@ -251,7 +256,10 @@ map-mode keys and two Boolean keys (E1).
 - **S.** Option names are case-insensitive; section names are exact (E7
   L890–904; E1 L146, L175, L182, L223, L276, L283). `=` and `:` delimit;
   full-line `#`/`;` lines are comments; text after a value stays in the value;
-  values are trimmed; empty values are conversion failures. A `[DEFAULT]` key
+  keys and values are stripped of leading and trailing whitespace as the reader
+  defines it, which includes tabs and some other ASCII control characters;
+  midi-config-v2 covers spaces only and excludes the rest (RV2-02). Empty
+  values are conversion failures. A `[DEFAULT]` key
   counts as present in each named section that exists and does not define it
   (E7 L611–616, L893–904). Unknown keys and keys in another section are never
   read. Duplicate sections, duplicate normalized options, pre-section text and

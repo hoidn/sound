@@ -25,7 +25,7 @@ manuals, package inventory, API surfaces, and observed user workflows.
 | FEAT-WARP | Warping | Markers, modes, tempo/pitch behavior, boundaries | Unspecified |
 | FEAT-PERSISTENCE | Files and recovery | Sets, presets, media references, migration, recovery | Unspecified; static envelope evidence in [document container](../research/document-container-static.md) |
 | FEAT-UI | Desktop interface | Browser, selection, shortcuts, drag/drop, focus, undo | Unspecified |
-| FEAT-MIDI-USER-MAPPING | User-defined controller mapping (ecosystem subset) | Configuration, channels, banks, buttons and native/host gaps | [Revision 2 draft](midi-user-mapping.md) with S4 closure applied; [finite configuration release](../../handoff/midi-config-v1/README.md), partial clauses only; [midi-config-v2 candidate](midi-config-v2-handoff-plan.md) staged, unreviewed |
+| FEAT-MIDI-USER-MAPPING | User-defined controller mapping (ecosystem subset) | Configuration, channels, banks, buttons and native/host gaps | [Revision 2 draft](midi-user-mapping.md) with S4 closure applied; [finite configuration release](../../handoff/midi-config-v1/README.md), partial clauses only; [midi-config-v2](../../handoff/midi-config-v2/README.md) released, partial REQ-002/003/005–013 |
 | FEAT-ECOSYSTEM | Integrations | Link, controllers, Push, Max for Live, Packs | Unspecified |
 | FEAT-DELIVERY | Delivery and export | Preferences, install, audio export, teardown, crash handling | Unspecified |
 

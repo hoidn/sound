@@ -10,13 +10,14 @@ access: analysis
 
 Specifications define what must be observable, independent of the original's
 internal implementation. This directory contains analyst-side drafts. The
-[first configuration release](../../handoff/midi-config-v1/README.md) approves
-only four explicitly partial clauses; the wider MIDI draft remains unreleased.
+[first configuration release](../../handoff/midi-config-v1/README.md) and its superset
+[midi-config-v2](../../handoff/midi-config-v2/README.md) approve
+explicitly partial clauses only; REQ-001, REQ-004 and the runtime clauses remain unreleased.
 
 | Page                                                           | Purpose                                                                     |
 | -------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | [MIDI configuration handoff plan](midi-config-handoff-plan.md) | Finite static-supported release candidate and review gates                  |
-| [MIDI configuration v2 handoff plan](midi-config-v2-handoff-plan.md) | Staged midi-config-v2 candidate (109 cases), traceability and review gates |
+| [MIDI configuration v2 handoff plan](midi-config-v2-handoff-plan.md) | Released midi-config-v2 (109 cases): scope, narrowing, traceability |
 | [Feature map](feature-map.md)                                  | Whole-app planning inventory and stable feature IDs                         |
 | [MIDI user mapping](midi-user-mapping.md)                      | Revision 2 draft: documented, static, static-conditional and unknown clauses; static expectations, unexecuted cases |
 
