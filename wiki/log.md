@@ -1290,3 +1290,12 @@ pattern scan found nothing. Statements that `analysis/` is ignored were correcte
 on the artifact catalog, tools README, installed-source page and Q-002. Evidence
 directories of agents still running (H4, N1 to N4) were committed as snapshots and
 will change. The `origin` remote is public; nothing was pushed.
+
+## [2026-10-17] decision | Clean-room separation waived for the Corpus demo
+
+User direction: "ignore the rule for now". The [AGENTS.md](../AGENTS.md) separation
+between analyst contexts and implementation is waived for the Corpus device DSP
+demo being built in this checkout from decompiled Corpus code. That demo is
+therefore decompilation-derived and is not a clean input to the independent
+application. The waiver is temporary and covers only this work; the rule is
+otherwise unchanged. Nothing has been pushed to the public `origin` remote.
