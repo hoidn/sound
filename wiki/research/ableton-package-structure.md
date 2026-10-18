@@ -89,7 +89,8 @@ provides detailed locators and per-sample limitations.
 The shipped default ALS identifies its creator as Live 12.1d1 even though the
 installed executable is 12.4.3. Treat it as an older fixture bundled with this
 build, not a capture produced by running this build. Sampled `.als/.adv/.adg/.alc`
-decode as gzip XML; sampled `.agr` did not. Actual defaults are under
+decode as gzip XML; sampled `.agr` did not. All 219 `.agr` are plain XML (116)
+or `AB1E` binary (103), never gzip ([document container](document-container-static.md)). Actual defaults are under
 `Builtin/Templates` and `Core Library/Defaults`; top-level `Defaults` and
 `Templates` only contain empty placeholders in this installation.
 
@@ -114,8 +115,11 @@ Their presence is a fact about bytes; which code references them, and whether
 that code reads or writes documents, is unknown until cross-references are
 resolved in an analyzed project.
 
-Observed with `find` over `Contents/App-Resources`: 52 `.als` sets, 700 `.alc`
-clips, 5,114 `.adv` presets, 2,144 `.adg` racks, 438 `.agr` grooves, 6 `.alp`
-packs, 4,378 `.xml` and 1,160 `.txt` files; `Schema/` holds 203 versioned
+Observed with `find` over `Contents/App-Resources`, excluding AppleDouble `._*`
+companions: 26 `.als` sets, 350 `.alc` clips, 2,557 `.adv` presets, 1,072 `.adg`
+racks, 219 `.agr` grooves, 3 `.alp` packs, 2,189 `.xml` and 580 `.txt` files.
+Correction 2026-10-17: the first version of this paragraph counted the 56,603
+`._*` companions too, doubling every figure; see the
+[inventory correction](document-container-static.md#inventory-correction). `Schema/` holds 203 versioned
 descriptions. Core Library and Builtin total about 4.3 GiB. Counts are file
 inventory, not parsed or validated documents.

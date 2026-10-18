@@ -1042,3 +1042,16 @@ installed Hopper 6.4.2 demo, Node 24.22.0 and rizin 0.9.1 without root under
 GNU multiarch objdump lacks Mach-O and was removed. IDA needs a licensed
 installer. No Live analysis ran; Hopper was not exercised on any target. Lint:
 relative links and anchors on edited pages resolve; `git diff --check` clean.
+
+## [2026-10-17] ingest | S2 document container static evidence
+
+Recomputed from the local bundle (read-only) into `analysis/ableton-live-12.4.3/r2/s2-static-v1/`
+and filed [document container static](research/document-container-static.md): container, gzip
+header and XML envelope for 4,140 documents, all 203 schema headers, document-to-schema
+cross-check (12 of 12 MinorVersions match a schema file), `.alp`/`AB1E` headers, and exact
+`Live.arm64` loader string anchors with offsets for the native half. Corrected the
+AppleDouble-doubled document counts on [package structure](research/ableton-package-structure.md)
+and the roadmap; the coordinator re-counted and confirmed. Gaps: accepted version range,
+error handling and save-time values remain unknown pending the saved Ghidra project;
+`.alp` encoding unknown. Lint: links resolve; `git diff --check` clean.
+

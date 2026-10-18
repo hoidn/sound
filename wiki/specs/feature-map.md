@@ -2,7 +2,7 @@
 id: SPEC-FEATURE-MAP
 type: feature-map
 status: draft
-updated: 2026-10-09
+updated: 2026-10-17
 access: analysis
 ---
 
@@ -23,7 +23,7 @@ manuals, package inventory, API surfaces, and observed user workflows.
 | FEAT-DEVICES | Devices and racks | Chains, macros, state, mapping, signal behavior | Unspecified |
 | FEAT-HOSTING | Plug-in hosting | Discovery, lifecycle, state, latency, failures | Unspecified |
 | FEAT-WARP | Warping | Markers, modes, tempo/pitch behavior, boundaries | Unspecified |
-| FEAT-PERSISTENCE | Files and recovery | Sets, presets, media references, migration, recovery | Unspecified |
+| FEAT-PERSISTENCE | Files and recovery | Sets, presets, media references, migration, recovery | Unspecified; static envelope evidence in [document container](../research/document-container-static.md) |
 | FEAT-UI | Desktop interface | Browser, selection, shortcuts, drag/drop, focus, undo | Unspecified |
 | FEAT-MIDI-USER-MAPPING | User-defined controller mapping (ecosystem subset) | Configuration, channels, banks, buttons and native/host gaps | [Revision 1 draft](midi-user-mapping.md); [finite configuration release](../../handoff/midi-config-v1/README.md), partial clauses only |
 | FEAT-ECOSYSTEM | Integrations | Link, controllers, Push, Max for Live, Packs | Unspecified |

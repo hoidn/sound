@@ -68,6 +68,7 @@ no experimental contradiction has been established yet.
 - Gap: core Live auto-analysis, remaining Python modules, proprietary ALP/AGR
   formats, schema migration semantics and resource-to-runtime bindings remain unknown.
 - Progress: [MIDI mapping bytecode](research/midi-user-mapping.md) decoded and scoped paths traced; this does not cover all shipped Python.
+- Progress 2026-10-17: [document container static](research/document-container-static.md) identified `.agr` encodings and the `.alp` header/trailer layout; `.alp` encoding and runtime use of `Schema/` remain unknown.
 - Next action: choose a bounded feature question, validate the matching decoder or
   trace its prepared native symbol; derive the contract and escalate only material
   gaps under [ADR 0002](decisions/adr-0002-static-first-analysis.md).
