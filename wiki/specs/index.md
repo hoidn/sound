@@ -42,7 +42,7 @@ draft spec.
 | [Corpus device](device-corpus.md) | Revision 1 draft (T1.2): Corpus audio specified from extracted execution of the bundle's own x86_64 code; 13 requirements; 28 cases (24 graded against retained reference renders, 4 U). Proposed metric: per-mode frequency, decay and amplitude bounds, third-octave levels for broadband. Unreleased |
 | [Transport-state handoff plan](transport-state-handoff-plan.md)      | Released transport-state-v1 (18 cases, approved with narrowing): scope, exclusions, traceability |
 | [Transport-state v2 handoff plan](transport-state-v2-handoff-plan.md) | Released transport-state-v2 (33 cases, approved with listed clarifications; supersedes v1): scope, change list, traceability, review outcome |
-| [MIDI user mapping](midi-user-mapping.md)                            | Revision 5 draft: 13 requirements; takeover (Pick-Up, Value Scaling, reversed ranges, first 14-bit pair) settled by extracted execution; tolerance max(1e-6, 2⁻²² × max(abs min, abs max)); cases MT-01 to 56 (18 S, 34 X, 4 S-cond); [midi-config-v3](../../handoff/midi-config-v3/README.md) released (127 cases) |
+| [MIDI user mapping](midi-user-mapping.md)                            | Revision 5 draft: 13 requirements; takeover (Pick-Up, Value Scaling, reversed ranges, first 14-bit pair) settled by extracted execution; tolerance max(1e-6, 2⁻²² × max(abs min, abs max)); cases MT-01 to 56 (18 S, 34 X, 4 S-cond); [midi-config-v4](../../handoff/midi-config-v4/README.md) released (127 cases) |
 | [MIDI configuration v3 handoff plan](midi-config-v3-handoff-plan.md) | Released midi-config-v3 (127 cases, approved): scope, exclusions, traceability, review outcome |
 | [Clip launch handoff plan](clip-launch-handoff-plan.md) | Released clip-launch-v1 (50 cases, approved with narrowing): scope, exclusions, traceability, review outcome |
 | [MIDI note storage handoff plan](midi-note-storage-handoff-plan.md) | Released midi-note-storage-v1 (67 cases, approved with narrowing): scope, exclusions, traceability, review outcome |
@@ -52,6 +52,7 @@ draft spec.
 | [Browser index handoff plan](browser-index-handoff-plan.md) | Released browser-index-v1 (26 cases, approved with narrowing): scope, exclusions, traceability, review outcome |
 | [Plug-in discovery handoff plan](plugin-discovery-handoff-plan.md) | Released plugin-discovery-v1 (35 cases, approved with clarifications): scope, exclusions, traceability, review outcome |
 | [Warp markers handoff plan](warp-markers-handoff-plan.md) | Released warp-markers-v1 (38 cases, approved with narrowing): scope, exclusions, traceability, review outcome |
+| [MIDI configuration v4 handoff plan](midi-config-v4-handoff-plan.md) | Released midi-config-v4 (161 cases, approved with narrowing): scope, change list, traceability, review outcome |
 
 **Browse every requirement in one place:** the
 [requirements browser](../../analysis/ableton-live-12.4.3/browse/specs/index.html)

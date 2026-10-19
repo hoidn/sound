@@ -1,0 +1,363 @@
+diff -ru pre-review/AGENTS.md export/midi-config-v4/AGENTS.md
+--- pre-review/AGENTS.md	2026-10-18 18:53:01.443519708 -0700
++++ export/midi-config-v4/AGENTS.md	2026-10-18 19:30:35.558919375 -0700
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This directory is a staged release candidate. Use it for implementation only
+-after a separate review approves it and it is published as an immutable
+-release. Even then, implementation requires a fresh, restricted implementation
+-workspace containing only permitted materials. Do not begin clean
+-implementation in an analyst checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace containing
++only permitted materials. Publication of this package does not provision one.
++Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+diff -ru pre-review/cases.json export/midi-config-v4/cases.json
+--- pre-review/cases.json	2026-10-18 19:04:26.100278737 -0700
++++ export/midi-config-v4/cases.json	2026-10-18 19:30:35.560490964 -0700
+@@ -2,7 +2,7 @@
+  "schema": "midi-config-cases-v4",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "scope": "midi-config-v4 partial requirement clauses only (see spec.md)",
+- "status": "candidate-unreviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal ASCII inputs and MIDI byte sequences; no shipped file copied",
+  "oracle_status": "Static-derived and extracted-execution expectations, labeled per case; neither reference nor candidate executed",
+  "representation": {
+diff -ru pre-review/manifest.json export/midi-config-v4/manifest.json
+--- pre-review/manifest.json	2026-10-18 19:04:26.202966480 -0700
++++ export/midi-config-v4/manifest.json	2026-10-18 19:33:59.225204448 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "midi-config-v4",
+- "release_status": "candidate-unreviewed",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "specification": {
+   "id": "SPEC-MIDI-USER-MAPPING",
+@@ -15,7 +15,7 @@
+  "partial_requirement_scopes": {
+   "REQ-MIDI-USER-002": "Number enablement for every CC key and integer pad notes",
+   "REQ-MIDI-USER-003": "Effective global channel, per-control channel keys, global-only controls, pad channel rules",
+-  "REQ-MIDI-USER-005": "Map-mode labels: ten exact tokens, absent default, key scope, 14-bit label above CC 95; value transforms of Absolute, Absolute14Bit and the eight relative modes for continuous, enumerated and other parameters, for either range order; the three takeover choices by preference position; Pick-Up and Value Scaling with previous data values, the previous value of a 14-bit pair and the sorted bounds; the values exempt from takeover; value tolerance tau",
++  "REQ-MIDI-USER-005": "Map-mode labels: ten exact tokens, absent default, key scope, 14-bit label above CC 95; value transforms of Absolute, Absolute14Bit and the eight relative modes for continuous, enumerated and other parameters, for either range order; the three takeover choices by preference position; Pick-Up and Value Scaling with previous data values, the previous value of a 14-bit pair and the sorted bounds; the values exempt from takeover; value tolerance tau per message, k tau after k relative messages in a row",
+   "REQ-MIDI-USER-006": "Pad identity and documented 4x4 position only",
+   "REQ-MIDI-USER-007": "Encoder compaction to parameter positions and bank span 1 or 2",
+   "REQ-MIDI-USER-008": "Direct-bank selector compaction and named device button targets",
+@@ -40,7 +40,7 @@
+  },
+  "expectation_provenance_labels": {
+   "static-derived; not observed reference output": "derived from evidence about the pinned build, reviewed before sanitization; cases MIDI-CONFIG-001 to 127",
+-  "extracted execution of the original x86_64 code (glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 code that turns each Control Change message into a parameter value (message and 14-bit half handling, the value computation and takeover) ran on the case's messages on a Linux x86_64 host, with glibc in place of the macOS system libraries; the run supplied the target parameter and the previous data values; the interpreted assignments, the previous-value rules and the takeover choice positions remain static-derived; cases MIDI-CONFIG-128 to 161"
++  "extracted execution of the original x86_64 code (glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 code that turns each Control Change message into a parameter value (message and 14-bit half handling, the value computation and takeover) ran on the case's messages on a Linux x86_64 host, with glibc in place of the macOS system libraries; the run supplied the target parameter and the previous data values; the interpreted assignments, the previous-value rules and the takeover choice positions remain static-derived; cases MIDI-CONFIG-128 to 161; not run: a notification Pick-Up gives after it has decided a value, and the route that applies a value later instead of at once (the run applied each value at once)"
+  },
+  "exclusions": {
+   "inputs_without_expectation": [
+@@ -61,8 +61,9 @@
+    "on/off target parameters, in every map mode",
+    "an enabled assignment on number n + 32 and the channel of an Absolute14Bit control with number n",
+    "a target parameter whose minimum equals its maximum; a stepped parameter with a non-integer minimum, maximum or current value; a current value outside the closed interval between minimum and maximum; a parameter that changes a value after it is set",
+-   "a Value Scaling move (the value moved by the travelled fraction), and every later value of its sequence, except in cases MIDI-CONFIG-129, 133, 137, 138, 143 to 145, 153, 155 and 161",
++   "a Value Scaling move (the value moved by the travelled fraction), and every later value of its sequence, except in cases MIDI-CONFIG-129, 133, 137, 138, 143 to 145, 153, 155 and 161 (none of them is on a stepped parameter)",
+    "a takeover comparison or test whose two sides lie within 8 tau of each other, other than p = n for one and the same data value, and every later value of its sequence, except in cases MIDI-CONFIG-149 and 152 to 161",
++   "a target value n or p of a stepped parameter whose exact value lies within 8 tau of a half-integer, and every later value of its sequence",
+    "other MIDI input during a value case, including running status; anything else that empties the record of previous data values, such as another control surface on the same input"
+   ],
+   "behavior": [
+@@ -90,20 +91,32 @@
+   "The application passes this code the parameter's reported range, kind and stepping, its current value and the previous data values as the contract states them, and the parameter keeps the value set on it. Every value case depends on it.",
+   "The three preference entries, which select none, pick-up and value-scaling by position, display as None, Pick-Up and Value Scaling; their wording was not read. Only the labels used in a reference run depend on it."
+  ],
+- "value_tolerance": "tau = max(1e-6, 2^-22 * max(|min|, |max|)) absolute, with the case parameter's min and max; 1e-6 for cases MIDI-CONFIG-110 to 127",
++ "value_tolerance": "tau = max(1e-6, 2^-22 * max(|min|, |max|)) absolute, with the case parameter's min and max; 1e-6 for cases MIDI-CONFIG-110 to 127; tau covers one message: a value reached by k relative messages in a row on a parameter that is not stepped is compared within k * tau",
+  "fixture_origin": "independently authored ASCII configuration inputs, expected logical assignments, MIDI byte sequences, parameter descriptions and expected values",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RV4-01 low: stepped target values within single-precision rounding of a half-integer can round the other way (14-bit pairs, stepped ranges from 0 to 5000 up); narrowed with the 8 tau band; narrows a midi-config-v3 clause, no case affected",
++   "RV4-02 low: rounding adds up over relative messages in a row (re-run of the original code: 5.2 tau after 200 messages); compared within k * tau; no case or comparator changed",
++   "RV4-03 low: change list missed the comparison obligations; strict-superset wording no longer accurate; completed and reworded",
++   "RV4-04 low: extracted-execution definition did not name the two parts of the code that did not run; named",
++   "RV4-05 editorial: a stepped parameter's value after a Value Scaling move has no expectation; clarified",
++   "RV4-06 info: the author's Value Scaling error figure was sampled; the true error reaches hundreds of tau; exclusion upheld",
++   "RV4-07 info: evidence identity re-hashed, evidence run reproduced byte for byte, every new case re-run",
++   "RV4-08 info: catalog wording outside the package not edited",
++   "RV4-09 editorial: payload status set to reviewed release; review record added"
++  ],
++  "disposition": "Approved with listed narrowing (RV4-01) and clarifications (RV4-02 to RV4-05), only for the explicit partial clauses; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "midi-config-v3",
+  "supersession": {
+-  "relationship": "strict superset on publication; midi-config-v3 stays immutable and valid for its narrower scope",
++  "relationship": "superset with two precision corrections to general midi-config-v3 value clauses: a value reached by k relative messages in a row is compared within k * tau, and a stepped target value within 8 tau of a half-integer has no expectation; no midi-config-v3 case affected; midi-config-v3 stays immutable and valid for its own scope apart from those corrections",
+   "superseded_manifest_sha256": "2e7d93767bbb9fffa79cec191b242d7eec52aeb1d20f6f33f1bbdc0beff40458",
+   "restated_cases": "MIDI-CONFIG-001 to 127: case records and fixture bytes identical to midi-config-v3",
+   "corrected_expectations": "none; parent revision 5 corrected no expectation of a midi-config-v3 case",
+@@ -112,13 +125,14 @@
+    "the midi-config-v3 assumption that the never-acting choice is the one labelled None is narrowed: which entry selects which choice is now static-derived; only the displayed wording is assumed",
+    "reversed ranges: min below max is no longer required; Absolute, Absolute14Bit and relative values and takeover hold for either order, a stepped relative step moves toward max when d > 0",
+    "REQ-MIDI-USER-010: crossfader Absolute14Bit pairs are subject to takeover (midi-config-v3 left them without expectation under the other two choices)",
+-   "value tolerance tau = max(1e-6, 2^-22 * max(|min|, |max|)) replaces 1e-6; tau is 1e-6 for every midi-config-v3 case",
+-   "stepped rounding: a Value Scaling move is not rounded",
+-   "exclusions: removed values subject to takeover under the choices other than none, and min above max; min equal to max stays excluded; added tests within 8 tau of a bound and Value Scaling moves outside the listed cases, with the later values of their sequences, and anything that empties the record of previous data values; the default choice stays excluded, the displayed wording of the choices and any takeover notification are listed",
+-   "provenance: the extracted-execution label is new and carried by every new case; carried cases keep the static-derived label; stated assumptions revised",
++   "value tolerance tau = max(1e-6, 2^-22 * max(|min|, |max|)) replaces 1e-6; tau is 1e-6 for every midi-config-v3 case; a value reached by k relative messages in a row on a parameter that is not stepped is compared within k * tau, because rounding adds up (midi-config-v3: 1e-6); each step of the carried relative cases is exact",
++   "stepped rounding: a Value Scaling move is not rounded; a stepped parameter's value after a move has no expectation",
++   "exclusions: removed values subject to takeover under the choices other than none, and min above max; min equal to max stays excluded; added tests within 8 tau of a bound, stepped target values within 8 tau of a half-integer (narrowing the midi-config-v3 rounding rule for such values; no midi-config-v3 case affected) and Value Scaling moves outside the listed cases, with the later values of their sequences, and anything that empties the record of previous data values; the default choice stays excluded, the displayed wording of the choices and any takeover notification are listed",
++   "provenance: the extracted-execution label is new and carried by every new case; carried cases keep the static-derived label; stated assumptions revised; the parts of the original code that did not run are named",
+    "representation: takeover gains pick-up and value-scaling; the initial value is stated to be a binary32 number; the values note and new comparators state tau",
++   "comparison obligations: each choice selected by its entry position with the wording recorded, instead of confirming the never-acting choice; the crossfader rescaling rule extended to MIDI-CONFIG-150",
+    "cases MIDI-CONFIG-128 to 161 added (34 value cases)",
+-   "no midi-config-v3 case, fixture or expectation changed; nothing in midi-config-v3 is contradicted; the sentences that left takeover unspecified now point to the new rules"
++   "no midi-config-v3 case, fixture or expectation changed; apart from the two precision corrections, nothing in midi-config-v3 is contradicted or narrowed; the sentences that left takeover unspecified now point to the new rules"
+   ]
+  },
+  "entrypoint": "README.md",
+@@ -129,18 +143,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "9b2cdd87fae57d6c4c5e589dad962073f8f2aeed7d023522fbb2700b56a9d887",
+-   "bytes": 1409
++   "sha256": "a507d8a8c52620a037d01a47a762915225dc3cd7e816bb57c37e843958df1ffa",
++   "bytes": 1369
+   },
+   {
+    "path": "README.md",
+-   "sha256": "94f9dfc30bf160e29a70dbb3bee33f4418bd1eeeb2bf44d1e6bb2b6e1ec4802b",
+-   "bytes": 4719
++   "sha256": "a81794643540541336ac674be535d8b4662f1cad756bb200524f07a81bdca768",
++   "bytes": 6188
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "7afe5771ab2856a1504ec2169a3bf38438d76b8dc3b76a24d92f11bb5c39daba",
++   "bytes": 11946
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "df533ed5160dbf2a34d50a4630b793a52b52052d831fe54a876e99d4744ac7c4",
+-   "bytes": 178208
++   "sha256": "13eed2c71525c0f70c305b87512a0280cec2a714ea599d7f9a1adc647141f9c2",
++   "bytes": 178205
+   },
+   {
+    "path": "fixtures/MIDI-CONFIG-001/UserConfiguration.txt",
+@@ -949,8 +968,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "ebde4c6ede62b561c889476017b8a011ed2da1f005a2ffa61b83bb68782ad6ff",
+-   "bytes": 32925
++   "sha256": "3e6a5c6893de3bfbdab721f59c9362c333a20938f9c26162ae2c4d7ec4c2d329",
++   "bytes": 33927
+   }
+  ]
+ }
+diff -ru pre-review/README.md export/midi-config-v4/README.md
+--- pre-review/README.md	2026-10-18 18:53:15.038377447 -0700
++++ export/midi-config-v4/README.md	2026-10-18 19:30:35.558358163 -0700
+@@ -1,8 +1,10 @@
+-# MIDI configuration interpretation and value transforms, release candidate 4
++# MIDI configuration interpretation and value transforms, release 4
+ 
+-**Staged candidate: not reviewed and not released.** It is not an
+-implementation input. Read [the contract](spec.md), [cases](cases.json),
+-[role instructions](AGENTS.md) and [the draft manifest](manifest.json).
++**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
++[role instructions](AGENTS.md), [the manifest](manifest.json) and
++[the review disposition](REVIEW.md). The stated partial scope is approved as a
++contract for a fresh, restricted implementation workspace. Such a workspace has
++not been provisioned by this release.
+ 
+ The finite scope is how a user configuration file is interpreted: which
+ assignments are enabled, their MIDI addresses, the device, mixer, transport and
+@@ -26,11 +28,16 @@
+ 
+ ## Supersession
+ 
+-When published, this release supersedes midi-config-v3 as a strict superset.
+-midi-config-v3 stays immutable and valid for its narrower scope. Its 127 cases
+-keep their IDs, records and fixture bytes, and no expected value is corrected;
+-34 value cases are new, for 161 in total. [The manifest](manifest.json)
+-records the relationship and the superseded manifest digest.
++This release supersedes midi-config-v3. It carries every midi-config-v3 case
++and clause and widens the scope, with two precision corrections to general
++value clauses (changes 5 and 7): a value reached by several relative messages
++in a row is compared within a tolerance that grows with their number, and a
++stepped target value very close to a half-integer has no expectation. No
++midi-config-v3 case is affected. Its 127 cases keep their IDs, records and
++fixture bytes, and no expected value is corrected; 34 value cases are new, for
++161 in total. midi-config-v3 stays immutable and valid for its own scope apart
++from those two corrections. [The manifest](manifest.json) records the
++relationship and the superseded manifest digest.
+ 
+ ## Changes from midi-config-v3
+ 
+@@ -54,24 +61,37 @@
+    expectation under the other two choices.
+ 5. **Tolerance.** Values compare within τ = max(1e-6, 2⁻²² × max(|min|,
+    |max|)) instead of 1e-6. τ is 1e-6 for every midi-config-v3 case, so no
+-   carried comparison changes.
++   carried comparison changes. Rounding adds up over relative messages in a
++   row on a parameter that is not stepped, so a value reached by *k* of them
++   is compared within *k* × τ. Each step of the carried relative cases is
++   exact in single precision, so their comparison is unchanged.
+ 6. **Rounding.** A Value Scaling move is not rounded, even for a stepped
+    parameter. Every other target value of a stepped parameter is rounded as
+-   before.
++   before. A stepped parameter's value after a move has no expectation.
+ 7. **Exclusions.** Removed: values subject to takeover under the choices other
+    than `none`, and *min* above *max*. *min* equal to *max* stays excluded.
+-   Added: results near a bound and Value Scaling moves outside the listed
+-   cases, with the later values of their sequences, and anything that empties
+-   the record of previous data values. The default choice stays excluded; the
++   Added: results near a bound, stepped target values near a half-integer and
++   Value Scaling moves outside the listed cases, with the later values of
++   their sequences, and anything that empties the record of previous data
++   values. The stepped exclusion narrows the midi-config-v3 rounding rule,
++   which gave such values an expectation; no midi-config-v3 case lies near a
++   half-integer. The default choice stays excluded; the
+    displayed wording of the choices and any takeover notification are now
+    listed.
+ 8. **Provenance.** The extracted-execution label is new, and every new case
+    carries it. Carried cases keep their records and the static-derived label.
+-   The contract states the assumptions that the value cases rest on.
++   The contract states the assumptions that the value cases rest on and the
++   parts of the original code that did not run.
+ 9. **Representation.** `takeover` gains `pick-up` and `value-scaling`. The
+    initial value is stated to be a binary32 number. The values note and each
+    new case's comparator state τ.
+-10. **Cases.** MIDI-CONFIG-128 to 161 are new value cases.
+-11. **Unchanged.** Every other clause, case and fixture of midi-config-v3 is
+-    carried unchanged, and nothing in midi-config-v3 is contradicted. The
++10. **Comparison obligations.** A reference comparison selects each case's
++    choice by its entry's position and records the entry's wording, instead
++    of confirming that the `none` choice is the one under which takeover
++    never acts. The rule for a crossfader that reports another range now
++    also covers MIDI-CONFIG-150.
++11. **Cases.** MIDI-CONFIG-128 to 161 are new value cases.
++12. **Unchanged.** Every other clause, case and fixture of midi-config-v3 is
++    carried unchanged. Apart from the two precision corrections in changes 5
++    and 7, nothing in midi-config-v3 is contradicted or narrowed. The
+     sentences that left takeover unspecified now point to the new rules.
+Only in export/midi-config-v4: REVIEW.md
+diff -ru pre-review/spec.md export/midi-config-v4/spec.md
+--- pre-review/spec.md	2026-10-18 18:55:06.729589408 -0700
++++ export/midi-config-v4/spec.md	2026-10-18 19:31:02.368694780 -0700
+@@ -1,17 +1,16 @@
+-# MIDI configuration interpretation and value transforms — release candidate 4
++# MIDI configuration interpretation and value transforms — release 4
+ 
+ Target: Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS.
+ Feature: FEAT-MIDI-USER-MAPPING. Parent specification identity:
+-SPEC-MIDI-USER-MAPPING revision 5. Release candidate: midi-config-v4, which
+-supersedes midi-config-v3 as a strict superset when published
+-([README](README.md#supersession)). Only the
++SPEC-MIDI-USER-MAPPING revision 5. Release: midi-config-v4, which
++supersedes midi-config-v3 ([README](README.md#supersession)). Only the
+ clauses explicitly included below are in scope. No other clause of a listed
+ requirement is implicitly approved. This document is self-contained.
+ 
+-**Status: staged candidate, not reviewed, not released.** It is not an
+-implementation input until a separate review approves it and it is published.
+-The clauses carried from midi-config-v3 keep the narrowing of the earlier
+-releases' reviews.
++**Status: reviewed local release.** A separate review approved the clauses
++below, recorded in [the review disposition](REVIEW.md). The clauses carried
++from midi-config-v3 keep the narrowing of the earlier releases' reviews.
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -39,7 +38,10 @@
+   computes a value. The takeover choice was set through the program's own
+   preference code. The run itself supplied the target parameter, which
+   returned the value last set on it, and the previous data value on each
+-  controller number. Cases MIDI-CONFIG-128 to 161 carry it.
++  controller number. Two parts of that code did not run: a notification
++  that Pick-Up gives after it has decided a value, and the route that
++  applies a value later instead of at once; the run applied each value at
++  once. Cases MIDI-CONFIG-128 to 161 carry it.
+ 
+ In every case the interpreted assignments are static-derived. So are the
+ rules that say which earlier data value counts as previous, which preference
+@@ -368,8 +370,11 @@
+ 
+ **Precision.** The rules are stated in exact arithmetic. The original computes
+ in IEEE 754 single precision (binary32), and values are compared within the
+-tolerance τ given under [value cases](#value-cases). Two kinds of result can
+-lie farther from the exact rules than τ, so outside the cases that state them
++tolerance τ given under [value cases](#value-cases). τ covers the rounding of
++one message. Over relative messages in a row on a parameter that is not
++stepped, that rounding can add up, so a value reached by *k* relative
++messages in a row is compared within *k* × τ. Three kinds of result can lie
++farther from the exact rules than that, so outside the cases that state them
+ they have no expectation:
+ 
+ - A takeover comparison or test whose two sides lie within 8τ of each other:
+@@ -378,10 +383,15 @@
+   data value. Rounding can decide it either way. Cases MIDI-CONFIG-149 and
+   152 to 161 place a test exactly on its bound or one binary32 step beyond
+   it; their expected values hold.
+-- A Value Scaling move. The travelled fraction can magnify rounding beyond τ.
+-  The moves in cases MIDI-CONFIG-129, 133, 137, 138, 143 to 145, 153, 155 and
+-  161, all with a smaller bound of 0, lie within τ of the exact rule; their
+-  expected values hold.
++- A target value *n* or *p* of a stepped parameter whose exact value lies
++  within 8τ of a half-integer. Rounding can give either adjacent whole
++  number. No case has one.
++- A Value Scaling move. The travelled fraction can magnify rounding far beyond
++  τ. The moves in cases MIDI-CONFIG-129, 133, 137, 138, 143 to 145, 153, 155
++  and 161, all with a smaller bound of 0, lie within τ of the exact rule;
++  their expected values hold. None of them is on a stepped parameter. A
++  stepped parameter takes only whole-number values, so its value after a
++  move has no expectation.
+ 
+ After such a result, the later values of the same sequence have no
+ expectation either.
+@@ -432,9 +442,12 @@
+ 
+ absolute, with the case's *min* and *max*. τ is 1e-6 for cases 110 to 127,
+ the tolerance midi-config-v3 stated; each new case's comparator gives its τ.
+-τ covers the original's rounding and the one difference between its two
+-builds (see [provenance](#what-the-contract-means)), except near a bound and
+-for Value Scaling moves ([precision](#starting-state-order-and-precision)).
++τ covers the original's rounding of one message and the one difference
++between its two builds (see [provenance](#what-the-contract-means)). The
++[precision](#starting-state-order-and-precision) rules say where it does not:
++after relative messages in a row, near a bound, near a half-integer on a
++stepped parameter and for Value Scaling moves. Each step of the relative
++cases is exact in single precision, so τ holds for each of their values.
+ Every value case uses number 20 on channel 0, and the `Absolute14Bit` cases
+ also send number 52. A candidate adapter may supply a test parameter with the
+ given description at the target and feed the messages to the interpreted
+@@ -458,7 +471,8 @@
+ any map mode; a target parameter whose *min* equals its *max*; a stepped
+ parameter with a non-integer *min*, *max* or current value; a current value
+ outside [*lo*, *hi*]; a parameter that changes a value after it is set; the
+-results near a bound and the Value Scaling moves described under
++results near a bound, the stepped target values near a half-integer and the
++Value Scaling moves described under
+ [precision](#starting-state-order-and-precision), outside the cases listed
+ there, and the later values of their sequences; another enabled assignment on
+ number *n* + 32 and the channel of an `Absolute14Bit` control with number *n*;

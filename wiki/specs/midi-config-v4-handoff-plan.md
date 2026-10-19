@@ -9,6 +9,17 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Fourth MIDI configuration handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [midi-config-v4](../../handoff/midi-config-v4/README.md), approved with one narrowing (RV4-01) and clarifications RV4-02 to 05 by a separate review agent ([review record](../../handoff/midi-config-v4/REVIEW.md)). All 161 cases are kept: the 127 v3 cases carried byte-identical, plus 34 new cases that match the original code on re-run within 5e-10.
+
+- **RV4-01:** a stepped value within 8τ of a half-integer has no expectation.
+- **Relative messages:** after k relative messages in a row, the value is compared within k×τ. A 200-message re-run drifted 5.2τ.
+- **Superset wording:** "strict superset" now reads "superset with two precision corrections".
+- **Ruling:** the 8τ band stands, and Value Scaling moves stay excluded.
+
+For the spec author (revision 6): the 3.8τ figure for the Value Scaling move error should read 96 to 408τ. Carry both precision corrections into the spec.
+
 ## Decision and boundary
 
 Stage a fourth finite candidate, midi-config-v4, from

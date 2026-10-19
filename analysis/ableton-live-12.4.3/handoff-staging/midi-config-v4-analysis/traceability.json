@@ -1,0 +1,1703 @@
+{
+ "schema": "midi-config-v4-traceability",
+ "status": "analyst-only; never part of the payload",
+ "parent_spec": "SPEC-MIDI-USER-MAPPING revision 5 (wiki/specs/midi-user-mapping.md)",
+ "plan": "wiki/specs/midi-config-v4-handoff-plan.md",
+ "supersedes": "midi-config-v3",
+ "evidence_identity": {
+  "x2_manifest_sha256": "da19636dfe5eeeb7f9921e48f6b22298995915847b532ab575ec8373eda0c88c",
+  "x2_slice_sha256": "1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0",
+  "x2_files_listed": 15,
+  "x2_file_mismatches": [],
+  "note": "raw/runs.jsonl is listed; heap addresses in it change on a re-run, the results files do not"
+ },
+ "evidence": {
+  "v2": "handoff/midi-config-v2/ (manifest sha256 889b52fa3b7f19c1bd085f26db39e0f62f00cbf7dc85be050e32207f012eb4d7, REVIEW.md); per-case sources in analysis/ableton-live-12.4.3/handoff-staging/midi-config-v2-analysis/traceability.json",
+  "E10": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0004 0x103b4d744 (wrapper forwards channel, CC, mode, avoid, sensitivity unchanged); results/n7-0001 0x102593258 (validation 0x1025931ac; mode 5 -> 0x1026094e0 called at 0x10259338c with x0-x4 only; other modes: CC receiver, init 0x101b7f32c stores avoid at +0x44); results/n7-0004 0x101b69248 -> results/n7-0002 0x101b65b68 (per-input prior table, -129 fill) -> results/n7-0004 0x101b7842c (every handler on the (channel, CC) list). S4 listings: _Framework/ControlSurface _install_mapping L735-743; InputControlElement L191, L197; _Generic/GenericScript L216 (crossfader set_needs_takeover(False))",
+  "E11": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0002 0x1026094e0 (keys (ch, n, 5) -> type 5 and (ch, n+32, 5) -> type 6; receiver flag `mov w3,#0x0` at 0x102609548), 0x101b8028c MSB store, 0x101b802bc LSB store, 0x101b7fcc0 combine ((MSB<<7|LSB)/129.0, constant 0x10584a8b4; MapMode 0, sensitivity 1.0; all four slots reset)",
+  "E12": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0002 0x101b76bf0 value function (absolute t = v/127, divisor 127.0; relative (hi-lo)/256*d*s or +-1 when quantized; clamp; frinta at 0x101b76cd4; step negated and t = (127-v)/127 when Max < Min); results/n7-0001 0x101b7b96c decoder; results/n7-0003 0x101b842cc table init; out/native-constants.json",
+  "E13": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0003 0x1026fa5c8, 0x1026fa684 (Type 1 ATimeableFloat, 2 Bool, 3 Enum, 0 other; Min/Max; Quantized); results/n7-0001 0x101b7fde4 apply (Type 2 branch; otherwise value function, then takeover only for MapMode 0/5, Type 1 and prior != FLT_MAX); results/n7-0002 0x101b7f894 CC receiver (prior := FLT_MAX when avoid and Zoom 1.0; quantized relative accumulator +-s, fires at |acc| >= 1)",
+  "E14": "analysis/ableton-live-12.4.3/r2/n7-midi-transforms-v1/results/n7-0001 0x101b7c508 takeover (mode 0 returns clamp(new)), 0x101b7c344 Pick-Up; results/n7-0003 0x101b83750 preference setter; out/corpus-excerpts.jsonl 0x1022df424 UI entry order (decompiler only)",
+  "v3": "handoff/midi-config-v3/ (manifest sha256 2e7d93767bbb9fffa79cec191b242d7eec52aeb1d20f6f33f1bbdc0beff40458, REVIEW.md); per-case sources in analysis/ableton-live-12.4.3/handoff-staging/midi-config-v3-analysis/traceability.json",
+  "E15": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/static-e15.txt and x86-disasm.txt: preference constructor x86 0x1023e0050 / arm64 0x1022cc18c builds the entries from sControlNoTakeOverEntry, sControlPickUpTakeOverEntry, sControlValueScalingTakeOverEntry in that order; change handler x86 0x1023e2a60 / arm64 0x1022cec38 posts OSetMidiTakeOverMode with the chooser index (unset -99 sends 0); engine handler x86 0x101bc0770 / arm64 0x101b83750 stores it for the takeover; reset: MidiInputRouter.ResetInputHistory (arm64 0x101b68f98, refill 0x101b65c1c), sole poster 0x10259b710 = reset_input_history, called only by Launch_Control_XL among the shipped scripts. Localized words not read",
+  "E16": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/run_x2.py under tools/xexec + gdb (sh run.sh); x86 receiver 0x101bbc3b0, 14-bit setters 0x101bbced0/0x101bbcf10, combiner 0x101bbc870, Apply 0x101bbc9c0, value function 0x101bb27b0, takeover 0x101bb8b70, Pick-Up 0x101bb8990 (arm64 matches in addresses.json); stubs 0x101abb210, 0x101b3d680, 0x101b6f830 (current value), 0x101b3d360 (setter); Pick-Up notification post jumped over; previous value supplied by the harness per E10; imports operator new, cxa guards, __cxa_atexit, pthread keys; no libm"
+ },
+ "inferred": {
+  "I1": "Revision 5 (E15) makes the entry-to-choice mapping static: first entry 0 = none, second 1 = pick-up, third 2 = value-scaling. Residual: the displayed words of the three text keys are None, Pick-Up, Value Scaling (not read; resources packed). Stated in the contract as an assumption affecting reference labels only.",
+  "I2": "The handler registry 0x101b84798/0x10260535c is the MidiMap handler lookup, and dispatch entry +0x30 holds the installed map mode (spec r3 E10 inference).",
+  "I3": "The parameter setter 0x101b0d328 (untraced) stores the value without further processing. The contract makes this a precondition and excludes parameters that change a value after it is set.",
+  "I4": "Messages are applied in arrival order, once each; the queued-command path taken when 0x1011c0ee8(0x100500) is nonzero has unknown timing. The contract applies messages one at a time and excludes back-to-back ordering, coalescing and deferral.",
+  "I5": "Layer wiring from control to component setter, assumed for every target association since spec revision 1.",
+  "I6": "arm64 equivalence of the X results: static slice comparison in E16; the only fused operation that differs is the value function fmadd (difference <= 1 binary32 ulp of R, 0 when lo = 0); the takeover fmadd has s1 = +-1.",
+  "I7": "The application passes the previous data value as the static dispatcher reading gives it (E10): the last data value on the same input, channel and controller, -129 when none. The X harness supplied it; the dispatcher and the per-input table did not run.",
+  "I8": "The harness built the parameter details record (kind, min, max, quantized, Zoom 1.0) and simulated the parameter; which application parameter reports which kind, range and stepping is excluded (PRB-N7-04)."
+ },
+ "clauses": {
+  "midi-config-v3 clauses, cases and fixtures, carried": {
+   "evidence": [
+    "v3"
+   ],
+   "inferred": []
+  },
+  "takeover: three choices by preference position; none applies every value": {
+   "evidence": [
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I1"
+   ]
+  },
+  "takeover: exemptions (relative; enumerated and other; crossfader Absolute); crossfader pairs not exempt": {
+   "evidence": [
+    "E10",
+    "E11",
+    "E13",
+    "E16"
+   ],
+   "inferred": [
+    "I2"
+   ]
+  },
+  "previous data values: per input, channel and number; empty on open; every message counts; nothing else empties it": {
+   "evidence": [
+    "E10",
+    "E15"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "pair previous value (four cases, equal to ((128m)|l)/129 with -129 for a missing half)": {
+   "evidence": [
+    "E11",
+    "E16"
+   ],
+   "inferred": [
+    "I7"
+   ]
+  },
+  "Pick-Up and Value Scaling rules, sorted bounds, -129 test, inclusive bounds, clamping, unrounded move": {
+   "evidence": [
+    "E14",
+    "E16"
+   ],
+   "inferred": [
+    "I6",
+    "I7",
+    "I8"
+   ]
+  },
+  "reversed ranges: Absolute, Absolute14Bit, relative (stepped toward max) and takeover": {
+   "evidence": [
+    "E12",
+    "E16"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "tolerance tau = max(1e-6, 2^-22 R)": {
+   "evidence": [
+    "E16"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "exclusion: tests within 8 tau of a bound outside cases 149 and 152-161 (r5 Timing and state; plan finding F2; precision-model.txt; band width an author choice)": {
+   "evidence": [
+    "E16"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "exclusion: Value Scaling moves outside the listed cases (cross-slice magnification up to 18 tau, r5; exact-versus-binary32 up to 3.8 tau with lo = 0, plan finding F1, precision-model.txt)": {
+   "evidence": [
+    "E16"
+   ],
+   "inferred": [
+    "I6"
+   ]
+  },
+  "exclusion: on/off parameters (S-cond, PRB-N7-04); default choice; displayed wording; notification": {
+   "evidence": [
+    "E13",
+    "E15"
+   ],
+   "inferred": []
+  }
+ },
+ "cases": {
+  "MIDI-CONFIG-001": {
+   "source": "midi-config-v3 MIDI-CONFIG-001 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-002": {
+   "source": "midi-config-v3 MIDI-CONFIG-002 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-003": {
+   "source": "midi-config-v3 MIDI-CONFIG-003 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-004": {
+   "source": "midi-config-v3 MIDI-CONFIG-004 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-005": {
+   "source": "midi-config-v3 MIDI-CONFIG-005 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-006": {
+   "source": "midi-config-v3 MIDI-CONFIG-006 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-007": {
+   "source": "midi-config-v3 MIDI-CONFIG-007 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-008": {
+   "source": "midi-config-v3 MIDI-CONFIG-008 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-009": {
+   "source": "midi-config-v3 MIDI-CONFIG-009 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-010": {
+   "source": "midi-config-v3 MIDI-CONFIG-010 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-011": {
+   "source": "midi-config-v3 MIDI-CONFIG-011 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-012": {
+   "source": "midi-config-v3 MIDI-CONFIG-012 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-013": {
+   "source": "midi-config-v3 MIDI-CONFIG-013 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-014": {
+   "source": "midi-config-v3 MIDI-CONFIG-014 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-015": {
+   "source": "midi-config-v3 MIDI-CONFIG-015 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-016": {
+   "source": "midi-config-v3 MIDI-CONFIG-016 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-017": {
+   "source": "midi-config-v3 MIDI-CONFIG-017 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-018": {
+   "source": "midi-config-v3 MIDI-CONFIG-018 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-019": {
+   "source": "midi-config-v3 MIDI-CONFIG-019 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-020": {
+   "source": "midi-config-v3 MIDI-CONFIG-020 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-021": {
+   "source": "midi-config-v3 MIDI-CONFIG-021 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-022": {
+   "source": "midi-config-v3 MIDI-CONFIG-022 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-023": {
+   "source": "midi-config-v3 MIDI-CONFIG-023 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-024": {
+   "source": "midi-config-v3 MIDI-CONFIG-024 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-025": {
+   "source": "midi-config-v3 MIDI-CONFIG-025 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-026": {
+   "source": "midi-config-v3 MIDI-CONFIG-026 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-027": {
+   "source": "midi-config-v3 MIDI-CONFIG-027 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-028": {
+   "source": "midi-config-v3 MIDI-CONFIG-028 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-029": {
+   "source": "midi-config-v3 MIDI-CONFIG-029 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-030": {
+   "source": "midi-config-v3 MIDI-CONFIG-030 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-031": {
+   "source": "midi-config-v3 MIDI-CONFIG-031 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-032": {
+   "source": "midi-config-v3 MIDI-CONFIG-032 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-033": {
+   "source": "midi-config-v3 MIDI-CONFIG-033 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-034": {
+   "source": "midi-config-v3 MIDI-CONFIG-034 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-035": {
+   "source": "midi-config-v3 MIDI-CONFIG-035 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-036": {
+   "source": "midi-config-v3 MIDI-CONFIG-036 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-037": {
+   "source": "midi-config-v3 MIDI-CONFIG-037 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-038": {
+   "source": "midi-config-v3 MIDI-CONFIG-038 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-039": {
+   "source": "midi-config-v3 MIDI-CONFIG-039 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-040": {
+   "source": "midi-config-v3 MIDI-CONFIG-040 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-041": {
+   "source": "midi-config-v3 MIDI-CONFIG-041 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-042": {
+   "source": "midi-config-v3 MIDI-CONFIG-042 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-043": {
+   "source": "midi-config-v3 MIDI-CONFIG-043 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-044": {
+   "source": "midi-config-v3 MIDI-CONFIG-044 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-045": {
+   "source": "midi-config-v3 MIDI-CONFIG-045 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-046": {
+   "source": "midi-config-v3 MIDI-CONFIG-046 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-047": {
+   "source": "midi-config-v3 MIDI-CONFIG-047 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-048": {
+   "source": "midi-config-v3 MIDI-CONFIG-048 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-049": {
+   "source": "midi-config-v3 MIDI-CONFIG-049 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-050": {
+   "source": "midi-config-v3 MIDI-CONFIG-050 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-051": {
+   "source": "midi-config-v3 MIDI-CONFIG-051 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-052": {
+   "source": "midi-config-v3 MIDI-CONFIG-052 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-053": {
+   "source": "midi-config-v3 MIDI-CONFIG-053 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-054": {
+   "source": "midi-config-v3 MIDI-CONFIG-054 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-055": {
+   "source": "midi-config-v3 MIDI-CONFIG-055 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-056": {
+   "source": "midi-config-v3 MIDI-CONFIG-056 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-057": {
+   "source": "midi-config-v3 MIDI-CONFIG-057 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-058": {
+   "source": "midi-config-v3 MIDI-CONFIG-058 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-059": {
+   "source": "midi-config-v3 MIDI-CONFIG-059 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-060": {
+   "source": "midi-config-v3 MIDI-CONFIG-060 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-061": {
+   "source": "midi-config-v3 MIDI-CONFIG-061 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-062": {
+   "source": "midi-config-v3 MIDI-CONFIG-062 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-063": {
+   "source": "midi-config-v3 MIDI-CONFIG-063 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-064": {
+   "source": "midi-config-v3 MIDI-CONFIG-064 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-065": {
+   "source": "midi-config-v3 MIDI-CONFIG-065 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-066": {
+   "source": "midi-config-v3 MIDI-CONFIG-066 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-067": {
+   "source": "midi-config-v3 MIDI-CONFIG-067 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-068": {
+   "source": "midi-config-v3 MIDI-CONFIG-068 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-069": {
+   "source": "midi-config-v3 MIDI-CONFIG-069 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-070": {
+   "source": "midi-config-v3 MIDI-CONFIG-070 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-071": {
+   "source": "midi-config-v3 MIDI-CONFIG-071 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-072": {
+   "source": "midi-config-v3 MIDI-CONFIG-072 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-073": {
+   "source": "midi-config-v3 MIDI-CONFIG-073 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-074": {
+   "source": "midi-config-v3 MIDI-CONFIG-074 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-075": {
+   "source": "midi-config-v3 MIDI-CONFIG-075 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-076": {
+   "source": "midi-config-v3 MIDI-CONFIG-076 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-077": {
+   "source": "midi-config-v3 MIDI-CONFIG-077 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-078": {
+   "source": "midi-config-v3 MIDI-CONFIG-078 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-079": {
+   "source": "midi-config-v3 MIDI-CONFIG-079 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-080": {
+   "source": "midi-config-v3 MIDI-CONFIG-080 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-081": {
+   "source": "midi-config-v3 MIDI-CONFIG-081 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-082": {
+   "source": "midi-config-v3 MIDI-CONFIG-082 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-083": {
+   "source": "midi-config-v3 MIDI-CONFIG-083 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-084": {
+   "source": "midi-config-v3 MIDI-CONFIG-084 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-085": {
+   "source": "midi-config-v3 MIDI-CONFIG-085 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-086": {
+   "source": "midi-config-v3 MIDI-CONFIG-086 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-087": {
+   "source": "midi-config-v3 MIDI-CONFIG-087 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-088": {
+   "source": "midi-config-v3 MIDI-CONFIG-088 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-089": {
+   "source": "midi-config-v3 MIDI-CONFIG-089 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-090": {
+   "source": "midi-config-v3 MIDI-CONFIG-090 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-091": {
+   "source": "midi-config-v3 MIDI-CONFIG-091 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-092": {
+   "source": "midi-config-v3 MIDI-CONFIG-092 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-093": {
+   "source": "midi-config-v3 MIDI-CONFIG-093 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-094": {
+   "source": "midi-config-v3 MIDI-CONFIG-094 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-095": {
+   "source": "midi-config-v3 MIDI-CONFIG-095 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-096": {
+   "source": "midi-config-v3 MIDI-CONFIG-096 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-097": {
+   "source": "midi-config-v3 MIDI-CONFIG-097 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-098": {
+   "source": "midi-config-v3 MIDI-CONFIG-098 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-099": {
+   "source": "midi-config-v3 MIDI-CONFIG-099 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-100": {
+   "source": "midi-config-v3 MIDI-CONFIG-100 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-101": {
+   "source": "midi-config-v3 MIDI-CONFIG-101 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-102": {
+   "source": "midi-config-v3 MIDI-CONFIG-102 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-103": {
+   "source": "midi-config-v3 MIDI-CONFIG-103 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-104": {
+   "source": "midi-config-v3 MIDI-CONFIG-104 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-105": {
+   "source": "midi-config-v3 MIDI-CONFIG-105 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-106": {
+   "source": "midi-config-v3 MIDI-CONFIG-106 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-107": {
+   "source": "midi-config-v3 MIDI-CONFIG-107 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-108": {
+   "source": "midi-config-v3 MIDI-CONFIG-108 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-109": {
+   "source": "midi-config-v3 MIDI-CONFIG-109 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ]
+  },
+  "MIDI-CONFIG-110": {
+   "source": "midi-config-v3 MIDI-CONFIG-110 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-01 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-111": {
+   "source": "midi-config-v3 MIDI-CONFIG-111 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-02 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-112": {
+   "source": "midi-config-v3 MIDI-CONFIG-112 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-03 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-113": {
+   "source": "midi-config-v3 MIDI-CONFIG-113 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-04 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-114": {
+   "source": "midi-config-v3 MIDI-CONFIG-114 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-05 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-115": {
+   "source": "midi-config-v3 MIDI-CONFIG-115 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-06 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-116": {
+   "source": "midi-config-v3 MIDI-CONFIG-116 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-07 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-117": {
+   "source": "midi-config-v3 MIDI-CONFIG-117 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-08 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-118": {
+   "source": "midi-config-v3 MIDI-CONFIG-118 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-09 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-119": {
+   "source": "midi-config-v3 MIDI-CONFIG-119 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-10 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-120": {
+   "source": "midi-config-v3 MIDI-CONFIG-120 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-11 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-121": {
+   "source": "midi-config-v3 MIDI-CONFIG-121 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-12 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-122": {
+   "source": "midi-config-v3 MIDI-CONFIG-122 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-13 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-123": {
+   "source": "midi-config-v3 MIDI-CONFIG-123 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-14 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-124": {
+   "source": "midi-config-v3 MIDI-CONFIG-124 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-15 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-125": {
+   "source": "midi-config-v3 MIDI-CONFIG-125 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-16 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-126": {
+   "source": "midi-config-v3 MIDI-CONFIG-126 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-22 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-127": {
+   "source": "midi-config-v3 MIDI-CONFIG-127 (record and fixture unchanged)",
+   "evidence": [
+    "v3"
+   ],
+   "x_corroboration": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-23 agrees within 1e-6: True"
+  },
+  "MIDI-CONFIG-128": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-19 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-19",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-129": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-20 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-20",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-130": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-21 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/results/mt.json MT-21",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-131": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-24 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-24 (results/takeover.json TK-02)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-132": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-25 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-25 (results/takeover.json TK-03)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-133": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-26 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-26 (results/takeover.json TK-05)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-134": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-27 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-27 (results/takeover.json TK-06)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-135": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-28 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-28 (results/takeover.json TK-07)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-136": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-29 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-29 (results/takeover.json TK-08)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-137": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-30 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-30 (results/takeover.json TK-09)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-138": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-31 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-31 (results/takeover.json TK-10)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-139": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-32 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-32 (results/takeover.json TK-11)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-140": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-33 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-33 (results/takeover.json TK-12)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-141": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-34 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-34 (results/takeover.json TK-13)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-142": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-35 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-35 (results/takeover.json TK-14)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-143": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-36 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-36 (results/takeover.json TK-15)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-144": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-37 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-37 (results/takeover.json TK-17)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-145": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-38 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-38 (results/takeover.json TK-18)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-146": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-39 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-39 (results/takeover.json TK-19)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-147": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-40 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-40 (results/takeover.json TK-22)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-148": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-41 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-41 (results/takeover.json TK-23)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-149": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-42 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-42 (results/takeover.json TK-25)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-150": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-45 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-45 (results/takeover.json TK-29)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-151": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-46 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-46 (results/takeover.json TK-30)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": false,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-152": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-47 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-47 (results/takeover.json TB-01)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-153": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-48 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-48 (results/takeover.json TB-02)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-154": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-49 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-49 (results/takeover.json TB-03)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-155": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-50 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-50 (results/takeover.json TB-04)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": true
+  },
+  "MIDI-CONFIG-156": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-51 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-51 (results/takeover.json TB-05)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-157": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-52 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-52 (results/takeover.json TB-06)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-158": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-53 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-53 (results/takeover.json TB-07)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-159": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-54 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-54 (results/takeover.json TB-08)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-160": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-55 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-55 (results/takeover.json TB-09)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": false
+  },
+  "MIDI-CONFIG-161": {
+   "source": "SPEC-MIDI-USER-MAPPING r5 MT-56 (label X)",
+   "x_result": "analysis/ableton-live-12.4.3/r2/x2-midi-v1/acceptance-cases-x2.json MT-56 (results/takeover.json TB-10)",
+   "evidence": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ],
+   "inferred": [
+    "I2",
+    "I3",
+    "I4",
+    "I6",
+    "I7",
+    "I8"
+   ],
+   "near_bound_exception": true,
+   "value_scaling_move_case": true
+  }
+ },
+ "excluded_spec_cases": {
+  "MT-17": "S-cond: on/off thresholds (PRB-N7-04)",
+  "MT-18": "S-cond: on/off, relative (PRB-N7-04)",
+  "MT-43": "S-cond: 14-bit on/off (PRB-N7-04)",
+  "MT-44": "S-cond: on/off, reversed thresholds (PRB-N7-04)"
+ }
+}

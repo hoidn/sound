@@ -2152,3 +2152,16 @@ Effort for the other devices:
 - Collision is silent with Live's defaults;
 - Amp and Cabinet need CoreFoundation and Objective-C emulation and a fake
   host identity. That is held for the user (Q-025).
+
+## [2026-10-18] release | midi-config-v4 supersedes v3
+
+[midi-config-v4](../handoff/midi-config-v4/README.md) has 161 cases: v3's 127 carried
+byte-identical, and 34 from extracted execution covering Pick-Up and Value Scaling
+takeover, reversed ranges and the first 14-bit pair. A separate review agent
+approved it with one narrowing: a stepped value within 8τ of a half-integer has
+no expectation. Relative message runs are compared within k×τ.
+
+The manifest SHA-256 is
+`0911e9b57730b9d41c143cd18a5bacc80d8439ce51b202201820bef9ff8cef65`. The review's
+two precision corrections, and its correction of the Value Scaling error figure
+(96 to 408τ, not 3.8τ), are owed to spec revision 6.

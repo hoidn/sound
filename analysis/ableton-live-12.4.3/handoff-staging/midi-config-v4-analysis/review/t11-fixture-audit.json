@@ -1,0 +1,4733 @@
+{
+ "id": "T11-RELEASED-FIXTURE-AUDIT",
+ "spec": "SPEC-LIVE-SET-STRUCTURE revision 1 (A1, A2, A3 settled statically; A5 still an assumption)",
+ "method": "Audit every released fixture against the structural load rules of SPEC-LIVE-SET-STRUCTURE r1.\n\nUsage: python3 -I fixture_audit.py <schema.txt> <handoff dir> <out.json>\nRead-only on handoff/. For each release, each fixture file is classified (Live Set, device preset,\ndeliberately unparseable, or not a Live Set document) and linked to the cases that use it with their\nexpectations. For a Live Set, the traced refusals are evaluated:\n  REQ-002  no audio, MIDI or group track; a player track after a return track     (validation walk)\n  REQ-006  an audio or MIDI track whose freeze slot count differs from its session slot count (walk)\n  REQ-013  a mixer with more send holders than trailing return tracks              (root post-load)\n  REQ-015  a pointee present with Id 0 or without Id; NextPointeeId not above the largest pointee Id\n  REQ-016  a negative or duplicate list-item Id (S-cond A5)\nand two shapes with no load check (REQ-006 slots != scenes, REQ-013 SendsPre != returns) are noted.\nFor a fixture that would be refused, the minimal addition taken from T11-MIN's skeleton is recorded\nas XML text with its insertion point, applied to a copy, and the copy is re-checked. The addition\nonly adds elements; no existing element or value changes, so what the case tests is kept.\nEnvelope, value-text and field-level refusals belong to the other specs and are not evaluated.",
+ "basis": {
+  "REQ-002, REQ-006": "validation walk, run by the XML reader's load step on every open (A1 settled)",
+  "REQ-006 freeze count": "the freeze sequencer is constructed with an empty slot list and no load step adds slots (A2 settled)",
+  "REQ-013, REQ-015 NextPointeeId": "root post-load step, enabled by the reading context's flag, which the XML reader's context sets (A1 settled)",
+  "REQ-015 Id 0": "member post-load step; preset exemption not set on the set-open path (A3 settled)",
+  "REQ-016": "generic list loader (S-cond A5)"
+ },
+ "totals": {
+  "fixtures": 161,
+  "live_sets": 0,
+  "refused": 0,
+  "cases_contradicted": 0,
+  "cases_not_isolating": 0
+ },
+ "releases": [
+  {
+   "release": "midi-config-v4",
+   "summary": {
+    "fixtures": 161,
+    "live_sets": 0,
+    "refused": 0,
+    "cases_contradicted": [],
+    "cases_not_isolating": [],
+    "with_unknown_shapes": 0
+   },
+   "fixtures": [
+    {
+     "fixture": "fixtures/MIDI-CONFIG-001/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-001",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 0,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-002/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-002",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 127,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-003/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-003",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-004/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-004",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-005/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-005",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-006/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-006",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-007/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-007",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-008/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-008",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 0,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-009/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-009",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 127,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-010/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-010",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-011/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-011",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-012/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-012",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-013/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-013",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-014/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-014",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-015/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-015",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 0,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-016/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-016",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 127,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-017/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-017",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-018/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-018",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-019/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-019",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-020/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-020",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-021/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-021",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-022/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-022",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-023/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-023",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-024/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-024",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-025/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-025",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-026/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-026",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-027/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-027",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-028/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-028",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-029/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-029",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-030/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-030",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-031/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-031",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-032/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-032",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-033/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-033",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-034/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-034",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-035/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-035",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-036/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-036",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-037/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-037",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-038/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-038",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-039/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-039",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-040/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-040",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-041/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-041",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-042/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-042",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-043/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-043",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-044/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-044",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-045/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-045",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-046/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-046",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-047/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-047",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-048/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-048",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-049/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-049",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-050/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-050",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-051/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-051",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-052/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-052",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 15,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-053/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-053",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 7,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 21,
+          "channel": 8,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 22,
+          "channel": 9,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-054/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-054",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 9,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-055/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-055",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-056/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-056",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder3",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 12,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder7",
+          "target": "device-parameter:2",
+          "message_type": "control-change",
+          "number": 14,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-057/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-057",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder2",
+          "target": "device-parameter:2",
+          "message_type": "control-change",
+          "number": 21,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder3",
+          "target": "device-parameter:3",
+          "message_type": "control-change",
+          "number": 22,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder4",
+          "target": "device-parameter:4",
+          "message_type": "control-change",
+          "number": 23,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder5",
+          "target": "device-parameter:5",
+          "message_type": "control-change",
+          "number": 24,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder6",
+          "target": "device-parameter:6",
+          "message_type": "control-change",
+          "number": 25,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder7",
+          "target": "device-parameter:7",
+          "message_type": "control-change",
+          "number": 26,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder8",
+          "target": "device-parameter:8",
+          "message_type": "control-change",
+          "number": 27,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder9",
+          "target": "device-parameter:9",
+          "message_type": "control-change",
+          "number": 28,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 2
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-058/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-058",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder9",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 30,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder10",
+          "target": "device-parameter:2",
+          "message_type": "control-change",
+          "number": 31,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder11",
+          "target": "device-parameter:3",
+          "message_type": "control-change",
+          "number": 32,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder12",
+          "target": "device-parameter:4",
+          "message_type": "control-change",
+          "number": 33,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder13",
+          "target": "device-parameter:5",
+          "message_type": "control-change",
+          "number": 34,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder14",
+          "target": "device-parameter:6",
+          "message_type": "control-change",
+          "number": 35,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder15",
+          "target": "device-parameter:7",
+          "message_type": "control-change",
+          "number": 36,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder16",
+          "target": "device-parameter:8",
+          "message_type": "control-change",
+          "number": 37,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-059/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-059",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 0,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder2",
+          "target": "device-parameter:2",
+          "message_type": "control-change",
+          "number": 11,
+          "channel": 15,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder3",
+          "target": "device-parameter:3",
+          "message_type": "control-change",
+          "number": 12,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder4",
+          "target": "device-parameter:4",
+          "message_type": "control-change",
+          "number": 13,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder5",
+          "target": "device-parameter:5",
+          "message_type": "control-change",
+          "number": 14,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-060/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-060",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder4",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 127,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-061/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-061",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 5,
+          "map_mode": "LinearTwoCompliment"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-062/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-062",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 95,
+          "channel": 5,
+          "map_mode": "Absolute14Bit"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Encoder2",
+          "target": "device-parameter:2",
+          "message_type": "control-change",
+          "number": 96,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-063/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-063",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 5,
+          "map_mode": "AccelSignedBit2"
+         },
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider1",
+          "target": "track-volume:1",
+          "message_type": "control-change",
+          "number": 11,
+          "channel": 5,
+          "map_mode": "LinearSignedBit"
+         },
+         {
+          "section": "MixerControls",
+          "control": "Send1Knob1",
+          "target": "track-send-a:1",
+          "message_type": "control-change",
+          "number": 12,
+          "channel": 5,
+          "map_mode": "AccelBinaryOffset"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 13,
+          "channel": 5,
+          "map_mode": "LinearSignedBit2"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-064/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-064",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 5,
+          "map_mode": "AccelTwoCompliment"
+         },
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider1",
+          "target": "track-volume:1",
+          "message_type": "control-change",
+          "number": 11,
+          "channel": 5,
+          "map_mode": "LinearBinaryOffset"
+         },
+         {
+          "section": "MixerControls",
+          "control": "Send1Knob1",
+          "target": "track-send-a:1",
+          "message_type": "control-change",
+          "number": 12,
+          "channel": 5,
+          "map_mode": "AccelSignedBit"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 13,
+          "channel": 5,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-065/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-065",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Bank8Button",
+          "target": "device-bank:1",
+          "message_type": "control-change",
+          "number": 40,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-066/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-066",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Bank2Button",
+          "target": "device-bank:1",
+          "message_type": "control-change",
+          "number": 41,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "Bank5Button",
+          "target": "device-bank:2",
+          "message_type": "control-change",
+          "number": 42,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-067/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-067",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "NextBankButton",
+          "target": "device-bank-next",
+          "message_type": "control-change",
+          "number": 50,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "PrevBankButton",
+          "target": "device-bank-previous",
+          "message_type": "control-change",
+          "number": 51,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "LockButton",
+          "target": "device-lock",
+          "message_type": "control-change",
+          "number": 52,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "DeviceControls",
+          "control": "OnOffButton",
+          "target": "device-on-off",
+          "message_type": "control-change",
+          "number": 53,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-068/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-068",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "LockButton",
+          "target": "device-lock",
+          "message_type": "control-change",
+          "number": 52,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton1",
+          "target": "track-mute:1",
+          "message_type": "control-change",
+          "number": 30,
+          "channel": 5,
+          "button_kind": "toggle"
+         },
+         {
+          "section": "MixerControls",
+          "control": "Send1Knob1",
+          "target": "track-send-a:1",
+          "message_type": "control-change",
+          "number": 12,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "TransportControls",
+          "control": "PlayButton",
+          "target": "transport-play",
+          "message_type": "control-change",
+          "number": 61,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-069/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-069",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider1",
+          "target": "track-volume:1",
+          "message_type": "control-change",
+          "number": 7,
+          "channel": 3,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider8",
+          "target": "track-volume:8",
+          "message_type": "control-change",
+          "number": 127,
+          "channel": 4,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-070/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-070",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider2",
+          "target": "track-volume:2",
+          "message_type": "control-change",
+          "number": 8,
+          "channel": 0,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider3",
+          "target": "track-volume:3",
+          "message_type": "control-change",
+          "number": 9,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-071/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-071",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "Send1Knob2",
+          "target": "track-send-a:2",
+          "message_type": "control-change",
+          "number": 21,
+          "channel": 5,
+          "map_mode": "AccelSignedBit"
+         },
+         {
+          "section": "MixerControls",
+          "control": "Send2Knob2",
+          "target": "track-send-b:2",
+          "message_type": "control-change",
+          "number": 22,
+          "channel": 5,
+          "map_mode": "AccelSignedBit"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-072/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-072",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton1",
+          "target": "track-mute:1",
+          "message_type": "control-change",
+          "number": 30,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackSoloButton1",
+          "target": "track-solo:1",
+          "message_type": "control-change",
+          "number": 31,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackSelectButton1",
+          "target": "track-select:1",
+          "message_type": "control-change",
+          "number": 32,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackArmButton1",
+          "target": "track-arm:1",
+          "message_type": "control-change",
+          "number": 33,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "NextBankButton",
+          "target": "mixer-bank-next",
+          "message_type": "control-change",
+          "number": 34,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "PrevBankButton",
+          "target": "mixer-bank-previous",
+          "message_type": "control-change",
+          "number": 35,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-073/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-073",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton8",
+          "target": "track-mute:8",
+          "message_type": "control-change",
+          "number": 40,
+          "channel": 5,
+          "button_kind": "toggle"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackArmButton8",
+          "target": "track-arm:8",
+          "message_type": "control-change",
+          "number": 41,
+          "channel": 5,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-074/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-074",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackSoloButton4",
+          "target": "track-solo:4",
+          "message_type": "control-change",
+          "number": 44,
+          "channel": 5,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-075/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-075",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-076/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-076",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-077/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-077",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-078/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-078",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-079/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-079",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-080/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-080",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-081/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-081",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton2",
+          "target": "track-mute:2",
+          "message_type": "control-change",
+          "number": 45,
+          "channel": 5,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-082/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-082",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "NextBankButton",
+          "target": "device-bank-next",
+          "message_type": "control-change",
+          "number": 50,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "MixerControls",
+          "control": "NextBankButton",
+          "target": "mixer-bank-next",
+          "message_type": "control-change",
+          "number": 51,
+          "channel": 5,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-083/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-083",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "VolumeSlider1",
+          "target": "track-volume:1",
+          "message_type": "control-change",
+          "number": 95,
+          "channel": 5,
+          "map_mode": "Absolute14Bit"
+         },
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 100,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 31,
+          "channel": 5,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-084/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-084",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 5,
+          "map_mode": "AccelTwoCompliment"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 21,
+          "channel": 5,
+          "map_mode": "AccelTwoCompliment"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 22,
+          "channel": 5,
+          "map_mode": "LinearBinaryOffset"
+         },
+         {
+          "section": "MixerControls",
+          "control": "Send1Knob1",
+          "target": "track-send-a:1",
+          "message_type": "control-change",
+          "number": 23,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "Send2Knob1",
+          "target": "track-send-b:1",
+          "message_type": "control-change",
+          "number": 24,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-085/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-085",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "TransportControls",
+          "control": "StopButton",
+          "target": "transport-stop",
+          "message_type": "control-change",
+          "number": 60,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "PlayButton",
+          "target": "transport-play",
+          "message_type": "control-change",
+          "number": 61,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "RecButton",
+          "target": "arrangement-record",
+          "message_type": "control-change",
+          "number": 62,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "SessionRecButton",
+          "target": "session-record",
+          "message_type": "control-change",
+          "number": 63,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "OverButton",
+          "target": "arrangement-overdub",
+          "message_type": "control-change",
+          "number": 64,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "MetroButton",
+          "target": "metronome",
+          "message_type": "control-change",
+          "number": 65,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "LoopButton",
+          "target": "arrangement-loop",
+          "message_type": "control-change",
+          "number": 66,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "RwdButton",
+          "target": "rewind",
+          "message_type": "control-change",
+          "number": 67,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "FfwdButton",
+          "target": "fast-forward",
+          "message_type": "control-change",
+          "number": 68,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "PunchInButton",
+          "target": "punch-in",
+          "message_type": "control-change",
+          "number": 69,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "PunchOutButton",
+          "target": "punch-out",
+          "message_type": "control-change",
+          "number": 70,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "NudgeUpButton",
+          "target": "nudge-up",
+          "message_type": "control-change",
+          "number": 71,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "NudgeDownButton",
+          "target": "nudge-down",
+          "message_type": "control-change",
+          "number": 72,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "TransportControls",
+          "control": "TapTempoButton",
+          "target": "tap-tempo",
+          "message_type": "control-change",
+          "number": 73,
+          "channel": 5,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-086/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-086",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-087/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-087",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "TransportControls",
+          "control": "PlayButton",
+          "target": "transport-play",
+          "message_type": "control-change",
+          "number": 61,
+          "channel": 0,
+          "button_kind": "momentary"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-088/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-088",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "Globals",
+          "control": "Pad1Note",
+          "target": "drum-pad:1",
+          "message_type": "note",
+          "number": 36,
+          "channel": 9
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-089/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-089",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "Globals",
+          "control": "Pad16Note",
+          "target": "drum-pad:16",
+          "message_type": "note",
+          "number": 127,
+          "channel": 15
+         },
+         {
+          "section": "Globals",
+          "control": "Pad2Note",
+          "target": "drum-pad:2",
+          "message_type": "note",
+          "number": 0,
+          "channel": 0
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-090/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-090",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-091/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-091",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "Globals",
+          "control": "Pad6Note",
+          "target": "drum-pad:6",
+          "message_type": "note",
+          "number": 42,
+          "channel": 3
+         },
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-092/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-092",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "Globals",
+          "control": "Pad8Note",
+          "target": "drum-pad:8",
+          "message_type": "note",
+          "number": 44,
+          "channel": 5
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-093/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-093",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-094/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-094",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-095/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-095",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-096/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-096",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 3,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-097/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-097",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-098/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-098",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-099/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-099",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-100/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-100",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-101/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-101",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-102/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-102",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 3,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-103/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-103",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-104/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-104",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 5,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 21,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-105/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-105",
+       "action": null,
+       "expected": {
+        "assignments": [],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-106/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-106",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "MasterVolumeSlider",
+          "target": "master-volume",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-107/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-107",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 2,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton1",
+          "target": "track-mute:1",
+          "message_type": "control-change",
+          "number": 30,
+          "channel": 5,
+          "button_kind": "toggle"
+         },
+         {
+          "section": "TransportControls",
+          "control": "PlayButton",
+          "target": "transport-play",
+          "message_type": "control-change",
+          "number": 61,
+          "channel": 5,
+          "button_kind": "momentary"
+         },
+         {
+          "section": "Globals",
+          "control": "Pad1Note",
+          "target": "drum-pad:1",
+          "message_type": "note",
+          "number": 36,
+          "channel": 5
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-108/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-108",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CueVolumeSlider",
+          "target": "cue-volume",
+          "message_type": "control-change",
+          "number": 21,
+          "channel": 5,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-109/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-109",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 10,
+          "channel": 0,
+          "map_mode": "Absolute"
+         },
+         {
+          "section": "MixerControls",
+          "control": "TrackMuteButton1",
+          "target": "track-mute:1",
+          "message_type": "control-change",
+          "number": 30,
+          "channel": 0,
+          "button_kind": "toggle"
+         }
+        ],
+        "device_parameter_banks": 1
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-110/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-110",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.0,
+         0.503937008,
+         1.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-111/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-111",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.784349631
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-112/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-112",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.784349631
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-113/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-113",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5,
+         0.784349631,
+         0.784349631
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-114/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-114",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         1.0,
+         1.0,
+         0.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-115/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-115",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearSignedBit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625,
+         0.5,
+         0.75,
+         0.50390625
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-116/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-116",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearSignedBit2"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.49609375,
+         0.5,
+         0.25
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-117/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-117",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearTwoCompliment"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625,
+         0.5,
+         0.25390625,
+         0.50390625
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-118/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-118",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearBinaryOffset"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625,
+         0.5,
+         0.5,
+         0.25
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-119/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-119",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "AccelSignedBit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625,
+         0.54296875,
+         0.73828125,
+         0.81640625,
+         0.8125,
+         0.6171875,
+         0.6953125
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-120/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-120",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "AccelSignedBit2"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.49609375,
+         0.5,
+         0.421875,
+         0.5,
+         0.3046875
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-121/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-121",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "AccelTwoCompliment"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625,
+         0.5,
+         0.6953125,
+         0.890625,
+         0.6953125,
+         0.890625
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-122/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-122",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "AccelBinaryOffset"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625,
+         0.5,
+         0.53125,
+         0.453125,
+         0.6484375
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-123/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-123",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearBinaryOffset"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.74609375,
+         0.9921875,
+         1.0,
+         0.75,
+         0.5,
+         0.25,
+         0.0,
+         0.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-124/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-124",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.0,
+         1.0,
+         1.0,
+         2.0,
+         3.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-125/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-125",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearSignedBit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         2.0,
+         3.0,
+         2.0,
+         1.0,
+         0.0,
+         0.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-126/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-126",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": null,
+        "values": [
+         0.078740157,
+         0.787401575
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-127/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-127",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "LinearSignedBit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.50390625
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-128/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-128",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5,
+         0.5,
+         0.496062994,
+         0.551181078
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-129/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-129",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.54273504,
+         0.58547008
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-130/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-130",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-131/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-131",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5,
+         0.472440958,
+         0.393700778
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-132/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-132",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.787401557
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-133/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-133",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.458333313,
+         0.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-134/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-134",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-135/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-135",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-136/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-136",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.503937006,
+         0.496062994,
+         0.448818892
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-137/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-137",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.45726499,
+         0.41452992
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-138/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-138",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.550000012
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-139/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-139",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.25,
+         0.212598428
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-140/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-140",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         1.059999943,
+         1.110236168
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-141/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-141",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.625038147
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-142/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-142",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-143/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-143",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.562530518
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-144/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-144",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5,
+         0.875999272
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-145/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-145",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5,
+         0.937695861
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-146/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-146",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         0.5,
+         0.5,
+         0.5,
+         0.507843494,
+         0.507843494,
+         0.625038147
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-147/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-147",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         1.0,
+         3.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-148/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-148",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         3.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-149/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-149",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         -10.0,
+         -10.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-150/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-150",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "MixerControls",
+          "control": "CrossfaderSlider",
+          "target": "crossfader",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute14Bit"
+         }
+        ],
+        "device_parameter_banks": null,
+        "values": [
+         0.5,
+         0.5
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-151/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-151",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         50.834648132,
+         58.543304443,
+         81.669296265,
+         999.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-152/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-152",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         30.49609375,
+         10.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-153/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-153",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         30.496095657,
+         10.165365219
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-154/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-154",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         29.50390625,
+         50.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-155/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-155",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         29.503904343,
+         49.606193542
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-156/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-156",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         31.984375,
+         30.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-157/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-157",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         31.984376907,
+         31.984376907
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-158/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-158",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         28.015625,
+         30.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-159/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-159",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         28.015623093,
+         28.015623093
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-160/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-160",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         61.984375,
+         60.0
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MIDI-CONFIG-161/UserConfiguration.txt",
+     "kind": "unparseable: ParseError: syntax error: line 1, column 0",
+     "cases": [
+      {
+       "id": "MIDI-CONFIG-161",
+       "action": null,
+       "expected": {
+        "assignments": [
+         {
+          "section": "DeviceControls",
+          "control": "Encoder1",
+          "target": "device-parameter:1",
+          "message_type": "control-change",
+          "number": 20,
+          "channel": 0,
+          "map_mode": "Absolute"
+         }
+        ],
+        "device_parameter_banks": 1,
+        "values": [
+         61.984378815,
+         89.768836975
+        ]
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
