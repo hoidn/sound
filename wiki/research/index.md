@@ -64,6 +64,7 @@ to the isolated implementation workspace.
 | [Playback core (T1.3)](playback-core.md) | Engine timing, launch pre-delay, MIDI note emission, unwarped audio playback; launch-timing A1 settled for Trigger |
 | [Device DSP by extracted execution (T1.2)](device-dsp-extracted.md) | Gate passed: the bundle loader works, Corpus renders are bit-repeatable and agree with the static model, Analog's note grid is exactly 1 ms, libm and FMA effects are described, effort per device is estimated |
 | [Electric device DSP](device-electric-dsp.md) | 120 retained renders; Polyphony settled; KeyboardStretch is a ±7.2-cent detune; corrections to the t12 probe and the Volume default |
+| [Tension device DSP](device-tension-dsp.md) | 68 deterministic renders on a 1 ms note grid; partials, sections and voices; floating-point sensitivity sets the metric |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

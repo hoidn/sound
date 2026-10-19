@@ -2243,3 +2243,12 @@ two. That makes v1 cases 003, 004 and 011 wrong. They are withdrawn, and the
 change list says so. No evaluated or playback values are released. The manifest
 SHA-256 is
 `267554cb2edc6c9960bfd5d67bcf996b833de15b9375063edfce4232c09d3791`.
+
+## [2026-10-18] spec | SPEC-DEVICE-TENSION r1
+
+[Tension](specs/device-tension.md) audio is specified from extracted execution: 15
+requirements and 42 cases (27 graded against 68 retained renders). Notes land on a
+1 ms grid measured from host block boundaries, and Live's block partition is not
+known (Q-025). The bow and DamperMass 0 settings are chaotic and can only be graded
+statistically. The T1.2 libm sensitivity test also moved exact results such as
+`expf(0) = 1`, which overstated Tension's sensitivity; Corpus figures are unchanged.

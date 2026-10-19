@@ -480,3 +480,4 @@ no experimental contradiction has been established yet.
 - Next action: trace Live's device-host calls statically; specify Analog, Tension,
   Electric and Collision the same way as Corpus.
 - Progress 2026-10-18: Electric is specified ([SPEC-DEVICE-ELECTRIC](specs/device-electric.md)). New protocol questions: Live's grid phase and event frame base; whether Live stops processing when a device signals that it may; which block an automated value arrives in, since parameters that act immediately can be off by one block. Values between sampled points need reference renders made on demand.
+- Progress 2026-10-18: Tension is specified ([SPEC-DEVICE-TENSION](specs/device-tension.md)). New items: the host block partition, which places notes on Analog's and Tension's 1 ms grid; whether statistical grading of chaotic Tension settings (bow, DamperMass 0) is acceptable; settings that depend on the random seed.
