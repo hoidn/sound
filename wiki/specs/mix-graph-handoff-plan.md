@@ -9,6 +9,16 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Mix graph handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [mix-graph-v1](../../handoff/mix-graph-v1/README.md), approved with listed narrowing by a separate review agent ([review record](../../handoff/mix-graph-v1/REVIEW.md)). All 28 cases are released unchanged: 17 computations and 11 composed renders, labelled spec conformance.
+
+- **RMG-01:** REQ-013's interpolated Float value and REQ-014 hold only under the default automation settings. Nothing depends on Q-023, A6 or A7.
+- **RMG-02:** the main track's one-event tempo and time-signature envelopes are exempt from the envelope exclusion.
+- **RMG-03:** REQ-013's sample-timing sentence is moved out of the released clause.
+
+For the spec author: F1, F2, F3 and F6 hold; objdump confirms that L is 200 for r ≥ 2³¹. REQ-013's interpolation needs a value step in the settings; without one, the value is held. REQ-012's one-event rule conflicts with the T11-MIN envelopes.
+
 ## Decision and boundary
 
 Stage a finite first release, mix-graph-v1, from

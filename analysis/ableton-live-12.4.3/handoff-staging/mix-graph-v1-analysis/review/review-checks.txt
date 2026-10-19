@@ -1,0 +1,128 @@
+mix-graph-v1 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B from any directory.
+Pre-review snapshot: session scratchpad mg1-pre/mix-graph-v1 (cp -a of staging before any edit).
+Export copy: session scratchpad export/hd/mix-graph-v1 (cp -a of the staging dir after all edits; diff -r: identical).
+
+Evidence identity. Draft manifest SHA-256 f4b48b14...e4e952 = plan page; all 17 listed files matched. Re-hashed on
+2026-10-18: t14-mix-v1 manifest 32a2a38b... (33 files, all match), x2-mixer-v1 662481cd... (12, all match),
+t11-structure-v1 6981daa7... (74, all match), Live x86_64 slice 1bae9a97..., derived/Live.arm64 3a99ceea...,
+schema 12.0_12402.txt b7c9d4c7.... All equal the recorded digests.
+
+Fixture validity (brief addendum). T11 checker, unchanged, on the 11 Live Set fixtures:
+- schema_check.py, staging (schema-check-staging.jsonl) and export (schema-check-export.jsonl): deviations {} in 11/11;
+  player_tracks 2, freeze == main slots, main slots == scenes (2), SendsPre == returns (1), holders == returns,
+  pointees 66 unique, NextPointeeId 67 > 66, list Ids unique, dangling envelopes 0, returns after players.
+- fixture_audit.py on a handoff-shaped dir holding only the candidate (t11-fixture-audit-staging.json,
+  t11-fixture-audit-export.json): 13 files, 11 Live Sets, 0 refused, 0 contradicted, 0 not isolating, 0 unknown shapes.
+  Every fixture is expected to open (spec "Every fixture is a complete minimal Live Set that opens"); none is refused.
+- REQ-LIVE-SET-STRUCTURE-001 shapes the checker does not evaluate (review_checks.lss001): base value element (Type -4)
+  without Value, repeated compound member, list item of unknown class: none in 11/11.
+- Each fixture = MIX-GRAPH-018 template with only the lines its purpose names (review_checks fixtures.lines_changed:
+  019-022 A Volume line 93; 023 main Volume 514; 024 A Pan 54; 025 A PanMode 52 and splits 67/80; 026 B Volume 240;
+  027 A Send 30 + A Speaker 46; 028 A Send 30 + R Speaker 340). Distinct; ASCII, tab-indented, LF, final newline.
+- Main-track one-event envelopes: Tempo (PointeeId 51, FloatEvent 120 = Manual 120) and TimeSignature (53, EnumEvent
+  201 = Manual 201) in every fixture: T11-MIN content (REQ-LIVE-SET-STRUCTURE-004/018, status V). They contradicted the
+  payload's render-case exclusion of envelopes on mixer parameters (RMG-02). Values equal Manual, so the timeable
+  validation walk noted in the transport-state-v3 review changes nothing; engine ActivateAutomation plays arranger
+  automation only with > 1 events (notes-automation.txt section 3, pc); tempo and time signature enter no gain here.
+
+Expectations. review_checks.py (own restatement, independent of build_mg1.py) on the export
+(review-checks-export.json; pre-edit run review-check-before.json gives the same results):
+- 17/17 computation cases agree; 11/11 render cases: coefficients recomposed from the fixture's mixer values agree
+  (1e-7 relative) and a frame-by-frame binary32 render of the shipped signals is within the comparator (worst 4.66e-8
+  against 5e-6). Mutation of each of the 28 cases caught (0 missed). Exclusion probes refused: A send 0.000318,
+  SoloSink true, crossfade A, a tempo event differing from Manual, ramp length r >= 2^31.
+- X inputs: pan law pan -1 Stereo and split (0, 0) equal x2-mixer-v1 pan_law exactly; volume round trip exact for
+  min, -6 dB, 0 dB, max (x2 fader.roundtrip_Q019); send-curve position of the exact minimum 0.0 (X); gate table = t14
+  solo.switch_word for types 0-6 x speaker {0, 1}; fade 75 (t14 solo.track_fade_time).
+- Silence-limit fixtures: own restatement of the SPEC-MIXER-VALUES REQ-005 table (approximate: differs from X by one
+  ulp at -6 dB, so not used for expectations) returns 0.000319 -> 0.00031900001 (below 0.0003199999919, silent) and
+  0.00033 -> 0.00033000001 unchanged. Interpolation between G[0] and G[1] is self-inverse, so the result is insensitive
+  to table ulps; margins 0.3 % and 3 %.
+- Hand re-derivations for REVIEW.md: MIX-GRAPH-024 (x2 pan_law w 0, p -1: 1.4142135381698608, 0, 0, 9.999999747e-06;
+  A send at min -> 0; main P = I) and MIX-GRAPH-026 (B 0.5011872053 -> 0.5011872053146362 exact round trip; A + 0.501*B).
+- build_mg1.py verify on the export (author-verify-after-review.json): 18 payload files, no hash, inventory, link or
+  input problem; deny-list hit only "glibc" in REVIEW.md's disposition (same wording as the transport-state-v3 record).
+  author_judge.py runs the author's judge_computation/judge_render, excluded_probes and structure_checks on the export
+  without rewriting anything (author-judge-after-review.json): 28 cases, no problem; 10/10 probes refused; 0 failing.
+  build and seal were not re-run: build rewrites cases.json and the manifest to the unreviewed state and seal rewrites
+  the author's validation record; no case record, fixture or signal changed.
+
+Static re-reading by the reviewer (pinned Live x86_64 slice, objdump -b binary --adjust-vma=0x100000000):
+- Ramp length 0x101b39550: r = ConvertDataStepToSampleStep(seg, step +0x68) (0x101b1f3d0: slope +0x10 == 0 -> return
+  constant 0x105b42d18 = 1.7976931348623155e308; else step / |slope| via andpd mask 0x105b35690, divsd).
+  0x101b39574 ucomisd r with that constant: equal -> L = 0 (0x101b395af). 0x101b39580 cmpb $1,0x68(status) else L = 0
+  (stopped). 0x101b39587 cvttsd2si %xmm0,%eax (32-bit); ecx = 0x10000, cmovl eax (signed min); edx = MinSeg +0x70;
+  cmp eax,edx; cmovg edx -> L = max(MinSeg, min(trunc r, 65536)) for r < 2^31; for r >= 2^31 eax = 0x80000000 ->
+  L = MinSeg = 200. Plan F3 confirmed; flat segment and stopped transport -> no ramp confirmed. SetStep 0x101b1f3a0:
+  step = L * slope.
+- Settings dependence (RMG-01): notes-automation.txt section 2, engine BringValueToProcessor 0x168c30 (reviewer objdump:
+  0x168ca6 no next event or 0x168cac cmpb $1,0x173(%rbx) not set -> 0x168d19 -> call 0x150150 with one value): with SegmentUpdateInData off (N < 1) the value is held (Init(v0)); interpolation needs a
+  value step. Song tempo uses N = 0. Defaults 0x10282b42d..3f (N 1000, MinSeg 200, smoothing 0) are applied to every
+  ATimeable* by the post-construction hook (S); their use for track-mixer parameters is the draft's A6 (no override
+  found, not traced). Payload now states REQ-013's Float value and REQ-014 for the default settings only.
+- Bool/Enum lookup (MIX-GRAPH-016): engine corpus names ScheduleNewEvent / ProcessAndScheduleNext only on
+  OAutomationPlayer (base); OBool/OEnumAutomationPlayer override BringValueToProcessor only. OBoolAutomationPlayer::
+  BringValueToProcessor 0x1674a0 (pc) sends the value of the current event index, no interpolation. Static-derived
+  label holds. The -1e7 first-time replacement is evidenced for ATimeableFloatOceanCreator only (RMG-03 scoping).
+- Main track volume (MIX-GRAPH-023; notes-q019.txt section 4 said "not re-traced"): Live x86 FUN_10269e7c0 calls
+  the ATrackDevice ctor FUN_10284e830 then installs vtable 0x106d178f8, whose typeinfo 0x106d18290 names
+  "16AMainTrackDevice" (bytes read from the slice); it then adds two timeables (tempo, time signature). The
+  ATrackDevice ctor creates the volume with ALevelUserFloatConverter kind 1 (0x10284f013, objdump-confirmed in the
+  notes). Call graph is pseudocode; typeinfo is from bytes.
+- A4 at the exact minimum (plan F4): notes-q019.txt 3a (send ToEngine = send-curve position, converter kind 0
+  confirmed at 0x102788389) and X2 gain_to_position 0 for 0.0003162277571: the engine port receives position 0, so g is
+  0 with the AConvertLevel(0) node (curve0(0) = 0.000316 -> floor) or without it. Upheld.
+- No-solo assumption: notes-solo.txt section 3: SoloPrehear is set only by OnSoloPrehearSink (SoloSink or a rack's
+  session-mixer solo) and the recompute leaves every type 0 when none is soloed; no racks in the fixtures. Does not
+  rest on A2 (A2 concerns SoloSink true). Kept as the stated assumption.
+
+Independence from Q-023 items, A6 and A7 (brief item c), per case:
+- 001-012: pure computations on stated inputs (send active a, post q, gates, ramps) - no open item.
+- 013-016: computations at envelope time; default settings stated as a term; no drive (A8), offset (F6), units (A3).
+- 017: step q is an argument; default MinSeg 200 is S; A6 removed from the payload (RMG-01).
+- 018-026: every send at the exact minimum (g = 0 under A4 either way; a irrelevant: A7); crossfade None (A5 moot);
+  no stored solo (A2 moot); no driving envelope (A3, A8, single-event content equal to Manual); main sum order in
+  the tolerance.
+- 027: A's send gate 0 zeroes the send matrix (MIX-GRAPH-004 X) - A4, A7 moot. 028: R's main gate 0 - A4, A7 moot.
+
+Sanitization. Own scan (review_checks.DENY: analyst paths, addresses, internal class/port names from the notes,
+predicate and solo-type table names, planning IDs A1-A8/F1-F7/Q-0xx/MG-0xx/E-fixtures/B0/T11, tool names): only
+"decompil" in AGENTS.md's forbidden-inputs list (allowed) and "glibc" in REVIEW.md's disposition. A first run flagged
+"JumpIndexA/B" (public Scene FollowAction element names) through a loose pattern; pattern anchored. The solo category
+labels paraphrase behavior; RMG-08 states they imply no internal state. "post amount", "split amount", "main gate",
+"send gate" are behavioral names.
+
+Package (export). sha256sum -c of the 18 listed files: all OK (sha256sum-export.txt). Inventory equals the directory;
+no symlinks; Markdown links README 5, spec 15, REVIEW 1, AGENTS 0, all resolve inside the package; every case input
+and signal exists. Signals: RIFF with chunks fmt and data only; PCM 16-bit, 2 ch, 44,100 Hz, 64 frames; samples equal
+the formulas; max |x| 0.5.
+
+Payload edits: apply_review_edits.py (README status and scope sentence; AGENTS status; cases.json top-level status;
+spec status, default-settings term, assumptions 2-3 removed and 4 renumbered, pan-law provenance, category labels,
+REQ-013 not-released list, Float-envelope first time, timing sentence removed, Float value under default settings,
+Bool/Enum at or after first event, REQ-014 default settings and q as input, send-reach wording, envelope exclusion,
+behavior exclusions, draft-case sentence, review link), REVIEW.md written, finalize_manifest.py (scopes 013/014,
+two input exclusions, two behavior exclusions, release status, date, review fields, re-hash). Diff:
+payload-changes.diff. No case record, fixture or signal changed; case count 28.
+Final manifest SHA-256: edb507883ccb32055307584d219fabe75a9534665a3ce828b7ec306ee0a33f66.
+
+For the spec owner (outside this package; SPEC-MIX-GRAPH r1 draft fixes):
+(1) F1 holds: MG-008 grades predicates; type 4's main gate follows Speaker (switch_word), so "speaker ignored for
+    {1, 3, 4}" misreads the gates. Drop or restate MG-008.
+(2) F2 holds: REQ-003's out-of-range consequences and MG-029 rest on REQ-MIXER-VALUES-015's held-as-written U; name it.
+(3) F3 holds (objdump above): REQ-014 gives L = 200 for r >= 2^31; zero slope -> sentinel -> no ramp. State both.
+(4) F6 holds: REQ-013's automation offset is untraced; the sample-accurate point-time clause depends on it too.
+(5) New: REQ-013's interpolated Float value holds only when the parameter's SegmentUpdateInData is set (N >= 1);
+    otherwise the value is held at each point (BringValueToProcessor). REQ-013 should name the settings condition;
+    REQ-014's settings binding for mixer parameters stays A6.
+(6) New: REQ-012's U on a one-event envelope ("excluded from graded cases") collides with the one-event tempo and
+    time-signature envelopes that T11-MIN (and every shipped set) holds; qualify it (event equal to Manual; arranger
+    automation activates only with > 1 events, pc).
+(7) New: the main-track clause of REQ-003 can cite the AMainTrackDevice -> ATrackDevice ctor chain above.
+(8) F4, F5 hold (Q-023 omits A6 and A7). F7 accepted.
+(9) MG-010's X is the binary64 control-ramp interpolator; REQ-009's binary32 step and accumulation for matrix gains is
+    pc. The values coincide for that input; the draft may distinguish the two ramp kinds.
+(10) Overlap with mixer-values-v2: identical pan-law formula; mixer-values-v2 leaves the PanMode -> w mapping
+    unreleased and this release releases it (S); no contradiction.
+Not copied to handoff/; plan page, spec pages, indexes, coverage and log untouched; no git operation.

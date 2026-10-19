@@ -1,0 +1,300 @@
+{
+ "id": "T11-RELEASED-FIXTURE-AUDIT",
+ "spec": "SPEC-LIVE-SET-STRUCTURE revision 1 (A1, A2, A3 settled statically; A5 still an assumption)",
+ "method": "Audit every released fixture against the structural load rules of SPEC-LIVE-SET-STRUCTURE r1.\n\nUsage: python3 -I fixture_audit.py <schema.txt> <handoff dir> <out.json>\nRead-only on handoff/. For each release, each fixture file is classified (Live Set, device preset,\ndeliberately unparseable, or not a Live Set document) and linked to the cases that use it with their\nexpectations. For a Live Set, the traced refusals are evaluated:\n  REQ-002  no audio, MIDI or group track; a player track after a return track     (validation walk)\n  REQ-006  an audio or MIDI track whose freeze slot count differs from its session slot count (walk)\n  REQ-013  a mixer with more send holders than trailing return tracks              (root post-load)\n  REQ-015  a pointee present with Id 0 or without Id; NextPointeeId not above the largest pointee Id\n  REQ-016  a negative or duplicate list-item Id (S-cond A5)\nand two shapes with no load check (REQ-006 slots != scenes, REQ-013 SendsPre != returns) are noted.\nFor a fixture that would be refused, the minimal addition taken from T11-MIN's skeleton is recorded\nas XML text with its insertion point, applied to a copy, and the copy is re-checked. The addition\nonly adds elements; no existing element or value changes, so what the case tests is kept.\nEnvelope, value-text and field-level refusals belong to the other specs and are not evaluated.",
+ "basis": {
+  "REQ-002, REQ-006": "validation walk, run by the XML reader's load step on every open (A1 settled)",
+  "REQ-006 freeze count": "the freeze sequencer is constructed with an empty slot list and no load step adds slots (A2 settled)",
+  "REQ-013, REQ-015 NextPointeeId": "root post-load step, enabled by the reading context's flag, which the XML reader's context sets (A1 settled)",
+  "REQ-015 Id 0": "member post-load step; preset exemption not set on the set-open path (A3 settled)",
+  "REQ-016": "generic list loader (S-cond A5)"
+ },
+ "totals": {
+  "fixtures": 13,
+  "live_sets": 11,
+  "refused": 0,
+  "cases_contradicted": 0,
+  "cases_not_isolating": 0
+ },
+ "releases": [
+  {
+   "release": "mix-graph-v1",
+   "summary": {
+    "fixtures": 13,
+    "live_sets": 11,
+    "refused": 0,
+    "cases_contradicted": [],
+    "cases_not_isolating": [],
+    "with_unknown_shapes": 0
+   },
+   "fixtures": [
+    {
+     "fixture": "fixtures/MIX-GRAPH-018.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-018",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 1.0
+         },
+         "R": {
+          "A.R": 1.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-019.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-019",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 1.9952623844146729
+         },
+         "R": {
+          "A.R": 1.9952623844146729
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-020.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-020",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {},
+         "R": {}
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-021.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-021",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {},
+         "R": {}
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-022.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-022",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 0.00033000000985339284
+         },
+         "R": {
+          "A.R": 0.00033000000985339284
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-023.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-023",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 0.5011872053146362
+         },
+         "R": {
+          "A.R": 0.5011872053146362
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-024.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-024",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 1.4142135381698608
+         },
+         "R": {
+          "A.R": 9.999999747378752e-06
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-025.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-025",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 0.7071067690849304,
+          "A.R": 0.7071067690849304
+         },
+         "R": {
+          "A.L": 0.7071067690849304,
+          "A.R": 0.7071067690849304
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-026.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-026",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 1.0,
+          "B.L": 0.5011872053146362
+         },
+         "R": {
+          "A.R": 1.0,
+          "B.R": 0.5011872053146362
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-027.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-027",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {},
+         "R": {}
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIX-GRAPH-028.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIX-GRAPH-028",
+       "action": "render",
+       "expected": {
+        "main": {
+         "L": {
+          "A.L": 1.0
+         },
+         "R": {
+          "A.R": 1.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/signals/x-a.wav",
+     "kind": "unparseable: ParseError: not well-formed (invalid token): line 1, column 4",
+     "cases": []
+    },
+    {
+     "fixture": "fixtures/signals/x-b.wav",
+     "kind": "unparseable: ParseError: not well-formed (invalid token): line 1, column 4",
+     "cases": []
+    }
+   ]
+  }
+ ]
+}

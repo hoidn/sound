@@ -1,0 +1,376 @@
+diff -ru /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/AGENTS.md ../mix-graph-v1/AGENTS.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/AGENTS.md	2026-10-18 19:53:42.953817849 -0700
++++ ../mix-graph-v1/AGENTS.md	2026-10-18 22:40:50.482378960 -0700
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This is an unreviewed handoff candidate for its explicit partial scope. It is
+-not a released contract and must not be used for implementation before a
+-separate review approves it. Application implementation requires a fresh,
+-restricted implementation workspace that contains only permitted materials. Do
+-not begin clean implementation in an analyst checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
++contains only permitted materials. Publication of this package does not
++provision one. Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+diff -ru /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/cases.json ../mix-graph-v1/cases.json
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/cases.json	2026-10-18 19:54:48.948376018 -0700
++++ ../mix-graph-v1/cases.json	2026-10-18 22:40:50.482531808 -0700
+@@ -2,7 +2,7 @@
+  "schema": "mix-graph-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "mix-graph-v1 partial requirement clauses only (see spec.md)",
+- "status": "candidate-unreviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal Live Set documents and generated test signals; no shipped file copied or excerpted",
+  "oracle_status": "Computation cases: extracted execution or static-derived; render cases: composed (spec conformance, not measured); neither reference nor candidate executed",
+  "representation": {
+diff -ru /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/manifest.json ../mix-graph-v1/manifest.json
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/manifest.json	2026-10-18 19:54:49.118190189 -0700
++++ ../mix-graph-v1/manifest.json	2026-10-18 22:42:08.835350296 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "mix-graph-v1",
+- "release_status": "candidate-unreviewed",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-MIX-GRAPH",
+@@ -25,8 +25,8 @@
+   "REQ-MIX-GRAPH-009": "Per-sample gains; ramp rules (linear, immediate below 1e-12 per sample, binary32 step); main entries move from the first sample, send entries one sample later; pan-law entries ramp to the value at the end of the shortest input ramp; values below 1e-12 count as 0",
+   "REQ-MIX-GRAPH-010": "Fade length 75 samples at every sample rate for the gates, the post amount and the split amount; unchanged values give no ramp after the start",
+   "REQ-MIX-GRAPH-011": "Render convention: a render starts from the settled state of the opened set (project convention, not original behavior)",
+-  "REQ-MIX-GRAPH-013": "Playback value of an envelope as a computation: point list with the first time at -10,000,000 beats, 16-piece curved segments, lookup at envelope time with the later of two equal times, segment value in samples, hold, Bool and Enum without interpolation; envelope time, drive and units not released",
+-  "REQ-MIX-GRAPH-014": "Ramp length of an automated value: max(200, min(65536, trunc(q / |slope|))) while playing, none for a flat segment or a stopped transport; last ramp shortened, new segment at each point; q is one thousandth of the range under the assumed default settings (0.002 for pan); only q / |slope| below 2^31"
++  "REQ-MIX-GRAPH-013": "Playback value of an envelope as a computation: point list with the first time of a Float envelope at -10,000,000 beats, 16-piece curved segments, lookup at envelope time with the later of two equal times, segment value in samples under the default automation settings, hold, Bool and Enum without interpolation at or after the first event; envelope time, the samples at which point times take effect, drive, each parameter's automation settings and units not released",
++  "REQ-MIX-GRAPH-014": "Ramp length of an automated value under the default automation settings: max(200, min(65536, trunc(q / |slope|))) while playing, none for a flat segment or a stopped transport; last ramp shortened, new segment at each point; q is an input (one thousandth of the driven parameter's range); which parameters use the default settings, and their q, not released; only q / |slope| below 2^31"
+  },
+  "unreleased_requirements": [
+   "REQ-MIX-GRAPH-012",
+@@ -48,13 +48,14 @@
+    "more than 12 return tracks; send holders or SendPreBool items not exactly one per return track; render sets with other than one return track",
+    "crossfade assignment A or B (CrossFadeState other than 1) on any track; a main track with its track switch off",
+    "any mixer storing SoloSink true; solo of the main or cue track",
+-   "a send stored above its minimum 0.0003162277571 whose output can reach the main track (its track's send gate on and the return playing); sends with EnabledByUser false above their minimum",
++   "a send stored above its minimum 0.0003162277571 whose output can reach the main track (its track's send gate not 0 and its return track's main gate not 0); sends with EnabledByUser false above their minimum",
+    "stored volumes outside 0.0003162277571 to 1.99526238, sends outside 0.0003162277571 to 1, pans and split pans outside -1 to 1, PanMode other than 0 and 1",
+-   "automation envelopes that drive a mixer or device parameter during a render case; clip envelopes",
++   "in render cases, automation envelopes on any mixer or device parameter other than the main track's one-event tempo and time-signature envelopes whose single event equals the stored value (every fixture holds these two); clip envelopes",
+    "ramp-length inputs whose step divided by the absolute slope is 2^31 or more"
+   ],
+   "behavior": [
+-   "which envelope drives a parameter and when, the mapping from song position to envelope time, and automated against manual values (REQ-MIX-GRAPH-012, 016)",
++   "which envelope drives a parameter and when, the mapping from song position to envelope time and the samples at which point times take effect, and automated against manual values (REQ-MIX-GRAPH-012, 016)",
++   "which parameters use the default automation settings, and the value step of any parameter",
+    "the units of automated values, including volume and send automation (REQ-MIX-GRAPH-015)",
+    "the send gain of sends stored above their minimum; which sends are active",
+    "which solo category a track is in when a Live Set stores a solo; the cue output",
+@@ -68,12 +69,25 @@
+  "fixture_origin": "independently authored minimal Live Set documents built for this release on the project's minimal-set rules, and two generated 16-bit test signals; no shipped file content, audio or program code",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RMG-01 medium: REQ-013's Float value and REQ-014 hold only for the default automation settings; two stated assumptions bound mixer parameters and pan's step to them; narrowed to the defined default settings, which parameters use them and their step not released, assumptions removed; no case changed",
++   "RMG-02 low: the render-case envelope exclusion contradicted the main track's one-event tempo and time-signature envelopes in every fixture; those two exempted when equal to the stored value; no case changed",
++   "RMG-03 low: REQ-013's sample-timing sentence depends on the unreleased song-position mapping and the first-time replacement was shown for Float envelopes only; moved to not released and scoped; no case changed",
++   "RMG-04 info: ramp-length rule fails for q/|s| of 2^31 or more (reviewer's static check); exclusion upheld",
++   "RMG-05 info: out-of-range stored volumes and the draft internal-predicate case stay out; one sentence reworded",
++   "RMG-06 info: no expectation depends on an open item; every render case is labeled composed spec conformance and was recomposed and rendered by the reviewer",
++   "RMG-07 info: all 11 fixtures pass the structural checker and the reviewer's shape check; signals generated",
++   "RMG-08 editorial: category labels, pan-law provenance and send-exclusion wording",
++   "RMG-09 editorial: payload status set to reviewed release; review record added",
++   "RMG-10 info: evidence identity re-hashed; all match"
++  ],
++  "disposition": "Approved with listed narrowing (RMG-01 to RMG-03), only for the explicit partial clauses; 28 cases released unchanged; computation expectations extracted execution or static-derived as labeled; render expectations composed spec conformance, not measured compatibility; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": null,
+  "entrypoint": "README.md",
+@@ -84,18 +98,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "dd2faeb88e2fe26066399a9c9df5d14a4ed19bd6a4d810350e48605c3a71c210",
+-   "bytes": 1603
++   "sha256": "d2b4325273d7c807ba65159d174d5fb20a7b4ac3e39b76d0896c43e17ab6654b",
++   "bytes": 1540
+   },
+   {
+    "path": "README.md",
+-   "sha256": "c5623ccd8769de8e6ffa6cfd741f03be833ed0ae9786e0b4dc445b4377e035a0",
+-   "bytes": 1855
++   "sha256": "65e4e56f08ae2d80b499ed235eef2fa328b67f553c9f0f5b8d9eb122d9e44593",
++   "bytes": 1985
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "746c52c458b1a3eb6b825126e8a5dcbd962f338488c93ebbd9ff47fb9624d3a4",
++   "bytes": 10949
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "455bbc458d3758331f597a11907acdd112dd1699a0c95d4bce3e70db2589c82b",
+-   "bytes": 36806
++   "sha256": "1708a081ad9d341f6e42cf1e23d2b6e056034795161b5596a3995e54140c90f8",
++   "bytes": 36803
+   },
+   {
+    "path": "fixtures/MIX-GRAPH-018.xml",
+@@ -164,8 +183,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "96cff9df891af93b82247889f13759d166801ab75493778f6d26c383c42893bf",
+-   "bytes": 28892
++   "sha256": "1c71dcf42ba1ba0cd68d331ae8c7e6bd642569ac7e93477d79ef091e28dc187c",
++   "bytes": 29872
+   }
+  ]
+ }
+diff -ru /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/README.md ../mix-graph-v1/README.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/README.md	2026-10-18 19:53:42.952817864 -0700
++++ ../mix-graph-v1/README.md	2026-10-18 22:40:50.482260773 -0700
+@@ -1,10 +1,11 @@
+ # Mix graph, mixer gains and automation playback, release 1
+ 
+-**Unreviewed handoff candidate.** Read [the contract](spec.md),
+-[the cases](cases.json), [the role instructions](AGENTS.md) and
+-[the manifest](manifest.json). This package has not been reviewed and is not a
+-released contract. It must not be used for implementation until a separate
+-review approves it.
++**Reviewed local release.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md),
++[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
++stated partial scope, with the narrowing recorded in the review, is approved
++as a contract for a fresh, restricted implementation workspace. Such a
++workspace has not been provisioned by this release.
+ 
+ The finite scope is how the project's offline render of a Live Set turns
+ per-track signals into the main output: the order of device chain and mixer,
+@@ -12,10 +13,10 @@
+ volume gain and its silence limit, the pan law and pan mode, the track switch,
+ the main and send gates for each solo category, per-sample ramps and the
+ 75-sample fade length, a settled start, and how an automation envelope's
+-events become the values it plays. Requirement IDs are retained with explicit
+-partial clauses. Requirements 012, 015 and 016 (which envelope drives a
+-parameter, the units of automated values, automated against manual values)
+-are not released.
++events become the values it plays under the default automation settings.
++Requirement IDs are retained with explicit partial clauses. Requirements 012,
++015 and 016 (which envelope drives a parameter, the units of automated values,
++automated against manual values) are not released.
+ 
+ The package has 28 cases. The 17 computation cases are labeled extracted
+ execution (the original program's own x86_64 code computed the values) or
+Only in ../mix-graph-v1: REVIEW.md
+diff -ru /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/spec.md ../mix-graph-v1/spec.md
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/mg1-pre/mix-graph-v1/spec.md	2026-10-18 19:54:16.364911687 -0700
++++ ../mix-graph-v1/spec.md	2026-10-18 22:40:50.482840592 -0700
+@@ -6,7 +6,9 @@
+ Only the clauses explicitly included below are in scope. No other clause of a
+ listed requirement is implicitly approved. This document is self-contained.
+ 
+-**Status: unreviewed handoff candidate.** It is not a released contract.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the narrowing recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -60,12 +62,7 @@
+ 1. The macOS arm64 build computes the extracted-execution values as the x86_64
+    build does, within the stated tolerances. The pan law uses the platform's
+    cosine, which may differ in the last binary32 digit.
+-2. Mixer parameters use the application's default automation settings: no
+-   smoothing, a minimum ramp of 200 samples, and a value step of one
+-   thousandth of the parameter's range ([REQ-014](#req-mix-graph-014--partial-how-often-an-automated-value-moves)).
+-   No other setting was found for them.
+-3. The range of pan and split pans for that step is −1 to 1.
+-4. A Live Set in which no mixer stores `SoloSink` as `true` has no soloed
++2. A Live Set in which no mixer stores `SoloSink` as `true` has no soloed
+    track.
+ 
+ ### Render convention
+@@ -89,6 +86,11 @@
+   length** is 75 samples ([REQ-010](#req-mix-graph-010--partial-fade-lengths)).
+ - The **silence limit** is 0.0003199999919, the binary32 value nearest to
+   0.00032.
++- The **default automation settings** are the application's defaults for an
++  automated value: a value step q of one thousandth of the parameter's value
++  range, a minimum ramp of 200 samples and no smoothing. REQ-013's Float value
++  and REQ-014 are stated for these settings. Which parameters use them, and so
++  the value step of any parameter, is not released.
+ - The **stored minimum** of volumes and sends is 0.0003162277571 (−70 dB), and
+   the stored maximum of volumes is 1.99526238 (+6 dB). Both are the binary32
+   values of these texts.
+@@ -182,7 +184,8 @@
+ - M_main = m·P(w, p, sL, sR, v). Here m is the track's main gate
+   ([REQ-007](#req-mix-graph-007--track-switch) and
+   [REQ-008](#req-mix-graph-008--partial-gates-by-solo-category)), v the volume
+-  gain of REQ-003, and P the pan-law matrix below (extracted execution).
++  gain of REQ-003, and P the pan-law matrix below. The product m·P is
++  extracted execution.
+ - **Pan law.** With θ(u) = (u + 1)·π/4, p the pan, sL and sR the split pans
+   and w the split amount:
+   - L→L = v·(w·cos θ(sL) + (1 − w)·max(10⁻⁵, √2·cos θ(p)))
+@@ -194,7 +197,9 @@
+   are mathematically 0 may come out below 10⁻¹⁶. Examples with v = 1:
+   Stereo (w = 0), pan 0: I; pan −1: (1.4142135, 0, 0, 0.00001); pan −0.5:
+   (1.306563, 0, 0, 0.5411961). Split Stereo (w = 1) with split pans (−1, 1):
+-  I; with split pans (0, 0): 0.70710677 for all four gains.
++  I; with split pans (0, 0): 0.70710677 for all four gains. The formula is
++  static-derived; extracted execution of the original code gave exactly the
++  example gains.
+ - The split amount w is the stored `PanMode` code: 0 for Stereo, 1 for Split
+   Stereo. A change of `PanMode` ramps w linearly over the fade length.
+ 
+@@ -261,10 +266,12 @@
+   | indirectly muted by solo | s | 0 |
+   | muted by a return-track solo | 0 | s |
+ 
+-  A soloed track therefore plays even when its track switch is off.
++  A soloed track therefore plays even when its track switch is off. The
++  categories are labels of this rule; they imply no stored value and no
++  required internal state.
+ - Which category a track is in is not released, with one exception: in a Live
+   Set in which no mixer stores `SoloSink` as `true`, no track is soloed and
+-  every track is unaffected (stated assumption 4).
++  every track is unaffected (stated assumption 2).
+ - A change of category ramps m and e over the fade length. The cue output is
+   outside this release.
+ 
+@@ -314,14 +321,16 @@
+ 
+ This clause defines the value an envelope plays at a given envelope time, as a
+ computation. Not released here: which envelope drives a parameter and when, the
+-mapping from song position to envelope time, and the units in which the values
+-of any parameter's envelope are played. Values below are in the envelope's own
+-value units.
++mapping from song position to envelope time and the samples at which point
++times take effect, the automation settings of any parameter, and the units in
++which the values of any parameter's envelope are played. Values below are in
++the envelope's own value units.
+ 
+ - **Point list.** The events of the envelope, in document order, give the
+   points: times in binary64 beats, values in binary32.
+-  - The first event's time is replaced by −10,000,000 beats, whatever it was.
+-    In documents the first event is the leading event at −63,072,000 beats.
++  - In a Float envelope, the first event's time is replaced by −10,000,000
++    beats, whatever it was. In documents the first event is the leading event
++    at −63,072,000 beats.
+   - A segment that starts at an event with a curve becomes 16 straight pieces.
+     The curve controls are the event's `CurveControl1X` (x1),
+     `CurveControl1Y` (y1), `CurveControl2X` (x2) and `CurveControl2Y` (y2); a
+@@ -334,23 +343,24 @@
+ - **Lookup.** At envelope time t (in beats, first rounded to the nearest
+   multiple of 1/3,843,840 beat, halves away from zero), the current segment
+   starts at the last point whose time is at or before t. At two points with
+-  the same time, the later one applies. Point times take effect at exact
+-  samples, independent of the buffer size.
+-- **Float value.** In a segment from (ta, va) to (tb, vb), with S samples per
+-  beat (sample rate × 60 / tempo):
++  the same time, the later one applies.
++- **Float value**, with the default automation settings. In a segment from
++  (ta, va) to (tb, vb), with S samples per beat (sample rate × 60 / tempo):
+   - slope = (vb − va, computed in binary32) / ((tb − ta)·S), in binary64, per
+     sample;
+   - value = va + max(0, (t − ta)·S)·slope, kept within the range of va and vb;
+   - va = vb gives a constant segment;
+-  - after the last point the value holds.
+-- **Bool and Enum values.** The value of the current point, without
+-  interpolation.
++  - after the last point the value holds;
++  - other automation settings have no expectation.
++- **Bool and Enum values.** At an envelope time at or after the first event's
++  time, the value of the current point, without interpolation.
+ 
+ ### REQ-MIX-GRAPH-014 — partial: how often an automated value moves
+ 
+-- While the transport plays, a Float parameter driven by an envelope moves
+-  along its current segment (REQ-013) through ramps of L samples. With slope s
+-  per sample and value step q, let r = q/|s| in binary64. Then
++- With the default automation settings, while the transport plays, a Float
++  value driven by an envelope moves along its current segment (REQ-013)
++  through ramps of L samples. With slope s per sample and value step q, let
++  r = q/|s| in binary64. Then
+   L = max(200, min(65,536, trunc(r))). A flat segment (s = 0) sends no ramp.
+   Expectations exist only for r below 2³¹.
+ - Each ramp moves the value by L·s. The last ramp before a point is shortened
+@@ -358,9 +368,10 @@
+   holds until the point's sample, so it deviates from the line by at most q. A
+   new segment starts at each point's sample.
+ - With the transport stopped, a value change takes effect at once (n = 0).
+-- q is one thousandth of the parameter's value range (stated assumption 2). For
+-  pan and split pans, whose range is −1 to 1, q is 0.002 (stated assumption 3).
+-  Volume and send automation are not released.
++- q is an input of this rule: one thousandth of the value range of the
++  parameter the envelope drives. Which parameters use the default automation
++  settings, and so the q of any parameter, is not released. Volume and send
++  automation are not released.
+ 
+ ## Acceptance representation and comparison
+ 
+@@ -458,19 +469,25 @@
+   track switch off;
+ - any mixer that stores `SoloSink` as `true`; solo of the main or cue track;
+ - in render cases, a send stored above its minimum whose output can reach the
+-  main track, that is, its track's send gate is on and its return track plays;
++  main track, that is, its track's send gate is not 0 and its return track's
++  main gate is not 0;
+   any send with `EnabledByUser` `false` stored above its minimum;
+ - stored volumes outside the stored minimum to the stored maximum; sends
+   outside 0.0003162277571 to 1; pans and split pans outside −1 to 1; `PanMode`
+   other than 0 and 1;
+-- in render cases, automation envelopes on any mixer or device parameter, and
+-  clip envelopes;
++- in render cases, automation envelopes on any mixer or device parameter, other
++  than the main track's one-event tempo and time-signature envelopes whose
++  single event equals the stored value (every fixture holds these two); clip
++  envelopes;
+ - ramp-length inputs whose r is 2³¹ or more.
+ 
+ Excluded behavior:
+ 
+ - which envelope drives a parameter and when; the mapping from song position to
+-  envelope time; automated against manual values;
++  envelope time and the samples at which point times take effect; automated
++  against manual values;
++- which parameters use the default automation settings, and the value step of
++  any parameter;
+ - the units of automated values, including volume and send automation;
+ - the send gain of sends stored above their minimum, and which sends are
+   active;
+@@ -487,8 +504,8 @@
+ Draft cases not released: the render cases with a send above its minimum
+ reaching a playing return track, with a stored solo, with crossfade assignment
+ A, with out-of-range stored volumes, or with an envelope driving a parameter;
+-the draft's unresolved cases; and a draft case on internal solo predicates
+-that has no observable here. Three draft render cases on automation are
++the draft's unresolved cases; and a draft case with no observable in this
++release. Three draft render cases on automation are
+ carried as the computation cases MIX-GRAPH-013 to 015, without their claim
+ about which envelope drives a parameter.
+ 
+@@ -521,4 +538,4 @@
+ No fixture contains shipped file content, audio, program code or assets.
+ Expected results are newly authored behavioral data, labeled per case. No
+ public source or dependency is approved or included. Review status is recorded
+-in [the manifest](manifest.json).
++in [the manifest](manifest.json) and [the review disposition](REVIEW.md).

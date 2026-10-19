@@ -1,0 +1,190 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "mix-graph-v1",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-MIX-GRAPH",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-AUDIO",
+  "FEAT-AUTOMATION"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-MIX-GRAPH-001": "One mixer stage per audio, MIDI and return track and the main track; source, devices in order, mixer stage; one main and one send output per return; send k and the k-th SendPreBool belong to the k-th return in list order; tracks output to the main track; render output is the main track's main output",
+  "REQ-MIX-GRAPH-002": "Main output M_main x and send outputs M_k x per sample; no other gain between device chain and mixer stage; return and main inputs are sums",
+  "REQ-MIX-GRAPH-003": "Crossfade assignment None and no automation: volume gain equals the stored gain from 0.0003162277571 to 1.99526238, zero at or below 0.0003199999919; main track the same",
+  "REQ-MIX-GRAPH-004": "Main matrix is the main gate times the pan-law matrix; the pan law; split amount is the stored PanMode code and ramps over the fade length",
+  "REQ-MIX-GRAPH-005": "Send matrix g e a (q P + (1 - q) I) for a track outside any group; pre and post consequences; q from SendPreBool; a send at its stored minimum contributes nothing; send output to the k-th return",
+  "REQ-MIX-GRAPH-006": "Destination inputs are per-sample sums; send sums in binary64 then binary32; main outputs binary32; return mixer shapes its output; main has no sends and its main output is the render output",
+  "REQ-MIX-GRAPH-007": "With no track soloed, track switch off sets both gates to 0, on sets them to 1; changes ramp over the fade length",
+  "REQ-MIX-GRAPH-008": "Main and send gates for each solo category and the track switch; no soloed track when no mixer stores SoloSink true; category assignment not released",
+  "REQ-MIX-GRAPH-009": "Per-sample gains; ramp rules (linear, immediate below 1e-12 per sample, binary32 step); main entries move from the first sample, send entries one sample later; pan-law entries ramp to the value at the end of the shortest input ramp; values below 1e-12 count as 0",
+  "REQ-MIX-GRAPH-010": "Fade length 75 samples at every sample rate for the gates, the post amount and the split amount; unchanged values give no ramp after the start",
+  "REQ-MIX-GRAPH-011": "Render convention: a render starts from the settled state of the opened set (project convention, not original behavior)",
+  "REQ-MIX-GRAPH-013": "Playback value of an envelope as a computation: point list with the first time of a Float envelope at -10,000,000 beats, 16-piece curved segments, lookup at envelope time with the later of two equal times, segment value in samples under the default automation settings, hold, Bool and Enum without interpolation at or after the first event; envelope time, the samples at which point times take effect, drive, each parameter's automation settings and units not released",
+  "REQ-MIX-GRAPH-014": "Ramp length of an automated value under the default automation settings: max(200, min(65536, trunc(q / |slope|))) while playing, none for a flat segment or a stopped transport; last ramp shortened, new segment at each point; q is an input (one thousandth of the driven parameter's range); which parameters use the default settings, and their q, not released; only q / |slope| below 2^31"
+ },
+ "unreleased_requirements": [
+  "REQ-MIX-GRAPH-012",
+  "REQ-MIX-GRAPH-015",
+  "REQ-MIX-GRAPH-016"
+ ],
+ "compatibility_dimensions": {
+  "audio": "render cases: composed expectations (spec conformance, not measured compatibility); computation cases: extracted execution and static-derived values; reference execution not-run and no render of the original exists",
+  "timing": "per-sample ramp and fade lengths as computations; real-time scheduling and latency excluded",
+  "behavior": "solo category assignment, automation drive, editing and manual changes excluded",
+  "project-files": "mixer values are read from the fixtures as stated; file reading itself is not graded",
+  "file-format-written": "excluded",
+  "ui-text": "excluded"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "group tracks and tracks inside a group; audio, MIDI or return tracks whose output is not AudioOut/Main; input monitoring; a non-zero TrackDelay; frozen tracks",
+   "racks; devices that report latency; in render cases any device or clip",
+   "more than 12 return tracks; send holders or SendPreBool items not exactly one per return track; render sets with other than one return track",
+   "crossfade assignment A or B (CrossFadeState other than 1) on any track; a main track with its track switch off",
+   "any mixer storing SoloSink true; solo of the main or cue track",
+   "a send stored above its minimum 0.0003162277571 whose output can reach the main track (its track's send gate not 0 and its return track's main gate not 0); sends with EnabledByUser false above their minimum",
+   "stored volumes outside 0.0003162277571 to 1.99526238, sends outside 0.0003162277571 to 1, pans and split pans outside -1 to 1, PanMode other than 0 and 1",
+   "in render cases, automation envelopes on any mixer or device parameter other than the main track's one-event tempo and time-signature envelopes whose single event equals the stored value (every fixture holds these two); clip envelopes",
+   "ramp-length inputs whose step divided by the absolute slope is 2^31 or more"
+  ],
+  "behavior": [
+   "which envelope drives a parameter and when, the mapping from song position to envelope time and the samples at which point times take effect, and automated against manual values (REQ-MIX-GRAPH-012, 016)",
+   "which parameters use the default automation settings, and the value step of any parameter",
+   "the units of automated values, including volume and send automation (REQ-MIX-GRAPH-015)",
+   "the send gain of sends stored above their minimum; which sends are active",
+   "which solo category a track is in when a Live Set stores a solo; the cue output",
+   "the crossfade factor and the ramp of a crossfade-assignment change",
+   "clip playback, instruments and device processing",
+   "recording, editing, undo, manual changes during a render, automation override and re-enable",
+   "real-time scheduling, latency, the audio-device stage after the main track, and what the original does in the first samples after a set is opened",
+   "a non-default fade-length setting; the order of the main-bus sum"
+  ]
+ },
+ "fixture_origin": "independently authored minimal Live Set documents built for this release on the project's minimal-set rules, and two generated 16-bit test signals; no shipped file content, audio or program code",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RMG-01 medium: REQ-013's Float value and REQ-014 hold only for the default automation settings; two stated assumptions bound mixer parameters and pan's step to them; narrowed to the defined default settings, which parameters use them and their step not released, assumptions removed; no case changed",
+   "RMG-02 low: the render-case envelope exclusion contradicted the main track's one-event tempo and time-signature envelopes in every fixture; those two exempted when equal to the stored value; no case changed",
+   "RMG-03 low: REQ-013's sample-timing sentence depends on the unreleased song-position mapping and the first-time replacement was shown for Float envelopes only; moved to not released and scoped; no case changed",
+   "RMG-04 info: ramp-length rule fails for q/|s| of 2^31 or more (reviewer's static check); exclusion upheld",
+   "RMG-05 info: out-of-range stored volumes and the draft internal-predicate case stay out; one sentence reworded",
+   "RMG-06 info: no expectation depends on an open item; every render case is labeled composed spec conformance and was recomposed and rendered by the reviewer",
+   "RMG-07 info: all 11 fixtures pass the structural checker and the reviewer's shape check; signals generated",
+   "RMG-08 editorial: category labels, pan-law provenance and send-exclusion wording",
+   "RMG-09 editorial: payload status set to reviewed release; review record added",
+   "RMG-10 info: evidence identity re-hashed; all match"
+  ],
+  "disposition": "Approved with listed narrowing (RMG-01 to RMG-03), only for the explicit partial clauses; 28 cases released unchanged; computation expectations extracted execution or static-derived as labeled; render expectations composed spec conformance, not measured compatibility; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 28,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "d2b4325273d7c807ba65159d174d5fb20a7b4ac3e39b76d0896c43e17ab6654b",
+   "bytes": 1540
+  },
+  {
+   "path": "README.md",
+   "sha256": "65e4e56f08ae2d80b499ed235eef2fa328b67f553c9f0f5b8d9eb122d9e44593",
+   "bytes": 1985
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "746c52c458b1a3eb6b825126e8a5dcbd962f338488c93ebbd9ff47fb9624d3a4",
+   "bytes": 10949
+  },
+  {
+   "path": "cases.json",
+   "sha256": "1708a081ad9d341f6e42cf1e23d2b6e056034795161b5596a3995e54140c90f8",
+   "bytes": 36803
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-018.xml",
+   "sha256": "f911f32130d68b9597e4ef2c5e11e430e3cde76f3b1b761976e6b8c4dd9386ad",
+   "bytes": 19193
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-019.xml",
+   "sha256": "cf7f4968d0d5ea62df7d1efae1bc794099d7a3f8350dc4d9e7697e30b00e6640",
+   "bytes": 19202
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-020.xml",
+   "sha256": "717ecef767282cd553b7c6a2c3462d763dd6ff4f00163ab2850ead42c59f00d6",
+   "bytes": 19207
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-021.xml",
+   "sha256": "4641fa5f7f8001581f281e16a80fcfbc2e4a269c74ec5e1a1e1aba424dfe24de",
+   "bytes": 19200
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-022.xml",
+   "sha256": "34aba82f0d581f0e87ccc37289b7405da903a3112f355daf52c78c6643b6627b",
+   "bytes": 19199
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-023.xml",
+   "sha256": "f2d70d3f167b6c9032719cca8adcca66e9edd7e457a94aa6dd851cce5b072ec6",
+   "bytes": 19204
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-024.xml",
+   "sha256": "2ef7c13e5879fc7ce9dad258ed7204414a984f693882f6f520165d27e1b875f4",
+   "bytes": 19194
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-025.xml",
+   "sha256": "5f3f03b4cc375ab96e8dd20382cd557d7ca5c123cdc5eae39c585b9087eef2eb",
+   "bytes": 19192
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-026.xml",
+   "sha256": "4c87189874710bf458733cdcc2eb3f30f2b223758f525fb06b5c1e55f2adccb3",
+   "bytes": 19204
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-027.xml",
+   "sha256": "4b8db92b137899915b5209e92302db9cf69e029e215237dba16ef4f8a71243a7",
+   "bytes": 19191
+  },
+  {
+   "path": "fixtures/MIX-GRAPH-028.xml",
+   "sha256": "6d22b452db3539cb4e85ded4f5657f4094bcf61a228d940004b6dfa62010c30e",
+   "bytes": 19191
+  },
+  {
+   "path": "fixtures/signals/x-a.wav",
+   "sha256": "3cbc6c3ebb3ccb107b0f12378e3a5b4a9414fa8e020bcfa6d1ade2300dde99b3",
+   "bytes": 300
+  },
+  {
+   "path": "fixtures/signals/x-b.wav",
+   "sha256": "cf685ec5ebf5dc36a28639f8a80c962a975658335dcb9c6bf09a710ac126c5a7",
+   "bytes": 300
+  },
+  {
+   "path": "spec.md",
+   "sha256": "1c71dcf42ba1ba0cd68d331ae8c7e6bd642569ac7e93477d79ef091e28dc187c",
+   "bytes": 29872
+  }
+ ]
+}

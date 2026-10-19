@@ -2213,3 +2213,12 @@ come back up to 2 steps off. The earlier "bit-exact" claim in the mixer and
 mix-graph specs and in Q-019 is therefore wrong, and is listed for correction. The
 manifest SHA-256 is
 `a79d427a2266ec637d18aad9cbd690c1656ddeea629b4c04501f6817389a6ae8`.
+
+## [2026-10-18] release | mix-graph-v1
+
+[mix-graph-v1](../handoff/mix-graph-v1/README.md) is the first release of SPEC-MIX-GRAPH.
+It has 28 cases: 17 computations and 11 composed renders, labelled as spec
+conformance under ADR 0004. A separate review agent approved it with narrowing:
+automation application holds under the default settings only, the main track's
+one-event envelopes are exempt, and the timing sentence is moved out of the
+released clause. The review confirmed the spec errors the author found.

@@ -1,0 +1,1492 @@
+{
+ "schema": "mix-graph-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "mix-graph-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored minimal Live Set documents and generated test signals; no shipped file copied or excerpted",
+ "oracle_status": "Computation cases: extracted execution or static-derived; render cases: composed (spec conformance, not measured); neither reference nor candidate executed",
+ "representation": {
+  "computation": "computation name, evaluations of arguments -> expected result (see spec.md)",
+  "render": "fixture Live Set, input signals placed at the named tracks' mixer-stage inputs, expected main output as coefficients of the input channels",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "MIX-GRAPH-001",
+   "kind": "computation",
+   "purpose": "Send matrix, post-fader",
+   "requirements": [
+    "REQ-MIX-GRAPH-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "send-matrix",
+   "evaluations": [
+    {
+     "arguments": {
+      "gain": 0.5,
+      "send_gate": 1.0,
+      "active": 1.0,
+      "post": 1.0,
+      "pan_matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.44999998807907104,
+       0.05000000074505806,
+       0.10000000149011612,
+       0.30000001192092896
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-002",
+   "kind": "computation",
+   "purpose": "Send matrix, pre-fader: no pan law and no volume",
+   "requirements": [
+    "REQ-MIX-GRAPH-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "send-matrix",
+   "evaluations": [
+    {
+     "arguments": {
+      "gain": 0.5,
+      "send_gate": 1.0,
+      "active": 1.0,
+      "post": 0.0,
+      "pan_matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.5,
+       0.0,
+       0.0,
+       0.5
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-003",
+   "kind": "computation",
+   "purpose": "Send matrix halfway through a pre/post fade",
+   "requirements": [
+    "REQ-MIX-GRAPH-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "send-matrix",
+   "evaluations": [
+    {
+     "arguments": {
+      "gain": 0.5,
+      "send_gate": 1.0,
+      "active": 1.0,
+      "post": 0.5,
+      "pan_matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.4749999940395355,
+       0.02500000037252903,
+       0.05000000074505806,
+       0.4000000059604645
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-004",
+   "kind": "computation",
+   "purpose": "Send matrix with the send gate off; with the send inactive; with send gain 0",
+   "requirements": [
+    "REQ-MIX-GRAPH-005",
+    "REQ-MIX-GRAPH-007"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "send-matrix",
+   "evaluations": [
+    {
+     "arguments": {
+      "gain": 0.5,
+      "send_gate": 0.0,
+      "active": 1.0,
+      "post": 1.0,
+      "pan_matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    {
+     "arguments": {
+      "gain": 0.5,
+      "send_gate": 1.0,
+      "active": 0.0,
+      "post": 1.0,
+      "pan_matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    {
+     "arguments": {
+      "gain": 0.0,
+      "send_gate": 1.0,
+      "active": 1.0,
+      "post": 1.0,
+      "pan_matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-005",
+   "kind": "computation",
+   "purpose": "Send gain 1 with the pan-law matrix of pan -0.5 at volume gain 0.5, post-fader, then pre-fader",
+   "requirements": [
+    "REQ-MIX-GRAPH-004",
+    "REQ-MIX-GRAPH-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "send-matrix",
+   "evaluations": [
+    {
+     "arguments": {
+      "gain": 1.0,
+      "send_gate": 1.0,
+      "active": 1.0,
+      "post": 1.0,
+      "pan_matrix": [
+       0.6532800197601318,
+       0.0,
+       0.0,
+       0.27059799432754517
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.6532800197601318,
+       0.0,
+       0.0,
+       0.27059799432754517
+      ]
+     }
+    },
+    {
+     "arguments": {
+      "gain": 1.0,
+      "send_gate": 1.0,
+      "active": 1.0,
+      "post": 0.0,
+      "pan_matrix": [
+       0.6532800197601318,
+       0.0,
+       0.0,
+       0.27059799432754517
+      ]
+     },
+     "expected": {
+      "matrix": [
+       1.0,
+       0.0,
+       0.0,
+       1.0
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-006",
+   "kind": "computation",
+   "purpose": "Main matrix with the main gate 1, 0 and 0.5",
+   "requirements": [
+    "REQ-MIX-GRAPH-004"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "main-matrix",
+   "evaluations": [
+    {
+     "arguments": {
+      "main_gate": 1.0,
+      "pan_matrix": [
+       0.9,
+       0.1,
+       0.2,
+       0.6
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.8999999761581421,
+       0.10000000149011612,
+       0.20000000298023224,
+       0.6000000238418579
+      ]
+     }
+    },
+    {
+     "arguments": {
+      "main_gate": 0.0,
+      "pan_matrix": [
+       0.9,
+       0.1,
+       0.2,
+       0.6
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    {
+     "arguments": {
+      "main_gate": 0.5,
+      "pan_matrix": [
+       0.9,
+       0.1,
+       0.2,
+       0.6
+      ]
+     },
+     "expected": {
+      "matrix": [
+       0.44999998807907104,
+       0.05000000074505806,
+       0.10000000149011612,
+       0.30000001192092896
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-007",
+   "kind": "computation",
+   "purpose": "Main and send gates for each solo category with the track switch on and off",
+   "requirements": [
+    "REQ-MIX-GRAPH-007",
+    "REQ-MIX-GRAPH-008"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "gates",
+   "evaluations": [
+    {
+     "arguments": {
+      "solo_category": "unaffected",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "unaffected",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 1,
+      "send_gate": 1
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "soloed",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 1,
+      "send_gate": 1
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "soloed",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 1,
+      "send_gate": 1
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "following",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "following",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 1,
+      "send_gate": 1
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "muted",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "muted",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "indirectly-muted",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "indirectly-muted",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 1,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "return-solo-muted",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "return-solo-muted",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 1
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "cue",
+      "track_switch": false
+     },
+     "expected": {
+      "main_gate": 0,
+      "send_gate": 0
+     }
+    },
+    {
+     "arguments": {
+      "solo_category": "cue",
+      "track_switch": true
+     },
+     "expected": {
+      "main_gate": 1,
+      "send_gate": 1
+     }
+    }
+   ],
+   "tolerance": 0,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-008",
+   "kind": "computation",
+   "purpose": "Switch fade length with default settings",
+   "requirements": [
+    "REQ-MIX-GRAPH-010"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "fade-length",
+   "evaluations": [
+    {
+     "arguments": {},
+     "expected": {
+      "samples": 75
+     }
+    }
+   ],
+   "tolerance": 0,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-009",
+   "kind": "computation",
+   "purpose": "Gain ramp from 0 to 1 over 4 samples, advanced one sample at a time",
+   "requirements": [
+    "REQ-MIX-GRAPH-009"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "ramp-advance",
+   "evaluations": [
+    {
+     "arguments": {
+      "start": 0.0,
+      "target": 1.0,
+      "length": 4,
+      "advances": 5
+     },
+     "expected": {
+      "values": [
+       0.25,
+       0.5,
+       0.75,
+       1.0,
+       1.0
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-010",
+   "kind": "computation",
+   "purpose": "A ramp whose per-sample step is below 1e-12 takes its target at once; a value below 1e-12 counts as 0",
+   "requirements": [
+    "REQ-MIX-GRAPH-009"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "ramp-start",
+   "evaluations": [
+    {
+     "arguments": {
+      "start": 0.0,
+      "target": 9.999999717180685e-10,
+      "length": 10000
+     },
+     "expected": {
+      "value": 9.999999717180685e-10
+     }
+    },
+    {
+     "arguments": {
+      "start": 0.0,
+      "target": 4.999999980020986e-13,
+      "length": 0
+     },
+     "expected": {
+      "value": 0.0
+     }
+    }
+   ],
+   "tolerance": 1e-15,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-011",
+   "kind": "computation",
+   "purpose": "Pan-law matrix ramps while a volume ramp and a shorter pan ramp overlap",
+   "requirements": [
+    "REQ-MIX-GRAPH-004",
+    "REQ-MIX-GRAPH-009"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "pan-ramp",
+   "evaluations": [
+    {
+     "arguments": {
+      "initial": {
+       "split_amount": 0.0,
+       "pan": 0.0,
+       "split_l": -1.0,
+       "split_r": 1.0,
+       "volume_gain": 1.0
+      },
+      "changes": [
+       {
+        "sample": 0,
+        "input": "volume_gain",
+        "target": 0.5,
+        "length": 100
+       },
+       {
+        "sample": 20,
+        "input": "pan",
+        "target": -1.0,
+        "length": 50
+       }
+      ]
+     },
+     "expected": {
+      "after_changes": [
+       {
+        "matrix_target": [
+         0.5,
+         0.0,
+         0.0,
+         0.5
+        ],
+        "length": 100
+       },
+       {
+        "matrix_target": [
+         0.9192387461662292,
+         0.0,
+         0.0,
+         6.499999471998308e-06
+        ],
+        "length": 50
+       }
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-012",
+   "kind": "computation",
+   "purpose": "The 15 interior points of a curved segment",
+   "requirements": [
+    "REQ-MIX-GRAPH-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "polyline",
+   "evaluations": [
+    {
+     "arguments": {
+      "start": [
+       0.0,
+       -1.0
+      ],
+      "end": [
+       4.0,
+       1.0
+      ],
+      "controls": [
+       0.5,
+       0.0,
+       0.5,
+       0.0
+      ]
+     },
+     "expected": {
+      "points": [
+       [
+        0.3525390625,
+        -0.99951171875
+       ],
+       [
+        0.6640625,
+        -0.99609375
+       ],
+       [
+        0.9404296875,
+        -0.98681640625
+       ],
+       [
+        1.1875,
+        -0.96875
+       ],
+       [
+        1.4111328125,
+        -0.93896484375
+       ],
+       [
+        1.6171875,
+        -0.89453125
+       ],
+       [
+        1.8115234375,
+        -0.83251953125
+       ],
+       [
+        2.0,
+        -0.75
+       ],
+       [
+        2.1884765625,
+        -0.64404296875
+       ],
+       [
+        2.3828125,
+        -0.51171875
+       ],
+       [
+        2.5888671875,
+        -0.35009765625
+       ],
+       [
+        2.8125,
+        -0.15625
+       ],
+       [
+        3.0595703125,
+        0.07275390625
+       ],
+       [
+        3.3359375,
+        0.33984375
+       ],
+       [
+        3.6474609375,
+        0.64794921875
+       ]
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution: the original x86_64 code computed these values on these inputs; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-013",
+   "kind": "computation",
+   "purpose": "Playback value on a curved segment at envelope times 1, 2 and 3",
+   "requirements": [
+    "REQ-MIX-GRAPH-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "playback-value",
+   "evaluations": [
+    {
+     "arguments": {
+      "events": [
+       [
+        -63072000,
+        -1.0
+       ],
+       [
+        0.0,
+        -1.0,
+        [
+         0.5,
+         0.0,
+         0.5,
+         0.0
+        ]
+       ],
+       [
+        4.0,
+        1.0
+       ]
+      ],
+      "samples_per_beat": 22050.0,
+      "times": [
+       1.0,
+       2.0,
+       3.0
+      ]
+     },
+     "expected": {
+      "values": [
+       -0.9824604743083004,
+       -0.75,
+       0.017539525691699615
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution of the point and segment computations; the choice of segment is static-derived; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-014",
+   "kind": "computation",
+   "purpose": "Playback value of the ramp from a leading event whose value differs, at envelope time 0",
+   "requirements": [
+    "REQ-MIX-GRAPH-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "playback-value",
+   "evaluations": [
+    {
+     "arguments": {
+      "events": [
+       [
+        -63072000,
+        1.0
+       ],
+       [
+        4.0,
+        0.0
+       ]
+      ],
+      "samples_per_beat": 22050.0,
+      "times": [
+       0.0
+      ]
+     },
+     "expected": {
+      "values": [
+       3.999998400283644e-07
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-12,
+   "expectation_provenance": "extracted execution of the point and segment computations; the choice of segment is static-derived; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-015",
+   "kind": "computation",
+   "purpose": "Playback value on a linear segment at envelope times 5, 6 and 7",
+   "requirements": [
+    "REQ-MIX-GRAPH-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "playback-value",
+   "evaluations": [
+    {
+     "arguments": {
+      "events": [
+       [
+        -63072000,
+        0.0
+       ],
+       [
+        4.0,
+        0.0
+       ],
+       [
+        8.0,
+        1.0
+       ]
+      ],
+      "samples_per_beat": 22050.0,
+      "times": [
+       5.0,
+       6.0,
+       7.0
+      ]
+     },
+     "expected": {
+      "values": [
+       0.25,
+       0.5,
+       0.75
+      ]
+     }
+    }
+   ],
+   "tolerance": 1e-06,
+   "expectation_provenance": "extracted execution of the point and segment computations; the choice of segment is static-derived; not an observed run of the application",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-016",
+   "kind": "computation",
+   "purpose": "Bool and Enum envelopes take the value of the last point at or before the time; at two points with one time the later applies",
+   "requirements": [
+    "REQ-MIX-GRAPH-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "discrete-value",
+   "evaluations": [
+    {
+     "arguments": {
+      "events": [
+       [
+        -63072000,
+        true
+       ],
+       [
+        4.0,
+        false
+       ],
+       [
+        8.0,
+        true
+       ]
+      ],
+      "times": [
+       0.0,
+       2.0,
+       4.0,
+       6.0,
+       8.0,
+       10.0
+      ]
+     },
+     "expected": {
+      "values": [
+       true,
+       true,
+       false,
+       false,
+       true,
+       true
+      ]
+     }
+    },
+    {
+     "arguments": {
+      "events": [
+       [
+        -63072000,
+        0
+       ],
+       [
+        4.0,
+        1
+       ],
+       [
+        4.0,
+        2
+       ],
+       [
+        8.0,
+        0
+       ]
+      ],
+      "times": [
+       2.0,
+       4.0,
+       6.0,
+       8.0
+      ]
+     },
+     "expected": {
+      "values": [
+       0,
+       2,
+       2,
+       0
+      ]
+     }
+    }
+   ],
+   "tolerance": 0,
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-017",
+   "kind": "computation",
+   "purpose": "Ramp length of an automated value for four segments and a stopped transport",
+   "requirements": [
+    "REQ-MIX-GRAPH-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "computation": "ramp-length",
+   "evaluations": [
+    {
+     "arguments": {
+      "step": 0.002,
+      "segment": [
+       4.0,
+       0.0,
+       8.0,
+       1.0
+      ],
+      "samples_per_beat": 22050.0,
+      "transport": "playing"
+     },
+     "expected": {
+      "length": 200
+     }
+    },
+    {
+     "arguments": {
+      "step": 0.002,
+      "segment": [
+       0.0,
+       0.0,
+       64.0,
+       1.0
+      ],
+      "samples_per_beat": 22050.0,
+      "transport": "playing"
+     },
+     "expected": {
+      "length": 2822
+     }
+    },
+    {
+     "arguments": {
+      "step": 0.002,
+      "segment": [
+       0.0,
+       0.0,
+       1000.0,
+       0.25
+      ],
+      "samples_per_beat": 22050.0,
+      "transport": "playing"
+     },
+     "expected": {
+      "length": 65536
+     }
+    },
+    {
+     "arguments": {
+      "step": 0.002,
+      "segment": [
+       0.0,
+       0.5,
+       4.0,
+       0.5
+      ],
+      "samples_per_beat": 22050.0,
+      "transport": "playing"
+     },
+     "expected": {
+      "length": 0
+     }
+    },
+    {
+     "arguments": {
+      "step": 0.002,
+      "segment": [
+       4.0,
+       0.0,
+       8.0,
+       1.0
+      ],
+      "samples_per_beat": 22050.0,
+      "transport": "stopped"
+     },
+     "expected": {
+      "length": 0
+     }
+    }
+   ],
+   "tolerance": 0,
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed number within the case tolerance (absolute); integers, Booleans and labels exact"
+  },
+  {
+   "id": "MIX-GRAPH-018",
+   "kind": "render",
+   "purpose": "Template: track A at 0 dB, every send at its minimum",
+   "requirements": [
+    "REQ-MIX-GRAPH-001",
+    "REQ-MIX-GRAPH-002",
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-005",
+    "REQ-MIX-GRAPH-006",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-018.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 1.0
+     },
+     "R": {
+      "A.R": 1.0
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-019",
+   "kind": "render",
+   "purpose": "Track A volume at the stored maximum 1.99526238 (+6 dB)",
+   "requirements": [
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-006",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-019.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 1.9952623844146729
+     },
+     "R": {
+      "A.R": 1.9952623844146729
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-020",
+   "kind": "render",
+   "purpose": "Track A volume at the stored minimum 0.0003162277571: silent",
+   "requirements": [
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-006",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-020.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {},
+     "R": {}
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-021",
+   "kind": "render",
+   "purpose": "Track A volume 0.000319, below the silence limit: silent",
+   "requirements": [
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-021.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {},
+     "R": {}
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-022",
+   "kind": "render",
+   "purpose": "Track A volume 0.00033, above the silence limit: audible",
+   "requirements": [
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-022.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 0.00033000000985339284
+     },
+     "R": {
+      "A.R": 0.00033000000985339284
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-023",
+   "kind": "render",
+   "purpose": "Main track volume 0.5011872053 (-6 dB)",
+   "requirements": [
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-006",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-023.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 0.5011872053146362
+     },
+     "R": {
+      "A.R": 0.5011872053146362
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-024",
+   "kind": "render",
+   "purpose": "Track A pan -1 in Stereo mode",
+   "requirements": [
+    "REQ-MIX-GRAPH-004",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-024.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 1.4142135381698608
+     },
+     "R": {
+      "A.R": 9.999999747378752e-06
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-025",
+   "kind": "render",
+   "purpose": "Track A in Split Stereo mode with both split pans at 0",
+   "requirements": [
+    "REQ-MIX-GRAPH-004",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-025.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 0.7071067690849304,
+      "A.R": 0.7071067690849304
+     },
+     "R": {
+      "A.L": 0.7071067690849304,
+      "A.R": 0.7071067690849304
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-026",
+   "kind": "render",
+   "purpose": "Tracks A and B both reach the main track; B at volume 0.5011872053",
+   "requirements": [
+    "REQ-MIX-GRAPH-002",
+    "REQ-MIX-GRAPH-003",
+    "REQ-MIX-GRAPH-006",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-026.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav",
+     "B": "fixtures/signals/x-b.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 1.0,
+      "B.L": 0.5011872053146362
+     },
+     "R": {
+      "A.R": 1.0,
+      "B.R": 0.5011872053146362
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-027",
+   "kind": "render",
+   "purpose": "Track A switched off with its send at 0.5011872053: nothing reaches the main track",
+   "requirements": [
+    "REQ-MIX-GRAPH-005",
+    "REQ-MIX-GRAPH-007",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-027.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {},
+     "R": {}
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  },
+  {
+   "id": "MIX-GRAPH-028",
+   "kind": "render",
+   "purpose": "Return R switched off while track A sends 0.5011872053 to it: only A's main output remains",
+   "requirements": [
+    "REQ-MIX-GRAPH-005",
+    "REQ-MIX-GRAPH-006",
+    "REQ-MIX-GRAPH-007",
+    "REQ-MIX-GRAPH-011"
+   ],
+   "input": "fixtures/MIX-GRAPH-028.xml",
+   "action": "render",
+   "render": {
+    "sample_rate": 44100,
+    "frames": 64,
+    "transport": "playing from beat 0",
+    "signals": {
+     "A": "fixtures/signals/x-a.wav"
+    }
+   },
+   "expected": {
+    "main": {
+     "L": {
+      "A.L": 1.0
+     },
+     "R": {
+      "A.R": 1.0
+     }
+    }
+   },
+   "tolerance_factor": 1e-05,
+   "expectation_provenance": "composed render (spec conformance): composed from the rules of this contract and extracted-execution gains; not measured; no render of the original application exists",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "for every frame n of the input signals and both channels c, |y_c[n] - sum of coefficient x input[n]| <= tolerance_factor x X, where y is the main output and X the largest magnitude of any input sample of the case"
+  }
+ ]
+}

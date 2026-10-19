@@ -1,0 +1,316 @@
+{
+ "schema": "mix-graph-traceability-v1",
+ "spec": "wiki/specs/mix-graph.md (SPEC-MIX-GRAPH r1)",
+ "evidence": {
+  "x-sends": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json sends[] (Live x86 0x101b40d30 = engine TSendVolumes::Calc 0x171a20; raw/runs.jsonl); notes-q019.txt 3d-3e",
+  "x-switch": "t14 results/mix.json main_switch[] (0x101b40cf0 TVolumeSwitch::Calc)",
+  "x-solo": "t14 results/mix.json solo.switch_word (0x101b3fdc0, 0x101b3ff50) and solo.split (0x101b401c0); notes-solo.txt",
+  "x-fade": "t14 results/mix.json solo.track_fade_time (0x101b0ee70 after 0x101b0ecb0: 75)",
+  "x-ramp": "t14 results/mix.json ramp_interpolator[] (0x101b2b970, 0x101b2bae0, 0x101b2ba30)",
+  "x-panner": "t14 results/mix.json volume_panner[] (setters 0x101b243f0, 0x101b244a0; recompute 0x101b27860)",
+  "x-bezier": "t14 results/mix.json automation.E9_polyline.points (0x1011f1610; point emission 0x102520a60, s=(i+1)/16, pc + constants)",
+  "x-segment": "t14 results/mix.json automation.E9_polyline.played, E13_t0, E1_linear (0x101b1f400; subss then divsd read in x86-disasm.txt)",
+  "s-pointlist": "notes-automation.txt 1a (0x102823cb0; first time := -1e7 at 0x102823d84 from 0x105dae938, objdump)",
+  "s-lookup": "notes-automation.txt 1b (engine 0x141110, 0x140310 pc; grid 0x15bdfe0); Bool/Enum mode 1",
+  "s-ramplen": "notes-automation.txt 2 (engine 0x16a240 pc; Live x86 0x101b39550 objdump re-read 2026-10-18: cvttsd2si %xmm0,%eax 32-bit, cmovl 0x10000, cmovg MinSeg; 0x101b1f3d0: slope 0 -> 1.7976931348623155e308 sentinel -> no ramp); defaults hook 0x10282b410 (N 1000, MinSeg 200, no smoothing) objdump",
+  "s-graph": "notes-mix.txt (track-out unit builder 0x102866450 pc; OTrackOutProcessor ports); SendsPre mask 0x1027bde00 pc",
+  "s-perSample": "notes-mix.txt; per-sample functions 0x101b4d870 (main: add then multiply) and 0x101b4c400 (send: multiply then add), objdump",
+  "s-summing": "send accumulation addsd 0x101b4c400; main outputs float32 0x101b4d870 (objdump)",
+  "s-volume": "notes-q019.txt 1a-1c, 2a-2c, 5 (manual value sent as position; engine curve 1 and floor 0x39a7c5ac); x2-mixer-v1 results/mixer.json fader.roundtrip_Q019 (exact at -70, -6, 0, +6 dB)",
+  "x-panlaw": "analysis/ableton-live-12.4.3/r2/x2-mixer-v1/results/mixer.json pan_law[] (TVolumePanner::Calc 0x101b719e0, glibc cos)",
+  "s-panmode": "notes-mix.txt PanMode -> ramp node -> pan-mode amount (pc)",
+  "s-sendspre": "SendsPre -> SendIsPost<k> (notes-mix.txt; 0x1027bde00 12-bit mask, pc)",
+  "s-sendmin": "notes-q019.txt 3a (send ToEngine = send-curve position, pc; converter kind 0 objdump 0x102788389); x2-mixer-v1 fader.gain_to_position send 0.0003162277571 -> 0.0 (X); under A4 floor(curve0(0)) = 0, without A4 the port receives position 0",
+  "s-mute": "notes-solo.txt; switch word X with solo type 0",
+  "s-nosolo": "SPEC-MIX-GRAPH A2: a loaded SoloSink true acts as pressing Solo (untraced); with every SoloSink false no Solo is pressed under either reading",
+  "d-template": "analysis/ableton-live-12.4.3/r2/t11-structure-v1/make_fixture.py (T11-MIN builders); schema_check.py, fixture_audit.py",
+  "adr-0004": "wiki/decisions/adr-0004-target-scope-t1.md render conventions (settled start)"
+ },
+ "clauses": {
+  "001": "S clauses kept; >12 returns, holder gaps and count mismatch excluded (U)",
+  "002": "S, as written",
+  "003": "assign None, manual volume, in-range stored gain; A5 (A/B) and A3 (automated) parts excluded; consequences for out-of-range stored values excluded (opening U)",
+  "004": "X matrix and pan law (restated from SPEC-MIXER-VALUES r4 REQ-013); S split amount",
+  "005": "X matrix and consequences; S SendsPre mapping; S-cond (A4) gain clause narrowed to the exact stored minimum; A7 and U a_k excluded",
+  "006": "S clauses; summation order U excluded (tolerance)",
+  "007": "X and S, as written",
+  "008": "X gate table kept (types 0-6 as categories); S (A2) category assignment excluded except: no SoloSink true -> no soloed track; U excluded",
+  "009": "S and X, as written; volume-curve evaluation narrowed to the volume gain",
+  "010": "X 75 samples; S scope; crossfade-assign ramp excluded with A/B assignments; automation ramps -> REQ-014; developer option U excluded",
+  "011": "Proposed (A1) adopted as the ADR 0004 render convention; automation part dropped",
+  "012": "not released: S (A8) and U",
+  "013": "S and X kept as a computation on envelope time; automation offset (untraced) and drive (REQ-012) excluded; comparison with REQ-AUTOMATION-ENVELOPES-010 is analyst-side only",
+  "014": "S (A6) kept with A6 and the pan step stated; volume/send example (A3/A4) excluded; r >= 2^31 excluded (finding F3)",
+  "015": "not released: S-cond (A3)",
+  "016": "not released: its observable is the drive state of REQ-012"
+ },
+ "cases": {
+  "MIX-GRAPH-001": {
+   "source": "MG-001",
+   "evidence": [
+    "x-sends"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-002": {
+   "source": "MG-002",
+   "evidence": [
+    "x-sends"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-003": {
+   "source": "MG-003",
+   "evidence": [
+    "x-sends"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-004": {
+   "source": "MG-004",
+   "evidence": [
+    "x-sends"
+   ],
+   "change": "as written; three evaluations"
+  },
+  "MIX-GRAPH-005": {
+   "source": "MG-005",
+   "evidence": [
+    "x-sends"
+   ],
+   "change": "as written; two evaluations"
+  },
+  "MIX-GRAPH-006": {
+   "source": "MG-006",
+   "evidence": [
+    "x-switch"
+   ],
+   "change": "as written; three evaluations"
+  },
+  "MIX-GRAPH-007": {
+   "source": "MG-007",
+   "evidence": [
+    "x-solo"
+   ],
+   "change": "narrowed: solo types 0-6 only (type 7 is not a category); the cue column dropped; types given as category names"
+  },
+  "MIX-GRAPH-008": {
+   "source": "MG-009",
+   "evidence": [
+    "x-fade"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-009": {
+   "source": "MG-010",
+   "evidence": [
+    "x-ramp"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-010": {
+   "source": "MG-011",
+   "evidence": [
+    "x-ramp"
+   ],
+   "change": "as written; two evaluations"
+  },
+  "MIX-GRAPH-011": {
+   "source": "MG-012",
+   "evidence": [
+    "x-panner",
+    "x-panlaw"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-012": {
+   "source": "MG-031",
+   "evidence": [
+    "x-bezier"
+   ],
+   "change": "as written"
+  },
+  "MIX-GRAPH-013": {
+   "source": "MG-032 value part",
+   "evidence": [
+    "x-bezier",
+    "x-segment",
+    "s-pointlist",
+    "s-lookup"
+   ],
+   "change": "re-authored as a computation: the claim that M's arrangement envelope drives M's pan (A8) is dropped; times are envelope times"
+  },
+  "MIX-GRAPH-014": {
+   "source": "MG-033 value part",
+   "evidence": [
+    "x-segment",
+    "s-pointlist",
+    "s-lookup"
+   ],
+   "change": "re-authored as a computation (A8 dropped)"
+  },
+  "MIX-GRAPH-015": {
+   "source": "MG-034 value part",
+   "evidence": [
+    "x-segment",
+    "s-pointlist",
+    "s-lookup"
+   ],
+   "change": "re-authored as a computation (A8 dropped)"
+  },
+  "MIX-GRAPH-016": {
+   "source": "new (REQ-013 Bool/Enum and step clauses had no case)",
+   "evidence": [
+    "s-lookup",
+    "s-pointlist"
+   ],
+   "change": "static-derived"
+  },
+  "MIX-GRAPH-017": {
+   "source": "new (REQ-014 had no case without A3/A8)",
+   "evidence": [
+    "s-ramplen"
+   ],
+   "change": "static-derived; A6 and the pan step stated in the contract"
+  },
+  "MIX-GRAPH-018": {
+   "source": "new (REQ-001/002/006 had no case without A4/A7)",
+   "evidence": [
+    "s-graph",
+    "s-perSample",
+    "s-summing",
+    "s-sendmin",
+    "x-panlaw",
+    "d-template",
+    "adr-0004"
+   ],
+   "change": "composed"
+  },
+  "MIX-GRAPH-019": {
+   "source": "MG-029 narrowed",
+   "evidence": [
+    "s-volume",
+    "x-panlaw",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "stored 2 replaced by the in-range maximum 1.99526238: opening out-of-range values is U (SPEC-MIXER-VALUES r4 REQ-015)"
+  },
+  "MIX-GRAPH-020": {
+   "source": "MG-029 narrowed",
+   "evidence": [
+    "s-volume",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "stored 0 and -1 replaced by the in-range minimum 0.0003162277571 (same reason)"
+  },
+  "MIX-GRAPH-021": {
+   "source": "new (floor inside the stored domain)",
+   "evidence": [
+    "s-volume",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "composed"
+  },
+  "MIX-GRAPH-022": {
+   "source": "new (floor inside the stored domain)",
+   "evidence": [
+    "s-volume",
+    "x-panlaw",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "composed; gain within the comparator of 0.00033"
+  },
+  "MIX-GRAPH-023": {
+   "source": "MG-030 without the send",
+   "evidence": [
+    "s-volume",
+    "x-panlaw",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "A's send kept at its minimum so A4/A7 are not needed"
+  },
+  "MIX-GRAPH-024": {
+   "source": "MG-022 without the send",
+   "evidence": [
+    "x-panlaw",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "A's send kept at its minimum"
+  },
+  "MIX-GRAPH-025": {
+   "source": "new (REQ-004 split amount)",
+   "evidence": [
+    "x-panlaw",
+    "s-panmode",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "composed"
+  },
+  "MIX-GRAPH-026": {
+   "source": "new (REQ-006 main sum)",
+   "evidence": [
+    "s-summing",
+    "s-volume",
+    "x-panlaw",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "composed"
+  },
+  "MIX-GRAPH-027": {
+   "source": "MG-023",
+   "evidence": [
+    "x-solo",
+    "x-sends",
+    "s-mute",
+    "s-nosolo",
+    "adr-0004"
+   ],
+   "change": "as written; the expectation does not depend on A4 or A7 (send gate 0 zeroes every send entry, MG-004)"
+  },
+  "MIX-GRAPH-028": {
+   "source": "new (REQ-007 on a return)",
+   "evidence": [
+    "x-solo",
+    "s-mute",
+    "s-nosolo",
+    "s-sendmin",
+    "adr-0004"
+   ],
+   "change": "composed; independent of A4 and A7 because the return's gates are 0"
+  }
+ },
+ "draft_cases_not_released": {
+  "MG-008": "grades three internal predicates with no released observable; its reading 'speaker ignored for type 4' contradicts REQ-008's X table (type 4: main gate = s)",
+  "MG-020, MG-021, MG-022, MG-030": "send above its minimum reaching a playing return: A4 (Q-023, Q-019 condition) and A7 (send-active derivation, Q-023 item); MG-022 and MG-030 re-authored without the send",
+  "MG-024, MG-025, MG-026, MG-027": "solo loaded from the set: A2 (Q-023)",
+  "MG-028": "crossfade assignment A: A5 (Q-023); also A4 and A7",
+  "MG-029 (stored 2, 0, -1)": "out-of-range stored volume: opening is U in SPEC-MIXER-VALUES r4 REQ-015; re-authored in range",
+  "MG-032, MG-033, MG-034 (render form)": "M's arrangement envelope driving M's pan rests on A8 (Q-023); value parts re-authored as computations",
+  "MG-035": "A3, A6 and A8 (volume automation units and drive)",
+  "MG-036": "A7 and A8 (Speaker envelope on R with A's send above minimum)",
+  "MG-037": "A8 (session launch stops arrangement automation)",
+  "MG-038 to MG-041": "U cases"
+ },
+ "assumptions_relied_on": {
+  "A1": "settled for T1 as the ADR 0004 render convention (REQ-011); every render case",
+  "A6": "stated in the contract (REQ-014)",
+  "pan step 0.002": "inferred from the pan range -1..1; stated in the contract",
+  "arm64 equivalence": "fma-scan.txt; stated in the contract"
+ },
+ "assumptions_not_relied_on": [
+  "A2",
+  "A3",
+  "A4 (except: a send at the exact stored minimum gives 0 with or without it)",
+  "A5",
+  "A7",
+  "A8"
+ ]
+}
