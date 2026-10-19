@@ -1,0 +1,364 @@
+--- transport-state-v1/README.md
++++ transport-state-v2/README.md
+@@ -1,23 +1,63 @@
+-# Transport state in Live Set documents, release 1
++# Transport state in Live Set documents, release 2
+ 
+-**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
+-[role instructions](AGENTS.md), [the manifest](manifest.json) and
+-[the review disposition](REVIEW.md). The stated partial scope, narrowed as
+-recorded in the review, is approved as a contract for a fresh, restricted
+-implementation workspace. Such a workspace has not been provisioned by this
+-release.
++**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
++[cases](cases.json), [role instructions](AGENTS.md) and
++[the manifest](manifest.json). This package is not an implementation input until
++a separate review approves it and it is published.
+ 
+-The finite scope is how the decoded XML of one Live Set format version stores
+-the arrangement loop switch, loop start, loop length, playback position, tempo
+-and time-signature code: where each value is, which text is accepted or refused
++The finite scope is the same as in transport-state-v1. It covers how the decoded
++XML of one Live Set format version stores six values: the arrangement loop
++switch, loop start, loop length, playback position, tempo and time-signature
++code. For each it states where the value is, which text is accepted or refused
+ when a document is opened, what missing, duplicated and unknown items do, and
+ the exact text written on save. Existing requirement IDs are retained with
+ explicit partial clauses. Requirements 009 and 012 and every runtime effect
+ remain unreleased. No application source, shipped file or public dependency is
+ included.
+ 
+-The 18 cases use independently authored minimal XML fixtures. All expected
+-outputs are static-derived and unexecuted, not captured reference behavior. The
+-representation is a comparison convention, not an API claimed to exist in Live
+-or a required architecture. No compatibility claim is made.
+-After publication the release is immutable; corrections require a new revision.
++The 33 cases use independently authored minimal XML fixtures. Each expected
++output is labeled static-derived or extracted execution, as defined in the
++contract. None is captured reference behavior. The representation is a
++comparison convention, not an API claimed to exist in Live or a required
++architecture. No compatibility claim is made. After publication the release is
++immutable; corrections require a new revision.
++
++## Supersession
++
++When published, this release supersedes transport-state-v1. transport-state-v1
++stays immutable. It remains valid for its own scope, but its REQ-011 rule should
++not be reused outside that scope (change 1). Its 18 cases keep their IDs,
++records and fixture bytes, and 15 cases are new, for 33 in total.
++[The manifest](manifest.json) records the relationship and the superseded
++manifest digest.
++
++## Changes from transport-state-v1
++
++1. **REQ-011 step 1 corrected.** transport-state-v1 takes k from the exact
++   base-10 logarithm. The original program takes it from the logarithm rounded to
++   the nearest binary64 value. The two differ only for binary64 values just above
++   a power of ten 10ⁿ (n ≥ 1) or just below 10⁻ⁿ, for example 1000.0000000000001
++   and 0.000001. transport-state-v1 gave no expectation for those values, so none
++   of its cases is affected. The rule is now stated exactly. TS-024 to TS-027 are
++   new cases.
++2. **Negative zero.** REQ-011 writes negative zero as `-0`, and REQ-004 reads
++   `-0` as negative zero. The transport-state-v1 exclusion of negative zero is
++   removed. TS-028 is new.
++3. **Time-signature text (REQ-006).** The rule is restated as five conditions:
++   sign, spaces, length and range. Spellings that transport-state-v1 excluded are
++   now decided: spaces on both sides, a `+` with trailing spaces, a `-` sign, and
++   text longer than 63 characters that ends in a space. TS-010 and TS-029 to
++   TS-033 are new. An accepted code outside 0 to 494 still has no expectation.
++4. **`#` forms (REQ-004, REQ-005).** The `#` form with exactly 16 (tempo: 8)
++   hexadecimal digits of either case reads as raw bits, most significant digit
++   first. Other text starting with `#` is refused. That exclusion is removed.
++   TS-034 to TS-037 are new; TS-034 and TS-035 exercise the existing sign and
++   space reading.
++5. **Exclusions.** One exclusion is narrowed and one is added. Values whose
++   logarithm lies within 1e-12 of an integer are no longer excluded. Values whose
++   logarithm lies between 1/4 and 3/4 of a binary64 gap from an integer now have no
++   expectation.
++6. **Provenance.** The extracted-execution label is new. Every new case carries
++   it. Carried cases keep their records and the static-derived label.
++7. **Unchanged.** Every other clause, case and fixture of transport-state-v1 is
++   carried unchanged.
+--- transport-state-v1/AGENTS.md
++++ transport-state-v2/AGENTS.md
+@@ -1,9 +1,10 @@
+ # Package role and access instructions
+ 
+-This is a reviewed local release for its explicit partial scope. Application
+-implementation requires a fresh, restricted implementation workspace containing
+-only permitted materials. Publication of this package does not provision one.
+-Do not begin clean implementation in an analyst checkout.
++This is a staged, unreviewed handoff candidate. It is not an implementation
++input. Only a release that a separate review approved and published may be used
++for implementation, in a fresh, restricted implementation workspace containing
++only permitted materials. Do not begin clean implementation in an analyst
++checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -17,7 +18,7 @@
+ structure is specified. A candidate adapter may expose the comparison labels;
+ this does not impose an internal architecture.
+ 
+-Preserve this release unchanged. Do not extend unknown or excluded behavior.
++Preserve this package unchanged. Do not extend unknown or excluded behavior.
+ Request a reviewed revision for gaps. Record candidate-only tests separately
+ from reference comparisons, with exact package and candidate hashes. Nothing
+ here authorizes package installation, network publication or messages.
+--- transport-state-v1/spec.md
++++ transport-state-v2/spec.md
+@@ -1,14 +1,14 @@
+-# Transport state in Live Set documents — release 1
++# Transport state in Live Set documents — release 2
+ 
+ Target: Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS.
+ Features: FEAT-TRANSPORT with FEAT-PERSISTENCE. Parent specification identity:
+-SPEC-TRANSPORT-STATE revision 1. Release: transport-state-v1. Only the clauses
++SPEC-TRANSPORT-STATE revision 3. Release: transport-state-v2, which supersedes
++transport-state-v1 ([README](README.md#supersession)). Only the clauses
+ explicitly included below are in scope. No other clause of a listed requirement
+ is implicitly approved. This document is self-contained.
+ 
+-**Status: reviewed local release.** A separate review approved the clauses
+-below with the narrowing recorded in [the review disposition](REVIEW.md).
+-Implementation requires a fresh, restricted implementation workspace.
++**Status: staged candidate; not reviewed; not released.** Do not implement from
++it. A separate review must approve it first.
+ 
+ ## What the contract means
+ 
+@@ -20,8 +20,24 @@
+ not describe playback, timing, editing after opening, undo, the user interface,
+ or how a refused document is reported.
+ 
+-All rules and expected results are **static-derived** from evidence reviewed
+-before sanitization. None is an observed reference execution. No compatibility
++Every expected result carries one of two provenance labels:
++
++- **Static-derived**: derived from evidence reviewed before sanitization.
++- **Extracted execution**: the original program's own code for converting the
++  value text was run on the case's text. It ran on a Linux x86_64 host, from the
++  program's x86_64 build, with glibc in place of the macOS system libraries. The
++  macOS arm64 build is inferred to give the same result.
++
++Locating the value, opening the document and saving it are static-derived in
++every case. The extracted-execution cases rest on three stated assumptions:
++
++- the macOS arm64 build converts these texts as the x86_64 build does;
++- on save, the base-10 logarithm is within 0.8 of a binary64 gap of the exact
++  value at the values of TS-024 to TS-027, whose logarithms lie 0.02 to 0.17 gaps
++  from an integer;
++- the decimal reading in TS-034 and TS-035 follows the C-standard number grammar.
++
++None is an observed run of the original application. No compatibility
+ result is established; the original application remains the authority for a
+ later comparison.
+ 
+@@ -46,8 +62,9 @@
+   from a fixture must not by itself change a judged outcome.
+ - Expectations exist only for values in these ranges: loop start and position
+   from 0 to below 1,000,000; loop length from 1 to below 1,000,000; tempo from
+-  20 to 999; time-signature codes from 0 to 494. The upper loop and position
+-  bound is a scope limit of this release, not a claim about the original.
++  20 to 999; time-signature codes from 0 to 494. Negative zero counts as zero
++  for these ranges. The upper loop and position bound is a scope limit of this
++  release, not a claim about the original.
+ 
+ ## Selected requirement clauses
+ 
+@@ -111,25 +128,38 @@
+   and at least one digit. An exponent marker without digits is not part of the
+   prefix. Text after the prefix is ignored, so `4.5abc` reads as 4.5.
+ - The value is the binary64 number nearest to the decimal prefix, ties to even.
+-- Text without such a prefix is refused, for example `abc` or the empty string.
++- Text of exactly 17 characters, `#` followed by 16 hexadecimal digits (`0`–`9`,
++  `A`–`F`, `a`–`f`), reads as the binary64 value with those bits, the first digit
++  most significant: `#4012000000000000` reads as 4.5. Other text that starts with
++  `#` has no decimal prefix and is refused.
++- Text without such a prefix is refused, for example `abc`, `- 4.5` or the empty
++  string. ` +4.5 ` reads as 4.5, and `-0` reads as negative zero.
+ 
+ ### REQ-TRANSPORT-STATE-005 — partial: tempo text on load
+ 
+-`Tempo/Manual` text is read by the REQ-004 rule. The binary64 result is then
+-rounded to the nearest binary32 value, ties to even, which is the tempo.
+-`93.3333333` reads as 93.33333587646484375.
++`Tempo/Manual` text is read by the REQ-004 rule, except for the `#` form. For
++tempo that form has exactly 9 characters, `#` followed by 8 hexadecimal digits, and
++reads as the binary32 value with those bits: `#42f00000` reads as 120. The binary64
++result of a decimal prefix is then rounded to the nearest binary32 value, ties to
++even, which is the tempo. `93.3333333` reads as 93.33333587646484375.
+ 
+ ### REQ-TRANSPORT-STATE-006 — partial: time-signature code text on load
+ 
+-- Accepted, as a decimal integer: ASCII digits preceded by any number of spaces
+-  and at most one `+`, in that order, with nothing after the digits (`201`,
+-  ` 201`, `+201`, ` +201`); or ASCII digits followed only by spaces (`201 `).
+-- Refused: text that is empty or only spaces; text with any byte outside ASCII;
+-  text in which, after leading spaces and one leading `+`, the rest is empty,
+-  starts with `-` after that `+`, contains a character other than an ASCII digit
+-  (apart from a single leading `-` and trailing spaces), or, when the text does
+-  not end in a space, is longer than 63 characters.
+-  Examples: `201.0`, `2e2`, `0x10`, `abc`.
++- Split the text into its leading spaces (U+0020), at most one `+` directly after
++  them, a body, and its trailing spaces (U+0020). The text is accepted as a
++  decimal integer when all five conditions hold. Otherwise it is refused.
++  1. Every byte is ASCII.
++  2. The body is an optional `-` followed by one or more ASCII digits, at most 63
++     characters in all.
++  3. A `+` is not followed by `-`.
++  4. There are no trailing spaces when there are leading spaces or a `+`.
++  5. The value lies from −2147483648 to 2147483647.
++- Accepted examples: `201`, ` 201`, `+201`, ` +201`, `201 `, `00201`, `-0`, and
++  63 characters `0…0201` followed by a space.
++- Refused examples: ` 201 `, ` +201 `, `+201 `, `- 201`, `+-201`, `--201`, `-`,
++  `2147483648`, `201.0`, `2e2`, `0x10`, `abc`, the empty text, and `-` followed by
++  63 digits.
++- An accepted code outside 0 to 494 has no expectation (see the preconditions).
+ 
+ ### REQ-TRANSPORT-STATE-007 — partial: missing values
+ 
+@@ -155,31 +185,45 @@
+ The code for numerator n and denominator d is `(n − 1) + 99 × log2(d)`, with n
+ from 1 to 99 and d in {1, 2, 4, 8, 16}. Valid codes are 0 to 494. Examples:
+ 4/4 is 201, 6/8 is 302, 7/8 is 303, 1/1 is 0 and 99/16 is 494. This clause
+-defines the meaning of a stored code only. No case exercises it, because opening
+-a document with a code other than 201 and saving an edited time signature are
+-excluded below.
++defines the meaning of a stored code only. No case exercises it, because whether
++a stored code other than 201 takes effect, and saving an edited time signature,
++are excluded below. TS-030 judges only that a document with code 0 opens.
+ 
+ ### REQ-TRANSPORT-STATE-011 — partial: number text on save
+ 
+ - Booleans are written `true` or `false`. Integers are written as plain decimal.
+-- Let P be 17 for the binary64 values and 9 for tempo. Positive zero is written
+-  `0`. For any other value x:
+-  1. let k be the smallest integer not below log10|x| when |x| ≥ 1, and the
+-     largest integer not above log10|x| when |x| < 1;
++- Let P be 17 for the binary64 values and 9 for tempo. Tempo is first converted
++  exactly to binary64. Positive zero is written `0`, and negative zero `-0`. For
++  any other value x:
++  1. let L be the binary64 value nearest to log10|x|. Let k be the smallest
++     integer not below L when L ≥ 0, and the largest integer not above L when
++     L < 0;
+   2. write x in fixed-point notation with max(0, P − k) digits after the decimal
+-     point, rounded from its exact binary value to nearest, ties to even (tempo
+-     is first converted exactly to binary64);
++     point, rounded from its exact binary value to nearest, ties to even;
+   3. if the text contains `.`, remove trailing `0` characters and then a
+      trailing `.`.
++- Step 1 uses the rounded logarithm L. It gives a different k from the exact
++  logarithm only when L is an integer and log10|x| is not. In that case:
++  - a binary64 value just above a power of ten 10ⁿ with n ≥ 1 gets one more digit
++    after the point than the exact logarithm would give;
++  - a binary64 value just below 10⁻ⁿ with n ≥ 1 gets one fewer. The binary64
++    value nearest to 10⁻ⁿ can itself lie below 10⁻ⁿ.
++
++  For example, 1000.0000000000001 → `1000.00000000000011` (the exact logarithm
++  would give `1000.0000000000001`) and 0.000001 → `0.00000099999999999999995`.
++  Tempo values are never affected.
+ - Examples: 120 → `120`; 8 → `8`; 4.5 → `4.5`; tempo read from `121.2` →
+   `121.199997`; tempo read from `93.3333333` → `93.3333359`; binary64 0.3 →
+-  `0.299999999999999989`; binary64 3.3 → `3.2999999999999998`.
++  `0.299999999999999989`; binary64 3.3 → `3.2999999999999998`;
++  100.00000000000001 → `100.000000000000014`; 0.09999999999999999 →
++  `0.099999999999999992`.
+ 
+ ## Acceptance representation and comparison
+ 
+-[cases.json](cases.json) lists 18 cases. Each has an input fixture, an action
+-(`open`, or `open-save`: open, then save without other changes) and an expected
+-result with these parts:
++[cases.json](cases.json) lists 33 cases. Each has an input fixture, an action
++(`open`, or `open-save`: open, then save without other changes), an
++`expectation_provenance` label (see [What the contract means](#what-the-contract-means))
++and an expected result with these parts:
+ 
+ | Field | Meaning |
+ | --- | --- |
+@@ -190,9 +234,10 @@
+ | `saved.transport_order` | When true, the saved `Transport` children obey the REQ-002 order and contain the four required children exactly once |
+ 
+ Numbers in `state` are JSON numbers and compare exactly as binary64 values. A
+-tempo is compared after its exact conversion to binary64. Saved documents are
+-compared as parsed XML: element names, nesting and attribute text, never bytes,
+-whitespace, indentation or attribute quoting. Anything a case does not list is
++tempo is compared after its exact conversion to binary64. Because equality does
++not distinguish negative zero, TS-028 judges the sign only through its saved
++text. Saved documents are compared as parsed XML: element names, nesting and
++attribute text, never bytes, whitespace, indentation or attribute quoting. Anything a case does not list is
+ not judged, including other elements, automation and the presence of other
+ known `Transport` children. A refused case has no `state` or `saved` part.
+ 
+@@ -212,11 +257,11 @@
+ `TimeSignature` with the fixture's (removing it where the fixture has none). In
+ that set, the tempo and time-signature automation of the main track holds a
+ single event equal to the fixture's `Manual` text, or `120` when the fixture's
+-tempo `Manual` has no value; for TS-009 the time-signature event holds `201`,
+-so that only `Manual` holds the refused text. Every scene has its tempo and
+-time-signature overrides disabled; the application uses its factory default
+-set, not a user template; and the host locale uses `.` as the decimal
+-separator. The observation channel is chosen by the validation analyst. A
++tempo `Manual` has no value. For TS-009, TS-010, TS-029, TS-031 and TS-033 the
++time-signature event holds `201`, so that only `Manual` holds the refused text.
++Every scene has its tempo and time-signature overrides disabled; the application
++uses its factory default set, not a user template; and the host locale uses `.`
++as the decimal separator. The observation channel is chosen by the validation analyst. A
+ channel that rounds must be compared at its rounding. None of this has been run.
+ 
+ ## Exclusions and deferred obligations
+@@ -229,14 +274,14 @@
+ 
+ - loop, position or tempo text whose remainder, after leading spaces and an
+   optional sign, starts with `0x` or `0X`, or with `inf` or `nan` in any letter
+-  case; the text `Invalid`; text starting with `#`; leading whitespace other than
+-  U+0020;
+-- values outside the ranges in the preconditions, non-finite values, the largest
+-  finite values and negative zero; saved values whose base-10 logarithm lies
+-  within 1e-12 of an integer without being an exact power of ten;
+-- time-signature text with spaces both before and after the digits, or with a
+-  `+` and trailing spaces (for example ` +201 `); text with a `-` sign; text
+-  longer than 63 characters that ends in a space;
++  case; the text `Invalid`; leading whitespace other than U+0020;
++- values outside the ranges in the preconditions, non-finite values and the
++  largest finite values;
++- saved binary64 values x whose log10|x| is not an integer but lies, from the
++  nearest integer n, between 1/4 and 3/4 of the gap between n and the adjacent
++  binary64 value on the side of log10|x|; the last bit of L is not established
++  there;
++- accepted time-signature codes outside 0 to 494;
+ - a missing `TimeSignature/Manual` element or value; a missing `Transport`,
+   `Tempo`, `TimeSignature`, `Mixer`, `DeviceChain` or `MainTrack` element;
+ - an unknown attribute on any element this release reads; repeated unknown
+@@ -254,9 +299,8 @@
+ `Transport` child is written; byte layout of saved documents; playback, timing,
+ Link and external sync; undo; the text and presentation of refusals.
+ 
+-Cases of the parent draft not released here: TS-010 (a code with spaces on both
+-sides), TS-017 to TS-019 (out-of-range values) and TS-023 (editing the time
+-signature after opening).
++Cases of the parent draft not released here: TS-017 to TS-019 (out-of-range
++values) and TS-023 (withdrawn: editing the time signature after opening).
+ 
+ Before claiming reference compatibility, run a separately designed bounded
+ probe for these cases or a justified equivalent set. Pin the original and
+@@ -266,12 +310,13 @@
+ 
+ ## Fixture provenance
+ 
+-All fixtures are minimal XML documents independently authored for these cases.
++All 33 fixtures are minimal XML documents independently authored for these
++cases. The 18 carried from transport-state-v1 are byte-identical to that release.
+ They use public document element names and simple values and contain no shipped
+ file content, program code or assets. The six `Transport` children outside the
+ release carry fixed values (`PhaseNudgeTempo` 10, `MetronomeTickDuration` 0,
+ the others `false`) only to give the element its usual shape; they are not
+-interpreted. Expected results are newly authored static-derived behavioral data.
+-No public source or dependency is approved or included. Review status is
+-recorded in [the manifest](manifest.json) and
+-[the review disposition](REVIEW.md).
++interpreted. Expected results are newly authored behavioral data, labeled per
++case as static-derived or extracted execution. No public source or dependency is
++approved or included. Review status is recorded in [the manifest](manifest.json); this
++candidate has no review record yet.

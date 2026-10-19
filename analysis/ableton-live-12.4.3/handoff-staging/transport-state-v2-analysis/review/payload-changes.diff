@@ -1,0 +1,313 @@
+diff -ru ts2-before-review/AGENTS.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/AGENTS.md
+--- ts2-before-review/AGENTS.md	2026-10-18 15:16:32.644536946 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/AGENTS.md	2026-10-18 15:38:44.504331346 -0700
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This is a staged, unreviewed handoff candidate. It is not an implementation
+-input. Only a release that a separate review approved and published may be used
+-for implementation, in a fresh, restricted implementation workspace containing
+-only permitted materials. Do not begin clean implementation in an analyst
+-checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace containing
++only permitted materials. Publication of this package does not provision one.
++Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -18,7 +17,7 @@
+ structure is specified. A candidate adapter may expose the comparison labels;
+ this does not impose an internal architecture.
+ 
+-Preserve this package unchanged. Do not extend unknown or excluded behavior.
++Preserve this release unchanged. Do not extend unknown or excluded behavior.
+ Request a reviewed revision for gaps. Record candidate-only tests separately
+ from reference comparisons, with exact package and candidate hashes. Nothing
+ here authorizes package installation, network publication or messages.
+diff -ru ts2-before-review/cases.json /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/cases.json
+--- ts2-before-review/cases.json	2026-10-18 15:22:17.252472631 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/cases.json	2026-10-18 15:38:44.504459443 -0700
+@@ -2,7 +2,7 @@
+  "schema": "transport-state-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "scope": "transport-state-v2 partial requirement clauses only (see spec.md)",
+- "status": "staged candidate; not reviewed; not released",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal XML documents; no shipped file copied or excerpted",
+  "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+  "representation": {
+diff -ru ts2-before-review/manifest.json /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/manifest.json
+--- ts2-before-review/manifest.json	2026-10-18 15:22:17.323595906 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/manifest.json	2026-10-18 17:32:59.833426948 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "transport-state-v2",
+- "release_status": "staged candidate; not reviewed; not released",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "specification": {
+   "id": "SPEC-TRANSPORT-STATE",
+@@ -23,7 +23,7 @@
+   "REQ-TRANSPORT-STATE-007": "Missing element or Value for the four Transport values and tempo Manual reads off/8/16/0/120",
+   "REQ-TRANSPORT-STATE-008": "Duplicate known non-KeyMidi Transport children or Manual refused; unknown Transport child skipped and not saved",
+   "REQ-TRANSPORT-STATE-010": "Code meaning (n-1)+99*log2(d) only; no acceptance case",
+-  "REQ-TRANSPORT-STATE-011": "Boolean and integer text; fixed-precision decimal text with P=17 or 9, k from the binary64 logarithm, for in-range finite values; positive and negative zero"
++  "REQ-TRANSPORT-STATE-011": "Boolean and integer text; fixed-precision decimal text with P=17 or 9, k from the binary64 logarithm, for in-range finite values outside the half-gap band; positive and negative zero"
+  },
+  "unreleased_requirements": [
+   "REQ-TRANSPORT-STATE-009",
+@@ -38,19 +38,19 @@
+  },
+  "expectation_provenance_labels": {
+   "static-derived; not observed reference output": "derived from evidence reviewed before sanitization",
+-  "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred": "the value's text conversion in the original program's x86_64 build ran on the case's text on a Linux x86_64 host, with glibc in place of the macOS system libraries; locating, opening and saving remain static-derived"
++  "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 build read the case's text and, where a saved text is judged, wrote the value read, on a Linux x86_64 host with glibc in place of the macOS system libraries; locating, opening and saving remain static-derived"
+  },
+  "stated_assumptions": [
+-  "The macOS arm64 build converts these texts as the x86_64 build does. All cases with the extracted-execution label depend on it.",
+-  "The reference's binary64 base-10 logarithm errs by less than 0.8 of a binary64 gap at the values of TS-024 to TS-027, whose logarithms lie 0.02 to 0.17 gaps from an integer. With that error the result is the integer, as it is in the correctly rounded result and in the glibc run.",
+-  "The reference's decimal reading of TS-034 and TS-035 follows the C-standard number grammar in a locale whose decimal separator is '.', as the glibc run did.",
+-  "Exact decimal ties on save round to even (as in transport-state-v1); no case lies on a tie."
++  "The macOS arm64 build converts these texts and values as the x86_64 build does. All cases with the extracted-execution label depend on it.",
++  "The reference's binary64 base-10 logarithm errs by less than 3/4 of a binary64 gap wherever its last bit decides k in REQ-011, outside the half-gap band. TS-024 to TS-027, whose logarithms lie 0.02 to 0.17 gaps from an integer, need only an error below 0.8 of a gap.",
++  "The reference's decimal reading follows the C-standard number grammar in a locale whose decimal separator is '.', and gives the nearest binary64 value with the sign of -0 kept, as the glibc run did. TS-024 to TS-028, TS-034 and TS-035 depend on it.",
++  "The reference's fixed-point text on save is exact, rounds exact decimal ties to even and keeps the sign of negative zero, as the glibc run did; transport-state-v1 accepted exactness and ties to even as inferences. TS-024 to TS-028 depend on it; no case lies on a tie."
+  ],
+  "exclusions": {
+   "inputs_without_expectation": [
+    "number text starting (after spaces and sign) with 0x, inf or nan; Invalid; leading whitespace other than U+0020",
+    "values outside the spec.md ranges (negative zero counts as zero); non-finite and largest finite values",
+-   "saved binary64 values whose log10 is not an integer but lies between 1/4 and 3/4 of a binary64 gap from one",
++   "saved binary64 values whose log10 is not an integer but lies between 1/4 and 3/4 of a binary64 gap from one (the gap on the side of log10, as in spec.md)",
+    "accepted time-signature codes outside 0 to 494",
+    "missing TimeSignature/Manual or its value; missing Transport, Tempo, TimeSignature, Mixer, DeviceChain or MainTrack",
+    "unknown attributes on any element this release reads; repeated unknown children; any *KeyMidi child in the input; LoopIsSongStart other than false",
+@@ -75,25 +75,36 @@
+  "fixture_origin": "independently authored minimal XML documents and expected logical results",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RV2-01 low: change list incomplete (TS-030 opening a code other than 201; unnamed added exclusion; stated assumptions); completed, no expectation changed",
++   "RV2-02 low: REQ-011 step 1 outside the band rested on an unstated logarithm-accuracy assumption; stated, band referenced from REQ-011, README change 1 reworded; no case affected",
++   "RV2-03 low: decimal reading and save-text dependence on the substituted library unstated; assumptions widened; no expectation changed",
++   "RV2-04 editorial: extracted-execution definition now covers the writer run on save cases",
++   "RV2-05 editorial: payload status set to reviewed release; review record added",
++   "RV2-06 info: evidence identity re-hashed and the evidence run reproduced byte for byte",
++   "RV2-07 info: half-gap band conservative on the side toward zero; accepted",
++   "RV2-08 info: coverage notes for a later revision; no defect"
++  ],
++  "disposition": "Approved with listed clarifications, only for the explicit partial clauses; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "transport-state-v1",
+  "supersession": {
+-  "relationship": "superset on publication; transport-state-v1 stays immutable and valid for its own scope; its REQ-011 step 1 is exact only within that scope",
++  "relationship": "superset in effect: within transport-state-v1's scope both give the same expectations; transport-state-v1 stays immutable and valid for its own scope; its REQ-011 step 1 wording is exact only within that scope",
+   "superseded_manifest_sha256": "b2fdf0294fb1209fd34b252fb83327edfb78ca466d22ff40cbd505a04045baba",
+   "restated_cases": "TS-001 to 009, 011 to 016, 020 to 022: case records and fixture bytes identical to transport-state-v1",
+   "changes": [
+    "REQ-011 step 1: k from the logarithm rounded to binary64 instead of the exact logarithm (differs only next to powers of ten, which v1 excluded); cases TS-024 to TS-027",
+    "REQ-011 and REQ-004: negative zero written -0 and read from -0; the negative-zero exclusion removed; TS-028",
+-   "REQ-006 restated as five conditions; spellings v1 excluded (spaces on both sides, + with trailing spaces, - sign, long text ending in a space) decided; TS-010, TS-029 to TS-033",
++   "REQ-006 restated as five conditions; spellings v1 excluded (spaces on both sides, + with trailing spaces, - sign, long text ending in a space) decided; TS-010, TS-029 to TS-033; TS-030 judges only that a document with code 0 opens (v1 gave no expectation for opening a code other than 201); whether such a code takes effect stays excluded",
+    "REQ-004 and REQ-005: # forms with exactly 16 or 8 hex digits of either case; other # text refused; TS-034 to TS-037",
+    "exclusion near integer logarithms narrowed from within 1e-12 to between 1/4 and 3/4 of a binary64 gap; accepted codes outside 0 to 494 excluded",
+-   "provenance label extracted execution added; carried records unchanged"
++   "provenance label extracted execution added, with the stated assumptions it rests on; carried records unchanged"
+   ]
+  },
+  "entrypoint": "README.md",
+@@ -104,18 +115,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "31b81024a6cce2409dff83668bbb0fddc728d88cc1368d1ba643756cde6a5860",
+-   "bytes": 1360
++   "sha256": "313e056ec5f13481dba4cfdd5a3e7d044cda5821007b65a805d9503af4fdac83",
++   "bytes": 1334
+   },
+   {
+    "path": "README.md",
+-   "sha256": "bf492af95abdb3185b62fb370f15f797151c89ceae92649e0a7b78169c655312",
+-   "bytes": 3748
++   "sha256": "717162db59e6ca1d28dd9501f07be0f67d20448159670857ef0b35f42a8c31a3",
++   "bytes": 4402
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "bcdb348ce622288ac2b3bd991a39763c3121d039493fb7b83f06fab0fcc93892",
++   "bytes": 9106
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "4ad25e069800f4f22751aa2cccab0faa8aee9ba0dad85ae1a8ed9cda7c738160",
+-   "bytes": 22246
++   "sha256": "650d432d5b3284f5b7b689d954baf4ac525bcdbfdba1f771729995a73ac31fcb",
++   "bytes": 22219
+   },
+   {
+    "path": "fixtures/TS-001.xml",
+@@ -284,8 +300,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "adec54a13bcb8e0144133bdc3862680f5e1a705704fe97857b9f35dd10b5c77b",
+-   "bytes": 18293
++   "sha256": "29f98a39110eb424e1c53716bb0277b4f6104446f7a246c10e2523ae7fc32455",
++   "bytes": 19114
+   }
+  ]
+ }
+diff -ru ts2-before-review/README.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/README.md
+--- ts2-before-review/README.md	2026-10-18 15:16:32.640036108 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/README.md	2026-10-18 15:38:44.504213699 -0700
+@@ -1,9 +1,11 @@
+ # Transport state in Live Set documents, release 2
+ 
+-**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
+-[cases](cases.json), [role instructions](AGENTS.md) and
+-[the manifest](manifest.json). This package is not an implementation input until
+-a separate review approves it and it is published.
++**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
++[role instructions](AGENTS.md), [the manifest](manifest.json) and
++[the review disposition](REVIEW.md). The stated partial scope, with the
++clarifications recorded in the review, is approved as a contract for a fresh,
++restricted implementation workspace. Such a workspace has not been provisioned
++by this release.
+ 
+ The finite scope is the same as in transport-state-v1. It covers how the decoded
+ XML of one Live Set format version stores six values: the arrangement loop
+@@ -24,7 +26,7 @@
+ 
+ ## Supersession
+ 
+-When published, this release supersedes transport-state-v1. transport-state-v1
++This release supersedes transport-state-v1. transport-state-v1
+ stays immutable. It remains valid for its own scope, but its REQ-011 rule should
+ not be reused outside that scope (change 1). Its 18 cases keep their IDs,
+ records and fixture bytes, and 15 cases are new, for 33 in total.
+@@ -34,8 +36,9 @@
+ ## Changes from transport-state-v1
+ 
+ 1. **REQ-011 step 1 corrected.** transport-state-v1 takes k from the exact
+-   base-10 logarithm. The original program takes it from the logarithm rounded to
+-   the nearest binary64 value. The two differ only for binary64 values just above
++   base-10 logarithm. The original program takes it from its binary64
++   logarithm, stated here as the logarithm rounded to the nearest binary64 value
++   outside the band of change 5. The two differ only for binary64 values just above
+    a power of ten 10ⁿ (n ≥ 1) or just below 10⁻ⁿ, for example 1000.0000000000001
+    and 0.000001. transport-state-v1 gave no expectation for those values, so none
+    of its cases is affected. The rule is now stated exactly. TS-024 to TS-027 are
+@@ -48,16 +51,22 @@
+    now decided: spaces on both sides, a `+` with trailing spaces, a `-` sign, and
+    text longer than 63 characters that ends in a space. TS-010 and TS-029 to
+    TS-033 are new. An accepted code outside 0 to 494 still has no expectation.
++   transport-state-v1 gave no expectation for opening a document whose code is
++   not 201; TS-030 now judges only that a document with code 0 (text `-0`)
++   opens. Whether a code other than 201 takes effect stays excluded.
+ 4. **`#` forms (REQ-004, REQ-005).** The `#` form with exactly 16 (tempo: 8)
+    hexadecimal digits of either case reads as raw bits, most significant digit
+    first. Other text starting with `#` is refused. That exclusion is removed.
+    TS-034 to TS-037 are new; TS-034 and TS-035 exercise the existing sign and
+    space reading.
+-5. **Exclusions.** One exclusion is narrowed and one is added. Values whose
+-   logarithm lies within 1e-12 of an integer are no longer excluded. Values whose
+-   logarithm lies between 1/4 and 3/4 of a binary64 gap from an integer now have no
+-   expectation.
++5. **Exclusions.** The exclusion near integer logarithms is narrowed. Values
++   whose logarithm lies within 1e-12 of an integer are no longer excluded; only
++   values whose logarithm lies between 1/4 and 3/4 of a binary64 gap from an
++   integer have no expectation. Accepted time-signature codes outside 0 to 494,
++   which transport-state-v1 left without expectation through its value ranges,
++   are now also listed as an exclusion.
+ 6. **Provenance.** The extracted-execution label is new. Every new case carries
+-   it. Carried cases keep their records and the static-derived label.
++   it. Carried cases keep their records and the static-derived label. The
++   contract states the assumptions the extracted-execution cases rest on.
+ 7. **Unchanged.** Every other clause, case and fixture of transport-state-v1 is
+    carried unchanged.
+Only in /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2: REVIEW.md
+diff -ru ts2-before-review/spec.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/spec.md
+--- ts2-before-review/spec.md	2026-10-18 15:19:56.947336806 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/transport-state-v2/spec.md	2026-10-18 15:38:44.504015083 -0700
+@@ -7,8 +7,9 @@
+ explicitly included below are in scope. No other clause of a listed requirement
+ is implicitly approved. This document is self-contained.
+ 
+-**Status: staged candidate; not reviewed; not released.** Do not implement from
+-it. A separate review must approve it first.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the clarifications recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -23,19 +24,25 @@
+ Every expected result carries one of two provenance labels:
+ 
+ - **Static-derived**: derived from evidence reviewed before sanitization.
+-- **Extracted execution**: the original program's own code for converting the
+-  value text was run on the case's text. It ran on a Linux x86_64 host, from the
+-  program's x86_64 build, with glibc in place of the macOS system libraries. The
+-  macOS arm64 build is inferred to give the same result.
++- **Extracted execution**: the original program's own code that reads the value
++  text was run on the case's text and, where a saved text is judged, its code
++  that writes the value text was run on the value read. It ran on a Linux x86_64
++  host, from the program's x86_64 build, with glibc in place of the macOS system
++  libraries. The macOS arm64 build is inferred to give the same result.
+ 
+ Locating the value, opening the document and saving it are static-derived in
+-every case. The extracted-execution cases rest on three stated assumptions:
++every case. The extracted-execution cases rest on four stated assumptions:
+ 
+-- the macOS arm64 build converts these texts as the x86_64 build does;
+-- on save, the base-10 logarithm is within 0.8 of a binary64 gap of the exact
+-  value at the values of TS-024 to TS-027, whose logarithms lie 0.02 to 0.17 gaps
+-  from an integer;
+-- the decimal reading in TS-034 and TS-035 follows the C-standard number grammar.
++- the macOS arm64 build converts these texts and values as the x86_64 build does;
++- on save, the base-10 logarithm the program computes is within 3/4 of a
++  binary64 gap of the exact value wherever its last bit decides k in REQ-011,
++  outside the values excluded there. TS-024 to TS-027, whose logarithms lie 0.02
++  to 0.17 gaps from an integer, need only an error below 0.8 of a gap;
++- the decimal reading in TS-024 to TS-028, TS-034 and TS-035 follows the
++  C-standard number grammar and gives the nearest binary64 value, keeping the
++  sign of `-0`, as the glibc run did;
++- the fixed-point text on save is exact, rounds exact decimal ties to even and
++  keeps the sign of negative zero, as the glibc run did. No case lies on a tie.
+ 
+ None is an observed run of the original application. No compatibility
+ result is established; the original application remains the authority for a
+@@ -212,6 +219,9 @@
+   For example, 1000.0000000000001 → `1000.00000000000011` (the exact logarithm
+   would give `1000.0000000000001`) and 0.000001 → `0.00000099999999999999995`.
+   Tempo values are never affected.
++- Values whose log10|x| is not an integer but lies between 1/4 and 3/4 of a
++  binary64 gap from one have no expectation, because the last bit of L is not
++  established there ([exclusions](#exclusions-and-deferred-obligations)).
+ - Examples: 120 → `120`; 8 → `8`; 4.5 → `4.5`; tempo read from `121.2` →
+   `121.199997`; tempo read from `93.3333333` → `93.3333359`; binary64 0.3 →
+   `0.299999999999999989`; binary64 3.3 → `3.2999999999999998`;
+@@ -318,5 +328,5 @@
+ the others `false`) only to give the element its usual shape; they are not
+ interpreted. Expected results are newly authored behavioral data, labeled per
+ case as static-derived or extracted execution. No public source or dependency is
+-approved or included. Review status is recorded in [the manifest](manifest.json); this
+-candidate has no review record yet.
++approved or included. Review status is recorded in [the manifest](manifest.json) and
++[the review disposition](REVIEW.md).

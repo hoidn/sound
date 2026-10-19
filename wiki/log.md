@@ -1989,3 +1989,21 @@ of 6,539 inputs.
 transport-state-v2, which corrects released REQ-011, is staged and under
 separate review. Automation and warp work is still running. The question
 register, spec index, feature map and coverage are updated.
+
+## [2026-10-18] release | transport-state-v2 corrects REQ-011 and supersedes v1
+
+[transport-state-v2](../handoff/transport-state-v2/README.md) was staged by the X2
+transport agent and approved by a separate review agent. The review made four
+clarifications, RV2-01 to RV2-04, and changed no case. The manifest SHA-256 is
+`398a88a62114552595830f99ba2fc1bc4d8c0e1f0d2ae65a70d21aa2324c17c8`.
+
+The release carries v1's 18 cases byte-identical and adds 15. TS-010 and TS-024
+to 037 come from extracted execution. It replaces v1's REQ-011 rule, which
+gave the wrong text next to powers of ten. Values whose logarithm lies 1/4 to
+3/4 of a binary64 spacing from an integer are excluded. The reading of `-0` and
+the exact save text are marked as depending on glibc.
+
+[SPEC-TRANSPORT-STATE](specs/transport-state.md) revision 4 applies the review's
+clarifications. The coordinator verified every hash and scanned the published
+copy for restricted links and addresses. The catalog, spec index, feature map,
+coverage, project page and gate table (new X2 row) are updated.

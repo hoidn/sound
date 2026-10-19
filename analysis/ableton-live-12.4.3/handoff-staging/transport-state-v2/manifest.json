@@ -1,0 +1,307 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "transport-state-v2",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+ "specification": {
+  "id": "SPEC-TRANSPORT-STATE",
+  "parent_revision": 3,
+  "release_revision": 3
+ },
+ "feature_ids": [
+  "FEAT-TRANSPORT",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-TRANSPORT-STATE-001": "Locations and value types of the six values; homonymous elements elsewhere are different values. Units unreleased",
+  "REQ-TRANSPORT-STATE-002": "Empty single-Value element shape for the four Transport values and both Manual elements; the four always written once; relative order of the 33 known Transport children",
+  "REQ-TRANSPORT-STATE-003": "Exact Boolean tokens true/1/false/0; all other text refused",
+  "REQ-TRANSPORT-STATE-004": "Decimal-prefix reading with leading spaces skipped and trailing text ignored; nearest binary64; # with 16 hex digits of either case reads raw bits, most significant first; no prefix refused",
+  "REQ-TRANSPORT-STATE-005": "Tempo read as REQ-004 then rounded to nearest binary32; # with 8 hex digits reads raw bits",
+  "REQ-TRANSPORT-STATE-006": "Five-condition integer rule (ASCII; optional - and digits, at most 63 characters; no +-; no trailing spaces after leading spaces or +; 32-bit range); accepted codes outside 0-494 excluded",
+  "REQ-TRANSPORT-STATE-007": "Missing element or Value for the four Transport values and tempo Manual reads off/8/16/0/120",
+  "REQ-TRANSPORT-STATE-008": "Duplicate known non-KeyMidi Transport children or Manual refused; unknown Transport child skipped and not saved",
+  "REQ-TRANSPORT-STATE-010": "Code meaning (n-1)+99*log2(d) only; no acceptance case",
+  "REQ-TRANSPORT-STATE-011": "Boolean and integer text; fixed-precision decimal text with P=17 or 9, k from the binary64 logarithm, for in-range finite values outside the half-gap band; positive and negative zero"
+ },
+ "unreleased_requirements": [
+  "REQ-TRANSPORT-STATE-009",
+  "REQ-TRANSPORT-STATE-012"
+ ],
+ "compatibility_dimensions": {
+  "project-files": "static-derived and extracted-execution expectations for the listed document values; reference execution not-run",
+  "behavior": "effective transport state after opening excluded",
+  "audio": "excluded",
+  "ui": "excluded",
+  "timing": "excluded"
+ },
+ "expectation_provenance_labels": {
+  "static-derived; not observed reference output": "derived from evidence reviewed before sanitization",
+  "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 build read the case's text and, where a saved text is judged, wrote the value read, on a Linux x86_64 host with glibc in place of the macOS system libraries; locating, opening and saving remain static-derived"
+ },
+ "stated_assumptions": [
+  "The macOS arm64 build converts these texts and values as the x86_64 build does. All cases with the extracted-execution label depend on it.",
+  "The reference's binary64 base-10 logarithm errs by less than 3/4 of a binary64 gap wherever its last bit decides k in REQ-011, outside the half-gap band. TS-024 to TS-027, whose logarithms lie 0.02 to 0.17 gaps from an integer, need only an error below 0.8 of a gap.",
+  "The reference's decimal reading follows the C-standard number grammar in a locale whose decimal separator is '.', and gives the nearest binary64 value with the sign of -0 kept, as the glibc run did. TS-024 to TS-028, TS-034 and TS-035 depend on it.",
+  "The reference's fixed-point text on save is exact, rounds exact decimal ties to even and keeps the sign of negative zero, as the glibc run did; transport-state-v1 accepted exactness and ties to even as inferences. TS-024 to TS-028 depend on it; no case lies on a tie."
+ ],
+ "exclusions": {
+  "inputs_without_expectation": [
+   "number text starting (after spaces and sign) with 0x, inf or nan; Invalid; leading whitespace other than U+0020",
+   "values outside the spec.md ranges (negative zero counts as zero); non-finite and largest finite values",
+   "saved binary64 values whose log10 is not an integer but lies between 1/4 and 3/4 of a binary64 gap from one (the gap on the side of log10, as in spec.md)",
+   "accepted time-signature codes outside 0 to 494",
+   "missing TimeSignature/Manual or its value; missing Transport, Tempo, TimeSignature, Mixer, DeviceChain or MainTrack",
+   "unknown attributes on any element this release reads; repeated unknown children; any *KeyMidi child in the input; LoopIsSongStart other than false",
+   "automation events or scene values that disagree with Manual",
+   "other envelopes, format versions, compressed containers and document kinds"
+  ],
+  "behavior": [
+   "effective tempo and time signature after opening; whether a code other than 201 takes effect",
+   "editing after opening (UI, remote control, MIDI)",
+   "whether automation or other known Transport children are written; byte layout of saved documents",
+   "playback, timing, Link and external sync; undo",
+   "refusal text, presentation and state after refusal",
+   "locale-dependent reading: host locales whose decimal separator is not '.'"
+  ],
+  "parent_cases_not_released": [
+   "TS-017",
+   "TS-018",
+   "TS-019",
+   "TS-023"
+  ]
+ },
+ "fixture_origin": "independently authored minimal XML documents and expected logical results",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RV2-01 low: change list incomplete (TS-030 opening a code other than 201; unnamed added exclusion; stated assumptions); completed, no expectation changed",
+   "RV2-02 low: REQ-011 step 1 outside the band rested on an unstated logarithm-accuracy assumption; stated, band referenced from REQ-011, README change 1 reworded; no case affected",
+   "RV2-03 low: decimal reading and save-text dependence on the substituted library unstated; assumptions widened; no expectation changed",
+   "RV2-04 editorial: extracted-execution definition now covers the writer run on save cases",
+   "RV2-05 editorial: payload status set to reviewed release; review record added",
+   "RV2-06 info: evidence identity re-hashed and the evidence run reproduced byte for byte",
+   "RV2-07 info: half-gap band conservative on the side toward zero; accepted",
+   "RV2-08 info: coverage notes for a later revision; no defect"
+  ],
+  "disposition": "Approved with listed clarifications, only for the explicit partial clauses; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": "transport-state-v1",
+ "supersession": {
+  "relationship": "superset in effect: within transport-state-v1's scope both give the same expectations; transport-state-v1 stays immutable and valid for its own scope; its REQ-011 step 1 wording is exact only within that scope",
+  "superseded_manifest_sha256": "b2fdf0294fb1209fd34b252fb83327edfb78ca466d22ff40cbd505a04045baba",
+  "restated_cases": "TS-001 to 009, 011 to 016, 020 to 022: case records and fixture bytes identical to transport-state-v1",
+  "changes": [
+   "REQ-011 step 1: k from the logarithm rounded to binary64 instead of the exact logarithm (differs only next to powers of ten, which v1 excluded); cases TS-024 to TS-027",
+   "REQ-011 and REQ-004: negative zero written -0 and read from -0; the negative-zero exclusion removed; TS-028",
+   "REQ-006 restated as five conditions; spellings v1 excluded (spaces on both sides, + with trailing spaces, - sign, long text ending in a space) decided; TS-010, TS-029 to TS-033; TS-030 judges only that a document with code 0 opens (v1 gave no expectation for opening a code other than 201); whether such a code takes effect stays excluded",
+   "REQ-004 and REQ-005: # forms with exactly 16 or 8 hex digits of either case; other # text refused; TS-034 to TS-037",
+   "exclusion near integer logarithms narrowed from within 1e-12 to between 1/4 and 3/4 of a binary64 gap; accepted codes outside 0 to 494 excluded",
+   "provenance label extracted execution added, with the stated assumptions it rests on; carried records unchanged"
+  ]
+ },
+ "entrypoint": "README.md",
+ "case_count": 33,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "313e056ec5f13481dba4cfdd5a3e7d044cda5821007b65a805d9503af4fdac83",
+   "bytes": 1334
+  },
+  {
+   "path": "README.md",
+   "sha256": "717162db59e6ca1d28dd9501f07be0f67d20448159670857ef0b35f42a8c31a3",
+   "bytes": 4402
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "bcdb348ce622288ac2b3bd991a39763c3121d039493fb7b83f06fab0fcc93892",
+   "bytes": 9106
+  },
+  {
+   "path": "cases.json",
+   "sha256": "650d432d5b3284f5b7b689d954baf4ac525bcdbfdba1f771729995a73ac31fcb",
+   "bytes": 22219
+  },
+  {
+   "path": "fixtures/TS-001.xml",
+   "sha256": "d3ef550633afb99c4d9da8bb7f8fb7032185489da79d4a19fc9d6232c918023d",
+   "bytes": 791
+  },
+  {
+   "path": "fixtures/TS-002.xml",
+   "sha256": "87f15704b21f0af6f6ee61eff679d709e2deffaf490f91fca43d15205db9ec29",
+   "bytes": 788
+  },
+  {
+   "path": "fixtures/TS-003.xml",
+   "sha256": "1666a988dece0bd72da40861940569ce865695bb9a9806b82e0dc522eaf7a039",
+   "bytes": 788
+  },
+  {
+   "path": "fixtures/TS-004.xml",
+   "sha256": "7b89400953f05a7fca4e42d7ed186634d2fd8b7e57a693f6b8037991f3b326e0",
+   "bytes": 791
+  },
+  {
+   "path": "fixtures/TS-005.xml",
+   "sha256": "a4e6d83c28a15acb4bafc0dcfff367112e13a486d4cc6af66dcd3b0e33354e8d",
+   "bytes": 787
+  },
+  {
+   "path": "fixtures/TS-006.xml",
+   "sha256": "35d40d2be7e559dd628301e6cb76eb43646e4997c96f00e954b5b9786bdc8ce9",
+   "bytes": 797
+  },
+  {
+   "path": "fixtures/TS-007.xml",
+   "sha256": "ae305de00e898d70b0d9dd75dfe0250b282f368005123731b6931052e381aa8a",
+   "bytes": 793
+  },
+  {
+   "path": "fixtures/TS-008.xml",
+   "sha256": "0e9a04ae97cf2524d8ffd3827440de088f7cf6b4c34922b5b98658e668690b46",
+   "bytes": 799
+  },
+  {
+   "path": "fixtures/TS-009.xml",
+   "sha256": "d56abf09fdcba7e1f8c153348813183a34aac3a6bee45d745679e6e75758fd5c",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-010.xml",
+   "sha256": "56d3ac10f116d3ce5deb77dfd4afd35208be95614bb800e80fdaee63d6a72e20",
+   "bytes": 795
+  },
+  {
+   "path": "fixtures/TS-011.xml",
+   "sha256": "8960ca7a218ab4873d4558f58a12364464a457d5cbe6c639378f22d9f06fe5df",
+   "bytes": 762
+  },
+  {
+   "path": "fixtures/TS-012.xml",
+   "sha256": "cf79510d3eec9a37638f3cbed5c9d13ec61a03964aaf4cee436e29fb6c151694",
+   "bytes": 781
+  },
+  {
+   "path": "fixtures/TS-013.xml",
+   "sha256": "6d316879ede93085c10dff1a4e2cc29d92d41445409b539a894d9f8a04e47da6",
+   "bytes": 729
+  },
+  {
+   "path": "fixtures/TS-014.xml",
+   "sha256": "c5f0f561ae46ca223180d941f1bd16cfbd99981c81bc91a233da86e2d4ec3766",
+   "bytes": 780
+  },
+  {
+   "path": "fixtures/TS-015.xml",
+   "sha256": "b4a9af98012df2b5c2469796dc4c8a95ee06fc845d9a7ca3a1e806df10f9d9af",
+   "bytes": 822
+  },
+  {
+   "path": "fixtures/TS-016.xml",
+   "sha256": "b59e969a07419b18272d47ca91574965c86228aba5162d16fe951647e60de0be",
+   "bytes": 816
+  },
+  {
+   "path": "fixtures/TS-020.xml",
+   "sha256": "a17b072685054751c547458bdead92057769f1f0f1b4a6945868099024847947",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-021.xml",
+   "sha256": "06e89984059ee98da3ec0886742cbabe8a16462edf81cbc683a532663d56b0a3",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-022.xml",
+   "sha256": "e65309b0496b3497b80210158fd34e0ed07ec2a034dc09ad57068f0929040e2b",
+   "bytes": 792
+  },
+  {
+   "path": "fixtures/TS-024.xml",
+   "sha256": "f1f94bdac856bacb0400c866cda1c519777e097f7be32d86a60917210e6d0cc2",
+   "bytes": 809
+  },
+  {
+   "path": "fixtures/TS-025.xml",
+   "sha256": "ece44a56e6c486ca7951365ccfc775138338eac19266d7238c49a1f2ae542322",
+   "bytes": 808
+  },
+  {
+   "path": "fixtures/TS-026.xml",
+   "sha256": "479a87b1db6c3f3ab952f7c2147a2a1bcb4639dbf7059ba92686eb78374806aa",
+   "bytes": 810
+  },
+  {
+   "path": "fixtures/TS-027.xml",
+   "sha256": "7abfcdad76b5af871d62301ada053d36aa844cf903246488bdc3375b62fe56a4",
+   "bytes": 799
+  },
+  {
+   "path": "fixtures/TS-028.xml",
+   "sha256": "f1bca7a1e9acc8ac88e339c0a1326dda604be6f6d7355e3568bdaddcad646da2",
+   "bytes": 793
+  },
+  {
+   "path": "fixtures/TS-029.xml",
+   "sha256": "a5a5d05c10df4b2ed5bb2fc904637f8919065ea7a34f429bc8f6584d7c2203c1",
+   "bytes": 794
+  },
+  {
+   "path": "fixtures/TS-030.xml",
+   "sha256": "adc46ef4a40581841acf1717374f8201563e7401ed704300308e66d76c4a36d9",
+   "bytes": 791
+  },
+  {
+   "path": "fixtures/TS-031.xml",
+   "sha256": "0c5280de12e61cf3b9ab8b21756f14c2cf4af86c2000926b09b7092770a87616",
+   "bytes": 799
+  },
+  {
+   "path": "fixtures/TS-032.xml",
+   "sha256": "bc38025bc7906f9addf7446ef7529f512729af91dd9b45479fb39671e710c0d7",
+   "bytes": 853
+  },
+  {
+   "path": "fixtures/TS-033.xml",
+   "sha256": "2dffe8fe192168abf149a80c7e1cba88a4d7fc16e279eae55915a7e27a3de142",
+   "bytes": 853
+  },
+  {
+   "path": "fixtures/TS-034.xml",
+   "sha256": "23d36f8bd11fe1f316ea07a10c34fccd6a606ee85a1756fac89cb903b43d733b",
+   "bytes": 796
+  },
+  {
+   "path": "fixtures/TS-035.xml",
+   "sha256": "cd7768252b188b3f1d276e9bc4f3ece1449a910a7f2b6ec7392d54c4d833e517",
+   "bytes": 796
+  },
+  {
+   "path": "fixtures/TS-036.xml",
+   "sha256": "52e8a1d89f41269afd3d8c5c5bf29684286fc075e50123eb2502645470adc00a",
+   "bytes": 808
+  },
+  {
+   "path": "fixtures/TS-037.xml",
+   "sha256": "de7d768d20583a2464d7a8639424fdd735136fc004db0f3203e44997d20a3f40",
+   "bytes": 798
+  },
+  {
+   "path": "spec.md",
+   "sha256": "29f98a39110eb424e1c53716bb0277b4f6104446f7a246c10e2523ae7fc32455",
+   "bytes": 19114
+  }
+ ]
+}

@@ -1,0 +1,353 @@
+{
+ "schema": "transport-state-v2-traceability-v1",
+ "spec": "SPEC-TRANSPORT-STATE r3",
+ "x_evidence": {
+  "manifest": "analysis/ableton-live-12.4.3/r2/x2-transport-v1/manifest.json",
+  "research": "wiki/research/transport-state-native.md#extracted-execution-results-x2-2026-10-18",
+  "functions": "analysis/ableton-live-12.4.3/r2/x2-transport-v1/addresses.json",
+  "substitutions": "glibc 2.39 log10, vsnprintf (C locale), strtod; integer path original code only"
+ },
+ "static_evidence": {
+  "v1_plan": "wiki/specs/transport-state-handoff-plan.md#evidence-traceability",
+  "v1_review": "handoff/transport-state-v1/REVIEW.md"
+ },
+ "clauses": {
+  "004 # form": "x86 converter double branch: 17-character # check, hex mask for A-F and a-f, byte swap (parse.json #4012000000000000, #3ff0000000000000, #8000000000000000; wrong lengths refused); arm64 0x10152bfb8 same structure (n1-0006)",
+  "004 sign and spaces": "glibc strtod through the original consumption check (parse.json ' +4.5 ', '- 4.5', '+-4.5', '+', '-'); inference: C-standard grammar on macOS",
+  "005 # form": "x86 converter float branch: 9-character check (parse.json #42f00000, #42F00000)",
+  "006": "x86 parser 0x100375650 and converter 0x10151b630 on 72 texts, no library substituted; arm64 0x1002fd908 window min(len - start, len - trailing) and limit 63 identical (n1-0006 disassembly)",
+  "011 k": "x86 formatters 0x10142b6c0/0x10142b980 on 6,539 values: correctly rounded L model 6,528/6,539, exact-logarithm model 5,714/6,539, glibc L model 6,539/6,539 (writer.json sweep); arm64 0x101431584/0x101431788 same branch structure (n1-0007)",
+  "011 zero": "x86 writers 0x10150f6a0/0x10150f7a0 with -0.0 -> '-0' (writer.json specials); zero test true for -0.0 in both slices"
+ },
+ "cases": {
+  "TS-001": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003",
+    "REQ-TRANSPORT-STATE-002",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=bool,text] = 'true'",
+    "not run (literal token) = None"
+   ]
+  },
+  "TS-002": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=bool,text] = '1'"
+   ]
+  },
+  "TS-003": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=bool,text] = '0'"
+   ]
+  },
+  "TS-004": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=bool,text] = 'TRUE'"
+   ]
+  },
+  "TS-005": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-003"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=bool,text] = ''"
+   ]
+  },
+  "TS-006": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '4.5abc'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = 4.5"
+   ]
+  },
+  "TS-007": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = 'abc'"
+   ]
+  },
+  "TS-008": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-005",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=float,text] = '93.3333333'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=float,x] = 93.3333333"
+   ]
+  },
+  "TS-009": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = '201.0'"
+   ]
+  },
+  "TS-010": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = ' +201 '"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-011": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-012": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-013": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-014": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-007"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-015": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-008"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-016": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-008"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-020": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=float,text] = '121.2'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=float,x] = 121.2"
+   ]
+  },
+  "TS-021": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)",
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '0.3'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = 0.3"
+   ]
+  },
+  "TS-022": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-002",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "static_evidence": "transport-state-v1, same case record (plan traceability and review)"
+  },
+  "TS-024": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '100.00000000000001'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = 100.00000000000001"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-025": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '1000.0000000000001'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = 1000.0000000000001"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-026": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '0.09999999999999999'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = 0.09999999999999999"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-027": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '0.000001'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = 1e-06"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-028": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004",
+    "REQ-TRANSPORT-STATE-011"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '-0'",
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/writer.json attribute_writer_*[kind=double,x] = -0.0"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-029": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = '+201 '"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-030": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = '-0'"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-031": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = '2147483648'"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-032": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = '000000000000000000000000000000000000000000000000000000000000201 '"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-033": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-006"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json int[text] = '-000000000000000000000000000000000000000000000000000000000000000'"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-034": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = ' +4.5 '"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-035": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '- 4.5'"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-036": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-004"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=double,text] = '#4012000000000000'"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  },
+  "TS-037": {
+   "requirements": [
+    "REQ-TRANSPORT-STATE-005"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[kind=float,text] = '#42f00000'"
+   ],
+   "static_steps": "field location, open and save outcome as in transport-state-v1 (plan traceability)"
+  }
+ }
+}

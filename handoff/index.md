@@ -8,9 +8,9 @@ access: handoff
 
 # Reviewed implementation handoffs
 
-Thirteen finite releases exist, eleven of them current;
-midi-config-v1 and v2 are superseded. midi-config-v3 is a strict superset of v2, which is a strict superset of v1. v3 adds the value each map mode
-produces from incoming controller values. transport-state-v1 and
+Fourteen finite releases exist, eleven of them current;
+midi-config-v1, midi-config-v2 and transport-state-v1 are superseded. midi-config-v3 is a strict superset of v2, which is a strict superset of v1. v3 adds the value each map mode
+produces from incoming controller values. transport-state-v2 (which corrects v1's number-text rule) and
 als-container-v1 cover a Live Set's transport values and its container and
 version envelope. The eight first releases of 2026-10-18 cover these areas:
 
@@ -42,6 +42,7 @@ still required.
 | [browser-index-v1](browser-index-v1/README.md) | Browser content kind by file extension; tag sidecar read and write format, names and colours | SPEC-BROWSER-INDEX r1, partial REQ-001, 003 to 008 only; 002, 009 to 013 unreleased | [Approved with narrowing](browser-index-v1/REVIEW.md) | `c47068980e7a10440f059acde5797b5760a2f18478ab97869c19340ead7225a5` | None |
 | [plugin-discovery-v1](plugin-discovery-v1/README.md) | VST3 and VST2 search folders and which entries are plug-in candidates | SPEC-PLUGIN-DISCOVERY r1, partial REQ-001, 002, 004, 005 only; 003, 006 to 016 unreleased | [Approved with clarifications](plugin-discovery-v1/REVIEW.md) | `9c3c739b0cf624d793a18bff6c36f5677934863af4da6be61dcd4a55555f6113` | None |
 | [warp-markers-v1](warp-markers-v1/README.md) | Warp markers in Live Sets: marker storage, the shadow marker, enumerations, setting domains and scripting edit limits; no playback mapping or saved values | SPEC-WARP-MARKERS r1, partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased | [Approved with narrowing](warp-markers-v1/REVIEW.md) | `f8546a3e95788074a2cf1cd99564637b8689af853db705fd9beba1af1764ef46` | None |
+| [transport-state-v2](transport-state-v2/README.md) | Live Set transport values as in v1, with the corrected number-text rule next to powers of ten, negative zero, integer and number text acceptance, and time-signature codes; new cases from extracted execution of the original x86_64 code | SPEC-TRANSPORT-STATE r3, partial REQ-001 to 008, 010, 011 only; 009 and 012 unreleased | [Approved with listed clarifications](transport-state-v2/REVIEW.md) | `398a88a62114552595830f99ba2fc1bc4d8c0e1f0d2ae65a70d21aa2324c17c8` | transport-state-v1 (corrects REQ-011; carries its 18 cases byte-identical) |
 
 ## Release contract
 

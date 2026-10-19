@@ -1,0 +1,34 @@
+transport-state-v2 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B from any directory.
+
+Evidence identity (x2-transport-v1): all 14 files in its manifest re-hashed, match. Slice
+1bae9a97...be999b0 and built loader cf063ca6...11c6 match. Full `run_x2.py` re-run in a scratch copy
+(cp -a, original loader, ~18 s): results/meter.json, parse.json, writer.json, summary.txt, addresses.json,
+imports.txt, x86-disasm.txt byte-identical.
+
+Loader 256-call limit: raw/runs.jsonl has 412 processes, max 200 calls per process (histogram
+1:72, 2:251, 5:1, 40:1, 55:1, 101:65, 150:4, 200:17); none over 256. x_sample.py re-ran every new case's
+reader (and, for TS-024..028, formatter and attribute writer) at <= 2 calls per process: x_sample.out,
+all_new_cases_agree true; 11 REQ-011 spec examples agree; refusals are all ___cxa_allocate_exception.
+
+REQ-011 band: independent 80-digit CR rule vs retained 6,539-value sweep: 11 differ, offsets 0.4955..0.5559,
+all inside 1/4..3/4; none outside. Case offsets: TS-024 0.139, TS-025 0.111, TS-026 0.163, TS-027 0.022.
+
+arm64 spot checks (n1-0006 0x1002fd908, n1-0007 0x101431788 disassembly): int window min(len-start, len-t),
+cmp #0x3f limit, +- check, ASCII loop, from_chars with end check = REQ-006; formatter fcmp #0 -> precision 16,
+frintm/frintp chosen by fcsel mi on L, 17 - k, bic max(0, .) = REQ-011.
+
+review_checks.py on the export copy (review-checks-export.json): 33 cases; 18 carried records and fixtures
+identical to handoff/transport-state-v1 (serialized text also identical); own model agrees 33/33, no
+exclusion hit; v1 manifest digest b2fdf029...5baba = catalog, v1 files 23/23 match; inventory and hashes OK;
+links resolve (README 6, spec 8, REVIEW 1); scan hits only label/definition/assumption wording, numbers,
+digests, the `0x10` test input and the AGENTS forbidden-inputs list.
+
+Author validator `build_v2.py verify` on the export copy (author-verify-after-review.json): no case, X,
+carry, hash, inventory or link problem; mutations 15/15. Its deny-list hits are REVIEW.md links and the
+label wording reflowed in spec.md and REVIEW.md (reviewed, benign).
+
+Payload edits: apply_review_edits.py (README, AGENTS, spec, cases status), REVIEW.md written,
+finalize_manifest.py (status, scopes, label definition, assumptions, change list, review fields, re-hash).
+Diff: payload-changes.diff. Final manifest SHA-256: 398a88a62114552595830f99ba2fc1bc4d8c0e1f0d2ae65a70d21aa2324c17c8.
+Not copied to handoff/; plan page, spec page, indexes and log untouched.

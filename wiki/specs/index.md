@@ -9,14 +9,14 @@ access: analysis
 # Behavioral specification index
 
 Specifications define what must be observable, independent of the original's
-internal implementation. This directory contains analyst-side drafts. Thirteen
+internal implementation. This directory contains analyst-side drafts. Fourteen
 reviewed releases approve explicitly partial clauses only. The
 [handoff catalog](../../handoff/index.md) lists them. The MIDI configuration line is
 [midi-config-v1](../../handoff/midi-config-v1/README.md), then
 [v2](../../handoff/midi-config-v2/README.md), then
 [v3](../../handoff/midi-config-v3/README.md); MIDI REQ-001, REQ-004 and the runtime
 clauses remain unreleased. The other ten are one release per draft spec below:
-transport-state-v1, als-container-v1 and the eight revision 1 releases of
+transport-state-v2 (superseding v1), als-container-v1 and the eight revision 1 releases of
 2026-10-18. Each handoff plan's review outcome lists the corrections owed to its
 draft spec.
 
@@ -27,7 +27,7 @@ draft spec.
 | [Feature map](feature-map.md)                                        | Whole-app planning inventory and stable feature IDs                                                                                                                                                                                                                                                                                                       |
 | [ALS container](als-container.md)                                    | Revision 2 draft: container recognition, root and version envelope, save envelope; 9 requirements, 27 unexecuted cases, 7 probes; partial 001 to 006 released as als-container-v1 |
 | [ALS container handoff plan](als-container-handoff-plan.md)          | Released als-container-v1 (35 cases, approved with narrowing): scope, exclusions, traceability |
-| [Transport state](transport-state.md)                                | Revision 3 draft: 12 requirements; REQ-011 k from binary64-rounded log10, negative zero, REQ-006 integer rule and meter codes settled by extracted execution; 36 graded cases (26 X, 7 S, 3 U), TS-023 withdrawn; 18 released as [transport-state-v1](../../handoff/transport-state-v1/README.md); transport-state-v2 staged |
+| [Transport state](transport-state.md)                                | Revision 4 draft: 12 requirements; REQ-011 k from binary64-rounded log10 with its 1/4 to 3/4 band and accuracy assumption, negative zero, REQ-006 integer rule and meter codes settled by extracted execution; 36 graded cases (26 X, 7 S, 3 U), TS-023 withdrawn; 33 released as [transport-state-v2](../../handoff/transport-state-v2/README.md), superseding transport-state-v1 |
 | [Plug-in discovery](plugin-discovery.md)                             | Revision 2 draft: 16 requirements (2 D and S with U parts, 10 S with U parts, 4 U only); 62 unexecuted cases (56 graded, 6 unresolved); release cases adopted as PD-043 to 062; partial clauses released as [plugin-discovery-v1](../../handoff/plugin-discovery-v1/README.md) (35 cases) |
 | [Browser index](browser-index.md)                                    | Revision 2 draft: 13 requirements (12 with static-derived clauses, 012 unknown only); 68 case IDs (66 active: 36 static-derived, 30 unknown; 2 withdrawn); sidecars bind to direct files only; partial clauses released as [browser-index-v1](../../handoff/browser-index-v1/README.md) (26 cases) |
 | [Clip launch](clip-launch.md)                                        | Revision 3 draft: 23 requirements; grid and boundary arithmetic, chance rescaling and limits, follow-time rounding settled by extracted execution; REQ-016 and 017 corrected; 64 cases (59 graded: 37 X, 22 S or D; 5 U); partial clauses released as [clip-launch-v1](../../handoff/clip-launch-v1/README.md) (50 cases) |
@@ -37,6 +37,7 @@ draft spec.
 | [Warp markers](warp-markers.md)                                      | Revision 2 draft: 16 requirements (2 without U parts, 12 with U parts, 2 U only); 36 cases (29 gradable, 4 in part; 7 unresolved); A2 opening and A4 saving split; REQ-015 inclusive bounds; partial clauses released as [warp-markers-v1](../../handoff/warp-markers-v1/README.md) (38 cases) |
 | [Mixer values](mixer-values.md)                                      | Revision 3 draft: 15 requirements; fader curves both ways with exact round trip, pan law, crossfade gains and On/Off settled by extracted execution; 48 cases (6 X, 20 static or documented, 11 unmeasured renders, 11 ungraded); partial clauses released as [mixer-values-v1](../../handoff/mixer-values-v1/README.md) (37 cases) |
 | [Transport-state handoff plan](transport-state-handoff-plan.md)      | Released transport-state-v1 (18 cases, approved with narrowing): scope, exclusions, traceability |
+| [Transport-state v2 handoff plan](transport-state-v2-handoff-plan.md) | Released transport-state-v2 (33 cases, approved with listed clarifications; supersedes v1): scope, change list, traceability, review outcome |
 | [MIDI user mapping](midi-user-mapping.md)                            | Revision 5 draft: 13 requirements; takeover (Pick-Up, Value Scaling, reversed ranges, first 14-bit pair) settled by extracted execution; tolerance max(1e-6, 2⁻²² × max(abs min, abs max)); cases MT-01 to 56 (18 S, 34 X, 4 S-cond); [midi-config-v3](../../handoff/midi-config-v3/README.md) released (127 cases) |
 | [MIDI configuration v3 handoff plan](midi-config-v3-handoff-plan.md) | Released midi-config-v3 (127 cases, approved): scope, exclusions, traceability, review outcome |
 | [Clip launch handoff plan](clip-launch-handoff-plan.md) | Released clip-launch-v1 (50 cases, approved with narrowing): scope, exclusions, traceability, review outcome |

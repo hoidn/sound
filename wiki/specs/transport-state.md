@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-18
 access: analysis
-revision: 3
+revision: 4
 target: Ableton Live 12 Suite 12.4.3 / macOS arm64
 ---
 
@@ -247,10 +247,18 @@ Applies to `LoopStart`, `LoopLength` and `CurrentTime`.
 - Examples (S, and all X): 120 → `120`; float 121.2 → `121.199997`; float
   93.3333333 → `93.3333359`; double 0.3 → `0.299999999999999989`; double 3.3 →
   `3.2999999999999998`; 1e20 → `100000000000000000000`.
-- **U.** The last bit of L where log10|x| lies about half a binary64 spacing from an
-  integer. glibc's `log10` is not correctly rounded there. It differs from the
-  correctly rounded L for 11 of 6,539 swept values, with offsets of 0.495 to 0.556
-  spacings. Apple's `log10` was not run.
+- **U.** The last bit of L where log10|x| is not an integer but lies between 1/4 and
+  3/4 of a binary64 spacing from one (revision 4: band stated, from the
+  transport-state-v2 review). glibc's `log10` is not correctly rounded there. It
+  differs from the correctly rounded L for 11 of 6,539 swept values, with offsets of
+  0.495 to 0.556 spacings. Apple's `log10` was not run.
+- **Assumption A-LOG (revision 4).** Outside that band, the rule assumes the
+  original's logarithm errs by less than 3/4 of a spacing wherever its last bit
+  decides k. The glibc runs satisfy this; Apple's `log10` is inferred to.
+- **glibc-dependent parts (revision 4).** The sign of `-0` when read, and the exact
+  save text including the sign of negative zero, are glibc's results in the X runs.
+  The original code calls the library for both. Apple's library is inferred to give
+  the same result.
 - **X (glibc formatter).** Exact decimal ties in step 2 round to even, for example
   tempo 120.0078125 → `120.007812` and 1 + 2⁻¹⁷ → `1.0000076293945312`. Inferred
   for Apple's formatter, as the transport-state-v1 review accepted; no case lies on a
@@ -423,14 +431,15 @@ The [Phase 4 batch](../research/phase4-probe-batch.md) follows the spec.
 | 1 | 2026-10-17 | First draft from the S1 static half and the N1 native half; 12 requirements (5 S only, 6 S with U parts, 1 U only), 23 unexecuted cases |
 | 2 | 2026-10-17 | Handoff-author corrections. REQ-006: trailing spaces accepted only without a leading space or `+`; both-sides and `-` spellings U. TS-010 relabelled B, unresolved. TS-023 withdrawn (UI edit, out of scope); edits after load added to the exclusions. REQ-011: "positive zero"; negative zero U. TS-008, TS-020: event text only if written. Probe references checked; appendix notes the probe file's older IDs. 12 requirements (3 S only, 8 S with U parts, 1 U only); 22 cases, 4 of them unresolved (TS-010, TS-017–019) |
 | 3 | 2026-10-18 | Extracted execution (X2, ADR 0003); label X added. REQ-011 corrected: k comes from the binary64 logarithm, which differs from revision 2 next to powers of ten; negative zero is written `-0`; positive largest, most negative and non-finite texts X; ties to even X on glibc; the library-dependent last bit of L U. REQ-006 restated exactly (X): sign, spaces, 63-character body, int32 range. REQ-003, 004 and 005 checks X, with REQ-004's sign and space spellings on glibc `strtod`. REQ-009 notes the accepted out-of-range codes. REQ-010 encoder, decoder and the 495 meter texts X. TS-010 graded (refused). TS-024–037 added. 12 requirements (2 without U parts, 9 with U parts, 1 U only); 36 graded cases (26 X, 7 S, 3 U) |
+| 4 | 2026-10-18 | transport-state-v2 review findings (RV2-02, RV2-03): REQ-011's undecided band is stated as 1/4 to 3/4 of a spacing; the logarithm-accuracy assumption A-LOG is added; the reading of `-0` and the exact save text are marked as glibc-dependent. No expectation changed |
 
-Revisions 2 and 3 are not reviewed. Revision 3 is the source of the unreviewed
-candidate transport-state-v2, with 33 cases: v1's 18 plus TS-010 and TS-024–037.
-It would supersede transport-state-v1 ([v2 handoff plan](transport-state-v2-handoff-plan.md)).
-The released [transport-state-v1](../../handoff/transport-state-v1/README.md)
-(approved with narrowing; [handoff plan](transport-state-handoff-plan.md)) was
-built from revision 1 with the revision 2 corrections applied. It carries 18
-cases: TS-001–009, TS-011–016 and TS-020–022. TS-017–019, REQ-009 and REQ-012
-stay out of both.
+Revision 3 is the source of [transport-state-v2](../../handoff/transport-state-v2/README.md),
+released 2026-10-18 and approved with listed clarifications
+([review](../../handoff/transport-state-v2/REVIEW.md);
+[handoff plan](transport-state-v2-handoff-plan.md)). It has 33 cases: v1's 18,
+byte-identical, plus TS-010 and TS-024 to 037. It supersedes
+[transport-state-v1](../../handoff/transport-state-v1/README.md), whose REQ-011
+rule was wrong next to powers of ten. Revision 4 applies the v2 review's
+clarifications. TS-017 to 019, REQ-009 and REQ-012 stay out of both releases.
 
 Status note, 2026-10-18 (editorial; requirements unchanged): under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) the probes cited here (PRB-N1-01 to 08) will not run on a macOS host. Clauses waiting on them stay unknown until extracted execution of the original x86_64 code or further static work settles them.

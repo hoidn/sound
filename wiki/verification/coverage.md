@@ -22,7 +22,7 @@ x86_64 functions, to static investigation, or to a permanent unknown.
 
 | Feature ID | Spec/handoff | Implementation | Verification | Next evidence |
 | --- | --- | --- | --- | --- |
-| FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r3; [transport-state-v1](../../handoff/transport-state-v1/README.md) released (18 cases) | Not started | Unknown; 18 release cases and 36 draft cases not run (26 of them backed by extracted execution) | PRB-N1-01 to 08; transition logic |
+| FEAT-TRANSPORT | Draft [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r4; [transport-state-v2](../../handoff/transport-state-v2/README.md) released (33 cases, supersedes v1) | Not started | Unknown; 33 release cases and 36 draft cases not run (26 of them backed by extracted execution) | PRB-N1-01 to 08; transition logic |
 | FEAT-SESSION | Draft [SPEC-CLIP-LAUNCH](../specs/clip-launch.md) r3; [clip-launch-v1](../../handoff/clip-launch-v1/README.md) released (50 cases) | Not started | Unknown; 50 release cases and 64 draft cases not run | PRB-S5-01 to 11; set-level variant for missing or out-of-range global quantization; launch-mode branches |
 | FEAT-ARRANGEMENT | None | Not started | Unknown | Editing/recording state and persistence paths |
 | FEAT-AUDIO | Draft [SPEC-MIXER-VALUES](../specs/mixer-values.md) r3; [mixer-values-v1](../../handoff/mixer-values-v1/README.md) released (37 cases) | Not started | Unknown; 37 release cases and 48 draft cases not run (11 need audio measurement) | Q-019 (stored gain to fader position; send path); PRB-S9-01 to 08; routing and DSP paths; flag latency for later measurement |
