@@ -1,0 +1,133 @@
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/before-cl2/tools/build_v2.py	2026-10-18 19:59:27.798044634 -0700
++++ clip-launch-v2-analysis/build_v2.py	2026-10-18 22:56:10.681276298 -0700
+@@ -76,7 +76,7 @@
+     cases += [val_record(n, r, p, comps) for n, r, p, comps in C.NEW_VAL]
+     (STAGE / "cases.json").write_text(json.dumps({
+         "schema": "clip-launch-cases-v2", "target": M.TARGET,
+-        "scope": "clip-launch-v2 partial requirement clauses only (see spec.md)", "status": "candidate-unreviewed",
++        "scope": "clip-launch-v2 partial requirement clauses only (see spec.md)", "status": "released-reviewed",
+         "fixture_origin": "Independently authored complete minimal Live Sets and a generated sample; no shipped file copied or excerpted",
+         "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+         "representation": {
+@@ -129,7 +129,7 @@
+         elif kind in ("boundary", "sweep"):
+             r = xr["boundary"][key] if kind == "boundary" else xr["sweep"][tuple(map(int, key.split("/")))]
+             v = (lambda f: float.fromhex(r[f]["hex"])) if kind == "boundary" else (lambda f: float.fromhex(r[f]))
+-            ok = same(v("t"), args["beat"]) and same(v("t_lattice"), res["press_beat"])
++            ok = same(v("t"), args["beat"]) and same(v("t_lattice"), res["rounded_beat"])
+             if args["grid"] != 0.0:
+                 ok &= same(v("B"), res["boundary"])
+                 if kind == "boundary":
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/before-cl2/tools/cases_v2.py	2026-10-18 19:58:49.907135552 -0700
++++ clip-launch-v2-analysis/cases_v2.py	2026-10-18 22:56:10.681455455 -0700
+@@ -16,7 +16,7 @@
+ B_X = "extracted execution"
+ B_SEL = "selection static-derived; grid length extracted execution"
+ B_SEL_X = "selection static-derived; reading of -99 and grid length extracted execution"
+-B_NOGRID = "press beat extracted execution; boundary with no grid static-derived"
++B_NOGRID = "rounded beat extracted execution; boundary with no grid static-derived"
+ GQ, AQ = "GlobalQuantisation", "AutoQuantisation"
+ FA = SC + "/FollowAction"
+ FA_INIT = {"FollowTime": 4.0, "IsLinked": True, "LoopIterations": 1, "FollowActionA": 4, "FollowActionB": 0,
+@@ -139,8 +139,8 @@
+ 
+ def bd(t, g, p, b, xref, a=0.0):
+     basis = B_NOGRID if g == 0 else B_X
+-    return {"function": "launch-boundary", "arguments": {"beat": t, "grid": g, "anchor": a},
+-            "result": {"press_beat": p, "boundary": b}, "basis": basis, "xref": xref}
++    return {"function": "grid-boundary", "arguments": {"beat": t, "grid": g, "anchor": a},
++            "result": {"rounded_beat": p, "boundary": b}, "basis": basis, "xref": xref}
+ 
+ 
+ S44, S34, S68, S78, S54 = (4, 4), (3, 4), (6, 8), (7, 8), (5, 4)
+@@ -205,9 +205,9 @@
+     (88, ["015", "016", "017"], "Clip in 6/8 set to 1 Bar in a 4/4 song: beats 1.2 and 4.2 give 3 and 6",
+      launch(4, 1.2, 3.0, 1.2, 3.0, "boundary:CLC-050a", k=5, clip_sig=S68)
+      + [bd(4.2, 3.0, 4.2, 6.0, "boundary:CLC-050b")]),
+-    (89, ["015", "016", "017"], "Clip in 6/8 set to Global uses the song's 4/4: beat 1.2 gives 4",
++    (89, ["015", "016", "017"], "Clip in 6/8 set to Global denotes the global value in the song's 4/4: beat 1.2 gives 4",
+      launch(4, 1.2, 4.0, 1.2, 4.0, "boundary:CLC-051", k=0, clip_sig=S68)),
+-    (90, ["016", "018"], "Clip set to None: no grid, the boundary is the press beat 5.3",
++    (90, ["016", "018"], "Clip set to None: no grid, the boundary is the rounded beat 5.3",
+      launch(4, 5.3, 0.0, 5.3, 5.3, "boundary:CLC-031", k=1)),
+     (91, ["016", "018"], "Global None with a clip set to Global: no grid, boundary 5.3",
+      launch(0, 5.3, 0.0, 5.3, 5.3, "boundary:CLC-031")),
+@@ -219,7 +219,7 @@
+     (94, ["016", "018"], "Clip value -1: no grid, boundary 5.3", launch(4, 5.3, 0.0, 5.3, 5.3, "boundary:CLC-031", k=-1)),
+     (95, ["015", "016", "017"], "Global 1/4T: the beat nearest 10/3, on a grid line, gives 4, not 10/3",
+      launch(8, 10 / 3, 2 / 3, 10 / 3, 4.0, "sweep:8/5/0")),
+-    (96, ["017"], "Press beat rounding next to the bar line at beat 4 (1 Bar in 4/4)",
++    (96, ["017"], "Beat rounding next to the grid line at beat 4 (1 Bar in 4/4)",
+      [bd(t, 4.0, p, b, f"boundary:PRB-S5-01 4/4 1 Bar t={t!r}") for t, p, b in (
+          (1.5, 1.5, 4.0), (3.9, 3.9, 4.0), (3.99999973984349, 3.99999973984349, 4.0),
+          (3.9999998699217447, 4.0, 4.0), (4.000000130078255, 4.0, 4.0), (4.00000012747669, 4.0, 4.0),
+@@ -240,7 +240,7 @@
+      [bd(9.0, 3.0, 9.0, 11.0, "boundary:CLC-055 anchor 8, 3/4 1 Bar, t=9", a=8.0),
+       bd(5.3, 4.0, 5.3, 8.0, "boundary:anchor -5 (clamped to 0), 1 Bar, t=5.3", a=-5.0),
+       bd(9.0, 3.0, 9.0, 11.0, "boundary:anchor 8.0000001 (off lattice), 3/4 1 Bar, t=9", a=8.0000001)]),
+-    (100, ["018"], "With no grid the boundary is the press beat, rounded to the lattice",
++    (100, ["018"], "With no grid the boundary is the beat rounded to the lattice",
+      [bd(3.99, 0.0, 3.990000104062604, 3.990000104062604, "boundary:PRB-S5-01 4/4 1 Bar t=3.99"),
+       bd(0.13, 0.0, 0.12999994796869796, 0.12999994796869796, "boundary:CLC-048"),
+       bd(4.000000001, 0.0, 4.0, 4.0, "boundary:PRB-S5-01 4/4 1 Bar t=4.000000001")]),
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/before-cl2/tools/meta_v2.py	2026-10-18 19:57:25.421286606 -0700
++++ clip-launch-v2-analysis/meta_v2.py	2026-10-18 22:56:10.681618702 -0700
+@@ -18,9 +18,9 @@
+     "013": "Follow-time rounding on opening by the binary64 formula, for values 0 to below 1,000,000 (the near-half exclusion of v1 removed)",
+     "014": "Conversion steps 406, 417 and 421 for clips of 11.0_405 documents and 12203 for scenes of 12.0_12117 documents, applied before reading; no conversion at 12.0_12402; other conversion steps excluded (unchanged)",
+     "015": "Value contract: grid length in beats for a global value q and a time signature n/d (n 1-99, d 1, 2, 4, 8 or 16); 0 means no grid",
+-    "016": "Value contract: the grid a clip's stored launch quantization denotes, from the clip value (-99 counts as 0), the global value and the clip's and the song's time signatures given as inputs; its use at launch excluded",
+-    "017": "Value contract: press beat (lattice rounding) and boundary arithmetic for a beat, a grid length and an anchor given as inputs; which beat and anchor a launch uses, the pre-delay, the move to the next line and all sample timing excluded",
+-    "018": "Value contract: with no grid the boundary is the press beat; launch timing excluded",
++    "016": "Value contract: the grid a clip's stored launch quantization denotes, from the clip value (-99 counts as 0), the global value and the clip's and the song's time signatures given as inputs; which global value, time signatures and grid a launch uses, and its use at launch, excluded",
++    "017": "Value contract: rounded beat (lattice rounding) and boundary arithmetic for a beat, a grid length and an anchor given as inputs; which beat and anchor a launch uses, whether a launch starts at the boundary, the pre-delay, the move to the next line and all sample timing excluded",
++    "018": "Value contract: with no grid the boundary is the rounded beat; launch timing excluded",
+ }
+ UNRELEASED = ["008", "010", "019", "020", "021", "022", "023"]
+ 
+@@ -41,10 +41,10 @@
+     "value functions outside their stated argument ranges",
+ ]
+ EXCLUDED_BEHAVIOR = [
+-    "launch timing: when a launched clip starts, the sample at which a launch takes effect, which beat and anchor a launch uses, the pre-delay and the move to the next grid line, launching with the transport stopped, how a launch picks its grid at run time; these belong to a separate playback release",
++    "launch timing: when a launched clip starts, the sample at which a launch takes effect, which beat, anchor, global value, time signatures and grid a launch uses at run time, whether a launch starts at the boundary of REQ-CLIP-LAUNCH-017, the pre-delay and the move to the next grid line, launching with the transport stopped; these belong to a separate playback release; the value functions of REQ-CLIP-LAUNCH-015 to 018 are not launch timing",
+     "Gate, Toggle and Repeat, Legato, velocity scaling, follow-action timing, loop iterations, jump indices and chance selection",
+     "displayed text, including where each follow-action label set is shown",
+-    "value held, displayed or saved for an out-of-range launch mode, launch quantization or follow-action value; the held value of a follow time outside 0 to below 1,000,000",
++    "value held, displayed or saved for an out-of-range launch mode, launch quantization or follow-action value; for a follow time outside 0 to below 1,000,000, whether the document opens and the value then held",
+     "text written for numbers and Booleans, and exact read-back of a written number with more than six significant digits; layout; save container and envelope; saved form of set-level values and of scenes",
+     "initial launch mode and quantization of a new clip and the related preferences; set initial values; File > New; clip creation paths",
+     "conversion steps other than 406, 417, 421 and 12203; the conversion error for a clip that has both forms; documents older than 11.0_405; the conversion of the fixtures' other content",
+@@ -59,7 +59,7 @@
+     "precondition removed: v1's 'absence of other set content must not change a judged outcome' does not hold for set structure",
+     "REQ-012: chances outside 0-100 (within -100 to 200, |A+B| >= 1) rescaled and limited to 0-100; v1's kept-value assumption settled; negative zero counts as zero; cases 051-059",
+     "REQ-013: stated as the binary64 formula; equals v1's rule outside v1's near-half exclusion, which is removed; cases 060-062",
+-    "REQ-015 to 018 released as value contracts only (grid length, the grid a clip's setting denotes including -99 as Global, press beat and boundary including the triplet next-line case, no grid); cases 063-100",
++    "REQ-015 to 018 released as value contracts only (grid length, the grid a clip's setting denotes including -99 as Global, rounded beat and boundary including the triplet next-line case, no grid); not launch timing; cases 063-100",
+     "REQ-011: out-of-range chances now have expectations through REQ-012; -99 denotes Global in the REQ-016 value",
+     "provenance label extracted execution added with its assumptions; carried records keep static-derived",
+ ]
+@@ -135,7 +135,7 @@
+         "unreleased_requirements": [R + k for k in UNRELEASED],
+         "compatibility_dimensions": {
+             "project-files": "static-derived and extracted-execution expectations for the listed document values; reference execution not-run",
+-            "behavior": "launch grid values as a value contract (extracted execution and static-derived); launching excluded",
++            "behavior": "quantization grid values as a value contract of explicit inputs (extracted execution and static-derived); not launch timing; launching excluded",
+             "timing": "excluded (launch timing belongs to a separate playback release)",
+             "ui": "excluded (labels define meaning; displayed text not graded)", "audio": "excluded"},
+         "expectation_provenance_labels": PROVENANCE_LABELS,
+--- /tmp/claude-1000/-home-ollie-Documents-sound/5c433942-c5e3-420d-833a-756602393383/scratchpad/before-cl2/tools/model_v2.py	2026-10-18 19:55:52.721371382 -0700
++++ clip-launch-v2-analysis/model_v2.py	2026-10-18 22:56:10.681077862 -0700
+@@ -174,10 +174,10 @@
+         return {"grid": grid_length(arguments["q"], *arguments["time_signature"])}
+     if function == "clip-grid":
+         return {"grid": clip_grid(**arguments)}
+-    if function == "launch-boundary":
++    if function == "grid-boundary":
+         if arguments["grid"] != 0.0 and arguments["grid"] not in {grid_length(q, n, d) for q in range(1, 14)
+                                                                   for n in range(1, 100) for d in (1, 2, 4, 8, 16)}:
+             raise NoExpectation("grid not a grid length")
+         p, b = launch_boundary(arguments["beat"], arguments["grid"], arguments["anchor"])
+-        return {"press_beat": p, "boundary": b}
++        return {"rounded_beat": p, "boundary": b}
+     raise ValueError(function)

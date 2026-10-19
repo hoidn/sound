@@ -9,6 +9,16 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Second clip-launch handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [clip-launch-v2](../../handoff/clip-launch-v2/README.md), approved with listed narrowing by a separate review agent ([review record](../../handoff/clip-launch-v2/REVIEW.md)). It has 100 cases.
+
+- **Framing.** The value functions are renamed `rounded_beat` and `grid-boundary`, and the text says they are not launch timing.
+- **REQ-016.** The global argument is only a value on that item's scale. Which global value and time signatures a launch uses is excluded.
+- **REQ-011.** For an out-of-range follow time, whether the document opens is excluded.
+
+The 11.0_405 fixtures pass the structure rules when read directly, which confirms that the audit tool's advice for them is wrong. A sample of the X cases re-ran bit for bit.
+
 ## Decision and boundary
 
 Stage a superseding candidate, clip-launch-v2, from

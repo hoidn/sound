@@ -1,0 +1,1699 @@
+{
+ "id": "T11-RELEASED-FIXTURE-AUDIT",
+ "spec": "SPEC-LIVE-SET-STRUCTURE revision 1 (A1, A2, A3 settled statically; A5 still an assumption)",
+ "method": "Audit every released fixture against the structural load rules of SPEC-LIVE-SET-STRUCTURE r1.\n\nUsage: python3 -I fixture_audit.py <schema.txt> <handoff dir> <out.json>\nRead-only on handoff/. For each release, each fixture file is classified (Live Set, device preset,\ndeliberately unparseable, or not a Live Set document) and linked to the cases that use it with their\nexpectations. For a Live Set, the traced refusals are evaluated:\n  REQ-002  no audio, MIDI or group track; a player track after a return track     (validation walk)\n  REQ-006  an audio or MIDI track whose freeze slot count differs from its session slot count (walk)\n  REQ-013  a mixer with more send holders than trailing return tracks              (root post-load)\n  REQ-015  a pointee present with Id 0 or without Id; NextPointeeId not above the largest pointee Id\n  REQ-016  a negative or duplicate list-item Id (S-cond A5)\nand two shapes with no load check (REQ-006 slots != scenes, REQ-013 SendsPre != returns) are noted.\nFor a fixture that would be refused, the minimal addition taken from T11-MIN's skeleton is recorded\nas XML text with its insertion point, applied to a copy, and the copy is re-checked. The addition\nonly adds elements; no existing element or value changes, so what the case tests is kept.\nEnvelope, value-text and field-level refusals belong to the other specs and are not evaluated.",
+ "basis": {
+  "REQ-002, REQ-006": "validation walk, run by the XML reader's load step on every open (A1 settled)",
+  "REQ-006 freeze count": "the freeze sequencer is constructed with an empty slot list and no load step adds slots (A2 settled)",
+  "REQ-013, REQ-015 NextPointeeId": "root post-load step, enabled by the reading context's flag, which the XML reader's context sets (A1 settled)",
+  "REQ-015 Id 0": "member post-load step; preset exemption not set on the set-open path (A3 settled)",
+  "REQ-016": "generic list loader (S-cond A5)"
+ },
+ "totals": {
+  "fixtures": 63,
+  "live_sets": 62,
+  "refused": 0,
+  "cases_contradicted": 0,
+  "cases_not_isolating": 0
+ },
+ "releases": [
+  {
+   "release": "clip-launch-v2",
+   "summary": {
+    "fixtures": 63,
+    "live_sets": 62,
+    "refused": 0,
+    "cases_contradicted": [],
+    "cases_not_isolating": [],
+    "with_unknown_shapes": 5
+   },
+   "fixtures": [
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-001.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-001",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": false,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false,
+         "GlobalQuantisation": 4,
+         "AutoQuantisation": 0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": false,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+         },
+         "clip_order": "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-002.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-002",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 2,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 5
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 2,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 5
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-003.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-003",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 3,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 14
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-004.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-004",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/AudioTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/AudioClip/LaunchMode": 1,
+         "Tracks/AudioTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/AudioClip/LaunchQuantisation": 1
+        },
+        "saved": {
+         "values": {
+          "Tracks/AudioTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/AudioClip/LaunchMode": 1,
+          "Tracks/AudioTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/AudioClip/LaunchQuantisation": 1
+         },
+         "clip_order": "Tracks/AudioTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/AudioClip"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-005.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-005",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipTimeable/ArrangerAutomation/Events/MidiClip[1]/LaunchQuantisation": 1
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipTimeable/ArrangerAutomation/Events/MidiClip[1]/LaunchQuantisation": 1
+         },
+         "clip_order": "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipTimeable/ArrangerAutomation/Events/MidiClip[1]"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-006.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-006",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "GlobalQuantisation": 7
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-007.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-007",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "GlobalQuantisation": 0
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-008.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-008",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "GlobalQuantisation": 13
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-009.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-009",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "AutoQuantisation": 5
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-010.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-010",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "AutoQuantisation": 8
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-011.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-011",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 9,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 2
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 9,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 2
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-012.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-012",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": true,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.5
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": true,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.5
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-013.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-013",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": true
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-014.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-014",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.30000001192092896
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-015.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-015",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 2,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 5
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-016.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-016",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.5
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-017.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-017",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-018.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-018",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-019.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-019",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-020.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-020",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-021.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-021",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-022.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-022",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-023.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-023",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": false,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchMode": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/LaunchQuantisation": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/Legato": false,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/VelocityAmount": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+         },
+         "clip_order": "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-024.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-024",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 3.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 3.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-025.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-025",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 8.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 8.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-026.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-026",
+       "action": "open",
+       "expected": {
+        "outcome": "opens"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-027.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-027",
+       "action": "open",
+       "expected": {
+        "outcome": "opens"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-028.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-028",
+       "action": "open",
+       "expected": {
+        "outcome": "opens"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-029.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-029",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 50.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 50.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 50.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 50.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-030.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-030",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-031.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-031",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 13.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 87.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 13.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 87.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-032.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-032",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 33.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 67.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 33.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 67.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-033.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-033",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 100.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-034.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-034",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 25.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 75.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 25.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 75.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-035.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-035",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": true
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": true
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-036.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-036",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-037.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-037",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 2.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 2.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-038.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-038",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 3.00000026015651
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-039.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-039",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 0.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 0.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-040.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-040",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 1.3333333333333333
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-041.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-041",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": true,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 4,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+         },
+         "absent": [
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowTime",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowActionA",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowActionB",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowChanceA",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowChanceB"
+         ],
+         "clip_order": "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": [
+      "REQ-006 U: session slot count differs from scene count (no load check found)"
+     ],
+     "recommended_addition": [
+      {
+       "what": "2 scene(s), one per slot, as T11-MIN (removes REQ-006's unknown)",
+       "insert": "/Ableton/LiveSet, after SendsPre or PreHearTrack",
+       "xml": "<Scenes><Scene Id=\"0\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene><Scene Id=\"1\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene></Scenes>"
+      }
+     ],
+     "after_additions": {
+      "refusals": [],
+      "unknown_shapes": [],
+      "new_schema_deviations": []
+     }
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-042.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-042",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 8.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": false,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 3,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 50.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 50.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": true
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 8.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": false,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 3,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 1,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 50.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 50.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": true
+         },
+         "absent": [
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowTime",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowActionA",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowActionB",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowChanceA",
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowChanceB"
+         ],
+         "clip_order": "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": [
+      "REQ-006 U: session slot count differs from scene count (no load check found)"
+     ],
+     "recommended_addition": [
+      {
+       "what": "2 scene(s), one per slot, as T11-MIN (removes REQ-006's unknown)",
+       "insert": "/Ableton/LiveSet, after SendsPre or PreHearTrack",
+       "xml": "<Scenes><Scene Id=\"0\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene><Scene Id=\"1\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene></Scenes>"
+      }
+     ],
+     "after_additions": {
+      "refusals": [],
+      "unknown_shapes": [],
+      "new_schema_deviations": []
+     }
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-043.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-043",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 4.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": false,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 2,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 4,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 25.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 75.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": true
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": false,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 2,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 25.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": true
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": [
+      "REQ-006 U: session slot count differs from scene count (no load check found)"
+     ],
+     "recommended_addition": [
+      {
+       "what": "2 scene(s), one per slot, as T11-MIN (removes REQ-006's unknown)",
+       "insert": "/Ableton/LiveSet, after SendsPre or PreHearTrack",
+       "xml": "<Scenes><Scene Id=\"0\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene><Scene Id=\"1\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene></Scenes>"
+      }
+     ],
+     "after_additions": {
+      "refusals": [],
+      "unknown_shapes": [],
+      "new_schema_deviations": []
+     }
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-044.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-044",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 8.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": false,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": [
+      "REQ-006 U: session slot count differs from scene count (no load check found)"
+     ],
+     "recommended_addition": [
+      {
+       "what": "2 scene(s), one per slot, as T11-MIN (removes REQ-006's unknown)",
+       "insert": "/Ableton/LiveSet, after SendsPre or PreHearTrack",
+       "xml": "<Scenes><Scene Id=\"0\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene><Scene Id=\"1\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene></Scenes>"
+      }
+     ],
+     "after_additions": {
+      "refusals": [],
+      "unknown_shapes": [],
+      "new_schema_deviations": []
+     }
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-045.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-045",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/IsLinked": false,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/LoopIterations": 1,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionA": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionB": 0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/JumpIndexB": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": [
+      "REQ-006 U: session slot count differs from scene count (no load check found)"
+     ],
+     "recommended_addition": [
+      {
+       "what": "2 scene(s), one per slot, as T11-MIN (removes REQ-006's unknown)",
+       "insert": "/Ableton/LiveSet, after SendsPre or PreHearTrack",
+       "xml": "<Scenes><Scene Id=\"0\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene><Scene Id=\"1\"><Name Value=\"\" /><Color Value=\"-1\" /><Tempo Value=\"120\" /><IsTempoEnabled Value=\"false\" /><TimeSignatureId Value=\"201\" /><IsTimeSignatureEnabled Value=\"false\" /></Scene></Scenes>"
+      }
+     ],
+     "after_additions": {
+      "refusals": [],
+      "unknown_shapes": [],
+      "new_schema_deviations": []
+     }
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-046.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-046",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Scenes/Scene[1]/FollowAction/IsLinked": true
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-047.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-047",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Scenes/Scene[1]/FollowAction/IsLinked": false,
+         "Scenes/Scene[1]/FollowAction/FollowTime": 8.0
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-048.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-048",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Scenes/Scene[1]/FollowAction/FollowTime": 4.0,
+         "Scenes/Scene[1]/FollowAction/IsLinked": true,
+         "Scenes/Scene[1]/FollowAction/LoopIterations": 1,
+         "Scenes/Scene[1]/FollowAction/FollowActionA": 0,
+         "Scenes/Scene[1]/FollowAction/FollowActionB": 0,
+         "Scenes/Scene[1]/FollowAction/FollowChanceA": 100.0,
+         "Scenes/Scene[1]/FollowAction/FollowChanceB": 0.0,
+         "Scenes/Scene[1]/FollowAction/JumpIndexA": 1.0,
+         "Scenes/Scene[1]/FollowAction/JumpIndexB": 1.0,
+         "Scenes/Scene[1]/FollowAction/FollowActionEnabled": false
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-049.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-049",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Scenes/Scene[1]/FollowAction/IsLinked": false,
+         "Scenes/Scene[1]/FollowAction/FollowActionEnabled": true
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-050.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-050",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Scenes/Scene[1]/FollowAction/IsLinked": false
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-051.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-051",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 38.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 62.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 38.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 62.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-052.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-052",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 63.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 37.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 63.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 37.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-053.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-053",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 1.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 99.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 1.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 99.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-054.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-054",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-055.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-055",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowActionEnabled": false
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-056.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-056",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 75.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 25.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 75.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 25.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-057.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-057",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 0.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 100.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 0.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 100.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-058.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-058",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 100.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 0.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-059.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-059",
+       "action": "open-save",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 50.0,
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 50.0
+        },
+        "saved": {
+         "values": {
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceA": 50.0,
+          "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowChanceB": 50.0
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-060.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-060",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 2.6015651015651016e-07
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-061.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-061",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 5.203130203130203e-07
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/CLIP-LAUNCH-062.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "CLIP-LAUNCH-062",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "Tracks/MidiTrack[1]/DeviceChain/MainSequencer/ClipSlotList/ClipSlot[1]/ClipSlot/Value/MidiClip/FollowAction/FollowTime": 100000.00000156094
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/Samples/T11-tone.wav",
+     "kind": "unparseable: ParseError: not well-formed (invalid token): line 1, column 5",
+     "cases": []
+    }
+   ]
+  }
+ ]
+}

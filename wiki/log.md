@@ -2276,3 +2276,12 @@ Corrections to [device DSP](research/device-dsp-extracted.md):
 - the random LFO shapes are not seeded, which is now X.
 
 Open items are in the new Q-026.
+
+## [2026-10-18] release | clip-launch-v2
+
+[clip-launch-v2](../handoff/clip-launch-v2/README.md) has 100 cases: v1's 50 on
+openable fixtures, plus document and computed-value cases. A separate review agent
+approved it with narrowing. The grid functions are framed as values, not launch
+timing. The global setting is a scale value only. Whether a document with an
+out-of-range follow time opens is excluded. The manifest SHA-256 is
+`02c0212fe8d5b454e3d44e64cd0dbd20299919dddf135032693ba33eee8b6024`.

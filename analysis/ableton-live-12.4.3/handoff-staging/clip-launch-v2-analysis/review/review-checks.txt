@@ -1,0 +1,94 @@
+clip-launch-v2 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B.
+Export copy used for package checks: <scratchpad>/export-cl2-review/clip-launch-v2 (cp -a of staging; diff -r identical).
+Pre-review copies of the payload and of the author's generators: <scratchpad>/before-cl2/ (diffs below).
+
+Evidence identity (all match recorded digests): Live.arm64 3a99ceea...1c383cfad (s5 manifest); x86_64 slice
+1bae9a97...be999b0; X2 notes/launch loader 8b62152e...0a6d; X2 transport loader cf063ca6...11c6;
+x2-notes-launch-v1 manifest aaa42a0b...cc1af, 16/16 files; s5-clip-launch-v1 87/87; t11-structure-v1 74/74
+(manifest 6981daa7...db2e); x2-transport-v1 14/14; schemas 12.0_12402 b7c9d4c7...f299, 12.0_12117 95dd2239...6eef,
+11.0_405 24eb3588...b951 (= s5 static-survey, s2 schemas.json). clip-launch-v1 manifest ecf755b1...45bea = catalog
+row = supersession claim; its 55 files match. The full X2 run was reproduced byte for byte by the
+midi-note-storage-v2 reviewer earlier on 2026-10-18 (same manifest); not repeated here.
+
+Supersession (review_checks.py): 50 carried records identical in content and json.dumps(indent=1) serialization;
+launch content (root attributes, GlobalQuantisation, AutoQuantisation, launch and old-form children of SC/SA/AR,
+first-scene FollowAction) of every carried fixture equal to v1 at every v1 location. Element-by-element comparison
+of carried fixtures with v1: nothing removed or changed; additions as README change 1 to 6 after RVC2-05 (HasStop on
+the first session slot and the inner DeviceChain/Devices were missing from the list). Formula vs v1 rule for
+0 <= x < 1e6 more than 1e-9 from a half point: rounding error of x + h/2 <= 2^-34 beat = 2.2e-4 lattice steps, of
+t1*N <= 2^-12 = 2.4e-4 steps; total < 6e-4 steps << 1e-9*N = 3.8e-3 steps, so floor(t2) = nearest multiple.
+
+Fixture validity (addendum):
+- t11 schema_check.py, 12.0_12402 schema, all 62 fixtures (t11-schema-check-12402.jsonl): 0 deviations for the 57
+  12402/12117 fixtures; each 11.0_405 fixture: 17 unknown-element deviations (MasterTrack, SceneNames, ColorIndex x5,
+  old clip follow children x10; 045 has 16: its MIDI clip has no FollowTime), dangling_envelopes 2 (main-track tempo and
+  time-signature envelopes target pointees 51/53 inside the undeclared MasterTrack), scenes_present false.
+- schema_check.py against each fixture's own schema (t11-schema-check-own.jsonl): 0 deviations in all 62; only
+  flags: 405 scenes_present false / main_slots_equal_scenes false (SceneNames).
+- fixture_audit.py on a handoff-shaped copy (t11-fixture-audit.json): 63 files, 62 Live Sets, 0 refused,
+  0 contradicted, 0 not isolating, 5 unknown shapes (041-045, slots != scenes) with the advice to add a 12402-form
+  Scenes. Wrong for 405 (F4 upheld): 11.0_405 LiveSet declares SceneNames (RemoteableList), not Scenes; its Scene
+  class has fields Value (String, -4), KeyMidi, FollowAction, Annotation, ColorIndex, LomId, ClipSlotsListWrapper and
+  no Name. Step 407 (0x1014b700c, Scene) reports "Unexpected member Name" (error, no return) for a scene with Name,
+  else creates Name from Value; step 414 (0x1014b80fc) renames SceneNames -> Scenes; step 12020 (0x1014bb578)
+  MasterTrack -> MainTrack; step 411 ColorIndex -> Color.
+- Own reading of SPEC-LIVE-SET-STRUCTURE r1 rules (review_checks.py structure(), 405 after the 407/414/12020
+  renames): REQ-001 repeated compound child / base value without Value / unknown list class, REQ-002, REQ-006
+  freeze and scene counts, REQ-013, REQ-015, REQ-016, plus REQ-005 output, REQ-012 devices and dangling envelopes as
+  shapes. Only CLIP-LAUNCH-019 (repeated LaunchMode, the tested reason) refused; no unknown shape. 017, 018, 020,
+  021, 022 refused only by value text; each refused fixture differs from CLIP-LAUNCH-001 only at its item.
+- Conversion of other content (conversion-steps.txt from conversion_steps.py over the corpus registry
+  0x10148ec98): 93 steps above 405. Read: every step above 12117 whose class filter matches a fixture class
+  (12119 Routable MpePitchBendUsesTuning, 12120 IsInKey, 12203 scenes, 12205 main-track freeze slots to the scene
+  count, 12401 arrangement audio clip Fade) and every step above 405 with an error report or a no-return path whose
+  class is present (406, 407, 413, 11201, 12037, 12039, 12045, 12105, 12109, 12116, 12117): each fires only on a
+  device, chord sequence, both-forms clip, scene Name, or wrong node type. 413 parses a tempo only from "BPM" in a
+  scene name (fixture names "Scene 1/2"). 419 EnvelopeModePreferred absent is safe: the child lookup 0x1014766b4
+  returns 0 for a null node. 12101 (ScaleInformation) and 12204 (GroupTrack) apply to classes absent from fixtures.
+
+Extracted execution (x_sample.py -> x_sample.out): from staged cases.json and fixture text, recorded loaders,
+63 processes, max 58 calls (limit 256): grid length 0x101ad2ef0 for 57 (n,d,q); enum getter 0x101556330 for
+10 clip values (-99 -> 0, others unchanged); lattice 0x1011999d0 mode 3 on 38 beats; boundary 0x101ae8280 mode 1
+on 54 (t,g,a) (4 with g=0, info: helper returns p with anchor 0); follow-action post-load 0x10262a930 on 17 chance
+pairs (029-036, 051-059; 055 -0/0 -> enabled setter called with 0); ARemoteableDouble post-load 0x101555850 flag 1
+on 8 follow times (016, 037-040, 060-062); attribute text conversion 0x10151b630 (glibc strtod in the transport
+loader) on 41 texts, all equal to Python's correctly rounded value. 146/146 computations and 25/25 document values
+agree bit for bit.
+arm64 static spot checks (s5-0001 dossiers, r2/s7-midi-notes-v1/disasm.py): clip grid 0x102442998: getter on
+[clip,#0x258]; != 0 -> 0x1026e3698(sig [clip,#0x1d8]), w1 = k - 1, 0x101aaae44; == 0 -> song passed ? tail-call
+0x10268ce9c (-> 0x1026787f0: song current signature, getter on [song+8]+0x388 GlobalQuantisation, 0x101aaae44)
+: -1.0. Lattice helper 0x1011be6c8: fsub, fdiv, frintp, fmul, fadd (separate; no fmadd in the boundary step,
+same as x86 mulsd/addsd); g == 0 skips to fadd ((t - a) + a). Engine fire path skips the helper when g <= 0 (s5 notes,
+0x101ad0130), so REQ-018's B = p is S. At launch 0x10245efa0 sends 0x102442998(clip, 0) (no song) -> Global as -1.0,
+and the engine uses its own global value (0x101b0e1c0): that is PBC A4, hence F1 upheld for the draft only.
+
+Restatement (restate.py, written from spec.md): 100/100 agree; --mutate 496/496 detected. review_checks.py
+contract examples: REQ-012 14 pairs, REQ-013 7 values and the h/2 claim, REQ-015 5, REQ-016 3, REQ-017 p and B
+examples, clause 5 for 3,424 beats: all true. Sample: 176,444 bytes, 2 ch, 16 bit, 44,100 Hz, 44,100 frames, equal
+to round(8192 sin(2 pi 441 n / 44100)) on both channels.
+Per-requirement re-derivation: REQ-001/002 12.0_12402 MidiClip/AudioClip field order LaunchMode, LaunchQuantisation,
+Legato, VelocityAmount, FollowAction and FollowAction's ten children in order with classes RemoteableEnum,
+RemoteableBool, UserFloat, RemoteableDouble, RangedRemoteableInt; REQ-003 LiveSet GlobalQuantisation and
+AutoQuantisation (RemoteableEnum); REQ-004 to 007 label lists (s5 notes: 0x102438b44, 0x102438d00, 0x102503ea0,
+0x10266f738); REQ-009 AClip/AFollowAction init (s5 notes); REQ-011 getter X; REQ-014 steps 406 (FollowTime absent ->
+1.0, chances default 1/0, error on existing FollowAction), 417 (enabled formula), 421, 12203 from the corpus;
+REQ-012/013/015 to 018 X run above and arm64 checks.
+
+Rulings recorded in REVIEW.md: (a) RVC2-01 rename and framing; (b) RVC2-02, F1 upheld for the draft (REQ-016 Global
+bullet should name PBC A4), v2's function is S from the clip-grid function without A4; (c) RVC2-03, F2 upheld:
+AClip post-load 0x102441a30 unread (research clip-launch.md), CLC-061 exclusion correct; v2 now also excludes
+whether such a document opens; chances: the FollowAction member's post-load runs as it is read, before the clip's
+own (LSS A1), so the clip step sees 0-100 values; (d) RVC2-04, F4 upheld and extended (dangling envelopes);
+(e) RVC2-08. F3 (fixture section) and F5 (integer text) are draft-only and agreed.
+
+Hygiene (review_checks.py hygiene, export): hits only provenance-label words (slice, x86, arm64, Linux), T11 in the
+sample name/path (as released live-set-structure-v1), RemoteableTimeSignature (12402 schema class; shipped clips),
+AGENTS forbidden-inputs "decompil", "probe" in the comparison obligation and REVIEW.md prose.
+Author validator build_v2.py verify on the export (author-verify-after-review.json): no case, X, carry, form, hash,
+inventory or link problem; mutations 100/100; deny hits only REVIEW.md links and RemoteableTimeSignature in
+REVIEW.md. review-checks-staging.json is the pre-edit run (older review_checks.py); review-checks-export.json final.
+Payload edits: apply_tooling_edits.py (author generators; tooling-changes.diff), build_v2.py build (fixtures
+byte-identical), apply_review_edits.py (README, AGENTS, spec), REVIEW.md, finalize_manifest.py; payload-changes.diff.
+Export: sha256sum -c 68/68 OK. Final manifest SHA-256 02c0212fe8d5b454e3d44e64cd0dbd20299919dddf135032693ba33eee8b6024.
+Nothing copied to handoff/; no wiki, index, log or spec page edited; no git add or commit.

@@ -1,0 +1,1612 @@
+diff -ruN -x fixtures clip-launch-v2/AGENTS.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/AGENTS.md
+--- clip-launch-v2/AGENTS.md	2026-10-18 20:03:32.911557221 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/AGENTS.md	2026-10-18 22:56:58.901553529 -0700
+@@ -1,11 +1,9 @@
+ # Package role and access instructions
+ 
+-This is an unreviewed candidate package for its explicit partial scope. It is
+-not an implementation input until a separate review approves it and it is
+-published. Application implementation then requires a fresh, restricted
+-implementation workspace that contains only permitted materials. Publication
+-of this package does not provision one. Do not begin clean implementation in
+-an analyst checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
++contains only permitted materials. Publication of this package does not
++provision one. Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -17,7 +15,9 @@
+ Read README.md and spec.md before cases.json. Requirements apply only to their
+ explicit partial clauses. No source-code structure, parser entry point or data
+ structure is specified. A candidate adapter may expose the comparison labels
+-and the value functions; this does not impose an internal architecture.
++and the value functions; this does not impose an internal architecture. The
++value functions are not launch timing; do not derive launch behavior from
++them.
+ 
+ Preserve this package unchanged. Do not extend unknown or excluded behavior or
+ inputs without an expectation. Request a reviewed revision for gaps. Record
+diff -ruN -x fixtures clip-launch-v2/cases.json /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/cases.json
+--- clip-launch-v2/cases.json	2026-10-18 22:31:23.068665176 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/cases.json	2026-10-18 23:04:17.910263164 -0700
+@@ -2,7 +2,7 @@
+  "schema": "clip-launch-cases-v2",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "clip-launch-v2 partial requirement clauses only (see spec.md)",
+- "status": "candidate-unreviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored complete minimal Live Sets and a generated sample; no shipped file copied or excerpted",
+  "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+  "representation": {
+@@ -2654,14 +2654,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 5.3,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 5.3,
++       "rounded_beat": 5.3,
+        "boundary": 8.0
+       },
+       "basis": "extracted execution"
+@@ -2706,14 +2706,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 9.0,
+        "grid": 8.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 9.0,
++       "rounded_beat": 9.0,
+        "boundary": 16.0
+       },
+       "basis": "extracted execution"
+@@ -2758,14 +2758,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 17.0,
+        "grid": 16.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 17.0,
++       "rounded_beat": 17.0,
+        "boundary": 32.0
+       },
+       "basis": "extracted execution"
+@@ -2810,14 +2810,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.0,
+        "grid": 32.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.0,
++       "rounded_beat": 1.0,
+        "boundary": 32.0
+       },
+       "basis": "extracted execution"
+@@ -2862,14 +2862,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.0,
+        "grid": 3.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 6.0
+       },
+       "basis": "extracted execution"
+@@ -2914,14 +2914,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.0,
+        "grid": 24.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.0,
++       "rounded_beat": 1.0,
+        "boundary": 24.0
+       },
+       "basis": "extracted execution"
+@@ -2966,14 +2966,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.0,
+        "grid": 3.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.0,
++       "rounded_beat": 1.0,
+        "boundary": 3.0
+       },
+       "basis": "extracted execution"
+@@ -3018,14 +3018,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.0,
+        "grid": 3.5,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 7.0
+       },
+       "basis": "extracted execution"
+@@ -3070,14 +3070,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.0,
+        "grid": 10.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.0,
++       "rounded_beat": 1.0,
+        "boundary": 10.0
+       },
+       "basis": "extracted execution"
+@@ -3122,14 +3122,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 2.25,
+        "grid": 2.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 2.25,
++       "rounded_beat": 2.25,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+@@ -3174,14 +3174,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.5,
+        "grid": 1.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.5,
++       "rounded_beat": 1.5,
+        "boundary": 2.6666666666666665
+       },
+       "basis": "extracted execution"
+@@ -3226,14 +3226,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 2.1,
+        "grid": 1.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 2.1,
++       "rounded_beat": 2.1,
+        "boundary": 3.0
+       },
+       "basis": "extracted execution"
+@@ -3278,14 +3278,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.0,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.0,
++       "rounded_beat": 1.0,
+        "boundary": 1.3333333333333333
+       },
+       "basis": "extracted execution"
+@@ -3330,14 +3330,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.1,
+        "grid": 0.5,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.1,
++       "rounded_beat": 3.1,
+        "boundary": 3.5
+       },
+       "basis": "extracted execution"
+@@ -3382,14 +3382,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 0.4,
+        "grid": 0.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 0.4,
++       "rounded_beat": 0.4,
+        "boundary": 0.6666666666666666
+       },
+       "basis": "extracted execution"
+@@ -3434,14 +3434,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.3,
+        "grid": 0.25,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.3,
++       "rounded_beat": 1.3,
+        "boundary": 1.5
+       },
+       "basis": "extracted execution"
+@@ -3486,14 +3486,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 0.2,
+        "grid": 0.16666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 0.2,
++       "rounded_beat": 0.2,
+        "boundary": 0.3333333333333333
+       },
+       "basis": "extracted execution"
+@@ -3538,14 +3538,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 0.13,
+        "grid": 0.125,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 0.12999994796869796,
++       "rounded_beat": 0.12999994796869796,
+        "boundary": 0.25
+       },
+       "basis": "extracted execution"
+@@ -3590,14 +3590,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 2.1,
+        "grid": 1.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 2.1,
++       "rounded_beat": 2.1,
+        "boundary": 3.0
+       },
+       "basis": "extracted execution"
+@@ -3642,27 +3642,27 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.2,
+        "grid": 3.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.2,
++       "rounded_beat": 1.2,
+        "boundary": 3.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.2,
+        "grid": 3.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.2,
++       "rounded_beat": 4.2,
+        "boundary": 6.0
+       },
+       "basis": "extracted execution"
+@@ -3677,7 +3677,7 @@
+   {
+    "id": "CLIP-LAUNCH-089",
+    "kind": "value",
+-   "purpose": "Clip in 6/8 set to Global uses the song's 4/4: beat 1.2 gives 4",
++   "purpose": "Clip in 6/8 set to Global denotes the global value in the song's 4/4: beat 1.2 gives 4",
+    "requirements": [
+     "REQ-CLIP-LAUNCH-015",
+     "REQ-CLIP-LAUNCH-016",
+@@ -3707,14 +3707,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.2,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.2,
++       "rounded_beat": 1.2,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+@@ -3729,7 +3729,7 @@
+   {
+    "id": "CLIP-LAUNCH-090",
+    "kind": "value",
+-   "purpose": "Clip set to None: no grid, the boundary is the press beat 5.3",
++   "purpose": "Clip set to None: no grid, the boundary is the rounded beat 5.3",
+    "requirements": [
+     "REQ-CLIP-LAUNCH-016",
+     "REQ-CLIP-LAUNCH-018"
+@@ -3758,17 +3758,17 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 5.3,
+        "grid": 0.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 5.3,
++       "rounded_beat": 5.3,
+        "boundary": 5.3
+       },
+-      "basis": "press beat extracted execution; boundary with no grid static-derived"
++      "basis": "rounded beat extracted execution; boundary with no grid static-derived"
+      }
+     ]
+    },
+@@ -3809,17 +3809,17 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 5.3,
+        "grid": 0.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 5.3,
++       "rounded_beat": 5.3,
+        "boundary": 5.3
+       },
+-      "basis": "press beat extracted execution; boundary with no grid static-derived"
++      "basis": "rounded beat extracted execution; boundary with no grid static-derived"
+      }
+     ]
+    },
+@@ -3861,27 +3861,27 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.99,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.990000104062604,
++       "rounded_beat": 3.990000104062604,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.0,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+@@ -3927,14 +3927,14 @@
+       "basis": "selection static-derived; reading of -99 and grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 5.3,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 5.3,
++       "rounded_beat": 5.3,
+        "boundary": 8.0
+       },
+       "basis": "extracted execution"
+@@ -3978,17 +3978,17 @@
+       "basis": "selection static-derived; reading of -99 and grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 5.3,
+        "grid": 0.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 5.3,
++       "rounded_beat": 5.3,
+        "boundary": 5.3
+       },
+-      "basis": "press beat extracted execution; boundary with no grid static-derived"
++      "basis": "rounded beat extracted execution; boundary with no grid static-derived"
+      }
+     ]
+    },
+@@ -4030,14 +4030,14 @@
+       "basis": "selection static-derived; grid length extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.3333333333333335,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.3333333333333335,
++       "rounded_beat": 3.3333333333333335,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+@@ -4052,7 +4052,7 @@
+   {
+    "id": "CLIP-LAUNCH-096",
+    "kind": "value",
+-   "purpose": "Press beat rounding next to the bar line at beat 4 (1 Bar in 4/4)",
++   "purpose": "Beat rounding next to the grid line at beat 4 (1 Bar in 4/4)",
+    "requirements": [
+     "REQ-CLIP-LAUNCH-017"
+    ],
+@@ -4061,118 +4061,118 @@
+    "expected": {
+     "computations": [
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.5,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.5,
++       "rounded_beat": 1.5,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.9,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.9,
++       "rounded_beat": 3.9,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.99999973984349,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.99999973984349,
++       "rounded_beat": 3.99999973984349,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.9999998699217447,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.000000130078255,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.00000012747669,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.000000260156511,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.000000260156511,
++       "rounded_beat": 4.000000260156511,
+        "boundary": 8.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.999999999,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.000000001,
+        "grid": 4.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+@@ -4196,105 +4196,105 @@
+    "expected": {
+     "computations": [
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 6.666666666666667,
+        "grid": 1.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 6.666666666666667,
++       "rounded_beat": 6.666666666666667,
+        "boundary": 8.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.6666666666666667,
+        "grid": 0.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.6666666666666667,
++       "rounded_beat": 1.6666666666666667,
+        "boundary": 2.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 61.833333333333336,
+        "grid": 0.16666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 61.833333333333336,
++       "rounded_beat": 61.833333333333336,
+        "boundary": 62.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 0.6666666666666666,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 0.6666666666666666,
++       "rounded_beat": 0.6666666666666666,
+        "boundary": 0.6666666666666666
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.3333333333333333,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.3333333333333333,
++       "rounded_beat": 1.3333333333333333,
+        "boundary": 1.3333333333333333
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 2.6666666666666665,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 2.6666666666666665,
++       "rounded_beat": 2.6666666666666665,
+        "boundary": 2.6666666666666665
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 1.3333333333333333,
+        "grid": 1.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 1.3333333333333333,
++       "rounded_beat": 1.3333333333333333,
+        "boundary": 1.3333333333333333
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 0.16666666666666666,
+        "grid": 0.16666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 0.16666666666666666,
++       "rounded_beat": 0.16666666666666666,
+        "boundary": 0.16666666666666666
+       },
+       "basis": "extracted execution"
+@@ -4318,79 +4318,79 @@
+    "expected": {
+     "computations": [
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.3333330731768234,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.3333330731768234,
++       "rounded_beat": 3.3333330731768234,
+        "boundary": 3.3333333333333335
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.3333335934898436,
+        "grid": 0.6666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.3333335934898436,
++       "rounded_beat": 3.3333335934898436,
+        "boundary": 4.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 6.666666406510156,
+        "grid": 1.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 6.666666406510156,
++       "rounded_beat": 6.666666406510156,
+        "boundary": 6.666666666666667
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 6.666666926823177,
+        "grid": 1.3333333333333333,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 6.666666926823177,
++       "rounded_beat": 6.666666926823177,
+        "boundary": 8.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 61.833333073176824,
+        "grid": 0.16666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 61.833333073176824,
++       "rounded_beat": 61.833333073176824,
+        "boundary": 61.833333333333336
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 61.83333359348984,
+        "grid": 0.16666666666666666,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 61.83333359348984,
++       "rounded_beat": 61.83333359348984,
+        "boundary": 62.0
+       },
+       "basis": "extracted execution"
+@@ -4414,40 +4414,40 @@
+    "expected": {
+     "computations": [
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 9.0,
+        "grid": 3.0,
+        "anchor": 8.0
+       },
+       "result": {
+-       "press_beat": 9.0,
++       "rounded_beat": 9.0,
+        "boundary": 11.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 5.3,
+        "grid": 4.0,
+        "anchor": -5.0
+       },
+       "result": {
+-       "press_beat": 5.3,
++       "rounded_beat": 5.3,
+        "boundary": 8.0
+       },
+       "basis": "extracted execution"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 9.0,
+        "grid": 3.0,
+        "anchor": 8.0000001
+       },
+       "result": {
+-       "press_beat": 9.0,
++       "rounded_beat": 9.0,
+        "boundary": 11.0
+       },
+       "basis": "extracted execution"
+@@ -4462,7 +4462,7 @@
+   {
+    "id": "CLIP-LAUNCH-100",
+    "kind": "value",
+-   "purpose": "With no grid the boundary is the press beat, rounded to the lattice",
++   "purpose": "With no grid the boundary is the beat rounded to the lattice",
+    "requirements": [
+     "REQ-CLIP-LAUNCH-018"
+    ],
+@@ -4471,43 +4471,43 @@
+    "expected": {
+     "computations": [
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 3.99,
+        "grid": 0.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 3.990000104062604,
++       "rounded_beat": 3.990000104062604,
+        "boundary": 3.990000104062604
+       },
+-      "basis": "press beat extracted execution; boundary with no grid static-derived"
++      "basis": "rounded beat extracted execution; boundary with no grid static-derived"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 0.13,
+        "grid": 0.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 0.12999994796869796,
++       "rounded_beat": 0.12999994796869796,
+        "boundary": 0.12999994796869796
+       },
+-      "basis": "press beat extracted execution; boundary with no grid static-derived"
++      "basis": "rounded beat extracted execution; boundary with no grid static-derived"
+      },
+      {
+-      "function": "launch-boundary",
++      "function": "grid-boundary",
+       "arguments": {
+        "beat": 4.000000001,
+        "grid": 0.0,
+        "anchor": 0.0
+       },
+       "result": {
+-       "press_beat": 4.0,
++       "rounded_beat": 4.0,
+        "boundary": 4.0
+       },
+-      "basis": "press beat extracted execution; boundary with no grid static-derived"
++      "basis": "rounded beat extracted execution; boundary with no grid static-derived"
+      }
+     ]
+    },
+diff -ruN -x fixtures clip-launch-v2/manifest.json /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/manifest.json
+--- clip-launch-v2/manifest.json	2026-10-18 22:31:25.103174584 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/manifest.json	2026-10-18 23:04:17.944054996 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "clip-launch-v2",
+- "release_status": "candidate-unreviewed",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-CLIP-LAUNCH",
+@@ -28,9 +28,9 @@
+   "REQ-CLIP-LAUNCH-013": "Follow-time rounding on opening by the binary64 formula, for values 0 to below 1,000,000 (the near-half exclusion of v1 removed)",
+   "REQ-CLIP-LAUNCH-014": "Conversion steps 406, 417 and 421 for clips of 11.0_405 documents and 12203 for scenes of 12.0_12117 documents, applied before reading; no conversion at 12.0_12402; other conversion steps excluded (unchanged)",
+   "REQ-CLIP-LAUNCH-015": "Value contract: grid length in beats for a global value q and a time signature n/d (n 1-99, d 1, 2, 4, 8 or 16); 0 means no grid",
+-  "REQ-CLIP-LAUNCH-016": "Value contract: the grid a clip's stored launch quantization denotes, from the clip value (-99 counts as 0), the global value and the clip's and the song's time signatures given as inputs; its use at launch excluded",
+-  "REQ-CLIP-LAUNCH-017": "Value contract: press beat (lattice rounding) and boundary arithmetic for a beat, a grid length and an anchor given as inputs; which beat and anchor a launch uses, the pre-delay, the move to the next line and all sample timing excluded",
+-  "REQ-CLIP-LAUNCH-018": "Value contract: with no grid the boundary is the press beat; launch timing excluded"
++  "REQ-CLIP-LAUNCH-016": "Value contract: the grid a clip's stored launch quantization denotes, from the clip value (-99 counts as 0), the global value and the clip's and the song's time signatures given as inputs; which global value, time signatures and grid a launch uses, and its use at launch, excluded",
++  "REQ-CLIP-LAUNCH-017": "Value contract: rounded beat (lattice rounding) and boundary arithmetic for a beat, a grid length and an anchor given as inputs; which beat and anchor a launch uses, whether a launch starts at the boundary, the pre-delay, the move to the next line and all sample timing excluded",
++  "REQ-CLIP-LAUNCH-018": "Value contract: with no grid the boundary is the rounded beat; launch timing excluded"
+  },
+  "unreleased_requirements": [
+   "REQ-CLIP-LAUNCH-008",
+@@ -43,7 +43,7 @@
+  ],
+  "compatibility_dimensions": {
+   "project-files": "static-derived and extracted-execution expectations for the listed document values; reference execution not-run",
+-  "behavior": "launch grid values as a value contract (extracted execution and static-derived); launching excluded",
++  "behavior": "quantization grid values as a value contract of explicit inputs (extracted execution and static-derived); not launch timing; launching excluded",
+   "timing": "excluded (launch timing belongs to a separate playback release)",
+   "ui": "excluded (labels define meaning; displayed text not graded)",
+   "audio": "excluded"
+@@ -77,10 +77,10 @@
+    "value functions outside their stated argument ranges"
+   ],
+   "behavior": [
+-   "launch timing: when a launched clip starts, the sample at which a launch takes effect, which beat and anchor a launch uses, the pre-delay and the move to the next grid line, launching with the transport stopped, how a launch picks its grid at run time; these belong to a separate playback release",
++   "launch timing: when a launched clip starts, the sample at which a launch takes effect, which beat, anchor, global value, time signatures and grid a launch uses at run time, whether a launch starts at the boundary of REQ-CLIP-LAUNCH-017, the pre-delay and the move to the next grid line, launching with the transport stopped; these belong to a separate playback release; the value functions of REQ-CLIP-LAUNCH-015 to 018 are not launch timing",
+    "Gate, Toggle and Repeat, Legato, velocity scaling, follow-action timing, loop iterations, jump indices and chance selection",
+    "displayed text, including where each follow-action label set is shown",
+-   "value held, displayed or saved for an out-of-range launch mode, launch quantization or follow-action value; the held value of a follow time outside 0 to below 1,000,000",
++   "value held, displayed or saved for an out-of-range launch mode, launch quantization or follow-action value; for a follow time outside 0 to below 1,000,000, whether the document opens and the value then held",
+    "text written for numbers and Booleans, and exact read-back of a written number with more than six significant digits; layout; save container and envelope; saved form of set-level values and of scenes",
+    "initial launch mode and quantization of a new clip and the related preferences; set initial values; File > New; clip creation paths",
+    "conversion steps other than 406, 417, 421 and 12203; the conversion error for a clip that has both forms; documents older than 11.0_405; the conversion of the fixtures' other content",
+@@ -94,12 +94,24 @@
+  "fixture_origin": "independently authored complete minimal Live Sets (decoded XML) generated from one authored template, and one generated sine-wave sample; no shipped file content",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RVC2-01 medium: REQ-015 to 018 were worded as computations that launching uses (press beat, launch-boundary, song position, a Global clip 'uses' the song's time signature) and could be read as launch timing; narrowed: rounded_beat and grid-boundary, stated not to be launch timing, boundary not stated to be a launch's start, value cases not launch cases; no computed value changed",
++   "RVC2-02 low: the global argument was called the set's stored GlobalQuantisation, which could state which global value a launch uses; narrowed to values on the stored items' scale, and which global value, time signatures and grid a launch uses excluded; selection static-derived from the clip-grid function",
++   "RVC2-03 low: for a follow time outside 0 to below 1,000,000 only the held value was excluded; whether the document opens is now excluded too, since a later opening step was not traced",
++   "RVC2-04 info: the structure audit measures 11.0_405 documents with current names and reports false problems; fixtures checked against their own version and the structure rules directly; analyst-side tool to be corrected",
++   "RVC2-05 editorial: README fixture change list omitted HasStop on each session slot and the empty device chain on each track; completed",
++   "RVC2-06 editorial: REQ-017 clause 4's verification note restated as clause 5, a rule for q = 5 to 13 with anchor 0",
++   "RVC2-07 editorial: payload status set to reviewed release; review record added",
++   "RVC2-08 info: evidence identity re-hashed; reviewer's own extracted-execution run (63 processes, at most 58 calls) agrees with all 146 computations and 25 document values",
++   "RVC2-09 info: conversion of the fixtures' other content partly checked statically; assumption stays stated"
++  ],
++  "disposition": "Approved with listed narrowing (RVC2-01 to RVC2-03), only for the explicit partial clauses; 100 cases; REQ-015 to 018 as value functions of explicit inputs only, not launch timing; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "clip-launch-v1",
+  "supersession": {
+@@ -111,7 +123,7 @@
+    "precondition removed: v1's 'absence of other set content must not change a judged outcome' does not hold for set structure",
+    "REQ-012: chances outside 0-100 (within -100 to 200, |A+B| >= 1) rescaled and limited to 0-100; v1's kept-value assumption settled; negative zero counts as zero; cases 051-059",
+    "REQ-013: stated as the binary64 formula; equals v1's rule outside v1's near-half exclusion, which is removed; cases 060-062",
+-   "REQ-015 to 018 released as value contracts only (grid length, the grid a clip's setting denotes including -99 as Global, press beat and boundary including the triplet next-line case, no grid); cases 063-100",
++   "REQ-015 to 018 released as value contracts only (grid length, the grid a clip's setting denotes including -99 as Global, rounded beat and boundary including the triplet next-line case, no grid); not launch timing; cases 063-100",
+    "REQ-011: out-of-range chances now have expectations through REQ-012; -99 denotes Global in the REQ-016 value",
+    "provenance label extracted execution added with its assumptions; carried records keep static-derived"
+   ]
+@@ -124,18 +136,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "791ce00a9f56f875954dbf3f0fe6e2c6455144eb729973b2cb7a81707345c090",
+-   "bytes": 1492
++   "sha256": "166b507a093d033052b83c5edc806c96b3dfd73ec296939e90f0680bb67eff59",
++   "bytes": 1473
+   },
+   {
+    "path": "README.md",
+-   "sha256": "c8dbe4169e395f3ac1309a572c610f3703e7c620d6f1d382dc8dd7bea2f46b6b",
+-   "bytes": 7521
++   "sha256": "9d722f74b2b064c318e2580d70e9bfda7009498fbb1fa4a51e95455370908c75",
++   "bytes": 7926
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "c8ed7ceca0efac75d95ddbb301fc4e3d1221b04e39e04912b63fac831c5c3f40",
++   "bytes": 16523
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "413b74a6652627460f51b3e864859c1b66b9f021c907ae98efe4624907cf91c6",
+-   "bytes": 143758
++   "sha256": "442203463918059d419720ef64dd124d33d73b4cf005ebfe099688653516555e",
++   "bytes": 143780
+   },
+   {
+    "path": "fixtures/CLIP-LAUNCH-001.xml",
+@@ -454,8 +471,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "c7e9619108de488bed4babc47997eec07608be9b65df5b2ee136c5f7c69f486c",
+-   "bytes": 37083
++   "sha256": "65305e2f2938a697d6e28e62e4f1662bd95ec52f257b83908b5d049f54c04b02",
++   "bytes": 38167
+   }
+  ]
+ }
+diff -ruN -x fixtures clip-launch-v2/README.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/README.md
+--- clip-launch-v2/README.md	2026-10-18 20:03:46.388065689 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/README.md	2026-10-18 22:56:58.901359023 -0700
+@@ -1,10 +1,11 @@
+ # Clip launch settings in Live Set documents, release 2
+ 
+-**Candidate, not reviewed.** Read [the contract](spec.md), [the cases](cases.json),
+-[the role instructions](AGENTS.md) and [the manifest](manifest.json). This
+-package is not an implementation input until a separate review approves it and
+-it is published. Publication would not provision the fresh, restricted
+-implementation workspace that implementation requires.
++**Reviewed local release.** Read [the contract](spec.md), [the cases](cases.json),
++[the role instructions](AGENTS.md), [the manifest](manifest.json) and
++[the review disposition](REVIEW.md). The stated partial scope, with the
++narrowing recorded in the review, is approved as a contract for a fresh,
++restricted implementation workspace. Such a workspace has not been provisioned
++by this release.
+ 
+ The finite scope is how the decoded XML of a Live Set stores each clip's launch
+ settings and the set's global and record quantization: where each value is,
+@@ -12,9 +13,10 @@
+ when a document is opened, what missing and repeated items do, the
+ follow-chance and follow-time corrections made on opening, the conversion of
+ follow actions in two older format versions, and what is written on save. New
+-in this release is a value contract for the launch grid: the grid length of
+-each quantization value, the grid a clip's setting denotes, the rounding of a
+-beat to the beat lattice and the grid boundary at or after it. Requirement IDs
++in this release is a value contract for the quantization grid: the grid length
++of each quantization value, the grid a clip's setting denotes, the rounding of
++a beat to the beat lattice and the grid boundary at or after it. These are
++functions of explicit inputs, not launch timing. Requirement IDs
+ are retained with explicit partial clauses. Requirements 008, 010 and 019 to
+ 023, launch timing and every other effect on launching or playback remain
+ unreleased. No application source, shipped file or public dependency is
+@@ -60,13 +62,17 @@
+    formula decides. That exclusion is removed. CLIP-LAUNCH-060 to 062 are new.
+ 5. **REQ-CLIP-LAUNCH-015 to 018** are released as a value contract only: the
+    grid length of each value, the grid a clip's setting denotes (a clip value
+-   of −99 counts as Global), the press beat and the boundary, including a
++   of −99 counts as Global), the rounded beat and the boundary, including a
+    triplet case in which the boundary is the next grid line, and the boundary
+-   with no grid. They define values, not launch timing. CLIP-LAUNCH-063 to 100
++   with no grid. They define values, not launch timing: the boundary is not
++   stated to be the beat at which a launched clip starts, and which global
++   value and time signatures a launch uses is excluded. CLIP-LAUNCH-063 to 100
+    are new.
+ 6. **REQ-CLIP-LAUNCH-011.** Follow chances outside 0 to 100 now follow
+    REQ-CLIP-LAUNCH-012, and the −99 rule of REQ-CLIP-LAUNCH-016 is named. The
+-   value held for other out-of-range values stays excluded.
++   value held for other out-of-range values stays excluded. A follow time
++   outside 0 to below 1,000,000 has no expectation, not even that the document
++   opens.
+ 7. **Provenance.** The extracted-execution label is new. Every new case carries
+    it; the contract states the assumptions it rests on. Carried records keep
+    the static-derived label.
+@@ -91,11 +97,11 @@
+ are:
+ 
+ 1. **All 50.** Added: `NextPointeeId`; for every track its name, colour,
+-   group Id −1, output, mixer with its automation and modulation targets, and
+-   send; on the
+-   MIDI track a volume automation envelope; an audio track and a return track;
+-   a second session slot on each player track and, on each, a freeze sequencer
+-   with as many empty slots as session slots; in each clip its start, end,
++   group Id −1, output, mixer with its automation and modulation targets, send
++   and an empty device chain; on the MIDI track a volume automation envelope;
++   an audio track and a return track; `HasStop` on each session slot; a second
++   session slot on each player track and, on each, a freeze sequencer with as
++   many empty slots as session slots; in each clip its start, end,
+    loop, name, colour, time signature, clip envelopes, warp state and notes or
+    sample reference and warp markers; the main track, cue track, send-pre item,
+    transport and `CrossfadeCurve`; the sample file `Samples/T11-tone.wav`. Text
+diff -ruN -x fixtures clip-launch-v2/REVIEW.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/REVIEW.md
+--- clip-launch-v2/REVIEW.md	1969-12-31 16:00:00.000000000 -0800
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/REVIEW.md	2026-10-18 23:04:17.108026822 -0700
+@@ -0,0 +1,201 @@
++# Review disposition
++
++Release: clip-launch-v2, 2026-10-18.
++
++Reviewer: separate review agent (Claude Opus 5.5), launched by the coordinator
++in its own handoff-review context. It did not author this candidate and will
++not implement it. The one reviewer performed the scope and evidence,
++supersession, fixture-validity, quality and sanitization, evidence-identity and
++fixture-sharing checks. Publication metadata outside this package is left to
++the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of REQ-CLIP-LAUNCH-001 to
++007, 009 and 011 to 018 in [the contract](spec.md), narrowed as listed below.
++REQ-CLIP-LAUNCH-015 to 018 are approved only as value functions of explicit
++inputs, not as launch timing. REQ-CLIP-LAUNCH-008, 010 and 019 to 023 remain
++unreleased.
++
++- Supersession. clip-launch-v1's manifest digest equals the catalog value and
++  the value recorded here, and all 55 files it lists still match. The 50
++  carried cases are identical case records to clip-launch-v1, in content and
++  serialization. In every carried fixture the envelope, `GlobalQuantisation`,
++  `AutoQuantisation`, each launch element and old-form follow item of each clip
++  that clip-launch-v1 had, and the first scene's follow action are identical to
++  clip-launch-v1. The new fixtures only add elements: no element or value of a
++  clip-launch-v1 fixture is removed or changed. Within clip-launch-v1's clauses
++  the expectations are the same: the new 0 to 100 limit cannot change a
++  rescaled pair of chances that both lie in 0 to 100, and the reviewer checked
++  that the follow-time formula equals clip-launch-v1's rule whenever the value
++  is more than 10⁻⁹ from a halfway point and below 1,000,000 (the rounding
++  error of the two binary64 steps is below 6 × 10⁻⁴ lattice steps). The
++  superset claim holds. The fixture change list was incomplete (RVC2-05) and
++  is now complete.
++- Fixture validity. The Live Set structure checker that found the
++  clip-launch-v1 defect was run by the reviewer on all 62 fixtures. Against
++  each fixture's own format version, no fixture has a schema deviation, and the
++  checker finds no structure refusal. Of the structure rules, only the
++  repeated-child rule refuses a fixture: CLIP-LAUNCH-019, whose repeated
++  `LaunchMode` is the reason that case tests. The other five refused
++  cases (017, 018, 020, 021 and 022) are refused only by the value text they
++  test. The reviewer also read the structure rules directly for every fixture,
++  with its own implementation: two player tracks before one return track, two
++  session and two freeze slots on each player track, two scenes, one send per
++  track for one return, none on the main or cue track, one send-pre item, 66
++  pointee Ids 1 to 66 below `NextPointeeId` 69, unique list-item Ids, a `Value`
++  on every base value and no repeated child. Each refused fixture differs from
++  the template only at the item its case tests. For the `11.0_405` fixtures
++  the rules were read after the renames that conversion makes (RVC2-04).
++- Extracted execution was re-run by the reviewer (RVC2-08). The original
++  x86_64 code computed every grid length, every stored-value reading, every
++  rounded beat and every boundary that the 38 value cases list, and the
++  chance correction and follow-time rounding of 25 document cases, from the
++  staged arguments and fixture text: 146 computations and 25 document values
++  agree bit for bit.
++- Every case was read one by one. The reviewer's own executable restatement of
++  the contract, written from the contract and not from the author's
++  cross-check, agreed with all 100 expected outcomes, held values, saved values
++  and computed results, and detected 496 of 496 mutated expectations. The
++  worked examples of REQ-012, 013 and 015 to 017 hold, and so does REQ-017
++  clause 5 for all 3,424 beats one lattice step from a grid line.
++- At least one expectation per released requirement was re-derived from the
++  evidence: the launch elements' and follow-action children's types and order
++  in the shipped `12.0_12402` class list (REQ-001, 002), the two set items
++  (REQ-003), the four label lists (REQ-004 to 007), the initial clip and
++  follow-action values (REQ-009), the stored-value reading of −99 (REQ-011),
++  the conversion steps 406, 417, 421 and 12203, including the follow time 1
++  that step 406 gives an absent one (REQ-014), and, for REQ-012, 013 and 015 to
++  018, the runs above together with the arm64 instructions of the clip-grid
++  selection and of the beat lattice step.
++- Sanitization was checked by the reviewer's own scan of every payload file. No
++  source code, recovered program text, internal identifiers, addresses, analyst
++  paths, private evidence links, planning, probe, question or assumption
++  identifiers or per-case evidence fields are present. The flagged words are
++  the provenance label and its definition, the generated sample's file name and
++  path inside the fixtures (as in the released structure package), the public
++  element name `RemoteableTimeSignature`, which the shipped schema lists and
++  shipped clips contain, the forbidden-inputs list of `AGENTS.md`, and
++  "probe" in the comparison obligation, worded as in clip-launch-v1.
++  SPEC-PLAYBACK-CORE is named by ID only, as the owner of launch timing.
++- Scope. After RVC2-01 no runtime, timing, render or display result is
++  presented as released. No expectation depends on an open question
++  (RVC2-02, RVC2-03). Exclusions appear in both the contract and the manifest
++  and agree. Expected results are labeled static-derived or extracted
++  execution per case and per computation; reference and candidate execution
++  have not run, and no compatibility is claimed.
++- In a copy outside the analyst checkout, every Markdown link resolves inside
++  the package, every case input exists, the 62 fixtures are distinct,
++  well-formed ASCII XML with LF endings, tab indentation and a final newline,
++  the sample equals the stated generated sine wave sample for sample, and every
++  listed hash and size matches. The fixtures were authored for these cases and
++  contain no shipped file content; all are suitable for sharing.
++
++## Rulings on the points raised for this review
++
++1. **Framing of REQ-015 to 018.** The value functions may be released, which
++   answers clip-launch-v1's removal of REQ-015: this release states functions
++   of explicit inputs, and the playback release, which owns launch timing,
++   consumes them. The candidate's wording did not keep that boundary. It
++   called them computations "that launching uses", named the rounded beat the
++   "press beat" and the function `launch-boundary`, called the global argument
++   the set's stored value and said that a Global clip "uses" the song's time
++   signature. A reader could take the boundary as the beat at which a pressed
++   clip starts, which the playback contract does not say in general. Narrowed
++   (RVC2-01): the contract, README, manifest and cases now name the rounded
++   beat `rounded_beat` and the function `grid-boundary`; they say that the
++   functions are not launch timing, that the boundary is not stated to be the
++   beat at which a launched clip starts or takes effect, and that a value case
++   is not a launch case. No computed value changed.
++2. **The Global clause of REQ-016.** In the parent draft that clause says which
++   grid a launch uses. The global value a launch takes rests there on an
++   assumption of the playback specification about the engine's copy of the
++   set's global quantization, so the draft's static label should name that
++   assumption. This package releases only what a clip's setting denotes for
++   explicit arguments. The reviewer re-read the program's clip-grid function in
++   the arm64 build: a clip value that reads as 0 gives the set's grid, the
++   set's own stored global quantization applied to the song's time signature;
++   any other value k gives grid k − 1 in the clip's own time signature. As a
++   function of explicit arguments the selection is therefore static-derived
++   without that assumption. Narrowed (RVC2-02): the argument list now says only
++   that the clip and global values are on the scale of the stored items, and
++   REQ-016, the exclusions and the manifest exclude which global value, time
++   signatures and grid a launch uses.
++3. **Follow times outside 0 to below 1,000,000.** The parent draft grades such a
++   follow time as held unchanged, from a run of the follow-time rounding alone.
++   A later step of opening, the clip's own completion step, was not traced and
++   could change or refuse such a value. Excluding the parent's case is upheld.
++   The candidate excluded the held value but not whether the document opens;
++   that is now excluded too (RVC2-03). The out-of-range chance cases do not
++   share the gap: under the structure contract's opening order the follow
++   action's correction completes first and leaves both chances in 0 to 100, so
++   the clip's later step sees values of the kind that the in-range assumption
++   already covers.
++4. **Older-version fixtures and the structure audit.** Upheld (RVC2-04). The
++   audit measures every document with `12.0_12402` names. For each `11.0_405`
++   fixture it therefore reports 16 or 17 undeclared elements, two automation
++   envelopes without a target (those of the old-named main track) and session
++   slots without scenes. Read directly, after the renames that conversion
++   makes (the old scene list becomes the scene list, each name-only scene's
++   name becomes its `Name`, and the old main track becomes the main track),
++   these fixtures satisfy every traced structure rule and have no shape with
++   an unknown outcome. The audit's advice to add a current-form scene list to
++   clip-launch-v1's `11.0_405` fixtures is wrong for that version: it declares
++   no such list, its scenes hold the name as `Value`, and its conversion treats
++   a scene that already has a `Name` as an error. CLIP-LAUNCH-041 and 042, the
++   migration cases of the parent draft, use these fixtures and are valid.
++5. **Extracted execution.** Re-run as described (RVC2-08), with every process
++   below the execution tool's call limit.
++
++Other rulings: the wider chance range (both −100 to 200 with |A + B| ≥ 1) is
++accepted; it keeps every computed quotient finite. The authored `11.0_405`
++form is accepted with its stated conversion assumption (RVC2-09). Removing the
++template's devices is accepted: no case uses them, and without them no fixture
++depends on the structure contract's untraced rule for device placement. The
++`RemoteableTimeSignature` element is accepted as document vocabulary.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RVC2-01 | Medium | The value functions of REQ-015 to 018 were worded as computations that launching uses, with a "press beat", a `launch-boundary` function, a "song position" argument and a case purpose saying a Global clip "uses" the song's time signature. They could be read as launch-timing claims, which belong to the separate playback release. | Narrowed: the rounded beat is `rounded_beat`, the function `grid-boundary`; the contract, README, `AGENTS.md`, manifest and four case purposes say that the functions are not launch timing, that the boundary is not stated to be a launch's start, and that a value case is not a launch case. The parent draft's launch cases are described as not released. No computed value changed. |
++| RVC2-02 | Low | The argument list called the global value "the set's stored `GlobalQuantisation`", which, read with REQ-016, could state which global value a launch uses; for a launch that rests on an assumption outside this release. | Narrowed: the clip and global values are values on the scale of the stored items; REQ-016, the exclusions and the manifest exclude which global value, time signatures and grid a launch uses. The selection itself is static-derived from the clip-grid function. No case affected. |
++| RVC2-03 | Low | For a follow time outside 0 to below 1,000,000 the contract excluded the value held, but not whether the document opens; a later opening step that could refuse such a value was not traced. | Narrowed: whether such a document opens is excluded in the contract, the README and the manifest. No case uses such a value. |
++| RVC2-04 | Info | The structure audit measures `11.0_405` documents with current names and reports false problems for them; its advice for clip-launch-v1's `11.0_405` fixtures is wrong. | Not a package defect. The fixtures were checked against their own format version and against the structure rules read directly. The audit tool should be corrected on the analyst side. |
++| RVC2-05 | Editorial | The README fixture change list omitted two additions: `HasStop` on each session slot and an empty device chain on each track. | Completed. The reviewer compared every carried fixture with its clip-launch-v1 fixture element by element; nothing else was added, removed or changed. |
++| RVC2-06 | Editorial | REQ-017 clause 4 ended with a verification note ("every grid line … that was checked") instead of a rule. | Restated as clause 5, for the grid lengths of q = 5 to 13 with anchor 0. It follows from clause 2, and the reviewer checked it for all 3,424 beats. |
++| RVC2-07 | Editorial | README, `AGENTS.md`, the contract, the cases and the manifest described an unreviewed candidate. | Status set to reviewed local release. This record was added and linked. The manifest review and status fields were filled and the inventory was re-hashed by the reviewer. |
++| RVC2-08 | Info | Evidence identity and re-execution. | The arm64 program image and the x86_64 build, the two execution-tool builds, the static evidence run, the extracted-execution run and every file it lists, the structure run, the shipped schemas of the three format versions and clip-launch-v1 match their recorded digests. The reviewer's own run used 63 processes of at most 58 calls each (tool limit 256): 57 grid lengths, 10 stored-value readings, 38 beat roundings, 54 boundaries, 17 chance corrections (CLIP-LAUNCH-029 to 036 and 051 to 059), 8 follow-time roundings and 41 text readings. Every text reads as its correctly rounded value, the text `-0` as negative zero, and the both-zero branch disables follow actions. With no grid and anchor 0, the boundary step itself also returns the rounded beat. |
++| RVC2-09 | Info | Conversion of the fixtures' other content from older versions is a stated assumption. | Accepted and partly checked: every conversion step above `12.0_12117` that applies to an element class in the fixtures was read, and none refuses or changes a judged item; for `11.0_405`, every step above 405 that can report an error or stop and that applies to an element class in the fixtures was read, and none fires for the fixtures' content. The other steps were not read in full, so the assumption stays stated. |
++
++## Corrections for the parent draft
++
++These do not change this package. The draft specification should be revised
++to:
++
++- name the playback specification's assumption about the engine's global value
++  beside REQ-016's Global clause, which states which grid a launch uses;
++- relabel REQ-011's out-of-range follow-time clause: the run shows the
++  follow-time rounding only, and the held value, and whether opening refuses
++  such a value, are unknown until the clip's own completion step is read; the
++  unknown clause about that step should name follow times as well;
++- name the fixture forms of its release cases: complete minimal sets, and the
++  authored `11.0_405` form;
++- keep the value functions of REQ-015 to 018 apart from launch timing in its
++  wording, as this release does.
++
++## Disposition
++
++**Approved with listed narrowing** (RVC2-01 to RVC2-03), only for the explicit
++partial clauses in the contract, with 100 cases. Expected results are
++static-derived or extracted execution, as labeled per case and per
++computation. Extracted execution ran the original program's x86_64 code on a
++Linux host; the arm64 build is inferred to behave the same. Neither reference
++nor candidate application cases have run, and no compatibility pass is claimed.
++Candidate-only checks cannot replace independent reference observations. An
++isolated implementation workspace remains a prerequisite.
++
++This release supersedes clip-launch-v1, which stays immutable and valid for its
++own clauses, but whose fixtures must not be used. This disposition concerns
++the local reviewed-handoff workflow; it does not authorize external
++publication. Preserve this release unchanged.
+diff -ruN -x fixtures clip-launch-v2/spec.md /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/spec.md
+--- clip-launch-v2/spec.md	2026-10-18 20:03:57.445151994 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/clip-launch-v2/spec.md	2026-10-18 22:56:58.902226656 -0700
+@@ -8,8 +8,9 @@
+ are in scope. No other clause of a listed requirement is implicitly approved.
+ This document is self-contained.
+ 
+-**Status: candidate, not reviewed.** This package is not an implementation
+-input until a separate review approves it and it is published.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the narrowing recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -27,11 +28,14 @@
+ - how follow actions in documents of two older format versions are converted;
+ - what form and values these items have when the document is saved.
+ 
+-It also states, as a **value contract**, four computations that launching
+-uses: the grid length a quantization value stands for in a given time
+-signature, the grid that a clip's stored setting denotes, a beat rounded to the
+-beat lattice, and the grid boundary at or after a beat. They are defined as
+-functions of explicit inputs (REQ-CLIP-LAUNCH-015 to 018).
++It also states four **value functions**, as a value contract
++(REQ-CLIP-LAUNCH-015 to 018): the grid length a quantization value stands for
++in a given time signature, the grid that a clip's stored setting denotes, a
++beat rounded to the beat lattice, and the grid boundary at or after a beat.
++They are functions of explicit inputs and nothing more. They are not launch
++timing: this release does not say which inputs a launch supplies, whether or
++how a launch uses the results, or at which beat or sample a launched clip
++starts.
+ 
+ It does not describe launching. That includes when a launched clip starts, the
+ sample at which a launch takes effect, which beat, anchor and grid a launch
+@@ -386,22 +390,25 @@
+    1 and 0 opens with `FollowTime` 4, `IsLinked` on, `FollowActionA` 4,
+    `FollowActionB` 0, chances 100 and 0 and `FollowActionEnabled` off.
+ 
+-## Launch grid values (value contract)
++## Quantization grid values (value contract)
+ 
+ REQ-CLIP-LAUNCH-015 to 018 define values as functions of explicit arguments.
+ In a Live Set the arguments correspond to these quantities:
+ 
+ - q: a value on the scale of `GlobalQuantisation` (REQ-CLIP-LAUNCH-005);
+-- clip value: a clip's stored `LaunchQuantisation`; global value: the set's
+-  stored `GlobalQuantisation`;
++- clip value: a value on the scale of a clip's `LaunchQuantisation`; global
++  value: a value on the scale of the set's `GlobalQuantisation`;
+ - the clip's time signature: the clip's own time signature, stored in the
+   clip's `TimeSignature` element; the song's time signature;
+-- beat: a song position in beats (quarter notes); grid: a grid length in
++- beat: a position in beats (quarter notes); grid: a grid length in
+   beats; anchor: a beat from which grid lines are counted.
+ 
+-How these arguments are obtained when a clip is launched, including reading
+-the clip and song time signatures, and how a launch uses the results, is not
+-part of this release. Every result is a binary64 number. A grid of 0 means no
++How these arguments are obtained when a clip is launched, including which
++global value and which clip and song time signatures a launch uses and how
++they are read, and whether and how a launch uses the results, are not part of
++this release. In particular, the boundary B is not stated to be the beat at
++which a launched clip starts or takes effect; that belongs to a separate
++playback release. Every result is a binary64 number. A grid of 0 means no
+ grid.
+ 
+ ### REQ-CLIP-LAUNCH-015 — grid length
+@@ -448,13 +455,18 @@
+ time signature; clip value 0 in a clip in 6/8 with global value 4 in a 4/4 song
+ gives 4; clip value 8 (1/4) gives 1 whatever the global value.
+ 
++These clauses state what a stored setting denotes for the given arguments.
++That a launch uses the set's stored `GlobalQuantisation`, the song's time
++signature at some moment or the clip's time signature is not part of this
++release.
++
+ ### REQ-CLIP-LAUNCH-017 — partial: beat rounding and boundary
+ 
+ Given a beat t (0 ≤ t < 1,000,000), a grid g > 0 that is a grid length of
+ REQ-CLIP-LAUNCH-015 and an anchor a with a > −1,000,000 and max(0, a) ≤ L(t),
+ where L is the rounding of REQ-CLIP-LAUNCH-013:
+ 
+-1. The **press beat** is p = L(t). Examples: 3.99 gives 3.990000104062604;
++1. The **rounded beat** is p = L(t). Examples: 3.99 gives 3.990000104062604;
+    4 − 10⁻⁹ and 4 + 10⁻⁹ give 4; 0.13 gives 0.12999994796869796; 4 plus one
+    lattice step (4.000000260156511) is kept.
+ 2. With a′ = max(0, a), the **boundary** is
+@@ -469,15 +481,15 @@
+    B is not always p when p lies exactly on a grid line: (p − a′) ÷ g can
+    exceed the whole number of lines by one rounding step, and B is then the
+    next line. With g nearest 2/3 and t the binary64 value nearest 10/3, B is 4;
+-   with g nearest 2/3 and t nearest 4/3, B is p. For every grid line up to
+-   beat 64 that was checked with anchor 0, a beat one lattice step
+-   (1/3,843,840) before or after the line gave the first line at or after the
+-   beat.
++   with g nearest 2/3 and t nearest 4/3, B is p.
++5. For the grid lengths of q = 5 to 13 with anchor 0, a beat one lattice step
++   (1/3,843,840) before or after any of their grid lines up to beat 64 gives
++   the first line at or after the beat.
+ 
+ ### REQ-CLIP-LAUNCH-018 — partial: boundary with no grid
+ 
+-With g = 0 (no grid) and t as in REQ-CLIP-LAUNCH-017, the boundary is the press
+-beat: B = p = L(t). The anchor plays no part.
++With g = 0 (no grid) and t as in REQ-CLIP-LAUNCH-017, the boundary is the
++rounded beat: B = p = L(t). The anchor plays no part.
+ 
+ ## Acceptance representation and comparison
+ 
+@@ -519,7 +531,7 @@
+ | --- | --- | --- |
+ | `grid-length` | `q`, `time_signature` [n, d] | `grid`: G(q, n/d) of REQ-CLIP-LAUNCH-015 |
+ | `clip-grid` | `clip_value`, `global_value`, `clip_time_signature` [n, d], `song_time_signature` [n, d] | `grid` of REQ-CLIP-LAUNCH-016 |
+-| `launch-boundary` | `beat`, `grid`, `anchor` | `press_beat` p and `boundary` B of REQ-CLIP-LAUNCH-017 and 018 |
++| `grid-boundary` | `beat`, `grid`, `anchor` | `rounded_beat` p and `boundary` B of REQ-CLIP-LAUNCH-017 and 018 |
+ 
+ Each computation is judged alone, from its arguments. Where a case chains two
+ computations, the later one's `grid` argument repeats the earlier result.
+@@ -548,9 +560,10 @@
+ 
+ **Value cases.** The original application shows these values only through
+ launch timing, which a separate playback release will specify and compare.
+-Their expectations come from the original program's own code, run on the
+-case's arguments, and are otherwise static-derived, not taken from a run of the
+-application.
++A value case is not a launch case, and agreement with the value cases shows
++nothing about launching. Their expectations come from the original program's
++own code, run on the case's arguments, and are otherwise static-derived, not
++taken from a run of the application.
+ 
+ None of this has been run.
+ 
+@@ -598,16 +611,18 @@
+ Excluded behavior:
+ 
+ - launch timing: when a launched clip starts, the sample at which a launch
+-  takes effect, which beat, anchor and grid a launch uses at run time, any
+-  delay before the boundary and any move to the next grid line, launches with
+-  the transport stopped, and the anchor after a time-signature change;
++  takes effect, which beat, anchor, global value, time signatures and grid a
++  launch uses at run time, whether a launch starts at the boundary of
++  REQ-CLIP-LAUNCH-017, any delay before the boundary and any move to the next
++  grid line, launches with the transport stopped, and the anchor after a
++  time-signature change;
+ - Gate, Toggle and Repeat press and release behavior, Legato, velocity scaling,
+   follow-action timing, loop iterations, jump indices and chance selection;
+ - displayed text, including whether the user interface shows exactly the
+   labels above and where each form of the follow-action labels is shown;
+ - the value held, displayed or written for an out-of-range launch mode,
+-  launch quantization or follow action, and the value held for a follow time
+-  outside 0 to below 1,000,000;
++  launch quantization or follow action; for a follow time outside 0 to below
++  1,000,000, whether the document opens and the value then held;
+ - the text written for numbers and Booleans, and whether a written number with
+   more than six significant digits reads back exactly; layout and indentation;
+   the save container and envelope; what is written for set-level items and
+@@ -632,8 +647,9 @@
+ `LaunchMode` and `LaunchQuantisation`, for the scripting interface, for a set
+ without `GlobalQuantisation` and `AutoQuantisation`, for a follow time below 0,
+ for the anchor after a time-signature change and for a launch with the
+-transport stopped. Its launch-timing cases are carried only as the beat values
+-of the value cases; the sample at which each launch takes effect is not.
++transport stopped. Its launch-timing cases are not released. Some value cases
++use the same beats and grids as arguments; they state the value functions
++only, not when or at which sample a launch takes effect.
+ 
+ Before claiming reference compatibility, run a separately designed bounded
+ probe for these cases or a justified equivalent set. Pin the original and
+@@ -682,4 +698,4 @@
+ 
+ Expected results are newly authored behavioral data. No public source or
+ dependency is approved or included. Review status is recorded in
+-[the manifest](manifest.json).
++[the manifest](manifest.json) and [the review disposition](REVIEW.md).
