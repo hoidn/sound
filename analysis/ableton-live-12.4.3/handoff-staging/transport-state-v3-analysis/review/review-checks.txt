@@ -1,0 +1,71 @@
+transport-state-v3 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B from any directory.
+Export copy: session scratchpad export/hd/transport-state-v3 (cp -a of the staging dir after all edits).
+
+Evidence identity. handoff/transport-state-v2/manifest.json SHA-256 398a88a6...24c17c8 = catalog = manifest
+supersession digest; all 38 files listed in the v2 manifest match. x2-transport-v1: all 14 files in its manifest match. Schema
+12.0_12402.txt SHA-256 b7c9d4c7...789d0f299. Draft manifest before review f3dffd74...9d0d (equals the plan page).
+
+Fixture validity (brief addendum). T11 checker, unchanged, on the exported fixtures:
+- schema_check.py, 33 fixtures (schema-check-v3-export.jsonl): player_tracks 1, freeze == main (0 == 0), no
+  holders, no pointees, NextPointeeId absent (reads 1 > 0), list Ids unique, main slots == scenes (0 == 0).
+  Deviations: "order LiveSet MainTrack" 33 (carried from v2), "unknown-element Transport Foo" 1 (TS-016, tested).
+- fixture_audit.py on a handoff-shaped dir holding only the export (t11-fixture-audit-export.json): 33 Live Sets,
+  0 refused, 0 contradicted, 0 not isolating, 0 unknown shapes.
+- Same checker on the released v2 fixtures (schema-check-v2-released.jsonl): player_tracks 0 in 33 of 33.
+- REQ-LIVE-SET-STRUCTURE-001 shapes, not evaluated by the T11 checker (review_checks.lss001): base-value (Type -4)
+  element without Value, repeated compound member, Tracks item of another class. Only TS-015 (duplicate
+  Transport/LoopOn, the tested refusal). Schema types: Transport/LoopOn..CurrentTime are Type 0 compounds (classes
+  LoopOn, LoopStart, LoopLength, CurrentTime) and Tempo/Manual, TimeSignature/Manual are Type 0 (RemoteableFloat,
+  RemoteableEnum), each with Value a Type -4 field written as an attribute. So <LoopLength /> (TS-012) and
+  <Manual /> (TS-014) are not the "<NextPointeeId />" refusal; transport-state-native "Missing, duplicated and
+  unknown items": the loader visits members present, constructor values stay. No conflict with REQ-TRANSPORT-STATE-007.
+- Isolation: each refused fixture differs from TS-022 in exactly one '+' line (the tested Transport child or Manual;
+  TS-015 the added LoopOn); TS-022 opens; own judge refuses each for its tested text only (refusal_reasons).
+
+Track insensitivity. Track block tags: Tracks, MidiTrack, Name, EffectiveName, UserName, Color, TrackGroupId,
+DeviceChain, AudioOutputRouting, Target, MainSequencer, FreezeSequencer, ClipSlotList; none of the six value paths,
+no Mixer, envelopes, clips, scenes. Schema: TrackDevice (track mixer) has no Tempo or TimeSignature field;
+MainTrackDevice has both. ATransport post-load only sets LoopEnd = LoopStart + LoopLength, no clamp
+(transport-state-native). Own judge: transport reading of v3 bytes == v2 bytes (structure off) for 33 of 33.
+Validation walk, ATimeable* +0x100 = 0x1026fc558 (vtable-owner.txt; arm64 corpus pseudocode read): for a timeable
+whose slot +0x200 returns non-null and +0x290 non-zero, and whose owner's +0x2b8 bit 0 is clear, it compares the
+Manual (+0x288 -> +0x210) with a value from the envelope (+0x410 ... +0x1f0) and, if they differ by 1e-12 or more
+(0x102777640), sets Manual to it (0x10156e6ec -> +0x220). For ATimeableSongTempo (vtable 0x1067fc550): +0x200 =
+0x1026f90d4 looks up the automation envelope of this target and returns 0 when none (0x102405658/0x102405164);
++0x290 = 0x1026f9240 returns 1. The fixtures hold no envelopes, so Manual is not changed. Not caused by the track.
+Bears on REQ-TRANSPORT-STATE-012 (unreleased): on open, a tempo Manual that disagrees with its envelope is
+replaced by the envelope's value (meaning of +0x2b8 and of the envelope value read not interpreted). Reported to
+the coordinator for the spec owner; nothing of it enters the payload.
+
+Expectations. review_checks.py (own restatement, independent of build_v3/build_v2/build_ts1) on the export
+(review-checks-export.json): 33 of 33 agree, no exclusion hit, contract examples (REQ-004/005/006/011) all pass.
+x_rederive.py (x-rederive.out): the retained X2 results cover the tested text of 26 cases; outcome, value read and
+saved text agree for all 26; mutation test of the own judge 33/33. Static re-reading for the cases not in the run:
+TS-011..014 constructor values 8/16/0/off and tempo 120 (transport-state-native); TS-015/016 add-member duplicate
+error and unknown-child skip (same page); TS-022 order: n1 registry-order-check.txt "identical order: True".
+
+Carry. 33 case records equal to v2 (dict and serialized text), same order. cases.json top level: scope and
+fixture_origin changed (status equals v2's after review). Manifest target, features, scopes, unreleased, dimensions,
+labels, assumptions, sources equal v2; one exclusion added (Tracks); behavior exclusions and parent cases equal.
+Each fixture = v2 bytes with spec.md's 21-line listing inserted after "  <LiveSet>" (33/33).
+
+Package (export). sha256sum -c of the 38 listed files: all OK (sha256sum-export.txt). Inventory equals the
+directory; no symlinks; links README 7, spec 9, REVIEW 2, AGENTS 0, all resolve inside the package; every case
+input exists. Fixtures ASCII, LF, final newline, no tabs, distinct. Own scan: log10 (REQ-011 notation), "probe"
+(comparison obligation), RV3 finding IDs; all benign. build_v3.py verify on the export (author-verify-after-review.json):
+no case, X, hash, inventory or link problem; mutations 33/33; deny-list hits are REVIEW.md links and the
+disposition's arm64/glibc/x86 wording (as in the v2 review record).
+
+Payload edits: apply_review_edits.py (README status, supersession, change 1; spec status, track rule, provenance;
+AGENTS status; cases status), REVIEW.md written, finalize_manifest.py (relationship, defect_corrected, status,
+release date, review fields, re-hash). Diff: payload-changes.diff.
+Final manifest SHA-256: 2cd4320ac3e6cefab257d8f8ab6bc627284c87ca4b0b7c06e5ea22ae172d329d.
+
+For the spec owner (outside this package): (1) the plan's F6 holds (SPEC-TRANSPORT-STATE acceptance cases call
+the fixtures B0 edits; its handoff section must name v3); (2) the catalog defect note, the plan page and
+SPEC-LIVE-SET-STRUCTURE's open-questions wording say "no audio or MIDI track"; the derived rule is "no audio, MIDI
+or group track" (RV3-01); (3) the timeable walk step above is new evidence for REQ-TRANSPORT-STATE-012;
+(4) a cross-reference between SPEC-LIVE-SET-STRUCTURE REQ-001's Value-less base element refusal and
+REQ-TRANSPORT-STATE-007 would prevent misreading.
+Not copied to handoff/; plan page, spec pages, indexes, coverage and log untouched; no git operation.

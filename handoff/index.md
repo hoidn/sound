@@ -29,8 +29,8 @@ still required.
 
 > **Known fixture defect (found 2026-10-18).**
 > [SPEC-LIVE-SET-STRUCTURE](../wiki/specs/live-set-structure.md) shows that opening a
-> Live Set always runs a validation walk. That walk refuses a set with no audio or
-> MIDI track, and a track with clip slots but no freeze sequencer. Under that rule,
+> Live Set always runs a validation walk. That walk refuses a set with no audio,
+> MIDI or group track, and a track with clip slots but no freeze sequencer. Under that rule,
 > fixtures in six releases would be refused, although their cases expect them to
 > open. The six are transport-state-v1 and v2, automation-envelopes-v1,
 > clip-launch-v1, midi-note-storage-v1 and warp-markers-v1: 204 fixtures and 178
@@ -56,6 +56,7 @@ still required.
 | [warp-markers-v1](warp-markers-v1/README.md) | Warp markers in Live Sets: marker storage, the shadow marker, enumerations, setting domains and scripting edit limits; no playback mapping or saved values | SPEC-WARP-MARKERS r1, partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased | [Approved with narrowing](warp-markers-v1/REVIEW.md) | `f8546a3e95788074a2cf1cd99564637b8689af853db705fd9beba1af1764ef46` | None |
 | [transport-state-v2](transport-state-v2/README.md) | Live Set transport values as in v1, with the corrected number-text rule next to powers of ten, negative zero, integer and number text acceptance, and time-signature codes; new cases from extracted execution of the original x86_64 code | SPEC-TRANSPORT-STATE r3, partial REQ-001 to 008, 010, 011 only; 009 and 012 unreleased | [Approved with listed clarifications](transport-state-v2/REVIEW.md) | `398a88a62114552595830f99ba2fc1bc4d8c0e1f0d2ae65a70d21aa2324c17c8` | transport-state-v1 (corrects REQ-011; carries its 18 cases byte-identical) |
 | [midi-config-v4](midi-config-v4/README.md) | Configuration interpretation as in v3, plus Pick-Up and Value Scaling takeover, reversed ranges, the first 14-bit pair and a range-relative value tolerance; new cases from extracted execution of the original x86_64 code | SPEC-MIDI-USER-MAPPING r5, partial REQ-002/003/005–013 only; 001 and 004 unreleased | [Approved with narrowing](midi-config-v4/REVIEW.md) | `0911e9b57730b9d41c143cd18a5bacc80d8439ce51b202201820bef9ff8cef65` | midi-config-v3 (superset with two precision corrections) |
+| [transport-state-v3](transport-state-v3/README.md) | Live Set transport values as in v2, with every fixture made openable (a MIDI track added); no expectation changed | SPEC-TRANSPORT-STATE r4, partial REQ-001 to 008, 010, 011 only; 009 and 012 unreleased | [Approved with listed clarifications](transport-state-v3/REVIEW.md) | `2cd4320ac3e6cefab257d8f8ab6bc627284c87ca4b0b7c06e5ea22ae172d329d` | transport-state-v2 (corrects the fixture defect; carries all 33 cases) |
 
 ## Release contract
 

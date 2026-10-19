@@ -1,0 +1,247 @@
+--- transport-state-v2/README.md
++++ transport-state-v3/README.md
+@@ -1,13 +1,11 @@
+-# Transport state in Live Set documents, release 2
++# Transport state in Live Set documents, release 3
+ 
+-**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
+-[role instructions](AGENTS.md), [the manifest](manifest.json) and
+-[the review disposition](REVIEW.md). The stated partial scope, with the
+-clarifications recorded in the review, is approved as a contract for a fresh,
+-restricted implementation workspace. Such a workspace has not been provisioned
+-by this release.
++**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
++[cases](cases.json), [role instructions](AGENTS.md) and
++[the manifest](manifest.json). This package is not an implementation input until
++a separate review approves it and it is published.
+ 
+-The finite scope is the same as in transport-state-v1. It covers how the decoded
++The finite scope is the same as in transport-state-v2. It covers how the decoded
+ XML of one Live Set format version stores six values: the arrangement loop
+ switch, loop start, loop length, playback position, tempo and time-signature
+ code. For each it states where the value is, which text is accepted or refused
+@@ -26,47 +24,51 @@
+ 
+ ## Supersession
+ 
+-This release supersedes transport-state-v1. transport-state-v1
+-stays immutable. It remains valid for its own scope, but its REQ-011 rule should
+-not be reused outside that scope (change 1). Its 18 cases keep their IDs,
+-records and fixture bytes, and 15 cases are new, for 33 in total.
+-[The manifest](manifest.json) records the relationship and the superseded
+-manifest digest.
++When published, this release supersedes transport-state-v2, which stays
++immutable. Its clauses, case records and expectations are carried unchanged,
++but its fixtures must not be used to judge that a document opens (change 1).
++All 33 cases keep their IDs and records, and every fixture changes (change 2).
++[The manifest](manifest.json) records the relationship, the superseded
++manifest digest and the fixture changes.
+ 
+-## Changes from transport-state-v1
++## Changes from transport-state-v2
+ 
+-1. **REQ-011 step 1 corrected.** transport-state-v1 takes k from the exact
+-   base-10 logarithm. The original program takes it from its binary64
+-   logarithm, stated here as the logarithm rounded to the nearest binary64 value
+-   outside the band of change 5. The two differ only for binary64 values just above
+-   a power of ten 10ⁿ (n ≥ 1) or just below 10⁻ⁿ, for example 1000.0000000000001
+-   and 0.000001. transport-state-v1 gave no expectation for those values, so none
+-   of its cases is affected. The rule is now stated exactly. TS-024 to TS-027 are
+-   new cases.
+-2. **Negative zero.** REQ-011 writes negative zero as `-0`, and REQ-004 reads
+-   `-0` as negative zero. The transport-state-v1 exclusion of negative zero is
+-   removed. TS-028 is new.
+-3. **Time-signature text (REQ-006).** The rule is restated as five conditions:
+-   sign, spaces, length and range. Spellings that transport-state-v1 excluded are
+-   now decided: spaces on both sides, a `+` with trailing spaces, a `-` sign, and
+-   text longer than 63 characters that ends in a space. TS-010 and TS-029 to
+-   TS-033 are new. An accepted code outside 0 to 494 still has no expectation.
+-   transport-state-v1 gave no expectation for opening a document whose code is
+-   not 201; TS-030 now judges only that a document with code 0 (text `-0`)
+-   opens. Whether a code other than 201 takes effect stays excluded.
+-4. **`#` forms (REQ-004, REQ-005).** The `#` form with exactly 16 (tempo: 8)
+-   hexadecimal digits of either case reads as raw bits, most significant digit
+-   first. Other text starting with `#` is refused. That exclusion is removed.
+-   TS-034 to TS-037 are new; TS-034 and TS-035 exercise the existing sign and
+-   space reading.
+-5. **Exclusions.** The exclusion near integer logarithms is narrowed. Values
+-   whose logarithm lies within 1e-12 of an integer are no longer excluded; only
+-   values whose logarithm lies between 1/4 and 3/4 of a binary64 gap from an
+-   integer have no expectation. Accepted time-signature codes outside 0 to 494,
+-   which transport-state-v1 left without expectation through its value ranges,
+-   are now also listed as an exclusion.
+-6. **Provenance.** The extracted-execution label is new. Every new case carries
+-   it. Carried cases keep their records and the static-derived label. The
+-   contract states the assumptions the extracted-execution cases rest on.
+-7. **Unchanged.** Every other clause, case and fixture of transport-state-v1 is
+-   carried unchanged.
++1. **Defect corrected: the fixtures had no track.** Opening a Live Set checks
++   its track list, and a set whose `Tracks` element is absent or holds no audio
++   or MIDI track is not opened (static-derived). No transport-state-v2 fixture
++   has a `Tracks` element. So the 23 cases that expect a document to open
++   (TS-001 to 003, 006, 008, 011 to 014, 016, 020 to 022, 024 to 028, 030, 032,
++   034, 036 and 037) could not hold for those files. The 10 cases that expect a
++   refusal (TS-004, 005, 007, 009, 010, 015, 029, 031, 033 and 035) were refused
++   for that reason as well as for the text they test, so they did not isolate
++   it. transport-state-v2 stated that the absence of other Live Set content must
++   not by itself change a judged outcome; for the track list that was wrong.
++   The 18 transport-state-v1 fixtures, which transport-state-v2 carried byte for
++   byte, have the same defect.
++2. **Fixture change, all 33 fixtures.** Each of `fixtures/TS-001.xml` to
++   `TS-016.xml`, `TS-020.xml` to `TS-022.xml` and `TS-024.xml` to `TS-037.xml`
++   is the transport-state-v2 file of the same name with 21 lines inserted
++   directly after the `<LiveSet>` start tag. The lines are the `Tracks` element
++   shown in [the preconditions](spec.md#document-scope-and-preconditions): one
++   MIDI track with fixed values and empty session and freeze clip lists. No
++   line of a transport-state-v2 fixture is changed, removed or reordered. The
++   fixtures remain ASCII with LF endings and no tabs.
++3. **Expectations re-checked; none changed.** With the track, each of the 23
++   documents opens and reads the same transport values as before, and the saved
++   values judged are unaffected: the track is a separate part of the document
++   and none of the judged paths lies inside it. Each of the 10 refused
++   documents differs from the unchanged document of TS-022, which opens, only in
++   the tested `Transport` child or `Manual` element.
++4. **Preconditions and exclusions.** The precondition on missing content now
++   names the track list. A document whose `Tracks` element is absent or holds no
++   audio or MIDI track, and track content other than the fixtures' one MIDI
++   track, are added to the inputs with no expectation.
++5. **Parent revision.** The parent is SPEC-TRANSPORT-STATE revision 4.
++   Revision 4 states the clarifications recorded in the transport-state-v2
++   review, which that release already carries: the REQ-011 band without
++   expectation, the logarithm-accuracy assumption, and the library dependence
++   of reading `-0` and of the save text. It settles no clause beyond
++   transport-state-v2, so no clause or case is added.
++6. **Unchanged.** Every requirement clause, case record, expectation,
++   provenance label, stated assumption and other exclusion of
++   transport-state-v2 is carried unchanged.
+--- transport-state-v2/AGENTS.md
++++ transport-state-v3/AGENTS.md
+@@ -1,9 +1,10 @@
+ # Package role and access instructions
+ 
+-This is a reviewed local release for its explicit partial scope. Application
+-implementation requires a fresh, restricted implementation workspace containing
+-only permitted materials. Publication of this package does not provision one.
+-Do not begin clean implementation in an analyst checkout.
++This is a staged, unreviewed handoff candidate. It is not an implementation
++input. Only a release that a separate review approved and published may be used
++for implementation, in a fresh, restricted implementation workspace containing
++only permitted materials. Do not begin clean implementation in an analyst
++checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -17,7 +18,7 @@
+ structure is specified. A candidate adapter may expose the comparison labels;
+ this does not impose an internal architecture.
+ 
+-Preserve this release unchanged. Do not extend unknown or excluded behavior.
++Preserve this package unchanged. Do not extend unknown or excluded behavior.
+ Request a reviewed revision for gaps. Record candidate-only tests separately
+ from reference comparisons, with exact package and candidate hashes. Nothing
+ here authorizes package installation, network publication or messages.
+--- transport-state-v2/spec.md
++++ transport-state-v3/spec.md
+@@ -1,15 +1,14 @@
+-# Transport state in Live Set documents — release 2
++# Transport state in Live Set documents — release 3
+ 
+ Target: Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS.
+ Features: FEAT-TRANSPORT with FEAT-PERSISTENCE. Parent specification identity:
+-SPEC-TRANSPORT-STATE revision 3. Release: transport-state-v2, which supersedes
+-transport-state-v1 ([README](README.md#supersession)). Only the clauses
+-explicitly included below are in scope. No other clause of a listed requirement
+-is implicitly approved. This document is self-contained.
+-
+-**Status: reviewed local release.** A separate review approved the clauses
+-below with the clarifications recorded in [the review disposition](REVIEW.md).
+-Implementation requires a fresh, restricted implementation workspace.
++SPEC-TRANSPORT-STATE revision 4. Release: transport-state-v3, which supersedes
++transport-state-v2 with corrected fixtures ([README](README.md#supersession)).
++Only the clauses explicitly included below are in scope. No other clause of a
++listed requirement is implicitly approved. This document is self-contained.
++
++**Status: staged candidate; not reviewed; not released.** Do not implement from
++it. A separate review must approve it first.
+ 
+ ## What the contract means
+ 
+@@ -64,9 +63,41 @@
+   afterwards, are excluded.
+ - Numbers use `.` as the decimal separator. Expectations assume a host locale
+   whose decimal separator is `.`; locale-dependent behavior is excluded.
+-- A full Live Set contains much more than the fixtures (tracks, devices, scenes,
+-  automation and other state). That content is outside this release. Its absence
+-  from a fixture must not by itself change a judged outcome.
++- Every fixture's `LiveSet` element starts with this track list, one MIDI track
++  whose session and freeze clip lists are empty:
++
++  ```xml
++  <Tracks>
++    <MidiTrack Id="1">
++      <Name>
++        <EffectiveName Value="1-MIDI" />
++        <UserName Value="" />
++      </Name>
++      <Color Value="15" />
++      <TrackGroupId Value="-1" />
++      <DeviceChain>
++        <AudioOutputRouting>
++          <Target Value="AudioOut/Main" />
++        </AudioOutputRouting>
++        <MainSequencer>
++          <ClipSlotList />
++        </MainSequencer>
++        <FreezeSequencer>
++          <ClipSlotList />
++        </FreezeSequencer>
++      </DeviceChain>
++    </MidiTrack>
++  </Tracks>
++  ```
++
++  A Live Set whose `Tracks` element is absent or holds no audio or MIDI track is
++  not opened (static-derived). That check, and every other rule for tracks, is
++  not part of this release; the track is present so that the documents can open.
++  Its values are fixed and not interpreted, and no case judges it.
++- A full Live Set contains much more than the fixtures (more tracks, devices,
++  clips, scenes, automation and other state). That content is outside this
++  release. Apart from the track list above, its absence from a fixture must not
++  by itself change a judged outcome.
+ - Expectations exist only for values in these ranges: loop start and position
+   from 0 to below 1,000,000; loop length from 1 to below 1,000,000; tempo from
+   20 to 999; time-signature codes from 0 to 494. Negative zero counts as zero
+@@ -294,6 +325,8 @@
+ - accepted time-signature codes outside 0 to 494;
+ - a missing `TimeSignature/Manual` element or value; a missing `Transport`,
+   `Tempo`, `TimeSignature`, `Mixer`, `DeviceChain` or `MainTrack` element;
++- a `Tracks` element that is absent or holds no `AudioTrack` or `MidiTrack`;
++  track content other than the fixtures' one MIDI track;
+ - an unknown attribute on any element this release reads; repeated unknown
+   children;
+ - `LoopIsSongStart` with any text other than `false` (every fixture sets
+@@ -321,12 +354,15 @@
+ ## Fixture provenance
+ 
+ All 33 fixtures are minimal XML documents independently authored for these
+-cases. The 18 carried from transport-state-v1 are byte-identical to that release.
+-They use public document element names and simple values and contain no shipped
+-file content, program code or assets. The six `Transport` children outside the
+-release carry fixed values (`PhaseNudgeTempo` 10, `MetronomeTickDuration` 0,
+-the others `false`) only to give the element its usual shape; they are not
+-interpreted. Expected results are newly authored behavioral data, labeled per
+-case as static-derived or extracted execution. No public source or dependency is
+-approved or included. Review status is recorded in [the manifest](manifest.json) and
+-[the review disposition](REVIEW.md).
++cases. Each is the transport-state-v2 fixture of the same name with the track
++list of [the preconditions](#document-scope-and-preconditions) inserted directly
++after the `<LiveSet>` start tag; no other line differs. They use public document
++element names and simple values and contain no shipped file content, program
++code or assets. The six `Transport` children outside the release carry fixed
++values (`PhaseNudgeTempo` 10, `MetronomeTickDuration` 0, the others `false`)
++only to give the element its usual shape; they are not interpreted. The same
++holds for the track's values (Id 1, name `1-MIDI`, colour 15, no group, output
++to the main track). Expected results are newly authored behavioral data, labeled
++per case as static-derived or extracted execution. No public source or
++dependency is approved or included. Review status is recorded in
++[the manifest](manifest.json); this candidate has no review record yet.

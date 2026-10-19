@@ -1,0 +1,339 @@
+diff -ruN export-pre/hd/transport-state-v3/AGENTS.md export/hd/transport-state-v3/AGENTS.md
+--- export-pre/hd/transport-state-v3/AGENTS.md	2026-10-18 19:34:28.232822675 -0700
++++ export/hd/transport-state-v3/AGENTS.md	2026-10-18 19:50:41.248184680 -0700
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This is a staged, unreviewed handoff candidate. It is not an implementation
+-input. Only a release that a separate review approved and published may be used
+-for implementation, in a fresh, restricted implementation workspace containing
+-only permitted materials. Do not begin clean implementation in an analyst
+-checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace containing
++only permitted materials. Publication of this package does not provision one.
++Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+@@ -18,7 +17,7 @@
+ structure is specified. A candidate adapter may expose the comparison labels;
+ this does not impose an internal architecture.
+ 
+-Preserve this package unchanged. Do not extend unknown or excluded behavior.
++Preserve this release unchanged. Do not extend unknown or excluded behavior.
+ Request a reviewed revision for gaps. Record candidate-only tests separately
+ from reference comparisons, with exact package and candidate hashes. Nothing
+ here authorizes package installation, network publication or messages.
+diff -ruN export-pre/hd/transport-state-v3/cases.json export/hd/transport-state-v3/cases.json
+--- export-pre/hd/transport-state-v3/cases.json	2026-10-18 19:37:13.608571060 -0700
++++ export/hd/transport-state-v3/cases.json	2026-10-18 19:50:41.248424137 -0700
+@@ -2,7 +2,7 @@
+  "schema": "transport-state-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "scope": "transport-state-v3 partial requirement clauses only (see spec.md)",
+- "status": "staged candidate; not reviewed; not released",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal XML documents, each with one fixed MIDI track; no shipped file copied or excerpted",
+  "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+  "representation": {
+diff -ruN export-pre/hd/transport-state-v3/manifest.json export/hd/transport-state-v3/manifest.json
+--- export-pre/hd/transport-state-v3/manifest.json	2026-10-18 19:37:13.774028752 -0700
++++ export/hd/transport-state-v3/manifest.json	2026-10-18 19:52:35.315547643 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "transport-state-v3",
+- "release_status": "staged candidate; not reviewed; not released",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+  "specification": {
+   "id": "SPEC-TRANSPORT-STATE",
+@@ -76,19 +76,28 @@
+  "fixture_origin": "independently authored minimal XML documents, each with one fixed MIDI track, and expected logical results",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RV3-01 low: the track rule was stated as no audio or MIDI track; the derived rule is no audio, MIDI or group track; restated in spec.md, README change 1 and defect_corrected; no case affected",
++   "RV3-02 low: the supersession covered only opening; the refused transport-state-v2 fixtures do not isolate their tested text; README and relationship now say its fixtures judge no case",
++   "RV3-03 editorial: payload status set to reviewed release; review record added",
++   "RV3-04 info: all 33 fixtures pass the structural checker; each refused fixture fails only for its tested text",
++   "RV3-05 info: the added track changes no transport expectation",
++   "RV3-06 info: opening without the omitted set members rests on static-derived evidence; accepted"
++  ],
++  "disposition": "Approved with listed clarifications, only for the explicit partial clauses; case records and expectations carried from transport-state-v2; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "transport-state-v2",
+  "supersession": {
+-  "relationship": "corrective: the same clauses, case records and expectations as transport-state-v2, on fixtures that can open; transport-state-v2 stays immutable, but its fixtures (and the 18 transport-state-v1 fixtures it carried) must not be used to judge that a document opens",
++  "relationship": "corrective: the same clauses, case records and expectations as transport-state-v2, on fixtures that can open; transport-state-v2 stays immutable, but its fixtures (and the 18 transport-state-v1 fixtures it carried) must not be used to judge any case: those expected to open cannot, and the refused ones do not isolate the tested text",
+   "superseded_manifest_sha256": "398a88a62114552595830f99ba2fc1bc4d8c0e1f0d2ae65a70d21aa2324c17c8",
+   "restated_cases": "all 33 case records (TS-001 to 016, TS-020 to 022 and TS-024 to 037) identical to transport-state-v2; every fixture changed as in fixture_changes",
+-  "defect_corrected": "no transport-state-v2 fixture has a track list; a Live Set whose track list holds no audio or MIDI track is not opened (static-derived), so the 23 cases expecting a document to open could not hold and the 10 refused cases were also refused for that reason; the v2 precondition that missing set content must not change a judged outcome was wrong for the track list",
++  "defect_corrected": "no transport-state-v2 fixture has a track list; a Live Set whose track list is absent or holds no audio, MIDI or group track is not opened (static-derived), so the 23 cases expecting a document to open could not hold and the 10 refused cases were also refused for that reason; the v2 precondition that missing set content must not change a judged outcome was wrong for the track list",
+   "fixture_changes": {
+    "fixtures": [
+     "fixtures/TS-001.xml",
+@@ -143,18 +152,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "31b81024a6cce2409dff83668bbb0fddc728d88cc1368d1ba643756cde6a5860",
+-   "bytes": 1360
++   "sha256": "313e056ec5f13481dba4cfdd5a3e7d044cda5821007b65a805d9503af4fdac83",
++   "bytes": 1334
+   },
+   {
+    "path": "README.md",
+-   "sha256": "4e806a9590e311a817280b4951626be6b4fafda834c0e49c8f2b6af448424500",
+-   "bytes": 4662
++   "sha256": "dbe7a641995f158b0861ca8ddc20aa7f86b7eb583dac02f1e3773e0914c9a148",
++   "bytes": 4858
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "ac84fc70a49811435081b6646fad3e7d9b621dcb2ffb48c99437eff9d931a632",
++   "bytes": 8592
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "43b1fca520057de2582e8ceac40d088bd0688eaf5ca37e5c31b7b023b9174464",
+-   "bytes": 22278
++   "sha256": "ddf30f65c8997b8e8f54c057e60073d7cef5a53c0b49d8a12a80d3a00715395d",
++   "bytes": 22251
+   },
+   {
+    "path": "fixtures/TS-001.xml",
+@@ -323,8 +337,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "021f153da74dd511c5fa1a620ef49b18c938c77af28bde6f4b7f68cb0fc87cc1",
+-   "bytes": 20437
++   "sha256": "d74c7b8693b04b40aa7aba9d54bf763db98a6498be32eadbfca03742232acae1",
++   "bytes": 20548
+   }
+  ]
+ }
+diff -ruN export-pre/hd/transport-state-v3/README.md export/hd/transport-state-v3/README.md
+--- export-pre/hd/transport-state-v3/README.md	2026-10-18 19:34:42.228624233 -0700
++++ export/hd/transport-state-v3/README.md	2026-10-18 19:50:41.247443601 -0700
+@@ -1,9 +1,11 @@
+ # Transport state in Live Set documents, release 3
+ 
+-**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
+-[cases](cases.json), [role instructions](AGENTS.md) and
+-[the manifest](manifest.json). This package is not an implementation input until
+-a separate review approves it and it is published.
++**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
++[role instructions](AGENTS.md), [the manifest](manifest.json) and
++[the review disposition](REVIEW.md). The stated partial scope, with the
++clarifications recorded in the review, is approved as a contract for a fresh,
++restricted implementation workspace. Such a workspace has not been provisioned
++by this release.
+ 
+ The finite scope is the same as in transport-state-v2. It covers how the decoded
+ XML of one Live Set format version stores six values: the arrangement loop
+@@ -24,9 +26,10 @@
+ 
+ ## Supersession
+ 
+-When published, this release supersedes transport-state-v2, which stays
+-immutable. Its clauses, case records and expectations are carried unchanged,
+-but its fixtures must not be used to judge that a document opens (change 1).
++This release supersedes transport-state-v2, which stays immutable. Its
++clauses, case records and expectations are carried unchanged, but its fixtures
++must not be used to judge any case: the documents expected to open cannot, and
++the refused ones do not isolate the text they test (change 1).
+ All 33 cases keep their IDs and records, and every fixture changes (change 2).
+ [The manifest](manifest.json) records the relationship, the superseded
+ manifest digest and the fixture changes.
+@@ -34,8 +37,8 @@
+ ## Changes from transport-state-v2
+ 
+ 1. **Defect corrected: the fixtures had no track.** Opening a Live Set checks
+-   its track list, and a set whose `Tracks` element is absent or holds no audio
+-   or MIDI track is not opened (static-derived). No transport-state-v2 fixture
++   its track list, and a set whose `Tracks` element is absent or holds no audio,
++   MIDI or group track is not opened (static-derived). No transport-state-v2 fixture
+    has a `Tracks` element. So the 23 cases that expect a document to open
+    (TS-001 to 003, 006, 008, 011 to 014, 016, 020 to 022, 024 to 028, 030, 032,
+    034, 036 and 037) could not hold for those files. The 10 cases that expect a
+diff -ruN export-pre/hd/transport-state-v3/REVIEW.md export/hd/transport-state-v3/REVIEW.md
+--- export-pre/hd/transport-state-v3/REVIEW.md	1969-12-31 16:00:00.000000000 -0800
++++ export/hd/transport-state-v3/REVIEW.md	2026-10-18 19:52:35.274380238 -0700
+@@ -0,0 +1,123 @@
++# Review disposition
++
++Release: transport-state-v3, 2026-10-18.
++
++Reviewer: separate review agent (Claude Opus 5.5), launched by the
++coordinator in its own handoff-review context. It did not author this candidate
++and will not implement it. The one reviewer performed the scope and evidence,
++supersession, fixture-validity, quality and sanitization, evidence-identity and
++fixture-sharing checks. Publication metadata outside this package is left to
++the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of REQ-TRANSPORT-STATE-001
++to 008, 010 and 011 in [the contract](spec.md). REQ-TRANSPORT-STATE-009 and 012
++remain unreleased.
++
++- Supersession. The transport-state-v2 manifest digest equals the catalog value
++  and the superseded digest recorded here, and every file it lists still
++  matches. All 33 case records are equal to transport-state-v2's, in the same
++  order and with the same serialized text. Requirement scopes, provenance
++  labels, stated assumptions and the other exclusions are unchanged. The only
++  added exclusion is the track list one. Apart from titles and status lines,
++  the changed text is the track-list precondition, the fixture provenance and
++  the change list. The parent revision states only clarifications that
++  transport-state-v2 already carries. No clause or case is added.
++- Fixture change. Each of the 33 fixtures equals the transport-state-v2 file
++  of the same name with the 21 lines of the track list in
++  [the preconditions](spec.md#document-scope-and-preconditions) inserted after
++  the `<LiveSet>` start tag. The lines were taken from the contract's own
++  listing. No other byte differs. The track list is the first `LiveSet` child
++  in all 33.
++- Fixture validity. The analysts' structural checker for Live Sets was run on an
++  exported copy of every fixture. It finds no structural refusal and no shape
++  of unknown outcome in any of the 33. The transport-state-v2 fixtures are all
++  refused, for the missing track. The only schema deviations are carried from
++  transport-state-v2: `MainTrack` after `Transport`, which does not change what
++  is read, and the unknown `Foo` that TS-016 tests. The reviewer's own check
++  covered the shape refusals that checker does not evaluate: a base value
++  element without `Value`, a repeated member, and a track of an unaccepted
++  class. Only TS-015's tested duplicate `LoopOn` was found. The value-less
++  elements of TS-012 and TS-014 are not base-value elements. Their `Value` is
++  an attribute that may be absent, and the field keeps its new-document value,
++  as REQ-007 states.
++- Refusal isolation. Each of the 10 refused fixtures differs from TS-022 in
++  exactly one line, the tested `Transport` child or `Manual`. TS-022 opens. The
++  reviewer's restatement refuses each of the 10 only for its tested text, or
++  for TS-015 the duplicate.
++- Track and transport values. The track list holds no element of the six
++  value paths. The track has no mixer, clips, scenes, automation or devices,
++  and the document format gives a track's mixer no tempo or time-signature
++  field. Every judged path is anchored at `LiveSet` and does not pass through
++  `Tracks`. On open, the loop end is derived from start and length with no
++  clamp, and none of the traced open steps reads the track list into a
++  transport value. The fixtures hold no automation envelopes, so no step that
++  reconciles a stored value with its automation applies; REQ-012 stays
++  excluded. The added track therefore changes no expectation.
++- Expectations. The reviewer's own executable restatement of the contract
++  agrees with all 33 expected outputs and with the worked examples of REQ-004,
++  005, 006 and 011. A mutation of any expectation is caught (33 of 33). No
++  fixture falls under an exclusion. The retained extracted-execution results
++  match their recorded digests. They cover the tested text of 26 cases, and
++  every result agrees with the case: refusal, value read and saved text. For
++  TS-011 to 016 and TS-022 the static evidence was re-read: the new-document
++  values, the duplicate and unknown-child rules, and the saved order of the
++  known `Transport` children. The author's cross-check was not relied on.
++- Sanitization was checked by the reviewer's own scan of every payload file.
++  No source code, recovered program text, internal identifiers, addresses,
++  analyst paths, private evidence links, planning identifiers or per-case
++  evidence fields are present. The only flagged words are `log10` in the
++  REQ-011 notation and the word "probe" in the comparison obligation, both
++  carried from transport-state-v2.
++- Scope. No runtime, timing, display or audio result is released. No
++  expectation depends on an open question. Exclusions appear in both the
++  contract and the manifest and agree. Reference and candidate execution have
++  not run, and no compatibility is claimed.
++- In a copy outside the analyst checkout, every Markdown link resolves inside
++  the package, every case input exists, and every listed hash and size matches.
++  The 33 fixtures are distinct, well-formed XML, ASCII with LF endings and a
++  final newline, with no tabs. They contain no shipped file content.
++
++## Scope rulings
++
++- Minimal addition. The fixtures add the track list only. They still omit
++  scenes, the cue track, `NextPointeeId`, the groove pool, quantization and
++  view state. Opening without them rests on static-derived evidence: an absent
++  member keeps its new-document value and is not an error, and no structural
++  check run on open requires them. A complete set would add scene tempo and
++  time-signature fields, which bear on the excluded REQ-012, so the minimal
++  addition is preferred.
++- The track list is inserted as the first `LiveSet` child, its schema position.
++  The carried order deviation of `MainTrack` is kept, because order does not
++  change what is read and fixing it is not a validity change.
++- The transport-state-v1 fixtures have the same defect. That release is already
++  superseded and stays immutable. The README and manifest record it.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RV3-01 | Low | The contract, README change 1 and the manifest said that a set with no audio or MIDI track is not opened (static-derived). The derived rule is narrower: no audio, MIDI or group track. A set holding only group tracks is refused by other grouping rules or has no derived outcome. | Restated as derived in the contract, README change 1 and the manifest. Such sets were already among the inputs without expectation. No case affected. |
++| RV3-02 | Low | The supersession said only that transport-state-v2's fixtures must not judge whether a document opens. Its 10 refused fixtures also fail to isolate their tested text, so a candidate that misses the text rule still passes them. | README and manifest now say that those fixtures must not be used to judge any case. |
++| RV3-03 | Editorial | README, AGENTS, contract, cases and manifest described an unreviewed candidate. | Status set to reviewed local release. This record added and linked. Manifest review and status fields filled; inventory re-hashed by the reviewer. |
++| RV3-04 | Info | Fixture validity. | All 33 fixtures pass the structural checker. Each refused fixture fails only for its tested text, as described above. |
++| RV3-05 | Info | The added track and the transport values. | No interaction found, as described above. No expectation changed. |
++| RV3-06 | Info | Opening still rests on static-derived evidence for the omitted members, including a set with no scenes and empty clip lists. | Accepted, as described under scope rulings. |
++
++## Disposition
++
++**Approved with listed clarifications** (RV3-01 and RV3-02), only for the
++explicit partial clauses in the contract. Every case record and expectation is
++transport-state-v2's. Expected results are static-derived or extracted
++execution, as labeled per case. Extracted execution ran the original program's
++x86_64 code with glibc in place of the macOS libraries. The arm64 build is
++inferred to behave the same. Opening and saving are static-derived. Neither
++reference nor candidate application cases have run, and no compatibility pass
++is claimed. Candidate-only checks cannot replace independent reference
++observations. An isolated implementation workspace remains a prerequisite.
++
++This release supersedes transport-state-v2, which stays immutable; its fixtures
++must not be used to judge its cases. This disposition concerns the local
++reviewed-handoff workflow; it does not authorize external publication.
++Preserve this release unchanged.
+diff -ruN export-pre/hd/transport-state-v3/spec.md export/hd/transport-state-v3/spec.md
+--- export-pre/hd/transport-state-v3/spec.md	2026-10-18 19:35:15.987087229 -0700
++++ export/hd/transport-state-v3/spec.md	2026-10-18 19:50:41.247939504 -0700
+@@ -7,8 +7,9 @@
+ Only the clauses explicitly included below are in scope. No other clause of a
+ listed requirement is implicitly approved. This document is self-contained.
+ 
+-**Status: staged candidate; not reviewed; not released.** Do not implement from
+-it. A separate review must approve it first.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the clarifications recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -90,10 +91,11 @@
+   </Tracks>
+   ```
+ 
+-  A Live Set whose `Tracks` element is absent or holds no audio or MIDI track is
+-  not opened (static-derived). That check, and every other rule for tracks, is
+-  not part of this release; the track is present so that the documents can open.
+-  Its values are fixed and not interpreted, and no case judges it.
++  A Live Set whose `Tracks` element is absent or holds no audio, MIDI or group
++  track is not opened (static-derived). That rule, and every other rule for
++  tracks, is not part of this release. The track is present only so that the
++  documents can open; its values are fixed and not interpreted, and no case
++  judges it.
+ - A full Live Set contains much more than the fixtures (more tracks, devices,
+   clips, scenes, automation and other state). That content is outside this
+   release. Apart from the track list above, its absence from a fixture must not
+@@ -365,4 +367,4 @@
+ to the main track). Expected results are newly authored behavioral data, labeled
+ per case as static-derived or extracted execution. No public source or
+ dependency is approved or included. Review status is recorded in
+-[the manifest](manifest.json); this candidate has no review record yet.
++[the manifest](manifest.json) and [the review disposition](REVIEW.md).

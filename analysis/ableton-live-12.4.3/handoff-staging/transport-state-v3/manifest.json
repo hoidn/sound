@@ -1,0 +1,344 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "transport-state-v3",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS",
+ "specification": {
+  "id": "SPEC-TRANSPORT-STATE",
+  "parent_revision": 4,
+  "release_revision": 4
+ },
+ "feature_ids": [
+  "FEAT-TRANSPORT",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-TRANSPORT-STATE-001": "Locations and value types of the six values; homonymous elements elsewhere are different values. Units unreleased",
+  "REQ-TRANSPORT-STATE-002": "Empty single-Value element shape for the four Transport values and both Manual elements; the four always written once; relative order of the 33 known Transport children",
+  "REQ-TRANSPORT-STATE-003": "Exact Boolean tokens true/1/false/0; all other text refused",
+  "REQ-TRANSPORT-STATE-004": "Decimal-prefix reading with leading spaces skipped and trailing text ignored; nearest binary64; # with 16 hex digits of either case reads raw bits, most significant first; no prefix refused",
+  "REQ-TRANSPORT-STATE-005": "Tempo read as REQ-004 then rounded to nearest binary32; # with 8 hex digits reads raw bits",
+  "REQ-TRANSPORT-STATE-006": "Five-condition integer rule (ASCII; optional - and digits, at most 63 characters; no +-; no trailing spaces after leading spaces or +; 32-bit range); accepted codes outside 0-494 excluded",
+  "REQ-TRANSPORT-STATE-007": "Missing element or Value for the four Transport values and tempo Manual reads off/8/16/0/120",
+  "REQ-TRANSPORT-STATE-008": "Duplicate known non-KeyMidi Transport children or Manual refused; unknown Transport child skipped and not saved",
+  "REQ-TRANSPORT-STATE-010": "Code meaning (n-1)+99*log2(d) only; no acceptance case",
+  "REQ-TRANSPORT-STATE-011": "Boolean and integer text; fixed-precision decimal text with P=17 or 9, k from the binary64 logarithm, for in-range finite values outside the half-gap band; positive and negative zero"
+ },
+ "unreleased_requirements": [
+  "REQ-TRANSPORT-STATE-009",
+  "REQ-TRANSPORT-STATE-012"
+ ],
+ "compatibility_dimensions": {
+  "project-files": "static-derived and extracted-execution expectations for the listed document values; reference execution not-run",
+  "behavior": "effective transport state after opening excluded",
+  "audio": "excluded",
+  "ui": "excluded",
+  "timing": "excluded"
+ },
+ "expectation_provenance_labels": {
+  "static-derived; not observed reference output": "derived from evidence reviewed before sanitization",
+  "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 build read the case's text and, where a saved text is judged, wrote the value read, on a Linux x86_64 host with glibc in place of the macOS system libraries; locating, opening and saving remain static-derived"
+ },
+ "stated_assumptions": [
+  "The macOS arm64 build converts these texts and values as the x86_64 build does. All cases with the extracted-execution label depend on it.",
+  "The reference's binary64 base-10 logarithm errs by less than 3/4 of a binary64 gap wherever its last bit decides k in REQ-011, outside the half-gap band. TS-024 to TS-027, whose logarithms lie 0.02 to 0.17 gaps from an integer, need only an error below 0.8 of a gap.",
+  "The reference's decimal reading follows the C-standard number grammar in a locale whose decimal separator is '.', and gives the nearest binary64 value with the sign of -0 kept, as the glibc run did. TS-024 to TS-028, TS-034 and TS-035 depend on it.",
+  "The reference's fixed-point text on save is exact, rounds exact decimal ties to even and keeps the sign of negative zero, as the glibc run did; transport-state-v1 accepted exactness and ties to even as inferences. TS-024 to TS-028 depend on it; no case lies on a tie."
+ ],
+ "exclusions": {
+  "inputs_without_expectation": [
+   "number text starting (after spaces and sign) with 0x, inf or nan; Invalid; leading whitespace other than U+0020",
+   "values outside the spec.md ranges (negative zero counts as zero); non-finite and largest finite values",
+   "saved binary64 values whose log10 is not an integer but lies between 1/4 and 3/4 of a binary64 gap from one (the gap on the side of log10, as in spec.md)",
+   "accepted time-signature codes outside 0 to 494",
+   "missing TimeSignature/Manual or its value; missing Transport, Tempo, TimeSignature, Mixer, DeviceChain or MainTrack",
+   "a Tracks element that is absent or holds no AudioTrack or MidiTrack; track content other than the fixtures' one MIDI track",
+   "unknown attributes on any element this release reads; repeated unknown children; any *KeyMidi child in the input; LoopIsSongStart other than false",
+   "automation events or scene values that disagree with Manual",
+   "other envelopes, format versions, compressed containers and document kinds"
+  ],
+  "behavior": [
+   "effective tempo and time signature after opening; whether a code other than 201 takes effect",
+   "editing after opening (UI, remote control, MIDI)",
+   "whether automation or other known Transport children are written; byte layout of saved documents",
+   "playback, timing, Link and external sync; undo",
+   "refusal text, presentation and state after refusal",
+   "locale-dependent reading: host locales whose decimal separator is not '.'"
+  ],
+  "parent_cases_not_released": [
+   "TS-017",
+   "TS-018",
+   "TS-019",
+   "TS-023"
+  ]
+ },
+ "fixture_origin": "independently authored minimal XML documents, each with one fixed MIDI track, and expected logical results",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RV3-01 low: the track rule was stated as no audio or MIDI track; the derived rule is no audio, MIDI or group track; restated in spec.md, README change 1 and defect_corrected; no case affected",
+   "RV3-02 low: the supersession covered only opening; the refused transport-state-v2 fixtures do not isolate their tested text; README and relationship now say its fixtures judge no case",
+   "RV3-03 editorial: payload status set to reviewed release; review record added",
+   "RV3-04 info: all 33 fixtures pass the structural checker; each refused fixture fails only for its tested text",
+   "RV3-05 info: the added track changes no transport expectation",
+   "RV3-06 info: opening without the omitted set members rests on static-derived evidence; accepted"
+  ],
+  "disposition": "Approved with listed clarifications, only for the explicit partial clauses; case records and expectations carried from transport-state-v2; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": "transport-state-v2",
+ "supersession": {
+  "relationship": "corrective: the same clauses, case records and expectations as transport-state-v2, on fixtures that can open; transport-state-v2 stays immutable, but its fixtures (and the 18 transport-state-v1 fixtures it carried) must not be used to judge any case: those expected to open cannot, and the refused ones do not isolate the tested text",
+  "superseded_manifest_sha256": "398a88a62114552595830f99ba2fc1bc4d8c0e1f0d2ae65a70d21aa2324c17c8",
+  "restated_cases": "all 33 case records (TS-001 to 016, TS-020 to 022 and TS-024 to 037) identical to transport-state-v2; every fixture changed as in fixture_changes",
+  "defect_corrected": "no transport-state-v2 fixture has a track list; a Live Set whose track list is absent or holds no audio, MIDI or group track is not opened (static-derived), so the 23 cases expecting a document to open could not hold and the 10 refused cases were also refused for that reason; the v2 precondition that missing set content must not change a judged outcome was wrong for the track list",
+  "fixture_changes": {
+   "fixtures": [
+    "fixtures/TS-001.xml",
+    "fixtures/TS-002.xml",
+    "fixtures/TS-003.xml",
+    "fixtures/TS-004.xml",
+    "fixtures/TS-005.xml",
+    "fixtures/TS-006.xml",
+    "fixtures/TS-007.xml",
+    "fixtures/TS-008.xml",
+    "fixtures/TS-009.xml",
+    "fixtures/TS-010.xml",
+    "fixtures/TS-011.xml",
+    "fixtures/TS-012.xml",
+    "fixtures/TS-013.xml",
+    "fixtures/TS-014.xml",
+    "fixtures/TS-015.xml",
+    "fixtures/TS-016.xml",
+    "fixtures/TS-020.xml",
+    "fixtures/TS-021.xml",
+    "fixtures/TS-022.xml",
+    "fixtures/TS-024.xml",
+    "fixtures/TS-025.xml",
+    "fixtures/TS-026.xml",
+    "fixtures/TS-027.xml",
+    "fixtures/TS-028.xml",
+    "fixtures/TS-029.xml",
+    "fixtures/TS-030.xml",
+    "fixtures/TS-031.xml",
+    "fixtures/TS-032.xml",
+    "fixtures/TS-033.xml",
+    "fixtures/TS-034.xml",
+    "fixtures/TS-035.xml",
+    "fixtures/TS-036.xml",
+    "fixtures/TS-037.xml"
+   ],
+   "change": "21 lines inserted directly after the <LiveSet> start tag: a Tracks element holding one MidiTrack (Id 1, EffectiveName 1-MIDI, empty UserName, Color 15, TrackGroupId -1, AudioOutputRouting Target AudioOut/Main, empty MainSequencer and FreezeSequencer ClipSlotList), as shown in spec.md",
+   "unchanged": "every line of the transport-state-v2 fixture of the same name, in order"
+  },
+  "changes": [
+   "defect corrected (defect_corrected): every fixture listed in fixture_changes, all 33, gains the track list; no other byte of a fixture changed",
+   "precondition on missing set content restated to name the track list; inputs without that track list, or with other track content, added to the inputs without expectation",
+   "parent revision 4: it states the transport-state-v2 review clarifications that v2 already carries (REQ-011 band, logarithm-accuracy assumption, library dependence of -0 reading and save text); no clause or case added",
+   "case records, expectations, provenance labels and requirement clauses unchanged"
+  ]
+ },
+ "entrypoint": "README.md",
+ "case_count": 33,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "313e056ec5f13481dba4cfdd5a3e7d044cda5821007b65a805d9503af4fdac83",
+   "bytes": 1334
+  },
+  {
+   "path": "README.md",
+   "sha256": "dbe7a641995f158b0861ca8ddc20aa7f86b7eb583dac02f1e3773e0914c9a148",
+   "bytes": 4858
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "ac84fc70a49811435081b6646fad3e7d9b621dcb2ffb48c99437eff9d931a632",
+   "bytes": 8592
+  },
+  {
+   "path": "cases.json",
+   "sha256": "ddf30f65c8997b8e8f54c057e60073d7cef5a53c0b49d8a12a80d3a00715395d",
+   "bytes": 22251
+  },
+  {
+   "path": "fixtures/TS-001.xml",
+   "sha256": "333f169300e05dace9d876c5e827ccaa25d0a52919aba1c1ced7f5707420e5e1",
+   "bytes": 1354
+  },
+  {
+   "path": "fixtures/TS-002.xml",
+   "sha256": "4366b5fb0e078161a104d096339ef76cdbccdcd57a0fd3ac0e2705c857aa90d6",
+   "bytes": 1351
+  },
+  {
+   "path": "fixtures/TS-003.xml",
+   "sha256": "c6915e38d9d91e4bf4d5046961ca370507d0c33cc926323e1ce997a7edde4330",
+   "bytes": 1351
+  },
+  {
+   "path": "fixtures/TS-004.xml",
+   "sha256": "9396ebdb1ed7f2e1b9e3f6a9530d33b04b2c835ea177bd7b336321debdb8b987",
+   "bytes": 1354
+  },
+  {
+   "path": "fixtures/TS-005.xml",
+   "sha256": "27202efc78539a9a24d55abe6cf292a869e1997c935b66794c551a65034c9ede",
+   "bytes": 1350
+  },
+  {
+   "path": "fixtures/TS-006.xml",
+   "sha256": "20c9ff02a6b247fd44c518c511da295fc081c2231cba2cceccf42a58ceb80eea",
+   "bytes": 1360
+  },
+  {
+   "path": "fixtures/TS-007.xml",
+   "sha256": "5193b44095f3cb0c1cb19560cdbb8685f2ce08e83856400994af9a87eddf8cdc",
+   "bytes": 1356
+  },
+  {
+   "path": "fixtures/TS-008.xml",
+   "sha256": "9c519f7c901f30ab37654579d65a7c50d85c68729efa6cad80f6edf809765478",
+   "bytes": 1362
+  },
+  {
+   "path": "fixtures/TS-009.xml",
+   "sha256": "7a205e35b53f5ba8c9656671f2467518da3d6a1343d18f6bcab7e35f9df284c6",
+   "bytes": 1357
+  },
+  {
+   "path": "fixtures/TS-010.xml",
+   "sha256": "7ea84af451b974ccf6fb7b00095fc6caf20838324c90db13e39ec57ce3bb82c4",
+   "bytes": 1358
+  },
+  {
+   "path": "fixtures/TS-011.xml",
+   "sha256": "c4ad4a062da26a294b0e1c45358ba5dbdd8fc66e01f3ec118331093487eb7da8",
+   "bytes": 1325
+  },
+  {
+   "path": "fixtures/TS-012.xml",
+   "sha256": "fbea34f7e149d599dc38a4cde9bd96ae453429512aa1310d49cc80866b9c8d2b",
+   "bytes": 1344
+  },
+  {
+   "path": "fixtures/TS-013.xml",
+   "sha256": "485c9f3503814ad953e32af94a1bf96120a5f046d444e25a5d881ce6e98e13ce",
+   "bytes": 1292
+  },
+  {
+   "path": "fixtures/TS-014.xml",
+   "sha256": "f0ab76d1535b35a5db27b11ca3f13d06632fe4d2b0f4cd2e289599107fbb94a3",
+   "bytes": 1343
+  },
+  {
+   "path": "fixtures/TS-015.xml",
+   "sha256": "9ffe090f9fae37d15f9299f07b165d2d8a82c1fa513993863b1b9ab80b103a49",
+   "bytes": 1385
+  },
+  {
+   "path": "fixtures/TS-016.xml",
+   "sha256": "a76ad4bea9847db21b2f18792800824aee7d50abb3fc2218829fd75f25df6f4d",
+   "bytes": 1379
+  },
+  {
+   "path": "fixtures/TS-020.xml",
+   "sha256": "1aaadc716ec129bf30a12977e1250d06961b8adf036cb42cee9c98d583975c14",
+   "bytes": 1357
+  },
+  {
+   "path": "fixtures/TS-021.xml",
+   "sha256": "e01e43206b573f430024d734e7e1724a4f0411ebb88eea14e49de3e5f15522ad",
+   "bytes": 1357
+  },
+  {
+   "path": "fixtures/TS-022.xml",
+   "sha256": "c2d1de0ff5d839f766bb5a7c8d06bc3b599e3635ed52573d0c860484e7ff89b8",
+   "bytes": 1355
+  },
+  {
+   "path": "fixtures/TS-024.xml",
+   "sha256": "84155fbfc86bd897de2eac5057da151988b42f60f8ed2cdd44ee508be80ff75a",
+   "bytes": 1372
+  },
+  {
+   "path": "fixtures/TS-025.xml",
+   "sha256": "8f83985c19667d428a9ded4aaaebff757d1ad44ede524ea9f0cd4c898d53e5a7",
+   "bytes": 1371
+  },
+  {
+   "path": "fixtures/TS-026.xml",
+   "sha256": "8ee7766aaab4335504f0f97ebfb33924473ed2eac6e6b4cdc899de2245da19ba",
+   "bytes": 1373
+  },
+  {
+   "path": "fixtures/TS-027.xml",
+   "sha256": "7fa91a6d187017d03c363f5ac2f207ff01a4fb09804ed2886077a306909a7a3e",
+   "bytes": 1362
+  },
+  {
+   "path": "fixtures/TS-028.xml",
+   "sha256": "abc0eb702c8fe086fc15b4f7f771a05c0750477b1a0b7baf3cb002f0a7e7dee9",
+   "bytes": 1356
+  },
+  {
+   "path": "fixtures/TS-029.xml",
+   "sha256": "be37083c944e2d6fe4654914b4433ca5a2b23b50b2c23a565838fb98822fc841",
+   "bytes": 1357
+  },
+  {
+   "path": "fixtures/TS-030.xml",
+   "sha256": "7988dac04736eb9a7be153800472575f9bc43c01d792034585a8892ba63d42d0",
+   "bytes": 1354
+  },
+  {
+   "path": "fixtures/TS-031.xml",
+   "sha256": "dfbb3edb76d1b2f2e88307844e6af95e226ef748e066cb63a558ba73ae97fd4f",
+   "bytes": 1362
+  },
+  {
+   "path": "fixtures/TS-032.xml",
+   "sha256": "12bc30a0bbc1fc0f697cc2f67ab07d6098d0f03cd4955141aa52eabc595dd8d2",
+   "bytes": 1416
+  },
+  {
+   "path": "fixtures/TS-033.xml",
+   "sha256": "0e54ad7b9a38f562ec7254219e63440a2e5855a15a964952e4687d09ddb0c384",
+   "bytes": 1416
+  },
+  {
+   "path": "fixtures/TS-034.xml",
+   "sha256": "a4243c9559a2bed85eae5d5239ef55d04c2028f99360011c1a0bcc9ae1fe2280",
+   "bytes": 1359
+  },
+  {
+   "path": "fixtures/TS-035.xml",
+   "sha256": "c39ae54cae6fc18ae22b07559c512ca8df481241cf94ba48788652e4f417cd3e",
+   "bytes": 1359
+  },
+  {
+   "path": "fixtures/TS-036.xml",
+   "sha256": "ccdd682361a072d29171350fe6f6b3575520d9365ec93ac387e5406bb3e1332a",
+   "bytes": 1371
+  },
+  {
+   "path": "fixtures/TS-037.xml",
+   "sha256": "6ada8e28ac048473562eb18d2f675721520be872d69f325ef0d38aa18e9e74c8",
+   "bytes": 1361
+  },
+  {
+   "path": "spec.md",
+   "sha256": "d74c7b8693b04b40aa7aba9d54bf763db98a6498be32eadbfca03742232acae1",
+   "bytes": 20548
+  }
+ ]
+}

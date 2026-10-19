@@ -2165,3 +2165,15 @@ The manifest SHA-256 is
 `0911e9b57730b9d41c143cd18a5bacc80d8439ce51b202201820bef9ff8cef65`. The review's
 two precision corrections, and its correction of the Value Scaling error figure
 (96 to 408τ, not 3.8τ), are owed to spec revision 6.
+
+## [2026-10-18] release | transport-state-v3 corrects the fixture defect
+
+[transport-state-v3](../handoff/transport-state-v3/README.md) carries v2's 33 cases,
+with records unchanged. Each fixture gains a MIDI track so that the reader
+opens it. A separate review agent approved it with two clarifications: the
+refusal rule covers no audio, MIDI or group track, and v2's fixtures judge no
+case. The manifest SHA-256 is
+`2cd4320ac3e6cefab257d8f8ab6bc627284c87ca4b0b7c06e5ea22ae172d329d`. The catalog's
+defect note now states the rule precisely. New REQ-012 evidence for the next
+spec revision: on open, a tempo Manual value that disagrees with its automation
+envelope is replaced by the envelope's value.
