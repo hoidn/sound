@@ -1,0 +1,818 @@
+{
+ "schema": "live-set-structure-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "live-set-structure-v1 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Generated minimal set T11-MIN and one-change variants; no shipped file copied",
+ "oracle_status": "Documented, static-derived and one extracted-execution expectation; neither reference nor candidate application executed",
+ "representation": {
+  "outcome": "opens or refused",
+  "state": "listed keys only (see spec.md)",
+  "identity": "compute-identity only",
+  "note": "project comparison representation, not an API of the original application or a required design"
+ },
+ "cases": [
+  {
+   "id": "LIVE-SET-STRUCTURE-001",
+   "purpose": "Open the reference minimal set T11-MIN",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-001",
+    "REQ-LIVE-SET-STRUCTURE-002",
+    "REQ-LIVE-SET-STRUCTURE-003",
+    "REQ-LIVE-SET-STRUCTURE-004",
+    "REQ-LIVE-SET-STRUCTURE-005",
+    "REQ-LIVE-SET-STRUCTURE-006",
+    "REQ-LIVE-SET-STRUCTURE-007",
+    "REQ-LIVE-SET-STRUCTURE-008",
+    "REQ-LIVE-SET-STRUCTURE-013",
+    "REQ-LIVE-SET-STRUCTURE-015",
+    "REQ-LIVE-SET-STRUCTURE-016",
+    "REQ-LIVE-SET-STRUCTURE-018"
+   ],
+   "input": "fixtures/T11-MIN.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "track_kinds": [
+      "midi",
+      "audio",
+      "return"
+     ],
+     "scene_names": [
+      "Scene 1",
+      "Scene 2"
+     ],
+     "session_clips": [
+      [
+       "Two Notes",
+       null
+      ],
+      [
+       "Tone",
+       null
+      ]
+     ],
+     "send_counts": [
+      1,
+      1,
+      1
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "documented and static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-002",
+   "purpose": "Tracks emptied, and the SendPreBool removed",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-002"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-002.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-003",
+   "purpose": "Tracks element removed, and the SendPreBool removed",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-001",
+    "REQ-LIVE-SET-STRUCTURE-002"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-003.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-004",
+   "purpose": "Audio and MIDI tracks removed; the return track kept",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-002"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-004.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-005",
+   "purpose": "Return track moved before the audio track, and every Sends list emptied",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-002"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-005.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-006",
+   "purpose": "An item FooTrack Id 9 inserted as the first item of Tracks",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-001",
+    "REQ-LIVE-SET-STRUCTURE-002"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-006.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-007",
+   "purpose": "MIDI track TrackGroupId 7 in a set without group tracks",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-002"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-007.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-008",
+   "purpose": "Audio track Id 5, which is also a target Id of the set",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-003",
+    "REQ-LIVE-SET-STRUCTURE-015",
+    "REQ-LIVE-SET-STRUCTURE-016"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-008.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "track_kinds": [
+      "midi",
+      "audio",
+      "return"
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "documented and static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-009",
+   "purpose": "Audio track Id 1, equal to the MIDI track's Id",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-003",
+    "REQ-LIVE-SET-STRUCTURE-016"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-009.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [
+    "list-item-ids"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-010",
+   "purpose": "Audio track Id -1",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-016"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-010.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [
+    "list-item-ids"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-011",
+   "purpose": "Audio track Id a",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-016"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-011.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [
+    "list-item-ids"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-012",
+   "purpose": "Unknown child element Foo Value 1 after the MIDI track's Color",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-001"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-012.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "track_kinds": [
+      "midi",
+      "audio",
+      "return"
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-013",
+   "purpose": "Second Color element in the MIDI track",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-001"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-013.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-014",
+   "purpose": "NextPointeeId written without Value",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-001",
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-014.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-015",
+   "purpose": "MainTrack removed",
+   "kind": "missing-element",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-004"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-015.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "tempo": 120
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-016",
+   "purpose": "PreHearTrack removed",
+   "kind": "missing-element",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-004"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-016.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "track_kinds": [
+      "midi",
+      "audio",
+      "return"
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-017",
+   "purpose": "Audio track's FreezeSequencer removed",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-006"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-017.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-018",
+   "purpose": "Last freeze slot of the MIDI track removed",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-006"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-018.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-019",
+   "purpose": "Scene Ids changed to 7 and 3",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-006",
+    "REQ-LIVE-SET-STRUCTURE-016"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-019.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "scene_names": [
+      "Scene 1",
+      "Scene 2"
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "documented and static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-020",
+   "purpose": "Audio track's session slot Ids changed to 7 and 3",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-006",
+    "REQ-LIVE-SET-STRUCTURE-016"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-020.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "session_clips": [
+      [
+       "Two Notes",
+       null
+      ],
+      [
+       "Tone",
+       null
+      ]
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "documented and static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-021",
+   "purpose": "MIDI track's Sends emptied",
+   "kind": "repair",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-013"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-021.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "send_counts": [
+      1,
+      1,
+      1
+     ],
+     "send_texts": {
+      "1": [
+       "-inf dB"
+      ]
+     }
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-022",
+   "purpose": "Second send holder on the audio track, written like the first, with target Ids 67 and 68 and NextPointeeId 69",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-013"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-022.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-023",
+   "purpose": "MIDI track envelope's PointeeId changed to 999999",
+   "kind": "repair",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-014"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-023.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "automated_parameters": {
+      "1": 0
+     }
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-024",
+   "purpose": "MIDI track envelope's PointeeId changed to 0",
+   "kind": "repair",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-014"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-024.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "automated_parameters": {
+      "1": 0
+     }
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-025",
+   "purpose": "NextPointeeId 66, equal to the largest target Id",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-025.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-026",
+   "purpose": "NextPointeeId removed",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-026.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-027",
+   "purpose": "NextPointeeId 100000",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-027.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "track_kinds": [
+      "midi",
+      "audio",
+      "return"
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-028",
+   "purpose": "Audio track's Pan AutomationTarget Id 0",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-028.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-029",
+   "purpose": "Audio track's Pan AutomationTarget without Id",
+   "kind": "refusal",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-029.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "refused"
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-030",
+   "purpose": "Audio track's Pan AutomationTarget element removed",
+   "kind": "missing-element",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-015"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-030.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "track_kinds": [
+      "midi",
+      "audio",
+      "return"
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-031",
+   "purpose": "T11-MIN opened from a new folder with its Samples folder",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-008",
+    "REQ-LIVE-SET-STRUCTURE-009"
+   ],
+   "input": "fixtures/T11-MIN.als",
+   "setup": "with-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "audio_clip_file": "Samples/T11-tone.wav"
+    }
+   },
+   "assumptions": [
+    "sample-folder"
+   ],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-032",
+   "purpose": "T11-MIN opened without its Samples folder",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-009"
+   ],
+   "input": "fixtures/T11-MIN.als",
+   "setup": "without-samples",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "session_clips": [
+      [
+       "Two Notes",
+       null
+      ],
+      [
+       "Tone",
+       null
+      ]
+     ]
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-033",
+   "purpose": "Audio clip's RelativePath Samples/absent.wav; Path set to the copied sample at setup",
+   "kind": "positive",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-009"
+   ],
+   "input": "fixtures/LIVE-SET-STRUCTURE-033.als",
+   "setup": "with-samples-absolute-path",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "state": {
+     "audio_clip_file": "Samples/T11-tone.wav"
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; listed state keys exact"
+  },
+  {
+   "id": "LIVE-SET-STRUCTURE-034",
+   "purpose": "Identity values of the fixture sample",
+   "kind": "computed",
+   "requirements": [
+    "REQ-LIVE-SET-STRUCTURE-008",
+    "REQ-LIVE-SET-STRUCTURE-010"
+   ],
+   "input": "fixtures/Samples/T11-tone.wav",
+   "setup": null,
+   "action": "compute-identity",
+   "expected": {
+    "identity": {
+     "OriginalFileSize": 176444,
+     "OriginalCrc": 47018,
+     "DefaultDuration": 44100,
+     "DefaultSampleRate": 44100
+    }
+   },
+   "assumptions": [],
+   "expectation_provenance": "documented rule and extracted execution of the original's checksum routine; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "identity values exact"
+  }
+ ]
+}

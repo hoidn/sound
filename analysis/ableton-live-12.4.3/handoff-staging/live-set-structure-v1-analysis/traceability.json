@@ -1,0 +1,439 @@
+{
+ "schema": "live-set-structure-traceability-v1",
+ "spec": "SPEC-LIVE-SET-STRUCTURE r1",
+ "evidence_root": "analysis/ableton-live-12.4.3/r2/t11-structure-v1/",
+ "evidence": {
+  "fixture": "make_fixture.py; out/schema-check-fixture.jsonl (no deviation; all structure measurements as required); review: device lists emptied (lss_cases.device_free); shipped sets hold empty device lists on 4 MIDI and 21 audio tracks (out/documents.json chain_devices)",
+  "schema-check": "schema_check.py; out/schema-check-als.jsonl, out/schema-check-alc.jsonl (375 documents: field, list and order form)",
+  "survey": "t11_survey.py; out/documents.json (track kinds and order, track and list Ids, 39 track Ids equal to pointee Ids, chain children, routing, slots, scenes, holders, SendsPre)",
+  "reader-n1": "wiki/research/transport-state-native.md#how-a-set-reaches-the-transport-objects: 0x1015299e0 start element, 0x10152adb0 -> 0x10152b45c required Value for type -4 elements, 0x101472624 duplicate member (n1-0007); r2/n1-transport-state-v1/notes.md round 2",
+  "unknown-child": "r2/n1-transport-state-v1/notes.md round 2: 0x1015299e0 ignored frame; Unexpected node only when versioned and SchemaChangeCount equals the schema ChangeCount (1 != 5)",
+  "list-loader": "traces/pointee/trace.txt 'List-item Ids (reader)': 0x1014674b4 unknown class, slot +0x190 class test, duplicate Id -> Non-unique list ids; x86 0x10145f320 (traces/pointee/x86-10145f320-list-loader.txt)",
+  "list-id-attr": "traces/pointee/trace.txt: 0x10152b77c Id parsed with int rule 0x1002fd908; failure or < 0 throws; flag +0x61 (A5)",
+  "walk-tracks": "traces/tracks/trace.txt item 3; x86 0x1027b1a00 (traces/tracks/x86-1027b1a00.txt 1027b1a48-1027b1ac5)",
+  "walk-grouping": "traces/tracks/trace.txt item 3 grouping: open-group stack; TrackGroupId != -1 needs a matching open group, else Track grouping corrupt",
+  "walk-slots": "traces/tracks/trace.txt item 4; x86 0x1026f1720 (traces/tracks/x86-1026f1720.txt): freeze vs session ClipSlotList size",
+  "freeze-empty": "traces/a1a2/trace.txt, reach.txt: chain ctors 0x1027df560, 0x10291f76c; sequencer base 0x10265b61c empty list; no load step adds slots (A2 settled)",
+  "open-path": "traces/a1a2/trace.txt, x86-load-sequence.txt: load step x86 0x10147e150 runs +0xd0 then the walk 0x10147e2e0 unconditionally (A1 settled)",
+  "song-ctor": "traces/tracks/trace.txt item 6: ASong ctor 0x10266f738 creates cue and main tracks and empty SendsPre, Scenes, Tracks",
+  "tempo-default": "wiki/specs/transport-state.md REQ-TRANSPORT-STATE-007 (tempo 120 for a new main track's tempo); wiki/research/transport-state-native.md",
+  "holders": "traces/tracks/trace.txt item 5; x86 0x1027c1640 (traces/tracks/x86-1027c1640.txt 1027c18a2-1027c18f3): R trailing returns, fewer appended, more refused",
+  "new-send": "wiki/research/mixer-values.md#constructor-defaults-and-ranges (send holder 0x102658f54: Send 0.0003162277571, s9-0002); appended holders 0x10271d824 -> 0x102659a78 -> 0x102658f54 (reviewer check, review/review-checks.txt); draft wiki/specs/mixer-values.md REQ-MIXER-VALUES-003 (unreleased there); handoff/mixer-values-v1/spec.md REQ-MIXER-VALUES-006 (-inf dB at or below -69.7 dB)",
+  "pointee-postload": "traces/pointee/trace.txt 'Pointee post-load hook' 0x101535954; x86 0x101525600 (traces/pointee/x86-101525600-pointee-postload.txt)",
+  "preset-flag": "traces/a1a2/trace.txt preset exemption off on the open path (A3 settled)",
+  "nextpointee": "traces/pointee/trace.txt 'Document post-load pointee check' 0x1015441a8 steps 1-2; x86 0x101533ae0, 0x10153df90; ADocument ctor NextPointeeId 1",
+  "registration": "traces/pointee/trace.txt step 4 and 0x10154368c: a pointee constructed with Id 0 gets the counter",
+  "dangling": "traces/pointee/trace.txt 'Dangling envelope purge': 0x1026869b0, dangling test 0x101536090 (PointeeId 0 or unregistered); gate byte set by app ctor",
+  "fileref-fields": "traces/fileref/trace.txt; traces/fileref/fileref-survey.json",
+  "crc": "traces/fileref/crc_check.py, crc-check.txt (2,984 of 2,984); out/x-crc.json (x86 0x101191310 on the T11 sample prefix: 47018; 123456789: 65256)",
+  "duration": "traces/fileref/duration_check.py, duration-check.txt (2,983 of 2,983 WAV and AIFF)",
+  "resolution": "traces/fileref/trace.txt: 0x1014e8504 (x86 0x1014d8e20; fallback to Path without identity 0x1014d90e5); candidates 0x1014e9d78; missing status 0x10279d228; no throwing branch"
+ },
+ "assumptions": {
+  "A4": "SPEC-LIVE-SET-STRUCTURE A4: sample-path resolution context present on open, base = folder of the set file (open)",
+  "A5": "SPEC-LIVE-SET-STRUCTURE A5: every list read by the generic list loader (open)",
+  "A6": "SPEC-LIVE-SET-STRUCTURE A6: bundled device classes accepted in track chains (open; listed in Q-022); not used: the review removed both devices from T11-MIN and every fixture",
+  "A1, A2, A3": "settled statically in revision 1; walk-dependent cases (REQ-002, 006) and the Id-0 case rest on them as S"
+ },
+ "clauses": {
+  "001 clauses 1-3": [
+   "schema-check",
+   "reader-n1"
+  ],
+  "001 clause 4": [
+   "unknown-child"
+  ],
+  "001 clause 5": [
+   "reader-n1",
+   "list-loader"
+  ],
+  "002 clauses 1-3": [
+   "survey",
+   "walk-tracks",
+   "open-path"
+  ],
+  "002 clause 4": [
+   "walk-grouping"
+  ],
+  "003": [
+   "survey"
+  ],
+  "004 clauses 1-2": [
+   "survey"
+  ],
+  "004 clause 3": [
+   "song-ctor",
+   "tempo-default"
+  ],
+  "005": [
+   "survey"
+  ],
+  "006 clauses 1-3, 5-6": [
+   "survey"
+  ],
+  "006 clause 4": [
+   "walk-slots",
+   "freeze-empty",
+   "open-path"
+  ],
+  "007": [
+   "schema-check",
+   "survey"
+  ],
+  "008": [
+   "fileref-fields",
+   "crc",
+   "duration"
+  ],
+  "009": [
+   "resolution"
+  ],
+  "010": [
+   "duration"
+  ],
+  "013": [
+   "survey",
+   "holders",
+   "new-send"
+  ],
+  "014": [
+   "dangling"
+  ],
+  "015": [
+   "survey",
+   "pointee-postload",
+   "preset-flag",
+   "nextpointee",
+   "registration"
+  ],
+  "016": [
+   "survey",
+   "list-loader",
+   "list-id-attr"
+  ],
+  "018": [
+   "fixture"
+  ]
+ },
+ "cases": {
+  "LIVE-SET-STRUCTURE-001": {
+   "source": "LSS-001",
+   "evidence": [
+    "fixture",
+    "schema-check",
+    "survey",
+    "walk-tracks",
+    "walk-slots",
+    "holders",
+    "nextpointee"
+   ],
+   "assumptions": [],
+   "change_from_draft": "narrowed: track names, colours and devices are not judged (displayed name U; REQ-012 unreleased); basis A6 only (A4 is not needed to open; its check is case 031); review: the devices are removed from T11-MIN and every fixture, so no case rests on A6 (open in Q-022)"
+  },
+  "LIVE-SET-STRUCTURE-002": {
+   "source": "LSS-002",
+   "evidence": [
+    "walk-tracks",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-003": {
+   "source": "LSS-005",
+   "evidence": [
+    "walk-tracks",
+    "song-ctor",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "SendPreBool also removed, so that no SendsPre-count unknown remains (as in LSS-002)"
+  },
+  "LIVE-SET-STRUCTURE-004": {
+   "source": "LSS-003",
+   "evidence": [
+    "walk-tracks",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-005": {
+   "source": "LSS-004",
+   "evidence": [
+    "walk-tracks",
+    "holders",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "Sends emptied: with the return moved, R is 0 and one holder per mixer would be refused first by REQ-013 (root post-load precedes the walk). SendsPre keeps one item, equal to the number of return tracks; the checker compares it with R (0) and reports the REQ-013 unknown shape"
+  },
+  "LIVE-SET-STRUCTURE-006": {
+   "source": "LSS-006",
+   "evidence": [
+    "list-loader",
+    "reader-n1"
+   ],
+   "assumptions": [],
+   "change_from_draft": "inserted first, not appended, so that R stays 1 for a reader that skipped it"
+  },
+  "LIVE-SET-STRUCTURE-007": {
+   "source": "new (REQ-002 grouping clause)",
+   "evidence": [
+    "walk-grouping",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "new case"
+  },
+  "LIVE-SET-STRUCTURE-008": {
+   "source": "LSS-019",
+   "evidence": [
+    "survey",
+    "list-id-attr"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-009": {
+   "source": "LSS-016",
+   "evidence": [
+    "list-loader"
+   ],
+   "assumptions": [
+    "A5"
+   ],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-010": {
+   "source": "LSS-017",
+   "evidence": [
+    "list-id-attr"
+   ],
+   "assumptions": [
+    "A5"
+   ],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-011": {
+   "source": "new (REQ-016 non-integer clause)",
+   "evidence": [
+    "list-id-attr"
+   ],
+   "assumptions": [
+    "A5"
+   ],
+   "change_from_draft": "new case"
+  },
+  "LIVE-SET-STRUCTURE-012": {
+   "source": "LSS-031",
+   "evidence": [
+    "unknown-child",
+    "reader-n1"
+   ],
+   "assumptions": [],
+   "change_from_draft": "narrowed: the save part (S-cond A7) is not released"
+  },
+  "LIVE-SET-STRUCTURE-013": {
+   "source": "new (REQ-001 duplicate-member clause)",
+   "evidence": [
+    "reader-n1"
+   ],
+   "assumptions": [],
+   "change_from_draft": "new case"
+  },
+  "LIVE-SET-STRUCTURE-014": {
+   "source": "LSS-023",
+   "evidence": [
+    "reader-n1"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-015": {
+   "source": "LSS-029",
+   "evidence": [
+    "song-ctor",
+    "tempo-default"
+   ],
+   "assumptions": [],
+   "change_from_draft": "obligation added: factory default set; the value 120 does not distinguish it from T11-MIN's tempo"
+  },
+  "LIVE-SET-STRUCTURE-016": {
+   "source": "LSS-030",
+   "evidence": [
+    "song-ctor"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-017": {
+   "source": "LSS-007",
+   "evidence": [
+    "walk-slots",
+    "freeze-empty",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-018": {
+   "source": "LSS-008",
+   "evidence": [
+    "walk-slots",
+    "freeze-empty",
+    "open-path"
+   ],
+   "assumptions": [],
+   "change_from_draft": "changed: removes a freeze slot instead of appending a session slot, which made session slots (3) differ from scenes (2), the REQ-006 unknown"
+  },
+  "LIVE-SET-STRUCTURE-019": {
+   "source": "LSS-011",
+   "evidence": [
+    "survey",
+    "list-loader"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-020": {
+   "source": "LSS-012",
+   "evidence": [
+    "survey",
+    "list-loader"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-021": {
+   "source": "LSS-013",
+   "evidence": [
+    "holders",
+    "new-send"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-022": {
+   "source": "LSS-014",
+   "evidence": [
+    "holders"
+   ],
+   "assumptions": [],
+   "change_from_draft": "the holder's two targets get new Ids and NextPointeeId is raised, by T11-MIN's rules"
+  },
+  "LIVE-SET-STRUCTURE-023": {
+   "source": "LSS-028",
+   "evidence": [
+    "dangling"
+   ],
+   "assumptions": [],
+   "change_from_draft": "narrowed: the save and reopen part (S-cond A7) is not released"
+  },
+  "LIVE-SET-STRUCTURE-024": {
+   "source": "new (REQ-014 PointeeId 0 clause)",
+   "evidence": [
+    "dangling"
+   ],
+   "assumptions": [],
+   "change_from_draft": "new case"
+  },
+  "LIVE-SET-STRUCTURE-025": {
+   "source": "LSS-020",
+   "evidence": [
+    "nextpointee"
+   ],
+   "assumptions": [],
+   "change_from_draft": "review: 66, the largest target Id once the devices are removed (68 in the draft)"
+  },
+  "LIVE-SET-STRUCTURE-026": {
+   "source": "LSS-021",
+   "evidence": [
+    "nextpointee"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-027": {
+   "source": "LSS-022",
+   "evidence": [
+    "nextpointee"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-028": {
+   "source": "LSS-024",
+   "evidence": [
+    "pointee-postload",
+    "preset-flag"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-029": {
+   "source": "LSS-025",
+   "evidence": [
+    "pointee-postload",
+    "preset-flag"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-030": {
+   "source": "LSS-027",
+   "evidence": [
+    "registration"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-031": {
+   "source": "LSS-032",
+   "evidence": [
+    "resolution",
+    "fileref-fields"
+   ],
+   "assumptions": [
+    "A4"
+   ],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-032": {
+   "source": "LSS-033",
+   "evidence": [
+    "resolution"
+   ],
+   "assumptions": [],
+   "change_from_draft": "narrowed: the missing-file report is U; only opening and the kept clip are judged; the sample is absent by setup instead of deletion"
+  },
+  "LIVE-SET-STRUCTURE-033": {
+   "source": "LSS-034",
+   "evidence": [
+    "resolution"
+   ],
+   "assumptions": [],
+   "change_from_draft": "as written"
+  },
+  "LIVE-SET-STRUCTURE-034": {
+   "source": "LSS-036",
+   "evidence": [
+    "crc",
+    "duration",
+    "fileref-fields"
+   ],
+   "assumptions": [],
+   "change_from_draft": "extended: DefaultDuration and DefaultSampleRate added (REQ-008 D clause)"
+  }
+ },
+ "excluded_draft_cases": {
+  "LSS-009, LSS-010": "U (REQ-006 slots against scenes; zero scenes)",
+  "LSS-015": "U (SendsPre count)",
+  "LSS-018": "U (Id-less list item)",
+  "LSS-026": "U (duplicate pointee Ids)",
+  "LSS-035": "type-7 outcome can be changed by the U library relocation and missing-file search (Q-022 missing samples)",
+  "LSS-037": "S-cond A6, an open Q-022 item; REQ-012 unreleased",
+  "LSS-038": "U (device class per chain)",
+  "LSS-039, LSS-040": "save: S-cond A7 and REQ-011 U (RelativePathType); REQ-011 and 017 unreleased"
+ }
+}

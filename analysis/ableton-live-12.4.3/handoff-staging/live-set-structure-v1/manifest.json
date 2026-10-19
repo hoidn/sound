@@ -1,0 +1,307 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "live-set-structure-v1",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-LIVE-SET-STRUCTURE",
+  "parent_revision": 1,
+  "release_revision": 1
+ },
+ "feature_ids": [
+  "FEAT-PERSISTENCE",
+  "FEAT-SESSION",
+  "FEAT-AUDIO"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-LIVE-SET-STRUCTURE-001": "Element forms (compound, value, list, array); children matched by name; absence not itself a refusal; unknown child skipped; refusals: NextPointeeId without Value, a repeated child of a compound element, an unknown item name in Tracks",
+  "REQ-LIVE-SET-STRUCTURE-002": "Tracks in display order; refused without an audio, MIDI or group track, or with one of those after a return track; TrackGroupId other than -1 refused in a set without group tracks",
+  "REQ-LIVE-SET-STRUCTURE-003": "Track Id form; Name and Color elements written",
+  "REQ-LIVE-SET-STRUCTURE-004": "Main and cue track placement; tempo, time signature and crossfader locations; absent main or cue track replaced by a new one (tempo 120)",
+  "REQ-LIVE-SET-STRUCTURE-005": "DeviceChain children per track kind; mixer and device list locations; AudioOut/Main in the fixtures",
+  "REQ-LIVE-SET-STRUCTURE-006": "Scenes, session and freeze slots, slot form; Ids do not order; freeze slot count must equal session slot count; scene fields written",
+  "REQ-LIVE-SET-STRUCTURE-007": "Clip element in the slot, kind per track, Id and Time attributes, Name held as read",
+  "REQ-LIVE-SET-STRUCTURE-008": "SampleRef and FileRef children; RelativePathType 0 and 1; Path and Type; size, checksum, frame count and rate rules",
+  "REQ-LIVE-SET-STRUCTURE-009": "Type 0 and 1 resolution against the set's folder (assumption); fallback to Path for 0 and 1; a missing sample does not refuse",
+  "REQ-LIVE-SET-STRUCTURE-010": "Stored length and rate equal the file's; fixture sample form only",
+  "REQ-LIVE-SET-STRUCTURE-013": "One send holder per return; SendsPre form; fewer holders added at -70 dB; more than R refused",
+  "REQ-LIVE-SET-STRUCTURE-014": "Envelope locations; envelopes with PointeeId 0 or naming no target removed on opening",
+  "REQ-LIVE-SET-STRUCTURE-015": "Target Id form; absent NextPointeeId reads 1; Id 0 or no Id refused; NextPointeeId not above the largest Id refused; absent target element tolerated",
+  "REQ-LIVE-SET-STRUCTURE-016": "List-item Id form; negative, lettered or repeated Ids refused (assumption); Ids do not order or link",
+  "REQ-LIVE-SET-STRUCTURE-018": "Reference minimal set T11-MIN, whose device lists are empty, opens with the listed content; element status table"
+ },
+ "unreleased_requirements": [
+  "REQ-LIVE-SET-STRUCTURE-011",
+  "REQ-LIVE-SET-STRUCTURE-012",
+  "REQ-LIVE-SET-STRUCTURE-017"
+ ],
+ "compatibility_dimensions": {
+  "document-structure-open-outcome": "documented and static-derived expectations; reference execution not-run",
+  "held-values-after-opening": "documented and static-derived expectations; reference execution not-run",
+  "sample-identity": "documented rule; extracted execution of the original's checksum routine; reference application not-run",
+  "file-format-written": "excluded (REQ-LIVE-SET-STRUCTURE-011, 017)",
+  "devices": "excluded (REQ-LIVE-SET-STRUCTURE-012); every device list of the fixtures is empty",
+  "ui": "excluded (refusal presentation)",
+  "audio": "excluded",
+  "timing": "excluded"
+ },
+ "expectation_provenance_labels": {
+  "static": "static-derived; not observed reference output",
+  "doc-static": "documented and static-derived; not observed reference output",
+  "doc-x": "documented rule and extracted execution of the original's checksum routine; not observed reference output"
+ },
+ "stated_assumptions": {
+  "list-item-ids": "The list-item Id rule (negative, lettered or repeated Ids refused) applies to every list of an opened Live Set, Tracks included",
+  "sample-folder": "When a set is opened from a file, a relative sample path of type 0 or 1 is joined to the folder that holds the set file"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "envelopes, containers and format versions other than the preconditions'",
+   "session slot count different from scene count; slots with no scenes or no Scenes element; two clips in a slot or a clip of the other track kind",
+   "SendsPre length different from the number of return tracks",
+   "missing samples beyond REQ-LIVE-SET-STRUCTURE-009 clause 3; other sample files, or stored length or rate differing from the file; RelativePathType 2 to 7",
+   "any device in a device list (every device list of the fixtures is empty)",
+   "repeated or negative target Ids",
+   "list items without Id; list-item Id text other than digits, -1 and a",
+   "items of Tracks of a known kind that is not a track; items of other lists of unknown or unaccepted kind",
+   "output routing other than AudioOut/Main, or none, on audio, MIDI or return tracks",
+   "group tracks beyond REQ-LIVE-SET-STRUCTURE-002 clause 4",
+   "value elements without Value other than NextPointeeId; repeated children ending in KeyMidi; unknown attributes",
+   "whether a track envelope whose target exists is kept",
+   "documents that break more than one rule"
+  ],
+  "behavior": [
+   "what a save writes (REQ-LIVE-SET-STRUCTURE-011, 017)",
+   "device placement rules and device content (REQ-LIVE-SET-STRUCTURE-012)",
+   "refusal presentation and state after a refusal",
+   "displayed track names, EffectiveName derivation and colour display",
+   "which scene a session slot belongs to; scene tempo, time signature and launching",
+   "clip timing and loop fields, playback and audio",
+   "which new Id an absent target element receives",
+   "missing-sample report, search and playback",
+   "which return a send feeds and what SendPreBool selects",
+   "meaning of Type; use of LastModDate, OriginalFileSize and OriginalCrc on opening",
+   "undo, edits after opening, cancellation and timing"
+  ]
+ },
+ "fixture_origin": "generated for this release from the invented minimal set T11-MIN and one generated sine-tone WAV; each other fixture is T11-MIN with one stated change; no shipped file content, audio, schema content or program code",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RV1-01 medium: 15 opening cases rested on the open device-placement question through T11-MIN's two devices; narrowed: devices removed from every fixture (NextPointeeId 67; case 025 uses 66; case 022 targets 67, 68 and NextPointeeId 69); assumption withdrawn; any device now has no expectation",
+   "RV1-02 low: the repeated-child refusal named every non-list element, which refused T11-MIN's KeyTrack/Notes array; arrays added as an element form; rule limited to compound elements; no case changed",
+   "RV1-03 low: REQ-009 clause 2 stated Path use for codes 2 to 7 without a case while relocation and the missing-file search are outside the release; narrowed to codes 0 and 1; no case affected",
+   "RV1-04 low: the element status table required a MIDI or audio track; restated as no audio, MIDI or group track there, in REQ-002 clause 2 and in the manifest scope; no case affected",
+   "RV1-05 low: keyed state values (send_texts, automated_parameters) now judged only for the listed track numbers; no expectation changed",
+   "RV1-06 editorial: payload status set to reviewed release; review record added; manifest fields filled",
+   "RV1-07 info: every traced open route runs the structural checks, and no read step adds freeze slots; confirmed with the stated remaining inference",
+   "RV1-08 info: every fixture expected to open passes the structural checker; each refused fixture fails only for its tested reason"
+  ],
+  "disposition": "Approved with listed narrowing and corrections, only for the explicit partial clauses; 34 cases; expectations documented, static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": null,
+ "entrypoint": "README.md",
+ "case_count": 34,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "f62984fa39423716717094d870c10d355f41dbaafa391d0047d98223efeffb46",
+   "bytes": 1483
+  },
+  {
+   "path": "README.md",
+   "sha256": "45299cdbb039c17039708cfc03deec4e69c20afb7dcb073b55f918677885396e",
+   "bytes": 1897
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "a6476560d05bfd75fa21bd558d3b808f10ae345f28ad290655a5e3034254e411",
+   "bytes": 10649
+  },
+  {
+   "path": "cases.json",
+   "sha256": "929fc68ad1f31788446a1e6cd9058ae41ad41da21c4c60f66cb27cc0ef12c408",
+   "bytes": 22269
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-002.als",
+   "sha256": "d251da41b3dd3502765d89a7e81018bb18f441c35b1e4003b75e4af61980e63c",
+   "bytes": 1140
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-003.als",
+   "sha256": "a458d34a71ed9b03537eb8c7d514ba05088f087c1886566813098e7f11350109",
+   "bytes": 1136
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-004.als",
+   "sha256": "a81361e6128d99a21a20247e55a822b735853c0a3cf85b4469c10cc4df5f15af",
+   "bytes": 1474
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-005.als",
+   "sha256": "508551a7a45612f347624c4c10b58752170a0a4dcf5cc4bcac459b9c5fce7329",
+   "bytes": 2389
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-006.als",
+   "sha256": "0e16ab8c1a9c8a5ea41b82838dd6db7f3af25686ceab21372f67e04601e367c6",
+   "bytes": 2502
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-007.als",
+   "sha256": "5c931961c6c99afd861b210be4cb975a6161960b20a751026e12c9de9a5812ad",
+   "bytes": 2498
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-008.als",
+   "sha256": "0f0654673336a2e91dd932ce6b45731eec998129f1e787b5e2392e22df1c721a",
+   "bytes": 2492
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-009.als",
+   "sha256": "4d781e4057eef45d8e7fe4cabb637a567c963883de5e184d73c44abec8ef5423",
+   "bytes": 2490
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-010.als",
+   "sha256": "6cae62118624551fae16f8f75c8a3de38fd4c67e0ab5499cdeea236d57841f67",
+   "bytes": 2493
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-011.als",
+   "sha256": "6dabc3e8b1a562c4a4501dafc81d9af0c111e05838f057e4e37a0729aca3261f",
+   "bytes": 2494
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-012.als",
+   "sha256": "8408f2e217b5a218066d5f7bd9cb45de683a3df753995eef3ac2c4f963b69c26",
+   "bytes": 2495
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-013.als",
+   "sha256": "b4293aee8d57a79694adf9ee6dce1c3f0ab053de0e8b78216f850a3d3319fd64",
+   "bytes": 2493
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-014.als",
+   "sha256": "f78487faefb59e76986a9fd93be0226df6bf1ebe694a939617bdea5f73260926",
+   "bytes": 2490
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-015.als",
+   "sha256": "a40fff862eb93a3cf1ec24630c28318a5b402667799b7cb035ff1c13cbcec068",
+   "bytes": 2222
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-016.als",
+   "sha256": "dec936c2f99cd8c7a4aeb53f77cad040806b32a791511970767d2fd04bafa228",
+   "bytes": 2417
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-017.als",
+   "sha256": "01163f826c575712b854731e159da928cca55e4e6df4009a066bf0213ddfbd61",
+   "bytes": 2492
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-018.als",
+   "sha256": "c93780991bfe7252bc4f5dae8dae1929053ff133ef06b6b60eae839252188867",
+   "bytes": 2493
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-019.als",
+   "sha256": "5f2fa82df4caae3fe8f817c47e9f77c010b5120f83d6d4b8a113ee9000d87632",
+   "bytes": 2493
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-020.als",
+   "sha256": "b2515d65b69060d843b795bff9d4861a2d0d606242a24e842c37f7670bcb5af0",
+   "bytes": 2500
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-021.als",
+   "sha256": "512133196269d5816549e35b49046c49e83e68872d5c686308fd8d7c262a01ad",
+   "bytes": 2482
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-022.als",
+   "sha256": "6eaed875e3788b8f37557bb0515efd3252b08b84fca27adbf473501cfd4aa3d1",
+   "bytes": 2514
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-023.als",
+   "sha256": "16e881aff3d724f757b60ebac416d06d4584d55078a3422cff7cc971b574c152",
+   "bytes": 2494
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-024.als",
+   "sha256": "e5107dc06092c4472ffb89114abab9b33b4678d9c0d2ad532c6c665229556122",
+   "bytes": 2489
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-025.als",
+   "sha256": "d92cb78fee5d0c777c3e048a68358f184b7c6bbc9c81dad7b79b8e10be1f4aa3",
+   "bytes": 2492
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-026.als",
+   "sha256": "fd8102ac376e6d2c5dd2713d0840fb63d276f9f912e080ff88f13f626e6c2169",
+   "bytes": 2482
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-027.als",
+   "sha256": "7df784b78a251fb27338ba90e78df030245d3105f5289373d068c8698e2aa19d",
+   "bytes": 2492
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-028.als",
+   "sha256": "4047fdbb3b234de60a143649e93dd785af2f60c103a85f8ee2831437e34e6c3e",
+   "bytes": 2491
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-029.als",
+   "sha256": "74b412674999427086fc9b970d6557fb7a1904c0536d915fa2d971a8a3b2f0c2",
+   "bytes": 2491
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-030.als",
+   "sha256": "1b1e7d7161e29d6aa17e3c44013bc3ebeea68657e5961edaf2ec087626739e5f",
+   "bytes": 2493
+  },
+  {
+   "path": "fixtures/LIVE-SET-STRUCTURE-033.als",
+   "sha256": "6a56fb2e67cb6f3df1f85de1c39ca8e78564d37c1b9743c0df88a35388f290a6",
+   "bytes": 2500
+  },
+  {
+   "path": "fixtures/Samples/T11-tone.wav",
+   "sha256": "cf8ebf90f4281e7c13e694f7f7ed8c51670ad9d25ad5e43a9cca01b712445ef0",
+   "bytes": 176444
+  },
+  {
+   "path": "fixtures/T11-MIN.als",
+   "sha256": "df3867eede9871cecf7aac7b5d25d77169bed215db0dc51053dcd21b2f14d2f6",
+   "bytes": 2492
+  },
+  {
+   "path": "fixtures/T11-MIN.xml",
+   "sha256": "c391d00f9d211452e88c95cc4ffc9cf9a1fefaa1136b9e949affa2b32d61e5cc",
+   "bytes": 24429
+  },
+  {
+   "path": "spec.md",
+   "sha256": "48630c5006817b31f9a1a56486f83dd2e1636e70191caf0b6005fc31c2f1ac2e",
+   "bytes": 29798
+  }
+ ]
+}

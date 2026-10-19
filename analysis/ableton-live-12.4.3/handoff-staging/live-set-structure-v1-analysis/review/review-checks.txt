@@ -1,0 +1,104 @@
+live-set-structure-v1 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B from any directory.
+Export copy: session scratchpad export/hd/live-set-structure-v1 (cp -a of the staging dir after all edits);
+export/hd-audit is the same copy without fixtures/LIVE-SET-STRUCTURE-014.als, for fixture_audit.py.
+Draft manifest before review 0582db40...1fff53737 (equals the plan page). Pre-review copies of the payload and of
+the analysis dir were kept in the session scratchpad (lss-orig/); diffs: payload-changes.diff, tooling-changes.diff.
+
+Evidence identity. r2/t11-structure-v1/manifest.json: all 74 listed files match. Live.arm64 3a99ceea...d1c383cfad,
+x86_64 slice 1bae9a97...be999b0, schema 12.0_12402.txt b7c9d4c7...789d0f299 (= t11 inputs). Retained corpus
+excerpts match their corpus lines (excerpt_check.py): a1a2 39 + 11 x86, tracks 48 + 6, pointee 55, fileref 47 + 3.
+
+(b) A1, open path (re-read, both slices). 0x1002e6e00 (ALiveApp +0x840): Note-set types to import, else 0x1018536d4
+-> general reader 0x10148389c: first two bytes 1f 8b -> decompress and recurse; "<?" -> XML reader 0x101484108
+(other heads: binary readers, outside the preconditions). 0x101484108: context 0x101478258 -> 0x10151e0d8 (+0x2c = 1
+on both branches; x86 0x10150cb5d/0x10150cb7f movb $1), parse, both class branches reach LAB_1014842b8 ->
+load step 0x101486fe4(.., ctx) or the non-returning class error. x86 load step 0x10147e150: +0xc8, loader +0x140;
+0x1015084b0(ctx) = movzbl 0x2c(%rdi); if set -> root +0xd0; then 0x10147e25c..0x10147e26d call walk 0x10147e2e0
+unconditionally. Walk: members via descriptor (+0x60, +0x40 filter 0x1011ec810, +0x20 child), recurse, then
+tail-jump obj->+0x100 (0x10147e37a..0x10147e39b). Only 0x1015192b8 clears +0x2c (callers 0x101546518, 0x101547ef4:
+undo-history stream). Generic member loader 0x101487310: iterates the document's child nodes; for a compound member
+calls +0xc8, +0x140 and, when 0x1015192c0(ctx), +0xd0 - so member post-load runs only for members present (bears on
+cases 017, 030). Holds; remaining inference (menu/OS open events use the traced entries) unchanged.
+(b) A2, freeze slots. vtable_scan.py over all 2,814 document-object vtables (slot +0x140 = 0x101487310): distinct
++0x100 overrides are exactly 0x1026fc558 (ATimeable* x9), 0x1026969d8 (songs x8), 0x102daaedc (Simpler holders x8),
+0x1025cb248 (player tracks x7), 0x1024050d8, 0x10245194c; every sequencer, chain and clip-slot class keeps the base
+no-op 0x101487c3c (vtable-scan.txt) - matches tracks/trace.txt item 2. Sequencer post-load +0xd0 = 0x10248857c
+(ASequencerDevice, AAudioSequencer, AMidiSequencer), chain post-loads 0x1023c6d80/0x1024c57a0/0x1025ae00c, main and
+cue track post-loads 0x102577164/0x1025ceb90, base 0x101486fa8: reach.py (unchanged, depth 6) reaches none of the
+slot-insertion functions or callers (0x10265d22c, 0x10265e1d8, 0x1025cde68, 0x1025cdf38, 0x1023bfed4, 0x1025776b4,
+0x10257770c, 0x10268dfc8, 0x10267d264, 0x10267bfc0) and no virtual call at +0x2e0/+0x2e8/+0x2f8 (reach-postload.txt).
+These roots were not in the author's reach run; they close the walk-order gap (freeze sequencer visited before the
+track check). The generic list append 0x10156d360 is reached from the song post-load only through 0x10271d824
+(send holders). The one other ClipSlotList reader among append callers, 0x10265d640 (caller 0x10265ec84), is not
+reached from any load root. Player check arm64 0x1025cb248 / x86 0x1026f1720: freeze = 0x10270aaa0 (non-null by
+construction, chain ctors 0x1027df560 +0x90 via 0x1027e3118, 0x10291f76c), +0x300 vs 0x10265d5e0 -> "Slot count
+mismatch." via the corrupt-document routine. Holds; remaining inference (indirect calls) unchanged.
+Song walk x86 0x1027b1a00: X = 0x10288b600 (APlayerTrack or IsGroup); empty or no X -> 0x106135387; X after non-X
+-> 0x1061353a0. So the rule is "no audio, MIDI or group track" (c).
+Other re-derivations: pointee post-load x86 0x101525600 (Id +0x24 == 0 and preset flag clear -> error);
+NextPointeeId x86 0x101533b4e..0x101533b57 (max >= next -> 0x10153400e "too low"); appended holders 0x10271d824 ->
+0x102659a78 -> holder ctor 0x102658f54 (Send 0.0003162277571 per research mixer-values s9-0002), so case 021 rests on
+construction evidence, not on the excluded REQ-MIXER-VALUES-003 new-holder clause; text by released mixer-values-v1
+REQ-006 (-inf dB at or below -69.7 dB). Sample fallback (fileref trace c.): types 0, 1, 2, 6 use Path with identity
+zeroed; 2, 5, 7 have an untraced library relocation before it -> REQ-009 clause 2 narrowed to 0 and 1 (RV1-03).
+
+(a) Device placement. T11-MIN held UltraAnalog (target 67) and Amp (target 68) directly in track chains; A6 open in
+Q-022; 15 opening cases listed it; no case judged devices. Narrowed: lss_cases.device_free empties both lists and
+sets NextPointeeId 67 (T11-MIN.xml diff vs the t11 packet: exactly those 21 lines). Shipped sets have empty device
+lists on 4 MIDI and 21 audio tracks (out/documents.json chain_devices), so the form is documented. Case 025 ->
+NextPointeeId 66 (= largest target Id); case 022 holder targets 67, 68, NextPointeeId 69. 0 cases now list an
+assumption about devices. Note for the coordinator: staged warp-markers-v2 fixtures (base.xml and variants) also
+place UltraAnalog in a track chain - same A6 dependence.
+
+Fixture validity (brief addendum). T11 checker unchanged (schema_check.py a3892c41..., fixture_audit.py 61a5ce1b...,
+= t11 manifest), on the export:
+- schema_check.py CLI, every fixtures/*.als and T11-MIN.xml (schema-check-export.jsonl): deviations only
+  006 "unknown-class LiveSet/Tracks/* FooTrack" and 012 "unknown-element MidiTrack Foo" (both tested); 014 stops the
+  checker (TypeError in rules(): <NextPointeeId />).
+- t11_checker_summary.py (measure/refusals/unknowns imported unchanged; 014 probe with Value 67 restored):
+  every opens fixture: no refusal, no unknown shape. Refused fixtures: 002-004 "no audio, MIDI or group track";
+  005 "player track after a return track" + unknown "SendsPre vs R" (R = 0; SendPreBool count 1 = return tracks 1,
+  the contract's measure; ruling accepted); 009 duplicate Id; 010 negative Id; 017, 018 freeze count; 022 holders;
+  025, 026 NextPointeeId; 028, 029 pointee Id 0/none; 006, 007, 011, 013, 014 none (shapes the checker does not
+  evaluate: unknown Tracks class (as deviation), grouping, lettered Id, repeated member, Value-less element).
+- fixture_audit.py on export/hd-audit (t11-fixture-audit-export.json): 31 Live Sets, 13 refused (the 13
+  checker-measured refusal fixtures), 0 contradicted, 13 "not isolating" in its released-fixture sense (the rule
+  under test refuses), 1 with an unknown shape (005, as above).
+- review_checks.py (own judge, independent of build_lss/extra()): exactly one violation per refused fixture, the
+  tested one; none for T11-MIN and every opens fixture; no exclusion hit in any fixture. variant-diffs.txt: each
+  variant differs from T11-MIN only by its stated change.
+
+Expectations. review_checks.py on the export (review-checks-export.json): 34 of 34 agree (outcomes, listed state
+keys, identity 176444 / 47018 / 44100 / 44100; CRC rule 65256 for 123456789; x-crc.json x86 result 47018 on the same
+16,384-byte prefix SHA). Keyed state values judged by listed track (RV1-05). Cross-release spot check of T11-MIN
+(automation-envelopes 007, midi-note-storage 001/002/008, clip-launch text, warp-marker text, transport text): none.
+
+(e) REQ-018 element status table: cites only REQ-LIVE-SET-STRUCTURE clauses; F10 rows marked Write; the Tracks row
+restated (RV1-04); the device row now "empty, Write".
+(d) LSS-004/005/008 corrections (release 005/003/018) isolate as described above.
+
+Package (export). sha256sum -c of the 38 listed files: all OK (sha256sum-export.txt); no symlinks; inventory equals
+the directory; links README 5, spec 6, REVIEW 2, AGENTS 0, all resolve inside the package; every case input exists;
+31 set fixtures distinct, header 1f8b0800 00000000 0213, one member, trailer valid, nothing after, ASCII, LF, final
+newline; reading copy = decoded T11-MIN. Own scan: decompil (AGENTS forbidden-inputs list), Pointee (target element
+name), probe (comparison obligation), x86 (extracted-execution provenance), schema (manifest/cases schema keys and
+"no ... schema content"); all benign. build_lss.py verify on the export (author-verify-after-review.json): no hash,
+inventory, link, input or deny-list problem. build_lss.py seal after the edits: problems {} (rebuild reproduces
+every staged file).
+
+Payload edits: apply_review_edits.py tooling (lss_cases.py, build_lss.py), build_lss.py build, apply_review_edits.py
+text / text-fixups / text-fixups-2 (spec, README, AGENTS, cases status), REVIEW.md written, finalize_manifest.py
+(release status, date, review fields), build_lss.py seal (inventory re-hash, author-validation.json,
+traceability.json regenerated; pre-review author validation kept as author-validation-before-review.json).
+Final: 34 cases (18 refused, 9 positive, 3 missing-element, 3 repair, 1 computed); assumptions list-item-ids 3
+cases, sample-folder 1. Final manifest SHA-256: b6d9ef7837bcbc0aa47bff6fc3acd7d51fc6da1e407981f712b1fb130e7a598d.
+
+For the spec author (draft SPEC-LIVE-SET-STRUCTURE, outside this package): (1) T11-MIN as released has empty device
+lists, NextPointeeId 67, targets 1-66; LSS-020 must use 66 and LSS-014 targets 67, 68 with NextPointeeId 69;
+REQ-018's basis is no longer S-cond A6; LSS-037 needs its own device variant; (2) REQ-001 has no array form
+(type -3) and its duplicate-member refusal must name compounds only; (3) REQ-009's S clause on types 2, 3, 5, 6, 7
+should be marked dependent on the U relocation/search (F9); (4) REQ-018 table row "at least one MidiTrack or
+AudioTrack" -> "audio, MIDI or group track"; (5) REQ-013's appended-send value should cite the holder construction
+evidence, not REQ-MIXER-VALUES-003 (that clause is unreleased in mixer-values-v1); F1-F12 of the plan stand.
+Not copied to handoff/; plan page, spec pages, indexes, coverage and log untouched; no git operation.

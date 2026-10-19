@@ -9,6 +9,24 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Live Set structure handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [live-set-structure-v1](../../handoff/live-set-structure-v1/README.md), approved with narrowing and corrections by a separate review agent ([review record](../../handoff/live-set-structure-v1/REVIEW.md)). It has 34 cases.
+
+The review made these changes:
+- **Device placement:** devices are removed from T11-MIN and every fixture, so no case depends on device placement.
+- **Ids:** `NextPointeeId` is now 67; case 025 uses 66, and case 022 uses targets 67 and 68.
+- **Rules held:** the open-path rule and the freeze-slot rule hold, with the stated inference.
+- **Track rule:** it reads "no audio, MIDI or group track".
+- **Path fallback:** limited to codes 0 and 1.
+
+For the spec author:
+- make T11-MIN device-free (LSS-020 becomes 66; LSS-014 becomes 67, 68 and 69);
+- add arrays to REQ-001;
+- add codes 2 to 7 to REQ-009;
+- add the track row to REQ-018;
+- cite a source for the added send's value.
+
 ## Decision and boundary
 
 Stage a finite first candidate, live-set-structure-v1, from

@@ -2222,3 +2222,13 @@ conformance under ADR 0004. A separate review agent approved it with narrowing:
 automation application holds under the default settings only, the main track's
 one-event envelopes are exempt, and the timing sentence is moved out of the
 released clause. The review confirmed the spec errors the author found.
+
+## [2026-10-18] release | live-set-structure-v1
+
+[live-set-structure-v1](../handoff/live-set-structure-v1/README.md) is the first
+release of SPEC-LIVE-SET-STRUCTURE, with 34 cases. A separate review agent approved
+it with narrowing. Devices are removed from T11-MIN and every fixture, because
+device placement (REQ-012, Q-022) is not established. The track rule reads "no
+audio, MIDI or group track", and the path fallback is limited to codes 0 and 1. The
+open-path and freeze-slot rules held under review. The staged warp-markers-v2 puts
+a device on a track, and its reviewer has been told to remove it.

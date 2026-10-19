@@ -1,0 +1,212 @@
+--- live-set-structure-v1-analysis/lss_cases.py	2026-10-18 19:49:39.501711816 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/live-set-structure-v1-analysis/lss_cases.py	2026-10-18 22:38:54.871234607 -0700
+@@ -48,6 +48,15 @@
+                                      "SampleRef/FileRef")
+ 
+ 
++def device_free(r):
++    """Review narrowing (device placement is an open question): both device lists of T11-MIN are emptied.
++    Their two targets (Ids 67 and 68) go with them, and NextPointeeId becomes 67, one more than the largest
++    remaining target Id (66), as REQ-015 clause 1 describes a written set."""
++    for tag in ("MidiTrack", "AudioTrack"):
++        clear(trk(r, tag).find("DeviceChain/DeviceChain/Devices"))
++    ls(r).find("NextPointeeId").set("Value", "67")
++
++
+ def e_return_first(r):
+     t = ls(r).find("Tracks")
+     ret = t.find("ReturnTrack")
+@@ -58,9 +67,9 @@
+ 
+ 
+ def e_second_holder(r):
+-    import make_fixture as mf  # T11-MIN's own rules: next target Ids 69, 70; NextPointeeId 71
++    import make_fixture as mf  # T11-MIN's own rules: next target Ids 67, 68; NextPointeeId 69
+     ids = mf.Ids()
+-    ids.n = 68
++    ids.n = 66
+     send, _ = mf.param("Send", "0.0003162277571", ids, ("0.0003162277571", "1"))
+     lines = []
+     mf.render(mf.el("TrackSendHolder", {"Id": "1"}, send, mf.v("EnabledByUser", "true")), 0, lines)
+@@ -134,7 +143,7 @@
+ 
+ 
+ def case(n, src, purpose, kind, reqs, edit, expected, ev, change="as written", setup="with-samples",
+-         action="open", assumptions=(DP,), prov="static", check=None):
++         action="open", assumptions=(), prov="static", check=None):
+     a = {DP: "A6", LI: "A5", SF: "A4"}
+     return {"n": n, "src": src, "purpose": purpose, "kind": kind, "reqs": reqs, "edit": edit, "expected": expected,
+             "ev": ev, "change": change, "setup": setup, "action": action, "assumptions": list(assumptions),
+@@ -146,7 +155,7 @@
+          ["001", "002", "003", "004", "005", "006", "007", "008", "013", "015", "016", "018"], None,
+          opens(**T11_STATE), ["fixture", "schema-check", "survey", "walk-tracks", "walk-slots", "holders", "nextpointee"],
+          "narrowed: track names, colours and devices are not judged (displayed name U; REQ-012 unreleased); "
+-         "basis A6 only (A4 is not needed to open; its check is case 031)", prov="doc-static"),
++         "basis A6 only (A4 is not needed to open; its check is case 031); review: the devices are removed from T11-MIN and every fixture, so no case rests on A6 (open in Q-022)", prov="doc-static"),
+     case(2, "LSS-002", "Tracks emptied, and the SendPreBool removed", "refusal", ["002"], e_empty_tracks, REF,
+          ["walk-tracks", "open-path"], check={"refusals": [R002]}, assumptions=()),
+     case(3, "LSS-005", "Tracks element removed, and the SendPreBool removed", "refusal", ["001", "002"],
+@@ -209,8 +218,8 @@
+     case(21, "LSS-013", "MIDI track's Sends emptied", "repair", ["013"],
+          lambda r: clear(trk(r, "MidiTrack").find("DeviceChain/Mixer/Sends")),
+          opens(send_counts=[1, 1, 1], send_texts={"1": ["-inf dB"]}), ["holders", "new-send"]),
+-    case(22, "LSS-014", "Second send holder on the audio track, written like the first, with target Ids 69 and 70 "
+-         "and NextPointeeId 71", "refusal", ["013"], e_second_holder, REF, ["holders"],
++    case(22, "LSS-014", "Second send holder on the audio track, written like the first, with target Ids 67 and 68 "
++         "and NextPointeeId 69", "refusal", ["013"], e_second_holder, REF, ["holders"],
+          "the holder's two targets get new Ids and NextPointeeId is raised, by T11-MIN's rules",
+          check={"refusals": [R013]}, assumptions=()),
+     case(23, "LSS-028", "MIDI track envelope's PointeeId changed to 999999", "repair", ["014"],
+@@ -218,8 +227,9 @@
+          "narrowed: the save and reopen part (S-cond A7) is not released"),
+     case(24, "new (REQ-014 PointeeId 0 clause)", "MIDI track envelope's PointeeId changed to 0", "repair", ["014"],
+          e_set(midi_env_target, "Value", "0"), opens(automated_parameters={"1": 0}), ["dangling"], "new case"),
+-    case(25, "LSS-020", "NextPointeeId 68", "refusal", ["015"],
+-         e_set(lambda r: ls(r).find("NextPointeeId"), "Value", "68"), REF, ["nextpointee"],
++    case(25, "LSS-020", "NextPointeeId 66, equal to the largest target Id", "refusal", ["015"],
++         e_set(lambda r: ls(r).find("NextPointeeId"), "Value", "66"), REF, ["nextpointee"],
++         "review: 66, the largest target Id once the devices are removed (68 in the draft)",
+          check={"refusals": [R015n]}, assumptions=()),
+     case(26, "LSS-021", "NextPointeeId removed", "refusal", ["015"], lambda r: drop(ls(r), "NextPointeeId"), REF,
+          ["nextpointee"], check={"refusals": [R015n]}, assumptions=()),
+@@ -236,7 +246,7 @@
+          opens(track_kinds=KINDS), ["registration"]),
+     case(31, "LSS-032", "T11-MIN opened from a new folder with its Samples folder", "positive", ["008", "009"], None,
+          opens(audio_clip_file="Samples/T11-tone.wav"), ["resolution", "fileref-fields"],
+-         assumptions=(DP, SF)),
++         assumptions=(SF,)),
+     case(32, "LSS-033", "T11-MIN opened without its Samples folder", "positive", ["009"], None,
+          opens(session_clips=CLIPS), ["resolution"],
+          "narrowed: the missing-file report is U; only opening and the kept clip are judged; the sample is "
+@@ -265,37 +275,35 @@
+              "reference output",
+ }
+ ASSUMPTIONS = {
+-    DP: "The original accepts an Analog instrument (UltraAnalog) as the only device in a MIDI track's device "
+-        "list and an Amp effect (Amp) as the only device in an audio track's device list, in T11-MIN's form",
+     LI: "The list-item Id rule (negative, lettered or repeated Ids refused) applies to every list of an opened "
+         "Live Set, Tracks included",
+     SF: "When a set is opened from a file, a relative sample path of type 0 or 1 is joined to the folder that "
+         "holds the set file",
+ }
+ SCOPES = {
+-    "REQ-LIVE-SET-STRUCTURE-001": "Element forms; children matched by name; absence not itself a refusal; unknown child skipped; refusals: NextPointeeId without Value, a repeated child of a non-list element, an unknown item name in Tracks",
+-    "REQ-LIVE-SET-STRUCTURE-002": "Tracks in display order; refused without a player track or with a player track after a return; TrackGroupId other than -1 refused in a set without group tracks",
++    "REQ-LIVE-SET-STRUCTURE-001": "Element forms (compound, value, list, array); children matched by name; absence not itself a refusal; unknown child skipped; refusals: NextPointeeId without Value, a repeated child of a compound element, an unknown item name in Tracks",
++    "REQ-LIVE-SET-STRUCTURE-002": "Tracks in display order; refused without an audio, MIDI or group track, or with one of those after a return track; TrackGroupId other than -1 refused in a set without group tracks",
+     "REQ-LIVE-SET-STRUCTURE-003": "Track Id form; Name and Color elements written",
+     "REQ-LIVE-SET-STRUCTURE-004": "Main and cue track placement; tempo, time signature and crossfader locations; absent main or cue track replaced by a new one (tempo 120)",
+     "REQ-LIVE-SET-STRUCTURE-005": "DeviceChain children per track kind; mixer and device list locations; AudioOut/Main in the fixtures",
+     "REQ-LIVE-SET-STRUCTURE-006": "Scenes, session and freeze slots, slot form; Ids do not order; freeze slot count must equal session slot count; scene fields written",
+     "REQ-LIVE-SET-STRUCTURE-007": "Clip element in the slot, kind per track, Id and Time attributes, Name held as read",
+     "REQ-LIVE-SET-STRUCTURE-008": "SampleRef and FileRef children; RelativePathType 0 and 1; Path and Type; size, checksum, frame count and rate rules",
+-    "REQ-LIVE-SET-STRUCTURE-009": "Type 0 and 1 resolution against the set's folder (assumption); fallback to Path for 0, 1, 2, 6 and not for 3, 5, 7; a missing sample does not refuse",
++    "REQ-LIVE-SET-STRUCTURE-009": "Type 0 and 1 resolution against the set's folder (assumption); fallback to Path for 0 and 1; a missing sample does not refuse",
+     "REQ-LIVE-SET-STRUCTURE-010": "Stored length and rate equal the file's; fixture sample form only",
+     "REQ-LIVE-SET-STRUCTURE-013": "One send holder per return; SendsPre form; fewer holders added at -70 dB; more than R refused",
+     "REQ-LIVE-SET-STRUCTURE-014": "Envelope locations; envelopes with PointeeId 0 or naming no target removed on opening",
+     "REQ-LIVE-SET-STRUCTURE-015": "Target Id form; absent NextPointeeId reads 1; Id 0 or no Id refused; NextPointeeId not above the largest Id refused; absent target element tolerated",
+     "REQ-LIVE-SET-STRUCTURE-016": "List-item Id form; negative, lettered or repeated Ids refused (assumption); Ids do not order or link",
+-    "REQ-LIVE-SET-STRUCTURE-018": "Reference minimal set T11-MIN opens with the listed content (assumption); element status table",
++    "REQ-LIVE-SET-STRUCTURE-018": "Reference minimal set T11-MIN, whose device lists are empty, opens with the listed content; element status table",
+ }
+ EXCLUSIONS = {
+     "inputs_without_expectation": [
+         "envelopes, containers and format versions other than the preconditions'",
+         "session slot count different from scene count; slots with no scenes or no Scenes element; two clips in a slot or a clip of the other track kind",
+         "SendsPre length different from the number of return tracks",
+-        "missing samples beyond REQ-LIVE-SET-STRUCTURE-009 clause 3; other sample files, or stored length or rate differing from the file; RelativePathType 2 to 7 beyond whether Path is used",
+-        "device classes and positions other than T11-MIN's two",
++        "missing samples beyond REQ-LIVE-SET-STRUCTURE-009 clause 3; other sample files, or stored length or rate differing from the file; RelativePathType 2 to 7",
++        "any device in a device list (every device list of the fixtures is empty)",
+         "repeated or negative target Ids",
+         "list items without Id; list-item Id text other than digits, -1 and a",
+         "items of Tracks of a known kind that is not a track; items of other lists of unknown or unaccepted kind",
+@@ -322,7 +330,7 @@
+ 
+ # ---- analyst-only traceability (relative to evidence_root unless a path starts with wiki/ or r2/) ----
+ E = {
+-    "fixture": "make_fixture.py; out/schema-check-fixture.jsonl (no deviation; all structure measurements as required)",
++    "fixture": "make_fixture.py; out/schema-check-fixture.jsonl (no deviation; all structure measurements as required); review: device lists emptied (lss_cases.device_free); shipped sets hold empty device lists on 4 MIDI and 21 audio tracks (out/documents.json chain_devices)",
+     "schema-check": "schema_check.py; out/schema-check-als.jsonl, out/schema-check-alc.jsonl (375 documents: field, list and order form)",
+     "survey": "t11_survey.py; out/documents.json (track kinds and order, track and list Ids, 39 track Ids equal to pointee Ids, chain children, routing, slots, scenes, holders, SendsPre)",
+     "reader-n1": "wiki/research/transport-state-native.md#how-a-set-reaches-the-transport-objects: 0x1015299e0 start element, 0x10152adb0 -> 0x10152b45c required Value for type -4 elements, 0x101472624 duplicate member (n1-0007); r2/n1-transport-state-v1/notes.md round 2",
+@@ -337,7 +345,7 @@
+     "song-ctor": "traces/tracks/trace.txt item 6: ASong ctor 0x10266f738 creates cue and main tracks and empty SendsPre, Scenes, Tracks",
+     "tempo-default": "wiki/specs/transport-state.md REQ-TRANSPORT-STATE-007 (tempo 120 for a new main track's tempo); wiki/research/transport-state-native.md",
+     "holders": "traces/tracks/trace.txt item 5; x86 0x1027c1640 (traces/tracks/x86-1027c1640.txt 1027c18a2-1027c18f3): R trailing returns, fewer appended, more refused",
+-    "new-send": "wiki/specs/mixer-values.md REQ-MIXER-VALUES-003 (new send 0.0003162277571); handoff/mixer-values-v1/spec.md REQ-MIXER-VALUES-006 (-inf dB at or below -69.7 dB)",
++    "new-send": "wiki/research/mixer-values.md#constructor-defaults-and-ranges (send holder 0x102658f54: Send 0.0003162277571, s9-0002); appended holders 0x10271d824 -> 0x102659a78 -> 0x102658f54 (reviewer check, review/review-checks.txt); draft wiki/specs/mixer-values.md REQ-MIXER-VALUES-003 (unreleased there); handoff/mixer-values-v1/spec.md REQ-MIXER-VALUES-006 (-inf dB at or below -69.7 dB)",
+     "pointee-postload": "traces/pointee/trace.txt 'Pointee post-load hook' 0x101535954; x86 0x101525600 (traces/pointee/x86-101525600-pointee-postload.txt)",
+     "preset-flag": "traces/a1a2/trace.txt preset exemption off on the open path (A3 settled)",
+     "nextpointee": "traces/pointee/trace.txt 'Document post-load pointee check' 0x1015441a8 steps 1-2; x86 0x101533ae0, 0x10153df90; ADocument ctor NextPointeeId 1",
+@@ -351,7 +359,7 @@
+ A = {
+     "A4": "SPEC-LIVE-SET-STRUCTURE A4: sample-path resolution context present on open, base = folder of the set file (open)",
+     "A5": "SPEC-LIVE-SET-STRUCTURE A5: every list read by the generic list loader (open)",
+-    "A6": "SPEC-LIVE-SET-STRUCTURE A6: bundled device classes accepted in track chains (open; listed in Q-022)",
++    "A6": "SPEC-LIVE-SET-STRUCTURE A6: bundled device classes accepted in track chains (open; listed in Q-022); not used: the review removed both devices from T11-MIN and every fixture",
+     "A1, A2, A3": "settled statically in revision 1; walk-dependent cases (REQ-002, 006) and the Id-0 case rest on them as S",
+ }
+ CLAUSES = {
+--- live-set-structure-v1-analysis/build_lss.py	2026-10-18 19:50:57.567004439 -0700
++++ /home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/live-set-structure-v1-analysis/build_lss.py	2026-10-18 22:38:54.871611770 -0700
+@@ -6,7 +6,8 @@
+   python3 -I build_lss.py verify <dir>   # hashes, inventory, links, deny-list of an exported copy
+ 
+ T11-MIN is generated by r2/t11-structure-v1/make_fixture.py (imported, unchanged): its build() tree,
+-render() text and wav() sample. The XML must equal that packet's fixtures/T11-MIN.xml byte for byte;
++render() text and wav() sample. The XML must equal that packet's fixtures/T11-MIN.xml byte for byte after the review's narrowing
++(lss_cases.device_free: both device lists emptied, NextPointeeId 67);
+ only the gzip header differs (OS byte 19, the shipped .als form graded by als-container-v1, instead of
+ Python's 255). Every other fixture is T11-MIN parsed, changed by one edit below and rendered with
+ make_fixture's layout. seal checks every fixture with the packet's checker (schema_check.check,
+@@ -75,9 +76,11 @@
+ 
+ def fixture_texts(sample):
+     """{published path: decoded XML} for T11-MIN and every edited variant."""
+-    base = t11_min(sample)
+-    root = ET.fromstring(base)
+-    assert text(root) == base, "ElementTree round trip changes T11-MIN"
++    packet = t11_min(sample)
++    root = ET.fromstring(packet)
++    assert text(root) == packet, "ElementTree round trip changes T11-MIN"
++    lc.device_free(root)  # review narrowing: no fixture holds a device
++    base = text(root)
+     out = {MIN_ALS: base}
+     for c in lc.CASES:
+         if c["edit"] is not None:
+@@ -103,7 +106,7 @@
+             "held-values-after-opening": "documented and static-derived expectations; reference execution not-run",
+             "sample-identity": "documented rule; extracted execution of the original's checksum routine; reference application not-run",
+             "file-format-written": "excluded (REQ-LIVE-SET-STRUCTURE-011, 017)",
+-            "devices": "excluded (REQ-LIVE-SET-STRUCTURE-012); two placements under a stated assumption",
++            "devices": "excluded (REQ-LIVE-SET-STRUCTURE-012); every device list of the fixtures is empty",
+             "ui": "excluded (refusal presentation)", "audio": "excluded", "timing": "excluded",
+         },
+         "expectation_provenance_labels": lc.PROVENANCE,
+@@ -198,9 +201,9 @@
+         dev, r = fa.measure(schema, root)
+     except TypeError:  # rules() reads NextPointeeId/@Value as int; measure the rest with it restored
+         fixed = copy.deepcopy(root)
+-        fixed.find("LiveSet/NextPointeeId").set("Value", "69")
++        fixed.find("LiveSet/NextPointeeId").set("Value", "67")
+         dev, r = fa.measure(schema, fixed)
+-        note = "checker rules() cannot read <NextPointeeId />; rules measured with Value 69 restored"
++        note = "checker rules() cannot read <NextPointeeId />; rules measured with Value 67 restored"
+     got = {"refusals": sorted(fa.refusals(r, dev)), "unknowns": sorted(fa.unknowns(r)),
+            "deviations": sorted(dev), "extra": extra(schema, root)}
+     return got, note
+@@ -286,8 +289,10 @@
+     if sample != (T11 / "fixtures/Samples/T11-tone.wav").read_bytes():
+         problems["sample"] = "differs from the t11 packet's generated sample"
+     texts = fixture_texts(sample)
+-    if texts[MIN_ALS] != (T11 / "fixtures/T11-MIN.xml").read_bytes():
+-        problems["T11-MIN"] = "decoded XML differs from the t11 packet's T11-MIN.xml"
++    packet = ET.fromstring((T11 / "fixtures/T11-MIN.xml").read_bytes())
++    lc.device_free(packet)
++    if texts[MIN_ALS] != text(packet):
++        problems["T11-MIN"] = "decoded XML differs from the t11 packet's T11-MIN.xml with the device lists emptied"
+     for rel, data in texts.items():  # determinism and container form of the staged files
+         raw = (STAGE / rel).read_bytes()
+         if raw != gz(data) or raw[:10] != GZ_HEADER or zlib.decompress(raw, 31) != data:
