@@ -2040,3 +2040,25 @@ No process exceeded 22 calls. The agent used a private bounds-checked loader
 copy, and one run failed when a rebuild replaced its binary; it produced no
 values. Questions Q-019 to 021, the spec index, feature map, coverage and gate
 table are updated.
+
+## [2026-10-18] decision | ADR 0004 target T1; roadmap revision 3
+
+The user asked whether spec generation was complete. It is not: three of 14
+families have no spec, and the other eleven each cover a narrow slice. The user
+accepted the recommendation to choose a bounded target ("proceed"), and asked
+for the plans to be updated.
+
+[ADR 0004](decisions/adr-0004-target-scope-t1.md) defines T1:
+- open and save Live Sets for the T1 fields;
+- offline-rendered playback: transport, Trigger launches, MIDI and unwarped
+  audio clips, the mixer, automation and the seven bundled devices;
+- MIDI control.
+
+It also sets the acceptance dimensions, which answers Q-001 for T1.
+[Roadmap revision 3](research/native-decompilation-roadmap.md#revision-3--t1-completion-plan-2026-10-18)
+plans workstreams T1.1 to T1.7, with gate rows added.
+
+Checks made for the plan: the seven device bundles are universal binaries with
+x86_64 slices, so their DSP can be run under the harness; bubblewrap is installed
+and proposed for the isolated implementation workspace (T1.6, which needs the
+user's decision).

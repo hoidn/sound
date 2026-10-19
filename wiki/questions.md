@@ -15,12 +15,13 @@ no experimental contradiction has been established yet.
 
 ## Q-001 Compatibility targets
 
-- State: open; owner: project maintainer.
+- State: resolved for target T1 ([ADR 0004](decisions/adr-0004-target-scope-t1.md)); open beyond T1; owner: project maintainer.
 - Affects: all features in the [feature map](specs/feature-map.md).
 - Gap: supported platform/version and behavior/audio/file/UI/timing acceptance
   criteria have not been selected.
 - Next action: define dimension-specific targets in the first spec review;
   choose numeric tolerances before accepting comparisons.
+- Progress 2026-10-18: ADR 0004 sets the T1 scope, the Linux x86_64 platform and the acceptance criteria for files, values, device audio, timing and whole-mix conformance. Numeric metrics for device audio are set per device spec.
 
 ## Q-002 Durable reference identity
 

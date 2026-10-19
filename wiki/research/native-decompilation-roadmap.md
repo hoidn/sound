@@ -606,3 +606,49 @@ immediately. Nothing here changes ADR 0002, the handoff boundary, evidence
 rules or the prohibition on implementation in this checkout. Export remains a
 deliverable, delivered as one measured job rather than as the gate for
 specification work.
+
+## Revision 3 — T1 completion plan (2026-10-18)
+
+Adopted with [ADR 0004](../decisions/adr-0004-target-scope-t1.md) (target T1) under
+[ADR 0003](../decisions/adr-0003-no-reference-execution.md): no whole-application
+reference run, and [extracted execution](extracted-execution.md) of original x86_64
+code as evidence class X. Revision 2's corpus, specification and handoff products stand.
+This revision plans only the gaps T1 needs. Progress is tracked in the
+[gate table](native-phase-execution.md#gate-ledger) under T1.
+
+### Workstreams
+
+| ID | Workstream | Output | Evidence route | Depends on |
+| --- | --- | --- | --- | --- |
+| T1.1 | Live Set structure | SPEC-LIVE-SET-STRUCTURE: tracks and types, clip slots, scenes, device chains of the seven devices, sends and returns, the main track, sample references, IDs | Shipped schema, shipped and authored sets, reader code (S); X where a reader is pure | — |
+| T1.2 | Device audio | Harness extension that loads a device bundle's x86_64 slice and renders audio. One spec per device: parameter meaning, signal behavior and reference renders | X (device bundles, universal binaries), static, documentation | Harness |
+| T1.3 | Playback core | SPEC-PLAYBACK-CORE covering three things. First, transport (play, stop, loop, tempo) and launch timing. Second, MIDI clip playback: clip start, end and loop, and note on and off positions. Third, audio clip playback with warping off | Engine and Live corpora (S); X for timing arithmetic; documented behavior (D) | Clip launch, notes, warp, transport specs |
+| T1.4 | Mixer and automation in playback | SPEC-MIX-GRAPH: summing order, where volume, pan and crossfade gains apply, sends and returns, mute and solo. Also when automation values are applied during playback | Engine corpus (S); X for gains already settled | Mixer values, automation specs |
+| T1.5 | Releases | Reviewed releases of the X-settled revisions and of the new T1 specs. One release per family per round | Release workflow, separate reviewer | T1.1 to T1.4 drafts |
+| T1.6 | Implementation workspace | A restricted workspace holding only released handoffs and neutral governance. Proposed mechanism: a bubblewrap (`bwrap`) sandbox launched by the user, with a fresh session inside | User decision and action | T1.5 first releases |
+| T1.7 | Candidate and verification | The candidate build, offline renderer and adapters. A comparison of candidate outputs with released expectations and X reference renders | Implementation and validation roles | T1.5, T1.6 |
+
+### Order
+
+T1.1 to T1.4 run in parallel. T1.2 starts with a feasibility gate: load one bundle,
+render through it, and compare with the static DSP model
+([Corpus DSP](corpus-dsp-static.md)). The other six devices follow only if that
+passes. T1.5 runs once each family has a reviewed-ready draft. T1.6 needs the
+user's decision on isolation. Analyst contexts never build the candidate.
+
+### Gates
+
+- **Specs.** Each T1 spec lists every T1-relevant clause as D, S, X or U. A U clause
+  that blocks T1 is either settled, or recorded as a T1 exclusion with its effect
+  on the target.
+- **Devices.** Reference renders retain the input, the parameters, the slice hash and
+  the import substitutions. Each device spec states its comparison metric.
+- **Done.** T1 is complete when every T1 family has a current release, the
+  candidate passes the released expectations under ADR 0004's criteria, and the
+  remaining T1 exclusions are listed with their impact.
+
+### Routing effect
+
+Before: revision 2 finished except Phase 4, which ADR 0003 cancelled; 14 releases.
+After: T1.1 to T1.4 start now; T1.5 follows; T1.6 waits for the user. Next items:
+T1.1, T1.2 feasibility, T1.3 and T1.4 in parallel.

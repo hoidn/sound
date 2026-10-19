@@ -37,6 +37,9 @@ a first reviewed handoff. The [execution plan](research/native-phase-execution.m
 records actual progress and resource limits. Current implementation and
 verification states remain unchanged. A [revision 2 proposal](research/native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)
 for restarting on the Linux workstation was adopted on 2026-10-17 and is executing.
+On 2026-10-18 [ADR 0004](decisions/adr-0004-target-scope-t1.md) set the first completion
+target, T1, and [roadmap revision 3](research/native-decompilation-roadmap.md#revision-3--t1-completion-plan-2026-10-18)
+plans its gaps.
 
 ## Milestones
 
