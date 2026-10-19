@@ -25,7 +25,7 @@ comparison metric can a device spec state?
 - **Randomness.** Every note carries a random component. Its generator is seeded from the clock
   once per instance, so it is not reproducible in Live. At the defaults it lies about 42 dB
   below the note. The damper controls set most of it.
-- **Timing.** Notes are placed on a 1 ms control grid. The rule is exact for 385 note-ons and 201
+- **Timing.** Notes are placed on a 1 ms control grid. The rule is exact for 318 note-ons and 201
   note-offs. The sound starts one control period after the grid point; a release starts at the
   grid point.
 - **Voices.** Polyphony index p allows p + 2 voices, for all 31 values. This settles the meaning of
@@ -149,8 +149,10 @@ phase would then depend on that history.
 
 **Start-up.** Without the warm-up, a note at frame 0 sounds 14.9 dB louder than a settled note.
 Notes from frame 4,400 on match the settled level (`start_up_note_level_db_by_onset_from_creation`).
-Leaving index 9 unsent removes the effect. MalletForceVelocity starts from the built-in patch
-value and ramps to the sent value (see [parameter timing](#parameter-timing)).
+With index 9 left unsent, a note at frame 0 is within 0.66 dB of a settled note
+(`laws.start_up_index9_unsent_early_vs_late_db`). Almost all of the start-up effect is therefore
+MalletForceVelocity, which ramps from the built-in patch value to the sent value (see
+[parameter timing](#parameter-timing)).
 
 ## Events and voices
 
@@ -166,13 +168,13 @@ at frame f:
 Then:
 
 - after a note-on, every frame before g' + P is exactly 0. The first non-zero frame is g' + P in
-  385 of 385 note-ons: blocks of 512, 64 and 333 at 44.1 kHz, and 512 at 48 kHz;
+  318 of 318 note-ons: blocks of 512, 64 and 333 at 44.1 kHz, and 512 at 48 kHz;
 - a note-off changes the output from frame g' on (201 of 201: 44.1 kHz with blocks of 512 and
   333, and 48 kHz).
 
 This is Analog's grid ([device DSP](device-dsp-extracted.md#analog-results)), with the sound
-starting one period later. In 117 of 118 reference cases the first non-zero frame is exactly
-g' + P. In E-Piano MKII Hollow it is g' + P + 2, because the attack rises from below the binary32
+starting one period later. In 118 of the 119 sounding reference cases the first non-zero frame
+is exactly g' + P. In E-Piano MKII Hollow it is g' + P + 2, because the attack rises from below the binary32
 resolution.
 
 **Note messages (X).**
@@ -218,31 +220,34 @@ noise floor.
   | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
   | −0.04 | −0.04 | 0.03 | 0.16 | 0.35 | 0.61 | 0.86 | 1.10 | 1.27 | 1.29 | 1.12 | 0.70 |
 
-  The values above are for notes 60 to 108; each lies within 0.06 cents of them. Notes 21 to 47
-  deviate by −10 to +10 cents. Their fundamentals are weak and their binary32 ulp bound is
-  10 cents near A0, so they are stated only by the reference renders.
+  Notes 60 to 108 lie within 0.06 cents of these values, and notes 48 to 59 within 0.23 cents.
+  Notes 21 to 47 lie between −1.8 and +2.8 cents. Below note 21 the estimate is unreliable:
+  the fundamentals are weak, and the binary32 ulp bound is about 10 cents near A0.
+  `defaults_44` lists every note.
 - 48 kHz agrees with 44.1 kHz within 0.12 cents from note 57 up. It differs by 4.7 cents at A0,
   which is one ulp bound there.
 - KeyboardFineTune shifts every note by (v − 0.5)·100 cents: −49.6, −24.8, +25.0 and +50.0 at
-  0, 0.25, 0.75 and 1 for C4. The values for C2 and C6 are within 1.2 cents of these.
+  0, 0.25, 0.75 and 1 for C4. C6 is within 0.03 cents of these values and C2 within 0.8 cents.
 - KeyboardTranspose t shifts by t − 12 semitones. The pitch-class pattern follows the sounding
   note.
-- KeyboardStretch shifts every note by about the same amount: +8.4 cents at 0, +4.8 at 0.25,
-  −2.3 at 0.75 and −5.9 at 1, for notes 21 to 105. The spread is ±0.7 cents by pitch class. No
-  stretch that grows with distance from a reference note was found.
+- KeyboardStretch shifts every note by about the same amount relative to the defaults: +6.96 to
+  +7.52 cents at 0, +3.55 to +3.77 at 0.25, −3.15 to −3.64 at 0.75 and −6.75 to −7.23 at 1, for
+  notes 39 to 105 (`cents_re_defaults`). That is about (0.5 − v)·14.4 cents. No stretch that grows
+  with distance from a reference note was found.
 - Harmonics follow the fundamental exactly, because the pickup forms them from the fundamental.
   The libm variants move them in proportion.
 
 ## Parameter laws and section behavior
 
 Host values v in 0..1 map to a controller c = 128v for v ≤ 0.5 and c = 126v + 1 above it, with
-n = 0.5 at c = 64 and n = c/127 otherwise. This is Corpus rule U. Exact for these laws
-(`results/probes_params.json` `gains`, sample ratios constant within 2 × 10⁻⁶):
+n = 0.5 at c = 64 and n = c/127 otherwise. This is Corpus rule U. The following laws are exact
+(`results/probes_params.json` `gains` and `laws`); the sample ratios are constant within
+2 × 10⁻⁶:
 
 - **Volume:** output gain ∝ n(v)². v = 1 is +6.02 dB re the default, v = 0.5 is −12.04 dB re
-  v = 1, and v = 0 is silent. The ratios match n² to 7 digits at 23 values.
+  v = 1, and v = 0 is silent. The ratios match n² within 1.5 × 10⁻⁷ relative at 23 values.
 - **PickupAmpOut:** gain = 15(c − 64)/64 dB re v = 0.5, from −15 dB to +14.77 dB, linear in v on
-  each half. v = 0 is silent. Exact to 10⁻⁶ dB at 18 values.
+  each half. v = 0 is silent. This holds within 3 × 10⁻⁶ dB at 17 values.
 - **PickupAmpKeyboardScaling:** gain = 2^((n − 0.5)(note − 60)/4). At v = 0 it is +18.06 dB at
   note 36 and −27.09 dB at note 96. At 0.5 it has no effect.
 - **Quantization:** PickupSymmetry and PickupDistance act in steps of ⌊c⌋; 0.25 and 0.2525
@@ -260,11 +265,11 @@ Measured effects at C4, velocity 100, values 0, 0.25, 0.5, 0.75 and 1
 | MalletNoisePitch, Decay, Amount | Attack transient only; sustain within 0.1 dB. Amount 1 raises the peak to 1.28 and the attack centroid to 822 Hz |
 | ForkToneBarDecay | Sustained decay. Harmonic 2 at −123, −35, −10.2, −3.2, −1.0 dB/s |
 | ForkToneBarVolume | Main level: −37.1 to +0.3 dB, brighter as it rises |
-| ForkTineVolume, Decay, Color, KeyboardScaling | Attack transient. TineVolume 1 raises the peak to 0.37 and the centroid to 715 Hz. At the default TineVolume, Decay and Color change the output by at most 2 × 10⁻² and 10⁻⁵ |
+| ForkTineVolume, Decay, Color, KeyboardScaling | Attack transient. TineVolume 1 raises the peak to 0.37 and the centroid to 715 Hz. At C4 with the default TineVolume, Decay and Color change the sustain and harmonics by less than 0.1 dB; Color acts on the release (see below) |
 | ForkReleaseTime | Release to −60 dB after the note-off. C4: 0.02, 0.05, 0.13, 0.30, 0.71 s. C2: 0.09 to 2.68 s. C6: 0.02 to 0.20 s |
 | PickupSymmetry | Fundamental against second harmonic. At 0, h1 is −82.6 and h2 −12.2 dB; at 1, h1 is −11.8 and h2 −40.6 dB |
 | PickupDistance | Nearer is louder and brighter: sustain −12.9 to −26.2 dB, h5 −18.1 to −91.7 dB |
-| PickupModel W | Sustain −21.3 dB against −16.6 dB for R, with a different harmonic balance |
+| PickupModel W | Loudest 10 ms frame −20.3 dB against −15.0 dB for R, with a different harmonic balance (case `p23_1`) |
 | PickupAmpIn | Drive into the pickup: −34.6 to −1.9 dB, brighter |
 | DamperAmount, Tone, Balance | Mostly the random component (above). Deterministic sustain changes within 1.6 dB |
 | Keyboard controls (5, 8, 13, 17, 26) | No effect at note 60; effect grows away from 60, with the sign of v − 0.5. MalletForceKeyboard 1 gives a peak of 3.94 at note 84 and 0.019 at note 36 |
@@ -300,11 +305,16 @@ The note-off was at 12,288, so its g' = 12,320.
 
 ## Floating point and metric
 
-- **libm.** Every inexact libm result was moved one ulp up and down (`XDEV_LIBM_ULP`). The
-  fundamental moved by at most 0.67 ulp bounds b(f0) = 3·2⁻²⁵/θ² + 2⁻²³ in every case; the
-  largest was 2.66, for PickupSymmetry 0, where h1 is near −83 dB. Harmonic levels moved by
-  0.05 dB or less in most cases. Low notes are most sensitive: at A0 the envelope moved by up
-  to 5 dB in frames near beating nulls.
+- **libm.** Every inexact libm result was moved one ulp up and down (`XDEV_LIBM_ULP`), and
+  measured on the graded elements (`results/cases.json` `variant_max_deviation_on_graded`).
+  - Harmonic frequencies moved by at most 0.78 ulp bounds of the fundamental,
+    b(f0) = 3·2⁻²⁵/θ² + 2⁻²³ with θ = 2πf0/fs. The exception is PickupSymmetry 0 at 2.66, whose
+    harmonic 1 lies near −83 dB.
+  - Harmonic levels moved by a median of 0.002 dB, by 0.05 dB or less in 97 % of the variants,
+    and by at most 0.31 dB.
+  - Low notes are the most sensitive. At A0 the graded envelope frames moved by up to 1.43 dB,
+    and frames near beating nulls by up to 5 dB; those frames exceed the cap and are not
+    graded.
 - **arm64.** The arm64 slice has 171 fused multiply-adds in 63 functions; the most is 21, in
   `0x2400c`. The x86_64 `__text` has no VEX instructions (`results/fma_scan.txt`). Inferred: arm64
   differs at the scale of the libm variants. This was not executed.

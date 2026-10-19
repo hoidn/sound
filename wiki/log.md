@@ -2186,3 +2186,19 @@ from extracted execution. A separate review agent approved it with listed
 clarifications: positive-zero `Duration`, `TimeOffset` negative zero excluded, and
 a completed change list. No expectation changed. The manifest SHA-256 is
 `697f09ffc4951d5f3b6d67c20b8f851d68671078a0b3d730a220383f94d2dd15`.
+
+## [2026-10-18] spec | SPEC-DEVICE-ELECTRIC r1
+
+[Electric](specs/device-electric.md) audio is specified from extracted execution of the
+bundle's x86_64 code: 16 requirements and 32 cases, 23 graded against 120 retained
+renders. Polyphony is settled: index p allows p + 2 voices, which settles the
+labels SPEC-BUNDLED-DEVICE-PARAMETERS REQ-014 left unknown. KeyboardStretch acts
+as a ±7.2-cent detune.
+
+Corrections:
+- The T1.2 gate's Electric probe used a rounded Volume and played during the
+  start-up ramp; its peak should be 0.296, not 0.32.
+- The N5 conversion table prints Volume's default rounded; it is 0.7047892213.
+
+Open, under Q-025: grid phase, the event frame base, stop-processing, and the
+block in which an automated value arrives.

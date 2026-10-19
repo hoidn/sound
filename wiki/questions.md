@@ -479,3 +479,4 @@ no experimental contradiction has been established yet.
   so it is left to the user.
 - Next action: trace Live's device-host calls statically; specify Analog, Tension,
   Electric and Collision the same way as Corpus.
+- Progress 2026-10-18: Electric is specified ([SPEC-DEVICE-ELECTRIC](specs/device-electric.md)). New protocol questions: Live's grid phase and event frame base; whether Live stops processing when a device signals that it may; which block an automated value arrives in, since parameters that act immediately can be off by one block. Values between sampled points need reference renders made on demand.
