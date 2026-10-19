@@ -1,0 +1,501 @@
+diff -ruN pre-review/AGENTS.md export/automation-envelopes-v2/AGENTS.md
+--- pre-review/AGENTS.md	2026-10-18 19:50:08.453029774 -0700
++++ export/automation-envelopes-v2/AGENTS.md	2026-10-18 22:43:57.655267504 -0700
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This is a staged, unreviewed handoff candidate. It is not an implementation
+-input. Only a release that a separate review approved and published may be used
+-for implementation, in a fresh, restricted implementation workspace containing
+-only permitted materials. Do not begin clean implementation in an analyst
+-checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
++contains only permitted materials. Publication of this package does not
++provision one. Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+diff -ruN pre-review/cases.json export/automation-envelopes-v2/cases.json
+--- pre-review/cases.json	2026-10-18 19:51:14.858253982 -0700
++++ export/automation-envelopes-v2/cases.json	2026-10-18 22:43:57.655823824 -0700
+@@ -2,7 +2,7 @@
+  "schema": "automation-envelopes-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "automation-envelopes-v2 partial requirement clauses only (see spec.md)",
+- "status": "staged candidate; not reviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored minimal documents; no shipped file copied",
+  "oracle_status": "Static-derived expectations; neither reference nor candidate executed",
+  "representation": {
+diff -ruN pre-review/manifest.json export/automation-envelopes-v2/manifest.json
+--- pre-review/manifest.json	2026-10-18 19:51:15.247385223 -0700
++++ export/automation-envelopes-v2/manifest.json	2026-10-18 22:46:13.489953127 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "automation-envelopes-v2",
+- "release_status": "staged candidate; not reviewed; not released",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-AUTOMATION-ENVELOPES",
+@@ -17,9 +17,9 @@
+   "REQ-AUTOMATION-ENVELOPES-001": "Track envelopes in a track's AutomationEnvelopes/Envelopes, clip envelopes in a clip's Envelopes/Envelopes; AutomationEnvelope and ClipEnvelope shape with EnvelopeTarget/PointeeId and Automation/Events; empty transform state; the MIDI track's arrangement clip timeline (MainSequencer/ClipTimeable/ArrangerAutomation) has the same Events shape and is not an envelope",
+   "REQ-AUTOMATION-ENVELOPES-002": "PointeeId names the Id of the target element; binding by Id, not by list position (judged through the saved envelope of each target); fixture target relations only",
+   "REQ-AUTOMATION-ENVELOPES-003": "FloatEvent, BoolEvent and EnumEvent by target kind; Id, Time (binary64) and Value (binary32, Boolean, integer) in the parameter's stored units",
+-  "REQ-AUTOMATION-ENVELOPES-005": "A document whose track envelope holds a single event, at the lower bound, opens; whether that envelope is kept is not specified",
++  "REQ-AUTOMATION-ENVELOPES-005": "A document whose track envelope holds a single event, at the lower bound, opens; opening discards that envelope; what a later save writes for it is not specified",
+   "REQ-AUTOMATION-ENVELOPES-006": "Document order with non-decreasing times; at most two events at one time; a later event may have a negative time",
+-  "REQ-AUTOMATION-ENVELOPES-007": "Empty event list of a clip envelope refused; for track and clip envelopes with at least two events, first event time other than the lower bound or 0 refused (binary64 comparison, -0 counts as 0); later times not checked; an empty arrangement clip timeline of the MIDI track does not cause a refusal (stated assumption). No expectation for a track envelope with fewer than two events other than one event at the lower bound, or for a clip envelope with exactly one event",
++  "REQ-AUTOMATION-ENVELOPES-007": "Before the checks, opening discards each track envelope on Speaker, Pan or CrossFadeState with no event or one event and each clip envelope with exactly one event, so the checks never refuse a document because of them; a clip envelope with no event is kept and refused; for envelopes with at least two events, a first event time other than the lower bound or 0 is refused (binary64 comparison, -0 counts as 0); later times not checked; an empty arrangement clip timeline of the MIDI track does not cause a refusal (stated assumption 3); other envelopes are kept (stated assumption 5)",
+   "REQ-AUTOMATION-ENVELOPES-008": "Curve control attribute names; a missing control reads as 0.5; four 0.5 controls mean no curve; on save each control equal to 0.5 is omitted and the others written as binary64 text",
+   "REQ-AUTOMATION-ENVELOPES-009": "Controls in [0, 1] whose pairs meet the stated monotonicity condition are kept on open",
+   "REQ-AUTOMATION-ENVELOPES-012": "Event text on open (Time and controls as decimal binary64, Float Value then binary32, Bool tokens, integer rule; refusal of rejected text) and on save (17 and 9 significant digits with k taken from the binary64 base-10 logarithm, true or false, decimal integers)"
+@@ -45,7 +45,8 @@
+   "BoolEvent and EnumEvent values are read and written with the Boolean and integer text rules of REQ-AUTOMATION-ENVELOPES-012 (the format declares them Boolean and integer). Cases 014, 015 and 021 depend on it.",
+   "A save keeps each envelope bound to its target. Every open-save case (001, 016 to 021) depends on it.",
+   "No step that runs when a document is opened refuses an empty Events list in the MIDI track's arrangement clip timeline. Case 032 depends on it.",
+-  "Where its last bit decides k on save (REQ-AUTOMATION-ENVELOPES-012 step 1), the reference's binary64 base-10 logarithm errs by less than 3/4 of a binary64 gap, outside the excluded band. No case lies next to a power of ten, so no case depends on it."
++  "Where its last bit decides k on save (REQ-AUTOMATION-ENVELOPES-012 step 1), the reference's binary64 base-10 logarithm errs by less than 3/4 of a binary64 gap, outside the excluded band. No case lies next to a power of ten, so no case depends on it.",
++  "Opening discards no envelope of this release's targets other than those of REQ-AUTOMATION-ENVELOPES-007 clause 5: a track envelope with at least two events, and a clip envelope with no event or at least two events, are kept and reach the checks of REQ-AUTOMATION-ENVELOPES-007. Cases 001, 008, 012, 016 to 021, 030 and 031 depend on it."
+  ],
+  "exclusions": {
+   "inputs_without_expectation": [
+@@ -56,7 +57,6 @@
+    "curve controls outside [0, 1] or not satisfying K, and controls on the first or last event, on an event followed by one at the same time, or on an event whose next event has the same value",
+    "Time, curve control or FloatEvent Value text that, after leading spaces and an optional sign, starts with 0x or 0X, or with inf or nan in any letter case; the text Invalid; text starting with #; leading whitespace other than U+0020",
+    "EnumEvent Value text with spaces both before and after the digits, with + and trailing spaces, or with a - sign, and such text longer than 63 characters that ends in a space",
+-   "a track envelope with no event, or with one event at a time other than L; a clip envelope with exactly one event",
+    "saved binary64 values (Time, curve controls) whose log10 is not an integer but lies between 1/4 and 3/4 of a binary64 gap from one",
+    "the main track's tempo and time-signature envelopes; envelopes of other tracks, devices, modulation targets and other MIDI controller targets; audio clip envelopes",
+    "elements outside AutomationEnvelope and ClipEnvelope that use the same Events shape, other than an empty Events list in the MIDI track's arrangement clip timeline: a non-empty timeline, and the timelines of audio tracks, samples and take lanes",
+@@ -66,7 +66,7 @@
+   ],
+   "behavior": [
+    "the value an envelope supplies to its parameter at any time, for Float, Bool and Enum envelopes, track and clip envelopes alike (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the last event and between equal values, and whether event Ids affect it (REQ-AUTOMATION-ENVELOPES-004): no externally observable reading of the value computed from the stored events has been established, and the value applied while the transport plays rests on conditions not yet established for a document that has just been opened",
+-   "whether opening keeps an envelope with fewer than two events",
++   "what a save writes for an envelope that opening discards (REQ-AUTOMATION-ENVELOPES-007 clause 5)",
+    "whether opening replaces controls that do not satisfy K by 0.5",
+    "whether a save keeps or renumbers event and target Ids, the saved transform state, saved negative zero, whether a save writes envelopes that hold a single event, and whether a save keeps a leading event whose value differs from the next event's value",
+    "editing, override, recording and undo (REQ-AUTOMATION-ENVELOPES-013)",
+@@ -77,16 +77,30 @@
+  "fixture_origin": "independently authored minimal Live Set XML documents from one template; no shipped file content, schema content or program code",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RA2-01 high: the discard on open of envelopes with fewer than two events is confirmed in both builds; automation-envelopes-v1 cases 003, 004 and 011 were wrong; change list says so; REQ-AUTOMATION-ENVELOPES-007 clause 5 states the discard instead of leaving it open; REQ-AUTOMATION-ENVELOPES-005 restated; excluded behavior aligned",
++   "RA2-02 medium: case 012 rests on the clip discard applying to exactly one event, not to an empty list; confirmed in both builds; upheld",
++   "RA2-03 medium: cases 001, 008, 012, 016 to 021, 030 and 031 rested on an unstated assumption that opening keeps envelopes with two or more events (and an empty clip envelope); stated as assumption 5",
++   "RA2-04 low: change list incomplete (new exclusions and assumptions; 'unchanged' claim too wide); completed",
++   "RA2-05 info: fixture validity: the structure checker passes all 21 fixtures; each refused fixture fails only for its tested rule; reviewer's single-defect controls open",
++   "RA2-06 info: no evaluated or playback value is implied by any case, field or comparison rule",
++   "RA2-07 info: reviewer's independent restatement agrees with all 21 expectations",
++   "RA2-08 info: supersession checked: superseded digest equals the catalog; 18 records identical; carried fixtures are the v1 files with 40 inserted lines only",
++   "RA2-09 info: evidence identity re-checked; all digests matched",
++   "RA2-10 editorial: status set to reviewed release; review record added; a cross-reference corrected; inventory re-hashed",
++   "RA2-11 info: clause 5 has one case (002); cases for the three withdrawn inputs proposed for a later revision"
++  ],
++  "disposition": "Approved with listed corrections (RA2-01, RA2-03, RA2-04), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "automation-envelopes-v1",
+  "supersession": {
+-  "relationship": "corrective and narrowing: automation-envelopes-v1 stays immutable, but its fixtures must not be used to judge that a document opens, and its cases 003, 004 and 011 and its REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 for envelopes with fewer than two events must not be relied on",
++  "relationship": "corrective and narrowing: automation-envelopes-v1 stays immutable, but its fixtures must not be used to judge that a document opens, and its cases 003, 004 and 011 were wrong: opening discards their envelopes before the checks of REQ-AUTOMATION-ENVELOPES-007, so the refusals they expect do not occur; its REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 were wrong for envelopes with fewer than two events",
+   "superseded_manifest_sha256": "793c1d7d5432de529c21c628e7fa6c46eecb1fa9128a4da9db1d1dfc34378302",
+   "restated_cases": "AUTOMATION-ENVELOPES-001, 002, 005 to 010 and 012 to 021: case records identical to automation-envelopes-v1; fixtures changed as in fixture_changes",
+   "not_carried": [
+@@ -101,13 +115,14 @@
+   ],
+   "changes": [
+    "Fixtures: every fixture gains one empty session and one empty freeze clip slot on the audio track, one empty freeze clip slot on the MIDI track and one scene (40 lines). A Live Set whose audio or MIDI track has a different number of session and freeze clip slots is not opened, and every automation-envelopes-v1 fixture had a session clip slot on its MIDI track and no freeze sequencer; the session slot and scene make each track hold one slot per scene. No v1 line changes",
+-   "Not carried: cases 003, 004 and 011. Each expected a refusal for an envelope with fewer than two events (a track envelope whose only event is at 4, a track envelope with no event, a clip envelope whose only event is at 4). Whether opening keeps such an envelope is not established, so the refusal does not follow; these inputs now have no expectation. automation-envelopes-v1's REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 are narrowed accordingly",
++   "Defect corrected: cases 003, 004 and 011 were wrong. Each expected a refusal for an envelope with fewer than two events (a Pan track envelope whose only event is at 4, a Pan track envelope with no event, a clip envelope whose only event is at 4). Opening discards each of these envelopes before the checks of REQ-AUTOMATION-ENVELOPES-007 apply (REQ-AUTOMATION-ENVELOPES-007 clause 5, static-derived), so the expected refusals were wrong, not only badly fixtured, and an implementation must not refuse these documents because of that envelope. automation-envelopes-v1's REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 were wrong for such envelopes: clause 1 now covers clip envelopes only, clause 2 envelopes with at least two events. The three cases are withdrawn, not carried with new fixtures",
+    "New cases 030 and 031 test the first-event time check with two events (track and clip envelope). IDs 022 to 029 were withdrawn before automation-envelopes-v1 was released and are not reused",
+    "New clause and case 032: an empty Events list in the MIDI track's arrangement clip timeline does not make the document refused (stated assumption); the exclusion of that element is narrowed",
+    "REQ-AUTOMATION-ENVELOPES-012 save step 1 corrected: k comes from the binary64 base-10 logarithm, as in transport-state-v2; values in the band where its last bit is not established are excluded. No v1 case is affected",
+    "Assumption removed: opening a Live Set applies the checks of REQ-AUTOMATION-ENVELOPES-007 is now static-derived",
+-   "REQ-AUTOMATION-ENVELOPES-005 restated: the document opens; whether the one-event envelope is kept is excluded",
+-   "Unchanged: every other clause, the 18 carried case records and every expectation; the value an envelope supplies at a time stays unreleased (REQ-AUTOMATION-ENVELOPES-010 and 011), with the reason stated"
++   "REQ-AUTOMATION-ENVELOPES-005 restated: the document still opens; opening discards the one-event envelope; what a later save writes for it is excluded",
++   "Exclusions and assumptions: new inputs without expectation (Live Set structure other than the fixtures'; saved values in the logarithm band); narrowed exclusion of elements that share the Events shape; new stated assumptions 3, 4 and 5 (opening discards no envelope of the fixtures other than those of REQ-AUTOMATION-ENVELOPES-007 clause 5; automation-envelopes-v1 relied on it without stating it); new excluded behavior: what a save writes for a discarded envelope",
++   "Unchanged: every other clause, the 18 carried case records and every carried expectation; the value an envelope supplies at a time stays unreleased (REQ-AUTOMATION-ENVELOPES-010 and 011), with the reason stated"
+   ],
+   "fixture_changes": {
+    "carried": "Each carried fixture is the automation-envelopes-v1 file of the same name with 40 lines inserted and no line changed, removed or reordered",
+@@ -132,18 +147,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "db5800b5df52f511cea1973760a78999ae953ad188b3106b74c8c864143eb875",
+-   "bytes": 1397
++   "sha256": "da8cd192f3729de77682356336e8c8182ef09d5c616e741fe84a2df4feec4989",
++   "bytes": 1374
+   },
+   {
+    "path": "README.md",
+-   "sha256": "5bd5e7e678409b0f9ebe25d842e32d848c89b4a6ee686c398ce1a359a418db15",
+-   "bytes": 6440
++   "sha256": "d35c18d673bccaf73c2466470b1cd0b563d53ba6da0f8cbfd02c32822a69f43c",
++   "bytes": 7639
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "f42e036a28344ad036763deda5b3626f32b9815e8ab38438c2a5b11289cfa7a0",
++   "bytes": 9732
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "5d80c93183b0e8a9b73fb9ed919da9cea92eac6193884698c49395daa018e08a",
+-   "bytes": 17076
++   "sha256": "cadc9f4127d51128c7e68fa50e7708666230bdde9b0204fe1ab95a0fe62bad58",
++   "bytes": 17063
+   },
+   {
+    "path": "fixtures/AUTOMATION-ENVELOPES-001.xml",
+@@ -252,8 +272,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "7d885354acf5be4d014b65ca758c7dda2e1985a74e6783f2df74fd714bf4a037",
+-   "bytes": 25060
++   "sha256": "0fc59f768caabc911822d66403259e015150dcd6ed82cdc579772bcfb14029fb",
++   "bytes": 25868
+   }
+  ]
+ }
+diff -ruN pre-review/README.md export/automation-envelopes-v2/README.md
+--- pre-review/README.md	2026-10-18 19:50:30.521699847 -0700
++++ export/automation-envelopes-v2/README.md	2026-10-18 22:43:57.655105407 -0700
+@@ -1,9 +1,11 @@
+ # Automation envelopes in Live Set documents, release 2
+ 
+-**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
+-[the cases](cases.json), [the role instructions](AGENTS.md) and
+-[the manifest](manifest.json). This package is not an implementation input until
+-a separate review approves it and it is published.
++**Reviewed local release.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md),
++[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
++stated partial scope, narrowed and clarified as recorded in the review, is
++approved as a contract for a fresh, restricted implementation workspace. Such
++a workspace has not been provisioned by this release.
+ 
+ The finite scope is how the decoded XML of one Live Set format version stores
+ track and clip automation envelopes: where envelopes are stored and how each
+@@ -21,13 +23,13 @@
+ results are static-derived and unexecuted. They are not captured reference
+ behavior. The representation is a comparison convention, not an API claimed to
+ exist in Live and not a required architecture. No compatibility claim is made.
+-After publication the release is immutable; corrections require a new revision.
++Preserve this release unchanged; corrections require a new revision.
+ 
+ ## Supersession
+ 
+-When published, this release supersedes automation-envelopes-v1, which stays
+-immutable. Its fixtures must not be used to judge that a document opens
+-(change 1), and its cases 003, 004 and 011 must not be relied on (change 2).
++This release supersedes automation-envelopes-v1, which stays immutable. Its
++fixtures must not be used to judge that a document opens (change 1), and its
++cases 003, 004 and 011 were wrong (change 2).
+ 18 of its 21 case records are carried unchanged with corrected fixtures, and
+ 3 cases are new, for 21 in total. [The manifest](manifest.json) records the
+ relationship, the superseded manifest digest and the fixture changes.
+@@ -42,16 +44,21 @@
+    refused cases were also refused for that reason. automation-envelopes-v1
+    stated that missing set content must not by itself change a judged outcome;
+    for the freeze clip slots that was wrong.
+-2. **Not carried: cases 003, 004 and 011.** Each expected a refusal for an
+-   envelope with fewer than two events: a track envelope whose only event is at
+-   4, a track envelope with no event, and a clip envelope whose only event is
+-   at 4. Opening a document may discard such an envelope before the checks of
+-   REQ-AUTOMATION-ENVELOPES-007 apply, so the refusal is not established. These
+-   inputs now have no expectation (REQ-AUTOMATION-ENVELOPES-007 clause 5).
+-   Clause 1 of automation-envelopes-v1's REQ-AUTOMATION-ENVELOPES-007 is
+-   narrowed to clip envelopes, and clause 2 to envelopes with at least two
+-   events. The fixtures
+-   `AUTOMATION-ENVELOPES-003.xml`, `004.xml` and `011.xml` are dropped.
++2. **Defect corrected: cases 003, 004 and 011 were wrong.** Each expected a
++   refusal for an envelope with fewer than two events: a `Pan` track envelope
++   whose only event is at 4, a `Pan` track envelope with no event, and a clip
++   envelope whose only event is at 4. Opening a document discards each of these
++   envelopes before the checks of REQ-AUTOMATION-ENVELOPES-007 apply
++   (REQ-AUTOMATION-ENVELOPES-007 clause 5, static-derived). The checks never see
++   the envelope and do not refuse the document because of it. The expected
++   refusals were therefore wrong, not only badly fixtured. An implementation
++   must not refuse these documents because of that envelope.
++   automation-envelopes-v1's REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 were
++   wrong for such envelopes. Clause 1 now covers clip envelopes only, and
++   clause 2 envelopes with at least two events. The three cases are withdrawn,
++   not carried with new fixtures, and `AUTOMATION-ENVELOPES-003.xml`, `004.xml`
++   and `011.xml` are dropped. Only case 002 has a discarded envelope, and it
++   opens with or without the discard.
+ 3. **Fixture change, the 18 carried fixtures.** Each of
+    `fixtures/AUTOMATION-ENVELOPES-001.xml`, `002.xml`, `005.xml` to `010.xml` and
+    `012.xml` to `021.xml` is the automation-envelopes-v1 file of the same name
+@@ -91,10 +98,19 @@
+    REQ-AUTOMATION-ENVELOPES-007 is now static-derived and is no longer a stated
+    assumption.
+ 9. **REQ-AUTOMATION-ENVELOPES-005 restated.** A document whose track envelope
+-   holds a single event, at L, opens. Whether that envelope is kept is now
+-   excluded behavior.
++   holds a single event, at L, still opens. Opening discards that envelope
++   (change 2). What a later save writes for it is excluded behavior.
+ 10. **Parent revision.** The parent is SPEC-AUTOMATION-ENVELOPES revision 4.
+     Its value clauses (REQ-AUTOMATION-ENVELOPES-010 and 011) stay unreleased,
+     for the reason stated in [the exclusions](spec.md#exclusions-and-deferred-obligations).
+-11. **Unchanged.** Every other clause, case record, expectation, provenance
+-    label and exclusion of automation-envelopes-v1 is carried unchanged.
++11. **Exclusions and assumptions.** New inputs without expectation: Live Set
++    structure other than the fixtures' (other tracks, devices, scenes, clips and
++    clip slots, main and cue tracks, sends and returns), and saved values in the
++    band of change 7. Narrowed exclusion: elements that share the `Events` shape
++    (change 6). New stated assumptions: 3 (change 6), 4 (change 7) and 5, that
++    opening discards no envelope of the fixtures other than those of change 2.
++    Cases 001, 008, 012, 016 to 021, 030 and 031 depend on assumption 5;
++    automation-envelopes-v1 relied on it without stating it. New excluded
++    behavior: what a save writes for a discarded envelope.
++12. **Unchanged.** Every other clause, case record, expectation and provenance
++    label of automation-envelopes-v1 is carried unchanged.
+diff -ruN pre-review/REVIEW.md export/automation-envelopes-v2/REVIEW.md
+--- pre-review/REVIEW.md	1969-12-31 16:00:00.000000000 -0800
++++ export/automation-envelopes-v2/REVIEW.md	2026-10-18 22:45:51.814942736 -0700
+@@ -0,0 +1,124 @@
++# Review disposition
++
++Release: automation-envelopes-v2, 2026-10-18.
++
++Reviewer: separate review agent (Claude Opus 5.5), launched by the
++coordinator in its own handoff-review context. It did not author this
++candidate and will not implement it. The one reviewer performed the scope and
++evidence, supersession, fixture-validity, quality and sanitization,
++evidence-identity and packaging checks. Publication metadata outside this
++package is left to the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of
++REQ-AUTOMATION-ENVELOPES-001 to 003, 005 to 009 and 012 in
++[the contract](spec.md), corrected as listed below.
++REQ-AUTOMATION-ENVELOPES-004, 010, 011 and 013 remain unreleased.
++
++- **The discard on open.** The candidate withdrew automation-envelopes-v1
++  cases 003, 004 and 011 because opening might discard an envelope with fewer
++  than two events before the checks of REQ-AUTOMATION-ENVELOPES-007. Its
++  author had read this in one build only and called it unconfirmed. The
++  reviewer re-derived it from the static evidence of both the arm64 and the
++  x86_64 build of 12.4.3, independently of the author's reading.
++  - Every opened Live Set runs the discard, before the checks.
++  - It discards a clip envelope that holds exactly one event.
++  - It discards a track envelope that holds no event or one event. Some
++    parameter kinds can be exempt from this; the audio track's `Speaker`,
++    `Pan` and `CrossFadeState` are not.
++  - The event count it uses is the number of events in the list.
++
++  The discard is therefore confirmed for this release's targets, and the three
++  v1 expectations were wrong (RA2-01). The author's further reading also holds:
++  a clip envelope with no event is kept and then refused (RA2-02).
++- **Fixture validity.** The Live Set structure checker was run on every
++  fixture, by its own command line on a copy holding only this release. It
++  found 21 Live Sets, none refused, no unknown shape and no case contradicted
++  or failing to isolate its rule. Its schema check found no deviation in any
++  fixture. For each of the seven refused fixtures (008, 012 to 015, 030 and
++  031), the reviewer wrote a control repairing only the tested defect. Six
++  controls change one attribute; 012's adds two events. Every control passes
++  the structure checker and opens under the reviewer's restatement. So each
++  refused fixture fails only for the reason its case tests. The three withdrawn
++  v1 inputs pass the checker once completed with its own structural additions.
++  Under this release's clauses they open (RA2-05).
++- **Expectations.** The reviewer restated the contract from `spec.md` alone,
++  without the author's model, and evaluated every case with it. The
++  restatement agrees with all 21 outcomes and every saved attribute text. This
++  covers each released requirement:
++  - storage and shape: 001, 010 and 032;
++  - binding by Id: 021;
++  - value kinds: 014, 015 and 021;
++  - the one-event list at L: 002;
++  - a later negative time: 009;
++  - every load check: 005 to 008, 012, 030 and 031;
++  - curve controls: 017 to 020;
++  - number text on open and save: 006, 007, 013 to 016 and 018.
++
++  Under v1's reading, without the discard, all 21 outcomes stay the same. Only
++  case 012 would change if a clip envelope with no event were also discarded;
++  the evidence rules that reading out (RA2-07).
++- **Weakest cases.** 012 rests on the clip discard's exact count (RA2-02).
++  Cases 030 and 031 are new and replace 003 and 011 within the narrowed clause
++  2. Case 032 rests on stated assumption 3; shipped Live Sets of this format
++  version hold empty arrangement clip timelines. All are accepted.
++- **No value cases.** No case, comparison field or representation carries the
++  value an envelope supplies at a time or while the transport plays. Such
++  wording appears only in the exclusions and in the reason that
++  REQ-AUTOMATION-ENVELOPES-010 and 011 stay unreleased (RA2-06).
++- **Supersession.** The superseded manifest digest equals the catalog value,
++  and every file automation-envelopes-v1 lists still matches. The 18 carried
++  case records are identical to v1's. Each carried fixture is the v1 file with
++  exactly 40 lines inserted and nothing else changed (RA2-08). The change list
++  was incomplete; it now matches the text differences (RA2-04).
++- **Sanitization.** The reviewer scanned every payload file with a deny list
++  wider than the author's. No source code, recovered program text or
++  messages, internal identifiers, addresses, analyst paths, private evidence
++  links, planning identifiers or per-case evidence fields are present. The
++  remaining hits are neutral: "recovered" in the forbidden-inputs list of
++  `AGENTS.md`, and "dangling" in the README's scope statement.
++- **Packaging.** Exclusions in the contract and the manifest agree. Every
++  expectation is labeled static-derived, reference and candidate execution
++  have not run, and no compatibility is claimed. In a copy outside the analyst
++  checkout, every Markdown link and case input resolves inside the package,
++  and every listed hash and size matches. The 21 fixtures are distinct, ASCII
++  with LF endings and a final newline. They were authored for these cases and
++  contain no shipped content.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RA2-01 | High | The discard of envelopes with fewer than two events is established for this release's targets, not merely possible. automation-envelopes-v1 cases 003, 004 and 011 expected refusals that do not occur, and its REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 were wrong for such envelopes. The candidate called the refusal "not established", left the inputs without expectation and excluded whether such an envelope is kept. | Corrected. README change 2 and the manifest now state that the three cases were wrong, not only badly fixtured. REQ-AUTOMATION-ENVELOPES-007 clause 5 now states the discard. REQ-AUTOMATION-ENVELOPES-005 now says the one-event envelope is discarded. The input exclusion for these envelopes was removed. "Whether opening keeps an envelope" became "what a save writes for a discarded envelope". No case was added or changed. |
++| RA2-02 | Medium | Case 012 (empty clip envelope refused) holds only if the clip discard counts exactly one event, not at most one. The author had this from one build. | Confirmed in both builds; upheld. The case also rests on assumption 5 (RA2-03). |
++| RA2-03 | Medium | The discard also removes an envelope whose target does not belong to its device. That test was not evaluated for the mixer and MIDI controller targets. Cases 001, 008, 012, 016 to 021, 030 and 031 need their envelopes kept. automation-envelopes-v1 relied on this without stating it. | Stated as assumption 5 in the contract and the manifest, with its dependent cases; README change 11 records it. An implementation keeps these envelopes. The parameters are the track's own mixer and controller targets, so the assumption is accepted. |
++| RA2-04 | Low | The change list omitted several changes: the new input exclusions (Live Set structure other than the fixtures', and the save-logarithm band), stated assumptions 3 and 4, and the removed one-event exclusion. Its "unchanged" item also claimed every v1 exclusion was carried. | Completed: README change 11 added, change 12 corrected, manifest changes aligned. No expectation changed. |
++| RA2-05 | Info | Fixture validity (structure checker; single-defect controls). | All 21 fixtures pass. Each refused fixture fails only for its tested rule. |
++| RA2-06 | Info | Value expectations. | None released or implied. |
++| RA2-07 | Info | Independent restatement. | Agrees with all 21 expectations and saved texts. |
++| RA2-08 | Info | Supersession. | Digest, carried records and carried fixtures verified. |
++| RA2-09 | Info | Evidence identity. | The pinned arm64 and x86_64 images, the schema file and every file of the evidence runs relied on were re-hashed on 2026-10-18. All matched the recorded digests. |
++| RA2-10 | Editorial | Payload status lines described an unreviewed candidate. The fixture provenance cited README change 1 for the template insertions, which are change 3. | Status set to reviewed local release, this record added and linked, cross-reference corrected, manifest review fields filled and inventory re-hashed. |
++| RA2-11 | Info | Clause 5 of REQ-AUTOMATION-ENVELOPES-007 has one case (002), which opens with or without the discard. | A later revision should add opening cases for a `Pan` envelope with one event at 4, a `Pan` envelope with no event and a clip envelope with one event at 4, and should extend the comparison obligation to them. No expectation was invented here. |
++
++Two inferences behind RA2-01 are accepted. First, the mixer's `Pan`,
++`Speaker` and `CrossFadeState` are of the format's plain float, Boolean and
++enumeration parameter kinds, as the format declares them. Second, the setting
++that enables the discard keeps the value it receives at application start: no
++other change to it was found.
++
++## Disposition
++
++**Approved with listed corrections** (RA2-01, RA2-03 and RA2-04), only for the
++explicit partial clauses in the contract. All expected outcomes remain
++static-derived. Neither reference nor candidate application cases have run,
++and no compatibility pass is claimed. Candidate-only checks cannot replace
++independent reference observations. An isolated implementation workspace
++remains a prerequisite.
++
++The parent specification's REQ-AUTOMATION-ENVELOPES-005 and 007 still describe
++the discard as open. The analyst must align them with this release.
++
++This disposition concerns the local reviewed-handoff workflow; it does not
++authorize external publication. Preserve this release unchanged.
+diff -ruN pre-review/spec.md export/automation-envelopes-v2/spec.md
+--- pre-review/spec.md	2026-10-18 19:49:32.448567738 -0700
++++ export/automation-envelopes-v2/spec.md	2026-10-18 22:43:57.655588048 -0700
+@@ -8,7 +8,9 @@
+ explicitly included below are in scope. No other clause of a listed requirement
+ is implicitly approved. This document is self-contained.
+ 
+-**Status: staged candidate; not reviewed; not released.**
++**Status: reviewed local release.** A separate review approved the clauses
++below with the narrowing and clarifications recorded in
++[the review disposition](REVIEW.md).
+ 
+ ## What the contract means
+ 
+@@ -46,6 +48,11 @@
+    the reference's binary64 base-10 logarithm errs by less than 3/4 of a
+    binary64 gap, outside the band that has no expectation. No case lies next to
+    a power of ten, so no case depends on it.
++5. Opening discards no envelope of this release's targets other than those of
++   REQ-AUTOMATION-ENVELOPES-007 clause 5. An `AutomationEnvelope` with at least
++   two events, and a `ClipEnvelope` with no event or at least two events, are
++   kept and reach the checks of REQ-AUTOMATION-ENVELOPES-007. Cases 001, 008,
++   012, 016 to 021, 030 and 031 depend on it.
+ 
+ The [comparison obligation](#reference-comparison-obligation-not-executed)
+ covers them.
+@@ -162,8 +169,9 @@
+ 
+ ### REQ-AUTOMATION-ENVELOPES-005: the event at the lower bound (partial)
+ 
+-A document whose track envelope holds a single event, at L, opens. Whether
+-opening keeps that envelope, and whether a save writes it, are not specified.
++A document whose track envelope holds a single event, at L, opens. Opening
++discards that envelope (REQ-AUTOMATION-ENVELOPES-007 clause 5). What a later
++save writes for it is not specified.
+ In every `open-save` fixture, the first event is at L and has the value of the
+ next event.
+ 
+@@ -188,10 +196,14 @@
+ 4. An empty `Events` list in the MIDI track's arrangement clip timeline
+    (REQ-AUTOMATION-ENVELOPES-001 clause 5) does not cause a refusal. This rests
+    on stated assumption 3.
+-5. This release has no refusal expectation for an `AutomationEnvelope` that
+-   holds no event, or one event at a time other than L, nor for a `ClipEnvelope`
+-   that holds exactly one event. Opening may discard such an envelope before the
+-   checks above apply; whether it does is not established.
++5. Before the checks above apply, opening discards every `AutomationEnvelope`
++   on the audio track's `Speaker`, `Pan` or `CrossFadeState` that holds no event
++   or one event, and every `ClipEnvelope` that holds exactly one event. The
++   checks therefore never refuse a document because of such an envelope,
++   whatever its event time. A `ClipEnvelope` that holds no event is not
++   discarded, and clause 1 refuses it. Of the discarded envelopes only the one
++   of AUTOMATION-ENVELOPES-002 has a case, and that document opens with or
++   without the discard. Other envelopes are kept (stated assumption 5).
+ 
+ ### REQ-AUTOMATION-ENVELOPES-008: curve controls (partial)
+ 
+@@ -310,8 +322,9 @@
+   transform state and the parameters' `Manual` values.
+ - A refused case has no `saved` part.
+ 
+-Case IDs 003, 004 and 011 of automation-envelopes-v1 are not carried, and IDs 022
+-to 029 are not used (see [the README](README.md)).
++Case IDs 003, 004 and 011 of automation-envelopes-v1 are withdrawn because their
++expectations were wrong, and IDs 022 to 029 are not used (see
++[the README](README.md#changes-from-automation-envelopes-v1)).
+ 
+ This is a **project comparison representation**, not an API claimed to exist in
+ Live and not a required design. A candidate adapter may translate its own result
+@@ -387,8 +400,6 @@
+ - `EnumEvent/@Value` text with spaces both before and after the digits, with a
+   `+` and trailing spaces, or with a `-` sign, and such text longer than 63
+   characters that ends in a space;
+-- a track envelope with no event, or with one event at a time other than L; a
+-  clip envelope with exactly one event (REQ-AUTOMATION-ENVELOPES-007 clause 5);
+ - saved binary64 values (`Time`, curve controls) whose log10 is not an integer
+   but lies between 1/4 and 3/4 of a binary64 gap from one;
+ - the main track's tempo and time-signature envelopes; envelopes of other
+@@ -410,7 +421,8 @@
+   (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the
+   last event and between equal values, and whether event Ids affect it
+   (REQ-AUTOMATION-ENVELOPES-004);
+-- whether opening keeps an envelope with fewer than two events;
++- what a save writes for an envelope that opening discards
++  (REQ-AUTOMATION-ENVELOPES-007 clause 5);
+ - whether opening replaces controls that do not satisfy K by 0.5;
+ - whether a save keeps or renumbers event and target Ids, the saved transform
+   state, saved negative zero, whether a save writes envelopes that hold a
+@@ -450,9 +462,9 @@
+ ASCII with line-feed line endings and tab indentation. The 21 inputs are
+ distinct. The template is the automation-envelopes-v1 template with the clip
+ slots and the scene inserted as whole lines; no line of that template changes
+-(README change 1).
++(README change 3).
+ 
+ No fixture contains shipped file content, program code, schema content or
+ assets. Expected results are newly authored static-derived behavioral data. No
+ public source or dependency is approved or included. Review status is recorded
+-in [the manifest](manifest.json).
++in [the manifest](manifest.json) and [the review disposition](REVIEW.md).

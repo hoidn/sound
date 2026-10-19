@@ -1,0 +1,404 @@
+--- automation-envelopes-v1/README.md
++++ automation-envelopes-v2/README.md
+@@ -1,11 +1,9 @@
+-# Automation envelopes in Live Set documents, release 1
++# Automation envelopes in Live Set documents, release 2
+ 
+-**Reviewed local release.** Read [the contract](spec.md),
+-[the cases](cases.json), [the role instructions](AGENTS.md),
+-[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
+-stated partial scope, narrowed as recorded in the review, is approved as a
+-contract for a fresh, restricted implementation workspace. Such a workspace
+-has not been provisioned by this release.
++**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md) and
++[the manifest](manifest.json). This package is not an implementation input until
++a separate review approves it and it is published.
+ 
+ The finite scope is how the decoded XML of one Live Set format version stores
+ track and clip automation envelopes: where envelopes are stored and how each
+@@ -23,4 +21,80 @@
+ results are static-derived and unexecuted. They are not captured reference
+ behavior. The representation is a comparison convention, not an API claimed to
+ exist in Live and not a required architecture. No compatibility claim is made.
+-Preserve this release unchanged; corrections require a new revision.
++After publication the release is immutable; corrections require a new revision.
++
++## Supersession
++
++When published, this release supersedes automation-envelopes-v1, which stays
++immutable. Its fixtures must not be used to judge that a document opens
++(change 1), and its cases 003, 004 and 011 must not be relied on (change 2).
++18 of its 21 case records are carried unchanged with corrected fixtures, and
++3 cases are new, for 21 in total. [The manifest](manifest.json) records the
++relationship, the superseded manifest digest and the fixture changes.
++
++## Changes from automation-envelopes-v1
++
++1. **Defect corrected: the fixtures could not open.** A Live Set is not opened
++   when an audio or MIDI track holds a different number of freeze clip slots
++   from session clip slots (static-derived). Every automation-envelopes-v1
++   fixture has one session clip slot on its MIDI track and no freeze clip slot,
++   so its 13 cases that expect a document to open could not hold, and its 8
++   refused cases were also refused for that reason. automation-envelopes-v1
++   stated that missing set content must not by itself change a judged outcome;
++   for the freeze clip slots that was wrong.
++2. **Not carried: cases 003, 004 and 011.** Each expected a refusal for an
++   envelope with fewer than two events: a track envelope whose only event is at
++   4, a track envelope with no event, and a clip envelope whose only event is
++   at 4. Opening a document may discard such an envelope before the checks of
++   REQ-AUTOMATION-ENVELOPES-007 apply, so the refusal is not established. These
++   inputs now have no expectation (REQ-AUTOMATION-ENVELOPES-007 clause 5).
++   Clause 1 of automation-envelopes-v1's REQ-AUTOMATION-ENVELOPES-007 is
++   narrowed to clip envelopes, and clause 2 to envelopes with at least two
++   events. The fixtures
++   `AUTOMATION-ENVELOPES-003.xml`, `004.xml` and `011.xml` are dropped.
++3. **Fixture change, the 18 carried fixtures.** Each of
++   `fixtures/AUTOMATION-ENVELOPES-001.xml`, `002.xml`, `005.xml` to `010.xml` and
++   `012.xml` to `021.xml` is the automation-envelopes-v1 file of the same name
++   with 40 lines inserted:
++   - after the audio track's `</Mixer>` line, a `MainSequencer` and a
++     `FreezeSequencer`, each holding one empty clip slot (20 lines);
++   - after the MIDI track's `</MainSequencer>` line, a `FreezeSequencer` holding
++     one empty clip slot (10 lines);
++   - after the `</Tracks>` line, `Scenes` with one scene (10 lines).
++
++   The clip slot and scene forms are those of
++   [fixture provenance](spec.md#fixture-provenance). Each track now has one
++   session and one freeze clip slot, and the set one scene per session clip
++   slot. No line of an automation-envelopes-v1 fixture is changed, removed or
++   reordered. The fixtures remain ASCII with LF endings.
++4. **Expectations re-checked; none changed.** The inserted elements lie outside
++   every judged path and name no envelope target. Each carried case keeps its
++   record, outcome and saved texts. Each refused fixture differs from a document
++   that opens only in the tested envelope.
++5. **New cases 030 and 031.** They test the first-event time check with two
++   events whose first is at 4, on a track envelope and on a clip envelope. They
++   replace cases 003 and 011 within the narrowed clause. IDs 022 to 029 were
++   withdrawn before automation-envelopes-v1 was released and are not reused.
++6. **New clause and case 032.** REQ-AUTOMATION-ENVELOPES-001 clause 5 and
++   REQ-AUTOMATION-ENVELOPES-007 clause 4: an empty `Events` list in the MIDI
++   track's arrangement clip timeline does not make the document refused. This
++   rests on stated assumption 3. The exclusion of elements that share the
++   `Events` shape is narrowed accordingly.
++7. **Save rule corrected (REQ-AUTOMATION-ENVELOPES-012 rule 7).** k now comes
++   from the binary64 base-10 logarithm, as in transport-state-v2. The two rules
++   differ only for binary64 `Time` and curve-control values just above a power
++   of ten 10ⁿ or just below 10⁻ⁿ (n ≥ 1). automation-envelopes-v1 stated the
++   exact-logarithm rule without excluding those values; no case of it lies
++   there. The band where the logarithm's last bit is not established has no
++   expectation (stated assumption 4).
++8. **Assumption settled.** That opening a Live Set applies the checks of
++   REQ-AUTOMATION-ENVELOPES-007 is now static-derived and is no longer a stated
++   assumption.
++9. **REQ-AUTOMATION-ENVELOPES-005 restated.** A document whose track envelope
++   holds a single event, at L, opens. Whether that envelope is kept is now
++   excluded behavior.
++10. **Parent revision.** The parent is SPEC-AUTOMATION-ENVELOPES revision 4.
++    Its value clauses (REQ-AUTOMATION-ENVELOPES-010 and 011) stay unreleased,
++    for the reason stated in [the exclusions](spec.md#exclusions-and-deferred-obligations).
++11. **Unchanged.** Every other clause, case record, expectation, provenance
++    label and exclusion of automation-envelopes-v1 is carried unchanged.
+--- automation-envelopes-v1/AGENTS.md
++++ automation-envelopes-v2/AGENTS.md
+@@ -1,9 +1,10 @@
+ # Package role and access instructions
+ 
+-This is a reviewed local release for its explicit partial scope. Application
+-implementation requires a fresh, restricted implementation workspace that
+-contains only permitted materials. Publication of this package does not
+-provision one. Do not begin clean implementation in an analyst checkout.
++This is a staged, unreviewed handoff candidate. It is not an implementation
++input. Only a release that a separate review approved and published may be used
++for implementation, in a fresh, restricted implementation workspace containing
++only permitted materials. Do not begin clean implementation in an analyst
++checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+--- automation-envelopes-v1/spec.md
++++ automation-envelopes-v2/spec.md
+@@ -1,14 +1,14 @@
+-# Automation envelopes in Live Set documents, release 1
++# Automation envelopes in Live Set documents, release 2
+ 
+ Target: Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07), macOS, Apple
+ silicon (arm64). Features: FEAT-AUTOMATION with FEAT-PERSISTENCE. Parent
+-specification identity: SPEC-AUTOMATION-ENVELOPES revision 1. Release:
+-automation-envelopes-v1. Only the clauses explicitly included below are in
+-scope. No other clause of a listed requirement is implicitly approved. This
+-document is self-contained.
+-
+-**Status: reviewed local release.** A separate review approved the clauses
+-below with the narrowing recorded in [the review disposition](REVIEW.md).
++specification identity: SPEC-AUTOMATION-ENVELOPES revision 4. Release:
++automation-envelopes-v2, superseding automation-envelopes-v1 (see
++[the README](README.md#changes-from-automation-envelopes-v1)). Only the clauses
++explicitly included below are in scope. No other clause of a listed requirement
++is implicitly approved. This document is self-contained.
++
++**Status: staged candidate; not reviewed; not released.**
+ 
+ ## What the contract means
+ 
+@@ -32,12 +32,23 @@
+ application, and none was run against a candidate. No compatibility result is
+ established, and the original application remains the authority for a later
+ comparison. Some derived steps rest on assumptions that were not traced to the
+-end: that opening a Live Set applies the envelope checks of
+-REQ-AUTOMATION-ENVELOPES-007; that `BoolEvent` and `EnumEvent` values are read
+-with the Boolean and integer rules of REQ-AUTOMATION-ENVELOPES-012; and that a
+-save keeps each envelope bound to its target. The
+-[comparison obligation](#reference-comparison-obligation-not-executed) covers
+-them.
++end. They are stated here and in [the manifest](manifest.json):
++
++1. `BoolEvent` and `EnumEvent` values are read and written with the Boolean and
++   integer rules of REQ-AUTOMATION-ENVELOPES-012. The format declares these
++   values as Boolean and integer. Cases 014, 015 and 021 depend on it.
++2. A save keeps each envelope bound to its target. Every `open-save` case
++   depends on it.
++3. No step that runs when a document is opened refuses an empty `Events` list in
++   the MIDI track's arrangement clip timeline (REQ-AUTOMATION-ENVELOPES-001
++   clause 5). Case 032 depends on it.
++4. Where its last bit decides k on save (REQ-AUTOMATION-ENVELOPES-012 rule 7),
++   the reference's binary64 base-10 logarithm errs by less than 3/4 of a
++   binary64 gap, outside the band that has no expectation. No case lies next to
++   a power of ten, so no case depends on it.
++
++The [comparison obligation](#reference-comparison-obligation-not-executed)
++covers them.
+ 
+ ## Document scope and preconditions
+ 
+@@ -54,14 +65,16 @@
+   afterwards, and anything that happens after reading are excluded.
+ - Numbers use `.` as the decimal separator. Expectations assume a host locale
+   whose decimal separator is `.`.
+-- A full Live Set contains much more than the fixtures: other tracks, devices,
+-  clip content, scenes and transport state. That content is outside this
+-  release. Its absence from a fixture must not by itself change a judged
+-  outcome.
+ - Every fixture has the layout described under
+   [fixture provenance](#fixture-provenance): one audio track with an envelope
+-  list and three mixer parameters, and one MIDI track holding a MIDI clip in a
+-  session clip slot and the MIDI controller target 6.
++  list and three mixer parameters, one MIDI track holding a MIDI clip in a
++  session clip slot and the MIDI controller target 6, and one scene. Each of the
++  two tracks has as many freeze clip slots as session clip slots, here one, and
++  the set has one scene per session clip slot.
++- A full Live Set contains much more than the fixtures: other tracks, devices,
++  clip content, main and cue tracks, sends and returns, and transport state.
++  That content is outside this release. Its absence from a fixture must not by
++  itself change a judged outcome.
+ 
+ ## Terms
+ 
+@@ -107,6 +120,12 @@
+ 
+ 4. Every fixture envelope has the transform state shown: `IsTransformPending`
+    `false` and an empty `TimeAndValueTransforms`.
++5. A MIDI track's `DeviceChain/MainSequencer` may hold, between `ClipSlotList`
++   and `MidiControllers`, a `ClipTimeable` element whose `ArrangerAutomation`
++   holds an `Events` list and an `AutomationTransformViewState` of the shape
++   above. It is the track's arrangement clip timeline, not an envelope: the
++   rules of REQ-AUTOMATION-ENVELOPES-005 to 012 do not apply to it. The cases use
++   it only with an empty `Events` list (`<Events />`).
+ 
+ ### REQ-AUTOMATION-ENVELOPES-002: envelope targets (partial)
+ 
+@@ -139,11 +158,12 @@
+ number. In every fixture, event Ids are distinct within their list. A
+ `FloatEvent` may also carry the curve controls of REQ-AUTOMATION-ENVELOPES-008.
+ Event values are in the parameter's stored units, the same units as its
+-`Manual` value.
++`Manual` value. This describes the document text only.
+ 
+ ### REQ-AUTOMATION-ENVELOPES-005: the event at the lower bound (partial)
+ 
+-A list whose only event is at L is accepted (REQ-AUTOMATION-ENVELOPES-007).
++A document whose track envelope holds a single event, at L, opens. Whether
++opening keeps that envelope, and whether a save writes it, are not specified.
+ In every `open-save` fixture, the first event is at L and has the value of the
+ next event.
+ 
+@@ -155,14 +175,23 @@
+ 
+ ### REQ-AUTOMATION-ENVELOPES-007: envelopes that refuse a document (partial)
+ 
+-1. A document is refused when the `Events` list of any `AutomationEnvelope` or
+-   `ClipEnvelope` is empty.
+-2. A document is refused when the first event of any such envelope has a time,
+-   read as binary64 under REQ-AUTOMATION-ENVELOPES-012, that is neither L nor 0.
+-   The comparison is numeric, so `-0` and `-6.3072e7` pass.
++These checks are applied when a Live Set is opened.
++
++1. A document is refused when the `Events` list of any `ClipEnvelope` is empty.
++2. A document is refused when the first event of any `AutomationEnvelope` or
++   `ClipEnvelope` that holds at least two events has a time, read as binary64
++   under REQ-AUTOMATION-ENVELOPES-012, that is neither L nor 0. The comparison
++   is numeric, so `-0` and `-6.3072e7` pass. This applies to track envelopes and
++   clip envelopes alike.
+ 3. Only the first event's time is checked. Later events at any time, including
+    negative times, do not cause a refusal.
+-4. These rules apply to track envelopes and clip envelopes alike.
++4. An empty `Events` list in the MIDI track's arrangement clip timeline
++   (REQ-AUTOMATION-ENVELOPES-001 clause 5) does not cause a refusal. This rests
++   on stated assumption 3.
++5. This release has no refusal expectation for an `AutomationEnvelope` that
++   holds no event, or one event at a time other than L, nor for a `ClipEnvelope`
++   that holds exactly one event. Opening may discard such an envelope before the
++   checks above apply; whether it does is not established.
+ 
+ ### REQ-AUTOMATION-ENVELOPES-008: curve controls (partial)
+ 
+@@ -227,21 +256,33 @@
+ 6. `BoolEvent/@Value` is written `true` or `false`. `EnumEvent/@Value` is written
+    as a plain decimal integer.
+ 7. Let P be 17 for `Time` and the curve controls and 9 for `FloatEvent/@Value`.
+-   Positive zero is written `0`. For any other value x:
+-   1. let k be the smallest integer not below log10|x| when |x| ≥ 1, and the
+-      largest integer not above log10|x| when |x| < 1;
++   A binary32 value is first converted exactly to binary64. Positive zero is
++   written `0`. For any other value x:
++   1. let Λ be the binary64 value nearest to log10|x|. Let k be the smallest
++      integer not below Λ when Λ ≥ 0, and the largest integer not above Λ when
++      Λ < 0;
+    2. write x in fixed-point notation with max(0, P − k) digits after the
+-      decimal point, rounded from its exact binary value to nearest, ties to even
+-      (a binary32 value is first converted exactly to binary64);
++      decimal point, rounded from its exact binary value to nearest, ties to even;
+    3. if the text contains `.`, remove trailing `0` characters and then a
+       trailing `.`.
++
++   Step 1 uses the rounded logarithm Λ. It gives a different k from the exact
++   logarithm only when Λ is an integer and log10|x| is not: a binary64 value
++   just above a power of ten 10ⁿ with n ≥ 1 then gets one more digit after the
++   point, and a binary64 value just below 10⁻ⁿ with n ≥ 1 one fewer. For
++   example, a `Time` of 1000.0000000000001 is written `1000.00000000000011` and
++   one of 0.000001 is written `0.00000099999999999999995`. `FloatEvent/@Value`
++   texts are never affected. A binary64 value whose log10|x| is not an integer
++   but lies between 1/4 and 3/4 of a binary64 gap from one has no expectation,
++   because the last bit of Λ is not established there (stated assumption 4).
+ 
+    Examples: L → `-63072000`; 4 → `4`; a `Value` read from `0.3` →
+    `0.3000000119`; a `Time` read from `0.3` → `0.299999999999999989`; controls
+    read from `0.8` and `0.2` → `0.800000000000000044` and `0.200000000000000011`.
+ 
+-These text rules are the same as the rules for Boolean, binary64, binary32 and
+-integer values in the transport-state-v1 release.
++The open rules are the same as the rules for Boolean, binary64, binary32 and
++integer text in the transport-state-v1 and transport-state-v2 releases, within
++this release's exclusions. Save rule 7 is the rule of transport-state-v2.
+ 
+ ## Acceptance representation and comparison
+ 
+@@ -269,6 +310,9 @@
+   transform state and the parameters' `Manual` values.
+ - A refused case has no `saved` part.
+ 
++Case IDs 003, 004 and 011 of automation-envelopes-v1 are not carried, and IDs 022
++to 029 are not used (see [the README](README.md)).
++
+ This is a **project comparison representation**, not an API claimed to exist in
+ Live and not a required design. A candidate adapter may translate its own result
+ into these labels. Each case starts from its fixture alone. Reading and saving a
+@@ -287,6 +331,8 @@
+   and the `Manual` values of its `Speaker`, `Pan` and `CrossFadeState` with the
+   fixture's;
+ - replaces the MIDI clip's `Envelopes/Envelopes` with the fixture's;
++- for case 032, replaces the MIDI track's arrangement clip timeline with the
++  fixture's empty one;
+ - sets each `PointeeId` to the `Id` of the corresponding target element of that
+   set, and makes sure no other envelope names those targets.
+ 
+@@ -311,6 +357,12 @@
+ **REQ-AUTOMATION-ENVELOPES-013** (editing envelopes, automation override and
+ re-enable, recording, undo, the precedence of a parameter's `Manual` value over
+ its envelope, and the meaning of `LockEnvelope` and of stored transforms).
++
++The value an envelope supplies at a time stays unreleased for this reason: no
++externally observable reading of the value computed from the stored events
++alone has been established, and the value applied while the transport plays
++rests on conditions not yet established for a document that has just been
++opened.
+ 
+ Inputs with **no expectation** in this release:
+ 
+@@ -335,11 +387,19 @@
+ - `EnumEvent/@Value` text with spaces both before and after the digits, with a
+   `+` and trailing spaces, or with a `-` sign, and such text longer than 63
+   characters that ends in a space;
++- a track envelope with no event, or with one event at a time other than L; a
++  clip envelope with exactly one event (REQ-AUTOMATION-ENVELOPES-007 clause 5);
++- saved binary64 values (`Time`, curve controls) whose log10 is not an integer
++  but lies between 1/4 and 3/4 of a binary64 gap from one;
+ - the main track's tempo and time-signature envelopes; envelopes of other
+   tracks, devices, modulation targets and other MIDI controller targets; audio
+   clip envelopes;
+ - elements outside `AutomationEnvelope` and `ClipEnvelope` that use the same
+-  `Events` shape, such as the timelines of arrangement clips;
++  `Events` shape, other than an empty `Events` list in the MIDI track's
++  arrangement clip timeline: a non-empty timeline, and the timelines of audio
++  tracks, samples and take lanes;
++- Live Set structure other than the fixtures': other tracks, devices, scenes,
++  clips and clip slots, main and cue tracks, sends and returns;
+ - any other format version, root attribute or compressed container;
+ - documents that break more than one rule of this release.
+ 
+@@ -350,6 +410,7 @@
+   (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the
+   last event and between equal values, and whether event Ids affect it
+   (REQ-AUTOMATION-ENVELOPES-004);
++- whether opening keeps an envelope with fewer than two events;
+ - whether opening replaces controls that do not satisfy K by 0.5;
+ - whether a save keeps or renumbers event and target Ids, the saved transform
+   state, saved negative zero, whether a save writes envelopes that hold a
+@@ -363,23 +424,35 @@
+ 
+ All 21 fixtures were authored for this release from one template written for
+ it. The template is the declaration, the root element with the three attributes
+-above, and a `LiveSet` holding `NextPointeeId` with the value 40 and two tracks:
++above, and a `LiveSet` holding `NextPointeeId` with the value 40, two tracks and
++one scene:
+ 
+ - `AudioTrack Id="1"` with an `AutomationEnvelopes/Envelopes` list and a
+-  `DeviceChain/Mixer` holding `Speaker` (`Manual` `true`, `AutomationTarget`
+-  Id 21), `Pan` (`Manual` `0`, `MidiControllerRange` −1 to 1, `AutomationTarget`
+-  Id 22) and `CrossFadeState` (`Manual` `1`, `AutomationTarget` Id 23);
++  `DeviceChain` holding a `Mixer` with `Speaker` (`Manual` `true`,
++  `AutomationTarget` Id 21), `Pan` (`Manual` `0`, `MidiControllerRange` −1 to 1,
++  `AutomationTarget` Id 22) and `CrossFadeState` (`Manual` `1`,
++  `AutomationTarget` Id 23), then a `MainSequencer` and a `FreezeSequencer`,
++  each with one empty clip slot (`ClipSlot Id="0"` with an empty `Value` and
++  `HasStop` `true`);
+ - `MidiTrack Id="2"` with a `DeviceChain/MainSequencer` holding a session clip
+   slot whose `MidiClip` has an `Envelopes/Envelopes` list, and
+-  `MidiControllers/ControllerTargets.6` with Id 31.
+-
+-All Ids are invented. The `Manual` values, the controller range and the clip's
+-`LoopSlot` and `ScrollerTimePreserver` values only give the elements their
+-usual shape; they are not judged. Each fixture is the template with the
+-envelopes that its purpose states. Text is ASCII with line-feed line endings
+-and tab indentation. The 21 inputs are distinct.
++  `MidiControllers/ControllerTargets.6` with Id 31, then a `FreezeSequencer` with
++  one empty clip slot;
++- `Scenes` with `Scene Id="0"`: an empty `Name`, `Color` −1, `Tempo` 120 with
++  `IsTempoEnabled` `false`, and `TimeSignatureId` 201 with
++  `IsTimeSignatureEnabled` `false`.
++
++All Ids are invented. The `Manual` values, the controller range, the clip's
++`LoopSlot` and `ScrollerTimePreserver` values, the clip slots and the scene only
++give the elements their usual shape; they are not judged. Each fixture is the
++template with the envelopes that its purpose states; case 032 also holds the
++empty arrangement clip timeline of REQ-AUTOMATION-ENVELOPES-001 clause 5. Text is
++ASCII with line-feed line endings and tab indentation. The 21 inputs are
++distinct. The template is the automation-envelopes-v1 template with the clip
++slots and the scene inserted as whole lines; no line of that template changes
++(README change 1).
+ 
+ No fixture contains shipped file content, program code, schema content or
+ assets. Expected results are newly authored static-derived behavioral data. No
+ public source or dependency is approved or included. Review status is recorded
+-in [the manifest](manifest.json) and [the review disposition](REVIEW.md).
++in [the manifest](manifest.json).

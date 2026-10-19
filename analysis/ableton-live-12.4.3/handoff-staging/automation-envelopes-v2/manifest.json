@@ -1,0 +1,279 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "automation-envelopes-v2",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-AUTOMATION-ENVELOPES",
+  "parent_revision": 4,
+  "release_revision": 4
+ },
+ "feature_ids": [
+  "FEAT-AUTOMATION",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-AUTOMATION-ENVELOPES-001": "Track envelopes in a track's AutomationEnvelopes/Envelopes, clip envelopes in a clip's Envelopes/Envelopes; AutomationEnvelope and ClipEnvelope shape with EnvelopeTarget/PointeeId and Automation/Events; empty transform state; the MIDI track's arrangement clip timeline (MainSequencer/ClipTimeable/ArrangerAutomation) has the same Events shape and is not an envelope",
+  "REQ-AUTOMATION-ENVELOPES-002": "PointeeId names the Id of the target element; binding by Id, not by list position (judged through the saved envelope of each target); fixture target relations only",
+  "REQ-AUTOMATION-ENVELOPES-003": "FloatEvent, BoolEvent and EnumEvent by target kind; Id, Time (binary64) and Value (binary32, Boolean, integer) in the parameter's stored units",
+  "REQ-AUTOMATION-ENVELOPES-005": "A document whose track envelope holds a single event, at the lower bound, opens; opening discards that envelope; what a later save writes for it is not specified",
+  "REQ-AUTOMATION-ENVELOPES-006": "Document order with non-decreasing times; at most two events at one time; a later event may have a negative time",
+  "REQ-AUTOMATION-ENVELOPES-007": "Before the checks, opening discards each track envelope on Speaker, Pan or CrossFadeState with no event or one event and each clip envelope with exactly one event, so the checks never refuse a document because of them; a clip envelope with no event is kept and refused; for envelopes with at least two events, a first event time other than the lower bound or 0 is refused (binary64 comparison, -0 counts as 0); later times not checked; an empty arrangement clip timeline of the MIDI track does not cause a refusal (stated assumption 3); other envelopes are kept (stated assumption 5)",
+  "REQ-AUTOMATION-ENVELOPES-008": "Curve control attribute names; a missing control reads as 0.5; four 0.5 controls mean no curve; on save each control equal to 0.5 is omitted and the others written as binary64 text",
+  "REQ-AUTOMATION-ENVELOPES-009": "Controls in [0, 1] whose pairs meet the stated monotonicity condition are kept on open",
+  "REQ-AUTOMATION-ENVELOPES-012": "Event text on open (Time and controls as decimal binary64, Float Value then binary32, Bool tokens, integer rule; refusal of rejected text) and on save (17 and 9 significant digits with k taken from the binary64 base-10 logarithm, true or false, decimal integers)"
+ },
+ "unreleased_requirements": [
+  "REQ-AUTOMATION-ENVELOPES-004",
+  "REQ-AUTOMATION-ENVELOPES-010",
+  "REQ-AUTOMATION-ENVELOPES-011",
+  "REQ-AUTOMATION-ENVELOPES-013"
+ ],
+ "compatibility_dimensions": {
+  "envelope-storage-and-load-checks": "static-derived expectations; reference execution not-run",
+  "file-format-written": "saved event text only, static-derived; reference execution not-run",
+  "envelope-value-at-time": "excluded (REQ-AUTOMATION-ENVELOPES-010 and 011 unreleased; reason in spec.md)",
+  "editing-and-ui": "excluded (REQ-AUTOMATION-ENVELOPES-013)",
+  "audio": "excluded",
+  "timing": "excluded"
+ },
+ "expectation_provenance_labels": {
+  "static-derived; not observed reference output": "derived from evidence reviewed before sanitization; no case is an observation of the original application"
+ },
+ "stated_assumptions": [
+  "BoolEvent and EnumEvent values are read and written with the Boolean and integer text rules of REQ-AUTOMATION-ENVELOPES-012 (the format declares them Boolean and integer). Cases 014, 015 and 021 depend on it.",
+  "A save keeps each envelope bound to its target. Every open-save case (001, 016 to 021) depends on it.",
+  "No step that runs when a document is opened refuses an empty Events list in the MIDI track's arrangement clip timeline. Case 032 depends on it.",
+  "Where its last bit decides k on save (REQ-AUTOMATION-ENVELOPES-012 step 1), the reference's binary64 base-10 logarithm errs by less than 3/4 of a binary64 gap, outside the excluded band. No case lies next to a power of ten, so no case depends on it.",
+  "Opening discards no envelope of this release's targets other than those of REQ-AUTOMATION-ENVELOPES-007 clause 5: a track envelope with at least two events, and a clip envelope with no event or at least two events, are kept and reach the checks of REQ-AUTOMATION-ENVELOPES-007. Cases 001, 008, 012, 016 to 021, 030 and 031 depend on it."
+ ],
+ "exclusions": {
+  "inputs_without_expectation": [
+   "a PointeeId that names no element, or an element other than the release's target relations, including another track's parameter; two envelopes naming one target; repeated target Ids; target Ids not below NextPointeeId; LockEnvelope other than 0",
+   "events in time disorder; three or more events at one time; repeated or missing event Ids; an event without Time or Value; an event element that does not match its target's value kind",
+   "stored transforms: a pending transform or a non-empty TimeAndValueTransforms",
+   "values outside the ranges of REQ-AUTOMATION-ENVELOPES-003; event times below L, at or above 1,000,000, or not finite",
+   "curve controls outside [0, 1] or not satisfying K, and controls on the first or last event, on an event followed by one at the same time, or on an event whose next event has the same value",
+   "Time, curve control or FloatEvent Value text that, after leading spaces and an optional sign, starts with 0x or 0X, or with inf or nan in any letter case; the text Invalid; text starting with #; leading whitespace other than U+0020",
+   "EnumEvent Value text with spaces both before and after the digits, with + and trailing spaces, or with a - sign, and such text longer than 63 characters that ends in a space",
+   "saved binary64 values (Time, curve controls) whose log10 is not an integer but lies between 1/4 and 3/4 of a binary64 gap from one",
+   "the main track's tempo and time-signature envelopes; envelopes of other tracks, devices, modulation targets and other MIDI controller targets; audio clip envelopes",
+   "elements outside AutomationEnvelope and ClipEnvelope that use the same Events shape, other than an empty Events list in the MIDI track's arrangement clip timeline: a non-empty timeline, and the timelines of audio tracks, samples and take lanes",
+   "Live Set structure other than the fixtures' (see spec.md): other tracks, devices, scenes, clips and clip slots, main and cue tracks, sends and returns",
+   "any other format version, root attribute or compressed container",
+   "documents that break more than one rule of this release"
+  ],
+  "behavior": [
+   "the value an envelope supplies to its parameter at any time, for Float, Bool and Enum envelopes, track and clip envelopes alike (REQ-AUTOMATION-ENVELOPES-010 and 011), including at event times, after the last event and between equal values, and whether event Ids affect it (REQ-AUTOMATION-ENVELOPES-004): no externally observable reading of the value computed from the stored events has been established, and the value applied while the transport plays rests on conditions not yet established for a document that has just been opened",
+   "what a save writes for an envelope that opening discards (REQ-AUTOMATION-ENVELOPES-007 clause 5)",
+   "whether opening replaces controls that do not satisfy K by 0.5",
+   "whether a save keeps or renumbers event and target Ids, the saved transform state, saved negative zero, whether a save writes envelopes that hold a single event, and whether a save keeps a leading event whose value differs from the next event's value",
+   "editing, override, recording and undo (REQ-AUTOMATION-ENVELOPES-013)",
+   "texts, dialogs and logging of a refusal, and the state after it",
+   "audio rendering, smoothing, scheduling and timing"
+  ]
+ },
+ "fixture_origin": "independently authored minimal Live Set XML documents from one template; no shipped file content, schema content or program code",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RA2-01 high: the discard on open of envelopes with fewer than two events is confirmed in both builds; automation-envelopes-v1 cases 003, 004 and 011 were wrong; change list says so; REQ-AUTOMATION-ENVELOPES-007 clause 5 states the discard instead of leaving it open; REQ-AUTOMATION-ENVELOPES-005 restated; excluded behavior aligned",
+   "RA2-02 medium: case 012 rests on the clip discard applying to exactly one event, not to an empty list; confirmed in both builds; upheld",
+   "RA2-03 medium: cases 001, 008, 012, 016 to 021, 030 and 031 rested on an unstated assumption that opening keeps envelopes with two or more events (and an empty clip envelope); stated as assumption 5",
+   "RA2-04 low: change list incomplete (new exclusions and assumptions; 'unchanged' claim too wide); completed",
+   "RA2-05 info: fixture validity: the structure checker passes all 21 fixtures; each refused fixture fails only for its tested rule; reviewer's single-defect controls open",
+   "RA2-06 info: no evaluated or playback value is implied by any case, field or comparison rule",
+   "RA2-07 info: reviewer's independent restatement agrees with all 21 expectations",
+   "RA2-08 info: supersession checked: superseded digest equals the catalog; 18 records identical; carried fixtures are the v1 files with 40 inserted lines only",
+   "RA2-09 info: evidence identity re-checked; all digests matched",
+   "RA2-10 editorial: status set to reviewed release; review record added; a cross-reference corrected; inventory re-hashed",
+   "RA2-11 info: clause 5 has one case (002); cases for the three withdrawn inputs proposed for a later revision"
+  ],
+  "disposition": "Approved with listed corrections (RA2-01, RA2-03, RA2-04), only for the explicit partial clauses; expectations static-derived; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": "automation-envelopes-v1",
+ "supersession": {
+  "relationship": "corrective and narrowing: automation-envelopes-v1 stays immutable, but its fixtures must not be used to judge that a document opens, and its cases 003, 004 and 011 were wrong: opening discards their envelopes before the checks of REQ-AUTOMATION-ENVELOPES-007, so the refusals they expect do not occur; its REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 were wrong for envelopes with fewer than two events",
+  "superseded_manifest_sha256": "793c1d7d5432de529c21c628e7fa6c46eecb1fa9128a4da9db1d1dfc34378302",
+  "restated_cases": "AUTOMATION-ENVELOPES-001, 002, 005 to 010 and 012 to 021: case records identical to automation-envelopes-v1; fixtures changed as in fixture_changes",
+  "not_carried": [
+   "AUTOMATION-ENVELOPES-003",
+   "AUTOMATION-ENVELOPES-004",
+   "AUTOMATION-ENVELOPES-011"
+  ],
+  "new_cases": [
+   "AUTOMATION-ENVELOPES-030",
+   "AUTOMATION-ENVELOPES-031",
+   "AUTOMATION-ENVELOPES-032"
+  ],
+  "changes": [
+   "Fixtures: every fixture gains one empty session and one empty freeze clip slot on the audio track, one empty freeze clip slot on the MIDI track and one scene (40 lines). A Live Set whose audio or MIDI track has a different number of session and freeze clip slots is not opened, and every automation-envelopes-v1 fixture had a session clip slot on its MIDI track and no freeze sequencer; the session slot and scene make each track hold one slot per scene. No v1 line changes",
+   "Defect corrected: cases 003, 004 and 011 were wrong. Each expected a refusal for an envelope with fewer than two events (a Pan track envelope whose only event is at 4, a Pan track envelope with no event, a clip envelope whose only event is at 4). Opening discards each of these envelopes before the checks of REQ-AUTOMATION-ENVELOPES-007 apply (REQ-AUTOMATION-ENVELOPES-007 clause 5, static-derived), so the expected refusals were wrong, not only badly fixtured, and an implementation must not refuse these documents because of that envelope. automation-envelopes-v1's REQ-AUTOMATION-ENVELOPES-007 clauses 1 and 2 were wrong for such envelopes: clause 1 now covers clip envelopes only, clause 2 envelopes with at least two events. The three cases are withdrawn, not carried with new fixtures",
+   "New cases 030 and 031 test the first-event time check with two events (track and clip envelope). IDs 022 to 029 were withdrawn before automation-envelopes-v1 was released and are not reused",
+   "New clause and case 032: an empty Events list in the MIDI track's arrangement clip timeline does not make the document refused (stated assumption); the exclusion of that element is narrowed",
+   "REQ-AUTOMATION-ENVELOPES-012 save step 1 corrected: k comes from the binary64 base-10 logarithm, as in transport-state-v2; values in the band where its last bit is not established are excluded. No v1 case is affected",
+   "Assumption removed: opening a Live Set applies the checks of REQ-AUTOMATION-ENVELOPES-007 is now static-derived",
+   "REQ-AUTOMATION-ENVELOPES-005 restated: the document still opens; opening discards the one-event envelope; what a later save writes for it is excluded",
+   "Exclusions and assumptions: new inputs without expectation (Live Set structure other than the fixtures'; saved values in the logarithm band); narrowed exclusion of elements that share the Events shape; new stated assumptions 3, 4 and 5 (opening discards no envelope of the fixtures other than those of REQ-AUTOMATION-ENVELOPES-007 clause 5; automation-envelopes-v1 relied on it without stating it); new excluded behavior: what a save writes for a discarded envelope",
+   "Unchanged: every other clause, the 18 carried case records and every carried expectation; the value an envelope supplies at a time stays unreleased (REQ-AUTOMATION-ENVELOPES-010 and 011), with the reason stated"
+  ],
+  "fixture_changes": {
+   "carried": "Each carried fixture is the automation-envelopes-v1 file of the same name with 40 lines inserted and no line changed, removed or reordered",
+   "insertions": [
+    "audio track: MainSequencer and FreezeSequencer, one empty clip slot each, after Mixer (20 lines)",
+    "MIDI track: FreezeSequencer with one empty clip slot, after MainSequencer (10 lines)",
+    "LiveSet: Scenes with one scene, after Tracks (10 lines)"
+   ],
+   "new": "fixtures/AUTOMATION-ENVELOPES-030.xml to 032.xml use the same template and insertions; 032 also has the 9-line arrangement clip timeline in the MIDI track's MainSequencer, between ClipSlotList and MidiControllers",
+   "not_carried": [
+    "fixtures/AUTOMATION-ENVELOPES-003.xml",
+    "fixtures/AUTOMATION-ENVELOPES-004.xml",
+    "fixtures/AUTOMATION-ENVELOPES-011.xml"
+   ]
+  }
+ },
+ "entrypoint": "README.md",
+ "case_count": 21,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "da8cd192f3729de77682356336e8c8182ef09d5c616e741fe84a2df4feec4989",
+   "bytes": 1374
+  },
+  {
+   "path": "README.md",
+   "sha256": "d35c18d673bccaf73c2466470b1cd0b563d53ba6da0f8cbfd02c32822a69f43c",
+   "bytes": 7639
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "f42e036a28344ad036763deda5b3626f32b9815e8ab38438c2a5b11289cfa7a0",
+   "bytes": 9732
+  },
+  {
+   "path": "cases.json",
+   "sha256": "cadc9f4127d51128c7e68fa50e7708666230bdde9b0204fe1ab95a0fe62bad58",
+   "bytes": 17063
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-001.xml",
+   "sha256": "87d7e46f66c3680e20c7ec08af6d5985b6183d174cb6976e3395fdc62a1aa9a9",
+   "bytes": 3002
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-002.xml",
+   "sha256": "5132749110d19503774c58791ad9cfa939ddd6579dfeb52116b0aed781401cfc",
+   "bytes": 2904
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-005.xml",
+   "sha256": "89650fe9b7f8c8000c5896a471eac146072c877b7ab8b3a845623125bcd9b328",
+   "bytes": 2944
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-006.xml",
+   "sha256": "297203a9a2681c1717468d447981e35ab2bc2951735b1a9822e7726394161284",
+   "bytes": 2945
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-007.xml",
+   "sha256": "f65bec1ff0f61269ad8213ee075bf6ae15dec47025123d13bdd2f829030104a4",
+   "bytes": 2952
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-008.xml",
+   "sha256": "64b0541f2804d22adbf772f00143c5cd46ee3054883531017e68f7610ce7bcd1",
+   "bytes": 2952
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-009.xml",
+   "sha256": "9388d66ec0ab232f8ec9e11acca8b5eb3a9f70d2a288e25fe8c680fcfb04a48e",
+   "bytes": 3006
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-010.xml",
+   "sha256": "4dee8b8b31a5943cbb29270f00a7fd161905236234b64ad478984ebe69707097",
+   "bytes": 3286
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-012.xml",
+   "sha256": "151ebb0481ea575e0cba19e7a2b9eb1b2c7bc2bf244266b307126f92399408d2",
+   "bytes": 3137
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-013.xml",
+   "sha256": "0bf097b7546f2dd0d80a4f5312abb52857837d798e217280bb3ef289fb9a9534",
+   "bytes": 2954
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-014.xml",
+   "sha256": "6eb7d60ae91a408eef2a1f26535e35b90bfba77159fa02c47334b3c99847c00a",
+   "bytes": 2956
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-015.xml",
+   "sha256": "ac71e346122075e4ea6bca14b4e0836ec71552e92cca3d0fca2483a744464f99",
+   "bytes": 2952
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-016.xml",
+   "sha256": "7b3994f27833d4a21a2a9357094458f78950e61707b35a146e6ff29e1b47b2d4",
+   "bytes": 2958
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-017.xml",
+   "sha256": "2e54c08ad8d7677a0bb26631dc78c916ebb675610e4c3d1e738dd9a94a872151",
+   "bytes": 3084
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-018.xml",
+   "sha256": "46cdf4ea13e9b370cbf2425c5364526396c7186df438982784dba187cc9ba642",
+   "bytes": 3084
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-019.xml",
+   "sha256": "1daf1e405add3211692c2af8a24f6344a225bd4e2b4d6304d931ba4a0bb80f43",
+   "bytes": 3042
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-020.xml",
+   "sha256": "20dcddb445fdd6841616ec834c6d8248cf300acc37e565271ab8877a0c60a816",
+   "bytes": 3088
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-021.xml",
+   "sha256": "58d338fd09a9bb409056cd45d3dcb2cc1e8d8407acb5ed80c650c90f6f529649",
+   "bytes": 3546
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-030.xml",
+   "sha256": "a4c7e4fda9fc4b20f6ad71a09cd619e7dcb5660d4643b8d2ebae8912e6d06cd4",
+   "bytes": 2944
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-031.xml",
+   "sha256": "d59ca192bc359755efc4d079031f05e91b972b7f7ce800616026d72f8b6ca721",
+   "bytes": 3278
+  },
+  {
+   "path": "fixtures/AUTOMATION-ENVELOPES-032.xml",
+   "sha256": "a6bf2992c935f1bdedb1cfec72e445d6d00e36daded2a2df9458af5b606c2df5",
+   "bytes": 3566
+  },
+  {
+   "path": "spec.md",
+   "sha256": "0fc59f768caabc911822d66403259e015150dcd6ed82cdc579772bcfb14029fb",
+   "bytes": 25868
+  }
+ ]
+}

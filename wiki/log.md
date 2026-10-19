@@ -2232,3 +2232,14 @@ device placement (REQ-012, Q-022) is not established. The track rule reads "no
 audio, MIDI or group track", and the path fallback is limited to codes 0 and 1. The
 open-path and freeze-slot rules held under review. The staged warp-markers-v2 puts
 a device on a track, and its reviewer has been told to remove it.
+
+## [2026-10-18] release | automation-envelopes-v2
+
+[automation-envelopes-v2](../handoff/automation-envelopes-v2/README.md) has 21 cases on
+openable fixtures. A separate review agent confirmed, in both builds, a removal
+step on open that runs before the checks. It deletes clip envelopes that have
+exactly one event, and Speaker, Pan and CrossFadeState envelopes with fewer than
+two. That makes v1 cases 003, 004 and 011 wrong. They are withdrawn, and the
+change list says so. No evaluated or playback values are released. The manifest
+SHA-256 is
+`267554cb2edc6c9960bfd5d67bcf996b833de15b9375063edfce4232c09d3791`.

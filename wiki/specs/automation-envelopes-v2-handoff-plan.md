@@ -9,6 +9,21 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Second automation-envelopes handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [automation-envelopes-v2](../../handoff/automation-envelopes-v2/README.md), approved with listed corrections by a separate review agent ([review record](../../handoff/automation-envelopes-v2/REVIEW.md)). It has 21 cases: 18 carried on repaired fixtures and 3 new.
+
+The review confirmed a removal step in both builds that runs on open, before the checks:
+- clip envelopes with exactly one event are removed;
+- Speaker, Pan and CrossFadeState envelopes with fewer than two events are removed.
+
+v1 cases 003, 004 and 011 were therefore wrong, and the change list says so. Case 012 stands. REQ-007 clause 5 now states the removal, and REQ-005 is restated. New assumption 5, that other envelopes are kept, carries 8 cases. No value is implied anywhere.
+
+For the spec author:
+- fix REQ-005 and REQ-007 in SPEC-AUTOMATION-ENVELOPES;
+- fix REQ-014's open condition in SPEC-LIVE-SET-STRUCTURE;
+- correct SF-3's unconfirmed status.
+
 ## Decision and boundary
 
 Stage a corrective candidate, automation-envelopes-v2, from
