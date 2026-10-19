@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-18
 access: analysis
-revision: 3
+revision: 4
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -26,11 +26,12 @@ the quantization grid. This draft specifies:
 - the quantization grid length for each setting, and the rule that places a launch on
   that grid while the transport plays.
 
-The launch offset near a grid line, launching with the transport stopped, the Gate,
-Toggle and Repeat press and release behavior, Legato, velocity scaling and
-follow-action timing are **open**. They are listed as unknown requirements. Each
-names the probe that would have settled it and, where one exists, a static route
-that could still settle it.
+Gate, Toggle and Repeat press and release behavior, Legato, velocity scaling and
+follow-action timing are **open**. They are listed as unknown requirements. Each names the
+probe that would have settled it and, where one exists, a static route that could still
+settle it. Revision 4 settles the launch offset near a grid line, and statically the launch
+with the transport stopped, through [SPEC-PLAYBACK-CORE](playback-core.md), which owns the
+launch sample.
 
 Every requirement is a **proposed contract** supported by a static derivation from the
 12.4.3 program, by shipped bytes, by extracted execution of the shipped x86_64 code, or
@@ -39,7 +40,9 @@ explicitly unknown. Nothing was run against Live.
 draft. Under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) nothing will
 be: no reference observation is available, and no probe will run. Revision 3 adds the X
 results of packet X2 for the grid arithmetic, the follow-chance rescaling and the
-follow-time rounding (appendix). Target: 12.4.3,
+follow-time rounding (appendix). Revision 4 applies the corrections of
+[SPEC-PLAYBACK-CORE](playback-core.md) r1, which settles A1 for the Trigger fire path and
+defines the launch sample, the pre-delay and the near-boundary rule. Target: 12.4.3,
 documents with `MinorVersion="12.0_12402"` unless a clause says otherwise. The
 gzip/XML envelope belongs to the draft
 [SPEC-ALS-CONTAINER](als-container.md); value text rules and the time-signature code
@@ -75,7 +78,7 @@ clauses that name it become unknown. No reference observation will test them
 
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
-| A1 | A press on a session clip's launch button while the transport plays reaches the launch-time computation without an explicit target time; the program then uses the clip's own grid when its launch quantization is not Global, and the set's global quantization otherwise, which equals the loaded `GlobalQuantisation`. Static route: interpreting the slot-state test behind the grid choice (appendix, REQ-016) | REQ-016, REQ-017, REQ-018 |
+| A1 | **Settled in revision 4 (S)** for the Trigger fire path by [REQ-PLAYBACK-CORE-007](playback-core.md#req-playback-core-007--launch-request-and-grid-settles-spec-clip-launch-a1). A press on a session clip's launch button, and `ClipSlot.fire()` without arguments, reaches the launch-time computation without an explicit target time. The slot-state test means "the slot holds a clip"; the program then uses the clip's own grid when its launch quantization is not Global, and the set's global quantization otherwise. That the engine's global value equals the loaded `GlobalQuantisation` remains an assumption there (its A4), as does which other gestures take this path | REQ-016, REQ-017, REQ-018 |
 | A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document. A present value inside its stated range is kept as read: the values of REQ-004, REQ-005 and REQ-007 for launch mode, launch quantization and follow actions; the bounds of REQ-009 for velocity amount, loop iterations, chances and jump indices; 0 to below 1,000,000 for follow time. A present launch mode, launch quantization or follow action outside its values is accepted without a range check. Revision 3 (S, both slices): the member's own load step does not limit a value outside its bounds either. The loader stores the value directly, and the post-load hook of the UserFloat and RangedRemoteableInt classes is the generic one, which does not clamp; the RemoteableDouble hook only rounds (REQ-013). A later step that could change such a value is still untraced, except for the chances (REQ-012) | REQ-009 to REQ-013 |
 | A3 | The load-time corrections of REQ-012 and REQ-013 run for every clip read from a Live Set | REQ-012, REQ-013 |
 | A4 | In a set whose time signature never changes, the grid is anchored at song beat 0 | REQ-017 and the grid cases |
@@ -367,13 +370,14 @@ to the nearest multiple of 1/3,843,840 beat (the rounding of REQ-013).
   The triplet lengths are the binary64 values nearest 4/3, 2/3, 1/3 and 1/6; they are
   not rounded to the lattice.
 - Not proposed for release: a grid length is observable only by launching (REQ-016 to
-  018), and the launch path rests on A1, which is open under Q-017.
+  018). Revision 4: A1 is settled (REQ-PLAYBACK-CORE-007), so the launch path no longer blocks a
+  release; see the release note below.
 
 ### REQ-CLIP-LAUNCH-016 — which grid a launch uses
 
-- **S (assumes A1).** A clip with launch quantization 0 (Global) uses the set's
+- **S (A1 settled in revision 4).** A clip with launch quantization 0 (Global) uses the set's
   global value with the song's time signature in effect at the press.
-- **S (assumes A1).** A clip with launch quantization k ≥ 1 uses grid value k − 1
+- **S (A1 settled in revision 4).** A clip with launch quantization k ≥ 1 uses grid value k − 1
   with the clip's own time signature (`TimeSignature/TimeSignatures/RemoteableTimeSignature`
   `Numerator` and `Denominator`, truncated to integers). Example: a 6/8 clip set to
   1 Bar uses 3 beats in a 4/4 song.
@@ -388,10 +392,10 @@ to the nearest multiple of 1/3,843,840 beat (the rounding of REQ-013).
 With the transport playing, a launch pressed at song beat t, grid g > 0 (REQ-016),
 and anchor a:
 
-- **X (assumes A1).** The press time t is the transport's current song time rounded to
+- **X (A1 settled in revision 4).** The press time t is the transport's current song time rounded to
   the 1/3,843,840 grid as in REQ-013 (an explicit target time is not rounded). Examples:
   3.99 → 3.990000104062604; 4 ± 1e-9 → 4; 4 + 1/3,843,840 stays.
-- **X (assumes A1).** The launch boundary is B = a + ⌈(t − a)/g⌉·g, rounded to the
+- **X (A1 settled in revision 4).** The launch boundary is B = a + ⌈(t − a)/g⌉·g, rounded to the
   1/3,843,840 grid, with a = max(0, the anchor) and every operation in binary64 with
   g the binary64 grid length of REQ-015. For bar grids and the note values 2, 1, 1/2,
   1/4 and 1/8, B is the first grid line at or after t. For the triplet grids it is not
@@ -401,20 +405,28 @@ and anchor a:
   384 of 1/16T (for example 1/4T at t = 10/3 gives B = 4). A press one lattice step
   before or after a grid line gives the first line at or after it in all 3,424 such
   presses run.
-- **X (assumes A1, A4).** In a set whose time signature never changes, a = 0.
+- **X (A1 settled in revision 4; assumes A4).** In a set whose time signature never changes, a = 0.
   Examples: 4/4, 1 Bar, t = 5.3 → B = 8; 1/4T, t = 1.0 → B = 4/3; 4/4, 1 Bar,
   t = 1.5, 3.9, 3.99 and 4.0 → B = 4 (PRB-S5-01's presses, before the rule below).
-- **U.** The clip starts at B unless the press is too close to B. A
-  tempo-dependent offset o is computed at the press; when B − t < o, with the
-  transport playing and a further track condition met, the clip starts at B + g
-  instead. The size of o, the track condition, and the result for a press exactly
-  on a grid line are unknown. No reference observation is available (ADR 0003;
-  PRB-S5-01), so this near-boundary clause must not be released unless a static
-  reading settles it. Static route: resolving the target of the offset call and
-  interpreting the track condition. Revision 3 narrowed the call (S): for a launch
-  without an explicit time it is slot +0x48 of an engine object found through the
-  song's track list, otherwise slot +0x18 of a per-song engine object given the tempo.
-  Both objects exist only at run time, so extracted execution cannot settle o.
+- **S, X (revision 4; [REQ-PLAYBACK-CORE-008 and 009](playback-core.md#req-playback-core-008--launch-boundary-and-pre-delay)).**
+  The clip's start counts from B, and its launch takes effect at E = B − o rounded to the
+  1/3,843,840 grid. o is a pre-delay that the track's clip player supplies:
+  - 0 on a MIDI track;
+  - on an audio track, the clips' crossfade length (at most 4 ms in beats) when a session audio
+    clip is playing and both clips have `Fade` on, else 0 (X).
+
+  When B − t < o, the launch moves to B + g, but only if g > 0 and the transport was already
+  playing before the press sample; otherwise o is reduced to B − t. A press exactly on a grid
+  line therefore launches on that line on a MIDI track, at the press sample itself.
+  - **Correction.** Revision 3 said the offset objects were "found through the song's track
+    list" or "a per-song engine object" and existed only at run time. They are the track's clip
+    player (no explicit time) and the track's clip timeable (explicit time). o reduces to pure
+    arithmetic, run by extracted execution.
+  - **Correction.** The "further track condition" is the song-already-playing test: the
+    current sample differs from the sample at which playback last started. It is not a track
+    field.
+  - **Correction.** The move to B + g also needs g > 0.
+- **U.** The audio of either clip between E and B when o > 0 (REQ-PLAYBACK-CORE-009).
 - **U.** After a time-signature change, a is the start of the current
   time-signature segment, and not less than 0. Static expectation: with 4/4 changing
   to 3/4 at beat 8, 1 Bar, a press at beat 9 starts at beat 11. No reference
@@ -424,18 +436,24 @@ and anchor a:
 
 ### REQ-CLIP-LAUNCH-018 — launches without a grid
 
-- **S (assumes A1).** When REQ-016 gives no grid (clip None; Global with global None;
+- **S (A1 settled in revision 4).** When REQ-016 gives no grid (clip None; Global with global None;
   out-of-range values), the launch is not moved to a grid line.
-- **U.** The delay between press and start, in beats. No reference observation is
-  available (ADR 0003; PRB-S5-04). It depends on the offset of REQ-017 and has the
-  same static route.
+- **S (revision 4; [REQ-PLAYBACK-CORE-010](playback-core.md#req-playback-core-010--launch-without-a-grid-and-launch-while-stopped)).**
+  There is no delay once the request is handled: B is the lattice-rounded press beat and
+  o = 0, so the clip starts at the sample where the engine handles the request. When the engine
+  handles an interface press relative to the audio buffer is U there.
 
 ### REQ-CLIP-LAUNCH-019 — launch with the transport stopped
 
-- **U.** Where playback and the clip start when a clip is launched with the transport
-  stopped. No reference observation is available (ADR 0003; PRB-S5-05). Static note:
-  the grid computation can return "no grid" when the song is not playing. Static
-  route: the transport start path and the engine's immediate-launch branch.
+- **S (revision 4; [REQ-PLAYBACK-CORE-010](playback-core.md#req-playback-core-010--launch-without-a-grid-and-launch-while-stopped)).**
+  The engine sets the song position to the start beat if it is a locator, and otherwise to the
+  start beat's downbeat (the bar line at or before it). It computes B from there and starts
+  the transport. With a start beat of 0 the clip starts on the first played sample.
+- **U.** The downbeat helper, the start beat after opening a set, and chasing of notes under
+  way at such a start.
+- **Correction.** Revision 3's static note that "the grid computation can return no grid when
+  the song is not playing" applies to stop requests and empty-slot presses, not to clip
+  launches.
 
 ### REQ-CLIP-LAUNCH-020 — Gate, Toggle and Repeat
 
@@ -478,10 +496,12 @@ and anchor a:
 - Persistent state: the fields of REQ-001 to REQ-003. A launch changes no stored field.
 - Determinism: loading and the boundary rule are deterministic for a given document
   and press position. Follow-action chance selection is random and out of scope.
-- Timing tolerance for the grid cases (proposed, pending
-  [Q-001](../questions.md#q-001-compatibility-targets)): the measured start beat must
-  lie within ±1/64 beat of the expected value, the jitter limit of the PRB-S5-01
-  design. Under ADR 0003 only a candidate is measured.
+- Timing tolerance for the grid cases (revision 4): none. The start is graded to the sample by
+  [REQ-PLAYBACK-CORE-002](playback-core.md#req-playback-core-002--placing-an-event-on-a-sample).
+  Where that requirement allows P or P + 1, either is accepted. Revision 3's ±1/64-beat
+  tolerance (375 samples at 48,000 Hz and 120 BPM) came from the PRB-S5-01 measurement design.
+  It was coarser than the sample-exact timing dimension of ADR 0004, and is withdrawn. Under
+  ADR 0003 only a candidate is measured.
 - Undo, edits in the user interface, and cancellation of a pending launch are out of
   scope.
 
@@ -552,12 +572,12 @@ clip. A song time-signature edit sets `TimeSignature/Manual/@Value` and the
 ### Grid cases
 
 Common setup: the stated fixture edit; transport playing from beat 0 at 90 BPM;
-Slide is launched once by a press at song beat t (clock-locked MIDI note mapped to its
-launch button, the method of the PRB-S5-01 design). Comparator: the song beat at which
-Slide's playback begins, within ±1/64 beat. Every press precedes B by at least 0.12
-beat (80 ms). A start at exactly B + g is not graded, because the near-boundary rule
-is unknown (REQ-017); any other result fails. Global value 4 and Slide value 0 unless
-stated. Every grid case rests on A1.
+Slide is launched once by a launch-button press handled at the render sample whose song beat
+is t, as defined in [SPEC-PLAYBACK-CORE](playback-core.md#definitions). Comparator: the song
+beat at which Slide's playback begins, exactly. The corresponding render samples are
+[PBC-020 to PBC-024](playback-core.md#launch-cases). Slide is a MIDI clip, so the pre-delay is 0
+and no press moves to B + g (REQ-017). Global value 4 and Slide value 0 unless stated. A1 is
+settled (revision 4).
 
 | Case ID | Requirement | Kind | Setup/action | Expected result/comparator | Fixture |
 | --- | --- | --- | --- | --- | --- |
@@ -582,18 +602,23 @@ stated. Every grid case rests on A1.
 | CLC-049 | 016, 017 | G | Slide value 8 (1/4); t = 2.1 | 3 (not 4: the clip's value wins) | B1 edit |
 | CLC-050 | 016, 017 | G | Slide signature 6/8 (`Numerator` 6, `Denominator` 8), value 5 (1 Bar); t = 1.2, then a second run with t = 4.2 | 3, then 6 | B1 edit |
 | CLC-051 | 016, 017 | G | Slide signature 6/8, value 0; t = 1.2 | 4 (Global uses the song's 4/4) | B1 edit |
-| CLC-052 | 018 | N | Slide value 1 (None); t = 5.3 | Starts before beat 6 (not moved to 8); exact delay unresolved (REQ-018) | B1 edit |
-| CLC-053 | 018 | N | Global 0 (None); t = 5.3 | Starts before beat 6 | B1 edit |
-| CLC-054 | 017 | U | t = 3.99, and t = 4.0 exactly | Unresolved: B = 4 for both (X arithmetic); the start is 4 or 8 by the near-boundary rule (REQ-017) | B1 |
+| CLC-052 | 018 | N | Slide value 1 (None); t = 5.3 | Starts at the press (song beat 5.3), not moved to 8 (REQ-018 r4) | B1 edit |
+| CLC-053 | 018 | N | Global 0 (None); t = 5.3 | Starts at the press (song beat 5.3) | B1 edit |
+| CLC-054 | 017 | G | t = 3.99, and t = 4.0 exactly (44,100 Hz: request sample 117,600) | Starts at 4 for both. At t = 4.0 the start is at the press sample itself (REQ-017; MIDI pre-delay 0) | B1 |
 | CLC-055 | 017 | U | 3/4 from beat 8 (second time-signature event); t = 9 | Static expectation 11; not graded (REQ-017) | B1 edit |
-| CLC-056 | 019 | U | Transport stopped at beat 5.3; launch Slide | Unresolved (REQ-019) | B1 |
+| CLC-056 | 019 | U | Transport stopped at beat 5.3; launch Slide | Unresolved. Static expectation (REQ-019 r4): playback and Slide start together at beat 4, the downbeat of 5.3. Not graded: the start beat and the downbeat helper are untraced | B1 |
 | CLC-062 | 016, 017 | G | Slide `<LaunchQuantisation Value="-99" />`; t = 5.3 | 8 (−99 is read as Global; the global value is 1 Bar) | B1 edit |
-| CLC-063 | 016, 018 | N | Slide `<LaunchQuantisation Value="-1" />`; t = 5.3 | Starts before beat 6 (no grid) | B1 edit |
-| CLC-064 | 017 | U | Global 8 (1/4T); a press exactly at song beat 10/3 | Unresolved: B = 4, not 10/3 (X arithmetic, triplet rounding); the start also depends on the near-boundary rule, and the grid-case method cannot place a press exactly on a lattice point | B1 edit |
+| CLC-063 | 016, 018 | N | Slide `<LaunchQuantisation Value="-1" />`; t = 5.3 | Starts at the press (song beat 5.3; no grid) | B1 edit |
+| CLC-064 | 017 | G | Global 8 (1/4T); at 44,100 Hz, a press handled at request sample 98,000, whose song beat is exactly 10/3 | Starts at 4, not 10/3 (X arithmetic, triplet rounding; MIDI pre-delay 0) | B1 edit |
 
-Omitted kinds: cancellation and teardown (a pending launch that is cancelled or
-replaced is out of scope); U-only requirements REQ-019 to 023 have no graded cases,
-and under ADR 0003 no probe will supply the observation. The global-value table rows
+Omitted kinds:
+
+- Cancellation and teardown. A pending launch that is cancelled or replaced is specified in
+  [REQ-PLAYBACK-CORE-022](playback-core.md#req-playback-core-022--stop-buttons-and-quantized-stop)
+  and graded there (PBC-089).
+- REQ-019. It has S clauses since revision 4, but its case CLC-056 stays unresolved.
+- The U-only requirements REQ-020 to 023. They have no graded cases, and under ADR 0003 no
+  probe will supply the observation. The global-value table rows
 for 0 and ≥ 14 are covered by CLC-053 and REQ-011's unresolved cases.
 
 ## Open questions
@@ -625,6 +650,21 @@ rounding (settled); the other bounded values (narrowed: the member's load step k
 the grid lengths and the boundary arithmetic (X; the scheduler still rests on A1); the
 offset call (narrowed, not settleable by X). New: the enum getter's −99 rule (REQ-011,
 REQ-016), and the triplet-grid boundary for a press exactly on a line (REQ-017).
+
+Settled in revision 4 by [SPEC-PLAYBACK-CORE](playback-core.md) r1 (static reading of the
+named Live Engine matched to both Live slices, and X):
+
+- A1 for the Trigger fire path;
+- the offset o, which is 0 for MIDI and the audio crossfade length otherwise;
+- the "track condition", which is the song-already-playing test;
+- the delay of an unquantized launch, which is none once the request is handled;
+- the stopped-transport launch, statically.
+
+Still open:
+
+- which gestures besides the launch button take the path;
+- the start beat and downbeat helper of a stopped launch (REQ-019);
+- the audio between E and B (REQ-017).
 
 The [probe batch](../../analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/probe-batch.json)
 (PRB-S5-01–11) is kept as the record of what observation would have settled. Under
@@ -662,9 +702,9 @@ re-checked them against the kept dossiers, the staging byte check
 | 014 | CL-19 | Registry `0x10148ec98` (C1); `0x101493140` (s5-0002; table `0x105815e9c` re-read from `Live.arm64` on 2026-10-17: 0,1,2,3,4,5,6,8,10,12,14; `b.cs` at `0x1014931a0`; body ends at the throw `0x1014931d8`); `0x1014b6d14`, `0x1014b82d8` (s5-0003); `0x1014b8b00` (s5-0002, `mov w1,#0x4` at `0x1014b8be4`); `0x1014bb048` (C1); `0x1014c04d0` (s5-0004, pseudocode read; the reviewer re-read its retained disassembly and confirmed every condition and default, F7, RVC-08). Step 406 with an existing `FollowAction`: error report `0x101471a98`, then a no-return trap (`0x1014b6d14.c`, F6). Steps above 405 for clip, follow-action, scene, track and song elements checked by the reviewer: none outside the table touches these items (RVC-04). Scene writer not read (F7) | S; A5; step 17 reachability, both-forms clip and saved scenes U |
 | 015 | CL-11 | `0x101aaae44` (s5-0001): `sub w8,w1,#1; cmp w8,#0xc; b.hi`; jump table `0x105846ef8` = `00 7a 37 61 2f a4 aa 76 ae 33 ac 2b 31` and sentinels `0x1055d9680` re-read from `Live.arm64` on 2026-10-17; constants 3843840.0 (`0x414d538000000000`), 4/3, 2/3, 1/3, 1/6 | S |
 | 016 | CL-12 | `0x102442998` (s5-0001; clip TimeSignature registered at `0x1d0`, value `+0x1d8`); `0x1026e3698` `fcvtzs` (s5-0003); `0x10245efa0` passes `0x102442998(clip,0)` (s5-0002); `0x101acffa4` (s5-0002): override `cmp w6,#0xd; b.ls`, precomputed grid when `[slot,#0x38]`=1 and `[slot,#0x20]`≥2, else global `0x101b0e1c0` when `w7` (requested time = DBL_MAX) | S; A1 (slot test uninterpreted) |
-| 017 | CL-13 | `0x101ad0130` (s5-0001) `0x101ad06cc`–`0x101ad0924`: `fcmp d12,#0.0; b.le` skips the ceiling; `0x101abf294` anchor `fmaxnm([sig,#8],0)` (s5-0002); `0x1011be6c8` mode 1 `frintp` then lattice (s5-0001); offset `0x101ad1418` virtual call (s5-0004); condition `0x101acfe68` (s5-0003) | S ceiling; A1, A4; near-boundary U |
-| 018 | CL-14 | Grid default 0.0; ceiling skipped when g ≤ 0; with g = 0 the near-boundary branch sets o := B − now | S; latency U |
-| 019 | — | `0x101acffa4` immediate-check path returns 0.0 when engine byte `+0x68` ≠ 1 | U |
+| 017 | CL-13 | `0x101ad0130` (s5-0001) `0x101ad06cc`–`0x101ad0924`: `fcmp d12,#0.0; b.le` skips the ceiling; `0x101abf294` anchor `fmaxnm([sig,#8],0)` (s5-0002); `0x1011be6c8` mode 1 `frintp` then lattice (s5-0001); offset `0x101ad1418` virtual call (s5-0004); condition `0x101acfe68` (s5-0003). Revision 4: Engine names `OAsyncClipFireManager::PrepareClipFire`, `RequestedPredelaySongBeatForClip` (slot +0x48 of the clip player, 0 for MIDI; audio `OAudioClip::SCrossfadeDurBeat` x86 `0x102278eb0`, arm64 `0x102188f34`, X 16 of 16) and `SongWasPlayingBeforeCurrentSample` ([t13-playback-v1](../../analysis/ableton-live-12.4.3/r2/t13-playback-v1/manifest.json) `launch/`) | S ceiling; X pre-delay; A1 settled; A4; meter-change anchor U |
+| 018 | CL-14 | Grid default 0.0; ceiling skipped when g ≤ 0; with g = 0 the near-boundary branch sets o := B − now. Revision 4: B = lattice(t), o = 0, activation at the request sample (`launch/`) | S |
+| 019 | — | `0x101acffa4` immediate-check path returns 0.0 when engine byte `+0x68` ≠ 1: revision 4 reads this as the stop and empty-slot branch. Stopped launch: Engine `OFireManager::FireClip` (x86 `0x101b1c870`, arm64 `0x101af0cbc`) sets the start beat's downbeat unless it is a locator, then requests play | S; start beat and downbeat helper U |
 | 020–023 | CL-21–23 | `0x10245efa0` sends Legato (conditional on vtable `+0x300`), launch mode, follow data; `0x10250416c` (s5-0003) sends LoopIterations only when IsLinked (else `0x80000000`) | U |
 | Fixtures | CL-20 | `inputs-documents.tsv`; values re-read from B1–B6 on 2026-10-17 | D |
 
@@ -684,7 +724,7 @@ the research page:
 | Requirement | x86_64 function run (arm64 counterpart) | Setup and result | Limits |
 | --- | --- | --- | --- |
 | 015 | Grid length `0x101ad2ef0` (`0x101aaae44`) | {n, d} in a buffer, q in a register; 6,463 combinations equal the REQ-015 table, bit for bit | How the clip or song signature is read is S (`0x102815210`, `cvttss2si` = arm64 `fcvtzs`) |
-| 017 | Lattice helper `0x1011999d0` (`0x1011be6c8`), mode 3 for the press-time rounding; boundary helper `0x101ae8280` (`0x101abf294`), mode 1 | An anchor entry with the anchor at +8; 37 listed presses (PRB-S5-01, every grid case, anchors 8, −5 and 8.0000001) and 5,136 presses on and one lattice step beside every note-value grid line up to beat 64 | The engine's own rounding of the current time is an inline copy of the same sequence (x86 `0x101afa4dd`–`0x101afa553`, S). Whether the fire path calls the helper for a press is A1. The offset rule is U |
+| 017 | Lattice helper `0x1011999d0` (`0x1011be6c8`), mode 3 for the press-time rounding; boundary helper `0x101ae8280` (`0x101abf294`), mode 1 | An anchor entry with the anchor at +8; 37 listed presses (PRB-S5-01, every grid case, anchors 8, −5 and 8.0000001) and 5,136 presses on and one lattice step beside every note-value grid line up to beat 64 | The engine's own rounding of the current time is an inline copy of the same sequence (x86 `0x101afa4dd`–`0x101afa553`, S). That the fire path calls the helper for a press (A1) is settled in revision 4. The offset rule is in REQ-PLAYBACK-CORE-008 |
 | 011, 016 | Enum getter `0x101556330` (`0x1015661b8`) | Stored −99 returns 0; −100, −98, −1, 0, 1, 14, 15 and the 32-bit extremes are returned as stored | That the clip grid `0x1025612b0` (`0x102442998`) uses this getter on [clip+0x258] is S |
 | 012, A7 | Follow-action post-load `0x10262a930` (`0x1025044b4`): slot +0xd0 of vtable `0x106d0dc08` | Hand-built AFollowAction with two UserFloat chances. Each chance has the real vtable `0x106bc35b0`, is set up by the real init `0x101564e20` with the ctor's (0, 100) mapping `0x101566480`, and holds the loaded value stored at +0x58 as the loader stores it. The listener callback and the enabled setter are skipped under gdb and recorded. 28 chance pairs. The chance setter `0x101565360` limits to 0–100; values in range are kept as computed | The real AFollowAction ctor `0x10262b4b0` was not run: it needs the class registries, which need libc++ imports. That A3's post-load runs for each clip is S |
 | 013 | ARemoteableDouble post-load `0x101555850` (`0x10156580c`) | Hand-built double with the real vtable `0x106bc07b0` and flag +0x70; the generic part `0x10147e120` skipped under gdb; 33 values with the flag set and 33 without. The binary64 formula equals X for all 66; exact rounding differs for 6 near-tie values | The flag is set by the AFollowAction ctor for `FollowTime` (S, both slices) |
@@ -696,7 +736,8 @@ every input class, and arm64's `fmadd` adds an exact product.
 **Cases backed by X.** CLC-019 to 025 and 057 to 061 take their values from X runs of the
 rescaling, the chance setter and the follow-time rounding, with the load path S and A3.
 CLC-031 to 053, 062 and 063 take B from X runs of the grid length and the boundary helper,
-with the launch path under A1. CLC-054, 055 and 064 record X arithmetic but stay unresolved.
+with the launch path under A1, settled in revision 4. CLC-054 and 064 become graded in revision 4. CLC-055
+records X arithmetic but stays unresolved.
 
 Corrections and contradictions:
 
@@ -726,6 +767,7 @@ values inside their stated ranges (RVC-03) and marks CL-15's API message unknown
 | 1 | 2026-10-17 | First draft from S5 (CL-01 to CL-23): 23 requirements (3 D with S parts, 5 S only, 10 S with U parts, 5 U only); 56 unexecuted cases: 4 not graded (CLC-030, 054–056), 3 with unresolved parts (CLC-013–015), 2 without a fixture (CLC-028, 029) |
 | 2 | 2026-10-18 | Staging and review findings of clip-launch-v1 applied; none rejected. F1, RVC-01: release proposal for REQ-015 to 018 dropped. F2, RVC-10: REQ-011 API message text U; CLC-016, 017 grade no text. F3, RVC-02: REQ-001 read-back limited to Booleans and numbers of at most six significant digits; CLC-025 grades the held value. F4, RVC-03: A2 limited to the stated ranges; out-of-range bounded values, chances and follow times U; 150/50 example removed; CLC-023 relabelled U. F5, RVC-09: REQ-013 byte evidence; near-tie values U. F6: both-forms clip U. F7, RVC-08: CLC-026, 027 grade held scene values; saved scene form U. F8: CLC-028, 029 use authored `11.0_405` fixtures. F9: scene corrections U. RVC-04: other conversion steps stated. RVC-05: REQ-005 worded as meaning. RVC-11: A7 named. RVC-13 coverage proposals deferred (no error). ADR 0003: probe references now say that no reference observation is available, with static routes. 23 requirements (3 D with S parts, 4 S only, 11 S with U parts, 5 U only); 56 unexecuted cases: 5 not graded (CLC-023, 030, 054–056), 3 with unresolved parts (CLC-013–015), all with a fixture |
 | 3 | 2026-10-18 | Extracted execution (packet X2, evidence label X added). REQ-012 and 013 become X with an S path. A7 is settled: the chance setter limits to 0–100 and does not run the chance controller. REQ-015's table and REQ-017's boundary arithmetic become X; REQ-017 still assumes A1, and its near-boundary clause stays U. REQ-011: chances and follow times outside their ranges settled by X; the other bounded values narrowed (S); the −99 rule added. A2 extended statically to out-of-range values. Errors found: REQ-016 said every negative clip value gives no grid, but −99 reads as Global; REQ-017 said B is always the first grid line at or after t, which fails for some presses exactly on a triplet line; REQ-013's near-tie U is replaced by the binary64 formula. CLC-023 becomes gradable (75/25); CLC-057 to 064 added. 23 requirements (3 D with S parts, 3 S only, 1 X only (015), 11 with U parts, 5 U only); 64 unexecuted cases: 5 not graded (CLC-030, 054–056, 064), 3 with unresolved parts (CLC-013–015); of the 59 graded, 12 document cases and 25 grid cases are backed by X, and 22 are static or documented |
+| 4 | 2026-10-18 | Corrections from [SPEC-PLAYBACK-CORE](playback-core.md) r1 (packet T1.3). A1 settled for the Trigger fire path (REQ-PLAYBACK-CORE-007). REQ-017: the offset is the track player's pre-delay (0 for MIDI, the audio crossfade length otherwise, X), not a run-time-only value; the "track condition" is the song-already-playing test; the move to B + g needs g > 0; activation at B − o; the audio between B − o and B stays U. REQ-018: no delay once the request is handled (S). REQ-019: stopped launch (S) with the start beat and downbeat helper U; revision 3's "no grid when not playing" note applied to stops, not launches. The ±1/64-beat tolerance is withdrawn in favour of REQ-PLAYBACK-CORE-002. CLC-054 and 064 become graded; CLC-052, 053 and 063 get exact expectations; grid-case setup restated with request samples. 23 requirements (3 D with S parts, 4 S only, 1 X only (015), 11 with U parts, 4 U only); 64 unexecuted cases: 3 not graded (CLC-030, 055, 056), 3 with unresolved parts (CLC-013–015); of the 61 graded, 12 document cases and 27 grid cases are backed by X, and 22 are static or documented |
 
 Revision 1 proposed that a first handoff could carry REQ-001 to 007, 009, 012, 013,
 015, 016 and the S clauses of 011, 014, 017 and 018, without REQ-017's near-boundary
@@ -737,7 +779,8 @@ Released 2026-10-18: [clip-launch-v1](../../handoff/clip-launch-v1/README.md), 5
 
 clip-launch-v1 stays pinned to revision 1, and revision 3 is unreleased. A later release
 revision could carry REQ-012's and 013's X-backed cases and the out-of-range chance cases.
-The grid cases still rest on A1. clip-launch-v1's manifest's partial scopes define
+Revision 4 settles A1, so a later release could also carry REQ-015 to 018 and the grid cases,
+graded to the sample through SPEC-PLAYBACK-CORE. clip-launch-v1's manifest's partial scopes define
 what was released. These draft clauses are broader than the release and unreleased:
 clips in take lanes and the groove pool, and repeated clip children other than
 launch elements (REQ-001); API names (REQ-004 to 006) and the API setters (REQ-011);

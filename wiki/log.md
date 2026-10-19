@@ -2104,3 +2104,23 @@ Neither contradicts a release. ADR 0004 gains a render convention: rendering
 starts from a settled state. New questions are Q-022 (structure load rules) and
 Q-023 (mix-graph conditions). The T1.3 playback-core draft is filed with its
 corrections still in progress.
+
+## [2026-10-18] spec | T1.3 playback core; clip launch r4 and warp r4
+
+[SPEC-PLAYBACK-CORE](specs/playback-core.md) r1 has 23 requirements and 68 cases, with
+evidence in `r2/t13-playback-v1`. It covers transport, launch timing, note
+emission and unwarped audio playback. Launch timing (clip-launch A1) is settled
+for Trigger launches. Eight cases accept either P or P+1 at 48 kHz, because the
+engine's sample counter decides which; this is Q-024.
+
+Corrections:
+- **Clip launch r4.** REQ-017's offset is the track player's pre-delay: 0 for
+  MIDI, the audio crossfade length otherwise. REQ-018 and 019 are corrected.
+  Sample-exact timing replaces the ±1/64-beat tolerance.
+- **Warp markers r4.** REQ-009 named no playback caller; one exists. Warped
+  playback uses the scripting mapping, and unwarped session clips ignore
+  markers.
+- **Transport transitions.** T-01's first played sample is exactly the start
+  beat.
+
+None of these contradicts a released handoff.

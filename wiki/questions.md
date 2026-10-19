@@ -338,6 +338,7 @@ no experimental contradiction has been established yet.
   test behind the clip-grid choice (assumption A1).
 - Progress 2026-10-18 (r2): [SPEC-CLIP-LAUNCH](specs/clip-launch.md) r2 applies the clip-launch-v1 review and drops the REQ-015 to 018 release proposal. New gaps: out-of-range bounded values, the script-side API error text, opening corrections for scenes, the step-406 clip with both forms, the saved scene form, and A7.
 - Progress 2026-10-18 (X2, r3): the grid and boundary arithmetic, the chance rescaling and its 0 to 100 limits (A7; 150/50 gives 75/25) and follow-time rounding are settled by [extracted execution](research/extracted-execution.md) (`r2/x2-notes-launch-v1`). Corrections: a stored −99 is read as 0 and launches as Global (REQ-016). A press exactly on a triplet grid line sometimes launches at the next line (REQ-017; 236 of 720 lines up to beat 64). Whether the scheduler calls this arithmetic (A1) and the near-boundary offset stay unknown, because the offset comes from engine objects that exist only at run time.
+- Progress 2026-10-18 (T1.3, clip-launch r4): A1 and the launch offset are settled for Trigger launches ([playback core](specs/playback-core.md) REQ-007). The offset is the track player's pre-delay: 0 for MIDI, the audio crossfade length otherwise. Timing is sample-exact.
 
 ## Q-018 MIDI note key range and ordering after load
 
@@ -409,6 +410,7 @@ no experimental contradiction has been established yet.
 - Next action: no reference observation is available (ADR 0003). Static routes: trace the other callers of the scripting interpolation into playback; the open-path check flag (A1) and the auto-warp trigger (A2); the save path (A4); the TransientEnvelope curve; the preference store at load. Per-mode audio stays unknown.
 - Progress 2026-10-18 (r2): [SPEC-WARP-MARKERS](specs/warp-markers.md) r2 applies the warp-markers-v1 review: A2 split into opening (A2) and saving (A4); REQ-015 restated as inclusive bounds.
 - Progress 2026-10-18 (X2, r3): the scripting beat and sample conversion, the shadow-marker formula and the REQ-015 and 016 edges are settled by extracted execution, which reproduces the shipped shadows exactly. No caller connects these functions to playback, so the playback mapping stays open.
+- Progress 2026-10-18 (T1.3, warp r4): playback callers found. Warped playback converts beats to file time with the scripting mapping, and unwarped session clips ignore markers. Per-mode read positions stay unknown and outside T1.
 
 ## Q-022 Live Set structure load rules
 
@@ -441,3 +443,19 @@ no experimental contradiction has been established yet.
   - the summation order on the main bus.
 - Progress 2026-10-18: A1 is recorded as a T1 render convention in [ADR 0004](decisions/adr-0004-target-scope-t1.md#render-conventions).
 - Next action: trace A2 to A5 statically.
+
+## Q-024 Playback core render semantics
+
+- State: open; owner: analyst.
+- Affects: FEAT-TRANSPORT, FEAT-SESSION, FEAT-MIDI, [SPEC-PLAYBACK-CORE](specs/playback-core.md).
+- Evidence: [playback core](research/playback-core.md); `r2/t13-playback-v1`.
+- Gap:
+  - at some whole-sample positions an event lands on P or P+1, depending on the engine's sample counter;
+  - Play's start beat after a set is opened, and when scripted actions take effect;
+  - same-key overlapping notes;
+  - the flag that enables velocity deviation and probability;
+  - exact fade values, and the audio during a crossfade;
+  - the HiQ 16-bit sample type (up to 4.9e-4);
+  - file formats other than those covered;
+  - `StartRelative` other than 0.
+- Next action: trace the engine sample counter and the action delivery statically; for T1, keep cases that accept P or P+1.

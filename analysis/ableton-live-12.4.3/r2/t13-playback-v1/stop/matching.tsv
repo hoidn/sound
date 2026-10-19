@@ -1,0 +1,48 @@
+role	engine_name	engine_va	live_x86_va	live_arm64_va	how_matched
+Track Clip Stop button callback	ATrackDevice::OnStop (Live-side; not in Engine)	-	0x10285cce0	0x102728b88	Symbol names CallMemberFunc<&ATrackDevice::OnStop> in both Live slices; body: track = 0x1025a2f70/0x10248256c(device,1), then track vtable slot +0x3d8(track, 1)
+Track stop (ATrack vtable slot +0x3d8)	(Live-side)	-	0x102842c50	0x1027104dc	x86: pointer at slot +0x3d8 of the vtables of ATrack, AMidiTrack, AAudioTrack, ASendTrack and seven more (vtslot.py); both: sends OFireClipCommand through the wrapper with AutomationIndex 0xfffffffe, StartType 0, QuantizationOverride 0x80000000, Quantized = argument
+Main track stop (AMainTrack slot +0x3d8)	(Live-side)	-	0x10269d2d0	0x1025770bc	x86: slot +0x3d8 of AMainTrack vtable 0x106d17178 (RTTI 10AMainTrack); both: song fire-scene wrapper (x86 0x1027be150, arm64 0x1026930a8) with scene index 0xfffffffe, Quantized = argument, NoteType 0, ForceLegato 0
+Group track stop (AGroupTrack slot +0x3d8)	(Live-side)	-	0x1024d9a50	not matched	x86: slot +0x3d8 of AGroupTrack vtable 0x106d56ee8; builds clip fire descriptions with index 0xfffffffe for the group's track range and sends OFireListOfClipsCommand (groups are outside T1)
+OFireClipCommand sender	(Live-side)	-	0x10288c480 (wrapper 0x10288c460)	0x102754ff8 (wrapper 0x102754ff0)	Sole users of the OFireClipCommand descriptor (x86 0x10749ef00, arm64 0x10700d040) besides its initializer; members Engine, TrackIndex, AutomationIndex, Quantized, NoteType, OClipFireParams, FireVelocity, FireTransposition
+OFireSceneCommand sender	(Live-side)	-	0x1027e8480	0x1026bb8f0	Sole users of the OFireSceneCommand descriptor (x86 0x10749e8c8, arm64 0x10700c9f8) besides its initializer; LaunchTime DBL_MAX (x86 0x105b3ce00; arm64 literal 0x7fefffffffffffff)
+Clip-slot fire (button)	(Live-side)	-	0x1028429f0	0x102710290	Both call the OFireClipCommand wrapper with the slot index; arm64 callers of the wrapper are exactly 0x102710290 and 0x1027104dc
+OFireClipCommand handler	OFireManager::SOnFireClipCommand	0x14d430	0x101b1c780	not matched	match_x86.py unique (size 232, callee multiset 1.00)
+OFireSceneCommand handler	OFireManager::SOnFireSceneCommand	0x14dc10	0x101b1cf60	not matched	match_x86.py unique (size 141)
+Fire clip (song level)	OFireManager::FireClip	0x14d520	0x101b1c870	0x101af0cbc	x86 match_x86.py best 0.88; arm64: first of the six callers of OTrackFireManager::FireClip in address order, as in x86
+Fire scene (index -2 = stop all clips)	OFireManager::FireScene	0x14dca0	0x101b1cff0	0x101af1358	x86 best 0.91; arm64: the caller with two call sites to OTrackFireManager::FireClip, as in x86 and the Engine
+Stop all clips	OFireManager::StopAllClips	0x14e4d0	0x101b1d820	0x101af1a80	x86 unique; arm64 by caller order of OTrackFireManager::FireClip
+Track fire	OTrackFireManager::FireClip	0x16e9b0	0x101b3dcc0	0x101b0dc14	x86 unique (630 bytes, 1.00); arm64: caller of PrepareClipFire (align.py: same callee sequence incl. PrepareClipFire, ActivateAutomations, Fire twice)
+Prepare fire record	OAsyncClipFireManager::PrepareClipFire	0x12ab50	0x101af9eb0	0x101ad0130	X2 match (x86/arm64); Engine-x86 identical size 3293, callee multiset 0.86; same -2 stop branch, near-boundary rule and immediate flag (x86-PrepareClipFire.c, arm-PrepareClipFire.c)
+Grid choice	OAsyncClipFireManager::CalcLaunchQuantization	0x12a9f0	0x101af9d50	0x101acffa4	X2 match; Engine-x86 unique (337 bytes, 1.00); same stop tests (not playing, current index -2, play-start sample) in all three
+Grid length	NQuantizationTypes::SQuantizationTime	(called from 0x12a9f0)	0x101ad2ef0	0x101aaae44	X2 match; callee of the grid choice in all three
+Boundary helper	TTimeSignatureChange::NextQuantizationTime	(called from 0x12ab50)	0x101ae8280	0x101abf294	X2 match
+Lattice helper	(press-time rounding, mode 3)	-	0x1011999d0	0x1011be6c8	X2 match
+Predelay	OAsyncClipFireManager::RequestedPredelaySongBeatForClip	0x12c1a0	0x101afb500	0x101ad1418	x86 unique (112 bytes, 1.00); arm64 = the offset call of the clip-launch research (slot +0x48 of the clip player without explicit time, slot +0x18 of the track's clip timeable otherwise)
+Song playing before current sample	OAsyncClipFireManager::SongWasPlayingBeforeCurrentSample	0x12a850	0x101af9bb0	0x101acfe68	x86: callee of PrepareClipFire at the three sites; arm64 = the clip-launch research's track condition 0x101acfe68 ([status+0x98] != [manager+0x3b0])
+Play-start sample stamp	OAsyncClipFireManager::OnSongPlayingSwitched	0x12db80	not matched	not matched	Engine only: stores the scheduler's current sample at +0x3b0 when playing starts
+Fire record helper	FUN_0012b9b0	0x12b9b0	0x101afad10	0x101ad0d08	identical size 2021 (x86, 0.54 callee overlap); arm64 by position in OAsyncClipFireManager::Process (align.py row 8)
+Schedule or apply fire	OAsyncClipFireManager::Fire	0x12c380	0x101afb6e0	0x101ad15e8	x86 best 0.93; arm64 by position in OTrackFireManager::FireClip (align.py rows 12 and 14)
+Process fire event	OAsyncClipFireManager::Process	0x12c850	0x101afbbb0	0x101ad1aec	x86 best 0.89; arm64 first caller of PrepareClipFire, as in x86
+Activate slot on track	OAsyncClipFireManager::ActivateTrackAutomations	0x12d010	0x101afc370	0x101ad220c	x86 unique; arm64 caller of ActivateAutomations in the same position
+Activate slot	OAsyncTrack::ActivateAutomations	0x136700	0x101b05a60	0x101adabf0	x86 best 0.69; arm64 by position in OTrackFireManager::FireClip; both have the same seven callers
+Unlooped past-end test	OClipTimeable::SIsPastEndOfUnloopedSlotClip	0x1481c0	0x101b17510	0x101aeb668	callee 2 of ActivateAutomations in x86 and arm64 (align.py); same body (X run of x86)
+Schedule loop or clip end	OAsyncTrack::ScheduleLoopOrUnloopedClipEnd(OClip*)	0x136c20	0x101b05f80	0x101adb0b8	x86 unique; arm64 callee 9 of ActivateAutomations
+Unlooped clip end	OAsyncTrack::OnUnloopedClipEnd	0x137770	0x101b06ad0	0x101adbbf0	x86: offset from OnSongPositionJumped equals the Engine's (0x5d0); arm64 caller of ActivateAutomations in the same position
+Song position jump	OAsyncTrack::OnSongPositionJumped	0x1371a0	0x101b06500	0x101adb6b0	x86 best 0.89; arm64 caller of ScheduleLoopOrUnloopedClipEnd in the same position
+Unwarped end beat	OUnwarpedClipTimeEvent::SBeatTimeForClipTime	0x19d230	0x101b6c540	0x101b36d14	x86 callee 10 of ActivateAutomations, offset from ScheduleAbsolute equals the Engine's; arm64 callee 10 of ActivateAutomations
+Unwarped end schedule	OUnwarpedClipTimeEvent::ScheduleAbsolute	0x19d790	0x101b6caa0	0x101b37194	x86 unique; arm64 callee of ScheduleLoopOrUnloopedClipEnd with frintp at 0x101b37250 and the constant -1.3007825507825508e-07
+Unwarped end on tempo change	OUnwarpedClipTimeEvent::OnTempoChanged	0x19dba0	0x101b6ceb0	not matched	x86 unique
+Clip fire event schedule	OClipFireEvent::Schedule	0x146720	0x101b15a70	not matched (inlined in arm64 Fire)	x86 unique
+Clip fire event process	OClipFireEvent::Process	0x146bf0	0x101b15f40	not matched	x86 offset from Schedule equals the Engine's (0x4d0)
+Beat event schedule	OScheduler::ScheduleAbsoluteBeatEvent	0x10a400	0x101ad9760	0x101ab10ec	x86 unique (807 bytes); arm64 callee 1 of OCallbackBeatEvent::ScheduleAbsolute (x86 0x101a65060, arm64 0x101a41050)
+Crossfade or stop predelay	OAudioClip::SCrossfadeDurBeat	0x9a45d0	0x102278eb0	0x102188f34	x86: tail callee of OAudioClipTimeable::CrossfadeDurBeat 0x10227c910 (slot +0x18 of 18OAudioClipTimeable vtable 0x106cb9bc0); arm64: callee of slot +0x18 of 18OAudioClipTimeable vtable 0x106775e38 (0x10218c5f8) and of the audio player predelay; same fields +0x2c/+0x40/+0x48/+0x58/+0xe0/+0xe1/+0x100/+0x108 and constants 0.5, 0.001, 60
+Audio clip player predelay (slot +0x48)	OAudioClipAutomationPlayer::RequestedPredelaySongBeatForClip	0x9a7bf0	0x10227c4d0	0x10218c1a8	slot +0x48 of 26OAudioClipAutomationPlayer vtable (x86 0x106cb9af8, arm64 0x106775d70)
+MIDI clip player predelay (slot +0x48)	OAutomationPlayer::RequestedPredelaySongBeatForClip (inherited)	0x142650	0x101b119a0	0x101ae6134	slot +0x48 of 25OMidiClipAutomationPlayer vtable (x86 0x106c9c838, arm64 0x106759aa8); both return 0.0 (xorps / movi d0,#0)
+MIDI clip timeable crossfade (slot +0x18)	OClipTimeable::CrossfadeDurBeat	0x148650	0x101b179a0	0x101aebbec	slot +0x18 of 13OClipTimeable vtable (x86 0x106c9a3e0, arm64 0x1067576c8); both return 0.0
+Default clip fade duration	OAudioClipFadeTime::SInitInstance	0x9a7ea0	0x10227c780	0x10218c488	x86 unique; arm64 sole writer of the fade global 0x106fbdaf0; default 4.0 ms (x86 0x105b42d00, arm64 immediate 0x4010000000000000) unless a debug option is set
+Transport Stop body	(Live-side) ATransport stop	-	0x1028a0460	0x102767b70	x86 CallMemberFunc<&ATransport::OnStop> 0x1028a9ac0 tail-calls it; arm64 from transport-transitions-native
+Engine SetPlaying	OEngine::SetPlaying	0x9fdc0	0x101a6f3c0	not matched	x86 unique (x86-live-paths cites 0x101a6f3c0)
+Engine domain SetPlaying	OEngineDomain::SetPlaying	0xa9920	0x101a78eb0	not matched	x86 unique
+MIDI clip player on song start/stop	OMidiClipAutomationPlayer::StatusChanged	0x1a9130	0x101b78440	not matched	x86 unique
+MIDI note player on song start/stop	OMidiNoteAutomationPlayer::ClipAndSongPlayingSwitched	0x1af8e0	0x101b7eb60	not matched	x86 unique
+AClipSlot fire (slot launch button; empty slot with stop button)	(Live-side)	-	0x10257bf70	0x10245c72c	slot +0x258 of 9AClipSlot vtable (x86 0x106cfdd40, arm64 0x1067b8b48); calls the clip-slot fire base (x86 0x1028429f0, arm64 0x102710290) with Quantized 1, StartType 0, QuantizationOverride 0x80000000

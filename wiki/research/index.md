@@ -61,6 +61,7 @@ to the isolated implementation workspace.
 | [Extracted execution (X1)](extracted-execution.md) | Harness that runs original x86_64 Live functions on this host (ADR 0003, label X); pilot agrees with all 70 released checks (mixer text, MIDI values, transport number text); finds REQ-TRANSPORT-STATE-011 imprecise next to powers of ten and an arm64 FMA in Absolute mode; triage of probes it can settle |
 | [Live Set structure (T1.1)](live-set-structure.md) | Schema conformance, reader refusals and repairs, sample CRC (X). The open path always runs the validation walk. Audit of released fixtures: 204 refused |
 | [Mix graph (T1.4)](mix-graph.md) | Track output stage, sends, solo, ramps, automation playback. Q-019 settled with conditions. Corrections to automation A1 and REQ-010 |
+| [Playback core (T1.3)](playback-core.md) | Engine timing, launch pre-delay, MIDI note emission, unwarped audio playback; launch-timing A1 settled for Trigger |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

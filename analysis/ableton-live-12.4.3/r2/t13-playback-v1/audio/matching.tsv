@@ -1,0 +1,50 @@
+engine_name	engine_va	live_x86_va	live_arm64_va	how_matched
+OWarperUnWarped::PosFileSmpl	0xaa5b50	0x10236dab0	-	x86: same size, 84.6% equal bytes (match_x86.py)
+OWarperUnWarped::StartFileSmpl	0xaa8750	0x1023706b0	0x10225b4e8	x86: size + 84.9% bytes, same decompiled formula; arm64: corpus grep 60000.0 and 1000.0 near the warper cluster, same formula (fp_scan: no fused ops)
+OWarperUnWarped::StartClipNote	0xaa8880	0x1023707e0	-	x86: size + 91.5% bytes; same structure
+OWarperUnWarped::StartPlayer	0xaa6060	0x10236dfc0	-	x86: size + 93.8% bytes
+OWarperProcessor::SSemitonesToInc	0xaa7290	0x10236f1f0	0x10225a2bc	x86: size + 84.6%; arm64: powf of constant 0x3f879c7d (1.0594631f) times rate ratio (corpus grep), no fused ops
+OWarperBase::SQuantizePosFileSmpl	0xa92b50	0x10235b910	-	x86: size + 70.9%, same constants 2^24 and 2^-24 (decompiled)
+OWarperBase::ModulatedIncrement	0xa93e30	0x10235cbf0	-	x86: size + 88.3%
+OWarperBase::NowTransposition	0xa93db0	0x10235cb70	-	x86: size + 93.2%
+OWarperBase::PreparePlayingProperties	0xa93c60	0x10235ca20	-	x86: size + 88.8%
+OWarperBase::StartClipNote	0xa93080	0x10235be40	-	x86: size + 93.2%
+OFadingPlayer::CalcPriFloatMonoNonInterpolScalar	0x9c3110	0x1022979f0	0x1021a6a54	x86: 100% bytes; arm64: corpus grep on the player-record offsets (+0x24 index, +0x2c step, +0x38 x +0x40), same code
+OFadingPlayer::CalcPriFloatMonoLinInterpolScalar	0x9c2fe0	0x1022978c0	0x1021a6960	x86: 92.7%; arm64: same grep, same formula; arm64 fuses x1*f + (1-f)*x0 (one fmadd)
+OFadingPlayer::CalcPriFloatMonoCubicInterpolScalar	0x9c3050	0x102297930	0x1021a69c4	x86: 93.6%; arm64: same grep, same formula; four fmadd on arm64
+OFadingPlayer::CalcPriFloatMonoFIRInterpolVector	0x9c3150	0x102297a30	0x1021a6a9c	x86: 96.3%; arm64: same grep and table shape (phase = frac >> 24, fine = (frac >> 9) & 0x7fff); no fused ops, vector sums
+OFadingPlayer::CalcPriFloatMonoFIR2XInterpolVector	0x9c3230	0x102297b10	-	x86: 97.9%
+OFadingPlayer::CalcPriT16MonoLinInterpolScalar	0x9c3a90	0x102298370	-	x86: 93.8%
+OFadingPlayer::CalcPriT16MonoNonInterpolScalar	0x9c3bf0	0x1022984d0	-	x86: 100%
+OFadingPlayer::CalcPriT16MonoFIRInterpolVector	0x9c3c40	0x102298520	-	x86: 94.3%
+OFadingPlayer::CalcPriT16MonoFIR2XInterpolVector	0x9c3d20	0x102298600	-	x86: 97.1%
+OFadingPlayer::SetAudioFunc	0x9e2fc0	0x1022b78a0	-	x86: 96.1%
+OFadingPlayer::SetAudioFuncInternal	0x9e2dc0	0x1022b76a0	-	x86: 100%
+NFirInterpolation::SInitO	0x520260	0x101e95890	-	x86: 79.8%; writes the tables the Live FIR kernel reads (0x10750ed80, 0x107512dc0)
+OPlayer::OPlayer	0xa84360	0x10234d260	-	x86: 97.7% (twin 0x10234d120)
+OPlayerEndEvent::PlaySample	0xa84760	0x10234d520	-	x86: 90.1%
+OPlayerEndEvent::SetupPlayer	0xa84b50	0x10234d910	-	x86: 81.6%
+OPlayerEndEvent::Process	0xa857f0	0x10234e5b0	-	x86: 89.2%
+OPlayerEndEvent::PausedWait	0xa84d70	0x10234db30	-	x86: 88.6%
+OFadingPlayerBrain::Start	0xa11630	0x1022e5f10	-	x86: 100%
+OFadingPlayerBrain::SetUpFade	0xa118e0	0x1022e61c0	-	x86: 93.0%
+OFadingPlayerBrain::Stop	0xa11cc0	0x1022e65a0	-	x86: 97.0%
+OVuMeterMath::SAudioLevel	0x11e040	0x101aed3a0	(0x101ac3498 OVolumeTable::AudioLevel)	x86: 88.0%; arm64 per SPEC-MIXER-VALUES appendix (same table family; fused interpolation, double intermediate)
+OVuMeterMath::SControlLevel	0x11e130	0x101aed490	-	x86: 96.2%; also the target of the clip-gain mapping slot +0x28 (0x102683d70)
+OVuMeterMath::SInitA	0x11de80	0x101aed1e0	-	x86: 98.2%
+OVolumeTable::Init	0x11d1b0	0x101aec510	-	x86: 89.6%
+OVolumeTable::CreatePixelToDbTableVersion3	0x11d2e0	0x101aec640	-	x86: 90.9%
+OAudioClip::ClipFadeIn	0x9a3ae0	0x1022783c0	-	x86: 81.8% (ClipFadeOut 0x102278520 has identical code)
+OAudioClip::SCrossfadeDurBeat	0x9a45d0	0x102278eb0	-	x86: 84.4%
+OAudioNoteEnvelopeProcessor::SetupNoteEnvelope	0x9abf50	0x102280830	-	x86: 91.0%
+OAudioNoteEnvelopeProcessor::ScheduleFade	0x9ab830	0x102280110	0x10218fc08	x86: 90.5%; arm64: sole callee of CallMemberFunc<&OAudioNoteEnvelopeProcessor::OnClipFadeOutStart> 0x1021a1604 (named wrapper)
+OAudioNoteEnvelopeProcessor::UpdateGainRamp	0x9aba80	0x102280360	0x10218fe24	x86: 88.4%; arm64: called by 0x10218fc08 after the ramp set, same curve; seven fused ops
+OAudioNoteVoiceAllocatorProcessor::CutShortOldNotes	0x9adce0	0x1022825c0	-	x86: 95.8%
+OWarperProcessor::OnVoiceInfo	0xa9f420	0x1023681e0	-	x86: 88.2%
+TAudioNoteProperties::SetFromClipStartEvent	0xaaafa0	0x102372f00	-	x86: 83.6%
+OModulation::ModulateUnipolarSingleIntensity	0x16a8e0	0x101b39bf0	-	x86: 92.9%
+OChunkedSample::ConvertToFloatFactor	0x9bd020	0x102291900	-	x86: 76.5%
+(Live side) WarperUnWarped.Parameter.Create sender	-	0x102904c10	0x1027cade8	x86: sole non-registry user of descriptor 0x1074acf20 ("WarperUnWarped.Parameter.Create"); arm64: user of descriptor 0x10701af10 with the same string
+(Live side) common warper parameter writer	-	0x1029048e0	0x1027cab44	called by the senders; same member order as OWarperBase::SDefineMemberCommon (Handle, Transposition, Groove, Volume, VelocityAmout, InterpolationType, ...)
+(Live side) interpolation type choice	-	0x1028f76a0	0x1027bd748	called by the writer for the InterpolationType member; same branches (HiQ at clip+0x4b0, warp mode at clip+0x5c0, ASong slot +0x368)
+(Live side) clip-gain mapping ctor / value->control / control->value	-	0x102683d10 / 0x102683d70 / 0x102683da0	-	mapping object passed to the SampleVolume UserFloat init in the AAudioClip ctor 0x1028ea670 (range 3)

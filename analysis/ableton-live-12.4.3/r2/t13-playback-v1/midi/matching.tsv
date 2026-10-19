@@ -1,0 +1,36 @@
+role	engine_va	engine_name	live_x86_64_va	live_arm64_va	how_matched
+clip position, 5-argument form	0x143520	OClip::SCalcCurrentPos(double,double,double,bool,double)	0x101b12870	0x101ae6f54	x86: Engine VA + 0x1019cf350, same body size, 12/12 neighbours same size (match-eng-x86.tsv); arm64: stores start/loopStart/loopEnd/looped then calls the core with d, DBL_MAX when unlooped and past LoopEnd
+clip position, loop-pointer form	0x1434e0	OClip::SCalcCurrentPos(OClipLoop const&,double)	0x101b12830	0x101ae6f0c	x86 as above; arm64 sole other caller pair of the core next to 0x101ae6f54
+clip position core (fold, lattice)	0x145c80	FUN_00145c80	0x101b14fd0	0x101ae9360	x86 as above; arm64 caller of the fold 0x1011aa920 next to the automation offset; same sentinel table 0x1055d9680, h, 3843840
+fold into interval	0x432d0	AMath::FoldIntoInterval	0x1011841a0	0x1011aa920	x86: sole callee of 0x101b12950 (fmod, sign test); arm64: sole callee of 0x101ae7004; same body
+automation offset	0x143600	OClip::SCalcAutomationOffset	0x101b12950	0x101ae7004	x86 delta/size; arm64 callee of OnGrooveUpdate 0x101ad5e9c (wrapper CallMemberFunc<&OAsyncClipTimeable::OnGrooveUpdate> 0x101ae2f90) in the same position as x86 0x101b00230
+recurring loop events	0x144110	OClipActionEvents::SetupRecurringLoopEvents	0x101b13460	0x101ae7984	x86 delta/size; arm64 last callee of OnGrooveUpdate; same loop-struct offsets
+next loop event	0x144240	OClipActionEvents::ScheduleNextLoopEvent	0x101b13590	0x101ae7aa4	x86 last callee of ProcessPhysicalLoop 0x101b00900; arm64 last callee of 0x101ad64cc
+physical loop	0x1315a0	OAsyncClipTimeable::ProcessPhysicalLoop	0x101b00900	0x101ad64cc	wrappers CallMemberFunc<&OAsyncClipTimeable::ProcessPhysicalLoop> x86 0x101b0e260 (jmp 0x101b00900), arm64 0x101ae2f94 (b 0x101ad64cc)
+loop-event priority 7	0x143dd0	OClipActionEvents::OClipActionEvents	0x101b13120	-	x86 delta/size; mov $0x7,%esi twice (x86-disasm-engine-copies.txt)
+clip event (fire, stop)	0x130710	OAsyncClipTimeable::OnClipEvent	0x101affa70	-	x86 delta 0x1019cf360/size
+clip envelopes activation	0x12fb50	OAsyncClipTimeable::ActivateNewClipEnvelopes	0x101afeeb0	0x101ad4b58	x86 callee of 0x101b00230; arm64 callee of 0x101ad5e9c
+envelope player activation	0x14c310	OEnvelopePlayer::ActivateAutomation(OEnvelopeActivationParameters const&)	0x101b1b660	0x101aefaf4	x86 delta/size; arm64 callee of ProcessPhysicalLoop at the same call position
+automation player activation	0x140f00	OAutomationPlayer::ActivateAutomation	0x101b10250	0x101ae4c28	x86 delta/size; arm64 callee of 0x101aefaf4 (stores +0x40, calls slot +0x58, then ScheduleNewEvent)
+schedule new event	0x141110	OAutomationPlayer::ScheduleNewEvent	0x101b10460	0x101ae4e14	x86 delta/size; arm64 callee of 0x101ae4c28; binary search on event times
+automation exchange	0x1416f0	OAutomationPlayer::OnAutomationExchange	0x101b10a40	0x101ae52e0	arm64 last callee of 0x101ae4e14
+process and schedule next	0x141f30	OAutomationPlayer::ProcessAndScheduleNext	0x101b11280	0x101ae5aa0	x86 delta/size; arm64 callee of 0x101ae52e0
+note player Process	0x1b0150	OMidiNoteAutomationPlayer::Process	0x101b7f3d0	0x101b48da8	x86 delta 0x1019cf280/size; arm64 caller of SendNewNoteOn 0x101b486ec and ChaseNoteEvent 0x101b489b4 with the same callee order
+send new note-on	0x1afa60	OMidiNoteAutomationPlayer::SendNewNoteOn	0x101b7ece0	0x101b486ec	x86 delta/size; arm64 caller of 0x101b49678; note-off 64.0f (0x42800000) before the new note-on
+chase note event	0x1afd60	OMidiNoteAutomationPlayer::ChaseNoteEvent	0x101b7efe0	0x101b489b4	x86 delta/size; arm64 caller of 0x101b49678
+artificial note-off	0x1afff0	OMidiNoteAutomationPlayer::GenerateArtificialNoteOff	0x101b7f270	0x101b48c50	x86 delta/size; arm64 first callee of Process with the +0x148 test
+should chase	0x1afbe0	OMidiNoteAutomationPlayer::ShouldChaseNoteEvent	0x101b7ee60	0x101b4885c	x86 delta/size; arm64 callee of Process before ChaseNoteEvent
+playing switched	0x1af8e0	OMidiNoteAutomationPlayer::ClipAndSongPlayingSwitched	0x101b7eb60	0x101b48550	x86 delta/size; arm64 caller of SendNewNoteOn and ChaseNoteEvent
+deactivation note-off	0x1b0940	OMidiNoteAutomationPlayer::OnDeactivateAutomation	0x101b7fbc0	-	x86 delta/size
+probability gate	0x1b0a90	OMidiNoteAutomationPlayer::ProbabilisticallySendNoteOn	0x101b7fd10	0x101b49678	LCG constants 0x19660d, 0x3c6ef35f in both slices; group none = INT_MIN
+note-on with deviation	0x1b0bd0	OMidiNoteProcessor::SendNoteOn	0x101b7fe50	0x101b497a8	LCG constants; callee of the probability gate in both
+event priority (0, 1, 14)	0x1af440	OMidiNoteAutomation::EventPriority	0x101b7e6c0	-	x86 delta/size; table 0x105db2460 = {0, 1, 14}
+activation origin names	0x1a23c0	ToString(TAutomationActivationOrigin)	0x101b716d0	-	x86 delta/size; table 0x106c9c3f8 decodes to the same 18 names (live-x86-activation-origin-names.txt)
+velocity amount / clamp	0x1a8d00	OMidiClipAttributeProcessor::HandleNoteOn	0x101b78010	-	x86 delta 0x1019cf310/size; constants 127, 1
+fire origin choice	0x16e9b0	OTrackFireManager::FireClip	-	-	Engine only (origin FireScene 1, ScrubClip 5, FireClip 2, FireStopSlot 10)
+song position jump	0x1371a0	OAsyncTrack::OnSongPositionJumped	0x101b06500	-	x86 delta 0x1019cf360/size
+unlooped clip end	0x137770	OAsyncTrack::OnUnloopedClipEnd	0x101b06ad0	-	x86 delta/size
+note-event builder (Live side)	-	-	0x102a13f20	0x1028cf5c0	both called by the OMidiNoteAutomation.Create sender (x86 0x102a13a10 uses descriptor 0x1074add18; arm64 0x1028cf110 uses 0x10701bd40, named in the AMidiClip initialisers x86 0x102a1b680 / arm64 0x1028d5aec); same constants (-1e7, 64, prob 1.0, INT_MIN, h)
+per-key envelope sender (Live side)	-	-	0x102a132e0	0x1028cead4	loops over the 128 MIDI keys; OClipEnvelope.Create per key with TimeableEnvelopeIndex -2-key; descriptor references as above
+OClip message writer (Live side)	-	-	0x10257ecd0	0x10245f420	x86 callee of the OMidiClip.Create sender 0x102a13160; arm64 callee of 0x1028ce928 (descriptor 0x10701bd20); Start = LoopStart (+ StartRelative when warped), LoopStart, LoopEnd, IsLooped, IsWarped
+ALoop member registry (Live side)	-	-	0x102691be0	0x10256b7e4	strings mpLoopStart .. mpHiddenLoopEnd (x86 wide strings; arm64 0x1062bfc88)

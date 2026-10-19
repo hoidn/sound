@@ -1,0 +1,96 @@
+## Live x86_64 PredictedBeatTime 0x101ad8a10 and PredictedLongSampleTime 0x101ad8a30
+   101ad8a10:	55                   	push   %rbp
+   101ad8a11:	48 89 e5             	mov    %rsp,%rbp
+   101ad8a14:	48 2b b7 a8 00 00 00 	sub    0xa8(%rdi),%rsi
+   101ad8a1b:	f2 48 0f 2a c6       	cvtsi2sd %rsi,%xmm0
+   101ad8a20:	f2 0f 59 47 30       	mulsd  0x30(%rdi),%xmm0
+   101ad8a25:	f2 0f 58 87 b0 00 00 	addsd  0xb0(%rdi),%xmm0
+   101ad8a2c:	00 
+   101ad8a2d:	5d                   	pop    %rbp
+   101ad8a2e:	c3                   	ret
+   101ad8a2f:	90                   	nop
+   101ad8a30:	55                   	push   %rbp
+   101ad8a31:	48 89 e5             	mov    %rsp,%rbp
+   101ad8a34:	f2 48 0f 2a 8f a8 00 	cvtsi2sdq 0xa8(%rdi),%xmm1
+   101ad8a3b:	00 00 
+   101ad8a3d:	f2 0f 5c 87 b0 00 00 	subsd  0xb0(%rdi),%xmm0
+   101ad8a44:	00 
+   101ad8a45:	f2 0f 59 47 28       	mulsd  0x28(%rdi),%xmm0
+   101ad8a4a:	f2 0f 58 c1          	addsd  %xmm1,%xmm0
+   101ad8a4e:	66 0f 3a 0b c0 0a    	roundsd $0xa,%xmm0,%xmm0
+   101ad8a54:	f2 48 0f 2c c0       	cvttsd2si %xmm0,%rax
+   101ad8a59:	5d                   	pop    %rbp
+   101ad8a5a:	c3                   	ret
+## Live x86_64 DoSetTempo 0x101adb640: samples per beat and beats per sample
+   101adb86b:	f2 0f 10 81 e8 00 00 	movsd  0xe8(%rcx),%xmm0
+   101adb872:	00 
+   101adb873:	f2 0f 11 83 98 01 00 	movsd  %xmm0,0x198(%rbx)
+   101adb87a:	00 
+   101adb87b:	0f 57 c0             	xorps  %xmm0,%xmm0
+   101adb87e:	f2 0f 2a 83 e8 00 00 	cvtsi2sdl 0xe8(%rbx),%xmm0
+   101adb885:	00 
+   101adb886:	f3 0f 5a c9          	cvtss2sd %xmm1,%xmm1
+   101adb88a:	f2 0f 5e c1          	divsd  %xmm1,%xmm0
+   101adb88e:	f2 0f 59 05 f2 d0 05 	mulsd  0x405d0f2(%rip),%xmm0        # 0x105b38988
+   101adb895:	04 
+   101adb896:	f2 0f 11 83 10 01 00 	movsd  %xmm0,0x110(%rbx)
+   101adb89d:	00 
+   101adb89e:	f2 0f 10 0d 4a bf f7 	movsd  0x3f7bf4a(%rip),%xmm1        # 0x105a577f0
+   101adb8a5:	03 
+   101adb8a6:	f2 0f 5e c8          	divsd  %xmm0,%xmm1
+   101adb8aa:	f2 0f 11 8b 18 01 00 	movsd  %xmm1,0x118(%rbx)
+   101adb8b1:	00 
+## Live x86_64 ProcessNextEvents 0x101ade8a0: countdown to the next beat event
+   101adebf2:	80 78 68 01          	cmpb   $0x1,0x68(%rax)
+   101adebf6:	75 7a                	jne    0x101adec72
+   101adebf8:	48 8b 8b d0 01 00 00 	mov    0x1d0(%rbx),%rcx
+   101adebff:	48 85 c9             	test   %rcx,%rcx
+   101adec02:	74 6e                	je     0x101adec72
+   101adec04:	f2 0f 10 41 28       	movsd  0x28(%rcx),%xmm0
+   101adec09:	0f 57 c9             	xorps  %xmm1,%xmm1
+   101adec0c:	f2 48 0f 2a 88 a8 00 	cvtsi2sdq 0xa8(%rax),%xmm1
+   101adec13:	00 00 
+   101adec15:	f2 0f 5c 80 b0 00 00 	subsd  0xb0(%rax),%xmm0
+   101adec1c:	00 
+   101adec1d:	f2 0f 59 40 28       	mulsd  0x28(%rax),%xmm0
+   101adec22:	f2 0f 58 c1          	addsd  %xmm1,%xmm0
+   101adec26:	66 0f 3a 0b c0 0a    	roundsd $0xa,%xmm0,%xmm0
+   101adec2c:	f2 48 0f 2c c8       	cvttsd2si %xmm0,%rcx
+   101adec31:	48 2b 88 98 00 00 00 	sub    0x98(%rax),%rcx
+   101adec38:	45 31 ff             	xor    %r15d,%r15d
+   101adec3b:	48 85 c9             	test   %rcx,%rcx
+   101adec3e:	4c 0f 4f f9          	cmovg  %rcx,%r15
+   101adec42:	81 fe ff ff ff 3f    	cmp    $0x3fffffff,%esi
+   101adec48:	75 1b                	jne    0x101adec65
+   101adec4a:	0f b6 05 ef 93 90 05 	movzbl 0x59093ef(%rip),%eax        # 0x1073e8040
+   101adec51:	84 c0                	test   %al,%al
+   101adec53:	74 37                	je     0x101adec8c
+   101adec55:	48 8b 05 dc 93 90 05 	mov    0x59093dc(%rip),%rax        # 0x1073e8038
+   101adec5c:	4c 39 f8             	cmp    %r15,%rax
+   101adec5f:	4c 0f 4c f8          	cmovl  %rax,%r15
+   101adec63:	eb 0a                	jmp    0x101adec6f
+   101adec65:	48 63 c6             	movslq %esi,%rax
+   101adec68:	49 39 c7             	cmp    %rax,%r15
+   101adec6b:	44 0f 4d fe          	cmovge %esi,%r15d
+   101adec6f:	44 89 fe             	mov    %r15d,%esi
+   101adec72:	48 89 df             	mov    %rbx,%rdi
+   101adec75:	e8 e6 a0 ff ff       	call   0x101ad8d60
+## constants (Live x86_64)
+0x105b38988 +0x000 60.0
+0x105a577f0 +0x000 1.0
+0x105b35820 +0x000 3.4028234663852886e+38
+## OLoopBraceEvent vtable 0x106c98e80 (slot +0x10 OEvent::CallProcess, +0x18 Process)
+0x106c98e80 +0x000 0x101ae3c90
+0x106c98e88 +0x008 0x101ae3cb0
+0x106c98e90 +0x010 0x101ab6900
+0x106c98e98 +0x018 0x101adf900
+0x106c98ea0 +0x020 0x101a661d0
+## Engine constants
+0x15caf58 +0x000 60.0
+0x15bf2c8 +0x000 999.0
+0x15bab88 +0x000 5.0
+0x15bad68 +0x000 10.0
+0x15cd8e8 +0x000 20.0
+0x15cb5c8 +0x000 4.0
+0x15bab9c +0x000 0.25
+0x15bac48 +0x000 1.0

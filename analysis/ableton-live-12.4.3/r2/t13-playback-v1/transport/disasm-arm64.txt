@@ -1,0 +1,41 @@
+## arm64 PredictedBeatTime 0x101ab05b0, PredictedLongSampleTime 0x101ab05cc (fmadd, fcvtps)
+0x101ab05b0 fd405800 ldr d,[x,#] d0, [x0, #0xb0]
+0x101ab05b4 f9405408 ldr x,[x,#] x8, [x0, #0xa8]
+0x101ab05b8 cb080028 sub x 8 = 1 op 8
+0x101ab05bc 9e620101 scvtf d,x 1 <- 8
+0x101ab05c0 fd401802 ldr d,[x,#] d2, [x0, #0x30]
+0x101ab05c4 1f420020 fmadd d d0 = d1*d2 +- d0
+0x101ab05c8 d65f03c0 ret 
+0x101ab05cc 6d4a8801 ldp d,d,[x,#] d1, d2, [x0, #0xa8]
+0x101ab05d0 5e61d821 scvtf d,d (int in fp reg) 1 <- 1
+0x101ab05d4 1e623800 fsub d 0 = 0 op 2
+0x101ab05d8 fd401402 ldr d,[x,#] d2, [x0, #0x28]
+0x101ab05dc 1f420400 fmadd d d0 = d0*d2 +- d1
+0x101ab05e0 9e680000 fcvtps x,d 0 <- 0
+0x101ab05e4 d65f03c0 ret 
+## arm64 DoSetTempo 0x101ab2d50: FP instructions
+0x101ab2dc4 9e620182 scvtf d,x 2 <- 12
+0x101ab2dd0 1f440c42 fmadd d d2 = d2*d4 +- d3
+0x101ab2e44 9e6201a2 scvtf d,x 2 <- 13
+0x101ab2e50 1f440c42 fmadd d d2 = d2*d4 +- d3
+0x101ab2fa0 5e61d800 scvtf d,d (int in fp reg) 0 <- 0
+0x101ab2fa4 1e22c021 fcvt d,s 1 <- 1
+0x101ab2fa8 1e611800 fdiv d 0 = 0 op 1
+0x101ab2fb4 1e610800 fmul d 0 = 0 op 1
+0x101ab2fbc 1e601821 fdiv d 1 = 1 op 0
+## arm64 ProcessNextEvents 0x101ab5cec: FP instructions
+0x101ab5d70 9e620160 scvtf d,x 0 <- 11
+0x101ab5d7c 1f420400 fmadd d d0 = d0*d2 +- d1
+0x101ab5df0 9e620180 scvtf d,x 0 <- 12
+0x101ab5dfc 1f420400 fmadd d d0 = d0*d2 +- d1
+0x101ab5e58 5e61d800 scvtf d,d (int in fp reg) 0 <- 0
+0x101ab5e5c 1e613921 fsub d 1 = 9 op 1
+0x101ab5e64 1f420020 fmadd d d0 = d1*d2 +- d0
+0x101ab5e68 9e680009 fcvtps x,d 9 <- 0
+0x101ab5e78 1e693900 fsub d 0 = 8 op 9
+0x101ab5fa0 5e61d821 scvtf d,d (int in fp reg) 1 <- 1
+0x101ab5fa4 1e623800 fsub d 0 = 0 op 2
+0x101ab5fac 1f420400 fmadd d d0 = d0*d2 +- d1
+0x101ab5fb0 9e680009 fcvtps x,d 9 <- 0
+0x101ab5ffc 97ffea1c bl 0x101ab086c
+0x101ab601c 94e59044 bl 0x10541a12c

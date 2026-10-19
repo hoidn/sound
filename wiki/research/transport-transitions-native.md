@@ -2,7 +2,7 @@
 id: RESEARCH-TRANSPORT-TRANSITIONS-NATIVE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -256,6 +256,22 @@ interface handles `TransportEngineStateChanged`.
 
 Undo participation was not examined: unknown. T1-A–F map to T-01/T-02, T-04/T-03,
 T-05, T-07/T-08, T-13 and T-12.
+
+**Correction 2026-10-18 (packet T1.3, [playback core](playback-core.md#3-play-stop-and-continue)).**
+T-01's "the effective start position … unknown" is superseded for the engine side. The engine
+rounds the posted start time t\* to the 1/3,843,840-beat grid and raises a negative value
+to 0. It anchors its clock at (current sample, t\*), so the first sample played is song beat
+t\* exactly (S, both slices, through the Engine names; extracted execution of the placement
+rule). The readings above are also identified:
+
+- ATransport `+0x70` is the insert marker (written by OnMoveInsertMarkerToPlayheadPosition).
+- The song value from `0x1026de350` is the earlier end of the arrangement selection (x86_64
+  `0x10280fcc0`).
+
+Still unknown: the latency of the posted request, the insert-marker and selection state after a
+set is opened, and the bar-line rule when a session clip is playing. T-01's other statements are
+unchanged. The contract is
+[REQ-PLAYBACK-CORE-004](../specs/playback-core.md#req-playback-core-004--play-from-stopped).
 
 ## ADR 0002 escalation record
 

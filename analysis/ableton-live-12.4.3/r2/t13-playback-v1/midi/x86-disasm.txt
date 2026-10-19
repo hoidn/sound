@@ -1,0 +1,950 @@
+== SCalcCurrentPos [0x101b12870, 0x101b128c4)
+   101b12870:	push   %rbp
+   101b12871:	mov    %rsp,%rbp
+   101b12874:	sub    $0x20,%rsp
+   101b12878:	movsd  %xmm0,-0x20(%rbp)
+   101b1287d:	movsd  %xmm1,-0x18(%rbp)
+   101b12882:	movsd  %xmm2,-0x10(%rbp)
+   101b12887:	mov    %dil,-0x8(%rbp)
+   101b1288b:	lea    -0x20(%rbp),%rdi
+   101b1288f:	movapd %xmm3,%xmm0
+   101b12893:	xor    %esi,%esi
+   101b12895:	call   0x101b14fd0
+   101b1289a:	cmpb   $0x0,-0x8(%rbp)
+   101b1289e:	jne    0x101b128be
+   101b128a0:	movapd %xmm0,%xmm1
+   101b128a4:	cmpltsd -0x10(%rbp),%xmm1
+   101b128aa:	andpd  %xmm1,%xmm0
+   101b128ae:	movsd  0x402a54a(%rip),%xmm2        # 0x105b3ce00
+   101b128b6:	andnpd %xmm2,%xmm1
+   101b128ba:	orpd   %xmm1,%xmm0
+   101b128be:	add    $0x20,%rsp
+   101b128c2:	pop    %rbp
+   101b128c3:	ret
+== clip-position-core [0x101b14fd0, 0x101b15222)
+   101b14fd0:	addsd  (%rdi),%xmm0
+   101b14fd4:	movddup %xmm0,%xmm1
+   101b14fd8:	movapd 0x4029b20(%rip),%xmm2        # 0x105b3eb00
+   101b14fe0:	cmpeqpd %xmm1,%xmm2
+   101b14fe5:	cmpeqpd 0x4029b22(%rip),%xmm1        # 0x105b3eb10
+   101b14fee:	shufps $0x88,%xmm2,%xmm1
+   101b14ff2:	movmskps %xmm1,%eax
+   101b14ff5:	test   %eax,%eax
+   101b14ff7:	je     0x101b15000
+   101b14ff9:	cmpb   $0x1,0x18(%rdi)
+   101b14ffd:	je     0x101b1505b
+   101b14fff:	ret
+   101b15000:	xorps  %xmm1,%xmm1
+   101b15003:	xor    %eax,%eax
+   101b15005:	ucomisd %xmm1,%xmm0
+   101b15009:	setae  %al
+   101b1500c:	lea    0x4029b0d(%rip),%rcx        # 0x105b3eb20
+   101b15013:	movsd  (%rcx,%rax,8),%xmm1
+   101b15018:	movsd  0x4029aa0(%rip),%xmm2        # 0x105b3eac0
+   101b15020:	mulsd  %xmm1,%xmm2
+   101b15024:	mulsd  0x3f427dc(%rip),%xmm2        # 0x105a57808
+   101b1502c:	addsd  %xmm0,%xmm2
+   101b15030:	andpd  0x4020658(%rip),%xmm2        # 0x105b35690
+   101b15038:	movsd  0x4029a88(%rip),%xmm3        # 0x105b3eac8
+   101b15040:	mulsd  %xmm3,%xmm2
+   101b15044:	xorps  %xmm0,%xmm0
+   101b15047:	roundsd $0x9,%xmm2,%xmm0
+   101b1504d:	divsd  %xmm3,%xmm0
+   101b15051:	mulsd  %xmm1,%xmm0
+   101b15055:	cmpb   $0x1,0x18(%rdi)
+   101b15059:	jne    0x101b14fff
+   101b1505b:	movsd  0x10(%rdi),%xmm2
+   101b15060:	ucomisd %xmm0,%xmm2
+   101b15064:	ja     0x101b14fff
+   101b15066:	push   %rbp
+   101b15067:	mov    %rsp,%rbp
+   101b1506a:	push   %r14
+   101b1506c:	push   %rbx
+   101b1506d:	movddup %xmm0,%xmm1
+   101b15071:	movapd 0x4029a87(%rip),%xmm3        # 0x105b3eb00
+   101b15079:	cmpeqpd %xmm1,%xmm3
+   101b1507e:	cmpeqpd 0x4029a89(%rip),%xmm1        # 0x105b3eb10
+   101b15087:	shufps $0x88,%xmm3,%xmm1
+   101b1508b:	movmskps %xmm1,%eax
+   101b1508e:	mov    %esi,%ebx
+   101b15090:	test   %eax,%eax
+   101b15092:	jne    0x101b150e9
+   101b15094:	xorps  %xmm1,%xmm1
+   101b15097:	xor    %eax,%eax
+   101b15099:	ucomisd %xmm1,%xmm0
+   101b1509d:	setae  %al
+   101b150a0:	lea    0x4029a79(%rip),%rcx        # 0x105b3eb20
+   101b150a7:	movsd  (%rcx,%rax,8),%xmm1
+   101b150ac:	movsd  0x4029a0c(%rip),%xmm3        # 0x105b3eac0
+   101b150b4:	mulsd  %xmm1,%xmm3
+   101b150b8:	mulsd  0x3f42748(%rip),%xmm3        # 0x105a57808
+   101b150c0:	addsd  %xmm0,%xmm3
+   101b150c4:	andpd  0x40205c4(%rip),%xmm3        # 0x105b35690
+   101b150cc:	movsd  0x40299f4(%rip),%xmm4        # 0x105b3eac8
+   101b150d4:	mulsd  %xmm4,%xmm3
+   101b150d8:	xorps  %xmm0,%xmm0
+   101b150db:	roundsd $0x9,%xmm3,%xmm0
+   101b150e1:	divsd  %xmm4,%xmm0
+   101b150e5:	mulsd  %xmm1,%xmm0
+   101b150e9:	mov    %rdi,%r14
+   101b150ec:	movsd  0x8(%rdi),%xmm1
+   101b150f1:	call   0x1011841a0
+   101b150f6:	movddup %xmm0,%xmm1
+   101b150fa:	movapd 0x40299fe(%rip),%xmm2        # 0x105b3eb00
+   101b15102:	cmpeqpd %xmm1,%xmm2
+   101b15107:	cmpeqpd 0x4029a00(%rip),%xmm1        # 0x105b3eb10
+   101b15110:	shufps $0x88,%xmm2,%xmm1
+   101b15114:	movmskps %xmm1,%eax
+   101b15117:	test   %eax,%eax
+   101b15119:	jne    0x101b15170
+   101b1511b:	xorps  %xmm1,%xmm1
+   101b1511e:	xor    %eax,%eax
+   101b15120:	ucomisd %xmm1,%xmm0
+   101b15124:	setae  %al
+   101b15127:	lea    0x40299f2(%rip),%rcx        # 0x105b3eb20
+   101b1512e:	movsd  (%rcx,%rax,8),%xmm1
+   101b15133:	movsd  0x4029985(%rip),%xmm2        # 0x105b3eac0
+   101b1513b:	mulsd  %xmm1,%xmm2
+   101b1513f:	mulsd  0x3f426c1(%rip),%xmm2        # 0x105a57808
+   101b15147:	addsd  %xmm0,%xmm2
+   101b1514b:	andpd  0x402053d(%rip),%xmm2        # 0x105b35690
+   101b15153:	movsd  0x402996d(%rip),%xmm3        # 0x105b3eac8
+   101b1515b:	mulsd  %xmm3,%xmm2
+   101b1515f:	xorps  %xmm0,%xmm0
+   101b15162:	roundsd $0x9,%xmm2,%xmm0
+   101b15168:	divsd  %xmm3,%xmm0
+   101b1516c:	mulsd  %xmm1,%xmm0
+   101b15170:	mov    %r14,%rax
+   101b15173:	movsd  0x10(%r14),%xmm1
+   101b15179:	ucomisd %xmm1,%xmm0
+   101b1517d:	jne    0x101b15186
+   101b1517f:	jp     0x101b15186
+   101b15181:	movsd  0x8(%rax),%xmm0
+   101b15186:	movddup %xmm0,%xmm2
+   101b1518a:	movapd 0x402996e(%rip),%xmm3        # 0x105b3eb00
+   101b15192:	cmpeqpd %xmm2,%xmm3
+   101b15197:	cmpeqpd 0x4029970(%rip),%xmm2        # 0x105b3eb10
+   101b151a0:	shufps $0x88,%xmm3,%xmm2
+   101b151a4:	movmskps %xmm2,%ecx
+   101b151a7:	test   %ecx,%ecx
+   101b151a9:	jne    0x101b15200
+   101b151ab:	xorps  %xmm2,%xmm2
+   101b151ae:	xor    %ecx,%ecx
+   101b151b0:	ucomisd %xmm2,%xmm0
+   101b151b4:	setae  %cl
+   101b151b7:	lea    0x4029962(%rip),%rdx        # 0x105b3eb20
+   101b151be:	movsd  (%rdx,%rcx,8),%xmm2
+   101b151c3:	movsd  0x40298f5(%rip),%xmm3        # 0x105b3eac0
+   101b151cb:	mulsd  %xmm2,%xmm3
+   101b151cf:	mulsd  0x3f42631(%rip),%xmm3        # 0x105a57808
+   101b151d7:	addsd  %xmm0,%xmm3
+   101b151db:	andpd  0x40204ad(%rip),%xmm3        # 0x105b35690
+   101b151e3:	movsd  0x40298dd(%rip),%xmm4        # 0x105b3eac8
+   101b151eb:	mulsd  %xmm4,%xmm3
+   101b151ef:	xorps  %xmm0,%xmm0
+   101b151f2:	roundsd $0x9,%xmm3,%xmm0
+   101b151f8:	divsd  %xmm4,%xmm0
+   101b151fc:	mulsd  %xmm2,%xmm0
+   101b15200:	test   %bl,%bl
+   101b15202:	pop    %rbx
+   101b15203:	pop    %r14
+   101b15205:	pop    %rbp
+   101b15206:	je     0x101b14fff
+   101b1520c:	ucomisd 0x8(%rax),%xmm0
+   101b15211:	jne    0x101b14fff
+   101b15217:	jp     0x101b14fff
+   101b1521d:	movapd %xmm1,%xmm0
+   101b15221:	ret
+== SCalcAutomationOffset [0x101b12950, 0x101b12b60)
+   101b12950:	movapd %xmm0,%xmm4
+   101b12954:	movsd  (%rdi),%xmm1
+   101b12958:	movsd  0x10(%rdi),%xmm2
+   101b1295d:	movapd %xmm1,%xmm0
+   101b12961:	addsd  %xmm4,%xmm0
+   101b12965:	ucomisd %xmm0,%xmm2
+   101b12969:	jbe    0x101b12995
+   101b1296b:	xorpd  %xmm3,%xmm3
+   101b1296f:	ucomisd %xmm4,%xmm3
+   101b12973:	setbe  %al
+   101b12976:	xor    $0x1,%sil
+   101b1297a:	or     %al,%sil
+   101b1297d:	jne    0x101b1298c
+   101b1297f:	cmpb   $0x1,0x18(%rdi)
+   101b12983:	jne    0x101b1298c
+   101b12985:	ucomisd 0x8(%rdi),%xmm1
+   101b1298a:	jae    0x101b1299f
+   101b1298c:	subsd  %xmm1,%xmm3
+   101b12990:	movapd %xmm3,%xmm0
+   101b12994:	ret
+   101b12995:	cmpb   $0x0,0x18(%rdi)
+   101b12999:	je     0x101b12b57
+   101b1299f:	push   %rbp
+   101b129a0:	mov    %rsp,%rbp
+   101b129a3:	push   %rbx
+   101b129a4:	sub    $0x18,%rsp
+   101b129a8:	movapd %xmm4,-0x20(%rbp)
+   101b129ad:	movddup %xmm0,%xmm1
+   101b129b1:	movapd 0x402c147(%rip),%xmm3        # 0x105b3eb00
+   101b129b9:	cmpeqpd %xmm1,%xmm3
+   101b129be:	cmpeqpd 0x402c149(%rip),%xmm1        # 0x105b3eb10
+   101b129c7:	shufps $0x88,%xmm3,%xmm1
+   101b129cb:	movmskps %xmm1,%eax
+   101b129ce:	test   %eax,%eax
+   101b129d0:	jne    0x101b12a27
+   101b129d2:	xorps  %xmm1,%xmm1
+   101b129d5:	xor    %eax,%eax
+   101b129d7:	ucomisd %xmm1,%xmm0
+   101b129db:	setae  %al
+   101b129de:	lea    0x402c13b(%rip),%rcx        # 0x105b3eb20
+   101b129e5:	movsd  (%rcx,%rax,8),%xmm1
+   101b129ea:	movsd  0x402c0ce(%rip),%xmm3        # 0x105b3eac0
+   101b129f2:	mulsd  %xmm1,%xmm3
+   101b129f6:	mulsd  0x3f44e0a(%rip),%xmm3        # 0x105a57808
+   101b129fe:	addsd  %xmm0,%xmm3
+   101b12a02:	andpd  0x4022c86(%rip),%xmm3        # 0x105b35690
+   101b12a0a:	movsd  0x402c0b6(%rip),%xmm4        # 0x105b3eac8
+   101b12a12:	mulsd  %xmm4,%xmm3
+   101b12a16:	xorps  %xmm0,%xmm0
+   101b12a19:	roundsd $0x9,%xmm3,%xmm0
+   101b12a1f:	divsd  %xmm4,%xmm0
+   101b12a23:	mulsd  %xmm1,%xmm0
+   101b12a27:	mov    %rdi,%rbx
+   101b12a2a:	movsd  0x8(%rdi),%xmm1
+   101b12a2f:	call   0x1011841a0
+   101b12a34:	movddup %xmm0,%xmm1
+   101b12a38:	movapd 0x402c0c0(%rip),%xmm2        # 0x105b3eb00
+   101b12a40:	cmpeqpd %xmm1,%xmm2
+   101b12a45:	cmpeqpd 0x402c0c2(%rip),%xmm1        # 0x105b3eb10
+   101b12a4e:	shufps $0x88,%xmm2,%xmm1
+   101b12a52:	movmskps %xmm1,%eax
+   101b12a55:	test   %eax,%eax
+   101b12a57:	jne    0x101b12aae
+   101b12a59:	xorps  %xmm1,%xmm1
+   101b12a5c:	xor    %eax,%eax
+   101b12a5e:	ucomisd %xmm1,%xmm0
+   101b12a62:	setae  %al
+   101b12a65:	lea    0x402c0b4(%rip),%rcx        # 0x105b3eb20
+   101b12a6c:	movsd  (%rcx,%rax,8),%xmm1
+   101b12a71:	movsd  0x402c047(%rip),%xmm2        # 0x105b3eac0
+   101b12a79:	mulsd  %xmm1,%xmm2
+   101b12a7d:	mulsd  0x3f44d83(%rip),%xmm2        # 0x105a57808
+   101b12a85:	addsd  %xmm0,%xmm2
+   101b12a89:	andpd  0x4022bff(%rip),%xmm2        # 0x105b35690
+   101b12a91:	movsd  0x402c02f(%rip),%xmm3        # 0x105b3eac8
+   101b12a99:	mulsd  %xmm3,%xmm2
+   101b12a9d:	xorps  %xmm0,%xmm0
+   101b12aa0:	roundsd $0x9,%xmm2,%xmm0
+   101b12aa6:	divsd  %xmm3,%xmm0
+   101b12aaa:	mulsd  %xmm1,%xmm0
+   101b12aae:	movsd  0x10(%rbx),%xmm1
+   101b12ab3:	cmpeqsd %xmm0,%xmm1
+   101b12ab8:	movsd  0x8(%rbx),%xmm2
+   101b12abd:	andpd  %xmm1,%xmm2
+   101b12ac1:	andnpd %xmm0,%xmm1
+   101b12ac5:	orpd   %xmm2,%xmm1
+   101b12ac9:	movapd -0x20(%rbp),%xmm4
+   101b12ace:	subsd  %xmm1,%xmm4
+   101b12ad2:	movddup %xmm4,%xmm0
+   101b12ad6:	movapd 0x402c022(%rip),%xmm1        # 0x105b3eb00
+   101b12ade:	cmpeqpd %xmm0,%xmm1
+   101b12ae3:	cmpeqpd 0x402c024(%rip),%xmm0        # 0x105b3eb10
+   101b12aec:	shufps $0x88,%xmm1,%xmm0
+   101b12af0:	movmskps %xmm0,%eax
+   101b12af3:	test   %eax,%eax
+   101b12af5:	jne    0x101b12b4c
+   101b12af7:	xorps  %xmm0,%xmm0
+   101b12afa:	xor    %eax,%eax
+   101b12afc:	ucomisd %xmm0,%xmm4
+   101b12b00:	setae  %al
+   101b12b03:	lea    0x402c016(%rip),%rcx        # 0x105b3eb20
+   101b12b0a:	movsd  (%rcx,%rax,8),%xmm0
+   101b12b0f:	movsd  0x402bfa9(%rip),%xmm1        # 0x105b3eac0
+   101b12b17:	mulsd  %xmm0,%xmm1
+   101b12b1b:	mulsd  0x3f44ce5(%rip),%xmm1        # 0x105a57808
+   101b12b23:	addsd  %xmm4,%xmm1
+   101b12b27:	andpd  0x4022b61(%rip),%xmm1        # 0x105b35690
+   101b12b2f:	movsd  0x402bf91(%rip),%xmm2        # 0x105b3eac8
+   101b12b37:	mulsd  %xmm2,%xmm1
+   101b12b3b:	xorps  %xmm4,%xmm4
+   101b12b3e:	roundsd $0x9,%xmm1,%xmm4
+   101b12b44:	divsd  %xmm2,%xmm4
+   101b12b48:	mulsd  %xmm0,%xmm4
+   101b12b4c:	add    $0x18,%rsp
+   101b12b50:	pop    %rbx
+   101b12b51:	pop    %rbp
+   101b12b52:	movapd %xmm4,%xmm0
+   101b12b56:	ret
+   101b12b57:	subsd  %xmm2,%xmm4
+   101b12b5b:	movapd %xmm4,%xmm0
+   101b12b5f:	ret
+== FoldIntoInterval [0x1011841a0, 0x10118421c)
+   1011841a0:	push   %rbp
+   1011841a1:	mov    %rsp,%rbp
+   1011841a4:	push   %rbx
+   1011841a5:	sub    $0x18,%rsp
+   1011841a9:	movsd  %xmm1,-0x10(%rbp)
+   1011841ae:	subsd  %xmm1,%xmm0
+   1011841b2:	subsd  %xmm1,%xmm2
+   1011841b6:	movapd %xmm2,-0x20(%rbp)
+   1011841bb:	xorpd  %xmm1,%xmm1
+   1011841bf:	xor    %ebx,%ebx
+   1011841c1:	ucomisd %xmm1,%xmm2
+   1011841c5:	seta   %bl
+   1011841c8:	movapd %xmm2,%xmm1
+   1011841cc:	call   0x105a4e95e
+   1011841d1:	lea    0x49ba948(%rip),%rax        # 0x105b3eb20
+   1011841d8:	movsd  (%rax,%rbx,8),%xmm2
+   1011841dd:	movapd -0x20(%rbp),%xmm3
+   1011841e2:	movapd %xmm3,%xmm1
+   1011841e6:	xorpd  %xmm4,%xmm4
+   1011841ea:	cmpeqsd %xmm4,%xmm1
+   1011841ef:	andnpd %xmm2,%xmm1
+   1011841f3:	mulsd  %xmm0,%xmm1
+   1011841f7:	addsd  %xmm0,%xmm3
+   1011841fb:	cmpltsd %xmm4,%xmm1
+   101184200:	andpd  %xmm1,%xmm3
+   101184204:	andnpd %xmm0,%xmm1
+   101184208:	orpd   %xmm3,%xmm1
+   10118420c:	addsd  -0x10(%rbp),%xmm1
+   101184211:	movapd %xmm1,%xmm0
+   101184215:	add    $0x18,%rsp
+   101184219:	pop    %rbx
+   10118421a:	pop    %rbp
+   10118421b:	ret
+== SetupRecurringLoopEvents [0x101b13460, 0x101b13590)
+   101b13460:	push   %rbp
+   101b13461:	mov    %rsp,%rbp
+   101b13464:	push   %r15
+   101b13466:	push   %r14
+   101b13468:	push   %r13
+   101b1346a:	push   %r12
+   101b1346c:	push   %rbx
+   101b1346d:	sub    $0x28,%rsp
+   101b13471:	movsd  %xmm1,-0x30(%rbp)
+   101b13476:	movsd  %xmm0,-0x38(%rbp)
+   101b1347b:	mov    %rsi,%r15
+   101b1347e:	mov    %rdi,%rbx
+   101b13481:	lea    0x20(%rdi),%r12
+   101b13485:	mov    %r12,%rdi
+   101b13488:	call   0x101a65040
+   101b1348d:	lea    0x68(%rbx),%r14
+   101b13491:	mov    %r14,%rdi
+   101b13494:	call   0x101a65040
+   101b13499:	cmpb   $0x1,0x18(%r15)
+   101b1349e:	jne    0x101b134d0
+   101b134a0:	xorpd  %xmm0,%xmm0
+   101b134a4:	movsd  -0x30(%rbp),%xmm1
+   101b134a9:	ucomisd %xmm0,%xmm1
+   101b134ad:	jbe    0x101b134df
+   101b134af:	cmpq   $0xffffffffffffffff,0x10(%rbx)
+   101b134b4:	je     0x101b134df
+   101b134b6:	mov    0x18(%rbx),%rdi
+   101b134ba:	call   0x101adcf20
+   101b134bf:	mov    0x98(%rax),%rax
+   101b134c6:	cmp    0x10(%rbx),%rax
+   101b134ca:	setg   %r13b
+   101b134ce:	jmp    0x101b134e2
+   101b134d0:	add    $0x28,%rsp
+   101b134d4:	pop    %rbx
+   101b134d5:	pop    %r12
+   101b134d7:	pop    %r13
+   101b134d9:	pop    %r14
+   101b134db:	pop    %r15
+   101b134dd:	pop    %rbp
+   101b134de:	ret
+   101b134df:	xor    %r13d,%r13d
+   101b134e2:	mov    0x18(%rbx),%rdi
+   101b134e6:	call   0x101adcf20
+   101b134eb:	movsd  0x70(%rax),%xmm1
+   101b134f0:	movsd  0x8(%r15),%xmm0
+   101b134f6:	movsd  0x10(%r15),%xmm2
+   101b134fc:	subsd  %xmm0,%xmm2
+   101b13500:	addsd  -0x38(%rbp),%xmm0
+   101b13505:	test   %r13b,%r13b
+   101b13508:	movapd %xmm1,-0x50(%rbp)
+   101b1350d:	je     0x101b1351c
+   101b1350f:	cmpeqsd %xmm0,%xmm1
+   101b13514:	andnpd %xmm2,%xmm1
+   101b13518:	movapd %xmm1,%xmm2
+   101b1351c:	addsd  %xmm2,%xmm0
+   101b13520:	movsd  %xmm0,-0x30(%rbp)
+   101b13525:	mov    0x18(%rbx),%rsi
+   101b13529:	mov    %r12,%rdi
+   101b1352c:	call   0x101a65060
+   101b13531:	movsd  -0x30(%rbp),%xmm0
+   101b13536:	movsd  (%r15),%xmm3
+   101b1353b:	movsd  0x8(%r15),%xmm2
+   101b13541:	ucomisd %xmm3,%xmm2
+   101b13545:	jae    0x101b13575
+   101b13547:	addsd  -0x38(%rbp),%xmm3
+   101b1354c:	movsd  0x10(%r15),%xmm1
+   101b13552:	subsd  %xmm2,%xmm1
+   101b13556:	test   %r13b,%r13b
+   101b13559:	je     0x101b1356d
+   101b1355b:	movapd -0x50(%rbp),%xmm2
+   101b13560:	cmplesd %xmm3,%xmm2
+   101b13565:	andnpd %xmm1,%xmm2
+   101b13569:	movapd %xmm2,%xmm1
+   101b1356d:	addsd  %xmm1,%xmm3
+   101b13571:	movapd %xmm3,%xmm0
+   101b13575:	mov    0x18(%rbx),%rsi
+   101b13579:	mov    %r14,%rdi
+   101b1357c:	add    $0x28,%rsp
+   101b13580:	pop    %rbx
+   101b13581:	pop    %r12
+   101b13583:	pop    %r13
+   101b13585:	pop    %r14
+   101b13587:	pop    %r15
+   101b13589:	pop    %rbp
+   101b1358a:	jmp    0x101a65060
+   101b1358f:	nop
+== note-event-builder [0x102a13f20, 0x102a14818)
+   102a13f20:	push   %rbp
+   102a13f21:	mov    %rsp,%rbp
+   102a13f24:	push   %r15
+   102a13f26:	push   %r14
+   102a13f28:	push   %r13
+   102a13f2a:	push   %r12
+   102a13f2c:	push   %rbx
+   102a13f2d:	sub    $0x4d8,%rsp
+   102a13f34:	mov    %r9,-0x4e8(%rbp)
+   102a13f3b:	mov    %r8,%rbx
+   102a13f3e:	mov    %rdx,-0x4d0(%rbp)
+   102a13f45:	mov    %esi,-0x46c(%rbp)
+   102a13f4b:	mov    %rdi,-0x4c8(%rbp)
+   102a13f52:	mov    0x401fbc7(%rip),%rax        # 0x106a33b20
+   102a13f59:	mov    (%rax),%rax
+   102a13f5c:	mov    %rax,-0x30(%rbp)
+   102a13f60:	mov    $0x1,%r15d
+   102a13f66:	mov    %rcx,-0x458(%rbp)
+   102a13f6d:	test   %ecx,%ecx
+   102a13f6f:	je     0x102a13fc5
+   102a13f71:	movslq -0x458(%rbp),%rax
+   102a13f78:	shl    $0x4,%rax
+   102a13f7c:	lea    (%rax,%rax,2),%r14
+   102a13f80:	mov    $0x1,%r15d
+   102a13f86:	mov    -0x4d0(%rbp),%r12
+   102a13f8d:	nopl   (%rax)
+   102a13f90:	mov    %r12,%rdi
+   102a13f93:	call   0x102a1e950
+   102a13f98:	lea    0x2(%r15),%r13d
+   102a13f9c:	test   %al,%al
+   102a13f9e:	cmove  %r15d,%r13d
+   102a13fa2:	mov    %r12,%rdi
+   102a13fa5:	call   0x102a20790
+   102a13faa:	mov    %rax,%rdi
+   102a13fad:	mov    %rbx,%rsi
+   102a13fb0:	call   0x102a7b950
+   102a13fb5:	mov    %eax,%r15d
+   102a13fb8:	add    %r13d,%r15d
+   102a13fbb:	add    $0x30,%r12
+   102a13fbf:	add    $0xffffffffffffffd0,%r14
+   102a13fc3:	jne    0x102a13f90
+   102a13fc5:	lea    0x0(,%r15,8),%edi
+   102a13fcd:	call   0x101ac78f0
+   102a13fd2:	mov    -0x4c8(%rbp),%r14
+   102a13fd9:	mov    %rax,0x8(%r14)
+   102a13fdd:	lea    (%r15,%r15,8),%eax
+   102a13fe1:	lea    (%rax,%rax,2),%edi
+   102a13fe4:	add    %r15d,%edi
+   102a13fe7:	call   0x101ac78f0
+   102a13fec:	mov    %rax,%r15
+   102a13fef:	mov    %rax,0x10(%r14)
+   102a13ff3:	mov    0x8(%r14),%r14
+   102a13ff7:	call   0x1014f4b30
+   102a13ffc:	mov    %rax,%rdi
+   102a13fff:	call   0x1014f9cc0
+   102a14004:	mov    %al,-0x459(%rbp)
+   102a1400a:	lea    0x339a927(%rip),%rax        # 0x105dae938
+   102a14011:	movsd  (%rax),%xmm0
+   102a14015:	mov    %r14,-0x478(%rbp)
+   102a1401c:	movsd  %xmm0,(%r14)
+   102a14021:	movl   $0x1,(%r15)
+   102a14028:	mov    -0x46c(%rbp),%eax
+   102a1402e:	mov    %eax,0x4(%r15)
+   102a14032:	movss  0x317015e(%rip),%xmm0        # 0x105b84198
+   102a1403a:	movlpd %xmm0,0x8(%r15)
+   102a14040:	movabs $0x800000003f800000,%rax
+   102a1404a:	mov    %rax,0x10(%r15)
+   102a1404e:	mov    %r15,-0x480(%rbp)
+   102a14055:	movw   $0x0,0x18(%r15)
+   102a1405c:	mov    -0x458(%rbp),%rcx
+   102a14063:	test   %ecx,%ecx
+   102a14065:	mov    $0x1,%r12d
+   102a1406b:	jle    0x102a147d9
+   102a14071:	mov    %rbx,%r14
+   102a14074:	lea    -0x1(%rcx),%eax
+   102a14077:	mov    %rax,-0x4f8(%rbp)
+   102a1407e:	mov    %ecx,%eax
+   102a14080:	mov    %rax,-0x4f0(%rbp)
+   102a14087:	mov    -0x480(%rbp),%rax
+   102a1408e:	lea    -0x1c(%rax),%rcx
+   102a14092:	mov    %rcx,-0x4d8(%rbp)
+   102a14099:	add    $0x19,%rax
+   102a1409d:	mov    %rax,-0x4e0(%rbp)
+   102a140a4:	mov    $0x1,%r12d
+   102a140aa:	movsd  0x3128d4e(%rip),%xmm0        # 0x105b3ce00
+   102a140b2:	xor    %r15d,%r15d
+   102a140b5:	movsd  %xmm0,-0x468(%rbp)
+   102a140bd:	movapd %xmm0,-0x490(%rbp)
+   102a140c5:	mov    %rbx,-0x498(%rbp)
+   102a140cc:	jmp    0x102a140e4
+   102a140ce:	xchg   %ax,%ax
+   102a140d0:	add    $0x2,%r12d
+   102a140d4:	inc    %r15
+   102a140d7:	cmp    -0x4f0(%rbp),%r15
+   102a140de:	je     0x102a147d9
+   102a140e4:	lea    (%r15,%r15,2),%rdi
+   102a140e8:	shl    $0x4,%rdi
+   102a140ec:	add    -0x4d0(%rbp),%rdi
+   102a140f3:	mov    %rdi,-0x458(%rbp)
+   102a140fa:	call   0x102a1e950
+   102a140ff:	mov    %eax,%r13d
+   102a14102:	cmp    -0x4f8(%rbp),%r15
+   102a14109:	jae    0x102a14190
+   102a1410f:	mov    -0x458(%rbp),%rdi
+   102a14116:	call   0x102a25db0
+   102a1411b:	ucomisd 0x3121745(%rip),%xmm0        # 0x105b35868
+   102a14123:	jne    0x102a14190
+   102a14125:	jp     0x102a14190
+   102a14127:	mov    -0x458(%rbp),%rax
+   102a1412e:	lea    0x30(%rax),%rdi
+   102a14132:	call   0x102a1e960
+   102a14137:	movsd  %xmm0,-0x4a8(%rbp)
+   102a1413f:	mov    -0x458(%rbp),%rdi
+   102a14146:	call   0x102a1e960
+   102a1414b:	movsd  -0x4a8(%rbp),%xmm1
+   102a14153:	cmpeqsd %xmm0,%xmm1
+   102a14158:	movq   %xmm1,%rbx
+   102a1415d:	and    $0x1,%ebx
+   102a14160:	movsd  -0x468(%rbp),%xmm0
+   102a14168:	ucomisd 0x3128c90(%rip),%xmm0        # 0x105b3ce00
+   102a14170:	jne    0x102a141a6
+   102a14172:	jp     0x102a141a6
+   102a14174:	xor    %eax,%eax
+   102a14176:	not    %r13b
+   102a14179:	or     %bl,%r13b
+   102a1417c:	test   $0x1,%r13b
+   102a14180:	je     0x102a141d3
+   102a14182:	jmp    0x102a140d4
+   102a14187:	nopw   0x0(%rax,%rax,1)
+   102a14190:	xor    %ebx,%ebx
+   102a14192:	movsd  -0x468(%rbp),%xmm0
+   102a1419a:	ucomisd 0x3128c5e(%rip),%xmm0        # 0x105b3ce00
+   102a141a2:	jne    0x102a141a6
+   102a141a4:	jnp    0x102a14174
+   102a141a6:	mov    -0x458(%rbp),%rdi
+   102a141ad:	call   0x102a1e960
+   102a141b2:	cmpeqsd -0x468(%rbp),%xmm0
+   102a141bb:	movq   %xmm0,%rax
+   102a141c0:	and    $0x1,%eax
+   102a141c3:	not    %r13b
+   102a141c6:	or     %bl,%r13b
+   102a141c9:	test   $0x1,%r13b
+   102a141cd:	jne    0x102a140d4
+   102a141d3:	test   %al,%al
+   102a141d5:	jne    0x102a140d4
+   102a141db:	mov    -0x458(%rbp),%rdi
+   102a141e2:	call   0x102a20790
+   102a141e7:	lea    -0x4c0(%rbp),%rdi
+   102a141ee:	mov    %rax,%rsi
+   102a141f1:	mov    %r14,%rdx
+   102a141f4:	call   0x102a7ac90
+   102a141f9:	mov    %r15,-0x4a0(%rbp)
+   102a14200:	mov    -0x4c0(%rbp),%r13
+   102a14207:	mov    $0x420,%esi
+   102a1420c:	lea    -0x450(%rbp),%rdi
+   102a14213:	call   0x105a4e568
+   102a14218:	mov    -0x4b8(%rbp),%r15
+   102a1421f:	cmp    %r15,%r13
+   102a14222:	mov    %r13,-0x468(%rbp)
+   102a14229:	je     0x102a1447d
+   102a1422f:	xor    %ebx,%ebx
+   102a14231:	jmp    0x102a1425a
+   102a14233:	data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   102a14240:	cmp    %rax,%rcx
+   102a14243:	je     0x102a1429e
+   102a14245:	mov    %rcx,%rax
+   102a14248:	movss  %xmm0,0x4(%rax)
+   102a1424d:	add    $0x10,%r13
+   102a14251:	cmp    %r15,%r13
+   102a14254:	je     0x102a142d6
+   102a1425a:	xorpd  %xmm0,%xmm0
+   102a1425e:	ucomisd 0x0(%r13),%xmm0
+   102a14264:	jb     0x102a142d6
+   102a14266:	movss  0xc(%r13),%xmm0
+   102a1426c:	lea    -0x450(,%rbx,8),%rax
+   102a14274:	add    %rbp,%rax
+   102a14277:	lea    -0x450(%rbp),%rcx
+   102a1427e:	test   %rbx,%rbx
+   102a14281:	je     0x102a14240
+   102a14283:	mov    0x8(%r13),%edx
+   102a14287:	lea    0x0(,%rbx,8),%rsi
+   102a1428f:	nop
+   102a14290:	cmp    %edx,(%rcx)
+   102a14292:	je     0x102a14240
+   102a14294:	add    $0x8,%rcx
+   102a14298:	add    $0xfffffffffffffff8,%rsi
+   102a1429c:	jne    0x102a14290
+   102a1429e:	cmp    $0x83,%rbx
+   102a142a5:	je     0x102a14805
+   102a142ab:	mov    0x8(%r13),%ecx
+   102a142af:	mov    %ecx,-0x450(%rbp,%rbx,8)
+   102a142b6:	movl   $0x0,-0x44c(%rbp,%rbx,8)
+   102a142c1:	inc    %rbx
+   102a142c4:	mov    %rbx,-0x38(%rbp)
+   102a142c8:	movss  %xmm0,0x4(%rax)
+   102a142cd:	add    $0x10,%r13
+   102a142d1:	cmp    %r15,%r13
+   102a142d4:	jne    0x102a1425a
+   102a142d6:	test   %rbx,%rbx
+   102a142d9:	je     0x102a14480
+   102a142df:	mov    %r12,%rdx
+   102a142e2:	movslq %edx,%rdx
+   102a142e5:	lea    (%rdx,%rdx,8),%rax
+   102a142e9:	lea    (%rax,%rax,2),%r15
+   102a142ed:	mov    -0x4d8(%rbp),%rax
+   102a142f4:	add    %rdx,%rax
+   102a142f7:	add    %rax,%r15
+   102a142fa:	mov    %rdx,%r12
+   102a142fd:	mov    -0x478(%rbp),%rcx
+   102a14304:	lea    (%rcx,%rdx,8),%rax
+   102a14308:	mov    %rax,-0x468(%rbp)
+   102a1430f:	shl    $0x3,%rbx
+   102a14313:	xor    %r14d,%r14d
+   102a14316:	mov    %rbx,-0x4a8(%rbp)
+   102a1431d:	jmp    0x102a143ca
+   102a14322:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   102a14330:	mov    -0x458(%rbp),%rdi
+   102a14337:	call   0x102a1e960
+   102a1433c:	mov    -0x468(%rbp),%rax
+   102a14343:	movsd  %xmm0,(%rax,%r14,1)
+   102a14349:	movss  -0x44c(%rbp,%r14,1),%xmm0
+   102a14353:	movaps %xmm0,%xmm1
+   102a14356:	andps  0x31212b3(%rip),%xmm1        # 0x105b35610
+   102a1435d:	orps   0x312e93c(%rip),%xmm1        # 0x105b42ca0
+   102a14364:	addss  %xmm0,%xmm1
+   102a14368:	xorps  %xmm0,%xmm0
+   102a1436b:	roundss $0xb,%xmm1,%xmm0
+   102a14371:	lea    (%r12,%r12,8),%rax
+   102a14375:	lea    (%rax,%rax,2),%rax
+   102a14379:	mov    -0x480(%rbp),%rcx
+   102a14380:	add    %r12,%rcx
+   102a14383:	add    %rcx,%rax
+   102a14386:	mov    -0x450(%rbp,%r14,1),%ecx
+   102a1438e:	movl   $0x0,(%rax)
+   102a14394:	mov    %ecx,0x4(%rax)
+   102a14397:	movss  %xmm0,0x8(%rax)
+   102a1439c:	movsd  0x31a59ec(%rip),%xmm0        # 0x105bb9d90
+   102a143a4:	movsd  %xmm0,0xc(%rax)
+   102a143a9:	movl   $0x80000000,0x14(%rax)
+   102a143b0:	movw   $0x1,0x18(%rax)
+   102a143b6:	inc    %r12
+   102a143b9:	add    $0x1c,%r15
+   102a143bd:	add    $0x8,%r14
+   102a143c1:	cmp    %r14,%rbx
+   102a143c4:	je     0x102a14466
+   102a143ca:	mov    -0x458(%rbp),%rdi
+   102a143d1:	call   0x102a1e960
+   102a143d6:	ucomisd -0x490(%rbp),%xmm0
+   102a143de:	jne    0x102a14330
+   102a143e4:	jp     0x102a14330
+   102a143ea:	mov    %r13,%rbx
+   102a143ed:	mov    -0x468(%rbp),%r13
+   102a143f4:	movsd  -0x8(%r13,%r14,1),%xmm0
+   102a143fb:	movsd  %xmm0,0x0(%r13,%r14,1)
+   102a14402:	movupd (%r15),%xmm0
+   102a14407:	movupd 0xa(%r15),%xmm1
+   102a1440d:	movupd %xmm1,0x26(%r15)
+   102a14413:	movupd %xmm0,0x1c(%r15)
+   102a14419:	mov    -0x458(%rbp),%rdi
+   102a14420:	call   0x102a1e960
+   102a14425:	movsd  %xmm0,-0x8(%r13,%r14,1)
+   102a1442c:	movss  -0x44c(%rbp,%r14,1),%xmm0
+   102a14436:	movaps %xmm0,%xmm1
+   102a14439:	andps  0x31211d0(%rip),%xmm1        # 0x105b35610
+   102a14440:	orps   0x312e859(%rip),%xmm1        # 0x105b42ca0
+   102a14447:	addss  %xmm0,%xmm1
+   102a1444b:	xorps  %xmm0,%xmm0
+   102a1444e:	roundss $0xb,%xmm1,%xmm0
+   102a14454:	mov    %r15,%rax
+   102a14457:	mov    %rbx,%r13
+   102a1445a:	mov    -0x4a8(%rbp),%rbx
+   102a14461:	jmp    0x102a14386
+   102a14466:	mov    -0x4c0(%rbp),%rax
+   102a1446d:	mov    %rax,-0x468(%rbp)
+   102a14474:	mov    -0x4b8(%rbp),%r15
+   102a1447b:	jmp    0x102a14480
+   102a1447d:	mov    %r13,%r15
+   102a14480:	mov    -0x458(%rbp),%r14
+   102a14487:	mov    %r14,%rdi
+   102a1448a:	call   0x102a1e960
+   102a1448f:	movslq %r12d,%rbx
+   102a14492:	mov    -0x478(%rbp),%rax
+   102a14499:	movsd  %xmm0,(%rax,%rbx,8)
+   102a1449e:	mov    %r14,%rdi
+   102a144a1:	call   0x102a29e00
+   102a144a6:	lea    (%rbx,%rbx,8),%rax
+   102a144aa:	lea    (%rax,%rax,2),%rax
+   102a144ae:	add    %rbx,%rax
+   102a144b1:	mov    -0x480(%rbp),%rdx
+   102a144b8:	lea    (%rdx,%rax,1),%rbx
+   102a144bc:	cmp    %r15,-0x468(%rbp)
+   102a144c3:	movl   $0x2,(%rdx,%rax,1)
+   102a144ca:	mov    -0x46c(%rbp),%ecx
+   102a144d0:	mov    %ecx,0x4(%rdx,%rax,1)
+   102a144d4:	movss  %xmm0,0x8(%rdx,%rax,1)
+   102a144da:	movsd  0x31a58ae(%rip),%xmm0        # 0x105bb9d90
+   102a144e2:	movsd  %xmm0,0xc(%rdx,%rax,1)
+   102a144e8:	movl   $0x80000000,0x14(%rdx,%rax,1)
+   102a144f0:	movb   $0x0,0x18(%rdx,%rax,1)
+   102a144f5:	setne  0x19(%rdx,%rax,1)
+   102a144fa:	cmpb   $0x0,-0x459(%rbp)
+   102a14501:	mov    -0x498(%rbp),%r14
+   102a14508:	mov    -0x4a0(%rbp),%r15
+   102a1450f:	je     0x102a14533
+   102a14511:	mov    -0x458(%rbp),%rdi
+   102a14518:	call   0x102a29e40
+   102a1451d:	movss  %xmm0,0xc(%rbx)
+   102a14522:	mov    -0x458(%rbp),%rdi
+   102a14529:	call   0x102a29e80
+   102a1452e:	movss  %xmm0,0x10(%rbx)
+   102a14533:	mov    -0x458(%rbp),%rdi
+   102a1453a:	call   0x102a20790
+   102a1453f:	mov    %rax,-0x500(%rbp)
+   102a14546:	mov    -0x4e8(%rbp),%rax
+   102a1454d:	mov    0x20(%rax),%rdi
+   102a14551:	test   %rdi,%rdi
+   102a14554:	je     0x102a1480c
+   102a1455a:	mov    (%rdi),%rax
+   102a1455d:	lea    -0x500(%rbp),%rsi
+   102a14564:	call   *0x30(%rax)
+   102a14567:	mov    %eax,0x14(%rbx)
+   102a1456a:	mov    -0x458(%rbp),%rdi
+   102a14571:	call   0x102a1e960
+   102a14576:	movsd  %xmm0,-0x468(%rbp)
+   102a1457e:	lea    0x1(%r12),%ebx
+   102a14583:	cmp    -0x4b8(%rbp),%r13
+   102a1458a:	je     0x102a14684
+   102a14590:	movslq %ebx,%rax
+   102a14593:	lea    (%rax,%rax,8),%rcx
+   102a14597:	lea    (%rcx,%rcx,2),%rbx
+   102a1459b:	mov    -0x4e0(%rbp),%rcx
+   102a145a2:	add    %rax,%rcx
+   102a145a5:	add    %rcx,%rbx
+   102a145a8:	mov    -0x478(%rbp),%rcx
+   102a145af:	lea    (%rcx,%rax,8),%r14
+   102a145b3:	xor    %r15d,%r15d
+   102a145b6:	cs nopw 0x0(%rax,%rax,1)
+   102a145c0:	movsd  0x0(%r13,%r15,2),%xmm0
+   102a145c7:	movsd  %xmm0,-0x490(%rbp)
+   102a145cf:	mov    -0x458(%rbp),%rdi
+   102a145d6:	call   0x102a25db0
+   102a145db:	ucomisd -0x490(%rbp),%xmm0
+   102a145e3:	jb     0x102a14671
+   102a145e9:	lea    0x0(,%r15,2),%rax
+   102a145f1:	add    %r13,%rax
+   102a145f4:	movsd  (%rax),%xmm0
+   102a145f8:	addsd  -0x468(%rbp),%xmm0
+   102a14600:	movsd  %xmm0,(%r14,%r15,1)
+   102a14606:	mov    0x8(%rax),%ecx
+   102a14609:	movss  0xc(%rax),%xmm0
+   102a1460e:	movaps %xmm0,%xmm1
+   102a14611:	andps  0x3120ff8(%rip),%xmm1        # 0x105b35610
+   102a14618:	orps   0x312e681(%rip),%xmm1        # 0x105b42ca0
+   102a1461f:	addss  %xmm0,%xmm1
+   102a14623:	xorps  %xmm0,%xmm0
+   102a14626:	roundss $0xb,%xmm1,%xmm0
+   102a1462c:	movl   $0x0,-0x19(%rbx)
+   102a14633:	mov    %ecx,-0x15(%rbx)
+   102a14636:	movss  %xmm0,-0x11(%rbx)
+   102a1463b:	movsd  0x31a574d(%rip),%xmm0        # 0x105bb9d90
+   102a14643:	movsd  %xmm0,-0xd(%rbx)
+   102a14648:	movl   $0x80000000,-0x5(%rbx)
+   102a1464f:	movw   $0x0,-0x1(%rbx)
+   102a14655:	inc    %r12d
+   102a14658:	add    $0x1c,%rbx
+   102a1465c:	add    $0x8,%r15
+   102a14660:	add    $0x10,%rax
+   102a14664:	cmp    -0x4b8(%rbp),%rax
+   102a1466b:	jne    0x102a145c0
+   102a14671:	lea    0x1(%r12),%ebx
+   102a14676:	mov    -0x498(%rbp),%r14
+   102a1467d:	mov    -0x4a0(%rbp),%r15
+   102a14684:	mov    -0x458(%rbp),%r13
+   102a1468b:	mov    %r13,%rdi
+   102a1468e:	call   0x102a25db0
+   102a14693:	ucomisd 0x31211cd(%rip),%xmm0        # 0x105b35868
+   102a1469b:	jbe    0x102a146c0
+   102a1469d:	mov    %r13,%rdi
+   102a146a0:	call   0x102a1e970
+   102a146a5:	movapd %xmm0,-0x490(%rbp)
+   102a146ad:	jmp    0x102a14753
+   102a146b2:	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   102a146c0:	mov    %r13,%rdi
+   102a146c3:	call   0x102a1e960
+   102a146c8:	movsd  0x312a3f0(%rip),%xmm2        # 0x105b3eac0
+   102a146d0:	addsd  %xmm2,%xmm0
+   102a146d4:	movddup %xmm0,%xmm3
+   102a146d8:	movapd %xmm3,%xmm1
+   102a146dc:	cmpeqpd 0x312a41b(%rip),%xmm1        # 0x105b3eb00
+   102a146e5:	cmpeqpd 0x312a422(%rip),%xmm3        # 0x105b3eb10
+   102a146ee:	shufps $0x88,%xmm1,%xmm3
+   102a146f2:	movmskps %xmm3,%eax
+   102a146f5:	test   %eax,%eax
+   102a146f7:	jne    0x102a1474b
+   102a146f9:	xor    %eax,%eax
+   102a146fb:	ucomisd 0x3121165(%rip),%xmm0        # 0x105b35868
+   102a14703:	setae  %al
+   102a14706:	lea    0x312a413(%rip),%rcx        # 0x105b3eb20
+   102a1470d:	movsd  (%rcx,%rax,8),%xmm3
+   102a14712:	movapd %xmm3,%xmm1
+   102a14716:	mulsd  %xmm2,%xmm1
+   102a1471a:	mulsd  0x30430e6(%rip),%xmm1        # 0x105a57808
+   102a14722:	addsd  %xmm0,%xmm1
+   102a14726:	andpd  0x3120f62(%rip),%xmm1        # 0x105b35690
+   102a1472e:	movsd  0x312a392(%rip),%xmm2        # 0x105b3eac8
+   102a14736:	mulsd  %xmm2,%xmm1
+   102a1473a:	xorps  %xmm0,%xmm0
+   102a1473d:	roundsd $0x9,%xmm1,%xmm0
+   102a14743:	divsd  %xmm2,%xmm0
+   102a14747:	mulsd  %xmm3,%xmm0
+   102a1474b:	movapd %xmm0,-0x490(%rbp)
+   102a14753:	movslq %ebx,%rbx
+   102a14756:	mov    -0x478(%rbp),%rax
+   102a1475d:	movapd -0x490(%rbp),%xmm0
+   102a14765:	movsd  %xmm0,(%rax,%rbx,8)
+   102a1476a:	mov    %r13,%rdi
+   102a1476d:	call   0x102a29e60
+   102a14772:	lea    (%rbx,%rbx,8),%rax
+   102a14776:	lea    (%rax,%rax,2),%rax
+   102a1477a:	add    %rbx,%rax
+   102a1477d:	mov    -0x480(%rbp),%rdx
+   102a14784:	movl   $0x1,(%rdx,%rax,1)
+   102a1478b:	mov    -0x46c(%rbp),%ecx
+   102a14791:	mov    %ecx,0x4(%rdx,%rax,1)
+   102a14795:	movss  %xmm0,0x8(%rdx,%rax,1)
+   102a1479b:	movsd  0x31a55ed(%rip),%xmm0        # 0x105bb9d90
+   102a147a3:	movsd  %xmm0,0xc(%rdx,%rax,1)
+   102a147a9:	movl   $0x80000000,0x14(%rdx,%rax,1)
+   102a147b1:	movw   $0x0,0x18(%rdx,%rax,1)
+   102a147b8:	mov    -0x4c0(%rbp),%rdi
+   102a147bf:	test   %rdi,%rdi
+   102a147c2:	je     0x102a140d0
+   102a147c8:	mov    %rdi,-0x4b8(%rbp)
+   102a147cf:	call   0x105a4e53e
+   102a147d4:	jmp    0x102a140d0
+   102a147d9:	mov    -0x4c8(%rbp),%rax
+   102a147e0:	mov    %r12d,(%rax)
+   102a147e3:	mov    0x401f336(%rip),%rax        # 0x106a33b20
+   102a147ea:	mov    (%rax),%rax
+   102a147ed:	cmp    -0x30(%rbp),%rax
+   102a147f1:	jne    0x102a14813
+   102a147f3:	add    $0x4d8,%rsp
+   102a147fa:	pop    %rbx
+   102a147fb:	pop    %r12
+   102a147fd:	pop    %r13
+   102a147ff:	pop    %r14
+   102a14801:	pop    %r15
+   102a14803:	pop    %rbp
+   102a14804:	ret
+   102a14805:	call   0x100d4e230
+   102a1480a:	jmp    0x102a14811
+   102a1480c:	call   0x1002d89d0
+   102a14811:	ud2
+   102a14813:	call   0x105a4e628
+== ProbabilisticallySendNoteOn [0x101b7fd10, 0x101b7fe45)
+   101b7fd10:	push   %rbp
+   101b7fd11:	mov    %rsp,%rbp
+   101b7fd14:	push   %r15
+   101b7fd16:	push   %r14
+   101b7fd18:	push   %r13
+   101b7fd1a:	push   %r12
+   101b7fd1c:	push   %rbx
+   101b7fd1d:	sub    $0x18,%rsp
+   101b7fd21:	mov    %ecx,%r14d
+   101b7fd24:	mov    %edx,%r13d
+   101b7fd27:	mov    %rsi,%r12
+   101b7fd2a:	mov    %rdi,%rbx
+   101b7fd2d:	xor    %eax,%eax
+   101b7fd2f:	cmp    0x14(%rsi),%eax
+   101b7fd32:	jno    0x101b7fdae
+   101b7fd34:	movss  0x10(%r12),%xmm1
+   101b7fd3b:	mov    $0x2,%r15d
+   101b7fd41:	xorps  %xmm0,%xmm0
+   101b7fd44:	ucomiss %xmm0,%xmm1
+   101b7fd47:	jbe    0x101b7fe2f
+   101b7fd4d:	ucomiss 0x3ef846c(%rip),%xmm1        # 0x105a781c0
+   101b7fd54:	jne    0x101b7fd5c
+   101b7fd56:	jnp    0x101b7fddd
+   101b7fd5c:	imul   $0x19660d,0x14c(%rbx),%eax
+   101b7fd66:	add    $0x3c6ef35f,%eax
+   101b7fd6b:	mov    %eax,0x14c(%rbx)
+   101b7fd71:	and    $0x7fffff,%eax
+   101b7fd76:	or     $0x3f800000,%eax
+   101b7fd7b:	movd   %eax,%xmm0
+   101b7fd7f:	addss  %xmm0,%xmm0
+   101b7fd83:	addss  0x41fe63d(%rip),%xmm0        # 0x105d7e3c8
+   101b7fd8b:	andps  0x3fb588e(%rip),%xmm0        # 0x105b35620
+   101b7fd92:	movss  %xmm1,-0x2c(%rbp)
+   101b7fd97:	xorps  %xmm1,%xmm1
+   101b7fd9a:	call   0x105a4ee02
+   101b7fd9f:	movss  -0x2c(%rbp),%xmm1
+   101b7fda4:	ucomiss %xmm0,%xmm1
+   101b7fda7:	ja     0x101b7fddd
+   101b7fda9:	jmp    0x101b7fe2f
+   101b7fdae:	mov    %rbx,%rdi
+   101b7fdb1:	call   0x101b10a30
+   101b7fdb6:	mov    0x58(%rax),%rdi
+   101b7fdba:	mov    0x4(%r12),%ecx
+   101b7fdbf:	mov    0x14(%r12),%esi
+   101b7fdc4:	lea    0x14c(%rbx),%r8
+   101b7fdcb:	mov    %r14d,%edx
+   101b7fdce:	call   0x101b87280
+   101b7fdd3:	mov    $0x2,%r15d
+   101b7fdd9:	test   %al,%al
+   101b7fddb:	je     0x101b7fe2f
+   101b7fddd:	mov    0x20(%rbx),%rax
+   101b7fde1:	mov    0x18(%rax),%rax
+   101b7fde5:	mov    %r14d,-0x2c(%rbp)
+   101b7fde9:	mov    %r13d,%r14d
+   101b7fdec:	mov    (%rax),%r13
+   101b7fdef:	mov    %rbx,%rdi
+   101b7fdf2:	call   0x101b10a30
+   101b7fdf7:	mov    %rax,%r15
+   101b7fdfa:	mov    %rbx,%rdi
+   101b7fdfd:	call   0x101b11890
+   101b7fe02:	movsd  %xmm0,-0x38(%rbp)
+   101b7fe07:	mov    %rbx,%rdi
+   101b7fe0a:	call   0x101b11990
+   101b7fe0f:	movaps %xmm0,%xmm1
+   101b7fe12:	mov    %r13,%rdi
+   101b7fe15:	mov    %r12,%rsi
+   101b7fe18:	mov    %r15,%rdx
+   101b7fe1b:	mov    %r14d,%ecx
+   101b7fe1e:	mov    -0x2c(%rbp),%r8d
+   101b7fe22:	movsd  -0x38(%rbp),%xmm0
+   101b7fe27:	call   0x101b7fe50
+   101b7fe2c:	xor    %r15d,%r15d
+   101b7fe2f:	mov    %r15d,0x148(%rbx)
+   101b7fe36:	add    $0x18,%rsp
+   101b7fe3a:	pop    %rbx
+   101b7fe3b:	pop    %r12
+   101b7fe3d:	pop    %r13
+   101b7fe3f:	pop    %r14
+   101b7fe41:	pop    %r15
+   101b7fe43:	pop    %rbp
+   101b7fe44:	ret
+== ToString(TAutomationActivationOrigin) [0x101b716d0, 0x101b716f1)
+   101b716d0:	push   %rbp
+   101b716d1:	mov    %rsp,%rbp
+   101b716d4:	cmp    $0x11,%edi
+   101b716d7:	ja     0x101b716e8
+   101b716d9:	mov    %edi,%eax
+   101b716db:	lea    0x512ad16(%rip),%rcx        # 0x106c9c3f8
+   101b716e2:	mov    (%rcx,%rax,8),%rax
+   101b716e6:	pop    %rbp
+   101b716e7:	ret
+   101b716e8:	lea    0x4530090(%rip),%rax        # 0x1060a177f
+   101b716ef:	pop    %rbp
+   101b716f0:	ret

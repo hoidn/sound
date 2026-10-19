@@ -159,7 +159,7 @@ defines them). M1–M6 above remain the revision 1 record.
 | X2 Settle by extracted execution | **Done 2026-10-18:** mixer r3, MIDI r5, transport r3 and r4, notes r3, clip launch r3, automation r3, warp r3 (see the log). [transport-state-v2](../../handoff/transport-state-v2/README.md) released, correcting v1's REQ-011 | Open clauses settled, or recorded as unsettleable |
 | T1.1 Live Set structure | **Draft done 2026-10-18:** [SPEC-LIVE-SET-STRUCTURE](../specs/live-set-structure.md) r1. Opening always runs the validation walk, so 204 released fixtures are invalid and need superseding releases ([roadmap revision 3](native-decompilation-roadmap.md#revision-3--t1-completion-plan-2026-10-18)) | Draft SPEC-LIVE-SET-STRUCTURE |
 | T1.2 Device audio | **Feasibility started 2026-10-18:** load one bundle's x86_64 slice and render | Reference render agrees with the static DSP model, then one spec per device |
-| T1.3 Playback core | **Started 2026-10-18** | Draft SPEC-PLAYBACK-CORE |
+| T1.3 Playback core | **Draft done 2026-10-18:** [SPEC-PLAYBACK-CORE](../specs/playback-core.md) r1; clip-launch r4 and warp r4 corrected | Draft SPEC-PLAYBACK-CORE |
 | T1.4 Mix graph and automation in playback | **Draft done 2026-10-18:** [SPEC-MIX-GRAPH](../specs/mix-graph.md) r1; automation r4 and mixer r4 corrected; Q-019 settled with conditions | Draft SPEC-MIX-GRAPH |
 | T1.5 Releases | Pending T1.1 to T1.4 drafts | Reviewed releases for every T1 family |
 | T1.6 Implementation workspace | Pending user decision (bwrap sandbox proposed) | Restricted workspace provisioned |

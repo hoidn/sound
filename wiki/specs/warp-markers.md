@@ -2,7 +2,7 @@
 id: SPEC-WARP-MARKERS
 type: spec
 status: draft
-revision: 3
+revision: 4
 updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -81,7 +81,9 @@ These have no requirement in this revision. They are not graded, and fixtures av
   measured comparison (PRB-S8-11), which ADR 0003 rules out.
 - **Changes after reading.** Any change the application makes by itself after it has read a
   document, such as automatic warping or sample analysis.
-- **Playback timing.** Which position of the sample plays at a given song time (REQ-009).
+- **Playback timing.** Which position of the sample plays at a given song time, beyond the
+  conversion step of REQ-009. Playback of clips with warping off belongs to
+  [SPEC-PLAYBACK-CORE](playback-core.md) (REQ-017 to 021 there).
 - **Clip region fields.** `Loop` children (`LoopStart`, `LoopEnd`, `HiddenLoopStart`,
   `HiddenLoopEnd`, `OutMarker`) and their units, and `DefaultDuration`/`DefaultSampleRate`
   semantics (PRB-S8-09). Cases keep the base set's region fields unchanged.
@@ -181,8 +183,9 @@ Support: documented and static-derived, with unknown parts.
 
 - **S.** Live treats the last element of an audio clip's marker list as the *shadow marker*.
   In the scripting conversion, the segment from the last visible marker to the shadow marker
-  governs everything after the last visible marker (REQ-008); for playback this is inferred
-  (REQ-009).
+  governs everything after the last visible marker (REQ-008). Revision 4: warped playback
+  converts beats to file time through the same mapping, so the same segment applies there
+  (REQ-009, S).
 - **S.** Where Live creates or re-places the shadow marker, it puts it 1/32 beat after the
   preceding marker, with the beat rounded as in REQ-016. Which user operations do this is U.
 - **X.** The append routine (x86_64 `0x102738d90`, arm64 `0x102612464`) adds a marker with
@@ -234,15 +237,51 @@ n ≥ 2 and both coordinates strictly increasing, and let R be the clip's sample
 
 ### REQ-WARP-MARKERS-009 — playback position of a warped clip
 
-Support: unknown.
+Support: static-derived for the conversion step (revision 4), with unknown parts.
 
-- **U.** Which sample position plays at a given clip beat (PRB-S8-08). Revision 3 ran the
-  scripting conversion cores (REQ-008, X) but found no static caller that connects them, or the
-  shared table, to the audio engine's playback position; this stays unknown.
-- **Inferred.** Playback uses the mapping of REQ-008, including both extensions. Support: the
-  same interpolation is shared by other callers whose roles were not traced; shipped region
-  fields match the extended mapping; Live deletes a marker recorded on the straight line of
-  its neighbours, which only makes sense for a piecewise-linear mapping.
+- **S (revision 4).** The conversion cores of REQ-008 are the engine's marker-list
+  conversions. Names come from the x86_64 Live Engine:
+  - x86_64 `0x101b6f970` is `OWarpMarkerList::BeatToSampleTime` and `0x101b6fa60` is
+    `SampleToBeatTime` (96.3 % equal bytes at the same size).
+  - In the Engine, the audio warpers' playback functions call them:
+    `OWarperBase::PlayPosFileSmpl`, `OWarperBase::StartSample` and `OWarpData::FileBeatToFileSmpl`;
+    the Re-Pitch warper's playing range; the Beats warper's grain and transient functions; the
+    Complex warpers' start, drift and jump functions; and the preload range estimates.
+  - Live x86_64 has 23 callers of the beats-to-seconds core. The arm64 core `0x101b39d8c` also
+    has 23, in the corresponding warper code (not matched one by one).
+- **S (revision 4).** For a warped clip, the play position takes the current song beat less the
+  clip's start offset, passes it through the clip's time map when one is present, and converts
+  it with the marker mapping of REQ-008 to seconds of file time. It then multiplies by the
+  file's sample rate (`OWarperBase::PlayPosFileSmpl`).
+  - **Extensions.** Before the first marker and after the last visible marker the mapping is
+    extended as in REQ-008.
+  - **Frame clamp.** `OWarpData::FileBeatToFileSmpl` limits the result to frames 0 to the last
+    frame.
+  - **What this establishes.** Warped playback places file positions by the scripting
+    conversion's mapping, and revision 3's "Inferred" clause becomes S for that step. The
+    arithmetic itself is X (REQ-008).
+- **S (revision 4), warping off.** A session clip with `IsWarped` false does not use its markers:
+  - its start frame and read position come from its loop start in seconds and a fixed read step
+    ([REQ-PLAYBACK-CORE-017](playback-core.md#req-playback-core-017--unwarped-audio-clip-start-read-step-and-read-position));
+  - the unwarped warper uses the extrapolating marker conversion only for an arrangement clip's
+    start (`OWarperUnWarped::StartFileSmpl`, Engine names, x86_64);
+  - the scripting conversion refuses unwarped clips (REQ-008).
+
+  So with warping off, session playback is fully specified elsewhere and owes nothing to this
+  mapping.
+- **U.** For warped playback:
+  - which file sample each output sample reads, in each warp mode: the Beats grains,
+    Tones/Texture, Complex and Complex Pro, and Re-Pitch's rate;
+  - the time map's effect, which is groove and is excluded;
+  - preload and rounding;
+  - whether `PlayPosFileSmpl` drives the audio or only position feedback;
+  - the arm64 correspondence beyond the caller count.
+
+  Warped audio playback is outside target T1
+  ([ADR 0004](../decisions/adr-0004-target-scope-t1.md)), so these items do not block it.
+- **Correction (revision 4).** Revision 3 said no static caller connects the conversion cores
+  to the engine's playback position. The callers above do. Revision 3 had followed only Live's
+  unnamed arm64 callers, without the Engine's names.
 
 ### REQ-WARP-MARKERS-010 — absent warp settings
 
@@ -513,8 +552,9 @@ has been run against Live, and under ADR 0003 none will be.
 | WMK-039 | 015, 016 | B | M1; Script `remove_warp_marker(2.0000001300782553)`; `remove_warp_marker(2.0000001300782544)` | First refused: no such marker (the 64-bit value nearest to beat 2 + ½ grid step rounds up to 2 + 1/3,843,840); second accepted (two units in the last place lower, it rounds to 2) | W0+M1 |
 
 Cancellation and teardown kinds are omitted: loading, saving and the scripting calls in scope
-have no cancellable step or resource. REQ-009 has no case: it is U, and the measurement that
-PRB-S8-08 describes is not available (ADR 0003). The REQ-015 clauses on an unchanged list have
+have no cancellable step or resource. REQ-009 has no case. Its S step (revision 4) is observable only
+through warped audio playback, which is excluded, and the per-mode measurement that PRB-S8-08
+describes is not available (ADR 0003). The REQ-015 clauses on an unchanged list have
 no case: no procedure here observes the list after a call except a save, under A4. The
 shadow append of REQ-007 has no case: no procedure here makes the clip recompute its shadow.
 Thirty-nine cases: 32 gradable (WMK-006 for refusal only, WMK-025 to 027 for opening only) and
@@ -540,8 +580,10 @@ unless its static route, where one exists, settles it:
   (PRB-S8-06): trace the readers of the stored values and the `TransientEnvelope` curve;
 - shadow spacing after edits and saves (PRB-S8-07): trace the callers of the steps that create
   or re-place the shadow;
-- playback mapping (PRB-S8-08): trace the other callers of the scripting interpolation into
-  playback. Region-field units (PRB-S8-09): trace the readers of the `Loop` fields;
+- playback mapping (PRB-S8-08). The conversion step is settled in revision 4 (REQ-009). The
+  per-mode read position remains, with no practical static route for the stretch modes.
+  Region-field units (PRB-S8-09) are settled for unwarped clips by REQ-PLAYBACK-CORE-017
+  (seconds). For warped clips, trace the readers of the `Loop` fields;
 - absent `WarpMode` and the preference (PRB-S8-10): trace whether the preference store exists
   while a set is read, and where the preference's factory value is set;
 - per-mode audio (PRB-S8-11): no practical static route; it stays excluded;
@@ -586,7 +628,7 @@ undecoded.
 | 006 | AWarpMarker constructor `0x1026105ec` ✓ (s8-0001): both fields DBL_MAX | S / U |
 | 007 | Is-shadow `0x1026102c0` ✓ (last element). Append `0x102612464` ✓: `Beat = q(last + 0.03125)`, `Sec = last + d9·60/d8·0.03125` (the operands' meaning is not traced, so the seconds formula is not specified). Rescale `0x102610bc4` ✓ re-places the last marker at `q(prev + 0.03125)`. `0x1027d304c`, `0x102610fb0` (pseudocode). Remove `0x1033bfa68` ✓, move `0x1033bfb94` ✓. `checks.last_beat_step_is_1/32` | S; D |
 | 008 | API `0x1033bf160` ✓ (d7-0001): audio-clip class test, slot +0x300 warped test, `fdiv d0,d8,d0` (t / rate from `0x1027b7514`, pseudocode), tail call slot +0x4b8 with `w1 = 1`. Slot `0x1027beb9c` ✓: helper at clip +0x5b0 (stored by the constructor ✓ s8-0001 at `0x1027b119c`), helper slot +0x198 `0x102893b1c` ✓ → +0x190 `0x1028939a4` ✓: builds once and caches at helper +0x28 a table from clip slot +0x4b0 → +0x4a8 `0x1027c6ec0` ✓ (`ldr x0,[x0,#0x658]`, the list REQ-004 tests) via `0x10277b71c` ✓ (list order, BeatTime → array +0 via `0x101b39d74` ✓, SecTime → array +0x10 via `0x101b39d80` ✓). With `w1 ≠ 0` → `0x102248700` → `0x101b39e20` ✓: upper bound over the first n−1 seconds, k = max(j − 1, 0), `fsub; fsub; fdiv; fmsub; fmadd`, so the value is (bₖ − u·bₖ) + u·bₖ₊₁ with fused operations and no guard for sₖ₊₁ = sₖ. The `w1 = 0` path `0x10224869c` clamps to [0, length] and is not used here. Inverse: `0x1033bf250` ✓ (slot +0x4c0, then `fmul` by the rate), `0x1027bec54` ✓, `0x1022485d8`, `0x101b39d8c` ✓. Help strings at `0x105c1dc05`, `0x105c1dc9c`; errors `Conversion is only available for audio clips`, `Cannot convert sample to beat time for unwarped clips.` | D; S (A3) |
-| 009 | Other callers of `0x101b39e20` (`0x10224869c` … `0x102250b34`, `0x102610fb0`, `0x1026119f0`, `0x10282cbe0`) not traced. Collinearity delete `0x1027c724c` ✓ (0.001 s). `checks.warped|…extrapolated…` 292/399, 330/399 | U; inferred |
+| 009 | Other callers of `0x101b39e20` (`0x10224869c` … `0x102250b34`, `0x102610fb0`, `0x1026119f0`, `0x10282cbe0`) not traced. Collinearity delete `0x1027c724c` ✓ (0.001 s). `checks.warped|…extrapolated…` 292/399, 330/399. Revision 4: Engine `OWarpMarkerList::BeatToSampleTime` `0x1a0660` / `SampleToBeatTime` `0x1a0750` match x86_64 `0x101b6f970` / `0x101b6fa60`. Their Engine callers: `OWarperBase::PlayPosFileSmpl` `0xa94400` (x86_64 `0x10235d1c0`), `OWarperBase::StartSample` `0xa93230` (`0x10235bff0`), `OWarpData::FileBeatToFileSmpl` `0xa928b0`, `_Extrapolate` `0xa92930` (`0x10235b6f0`), `OWarperUnWarped::StartFileSmpl` `0xaa8750` (non-slot branch only), `OWarperRePitch::FindPlayingRange`, `OWarperBeats` and `OWarperElastique` functions. Counts: x86_64 23 callers of `0x101b6f970`, arm64 23 of `0x101b39d8c`. Evidence: [t13-playback-v1](../../analysis/ableton-live-12.4.3/r2/t13-playback-v1/manifest.json) `audio/match-x86.txt`, [playback core](../research/playback-core.md#corrections-to-existing-pages) | S (conversion step); per-mode U |
 | 010 | AAudioClip constructor `0x1027b0e40` ✓ (s8-0001): getter triples (`getter-constants.txt`), enum inits `mov w1,#0x6`, `#0x2`; WarpMode at `0x1027b1b00`: `0x101849958` null → 0, else `0x102676cf0` → `0x1026a9ec4` (table `0x105889f90` = 0,1,2,3,4,6). ASampleWarpProperties constructor `0x102883578` ✓ (d7-0002): the same getter triples, `0x1027b2794`/`0x1027b29e0`, and WarpMode from `0x102676cf0` → `0x1026a9ec4` with no null test (`0x102883a14`). Its `IsWarped` default (false in pseudocode) is not specified. Loader skips absent members (n1) | S / U |
 | 011 | Stored list `0x1026a9ef8` ✓ (`mov w2,#0x7`); chooser `0x1026aa13c` ✓; short twin `0x1026aa354`, lists `0x1026a9a08` (4), `0x1026a9820` (5) (pseudocode). `distributions.*WarpMode` | S; D |
 | 012 | `0x1027b279c` ✓, `0x1027b29e8` ✓; label block `0x105af67ac` (`vtable-reads.txt`); long labels referenced by test code `0x100718e6c`, `0x102820654` | S; labels inferred |
@@ -678,7 +720,7 @@ were counted in the decoded W0.
 | WM-12 | REQ-011, REQ-010; the absent-`WarpMode` default for audio clips is U |
 | WM-13 | REQ-014 |
 | WM-14 | REQ-012, REQ-013 |
-| WM-15 | Dropped to the exclusions (PRB-S8-09) |
+| WM-15 | Dropped to the exclusions (PRB-S8-09). Revision 4: for unwarped clips the seconds unit is S and D in REQ-PLAYBACK-CORE-017 |
 | WM-16 | Exclusion (PRB-S8-11) |
 
 Also not carried: the Seg. BPM display rule (pseudocode only; PRB-S8-02 and 07 would have
@@ -693,9 +735,10 @@ choosers, the recording-path collinearity delete (support for REQ-009 only), and
 | 1 | 2026-10-17 | First draft from packet S8 (WM-01 to WM-16) plus two verification rounds (d7-0001, d7-0002) that located and confirmed the scripting conversion. 16 requirements: 3 without unknown parts (003, 012, 016), 11 with D or S clauses and unknown parts, 2 unknown (005, 009). 35 unexecuted cases: 28 gradable (4 in part), 7 unresolved |
 | 2 | 2026-10-18 | Applies the warp-markers-v1 review findings ([plan](warp-markers-handoff-plan.md#review-outcome), [REVIEW.md](../../handoff/warp-markers-v1/REVIEW.md)). Applied: F1 and RVW-01 (A2 narrowed to opening and marked on every load and scripting clause, including REQ-003's load clause; saving half is the new A4; "held after opening" defined; later changes by the application excluded); F3 and RVW-03 (REQ-015 as inclusive beat bounds, the zero-distance and first-marker cases, U bands of 0.001 BPM, 0.001 grid step and 0.0005 s; REQ-016 tie band U); F4 (accepted add or remove can leave the list unchanged); F5 (move has no warped check; new WMK-036); F6 and RVW-05 (TransientResolution labels and the code 5 label inferred; loop-mode and parameter names inferred internal names); RVW-02 (TransientEnvelope created at 100 without a clamp; range U); RVW-04 (WMK-029 now 10,000,000 s; sample-length unit assumed); RVW-06 and RVW-07 (assumptions confirmed or stated); RVW-08 (d7 rounds cited from their retained run). F7 needed no change: the text was fixed at release. Rejected: F2, because the review's corpus check shows creation stores 100 without a clamp, so REQ-010 and WMK-021 keep the default; RVW-09, which concerns release status text only. ADR 0003: probe wording changed and static routes named. 16 requirements: 2 without unknown parts (003, 012), 12 with D or S clauses and unknown parts, 2 unknown (005, 009). 36 unexecuted cases: 29 gradable (4 in part), 7 unresolved |
 | 3 | 2026-10-18 | Extracted execution X2 ([x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json)). Added label X. REQ-008 conversion X (cores run, WMK-016 to 019 confirmed); REQ-007 shadow append X with its seconds formula (operands' meaning U); REQ-015 bounds and REQ-016 rounding X as exact 64-bit sequences, which replace revision 2's uncertainty bands; new finding: q(−0) = +0. REQ-009 playback stays U (no static caller to the engine found). New cases WMK-037 to 039. 16 requirements: 2 without unknown parts (003, 012), 12 with D, S or X clauses and unknown parts, 2 unknown (005, 009). 39 cases: 32 gradable (4 in part), 7 unresolved |
+| 4 | 2026-10-18 | Correction from [SPEC-PLAYBACK-CORE](playback-core.md) r1 (packet T1.3). REQ-009: revision 3's "no static caller" is wrong. The conversion cores are the Engine's marker-list conversions, called by the warpers' playback functions. The conversion step of warped playback becomes S (Engine names; x86_64 matched; arm64 by caller count). Warping off is stated as not using the markers for session clips (SPEC-PLAYBACK-CORE REQ-017). Per-mode read positions stay U, outside T1. REQ-007's playback inference becomes S. WM-15's unit settled for unwarped clips. 16 requirements: 2 without unknown parts (003, 012), 13 with D, S or X clauses and unknown parts (009 now among them), 1 unknown (005). 39 cases unchanged: 32 gradable (4 in part), 7 unresolved |
 
 Before the 2026-10-18 review, a first release candidate could
 contain the D and S clauses of REQ-001 to 004, 007, 008 and 010 to 016 with their gradable
 cases, under assumptions A1 to A3.
 
-Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1. The plan's [scope table](warp-markers-handoff-plan.md#scope) lists the released part of each requirement; every other clause of this draft is broader than v1. Revision 3's X clauses (REQ-007, 008, 015, 016) and cases WMK-037 to 039 are not released; a later release revision could carry them after review.
+Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1. The plan's [scope table](warp-markers-handoff-plan.md#scope) lists the released part of each requirement; every other clause of this draft is broader than v1. Revision 3's X clauses (REQ-007, 008, 015, 016) and cases WMK-037 to 039 are not released; a later release revision could carry them after review. Revision 4's REQ-009 clauses are unreleased; warp-markers-v1 excludes REQ-009, so they contradict nothing released.
