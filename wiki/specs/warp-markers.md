@@ -2,7 +2,7 @@
 id: SPEC-WARP-MARKERS
 type: spec
 status: draft
-revision: 2
+revision: 3
 updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -26,9 +26,10 @@ inspect or edit its warp markers, and save it again. This draft specifies:
 - the limits that the scripting interface applies to marker edits.
 
 Every requirement is a **proposed contract**. Each clause is documented, supported by a
-static derivation, or explicitly unknown. Nothing was run against Live, and nothing will be:
-under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) static evidence is the only
-source of reference behavior. [ADR 0002](../decisions/adr-0002-static-first-analysis.md)
+static derivation, supported by extracted execution of the shipped x86_64 code, or explicitly
+unknown. The whole Live application was not run, and will not be: under
+[ADR 0003](../decisions/adr-0003-no-reference-execution.md) static evidence and extracted
+execution of self-contained functions are the only sources of reference behavior. [ADR 0002](../decisions/adr-0002-static-first-analysis.md)
 permits a static-first draft.
 The target is documents with `MinorVersion="12.0_12402"`. The gzip and XML envelope belongs
 to [SPEC-ALS-CONTAINER](als-container.md). Number text follows
@@ -45,9 +46,10 @@ and Max for Live (`sample_to_beat_time`, `beat_to_sample_time`, `add_warp_marker
 | --- | --- |
 | D | Documented: present in the shipped schema for `12.0_12402`, in shipped documents (written by 12.4d1 or 12.1d1, not by 12.4.3), or in the scripting interface's built-in help text |
 | S | Static derivation from the 12.4.3 executable; not an observed run |
+| X | Extracted execution: what a named x86_64 function of the shipped slice computed for the given inputs in the harness ([ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code)). Results bind to the x86_64 slice; arm64 equivalence is inferred from static comparison. Evidence: [x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json) |
 | U | Unknown; no expected result. A PRB ID names the Phase 4 probe that would have settled it. No reference observation is available (ADR 0003), so a U clause stays unknown unless the static route in [Open questions](#open-questions) settles it |
 
-Only D and S clauses may enter a release. U clauses block the behavior they name. Inferred
+Only D, S and X clauses may enter a release. U clauses block the behavior they name. Inferred
 statements are marked **Inferred** and carry no requirement.
 
 Static clauses rest on these assumptions:
@@ -183,6 +185,15 @@ Support: documented and static-derived, with unknown parts.
   (REQ-009).
 - **S.** Where Live creates or re-places the shadow marker, it puts it 1/32 beat after the
   preceding marker, with the beat rounded as in REQ-016. Which user operations do this is U.
+- **X.** The append routine (x86_64 `0x102738d90`, arm64 `0x102612464`) adds a marker with
+  `BeatTime = q(b + 1/32)` and `SecTime = s + (p₂ × 60 / p₁) / 32`, where (s, b) is the last
+  marker and p₁, p₂ are its two arguments. Run on real `AWarpMarker` lists: (0, 0), (1, 2),
+  (2, 3) with p₁ = 120, p₂ = 1 gives (2.015625, 3.03125), M1's shadow; (0, 0) with p₁ = 167,
+  p₂ = 1 gives `SecTime` 0.0112275449101796407 and `BeatTime` 0.03125, M0's shadow, bit for
+  bit; a last beat of 2.0000001 gives a shadow beat of 2.03125 (rounded) ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json),
+  `warp_REQ007_shadow_*`). **U.** What p₁ and p₂ are at each caller: the clip passes a tempo
+  value and its slot +0x2d0 value, neither traced; inferred: the tempo in BPM and a rate
+  factor of 1 for an unaltered clip.
 - **D.** In shipped lists the last marker is exactly 1/32 beat after the previous one in
   2,869 of 2,878 audio clips and 7,313 of 7,372 sampler lists; the others use 1/16 or 1/64.
 - **S (A2).** On load a different spacing is kept: no completion step moves the last marker.
@@ -208,6 +219,16 @@ n ≥ 2 and both coordinates strictly increasing, and let R be the clip's sample
 - **S (A2, A3).** The result is linear inside each segment. Before the first marker the first
   segment is extended. At or after the last visible marker sₙ₋₂ the segment to the shadow
   marker is extended. Results are not limited to the sample or to the marker range.
+- **X.** The two conversion cores (x86_64 `0x101b6fa60` seconds → beats and `0x101b6f970`
+  beats → seconds; arm64 `0x101b39e20` and `0x101b39d8c`) were run on the conversion table of
+  M1 and M2: they compute the formulas above, including both extensions, with
+  bₖ + u·(bₖ₊₁ − bₖ) evaluated as fma(u, bₖ₊₁, fma(−u, bₖ, bₖ)). WMK-016 to 018 give exactly the
+  expected values ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json), `warp_WMK016_M1`, `warp_WMK017_M2`). Both slices fuse the same two
+  operations (arm64 `fmsub`/`fmadd`; x86_64 glibc `fma`), so the results are bit-identical.
+  **Limits:** the table was built in harness buffers in list order (`BeatTime` to the first
+  array, `SecTime` to the second), as the builder `0x1028b4f00` / `0x10277b71c` does (S); the
+  scripting entry points' audio-clip and warped tests, and the division and multiplication by
+  the sample rate, are S.
 - **U.** Results for n = 1, equal adjacent coordinates, or an unsorted list; the result after
   marker edits (A3).
 
@@ -215,7 +236,9 @@ n ≥ 2 and both coordinates strictly increasing, and let R be the clip's sample
 
 Support: unknown.
 
-- **U.** Which sample position plays at a given clip beat (PRB-S8-08).
+- **U.** Which sample position plays at a given clip beat (PRB-S8-08). Revision 3 ran the
+  scripting conversion cores (REQ-008, X) but found no static caller that connects them, or the
+  shared table, to the audio engine's playback position; this stays unknown.
 - **Inferred.** Playback uses the mapping of REQ-008, including both extensions. Support: the
   same interpolation is shared by other callers whose roles were not traced; shipped region
   fields match the extended mapping; Live deletes a marker recorded on the straight line of
@@ -326,6 +349,13 @@ checks run in the order below; the first that fails refuses the call.
   bₙ + Δs × 999/60, the smaller being the lower bound; a NaN q′ is refused. No bound applies
   toward the shadow marker or toward a missing left neighbour. Live computes the bounds in
   64-bit floating point.
+- **X.** The bounds are computed exactly as Δs = p − sₙ, a = bₙ + Δs × (5/60),
+  c = bₙ + Δs × (999/60), each operation rounded to 64 bits with no fused operation, returned as
+  (min(a, c), max(a, c)) (x86_64 `0x1028e96b0` with `0x102275e80`; arm64 `0x1027afd40` with
+  `0x1021862f0`, the same order). Run: neighbour (1, 2), p = 1.5 → [2.0416666666666665, 10.325];
+  p = 1 → [2, 2]; p = 1.0004 → [2.0000333333333336, 2.0066599999999992]; right neighbour (2, 3),
+  p = 1.5 → [−5.324999999999999, 2.9583333333333335] ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json), re-derived by [check_rules.py](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/check_rules.py)).
+  The comparison with q′ is inclusive (S, both slices).
 - **S.** For Δs ≠ 0 this is the condition that the segment tempo (q′ − bₙ) / Δs × 60 lies
   within 5 to 999 BPM inclusive. At Δs = 0, when p equals the left neighbour's `SecTime`, both
   bounds are bₙ, so only q′ = bₙ passes.
@@ -339,10 +369,11 @@ checks run in the order below; the first that fails refuses the call.
 - **S (A2).** A remove that passes these checks raises no error. It leaves the list unchanged
   when the list has fewer than three markers: removing the first marker of M0 is accepted with
   no effect. Support is pseudocode.
-- **U.** The outcome when a segment tempo is within 0.001 BPM of 5 or 999, when q is within
-  0.001 grid step of a rounding tie (REQ-016), or when p is less than 0.0005 s from a
-  neighbour's `SecTime` without equalling it. There Live's 64-bit bounds and rounding can
-  disagree with the exact rule above. Cases stay outside these bands.
+- **X.** Inside the former uncertainty bands (a segment tempo within 0.001 BPM of 5 or 999, q
+  within 0.001 grid step of a rounding tie, p less than 0.0005 s from a neighbour's `SecTime`)
+  the outcome is decided by the 64-bit sequences of this clause and of REQ-016, which are
+  now settled by X. A candidate must reproduce those sequences, not the exact rule, at these
+  edges. Revision 2's bands are withdrawn; cases WMK-037 to 039 test the edges.
 - **U.** The resulting list after any other accepted add or remove, including the shadow; the
   limits of `move_warp_marker` and the result of an accepted move; the warp modes the scripting
   `warp_mode` setter accepts; whether interactive edits apply the same limits.
@@ -355,8 +386,16 @@ Support: documented and static-derived, with an unknown part.
   beat to the nearest multiple of 1/3,843,840 beat, with halves away from zero, computed in
   64-bit floating point. The values ±1.7976931348623155e308, the largest finite value and +∞
   are not rounded.
-- **U.** The result for a beat within 0.001 grid step of a halfway point, where the 64-bit
-  computation can differ from exact rounding.
+- **X.** The rounding is exactly q(b) = s × ⌊|b + s × (2.6015651015651016e−07 × 0.5)| × 3,843,840⌋
+  / 3,843,840 with s = +1 when b ≥ 0 and −1 otherwise, each operation rounded to 64 bits
+  (x86_64 `0x102736ce0`, arm64 `0x1026101b4`; arm64 fuses the add with an exact product and
+  uses `frintm`, x86_64 adds and uses `roundsd` floor, so the slices agree bit for bit). Run on
+  a real `AWarpMarker` ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json), `beat_grid_round`, re-derived by [check_rules.py](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/check_rules.py)):
+  2.0000001 → 2; 2.001 → 2.0010000416250415; 10.325 → 10.325; +∞ and the three sentinels
+  unchanged; −∞ → −∞; NaN → NaN; **−0 → +0**. It differs from exact rounding only within about
+  3 × 10⁻⁹ grid step of a halfway point: the 64-bit value nearest to beat 2 + ½ step, and the
+  value one unit in the last place below it, both round up to 2 + 1/3,843,840, although the
+  latter is below the halfway point; two units below, the result is 2.
 - **S (A2).** Load does not round: a loaded `BeatTime` is held with its value (REQ-002).
 - **S.** The scripting add does not round `SecTime`.
 - **D.** All 22,029 shipped `BeatTime` values lie on the 1/3,843,840-beat grid.
@@ -427,8 +466,9 @@ graded as passes. WMK-001 and WMK-002 also check A2 and A4: if their saved value
 the document's, the other save comparisons are inconclusive.
 
 **Case kinds.** P positive, N negative (refused), B boundary, M missing input, S save text,
-U unresolved. All expected results are static derivations or shipped-document facts. None
-has been run, and under ADR 0003 none will be run against Live.
+U unresolved. Expected results are static derivations, shipped-document facts, or values
+from extracted execution of the x86_64 slice (revision 3: WMK-016 to 019 and 037 to 039). No case
+has been run against Live, and under ADR 0003 none will be.
 
 | Case ID | Requirement | Kind | Setup (change to clip C) and action | Expected result | Fixture |
 | --- | --- | --- | --- | --- | --- |
@@ -468,13 +508,19 @@ has been run, and under ADR 0003 none will be run against Live.
 | WMK-034 | 015 | B | M1; Script add (2.5 s, 4) | Accepted: the next marker is the shadow, so there is no right neighbour and only the left limit applies (120 BPM) | W0+M1 |
 | WMK-035 | 015, 016 | B | M1; Script `remove_warp_marker(2.0000001)`; `remove_warp_marker(2.001)` | First accepted (rounds to beat 2); second refused: no such marker | W0+M1 |
 | WMK-036 | 015 | B | M1 and `<IsWarped Value="false" />`; Script `remove_warp_marker(2)`; `move_warp_marker(2.001, 1)` | First accepted; second refused: no such marker. Neither is refused as not warped | W0+M1 |
+| WMK-037 | 015 | B | M1; Script add (1.5 s, 2.0416666666666665); add (1.5 s, 2.0416664065101564) | First accepted (left segment tempo exactly 5 BPM: q′ equals the computed lower bound); second refused: segment length out of range (one grid step below) | W0+M1 |
+| WMK-038 | 015 | B | M1; Script add (2.5 s, 11.325); add (2.5 s, 11.325000260156509) | First accepted (segment from the last visible marker at exactly 999 BPM; the next marker is the shadow, so there is no right bound); second refused: segment length out of range (one grid step above) | W0+M1 |
+| WMK-039 | 015, 016 | B | M1; Script `remove_warp_marker(2.0000001300782553)`; `remove_warp_marker(2.0000001300782544)` | First refused: no such marker (the 64-bit value nearest to beat 2 + ½ grid step rounds up to 2 + 1/3,843,840); second accepted (two units in the last place lower, it rounds to 2) | W0+M1 |
 
 Cancellation and teardown kinds are omitted: loading, saving and the scripting calls in scope
 have no cancellable step or resource. REQ-009 has no case: it is U, and the measurement that
 PRB-S8-08 describes is not available (ADR 0003). The REQ-015 clauses on an unchanged list have
-no case: no procedure here observes the list after a call except a save, under A4. Thirty-six
-cases: 29 gradable (WMK-006 for refusal only, WMK-025 to 027 for opening only) and 7
-unresolved (WMK-008 to 013, 022).
+no case: no procedure here observes the list after a call except a save, under A4. The
+shadow append of REQ-007 has no case: no procedure here makes the clip recompute its shadow.
+Thirty-nine cases: 32 gradable (WMK-006 for refusal only, WMK-025 to 027 for opening only) and
+7 unresolved (WMK-008 to 013, 022). Revision 3: the values of WMK-016 to 019 are confirmed by
+extracted execution of the conversion cores (REQ-008, X), and WMK-037 to 039 take their
+outcomes from the X-settled 64-bit sequences of REQ-015 and REQ-016.
 
 ## Open questions
 
@@ -548,6 +594,25 @@ undecoded.
 | 014 | Direct store in `0x101487310` (n1); ARemoteableEnum setter range check `0x10156675c` not on the load path | S / U |
 | 015 | `0x1033bf42c` ✓ (s8-0001): class and warped tests; `fcmp d8,#0; fccmp d8,d0,#2,ge; b.hi`; insertion scan by `SecTime` stopping at the shadow; left `b.mi` and right checks; q(); bounds `0x1027afd40` ✓ (s8-0002; 999 and 5 BPM; called only from the add). Lookup `0x1027c79d0` (pseudocode): q() then exact match, scan stops past the target. Move limits `0x1027b83bc` not traced. Warp-mode setter `0x1033bded8`/`0x1033be004` (pseudocode, list partly read). Messages: `Cannot add warp marker to an unwarped clip.`, `Warp marker sample time is out of range.`, `Warp marker beat time is ahead of left adjacent marker's beat time.` (beat below the left neighbour), `Warp marker beat time is behind right adjacent marker's beat time.`, `Segment length out of range.`, `The shadow marker can't be deleted.`, `The shadow marker can't be moved.`, `The specified warp marker doesn't exist` | S / U |
 | 016 | BeatTime setter `0x1026101b4` ✓ (s8-0003); q() in `0x1033bf42c` ✓; sentinels `0x1055d9680` = (−1.7976931348623155e308, 1.7976931348623155e308, DBL_MAX, +∞) (`s7-midi-notes-v1/vtable-reads.txt` line 470). SecTime setter `0x1026101a0` (pseudocode). `checks.beat_on_1/3843840_grid` 22,029 | S; D |
+
+**Revision 3 evidence (X).** Extracted execution,
+[x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json)
+(`sh run.sh`; `results/envelope-warp.json`, `raw/runs.jsonl`, `addresses.json`,
+`check_rules.py`). Functions run: conversion cores `0x101b6fa60`, `0x101b6f970` (arm64
+`0x101b39e20`, `0x101b39d8c`; matched through the scripting entry points `0x103530e40` and
+`0x103530f20`, which reference the same error strings, and clip slots +0x4b8/+0x4c0 → helper
+slot +0x198 → wrappers `0x10235b790`/`0x10235b660`); shadow append `0x102738d90` (arm64
+`0x102612464`, same constants); beat setter `0x102736ce0` (arm64 `0x1026101b4`); add bounds
+`0x1028e96b0` (arm64 `0x1027afd40`, called by the add `0x1035310c0` / `0x1033bf42c`). Setup: the
+conversion table was written into harness buffers in list order; markers are real `AWarpMarker`
+objects from `SNewCompound<AWarpMarker>` `0x102737050`, after the slice's static initialisers
+and a class-registry subset (the `AAbstractWarpMarker` and `AWarpMarker` registries were
+constructed with the arguments of initialiser 1237, which stops earlier at a `std::regex`); the
+setter's change notification `0x10154dfb0` was skipped under gdb; bounds take plain records,
+since their getters read only +0x50 and +0x58. Slice comparison: conversion cores fused in both
+slices (arm64 `fmsub`/`fmadd`, x86_64 glibc `fma`); q() and the bounds use the same operation
+order with no inexact fused step; the only substitution reached is glibc `fma`, which is
+correctly rounded like the arm64 instructions.
 
 **Revision 2 evidence.** The warp-markers-v1 review record
 [review-checks.txt](../../analysis/ableton-live-12.4.3/handoff-staging/warp-markers-v1-analysis/review/review-checks.txt)
@@ -627,9 +692,10 @@ choosers, the recording-path collinearity delete (support for REQ-009 only), and
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from packet S8 (WM-01 to WM-16) plus two verification rounds (d7-0001, d7-0002) that located and confirmed the scripting conversion. 16 requirements: 3 without unknown parts (003, 012, 016), 11 with D or S clauses and unknown parts, 2 unknown (005, 009). 35 unexecuted cases: 28 gradable (4 in part), 7 unresolved |
 | 2 | 2026-10-18 | Applies the warp-markers-v1 review findings ([plan](warp-markers-handoff-plan.md#review-outcome), [REVIEW.md](../../handoff/warp-markers-v1/REVIEW.md)). Applied: F1 and RVW-01 (A2 narrowed to opening and marked on every load and scripting clause, including REQ-003's load clause; saving half is the new A4; "held after opening" defined; later changes by the application excluded); F3 and RVW-03 (REQ-015 as inclusive beat bounds, the zero-distance and first-marker cases, U bands of 0.001 BPM, 0.001 grid step and 0.0005 s; REQ-016 tie band U); F4 (accepted add or remove can leave the list unchanged); F5 (move has no warped check; new WMK-036); F6 and RVW-05 (TransientResolution labels and the code 5 label inferred; loop-mode and parameter names inferred internal names); RVW-02 (TransientEnvelope created at 100 without a clamp; range U); RVW-04 (WMK-029 now 10,000,000 s; sample-length unit assumed); RVW-06 and RVW-07 (assumptions confirmed or stated); RVW-08 (d7 rounds cited from their retained run). F7 needed no change: the text was fixed at release. Rejected: F2, because the review's corpus check shows creation stores 100 without a clamp, so REQ-010 and WMK-021 keep the default; RVW-09, which concerns release status text only. ADR 0003: probe wording changed and static routes named. 16 requirements: 2 without unknown parts (003, 012), 12 with D or S clauses and unknown parts, 2 unknown (005, 009). 36 unexecuted cases: 29 gradable (4 in part), 7 unresolved |
+| 3 | 2026-10-18 | Extracted execution X2 ([x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json)). Added label X. REQ-008 conversion X (cores run, WMK-016 to 019 confirmed); REQ-007 shadow append X with its seconds formula (operands' meaning U); REQ-015 bounds and REQ-016 rounding X as exact 64-bit sequences, which replace revision 2's uncertainty bands; new finding: q(−0) = +0. REQ-009 playback stays U (no static caller to the engine found). New cases WMK-037 to 039. 16 requirements: 2 without unknown parts (003, 012), 12 with D, S or X clauses and unknown parts, 2 unknown (005, 009). 39 cases: 32 gradable (4 in part), 7 unresolved |
 
 Before the 2026-10-18 review, a first release candidate could
 contain the D and S clauses of REQ-001 to 004, 007, 008 and 010 to 016 with their gradable
 cases, under assumptions A1 to A3.
 
-Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1. The plan's [scope table](warp-markers-handoff-plan.md#scope) lists the released part of each requirement; every other clause of this draft is broader than v1.
+Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1. The plan's [scope table](warp-markers-handoff-plan.md#scope) lists the released part of each requirement; every other clause of this draft is broader than v1. Revision 3's X clauses (REQ-007, 008, 015, 016) and cases WMK-037 to 039 are not released; a later release revision could carry them after review.

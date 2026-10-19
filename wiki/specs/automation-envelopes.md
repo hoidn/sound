@@ -2,7 +2,7 @@
 id: SPEC-AUTOMATION-ENVELOPES
 type: spec
 status: draft
-revision: 2
+revision: 3
 updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -25,11 +25,16 @@ specifies:
 - the value a Float, Bool or Enum envelope supplies at a given time.
 
 Every requirement is a **proposed contract** supported by shipped bytes, by a static
-derivation from the 12.4.3 program, or explicitly unknown. Nothing was run against
-Live. [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a
+derivation from the 12.4.3 program, by extracted execution of the shipped x86_64 code,
+or explicitly unknown. The whole Live application was not run and no document was
+loaded. [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a
 static-first draft. Under [ADR 0003](../decisions/adr-0003-no-reference-execution.md)
-no reference observation will be made, so a clause that waited on a probe stays
-unknown unless a static route settles it. Target: 12.4.3, documents with
+no whole-application observation will be made, but self-contained functions of the
+x86_64 slice may be executed in a harness (evidence label X; the
+[extracted-execution packet](../research/extracted-execution.md)). Revision 3 settles
+the Float and Bool/Enum evaluation arithmetic and the evaluation-time value conversion
+by X; a clause that depends on callers, state or UI not run stays unknown or carries a
+stated assumption. Target: 12.4.3, documents with
 `MinorVersion="12.0_12402"`. The gzip/XML envelope belongs to
 [SPEC-ALS-CONTAINER](als-container.md); value text rules come from
 [SPEC-TRANSPORT-STATE](transport-state.md). Document examples are fragments of the
@@ -54,9 +59,10 @@ evaluated values in audio processing, and the text of error messages.
 | --- | --- |
 | D | Documented in shipped bytes: the schema files and the 4,120 parsed documents of the 12.4.3 bundle. These were written by Live 12.4d1, 12.1d1 or older versions, not by a 12.4.3 save |
 | S | Static derivation from the 12.4.3 executable or shipped bytes; not an observed run. An assumption is named beside the clause when one is needed |
-| U | Unknown; no expected result, or a static expectation that must not be graded. A PRB ID names the probe that would have settled it. No probe will run ([ADR 0003](../decisions/adr-0003-no-reference-execution.md)), so a U clause stays U unless the static route named beside it settles it |
+| X | Extracted execution: what a named x86_64 function of the shipped slice computed for the given inputs in the harness, per [ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code). Results bind to the x86_64 slice; arm64 equivalence is an inference checked by static comparison. Substituted libraries (glibc `fma`, used by both evaluators) and hand-built object graphs are stated. Evidence: [x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json) |
+| U | Unknown; no expected result, or a static expectation that must not be graded. A PRB ID names the probe that would have settled it. No probe will run ([ADR 0003](../decisions/adr-0003-no-reference-execution.md)), so a U clause stays U unless the static route named beside it, or extracted execution, settles it |
 
-Only D and S clauses may enter a release. U clauses block the behavior they name.
+Only D, S and X clauses may enter a release. U clauses block the behavior they name.
 "The set does not open" means the document reader stops with a read error, as in
 SPEC-TRANSPORT-STATE. How Live presents it is U
 ([REQ-ALS-CONTAINER-009](als-container.md#req-als-container-009--failure-presentation-and-state), PRB-S6-01).
@@ -65,8 +71,8 @@ SPEC-TRANSPORT-STATE. How Live presents it is U
 
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
-| A1 | Every Float envelope value is in stored units. The Float evaluator passes the value of every rule (hold, event time, equal values, linear and curved segments) through a per-target value step, and that step leaves in-range stored values unchanged. Static evidence shows the step; its per-target form is unknown. No reference observation is available (ADR 0003). Static route: resolve the value converter that ordinary track and clip envelopes supply to the Float evaluator | Every Float value: REQ-005's value before the first ordinary event, REQ-010, and cases AEN-014 to 022, none of them graded |
-| A2 | With arrangement automation active and not overridden, a parameter's effective value at song time t is the envelope value E(t) of its track envelope. Untraced; no reference observation is available (ADR 0003). Static route: the caller that reads a parameter's interpolator at the song position | Every evaluation case (comparator) |
+| A1 | **Settled (X, S).** Every Float envelope value is in stored units. The Float evaluator passes the value of every rule through an evaluation-time value step that is the **identity** for ordinary track and clip envelopes. Resolved in revision 3: the evaluator (x86_64 `0x102526870`, arm64 `0x1024095b4`) obtains a conversion provider from the automation's slot +0x238 (a `dynamic_cast` of the automation owner to `IConversionAndInterpolatorProvider`, x86_64 `0x102687e00`), builds a transform record, then calls the provider's converter only when the converter pointer is non-null (x86_64 `0x101565810`). The automation's conversion provider is built with a **null converter** (arm64 `0x10275c5a0` → `FUN_101574b8c(..., 0, ...)`, S), so the step is a no-op and returns the stored value. X confirms it: with the record built full-range and no converter, the evaluator returns stored values for hold, event-time, equal-value, linear and curved segments ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json), `float_*`). The parameter's **display** converter (Volume `ALevelUserFloatConverter`, a dB log table, x86_64 `0x102683d70`; Pan `ALinearUserFloatConverter`, identity on its range, x86_64 `0x1015664f0`) is a separate path not reached by the automation evaluator. **Limit:** the null-converter claim for a real per-parameter automation provider rests on the static reading of `0x10275c5a0`; the evaluator was not run with a real loaded parameter attached | Every Float value: REQ-005's value before the first ordinary event, REQ-010, and cases AEN-014 to 022 |
+| A2 | With arrangement automation active and not overridden, a parameter's effective value at song time t is the envelope value E(t) evaluated by the interpolator of REQ-010/011. The value E(t) computes is settled (X, A1); that opening a set and reading at song time t drives this evaluator for a document is **untraced** and stays an assumption (a caller/UI path, not settleable by extracted execution; ADR 0003). Static route: the caller that reads a parameter's interpolator at the song position | Every evaluation case (comparator; the computed value is X, the drive to it is A2) |
 | A3 | Opening a Live Set runs the post-load walk that applies the checks of REQ-007. The walk's callers are document readers; which document kinds reach them is untraced | Every "does not open" case of REQ-007 (AEN-004, 005, 008, 010, 011) |
 | A4 | `BoolEvent` and `EnumEvent` values are Bool and integer members, read and written with the Boolean and integer text rules of REQ-012. The schema declares these types; the member registries were not re-read | REQ-012's Bool and Enum clauses |
 | A5 | A save keeps each envelope bound to its target. Id handling on save is untraced (REQ-004) | Every save case (AEN-003, 012, 013, 026) |
@@ -269,6 +275,10 @@ For control values c1, c2, let M(c1, c2) be true when the cubic Bézier coordina
   linear and no control is written on save (REQ-008).
 - **S.** All 4,151 shipped curves pass, including the 315 with x1 > x2 and the 7 with
   a Y control above 1.
+- **X.** The monotone test M was run (x86_64 `0x1011f2080`, arm64 `0x1012132d8`):
+  M(0.5, 0.5) and M(0.2, 0.8) true, M(0.8, 0.2) true, M(1.5, −0.5) false
+  ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json),
+  `warp_edges_REQ015_016.monotone`). The predicate matches the clauses above.
 - **U.** Whether opening a Live Set runs the normalization (PRB-S6-05; no reference
   observation is available, ADR 0003). Static route: the context flag that enables
   post-load steps for a Live Set open. Monotone controls are kept either way, so
@@ -292,14 +302,23 @@ and t ≥ t0:
      rounded to 32 bits.
 
 - **S.** Rules 1–3 and their order: which event or events give E(t).
-- **U.** The values they give. Every rule passes its value through a per-target
-  value step whose form is unknown. Under A1, rules 1–3 give stored units. No value
-  case is graded, and no reference observation is available (ADR 0003); A1 names
-  the static route.
+- **X.** The values they give. Rules 1–3 were run on the x86_64 evaluator `0x102526870`
+  with the automation transform record built full-range and no converter (A1 identity),
+  giving stored units. Cases AEN-015 to 022 carry the X values ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json)):
+  hold (`t = 12, 100 → 1`), event time (`t = 4 → 0`), equal values (`t = 0, 2 → 0`),
+  linear (`t = 5, 6, 7 → 0.25, 0.5, 0.75`), the ramp from L (`t = 0 → 6.341958e−8`), and
+  the cubic-Bézier curve, which bisects X(s) to 10⁻⁸ beats and agrees with the derivation
+  to the last bit (`t = 1, 2, 3 → −0.983523965, −0.75, 0.0164760482`). The linear branch
+  uses an FMA (`fmadd`) in both slices, so glibc `fma` reproduces the arm64 rounding
+  (no divergence). **Limit:** A2 (that reading at song time t drives this evaluator) is
+  not settled; the computed value is X.
 - **U.** Values outside the target's range, and any clamping of E(t) (static route
-  as for A1). Fixtures keep values in range.
-- **U.** Which value applies at a step (PRB-S6-06; ADR 0003). Static route: the
-  callers that choose between the two events of a step.
+  as for A1; the curve branch clamps to the provider's [min, max], the other branches do
+  not). Fixtures keep values in range.
+- **X.** Which value applies at a step. The evaluator takes a mode argument: mode 0 gives
+  the value of the event before t, mode 1 the value of the last event at t
+  (`E8` step at t = 4 → `1` at mode 0, `−1` at mode 1). Which consumer passes which mode
+  is **U** (PRB-S6-06; a caller path, not run).
 - **U.** The clip envelope time base relative to clip start, loop and warp (a
   PRB-S6-11 was proposed; ADR 0003). Static route: the caller that passes clip time
   to the evaluator. The cases use track envelopes only.
@@ -307,14 +326,20 @@ and t ≥ t0:
 
 ### REQ-AUTOMATION-ENVELOPES-011 — Bool and Enum envelope value
 
-- **S.** Bool and Enum envelopes do not interpolate. For t ≥ t0 that is not an event
+- **X.** Bool and Enum envelopes do not interpolate. For t ≥ t0 that is not an event
   time, E(t) is the value of the last event with time < t, which holds after the last
-  event.
-- **S.** No per-target value step: E(t) is the stored `true`, `false` or integer of
-  the selected event. The value step of REQ-010 and A1 does not apply.
-- **S.** At an event time t, E(t) is either the value of the last event at t or the
-  value of the last event before t, chosen by the consumer. **U.** Which consumer
-  uses which (PRB-S6-06; ADR 0003; static route as in REQ-010).
+  event (`E14` Bool `t = 0, 2, 6, 10 → true, true, false, true`; `E15` Enum
+  `t = 2, 6, 12 → 1, 0, 2`; [results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json)).
+- **X.** No per-target value step: E(t) is the stored `true`, `false` or integer of
+  the selected event. The discrete interpolator (x86_64 `0x102527b40`, arm64
+  `0x10240a84c`) reads the event's value (`ABoolEvent` `0x1028b0da0` = byte at +0x58;
+  `AEnumEvent` `0x1028b1220` = int at +0x58) and requests no converter. This re-establishes
+  with retained X runs the Bool/Enum no-conversion claim that revision 2 based on
+  unretained scratch lookups.
+- **X.** At an event time t, E(t) is either the value of the last event at t (mode 1)
+  or the value of the last event before t (mode 0): `E14` at t = 4 → `false` (mode 1) or
+  `true` (mode 0); at t = 8 → `true` (mode 1) or `false` (mode 0). **U.** Which consumer
+  uses which mode (PRB-S6-06; a caller path, not run).
 - **S.** This applies to the time-signature envelope as well. Its effect on the meter
   is [REQ-TRANSPORT-STATE-012](transport-state.md#req-transport-state-012--precedence-between-stored-tempo-and-meter-sources) (U).
 - **Excluded (Q-020).** t < t0.
@@ -437,9 +462,10 @@ Event lists, written as (Time, Value) for `FloatEvent` unless stated:
 
 Value comparator: open the set with the transport stopped and arrangement
 automation active, move the song position to t, and read the target's value (A2).
-No reference observation will be made (ADR 0003); the comparator says what a value
-expectation means for a candidate. Float values match exactly at 32-bit precision,
-except curve values, which match within 10⁻⁶. "Opens" and "does not open" are
+The value a V case expects is what the Float or discrete interpolator computed under
+extracted execution (X); the comparator additionally rests on A2 (that reading the
+target at song time t drives that interpolator), which is not settled. Float values
+match exactly at 32-bit precision, except curve values, which match within 10⁻⁶. "Opens" and "does not open" are
 judged by whether loading finishes. Saved text is compared per attribute value.
 Event Ids are not compared, and a saved `PointeeId` is judged only against the `Id`
 of the saved target (REQ-004).
@@ -460,17 +486,17 @@ of the saved target (REQ-004).
 | AEN-012 | 008, 009 | S | B0 + E9; open, save | The saved `Time="0"` event carries `CurveControl1Y="0"` and `CurveControl2Y="0"` and no `CurveControl1X` or `CurveControl2X` | S (A5) |
 | AEN-013 | 008, 009, 012 | S | B0 + E11; open, save | The saved `Time="0"` event carries `CurveControl1X="0.800000000000000044"`, `CurveControl1Y="0"`, `CurveControl2X="0.200000000000000011"`, `CurveControl2Y="1"` | S (A5) |
 | AEN-014 | 009 | S | B0 + E10; open, save | Static reading: the saved `Time="0"` event has no curve controls and E(2) = 0 | U (PRB-S6-05; value also A1) |
-| AEN-015 | 010 | V | B0 + E1; read t = 0, 2, 4, 12, 100 | Static reading: 0, 0, 0, 1, 1 | U (A1, A2) |
-| AEN-016 | 010 | V | B0 + E1; read t = 5, 6, 7 | Static reading: 0.25, 0.5, 0.75 | U (A1, A2) |
-| AEN-017 | 010 | V | B0 + E12; read t = 1 | Static reading: 0.3333333432674408 (32-bit) | U (A1, A2) |
-| AEN-018 | 005, 010 | B, V | B0 + E13; read t = 0 and t = 4 | Static reading: t = 4: 0; t = 0: 6.341958e−8 (the ramp from L ends at 4) | U (A1, A2) |
-| AEN-019 | 006, 010 | V | B0 + E8; read t = 2, 6, 10 | Static reading: 1, −1, −1 | U (A1, A2) |
-| AEN-020 | 010 | V | B0 + E8; read t = 4 | 1 or −1 by consumer | U (PRB-S6-06, A1) |
-| AEN-021 | 010 | V | B0 + E9; read t = 0, 4, 6 | Static reading: −1, 1, 1 | U (A1, A2) |
-| AEN-022 | 010 | V | B0 + E9; read t = 1, 2, 3 | Static reading: −0.983523965, −0.75, 0.0164760482 (linear would give −0.5, 0, 0.5) | U (A1, A2) |
-| AEN-023 | 011 | V | B0 + E14; read t = 0, 2, 6, 10 | `true`, `true`, `false`, `true` | S (A2) |
-| AEN-024 | 011 | V | B0 + E14; read t = 4 and t = 8 | `false` and `true` (last event at t), or `true` and `false` (last event before t), by consumer | U (PRB-S6-06) |
-| AEN-025 | 011 | V | B0 + E15; read t = 2, 6, 12 | 1, 0, 2 | S (A2) |
+| AEN-015 | 010 | V | B0 + E1; read t = 0, 2, 4, 12, 100 | 0, 0, 0, 1, 1 | X (value; A2) |
+| AEN-016 | 010 | V | B0 + E1; read t = 5, 6, 7 | 0.25, 0.5, 0.75 | X (value; A2) |
+| AEN-017 | 010 | V | B0 + E12; read t = 1 | 0.3333333432674408 (32-bit) | X (value; A2) |
+| AEN-018 | 005, 010 | B, V | B0 + E13; read t = 0 and t = 4 | t = 4: 0; t = 0: 6.341957714539603e−8 (32-bit; the ramp from L ends at 4) | X (value; A2) |
+| AEN-019 | 006, 010 | V | B0 + E8; read t = 2, 6, 10 | 1, −1, −1 | X (value; A2) |
+| AEN-020 | 010 | V | B0 + E8; read t = 4 | 1 (mode 0, last event before t) or −1 (mode 1, last event at t), by consumer | X (both values; which mode is U, PRB-S6-06) |
+| AEN-021 | 010 | V | B0 + E9; read t = 0, 4, 6 | −1, 1, 1 | X (value; A2) |
+| AEN-022 | 010 | V | B0 + E9; read t = 1, 2, 3 | −0.983523965, −0.75, 0.0164760482 (linear would give −0.5, 0, 0.5) | X (value; A2) |
+| AEN-023 | 011 | V | B0 + E14; read t = 0, 2, 6, 10 | `true`, `true`, `false`, `true` | X (value; A2) |
+| AEN-024 | 011 | V | B0 + E14; read t = 4 and t = 8 | `false` and `true` (mode 1, last event at t), or `true` and `false` (mode 0, last event before t), by consumer | X (both values; which mode is U, PRB-S6-06) |
+| AEN-025 | 011 | V | B0 + E15; read t = 2, 6, 12 | 1, 0, 2 | X (value; A2) |
 | AEN-026 | 012 | S | B0 + E16; open, save | Saved values `0.3000000119` (both events); saved second `Time` `0.299999999999999989` | S (A5) |
 | AEN-027 | 012 | M | B0 + E17; open | Does not open | S |
 | AEN-028 | 004 | M | B0 + E19; open, save | Unresolved | U (PRB-S6-07) |
@@ -480,10 +506,11 @@ of the saved target (REQ-004).
 | AEN-032 | 005, 007 | B | B0 + E22; open | Opens | S |
 | AEN-033 | 007 | B | T0; add to the MIDI track's `DeviceChain/MainSequencer`, between `ClipSlotList` and `MidiControllers` (the shipped order), a `ClipTimeable` whose `ArrangerAutomation` holds `<Events />` and the empty `AutomationTransformViewState` of REQ-001; open | Opens (the same empty list in a clip envelope is refused, AEN-011) | S (REQ-007 timeline assumption) |
 
-33 case IDs. AEN-001 and 002 are withdrawn. Of the 31 others, 17 are gradable
-(AEN-003 to 013, 023, 025 to 027, 032 and 033) and 14 are unresolved (AEN-014 to
-022, 024 and 028 to 031). No reference observation is available for the unresolved
-cases (ADR 0003). No case uses an excluded input (dangling target, time before the
+33 case IDs. AEN-001 and 002 are withdrawn. Of the 31 others, 26 are gradable
+(AEN-003 to 013, 015 to 027, 032 and 033; the value of AEN-015 to 025 is X,
+settled by extracted execution in revision 3) and 5 are unresolved (AEN-014 and 028 to
+031). No reference observation is available for the unresolved cases (ADR 0003), and the
+X value cases still rest on A2 for the comparator. No case uses an excluded input (dangling target, time before the
 first event). Cancellation and teardown are omitted: reading and evaluating
 envelopes has no cancellable step or resource in this scope. Refusal presentation is
 not graded (PRB-S6-01).
@@ -495,9 +522,10 @@ not graded (PRB-S6-01).
   and duplicate Ids (PRB-S6-07). Evaluation before an envelope's first event is a
   further gap of the same kind: possible when the first event is at 0, untraced in
   the reference, excluded here.
-- Refusal presentation (PRB-S6-01), curve normalization on open (PRB-S6-05), the
-  interpolation domain and range handling (A1, PRB-S6-04), the value at steps and at
-  Bool event times (PRB-S6-06).
+- Refusal presentation (PRB-S6-01), curve normalization on open (PRB-S6-05), range
+  handling of out-of-range values (PRB-S6-04's clamp part), and which consumer uses which
+  step mode (PRB-S6-06). Revision 3 settled by extracted execution the interpolation
+  domain (A1: stored units), PRB-S6-04's value part and both step values.
 - None of these probes will run (ADR 0003). Each item stays unknown unless the static
   route named beside its clause settles it.
 - Probes proposed in revision 1 and never added to the S6 batch will not be added
@@ -545,7 +573,8 @@ derivation, not retained).
 | 009 | post-load hook `0x102778870` ✓ (`AFloatEvent` slot +0xd0): monotone test `0x1012132d8` ✓ on (0, x1, x2, 1) and (0, y1, y2, 1), else four 0.5. Slot +0xd0 runs only when `0x1015192c0(context)` is true in `0x101486fe4` ✓; that flag for a Live Set open is untraced. `curve-check.json`: 4,151 / 4,151 kept | S; U for enablement |
 | 010 | evaluator `0x1024095b4` ✓ (s6-0001) via `0x1024094c0` (corpus); search `0x102565974` ✓, `0x102565a48`, walker `0x1025669d8`; has-curve `0x1027778a4` ✓; curve points `0x102403c88` (pseudocode); value at t `0x102404218` (pseudocode); bisection `0x101212e30` ✓ (tolerance `0x3e45798ee2308c3a` = 1e−8) | S; domain U |
 | 010 domain | Every value branch converts. In the disassembly of `0x1024095b4` ✓ the end-of-list, event-time and equal-value branches call `0x102778f50` and then `0x101574bb0` (calls at `0x10240973c`, `0x1024097dc`, `0x10240997c`); the linear branch converts both values (`0x1024099c8`, `0x1024099e4`) before `0x102779088`. `0x101574bb0` calls the converter's slot +0x28 (min, max) when a converter object exists and otherwise returns the value unchanged (corpus pseudocode). The converter comes from the automation's slot +0x238, requested by the Float entry `0x1024094c0` (corpus); which converter ordinary track and clip envelopes get is unresolved, and resolving it is A1's static route. The full-range transform record built by `0x102778c98` makes `0x102779088` and `0x102778f50` identities. The curve branch reads values through `0x102778d28` (not in the retained evidence), not the converter, and clamps to the provider's [min, max] in `0x102404218` | U (A1) |
-| 011 | discrete value `0x10240a84c` ✓; search `0x102565e10` ✓; interpolator ownership by `vtable_owner.py` (`interpolator-owners.txt`, heuristic). No value step: the discrete entry, slot 0 `0x10240a83c` (scratch pseudocode), tail-calls slot +8 `0x10240a84c` ✓, whose 212-byte body calls only the search slot +0x3e8, list-node accessors and the event's slot +0x1f0; it requests no converter (+0x238) and calls neither `0x101574bb0` nor `0x102778f50`. Slot +0x1f0 (scratch): `ABoolEvent` vtable `0x1068063d0` (set by constructor `0x102777adc` ✓) gives `0x102777cfc`, the +0x58 byte as a float; `AEnumEvent` vtable `0x106806600` (constructor `0x102777f3c` ✓) gives `0x102778168`, the +0x58 integer as a float; the constructors initialize +0x58 as the value. The one discrete slot that requests the converter, +0x20 (`0x10240a93c`, corpus), passes it to slot +0x28, `0x10240aa54`, which returns the constant 0.5 | S; the slot reads are scratch, not retained |
+| 010 (X, rev. 3) | Extracted execution, [x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json) (`sh run.sh`; `results/envelope-warp.json`, `raw/runs.jsonl`, `addresses.json`). Real `AListAutomation` and `AFloatEvent` objects from the slice's factories (`0x102687490`, `0x1028b13d0`) after its static initialisers and a minimal class-registry subset; event Time/Value written as the generic loader stores them; events appended through `ARemoteableList::SDefaultAddController`. The evaluator `0x102526870` is called with the transform record that its entry `0x102526770` would build, but with the provider handle given directly (full range, no converter), because the entry's `dynamic_cast` (`0x102687e00`) is a libc++abi import. Arm64 comparison: same branch structure; the linear branch is fused in both slices (arm64 `fmsub`/`fmadd` at `0x102409a1c`/`0x102409a20`, x86_64 two glibc `fma` calls), so no divergence; the curve bisection (`0x101212e30`) and monotone test (`0x1012132d8`) use `fmadd` on arm64 and plain multiply-add on x86_64 (`0x1011f17e0`, `0x1011f2080`), a possible last-bit difference below the 10⁻⁶ curve tolerance (inferred) | X |
+| 011 | discrete value `0x10240a84c` ✓; search `0x102565e10` ✓; interpolator ownership by `vtable_owner.py` (`interpolator-owners.txt`, heuristic). No value step: the discrete entry, slot 0 `0x10240a83c` (scratch pseudocode), tail-calls slot +8 `0x10240a84c` ✓, whose 212-byte body calls only the search slot +0x3e8, list-node accessors and the event's slot +0x1f0; it requests no converter (+0x238) and calls neither `0x101574bb0` nor `0x102778f50`. Slot +0x1f0 (scratch): `ABoolEvent` vtable `0x1068063d0` (set by constructor `0x102777adc` ✓) gives `0x102777cfc`, the +0x58 byte as a float; `AEnumEvent` vtable `0x106806600` (constructor `0x102777f3c` ✓) gives `0x102778168`, the +0x58 integer as a float; the constructors initialize +0x58 as the value. The one discrete slot that requests the converter, +0x20 (`0x10240a93c`, corpus), passes it to slot +0x28, `0x10240aa54`, which returns the constant 0.5 | S; the slot reads are scratch, not retained. Revision 3: X, retained — discrete interpolator x86_64 `0x102527b40` run on real `ABoolEvent`/`AEnumEvent` lists in both modes; getters `0x1028b0da0` (`movsbl 0x58`) and `0x1028b1220` (`cvtsi2ss 0x58`) read in `addresses.json`; vtables via the slice's RTTI (`rtti.py`) |
 | 012 | generic loader and member-type text conversion (N1: `0x101487310`, `0x10152bfb8`); formatter rule and `number-format-check.txt` (N1): 149,716 / 149,716 `FloatEvent` values; `BoolEvent` and `EnumEvent` value types (Bool, Int) from the schema, registries not re-read (A4) | S, corroborated D |
 | 013 | none traced | U |
 
@@ -553,6 +582,12 @@ Unguarded evaluation before the first event: in `0x1024095b4` ✓ the previous e
 is null when the search returns the first event, and it is dereferenced without a
 check; `0x10240a84c` returns the list head in the same situation. This is why
 REQ-010 and REQ-011 exclude t < t0.
+
+Correction, revision 3 (X): with the first event at 0 and t = −1, the x86_64 Float
+evaluator faults on a null read (`0x102526c07`), and the discrete one faults in both
+modes (`0x102527bcc` mode 0, `0x102527b8e` mode 1) reading through a node that is not an
+event; it does not return the list head. Evaluation before the first event is therefore
+not a defined value in the slice, and the exclusion stays.
 
 Further analyst notes, not carried into requirements:
 
@@ -587,13 +622,14 @@ Not carried from the research candidates:
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from S6 (AE-C01 to AE-C17 except C09, C12 and C16): 13 requirements (1 D and S, 1 S only, 10 with U parts, 1 U only); 31 unexecuted cases, 10 unresolved and 1 partly unresolved; dangling targets and evaluation before the first event excluded (Q-020) |
 | 2 | 2026-10-18 | Review findings of automation-envelopes-v1 and ADR 0003. Applied: F1 and RVE-01 (A1 covers every Float value; AEN-015, 018, 019 and 021 ungraded); RVE-01 on Bool and Enum (static evidence that the discrete path has no value step; AEN-023 and 025 stay S); F2 and RVE-03 (AEN-003 judges the saved `PointeeId` against the saved target; REQ-004 adds target Ids); F3 (AEN-001 and 002 withdrawn, counts moved to the research page, one-event acceptance as new AEN-032); F4 (new AEN-033 with fixture T0); RVE-02 (U clause in REQ-005); RVE-05 (A3 to A5 named); RVE-01's narrowing (draft clauses broader than the release marked below). Rejected: F3's reference-comparison obligation and PRB-S6-04 as the route for F1 and for the Bool and Enum claim, since no reference observation is available (ADR 0003); RVE-04, 06 and 07, which concern only the release's fixtures, evidence identity and status text. Probe wording follows ADR 0003. 13 requirements (counts unchanged); 33 case IDs: 2 withdrawn, 17 gradable, 14 unresolved |
+| 3 | 2026-10-18 | Extracted execution X2 ([x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json)). Added label X. A1 settled: the evaluation-time value step is the identity for ordinary envelopes (X with no converter; S that the automation provider has a null converter, `0x10275c5a0`); the Volume and Pan display converters are a separate path. A2 narrowed to the drive from song position to the evaluator. REQ-010 values and the step modes X; REQ-011 X with retained evidence (replaces revision 2's scratch lookups); REQ-009 monotone test X. Correction: evaluation before the first event faults in both interpolators (appendix). Cases: AEN-015 to 025 now X values (AEN-020 and 024 X for both mode values, mode choice U); AEN-018 value given to full binary32 precision. 13 requirements; 33 case IDs: 2 withdrawn, 26 gradable, 5 unresolved |
 
 Before the 2026-10-18 review, a first handoff could carry REQ-008 and 012, the D
 and S clauses of REQ-001 to 007 (002 with its exclusion), REQ-009's rule with cases
 AEN-012 and 013, and the S clauses of 010 and 011 with the A2 cases (AEN-015, 019,
 021, 023, 025 and AEN-018 at t = 4).
 
-Released 2026-10-18: [automation-envelopes-v1](../../handoff/automation-envelopes-v1/README.md), 21 cases, approved with narrowing by a separate review agent (partial REQ-001 to 003, 005 to 009, 012 only; 004, 010, 011, 013 unreleased). The review findings to apply in the next revision are on the [handoff plan](automation-envelopes-handoff-plan.md#review-outcome). Revision 2 applies them (revision table). The release still pins revision 1. The table marks where this draft is broader than the release; those clauses are not released.
+Released 2026-10-18: [automation-envelopes-v1](../../handoff/automation-envelopes-v1/README.md), 21 cases, approved with narrowing by a separate review agent (partial REQ-001 to 003, 005 to 009, 012 only; 004, 010, 011, 013 unreleased). The review findings to apply in the next revision are on the [handoff plan](automation-envelopes-handoff-plan.md#review-outcome). Revision 2 applies them (revision table). The release still pins revision 1. The table marks where this draft is broader than the release; those clauses are not released. Revision 3 adds X evidence for REQ-009 to 011; a later release revision could carry REQ-010 and 011 values with AEN-015 to 025, under A2, after review.
 
 | Requirement | Released in v1 | Broader in this draft |
 | --- | --- | --- |

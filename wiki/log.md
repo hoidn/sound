@@ -2007,3 +2007,36 @@ the exact save text are marked as depending on glibc.
 clarifications. The coordinator verified every hash and scanned the published
 copy for restricted links and addresses. The catalog, spec index, feature map,
 coverage, project page and gate table (new X2 row) are updated.
+
+## [2026-10-18] analysis | X2 automation and warp
+
+Automation envelopes and warp markers are both at revision 3 (evidence:
+`r2/x2-envelope-warp-v1`). Every run matches its spec case bit for bit.
+
+Envelopes:
+- Float evaluation is now X: holds, values at event times, equal values,
+  linear segments, the ramp and curves. At a step, mode 0 gives the left value
+  and mode 1 the right.
+- Envelopes evaluate in stored units. The conversion step applies a converter
+  only if one is present, and none is (static).
+- The Bool and Enum no-conversion claim is now X, with retained evidence.
+- Evaluating before the first event crashes, so that input stays excluded.
+- Unknown: whether song position drives the evaluator, and which caller picks
+  which mode.
+
+Warp:
+- The beat and sample conversion, the shadow marker (it reproduces the shipped
+  shadows) and the REQ-015 and 016 edges are X.
+- Revision 2's tolerance bands are replaced by the exact binary64 operation
+  order.
+- Playback stays unknown, because no caller connects these functions to it.
+
+Errors fixed:
+- The discrete path crashes before the first event; revision 2 said it
+  returned the list head.
+- A negative-zero beat rounds to +0.
+
+No process exceeded 22 calls. The agent used a private bounds-checked loader
+copy, and one run failed when a rebuild replaced its binary; it produced no
+values. Questions Q-019 to 021, the spec index, feature map, coverage and gate
+table are updated.
