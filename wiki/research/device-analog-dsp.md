@@ -113,7 +113,7 @@ The first note is at frame 4,400, a control-grid point 100 periods after creatio
 | --- | --- | --- |
 | 0 | 104 | clamps to 0..1, then sends the controller value c = 128v (v ≤ 0.5) or 126v + 1 |
 | 2 | 1, 9, 10, 194, 196, 198, 200, 202 | clamps to the float range and sends it |
-| 3 | 91 | clamps to 0..max and sends the integer |
+| 3 | 85 | clamps to 0..max and sends the integer |
 | virtual | 0, 7, 195, 197, 199, 201 | Polyphony and the MPE targets, handled by the wrapper |
 
 Each registration names an engine module and parameter. Module names are inferred from the
@@ -346,8 +346,9 @@ Every result below is linear: the input level does not change it, below the satu
   - 0 High: the highest held key sounds.
   - 1 Low: the lowest.
   - 2 Last (default): the latest. Releasing it returns to the latest still-held key.
-- **Mono key change.** The output dips (to 0.14 of its level about 100 frames in) and recovers.
-  Its exact form was not characterized.
+- **Mono key change.** When the sounding key changes, the peak dips to 0.29–0.45 of its level about
+  100 frames in and recovers within about 300 (DAN-040; `glide.json` with glide on). A release that
+  leaves the sounding key unchanged has no dip. The exact form was not characterized.
 - **Glide.** Pitch traces were not consistent with a simple time constant. In mono legato
   transitions the pitch passed below the start note. Unresolved.
 - **Unison.** Not characterized.

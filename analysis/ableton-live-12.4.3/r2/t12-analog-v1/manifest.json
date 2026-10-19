@@ -1,0 +1,597 @@
+{
+ "id": "t12-analog-v1",
+ "created": "2026-10-18",
+ "packet": "T1.2 device audio: Analog by extracted execution",
+ "regenerate": "sh run.sh",
+ "tools": {
+  "host": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "python": "3.13.9",
+  "numpy": "2.3.1",
+  "scipy": "1.16.0",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "glibc": "ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39",
+  "objdump": "GNU objdump (GNU Binutils for Ubuntu) 2.42",
+  "loader_binary": "/var/tmp/sound-analysis/t12-analog/xdev",
+  "loader_sha256": "3eec4ad1cfa0765c9e8267806cf02b7e664a07157043e3a170388cfa4d63cf14"
+ },
+ "external_inputs": {
+  "bundle:Analog": {
+   "path": "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Devices/Mac/Analog.bundle/Contents/MacOS/Analog",
+   "file_sha256": "dddb93e754b87cf21e947a37ff2330f3754d2db07c26bc15785440782f8c3d4b",
+   "x86_64_offset": 16384,
+   "x86_64_size": 500880,
+   "x86_64_sha256": "75c8d1cd8e10c7bcc2570c02c204d0860d725467353729eb1f2cef8594f2d113"
+  },
+  "n6-device-tables-v1/out/conversions.tsv": {
+   "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/n6-device-tables-v1/out/conversions.tsv",
+   "sha256": "3fd82068ee78c017beb340583c41b5f99deca1fab7903fce76fb1ccc4bf2626c"
+  },
+  "n6-device-tables-v1/out/spec_defaults.tsv": {
+   "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/n6-device-tables-v1/out/spec_defaults.tsv",
+   "sha256": "497b1dc351f000f0304c6cd84262d40095f70ca11f04f6c90233d92ae005c504"
+  },
+  "helper-corpus:Analog": {
+   "path": "/var/tmp/sound-analysis/helpers/Analog",
+   "slice": {
+    "source": "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Devices/Mac/Analog.bundle/Contents/MacOS/Analog",
+    "source_sha256": "dddb93e754b87cf21e947a37ff2330f3754d2db07c26bc15785440782f8c3d4b",
+    "slice_offset": 524288,
+    "slice_size": 432640,
+    "slice_sha256": "211bd67c47291a4dfd0e76c7b85cf63490dc5df48b67992a154beac0372f09ab"
+   },
+   "corpus_manifest_sha256": "388972ad9ce10789b2e2806451d075bb6c66add7ca839c7419ec9ec57662c2a6"
+  }
+ },
+ "files": {
+  "an.py": {
+   "sha256": "2585755d644b9033cb38bc5f607169cab5f881d3a6846c77ac914a41330bf916",
+   "bytes": 8399
+  },
+  "cases.py": {
+   "sha256": "691ca84d4e82b256f7c2a822127c666ded4800f9104c9adfc559231070e9ad7b",
+   "bytes": 11363
+  },
+  "fit.py": {
+   "sha256": "6ebc8694bdd1303af3f625f1dc0bcfd52f2533fabdc139b96a7f147c76762ba3",
+   "bytes": 1933
+  },
+  "fma_scan.py": {
+   "sha256": "7153f10db778473b5b7d6314405355b71ca033a16fa4f6822d9e7798619be863",
+   "bytes": 3325
+  },
+  "harness/xdev.c": {
+   "sha256": "2e550951a4c7eb669ecdf9fa50734b2227c0768cda0b62099e2e975bad9430a9",
+   "bytes": 8128
+  },
+  "harness/xdev.h": {
+   "sha256": "74cfa58ca4dfbf4fe5a51c19acb9e0b97ee6ec3416516aab8efecf732ead61be",
+   "bytes": 1830
+  },
+  "harness/xdev_bind.c": {
+   "sha256": "0884c8f03174db209afa4dd3853b42de2d90035e0c1655effa7c5d04367617f2",
+   "bytes": 9881
+  },
+  "harness/xdev_cxx.c": {
+   "sha256": "a6d24d2dc367d8c833117a0bca0cd82d914a9c8be45177034845afb23f99e1f2",
+   "bytes": 20075
+  },
+  "harness/xdev_load.c": {
+   "sha256": "5f066004949c9af63710e646cf81fff6e6fe49204af5fbac481e5a9cdccfe515",
+   "bytes": 12247
+  },
+  "make_manifest.py": {
+   "sha256": "0a6ec8e68e8d4c8ccb0799c0514ac32405dfc95fe23c3ccac6e8e2cdc53b1f46",
+   "bytes": 3081
+  },
+  "measure.py": {
+   "sha256": "30f341905cfc753f8992a715db5196718f060ec7b2d38ca977f13be667564101",
+   "bytes": 45175
+  },
+  "model.py": {
+   "sha256": "232a6deca7e1dcef1807704cf795cc415c4fa762059cf949191542a4ef1a4b77",
+   "bytes": 4592
+  },
+  "raw/DAN-001.script": {
+   "sha256": "35e242d4943041f8323c5369fe52c618a053ac0da317e6ffd038af318228f25e",
+   "bytes": 2981
+  },
+  "raw/DAN-001.wav": {
+   "sha256": "314723861924b17005c59eed186bd8dba10f176736cbd2d9fc7c20e2871dbb7f",
+   "bytes": 264658
+  },
+  "raw/DAN-002.script": {
+   "sha256": "3af4b1c8009cd433166acd4384db4f622b9d5027d2e473c9fd3859c380c04b09",
+   "bytes": 2981
+  },
+  "raw/DAN-002.wav": {
+   "sha256": "7837b416853eec55a43a4c97a674d6f66c5a1a3a0ab27bc96117a911d67b6e0c",
+   "bytes": 288058
+  },
+  "raw/DAN-003.script": {
+   "sha256": "6f6f7dce5202091c59b1c3b7d82244030aeadc336e436987bcfe5fb6263cdf89",
+   "bytes": 2997
+  },
+  "raw/DAN-003.wav": {
+   "sha256": "be66eee57e5010d24fc8583d373a831c47fb33e5746a8eb6566c91113611bd1a",
+   "bytes": 264658
+  },
+  "raw/DAN-004.script": {
+   "sha256": "968a6630f189e4fef7552431313ad441ec9c4ea0b70ee39027bf38f9a15dbc5c",
+   "bytes": 3089
+  },
+  "raw/DAN-004.wav": {
+   "sha256": "9991f5775dd4a83344c5ecded205fa542c61db5b739a66b24f12e5f06639cc46",
+   "bytes": 264658
+  },
+  "raw/DAN-005.script": {
+   "sha256": "b840a36fb02a162ceb312909df119126bf8735f2837ff37b25c45dbf634cbd03",
+   "bytes": 3089
+  },
+  "raw/DAN-005.wav": {
+   "sha256": "5ee1afa5f5e07cd29ec9c0311c593cdba2824ac11c27c9418a682edf348b6366",
+   "bytes": 288058
+  },
+  "raw/DAN-006.script": {
+   "sha256": "7a05b31051057d196c778313c6331a9395401ffd63a3759b8d0dad7b4854d40e",
+   "bytes": 2958
+  },
+  "raw/DAN-006.wav": {
+   "sha256": "1fae06ba4e2b3e48a8456a100173806d1e0b188c3af9f9a4f84b048ee8f32a6c",
+   "bytes": 105898
+  },
+  "raw/DAN-007.script": {
+   "sha256": "ed507c26b8870269efe7e456b161c9698b1a09b5b1fae4ed21f7f58d7c7df65c",
+   "bytes": 2958
+  },
+  "raw/DAN-007.wav": {
+   "sha256": "b770743b90f1632b09aa7c3b8e96bd295ace76007dd14e8e20f9759cb4d02a3a",
+   "bytes": 105898
+  },
+  "raw/DAN-008.script": {
+   "sha256": "ce52aeb637e010bf45b7f89d30bfff99cf31c914a18477f42a6bd2a69773510e",
+   "bytes": 2958
+  },
+  "raw/DAN-008.wav": {
+   "sha256": "c7ee5f5c6210562b092dce6909be194f2e2026fee21a0f76802260a6e1798d2b",
+   "bytes": 105898
+  },
+  "raw/DAN-009a.script": {
+   "sha256": "6434fa65853c1a18d2feb479a3b183a0f3a3d2e2b27a2ce427d9bf3573a91c57",
+   "bytes": 2958
+  },
+  "raw/DAN-009a.wav": {
+   "sha256": "b9a5b46a92abeeed5783348bea189b7c6e71117112455763e4d1994261072a50",
+   "bytes": 105898
+  },
+  "raw/DAN-009b.script": {
+   "sha256": "55bd244974db1ebbb2c671be46e312833c62a22c7ab53716d8e66085dfbf9b90",
+   "bytes": 2958
+  },
+  "raw/DAN-009b.wav": {
+   "sha256": "8e77d0fd715a3488bafe73fd793bb921d268a9840aa16e1e19299b041f2b7c29",
+   "bytes": 105898
+  },
+  "raw/DAN-010.script": {
+   "sha256": "2c527cb29d3ca08f1587cfbd503673892e2a855fa2903e5d0958aafcc68992f9",
+   "bytes": 3070
+  },
+  "raw/DAN-010.wav": {
+   "sha256": "bf489d48c55a9af38e924515dfba2ea64cd4cd45bd4e65fd25a22694db49cdcf",
+   "bytes": 546058
+  },
+  "raw/DAN-011a.script": {
+   "sha256": "236a6ba8fabf634c450a8ae2ad5f34c918371c05a4a32f6cdaa3a8ce79db0664",
+   "bytes": 2959
+  },
+  "raw/DAN-011a.wav": {
+   "sha256": "89adb764abe00d4b5173232db5a7fdb869d9d2c9cd465208de950751affc21dd",
+   "bytes": 105898
+  },
+  "raw/DAN-011b.script": {
+   "sha256": "bd9265b9117bf2f5eab798ac1c4955712d89b15767554a64932f740723fef5ac",
+   "bytes": 2958
+  },
+  "raw/DAN-011b.wav": {
+   "sha256": "96be017dc1fdbbce77537bd6cdc253210c5e8757a9d8bfda472df00f77a35949",
+   "bytes": 105898
+  },
+  "raw/DAN-011c.script": {
+   "sha256": "63e738f1be41b2483d8b00241fd2d771694f82d32cd7695a8ec5b0528f073ae6",
+   "bytes": 2958
+  },
+  "raw/DAN-011c.wav": {
+   "sha256": "a05db78ec46abc570427ef72bf9c64a5c8e4b070a45f417a67979a4efee0211d",
+   "bytes": 105898
+  },
+  "raw/DAN-012.script": {
+   "sha256": "8a94d2c44e811d01f044a932eba58dd666e7c18a81498b01f15f48bac1c813a1",
+   "bytes": 2958
+  },
+  "raw/DAN-012.wav": {
+   "sha256": "3f3f29bd9f36dcbc206009b482de1158380a46d073ba619fd13c7a4571c24556",
+   "bytes": 194098
+  },
+  "raw/DAN-013.script": {
+   "sha256": "195c5c2770d972b0923be92c63ff96886597767b2b8de6315fdf40c6e60a39cc",
+   "bytes": 2958
+  },
+  "raw/DAN-013.wav": {
+   "sha256": "b641a585759986ea4468d4388b0608c7f87baccd5cce0357e12f44ce7f32b538",
+   "bytes": 105898
+  },
+  "raw/DAN-014.script": {
+   "sha256": "503a49ab3d01b38c0cc1e33d8e4a6783788f89855a8c4977b9d9e18deebcf6c0",
+   "bytes": 2958
+  },
+  "raw/DAN-014.wav": {
+   "sha256": "d78047f4b20e2d2d8665d66cf02f019612e72f7d3dd473e0cd949f2bc7e07e43",
+   "bytes": 105898
+  },
+  "raw/DAN-015.script": {
+   "sha256": "3f3134bfc0af8271dc9dea2c687c2a8101cc1589dc34f29782caa34a2f605498",
+   "bytes": 2958
+  },
+  "raw/DAN-015.wav": {
+   "sha256": "686fb99a98717fe13c55030fcf3dbcd7a10061f135f35d29963178588da77058",
+   "bytes": 105898
+  },
+  "raw/DAN-016.script": {
+   "sha256": "745e6b941f21064ed0b86f4e08e014d95e0d8ea0eb0edab2720cfdf9db7def62",
+   "bytes": 2958
+  },
+  "raw/DAN-016.wav": {
+   "sha256": "8d64bcb21d10f8aba97155fdb9df4cdb3d2dfe99bb254a12425ca94db0cfa9a8",
+   "bytes": 105898
+  },
+  "raw/DAN-017.script": {
+   "sha256": "7dde83ffd492bee4d65e3e592cb9806e2a2938c5002feac3baa957512e140c5a",
+   "bytes": 2958
+  },
+  "raw/DAN-017.wav": {
+   "sha256": "f0d652566f8f56c58afae1e5ea12c83ca0bfe2f32f5bd5ae50192d6f9fef2631",
+   "bytes": 105898
+  },
+  "raw/DAN-018.script": {
+   "sha256": "487b9e24e7c95e3c1e01b34434b65cab4fc25b1d656be18278f2e0200f7d7a26",
+   "bytes": 2958
+  },
+  "raw/DAN-018.wav": {
+   "sha256": "ecde431316963aca36290f4c2953c506914df661d2412d4bcecf383ce476f89d",
+   "bytes": 105898
+  },
+  "raw/DAN-019.script": {
+   "sha256": "c530db55d8594c49810a181e1339d50294378d33b643b690d9696a5282c7bcfe",
+   "bytes": 2958
+  },
+  "raw/DAN-019.wav": {
+   "sha256": "ba2fd86d345877a54ad56f5e42bfe0cc5cc0e1161ff9fdbb7e667ef6df937a58",
+   "bytes": 105898
+  },
+  "raw/DAN-020.script": {
+   "sha256": "a31f5603c9afd4e1708a39f8d9eabe889755113be0ce3f6353a0a028a0fbf738",
+   "bytes": 2958
+  },
+  "raw/DAN-020.wav": {
+   "sha256": "0aa015a18ee66aab89078e18b4652d9219f1f94651f001c6621feae3f711d3f9",
+   "bytes": 105898
+  },
+  "raw/DAN-021.script": {
+   "sha256": "e6ca7d7749a6a3b6e0303e4bd11e32b48ea1bd6a9cd3d692f4031ca27f32d757",
+   "bytes": 2958
+  },
+  "raw/DAN-021.wav": {
+   "sha256": "66dafc940ee1fb2a552b9958902d7edeae562ab196d241cd4af79f8c9bc3cf60",
+   "bytes": 105898
+  },
+  "raw/DAN-022.script": {
+   "sha256": "816de1e09ec533cd6438364dadd0d3ee68a067f53c3dcee80d5a58711e906683",
+   "bytes": 2958
+  },
+  "raw/DAN-022.wav": {
+   "sha256": "c5b7dfeb70e8e3e74c17bdcab0eca177b3adf8fb266897b77598287eff44f24d",
+   "bytes": 105898
+  },
+  "raw/DAN-023.script": {
+   "sha256": "6eb19f09ce63cd0ec8b8e07be8057d7779fbd09e73e214d9034f86e420a7dc41",
+   "bytes": 2950
+  },
+  "raw/DAN-023.wav": {
+   "sha256": "0bb999b20839bbe4e0197dcaf964902db314a41f1b733087e4958a08d4e202bb",
+   "bytes": 176458
+  },
+  "raw/DAN-024.script": {
+   "sha256": "94281810f9dc3e2c9f28583e82ab138a3c774586146fec30d8420c59bce77807",
+   "bytes": 3028
+  },
+  "raw/DAN-024.wav": {
+   "sha256": "f2e3d43bd5db887709908ecd62d34fd7f68cc017ca837024c082dfe0db4f2b45",
+   "bytes": 141178
+  },
+  "raw/DAN-025.script": {
+   "sha256": "4a9fc63c9d0ee783ce0f092a507b0f4afc6b515701cd0fe45d4a51ef11a6c732",
+   "bytes": 2940
+  },
+  "raw/DAN-025.wav": {
+   "sha256": "0752392c2f271ed472c8e155716a14cc2b118109943be636329635f7e2bdc2b2",
+   "bytes": 105898
+  },
+  "raw/DAN-026.script": {
+   "sha256": "26d583bcbdfe0e28ce0fc5940c1c9b417b790d89563a09cc9b5f0b06f55c0646",
+   "bytes": 2940
+  },
+  "raw/DAN-026.wav": {
+   "sha256": "012ef825abcbafec5d43086387bdbb8684fc8e0630ee16510dc5aa06a1122261",
+   "bytes": 105898
+  },
+  "raw/DAN-027.script": {
+   "sha256": "0095a6ab76396b539b7a0127c7d48dec84e17f9a2d62dc9371dca8431b71afc1",
+   "bytes": 2931
+  },
+  "raw/DAN-027.wav": {
+   "sha256": "889977e7d0fe41fe13ba58a11de177541d00d0ad5c668c50c32d6899a99fa429",
+   "bytes": 105898
+  },
+  "raw/DAN-028.script": {
+   "sha256": "48338c2c7d494afb4289a5d58befebdb86e5caf56e3e3dbf3937c58e9fa9fbfd",
+   "bytes": 2963
+  },
+  "raw/DAN-028.wav": {
+   "sha256": "7e7398a0de1c29104510502a2f356ff339ff1ded732feb5b975e10062a98494d",
+   "bytes": 176458
+  },
+  "raw/DAN-029.script": {
+   "sha256": "4dae1758a19cac6389c841af927697402cd4e1f4863b6f5659ee9865dedcb5de",
+   "bytes": 2963
+  },
+  "raw/DAN-029.wav": {
+   "sha256": "7e449b74e9bb661799ed7d8a1f03c28d0c85b4bd6950640ed2593544588e66b7",
+   "bytes": 176458
+  },
+  "raw/DAN-030.script": {
+   "sha256": "63e60964e9f062267c8a631f6322182bf38d4fde514ed02f02039e313766f3d1",
+   "bytes": 2950
+  },
+  "raw/DAN-030.wav": {
+   "sha256": "4afc1abf7873781aed9bf3b0986791174aaf7f290e2517779b6f0cc101b82a97",
+   "bytes": 264658
+  },
+  "raw/DAN-031.script": {
+   "sha256": "f118d941c276f5acfc5f123c4c855ff19ff6de7b0513cb87089bfb9f272bae87",
+   "bytes": 3072
+  },
+  "raw/DAN-031.wav": {
+   "sha256": "e30d5d47088de83eb130a0ff7b3da8b1465be6a8267379642f158c1a1e32735b",
+   "bytes": 158818
+  },
+  "raw/DAN-032.script": {
+   "sha256": "565c110eae8e740c39c8eb8f5552d4a600ca8eb6fb745bbb3b6dc6f442a1151c",
+   "bytes": 2958
+  },
+  "raw/DAN-032.wav": {
+   "sha256": "8ac5880a9623e55cd204b51632362fe665e9c5d0995975219147b61097a77e36",
+   "bytes": 88258
+  },
+  "raw/DAN-033.script": {
+   "sha256": "c3bb817ad659450cb7989983902484aa2a60a4fc7d34869f47b0d97aaf65f64a",
+   "bytes": 2960
+  },
+  "raw/DAN-033.wav": {
+   "sha256": "82ec08b722fdbf93a8157f0789fcd5927749bb221508087675307aa494b679e6",
+   "bytes": 194098
+  },
+  "raw/DAN-034.script": {
+   "sha256": "04f0625d3649fda87b6d1c7def3e45cceafd7d7ab3aa14f3378b2a5ba6dacda5",
+   "bytes": 2961
+  },
+  "raw/DAN-034.wav": {
+   "sha256": "59515ccab3e365e64d9ea59d12ff23ac1f179e46a94464cfbb6495c63033eba3",
+   "bytes": 194098
+  },
+  "raw/DAN-035.script": {
+   "sha256": "db376a750a9279a8a695162051eeb7b21801ee907a3e753678b95cc6161c6add",
+   "bytes": 2958
+  },
+  "raw/DAN-035.wav": {
+   "sha256": "4e02082cb1c1b8c3ebf890fa4cc99f138f5173645a9f22b9682fb2cd24397951",
+   "bytes": 105898
+  },
+  "raw/DAN-036.script": {
+   "sha256": "b07f17b4417a9848d3b709291ebc7f9b5d742ad5fe2c67e83a33a8111a89a721",
+   "bytes": 2959
+  },
+  "raw/DAN-036.wav": {
+   "sha256": "046b1dc915b635fcd2431d90ec93e9b2f092cee669c6bb9b4c373be6c4867c0a",
+   "bytes": 352858
+  },
+  "raw/DAN-037.script": {
+   "sha256": "e7dbcf55e4d33c0c5229472767c4388c1d279c9fa4c8e01ff10d7d0afaa1b2c9",
+   "bytes": 2958
+  },
+  "raw/DAN-037.wav": {
+   "sha256": "d6cfb03c2db00b9b7d6815b630adce006cf0052bfff7bb4f042442030a72d158",
+   "bytes": 105898
+  },
+  "raw/DAN-038.script": {
+   "sha256": "e8b7306c0f5a7c2956792238e384834f998defe1ef90723887810188a8119d9b",
+   "bytes": 2958
+  },
+  "raw/DAN-038.wav": {
+   "sha256": "5da649f6867fc6faa75f5733c3e2c2ebd7d948a5276ae336d9ff791e6ce0c14a",
+   "bytes": 105898
+  },
+  "raw/DAN-039.script": {
+   "sha256": "756188173781b5e9e9f39fa260d3befba6de07029c61631f07116ce541809192",
+   "bytes": 3074
+  },
+  "raw/DAN-039.wav": {
+   "sha256": "1a3a8084cc84c63b7c8b2e6089925fd4c38ff4c3063998f3a6afef208d7c1ce8",
+   "bytes": 176458
+  },
+  "raw/DAN-040.script": {
+   "sha256": "5b53d6ef5b927b854bd44ae7b79fdc0d0b8ee66dd29cb99b28ec27b9b0c92fe9",
+   "bytes": 3075
+  },
+  "raw/DAN-040.wav": {
+   "sha256": "7fa400308538a0b32ed947737a7a57690dafdaa258f536fd5a665914a120f9d9",
+   "bytes": 264658
+  },
+  "raw/DAN-041.script": {
+   "sha256": "a6f85ee07c1e518758585af67c8c500761ee0ba2ce1a14797312a59930ef57ec",
+   "bytes": 2958
+  },
+  "raw/DAN-041.wav": {
+   "sha256": "0e15783926ca8fac06f6cb33a397b66154258bfe388221a53f2f491c5a923e1b",
+   "bytes": 105898
+  },
+  "raw/DAN-042.script": {
+   "sha256": "2c4cd0282c24316ec9c7f93fd0f094d5283f7a295eeb0c6d239ada40b6a27ea8",
+   "bytes": 2979
+  },
+  "raw/DAN-042.wav": {
+   "sha256": "33a5a38c382218b874ae460c4983b015b376d862a1c0023c0c57ea1d7d159a5f",
+   "bytes": 32826
+  },
+  "raw/DAN-043.script": {
+   "sha256": "4608df3b40cbdb80542556d9e0b81fa4ca8fbf9d689d36848c813845cf43019b",
+   "bytes": 2983
+  },
+  "raw/DAN-043.wav": {
+   "sha256": "44f6401fac5900779c1efeb9c496fbb93612e6a5ed84ac022076c1ff5afb49a1",
+   "bytes": 264658
+  },
+  "raw/DAN-044.script": {
+   "sha256": "244b7ae74994f1d6c3391732cde97f43b19d1e2e5cbc25fd1cb6aba5799c3a36",
+   "bytes": 2958
+  },
+  "raw/DAN-044.wav": {
+   "sha256": "33625adeac2f6bdbffbbb24623fa8534ecf3ffb49c2e71ddb222748255ec42b9",
+   "bytes": 105898
+  },
+  "results/cases.json": {
+   "sha256": "b3fdd13f03490e246effa672f8fd48d995dfb1f7e93568e784f5f8b1a57f23fa",
+   "bytes": 162716
+  },
+  "results/cases.txt": {
+   "sha256": "145b2f0a8dda512ad9a87f4d6e1692430415efde1e7528c4fad33c9fab5a706b",
+   "bytes": 4627
+  },
+  "results/determinism.json": {
+   "sha256": "d1628bba72a8c88147acd6cd067de14c203242cfc22634b0fe14727b88f435a0",
+   "bytes": 820
+  },
+  "results/drive.json": {
+   "sha256": "9063d1886cf912cf115654451bbc397afe9286d5ce1d29bb0e67ee740f97155a",
+   "bytes": 1502
+  },
+  "results/env.json": {
+   "sha256": "5eb42cecd7c9ef19ccd38e18ea1bfda7e12e1ab8c98ae3062abf83b7593c66c5",
+   "bytes": 29791
+  },
+  "results/filter.json": {
+   "sha256": "84239113d81ec1b3825b148be0aa441ae282e43be71f492155531a6f4136506c",
+   "bytes": 37482
+  },
+  "results/fma_scan.txt": {
+   "sha256": "51e533efb13b4a6fc727a96c4a4d0634217406cfac34150511c555b1ec88895f",
+   "bytes": 251
+  },
+  "results/glide.json": {
+   "sha256": "7dbaff470d79e4139756dbc653c12a83763dd54f03d84db42917c5063cfc7fdb",
+   "bytes": 4384
+  },
+  "results/levels.json": {
+   "sha256": "545a9b0881d5d8943d09765d7fcb36323c1811af739ca3b344f5226931c9f846",
+   "bytes": 7333
+  },
+  "results/lfo.json": {
+   "sha256": "200540b87703444ef6035a66173589c8b04f1a308df347d9ef4014de3103fea6",
+   "bytes": 13885
+  },
+  "results/lfodest.json": {
+   "sha256": "b1c9678ef36b0eec1d604271e5987231be803eda4fe833c62786b86f2efdfc87",
+   "bytes": 1749
+  },
+  "results/libm.json": {
+   "sha256": "a841be71189da13dbeb8ae5bdadb3f1401c46ea436698f120fe05061cf75ef99",
+   "bytes": 981
+  },
+  "results/measure.txt": {
+   "sha256": "0f824d76ce5ee076b39dd308743bb7ec28a5bdae0d97df3756e21f3e5e3f6a8e",
+   "bytes": 58708
+  },
+  "results/mod.json": {
+   "sha256": "b4ff510a62d18a6a46a50a27f85518d971de6d1ed4e46937cfe6530f870837aa",
+   "bytes": 5851
+  },
+  "results/noise.json": {
+   "sha256": "34bf10453be82dbf69927842f8f37d148948d697ba8a830aee7a9bb3bcb0f51b",
+   "bytes": 9356
+  },
+  "results/osc.json": {
+   "sha256": "f87ea2f0fd26cb0c84b8e73c51fdd66d2e670a21edfb64b409ed527e0a7b75d6",
+   "bytes": 81550
+  },
+  "results/output.json": {
+   "sha256": "8e1a1db9bc938c54b2b3a108f73fcbd4c3950fe5e698f0de7415eb14a4d3b61e",
+   "bytes": 187
+  },
+  "results/peg.json": {
+   "sha256": "a7a33cfe527a146ae087c24896c54287d3c6016dbd55069c1aeae816199d56bc",
+   "bytes": 3442
+  },
+  "results/pitch.json": {
+   "sha256": "9a0d08b532352a9996d067ce87c4813e668af60f5cb9fd2291c2c0ca3f8fc32d",
+   "bytes": 62340
+  },
+  "results/protocol.json": {
+   "sha256": "fac8ce1c5fb2a53a7233e6337a68f72c30392b689a311351a8f22a2aa287209b",
+   "bytes": 1408
+  },
+  "results/routing.json": {
+   "sha256": "771bfd616b0eb3a54ff4e0de3c7ec9e03f68516f0de070d408f9765816b39591",
+   "bytes": 3437
+  },
+  "results/static_map.json": {
+   "sha256": "a27a954a06e008a1a7bb54229420c23ce23d34773031b31f91ba156176519c14",
+   "bytes": 52668
+  },
+  "results/steal.json": {
+   "sha256": "a36f2dc7bcee9cab369ce6c49db3e7ec92a49ec39a4824796dcd25c1fce2e996",
+   "bytes": 879
+  },
+  "results/subsync.json": {
+   "sha256": "f4ed690e201f110f21be0285c8fd8a0313de26ff781653beecf3df2fb84d8e12",
+   "bytes": 54903
+  },
+  "results/timing.json": {
+   "sha256": "81675536599af77e61e27fc36b84903bf859ef8e034ab394080fbf973425f0ea",
+   "bytes": 26943
+  },
+  "results/velocity.json": {
+   "sha256": "fb76d4d230fddda945ea4cd08552cb70d04c10a1128b8b5e3e400b46524cb279",
+   "bytes": 7126
+  },
+  "results/vibrato.json": {
+   "sha256": "16910b8b1661c77b3eaeb6f670506388f1c5b750a416b64f2c7df04e3667cd92",
+   "bytes": 3665
+  },
+  "results/voices.json": {
+   "sha256": "22099862d0db175ec2a4cf5b3572a4fff7ece326743a9c71bcb51824de45f5a8",
+   "bytes": 12215
+  },
+  "run.sh": {
+   "sha256": "98f50588e450395fefa8344a5ba997b9d4ebe9ecbbde4971ac41e2f7cb225d88",
+   "bytes": 874
+  },
+  "static_map.py": {
+   "sha256": "116ec5ee197b1754f176eccff05b0cfd52c14ca6d18bc6be4ffde7670bf34310",
+   "bytes": 4713
+  },
+  "xdevpy.py": {
+   "sha256": "fa776f8732d1daaf8b9a16fa680a83e5a3ae3d84b5d0b62e704509d5e2265e3e",
+   "bytes": 2897
+  }
+ },
+ "harness": "harness/ is a byte-identical copy of t12-device-dsp-v1/harness (SHA-256 per file below); built to /var/tmp/sound-analysis/t12-analog/xdev",
+ "not_retained": "Measurement renders (measure.py) are reduced to results/*.json and not kept; variants are written under /var/tmp/sound-analysis/t12-analog/tmp and deleted."
+}

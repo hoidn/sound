@@ -65,6 +65,7 @@ to the isolated implementation workspace.
 | [Device DSP by extracted execution (T1.2)](device-dsp-extracted.md) | Gate passed: the bundle loader works, Corpus renders are bit-repeatable and agree with the static model, Analog's note grid is exactly 1 ms, libm and FMA effects are described, effort per device is estimated |
 | [Electric device DSP](device-electric-dsp.md) | 120 retained renders; Polyphony settled; KeyboardStretch is a ±7.2-cent detune; corrections to the t12 probe and the Volume default |
 | [Tension device DSP](device-tension-dsp.md) | 68 deterministic renders on a 1 ms note grid; partials, sections and voices; floating-point sensitivity sets the metric |
+| [Analog device DSP](device-analog-dsp.md) | Renders reproduced bit for bit; exact laws for pitch, filters, envelopes and saturators; voice stealing and mono priority |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

@@ -2261,3 +2261,18 @@ withdrawn, along with the clauses that needed device placement, and REQ-009 is
 unreleased. All 15 extracted-execution labels match the raw runs and re-ran bit
 for bit. The manifest SHA-256 is
 `8207ba862c73149821da6e2433b4e5f7fffbae118f540652645aadea5f186cd9`.
+
+## [2026-10-18] spec | SPEC-DEVICE-ANALOG r1
+
+[Analog](specs/device-analog.md) audio is specified from extracted execution: 23
+requirements and 47 cases, 42 graded against retained renders that regenerate bit
+for bit. Exact laws reproduce the renders to binary32 rounding: pitch, the
+filter sections, the envelopes, the saturators, levels and velocity. Voice
+stealing takes the oldest voice, and mono priority is High, Low or Last.
+
+Corrections to [device DSP](research/device-dsp-extracted.md):
+- the activity flag is 1 for two blocks before any note;
+- the 261.537 Hz C4 is exact;
+- the random LFO shapes are not seeded, which is now X.
+
+Open items are in the new Q-026.

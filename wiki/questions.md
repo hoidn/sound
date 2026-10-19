@@ -481,3 +481,19 @@ no experimental contradiction has been established yet.
   Electric and Collision the same way as Corpus.
 - Progress 2026-10-18: Electric is specified ([SPEC-DEVICE-ELECTRIC](specs/device-electric.md)). New protocol questions: Live's grid phase and event frame base; whether Live stops processing when a device signals that it may; which block an automated value arrives in, since parameters that act immediately can be off by one block. Values between sampled points need reference renders made on demand.
 - Progress 2026-10-18: Tension is specified ([SPEC-DEVICE-TENSION](specs/device-tension.md)). New items: the host block partition, which places notes on Analog's and Tension's 1 ms grid; whether statistical grading of chaotic Tension settings (bow, DamperMass 0) is acceptable; settings that depend on the random seed.
+- Progress 2026-10-18: Analog is specified ([SPEC-DEVICE-ANALOG](specs/device-analog.md)). New items: rounding of fractional velocity; stopping when the activity flag is 0; the block in which an automated value arrives.
+
+## Q-026 Analog behavior left open
+
+- State: open; owner: analyst.
+- Affects: FEAT-DEVICES, [SPEC-DEVICE-ANALOG](specs/device-analog.md).
+- Evidence: [Analog DSP](research/device-analog-dsp.md); `r2/t12-analog-v1`.
+- Gap:
+  - glide and unison;
+  - the envelope Loop, FreeRun and Legato modes (REQ-021);
+  - the LFO Sync, Delay, FadeIn, Phase and pulse-width laws (REQ-018);
+  - the amplifier's keyboard and envelope pan modulation (REQ-015);
+  - ramps after parameter changes (REQ-022);
+  - Notch4 and formant responses, graded only against renders;
+  - whether arm64 fused multiply-adds change the binary32 envelope steps.
+- Next action: render each mode under extracted execution and fit its law.

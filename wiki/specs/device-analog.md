@@ -149,7 +149,7 @@ A U clause blocks the behavior it names. Each blocking U clause states its effec
 
 - **S, X.** Each host index acts in one of four ways (static map, appendix):
   - 104 indices clamp v to 0..1 and act through c and the curves of Terms;
-  - 91 indices clamp to 0..max and act as an integer: enumerations, Booleans, Octave and Semi;
+  - 85 indices clamp to 0..max and act as an integer: enumerations, Booleans, Octave and Semi;
   - KeyboardDetune, KeyboardUnisonDelay, PitchBendRange, the DummyPerNotePitchBendRange and the
     MPE amounts act as floats in their range;
   - Polyphony and the MPE targets are handled separately.
@@ -164,9 +164,9 @@ A U clause blocks the behavior it names. Each blocking U clause states its effec
   sounding changes nothing.
 - **X.** An event at frame f takes effect at its grid point g′. The first output frame it can
   change is g′ + 1. A note-on therefore can sound up to P − 1 frames before its frame. The rule
-  holds for 470 events: 250 note-ons from the
-  [T1.2 gate](../research/device-dsp-extracted.md#analog-results), and 220 further note-ons and
-  note-offs at both rates in blocks of 512, 64 and 333.
+  holds for 520 events: the 300 of the
+  [T1.2 gate](../research/device-dsp-extracted.md#analog-results) (250 note-ons, 50 note-offs), and
+  220 further note-ons and note-offs at both rates in blocks of 512, 64 and 333.
 - **X.** Output before the first note is exactly 0. After every voice has ended it is exactly 0
   (REQ-016).
 - **S-cond (A2).** With processing from the instance's creation in blocks of 512, a note-on at
@@ -186,9 +186,9 @@ A U clause blocks the behavior it names. Each blocking U clause states its effec
   - 0, highest held;
   - 1, lowest held;
   - 2, latest held (default). When it is released, the latest key still held sounds again.
-- **X, U.** In mono, a key change while a key is held dips the output and restarts it: it falls to
-  about 0.14 of its level within about 100 frames and recovers within about 300. The exact form
-  is U. **Effect on T1:** mono key changes are graded only against DAN-040's reference with the
+- **X, U.** In mono, a change of the sounding key dips the output and restarts it: the peak falls to
+  0.29 to 0.45 of its level within about 100 frames and recovers within about 300. A release that
+  leaves the sounding key unchanged has no dip. The exact form is U. **Effect on T1:** mono key changes are graded only against DAN-040's reference with the
   envelope metric.
 
 ### REQ-DEVICE-ANALOG-006 — pitch
@@ -224,7 +224,8 @@ Levels below are internal (Terms), at oscillator level gain 1 and balance gain 1
   - **0, sine:** fundamental amplitude 0.6987. Harmonics 2 to 6 lie at −37.9, −52.5, −54.4, −58.5
     and −62.4 dB re the fundamental, at every key tested.
   - **1, saw:** harmonic k has amplitude (1/(πk))·(1 + e), a sawtooth of ±0.5, band-limited. The
-    excess e rises with frequency: +0.3 % at 523 Hz and +5.4 % at 7.8 kHz (C4, harmonics 2 and 30).
+    excess e rises with frequency: for C4, +0.03 % at harmonic 2, +0.6 % at harmonic 10 (2.6 kHz)
+    and +5.4 % at harmonic 30 (7.8 kHz).
   - **2, rectangle:** a pulse of height 1, band-limited. Harmonic k is (2/(πk))·|sin(πkd)|·(1 + e)
     with the same kind of excess. Its duty is d = (c + 10)/274 of OscillatorPulseWidth: 3.65 % at
     0, 27.0 % at 0.5, 50 % at 1. Its mean is 0.8872d − 0.1818 (within 3 × 10⁻⁵).
@@ -263,8 +264,8 @@ Levels below are internal (Terms), at oscillator level gain 1 and balance gain 1
 ### REQ-DEVICE-ANALOG-010 — noise
 
 - **X.** With NoiseToggle on, a noise source joins the oscillators:
-  - its spectrum is flat and its amplitude distribution uniform (kurtosis 1.80). Its RMS is 0.375
-    of full scale at NoiseLevel 1 and balance gain 1, at the output of the probe set;
+  - its spectrum is flat and its amplitude distribution uniform (kurtosis 1.80). With Color 1, the
+    default NoiseLevel and balance gain 1, its RMS at the output of the probe set is 0.375;
   - NoiseColor is a one-pole low-pass y ← y + a(x − y), with a = min(1, 2πf/fs) and
     f = exp(20, 22,000) Hz of c. The renders agree within 0.16 dB (Color 0.1) and 0.02 dB from
     Color 0.4. Color 0.9 and above leave it unfiltered;
@@ -385,7 +386,8 @@ Each chain has a filter envelope (Envelope.0) and an amplifier envelope (Envelop
   ExponentialSlope off and SustainTime 1, the sustain does not fall. With it on, it falls by about
   0.26 % per second.
 - **X.** A voice ends when its amplifier envelope reaches 0. Its output is then exactly 0, and it is
-  free. The last non-zero frame after a note-off is g′ + ⌊L_release⌋ when the release starts at 1.
+  free. The last non-zero frame after a note-off is g′ + ⌊L⌋ of the release, from any starting gain
+  (DAN-001, DAN-028).
 - **S.** The filter envelope is the same module as the amplifier envelope. Inferred: it follows the
   same law. Only its sustained level was rendered (REQ-013).
 - **U.** Envelope Loop, FreeRun and Legato. They were not rendered. **Effect on T1:** sets with a
@@ -515,7 +517,7 @@ case passes when it meets every line that applies.
 | Signal | Comparator | Tolerance |
 | --- | --- | --- |
 | Timing | First non-zero frame of each note; first changed frame after each note-off; last non-zero frame of a voice | Exact; the voice end ±1 frame |
-| Pitch | Frequency of a steady segment (≥ 0.2 s) | 10⁻⁵ relative (0.017 cent) |
+| Pitch | Frequency of a steady segment of at least 0.2 s and 25 periods, measured with the same estimator in candidate and reference | 10⁻⁵ relative (0.017 cent) |
 | Pitch trajectory | Instantaneous frequency from zero crossings, averaged over 10 ms | 0.02 octave, or 1 % of the modulation depth if that is larger |
 | Steady waveform | Amplitude of every harmonic within 40 dB of the strongest, over a steady segment, fitted at the reference frequency | 0.05 dB; mean (DC) within 10⁻³ of the peak |
 | Onset waveform | The 2,048 frames from each note's first non-zero frame | Rel RMS 5 × 10⁻³ |
@@ -565,7 +567,7 @@ means key 60, velocity 100, on at frame 4,400, not released.
 | DAN-007 | 007 | P | probe, shape 1; C4 held | Saw harmonics | `b770743b90f1632b` |
 | DAN-008 | 007 | P | probe, shape 2; C4 held | Rectangle, duty 0.2701, mean 0.0300 at the output | `c7ee5f5c6210562b` |
 | DAN-009 | 007 | B | probe, shape 2, PulseWidth 0 and 1 | Duty 0.0365 and 0.5 | `b9a5b46a92abeeed`, `8e77d0fd715a3488` |
-| DAN-010 | 006 | P, B | probe; keys 24, 69, 108 for 0.3 s each | 32.6922, 440.1927, 4184.601 Hz | `c6ac6e5629560ddb` |
+| DAN-010 | 006 | P, B | probe with release 0; keys 24, 69, 108 held 0.9 s each, 1 s apart | 32.6922, 440.1927, 4184.601 Hz | `bf489d48c55a9af3` |
 | DAN-011 | 006 | P | probe; (a) Octave 1, Transpose 7, FineTune 0.75; (b) OscOct −1, OscSemi −5, Detune 0.25; (c) key 96, Stretch 1 | 795.770, 93.7905, 2118.569 Hz | `89adb764abe00d4b`, `96be017dc1fdbbce`, `a05db78ec46abc57` |
 | DAN-012 | 010, 020 | U, statistical | probe, oscillator off, noise on, balance 1; C4 held | Random metric only: RMS and third-octave levels. Not sample-graded | `3f3f29bd9f36dcbc` (one seed) |
 | DAN-013 | 012 | P | probe, saw, key 48 held; filter 1 on, cutoff 0.5, Q 0.6 | Harmonics follow LP12 at 833.78 Hz, Q 7.198 | `b641a585759986ea` |
@@ -579,7 +581,7 @@ means key 60, velocity 100, on at frame 4,400, not released.
 | DAN-029 | 016 | P | DAN-028 with ExponentialSlope off | As DAN-028 | `7e449b74e9bb6617` |
 | DAN-030 | 016 | P | probe, rectangle PW 1; decay 0.2, sustain 0.75, SustainTime 0.5; C4 held 1.4 s | Exponential fall over 10.369 s | `4afc1abf7873781a` |
 | DAN-031 | 017 | P | probe; amplifier AmpMod 0.5; C4 at velocities 1, 64, 127 | Gains ¼, 1, 4 | `e30d5d47088de83e` |
-| DAN-032 | 017 | P | probe; attack 0.4, AttackMod 0.5; velocity 127 | Attack ends after 1,391 frames | `8ac5880a9623e55c` |
+| DAN-032 | 017 | P | probe; attack 0.4, AttackMod 0.5; velocity 127 | Attack lasts L = 1,390.4 frames: gain exactly 1 from frame 4,400 + 1,391 | `8ac5880a9623e55c` |
 | DAN-033 | 018 | P | probe, key 81; LFO 1 on, speed 0.75, pitch 0.25 | Pitch trajectory: 3.9454 Hz, ±0.254 octave, phase 0 at frame 0 | `82ec08b722fdbf93` |
 | DAN-034 | 018 | P | DAN-033 with LFO square, PW 0.25 | +0.254 octave for a quarter cycle, −0.254 octave otherwise | `59515ccab3e365e6` |
 | DAN-035 | 009 | P | probe, key 81; EnvAmount 0.5, EnvTime 0.5 | +0.2512 octave falling linearly over 0.3249 s | `4e02082cb1c1b8c3` |
@@ -657,7 +659,7 @@ loader, built to `/var/tmp/sound-analysis/t12-analog/xdev`. Slice:
 
 | Revision | Date | Change |
 | --- | --- | --- |
-| 1 | 2026-10-18 | First draft (T1.2, packet t12-analog-v1). 23 requirements: 17 with X closed forms or X tables (004 to 019 in part, 022); 002 S with S-cond and U parts; 001 X with U parts; 020, 021 and 023 largely U. 47 cases: 41 graded against retained reference renders (one statistically), 6 not graded |
+| 1 | 2026-10-18 | First draft (T1.2, packet t12-analog-v1). 23 requirements: 17 with X closed forms or X tables (004 to 019 in part, 022); 002 S with S-cond and U parts; 001 X with U parts; 020, 021 and 023 largely U. 47 cases: 42 graded against retained reference renders, 1 graded statistically (DAN-012), 4 not graded (DAN-043, 044, 046, 047) |
 
 Not released. A first release could carry these with their cases and renders:
 
