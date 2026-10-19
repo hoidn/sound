@@ -1,0 +1,38 @@
+midi-note-storage-v2 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B from any directory.
+Export copy used for package checks: <scratchpad>/export-mns2-review/midi-note-storage-v2 (cp -a of staging; diff -r identical).
+
+Evidence identity: slice 1bae9a97...be999b0; X2 notes loader 8b62152e...0a6d; X2 transport loader cf063ca6...11c6 match.
+Manifests re-hashed: x2-notes-launch-v1 16/16, x2-transport-v1 14/14, t11-structure-v1 74/74 files match (run.sh entry
+refreshed in commit 823ac57; staging F9 obsolete). Schema 12.0_12402.txt b7c9d4c7...f299 matches.
+X2 evidence re-run (sh run.sh in a cp -a copy, original loader, no rebuild): results/notes.json, launch.json, follow.json,
+summary.txt, addresses.json, imports.txt, inputs.json, x86-disasm.txt byte-identical. raw/runs.jsonl differs only in heap
+addresses (ASLR); regenerated manifest differs in that digest and in the current tools/xexec/xexec.c digest (base updated
+after X2; the X2 loader is built from its own xexec_x2.c, which matches). Evidence run max 241 calls per process (< 256).
+
+x_sample.py -> x_sample.out: five new cases from fixture text: converter (0x10151b630) on every number text, limits +
+grid, member writers and formatters on every held value; 50 processes, max 2 calls each; all_agree, all_writers_agree,
+all readings equal Python's correctly rounded value; '-0' -> 0x8000000000000000 / 0x80000000.
+arm64 spot check (r2/s7-midi-notes-v1 disasm.py, s7-0001 0x1028e2c80, 0x1028e2e24): Duration fcmp/fccmp keeps -0;
+Velocity fcsel mi -> 1.0 for -0; OffVelocity/Probability fcmlt/bic keep -0; grid fcsel ge gives +1 for -0, fmadd of the
+exact (s*h)*0.5 = separate add. TrackGroupId: corpus record 0x102705a50 (code 3c23d9df) sets +0x400 (param_1[0x80]) to
+0xffffffff with TrackGroupIdNotifier; getter 0x102709884 (32390593) tests != -1.
+
+Structure (addendum): t11 schema_check.py on 72 export fixtures (t11-schema-check.jsonl) and fixture_audit.py on a
+handoff-shaped copy (t11-fixture-audit.json): 72 fixtures, 71 Live Sets, 0 refused, 0 contradicted, 0 not isolating,
+0 unknown shapes; only deviation MNS-013 Foo; MNS-012 parse error at the duplicate attribute (line 22 col 69).
+review_checks.py (review-checks-staging.json before edits, review-checks-export.json after): v1 digest 90e79915...e0d4 =
+catalog = claim; v1 files 23/23 match; 67 carried records identical (also serialized); each carried fixture = v1 + the
+exact 20-line freeze-slot and scene blocks; clip Notes text unchanged; new fixtures differ from MNS-001 only by the
+purpose's note attributes; MNS-012 minus its repeat = MNS-001; counts 72/56 loads/16 refused/54 open-save, 67 S + 5 X;
+numeric claims (h, MNS-072 one step below h/2, formula h vs exact 0, REQ-005/006/016 examples) true; inventory, hashes,
+links (README 6, spec 8, REVIEW 1) OK; sha256sum -c 77/77 OK.
+restate.py (v1 reviewer restatement adapted to v2 -0 clauses and carrier) -> restate.out: 72/72 agree.
+restate_selfcheck.py -> 12/12 mutations detected; -0 probes in VelocityDeviation, TimeOffset, Value, curve control:
+no expectation. fixtures.out (v1 reviewer fixtures.py): 72 form ok, 72 distinct, one edit per case.
+hygiene.out (v1 reviewer hygiene.py): hits only slot (public names), glibc (label), AGENTS forbidden-inputs list,
+'flagged'/'hash' prose, a digest, 'translate' (adapter) and non-ASCII math signs.
+Author validator build_v2.py verify on the export (author-verify-after-review.json): no case, X, carry, form, hash,
+inventory or link problem; deny hits only REVIEW.md links and the label wording.
+Payload edits: apply_review_edits.py (README, AGENTS, spec, cases), REVIEW.md, finalize_manifest.py; payload-changes.diff.
+Final manifest SHA-256 697f09ffc4951d5f3b6d67c20b8f851d68671078a0b3d730a220383f94d2dd15. Nothing copied to handoff/.

@@ -1,0 +1,422 @@
+diff -ruN midi-note-storage-v2/AGENTS.md midi-note-storage-v2/AGENTS.md
+--- midi-note-storage-v2/AGENTS.md	2026-10-18 19:39:28.803496713 -0700
++++ midi-note-storage-v2/AGENTS.md	2026-10-18 20:02:38.318773520 -0700
+@@ -1,8 +1,7 @@
+ # Package role and access instructions
+ 
+-This is an unreviewed release candidate. It is not an implementation input
+-until a separate review approves it and it is published. Application
+-implementation then requires a fresh, restricted implementation workspace that
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
+ contains only permitted materials. Publication of this package does not
+ provision one. Do not begin clean implementation in an analyst checkout.
+ 
+diff -ruN midi-note-storage-v2/cases.json midi-note-storage-v2/cases.json
+--- midi-note-storage-v2/cases.json	2026-10-18 19:44:48.780808453 -0700
++++ midi-note-storage-v2/cases.json	2026-10-18 20:02:38.319536212 -0700
+@@ -2,7 +2,7 @@
+  "schema": "midi-note-storage-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "midi-note-storage-v2 partial requirement clauses only (see spec.md)",
+- "status": "staged candidate; not reviewed; not released",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored gzip Live Sets; no shipped file copied or excerpted",
+  "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+  "representation": {
+@@ -3298,6 +3298,7 @@
+    "kind": "boundary",
+    "purpose": "Time 0.00000013007825507825505 on n1, one binary64 step below the binary64 value of half a grid unit, is stored as one grid unit",
+    "requirements": [
++    "REQ-MIDI-NOTE-STORAGE-002",
+     "REQ-MIDI-NOTE-STORAGE-006",
+     "REQ-MIDI-NOTE-STORAGE-016"
+    ],
+diff -ruN midi-note-storage-v2/manifest.json midi-note-storage-v2/manifest.json
+--- midi-note-storage-v2/manifest.json	2026-10-18 19:44:48.869530535 -0700
++++ midi-note-storage-v2/manifest.json	2026-10-18 22:31:45.512229467 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "midi-note-storage-v2",
+- "release_status": "staged candidate; not reviewed; not released",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-MIDI-NOTE-STORAGE",
+@@ -20,7 +20,7 @@
+   "REQ-MIDI-NOTE-STORAGE-004": "Saved attribute order; omission of VelocityDeviation 0, Probability 1 and IsEnabled true",
+   "REQ-MIDI-NOTE-STORAGE-005": "Velocity, OffVelocity, Probability and Duration limits on opening, exact at the binary32 bounds; negative zero: Velocity -0 becomes 1, OffVelocity and Probability -0 kept, Duration -0 kept by the limits; Time, VelocityDeviation and NoteId not limited",
+   "REQ-MIDI-NOTE-STORAGE-006": "Rounding of Time, Duration and TimeOffset to multiples of 1/3,843,840 by the stated binary64 formula, half away from zero, including next to halfway points; -0 stored as +0; a value rounding to zero from below stored as -0",
+-  "REQ-MIDI-NOTE-STORAGE-007": "A note outside the clip loop and a note of Duration 0 load and save unchanged",
++  "REQ-MIDI-NOTE-STORAGE-007": "A note outside the clip loop and a note whose Duration is positive zero load and save unchanged; a Duration of -0 is saved as 0 (REQ-MIDI-NOTE-STORAGE-006)",
+   "REQ-MIDI-NOTE-STORAGE-008": "Non-zero NoteIds unique within the clip; NoteId 0 repeatable",
+   "REQ-MIDI-NOTE-STORAGE-009": "Next id raise, numbering of NoteId 0 notes in ascending key and document order, saved next id; NoteId absent from every note",
+   "REQ-MIDI-NOTE-STORAGE-010": "Sorted key tracks and strictly ascending notes keep their order; overlapping or equal-Time notes of one key do not refuse (saved text excluded)",
+@@ -47,7 +47,7 @@
+  },
+  "stated_assumptions": [
+   "Opening a set and saving it without other changes changes the notes only as the release states; a refusal raised while the notes are read stops the reading of the document (as in midi-note-storage-v1).",
+-  "Decimal number text is read and written with exact, correctly rounded conversions; exact decimal ties on save round to even (as in midi-note-storage-v1). No case lies on a tie.",
++  "Decimal number text is read and written with exact, correctly rounded conversions; exact decimal ties on save round to even (as in midi-note-storage-v1). No case lies on a tie. MNS-072 depends on the reading at full precision: a value one binary64 step below the nearest value to its text would be stored as 0.",
+   "The macOS arm64 build computes these limits, roundings, readings and texts as the x86_64 build does. All cases with the extracted-execution label depend on it.",
+   "The reference's decimal reading of -0 gives negative zero, as the glibc run did. MNS-073 depends on it; the results of MNS-074 are the same for either zero.",
+   "The reference's number text on save keeps the sign of negative zero, as the glibc run did. MNS-023 and MNS-073 depend on it."
+@@ -58,7 +58,7 @@
+    "MidiKey outside 0 to 127, a key track without MidiKey, two key tracks with the same key, key tracks not in ascending key order, an empty key track, repeated key track or list Id values",
+    "notes of one key not in strictly ascending Time after rounding, or overlapping, beyond the not-refused outcome of REQ-MIDI-NOTE-STORAGE-010",
+    "a kept list with an event at or before offset 0 or at or after its note's Duration",
+-   "NaN, infinite, # and hexadecimal number text, inf and nan words, leading whitespace other than U+0020; Invalid outside Duration and TimeOffset; magnitudes of 1,000,000 or more other than Invalid; negative zero read in VelocityDeviation, an event's Value or a curve control; saved values whose log10 is within 1e-12 of an integer without being an exact power of ten",
++   "NaN, infinite, # and hexadecimal number text, inf and nan words, leading whitespace other than U+0020; Invalid outside Duration and TimeOffset; magnitudes of 1,000,000 or more other than Invalid; negative zero read in VelocityDeviation, an event's TimeOffset or Value, or a curve control; saved values whose log10 is within 1e-12 of an integer without being an exact power of ten",
+    "integer text with spaces on both sides of the digits or a + with trailing spaces; a - sign; accepted integer values above 1,000,000; MidiKey, CC, list NoteId and Id text other than plain decimal (a leading - only in CC)",
+    "a missing structural element; unknown attributes or child elements in the note structures; a non-empty NoteProbabilityGroups",
+    "documents that break more than one refusal rule",
+@@ -96,26 +96,37 @@
+  "fixture_origin": "independently authored gzip Live Sets from a carrier written for this release: one MIDI track with one session slot holding the case's clip and one empty freeze slot, and one scene; no shipped file content or program code",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RVN2-01 low: REQ-007 (a note with Duration 0 saves unchanged) conflicted with -0 being saved as 0; clarified to positive zero in the contract and manifest; no expectation changed",
++   "RVN2-02 low: negative-zero exclusion did not name an event's TimeOffset, which REQ-002 clause 3 excludes; narrowed explicitly; no case affected",
++   "RVN2-03 low: MNS-072 depends at full precision on the static nearest-value reading of its text; REQ-002 added to the case and the case named in the number-text assumption; expected output unchanged",
++   "RVN2-04 editorial: change list incomplete (assumption wording, REQ-006 clause 3, RVN2-01, RVN2-02); completed",
++   "RVN2-05 editorial: payload status set to reviewed release; review record added",
++   "RVN2-06 info: evidence identity re-hashed; the extracted-execution run reproduced byte for byte; the staging note on the structure run's digest is obsolete",
++   "RVN2-07 info: corrections for the parent specification draft (REQ-006 and REQ-007 wording, case requirement IDs, REQ-002 negative zero); no package defect"
++  ],
++  "disposition": "Approved with listed clarifications, only for the explicit partial clauses; 72 cases; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "midi-note-storage-v1",
+  "supersession": {
+-  "relationship": "superset in effect: every midi-note-storage-v1 clause and case is carried with the same expectation; midi-note-storage-v1 stays immutable, but its fixtures lack Live Set structure that opening requires and must not be used",
++  "relationship": "superset in effect: every midi-note-storage-v1 clause and case is carried with the same expectation within its scope; REQ-006 clause 3 and REQ-007 are qualified only for negative zero, which midi-note-storage-v1 excluded; midi-note-storage-v1 stays immutable, but its fixtures lack Live Set structure that opening requires and must not be used",
+   "superseded_manifest_sha256": "90e799158256b226dde22aff88bae18cdc789d49952469611a455b25cc08e0d4",
+   "restated_cases": "the 67 midi-note-storage-v1 case records, unchanged; each fixture is the midi-note-storage-v1 fixture with one empty freeze slot and one scene added",
+   "changes": [
+    "fixtures: all 67 rebuilt; each gains, and only gains, a FreezeSequencer whose ClipSlotList holds one empty slot, after the MIDI track's MainSequencer, and a Scenes list with one scene after Tracks; MNS-012 gets the same additions, so its only defect is the repeated attribute",
+    "REQ-002: -0 reads as negative zero; MNS-073 and MNS-074",
+    "REQ-005: limits exact at the binary32 bounds; negative zero for each limited value; MNS-074, MNS-075",
+-   "REQ-006: the stated formula governs next to halfway points; -0 stored as +0; a value rounding to zero from below stored as -0; MNS-023, MNS-072, MNS-074",
++   "REQ-006: the stated formula governs next to halfway points; -0 stored as +0, so clause 3 (values on the grid unchanged) now excepts negative zero; a value rounding to zero from below stored as -0; MNS-023, MNS-072, MNS-074",
++   "REQ-007: the note that loads and saves unchanged has a Duration of positive zero; a Duration of -0 is saved as 0 (MNS-074)",
+    "REQ-016: negative zero written -0; MNS-023, MNS-073",
+-   "exclusion of negative zero narrowed to VelocityDeviation, event Value and curve controls; MNS-023 released",
+-   "provenance label extracted execution added for the five new cases, with the stated assumptions it rests on; carried records keep the static-derived label"
++   "exclusion of negative zero narrowed to VelocityDeviation, event TimeOffset and Value, and curve controls; MNS-023 released",
++   "provenance label extracted execution added for the five new cases, with the stated assumptions it rests on; carried records keep the static-derived label; the general number-text assumption now also names ties to even on save (already in REQ-016) and MNS-072, which depends on the nearest-value reading of its text"
+   ]
+  },
+  "entrypoint": "README.md",
+@@ -126,18 +137,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "38cac1f8430b15c93d62ac8ba8c8791fc8b7457d0d389bcf6e15b2c0f36d2ff5",
+-   "bytes": 1541
++   "sha256": "73be821e4b34459651839bfae055ad3669ebf978eb09065881303739b8d5d0a7",
++   "bytes": 1469
+   },
+   {
+    "path": "README.md",
+-   "sha256": "2daa9e7dd15969b69e6cf4662242e2a19f7ff135adfdc1353dbc94872d095437",
+-   "bytes": 4349
++   "sha256": "f9aa857e6e52293e33af7deb21bc71b547f9579144c5f809cf7440b879851099",
++   "bytes": 4884
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "cfc89bf585debe1ea30f6a3ad7955a15d24192ddadce7ca83bb8cd07105fd4db",
++   "bytes": 11296
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "4a8c6ac9e3968cce0a5ffa300a006f4a3e3d7995b9ec6565dbbb633e7b412440",
+-   "bytes": 96203
++   "sha256": "b0707c3303d8a53fa8a5932902c8fb92633f76e725b3b0d462c3b6cb9bc4afac",
++   "bytes": 96209
+   },
+   {
+    "path": "fixtures/MNS-001.als",
+@@ -501,8 +517,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "135cd728968a84d650bbf76b2fc246f77ef8f5093653b3009730834fa9b8c946",
+-   "bytes": 29604
++   "sha256": "1f603b99dc36e572cb1869239a6500c4967cbb3ecb7f9c63fe954c4a8d60b284",
++   "bytes": 29947
+   }
+  ]
+ }
+diff -ruN midi-note-storage-v2/README.md midi-note-storage-v2/README.md
+--- midi-note-storage-v2/README.md	2026-10-18 19:39:50.377181965 -0700
++++ midi-note-storage-v2/README.md	2026-10-18 20:02:38.318486992 -0700
+@@ -1,10 +1,11 @@
+ # MIDI clip note storage in Live Sets, release 2
+ 
+-**Unreviewed release candidate.** Read [the contract](spec.md),
+-[the cases](cases.json), [the role instructions](AGENTS.md) and
+-[the manifest](manifest.json). A separate review has not yet checked this
+-package, and it is not published. It is not an implementation input until
+-then.
++**Reviewed local release.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md),
++[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
++stated partial scope, with the clarifications recorded in the review, is
++approved as a contract for a fresh, restricted implementation workspace.
++Such a workspace has not been provisioned by this release.
+ 
+ The finite scope is the same as in midi-note-storage-v1. It covers how a Live
+ Set stores the notes of a MIDI clip: the note structure, which note text is
+@@ -52,14 +53,17 @@
+    attribute or value changes. MNS-012, whose repeated attribute makes the XML
+    not well-formed, gets the same additions, so that repeat is its only
+    defect.
+-2. **Negative zero** (REQ-002, 005, 006 and 016). The text `-0` reads as
++2. **Negative zero** (REQ-002, 005, 006, 007 and 016). The text `-0` reads as
+    negative zero. A `Velocity` of −0 becomes 1, while an `OffVelocity` or
+    `Probability` of −0 is kept. A `Time` or `Duration` of −0 is stored as
+    positive zero, and a `Time` that rounds to zero from below is stored as
+-   negative zero. Negative zero is saved as `-0`. The midi-note-storage-v1
+-   exclusion of negative zero is narrowed: it remains only for
+-   `VelocityDeviation`, an event's `Value` and the curve controls. MNS-023
+-   (from the parent draft), MNS-073 and MNS-074 are new.
++   negative zero. Negative zero is saved as `-0`. REQ-007 now says that a
++   note whose `Duration` is positive zero saves unchanged; a `Duration` of −0
++   is saved as `0`. REQ-006's statement that values on the grid are
++   unchanged now excepts negative zero. The midi-note-storage-v1 exclusion of
++   negative zero is narrowed: it remains only for `VelocityDeviation`, an
++   event's `TimeOffset` and `Value`, and the curve controls. MNS-023 (from the
++   parent draft), MNS-073 and MNS-074 are new.
+ 3. **Time grid next to halfway points** (REQ-006). The stated binary64 formula,
+    not exact rounding, defines the stored value next to a halfway point.
+    MNS-072 is new.
+@@ -67,6 +71,9 @@
+    above 127 or below 1 is limited. MNS-075 is new.
+ 5. **Provenance.** The extracted-execution label is new, and the five new
+    cases carry it. The carried cases keep their records and the static-derived
+-   label. The contract states the assumptions the new label rests on.
++   label. The contract states the assumptions the new label rests on. The
++   general assumption on number text now also names ties to even on save,
++   which REQ-016 already stated, and MNS-072, which depends on the
++   nearest-value reading of its text.
+ 6. **Unchanged.** Every other clause, case and expectation of
+    midi-note-storage-v1 is carried unchanged.
+diff -ruN midi-note-storage-v2/REVIEW.md midi-note-storage-v2/REVIEW.md
+--- midi-note-storage-v2/REVIEW.md	1969-12-31 16:00:00.000000000 -0800
++++ midi-note-storage-v2/REVIEW.md	2026-10-18 22:31:35.233600038 -0700
+@@ -0,0 +1,146 @@
++# Review disposition
++
++Release: midi-note-storage-v2, 2026-10-18.
++
++Reviewer: separate review agent (Claude Opus 5.5), launched by the
++coordinator in its own handoff-review context. It did not author this candidate
++and will not implement it. The one reviewer performed the scope and evidence,
++supersession, fixture-validity, quality and sanitization, evidence-identity and
++fixture-sharing checks. Publication metadata outside this package is left to
++the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of REQ-MIDI-NOTE-STORAGE-001
++to 010, 013, 014 and 016 in [the contract](spec.md). REQ-MIDI-NOTE-STORAGE-011,
++012, 015 and 017 remain unreleased.
++
++- Supersession. The 67 carried cases are identical case records to the
++  released midi-note-storage-v1, in content and serialization. That release's
++  manifest digest equals the catalog value and the value recorded here, and
++  every file it lists still matches. Each carried fixture's text, with the
++  freeze slot after `MainSequencer` and the `Scenes` list after `Tracks`
++  removed, equals its midi-note-storage-v1 fixture byte for byte; each gains
++  exactly those 20 lines and nothing else, and its clip's notes element is
++  unchanged. Apart from status lines, the changed contract text is the
++  negative-zero, halfway-point and binary32-bound clauses, the narrowed
++  exclusion, the stated assumptions and the fixture structure. Each is a
++  release of a clause that midi-note-storage-v1 excluded, or a qualification
++  for negative zero, which it also excluded, so within its scope every
++  expectation is the same. The superset claim holds in effect. The change list
++  was incomplete (RVN2-04) and is now complete.
++- Fixture validity. The Live Set structure checker that found the defect in
++  midi-note-storage-v1 was run by the reviewer on all 72 fixtures. 71 parse;
++  none is refused by a known structure rule and none has an unknown shape.
++  Each has one MIDI track with one session slot, one freeze slot and one
++  scene. The only schema deviation is MNS-013's `Foo`, the element that case
++  tests. MNS-012 fails to parse only at its repeated `Velocity`; without the
++  repeat it is the MNS-001 fixture byte for byte. Every other refused case
++  differs from the base notes or the base list by the one edit its purpose
++  states, and the reviewer's restatement refuses it by that rule. The
++  additions lie outside the clip, hold no clip, note or per-note list, and
++  every judged rule is scoped to the case's clip, so they cannot change a
++  note expectation.
++- Extracted execution was re-run by the reviewer. The evidence run was
++  repeated in a copy of its directory. Every result file, the summary and the
++  recorded inputs were reproduced byte for byte; the raw process log differs
++  only in values that change from run to run. The evidence run made at most 241 calls per
++  process, below the execution tool's 256-call limit. The reviewer then ran the
++  original code on the five new cases from the fixture text itself, at most two
++  calls per process: the attribute text conversion on every number text of the
++  three notes, the value limits and the time grid on the values read, and both
++  the attribute writers and the number-text functions on every held value.
++  Assembled with the omission rule, the saved notes equal the expected output
++  of all five cases.
++- Every case was read one by one. The reviewer's own executable restatement
++  of the contract, written from the contract and not from the author's
++  cross-check, agreed with all 72 expected outcomes and saved notes, and with
++  the worked examples in REQ-005, 006 and 016. It detected 12 of 12 mutated
++  expectations. Probe inputs with negative zero in `VelocityDeviation`, an
++  event's `TimeOffset` or `Value`, or a curve control get no expectation.
++- The arm64 instructions of the value limits and the note time grid were
++  compared with the rule for the new inputs. Negative zero takes the sign +1,
++  a `Velocity` of −0 becomes 1, an `OffVelocity`, `Probability` or `Duration`
++  of −0 is kept by the limits, and the half step is added with one rounding,
++  which equals the separate addition because the scaled step is exact.
++- Each extracted-execution expectation is the program's own result for the
++  value of the case's text: the limits, the grid and the saved text. Locating
++  the notes, reading other text, opening and saving stay static-derived, as the
++  label says. The label, its definition and the stated assumptions agree in the
++  contract and the manifest.
++- Sanitization was checked by the reviewer's own scan of every payload file and
++  of the decompressed text of every fixture. No source code, recovered program
++  text, internal identifiers, addresses, analyst paths, private evidence links,
++  planning or structure-analysis identifiers or per-case evidence fields are
++  present. The only flagged words are in the provenance label, its definition
++  and the stated assumptions, public element names, or the forbidden-inputs
++  list of `AGENTS.md`, worded as in the released packages.
++- Scope. No runtime, timing, display or audio result is released. No
++  expectation depends on an open question: the scene addition removes the one
++  structure shape whose outcome is unknown. Exclusions appear in both the
++  contract and the manifest and agree. Reference and candidate execution have
++  not run, and no compatibility is claimed.
++- In a copy outside the analyst checkout, every Markdown link resolves inside
++  the package, every case input exists, the 72 fixtures are distinct
++  single-member gzip files with the stated header and trailer, UTF-8 text with
++  LF endings and a final newline, and every listed hash and size matches. They
++  were authored for these cases and contain no shipped file content.
++
++## Scope rulings
++
++- Requirement IDs added by the author to MNS-073 to MNS-075: upheld, and
++  extended to MNS-072 (RVN2-03).
++- "Values on the grid are unchanged" against "−0 is stored as +0":
++  confirmed. The contract's REQ-006 clause 3 now excepts negative zero, and
++  REQ-007 had the same conflict (RVN2-01). Both now say the same thing in the
++  contract, the README and the manifest.
++- Stating `-0` in REQ-002 clause 3: accepted.
++- Negative zero excluded in `VelocityDeviation`, an event's `Value` and the
++  curve controls: upheld. The exclusion now also names `TimeOffset`
++  (RVN2-02).
++- REQ-016 step 1 kept from midi-note-storage-v1: accepted, as in the
++  transport-state-v2 review. The new saved values are 0, −0, 1, 127 and one
++  grid unit; 1 is an exact power of ten, and the logarithms of 127 and of one
++  grid unit (2.104 and −6.585) are far from an integer.
++- Carried records keep the static-derived label: accepted. Relabelling
++  would change midi-note-storage-v1 records.
++- Stated assumptions: accepted, and widened for MNS-072 (RVN2-03). Arm64
++  equivalence is accepted on the instruction comparison above.
++- A carrier that satisfies the known structure rules reads the notes as a full
++  set would: accepted as an inference; the reference comparison
++  obligation covers it.
++- The scene is required, not optional. A set whose slot count differs from its
++  scene count has no established outcome, so `loads` without a scene would
++  depend on an open question.
++- `TrackGroupId` is absent from every fixture. The reviewer read the cited
++  record of the track's initial state, which sets the group to none, and its
++  test of that value. An absent member keeps its initial value. Accepted as a
++  stated inference, as for the other absent track elements.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RVN2-01 | Low | REQ-007 said that a note with `Duration` 0 loads and saves unchanged. Negative zero compares equal to 0, but a `Duration` of −0 is saved as `0` (REQ-006 clause 4, MNS-074). This is the conflict the author found in REQ-006, in a second clause. | Clarified: REQ-007 now names positive zero and points to REQ-006 clause 4, in the contract and the manifest; README change 2 says so. No expectation changed. |
++| RVN2-02 | Low | The negative-zero exclusion named only `VelocityDeviation`, an event's `Value` and the curve controls. REQ-002 clause 3 also gives no expectation for −0 read in an event's `TimeOffset`. | Narrowed explicitly in the contract's exclusions, the manifest, README change 2 and the change list. No case affected. |
++| RVN2-03 | Low | MNS-072 depends at full precision on the nearest-value reading of its text, which is static-derived: the retained run passed the value, not the text. A value one binary64 step lower is stored as 0. The case did not list REQ-002, and the number-text assumption did not name it. | REQ-002 added to MNS-072, as the author did for MNS-075. The assumption names MNS-072 in the contract and the manifest. The reviewer's run of the original reading code on the text, with glibc's conversion, gave the correctly rounded value. The expected output is unchanged. |
++| RVN2-04 | Editorial | The change list did not mention three things: the number-text assumption now names ties to even on save, REQ-006 clause 3 now excepts negative zero, and the changes of RVN2-01 and RVN2-02. | README changes 2 and 5 and the manifest change list completed. The supersession relationship now says that these clauses are qualified only for negative zero, which midi-note-storage-v1 excluded. |
++| RVN2-05 | Editorial | README, AGENTS, contract, cases and manifest described an unreviewed candidate. | Status set to reviewed local release. This record added and linked. Manifest review and status fields filled; inventory re-hashed by the reviewer. |
++| RVN2-06 | Info | Evidence identity. | The program build, both builds of the execution tool and every file of the two extracted-execution runs and the structure run match their recorded digests. The structure run's record was refreshed after staging, so the digest mismatch noted at staging no longer exists. A full re-run reproduced the extracted-execution results byte for byte. |
++| RVN2-07 | Info | For the parent specification draft, not this package. REQ-006's "values already on the grid are unchanged" and REQ-007's "a note with `Duration` 0 … unchanged" conflict with −0 being stored as +0. The case table omits REQ-002 for MNS-072 to MNS-075 and REQ-004 for MNS-073. REQ-002 does not state that `-0` reads as negative zero. | To be corrected in a later revision of the draft. |
++
++## Disposition
++
++**Approved with listed clarifications** (RVN2-01 to RVN2-04), only for the
++explicit partial clauses in the contract, with 72 cases. Expected results are
++static-derived or extracted execution, as labeled per case. Extracted
++execution ran the original program's x86_64 code with glibc in place of the
++macOS libraries. The arm64 build is inferred to behave the same. Neither
++reference nor candidate application cases have run, and no compatibility pass
++is claimed. Candidate-only checks cannot replace independent reference
++observations. An isolated implementation workspace remains a prerequisite.
++
++This release supersedes midi-note-storage-v1, which stays immutable and valid
++for its own clauses, but whose fixtures must not be used. This disposition
++concerns the local reviewed-handoff workflow; it does not authorize external
++publication. Preserve this release unchanged.
+diff -ruN midi-note-storage-v2/spec.md midi-note-storage-v2/spec.md
+--- midi-note-storage-v2/spec.md	2026-10-18 19:43:48.429754310 -0700
++++ midi-note-storage-v2/spec.md	2026-10-18 20:02:38.319168126 -0700
+@@ -8,9 +8,9 @@
+ below are in scope. No other clause of a listed requirement is implicitly
+ approved. This document is self-contained.
+ 
+-**Status: unreviewed release candidate.** A separate review has not yet
+-checked the clauses below. Implementation requires an approved, published
+-release and a fresh, restricted implementation workspace.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the clarifications recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -56,7 +56,8 @@
+   only as these rules state;
+ - that decimal number text is read and written with exact, correctly rounded
+   conversions, and that exact decimal ties on save round to even (no case lies
+-  on a tie).
++  on a tie). MNS-072 depends on the reading at full precision: a value one
++  binary64 step below the nearest value to its text would be stored as 0.
+ 
+ The extracted-execution cases rest on three more:
+ 
+@@ -305,8 +306,9 @@
+ 
+ ### REQ-MIDI-NOTE-STORAGE-007 — partial: notes outside the loop
+ 
+-A note outside the clip's loop region, and a note with `Duration` 0, load and
+-save unchanged.
++A note outside the clip's loop region, and a note whose `Duration` is positive
++zero, load and save unchanged. A `Duration` of −0 is saved as `0`
++(REQ-MIDI-NOTE-STORAGE-006 clause 4).
+ 
+ ### REQ-MIDI-NOTE-STORAGE-008 — NoteId uniqueness
+ 
+@@ -521,7 +523,8 @@
+   case; leading whitespace other than U+0020; `Invalid` in any attribute other
+   than `Duration` and `TimeOffset`; values whose magnitude is 1,000,000 or
+   more, other than `Invalid`; non-finite values; negative zero read in
+-  `VelocityDeviation`, an event's `Value` or a curve control; saved values
++  `VelocityDeviation`, an event's `TimeOffset` or `Value`, or a curve control
++  (REQ-MIDI-NOTE-STORAGE-002 clause 3); saved values
+   whose base-10 logarithm lies within 1e-12 of an integer without being an
+   exact power of ten;
+ - integer text marked "no expectation" in REQ-MIDI-NOTE-STORAGE-002 clause 6,
+@@ -584,4 +587,4 @@
+ attribute names are the public names of the document format. Expected results
+ are newly authored behavioral data, labeled per case. No public source or
+ dependency is approved or included. Review status is recorded in
+-[the manifest](manifest.json).
++[the manifest](manifest.json) and [the review disposition](REVIEW.md).

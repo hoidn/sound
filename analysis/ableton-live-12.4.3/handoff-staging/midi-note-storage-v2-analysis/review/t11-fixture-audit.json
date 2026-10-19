@@ -1,0 +1,3499 @@
+{
+ "id": "T11-RELEASED-FIXTURE-AUDIT",
+ "spec": "SPEC-LIVE-SET-STRUCTURE revision 1 (A1, A2, A3 settled statically; A5 still an assumption)",
+ "method": "Audit every released fixture against the structural load rules of SPEC-LIVE-SET-STRUCTURE r1.\n\nUsage: python3 -I fixture_audit.py <schema.txt> <handoff dir> <out.json>\nRead-only on handoff/. For each release, each fixture file is classified (Live Set, device preset,\ndeliberately unparseable, or not a Live Set document) and linked to the cases that use it with their\nexpectations. For a Live Set, the traced refusals are evaluated:\n  REQ-002  no audio, MIDI or group track; a player track after a return track     (validation walk)\n  REQ-006  an audio or MIDI track whose freeze slot count differs from its session slot count (walk)\n  REQ-013  a mixer with more send holders than trailing return tracks              (root post-load)\n  REQ-015  a pointee present with Id 0 or without Id; NextPointeeId not above the largest pointee Id\n  REQ-016  a negative or duplicate list-item Id (S-cond A5)\nand two shapes with no load check (REQ-006 slots != scenes, REQ-013 SendsPre != returns) are noted.\nFor a fixture that would be refused, the minimal addition taken from T11-MIN's skeleton is recorded\nas XML text with its insertion point, applied to a copy, and the copy is re-checked. The addition\nonly adds elements; no existing element or value changes, so what the case tests is kept.\nEnvelope, value-text and field-level refusals belong to the other specs and are not evaluated.",
+ "basis": {
+  "REQ-002, REQ-006": "validation walk, run by the XML reader's load step on every open (A1 settled)",
+  "REQ-006 freeze count": "the freeze sequencer is constructed with an empty slot list and no load step adds slots (A2 settled)",
+  "REQ-013, REQ-015 NextPointeeId": "root post-load step, enabled by the reading context's flag, which the XML reader's context sets (A1 settled)",
+  "REQ-015 Id 0": "member post-load step; preset exemption not set on the set-open path (A3 settled)",
+  "REQ-016": "generic list loader (S-cond A5)"
+ },
+ "totals": {
+  "fixtures": 72,
+  "live_sets": 71,
+  "refused": 0,
+  "cases_contradicted": 0,
+  "cases_not_isolating": 0
+ },
+ "releases": [
+  {
+   "release": "midi-note-storage-v2",
+   "summary": {
+    "fixtures": 72,
+    "live_sets": 71,
+    "refused": 0,
+    "cases_contradicted": [],
+    "cases_not_isolating": [],
+    "with_unknown_shapes": 0
+   },
+   "fixtures": [
+    {
+     "fixture": "fixtures/MNS-001.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-001",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-002.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-002",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-003.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-003",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "VelocityDeviation": "3",
+             "OffVelocity": "64",
+             "Probability": "0.5",
+             "IsEnabled": "false",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-004.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-004",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "VelocityDeviation": "3",
+             "OffVelocity": "64",
+             "Probability": "0.5",
+             "IsEnabled": "false",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-005.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-005",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "IsEnabled": "false",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-006.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-006",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-007.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-007",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-008.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-008",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-009.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-009",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-010.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-010",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "7"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "8"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-012.als",
+     "kind": "unparseable: ParseError: duplicate attribute: line 22, column 69",
+     "cases": [
+      {
+       "id": "MNS-012",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "not evaluated: the file is deliberately not well-formed"
+      }
+     ]
+    },
+    {
+     "fixture": "fixtures/MNS-013.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-013",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-014.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-014",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "1",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "127",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "1",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-015.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-015",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "0",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "127",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-016.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-016",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "Probability": "0",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-017.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-017",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-018.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-018",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "-3",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "VelocityDeviation": "-500",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-019.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-019",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "80.578949",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "33.2999992",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-020.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-020",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0.123456751581751581",
+             "Duration": "0.333333333333333315",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-021.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-021",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "-0.000000260156510156510156",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-022.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-022",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.000000260156510156510156",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-023.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-023",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "-0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-025.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-025",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "20",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-026.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-026",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-027.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-027",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-028.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-028",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "4"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "5"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-029.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-029",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "4"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "5"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "6"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "7"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-030.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-030",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "4"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "5"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "6"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "7"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-031.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-031",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-032.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-032",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "100"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-033.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-033",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "100"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "101"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "102"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "103"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-036.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-036",
+       "action": "open",
+       "expected": {
+        "outcome": "loads"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-039.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-039",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-040.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-040",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100",
+             "CurveControl1Y": "0.200000000000000011"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-041.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-041",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-042.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-042",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          },
+          {
+           "NoteId": "1",
+           "CC": "74",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "64"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-043a.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-043a",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-043b.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-043b",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-043c.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-043c",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-043d.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-043d",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-043e.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-043e",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-043f.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-043f",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-044a.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-044a",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "1",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "0"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-044b.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-044b",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "119",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "0"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-044c.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-044c",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-1",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "0"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-045a.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-045a",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-045b.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-045b",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-046.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-046",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-047.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-047",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "8191"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-8192"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-048.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-048",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "74",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "127"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "0"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-049a.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-049a",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-049b.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-049b",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.0625",
+             "Value": "5"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-050.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-050",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-051a.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-051a",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-051b.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-051b",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-052.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-052",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "4"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "5"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-061.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-061",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-062.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-062",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-063.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-063",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-064.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-064",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-065.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-065",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-066.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-066",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-067.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-067",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-068.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-068",
+       "action": "open",
+       "expected": {
+        "outcome": "refused"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-069.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-069",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "-2",
+           "events": [
+            {
+             "TimeOffset": "0.123456751581751581",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "-200"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-070.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-070",
+       "action": "open",
+       "expected": {
+        "outcome": "loads"
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-071a.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-071a",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "31",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "0"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-071b.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-071b",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [
+          {
+           "NoteId": "1",
+           "CC": "33",
+           "events": [
+            {
+             "TimeOffset": "0.0625",
+             "Value": "100"
+            },
+            {
+             "TimeOffset": "0.125",
+             "Value": "0"
+            }
+           ]
+          }
+         ],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-072.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-072",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0.000000260156510156510156",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-073.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-073",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "-0",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "Probability": "-0",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-074.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-074",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "1",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0",
+             "Velocity": "85",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MNS-075.als",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MNS-075",
+       "action": "open-save",
+       "expected": {
+        "outcome": "loads",
+        "saved_notes": {
+         "key_tracks": [
+          {
+           "midi_key": "36",
+           "notes": [
+            {
+             "Time": "0",
+             "Duration": "0.25",
+             "Velocity": "127",
+             "OffVelocity": "64",
+             "NoteId": "1"
+            },
+            {
+             "Time": "1",
+             "Duration": "0.25",
+             "Velocity": "1",
+             "OffVelocity": "64",
+             "NoteId": "2"
+            }
+           ]
+          },
+          {
+           "midi_key": "38",
+           "notes": [
+            {
+             "Time": "0.5",
+             "Duration": "0.25",
+             "Velocity": "100",
+             "OffVelocity": "64",
+             "NoteId": "3"
+            }
+           ]
+          }
+         ],
+         "event_lists": [],
+         "note_id_next": "4"
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    }
+   ]
+  }
+ ]
+}

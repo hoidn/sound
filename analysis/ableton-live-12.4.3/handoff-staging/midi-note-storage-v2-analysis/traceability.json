@@ -1,0 +1,1573 @@
+{
+ "schema": "midi-note-storage-v2-traceability-v1",
+ "spec": "SPEC-MIDI-NOTE-STORAGE r3",
+ "carried_static_evidence": {
+  "traceability": "analysis/ableton-live-12.4.3/handoff-staging/midi-note-storage-v1-analysis/traceability.json",
+  "plan": "wiki/specs/midi-note-storage-handoff-plan.md#evidence-traceability",
+  "review": "handoff/midi-note-storage-v1/REVIEW.md"
+ },
+ "x_evidence": {
+  "notes": "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/manifest.json (results/notes.json, addresses.json, slice-compare.txt, summary.txt)",
+  "minus_zero_reading": "analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[text='-0'] (x86 0x10151b630 = arm64 0x10152bfb8, the same text conversion as REQ-002's, n1-0006)",
+  "research": "wiki/research/midi-note-storage.md#extracted-execution-results-x2-2026-10-18",
+  "functions": "limits x86 0x102a2a7f0 (arm64 0x1028e2c80); note grid 0x102a2a9b0 (0x1028e2e24); event grid 0x1026ede60 (0x1025c7a0c); writers P=17 0x10142b980, P=9 0x10142b6c0 (X1)",
+  "substitutions": "limits and grid call no import; writers use glibc 2.39 log10 and vsnprintf (C locale); the -0 reading uses glibc strtod",
+  "arm64": "slice-compare.txt: limits, sign and grid sequences equal for every input class (no FMA effect)"
+ },
+ "structure_evidence": {
+  "spec": "wiki/specs/live-set-structure.md REQ-006, REQ-018 (r1)",
+  "audit": "analysis/ableton-live-12.4.3/r2/t11-structure-v1/released-fixture-audit.json release midi-note-storage-v1: 66 fixtures refused by REQ-006 (freeze slot count), minimal addition one empty freeze slot; recommended addition one scene (REQ-006 U, Q-022); MNS-012 not parseable",
+  "checker": "analysis/ableton-live-12.4.3/r2/t11-structure-v1/schema_check.py and fixture_audit.py (measure, refusals, unknowns, repairs), imported unchanged",
+  "track_group_default": "TrackGroupId is absent in every fixture (as in v1). Corpus pseudocode, not re-read in disassembly: the track initializer FUN_102705a50 (chunk-01903.jsonl offset 78507, code SHA-256 3c23d9df…6d53d97) sets the remoteable at track+0x400 to 0xffffffff with TrackGroupIdNotifier; the getter 0x102709884 (chunk-01904.jsonl offset 57284, 32390593…483a06388) tests +0x400 != -1. Absent reads as -1, not grouped; the audit finds no refusal"
+ },
+ "cases": {
+  "MNS-001": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-001",
+    "REQ-MIDI-NOTE-STORAGE-004",
+    "REQ-MIDI-NOTE-STORAGE-010",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-001; group generator value and group content not compared (finding F2)",
+    "evidence": [
+     "structure",
+     "attrs",
+     "omit",
+     "order",
+     "notes_post",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-002": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-003",
+    "REQ-MIDI-NOTE-STORAGE-004"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-002",
+    "evidence": [
+     "reset",
+     "omit",
+     "fmt"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-003": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-003",
+    "REQ-MIDI-NOTE-STORAGE-004",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-003; n2 expectation added (per-note defaults, REQ-003)",
+    "evidence": [
+     "reset",
+     "omit",
+     "fmt"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-004": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-003",
+    "REQ-MIDI-NOTE-STORAGE-004"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-004",
+    "evidence": [
+     "attrs",
+     "reset",
+     "omit"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-005": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-004"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-005",
+    "evidence": [
+     "text",
+     "omit"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-006": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-006",
+    "evidence": [
+     "text"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-007": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-007",
+    "evidence": [
+     "text",
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-008": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-008",
+    "evidence": [
+     "text",
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-009": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-009",
+    "evidence": [
+     "text",
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-010": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-010",
+    "evidence": [
+     "int64",
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-012": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-012",
+    "evidence": [
+     "xml"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-013": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-001"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-013",
+    "evidence": [
+     "array"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-014": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-005",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-014",
+    "evidence": [
+     "limits",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-014 n1:vel (n1 Velocity text '0', float)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-014 n2:vel (n2 Velocity text '300', float)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-014 n3:vel (n3 Velocity text '0.5', float)"
+   ]
+  },
+  "MNS-015": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-005"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-015",
+    "evidence": [
+     "limits",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-015 n1:offvel (n1 OffVelocity text '-5', float)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-015 n2:offvel (n2 OffVelocity text '200', float)"
+   ]
+  },
+  "MNS-016": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-004",
+    "REQ-MIDI-NOTE-STORAGE-005"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-016",
+    "evidence": [
+     "limits",
+     "omit",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-016 n1:prob (n1 Probability text '1.5', float)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-016 n2:prob (n2 Probability text '-1', float)"
+   ]
+  },
+  "MNS-017": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-005"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-017; REQ-002 added (Invalid text)",
+    "evidence": [
+     "text",
+     "limits",
+     "grid",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-017 n1:dur (n1 Duration text '-2', double)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-017 n2:dur (n2 Duration text 'Invalid', double)"
+   ]
+  },
+  "MNS-018": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-005",
+    "REQ-MIDI-NOTE-STORAGE-007"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-018",
+    "evidence": [
+     "limits",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-018 n1:time (n1 Time text '-3', double)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-018 n1:veldev (n1 VelocityDeviation text '-500', float)"
+   ]
+  },
+  "MNS-019": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-005",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-019",
+    "evidence": [
+     "text",
+     "limits",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-019 n1:vel (n1 Velocity text '80.578949', float)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-019 n2:vel (n2 Velocity text '33.3', float)"
+   ]
+  },
+  "MNS-020": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-020",
+    "evidence": [
+     "grid",
+     "fmt"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-020 n1:time (n1 Time text '0.123456789', double)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-020 n1:dur (n1 Duration text '0.3333333333', double)"
+   ]
+  },
+  "MNS-021": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-021",
+    "evidence": [
+     "grid",
+     "fmt"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-021 n1:time (n1 Time text '-0.0000002', double)"
+   ]
+  },
+  "MNS-022": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-022",
+    "evidence": [
+     "grid",
+     "fmt"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-022 n1:time (n1 Time text '0.00000013', double)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-022 n3:dur (n3 Duration text '0.000000131', double)"
+   ]
+  },
+  "MNS-023": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "fixture": "v1 carrier form (mns_cases.document) plus the freeze slot and the scene",
+   "source": "SPEC-MIDI-NOTE-STORAGE r3 MNS-023",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-023 n1:time (n1 Time text '-0.0000001', double); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[double, held value]"
+   ],
+   "static_steps": "locating the notes, reading decimal text other than -0 (REQ-002 clause 3), opening and saving (as midi-note-storage-v1, evidence keys attrs, omit, fmt, gate)"
+  },
+  "MNS-025": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-007"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-025",
+    "evidence": [
+     "limits",
+     "grid",
+     "order",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-025:time (n2 Time text '20', double)",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-025:dur (n3 Duration text '0', double)"
+   ]
+  },
+  "MNS-026": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-008"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-026",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-027": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-008"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-027",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-028": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-028",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-029": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-029",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-030": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-030",
+    "evidence": [
+     "notes_post",
+     "attrs",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-031": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-031",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-032": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-032",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-033": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-033",
+    "evidence": [
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-036": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-010"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-036 narrowed to the outcome (saved text U, PRB-S7-06)",
+    "evidence": [
+     "order",
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-039": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-013",
+    "REQ-MIDI-NOTE-STORAGE-014",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-039",
+    "evidence": [
+     "event",
+     "list_post",
+     "store_post",
+     "span",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-040": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-013",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-040",
+    "evidence": [
+     "event",
+     "fmt",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-041": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-041 (event Value 1 chosen)",
+    "evidence": [
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-042": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-042",
+    "evidence": [
+     "store_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-043a": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-043 variant (a)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-043b": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-043 variant (b)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-043c": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-043 variant (c)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-043d": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-043 variant (d)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-043e": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-043 variant (e)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-043f": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-043 variant (f)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-044a": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-044 variant (a)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-044b": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-044 variant (b)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-044c": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-044 variant (c)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-045a": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-045 variant (a)",
+    "evidence": [
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-045b": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-045 variant (b)",
+    "evidence": [
+     "orphans",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-046": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-046 (event Value 1 chosen)",
+    "evidence": [
+     "store_post",
+     "orphans",
+     "gate"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-047": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-047",
+    "evidence": [
+     "list_post",
+     "fmt",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-048": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-048",
+    "evidence": [
+     "list_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-049a": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-049 variant (a)",
+    "evidence": [
+     "list_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-049b": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-049 variant (b)",
+    "evidence": [
+     "list_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-050": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-050",
+    "evidence": [
+     "span",
+     "store_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-051a": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-051 variant (a); REQ-002 added",
+    "evidence": [
+     "text",
+     "grid",
+     "list_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-051b": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-051 variant (b); REQ-002 added",
+    "evidence": [
+     "text",
+     "grid",
+     "list_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-052": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-009",
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "MNS-052 (event Value 1 chosen)",
+    "evidence": [
+     "orphans",
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-061": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 accepted spellings ' 7', '+7', '7 '",
+    "evidence": [
+     "int64"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   }
+  },
+  "MNS-062": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 '+-7'",
+    "evidence": [
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-063": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 all-space value",
+    "evidence": [
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-064": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 non-ASCII byte",
+    "evidence": [
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-065": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 more than 63 characters",
+    "evidence": [
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-066": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 value must fit in 64 bits",
+    "evidence": [
+     "int64"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-067": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 64-bit text (REQ-TRANSPORT-STATE-004: leading spaces, trailing text)",
+    "evidence": [
+     "text",
+     "fmt"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:MNS-067 n3:time (n3 Time text ' 0.5abc', double)"
+   ]
+  },
+  "MNS-068": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-002 32-bit text without a numeric prefix",
+    "evidence": [
+     "text"
+    ],
+    "inferred": [
+     "I3",
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-069": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-013",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-006 and REQ-013 TimeOffset rounding",
+    "evidence": [
+     "grid",
+     "list_post",
+     "span",
+     "fmt",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   },
+   "x_corroboration": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json event:0.123456789 (ne1 TimeOffset text '0.123456789', double)"
+   ]
+  },
+  "MNS-070": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-010"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-010 notes sharing a Time do not refuse",
+    "evidence": [
+     "order",
+     "notes_post",
+     "gate"
+    ],
+    "inferred": [
+     "I4",
+     "I6"
+    ]
+   }
+  },
+  "MNS-071a": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-014 CC 31 kept (edge of the excluded 32)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-071b": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-014"
+   ],
+   "provenance": "static-derived; not observed reference output",
+   "fixture": "v1 fixture text plus the freeze slot and the scene",
+   "v1": {
+    "source": "new case for an r1 clause without a case: REQ-014 CC 33 kept (edge of the excluded 32)",
+    "evidence": [
+     "list_post",
+     "store_post",
+     "span",
+     "gate"
+    ],
+    "inferred": [
+     "I2",
+     "I4",
+     "I5",
+     "I6",
+     "I7"
+    ]
+   }
+  },
+  "MNS-072": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "fixture": "v1 carrier form (mns_cases.document) plus the freeze slot and the scene",
+   "source": "SPEC-MIDI-NOTE-STORAGE r3 MNS-072",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:tie k=0 -1ulp:time (n1 Time text '0.00000013007825507825505', double); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[double, held value]"
+   ],
+   "static_steps": "locating the notes, reading decimal text other than -0 (REQ-002 clause 3), opening and saving (as midi-note-storage-v1, evidence keys attrs, omit, fmt, gate)"
+  },
+  "MNS-073": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-004",
+    "REQ-MIDI-NOTE-STORAGE-005",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "fixture": "v1 carrier form (mns_cases.document) plus the freeze slot and the scene",
+   "source": "SPEC-MIDI-NOTE-STORAGE r3 MNS-073",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:offvel -0:offvel (n1 OffVelocity text '-0', float); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[float, held value]; reading of '-0': analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[float, '-0']",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:prob -0:prob (n2 Probability text '-0', float); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[float, held value]; reading of '-0': analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[float, '-0']"
+   ],
+   "static_steps": "locating the notes, reading decimal text other than -0 (REQ-002 clause 3), opening and saving (as midi-note-storage-v1, evidence keys attrs, omit, fmt, gate)"
+  },
+  "MNS-074": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-005",
+    "REQ-MIDI-NOTE-STORAGE-006",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "fixture": "v1 carrier form (mns_cases.document) plus the freeze slot and the scene",
+   "source": "SPEC-MIDI-NOTE-STORAGE r3 MNS-074",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:vel -0:vel (n1 Velocity text '-0', float); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[float, held value]; reading of '-0': analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[float, '-0']",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:dur -0:dur (n2 Duration text '-0', double); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[double, held value]; reading of '-0': analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[double, '-0']",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:time -0:time (n3 Time text '-0', double); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[double, held value]; reading of '-0': analysis/ableton-live-12.4.3/r2/x2-transport-v1/results/parse.json number_and_bool[double, '-0']"
+   ],
+   "static_steps": "locating the notes, reading decimal text other than -0 (REQ-002 clause 3), opening and saving (as midi-note-storage-v1, evidence keys attrs, omit, fmt, gate)"
+  },
+  "MNS-075": {
+   "requirements": [
+    "REQ-MIDI-NOTE-STORAGE-002",
+    "REQ-MIDI-NOTE-STORAGE-005",
+    "REQ-MIDI-NOTE-STORAGE-016"
+   ],
+   "provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "fixture": "v1 carrier form (mns_cases.document) plus the freeze slot and the scene",
+   "source": "SPEC-MIDI-NOTE-STORAGE r3 MNS-075",
+   "x_evidence": [
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:vel above 127:vel (n1 Velocity text '127.00001', float); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[float, held value]",
+    "analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json note:vel below 1:vel (n2 Velocity text '0.99999994', float); saved text: analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/results/notes.json writer_texts[float, held value]"
+   ],
+   "static_steps": "locating the notes, reading decimal text other than -0 (REQ-002 clause 3), opening and saving (as midi-note-storage-v1, evidence keys attrs, omit, fmt, gate)"
+  }
+ }
+}

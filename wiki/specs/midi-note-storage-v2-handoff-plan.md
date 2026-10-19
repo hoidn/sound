@@ -9,6 +9,22 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Second MIDI note storage handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [midi-note-storage-v2](../../handoff/midi-note-storage-v2/README.md), approved with listed clarifications by a separate review agent ([review record](../../handoff/midi-note-storage-v2/REVIEW.md)). It has 72 cases: 67 carried, each fixture its v1 file plus 20 added lines, and 5 new extracted-execution cases that re-run in agreement. No expectation changed.
+
+Narrowings:
+- REQ-007 now says a `Duration` of positive zero.
+- Negative zero in `TimeOffset` is explicitly excluded.
+- MNS-072 now lists REQ-002.
+
+The change list is completed.
+
+For the spec author:
+- fix the "unchanged" wording in REQ-006 and REQ-007;
+- correct the case table's requirement IDs for MNS-072 to 075;
+- REQ-002 should state that `-0` reads as negative zero.
+
 ## Decision and boundary
 
 Stage a corrected candidate, midi-note-storage-v2, from

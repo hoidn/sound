@@ -1,0 +1,282 @@
+MNS-001 form=ok base=MNS-001 | Base notes unchanged: the saved key tracks, notes and next id equal the input
+MNS-002 form=ok base=MNS-001 | n1 states VelocityDeviation 0, Probability 1 and IsEnabled true; none of them is written
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" VelocityDeviation="0" OffVelocity="64" Probability="1" IsEnabled="true" NoteId="1" />
+MNS-003 form=ok base=MNS-001 | n1 states VelocityDeviation 3, Probability 0.5 and IsEnabled false; they are written in order and n2 keeps its defaults
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" VelocityDeviation="3" OffVelocity="64" Probability="0.5" IsEnabled="false" NoteId="1" />
+MNS-004 form=ok base=MNS-001 | n1 lists all eight attributes in alphabetical order
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Duration="0.25" IsEnabled="false" NoteId="1" OffVelocity="64" Probability="0.5" Time="0" Velocity="85" VelocityDeviation="3" />
+MNS-005 form=ok base=MNS-001 | IsEnabled text 0 on n1 and 1 on n2
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" IsEnabled="0" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" IsEnabled="1" NoteId="2" />
+MNS-006 form=ok base=MNS-001 | IsEnabled text TRUE on n1 is refused
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" IsEnabled="TRUE" NoteId="1" />
+MNS-007 form=ok base=MNS-001 | NoteId text 3.0 on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3.0" />
+MNS-008 form=ok base=MNS-001 | NoteId text 0x3 on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="0x3" />
+MNS-009 form=ok base=MNS-001 | Empty NoteId text on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="" />
+MNS-010 form=ok base=MNS-001 | NoteId text ' +7' on n3 reads as 7 and raises the next id to 8
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId=" +7" />
+MNS-012 form=ok base=MNS-001 | n1 carries the Velocity attribute twice (not well-formed XML)
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-013 form=ok base=MNS-001 | An element Foo after n2 among the notes of key 36 is refused
+    +															<Foo />
+MNS-014 form=ok base=MNS-001 | Velocity 0, 300 and 0.5 are limited to 1, 127 and 1
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="0" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="300" OffVelocity="64" NoteId="2" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="0.5" OffVelocity="64" NoteId="3" />
+MNS-015 form=ok base=MNS-001 | OffVelocity -5 and 200 are limited to 0 and 127
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="-5" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="200" NoteId="2" />
+MNS-016 form=ok base=MNS-001 | Probability 1.5 is limited to 1 and omitted; -1 is limited to 0
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" Probability="1.5" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" Probability="-1" NoteId="2" />
+MNS-017 form=ok base=MNS-001 | Duration -2 and Duration Invalid both become 0
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="-2" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="Invalid" Velocity="85" OffVelocity="64" NoteId="2" />
+MNS-018 form=ok base=MNS-001 | Time -3 and VelocityDeviation -500 on n1 are not limited
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="-3" Duration="0.25" Velocity="85" VelocityDeviation="-500" OffVelocity="64" NoteId="1" />
+MNS-019 form=ok base=MNS-001 | Fractional Velocity 80.578949 and 33.3 are kept as binary32
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="80.578949" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="33.3" OffVelocity="64" NoteId="2" />
+MNS-020 form=ok base=MNS-001 | Off-grid Time 0.123456789 and Duration 0.3333333333 on n1 are rounded
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0.123456789" Duration="0.3333333333" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-021 form=ok base=MNS-001 | Time -0.0000002 on n1 rounds to minus one grid unit
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="-0.0000002" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-022 form=ok base=MNS-001 | Time 0.00000013 on n1 rounds to 0; Duration 0.000000131 on n3 rounds to one grid unit
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0.00000013" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.000000131" Velocity="100" OffVelocity="64" NoteId="3" />
+MNS-023 form=ok base=MNS-001 | Time -0.0000001 on n1 rounds to negative zero and is saved as -0
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="-0.0000001" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-025 form=ok base=MNS-001 | n2 at Time 20, outside the clip loop from 0 to 8, and n3 with Duration 0 are kept
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="20" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0" Velocity="100" OffVelocity="64" NoteId="3" />
+MNS-026 form=ok base=MNS-001 | n3 repeats NoteId 2 of n2 in another key
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="2" />
+MNS-027 form=ok base=MNS-001 | n2 repeats NoteId 1 of n1 in the same key
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-028 form=ok base=MNS-001 | n2 with NoteId 0 receives 4; the next id becomes 5
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="0" />
+MNS-029 form=ok base=MNS-001 | All three notes with NoteId 0 receive 4, 5 and 6 in key order
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="0" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="0" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="0" />
+MNS-030 form=ok base=MNS-001 | NoteId absent from every note: numbered as in MNS-029
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" />
+MNS-031 form=ok base=MNS-001 | Stored next id 1 is raised to 4
+    -													<NextId Value="4" />
+    +													<NextId Value="1" />
+MNS-032 form=ok base=MNS-001 | Stored next id 100 is kept
+    -													<NextId Value="4" />
+    +													<NextId Value="100" />
+MNS-033 form=ok base=MNS-001 | All NoteIds 0 with stored next id 100: 100, 101 and 102
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="0" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="0" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="0" />
+    -													<NextId Value="4" />
+    +													<NextId Value="100" />
+MNS-036 form=ok base=MNS-001 | n1 Duration 2 overlaps n2 on the same key; the set loads
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0" Duration="2" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-039 form=ok base=MNS-039 | Base list L1 unchanged
+MNS-040 form=ok base=MNS-039 | e1 adds CurveControl1X 0.5 (omitted on save) and CurveControl1Y 0.2
+    -																<PerNoteEvent TimeOffset="0.0625" Value="100" />
+    +																<PerNoteEvent TimeOffset="0.0625" Value="100" CurveControl1X="0.5" CurveControl1Y="0.2" />
+MNS-041 form=ok base=MNS-039 | A second list with NoteId 1 and CC -2 is refused
+    +															</Events>
+    +														</PerNoteEventList>
+    +														<PerNoteEventList Id="1" NoteId="1" CC="-2">
+    +															<Events>
+    +																<PerNoteEvent TimeOffset="0.0625" Value="1" />
+MNS-042 form=ok base=MNS-039 | A second list for n1 with CC 74 is kept beside L1
+    +															</Events>
+    +														</PerNoteEventList>
+    +														<PerNoteEventList Id="1" NoteId="1" CC="74">
+    +															<Events>
+    +																<PerNoteEvent TimeOffset="0.0625" Value="64" />
+MNS-043a form=ok base=MNS-039 | L1 with CC 0 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="0">
+MNS-043b form=ok base=MNS-039 | L1 with CC 32 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="32">
+MNS-043c form=ok base=MNS-039 | L1 with CC 120 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="120">
+MNS-043d form=ok base=MNS-039 | L1 with CC 128 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="128">
+MNS-043e form=ok base=MNS-039 | L1 with CC 129 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="129">
+MNS-043f form=ok base=MNS-039 | L1 with CC -3 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="-3">
+MNS-044a form=ok base=MNS-039 | L1 with CC 1 is kept and its values limited to 0..127
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="1">
+MNS-044b form=ok base=MNS-039 | L1 with CC 119 is kept and its values limited to 0..127
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="119">
+MNS-044c form=ok base=MNS-039 | L1 with CC -1 is kept and its values limited to 0..127
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="-1">
+MNS-045a form=ok base=MNS-039 | L1 with NoteId 0 is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="0" CC="-2">
+MNS-045b form=ok base=MNS-039 | L1 naming NoteId 99, which no note has, is removed
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="99" CC="-2">
+MNS-046 form=ok base=MNS-039 | Two lists with NoteId 99 and CC -2 are refused although no note has NoteId 99
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="99" CC="-2">
+    +															</Events>
+    +														</PerNoteEventList>
+    +														<PerNoteEventList Id="1" NoteId="99" CC="-2">
+    +															<Events>
+    +																<PerNoteEvent TimeOffset="0.0625" Value="1" />
+MNS-047 form=ok base=MNS-039 | Values 9000 and -9000 for CC -2 are limited to 8191 and -8192
+    -																<PerNoteEvent TimeOffset="0.0625" Value="100" />
+    -																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+    +																<PerNoteEvent TimeOffset="0.0625" Value="9000" />
+    +																<PerNoteEvent TimeOffset="0.125" Value="-9000" />
+MNS-048 form=ok base=MNS-039 | Values 200 and -1 for CC 74 are limited to 127 and 0
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="74">
+    -																<PerNoteEvent TimeOffset="0.0625" Value="100" />
+    -																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+    +																<PerNoteEvent TimeOffset="0.0625" Value="200" />
+    +																<PerNoteEvent TimeOffset="0.125" Value="-1" />
+MNS-049a form=ok base=MNS-039 | e2 listed before e1: events are sorted by TimeOffset
+    +																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+    -																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+MNS-049b form=ok base=MNS-039 | A third event at TimeOffset 0.0625 after e2 keeps its place after e1
+    +																<PerNoteEvent TimeOffset="0.0625" Value="5" />
+MNS-050 form=ok base=MNS-039 | L1 stored with an empty Events element is removed
+    -															<Events>
+    -																<PerNoteEvent TimeOffset="0.0625" Value="100" />
+    -																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+    -															</Events>
+    +															<Events />
+MNS-051a form=ok base=MNS-039 | e2 with TimeOffset Invalid is dropped
+    -																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+    +																<PerNoteEvent TimeOffset="Invalid" Value="-200" />
+MNS-051b form=ok base=MNS-039 | e1 and e2 with TimeOffset Invalid: L1 is left empty and removed
+    -																<PerNoteEvent TimeOffset="0.0625" Value="100" />
+    -																<PerNoteEvent TimeOffset="0.125" Value="-200" />
+    +																<PerNoteEvent TimeOffset="Invalid" Value="100" />
+    +																<PerNoteEvent TimeOffset="Invalid" Value="-200" />
+MNS-052 form=ok base=MNS-039 | n2 with NoteId 0 receives 4; a list naming 4 is removed
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="0" />
+    +															</Events>
+    +														</PerNoteEventList>
+    +														<PerNoteEventList Id="1" NoteId="4" CC="-2">
+    +															<Events>
+    +																<PerNoteEvent TimeOffset="0.0625" Value="1" />
+MNS-061 form=ok base=MNS-001 | NoteId text ' 1', '+2' and '3 ' read as 1, 2 and 3
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId=" 1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="+2" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3 " />
+MNS-062 form=ok base=MNS-001 | NoteId text +-3 on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="+-3" />
+MNS-063 form=ok base=MNS-001 | NoteId text of three spaces on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="   " />
+MNS-064 form=ok base=MNS-001 | NoteId text U+FF13 (fullwidth digit three) on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="３" />
+MNS-065 form=ok base=MNS-001 | NoteId text of 64 digits (63 zeros, then 3) on n3 is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="0000000000000000000000000000000000000000000000000000000000000003" />
+MNS-066 form=ok base=MNS-001 | NoteId 9223372036854775808 on n3 exceeds the 64-bit range and is refused
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="9223372036854775808" />
+MNS-067 form=ok base=MNS-001 | Time text ' 0.5abc' on n3 reads as 0.5
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time=" 0.5abc" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+MNS-068 form=ok base=MNS-001 | Velocity text abc on n1 is refused
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="abc" OffVelocity="64" NoteId="1" />
+MNS-069 form=ok base=MNS-039 | Off-grid TimeOffset 0.123456789 on e1 is rounded
+    -																<PerNoteEvent TimeOffset="0.0625" Value="100" />
+    +																<PerNoteEvent TimeOffset="0.123456789" Value="100" />
+MNS-070 form=ok base=MNS-001 | n2 at Time 0, the same Time as n1 on the same key; the set loads
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+MNS-071a form=ok base=MNS-039 | L1 with CC 31 is kept and its values limited to 0..127
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="31">
+MNS-071b form=ok base=MNS-039 | L1 with CC 33 is kept and its values limited to 0..127
+    -														<PerNoteEventList Id="0" NoteId="1" CC="-2">
+    +														<PerNoteEventList Id="0" NoteId="1" CC="33">
+MNS-072 form=ok base=MNS-001 | Time 0.00000013007825507825505 on n1, one binary64 step below the binary64 value of half a grid unit, is stored as one grid unit
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="0.00000013007825507825505" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+MNS-073 form=ok base=MNS-001 | OffVelocity -0 on n1 and Probability -0 on n2 are kept as negative zero and saved as -0
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="-0" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" Probability="-0" NoteId="2" />
+MNS-074 form=ok base=MNS-001 | Velocity -0 on n1 becomes 1; Duration -0 on n2 and Time -0 on n3 are stored as positive zero
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="-0" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="-0" Velocity="85" OffVelocity="64" NoteId="2" />
+    -															<MidiNoteEvent Time="0.5" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+    +															<MidiNoteEvent Time="-0" Duration="0.25" Velocity="100" OffVelocity="64" NoteId="3" />
+MNS-075 form=ok base=MNS-001 | Velocity 127.00001 and 0.99999994, one binary32 step outside the limits, become 127 and 1
+    -															<MidiNoteEvent Time="0" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="1" />
+    -															<MidiNoteEvent Time="1" Duration="0.25" Velocity="85" OffVelocity="64" NoteId="2" />
+    +															<MidiNoteEvent Time="0" Duration="0.25" Velocity="127.00001" OffVelocity="64" NoteId="1" />
+    +															<MidiNoteEvent Time="1" Duration="0.25" Velocity="0.99999994" OffVelocity="64" NoteId="2" />
+distinct inputs: 72 of 72 | duplicates: []

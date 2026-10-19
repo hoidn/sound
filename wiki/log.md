@@ -2177,3 +2177,12 @@ case. The manifest SHA-256 is
 defect note now states the rule precisely. New REQ-012 evidence for the next
 spec revision: on open, a tempo Manual value that disagrees with its automation
 envelope is replaced by the envelope's value.
+
+## [2026-10-18] release | midi-note-storage-v2 corrects the fixture defect
+
+[midi-note-storage-v2](../handoff/midi-note-storage-v2/README.md) has 72 cases: v1's
+67, each with a freeze slot and a scene added to its fixture, plus 5 new cases
+from extracted execution. A separate review agent approved it with listed
+clarifications: positive-zero `Duration`, `TimeOffset` negative zero excluded, and
+a completed change list. No expectation changed. The manifest SHA-256 is
+`697f09ffc4951d5f3b6d67c20b8f851d68671078a0b3d730a220383f94d2dd15`.
