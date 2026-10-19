@@ -459,3 +459,23 @@ no experimental contradiction has been established yet.
   - file formats other than those covered;
   - `StartRelative` other than 0.
 - Next action: trace the engine sample counter and the action delivery statically; for T1, keep cases that accept P or P+1.
+
+## Q-025 Device host protocol and device-audio acceptance
+
+- State: open; owner: analyst (protocol); user (Amp and Cabinet decision).
+- Affects: FEAT-DEVICES, [SPEC-DEVICE-CORPUS](specs/device-corpus.md) and the other T1 device specs.
+- Evidence: [device DSP](research/device-dsp-extracted.md); `r2/t12-device-dsp-v1`.
+- Gap:
+  - the Live-side protocol: event frame base, transport and flag values, reset timing;
+  - whether Live passes Corpus ExcitationX and Listening as 0..1 or −1..1. The strike range
+    is 0.5–0.723 under one reading and 0.277–0.723 under the other (see
+    REQ-BUNDLED-DEVICE-PARAMETERS-015);
+  - the Corpus MIDI side-chain path;
+  - LfoSync, and clock-seeded random LFO shapes;
+  - why Collision is silent with Live's defaults;
+  - whether the proposed per-device metric is acceptable for T1.
+- Decision needed: Amp and Cabinet render only with CoreFoundation and Objective-C
+  emulation and a fake host identity. That may amount to working around a vendor check,
+  so it is left to the user.
+- Next action: trace Live's device-host calls statically; specify Analog, Tension,
+  Electric and Collision the same way as Corpus.

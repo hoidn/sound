@@ -62,6 +62,7 @@ to the isolated implementation workspace.
 | [Live Set structure (T1.1)](live-set-structure.md) | Schema conformance, reader refusals and repairs, sample CRC (X). The open path always runs the validation walk. Audit of released fixtures: 204 refused |
 | [Mix graph (T1.4)](mix-graph.md) | Track output stage, sends, solo, ramps, automation playback. Q-019 settled with conditions. Corrections to automation A1 and REQ-010 |
 | [Playback core (T1.3)](playback-core.md) | Engine timing, launch pre-delay, MIDI note emission, unwarped audio playback; launch-timing A1 settled for Trigger |
+| [Device DSP by extracted execution (T1.2)](device-dsp-extracted.md) | Gate passed: the bundle loader works, Corpus renders are bit-repeatable and agree with the static model, Analog's note grid is exactly 1 ms, libm and FMA effects are described, effort per device is estimated |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

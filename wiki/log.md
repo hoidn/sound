@@ -2124,3 +2124,31 @@ Corrections:
   beat.
 
 None of these contradicts a released handoff.
+
+## [2026-10-18] analysis | T1.2 device audio gate passes
+
+A copy of the harness loader loads a device bundle's own x86_64 slice. The
+bundles are universal binaries in the app, and the copy renders audio through
+them. Evidence is in `r2/t12-device-dsp-v1`, and the method is described in
+[device DSP](research/device-dsp-extracted.md).
+
+Corpus results:
+- renders are bit-identical across 25 determinism checks;
+- every difference from the static model and from the traced demo port is
+  explained.
+
+[SPEC-DEVICE-CORPUS](specs/device-corpus.md) r1 has 13 requirements and 28 cases
+(24 graded against retained renders). Its proposed metric is per-mode
+frequency, decay and amplitude bounds, plus third-octave levels for broadband
+output. A one-ulp libm change moves a 66 Hz mode measurably, so the metric does
+not use maximum absolute error.
+
+Corrections to research pages: Pipe and Tube frequencies are 251.271 and
+241.687 Hz, not 251.0 and 241.2, and output starts after a 100-frame silence.
+The traced demo port ramps from frame 0 and skips DecayOnNoteOff's 1 − v.
+
+Effort for the other devices:
+- Analog, Tension and Electric already render;
+- Collision is silent with Live's defaults;
+- Amp and Cabinet need CoreFoundation and Objective-C emulation and a fake
+  host identity. That is held for the user (Q-025).
