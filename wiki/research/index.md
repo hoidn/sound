@@ -66,6 +66,7 @@ to the isolated implementation workspace.
 | [Electric device DSP](device-electric-dsp.md) | 120 retained renders; Polyphony settled; KeyboardStretch is a ±7.2-cent detune; corrections to the t12 probe and the Volume default |
 | [Tension device DSP](device-tension-dsp.md) | 68 deterministic renders on a 1 ms note grid; partials, sections and voices; floating-point sensitivity sets the metric |
 | [Analog device DSP](device-analog-dsp.md) | Renders reproduced bit for bit; exact laws for pitch, filters, envelopes and saturators; voice stealing and mono priority |
+| [Session handoff](session-handoff.md) | Continuation note: repo state, user decisions, undispatched work queue and pending spec corrections (2026-10-19) |
 | [Ableton investigation plan](ableton-plan.md) | Static-first loop, optional probes, subsystem order and review of the harness-first proposal |
 
 Use [source storage](../../raw/README.md), the [source template](../../templates/source.md),

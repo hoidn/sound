@@ -2293,3 +2293,10 @@ the structure checks. The catalog intro is regenerated from its table (23
 releases, 13 current), and its defect note now records the correction. The spec
 index, project page and gate table (T1.5) are updated. By user direction, no
 further work is being dispatched. playback-core-v1 is staged but unreviewed.
+
+## [2026-10-19] maintenance | Session handoff note
+
+Added [the session handoff](research/session-handoff.md). It records the repo state,
+the two user decisions still open (Q-025 Amp and Cabinet; T1.6 workspace), the
+undispatched work queue, and the pending spec corrections. Those corrections were
+previously held only in session scratch.
