@@ -1,0 +1,78 @@
+# X2 static slice comparison: x86_64 functions run here against their arm64 counterparts.
+# x86: x86-disasm.txt (objdump of the slice) and xtool.py reads. arm64: retained dossier disassembly
+# (r2/s7-midi-notes-v1/results/s7-000N, r2/s5-clip-launch-v1/results/s5-000N; print with
+# r2/s7-midi-notes-v1/disasm.py) and, where no dossier exists, the arm64 corpus pseudocode (marked P).
+# Result per function: equal = same operations and constants for every input class listed.
+
+## Note value limits: x86 0x102a2a7f0 / arm64 0x1028e2c80 (s7-0001)
+Duration +0x38: x86 ucomisd 0 / ja, ucomisd DBL_MAX (0x105b3ce00) / jne,jp; arm64 fcmp #0, fccmp DBL_MAX #4 pl, b.ne.
+  Both zero x < 0 and x == DBL_MAX; both keep NaN, -0, +inf; -inf -> +0.                       equal
+Velocity +0x40: x86 minss(127, v) then cmpltss 1.0 select; arm64 fcsel gt 127, fcsel mi 1.0.
+  NaN: x86 minss returns the source (v), cmpltss false -> NaN; arm64 both fcsel conditions false -> NaN.
+  -0, -inf, denormals -> 1; +inf -> 127.                                                        equal
+OffVelocity/Probability +0x48/+0x4c: x86 minps((127, 1), v) then cmpnltps 0 mask (andps);
+  arm64 fcmlt #0 / fcmgt (127, 1) / bit / bic. Both: x < 0 -> +0, x > max -> max, NaN kept, -0 kept.  equal
+Constants: x86 0x105b8419c 127.0f, 0x105a781c0 1.0f, 0x105e027e0 (127, 1); arm64 0x42fe0000, 0x3f800000,
+  0x105896fa8 (127, 1).                                                                        equal
+Note: x86 Ghidra pseudocode of 0x102a2a7f0 shows NaN Velocity -> 127 and NaN OffVelocity -> 0; the
+  disassembly (minss/minps return the second operand when unordered) keeps NaN. X agrees with the disassembly.
+
+## Grid rounding sequence (note copy x86 0x102a2a9b0 / arm64 0x1028e2e24 s7-0001; event copy
+## x86 0x1026ede60 / arm64 0x1025c7a0c s7-0003; lattice helper x86 0x1011999d0 / arm64 0x1011be6c8 s5-0001;
+## grid length x86 0x101ad2ef0 / arm64 0x101aaae44 s5-0001; double post-load x86 0x101555850 / arm64 0x10156580c P)
+Sentinel test: x86 cmpeqpd against 0x105b3eb00/0x105b3eb10 = (DBL_MAX, +inf, -1.7976931348623155e308,
+  1.7976931348623155e308); arm64 fcmeq against 0x1055d9680/0x1055d9690 (same four values).    equal
+Sign: x86 setae after ucomisd x,0 indexes (-1, +1) at 0x105b3eb20 (NaN -> -1, -0 -> +1);
+  arm64 fcmp #0, fcsel ge (NaN -> -1, -0 -> +1).                                                equal
+Half step: x86 mulsd h (0x105b3eac0 = 0x3e9175746e8cba40) by s, mulsd 0.5, addsd x;
+  arm64 fmul s*h, fmadd (s*h)*0.5 + x. s*h and *0.5 are exact (s = +-1, h normal), so the single
+  rounding of fmadd equals the rounding of addsd.                                               equal (no FMA effect)
+Then: andpd abs / fabs; mulsd 3843840 / fmul; roundsd 9 / frintm; divsd / fdiv; mulsd s / fmul.  equal
+Lattice helper modes: x86 0 = x + copysign(0.49999999999999994, x) then roundsd 0xb (clang's lowering of
+  round()), 1 = roundsd 0xa, 2 = roundsd 9, other = none; arm64 frinta, frintp, frintm, none.
+  g == 0 skips the division in both (x86 ucomisd/jne/jnp, arm64 fcmp #0 / b.eq; NaN g divides in both).  equal
+Grid length: cvtsi2sd n, d / scvtf; divsd; mulsd 4.0 (0x105b42d00); the rounding above; then *8.0 (0x105a75cf0),
+  *4.0, x + x, or none; note values 2.0, 1.0, 0.5, 0.25, 0.125 and 0x3ff5555555555555, 0x3fe5555555555555,
+  0x3fd5555555555555, 0x3fc5555555555555 (x86 0x105bd7dd0, 0x105bd7dc8, 0x105bbfc50, 0x105bd7dc0);
+  q - 1 > 12 unsigned -> 0.0 in both.                                                          equal
+Boundary helper: x86 0x101ae8280 maxsd([entry+8], +0) / arm64 0x101abf294 fmaxnm(d2, #0), then the lattice
+  helper with mode 1. maxsd returns the second operand (+0) when [entry+8] is NaN, -0 or negative; fmaxnm
+  returns +0 for NaN, -0 and negative values.                                                  equal
+
+## Follow-action post-load: x86 0x10262a930 / arm64 0x1025044b4 (s5-0003)
+Reads chance A [+0xf0] and B [+0x108] through slot +0x210; A == 0 && B == 0 (ucomiss / fcmp, -0 counts as 0):
+  set A := 100 through slot +0x280, enabled [+0x120] := false (x86 0x101554600, arm64 0x101564698).
+Otherwise: s = (B + A) / 100 (x86 addss B,A) / (A + B) / 100 (arm64 fadd s8,s0); binary32 addition is
+  commutative. A' = A / s; rounded with x86 A' + copysign(0.49999997f, A') then roundss 0xb (clang's lowering
+  of roundf) / arm64 frinta; B' = 100 - A' (subss / fsub). Both set A' then B' through slot +0x280.  equal
+
+## UserFloat setter (vtable +0x280): x86 0x101565360 / arm64 0x10157478c (P)
+Both map min and max through [+0x78] slot +0x30, clamp the value to them and store through the float base
+setter. x86 stores via 0x101558c60 (store if changed, mark the parent chain 0x10147a210, notify through slot
++0x1b8 -> +0x1d8 -> the callback at [+0x38]); the chance controller at [+0x60] is not called on this path.
+arm64 calls 0x10156891c; its body was not compared (no dossier).                                structure equal; NaN order not compared
+
+## Load path of bounded members (vtable slot +0xd0, static)
+UserFloat: x86 0x10147e120 (generic compound post-load) / arm64 0x101486fa8 (generic).          equal, no clamp
+RangedRemoteableInt: x86 0x101559950 -> jmp 0x10147e120 / arm64 0x101569540 -> 0x101486fa8.    equal, no clamp
+ARemoteableDouble: x86 0x101555850 / arm64 0x10156580c: generic, then the grid rounding when flag +0x70 == 1.  equal
+Vtables: x86 UserFloat 0x106bc35b0 (factory 0x101564c00), RangedRemoteableInt 0x106bbe8d0 (0x10154aa70),
+  ARemoteableDouble 0x106bc07b0 (0x101555070); arm64 0x106680438 (0x1015740f0), 0x10667b8f0 (0x10155ac88),
+  0x10667d7e8 (0x101564dd8). The generic loader stores a base-type value straight into the field (N1).
+
+## ARemoteableEnum value getter: x86 0x101556330 / arm64 0x1015661b8 (P)
+Both return [+0xd8], except 0 for a stored -99.                                                equal
+
+## MidiKey getter and key-map stores (static)
+Getter x86 0x1029ed3b0 / arm64 0x1028aca40: return int [+0x40].                                 equal
+Rebuild x86 0x102a40980 / arm64 0x1028f5f74 (s7-0003); store/clear x86 0x102a3fce0 / arm64 0x1028f5420 (s7-0004):
+  x86 cltq; mov %r,(%rbx,%rax,8) with rbx = this+0x28 (or movq $0 / mov at 0x28(%rbx,%rax,8));
+  arm64 str x23,[x19,w0,SXTW #3] / add x8,x19,w0,SXTW #3; str [x8,#0x28]. No bound check in either.
+  The map occupies this+0x28 .. this+0x427 (128 slots); key 128 writes this+0x428, 129 writes this+0x430
+  (the KeyTrack list pointer read at [this+0x430]), -1 writes this+0x20, -5 writes this+0 (the vtable pointer).
+
+## Substituted libraries
+Note limits, note/event grid, grid length, lattice and boundary helpers, enum getter, follow-action post-load,
+UserFloat setter and double post-load call no import (results/*.json replaced_imports_called: launch and
+follow none). The writer texts call glibc log10, vsnprintf_l (vsnprintf under uselocale C), newlocale, strlen,
+strchr, malloc, operator new and the C++ guards, as in X1.

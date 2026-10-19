@@ -2,7 +2,7 @@
 id: RESEARCH-TRANSPORT-STATE-NATIVE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -16,7 +16,9 @@ Question: for song tempo (`Tempo/Manual`), time signature (`TimeSignature/Manual
 `LoopOn`, `LoopStart`, `LoopLength` and `CurrentTime`, what does the 12.4.3
 document reader do with a missing, malformed, duplicated or out-of-range value?
 Which defaults and clamps apply, and what does the writer emit? Everything here
-is static. Nothing was executed. Where this page says "load fails", it means that
+is static except the [extracted-execution results](#extracted-execution-results-x2-2026-10-18)
+added on 2026-10-18, which ran the x86_64 counterparts of the reader's text
+conversion, the writer and the meter functions. Where this page says "load fails", it means that
 the traced code throws; what the user sees has not been traced.
 
 The resulting draft contract is [SPEC-TRANSPORT-STATE](../specs/transport-state.md).
@@ -121,7 +123,7 @@ This resolves the "mapping rule is unknown" note on the static page. The
 | Bool (`LoopOn/@Value`) | exactly `true` or `1` gives true; exactly `false` or `0` gives false | anything else, including `TRUE`, `True`, `""`, ` true`, `yes` |
 | Double (`LoopStart`, `LoopLength`, `CurrentTime`) | `Invalid` gives the largest double; a 17-character `#` plus 16 hex digits gives raw IEEE bits; otherwise C `strtod`, accepted when at least one character is consumed, so trailing text is ignored and leading whitespace, exponents, hex floats, `inf` and `nan` are accepted | text with no numeric prefix, such as `""` or `abc` |
 | Float (`Tempo/Manual/@Value`) | as Double, but `#` plus 8 hex digits, `Invalid` gives the largest float, and the parsed double is rounded to float32 (`fcvt s0,d0`) | as Double |
-| Int (`TimeSignature/Manual/@Value`) | ASCII decimal; leading spaces and an explicit `+` are skipped, but trailing spaces are kept whenever a leading space or `+` was present (see [document container native](document-container-native.md)); `+-` is rejected; the `-` sign is passed to an untraced converter; fewer than 64 characters after the skipped prefix. Corrected 2026-10-17 from "after trimming spaces, optional sign"; see [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2 | `201.0`, `2e2`, `0x10`, `""`, non-ASCII bytes |
+| Int (`TimeSignature/Manual/@Value`) | ASCII decimal; leading spaces and an explicit `+` are skipped, but trailing spaces are kept whenever a leading space or `+` was present (see [document container native](document-container-native.md)); `+-` is rejected; the `-` sign is passed to an untraced converter; fewer than 64 characters after the skipped prefix. Corrected 2026-10-17 from "after trimming spaces, optional sign"; see [SPEC-TRANSPORT-STATE](../specs/transport-state.md) r2. Settled 2026-10-18 by [X2](#integer-and-number-text-c): the converter is `from_chars`, which takes one optional `-` and no spaces | `201.0`, `2e2`, `0x10`, `""`, non-ASCII bytes |
 
 The float32 rounding answers the static page's question: tempo is held as float32
 after load. **Unknown:** whether `strtod` follows the user's locale on macOS (for
@@ -224,6 +226,9 @@ prefers that event or `Manual` when they disagree is **unknown** (PRB-N1-04/05).
   formats with `%.*lf` (`0x105b8f6c9`) at precision max(0, 9 − k) for Float or
   max(0, 17 − k) for Double. Zero uses precision 8 or 16. Trailing `0`s and a
   trailing `.` are then removed.
+- Correction 2026-10-18 ([X2](#number-text-on-save-a-b)): "log10|x|" here is the
+  binary64 result of the library `log10`, not the exact logarithm. Next to powers of
+  ten the two give different k.
 - Bool is written `true`/`false`; Int as plain decimal.
 
 **Corroborated** (`check_number_format.py`): the rule reproduces all 376 shipped
@@ -235,6 +240,173 @@ the writer is not "at most 9 or 17 significant digits". A Float below 1 gets up 
 10 or more decimals. The shipped files were written by 12.4d1 and 12.1d1. This
 binary's own formatter is the 12.4.3 evidence, which makes the rule a static
 derivation for 12.4.3.
+
+## Extracted execution results (X2, 2026-10-18)
+
+**Question.** Four clauses of [SPEC-TRANSPORT-STATE](../specs/transport-state.md)
+r2 could be settled by running the original x86_64 code. They are (a) REQ-011's k
+next to powers of ten, (b) negative zero on save, (c) the REQ-006 integer spellings
+and whether the number reader treats them the same way, and (d) the REQ-010 meter
+codes and texts (PRB-N1-06). The method follows
+[ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code)
+and the [X1 pilot](extracted-execution.md).
+
+**Answer.**
+
+| Target | Outcome | Label |
+| --- | --- | --- |
+| (a) REQ-011 k | k comes from the binary64 `log10` result L. This differs from r2 (exact logarithm) for 825 of 6,539 swept 64-bit values; no 32-bit value is affected | X; L's last bit near half a spacing U |
+| (b) Negative zero | Both writers write `-0`; `-0` loads as −0 | X |
+| (c) REQ-006 | Exact rule: ASCII; body `-`? digits, at most 63 characters; no `+-`; no trailing spaces after leading spaces or `+`; int32 range. ` +201 ` (TS-010) is refused, and `-0`, `-201` are accepted | X |
+| (c) Number text | Not the same as the integer reader: `strtod` skips leading white space, takes a sign and ignores trailing text. The `Invalid` and `#` checks and the binary32 rounding are original code | X; grammar on glibc `strtod` |
+| (d) REQ-010 | Encoder and decoder agree with the formula; the 495 value texts are `n/d` | X; display surface and out-of-range meaning U |
+
+Evidence: [x2-transport-v1](../../analysis/ableton-live-12.4.3/r2/x2-transport-v1/manifest.json),
+regenerated by `sh run.sh` (about 15 s). It contains:
+
+- `results/writer.json`, `parse.json` and `meter.json`, byte-stable across reruns;
+- `raw/runs.jsonl`, with the argv, stdout, stderr and gdb script of all 412 processes;
+- `addresses.json`, with every function, how it was matched and its corpus record SHA-256;
+- `imports.txt`, `x86-disasm.txt` and `summary.txt`, and the scripts.
+
+### Method
+
+- **Slice and loader.** The slice is the X1 slice (`1bae9a97…be999b0`). The loader is a
+  copy of [tools/xexec](../../tools/xexec/xexec.c) in the evidence directory, with
+  three changes. `_strtod` is bound to glibc `strtod`; the process never calls
+  `setlocale`, so the locale is C. A `mk` command builds a buffer without passing it.
+  A `ptrs:` argument builds a buffer of pointers, so one buffer can point to another.
+  The built loader is `/var/tmp/sound-analysis/xexec/xexec-x2-transport`.
+- **Substituted libraries.** glibc 2.39 replaces Apple's `log10`, `vsnprintf_l` (under
+  the C locale) and `strtod`. The integer path runs only original code, `from_chars`
+  included.
+- **Reader setup.** The converter `0x10151b630` takes a node and a (pointer, length)
+  text. It asks the node's vtable slot +0x28 for the base type and reads it with
+  `0x1011ec760` (`return *p`).
+  - The fake node is {`0x106a4b178`, pointer to the type id}. At `0x106a4b178` + 0x28
+    the slice holds `0x103c2c670`, a `mov rax,[rdi+8]` getter, so no code is stubbed.
+  - `SetValue<T>` is reached by tail jumps through the stubs `0x105a4d446` (bool),
+    `0x105a4d44c` (double), `0x105a4d452` (float) and `0x105a4d458` (int). gdb stops
+    there, prints the value register and returns, so the value holder is never built.
+  - A refusal shows as the trap on `___cxa_allocate_exception`. The throw itself, and
+    the catch, did not run.
+- **Writer setup.** The writers `0x10150f6a0` (float) and `0x10150f7a0` (double)
+  take the value and a stream. The stream's fake vtable sends slot +0x30 (a Live
+  string) and slot +0x38 (a C string) to two unrelated entries, where gdb prints the
+  text and returns. The sweep calls the formatters `0x10142b6c0` and `0x10142b980`
+  directly, 100 values per process.
+- **Meter setup.** The encoder, decoder and list builder are pure apart from
+  allocation and the list's static guard. They were called directly.
+
+### Function matching
+
+| Role | x86_64 | arm64 | How matched |
+| --- | --- | --- | --- |
+| Float / double attribute writer | `0x10150f6a0` / `0x10150f7a0` | `0x101520c70` / `0x101520dbc` | Sole references to `#%8.8X` / `#%16.16llX`; same branches |
+| Number text P = 9 / 17 | `0x10142b6c0` / `0x10142b980` | `0x101431584` / `0x101431788` | X1 |
+| Attribute text converter | `0x10151b630` | `0x10152bfb8` | 5th of the 10 call sites of the int parser in each slice; same type switch (0x10–0x19), same `true`/`false`/`0`, `Invalid`, `#hex` and `strtod` structure |
+| Int parser, `from_chars` | `0x100375650`, `0x100375790` | `0x1002fd908`, `0x1002fda78` | X1 |
+| Meter encoder | `0x101ae7a40` | `0x101abea70` | n > 0, d − 1 < 16, popcount(d) = 1, 99·log2(d) + n − 1, else INT_MIN; called by the time-signature init `0x102829920` (arm64 `0x1026f7420`) |
+| Meter decoder | `0x101ae7a00` | `0x101abea38` | The two functions with both `code % 99` and `code / 99` next to the encoder |
+| Meter list, entry text | `0x102812bf0`, `0x1028127e0` | `0x1026e10a8`, `0x1026e0c6c` | Callee of the time-signature init; loops 5 × 99; text is int, `/`, int |
+
+### Number text on save (a, b)
+
+- **Sweep.** The sweep covers each binary64 value within ±40 steps of the double
+  nearest 10ⁿ, for n = −30 to 22 and ten larger |n|. It adds every binary32 value
+  within ±8 steps of each power of ten from 1e−45 to 1e38, the sign mirrors of some,
+  and tie probes: 6,539 values. Each X text was compared with three models of
+  REQ-011:
+  - "glibc": k from glibc's `log10`. It agrees with X for 6,539 of 6,539, as it must,
+    because X called the same `log10`.
+  - "cr": k from the correctly rounded binary64 log10, computed in 80-digit decimal.
+    It agrees with X for 6,528. The 11 others lie 0.495 to 0.556 spacings from an
+    integer, where glibc's `log10` is not correctly rounded. It is not correctly
+    rounded at 108 inputs in all; 97 of them do not change the text.
+  - "exact": k from the exact logarithm, as r2 is worded. It agrees with X for 5,714.
+    The 825 others are all binary64 values just above 10ⁿ (n = 1 to 15) or just below
+    10⁻ⁿ, whose exact logarithm lies within 0.56 spacings of the integer.
+  The binary32 values lie at least 22,008 binary64 spacings from an integer, apart
+  from exact powers of ten, so the 32-bit text never depends on L's rounding.
+- **Examples.** The doubles nearest 1e−6 and 1e−14 lie below those powers, so the
+  nearest double to 10⁻ⁿ is itself affected: 0.000001 → `0.00000099999999999999995`,
+  1e−14 → `0.00000000000001`. Further examples are in REQ-011.
+- **Whole writer.** Through the attribute writers:
+
+  | Value | Double field | Float field |
+  | --- | --- | --- |
+  | +0 / −0 | `0` / `-0` | `0` / `-0` |
+  | Largest finite | `Invalid` | `Invalid` |
+  | Most negative finite | its 309 digits | `-340282346638528859811704183484516925440` |
+  | +∞ / −∞ | `#7FF0000000000000` / `#FFF0000000000000` | `#7F800000` / `#FF800000` |
+  | NaN / −NaN | `#7FF8000000000000` / `#FFF8000000000000` | `#7FC00000` / `#FFC00000` |
+
+  The 16 case values (4.5, 0.3, 121.2, 93.3333333 and the new REQ-011 cases) give the
+  texts in the spec.
+- **Ties.** Exact decimal ties round to even under glibc: 1 + 2⁻¹⁷ →
+  `1.0000076293945312`, tempo 120.0078125 → `120.007812`.
+- **Static arm64 comparison** (n1-0007 dossiers, corpus records in `addresses.json`).
+  Both slices skip to precision 8 or 16 on `x == 0`, which is true for −0, so the
+  sign reaches `%.*lf`. Both choose floor or ceiling by L < 0 (`fcsel …,mi` against
+  `cmpltsd`) and truncate (`fcvtzs` / `cvttsd2si`). The writers test finiteness, then
+  equality with the positive largest value, in the same order. There is no fused or
+  extended-precision step. Possible slice differences are only Apple's `log10` and
+  `vsnprintf_l` builds.
+
+### Integer and number text (c)
+
+- **Integer reader.** The parser and the converter ran on 72 texts and agreed on
+  every one. The rule in REQ-006 r3 reproduces all 72.
+  - The window passed to `from_chars` is text[start, start + min(len − start, len − t)],
+    where start is after the leading spaces and `+` and t counts the trailing spaces.
+    With leading spaces or `+`, it keeps at least one trailing space, and
+    `from_chars` stops there.
+  - `from_chars` takes one optional `-`, digits, and int32 range. The 63-character
+    limit counts the `-`.
+  - Arm64 computes the same window (`csel` at `0x1002fd9a4`) and limit (`cmp x11,#0x3f`).
+- **Number reader** (types 0x12, 0x17; 133 texts).
+  - Original code, no library involved: the converter compares `Invalid` by length 7
+    and content. It accepts `#` and 8 or 16 hex digits of either case (mask
+    `0x3f0000003f` in both slices) and swaps them to most-significant-first. Any
+    other text goes to `strtod`, and the converter refuses it when nothing is
+    consumed. The binary32 result is `cvtsd2ss` (arm64 `fcvt s0,d0`), so
+    `3.4028236e38` and `1e39` become +∞.
+  - The rest is glibc's `strtod` grammar. It accepts leading spaces, tabs and line
+    feeds, a sign, trailing text, hex floats, `inf`, `infinity` and `nan`, so ` 4.5 `
+    and ` +4.5 ` load 4.5. It refuses `- 4.5`, `+-4.5`, `--4.5`, `+` and `-`.
+  - The number reader therefore does not refuse the padded and signed-padded
+    spellings that the integer reader refuses.
+- **Booleans** (13 texts) agree with REQ-003.
+
+### Meter codes and texts (d)
+
+- **Encoder.** For all 495 valid pairs, the code is (n − 1) + 99·log2(d). Of 160
+  other pairs, a denominator outside {1, 2, 4, 8, 16}, or n ≤ 0, gives INT_MIN. A
+  numerator above 99 is not checked: 100/4 gives 297, the code of 1/8, and
+  2147483647/2 wraps.
+- **Decoder.** For c ≥ 0 it gives (c mod 99 + 1, 1 << (⌊c/99⌋ mod 32)), so 495 gives
+  1/32 and 3069 gives a denominator of INT_MIN. For c < 0 it gives (INT_MIN, INT_MIN).
+  On 0–494 it inverts the encoder.
+- **List.** The list builder fills a vector of 495 entries (capacity 512) whose entry
+  c is `n/d` for decode(c).
+- **Slices.** The arm64 encoder (n1-0008 disassembly) uses `cnt`/`uaddlv` for the
+  popcount, `clz` and an integer `madd`. The decoder and list builder agree in the
+  corpus pseudocode. All of it is integer arithmetic.
+- **Not shown.** Whether a loaded code outside 0–494 ever reaches the decoder, and
+  which UI shows the list texts. PRB-N1-06 stays U for the effective meter.
+
+### Limits
+
+- **Scope.** X shows what these x86_64 functions compute with this setup. The open
+  and save paths, the catch of a refusal and the UI are static or unknown.
+- **Slices and libraries.** arm64 equivalence is inferred from the comparisons
+  above. The library-dependent results are the last bit of `log10` near half a
+  spacing, exact ties, and the `strtod` grammar for signs, white space and special
+  forms.
+- **Missing counts.** Processes that end at the exception trap print no
+  import-usage lines, so the counts in `parse.json` cover accepted texts only.
+- **Loader limit.** At most 256 calls per process (`rets[256]` in the loader); the
+  script stays below it.
 
 ## Phase 4 probes
 
@@ -251,7 +423,7 @@ a stop condition.
 | PRB-N1-03 | Effective and re-saved values for negative or small loop values, negative position, tempo 5 and 2000 |
 | PRB-N1-04 | Time signature: `Manual` versus envelope; whether a loaded 6/8 survives |
 | PRB-N1-05 | Tempo: `Manual` versus envelope; an enabled scene tempo at load |
-| PRB-N1-06 | Time-signature codes 495, −1 and `201.0` |
+| PRB-N1-06 | Time-signature codes 495, −1 and `201.0`. Parser outcomes, encoder, decoder and list texts settled by X2; the effective meter stays open |
 | PRB-N1-07 | A real 12.4.3 save: number text, child order, KeyMidi omission, envelopes, SchemaChangeCount |
 | PRB-N1-08 | Duplicate child, unknown child and unknown attribute outcomes |
 

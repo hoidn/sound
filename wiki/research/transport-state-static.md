@@ -2,7 +2,7 @@
 id: RESEARCH-TRANSPORT-STATE-STATIC
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -367,6 +367,17 @@ FEAT-PERSISTENCE.
 T-09 is superseded by [REQ-TRANSPORT-STATE-011](../specs/transport-state.md#req-transport-state-011--number-text-on-save):
 the native writer uses fixed precision, and 4,803 shipped values contradict the
 `%.9g` reading.
+
+Correction notes, 2026-10-18: extracted execution of the x86_64 code
+([X2 results](transport-state-native.md#extracted-execution-results-x2-2026-10-18)) settles three
+items.
+
+- H-TS (T-05) is confirmed. The original encoder and decoder agree with
+  (n − 1) + 99·log2(d) for all 495 valid pairs, and the value list texts are `n/d`.
+- The time-signature code's malformed-input unknowns below are settled by
+  REQ-TRANSPORT-STATE-006 r3.
+- The writer's precision rule takes k from the binary64 `log10` result, which differs
+  from the exact logarithm next to powers of ten (REQ-TRANSPORT-STATE-011 r3).
 
 Statically derived fixture expectations (document values only, no behavior):
 `DefaultLiveSet.als` → `false`/`8`/`16`/`0`, tempo `120`, code `201`; `Quick

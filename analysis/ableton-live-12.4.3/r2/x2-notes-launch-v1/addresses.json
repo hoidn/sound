@@ -1,0 +1,168 @@
+{
+ "slice": "/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64",
+ "image_base": "0x100000000",
+ "functions": [
+  {
+   "x86": "0x102a2a7f0",
+   "arm64": "0x1028e2c80",
+   "role": "AMidiNoteEvent post-load value limits",
+   "how": "slot +0xd0 of the AMidiNoteEvent vtable in both slices (x86 0x106d6ab58 stored by the ctor 0x102a2a660; arm64 0x1068256e0); same fields +0x38/+0x40/+0x48/+0x4c and constants 127, 1, DBL_MAX, (127, 1)"
+  },
+  {
+   "x86": "0x102a2a9b0",
+   "arm64": "0x1028e2e24",
+   "role": "note copy into the in-memory note with Time/Duration grid rounding",
+   "how": "slot +0 of the translator vtable (x86 0x106d6ad10, arm64 0x106825898); same sentinel table, h, 0.5, 3843840 (x86 0x105b3eb00/0x105b3eac0/0x105a57808/0x105b3eac8 = arm64 0x1055d9680 and immediates)"
+  },
+  {
+   "x86": "0x102a2a250",
+   "arm64": "0x1028e26c0",
+   "role": "AMidiNoteEvent member registration (setup reference only)",
+   "how": "registers mTime +0x30, mDuration +0x38, mVelocity +0x40, mVelocityDeviation +0x44, mOffVelocity +0x48, mProbability +0x4c, mIsEnabled +0x50, mNoteId +0x58 (x86 pseudocode); only x86 function naming \"OffVelocity\" next to the note vtables"
+  },
+  {
+   "x86": "0x1026ede60",
+   "arm64": "0x1025c7a0c",
+   "role": "per-note event copy with TimeOffset grid rounding",
+   "how": "slot +0 of the APerNoteEvent translator vtable 0x106d24b48 (ctor 0x1026edc20; registration 0x1026ed900 names mTimeOffset +0x30 ... mCurveControl2Y +0x58); same rounding sequence and constants"
+  },
+  {
+   "x86": "0x10150f7a0",
+   "arm64": "0x101520dbc",
+   "role": "Double member text writer (static reference only)",
+   "how": "sole x86 reference to \"#%16.16llX\"; DBL_MAX -> \"Invalid\"; finite -> 0x10142b960 -> 0x10142b980"
+  },
+  {
+   "x86": "0x10150f6a0",
+   "arm64": "0x101520c70",
+   "role": "Float member text writer (static reference only)",
+   "how": "sole x86 reference to \"#%8.8X\"; finite -> 0x10142b6a0 -> P = 9 writer"
+  },
+  {
+   "x86": "0x10142b980",
+   "arm64": "0x101431788",
+   "role": "writer text P = 17",
+   "how": "X1 match"
+  },
+  {
+   "x86": "0x10142b6c0",
+   "arm64": "0x101431584",
+   "role": "writer text P = 9",
+   "how": "X1 match"
+  },
+  {
+   "x86": "0x1029ed3b0",
+   "arm64": "0x1028aca40",
+   "role": "KeyTrack MidiKey getter (returns int +0x40)",
+   "how": "called by the key-map rebuild x86 0x102a40980 = arm64 0x1028f5f74 (first call of the AMidiNotes post-load x86 0x102a40180 = arm64 0x1028f5864, sole x86 reference to \"Note IDs are not unique\")"
+  },
+  {
+   "x86": "0x102a40980",
+   "arm64": "0x1028f5f74",
+   "role": "key-map rebuild (static only)",
+   "how": "cltq; mov %r13,(%rbx,%rax,8) with rbx = this+0x28 = arm64 str x23,[x19,w0,SXTW #3]; no bound check"
+  },
+  {
+   "x86": "0x102a3fce0",
+   "arm64": "0x1028f5420",
+   "role": "key-map store/clear (static only)",
+   "how": "two getter calls each, stores at this+0x28+8*key without bound check in both"
+  },
+  {
+   "x86": "0x101ad2ef0",
+   "arm64": "0x101aaae44",
+   "role": "grid length (signature, global value q)",
+   "how": "switch on q-1 <= 12 with the same cases (8/4/2/1 bar, 2, 4/3, 1, 2/3, 1/2, 1/3, 1/4, 1/6, 1/8) and the same lattice rounding of the bar; callers include the clip grid x86 0x1025612b0 = arm64 0x102442998"
+  },
+  {
+   "x86": "0x1025612b0",
+   "arm64": "0x102442998",
+   "role": "clip grid (static only)",
+   "how": "enum at [clip+0x258] via the enum getter, signature [clip+0x1d8] via 0x102815210 (= arm64 0x1026e3698, cvttss2si = fcvtzs), grid(sig, k-1); else song grid or -1.0 (0x105b35858)"
+  },
+  {
+   "x86": "0x101af9eb0",
+   "arm64": "0x101ad0130",
+   "role": "fire/boundary computation (static only)",
+   "how": "sole caller of the grid-choice function x86 0x101af9d50 = arm64 0x101acffa4 (sole caller 0x101ad0130); same inline lattice rounding of the current time [+0x70] and call of the boundary helper with mode 1"
+  },
+  {
+   "x86": "0x101ae8280",
+   "arm64": "0x101abf294",
+   "role": "boundary helper: anchor max([entry+8], 0), then lattice helper",
+   "how": "called from 0x101afa59b with rdi = obj+0x38, esi = 1 exactly where arm64 0x101ad07c8 calls 0x101abf294; maxsd with 0 (arm64 fmaxnm), tail jump to the lattice helper"
+  },
+  {
+   "x86": "0x1011999d0",
+   "arm64": "0x1011be6c8",
+   "role": "lattice helper (mode 0 round, 1 ceil, 2 floor, other none)",
+   "how": "tail target of the boundary helper; same mode tests, g == 0 skip, then the grid rounding"
+  },
+  {
+   "x86": "0x101556330",
+   "arm64": "0x1015661b8",
+   "role": "ARemoteableEnum value getter",
+   "how": "called by both clip grid functions on [clip+0x258]; both return 0 for a stored -99"
+  },
+  {
+   "x86": "0x10262a930",
+   "arm64": "0x1025044b4",
+   "role": "AFollowAction post-load (chance rescaling)",
+   "how": "slot +0xd0 of the AFollowAction vtable (x86 0x106d0dc08 stored by the ctor 0x10262b4b0, found through the symbolized CallMemberFunc<&AFollowAction::...> pointers; arm64 0x1067c8830); same members +0xf0, +0x108, +0x120"
+  },
+  {
+   "x86": "0x10262b4b0",
+   "arm64": "0x102505030",
+   "role": "AFollowAction ctor (static reference; not run: needs the class registries)",
+   "how": "stores vtable 0x106d0dc08, builds FollowTime/IsLinked/LoopIterations/A/B/chances/jump indices with the same values as arm64"
+  },
+  {
+   "x86": "0x10262bc20",
+   "arm64": "0x102505724",
+   "role": "follow-action member builder (static reference)",
+   "how": "label list No Action ... Jump; UserFloat init (0, 100, default) and (-1, 8388608, 1)"
+  },
+  {
+   "x86": "0x102630f80",
+   "arm64": null,
+   "role": "CallMemberFunc<&AFollowAction::FollowChanceController> (static only)",
+   "how": "symbol name in the x86 corpus; rounds the value (roundf) and sets the other chance to 100 - it"
+  },
+  {
+   "x86": "0x102630f60",
+   "arm64": null,
+   "role": "CallMemberFunc<&AFollowAction::FollowTimeController> (static only)",
+   "how": "symbol name in the x86 corpus; max(0.25, v), then the double setter"
+  },
+  {
+   "x86": "0x101564e20",
+   "arm64": "0x10157432c",
+   "role": "UserFloat init (bounds, mapping, default, callback)",
+   "how": "called by the member builder with (0, 100, default) as arm64 0x102505724 calls 0x10157432c"
+  },
+  {
+   "x86": "0x101565360",
+   "arm64": "0x10157478c",
+   "role": "UserFloat vtable +0x280 setter",
+   "how": "slot +0x280 of the UserFloat vtable (x86 0x106bc35b0 from factory 0x101564c00; arm64 0x106680438 from 0x1015740f0); both map min and max through [+0x78] slot +0x30 and clamp"
+  },
+  {
+   "x86": "0x101566480",
+   "arm64": null,
+   "role": "value-mapping ctor used by the AFollowAction ctor for the chances",
+   "how": "called by 0x10262b4b0 as (0, 100, 1, 1, obj); slot +0x30 0x1015665a0 returns x unchanged when its (+0x28, +0x2c) equal the bounds passed"
+  },
+  {
+   "x86": "0x101555850",
+   "arm64": "0x10156580c",
+   "role": "ARemoteableDouble post-load: grid rounding when flag +0x70",
+   "how": "slot +0xd0 of the ARemoteableDouble vtable (x86 0x106bc07b0 from 0x101555070; arm64 0x10667d7e8)"
+  },
+  {
+   "x86": "0x101555660",
+   "arm64": "0x101565624",
+   "role": "ARemoteableDouble set-quantize flag (static reference)",
+   "how": "AFollowAction ctor calls it with (FollowTime, 1, 1) in both slices"
+  }
+ ]
+}

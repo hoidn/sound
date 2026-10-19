@@ -1963,3 +1963,29 @@ The colour parse lives in the index helper and was not run. Findings:
   recorded as a limit.
 
 The page lists the probes and questions this route can settle.
+
+## [2026-10-18] analysis | X2: open clauses settled by extracted execution
+
+Five agents used the [harness](research/extracted-execution.md) to run the
+original x86_64 functions that decide open clauses. Each revised its specs. The
+evidence is in `analysis/ableton-live-12.4.3/r2/x2-*`, each directory with
+`run.sh` and a manifest.
+
+| Topic | Spec revision | Settled (X) | Errors corrected | Still open |
+| --- | --- | --- | --- | --- |
+| Mixer | [mixer-values](specs/mixer-values.md) r3 | Fader curves both ways (exact round trip), pan law, seven crossfade curves, `On`/`Off` | Model rounding in `derive_curves.py` | Engine-port values (Q-019) |
+| MIDI | [midi-user-mapping](specs/midi-user-mapping.md) r5 | Pick-Up and Value Scaling takeover, reversed ranges, first 14-bit pair; 34 X cases | 1e-6 tolerance replaced; reversed-range takeover formula | Master-volume display, PRB-N7-04 and 05 |
+| Transport | [transport-state](specs/transport-state.md) r3 | REQ-011 rule, negative zero, REQ-006 integer spellings, meter codes | REQ-011 next to powers of ten | REQ-009, REQ-012; Apple's `log10` near half a spacing |
+| Notes | [midi-note-storage](specs/midi-note-storage.md) r3 | Value limits, time-grid rounding, saved number text | None; no MidiKey guard exists, so REQ-011 is permanently excluded | Re-sorting, list adjustment |
+| Clip launch | [clip-launch](specs/clip-launch.md) r3 | Grid and boundary arithmetic, chance rescaling and limits, follow-time rounding | REQ-016 (stored −99 launches as Global), REQ-017 (triplet grid lines) | Scheduler call (A1), near-boundary offset |
+
+Harness defect: the loader's 256-slot return array had no bounds check. It now
+stops with an error at the 257th call in one process. The X1 runs and four of
+the five X2 sets stayed under the limit. The MIDI set went over it in ten
+processes; those were re-run, and no value changed. The harness page also
+corrects its claim that glibc's `log10` is correctly rounded: it is not for 108
+of 6,539 inputs.
+
+transport-state-v2, which corrects released REQ-011, is staged and under
+separate review. Automation and warp work is still running. The question
+register, spec index, feature map and coverage are updated.

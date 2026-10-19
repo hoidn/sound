@@ -2,7 +2,7 @@
 id: SPEC-MIDI-NOTE-STORAGE
 type: spec
 status: draft
-revision: 2
+revision: 3
 updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
@@ -24,11 +24,13 @@ how the clip's notes are stored in the document and how they are read and writte
 - the order and number text a save writes.
 
 Every requirement is a **proposed contract**. Each clause is documented by shipped files,
-supported by a static derivation, or explicitly unknown. Nothing was run against Live.
+supported by a static derivation, settled by extracted execution, or explicitly unknown. Nothing
+was run against Live.
 [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a static-first draft. Under
 [ADR 0003](../decisions/adr-0003-no-reference-execution.md) nothing will be run against Live:
-no reference observation is available, so a U clause is settled only by a static route or
-stays U.
+no reference observation is available, so a U clause is settled only by a static route, by
+extracted execution of the shipped x86_64 code, or stays U. Revision 3 adds the X results of
+packet X2 for the value limits, the time grid and the saved number text (appendix).
 The target is documents with `MinorVersion="12.0_12402"`. The gzip and XML envelope belongs
 to [SPEC-ALS-CONTAINER](als-container.md). Value text follows
 [SPEC-TRANSPORT-STATE](transport-state.md) REQ-003, 004, 005 and 011. Both are dependencies.
@@ -40,9 +42,10 @@ All examples are fragments of decoded XML.
 | --- | --- |
 | D | Documented: present in the shipped schema for `12.0_12402` or in shipped documents. Those documents were written by 12.4d1 or older, not by 12.4.3 |
 | S | Static derivation from the 12.4.3 executable; not an observed run |
+| X | Extracted execution: the shipped x86_64 function was run on the stated inputs in the harness of [ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code). It shows what the function computes, not that Live reaches it with those inputs; the path is S and is stated. The arm64 release slice is matched by static comparison (appendix) |
 | U | Unknown; no expected result. A PRB ID names the Phase 4 probe that would have settled it. No probe will run (ADR 0003); where a static route could still settle a clause, the clause names it |
 
-Only D and S clauses may enter a release. U clauses block the behavior they name.
+Only D, S and X clauses may enter a release. U clauses block the behavior they name.
 
 Static clauses rest on these assumptions. A1 is now established statically. A2 and A3 remain
 stated assumptions, which the review accepted as such (RVN-11):
@@ -159,31 +162,44 @@ fixtures avoid them.
 
 ### REQ-MIDI-NOTE-STORAGE-005 — value normalization on load
 
-- **S.** After a note's attributes are read (A1, established):
+- **X (path S, A1 established).** After a note's attributes are read:
   - `Velocity` below 1 becomes 1, and above 127 becomes 127;
   - `OffVelocity` below 0 becomes 0, and above 127 becomes 127;
   - `Probability` below 0 becomes 0, and above 1 becomes 1;
   - a `Duration` below 0, or equal to the largest finite 64-bit value, becomes 0.
 
   A value set to 0 by these rules is positive zero. These values do not make the document
-  refused.
-- **S.** `Time`, `VelocityDeviation` and `NoteId` are not range-checked. A negative `Time` is
+  refused (S). The limits are exact at the bounds: binary32 127.00000762939453 (text
+  `127.00001`) becomes 127, and 0.9999999403953552 (text `0.99999994`) becomes 1.
+- **X.** Negative zero: a `Velocity` of −0 becomes 1. An `OffVelocity` or `Probability` of −0 is
+  kept as −0, and a `Duration` of −0 is kept by this step and becomes +0 in REQ-006.
+- **X.** `Time`, `VelocityDeviation` and `NoteId` are not range-checked. A negative `Time` is
   kept.
-- **S.** A fractional `Velocity` is kept, for example 80.578949.
-- Excluded: NaN and infinite values (the rules above do not change NaN).
+- **X.** A fractional `Velocity` is kept, for example 80.578949.
+- Excluded: NaN and infinite values. (X, for the record only: NaN is kept by every rule; an
+  infinite `Velocity`, `OffVelocity` or `Probability` is limited like a finite value; a `Duration`
+  of −∞ becomes 0 and one of +∞ is kept.)
 
 ### REQ-MIDI-NOTE-STORAGE-006 — time grid
 
-- **S.** On load, each note's `Time` and `Duration` (after REQ-005) and each per-note event's
-  `TimeOffset` are rounded to a grid of 1/3,843,840 beat, half away from zero. In binary64
+- **X (path S).** On load, each note's `Time` and `Duration` (after REQ-005) and each per-note
+  event's `TimeOffset` are rounded to a grid of 1/3,843,840 beat, half away from zero. In binary64
   arithmetic, with each operation rounded:
   - let h = 2.6015651015651016e-07 (the binary64 value of 1/3,843,840);
   - let s = +1 when x ≥ 0 (including −0), else −1;
   - the stored value is s × (⌊|x + s × h/2| × 3,843,840⌋ / 3,843,840).
-- **S.** These values are not rounded: ±1.7976931348623155e308, the largest finite value
+
+  The formula, not exact rounding, defines the result next to a halfway point. A value one
+  binary64 step below the nearest binary64 value to h/2, 1.3007825507825505e-07 (text
+  `0.00000013007825507825505`), is stored as h; exact halves-away rounding would give 0.
+  Of 70 values within three binary64 steps of a halfway point, 12 differ in this way (X).
+- **X.** These values are not rounded: ±1.7976931348623155e308, the largest finite value
   1.7976931348623157e308 (text `Invalid`), and +∞.
-- **S.** Values already on the grid are unchanged. Every shipped value is on the grid.
-- **S.** Examples:
+- **X.** A `Time` or `Duration` of −0 is stored as +0. A value that rounds to zero from below,
+  such as −0.0000001, is stored as −0.
+- **S.** Values already on the grid are unchanged; every on-grid value run was (X). Every
+  shipped value is on the grid.
+- **X.** Examples:
 
   | Input | Stored and saved |
   | --- | --- |
@@ -192,9 +208,9 @@ fixtures avoid them.
   | −0.0000002 | `-0.000000260156510156510156` (−1/3,843,840) |
   | 0.00000013 | `0` |
   | 0.000000131 | `0.000000260156510156510156` |
+  | −0.0000001 | `-0` (negative zero, REQ-016) |
+  | 0.00000013007825507825505 | `0.000000260156510156510156` |
 
-- **U.** The saved text of a value that rounds to negative zero, such as −0.0000001.
-  REQ-TRANSPORT-STATE-011 leaves negative zero unknown.
 - **U.** What a note whose time was not rounded does after load, including whether it is
   kept.
 
@@ -262,8 +278,14 @@ fixtures avoid them.
   The reference handles them without a range or duplicate check, so the outcome may be
   memory corruption rather than defined behavior. No reference outcome may be treated as
   required. See [Q-018](../questions.md#q-018-midi-note-key-range-and-ordering-after-load).
-  No reference observation is available (ADR 0003). A static trace of the key-map store's
-  callers for a range guard is the remaining route.
+  No reference observation is available (ADR 0003).
+- **S (both slices, X for the getter).** Revision 3 traced the route this clause named. The
+  `MidiKey` getter returns the stored value unchanged (X: 128, 129, −1 and −5 are returned as
+  stored). Both key-map stores in both slices then write at map slot 8 × key with a sign-extended
+  index and no bound check. The 128-slot map ends just before the object's KeyTrack list
+  pointer, so key 129 overwrites that pointer, and −5 the object's vtable pointer. No range
+  guard exists on the load path, so the exclusion is permanent: these inputs have no defined
+  reference behavior.
 
 ### REQ-MIDI-NOTE-STORAGE-012 — list ids and empty KeyTracks
 
@@ -361,7 +383,7 @@ fixtures avoid them.
   - `IsEnabled` is written `false` (true is omitted, REQ-004).
 - **D.** All 2,054,618 shipped note and event numbers agree with this rule, for example
   `Time="0.359923670079920099"`.
-- Examples:
+- **X (path S).** Examples, from the writers run on the held values:
 
   | Value | Saved text |
   | --- | --- |
@@ -369,8 +391,10 @@ fixtures avoid them.
   | Velocity 33.3 | `33.2999992` |
   | Velocity 80.578949 | `80.578949` |
   | Curve control 0.2 | `0.200000000000000011` |
+  | 64-bit or 32-bit −0 | `-0` |
 
-- **U.** Negative zero, as in REQ-006.
+- **S (both slices).** The largest finite 64-bit or 32-bit value is written `Invalid`, and a
+  non-finite value as `#` with 16 or 8 hexadecimal digits, without the number rule.
 
 ### REQ-MIDI-NOTE-STORAGE-017 — refusal presentation
 
@@ -482,9 +506,10 @@ group shape is unknown, so they are marked "blocked". No reference observation w
 (ADR 0003). A static derivation of the shape (REQ-015) would unblock them.
 
 **Case kinds.** P positive, N negative (refused), B boundary, M missing input, S save text,
-U unresolved. All expected results are static derivations or shipped-document facts. None
-has been run, and none will be (ADR 0003). Unless stated otherwise, the other values are
-unchanged from F0 or F1.
+U unresolved. Expected results are static derivations, shipped-document facts or, for the
+value limits, the time grid and the number text, X results of the original x86_64 functions
+(appendix, "Cases backed by X"). No case has been run against Live, and none will be
+(ADR 0003). Unless stated otherwise, the other values are unchanged from F0 or F1.
 
 | Case ID | Requirement | Kind | Setup (edit of F0 or F1) | Expected result | Fixture |
 | --- | --- | --- | --- | --- | --- |
@@ -510,7 +535,7 @@ unchanged from F0 or F1.
 | MNS-020 | 006, 016 | B | n1 `Time="0.123456789" Duration="0.3333333333"` | Saved n1 `Time="0.123456751581751581" Duration="0.333333333333333315"` | B0+F0 |
 | MNS-021 | 006 | B | n1 `Time="-0.0000002"` | Saved n1 `Time="-0.000000260156510156510156"` | B0+F0 |
 | MNS-022 | 006 | B | n1 `Time="0.00000013"`, n3 `Duration="0.000000131"` | Saved n1 `Time="0"`; n3 `Duration="0.000000260156510156510156"` | B0+F0 |
-| MNS-023 | 006 | U | n1 `Time="-0.0000001"` | Rounds to negative zero; saved text unresolved | B0+F0 |
+| MNS-023 | 006, 016 | B | n1 `Time="-0.0000001"` | Saved n1 `Time="-0"` | B0+F0 |
 | MNS-024 | 006 | U | n2 `Time="Invalid"` | Not rounded; whether n2 is kept and its saved text unresolved | B0+F0 |
 | MNS-025 | 007 | P | n2 `Time="20"` (outside the loop), n3 `Duration="0"` | Saved n2 `Time="20"`; n3 `Duration="0"` | B0+F0 |
 | MNS-026 | 008 | N | n3 `NoteId="2"` (repeat in another key) | Refused | B0+F0 |
@@ -559,6 +584,10 @@ unchanged from F0 or F1.
 | MNS-069 | 006, 013, 016 | B | e1 `TimeOffset="0.123456789"` | Saved e1 `TimeOffset="0.123456751581751581"`, before e2 | B0+F1 |
 | MNS-070 | 010 | B | n2 `Time="0"`, the same Time as n1 | Loads (not refused); saved n1 and n2 unresolved; no reference observation (ADR 0003) | B0+F0 |
 | MNS-071 | 014 | B | L1 `CC` set to (a) `31`, (b) `33` | Loads; L1 saved with e1 `Value="100"` and e2 `Value="0"` | B0+F1 |
+| MNS-072 | 006, 016 | B | n1 `Time="0.00000013007825507825505"` (one binary64 step below the nearest value to h/2) | Saved n1 `Time="0.000000260156510156510156"` (exact halves-away rounding would give `0`) | B0+F0 |
+| MNS-073 | 005, 016 | B | n1 `OffVelocity="-0"`, n2 `Probability="-0"` | Saved n1 `OffVelocity="-0"`; saved n2 `Probability="-0"` | B0+F0 |
+| MNS-074 | 005, 006, 016 | B | n1 `Velocity="-0"`, n2 `Duration="-0"`, n3 `Time="-0"` | Saved n1 `Velocity="1"`, n2 `Duration="0"`, n3 `Time="0"` | B0+F0 |
+| MNS-075 | 005, 016 | B | n1 `Velocity="127.00001"`, n2 `Velocity="0.99999994"` | Saved Velocity `127`, `1` | B0+F0 |
 
 Cases marked unresolved or blocked must not be graded as passes. The omitted case kinds:
 
@@ -574,8 +603,8 @@ Cases marked unresolved or blocked must not be graded as passes. The omitted cas
 - **Per-note lists at the note's edges:** the untraced adjustment of lists with events at or
   outside the note's span (REQ-014, MNS-053).
 - **Probability groups:** the group XML shape and saved text (REQ-015).
-- **Negative values and other spellings:** negative ids and next ids, negative zero, and the
-  integer spellings of REQ-002.
+- **Negative values and other spellings:** negative ids and next ids, and the integer spellings
+  of REQ-002. Negative zero is settled in revision 3 (REQ-005, 006, 016).
 - **Assumptions:** A1 is established statically (review RVN-01). A2 and A3 remain stated
   assumptions.
 
@@ -638,6 +667,29 @@ records, not d4-0001. The d4-0001 file hashes recorded in revision 1:
 | 016 | `0x10152205c` ✓ (s7-0001): Double `0x101520dbc`, Float `0x101520c70`, Int64 plain, Bool. Rule in REQ-TRANSPORT-STATE-011. `documents.checks` `fmt_ok` 2,054,618 | S; corroborated |
 | 017 | Throws through `0x101488e64` and `0x10148229c`; the top-level catch was not traced | S / U |
 
+**Extracted execution (X2, revision 3).** Evidence:
+[x2-notes-launch-v1](../../analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/manifest.json),
+regenerated by `sh run.sh`: `results/notes.json` (every vector, with the spec formula and exact
+rounding beside the X value), `inputs.json`, `raw/runs.jsonl`, `addresses.json` (matching),
+`slice-compare.txt` (arm64 comparison), `imports.txt` and `summary.txt`. The slice is
+`Live_x86_64.x86_64` (SHA-256 in the manifest). The research page has the method:
+[MIDI note storage, X2 results](../research/midi-note-storage.md#extracted-execution-results-x2-2026-10-18).
+
+| Requirement | x86_64 function run (arm64 counterpart) | Setup and result | Limits |
+| --- | --- | --- | --- |
+| 005 | Post-load limits `0x102a2a7f0` (`0x1028e2c80`): slot +0xd0 of vtable `0x106d6ab58` | Hand-built note objects at the registered offsets (registration `0x102a2a250`: Time +0x30 … NoteId +0x58); 58 vectors outside the near-tie set, including every MNS-014 to 025 value, the bounds, −0, ±∞, NaN and denormals | That the post-load slot runs for a Live Set read is A1 (S). The text parse of each value is not run; the harness passes the binary64 or binary32 value of the text |
+| 006 | Translator slot +0 `0x102a2a9b0` (`0x1028e2e24`), event translator `0x1026ede60` (`0x1025c7a0c`) | Run on the object the limits left (order of REQ-005 then 006); 128 note vectors, including 70 within three binary64 steps of a halfway point, and 9 TimeOffsets. The REQ-006 formula equals X bit for bit for all 137; exact halves-away rounding differs for 12 near-tie values | The copy into the in-memory note is the step that rounds (S); slices equal (no FMA effect: `fmadd` adds an exact product) |
+| 016 | Writer text P = 17 `0x10142b980` and P = 9 `0x10142b6c0` (X1 matches) | The held values of the MNS cases, 0.1, 0.2 and ±0; `-0` for −0 in both widths | That the member writers `0x10150f7a0` and `0x10150f6a0` (arm64 `0x101520dbc`, `0x101520c70`) reach these formatters for a finite value other than the largest is S. Substituted glibc `log10` and `vsnprintf` as in X1 |
+| 011 | `MidiKey` getter `0x1029ed3b0` (`0x1028aca40`) | Returns the stored int for 36, 0, 127, 128, 129, −1, −5 and 2³¹ − 1 | The stores `0x102a40980` and `0x102a3fce0` (arm64 `0x1028f5f74`, `0x1028f5420`) are read statically only |
+
+No import was called by the limits, grid or getter runs. The slice comparison found no
+difference for any input class, including NaN (the x86 Ghidra pseudocode of `0x102a2a7f0` shows
+NaN changed; its disassembly keeps NaN, as X does).
+
+**Cases backed by X.** MNS-014 to 023, 025, 067, 069 and 072 to 075 take their saved values from
+X runs of the limits, the grid rounding and the writers. Their path (read, post-load, copy,
+writer) remains S, and every saved comparison still rests on A2.
+
 **Excluded inheritance (static reading, not a requirement).** The array loader creates one
 note object per KeyTrack and reuses it. The reset touches only three fields. So an omitted
 Time, Duration, Velocity, OffVelocity or NoteId repeats the previous note of the same
@@ -686,9 +738,13 @@ reading.
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from packet S7 (MN-01 to MN-24) plus one verification round (d4-0001). 17 requirements: 4 without unknown parts (003, 004, 005, 008), 12 with D or S clauses and unknown parts, 1 unknown and excluded (011). 60 unexecuted cases: 45 gradable (MNS-036 in part), 6 blocked by the group shape, 9 unresolved |
 | 2 | 2026-10-18 | Applies the staging and review findings of midi-note-storage-v1 ([plan](midi-note-storage-handoff-plan.md#review-outcome), [review](../../handoff/midi-note-storage-v1/REVIEW.md)) and ADR 0003. Applied: RVN-01 (A1 widened to every gated post-read step and established statically); RVN-02 and F10 (the REQ-014 boundary step cited from the review excerpts); RVN-03 (REQ-009 precondition: KeyTracks stored in ascending key order); RVN-04 and F2 (MNS-001 and the comparators no longer cover probability groups or the group `NextId`); RVN-09 and F4 (`Invalid` stated in REQ-002 and REQ-013; MNS-017 and MNS-051 list 002); RVN-11 (A2 restated for both constructions; A3 added); RVN-12 and F1 in part (the release's authored-set construction noted); F3 (plain decimal text for `MidiKey`, `CC`, list `NoteId` and `Id`); F5 (REQ-010 order clause excludes overlap); F6 (list order and event attribute order U and not compared); F7 (signed 64-bit limit; leading zeros counted); F8 (MNS-061 to MNS-071 added); F9 (MNS-003 judges n2 and lists 003); the plan's case disposition (unstated event `Value` 1 in MNS-041 and MNS-046); release alignment (positive zero in REQ-005; REQ-014 in REQ-016). Rejected: copying d4-0001 into the retained run, since the review excerpts carry identical code and this revision edits wiki pages only; F1's PRB-S7-09 extension, since no probe will run (ADR 0003). No change needed: RVN-05 to RVN-08 and RVN-10, which concern only the release package or confirm the draft. Probe wording replaced under ADR 0003. 17 requirements: 4 without unknown parts, 12 with D or S clauses and unknown parts, 1 unknown and excluded (011). 71 unexecuted cases: 56 gradable (MNS-036 and MNS-070 for the outcome only), 6 blocked by the group shape, 9 unresolved |
+| 3 | 2026-10-18 | Extracted execution (packet X2, evidence label X added). REQ-005, 006 and 016 examples become X with an S path; the REQ-006 formula is confirmed bit for bit, including values next to halfway points, where it differs from exact rounding. Negative zero settled: REQ-006's and REQ-016's U clauses become X (`-0`), and REQ-005 states −0 for each value. REQ-011 stays excluded; its static route was traced in both slices and no range guard exists. Errors found: none in the clauses; the x86 pseudocode's NaN reading is wrong, as revision 1 found for arm64. MNS-023 becomes gradable (`-0`); MNS-072 to 075 added. 17 requirements: 5 without unknown parts (003, 004, 005, 008, 016), 11 with D, S or X clauses and unknown parts, 1 unknown and excluded (011). 75 unexecuted cases: 61 gradable (17 backed by X, 44 static or documented; MNS-036 and MNS-070 for the outcome only), 6 blocked by the group shape, 8 unresolved |
 
 Before the 2026-10-18 review, a first release candidate could
 contain the gradable cases of REQ-002 to 009, REQ-014 and REQ-016, under assumptions A1
 and A2.
 
 Released 2026-10-18: [midi-note-storage-v1](../../handoff/midi-note-storage-v1/README.md), 67 cases, approved with narrowing by a separate review agent (partial REQ-001 to 010, 013, 014, 016 only; 011, 012, 015, 017 unreleased). The review findings are on the [handoff plan](midi-note-storage-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1.
+
+Revision 3 adds X evidence and cases MNS-072 to 075, and makes MNS-023 gradable. It is
+unreleased; a later release revision could carry the X-backed cases of REQ-005, 006 and 016.

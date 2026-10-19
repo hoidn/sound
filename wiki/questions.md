@@ -132,6 +132,7 @@ no experimental contradiction has been established yet.
   how an unknown mode token is passed on. Host outcomes remain open as PRB-S4-03/04
   in the [S4 probe batch](research/midi-closure-r2.md#phase-4-probe-batch); the
   [midi-config-v2 candidate](specs/midi-config-v2-handoff-plan.md) excludes them.
+- Progress 2026-10-18 (X2): PRB-S4-04 cannot be settled by extracted execution; it depends on host behavior outside a self-contained function.
 
 ## Q-009 MIDI numerical modes, timing and feedback
 
@@ -158,6 +159,7 @@ no experimental contradiction has been established yet.
   (REQ-005 static value clauses, the crossfader opt-out, MT-01 to 16, 22, 23) is justified but
   not started.
 - Progress 2026-10-18 (r4): midi-config-v3 released (127 cases). [SPEC-MIDI-USER-MAPPING](specs/midi-user-mapping.md) r4 narrows the crossfader exemption to Absolute, states the reversed-range stepped rule, and adds reversed-range takeover as unknown. PRB-N7-01 to 05 will not run (ADR 0003); static or extracted-execution routes remain.
+- Progress 2026-10-18 (X2, r5): Pick-Up and Value Scaling takeover, reversed ranges and the first 14-bit pair are settled by [extracted execution](research/extracted-execution.md) (`r2/x2-midi-v1`); PRB-N7-03 is settled except the preference default. The value tolerance is now max(1e-6, 2⁻²² × max(|min|, |max|)), which holds on both slices. Still open: PRB-N7-04 (classes, threshold check), PRB-N7-05, and the display and setter (PRB-N7-01, PRB-S4-05).
 
 ## Q-010 MIDI discovery, lifecycle and interaction
 
@@ -174,6 +176,7 @@ no experimental contradiction has been established yet.
   Revision 2 adds a routing refinement pending review: a `Send2Knob`*N* without
   a valid `Send1Knob`*N* reaches the strip's first send, contrary to a literal
   reading of the template (D5) and to S4 draft case S4-MIDI-030.
+- Progress 2026-10-18 (X2): another control surface on the same input can empty the previous-value record ([MIDI transforms](research/midi-transforms-native.md)).
 
 ## Q-011 Main Live export capacity and recovery
 
@@ -246,6 +249,7 @@ no experimental contradiction has been established yet.
   both-sides-space, `+`-with-trailing-space and `-` meter spellings and negative zero on
   save unknown. A probe is still needed for TS-010 and for a missing
   `TimeSignature/Manual` (PRB-N1-04 has no such variant).
+- Progress 2026-10-18 (X2, r3): settled by [extracted execution](research/extracted-execution.md) (`r2/x2-transport-v1`): the REQ-006 integer spellings (` +201 `, ` 201 `, `+201 ` refused; `-0`, `-201` accepted; 63-character and int32 limits), negative zero (`-0` written and read), the REQ-011 correction (k from log10 rounded to binary64) and the meter codes (`n/d`). TS-010 is refused. The number parser behaves like C `strtod`. transport-state-v2 is staged to correct the released REQ-011. Still open: REQ-009 effective values, REQ-012, the default when the time signature is missing, which display shows the meter, codes outside 0 to 494, and Apple's `log10` near half a binary64 spacing. The loader's handling of an accepted −201 is also unknown.
 
 ## Q-013 x86_64-only ReWire and MultiF0 paths
 
@@ -332,6 +336,7 @@ no experimental contradiction has been established yet.
   migration step 17, clips with several time-signature entries, and the uninterpreted slot-state
   test behind the clip-grid choice (assumption A1).
 - Progress 2026-10-18 (r2): [SPEC-CLIP-LAUNCH](specs/clip-launch.md) r2 applies the clip-launch-v1 review and drops the REQ-015 to 018 release proposal. New gaps: out-of-range bounded values, the script-side API error text, opening corrections for scenes, the step-406 clip with both forms, the saved scene form, and A7.
+- Progress 2026-10-18 (X2, r3): the grid and boundary arithmetic, the chance rescaling and its 0 to 100 limits (A7; 150/50 gives 75/25) and follow-time rounding are settled by [extracted execution](research/extracted-execution.md) (`r2/x2-notes-launch-v1`). Corrections: a stored −99 is read as 0 and launches as Global (REQ-016). A press exactly on a triplet grid line sometimes launches at the next line (REQ-017; 236 of 720 lines up to beat 64). Whether the scheduler calls this arithmetic (A1) and the near-boundary offset stay unknown, because the offset comes from engine objects that exist only at run time.
 
 ## Q-018 MIDI note key range and ordering after load
 
@@ -348,6 +353,7 @@ no experimental contradiction has been established yet.
   PRB-S7-05 and 06 remain the next action. Also open: an untraced adjustment of per-note lists
   with events at or outside the note span (REQ-014).
 - Progress 2026-10-18 (r2): [SPEC-MIDI-NOTE-STORAGE](specs/midi-note-storage.md) r2 applies the midi-note-storage-v1 review.
+- Progress 2026-10-18 (X2, r3): the range-guard part is closed. Neither slice has a guard, and an out-of-range key corrupts the notes object, so REQ-011 stays permanently excluded. Value limits, time-grid rounding and saved number text are now settled by extracted execution. Re-sorting, the list adjustment and the empty-KeyTrack gate remain open.
 
 ## Q-019 Mixer volume and send values sent to the engine
 
@@ -366,6 +372,7 @@ no experimental contradiction has been established yet.
   [SPEC-MIXER-VALUES](specs/mixer-values.md) appendix; queries retained in
   `analysis/ableton-live-12.4.3/r2/d8-mixer-v1/`.
 - Progress 2026-10-18 (r2): [SPEC-MIXER-VALUES](specs/mixer-values.md) r2 applies the mixer-values-v1 review. New gap: what `EnabledByUser` changes (REQ-003). SPEC-AUTOMATION-ENVELOPES r2: every Float envelope value passes through the same unresolved per-target converter.
+- Progress 2026-10-18 (X2, r3): both fader-curve conversions and their exact round trip, the pan law, the seven crossfade curves and the `On`/`Off` text are settled by [extracted execution](research/extracted-execution.md) (`r2/x2-mixer-v1`). The value that reaches the engine ports depends on callers and state and stays open.
 
 ## Q-020 Automation envelope load robustness
 

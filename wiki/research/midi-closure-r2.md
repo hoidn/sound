@@ -2,7 +2,7 @@
 id: RESEARCH-MIDI-CLOSURE-R2
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-18
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -126,6 +126,15 @@ unverified.
 | PRB-S4-10/11/12 | 008, 009, 011 | Bank navigation, lock, activator; strip ordering; toggle-on-zero, exclusivity, arm-select |
 | PRB-S4-13 | 011e | Mute feedback bytes |
 | PRB-S4-14/15/16 | Lifecycle, teardown, 013h | Reload, held controls at disconnect, file encoding |
+
+Update 2026-10-18 (X2): no probe will run ([ADR 0003](../decisions/adr-0003-no-reference-execution.md)).
+[Extracted execution](midi-transforms-native.md#extracted-execution-results-x2-2026-10-18)
+settles the numeric side of PRB-S4-05, the value transforms and takeover, for
+given parameter details. It does not settle the displayed master volume, because
+no self-contained function decides it. The range and the set path go through the
+volume parameter's own methods, which were not traced. PRB-S4-04 is not
+self-contained either: the token reaches native code through the Python binding.
+Both stay unknown in [spec revision 5](../specs/midi-user-mapping.md).
 
 ## Limitations and next steps
 

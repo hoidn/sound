@@ -1,0 +1,899 @@
+{
+ "schema": "n7-acceptance-cases (MT ids continue MT-01..MT-23)",
+ "target": "Ableton Live 12 Suite 12.4.3",
+ "note": "Every sequence starts from an input just opened, channel 0, CC 20 (MSB) and CC 52 (LSB). Expected values are X results; tolerance = max(1e-6, 2^-22 * max(|min|, |max|)).",
+ "cases": [
+  {
+   "id": "MT-24",
+   "source_run": "TK-02",
+   "label": "X",
+   "title": "Pick-Up: knob above, crossing downward picks up",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 78",
+    "B0 14 64",
+    "B0 14 3C",
+    "B0 14 32"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5,
+    0.4724409580230713,
+    0.3937007784843445
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-25",
+   "source_run": "TK-03",
+   "label": "X",
+   "title": "Pick-Up: jump past the value in one message picks up",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 64"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.787401556968689
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-26",
+   "source_run": "TK-05",
+   "label": "X",
+   "title": "Value Scaling: downward travel",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 78",
+    "B0 14 6E",
+    "B0 14 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.4583333134651184,
+    0.0
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-27",
+   "source_run": "TK-06",
+   "label": "X",
+   "title": "Value Scaling: same data value twice keeps the value",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 0A"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-28",
+   "source_run": "TK-07",
+   "label": "X",
+   "title": "Value Scaling: first message after open keeps the value",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 64"
+   ],
+   "expected_after_each_message": [
+    0.5
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-29",
+   "source_run": "TK-08",
+   "label": "X",
+   "title": "Pick-Up, reversed range (reported min 1, max 0)",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 1.0,
+    "max": 0.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 3F",
+    "B0 14 40",
+    "B0 14 46"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5039370059967041,
+    0.4960629940032959,
+    0.4488188922405243
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-30",
+   "source_run": "TK-09",
+   "label": "X",
+   "title": "Value Scaling, reversed range, target moving down",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 1.0,
+    "max": 0.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 14",
+    "B0 14 1E"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.4572649896144867,
+    0.4145299196243286
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-31",
+   "source_run": "TK-10",
+   "label": "X",
+   "title": "Value Scaling, reversed range, target moving up",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 1.0,
+    "max": 0.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 64",
+    "B0 14 5A"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.550000011920929
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-32",
+   "source_run": "TK-11",
+   "label": "X",
+   "title": "Pick-Up, reversed range: previous target within (max-min)/256 of the value",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 1.0,
+    "max": 0.0,
+    "quantized": false,
+    "value": 0.25
+   },
+   "input": [
+    "B0 14 5F",
+    "B0 14 64"
+   ],
+   "expected_after_each_message": [
+    0.25,
+    0.21259842813014984
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-33",
+   "source_run": "TK-12",
+   "label": "X",
+   "title": "Pick-Up, reversed range (min 3, max -1): just inside the window",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 3.0,
+    "max": -1.0,
+    "quantized": false,
+    "value": 1.06
+   },
+   "input": [
+    "B0 14 28",
+    "B0 14 3C"
+   ],
+   "expected_after_each_message": [
+    1.059999942779541,
+    1.1102361679077148
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-34",
+   "source_run": "TK-13",
+   "label": "X",
+   "title": "14-bit, Pick-Up: first pair after open, target above the value",
+   "map_mode": "Absolute14Bit",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 50",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.6250381469726562
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-35",
+   "source_run": "TK-14",
+   "label": "X",
+   "title": "14-bit, Pick-Up: first pair after open, target below the value",
+   "map_mode": "Absolute14Bit",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 10",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-36",
+   "source_run": "TK-15",
+   "label": "X",
+   "title": "14-bit, Value Scaling: first pair after open, target below the value",
+   "map_mode": "Absolute14Bit",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 10",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.562530517578125
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-37",
+   "source_run": "TK-17",
+   "label": "X",
+   "title": "14-bit, Value Scaling: MSB has a previous value, LSB none",
+   "map_mode": "Absolute14Bit",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 10",
+    "B0 14 60",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5,
+    0.8759992718696594
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-38",
+   "source_run": "TK-18",
+   "label": "X",
+   "title": "14-bit, Value Scaling: LSB has a previous value, MSB none",
+   "map_mode": "Absolute14Bit",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 34 20",
+    "B0 34 00",
+    "B0 14 60"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5,
+    0.9376958608627319
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-39",
+   "source_run": "TK-19",
+   "label": "X",
+   "title": "14-bit, Pick-Up: later pairs use the previous pair",
+   "map_mode": "Absolute14Bit",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 30",
+    "B0 34 00",
+    "B0 14 41",
+    "B0 34 00",
+    "B0 14 50",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5,
+    0.5,
+    0.5078434944152832,
+    0.5078434944152832,
+    0.6250381469726562
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-40",
+   "source_run": "TK-22",
+   "label": "X",
+   "title": "Stepped continuous parameter, Pick-Up: the previous target is rounded",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 3.0,
+    "quantized": true,
+    "value": 1.0
+   },
+   "input": [
+    "B0 14 32",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    1.0,
+    3.0
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-41",
+   "source_run": "TK-23",
+   "label": "X",
+   "title": "Enumerated parameter: never subject to takeover",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "enum",
+    "min": 0.0,
+    "max": 3.0,
+    "quantized": true,
+    "value": 1.0
+   },
+   "input": [
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    3.0
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-42",
+   "source_run": "TK-25",
+   "label": "X",
+   "title": "A previous target of exactly -129 counts as no previous value",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": -129.0,
+    "max": 0.0,
+    "quantized": false,
+    "value": -10.0
+   },
+   "input": [
+    "B0 14 00",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    -10.0,
+    -10.0
+   ],
+   "tolerance": 3.075599670410156e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-43",
+   "source_run": "TK-27",
+   "label": "S-cond",
+   "title": "14-bit on/off: pair/129 compared with thresholds 64..127",
+   "map_mode": "Absolute14Bit",
+   "takeover": "none",
+   "parameter": {
+    "kind": "onoff",
+    "min": 64.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 0.0
+   },
+   "input": [
+    "B0 14 40",
+    "B0 34 00",
+    "B0 14 40",
+    "B0 34 7F",
+    "B0 14 7F",
+    "B0 34 7F"
+   ],
+   "expected_after_each_message": [
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-44",
+   "source_run": "TK-28",
+   "label": "S-cond",
+   "title": "On/off with reversed thresholds (min 127, max 64): result inverted",
+   "map_mode": "Absolute",
+   "takeover": "none",
+   "parameter": {
+    "kind": "onoff",
+    "min": 127.0,
+    "max": 64.0,
+    "quantized": false,
+    "value": 0.0
+   },
+   "input": [
+    "B0 14 3F",
+    "B0 14 40",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-45",
+   "source_run": "TK-29",
+   "label": "X",
+   "title": "Crossfader Absolute14Bit pair (pair receiver has no avoid flag), Pick-Up",
+   "map_mode": "Absolute14Bit",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 1.0,
+    "quantized": false,
+    "value": 0.5
+   },
+   "input": [
+    "B0 14 10",
+    "B0 34 00"
+   ],
+   "expected_after_each_message": [
+    0.5,
+    0.5
+   ],
+   "tolerance": 1e-06,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-46",
+   "source_run": "TK-30",
+   "label": "X",
+   "title": "Wide range 20..999, Absolute, None (slice tolerance)",
+   "map_mode": "Absolute",
+   "takeover": "none",
+   "parameter": {
+    "kind": "continuous",
+    "min": 20.0,
+    "max": 999.0,
+    "quantized": false,
+    "value": 500.0
+   },
+   "input": [
+    "B0 14 04",
+    "B0 14 05",
+    "B0 14 08",
+    "B0 14 7F"
+   ],
+   "expected_after_each_message": [
+    50.83464813232422,
+    58.543304443359375,
+    81.66929626464844,
+    999.0
+   ],
+   "tolerance": 0.00023818016052246094,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-47",
+   "source_run": "TB-01",
+   "label": "X",
+   "title": "In sync: c - p = (max-min)/256 exactly",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 30.49609375
+   },
+   "input": [
+    "B0 14 1E",
+    "B0 14 0A"
+   ],
+   "expected_after_each_message": [
+    30.49609375,
+    10.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-48",
+   "source_run": "TB-02",
+   "label": "X",
+   "title": "In sync: c - p one binary32 step beyond (max-min)/256",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 30.496095657348633
+   },
+   "input": [
+    "B0 14 1E",
+    "B0 14 0A"
+   ],
+   "expected_after_each_message": [
+    30.496095657348633,
+    10.165365219116211
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-49",
+   "source_run": "TB-03",
+   "label": "X",
+   "title": "In sync: p - c = (max-min)/256 exactly",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 29.50390625
+   },
+   "input": [
+    "B0 14 1E",
+    "B0 14 32"
+   ],
+   "expected_after_each_message": [
+    29.50390625,
+    50.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-50",
+   "source_run": "TB-04",
+   "label": "X",
+   "title": "In sync: p - c one binary32 step beyond (max-min)/256",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 29.503904342651367
+   },
+   "input": [
+    "B0 14 1E",
+    "B0 14 32"
+   ],
+   "expected_after_each_message": [
+    29.503904342651367,
+    49.60619354248047
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-51",
+   "source_run": "TB-05",
+   "label": "X",
+   "title": "Pick-Up window: c = max(n, p) + (max-min)/64 exactly",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 31.984375
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 1E"
+   ],
+   "expected_after_each_message": [
+    31.984375,
+    30.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-52",
+   "source_run": "TB-06",
+   "label": "X",
+   "title": "Pick-Up window: c one binary32 step above it",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 31.984376907348633
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 1E"
+   ],
+   "expected_after_each_message": [
+    31.984376907348633,
+    31.984376907348633
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-53",
+   "source_run": "TB-07",
+   "label": "X",
+   "title": "Pick-Up window: c = min(n, p) - (max-min)/64 exactly",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 28.015625
+   },
+   "input": [
+    "B0 14 32",
+    "B0 14 1E"
+   ],
+   "expected_after_each_message": [
+    28.015625,
+    30.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-54",
+   "source_run": "TB-08",
+   "label": "X",
+   "title": "Pick-Up window: c one binary32 step below it",
+   "map_mode": "Absolute",
+   "takeover": "pickup",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 28.015623092651367
+   },
+   "input": [
+    "B0 14 32",
+    "B0 14 1E"
+   ],
+   "expected_after_each_message": [
+    28.015623092651367,
+    28.015623092651367
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-55",
+   "source_run": "TB-09",
+   "label": "X",
+   "title": "Value Scaling: |n - c| = (max-min)/64 exactly",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 61.984375
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 3C"
+   ],
+   "expected_after_each_message": [
+    61.984375,
+    60.0
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  },
+  {
+   "id": "MT-56",
+   "source_run": "TB-10",
+   "label": "X",
+   "title": "Value Scaling: |n - c| one binary32 step beyond",
+   "map_mode": "Absolute",
+   "takeover": "scaling",
+   "parameter": {
+    "kind": "continuous",
+    "min": 0.0,
+    "max": 127.0,
+    "quantized": false,
+    "value": 61.984378814697266
+   },
+   "input": [
+    "B0 14 0A",
+    "B0 14 3C"
+   ],
+   "expected_after_each_message": [
+    61.984378814697266,
+    89.76883697509766
+   ],
+   "tolerance": 3.0279159545898438e-05,
+   "r5_model_agrees": true,
+   "provenance": "X: x86_64 receiver, Apply, value function and takeover run under run_x2.py (stubs in addresses.json); arm64 equivalence static"
+  }
+ ]
+}

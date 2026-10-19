@@ -368,6 +368,7 @@ int main(int argc, char **argv)
                 ints[ni++] = (uint64_t)bufs[newbuf(n, tmp, n)].p;
             } else die("bad argument %s", s);
         }
+        if (ncalls == 256) die("too many calls in one process (limit 256)");
         fflush(stdout);
         xcall(fn, ints, fps, out);
         rets[ncalls] = out[0];

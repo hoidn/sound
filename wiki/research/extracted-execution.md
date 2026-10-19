@@ -344,10 +344,19 @@ Per [ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-executi
 - **Slice.** The release target is arm64. Equivalence is inferred from the static
   comparisons above. Known divergence is limited to the arm64 `fmadd` in Absolute
   mode with min ≠ 0, and to Apple library builds that were not compared.
+- **Harness defect, fixed 2026-10-18.** The loader stored each call's return value in a
+  256-slot array with no bounds check, so a 257th call in one process silently overwrote
+  neighbouring memory. It now stops with an error at that point. No X1 process came near
+  the limit: no raw output has a call index of 250 or more. The X2 MIDI runs exceeded it
+  and were re-run.
 - **Substituted libraries.** Every `libm`, `vsnprintf_l` and `newlocale` result is
   glibc 2.39's. For `log10f` that was measured: 2 of 14 results are not correctly
-  rounded. The ±1 ulp check bounds its effect on the mixer texts. `log10` and `%f`
-  formatting are correctly rounded in glibc; Apple's were not available.
+  rounded. The ±1 ulp check bounds its effect on the mixer texts. `%f` formatting is
+  correctly rounded in glibc. Apple's libraries were not available.
+  - *Correction 2026-10-18 (X2 transport):* this page first said glibc's `log10` is
+    correctly rounded. It is not for 108 of 6,539 swept inputs; 11 of those change
+    a REQ-TRANSPORT-STATE-011 text. See
+    [transport state native](transport-state-native.md).
 - **Setup is the harness's.** It runs the static initializers it calls and none
   other. Object states are hand-built (the 14-bit receiver) or come from the original
   constructors (the dB holder). The process is single-threaded and runs in the C locale.

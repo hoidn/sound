@@ -1,0 +1,97 @@
+{
+ "slice": "/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64",
+ "image_base": "0x100000000",
+ "functions": [
+  {
+   "x86": "0x101bc0770",
+   "arm64": "0x101b83750",
+   "role": "OSetMidiTakeOverMode handler",
+   "how": "registered with the string \"OSetMidiTakeOverMode\" and field \"TakeOverModeIndex\" in 0x101bb8da0; only writer of 0x107443e78; arm64 0x101b83750 stores 0x106fb2110 the same way (n7-0003)"
+  },
+  {
+   "x86": "0x101bb8b70",
+   "arm64": "0x101b7c508",
+   "role": "takeover",
+   "how": "Apply 0x101bbc9c0 calls it right after the value function, as arm64 Apply 0x101b801c4; reads 0x107443e78; constants -129, 0.5, {128, 16384}, -1, 1"
+  },
+  {
+   "x86": "0x101bb8990",
+   "arm64": "0x101b7c344",
+   "role": "Pick-Up",
+   "how": "only callee of the takeover besides the value function; 2(hi-lo)/{128,16384} window; posts the notification type 0x107443e48"
+  },
+  {
+   "x86": "0x101bbc3b0",
+   "arm64": "0x101b7f894",
+   "role": "CC receiver (registry type 3)",
+   "how": "registered for type 3 by 0x101bc1950 (arm64 registry 0x101b84798 type 3); avoid +0x44, Zoom +0x3c, sensitivity +0x48, accumulator +0x4c"
+  },
+  {
+   "x86": "0x101bbced0",
+   "arm64": "0x101b8028c",
+   "role": "14-bit MSB setter (registry type 5)",
+   "how": "registered for type 5 by 0x101bc1950; same body as X1 0x101bbc830"
+  },
+  {
+   "x86": "0x101bbcf10",
+   "arm64": "0x101b802bc",
+   "role": "14-bit LSB setter (registry type 6)",
+   "how": "registered for type 6; same body as X1 0x101bbc980"
+  },
+  {
+   "x86": "0x101bbc870",
+   "arm64": "0x101b7fcc0",
+   "role": "14-bit combiner",
+   "how": "X1; prior FLT_MAX when avoid +0x44 is set or either half prior is FLT_MAX"
+  },
+  {
+   "x86": "0x101bc09b0",
+   "arm64": "0x101b83974",
+   "role": "apply callback",
+   "how": "installed by the CC receiver; shifts arguments and jumps to Apply"
+  },
+  {
+   "x86": "0x101bbc9c0",
+   "arm64": "0x101b7fde4",
+   "role": "Apply",
+   "how": "X1; Type 2 threshold test, value function, takeover gate (mode 0/5, Type 1, prior != FLT_MAX), setter"
+  },
+  {
+   "x86": "0x101bb27b0",
+   "arm64": "0x101b76bf0",
+   "role": "value function",
+   "how": "X1"
+  },
+  {
+   "x86": "0x101bb7ff0",
+   "arm64": "0x101b7b96c",
+   "role": "relative decoder",
+   "how": "X1"
+  },
+  {
+   "x86": "0x101bc1360",
+   "arm64": null,
+   "role": "static initializer of the unit",
+   "how": "X1"
+  },
+  {
+   "x86": "0x1023e2a60",
+   "arm64": "0x1022cec38",
+   "role": "LMidiPreferences::OnTakeOverModeChanged (static only)",
+   "how": "arm64 named by PTR_CallMemberFunc<&LMidiPreferences::OnTakeOverModeChanged>; both post OSetMidiTakeOverMode with the chooser index (+0xd8, -99 -> 0)"
+  },
+  {
+   "x86": "0x1023e0050",
+   "arm64": "0x1022cc18c",
+   "role": "LMidiPreferences constructor (static only)",
+   "how": "builds the chooser entry list [sControlNoTakeOverEntry, sControlPickUpTakeOverEntry, sControlValueScalingTakeOverEntry]"
+  }
+ ],
+ "stubs_under_gdb": {
+  "0x101abb210": "owner -> object (*(owner)); stub returns rdi, the object is only passed to the next two stubs",
+  "0x101b3d680": "object, timeable index -> parameter pointer; stub returns 0x5a5a0000",
+  "0x101b6f830": "parameter -> current value (virtual); stub returns the simulated value",
+  "0x101b3d360": "parameter setter (object, timeable index, id, {value, extra}); stub records the value",
+  "0x101bb8a0d": "PickUpNotification post (0x101bb8a0d..0x101bb8a7f) jumped over after the result is stored"
+ }
+}

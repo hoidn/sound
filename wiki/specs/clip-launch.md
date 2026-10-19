@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-18
 access: analysis
-revision: 2
+revision: 3
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -33,10 +33,13 @@ names the probe that would have settled it and, where one exists, a static route
 that could still settle it.
 
 Every requirement is a **proposed contract** supported by a static derivation from the
-12.4.3 program, by shipped bytes, or explicitly unknown. Nothing was run against Live.
+12.4.3 program, by shipped bytes, by extracted execution of the shipped x86_64 code, or
+explicitly unknown. Nothing was run against Live.
 [ADR 0002](../decisions/adr-0002-static-first-analysis.md) permits a static-first
 draft. Under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) nothing will
-be: no reference observation is available, and no probe will run. Target: 12.4.3,
+be: no reference observation is available, and no probe will run. Revision 3 adds the X
+results of packet X2 for the grid arithmetic, the follow-chance rescaling and the
+follow-time rounding (appendix). Target: 12.4.3,
 documents with `MinorVersion="12.0_12402"` unless a clause says otherwise. The
 gzip/XML envelope belongs to the draft
 [SPEC-ALS-CONTAINER](als-container.md); value text rules and the time-signature code
@@ -57,9 +60,10 @@ other than the API setters in REQ-011, and the exact text of error messages.
 | --- | --- |
 | D | Documented in shipped bytes: the schema files or the Live Sets and clips in the 12.4.3 bundle. These were written by Live 12.4d1 or 12.1d1, not by a 12.4.3 save |
 | S | Static derivation from the 12.4.3 executable or shipped bytes; not an observed run. An assumption is named beside the clause (A1–A7 below) |
+| X | Extracted execution: the shipped x86_64 function was run on the stated inputs in the harness of [ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code). It shows what the function computes, not that Live calls it with those inputs; the path and any assumption are stated beside the clause. The arm64 release slice is matched by static comparison (appendix) |
 | U | Unknown; no expected result, or only a static expectation that must not be graded. A PRB ID names the Phase 4 probe that would have settled it; under ADR 0003 no probe will run, so no reference observation is available. A static route, where named, is a static reading that could still settle it |
 
-Only D and S clauses may enter a release. U clauses block the behavior they name.
+Only D, S and X clauses may enter a release. U clauses block the behavior they name.
 "The set does not open" means the document reader stops with a read error, as in
 SPEC-TRANSPORT-STATE.
 
@@ -72,12 +76,12 @@ clauses that name it become unknown. No reference observation will test them
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
 | A1 | A press on a session clip's launch button while the transport plays reaches the launch-time computation without an explicit target time; the program then uses the clip's own grid when its launch quantization is not Global, and the set's global quantization otherwise, which equals the loaded `GlobalQuantisation`. Static route: interpreting the slot-state test behind the grid choice (appendix, REQ-016) | REQ-016, REQ-017, REQ-018 |
-| A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document. A present value inside its stated range is kept as read: the values of REQ-004, REQ-005 and REQ-007 for launch mode, launch quantization and follow actions; the bounds of REQ-009 for velocity amount, loop iterations, chances and jump indices; 0 to below 1,000,000 for follow time. A present launch mode, launch quantization or follow action outside its values is accepted without a range check | REQ-009 to REQ-013 |
+| A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document. A present value inside its stated range is kept as read: the values of REQ-004, REQ-005 and REQ-007 for launch mode, launch quantization and follow actions; the bounds of REQ-009 for velocity amount, loop iterations, chances and jump indices; 0 to below 1,000,000 for follow time. A present launch mode, launch quantization or follow action outside its values is accepted without a range check. Revision 3 (S, both slices): the member's own load step does not limit a value outside its bounds either. The loader stores the value directly, and the post-load hook of the UserFloat and RangedRemoteableInt classes is the generic one, which does not clamp; the RemoteableDouble hook only rounds (REQ-013). A later step that could change such a value is still untraced, except for the chances (REQ-012) | REQ-009 to REQ-013 |
 | A3 | The load-time corrections of REQ-012 and REQ-013 run for every clip read from a Live Set | REQ-012, REQ-013 |
 | A4 | In a set whose time signature never changes, the grid is anchored at song beat 0 | REQ-017 and the grid cases |
 | A5 | Opening a document whose `MinorVersion` has translator number c applies, in increasing order and before the values are loaded, every migration step numbered above c | REQ-014 |
 | A6 | Each value label below is the text the user interface shows for that value | Display comparators in the cases |
-| A7 | The chance values that the rescaling of REQ-012 writes are kept as computed. Static route: the follow-action chance controller, not read | REQ-012 |
+| A7 | **Settled in revision 3 (X, setter path S).** The rescaling of REQ-012 writes each chance through the chance setter. That setter limits the value to 0–100 and stores it; it does not call the follow-action chance controller. A value inside 0–100 is therefore kept as computed | REQ-012 |
 
 ## Requirements
 
@@ -233,12 +237,27 @@ clauses that name it become unknown. No reference observation will test them
   the index directly; timing has no grid (REQ-015). No reference observation is
   available (ADR 0003; PRB-S5-09). Static route for the saved value: the generic
   writer.
+- **S (both slices; X for the getter).** The enum value getter returns 0 for a stored −99
+  and the stored value otherwise (X: −100, −98, −1, 15 and the 32-bit extremes are
+  returned unchanged). A `LaunchQuantisation` of −99 therefore launches as Global
+  (REQ-016).
 - **U.** Whether an out-of-range `GlobalQuantisation` or `AutoQuantisation` opens.
   Static route: the song loader, not read.
-- **U.** A velocity amount, loop-iteration count, chance or jump index outside the
-  bounds of REQ-009, or a follow time below 0 or from 1,000,000: whether the set
-  opens and which value is held. A2 does not cover these values. Static route: the
-  load path of the bounded members, not read.
+- **S (both slices).** A velocity amount, loop-iteration count, chance or jump index
+  outside the bounds of REQ-009, or a follow time below 0 or from 1,000,000, is not
+  refused by the text rules or by the member's load step, which keeps it as read (A2,
+  revision 3).
+- **X (load path S; assumes A3).** Chances outside 0 to 100 are then rescaled by
+  REQ-012 and limited by the chance setter: 150 and 50 give 75 and 25; −10 and 50 give
+  0 and 100; 150 and −50 give 100 and 0; −10 and −10 give 50 and 50.
+- **X (load path S; assumes A3).** A follow time below 0 or from 1,000,000 is rounded
+  by REQ-013 and not limited: −0.3, −5 and 2,000,000 are held unchanged. The
+  follow-time controller's minimum of 0.25 belongs to controlled changes, not to the
+  load (S).
+- **U.** Whether the clip's own post-load hook, which was not read, changes or refuses
+  such a value. So the value held after load for a velocity amount, loop-iteration count
+  or jump index outside its bounds is unknown. Unknown too: what the user interface
+  shows for any out-of-range value.
 - **S.** Live API: assigning `launch_mode` a value outside 0–3, or
   `launch_quantization` a value outside 0–14, raises an error, and the stored value
   does not change. Values inside the ranges are accepted.
@@ -249,15 +268,16 @@ clauses that name it become unknown. No reference observation will test them
 
 ### REQ-CLIP-LAUNCH-012 — follow-chance rescaling on load
 
-- **S (assumes A2, A3, A7).** After a clip's follow action is read, with A and B its
-  stored chances (32-bit floats, each from 0 to 100):
-  - if A = 0 and B = 0: chance A becomes 100, chance B stays 0, and follow actions
-    become disabled;
+- **X (path S; assumes A2, A3).** After a clip's follow action is read, with A and B its
+  stored chances (32-bit floats):
+  - if A = 0 and B = 0 (−0 counts as 0): chance A becomes 100, chance B stays 0, and
+    follow actions become disabled;
   - otherwise: chance A becomes round(A ÷ ((A + B) ÷ 100)) and chance B becomes
     100 − chance A. The arithmetic is 32-bit float, and halves round away from zero.
-- Examples: 30/30 → 50/50; 1/2 → 33/67; 1/7 → 13/87; 1/0 → 100/0.
-- **U.** Chances below 0 or above 100: A2 does not cover them, so the values the
-  rescaling starts from are unknown (REQ-011).
+  - Each new chance is then limited to 0 to 100 by the chance setter (A7, settled).
+- **X.** Examples: 30/30 → 50/50; 1/2 → 33/67; 1/7 → 13/87; 1/0 → 100/0;
+  3/5 → 38/62 and 5/3 → 63/37 (halves); 1/199 → 1/99; 0.25/0.75 → 25/75;
+  99.5/0.5 → 100/0. Values outside 0 to 100 are in REQ-011.
 - **U.** Whether the rescaling also runs for scene follow actions. It is the
   follow-action correction made after loading, but A3 covers clips only. Static
   route: whether scene loading runs the same post-load step. No case depends on it,
@@ -265,17 +285,21 @@ clauses that name it become unknown. No reference observation will test them
 
 ### REQ-CLIP-LAUNCH-013 — follow-time rounding on load
 
-- **S (assumes A2, A3).** After load, a clip's `FollowTime` from 0 to below
-  1,000,000 is the nearest multiple of 1/3,843,840 beat, halves rounded away from
-  zero; the held value is the 64-bit float nearest that multiple. Examples:
-  2.0000001 → 2; 3.0000002 → 11,531,521/3,843,840 (≈ 3.00000026); 1e-8 → 0.
+- **X (path S; assumes A2, A3).** After load, a clip's `FollowTime` is rounded to
+  the grid of 1/3,843,840 beat, halves away from zero, by the binary64 formula of
+  REQ-MIDI-NOTE-STORAGE-006: with h the binary64 value of 1/3,843,840 and s = +1 for
+  x ≥ 0 (including −0), else −1, the held value is
+  s × (⌊|x + s × h/2| × 3,843,840⌋ / 3,843,840). The values ±1.7976931348623155e308,
+  the largest finite value and +∞ are not rounded. Examples:
+  2.0000001 → 2; 3.0000002 → 11,531,521/3,843,840 (≈ 3.00000026); 1e-8 → 0; −0 → +0.
   3,843,840 = 2⁸·3·5·7·11·13, so every triplet and bar length of REQ-015 is a whole
   multiple.
-- **U.** A value within about 10⁻⁹ beat of a point halfway between two multiples:
-  floating error in the rounding steps can give a result other than exact
-  halves-away rounding.
-- **U.** Follow times below 0 or from 1,000,000 (REQ-011), and whether the rounding
-  runs for scene follow actions (as in REQ-012).
+- **X.** Next to a halfway point the formula, not exact rounding, decides: a value
+  one binary64 step below the nearest value to h/2, 1.3007825507825505e-07, is held as
+  h, where exact rounding gives 0. Six of the 18 values run within one step of a
+  halfway point differ in this way.
+- **U.** Whether the rounding runs for scene follow actions (as in REQ-012). Follow
+  times outside 0 to below 1,000,000 are in REQ-011.
 
 ### REQ-CLIP-LAUNCH-014 — migration of older documents
 
@@ -316,9 +340,11 @@ older shipped schema.
 ### REQ-CLIP-LAUNCH-015 — quantization grid length
 
 Let a global value q and a time signature n/d be given, and bar = 4·n/d beats rounded
-to the nearest multiple of 1/3,843,840 beat.
+to the nearest multiple of 1/3,843,840 beat (the rounding of REQ-013).
 
-- **S.** The grid length in beats is:
+- **X.** The grid length in beats is (every one of the 495 signatures n = 1 to 99,
+  d = 1, 2, 4, 8, 16, with q = 1 to 13, and q = −99, −2, −1, 0, 14, 15 and 100 on four
+  signatures: 6,463 of 6,463 equal):
 
 | q | Setting | Grid (beats) | 4/4 | 3/4 | 6/8 | 7/8 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -337,7 +363,9 @@ to the nearest multiple of 1/3,843,840 beat.
 | 13 | 1/32 | 1/8 | | | | |
 | 0, negative, ≥ 14 | None or out of range | no grid | | | | |
 
-- **S.** Note values (q ≥ 5) do not depend on the signature: 1/2 is 2 beats in 6/8.
+- **X.** Note values (q ≥ 5) do not depend on the signature: 1/2 is 2 beats in 6/8.
+  The triplet lengths are the binary64 values nearest 4/3, 2/3, 1/3 and 1/6; they are
+  not rounded to the lattice.
 - Not proposed for release: a grid length is observable only by launching (REQ-016 to
   018), and the launch path rests on A1, which is open under Q-017.
 
@@ -349,7 +377,10 @@ to the nearest multiple of 1/3,843,840 beat.
   with the clip's own time signature (`TimeSignature/TimeSignatures/RemoteableTimeSignature`
   `Numerator` and `Denominator`, truncated to integers). Example: a 6/8 clip set to
   1 Bar uses 3 beats in a 4/4 song.
-- **S.** Clip values 1 (None), negative or ≥ 15 give no grid.
+- **S (X for the grid length and the enum getter).** Clip values 1 (None), negative
+  values other than −99, and values ≥ 15 give no grid. A stored −99 is read as 0
+  (REQ-011), so that clip uses the global value as Global does. Revision 2 stated that
+  every negative value gives no grid; −99 is the exception.
 - **U.** Which entry is used when a clip has several time-signature entries.
 
 ### REQ-CLIP-LAUNCH-017 — launch boundary while playing
@@ -357,10 +388,22 @@ to the nearest multiple of 1/3,843,840 beat.
 With the transport playing, a launch pressed at song beat t, grid g > 0 (REQ-016),
 and anchor a:
 
-- **S (assumes A1).** The launch boundary is B = a + ⌈(t − a)/g⌉·g, rounded to the
-  nearest multiple of 1/3,843,840 beat. B is the first grid line at or after t.
-- **S (assumes A1, A4).** In a set whose time signature never changes, a = 0.
-  Examples: 4/4, 1 Bar, t = 5.3 → B = 8; 1/4T, t = 1.0 → B = 4/3.
+- **X (assumes A1).** The press time t is the transport's current song time rounded to
+  the 1/3,843,840 grid as in REQ-013 (an explicit target time is not rounded). Examples:
+  3.99 → 3.990000104062604; 4 ± 1e-9 → 4; 4 + 1/3,843,840 stays.
+- **X (assumes A1).** The launch boundary is B = a + ⌈(t − a)/g⌉·g, rounded to the
+  1/3,843,840 grid, with a = max(0, the anchor) and every operation in binary64 with
+  g the binary64 grid length of REQ-015. For bar grids and the note values 2, 1, 1/2,
+  1/4 and 1/8, B is the first grid line at or after t. For the triplet grids it is not
+  always: when t lies exactly on a triplet grid line, (t − a)/g can exceed the whole
+  number of lines by one rounding step, and B is then the next line. Up to beat 64 this
+  happens for 15 of 48 lines of 1/2T, 31 of 96 of 1/4T, 63 of 192 of 1/8T and 127 of
+  384 of 1/16T (for example 1/4T at t = 10/3 gives B = 4). A press one lattice step
+  before or after a grid line gives the first line at or after it in all 3,424 such
+  presses run.
+- **X (assumes A1, A4).** In a set whose time signature never changes, a = 0.
+  Examples: 4/4, 1 Bar, t = 5.3 → B = 8; 1/4T, t = 1.0 → B = 4/3; 4/4, 1 Bar,
+  t = 1.5, 3.9, 3.99 and 4.0 → B = 4 (PRB-S5-01's presses, before the rule below).
 - **U.** The clip starts at B unless the press is too close to B. A
   tempo-dependent offset o is computed at the press; when B − t < o, with the
   transport playing and a further track condition met, the clip starts at B + g
@@ -368,12 +411,16 @@ and anchor a:
   on a grid line are unknown. No reference observation is available (ADR 0003;
   PRB-S5-01), so this near-boundary clause must not be released unless a static
   reading settles it. Static route: resolving the target of the offset call and
-  interpreting the track condition.
+  interpreting the track condition. Revision 3 narrowed the call (S): for a launch
+  without an explicit time it is slot +0x48 of an engine object found through the
+  song's track list, otherwise slot +0x18 of a per-song engine object given the tempo.
+  Both objects exist only at run time, so extracted execution cannot settle o.
 - **U.** After a time-signature change, a is the start of the current
   time-signature segment, and not less than 0. Static expectation: with 4/4 changing
   to 3/4 at beat 8, 1 Bar, a press at beat 9 starts at beat 11. No reference
   observation is available (ADR 0003; PRB-S5-02). Static route: the layout of the
-  time-signature entry that the anchor reads.
+  time-signature entry that the anchor reads. X settles the arithmetic only: an anchor
+  of 8 with g = 3 and t = 9 gives 11, and an anchor of −5 is used as 0.
 
 ### REQ-CLIP-LAUNCH-018 — launches without a grid
 
@@ -422,9 +469,10 @@ and anchor a:
 
 ## Timing and state
 
-- Units: song and clip positions in beats (quarter notes). Grid lengths and
-  boundaries are exact multiples of 1/3,843,840 beat (REQ-015, REQ-017). Tempo does
-  not change grid positions; it may change the unknown offset of REQ-017.
+- Units: song and clip positions in beats (quarter notes). Bar grid lengths and
+  boundaries are rounded to the 1/3,843,840 lattice; the triplet note values are the
+  binary64 values of 4/3, 2/3, 1/3 and 1/6 (REQ-015, REQ-017). Tempo does not change
+  grid positions; it may change the unknown offset of REQ-017.
 - Ordering on load: migration (REQ-014), then values, then the corrections of REQ-012
   and REQ-013.
 - Persistent state: the fields of REQ-001 to REQ-003. A launch changes no stored field.
@@ -439,9 +487,10 @@ and anchor a:
 
 ## Acceptance cases
 
-All expectations are static derivations; none has been run, and under ADR 0003 none
-will be compared with Live. Kinds: P positive, N negative/malformed, B boundary,
-M missing, S save, G grid timing, U unresolved (not graded).
+Expectations are static derivations or, where the appendix lists them under "Cases
+backed by X", X results of the original x86_64 functions. None has been run against
+Live, and under ADR 0003 none will be. Kinds: P positive, N negative/malformed,
+B boundary, M missing, S save, G grid timing, U unresolved (not graded).
 
 ### Fixtures
 
@@ -486,7 +535,7 @@ clip. A song time-signature edit sets `TimeSignature/Manual/@Value` and the
 | CLC-020 | 012 | B | Slide chances 0 and 0, `FollowActionEnabled` true; open, save | Saved chances 100 and 0, enabled false | B1 edit |
 | CLC-021 | 012 | B | Slide chances 1 and 7; open, save | Saved chances 13 and 87 (half rounds away from zero) | B1 edit |
 | CLC-022 | 012 | P | Slide chances 1 and 2; open, save | Saved 33 and 67 | B1 edit |
-| CLC-023 | 012 | U | Slide chances 150 and 50; open, save | Not graded: a chance above 100 is unknown (REQ-012, A2) | B1 edit |
+| CLC-023 | 011, 012 | B | Slide chances 150 and 50; open, save | Saved chances 75 and 25 | B1 edit |
 | CLC-024 | 013 | B | Slide `<FollowTime Value="2.0000001" />`; open, save | Saved follow time parses to exactly 2 | B1 edit |
 | CLC-025 | 013 | B | Slide `<FollowTime Value="3.0000002" />`; open | Held follow time is the 64-bit float nearest 11531521/3843840 (3.00000026015651); saved text not graded (REQ-001) | B1 edit |
 | CLC-026 | 014 | P | First scene (`Id="0"`) `<IsLinked Value="false" />`, `MinorVersion` unchanged; open | First scene `IsLinked` true after opening; the saved scene form is unknown (REQ-014) | B6 edit |
@@ -494,6 +543,11 @@ clip. A song time-signature edit sets `TimeSignature/Manual/@Value` and the
 | CLC-028 | 014 | P | A clip saved at `11.0_405` with clip-level follow time 4, A 0, B 0, chance A 1, chance B 0; open | Follow action: time 4, linked, A Next, chances 100/0, disabled | Authored minimal `11.0_405` document with the old clip form after `VelocityAmount`, as clip-launch-v1 `CLIP-LAUNCH-041`; no authentic set ships, and none will be observed (ADR 0003) |
 | CLC-029 | 014 | P | As CLC-028 with A 3, chance A 0.5, B 1, chance B 0.5, follow time 8 | Enabled, unlinked, A Previous, B Stop, chances 50/50 | Authored as for CLC-028 (clip-launch-v1 `CLIP-LAUNCH-042`) |
 | CLC-030 | 008 | U | Delete `GlobalQuantisation` and `AutoQuantisation`; open | Static expectation 1 Bar and None; not graded | B1 edit |
+| CLC-057 | 012 | B | Slide chances 3 and 5; open, save | Saved chances 38 and 62 (37.5 rounds away from zero) | B1 edit |
+| CLC-058 | 011, 012 | B | Slide chances −10 and 50; open, save | Saved chances 0 and 100 | B1 edit |
+| CLC-059 | 011, 012 | B | Slide chances 150 and −50; open, save | Saved chances 100 and 0 | B1 edit |
+| CLC-060 | 013 | B | Slide `<FollowTime Value="0.00000013007825507825505" />`; open | Held follow time is the 64-bit float nearest 1/3,843,840 (2.6015651015651016e-07), not 0; saved text not graded (REQ-001) | B1 edit |
+| CLC-061 | 011, 013 | B | Slide `<FollowTime Value="-0.3" />`; open | Held follow time −0.3 (not raised to 0 or 0.25) | B1 edit |
 
 ### Grid cases
 
@@ -530,9 +584,12 @@ stated. Every grid case rests on A1.
 | CLC-051 | 016, 017 | G | Slide signature 6/8, value 0; t = 1.2 | 4 (Global uses the song's 4/4) | B1 edit |
 | CLC-052 | 018 | N | Slide value 1 (None); t = 5.3 | Starts before beat 6 (not moved to 8); exact delay unresolved (REQ-018) | B1 edit |
 | CLC-053 | 018 | N | Global 0 (None); t = 5.3 | Starts before beat 6 | B1 edit |
-| CLC-054 | 017 | U | t = 3.99, and t = 4.0 exactly | Unresolved: 4 or 8 (REQ-017) | B1 |
+| CLC-054 | 017 | U | t = 3.99, and t = 4.0 exactly | Unresolved: B = 4 for both (X arithmetic); the start is 4 or 8 by the near-boundary rule (REQ-017) | B1 |
 | CLC-055 | 017 | U | 3/4 from beat 8 (second time-signature event); t = 9 | Static expectation 11; not graded (REQ-017) | B1 edit |
 | CLC-056 | 019 | U | Transport stopped at beat 5.3; launch Slide | Unresolved (REQ-019) | B1 |
+| CLC-062 | 016, 017 | G | Slide `<LaunchQuantisation Value="-99" />`; t = 5.3 | 8 (−99 is read as Global; the global value is 1 Bar) | B1 edit |
+| CLC-063 | 016, 018 | N | Slide `<LaunchQuantisation Value="-1" />`; t = 5.3 | Starts before beat 6 (no grid) | B1 edit |
+| CLC-064 | 017 | U | Global 8 (1/4T); a press exactly at song beat 10/3 | Unresolved: B = 4, not 10/3 (X arithmetic, triplet rounding); the start also depends on the near-boundary rule, and the grid-case method cannot place a press exactly on a lattice point | B1 edit |
 
 Omitted kinds: cancellation and teardown (a pending launch that is cancelled or
 replaced is out of scope); U-only requirements REQ-019 to 023 have no graded cases,
@@ -561,6 +618,13 @@ Added in revision 2, from the clip-launch-v1 staging and review:
 - A step-406 clip that has both follow-action forms, and the saved form of a scene
   (REQ-014).
 - The kept chance values (A7).
+
+Settled or narrowed in revision 3 by extracted execution (X2): A7 and the chances outside
+0 to 100 (settled); follow times outside 0 to below 1,000,000 and the near-tie follow-time
+rounding (settled); the other bounded values (narrowed: the member's load step keeps them);
+the grid lengths and the boundary arithmetic (X; the scheduler still rests on A1); the
+offset call (narrowed, not settleable by X). New: the enum getter's −99 rule (REQ-011,
+REQ-016), and the triplet-grid boundary for a press exactly on a line (REQ-017).
 
 The [probe batch](../../analysis/ableton-live-12.4.3/r2/s5-clip-launch-v1/probe-batch.json)
 (PRB-S5-01–11) is kept as the record of what observation would have settled. Under
@@ -607,6 +671,32 @@ re-checked them against the kept dossiers, the staging byte check
 Derived values (grid cases, chances, follow times) were recomputed with a scratch
 emulation of the cited disassembly, including 32-bit chance arithmetic; the script was
 not retained. Each value can be rechecked by hand from REQ-012, 013, 015 and 017.
+Revision 3 replaces that emulation with X runs of the original functions.
+
+**Extracted execution (X2, revision 3).** Evidence:
+[x2-notes-launch-v1](../../analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/manifest.json),
+regenerated by `sh run.sh`: `results/launch.json` and `results/follow.json` (each run with
+its model value), `inputs.json`, `raw/runs.jsonl`, `addresses.json` (matching),
+`slice-compare.txt` (arm64 comparison), `imports.txt` and `summary.txt`. The method is on
+the research page:
+[clip launch, X2 results](../research/clip-launch.md#extracted-execution-results-x2-2026-10-18).
+
+| Requirement | x86_64 function run (arm64 counterpart) | Setup and result | Limits |
+| --- | --- | --- | --- |
+| 015 | Grid length `0x101ad2ef0` (`0x101aaae44`) | {n, d} in a buffer, q in a register; 6,463 combinations equal the REQ-015 table, bit for bit | How the clip or song signature is read is S (`0x102815210`, `cvttss2si` = arm64 `fcvtzs`) |
+| 017 | Lattice helper `0x1011999d0` (`0x1011be6c8`), mode 3 for the press-time rounding; boundary helper `0x101ae8280` (`0x101abf294`), mode 1 | An anchor entry with the anchor at +8; 37 listed presses (PRB-S5-01, every grid case, anchors 8, −5 and 8.0000001) and 5,136 presses on and one lattice step beside every note-value grid line up to beat 64 | The engine's own rounding of the current time is an inline copy of the same sequence (x86 `0x101afa4dd`–`0x101afa553`, S). Whether the fire path calls the helper for a press is A1. The offset rule is U |
+| 011, 016 | Enum getter `0x101556330` (`0x1015661b8`) | Stored −99 returns 0; −100, −98, −1, 0, 1, 14, 15 and the 32-bit extremes are returned as stored | That the clip grid `0x1025612b0` (`0x102442998`) uses this getter on [clip+0x258] is S |
+| 012, A7 | Follow-action post-load `0x10262a930` (`0x1025044b4`): slot +0xd0 of vtable `0x106d0dc08` | Hand-built AFollowAction with two UserFloat chances. Each chance has the real vtable `0x106bc35b0`, is set up by the real init `0x101564e20` with the ctor's (0, 100) mapping `0x101566480`, and holds the loaded value stored at +0x58 as the loader stores it. The listener callback and the enabled setter are skipped under gdb and recorded. 28 chance pairs. The chance setter `0x101565360` limits to 0–100; values in range are kept as computed | The real AFollowAction ctor `0x10262b4b0` was not run: it needs the class registries, which need libc++ imports. That A3's post-load runs for each clip is S |
+| 013 | ARemoteableDouble post-load `0x101555850` (`0x10156580c`) | Hand-built double with the real vtable `0x106bc07b0` and flag +0x70; the generic part `0x10147e120` skipped under gdb; 33 values with the flag set and 33 without. The binary64 formula equals X for all 66; exact rounding differs for 6 near-tie values | The flag is set by the AFollowAction ctor for `FollowTime` (S, both slices) |
+
+No import was called by any of these runs. The slice comparison found no difference: arm64's
+`frinta`, `frintp`, `frintm` and `fmaxnm` match x86's rounding sequences and `maxsd` for
+every input class, and arm64's `fmadd` adds an exact product.
+
+**Cases backed by X.** CLC-019 to 025 and 057 to 061 take their values from X runs of the
+rescaling, the chance setter and the follow-time rounding, with the load path S and A3.
+CLC-031 to 053, 062 and 063 take B from X runs of the grid length and the boundary helper,
+with the launch path under A1. CLC-054, 055 and 064 record X arithmetic but stay unresolved.
 
 Corrections and contradictions:
 
@@ -635,6 +725,7 @@ values inside their stated ranges (RVC-03) and marks CL-15's API message unknown
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from S5 (CL-01 to CL-23): 23 requirements (3 D with S parts, 5 S only, 10 S with U parts, 5 U only); 56 unexecuted cases: 4 not graded (CLC-030, 054–056), 3 with unresolved parts (CLC-013–015), 2 without a fixture (CLC-028, 029) |
 | 2 | 2026-10-18 | Staging and review findings of clip-launch-v1 applied; none rejected. F1, RVC-01: release proposal for REQ-015 to 018 dropped. F2, RVC-10: REQ-011 API message text U; CLC-016, 017 grade no text. F3, RVC-02: REQ-001 read-back limited to Booleans and numbers of at most six significant digits; CLC-025 grades the held value. F4, RVC-03: A2 limited to the stated ranges; out-of-range bounded values, chances and follow times U; 150/50 example removed; CLC-023 relabelled U. F5, RVC-09: REQ-013 byte evidence; near-tie values U. F6: both-forms clip U. F7, RVC-08: CLC-026, 027 grade held scene values; saved scene form U. F8: CLC-028, 029 use authored `11.0_405` fixtures. F9: scene corrections U. RVC-04: other conversion steps stated. RVC-05: REQ-005 worded as meaning. RVC-11: A7 named. RVC-13 coverage proposals deferred (no error). ADR 0003: probe references now say that no reference observation is available, with static routes. 23 requirements (3 D with S parts, 4 S only, 11 S with U parts, 5 U only); 56 unexecuted cases: 5 not graded (CLC-023, 030, 054–056), 3 with unresolved parts (CLC-013–015), all with a fixture |
+| 3 | 2026-10-18 | Extracted execution (packet X2, evidence label X added). REQ-012 and 013 become X with an S path. A7 is settled: the chance setter limits to 0–100 and does not run the chance controller. REQ-015's table and REQ-017's boundary arithmetic become X; REQ-017 still assumes A1, and its near-boundary clause stays U. REQ-011: chances and follow times outside their ranges settled by X; the other bounded values narrowed (S); the −99 rule added. A2 extended statically to out-of-range values. Errors found: REQ-016 said every negative clip value gives no grid, but −99 reads as Global; REQ-017 said B is always the first grid line at or after t, which fails for some presses exactly on a triplet line; REQ-013's near-tie U is replaced by the binary64 formula. CLC-023 becomes gradable (75/25); CLC-057 to 064 added. 23 requirements (3 D with S parts, 3 S only, 1 X only (015), 11 with U parts, 5 U only); 64 unexecuted cases: 5 not graded (CLC-030, 054–056, 064), 3 with unresolved parts (CLC-013–015); of the 59 graded, 12 document cases and 25 grid cases are backed by X, and 22 are static or documented |
 
 Revision 1 proposed that a first handoff could carry REQ-001 to 007, 009, 012, 013,
 015, 016 and the S clauses of 011, 014, 017 and 018, without REQ-017's near-boundary
@@ -644,7 +735,9 @@ is open under Q-017.
 
 Released 2026-10-18: [clip-launch-v1](../../handoff/clip-launch-v1/README.md), 50 cases, approved with narrowing by a separate review agent (partial REQ-001 to 007, 009, 011 to 014 only; 008, 010, 015 to 023 unreleased). The review findings to apply in the next revision are on the [handoff plan](clip-launch-handoff-plan.md#review-outcome). Revision 2 applies them; the revision table lists each one.
 
-clip-launch-v1 stays pinned to revision 1, and its manifest's partial scopes define
+clip-launch-v1 stays pinned to revision 1, and revision 3 is unreleased. A later release
+revision could carry REQ-012's and 013's X-backed cases and the out-of-range chance cases.
+The grid cases still rest on A1. clip-launch-v1's manifest's partial scopes define
 what was released. These draft clauses are broader than the release and unreleased:
 clips in take lanes and the groove pool, and repeated clip children other than
 launch elements (REQ-001); API names (REQ-004 to 006) and the API setters (REQ-011);
