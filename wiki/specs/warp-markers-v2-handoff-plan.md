@@ -9,6 +9,19 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Second warp-markers handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [warp-markers-v2](../../handoff/warp-markers-v2/README.md), approved with narrowing by a separate review agent ([review record](../../handoff/warp-markers-v2/REVIEW.md)). It has 63 cases.
+
+The narrowings:
+- **Devices:** both devices are removed from every fixture, because device placement is not established. Case 018 is withdrawn, and REQ-001 clause 2 and REQ-004 go with it.
+- **REQ-009:** unreleased, because no released output can observe it.
+- **Labels and order:** the extracted-execution label is reworded so it claims no more than was run. An add is decided by its first failing check.
+
+All 15 extracted-execution labels match the raw runs, and a fresh re-run reproduced them bit for bit.
+
+For the spec author: revision 4 still claims that WMK-019 ran by extracted execution, and REQ-009's not-warped clause cannot be tested outside playback.
+
 ## Decision and boundary
 
 Stage a superseding candidate, warp-markers-v2, from

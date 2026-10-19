@@ -1,0 +1,2859 @@
+diff -ruN '--exclude=sample.wav' ./AGENTS.md warp-markers-v2/AGENTS.md
+--- ./AGENTS.md	2026-10-18 19:58:10.145487152 -0700
++++ warp-markers-v2/AGENTS.md	2026-10-18 22:54:45.858883687 -0700
+@@ -1,11 +1,9 @@
+ # Package role and access instructions
+ 
+-This is an unreviewed candidate for a local release. It is not an
+-implementation input until a separate review approves and publishes it.
+-Application implementation then requires a fresh, restricted implementation
+-workspace that contains only permitted materials. Publication of this package
+-does not provision one. Do not begin clean implementation in an analyst
+-checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace that
++contains only permitted materials. Publication of this package does not
++provision one. Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+diff -ruN '--exclude=sample.wav' ./cases.json warp-markers-v2/cases.json
+--- ./cases.json	2026-10-18 20:03:31.225666951 -0700
++++ warp-markers-v2/cases.json	2026-10-18 22:54:45.882270620 -0700
+@@ -2,11 +2,11 @@
+  "schema": "warp-markers-cases-v2",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "warp-markers-v2 partial requirement clauses only (see spec.md)",
+- "status": "candidate-unreviewed",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored complete Live Set documents built from one base set, and one generated silent WAV; no shipped file copied",
+  "oracle_status": "Static-derived and extracted-execution expectations, labelled per case; neither the reference application nor a candidate executed",
+  "representation": {
+-  "paths": "relative to /Ableton/LiveSet; the clip is the only AudioClip; the sample part is the only SampleWarpProperties (one fixture)",
++  "paths": "relative to /Ableton/LiveSet; the clip is the only AudioClip",
+   "state": "values held after opening, by element name; WarpMarkers as [SecTime, BeatTime] pairs in list order",
+   "call": "one scripting call after opening; arguments are binary64",
+   "value": "accepted conversion calls only: the number returned",
+@@ -525,30 +525,6 @@
+      }
+     }
+    },
+-   "expectation_provenance": "static-derived; not observed reference output",
+-   "reference_execution": "not-run",
+-   "candidate_execution": "not-run",
+-   "comparator": "outcome exact; listed state keys exact (binary64 numbers; marker lists as whole ordered lists)"
+-  },
+-  {
+-   "id": "WARP-MARKERS-018",
+-   "kind": "positive",
+-   "purpose": "Simpler sample part with an empty marker list",
+-   "requirements": [
+-    "REQ-WARP-MARKERS-001",
+-    "REQ-WARP-MARKERS-004"
+-   ],
+-   "input": "fixtures/simpler-empty-markers.xml",
+-   "sample": "fixtures/sample.wav",
+-   "action": "open",
+-   "expected": {
+-    "outcome": "opens",
+-    "state": {
+-     "SampleWarpProperties": {
+-      "WarpMarkers": []
+-     }
+-    }
+-   },
+    "expectation_provenance": "static-derived; not observed reference output",
+    "reference_execution": "not-run",
+    "candidate_execution": "not-run",
+diff -ruN '--exclude=sample.wav' ./fixtures/base.xml warp-markers-v2/fixtures/base.xml
+--- ./fixtures/base.xml	2026-10-18 20:03:31.222661951 -0700
++++ warp-markers-v2/fixtures/base.xml	2026-10-18 22:50:23.676933545 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/beattime-empty.xml warp-markers-v2/fixtures/beattime-empty.xml
+--- ./fixtures/beattime-empty.xml	2026-10-18 20:03:31.223359264 -0700
++++ warp-markers-v2/fixtures/beattime-empty.xml	2026-10-18 22:50:23.678558325 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/beattime-off-grid.xml warp-markers-v2/fixtures/beattime-off-grid.xml
+--- ./fixtures/beattime-off-grid.xml	2026-10-18 20:03:31.223082627 -0700
++++ warp-markers-v2/fixtures/beattime-off-grid.xml	2026-10-18 22:50:23.677931307 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/beattime-trailing-text.xml warp-markers-v2/fixtures/beattime-trailing-text.xml
+--- ./fixtures/beattime-trailing-text.xml	2026-10-18 20:03:31.223163086 -0700
++++ warp-markers-v2/fixtures/beattime-trailing-text.xml	2026-10-18 22:50:23.678127143 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/first-marker-later.xml warp-markers-v2/fixtures/first-marker-later.xml
+--- ./fixtures/first-marker-later.xml	2026-10-18 20:03:31.224463343 -0700
++++ warp-markers-v2/fixtures/first-marker-later.xml	2026-10-18 22:50:23.680491889 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/not-warped.xml warp-markers-v2/fixtures/not-warped.xml
+--- ./fixtures/not-warped.xml	2026-10-18 20:03:31.222825650 -0700
++++ warp-markers-v2/fixtures/not-warped.xml	2026-10-18 22:50:23.677355138 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/sectime-exponent.xml warp-markers-v2/fixtures/sectime-exponent.xml
+--- ./fixtures/sectime-exponent.xml	2026-10-18 20:03:31.222919709 -0700
++++ warp-markers-v2/fixtures/sectime-exponent.xml	2026-10-18 22:50:23.677541904 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/sectime-leading-space.xml warp-markers-v2/fixtures/sectime-leading-space.xml
+--- ./fixtures/sectime-leading-space.xml	2026-10-18 20:03:31.223003958 -0700
++++ warp-markers-v2/fixtures/sectime-leading-space.xml	2026-10-18 22:50:23.677732541 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/sectime-no-number.xml warp-markers-v2/fixtures/sectime-no-number.xml
+--- ./fixtures/sectime-no-number.xml	2026-10-18 20:03:31.223264925 -0700
++++ warp-markers-v2/fixtures/sectime-no-number.xml	2026-10-18 22:50:23.678310540 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/settings-absent.xml warp-markers-v2/fixtures/settings-absent.xml
+--- ./fixtures/settings-absent.xml	2026-10-18 20:03:31.223465173 -0700
++++ warp-markers-v2/fixtures/settings-absent.xml	2026-10-18 22:50:23.678745342 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -453,16 +444,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/settings-no-value.xml warp-markers-v2/fixtures/settings-no-value.xml
+--- ./fixtures/settings-no-value.xml	2026-10-18 20:03:31.223558122 -0700
++++ warp-markers-v2/fixtures/settings-no-value.xml	2026-10-18 22:50:23.678999037 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/shadow-sixteenth.xml warp-markers-v2/fixtures/shadow-sixteenth.xml
+--- ./fixtures/shadow-sixteenth.xml	2026-10-18 20:03:31.224629771 -0700
++++ warp-markers-v2/fixtures/shadow-sixteenth.xml	2026-10-18 22:50:23.680858442 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/simpler-empty-markers.xml warp-markers-v2/fixtures/simpler-empty-markers.xml
+--- ./fixtures/simpler-empty-markers.xml	2026-10-18 20:03:31.224377504 -0700
++++ warp-markers-v2/fixtures/simpler-empty-markers.xml	1969-12-31 16:00:00.000000000 -0800
+@@ -1,913 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+-	<LiveSet>
+-		<NextPointeeId Value="69" />
+-		<Tracks>
+-			<MidiTrack Id="1">
+-				<Name>
+-					<EffectiveName Value="Lead" />
+-					<UserName Value="Lead" />
+-				</Name>
+-				<Color Value="15" />
+-				<AutomationEnvelopes>
+-					<Envelopes>
+-						<AutomationEnvelope Id="0">
+-							<EnvelopeTarget>
+-								<PointeeId Value="11" />
+-							</EnvelopeTarget>
+-							<Automation>
+-								<Events>
+-									<FloatEvent Id="0" Time="-63072000" Value="1" />
+-									<FloatEvent Id="1" Time="4" Value="0.5" />
+-								</Events>
+-								<AutomationTransformViewState>
+-									<IsTransformPending Value="false" />
+-									<TimeAndValueTransforms />
+-								</AutomationTransformViewState>
+-							</Automation>
+-						</AutomationEnvelope>
+-					</Envelopes>
+-				</AutomationEnvelopes>
+-				<TrackGroupId Value="-1" />
+-				<DeviceChain>
+-					<AudioOutputRouting>
+-						<Target Value="AudioOut/Main" />
+-					</AudioOutputRouting>
+-					<Mixer>
+-						<On>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="1">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</On>
+-						<Sends>
+-							<TrackSendHolder Id="0">
+-								<Send>
+-									<Manual Value="0.0003162277571" />
+-									<MidiControllerRange>
+-										<Min Value="0.0003162277571" />
+-										<Max Value="1" />
+-									</MidiControllerRange>
+-									<AutomationTarget Id="2">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-									<ModulationTarget Id="3">
+-										<LockEnvelope Value="0" />
+-									</ModulationTarget>
+-								</Send>
+-								<EnabledByUser Value="true" />
+-							</TrackSendHolder>
+-						</Sends>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="4">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<SoloSink Value="false" />
+-						<PanMode Value="0" />
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="5">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="6">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</Pan>
+-						<SplitStereoPanL>
+-							<Manual Value="-1" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="7">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="8">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</SplitStereoPanL>
+-						<SplitStereoPanR>
+-							<Manual Value="1" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="9">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="10">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</SplitStereoPanR>
+-						<Volume>
+-							<Manual Value="1" />
+-							<MidiControllerRange>
+-								<Min Value="0.0003162277571" />
+-								<Max Value="1.99526238" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="11">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="12">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</Volume>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="13">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<MidiControllerRange>
+-								<Min Value="0" />
+-								<Max Value="2" />
+-							</MidiControllerRange>
+-						</CrossFadeState>
+-					</Mixer>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<MidiClip Id="0" Time="0">
+-											<CurrentStart Value="0" />
+-											<CurrentEnd Value="4" />
+-											<Loop>
+-												<LoopStart Value="0" />
+-												<LoopEnd Value="4" />
+-												<StartRelative Value="0" />
+-												<LoopOn Value="true" />
+-												<OutMarker Value="4" />
+-												<HiddenLoopStart Value="0" />
+-												<HiddenLoopEnd Value="4" />
+-											</Loop>
+-											<Name Value="Two Notes" />
+-											<Color Value="15" />
+-											<LaunchMode Value="0" />
+-											<LaunchQuantisation Value="0" />
+-											<TimeSignature>
+-												<TimeSignatures>
+-													<RemoteableTimeSignature Id="0">
+-														<Numerator Value="4" />
+-														<Denominator Value="4" />
+-														<Time Value="0" />
+-													</RemoteableTimeSignature>
+-												</TimeSignatures>
+-											</TimeSignature>
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-											<Legato Value="false" />
+-											<VelocityAmount Value="0" />
+-											<FollowAction>
+-												<FollowTime Value="4" />
+-												<IsLinked Value="true" />
+-												<LoopIterations Value="1" />
+-												<FollowActionA Value="4" />
+-												<FollowActionB Value="0" />
+-												<FollowChanceA Value="100" />
+-												<FollowChanceB Value="0" />
+-												<JumpIndexA Value="1" />
+-												<JumpIndexB Value="1" />
+-												<FollowActionEnabled Value="false" />
+-											</FollowAction>
+-											<IsWarped Value="true" />
+-											<Notes>
+-												<KeyTracks>
+-													<KeyTrack Id="0">
+-														<Notes>
+-															<MidiNoteEvent Time="0" Duration="1" Velocity="100" OffVelocity="64" NoteId="1" />
+-															<MidiNoteEvent Time="2" Duration="1" Velocity="100" OffVelocity="64" NoteId="2" />
+-														</Notes>
+-														<MidiKey Value="60" />
+-													</KeyTrack>
+-												</KeyTracks>
+-												<PerNoteEventStore>
+-													<EventLists />
+-												</PerNoteEventStore>
+-												<NoteProbabilityGroups />
+-												<ProbabilityGroupIdGenerator>
+-													<NextId Value="1" />
+-												</ProbabilityGroupIdGenerator>
+-												<NoteIdGenerator>
+-													<NextId Value="3" />
+-												</NoteIdGenerator>
+-											</Notes>
+-										</MidiClip>
+-									</Value>
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-							<ClipSlot Id="1">
+-								<ClipSlot>
+-									<Value />
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-						</ClipSlotList>
+-					</MainSequencer>
+-					<FreezeSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value />
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-							<ClipSlot Id="1">
+-								<ClipSlot>
+-									<Value />
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-						</ClipSlotList>
+-					</FreezeSequencer>
+-					<DeviceChain>
+-						<Devices>
+-							<OriginalSimpler Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-								<Player>
+-									<MultiSampleMap>
+-										<SampleParts>
+-											<MultiSamplePart Id="0">
+-												<SampleWarpProperties>
+-													<WarpMarkers />
+-													<WarpMode Value="0" />
+-													<GranularityTones Value="30" />
+-													<GranularityTexture Value="65" />
+-													<FluctuationTexture Value="25" />
+-													<ComplexProFormants Value="100" />
+-													<ComplexProEnvelope Value="128" />
+-													<TransientResolution Value="6" />
+-													<TransientLoopMode Value="2" />
+-													<TransientEnvelope Value="100" />
+-													<IsWarped Value="false" />
+-												</SampleWarpProperties>
+-											</MultiSamplePart>
+-										</SampleParts>
+-									</MultiSampleMap>
+-								</Player>
+-							</OriginalSimpler>
+-						</Devices>
+-					</DeviceChain>
+-				</DeviceChain>
+-			</MidiTrack>
+-			<AudioTrack Id="2">
+-				<Name>
+-					<EffectiveName Value="2-Audio" />
+-					<UserName Value="" />
+-				</Name>
+-				<Color Value="3" />
+-				<AutomationEnvelopes>
+-					<Envelopes />
+-				</AutomationEnvelopes>
+-				<TrackGroupId Value="-1" />
+-				<DeviceChain>
+-					<AudioOutputRouting>
+-						<Target Value="AudioOut/Main" />
+-					</AudioOutputRouting>
+-					<Mixer>
+-						<On>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="14">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</On>
+-						<Sends>
+-							<TrackSendHolder Id="0">
+-								<Send>
+-									<Manual Value="0.0003162277571" />
+-									<MidiControllerRange>
+-										<Min Value="0.0003162277571" />
+-										<Max Value="1" />
+-									</MidiControllerRange>
+-									<AutomationTarget Id="15">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-									<ModulationTarget Id="16">
+-										<LockEnvelope Value="0" />
+-									</ModulationTarget>
+-								</Send>
+-								<EnabledByUser Value="true" />
+-							</TrackSendHolder>
+-						</Sends>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="17">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<SoloSink Value="false" />
+-						<PanMode Value="0" />
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="18">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="19">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</Pan>
+-						<SplitStereoPanL>
+-							<Manual Value="-1" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="20">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="21">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</SplitStereoPanL>
+-						<SplitStereoPanR>
+-							<Manual Value="1" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="22">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="23">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</SplitStereoPanR>
+-						<Volume>
+-							<Manual Value="1" />
+-							<MidiControllerRange>
+-								<Min Value="0.0003162277571" />
+-								<Max Value="1.99526238" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="24">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="25">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</Volume>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="26">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<MidiControllerRange>
+-								<Min Value="0" />
+-								<Max Value="2" />
+-							</MidiControllerRange>
+-						</CrossFadeState>
+-					</Mixer>
+-					<MainSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value>
+-										<AudioClip Id="0" Time="0">
+-											<CurrentStart Value="0" />
+-											<CurrentEnd Value="2" />
+-											<Loop>
+-												<LoopStart Value="0" />
+-												<LoopEnd Value="2" />
+-												<StartRelative Value="0" />
+-												<LoopOn Value="true" />
+-												<OutMarker Value="2" />
+-												<HiddenLoopStart Value="0" />
+-												<HiddenLoopEnd Value="2" />
+-											</Loop>
+-											<Name Value="Tone" />
+-											<Color Value="3" />
+-											<LaunchMode Value="0" />
+-											<LaunchQuantisation Value="0" />
+-											<TimeSignature>
+-												<TimeSignatures>
+-													<RemoteableTimeSignature Id="0">
+-														<Numerator Value="4" />
+-														<Denominator Value="4" />
+-														<Time Value="0" />
+-													</RemoteableTimeSignature>
+-												</TimeSignatures>
+-											</TimeSignature>
+-											<Envelopes>
+-												<Envelopes />
+-											</Envelopes>
+-											<Legato Value="false" />
+-											<VelocityAmount Value="0" />
+-											<FollowAction>
+-												<FollowTime Value="4" />
+-												<IsLinked Value="true" />
+-												<LoopIterations Value="1" />
+-												<FollowActionA Value="4" />
+-												<FollowActionB Value="0" />
+-												<FollowChanceA Value="100" />
+-												<FollowChanceB Value="0" />
+-												<JumpIndexA Value="1" />
+-												<JumpIndexB Value="1" />
+-												<FollowActionEnabled Value="false" />
+-											</FollowAction>
+-											<IsWarped Value="true" />
+-											<SampleRef>
+-												<FileRef>
+-													<RelativePathType Value="1" />
+-													<RelativePath Value="sample.wav" />
+-													<Path Value="/Fixtures/sample.wav" />
+-													<Type Value="2" />
+-													<LivePackName Value="" />
+-													<LivePackId Value="" />
+-													<OriginalFileSize Value="48044" />
+-													<OriginalCrc Value="23034" />
+-													<SourceHint Value="" />
+-												</FileRef>
+-												<LastModDate Value="1760000000" />
+-												<DefaultDuration Value="24000" />
+-												<DefaultSampleRate Value="8000" />
+-											</SampleRef>
+-											<WarpMode Value="4" />
+-											<GranularityTones Value="40" />
+-											<GranularityTexture Value="100" />
+-											<FluctuationTexture Value="50" />
+-											<TransientResolution Value="4" />
+-											<TransientLoopMode Value="1" />
+-											<TransientEnvelope Value="100" />
+-											<ComplexProFormants Value="75" />
+-											<ComplexProEnvelope Value="64" />
+-											<WarpMarkers>
+-												<WarpMarker Id="10" SecTime="0" BeatTime="0" />
+-												<WarpMarker Id="11" SecTime="1" BeatTime="2" />
+-												<WarpMarker Id="12" SecTime="2" BeatTime="3" />
+-												<WarpMarker Id="13" SecTime="2.015625" BeatTime="3.03125" />
+-											</WarpMarkers>
+-										</AudioClip>
+-									</Value>
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-							<ClipSlot Id="1">
+-								<ClipSlot>
+-									<Value />
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-						</ClipSlotList>
+-					</MainSequencer>
+-					<FreezeSequencer>
+-						<ClipSlotList>
+-							<ClipSlot Id="0">
+-								<ClipSlot>
+-									<Value />
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-							<ClipSlot Id="1">
+-								<ClipSlot>
+-									<Value />
+-								</ClipSlot>
+-								<HasStop Value="true" />
+-							</ClipSlot>
+-						</ClipSlotList>
+-					</FreezeSequencer>
+-					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
+-					</DeviceChain>
+-				</DeviceChain>
+-			</AudioTrack>
+-			<ReturnTrack Id="3">
+-				<Name>
+-					<EffectiveName Value="A-Return" />
+-					<UserName Value="" />
+-				</Name>
+-				<Color Value="55" />
+-				<AutomationEnvelopes>
+-					<Envelopes />
+-				</AutomationEnvelopes>
+-				<TrackGroupId Value="-1" />
+-				<DeviceChain>
+-					<AudioOutputRouting>
+-						<Target Value="AudioOut/Main" />
+-					</AudioOutputRouting>
+-					<Mixer>
+-						<On>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="27">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</On>
+-						<Sends>
+-							<TrackSendHolder Id="0">
+-								<Send>
+-									<Manual Value="0.0003162277571" />
+-									<MidiControllerRange>
+-										<Min Value="0.0003162277571" />
+-										<Max Value="1" />
+-									</MidiControllerRange>
+-									<AutomationTarget Id="28">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-									<ModulationTarget Id="29">
+-										<LockEnvelope Value="0" />
+-									</ModulationTarget>
+-								</Send>
+-								<EnabledByUser Value="false" />
+-							</TrackSendHolder>
+-						</Sends>
+-						<Speaker>
+-							<Manual Value="true" />
+-							<AutomationTarget Id="30">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-						</Speaker>
+-						<SoloSink Value="false" />
+-						<PanMode Value="0" />
+-						<Pan>
+-							<Manual Value="0" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="31">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="32">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</Pan>
+-						<SplitStereoPanL>
+-							<Manual Value="-1" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="33">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="34">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</SplitStereoPanL>
+-						<SplitStereoPanR>
+-							<Manual Value="1" />
+-							<MidiControllerRange>
+-								<Min Value="-1" />
+-								<Max Value="1" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="35">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="36">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</SplitStereoPanR>
+-						<Volume>
+-							<Manual Value="1" />
+-							<MidiControllerRange>
+-								<Min Value="0.0003162277571" />
+-								<Max Value="1.99526238" />
+-							</MidiControllerRange>
+-							<AutomationTarget Id="37">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<ModulationTarget Id="38">
+-								<LockEnvelope Value="0" />
+-							</ModulationTarget>
+-						</Volume>
+-						<CrossFadeState>
+-							<Manual Value="1" />
+-							<AutomationTarget Id="39">
+-								<LockEnvelope Value="0" />
+-							</AutomationTarget>
+-							<MidiControllerRange>
+-								<Min Value="0" />
+-								<Max Value="2" />
+-							</MidiControllerRange>
+-						</CrossFadeState>
+-					</Mixer>
+-					<DeviceChain>
+-						<Devices />
+-					</DeviceChain>
+-				</DeviceChain>
+-			</ReturnTrack>
+-		</Tracks>
+-		<MainTrack>
+-			<Name>
+-				<EffectiveName Value="Main" />
+-				<UserName Value="" />
+-			</Name>
+-			<Color Value="69" />
+-			<AutomationEnvelopes>
+-				<Envelopes>
+-					<AutomationEnvelope Id="0">
+-						<EnvelopeTarget>
+-							<PointeeId Value="53" />
+-						</EnvelopeTarget>
+-						<Automation>
+-							<Events>
+-								<EnumEvent Id="0" Time="-63072000" Value="201" />
+-							</Events>
+-							<AutomationTransformViewState>
+-								<IsTransformPending Value="false" />
+-								<TimeAndValueTransforms />
+-							</AutomationTransformViewState>
+-						</Automation>
+-					</AutomationEnvelope>
+-					<AutomationEnvelope Id="1">
+-						<EnvelopeTarget>
+-							<PointeeId Value="51" />
+-						</EnvelopeTarget>
+-						<Automation>
+-							<Events>
+-								<FloatEvent Id="0" Time="-63072000" Value="120" />
+-							</Events>
+-							<AutomationTransformViewState>
+-								<IsTransformPending Value="false" />
+-								<TimeAndValueTransforms />
+-							</AutomationTransformViewState>
+-						</Automation>
+-					</AutomationEnvelope>
+-				</Envelopes>
+-			</AutomationEnvelopes>
+-			<DeviceChain>
+-				<AudioOutputRouting>
+-					<Target Value="AudioOut/External/S0" />
+-				</AudioOutputRouting>
+-				<Mixer>
+-					<On>
+-						<Manual Value="true" />
+-						<AutomationTarget Id="40">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-					</On>
+-					<Sends />
+-					<Speaker>
+-						<Manual Value="true" />
+-						<AutomationTarget Id="41">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-					</Speaker>
+-					<SoloSink Value="false" />
+-					<PanMode Value="0" />
+-					<Pan>
+-						<Manual Value="0" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="42">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="43">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</Pan>
+-					<SplitStereoPanL>
+-						<Manual Value="-1" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="44">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="45">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</SplitStereoPanL>
+-					<SplitStereoPanR>
+-						<Manual Value="1" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="46">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="47">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</SplitStereoPanR>
+-					<Volume>
+-						<Manual Value="1" />
+-						<MidiControllerRange>
+-							<Min Value="0.0003162277571" />
+-							<Max Value="1.99526238" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="48">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="49">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</Volume>
+-					<CrossFadeState>
+-						<Manual Value="1" />
+-						<AutomationTarget Id="50">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<MidiControllerRange>
+-							<Min Value="0" />
+-							<Max Value="2" />
+-						</MidiControllerRange>
+-					</CrossFadeState>
+-					<Tempo>
+-						<Manual Value="120" />
+-						<MidiControllerRange>
+-							<Min Value="60" />
+-							<Max Value="200" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="51">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="52">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</Tempo>
+-					<TimeSignature>
+-						<Manual Value="201" />
+-						<AutomationTarget Id="53">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<MidiControllerRange>
+-							<Min Value="0" />
+-							<Max Value="494" />
+-						</MidiControllerRange>
+-					</TimeSignature>
+-					<CrossFade>
+-						<Manual Value="0" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="54">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="55">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</CrossFade>
+-				</Mixer>
+-				<DeviceChain>
+-					<Devices />
+-				</DeviceChain>
+-			</DeviceChain>
+-		</MainTrack>
+-		<PreHearTrack>
+-			<DeviceChain>
+-				<Mixer>
+-					<On>
+-						<Manual Value="true" />
+-						<AutomationTarget Id="56">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-					</On>
+-					<Sends />
+-					<Speaker>
+-						<Manual Value="true" />
+-						<AutomationTarget Id="57">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-					</Speaker>
+-					<SoloSink Value="false" />
+-					<PanMode Value="0" />
+-					<Pan>
+-						<Manual Value="0" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="58">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="59">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</Pan>
+-					<SplitStereoPanL>
+-						<Manual Value="-1" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="60">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="61">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</SplitStereoPanL>
+-					<SplitStereoPanR>
+-						<Manual Value="1" />
+-						<MidiControllerRange>
+-							<Min Value="-1" />
+-							<Max Value="1" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="62">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="63">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</SplitStereoPanR>
+-					<Volume>
+-						<Manual Value="1" />
+-						<MidiControllerRange>
+-							<Min Value="0.0003162277571" />
+-							<Max Value="1.99526238" />
+-						</MidiControllerRange>
+-						<AutomationTarget Id="64">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<ModulationTarget Id="65">
+-							<LockEnvelope Value="0" />
+-						</ModulationTarget>
+-					</Volume>
+-					<CrossFadeState>
+-						<Manual Value="1" />
+-						<AutomationTarget Id="66">
+-							<LockEnvelope Value="0" />
+-						</AutomationTarget>
+-						<MidiControllerRange>
+-							<Min Value="0" />
+-							<Max Value="2" />
+-						</MidiControllerRange>
+-					</CrossFadeState>
+-				</Mixer>
+-			</DeviceChain>
+-		</PreHearTrack>
+-		<SendsPre>
+-			<SendPreBool Id="0" Value="false" />
+-		</SendsPre>
+-		<Scenes>
+-			<Scene Id="0">
+-				<FollowAction>
+-					<FollowTime Value="4" />
+-					<IsLinked Value="true" />
+-					<LoopIterations Value="1" />
+-					<FollowActionA Value="4" />
+-					<FollowActionB Value="0" />
+-					<FollowChanceA Value="100" />
+-					<FollowChanceB Value="0" />
+-					<JumpIndexA Value="1" />
+-					<JumpIndexB Value="1" />
+-					<FollowActionEnabled Value="false" />
+-				</FollowAction>
+-				<Name Value="Scene 1" />
+-				<Color Value="-1" />
+-				<Tempo Value="120" />
+-				<IsTempoEnabled Value="false" />
+-				<TimeSignatureId Value="201" />
+-				<IsTimeSignatureEnabled Value="false" />
+-			</Scene>
+-			<Scene Id="1">
+-				<FollowAction>
+-					<FollowTime Value="4" />
+-					<IsLinked Value="true" />
+-					<LoopIterations Value="1" />
+-					<FollowActionA Value="4" />
+-					<FollowActionB Value="0" />
+-					<FollowChanceA Value="100" />
+-					<FollowChanceB Value="0" />
+-					<JumpIndexA Value="1" />
+-					<JumpIndexB Value="1" />
+-					<FollowActionEnabled Value="false" />
+-				</FollowAction>
+-				<Name Value="Scene 2" />
+-				<Color Value="-1" />
+-				<Tempo Value="120" />
+-				<IsTempoEnabled Value="false" />
+-				<TimeSignatureId Value="201" />
+-				<IsTimeSignatureEnabled Value="false" />
+-			</Scene>
+-		</Scenes>
+-		<Transport>
+-			<LoopOn Value="false" />
+-			<LoopStart Value="0" />
+-			<LoopLength Value="8" />
+-			<CurrentTime Value="0" />
+-		</Transport>
+-		<GlobalQuantisation Value="4" />
+-		<AutoQuantisation Value="0" />
+-		<CrossfadeCurve Value="2" />
+-	</LiveSet>
+-</Ableton>
+diff -ruN '--exclude=sample.wav' ./fixtures/transient-loop-mode-0.xml warp-markers-v2/fixtures/transient-loop-mode-0.xml
+--- ./fixtures/transient-loop-mode-0.xml	2026-10-18 20:03:31.223787720 -0700
++++ warp-markers-v2/fixtures/transient-loop-mode-0.xml	2026-10-18 22:50:23.679365580 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/transient-resolution-0.xml warp-markers-v2/fixtures/transient-resolution-0.xml
+--- ./fixtures/transient-resolution-0.xml	2026-10-18 20:03:31.223674011 -0700
++++ warp-markers-v2/fixtures/transient-resolution-0.xml	2026-10-18 22:50:23.679181443 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/two-markers.xml warp-markers-v2/fixtures/two-markers.xml
+--- ./fixtures/two-markers.xml	2026-10-18 20:03:31.224547052 -0700
++++ warp-markers-v2/fixtures/two-markers.xml	2026-10-18 22:50:23.680670596 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -458,16 +449,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/warp-mode-0.xml warp-markers-v2/fixtures/warp-mode-0.xml
+--- ./fixtures/warp-mode-0.xml	2026-10-18 20:03:31.223898719 -0700
++++ warp-markers-v2/fixtures/warp-mode-0.xml	2026-10-18 22:50:23.679546247 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/warp-mode-1.xml warp-markers-v2/fixtures/warp-mode-1.xml
+--- ./fixtures/warp-mode-1.xml	2026-10-18 20:03:31.223984628 -0700
++++ warp-markers-v2/fixtures/warp-mode-1.xml	2026-10-18 22:50:23.679724323 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/warp-mode-2.xml warp-markers-v2/fixtures/warp-mode-2.xml
+--- ./fixtures/warp-mode-2.xml	2026-10-18 20:03:31.224082067 -0700
++++ warp-markers-v2/fixtures/warp-mode-2.xml	2026-10-18 22:50:23.679906780 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/warp-mode-3.xml warp-markers-v2/fixtures/warp-mode-3.xml
+--- ./fixtures/warp-mode-3.xml	2026-10-18 20:03:31.224172146 -0700
++++ warp-markers-v2/fixtures/warp-mode-3.xml	2026-10-18 22:50:23.680139726 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./fixtures/warp-mode-6.xml warp-markers-v2/fixtures/warp-mode-6.xml
+--- ./fixtures/warp-mode-6.xml	2026-10-18 20:03:31.224288985 -0700
++++ warp-markers-v2/fixtures/warp-mode-6.xml	2026-10-18 22:50:23.680316612 -0700
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Ableton MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1">
+ 	<LiveSet>
+-		<NextPointeeId Value="69" />
++		<NextPointeeId Value="67" />
+ 		<Tracks>
+ 			<MidiTrack Id="1">
+ 				<Name>
+@@ -228,16 +228,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<UltraAnalog Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="67">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</UltraAnalog>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</MidiTrack>
+@@ -460,16 +451,7 @@
+ 						</ClipSlotList>
+ 					</FreezeSequencer>
+ 					<DeviceChain>
+-						<Devices>
+-							<Amp Id="0">
+-								<On>
+-									<Manual Value="true" />
+-									<AutomationTarget Id="68">
+-										<LockEnvelope Value="0" />
+-									</AutomationTarget>
+-								</On>
+-							</Amp>
+-						</Devices>
++						<Devices />
+ 					</DeviceChain>
+ 				</DeviceChain>
+ 			</AudioTrack>
+diff -ruN '--exclude=sample.wav' ./manifest.json warp-markers-v2/manifest.json
+--- ./manifest.json	2026-10-18 20:03:31.901267579 -0700
++++ warp-markers-v2/manifest.json	2026-10-18 22:57:35.184969357 -0700
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "warp-markers-v2",
+- "release_status": "candidate-unreviewed",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-WARP-MARKERS",
+@@ -14,13 +14,11 @@
+   "FEAT-PERSISTENCE"
+  ],
+  "partial_requirement_scopes": {
+-  "REQ-WARP-MARKERS-001": "AudioClip warp children and their empty single-Value form; Sampler/Simpler list and settings in SampleWarpProperties; FluctuationTexture name; IsWarped true/false",
++  "REQ-WARP-MARKERS-001": "AudioClip warp children and their empty single-Value form; FluctuationTexture name; IsWarped true/false",
+   "REQ-WARP-MARKERS-002": "WarpMarker attributes; SecTime/BeatTime binary64 read by the decimal-prefix rule; no prefix refused; no rounding on load",
+   "REQ-WARP-MARKERS-003": "Strictly increasing audio clip list of two or more markers held as read, in document order",
+-  "REQ-WARP-MARKERS-004": "Empty marker list of a sample part not refused",
+   "REQ-WARP-MARKERS-007": "Last marker of an audio clip list is the shadow marker; scripting remove and move refuse it; it is never a right neighbour; its segment extends the conversions past the last visible marker; a spacing other than 1/32 beat is kept on opening",
+   "REQ-WARP-MARKERS-008": "Both conversions refused on a clip that is not warped; on a warped clip, the piecewise-linear conversion values with both extensions, as binary64 sequences, for a call right after opening",
+-  "REQ-WARP-MARKERS-009": "Statement only, no case: a session audio clip that is not warped does not use its warp markers when it plays",
+   "REQ-WARP-MARKERS-010": "Seven absent or value-less audio clip settings take their defaults",
+   "REQ-WARP-MARKERS-011": "WarpMode codes 0 to 4 and 6 with their chooser labels; held as stored",
+   "REQ-WARP-MARKERS-012": "TransientResolution and TransientLoopMode codes and defaults, without labels; codes held as stored",
+@@ -29,8 +27,10 @@
+   "REQ-WARP-MARKERS-016": "Grid rounding as a binary64 operation sequence in the scripting add and lookup; no rounding on load"
+  },
+  "unreleased_requirements": [
++  "REQ-WARP-MARKERS-004",
+   "REQ-WARP-MARKERS-005",
+   "REQ-WARP-MARKERS-006",
++  "REQ-WARP-MARKERS-009",
+   "REQ-WARP-MARKERS-014"
+  ],
+  "compatibility_dimensions": {
+@@ -38,24 +38,25 @@
+   "scripting-edit-checks": "static-derived and extracted-execution expectations as labelled; reference execution not-run",
+   "scripting-conversion-values": "extracted-execution expectations as labelled; reference execution not-run",
+   "file-format-written": "excluded (nothing saved is graded)",
+-  "playback": "excluded, except the ungraded statement of REQ-WARP-MARKERS-009",
++  "playback": "excluded",
+   "audio": "excluded",
+   "ui": "excluded",
+   "timing": "excluded"
+  },
+  "expectation_provenance_labels": {
+   "static-derived; not observed reference output": "derived for the target build without running it, from evidence reviewed before sanitization",
+-  "extracted execution; not observed reference output": "the deciding binary64 values of the case (the conversion result, or the rounded beat and the beat bounds that decide the outcome) were computed by the original program's x86_64 code for this case's inputs, run on a Linux x86_64 host outside the application; the macOS arm64 build is inferred to compute the same; opening, the call's other checks and the sample rate are static-derived",
++  "extracted execution; not observed reference output": "the deciding binary64 values of the case (the conversion result, or the rounded beat and the beat bounds that decide the outcome) were computed by the original program's x86_64 code for this case's inputs, run on a Linux x86_64 host outside the application; for a conversion, that code computed the step between seconds and beats, and the division of a position in frames by the sample rate and the multiplication of a result by it are static-derived and exact for every case with this label; the grid rounding ran in another part of the original program that rounds a beat with the same operations as the add and the marker lookup (static-derived); the macOS arm64 build is inferred to compute the same; opening, the comparisons of the deciding values, the call's other checks and the sample rate are static-derived",
+   "computed by extracted-execution rules; not observed reference output": "computed for this case's inputs with the binary64 operation sequences that extracted execution of the original x86_64 code confirmed on other inputs; this input was not run; otherwise as static-derived"
+  },
+  "stated_assumptions": [
+-  "The base set opens in the target build. Its structure follows static-derived rules, which assume that a MIDI track's device list accepts the base set's instrument (in case 018, the Simpler) and an audio track's device list its effect (every case).",
++  "The base set, whose device lists are empty, opens in the target build. Its structure follows static-derived rules (every case).",
+   "Marker times are held as binary64 values read by the decimal rule of REQ-WARP-MARKERS-002 (every case).",
+   "The sample length that add_warp_marker compares with is the duration of the clip's sample, 3 s (cases 021 to 032, 052 to 055 and 059 to 061). Every add whose sample time lies in the sample stays at least 0.5 s before its end, and the 900,000 s of case 024 lies beyond it whether it is counted in seconds, milliseconds or frames.",
+   "The sample rate that both conversions use is the rate of the clip's sample, 8,000 Hz, which the clip also stores (cases 039 to 051).",
+   "An add or remove whose checks all pass raises no further error (cases 022, 031, 032, 035, 038, 052, 054, 058, 059, 061 and 063).",
+   "The marker lookup of REQ-WARP-MARKERS-015 clause 7 behaves as stated (cases 033 to 038, 056 to 058, 062 and 063).",
+-  "The macOS arm64 build computes the conversions, the grid rounding and the beat bounds with the same binary64 operations as the x86_64 build (cases 039 to 060)."
++  "The macOS arm64 build computes the conversions, the grid rounding and the beat bounds with the same binary64 operations as the x86_64 build (cases 039 to 060).",
++  "A conversion made right after opening uses the marker list held after opening (cases 039 to 051)."
+  ],
+  "exclusions": {
+   "inputs_without_expectation": [
+@@ -63,18 +64,19 @@
+    "marker Id values that are missing, repeated or not decimal integers; content inside WarpMarker; children of WarpMarkers other than WarpMarker",
+    "audio clip marker lists with fewer than two markers or not strictly increasing in both positions",
+    "code and setting text other than plain decimal digits; codes outside their lists; settings outside their ranges or not integers; IsWarped other than true or false; a missing IsWarped or WarpMode; a TransientEnvelope value other than 100 (every fixture carries 100; the held value is not judged)",
+-   "children of AudioClip or SampleWarpProperties other than those the fixtures carry, other child orders, repeated children",
+-   "any change to the fixtures' context: the document outside the clip's warp children and marker list and the sample part's children, including the clip's sample reference, and the WAV file",
+-   "scripting arguments that are not finite or have magnitude 1,000,000 or more; a move on a list of fewer than three markers; a call that breaks more than one rule",
++   "children of AudioClip other than those the fixtures carry, other child orders, repeated children",
++   "any change to the fixtures' context: the document outside the clip's warp children and marker list, including the clip's sample reference, and the WAV file; any device in a device list (every device list of the fixtures is empty), including a Sampler or Simpler and its sample parts",
++   "scripting arguments that are not finite or have magnitude 1,000,000 or more; a move on a list of fewer than three markers; a call that breaks more than one rule, except an add_warp_marker call, which the first failing check of REQ-015 clauses 1 to 5 decides",
+    "any other envelope, format version, compressed container or document kind"
+   ],
+   "behavior": [
+    "everything written on save (REQ-002, 003, 004, 007, 010 save clauses)",
+-   "an audio clip whose marker list is empty (REQ-004); one-marker, out-of-order and equal-position lists (REQ-005); missing or Invalid positions (REQ-006)",
++   "an empty marker list, in an audio clip or a sample part (REQ-004); one-marker, out-of-order and equal-position lists (REQ-005); missing or Invalid positions (REQ-006)",
+    "the value used, shown and saved for codes and settings outside their ranges (REQ-014); the TransientEnvelope range and default",
+    "conversion results after any edit of the clip; conversions on clips that are not audio clips",
+-   "which sample position plays at a given beat for a warped clip (REQ-009); how a clip that is not warped plays, beyond the statement of REQ-009 clause 1; arrangement clips; the audio output of every warp mode",
+-   "the default WarpMode of an audio clip or sample part and the default warp mode preference; sample-part defaults",
++   "playback (REQ-009): which sample position plays at a given beat, whether a clip that is not warped uses its warp markers, arrangement clips; the audio output of every warp mode",
++   "the default WarpMode of an audio clip and the default warp mode preference",
++   "Sampler and Simpler sample parts: where they store warp state (REQ-001 clause 2), their marker lists (REQ-004), codes, settings and defaults; any device in a device list",
+    "where and when the application creates or re-places the shadow marker, and the values it gives it; the marker list after an accepted add or remove; move limits and accepted moves; the scripting warp_mode setter; non-audio clips",
+    "display of markers, codes, labels and settings; interactive edits, auto-warp, recording and undo",
+    "any change the application makes by itself after reading the document, such as automatic warping or sample analysis; whether the original makes one on opening is not established",
+@@ -86,81 +88,103 @@
+  "fixture_origin": "independently authored complete Live Set documents built from one base set, and one generated silent WAV; no shipped file content, audio or program code",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": "pending: separate handoff review required before release",
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RVW2-01 medium: every case rested on the open question of where devices may be placed; both devices removed from every document (next pointee identifier 67); WARP-MARKERS-018 withdrawn with REQ-001 clause 2 and REQ-004; devices and sample parts excluded",
++   "RVW2-02 medium: the REQ-009 statement was a playback claim that no released output can observe; REQ-009 unreleased",
++   "RVW2-03 low: the extracted-execution label was broader than what ran (frame scaling by the rate; rounding run in another part of the program); clarified, no label changed",
++   "RVW2-04 low: stated assumption 8 added (a conversion right after opening uses the list held after opening)",
++   "RVW2-05 low: combined failures clarified: an add is decided by its first failing check (cases 023 to 027)",
++   "RVW2-06 info: all 15 extracted-execution cases found in the retained raw outputs and re-run bit for bit",
++   "RVW2-07 editorial: payload status set to reviewed release; review record added",
++   "RVW2-08 info: the 7 computed-by-rules cases have inputs inside the run's range; outcomes unchanged under alternative operation orders consistent with the run",
++   "RVW2-09 info: all 20 documents pass the structural checker; 007 and 008 refused only for their marker text; the WAV is generated",
++   "RVW2-10 info: evidence identity re-hashed and matched"
++  ],
++  "disposition": "Approved with listed narrowing (RVW2-01, RVW2-02), only for the explicit partial clauses; expectations static-derived, extracted execution or computed by extracted-execution rules as labelled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "warp-markers-v1",
+  "supersession": {
+-  "relationship": "superset in effect: carries every warp-markers-v1 case record unchanged with rebuilt fixtures; within warp-markers-v1's scope both give the same expectations; warp-markers-v1 stays immutable, but its fixtures must not be used (the target build refuses 17 of its 18 documents)",
++  "relationship": "supersedes with one case withdrawn: carries 37 of the 38 warp-markers-v1 case records unchanged with rebuilt fixtures; WARP-MARKERS-018 is withdrawn and has no expectation; for every other case and clause of warp-markers-v1 both give the same expectations; warp-markers-v1 stays immutable, but its fixtures must not be used (the target build refuses 17 of its 18 documents)",
+   "superseded_manifest_sha256": "f8546a3e95788074a2cf1cd99564637b8689af853db705fd9beba1af1764ef46",
+-  "restated_cases": "WARP-MARKERS-001 to 038: case records identical to warp-markers-v1; fixture names and the WAV bytes identical; every XML fixture rebuilt as a complete Live Set",
++  "restated_cases": "WARP-MARKERS-001 to 017 and 019 to 038: case records identical to warp-markers-v1; fixture names and the WAV bytes identical; every XML fixture rebuilt as a complete Live Set without devices",
++  "withdrawn_cases": {
++   "WARP-MARKERS-018": "its document needs a Simpler in a track's device list; whether the target build accepts a device there is not established, so the case has no expectation; REQ-001 clause 2 and REQ-004 are withdrawn with it"
++  },
+   "changes": [
+-   "fixtures: every XML document rebuilt as a complete Live Set (the base set of spec.md) with the warp-markers-v1 change of its case; 17 of the 18 v1 documents are refused by the target build's open-time structure check (a track with clip slots but no freeze slots); fixture names kept; the WAV is byte-identical",
++   "fixtures: every XML document rebuilt as a complete Live Set (the base set of spec.md, whose device lists are empty) with the warp-markers-v1 change of its case; 17 of the 18 v1 documents are refused by the target build's open-time structure check (a track with clip slots but no freeze slots); fixture names kept; the WAV is byte-identical",
++   "case WARP-MARKERS-018 withdrawn, with REQ-001 clause 2 and REQ-004: its document needs a Simpler in a track's device list, and whether the target build accepts a device there is not established; simpler-empty-markers.xml removed",
+    "cases 007 and 008 now isolate the number-text refusal: their v1 documents were also refused for their structure",
+    "REQ-015 clause 5: the 5 to 999 BPM tempo rule replaced by the binary64 beat bounds per neighbour (same outcome within warp-markers-v1's scope); the bands near the limits and near a neighbour's sample time withdrawn; cases 052 to 055, 059 and 060",
+    "REQ-016: grid rounding stated as its binary64 operation sequence (same outcome within warp-markers-v1's scope); the band near a rounding tie withdrawn; cases 056 to 058",
+    "REQ-008: conversion values of sample_to_beat_time and beat_to_sample_time released for a call right after opening; cases 039 to 051 on two new documents",
+    "REQ-007: the shadow segment extends the conversions; a shadow spacing other than 1/32 beat is kept on opening; case 064 on a new document",
+    "REQ-015: an add below the first marker's sample time has no left neighbour (case 061); move, like remove, has no warped check (case 062); a remove on a list of two markers is accepted (case 063)",
+-   "REQ-009 partially released as an ungraded statement: a session audio clip that is not warped does not use its warp markers when it plays",
+-   "provenance labels extracted execution and computed by extracted-execution rules added; stated assumptions extended to the sample rate and the arm64 build; carried records unchanged",
+-   "exclusions: conversion values, the add below the first marker, a remove on fewer than three markers and the three uncertainty bands no longer excluded; the fixtures' context, the structure rules and sample resolution newly excluded"
++   "REQ-009 stays unreleased, as in warp-markers-v1: no case of this release can observe playback",
++   "provenance labels extracted execution and computed by extracted-execution rules added; stated assumptions extended to the sample rate, the marker list a conversion uses and the arm64 build; the carried records unchanged",
++   "exclusions: conversion values, the add below the first marker, a remove on fewer than three markers and the three uncertainty bands no longer excluded; the fixtures' context, the structure rules, sample resolution, device lists and Sampler and Simpler sample parts newly excluded"
+   ]
+  },
+  "entrypoint": "README.md",
+- "case_count": 64,
++ "case_count": 63,
+  "inventory_excludes": [
+   "manifest.json (self-hash recorded outside package)"
+  ],
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "b28519ca54bcd931e60b10394b98747f0916d49fd08fd3342d1be02ce8b0bbb3",
+-   "bytes": 1629
++   "sha256": "f35829169b29fb3aac301ec2db8381b41f7b2a84cc7d64d3e73088dd7a4eec08",
++   "bytes": 1551
+   },
+   {
+    "path": "README.md",
+-   "sha256": "e3d4c2e7584b576b8d5363d894ebfffa43e56b997e52a1b95c180d3ce350d1ac",
+-   "bytes": 8478
++   "sha256": "5a8c6e532f3237bb7d51126048df02f8ef184f038a8900b93aace56e89e6f506",
++   "bytes": 8556
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "dd18ffb1dd814b7271ccd4bb607990a9c4315bf270cb3b5fe6b689b493ca572a",
++   "bytes": 12568
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "fcbfc6e7e3e3366f535375ced707b246d57b9b7fb6e519cef49a423b1f018932",
+-   "bytes": 47748
++   "sha256": "67a37755bad5e7a156e81f515405a3d8bad1124e1ba16c61436aa0c8bfb758a3",
++   "bytes": 46972
+   },
+   {
+    "path": "fixtures/base.xml",
+-   "sha256": "c97294fa5514f51c1e4a0ec1ba17cf10d3c784249d2384c603e18d3277e977fc",
+-   "bytes": 25328
++   "sha256": "0f0c7068eb974558961f2c2886825190b1b92860c66bc82f48c26c8f9e9b3378",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/beattime-empty.xml",
+-   "sha256": "0e483171f01aea9002164a66097419729055ed7330a66bc7869e5e6854b255c1",
+-   "bytes": 25327
++   "sha256": "12725fa69460da4c6c75bb417cd3acb61c7f34225902c0d5ee7e2f680e44e2ad",
++   "bytes": 24889
+   },
+   {
+    "path": "fixtures/beattime-off-grid.xml",
+-   "sha256": "37703e0ebdfcae8f05fc8feca622cab8d99abb6e358ff3ed26619be49f91c027",
+-   "bytes": 25336
++   "sha256": "8bcb4311a8bd76efdc66c2af234ef23b77fbd911797bf2c8071089a770cd579a",
++   "bytes": 24898
+   },
+   {
+    "path": "fixtures/beattime-trailing-text.xml",
+-   "sha256": "aa7f3aad959dfa2a38e9526c3ad6ffdb0c6e00d66cd1487270580752c77f2e43",
+-   "bytes": 25332
++   "sha256": "0239cd7ad8ab317d1ccbca721b6d501260a270b9c7756f44740a37fedc039106",
++   "bytes": 24894
+   },
+   {
+    "path": "fixtures/first-marker-later.xml",
+-   "sha256": "56d04d63423bf25c684c8f63b42f2319f590741ee5638803937ccaf3c35adf15",
+-   "bytes": 25330
++   "sha256": "2237a7895a9a9d10d6aab2578fe756716587be7b6b4317c35bcd8c80846931a5",
++   "bytes": 24892
+   },
+   {
+    "path": "fixtures/not-warped.xml",
+-   "sha256": "b02ceeeaad319e7b93e8027cb19bfdeecd9564cf135b60f3719ab1a1a844bfba",
+-   "bytes": 25329
++   "sha256": "698afd684457290ead75ebe513d92feccac3d36bbb55917b0b74f0db023a49ae",
++   "bytes": 24891
+   },
+   {
+    "path": "fixtures/sample.wav",
+@@ -169,83 +193,78 @@
+   },
+   {
+    "path": "fixtures/sectime-exponent.xml",
+-   "sha256": "aacd9756f74b3bca528d95f120668b90f40461378216d6ba3f4df221a1e5cbf1",
+-   "bytes": 25332
++   "sha256": "cdbc6d617a8af25c12d67e725e957661901a9026d22ea93ac7c3e1bfdbb72507",
++   "bytes": 24894
+   },
+   {
+    "path": "fixtures/sectime-leading-space.xml",
+-   "sha256": "de90ea5276d2e90645d84ead5a539b31211a19c22fcd99af08ac33baeb464641",
+-   "bytes": 25329
++   "sha256": "7e6a60d35508ab44e7f0f146c148a8a8c5ec598bbb89904c8d7b4ed10ffe3c9b",
++   "bytes": 24891
+   },
+   {
+    "path": "fixtures/sectime-no-number.xml",
+-   "sha256": "2fdf98f99313843ba2cf251d476ff7072c4b4c86e26507f43af55d361a8fee71",
+-   "bytes": 25330
++   "sha256": "4476411af1a674dc3e2228c07e1d6efed58200ab961f7943ee266de6e33cb78b",
++   "bytes": 24892
+   },
+   {
+    "path": "fixtures/settings-absent.xml",
+-   "sha256": "f4cc259917bf4fe7354ea994690581de6eaf091532bcf21fc8111f3fb5cbbd42",
+-   "bytes": 25016
++   "sha256": "798e3c1ef6c26e63d7ab53e8098b2bb455f33a0078aeecb3a6fbee4a0c7f1aaa",
++   "bytes": 24578
+   },
+   {
+    "path": "fixtures/settings-no-value.xml",
+-   "sha256": "dc341e6e3dc297283b2bb48baed3b6161a5a7d4b828b35545ea3719f2f5fcd81",
+-   "bytes": 25252
++   "sha256": "2a22960893b8e9ffe60aba6bc6318cf4d09b145ffec5c041b7921d0906dc10bc",
++   "bytes": 24814
+   },
+   {
+    "path": "fixtures/shadow-sixteenth.xml",
+-   "sha256": "827339699a33e3d40023385d8d9a3cf1190f6aa46f7ce37868632bef555d9d2b",
+-   "bytes": 25326
+-  },
+-  {
+-   "path": "fixtures/simpler-empty-markers.xml",
+-   "sha256": "6777790104c7c68e208752cd880fa0bdade862622384baddfa356c6a6d8e082d",
+-   "bytes": 26089
++   "sha256": "9fbfc407984ada9ce928e7d4b64d8394d8519aa5af0dbdc6d12f4f800659cfe4",
++   "bytes": 24888
+   },
+   {
+    "path": "fixtures/transient-loop-mode-0.xml",
+-   "sha256": "72c422ce4232f986e99a0cbacde62ad671f501ba66c2e4256bcc76466a792cb2",
+-   "bytes": 25328
++   "sha256": "1dfe8d6b84ddfcb7ff86de0ff534c6985128d75707f3bf5d22b8a652134c5915",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/transient-resolution-0.xml",
+-   "sha256": "6fce0a93a8c5281ade7afa44dfca5b9d53deca33fa28bcb10f80a13eabdce6f8",
+-   "bytes": 25328
++   "sha256": "30007fd2f56d8afdf23264f1aace65d0fc40f984f79bb8a129cfeda928af2191",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/two-markers.xml",
+-   "sha256": "23c5a1da6739068bb614ebb7040f1f4e271649a43f0f48f5d4a7aa2370de47e0",
+-   "bytes": 25221
++   "sha256": "da877d3477e36546d620e1ad3bfd0f0664a03859557980358791e4e03f4f0531",
++   "bytes": 24783
+   },
+   {
+    "path": "fixtures/warp-mode-0.xml",
+-   "sha256": "d380bda52fc16d304a548242fa8b8e64ccafc9726c97f8a8498289c49f27e958",
+-   "bytes": 25328
++   "sha256": "cd2330edb30f3acec9b577682b0ae4e9e95d554e822c6a083bb6764e04fb2229",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/warp-mode-1.xml",
+-   "sha256": "c9ca4a2eebdda8b844c202adad6a78c8dea3c0d3b8eed947abd178e8dde6c446",
+-   "bytes": 25328
++   "sha256": "af5984384cae7b1548ba0871590326ce94067d00a773d6f943268fa6caf0e03f",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/warp-mode-2.xml",
+-   "sha256": "aebd93d962b3c9cf12be265770191a3ee22f45db63d28a8e487485772ff702d9",
+-   "bytes": 25328
++   "sha256": "609f1631f6e9b49e29281a59db3b047a47f3386e83b9cc416892cf559001d5be",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/warp-mode-3.xml",
+-   "sha256": "3c8b872b46e8cd5dd8796e6a83c6af916b745d978f31505295b1733a9660258c",
+-   "bytes": 25328
++   "sha256": "e8b021cf74710d92f66e7388c8a8fa6556b2c37563742a14812be618565be539",
++   "bytes": 24890
+   },
+   {
+    "path": "fixtures/warp-mode-6.xml",
+-   "sha256": "da6aa642804a15e72798626f7eb918f3524a50e5201edb171342944c8a08faf3",
+-   "bytes": 25328
++   "sha256": "b0dfd6661dcd1b89f74cebdec0aff0bf41c6f7f11aebd5f2a904d006dd792d97",
++   "bytes": 24890
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "e69eeb2d46e2d40e936b469906af245f4e0b2b56c7ee369a292b908d09fd9f0f",
+-   "bytes": 30079
++   "sha256": "7eeef903226dbf730c33d790e6ee25a01f6b4e306e633ad9fbd9606d83cb8457",
++   "bytes": 29589
+   }
+  ]
+ }
+diff -ruN '--exclude=sample.wav' ./README.md warp-markers-v2/README.md
+--- ./README.md	2026-10-18 20:00:10.140515232 -0700
++++ warp-markers-v2/README.md	2026-10-18 22:54:45.858735990 -0700
+@@ -1,25 +1,24 @@
+ # Warp markers and warp settings, release 2
+ 
+-**Unreviewed candidate.** Read [the contract](spec.md), [the cases](cases.json),
+-[the role instructions](AGENTS.md) and [the manifest](manifest.json). No
+-separate review has approved this package yet, and it is not an implementation
+-input until it is released. A fresh, restricted implementation workspace would
+-then still be required; this package does not provision one.
++**Reviewed local release.** Read [the contract](spec.md),
++[the cases](cases.json), [the role instructions](AGENTS.md),
++[the manifest](manifest.json) and [the review disposition](REVIEW.md). The
++stated partial scope, narrowed as recorded in the review, is approved as a
++contract for a fresh, restricted implementation workspace. Such a workspace
++has not been provisioned by this release.
+ 
+ The finite scope is how a decoded Live Set stores the warp markers and warp
+-settings of an audio clip, and the marker list of a Simpler sample: where they
+-are, how their text is read when a document is opened, the defaults of absent
+-settings and the stored codes. It also covers what the scripting interface's
+-conversions between sample time and beat time return for a warped clip, and
+-which edits of warp markers through the scripting interface are refused or
+-accepted, including the exact binary64 arithmetic at the edges of the edit
+-limits and of the beat grid. One statement is added about playback: a session
+-clip that is not warped does not use its warp markers. Requirement IDs are
+-retained with explicit partial clauses. Requirements 005, 006 and 014 are not
+-released, and 009 is released only as that statement. Nothing that is saved,
+-played or heard is graded.
++settings of an audio clip: where they are, how their text is read when a
++document is opened, the defaults of absent settings and the stored codes. It
++also covers what the scripting interface's conversions between sample time and
++beat time return for a warped clip, and which edits of warp markers through the
++scripting interface are refused or accepted, including the exact binary64
++arithmetic at the edges of the edit limits and of the beat grid. Requirement
++IDs are retained with explicit partial clauses. Requirements 004, 005, 006, 009
++and 014 are not released. Nothing that is saved, played or heard is graded,
++and no device is part of the release.
+ 
+-The package has 64 cases over 21 XML documents and one generated WAV file of
++The package has 63 cases over 20 XML documents and one generated WAV file of
+ three seconds of silence. Every document is the same complete Live Set with
+ one change.
+ 
+@@ -35,11 +34,13 @@
+ This release supersedes warp-markers-v1, which stays immutable. Do not use the
+ warp-markers-v1 fixtures: the target build checks the structure of every Live
+ Set it opens, and it would refuse 17 of the 18 warp-markers-v1 documents,
+-although 35 of their cases expect them to open (change 1). Within
+-warp-markers-v1's scope, both releases give the same expectations. Its 38 case
+-records are carried unchanged, with the same IDs and fixture names, and 26
+-cases are new, for 64 in total. [The manifest](manifest.json) records the
+-relationship and the superseded manifest digest.
++although 35 of their cases expect them to open (change 1). Case
++WARP-MARKERS-018 is withdrawn and has no expectation (change 11); do not use it
++either. For every other case and clause of warp-markers-v1, both releases give
++the same expectations. Its other 37 case records are carried unchanged, with
++the same IDs and fixture names, and 26 cases are new, for 63 in total.
++[The manifest](manifest.json) records the relationship and the superseded
++manifest digest.
+ 
+ ## Changes from warp-markers-v1
+ 
+@@ -52,11 +53,11 @@
+    document are these:
+    - the freeze slots that the structure check requires: one empty freeze slot
+      for each clip slot of the audio and MIDI tracks;
+-   - the rest of the base set: a MIDI track with a two-note MIDI clip and an
+-     instrument, a return track, one send per track mixer, the main and cue
+-     tracks, two scenes, the transport, the set-level values and the automation
+-     target identifiers. The audio track's identifier is now 2 (it was 0) and
+-     its second clip slot is empty;
++   - the rest of the base set: a MIDI track with a two-note MIDI clip, a
++     return track, one send per track mixer, the main and cue tracks, two
++     scenes, the transport, the set-level values and the automation target
++     identifiers. Every device list is empty. The audio track's identifier is
++     now 2 (it was 0) and its second clip slot is empty;
+    - in the clip: its region, name, colour, launch and time-signature children,
+      and a sample reference to `sample.wav` between `IsWarped` and `WarpMode`.
+      The ten value children of REQ-WARP-MARKERS-001 clause 1, the marker list
+@@ -80,7 +81,6 @@
+    | `transient-resolution-0.xml` | `TransientResolution` 0, as in warp-markers-v1 | 011 |
+    | `transient-loop-mode-0.xml` | `TransientLoopMode` 0, as in warp-markers-v1 | 012 |
+    | `warp-mode-0.xml` to `warp-mode-3.xml`, `warp-mode-6.xml` | `WarpMode` 0, 1, 2, 3 or 6, as in warp-markers-v1 | 013 to 017 |
+-   | `simpler-empty-markers.xml` | A Simpler replaces the MIDI track's instrument; its sample part is the warp-markers-v1 one, and it also has the base set's `On` parameter. Unlike warp-markers-v1, the document also holds the clip, and the MIDI track's identifier is 1 (it was 0) | 018 |
+    | `first-marker-later.xml` (new) | First marker (0.5 s, beat 1) | 046, 047, 061 |
+    | `two-markers.xml` (new) | Two markers: (0 s, beat 0) and (0.0112275449101796407 s, beat 0.03125) | 051, 063 |
+    | `shadow-sixteenth.xml` (new) | Shadow marker (2.03125 s, beat 3.0625), 1/16 beat after the last visible marker | 064 |
+@@ -112,16 +112,22 @@
+    remove, does not check whether the clip is warped (WARP-MARKERS-062). A
+    remove on a list of two markers is accepted; that exclusion is withdrawn
+    for the remove and kept for the move (WARP-MARKERS-063).
+-8. **REQ-WARP-MARKERS-009** is partly released, as one statement without a
+-   case: a session audio clip that is not warped does not use its warp markers
+-   when it plays.
++8. **REQ-WARP-MARKERS-009** stays unreleased, as in warp-markers-v1: no case
++   of this release can observe playback.
+ 9. **Provenance and assumptions.** The labels extracted execution and computed
+    by extracted-execution rules are new; 22 new cases carry one of them. The
+    carried records keep the static-derived label. The stated assumptions now
+-   also cover the base set opening, the sample rate and the arm64 build.
++   also cover the base set opening, the sample rate, the marker list a
++   conversion uses and the arm64 build.
+ 10. **Exclusions.** The fixtures' context, the structure rules that decide
+-    whether a Live Set opens, and how a document finds its sample are newly
+-    excluded. Conversion values, the cases named in changes 3, 4 and 7, and
+-    the three uncertainty bands are no longer excluded.
+-11. **Unchanged.** Every other clause, the 38 carried case records and the WAV
++    whether a Live Set opens, how a document finds its sample, devices and
++    the sample parts of a Sampler or Simpler are newly excluded. Conversion
++    values, the cases named in changes 3, 4 and 7, and the three uncertainty
++    bands are no longer excluded.
++11. **Withdrawn.** WARP-MARKERS-018, and with it REQ-WARP-MARKERS-001 clause 2
++    and REQ-WARP-MARKERS-004. Its document needs a Simpler in the MIDI track's
++    device list, and whether the target build accepts a device there is not
++    established. `simpler-empty-markers.xml` is removed, and no fixture holds a
++    device.
++12. **Unchanged.** Every other clause, the 37 carried case records and the WAV
+     are as in warp-markers-v1.
+diff -ruN '--exclude=sample.wav' ./REVIEW.md warp-markers-v2/REVIEW.md
+--- ./REVIEW.md	1969-12-31 16:00:00.000000000 -0800
++++ warp-markers-v2/REVIEW.md	2026-10-18 22:57:34.567007965 -0700
+@@ -0,0 +1,165 @@
++# Review disposition
++
++Release: warp-markers-v2, 2026-10-18.
++
++Reviewer: separate review agent (Claude Opus 5.5), launched by the
++coordinator in its own handoff-review context. It did not author this candidate
++and will not implement it. The one reviewer performed the scope and evidence,
++supersession, provenance, fixture-validity, quality and sanitization,
++evidence-identity and fixture-sharing checks. Publication metadata outside this
++package is left to the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of REQ-WARP-MARKERS-001 to
++003, 007, 008, 010 to 013, 015 and 016 in [the contract](spec.md), narrowed as
++listed below. REQ-WARP-MARKERS-004, 005, 006, 009 and 014, and clause 2 of
++REQ-WARP-MARKERS-001, remain unreleased.
++
++- Supersession. The warp-markers-v1 manifest digest equals the catalog value
++  and the superseded digest recorded here, and every file it lists still
++  matches. 37 of its 38 case records are carried in their order, equal as data
++  and as serialized text; WARP-MARKERS-018 is withdrawn (RVW2-01). Each of the
++  17 documents that keep a warp-markers-v1 name holds the same warp children
++  and marker list as its warp-markers-v1 counterpart. The structural checker
++  below finds a track with clip slots but no freeze slots in 17 of the 18
++  warp-markers-v1 documents, as the change list says.
++- Fixture validity. The analysts' structural checker for Live Sets was run
++  unchanged on an exported copy of every fixture. It finds no structural
++  refusal, no shape of unknown outcome and no schema deviation in any of the 20
++  documents, and no contradicted or non-isolating case. The reviewer's own
++  check of the shapes that checker does not evaluate (a base value element
++  without `Value`, a repeated member) found none. The seven value-less settings
++  of WARP-MARKERS-010 are compound members whose `Value` is an attribute, not
++  base value elements. Every document has four empty device lists and a next
++  pointee identifier of 67, above its largest identifier, 66. Each document
++  differs from `base.xml` only inside the clip. WARP-MARKERS-007 and 008 differ
++  from it in one line, the tested marker attribute; `base.xml` opens, and the
++  reviewer's restatement refuses each only for its number text. The WAV fixture
++  is mono 16-bit PCM at 8,000 Hz with 24,000 zero frames. It equals, byte for
++  byte, a WAV rebuilt from those parameters and the warp-markers-v1 file, so it
++  is generated.
++- Extracted-execution labels. Each of the 15 cases labelled extracted
++  execution (WARP-MARKERS-039 to 050, 052, 056 and 057) was checked against the
++  raw outputs of the retained run, not only its summary. Every deciding value
++  is there and equals the case bit for bit: the conversion result for 039 to
++  050, the rounded beat and both neighbours' bounds for 052, the rounded beat
++  for 056 and 057. The reviewer then re-ran all of them in fresh processes of
++  the same extraction setup, with inputs taken from the package: at most 10 calls per
++  process, against a limit of 256. Every value was reproduced bit for bit,
++  including 2.000000130078255 → 2.00000026015651 for WARP-MARKERS-057. No case
++  claims extracted execution without a retained run. WARP-MARKERS-051, the
++  conversion on two markers, is labelled computed: the run converted on
++  four-marker lists only. Two statements of the label were broader than what
++  ran (RVW2-03).
++- Computed-by-rules cases. In the 7 cases (WARP-MARKERS-051, 053 to 055 and
++  058 to 060) every deciding value the run did not cover has inputs inside
++  the run's range. The rounded beats lie between 2 and 12, inside the run's 0 to
++  10¹³, and on the run's side of zero. The bounds use neighbour distances of
++  0.5 and −0.5, as in the run. The one exception, distance −1 toward the right
++  neighbour in 059 and 060, decides nothing, because the rounded beat lies at
++  least 0.41 beat inside those bounds. Two alternative operation orders are
++  also consistent with every run value: a reciprocal multiplication in the
++  rounding, and the tempo multiplied by the distance before the division by 60
++  in the bounds. Each computed case keeps its outcome under them. 054, which
++  equals its bound exactly, uses the run's distance 0.5. For 051, the reviewer's
++  reading of the target build's conversion finds no step that depends on the
++  list length. Its interpolation factor of 89.07 lies inside the run's −1 to
++  3,072, and its value is compared within 1e-9 beat.
++- Expectations. The reviewer's own executable restatement of the contract
++  agrees with all 63 expected outcomes, and every conversion value is
++  bit-identical. A mutation of any expectation is caught (63 of 63). The worked
++  examples of REQ-008, 015 and 016 hold, including the binary64 neighbours of
++  the halfway point in REQ-016. For WARP-MARKERS-061 to 063 the reviewer re-read
++  the target build's add, remove, move and delete. The add skips the left check
++  and bound for a position before the first marker. Neither remove nor move
++  tests whether the clip is warped. The delete returns without change below
++  three markers. 064 rests on the opening steps that the carried cases rest on
++  and that the warp-markers-v1 review checked: none moves the last marker. The
++  author's cross-check was not relied on.
++- Shadow-marker formula. Its exclusion is clean. The payload states no formula
++  and no value of a newly placed shadow marker. "Where and when the application
++  creates or re-places the shadow marker, and the values it gives it" is
++  excluded in the contract and the manifest. The cases that use a shadow
++  marker take it from the fixture as stored: 043 to 045, 050, 051, 063 and 064.
++- Sanitization was checked by the reviewer's own scan of every payload file.
++  No source code, recovered program text, internal identifiers, addresses,
++  analyst paths, private evidence links, planning identifiers or per-case
++  evidence fields are present. The flagged words are one in the
++  forbidden-inputs list of `AGENTS.md`, worded as in the released packages, and
++  the host and build names in the provenance label, as in the other releases
++  with extracted execution. The fused multiply-add and the rounding sequences
++  are stated as arithmetic.
++- Scope. No runtime, timing, playback, display or audio result is released
++  after RVW2-02. No expectation depends on an open question after RVW2-01. The
++  remaining derived steps are stated assumptions covered by the comparison
++  obligation. Exclusions appear in both the contract and the manifest and agree.
++  Reference and candidate execution have not run, and no compatibility is
++  claimed.
++- In a copy outside the analyst checkout, every Markdown link resolves inside
++  the package, every case input and sample exists, and every listed hash and
++  size matches. The 20 XML fixtures are distinct, well-formed ASCII with LF
++  endings, tab indentation and a final newline. No fixture contains shipped
++  file content.
++
++## Scope rulings
++
++- Device placement. The candidate's base set placed an instrument directly in
++  the MIDI track's device list and an effect directly in the audio track's.
++  Whether a track's device list accepts a device is an open question. Every
++  case rested on it, and WARP-MARKERS-018 also judged the sample part of a
++  Simpler placed there. Both devices are removed from the base set and so from
++  every document. Their two automation targets go with them, and the next
++  pointee identifier becomes 67. An empty device list is a form of saved sets,
++  so no case rests on device placement any more. WARP-MARKERS-018 cannot be
++  kept without a device. It is withdrawn, with clause 2 of
++  REQ-WARP-MARKERS-001 and REQ-WARP-MARKERS-004, whose only released clause it
++  judged. Its identifier stays unused. No other expectation changed.
++- REQ-WARP-MARKERS-009. The candidate released one statement without a case:
++  a session clip that is not warped does not use its markers when it plays.
++  It is a playback claim. No output this release grades can show it, and the
++  silent WAV fixture could not show it even in an audio comparison. The
++  requirement stays unreleased, as in warp-markers-v1.
++- Combined failures. The calls of WARP-MARKERS-023 to 027 also lie outside the
++  beat bounds. Their expected reasons are those of the first failing check, in
++  the order of REQ-WARP-MARKERS-015, which the reviewer's reading of the add
++  confirms. The contract now says so. Other combinations still have no
++  expectation.
++- The two-marker list of `two-markers.xml` holds a shadow marker 1/32 beat after
++  the first marker at 167 BPM. Its `SecTime` text is that arithmetic value to
++  18 significant digits, the same value a shipped set holds. A single computed
++  number is not shipped content, and the rest of the document is authored.
++  It is accepted.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RVW2-01 | Medium | Every case rested on the open question of where devices may be placed, through the base set's instrument and effect; WARP-MARKERS-018 also judged a Simpler's sample part. | Narrowed: both devices removed from every document, the next pointee identifier set to 67, WARP-MARKERS-018 withdrawn with REQ-WARP-MARKERS-001 clause 2 and REQ-WARP-MARKERS-004, and devices and sample parts excluded, in the contract, README, cases and manifest. The structure assumption no longer names devices. |
++| RVW2-02 | Medium | The REQ-WARP-MARKERS-009 statement was a playback claim that no released output can observe. | Narrowed: REQ-WARP-MARKERS-009 unreleased; playback excluded in the contract, README and manifest. |
++| RVW2-03 | Low | The extracted-execution label said the original code computed each deciding value for the case's inputs. For the conversions it computed the step between seconds and beats; the frame division and multiplication by the rate did not run there, and the run used 48,000 Hz positions six times larger. The rounding ran in another part of the program than the add and the lookup. | Clarified in the contract and the manifest: the frame scaling is static-derived and exact for every case with the label (checked), and the add and lookup use the same rounding operations (static-derived). No label changed. |
++| RVW2-04 | Low | The conversion values rest on an untraced step, that a conversion right after opening uses the marker list held after opening, which the stated assumptions did not name. | Stated assumption 8 added, for WARP-MARKERS-039 to 051. |
++| RVW2-05 | Low | "A call that breaks more than one rule has no expectation" contradicted WARP-MARKERS-023 to 027, which also lie outside the beat bounds. | Clarified: an add is decided by its first failing check. No case changed. |
++| RVW2-06 | Info | Extracted-execution labels. | All 15 checked against the retained raw outputs and re-run bit for bit, as described above. |
++| RVW2-07 | Editorial | README, AGENTS, contract, cases and manifest described an unreviewed candidate. | Status set to reviewed local release. This record added and linked. Manifest review and status fields filled; inventory re-hashed by the reviewer. |
++| RVW2-08 | Info | Computed-by-rules cases. | Accepted, as described above. |
++| RVW2-09 | Info | Fixture validity. | All 20 documents pass the structural checker; 007 and 008 are refused only for their marker text; the WAV is generated. |
++| RVW2-10 | Info | Evidence identity. | The retained extraction run, the program image it ran, the build of its loader, the structural checker and the schema list were re-hashed on 2026-10-18. All matched their recorded digests. |
++
++## Disposition
++
++**Approved with listed narrowing** (RVW2-01 and RVW2-02), only for the explicit
++partial clauses in the contract. Expected results are static-derived,
++extracted execution, or computed by extracted-execution rules, as labelled per
++case. Extracted execution ran the original program's x86_64 code with the host's
++C library in place of the macOS libraries. The arm64 build is inferred to
++behave the same. Opening and the other checks of each call are static-derived.
++Neither reference nor candidate application cases have run, and no
++compatibility pass is claimed. Candidate-only checks cannot replace independent
++reference observations. An isolated implementation workspace remains a
++prerequisite.
++
++This release supersedes warp-markers-v1, which stays immutable; its fixtures
++must not be used, and its case WARP-MARKERS-018 has no expectation here. This
++disposition concerns the local reviewed-handoff workflow; it does not authorize
++external publication. Preserve this release unchanged.
+diff -ruN '--exclude=sample.wav' ./spec.md warp-markers-v2/spec.md
+--- ./spec.md	2026-10-18 20:03:28.566602542 -0700
++++ warp-markers-v2/spec.md	2026-10-18 22:54:45.859426627 -0700
+@@ -7,14 +7,15 @@
+ clauses explicitly included below are in scope. No other clause of a listed
+ requirement is implicitly approved. This document is self-contained.
+ 
+-**Status: unreviewed candidate.** No separate review has approved this
+-contract yet. It is not an implementation input until it is released.
++**Status: reviewed local release**, approved with listed narrowing. A separate
++review approved the clauses below, narrowed as recorded in
++[the review disposition](REVIEW.md).
+ 
+ ## What the contract means
+ 
+ An audio clip in a Live Set can be warped: warp markers pair a time in its
+-sample with a position in beats. Each sample of a Simpler carries a marker list
+-of the same kind. For one document format version, this contract describes:
++sample with a position in beats. For one document format version, this
++contract describes:
+ 
+ - where warp markers and warp settings are stored in a decoded Live Set, and how
+   their text is read when a document is opened;
+@@ -24,13 +25,12 @@
+ - the values that the scripting interface's two conversions between sample
+   time and beat time return for a warped clip right after opening;
+ - which edits of warp markers through the scripting interface are refused, and
+-  which are accepted;
+-- one statement about playback: a session clip that is not warped does not use
+-  its warp markers.
++  which are accepted.
+ 
+ It does not describe what is saved, how a clip plays or sounds, the marker list
+ after an accepted edit, editing in the user interface, how a refused document
+-is reported, or the structure rules that decide whether a Live Set opens.
++is reported, devices and the sample parts of a Sampler or Simpler, or the
++structure rules that decide whether a Live Set opens.
+ 
+ ### Provenance
+ 
+@@ -41,10 +41,16 @@
+ - **Extracted execution**: the deciding binary64 values of the case were
+   computed by the original program's own x86_64 code for this case's inputs.
+   The deciding values are the conversion result, or the rounded beat and the
+-  beat bounds that decide the outcome. The code ran on a Linux x86_64 host,
+-  outside the application, with the host's C library in place of the macOS
+-  system libraries. The macOS arm64 build is inferred to compute the same
+-  values. Opening, the call's other checks and the sample rate are
++  beat bounds that decide the outcome. For a conversion, that code computed
++  the step between seconds and beats. The division of a position in frames by
++  the sample rate, and the multiplication of a result by it, are
++  static-derived; for every case with this label they are exact. The grid
++  rounding ran in another part of the original program that rounds a beat
++  with the same operations as the add and the marker lookup (static-derived).
++  The code ran on a Linux x86_64 host, outside the application, with the
++  host's C library in place of the macOS system libraries. The macOS arm64
++  build is inferred to compute the same values. Opening, the comparisons of
++  the deciding values, the call's other checks and the sample rate are
+   static-derived.
+ - **Computed by extracted-execution rules**: computed for this case's inputs
+   with the binary64 operation sequences of REQ-WARP-MARKERS-008, 015 and 016.
+@@ -62,9 +68,7 @@
+ comparison obligation below covers them:
+ 
+ 1. the base set opens in the target build; its structure follows static-derived
+-   rules, which assume that a MIDI track's device list accepts the base set's
+-   instrument (in case WARP-MARKERS-018, the Simpler) and an audio track's
+-   device list its effect;
++   rules, and its device lists are empty;
+ 2. marker times are held as binary64 values read by REQ-WARP-MARKERS-002
+    clause 2;
+ 3. the sample length that `add_warp_marker` compares with is the duration of
+@@ -73,7 +77,9 @@
+ 5. an add or remove whose checks all pass raises no further error;
+ 6. the marker lookup of REQ-WARP-MARKERS-015 clause 7 behaves as stated;
+ 7. the macOS arm64 build computes the conversions, the grid rounding and the
+-   beat bounds with the same binary64 operations as the x86_64 build.
++   beat bounds with the same binary64 operations as the x86_64 build;
++8. a conversion made right after opening uses the marker list held after
++   opening.
+ 
+ ## Document scope and preconditions
+ 
+@@ -87,10 +93,10 @@
+   one change that its case purpose states. The base set holds a MIDI track, an
+   audio track and a return track, the main and cue tracks, two scenes, the
+   transport and the set-level values. The MIDI track holds a MIDI clip of two
+-  notes and an instrument. The audio track's first clip slot holds the clip;
+-  its second slot is empty. Each audio and MIDI track has two clip slots and
+-  two empty freeze slots, and each track mixer has one send. The base set's
+-  structure is static-derived to open in the target build (stated assumption
++  notes. Every device list is empty. The audio track's first clip slot holds
++  the clip; its second slot is empty. Each audio and MIDI track has two clip
++  slots and two empty freeze slots, and each track mixer has one send. The
++  base set's structure is static-derived to open in the target build (stated assumption
+   1). The rules that decide whether a Live Set opens are outside this release.
+   This release relies only on the base set opening, and no case judges the
+   base set's other content.
+@@ -100,10 +106,6 @@
+   Besides the children of REQ-WARP-MARKERS-001 clause 1, it holds its region,
+   name, colour, launch and time-signature children, and a sample reference
+   `SampleRef` between `IsWarped` and `WarpMode`.
+-- The **sample part** of case WARP-MARKERS-018 is the only
+-  `SampleWarpProperties` element, at
+-  `Tracks/MidiTrack/DeviceChain/DeviceChain/Devices/OriginalSimpler/Player/MultiSampleMap/SampleParts/MultiSamplePart/SampleWarpProperties`.
+-  In that fixture a Simpler is the MIDI track's instrument.
+ - The **base list** is the clip's marker list in the base set: three visible
+   markers (0 s, beat 0), (1 s, beat 2), (2 s, beat 3) and a shadow marker
+   (2.015625 s, beat 3.03125), 1/32 beat after the last visible marker. Its
+@@ -113,8 +115,8 @@
+ - **Opens** means the document is read without refusal. **Refused** means the
+   document is not opened. How a refusal is reported, and what is open
+   afterwards, are excluded.
+-- **Held after opening** means the values the clip or sample part holds once
+-  the document has been read. A change that the application then makes by
++- **Held after opening** means the values the clip holds once the document
++  has been read. A change that the application then makes by
+   itself, such as automatic warping or sample analysis, is outside this
+   release. Whether the original makes such a change when a set is opened is not
+   established; the comparison obligation says how a comparison detects one.
+@@ -158,9 +160,7 @@
+    `ComplexProFormants` and `ComplexProEnvelope` (numbers), and `WarpMarkers`.
+    Each of these children other than `WarpMarkers` is an empty element with one
+    `Value` attribute, for example `<WarpMode Value="4" />`.
+-2. A Sampler or Simpler sample stores a marker list of the same form, a
+-   `WarpMode`, the same eight settings and an `IsWarped` in
+-   `SampleWarpProperties`, a child of each `MultiSamplePart`.
++2. Not released: how a Sampler or Simpler sample stores its warp state.
+ 3. The texture fluctuation setting is named `FluctuationTexture`.
+ 4. `IsWarped` text `true` means the clip is warped and `false` that it is not.
+ 
+@@ -191,12 +191,6 @@
+    increasing in both `SecTime` and `BeatTime` opens. Each marker holds its
+    values as read by REQ-WARP-MARKERS-002, and the list keeps document order.
+ 
+-### REQ-WARP-MARKERS-004: empty marker list of a sample part (partial)
+-
+-1. An empty `WarpMarkers` element (`<WarpMarkers />`) in
+-   `SampleWarpProperties` does not refuse the document. The sample part's
+-   marker list is empty after opening.
+-
+ ### REQ-WARP-MARKERS-007: the shadow marker (partial)
+ 
+ 1. The last marker of an audio clip's marker list is the shadow marker.
+@@ -236,15 +230,6 @@
+    held after opening. A result after an edit of the clip is not part of this
+    release.
+ 
+-### REQ-WARP-MARKERS-009: playback of a clip that is not warped (partial, statement only)
+-
+-1. A session audio clip whose `IsWarped` is `false` does not use its warp
+-   markers when it plays: its marker list has no effect on which positions of
+-   its sample it plays (static-derived). No case judges this clause, because it
+-   is observable only through playback, which this release does not grade. How
+-   such a clip plays, how a warped clip plays, and arrangement clips are
+-   outside this release.
+-
+ ### REQ-WARP-MARKERS-010: absent warp settings (partial)
+ 
+ 1. In an audio clip, a `GranularityTones`, `GranularityTexture`,
+@@ -348,12 +333,17 @@
+ 
+ ### Combined failures
+ 
+-Every case breaks at most one rule. A document or call that breaks more than
+-one rule of this release has no expectation.
++Every case breaks at most one rule, with one exception: an `add_warp_marker`
++call is refused for the first check of REQ-WARP-MARKERS-015 clauses 1 to 5 that
++fails, whatever the later checks would give (the calls of WARP-MARKERS-023 to
++027 also lie outside the beat bounds). Any other document or call that breaks
++more than one rule of this release has no expectation.
+ 
+ ## Acceptance representation and comparison
+ 
+-[cases.json](cases.json) lists 64 cases. Each has an input fixture, the clip's
++[cases.json](cases.json) lists 63 cases. The identifier WARP-MARKERS-018 is
++not used: that case of warp-markers-v1 is withdrawn
++([README](README.md#supersession)). Each has an input fixture, the clip's
+ sample, an action and an expected result. The action is `open` (open the
+ document) or `open-call` (open it, then make the one scripting call in the
+ case's `call` field on the clip, before any other edit).
+@@ -361,7 +351,7 @@
+ | Field | Meaning |
+ | --- | --- |
+ | `outcome` | For `open`: `opens` or `refused`. For `open-call`: `accepted` (the call raises no error) or `refused` (it raises an error) |
+-| `state` | Values held after opening, for listed keys only, under `AudioClip` (the clip) or `SampleWarpProperties` (the sample part). Each key is a child element name of REQ-WARP-MARKERS-001. `IsWarped` is a Boolean, codes and settings are numbers, and `WarpMarkers` is the marker list as `[SecTime, BeatTime]` pairs in list order |
++| `state` | Values held after opening, for listed keys only, under `AudioClip` (the clip). Each key is a child element name of REQ-WARP-MARKERS-001. `IsWarped` is a Boolean, codes and settings are numbers, and `WarpMarkers` is the marker list as `[SecTime, BeatTime]` pairs in list order |
+ | `value` | For an accepted conversion call: the number it returns, a beat for `sample_to_beat_time` and a position in sample frames for `beat_to_sample_time` |
+ | `refusal_reason` | For a refused call: `not-warped`, `sample-time-out-of-range`, `beat-below-left-neighbour`, `beat-above-right-neighbour`, `segment-tempo-out-of-range`, `no-such-marker` or `shadow-marker`, as defined in the clauses above |
+ | `expectation_provenance` | One of the three labels of [Provenance](#provenance) |
+@@ -431,11 +421,12 @@
+ 
+ ## Exclusions and deferred obligations
+ 
+-Requirements not released: **REQ-WARP-MARKERS-005** (one-marker, out-of-order
+-and equal-time audio clip marker lists), **REQ-WARP-MARKERS-006** (missing or
+-`Invalid` marker times) and **REQ-WARP-MARKERS-014** (codes and settings
+-outside their codes or ranges on load). **REQ-WARP-MARKERS-009** is released
+-only as the statement of its clause 1.
++Requirements not released: **REQ-WARP-MARKERS-004** (empty marker lists),
++**REQ-WARP-MARKERS-005** (one-marker, out-of-order and equal-time audio clip
++marker lists), **REQ-WARP-MARKERS-006** (missing or `Invalid` marker times),
++**REQ-WARP-MARKERS-009** (playback) and **REQ-WARP-MARKERS-014** (codes and
++settings outside their codes or ranges on load). Clause 2 of
++REQ-WARP-MARKERS-001 is not released.
+ 
+ Inputs with **no expectation** in this release:
+ 
+@@ -455,12 +446,13 @@
+   ranges or not integers; `IsWarped` text other than `true` or `false`; a
+   missing `IsWarped` or `WarpMode`; a `TransientEnvelope` value other than 100.
+   Every fixture carries 100; the held `TransientEnvelope` value is not judged;
+-- children of `AudioClip` or `SampleWarpProperties` other than those the
+-  fixtures carry, a child order other than the fixtures', and repeated
+-  children;
++- children of `AudioClip` other than those the fixtures carry, a child order
++  other than the fixtures', and repeated children;
+ - any change to the fixtures' context: the document outside the clip's
+-  children of REQ-WARP-MARKERS-001 clause 1 and the sample part's children,
+-  including the clip's sample reference, and the WAV file;
++  children of REQ-WARP-MARKERS-001 clause 1, including the clip's sample
++  reference, and the WAV file; any device in a device list, including a
++  Sampler or Simpler and its sample parts (every device list of the fixtures
++  is empty);
+ - scripting arguments that are not finite or whose magnitude is 1,000,000 or
+   more; a move on a list of fewer than three markers;
+ - any other envelope, format version, compressed container or document kind.
+@@ -468,18 +460,19 @@
+ Excluded behavior:
+ 
+ - everything written on save, including the marker, code and setting text;
+-- an audio clip whose marker list is empty, and what the user sees for any
+-  refused document;
++- an empty marker list, in an audio clip or in a sample part, and what the
++  user sees for any refused document;
+ - the value used, shown and saved for a code or setting outside its list or
+   range; the range and default of `TransientEnvelope`;
+ - conversion results after any edit of the clip, and conversions on clips that
+   are not audio clips;
+-- which sample position plays at a given beat for a warped clip; how a clip
+-  that is not warped plays, beyond REQ-WARP-MARKERS-009 clause 1; arrangement
+-  clips; the audio output of every warp mode and setting;
+-- the warp mode a new or loaded clip or sample part gets when `WarpMode` is
+-  absent, and any default warp mode preference; defaults of sample-part
+-  settings;
++- playback: which sample position plays at a given beat, whether a clip that
++  is not warped uses its warp markers, and arrangement clips; the audio output
++  of every warp mode and setting;
++- the warp mode a new or loaded clip gets when `WarpMode` is absent, and any
++  default warp mode preference;
++- Sampler and Simpler sample parts: how they store warp state, their marker
++  lists, codes, settings and defaults; any device in a device list;
+ - where and when the application creates or re-places the shadow marker, and
+   the values it gives it; the marker list after an accepted add or remove; the
+   limits of `move_warp_marker` and the result of an accepted move; setting the
+@@ -495,20 +488,18 @@
+ 
+ ## Fixture provenance
+ 
+-All 21 XML fixtures were authored for this project from one base set: the
++All 20 XML fixtures were authored for this project from one base set: the
+ envelope above; the tracks, scenes and set-level values described in
+ [Document scope and preconditions](#document-scope-and-preconditions), with
+ invented names, colours, identifiers and values; and the clip, whose ten value
+ children of REQ-WARP-MARKERS-001 clause 1 hold invented values and whose marker
+-list is the base list. Each clip fixture is the base set, or the base set with
+-the one change that its case purpose states. The sample-part fixture is the
+-base set with a Simpler as the MIDI track's instrument, whose
+-`SampleWarpProperties` holds an empty marker list, `WarpMode` 0, `IsWarped`
+-false, `TransientEnvelope` 100 and the setting values of REQ-WARP-MARKERS-010.
++list is the base list. Each fixture is the base set, or the base set with the
++one change that its case purpose states. Every device list is empty.
+ Text is ASCII with line-feed line endings, tab indentation and a final newline.
+ The WAV fixture is generated silence.
+ 
+ No fixture contains shipped file content, shipped audio, program code or
+ assets. Expected outcomes are newly authored behavioral data, labelled by
+ provenance. No public source or dependency is approved or included. Review
+-status is recorded in [the manifest](manifest.json).
++status is recorded in [the manifest](manifest.json) and
++[the review disposition](REVIEW.md).

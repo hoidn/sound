@@ -1,0 +1,284 @@
+--- warp-markers-v2-analysis/build_v2.py
++++ warp-markers-v2-analysis/build_v2.py
+@@ -33,14 +33,9 @@
+ SAMPLE = "fixtures/sample.wav"
+ CLIP_PATH = ["LiveSet", "Tracks", "AudioTrack", "DeviceChain", "MainSequencer", "ClipSlotList", "ClipSlot",
+              "ClipSlot", "Value", "AudioClip"]
+-DEVICES_PATH = ["LiveSet", "Tracks", "MidiTrack", "DeviceChain", "DeviceChain", "Devices"]
+ CLIP_FIELDS = [("IsWarped", "true"), ("WarpMode", "4"), ("GranularityTones", "40"), ("GranularityTexture", "100"),
+                ("FluctuationTexture", "50"), ("TransientResolution", "4"), ("TransientLoopMode", "1"),
+                ("TransientEnvelope", "100"), ("ComplexProFormants", "75"), ("ComplexProEnvelope", "64")]
+-SIMPLER_FIELDS = [("WarpMode", "0"), ("GranularityTones", "30"), ("GranularityTexture", "65"),
+-                  ("FluctuationTexture", "25"), ("ComplexProFormants", "100"), ("ComplexProEnvelope", "128"),
+-                  ("TransientResolution", "6"), ("TransientLoopMode", "2"), ("TransientEnvelope", "100"),
+-                  ("IsWarped", "false")]
+ SEVEN = ("GranularityTones", "GranularityTexture", "FluctuationTexture", "TransientResolution",
+          "TransientLoopMode", "ComplexProFormants", "ComplexProEnvelope")
+ M1 = [("10", "0", "0"), ("11", "1", "2"), ("12", "2", "3"), ("13", "2.015625", "3.03125")]
+@@ -92,6 +87,11 @@
+     i = next(n for n, k in enumerate(clip[2]) if k[0] == "WarpMode")
+     clip[2][i + 1:i + 1] = [mf.v(t, x) for t, x in CLIP_FIELDS[2:]]
+     kid(clip, "WarpMarkers")[2][:] = markers(M1)
++    # review RVW2-01 (device placement is open, Q-022): both device lists emptied, as the live-set-structure-v1
++    # review did for T11-MIN; their targets 67 and 68 go with them, so NextPointeeId is 67 (largest target Id 66)
++    for track in ("MidiTrack", "AudioTrack"):
++        at(root, ["LiveSet", "Tracks", track, "DeviceChain", "DeviceChain", "Devices"])[2][:] = []
++    setv(kid(root, "LiveSet"), "NextPointeeId", 67)
+     return root
+ 
+ 
+@@ -114,16 +114,6 @@
+     return [M1[0], (i, text, b) if attr == "SecTime" else (i, s, text), *M1[2:]]
+ 
+ 
+-def simpler(root):
+-    """The MIDI track's instrument replaced by a Simpler whose one sample part has an empty marker list."""
+-    devices = at(root, DEVICES_PATH)
+-    on = kid(kid(devices, "UltraAnalog"), "On")  # keeps the base's pointee Id
+-    swp = mf.el("SampleWarpProperties", None, mf.el("WarpMarkers"), *[mf.v(t, x) for t, x in SIMPLER_FIELDS])
+-    player = mf.el("Player", None, mf.el("MultiSampleMap", None, mf.el(
+-        "SampleParts", None, mf.el("MultiSamplePart", {"Id": "0"}, swp))))
+-    devices[2][:] = [mf.el("OriginalSimpler", {"Id": "0"}, on, player)]
+-
+-
+ def render(root):
+     lines = ['<?xml version="1.0" encoding="UTF-8"?>']
+     mf.render(root, 0, lines)
+@@ -150,7 +140,6 @@
+     "transient-resolution-0.xml": fixture(clip_fx({"TransientResolution": "0"})),
+     "transient-loop-mode-0.xml": fixture(clip_fx({"TransientLoopMode": "0"})),
+     **{f"warp-mode-{c}.xml": fixture(clip_fx({"WarpMode": str(c)})) for c in (0, 1, 2, 3, 6)},
+-    "simpler-empty-markers.xml": fixture(simpler),
+     "first-marker-later.xml": fixture(clip_fx(ms=LATER)),
+     "two-markers.xml": fixture(clip_fx(ms=TWO)),
+     "shadow-sixteenth.xml": fixture(clip_fx(ms=SIXTEENTH)),
+@@ -283,18 +272,19 @@
+         "marker Id values that are missing, repeated or not decimal integers; content inside WarpMarker; children of WarpMarkers other than WarpMarker",
+         "audio clip marker lists with fewer than two markers or not strictly increasing in both positions",
+         "code and setting text other than plain decimal digits; codes outside their lists; settings outside their ranges or not integers; IsWarped other than true or false; a missing IsWarped or WarpMode; a TransientEnvelope value other than 100 (every fixture carries 100; the held value is not judged)",
+-        "children of AudioClip or SampleWarpProperties other than those the fixtures carry, other child orders, repeated children",
+-        "any change to the fixtures' context: the document outside the clip's warp children and marker list and the sample part's children, including the clip's sample reference, and the WAV file",
+-        "scripting arguments that are not finite or have magnitude 1,000,000 or more; a move on a list of fewer than three markers; a call that breaks more than one rule",
++        "children of AudioClip other than those the fixtures carry, other child orders, repeated children",
++        "any change to the fixtures' context: the document outside the clip's warp children and marker list, including the clip's sample reference, and the WAV file; any device in a device list (every device list of the fixtures is empty), including a Sampler or Simpler and its sample parts",
++        "scripting arguments that are not finite or have magnitude 1,000,000 or more; a move on a list of fewer than three markers; a call that breaks more than one rule, except an add_warp_marker call, which the first failing check of REQ-015 clauses 1 to 5 decides",
+         "any other envelope, format version, compressed container or document kind",
+     ],
+     "behavior": [
+         "everything written on save (REQ-002, 003, 004, 007, 010 save clauses)",
+-        "an audio clip whose marker list is empty (REQ-004); one-marker, out-of-order and equal-position lists (REQ-005); missing or Invalid positions (REQ-006)",
++        "an empty marker list, in an audio clip or a sample part (REQ-004); one-marker, out-of-order and equal-position lists (REQ-005); missing or Invalid positions (REQ-006)",
+         "the value used, shown and saved for codes and settings outside their ranges (REQ-014); the TransientEnvelope range and default",
+         "conversion results after any edit of the clip; conversions on clips that are not audio clips",
+-        "which sample position plays at a given beat for a warped clip (REQ-009); how a clip that is not warped plays, beyond the statement of REQ-009 clause 1; arrangement clips; the audio output of every warp mode",
+-        "the default WarpMode of an audio clip or sample part and the default warp mode preference; sample-part defaults",
++        "playback (REQ-009): which sample position plays at a given beat, whether a clip that is not warped uses its warp markers, arrangement clips; the audio output of every warp mode",
++        "the default WarpMode of an audio clip and the default warp mode preference",
++        "Sampler and Simpler sample parts: where they store warp state (REQ-001 clause 2), their marker lists (REQ-004), codes, settings and defaults; any device in a device list",
+         "where and when the application creates or re-places the shadow marker, and the values it gives it; the marker list after an accepted add or remove; move limits and accepted moves; the scripting warp_mode setter; non-audio clips",
+         "display of markers, codes, labels and settings; interactive edits, auto-warp, recording and undo",
+         "any change the application makes by itself after reading the document, such as automatic warping or sample analysis; whether the original makes one on opening is not established",
+@@ -304,16 +294,17 @@
+     ],
+ }
+ CHANGES = [
+-    "fixtures: every XML document rebuilt as a complete Live Set (the base set of spec.md) with the warp-markers-v1 change of its case; 17 of the 18 v1 documents are refused by the target build's open-time structure check (a track with clip slots but no freeze slots); fixture names kept; the WAV is byte-identical",
++    "fixtures: every XML document rebuilt as a complete Live Set (the base set of spec.md, whose device lists are empty) with the warp-markers-v1 change of its case; 17 of the 18 v1 documents are refused by the target build's open-time structure check (a track with clip slots but no freeze slots); fixture names kept; the WAV is byte-identical",
++    "case WARP-MARKERS-018 withdrawn, with REQ-001 clause 2 and REQ-004: its document needs a Simpler in a track's device list, and whether the target build accepts a device there is not established; simpler-empty-markers.xml removed",
+     "cases 007 and 008 now isolate the number-text refusal: their v1 documents were also refused for their structure",
+     "REQ-015 clause 5: the 5 to 999 BPM tempo rule replaced by the binary64 beat bounds per neighbour (same outcome within warp-markers-v1's scope); the bands near the limits and near a neighbour's sample time withdrawn; cases 052 to 055, 059 and 060",
+     "REQ-016: grid rounding stated as its binary64 operation sequence (same outcome within warp-markers-v1's scope); the band near a rounding tie withdrawn; cases 056 to 058",
+     "REQ-008: conversion values of sample_to_beat_time and beat_to_sample_time released for a call right after opening; cases 039 to 051 on two new documents",
+     "REQ-007: the shadow segment extends the conversions; a shadow spacing other than 1/32 beat is kept on opening; case 064 on a new document",
+     "REQ-015: an add below the first marker's sample time has no left neighbour (case 061); move, like remove, has no warped check (case 062); a remove on a list of two markers is accepted (case 063)",
+-    "REQ-009 partially released as an ungraded statement: a session audio clip that is not warped does not use its warp markers when it plays",
+-    "provenance labels extracted execution and computed by extracted-execution rules added; stated assumptions extended to the sample rate and the arm64 build; carried records unchanged",
+-    "exclusions: conversion values, the add below the first marker, a remove on fewer than three markers and the three uncertainty bands no longer excluded; the fixtures' context, the structure rules and sample resolution newly excluded",
++    "REQ-009 stays unreleased, as in warp-markers-v1: no case of this release can observe playback",
++    "provenance labels extracted execution and computed by extracted-execution rules added; stated assumptions extended to the sample rate, the marker list a conversion uses and the arm64 build; the carried records unchanged",
++    "exclusions: conversion values, the add below the first marker, a remove on fewer than three markers and the three uncertainty bands no longer excluded; the fixtures' context, the structure rules, sample resolution, device lists and Sampler and Simpler sample parts newly excluded",
+ ]
+ 
+ 
+@@ -324,14 +315,15 @@
+         p.write_bytes(data)
+         if name.endswith(".wav"):
+             os.utime(p, (mf.LASTMOD, mf.LASTMOD))  # the clip's LastModDate, as the generator does
+-    cases = v1_cases() + [case_json(*c) for c in NEW]
+-    assert [c["id"] for c in cases] == [cid(n) for n in range(1, 65)]
++    # review RVW2-01: WARP-MARKERS-018 (a Simpler sample part) is withdrawn; its ID stays unused
++    cases = [c for c in v1_cases() if c["id"] != cid(18)] + [case_json(*c) for c in NEW]
++    assert [c["id"] for c in cases] == [cid(n) for n in range(1, 65) if n != 18]
+     doc = {"schema": "warp-markers-cases-v2", "target": TARGET,
+            "scope": "warp-markers-v2 partial requirement clauses only (see spec.md)", "status": "candidate-unreviewed",
+            "fixture_origin": "Independently authored complete Live Set documents built from one base set, and one generated silent WAV; no shipped file copied",
+            "oracle_status": "Static-derived and extracted-execution expectations, labelled per case; neither the reference application nor a candidate executed",
+            "representation": {
+-               "paths": "relative to /Ableton/LiveSet; the clip is the only AudioClip; the sample part is the only SampleWarpProperties (one fixture)",
++               "paths": "relative to /Ableton/LiveSet; the clip is the only AudioClip",
+                "state": "values held after opening, by element name; WarpMarkers as [SecTime, BeatTime] pairs in list order",
+                "call": "one scripting call after opening; arguments are binary64",
+                "value": "accepted conversion calls only: the number returned",
+--- warp-markers-v2-analysis/check_v2.py
++++ warp-markers-v2-analysis/check_v2.py
+@@ -313,8 +313,12 @@
+ # ---- carry, package checks and seal ----
+ def carry_check(cases):
+     v1 = json.loads((ROOT / V1 / "cases.json").read_text())["cases"]
+-    same = [a["id"] for a, b in zip(v1, cases) if json.dumps(a, indent=1) == json.dumps(b, indent=1)]
+-    return {"v1_records": len(v1), "identical": len(same), "problems": sorted({c["id"] for c in v1} - set(same))}
++    by_id = {c["id"]: c for c in cases}  # review: keyed by ID; WARP-MARKERS-018 is withdrawn
++    same = [a["id"] for a in v1 if a["id"] in by_id and json.dumps(a, indent=1) == json.dumps(by_id[a["id"]], indent=1)]
++    withdrawn = sorted({c["id"] for c in v1} - set(by_id))
++    return {"v1_records": len(v1), "identical": len(same), "withdrawn": withdrawn,
++            "problems": sorted({c["id"] for c in v1} - set(same) - {"WARP-MARKERS-018"})
++            + ([] if withdrawn == ["WARP-MARKERS-018"] else ["withdrawn set"])}
+ 
+ 
+ def payload(d):
+@@ -368,7 +372,8 @@
+ 
+ def model_check(cases):
+     problems, undetected, exact = {}, [], {}
+-    for n, c in enumerate(cases, 1):
++    for c in cases:
++        n = int(c["id"][-3:])  # review: by ID, not position
+         rules = ("x", "exact") if n <= 38 else ("x",)
+         for rule in rules:
+             try:
+@@ -386,8 +391,8 @@
+                 exact[c["id"]] = model(c, "exact")
+             except NoExpectation as e:
+                 exact[c["id"]] = {"no-expectation": str(e)}
+-    differs = sorted(k for k, v in exact.items() if not agrees(v, cases[int(k[-3:]) - 1]["expected"],
+-                                                               cases[int(k[-3:]) - 1].get("call")))
++    by_id = {c["id"]: c for c in cases}
++    differs = sorted(k for k, v in exact.items() if not agrees(v, by_id[k]["expected"], by_id[k].get("call")))
+     return {"case_problems": problems, "mutations_undetected": undetected,
+             "new_cases_without_expectation_or_other_outcome_under_v1_rules": differs}
+ 
+@@ -421,7 +426,7 @@
+              "inferred_links": I, "clauses": {k: {"clause": c, "support": s, "evidence": ev, "inferred": inf}
+                                               for k, (c, s, ev, inf) in CLAUSES.items()},
+              "cases": {B.cid(n): {"source": s, "evidence": ev, "inferred": inf,
+-                                  "provenance": cases[n - 1]["expectation_provenance"]}
++                                  "provenance": {c["id"]: c for c in cases}[B.cid(n)]["expectation_provenance"]}
+                        for n, (s, ev, inf) in TRACE.items()},
+              "x2_corroboration": checks["x2"]["cases_with_x2_values"]}
+     assert set(trace["cases"]) == {c["id"] for c in cases}
+--- warp-markers-v2-analysis/fixture_checks.py
++++ warp-markers-v2-analysis/fixture_checks.py
+@@ -75,6 +75,10 @@
+         out[p.name] = {"changed_lines": len(diff), "inside_clip": inside, "same_change_as_v1": same_as_v1,
+                        "diff": diff if len(diff) <= 12 else diff[:6] + ["..."] + diff[-6:]}
+     t11 = (ROOT / T11 / "fixtures/T11-MIN.xml").read_text()
++    # review RVW2-01: base.xml is T11-MIN without its two devices (and NextPointeeId 67), plus the clip change
++    t11 = re.sub(r"<Devices>\n.*?</Devices>", "<Devices />", t11, flags=re.S)
++    assert t11.count('<NextPointeeId Value="69" />') == 1
++    t11 = t11.replace('<NextPointeeId Value="69" />', '<NextPointeeId Value="67" />')
+     tdiff = list(difflib.unified_diff(t11.splitlines(), lines, lineterm="", n=0))
+     t_starts = [int(re.match(r"@@ -\d+(?:,\d+)? \+(\d+)", h).group(1)) for h in tdiff if h.startswith("@@")]
+     base_vs_t11 = {"changed_lines": len(changed_lines(t11, base)),
+--- warp-markers-v2-analysis/v2_meta.py
++++ warp-markers-v2-analysis/v2_meta.py
+@@ -125,7 +125,6 @@
+     12: ("REQ-012 TransientLoopMode 0", ["codes", "loader", "t11min"], ["I3"]),
+     **{n: (f"WMK-023 code {c}, load part", ["codes", "loader", "shipped", "t11min"], ["I3"])
+        for n, c in zip(range(13, 18), (0, 1, 2, 3, 6))},
+-    18: ("WMK-007 narrowed to one Simpler sample part", ["swppostload", "schema", "shipped", "t11min"], ["I3"]),
+     19: ("WMK-020 first call", ["convert", "warpedtest", "t11min"], ["I3"]),
+     20: ("WMK-020 second call", ["convert", "warpedtest", "t11min"], ["I3"]),
+     21: ("WMK-028 on the three-marker list", ["add", "warpedtest", "t11min"], ["I3"]),
+@@ -189,14 +188,12 @@
+ # release clause -> (summary, support, evidence keys, inferred links)
+ CLAUSES = {
+     "001.1": ("AudioClip warp children and empty single-Value form", "D", ["schema", "shipped"], []),
+-    "001.2": ("Sampler/Simpler list and settings in SampleWarpProperties", "D", ["schema", "shipped"], []),
+     "001.3": ("FluctuationTexture name", "D", ["schema"], []),
+     "001.4": ("IsWarped true/false", "S", ["loader", "warpedtest"], ["I3"]),
+     "002.1-5": ("marker attributes, binary64, prefix rule, no prefix refused, no rounding on load", "D; S",
+                 ["schema", *L, "q"], ["I1", "I2", "I3"]),
+     "003.1": ("strictly increasing list of two or more held as read, in order", "S; D", ["loader", "shipped",
+                                                                                          "review-a2"], ["I3"]),
+-    "004.1": ("empty sample-part list not refused, held empty", "S; D", ["swppostload", "shipped"], ["I3"]),
+     "007.1-2": ("last element is the shadow; remove/move refuse it; never a right neighbour", "S",
+                 ["shadow", "add", "remove", "move"], ["I6"]),
+     "007.3": ("shadow segment extends the conversions past the last visible marker", "S; X", ["builder", "x2conv"],
+@@ -205,8 +202,6 @@
+     "008.1": ("conversions refused when not warped", "D; S", ["convert", "warpedtest"], []),
+     "008.2-5": ("conversion formulas, segment choice, extensions, fused evaluation, rate", "S; X",
+                 ["convert", "builder", "rate", "x2conv", "x2rules"], ["I3", "I8", "I9", "I10"]),
+-    "009.1": ("a session clip that is not warped does not use its markers in playback (statement, no case)", "S",
+-              ["t13unwarped"], []),
+     "010.1": ("seven absent or value-less settings take creation defaults", "S", ["ctor", "loader", "schema"], ["I3"]),
+     "011.1-2": ("WarpMode code table and chooser labels; 0-4, 6 held", "S", ["codes", "loader", "shipped"], ["I3"]),
+     "012.1-3": ("transient codes and defaults; held", "S", ["codes", "ctor", "loader"], ["I3"]),
+@@ -241,15 +236,14 @@
+         r"\bADR\b", r"SPEC-(?!WARP-MARKERS)", r"\bslice\b", r"xexec", r"\bEngine\b", r"run_x", r"\bLAB_"]
+ ALLOWED_HITS = {"AGENTS.md": {"decompil"}}  # forbidden-inputs list, same wording as released packages
+ 
+-UNRELEASED = ["REQ-WARP-MARKERS-005", "REQ-WARP-MARKERS-006", "REQ-WARP-MARKERS-014"]
++UNRELEASED = ["REQ-WARP-MARKERS-004", "REQ-WARP-MARKERS-005", "REQ-WARP-MARKERS-006", "REQ-WARP-MARKERS-009",
++              "REQ-WARP-MARKERS-014"]  # review: 004 (RVW2-01) and 009 (RVW2-02) added
+ SCOPES = {
+-    "REQ-WARP-MARKERS-001": "AudioClip warp children and their empty single-Value form; Sampler/Simpler list and settings in SampleWarpProperties; FluctuationTexture name; IsWarped true/false",
++    "REQ-WARP-MARKERS-001": "AudioClip warp children and their empty single-Value form; FluctuationTexture name; IsWarped true/false",
+     "REQ-WARP-MARKERS-002": "WarpMarker attributes; SecTime/BeatTime binary64 read by the decimal-prefix rule; no prefix refused; no rounding on load",
+     "REQ-WARP-MARKERS-003": "Strictly increasing audio clip list of two or more markers held as read, in document order",
+-    "REQ-WARP-MARKERS-004": "Empty marker list of a sample part not refused",
+     "REQ-WARP-MARKERS-007": "Last marker of an audio clip list is the shadow marker; scripting remove and move refuse it; it is never a right neighbour; its segment extends the conversions past the last visible marker; a spacing other than 1/32 beat is kept on opening",
+     "REQ-WARP-MARKERS-008": "Both conversions refused on a clip that is not warped; on a warped clip, the piecewise-linear conversion values with both extensions, as binary64 sequences, for a call right after opening",
+-    "REQ-WARP-MARKERS-009": "Statement only, no case: a session audio clip that is not warped does not use its warp markers when it plays",
+     "REQ-WARP-MARKERS-010": "Seven absent or value-less audio clip settings take their defaults",
+     "REQ-WARP-MARKERS-011": "WarpMode codes 0 to 4 and 6 with their chooser labels; held as stored",
+     "REQ-WARP-MARKERS-012": "TransientResolution and TransientLoopMode codes and defaults, without labels; codes held as stored",
+@@ -265,19 +259,24 @@
+     PROV_S: "derived for the target build without running it, from evidence reviewed before sanitization",
+     PROV_X: "the deciding binary64 values of the case (the conversion result, or the rounded beat and the beat bounds "
+             "that decide the outcome) were computed by the original program's x86_64 code for this case's inputs, run "
+-            "on a Linux x86_64 host outside the application; the macOS arm64 build is inferred to compute the same; "
+-            "opening, the call's other checks and the sample rate are static-derived",
++            "on a Linux x86_64 host outside the application; for a conversion, that code computed the step between "
++            "seconds and beats, and the division of a position in frames by the sample rate and the multiplication "
++            "of a result by it are static-derived and exact for every case with this label; the grid rounding ran "
++            "in another part of the original program that rounds a beat with the same operations as the add and the "
++            "marker lookup (static-derived); the macOS arm64 build is inferred to compute the same; opening, the "
++            "comparisons of the deciding values, the call's other checks and the sample rate are static-derived",
+     PROV_XS: "computed for this case's inputs with the binary64 operation sequences that extracted execution of the "
+              "original x86_64 code confirmed on other inputs; this input was not run; otherwise as static-derived",
+ }
+ ASSUMPTIONS = [
+-    "The base set opens in the target build. Its structure follows static-derived rules, which assume that a MIDI track's device list accepts the base set's instrument (in case 018, the Simpler) and an audio track's device list its effect (every case).",
++    "The base set, whose device lists are empty, opens in the target build. Its structure follows static-derived rules (every case).",
+     "Marker times are held as binary64 values read by the decimal rule of REQ-WARP-MARKERS-002 (every case).",
+     "The sample length that add_warp_marker compares with is the duration of the clip's sample, 3 s (cases 021 to 032, 052 to 055 and 059 to 061). Every add whose sample time lies in the sample stays at least 0.5 s before its end, and the 900,000 s of case 024 lies beyond it whether it is counted in seconds, milliseconds or frames.",
+     "The sample rate that both conversions use is the rate of the clip's sample, 8,000 Hz, which the clip also stores (cases 039 to 051).",
+     "An add or remove whose checks all pass raises no further error (cases 022, 031, 032, 035, 038, 052, 054, 058, 059, 061 and 063).",
+     "The marker lookup of REQ-WARP-MARKERS-015 clause 7 behaves as stated (cases 033 to 038, 056 to 058, 062 and 063).",
+     "The macOS arm64 build computes the conversions, the grid rounding and the beat bounds with the same binary64 operations as the x86_64 build (cases 039 to 060).",
++    "A conversion made right after opening uses the marker list held after opening (cases 039 to 051).",
+ ]
+ 
+ REVIEW_PENDING = {"status": "pending", "reviewers": [], "date": None, "findings": [],
+@@ -296,7 +295,7 @@
+             "scripting-edit-checks": "static-derived and extracted-execution expectations as labelled; reference execution not-run",
+             "scripting-conversion-values": "extracted-execution expectations as labelled; reference execution not-run",
+             "file-format-written": "excluded (nothing saved is graded)",
+-            "playback": "excluded, except the ungraded statement of REQ-WARP-MARKERS-009",
++            "playback": "excluded",
+             "audio": "excluded", "ui": "excluded", "timing": "excluded",
+         },
+         "expectation_provenance_labels": PROV_LABELS, "stated_assumptions": ASSUMPTIONS,
+@@ -304,9 +303,10 @@
+         "fixture_origin": "independently authored complete Live Set documents built from one base set, and one generated silent WAV; no shipped file content, audio or program code",
+         "approved_public_sources": [], "review": REVIEW_PENDING, "supersedes": "warp-markers-v1",
+         "supersession": {
+-            "relationship": "superset in effect: carries every warp-markers-v1 case record unchanged with rebuilt fixtures; within warp-markers-v1's scope both give the same expectations; warp-markers-v1 stays immutable, but its fixtures must not be used (the target build refuses 17 of its 18 documents)",
++            "relationship": "supersedes with one case withdrawn: carries 37 of the 38 warp-markers-v1 case records unchanged with rebuilt fixtures; WARP-MARKERS-018 is withdrawn and has no expectation; for every other case and clause of warp-markers-v1 both give the same expectations; warp-markers-v1 stays immutable, but its fixtures must not be used (the target build refuses 17 of its 18 documents)",
+             "superseded_manifest_sha256": V1_MANIFEST_SHA,
+-            "restated_cases": "WARP-MARKERS-001 to 038: case records identical to warp-markers-v1; fixture names and the WAV bytes identical; every XML fixture rebuilt as a complete Live Set",
++            "restated_cases": "WARP-MARKERS-001 to 017 and 019 to 038: case records identical to warp-markers-v1; fixture names and the WAV bytes identical; every XML fixture rebuilt as a complete Live Set without devices",
++            "withdrawn_cases": {"WARP-MARKERS-018": "its document needs a Simpler in a track's device list; whether the target build accepts a device there is not established, so the case has no expectation; REQ-001 clause 2 and REQ-004 are withdrawn with it"},
+             "changes": changes,
+         },
+         "entrypoint": "README.md", "case_count": case_count,

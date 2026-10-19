@@ -1,0 +1,85 @@
+warp-markers-v2 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B.
+Export copy: session scratchpad export/hd/warp-markers-v2 (cp -a of the staging dir after all edits).
+
+Run order (reproduces the payload): apply_tooling_edits.py; build_v2.py build; apply_review_edits.py; REVIEW.md
+(hand-written); finalize_manifest.py; check_v2.py seal (author-seal-after-review.json). Then on the export:
+T11 checker, review_checks.py --full, x_sample.py, check_v2.py verify, sha256sum -c.
+Draft manifest before review 6ff7f7e2...52fbddb3 (equals the plan page). Final manifest SHA-256:
+8207ba862c73149821da6e2433b4e5f7fffbae118f540652645aadea5f186cd9 (26 payload files + manifest).
+
+Evidence identity (review_checks evidence): handoff/warp-markers-v1/manifest.json f8546a3e...1764ef46 = catalog
+= supersession digest; all v1 files match. x2-envelope-warp-v1: all 18 manifest files match; slice
+Live_x86_64.x86_64 1bae9a97...e999b0 and loader build xexec2 3dca08a9...4432b5 match the run manifest. t11
+schema_check.py, fixture_audit.py, make_fixture.py match the t11 manifest. Schema 12.0_12402.txt b7c9d4c7...89d0f299.
+Author's seal also re-hashed s8 (76), d7 (34), t13 (153): no mismatch.
+
+(a) X labels against the raw outputs (x_sample.py, x_sample.out). raw/runs.jsonl parsed from argv tokens and stdout
+register lines (not results/): M1 calls 0-9 (core s2b at -0.5 .. 50, b2s at 0.5, 2.5, 4), M2 calls 0-1,
+beat-grid-q calls 4-21 (beat setter x86 0x102736ce0), add-bounds-monotone calls 0-3 (0x1028e96b0). All 15 X cases
+(039-050, 052, 056, 057) have every deciding value in the raw run, bit-equal to the case. 052: q(2.0416666666666665),
+bounds toward (1,2) and (2,3) at p = 1.5, all three run. No other case is labelled X. 051 (draft WMK-019) labelled
+computed: the run has no two-marker conversion (plan F1 confirmed; revision 4's "WMK-016 to 019 confirmed" is wrong).
+Conversion inputs: X2 passed frames/48000 computed in Python to the cores and multiplied b2s results by 48000 in Python;
+the case seconds frames/8000 are bit-equal; x * 8000 exact for 048-050. Rounding ran in the BeatTime setter;
+arm64 corpus pseudocode: setter 0x1026101b4, lookup 0x1027c79d0 (q inline, then exact match, scan stops past the
+target) and add 0x1033bf42c (q inline) use the same sentinel test and s*((double)(long)(|b+s*h*0.5|*3843840)/3843840).
+-> RVW2-03 label clarification.
+
+(b) Fresh re-run (x_sample.py on the export): all 15 X cases, inputs from cases.json and the fixture marker lists
+(hex-float tokens), 4 processes for values plus 2 registry dumps; max 10 calls per process (limit 256). Every value
+bit-identical to the retained run and the case; 057: 2.000000130078255 -> 2.00000026015651. X2 directory unchanged
+afterwards (manifest re-hash), no bytecode written.
+
+(c) Shadow formula: payload states no formula or new-shadow value; excluded in spec and manifest; shadow cases take the
+stored shadow. REQ-009: a playback claim, no case, silent WAV, playback and audio ungraded -> unreleased (RVW2-02).
+
+(d) Computed-by-rules (review_checks computed_by_rules): q inputs 2.0416664065101564, 11.325, 11.325000260156509,
+2.0000001300782544, 2, 2.5 (run: 0, 2.0000001 .. 1e13, both signs); bounds d = +-0.5 (run: -0.5 .. 0.5), except
+d = -1 toward (2,3) in 059/060 (margin 0.9167 and 0.4167 beat, not deciding). Alternatives consistent with every run
+value: q with a reciprocal multiply; bounds (B*d)/60. Rejected by the run: exact rounding, floor(|b|N+0.5),
+fma(|b|,N,0.5); exact bounds, fused bounds. Every computed case has its expected outcome under every consistent
+alternative. 054 at the edge (q' = c = 11.325, d = 0.5 as run). 051: core 0x101b39e20 binary search over n-1
+entries, no n branch; table builder 0x10277b71c/0x1028939a4 no list change; u = 89.07 in the run's -1 .. 3072;
+tolerance 1e-9. Static re-reading for 061-063: add skips the left check/bound for the first node; remove 0x1033bfa68
+and move 0x1033bfb94 test only the audio-clip class; delete 0x1027c6eec returns when count < 3; insertion
+0x1027baad8 has no throw (callees untraced: assumption 5).
+
+(e) Fixture validity (brief addendum). T11 checker unchanged on the export:
+- schema_check.py, 20 documents (schema-check-export.jsonl): 0 deviations; player_tracks 2; freeze == main; main ==
+  scenes; no extra holders; SendsPre == returns; no pointee without Id or 0; pointee Ids unique; NextPointeeId 67 >
+  max 66; no dangling envelope; list Ids unique.
+- fixture_audit.py on a handoff-shaped dir holding only the export (t11-fixture-audit-export.json): 20 Live Sets,
+  0 refused, 0 contradicted, 0 not isolating, 0 unknown shapes; every case "consistent".
+- Own REQ-LIVE-SET-STRUCTURE-001 shapes (review_checks.lss001): none. The 7 value-less settings (case 010) are Type 0
+  UserFloat/RemoteableEnum compounds whose Value is a -4 attribute, not base value elements.
+- 007/008: one line differs from base.xml (SecTime="abc", BeatTime=""); reverting it gives base.xml; base opens; own
+  judge refuses only for the number text.
+- WAV: mono, 16-bit, 8000 Hz, 24000 frames, all zero; equals a RIFF/fmt/data file rebuilt from those parameters and
+  the v1 WAV; mtime 1760000000.
+- v1 fixtures under the same checker: 17 of 18 fail freeze == main (the 18th, the Simpler document, has no clip).
+
+Coordinator note (device placement, Q-022, REQ-LIVE-SET-STRUCTURE-012, A6): T11-MIN's UltraAnalog (MIDI track) and Amp
+(audio track) removed from the base set, as the live-set-structure-v1 review did (targets 67, 68 removed;
+NextPointeeId 67); 018 (Simpler sample part) withdrawn with REQ-001 clause 2 and REQ-004; build_v2.py rerun;
+checker and seal rerun (RVW2-01). tooling-changes.diff and payload-changes.diff record every change.
+
+Expectations: review_checks.py (own restatement) 63/63 agree, conversion values bit-identical, mutations 63/63,
+contract examples all hold. Carry: 37 v1 records equal (dict and text) in v1 order; 018 absent; 17 v1-named documents
+keep v1's warp children and markers. Add calls with a second failing check: 023-027 (all with the bounds) -> RVW2-05.
+
+Package (export): sha256sum -c of the 26 listed files all OK (sha256sum-export.txt); inventory equals the directory;
+no symlinks; links README 7, spec 9, REVIEW 1, AGENTS 0, all inside the package; every input and sample exists;
+20 XML fixtures distinct, ASCII, LF, tabs, final newline. Own scan: only "decompil" in AGENTS.md (forbidden list).
+check_v2.py verify on the export (author-verify-after-review.json): no hash, inventory, link, input or deny-list
+problem.
+
+For the spec owner (outside this package): (1) plan F1: revision 4's acceptance paragraph and revision 3 row claim
+WMK-019 was run by X2; it was not; (2) REQ-009's "warping off" clause has no observable outside playback; (3) REQ-008's
+X limits should say that the frame division and rate multiplication ran outside the original code and that the
+X2 runs used 48 kHz positions, and REQ-016's X clause that the lookup and the add inline the setter's sequence;
+(4) A3 is a stated assumption of the release (assumption 8); (5) REQ-001 clause 2, REQ-004's sample-part clause and WMK-007
+depend on device placement (A6, Q-022) as well as A1; (6) the combined-failure rule should defer to the add's
+check order; (7) the bounds sequence is not pinned by the X2 inputs against (B*d)/60, nor q against a reciprocal
+multiply; the static reading settles the order.
+Not copied to handoff/; plan page, spec pages, indexes, coverage and log untouched; no git operation.

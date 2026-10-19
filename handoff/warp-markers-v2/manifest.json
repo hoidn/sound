@@ -1,0 +1,270 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "warp-markers-v2",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-WARP-MARKERS",
+  "parent_revision": 4,
+  "release_revision": 4
+ },
+ "feature_ids": [
+  "FEAT-WARP",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-WARP-MARKERS-001": "AudioClip warp children and their empty single-Value form; FluctuationTexture name; IsWarped true/false",
+  "REQ-WARP-MARKERS-002": "WarpMarker attributes; SecTime/BeatTime binary64 read by the decimal-prefix rule; no prefix refused; no rounding on load",
+  "REQ-WARP-MARKERS-003": "Strictly increasing audio clip list of two or more markers held as read, in document order",
+  "REQ-WARP-MARKERS-007": "Last marker of an audio clip list is the shadow marker; scripting remove and move refuse it; it is never a right neighbour; its segment extends the conversions past the last visible marker; a spacing other than 1/32 beat is kept on opening",
+  "REQ-WARP-MARKERS-008": "Both conversions refused on a clip that is not warped; on a warped clip, the piecewise-linear conversion values with both extensions, as binary64 sequences, for a call right after opening",
+  "REQ-WARP-MARKERS-010": "Seven absent or value-less audio clip settings take their defaults",
+  "REQ-WARP-MARKERS-011": "WarpMode codes 0 to 4 and 6 with their chooser labels; held as stored",
+  "REQ-WARP-MARKERS-012": "TransientResolution and TransientLoopMode codes and defaults, without labels; codes held as stored",
+  "REQ-WARP-MARKERS-013": "Ranges and defaults of five settings; integer in-range values held as stored",
+  "REQ-WARP-MARKERS-015": "add_warp_marker refusal conditions in order, insertion neighbours including none before the first marker, as-given beat checks, grid rounding and the binary64 beat bounds per neighbour; remove/move lookup and refusals; no warped check for remove and move; remove accepted, also on two markers",
+  "REQ-WARP-MARKERS-016": "Grid rounding as a binary64 operation sequence in the scripting add and lookup; no rounding on load"
+ },
+ "unreleased_requirements": [
+  "REQ-WARP-MARKERS-004",
+  "REQ-WARP-MARKERS-005",
+  "REQ-WARP-MARKERS-006",
+  "REQ-WARP-MARKERS-009",
+  "REQ-WARP-MARKERS-014"
+ ],
+ "compatibility_dimensions": {
+  "document-load-state": "static-derived expectations; reference execution not-run",
+  "scripting-edit-checks": "static-derived and extracted-execution expectations as labelled; reference execution not-run",
+  "scripting-conversion-values": "extracted-execution expectations as labelled; reference execution not-run",
+  "file-format-written": "excluded (nothing saved is graded)",
+  "playback": "excluded",
+  "audio": "excluded",
+  "ui": "excluded",
+  "timing": "excluded"
+ },
+ "expectation_provenance_labels": {
+  "static-derived; not observed reference output": "derived for the target build without running it, from evidence reviewed before sanitization",
+  "extracted execution; not observed reference output": "the deciding binary64 values of the case (the conversion result, or the rounded beat and the beat bounds that decide the outcome) were computed by the original program's x86_64 code for this case's inputs, run on a Linux x86_64 host outside the application; for a conversion, that code computed the step between seconds and beats, and the division of a position in frames by the sample rate and the multiplication of a result by it are static-derived and exact for every case with this label; the grid rounding ran in another part of the original program that rounds a beat with the same operations as the add and the marker lookup (static-derived); the macOS arm64 build is inferred to compute the same; opening, the comparisons of the deciding values, the call's other checks and the sample rate are static-derived",
+  "computed by extracted-execution rules; not observed reference output": "computed for this case's inputs with the binary64 operation sequences that extracted execution of the original x86_64 code confirmed on other inputs; this input was not run; otherwise as static-derived"
+ },
+ "stated_assumptions": [
+  "The base set, whose device lists are empty, opens in the target build. Its structure follows static-derived rules (every case).",
+  "Marker times are held as binary64 values read by the decimal rule of REQ-WARP-MARKERS-002 (every case).",
+  "The sample length that add_warp_marker compares with is the duration of the clip's sample, 3 s (cases 021 to 032, 052 to 055 and 059 to 061). Every add whose sample time lies in the sample stays at least 0.5 s before its end, and the 900,000 s of case 024 lies beyond it whether it is counted in seconds, milliseconds or frames.",
+  "The sample rate that both conversions use is the rate of the clip's sample, 8,000 Hz, which the clip also stores (cases 039 to 051).",
+  "An add or remove whose checks all pass raises no further error (cases 022, 031, 032, 035, 038, 052, 054, 058, 059, 061 and 063).",
+  "The marker lookup of REQ-WARP-MARKERS-015 clause 7 behaves as stated (cases 033 to 038, 056 to 058, 062 and 063).",
+  "The macOS arm64 build computes the conversions, the grid rounding and the beat bounds with the same binary64 operations as the x86_64 build (cases 039 to 060).",
+  "A conversion made right after opening uses the marker list held after opening (cases 039 to 051)."
+ ],
+ "exclusions": {
+  "inputs_without_expectation": [
+   "SecTime or BeatTime text starting, after spaces and a sign, with 0x, inf or nan; the text Invalid; text starting with #; leading whitespace other than U+0020; a missing SecTime or BeatTime; values outside -1,000,000 to 1,000,000",
+   "marker Id values that are missing, repeated or not decimal integers; content inside WarpMarker; children of WarpMarkers other than WarpMarker",
+   "audio clip marker lists with fewer than two markers or not strictly increasing in both positions",
+   "code and setting text other than plain decimal digits; codes outside their lists; settings outside their ranges or not integers; IsWarped other than true or false; a missing IsWarped or WarpMode; a TransientEnvelope value other than 100 (every fixture carries 100; the held value is not judged)",
+   "children of AudioClip other than those the fixtures carry, other child orders, repeated children",
+   "any change to the fixtures' context: the document outside the clip's warp children and marker list, including the clip's sample reference, and the WAV file; any device in a device list (every device list of the fixtures is empty), including a Sampler or Simpler and its sample parts",
+   "scripting arguments that are not finite or have magnitude 1,000,000 or more; a move on a list of fewer than three markers; a call that breaks more than one rule, except an add_warp_marker call, which the first failing check of REQ-015 clauses 1 to 5 decides",
+   "any other envelope, format version, compressed container or document kind"
+  ],
+  "behavior": [
+   "everything written on save (REQ-002, 003, 004, 007, 010 save clauses)",
+   "an empty marker list, in an audio clip or a sample part (REQ-004); one-marker, out-of-order and equal-position lists (REQ-005); missing or Invalid positions (REQ-006)",
+   "the value used, shown and saved for codes and settings outside their ranges (REQ-014); the TransientEnvelope range and default",
+   "conversion results after any edit of the clip; conversions on clips that are not audio clips",
+   "playback (REQ-009): which sample position plays at a given beat, whether a clip that is not warped uses its warp markers, arrangement clips; the audio output of every warp mode",
+   "the default WarpMode of an audio clip and the default warp mode preference",
+   "Sampler and Simpler sample parts: where they store warp state (REQ-001 clause 2), their marker lists (REQ-004), codes, settings and defaults; any device in a device list",
+   "where and when the application creates or re-places the shadow marker, and the values it gives it; the marker list after an accepted add or remove; move limits and accepted moves; the scripting warp_mode setter; non-audio clips",
+   "display of markers, codes, labels and settings; interactive edits, auto-warp, recording and undo",
+   "any change the application makes by itself after reading the document, such as automatic warping or sample analysis; whether the original makes one on opening is not established",
+   "the structure rules that decide whether a Live Set opens; how a document refers to and finds its sample",
+   "refusal presentation and the state after a refusal; error text of scripting calls",
+   "progress, cancellation and timing"
+  ]
+ },
+ "fixture_origin": "independently authored complete Live Set documents built from one base set, and one generated silent WAV; no shipped file content, audio or program code",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RVW2-01 medium: every case rested on the open question of where devices may be placed; both devices removed from every document (next pointee identifier 67); WARP-MARKERS-018 withdrawn with REQ-001 clause 2 and REQ-004; devices and sample parts excluded",
+   "RVW2-02 medium: the REQ-009 statement was a playback claim that no released output can observe; REQ-009 unreleased",
+   "RVW2-03 low: the extracted-execution label was broader than what ran (frame scaling by the rate; rounding run in another part of the program); clarified, no label changed",
+   "RVW2-04 low: stated assumption 8 added (a conversion right after opening uses the list held after opening)",
+   "RVW2-05 low: combined failures clarified: an add is decided by its first failing check (cases 023 to 027)",
+   "RVW2-06 info: all 15 extracted-execution cases found in the retained raw outputs and re-run bit for bit",
+   "RVW2-07 editorial: payload status set to reviewed release; review record added",
+   "RVW2-08 info: the 7 computed-by-rules cases have inputs inside the run's range; outcomes unchanged under alternative operation orders consistent with the run",
+   "RVW2-09 info: all 20 documents pass the structural checker; 007 and 008 refused only for their marker text; the WAV is generated",
+   "RVW2-10 info: evidence identity re-hashed and matched"
+  ],
+  "disposition": "Approved with listed narrowing (RVW2-01, RVW2-02), only for the explicit partial clauses; expectations static-derived, extracted execution or computed by extracted-execution rules as labelled; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": "warp-markers-v1",
+ "supersession": {
+  "relationship": "supersedes with one case withdrawn: carries 37 of the 38 warp-markers-v1 case records unchanged with rebuilt fixtures; WARP-MARKERS-018 is withdrawn and has no expectation; for every other case and clause of warp-markers-v1 both give the same expectations; warp-markers-v1 stays immutable, but its fixtures must not be used (the target build refuses 17 of its 18 documents)",
+  "superseded_manifest_sha256": "f8546a3e95788074a2cf1cd99564637b8689af853db705fd9beba1af1764ef46",
+  "restated_cases": "WARP-MARKERS-001 to 017 and 019 to 038: case records identical to warp-markers-v1; fixture names and the WAV bytes identical; every XML fixture rebuilt as a complete Live Set without devices",
+  "withdrawn_cases": {
+   "WARP-MARKERS-018": "its document needs a Simpler in a track's device list; whether the target build accepts a device there is not established, so the case has no expectation; REQ-001 clause 2 and REQ-004 are withdrawn with it"
+  },
+  "changes": [
+   "fixtures: every XML document rebuilt as a complete Live Set (the base set of spec.md, whose device lists are empty) with the warp-markers-v1 change of its case; 17 of the 18 v1 documents are refused by the target build's open-time structure check (a track with clip slots but no freeze slots); fixture names kept; the WAV is byte-identical",
+   "case WARP-MARKERS-018 withdrawn, with REQ-001 clause 2 and REQ-004: its document needs a Simpler in a track's device list, and whether the target build accepts a device there is not established; simpler-empty-markers.xml removed",
+   "cases 007 and 008 now isolate the number-text refusal: their v1 documents were also refused for their structure",
+   "REQ-015 clause 5: the 5 to 999 BPM tempo rule replaced by the binary64 beat bounds per neighbour (same outcome within warp-markers-v1's scope); the bands near the limits and near a neighbour's sample time withdrawn; cases 052 to 055, 059 and 060",
+   "REQ-016: grid rounding stated as its binary64 operation sequence (same outcome within warp-markers-v1's scope); the band near a rounding tie withdrawn; cases 056 to 058",
+   "REQ-008: conversion values of sample_to_beat_time and beat_to_sample_time released for a call right after opening; cases 039 to 051 on two new documents",
+   "REQ-007: the shadow segment extends the conversions; a shadow spacing other than 1/32 beat is kept on opening; case 064 on a new document",
+   "REQ-015: an add below the first marker's sample time has no left neighbour (case 061); move, like remove, has no warped check (case 062); a remove on a list of two markers is accepted (case 063)",
+   "REQ-009 stays unreleased, as in warp-markers-v1: no case of this release can observe playback",
+   "provenance labels extracted execution and computed by extracted-execution rules added; stated assumptions extended to the sample rate, the marker list a conversion uses and the arm64 build; the carried records unchanged",
+   "exclusions: conversion values, the add below the first marker, a remove on fewer than three markers and the three uncertainty bands no longer excluded; the fixtures' context, the structure rules, sample resolution, device lists and Sampler and Simpler sample parts newly excluded"
+  ]
+ },
+ "entrypoint": "README.md",
+ "case_count": 63,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "f35829169b29fb3aac301ec2db8381b41f7b2a84cc7d64d3e73088dd7a4eec08",
+   "bytes": 1551
+  },
+  {
+   "path": "README.md",
+   "sha256": "5a8c6e532f3237bb7d51126048df02f8ef184f038a8900b93aace56e89e6f506",
+   "bytes": 8556
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "dd18ffb1dd814b7271ccd4bb607990a9c4315bf270cb3b5fe6b689b493ca572a",
+   "bytes": 12568
+  },
+  {
+   "path": "cases.json",
+   "sha256": "67a37755bad5e7a156e81f515405a3d8bad1124e1ba16c61436aa0c8bfb758a3",
+   "bytes": 46972
+  },
+  {
+   "path": "fixtures/base.xml",
+   "sha256": "0f0c7068eb974558961f2c2886825190b1b92860c66bc82f48c26c8f9e9b3378",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/beattime-empty.xml",
+   "sha256": "12725fa69460da4c6c75bb417cd3acb61c7f34225902c0d5ee7e2f680e44e2ad",
+   "bytes": 24889
+  },
+  {
+   "path": "fixtures/beattime-off-grid.xml",
+   "sha256": "8bcb4311a8bd76efdc66c2af234ef23b77fbd911797bf2c8071089a770cd579a",
+   "bytes": 24898
+  },
+  {
+   "path": "fixtures/beattime-trailing-text.xml",
+   "sha256": "0239cd7ad8ab317d1ccbca721b6d501260a270b9c7756f44740a37fedc039106",
+   "bytes": 24894
+  },
+  {
+   "path": "fixtures/first-marker-later.xml",
+   "sha256": "2237a7895a9a9d10d6aab2578fe756716587be7b6b4317c35bcd8c80846931a5",
+   "bytes": 24892
+  },
+  {
+   "path": "fixtures/not-warped.xml",
+   "sha256": "698afd684457290ead75ebe513d92feccac3d36bbb55917b0b74f0db023a49ae",
+   "bytes": 24891
+  },
+  {
+   "path": "fixtures/sample.wav",
+   "sha256": "59db6dfb709393b7aab8efcc2b395df4def43f1c976d8b157bb9009dbacdc0ec",
+   "bytes": 48044
+  },
+  {
+   "path": "fixtures/sectime-exponent.xml",
+   "sha256": "cdbc6d617a8af25c12d67e725e957661901a9026d22ea93ac7c3e1bfdbb72507",
+   "bytes": 24894
+  },
+  {
+   "path": "fixtures/sectime-leading-space.xml",
+   "sha256": "7e6a60d35508ab44e7f0f146c148a8a8c5ec598bbb89904c8d7b4ed10ffe3c9b",
+   "bytes": 24891
+  },
+  {
+   "path": "fixtures/sectime-no-number.xml",
+   "sha256": "4476411af1a674dc3e2228c07e1d6efed58200ab961f7943ee266de6e33cb78b",
+   "bytes": 24892
+  },
+  {
+   "path": "fixtures/settings-absent.xml",
+   "sha256": "798e3c1ef6c26e63d7ab53e8098b2bb455f33a0078aeecb3a6fbee4a0c7f1aaa",
+   "bytes": 24578
+  },
+  {
+   "path": "fixtures/settings-no-value.xml",
+   "sha256": "2a22960893b8e9ffe60aba6bc6318cf4d09b145ffec5c041b7921d0906dc10bc",
+   "bytes": 24814
+  },
+  {
+   "path": "fixtures/shadow-sixteenth.xml",
+   "sha256": "9fbfc407984ada9ce928e7d4b64d8394d8519aa5af0dbdc6d12f4f800659cfe4",
+   "bytes": 24888
+  },
+  {
+   "path": "fixtures/transient-loop-mode-0.xml",
+   "sha256": "1dfe8d6b84ddfcb7ff86de0ff534c6985128d75707f3bf5d22b8a652134c5915",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/transient-resolution-0.xml",
+   "sha256": "30007fd2f56d8afdf23264f1aace65d0fc40f984f79bb8a129cfeda928af2191",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/two-markers.xml",
+   "sha256": "da877d3477e36546d620e1ad3bfd0f0664a03859557980358791e4e03f4f0531",
+   "bytes": 24783
+  },
+  {
+   "path": "fixtures/warp-mode-0.xml",
+   "sha256": "cd2330edb30f3acec9b577682b0ae4e9e95d554e822c6a083bb6764e04fb2229",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/warp-mode-1.xml",
+   "sha256": "af5984384cae7b1548ba0871590326ce94067d00a773d6f943268fa6caf0e03f",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/warp-mode-2.xml",
+   "sha256": "609f1631f6e9b49e29281a59db3b047a47f3386e83b9cc416892cf559001d5be",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/warp-mode-3.xml",
+   "sha256": "e8b021cf74710d92f66e7388c8a8fa6556b2c37563742a14812be618565be539",
+   "bytes": 24890
+  },
+  {
+   "path": "fixtures/warp-mode-6.xml",
+   "sha256": "b0dfd6661dcd1b89f74cebdec0aff0bf41c6f7f11aebd5f2a904d006dd792d97",
+   "bytes": 24890
+  },
+  {
+   "path": "spec.md",
+   "sha256": "7eeef903226dbf730c33d790e6ee25a01f6b4e306e633ad9fbd9606d83cb8457",
+   "bytes": 29589
+  }
+ ]
+}

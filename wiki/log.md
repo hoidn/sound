@@ -2252,3 +2252,12 @@ requirements and 42 cases (27 graded against 68 retained renders). Notes land on
 known (Q-025). The bow and DamperMass 0 settings are chaotic and can only be graded
 statistically. The T1.2 libm sensitivity test also moved exact results such as
 `expf(0) = 1`, which overstated Tension's sensitivity; Corpus figures are unchanged.
+
+## [2026-10-18] release | warp-markers-v2
+
+[warp-markers-v2](../handoff/warp-markers-v2/README.md) has 63 cases on device-free,
+openable fixtures. A separate review agent approved it with narrowing: case 018 is
+withdrawn, along with the clauses that needed device placement, and REQ-009 is
+unreleased. All 15 extracted-execution labels match the raw runs and re-ran bit
+for bit. The manifest SHA-256 is
+`8207ba862c73149821da6e2433b4e5f7fffbae118f540652645aadea5f186cd9`.
