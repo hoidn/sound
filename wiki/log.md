@@ -2062,3 +2062,45 @@ Checks made for the plan: the seven device bundles are universal binaries with
 x86_64 slices, so their DSP can be run under the harness; bubblewrap is installed
 and proposed for the isolated implementation workspace (T1.6, which needs the
 user's decision).
+
+## [2026-10-18] spec | T1.1 structure and T1.4 mix graph; released fixtures found invalid
+
+The T1.1 and T1.4 drafts are in:
+- [SPEC-LIVE-SET-STRUCTURE](specs/live-set-structure.md) r1: 18 requirements and
+  40 cases, plus the minimal set T11-MIN;
+- [SPEC-MIX-GRAPH](specs/mix-graph.md) r1: 16 requirements and 34 cases.
+
+Every open route runs the reader's validation walk (A1), traced in both corpora
+with the key branches read in x86_64 disassembly. That walk refuses two kinds of
+set:
+- a set with no audio or MIDI track;
+- a track that has clip slots but no freeze sequencer (A2).
+
+An audit
+(`r2/t11-structure-v1/released-fixture-audit.json`) finds 204 fixtures that would
+be refused, contradicting 178 cases:
+
+| Release | Fixtures | Cases |
+| --- | --- | --- |
+| transport-state-v1 | 18 | 13 |
+| transport-state-v2 | 33 | 23 |
+| automation-envelopes-v1 | 21 | 13 |
+| clip-launch-v1 | 49 | 43 |
+| midi-note-storage-v1 | 66 | 51 |
+| warp-markers-v1 | 17 | 35 |
+
+als-container-v1 is unaffected. For mixer-values-v1, the effect of the missing
+SendsPre is unknown. The catalog now carries a defect note. Superseding releases
+with fixtures rebuilt on T11-MIN are next. Both briefs now require a fixture
+validity check: the first review round had none, which is how these got through.
+
+T1.4 also settled Q-019, with conditions: Live sends fader positions, not gains,
+to the engine. Its follow-up wrote two revisions:
+- automation r4 separates evaluator values from playback: a 16-piece polyline,
+  a first point at −10⁷ beats, and the later event at a step;
+- mixer r4 narrows REQ-011 to 015.
+
+Neither contradicts a release. ADR 0004 gains a render convention: rendering
+starts from a settled state. New questions are Q-022 (structure load rules) and
+Q-023 (mix-graph conditions). The T1.3 playback-core draft is filed with its
+corrections still in progress.

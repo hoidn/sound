@@ -1,0 +1,163 @@
+T1.4 fork notes: Q-019 (value on the engine volume and send ports; send curve and floor)
+Static tracing only. No X runs. Date 2026-10-18.
+
+Images: Live x86_64 slice /var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64 (base 0x100000000);
+Engine x86_64 slice .../Ableton_Live_Engine_x86_64/Ableton_Live_Engine_x86_64.x86_64 (base 0, named);
+arm64 derived/Live.arm64 (base 0x100000000, chained fixups read with s9-mixer-v1/read_ptrs.py).
+"OK" = branch confirmed in objdump disassembly; "pc" = decompiled pseudocode only.
+Corpus records relied on: excerpts-q019-{engine,live-x86,live-arm64}.jsonl (chunk, offset, line SHA-256).
+Vtable/typeinfo reads: q019_ptrscan.py (qword scan) and the Python one-liners described below
+(typeinfo name = C string at *(typeinfo+8); vmi base list at typeinfo+24, 16 bytes per base).
+
+1. Logic side: stored value -> engine value ("ToEngine")
+-----------------------------------------------------------
+1a. Volume parameter construction (x86 ATrackDevice ctor 0x10284e830; arm64 0x10271b660).
+  - new ALevelUserFloatConverter(kind 1): x86 0x102683d10(obj,1) at 0x10284f013 OK; arm64 0x10255d93c(obj,1).
+    Fields: kind +0x28, min gain +0x2c (0x39a5cb5f = 0.0003162277571), max gain +0x30 (tables x86 0x105dee880/898).
+    typeinfo "24ALevelUserFloatConverter" x86 0x106d158c8; vtable x86 0x106d154b0, arm64 0x1067d0108.
+  - x86 0x1028229b0(xmm0=0, xmm1=1.0, xmm2=1.0, rdi=timeable [ATrackDevice+0x318], rsi=device,
+    rdx=converter, rcx=gain-text holder, r8="Track Volume", r9=0) at 0x10284f0ad OK.
+    It calls 0x101564e20 (pc), which stores AUserFloat +0x80 min, +0x84 max, +0x88 default, +0x78 converter.
+    So the volume AUserFloat holds range (0, 1) = normalized range, value/default in gain units.
+1b. Converter slots (ALevelUserFloatConverter):
+  - +0x28 "to normalized": x86 0x102683d70 OK = min(1, SControlLevel(kind, v)), 0 if negative;
+    SControlLevel = gain->position by mode, x86 0x101aed490 (Engine OVuMeterMath::SControlLevel 0x11e130);
+    arm64 0x10255d9b0 -> 0x101ac3c94 (binary search over the 101-point gain table, pc).
+  - +0x30 "from normalized": x86 0x102683da0 (pc) = clamp(SAudioLevel(kind, p), min, max);
+    SAudioLevel = position->gain by mode, x86 0x101aed3a0 (Engine OVuMeterMath::SAudioLevel 0x11e040);
+    arm64 0x10255d9e0 -> 0x101ac3bac.
+  - Note: x2-mixer-v1/addresses.json gives arm64 0x101ac3c94 for "position -> gain by mode". Per these
+    reads 0x101ac3c94 is gain->position and 0x101ac3bac is position->gain (D8's OCrossFadeVolumeProcessor
+    citation also uses 0x101ac3bac). Labelling slip in that file only; no result depends on it.
+1c. Manual value sent to the engine:
+  - AUserFloat slot 0x208 (x86 0x1015650c0 OK; arm64 0x10157459c pc) = converter(+0x78)->slot 0x28(value,
+    range +0x80/+0x84). For Volume: fader position.
+  - "OValueTimeable.SendManualValue" (message id DAT_10749ed08, initializer 0x102835390) senders
+    x86 0x10282e1b0, 0x10282e4f0 (pc): payload float = timeable->[0x278]()->[0x208]() = AUserFloat normalized.
+  - "OValueTimeable.Create" sender x86 0x102831d20 (pc; vtable slot +0x78 of ATimeableFloatOceanCreator,
+    vtable 0x106d40c68, typeinfo "26ATimeableFloatOceanCreator"): value = owner->[0x310](current value).
+  - ATimeableFloat (typeinfo 0x106d41168, vtable x86 0x106d40470, arm64 0x1067fb1b8) slot 0x310
+    = x86 0x10282ea20 (pc), arm64 0x1026fc738 (pc, same shape): record {converter = slot 0x320
+    (0x1028236b0 -> AUserFloat +0x78), range = slot 0x2e8 (0x102823660: AUserFloat +0x80/+0x84)} then
+    apply step x86 0x101565810 OK (null converter -> value unchanged; else tail-call converter slot +0x28
+    with xmm1/xmm2 = range). Slot 0x318 (0x10282eb40) is the inverse (converter slot +0x30).
+  - Engine->logic direction: x86 0x102831a20 (pc) decodes an engine message and converts two values back
+    with slot 0x318 before FUN_10282bf00 (recording/gesture path). Consistent with engine values being
+    in the normalized domain.
+1d. Automation events sent to the engine:
+  - "OFloatAutomation.Create" (DAT_1075311a0) sender for ATimeableFloat: x86 0x102823cb0 (slot +0x90 of
+    ATimeableFloatOceanCreator). Loop 0x102823d60-0x102823d82 OK stores per event time (xmm0) and value
+    (xmm1) returned by the iterator 0x102518360; the first time is overwritten with DAT_105dae938.
+    (0x102827920 is the SongTempo creator's variant, vtable "30ATimeableSongTempoOceanCreator"; not mixer.)
+  - Iterator value 0x102518360 OK: calls automation->[0x238]() (provider record), reads the event time
+    at +0x50, event->[0x1f0]() value, then 0x101565810 (apply converter).
+  - AListAutomation (typeinfo "15AListAutomation", vtable 0x106d15a60) slot 0x238 = 0x102687e00 (pc):
+    dynamic_cast(owner at +0x130, TForgetable -> IConversionAndInterpolatorProvider) then its slot +8.
+  - Implementers of IConversionAndInterpolatorProvider (typeinfo 0x106afba10), from typeinfo scans:
+    IEnvelopeTarget <- AEnvelopeTarget <- {ATimeableAutomationTarget <- {ABool,AEnum,AFloat}AutomationTarget,
+    AMultiPurposeEnvelopeTarget <- {ATimeableModulationTarget, AUserFloatModulationTarget}}, and
+    TConversionAndInterpolatorProvider (typeinfo 0x106d00a10).
+  - AFloatAutomationTarget (typeinfo 0x106d0d230): IEnvelopeTarget subobject at +0x28, vtable 0x106d0c270;
+    slot +8 = 0x10281abe0 (pc): timeable = this->[0x1e0]() then 0x10282ead0 (pc), which builds exactly the
+    ATimeableFloat::ToEngine record (slot 0x2e8 range, slot 0x320 converter, slot 0x2a8 flag).
+  - Inferred: for a Float parameter's envelope whose owner is its AFloatAutomationTarget, every event value
+    sent to the engine is converted by the parameter's own converter (Volume, Send: gain -> position).
+    Not traced: which object is at AListAutomation+0x130 for a loaded track envelope.
+  - CONTRADICTION to resolve: SPEC-AUTOMATION-ENVELOPES r3 A1 says the automation's provider has a null
+    converter (arm64 0x10275c5a0 -> FUN_101574b8c(...,0,...)). 0x10275c5a0 builds a separate provider for
+    one consumer (record s6-automation-v1 corpus-excerpts.jsonl line 45); it is not the provider the
+    owner cast returns. If the owner is the AFloatAutomationTarget, Volume and Send envelope values are
+    converted to fader positions before interpolation (Live-side evaluator 0x102526870 and the engine),
+    so volume automation interpolates linearly in fader position, not in gain. Pan (ALinearUserFloatConverter
+    slot +0x28 is identity on [-1, 1], X2) is unaffected.
+1e. Float automation player creation (AFloatAutomationPlayerModule, x86 0x1028b01e0, pc): sends
+    timeable->[0x1a0]()->[0x208]() (normalized value), two bools, a float, a double smoothing step
+    ((range hi - lo)/N), int, double, int; Engine OFloatAutomationPlayer ctor 0x168780 reads the same
+    order (SetSmoothing fields). Engine OFloatAutomationPlayer::EventValue 0x168b90 and
+    BringValueToProcessor 0x168c30 play the sent event values unchanged (pc): no engine-side conversion.
+
+2. Engine side: engine value -> gain on audio
+---------------------------------------------
+2a. Track mixer wiring: x86 0x102853480 (pc; = arm64 0x1027200f8, D8 OK). Track slot 0x370 (via 0x1025a2f70(track,1)):
+  - >= 0: Volume timeable Out -> OCrossFadeVolumeProcessor (unit +0x28) "Volume"; crossfade unit -> track-out
+    (+0x20, OTrackOutVolumeProcessor) "Volume"; SendOutsConnected and CrossFadeState wired; "Curve" from +0x98.
+  - < 0: AConvertLevel (+0xa8) set to curve 1 by 0x10258a090 OK (mov %esi,0x120(%rdi); call site 0x102853727 OK,
+    esi = 1), Volume Out -> converter -> track-out "Volume".
+  - Meaning of slot 0x370 (which track kinds take which branch, main in particular): not traced.
+2b. OCrossFadeVolumeProcessor (Engine OnVolume 0x14a990, compute 0x14a570 pc; Live x86 0x101b198c0, arm64 0x101aede40):
+    volume input is a fader position; curves 0-5: g = SAudioLevel(1, pos) x crossfade-table value;
+    Transition (6): g = SAudioLevel(1, pos x table value) (byte table "\1\1\1\1\1\1\0"); then g <= 0.00032
+    (Engine DAT_015cd640 = 0x39a7c5ac) -> 0; result sent as a ramp event (OSmartRampEventOutPort).
+    Crossfade-state ramp = SecondsToBeats(0.002 s, DAT_015cd638) x status factor (OnCrossFadeState 0x14a730).
+2c. OConvertLevelProcessor::OnIn (0x148920) / OConvertLevelRampEventProcessor::OnIn (0x148b70) / Base::Convert
+    (0x148750), all pc: g = SAudioLevel(RangeType, x); g <= 0.00032 -> 0. RangeType read from the create
+    message (0x148690, default 1; member "RangeType" declared at 0x148660). Live x86 lambdas 0x101b1a140, 0x101b1a1c0.
+2d. SAudioLevel identity bypass: Engine DAT_01824396 / arm64 DAT_106f7e914 (TAudioLevelFunctionMocker, a test
+    mocker, sets it; inferred never set in a release run).
+
+3. Send path
+------------
+3a. ASendHolder ctor x86 0x1027807c0 (pc): Send timeable (+0xb8) set up by 0x102822950 with min 0, max 1.0,
+    default = sendConverter->slot 0x30(0) (= gain at position 0), converter = global ALevelUserFloatConverter kind 0
+    (x86 0x102788370, 0x102683d10(obj, 0) at 0x102788389 OK; global DAT_10749e2a8), text holder, "Send".
+    So the send's ToEngine is SControlLevel(0, gain) = send-curve position.
+3b. Subclass ctor x86 0x1027813d0 / 0x1027814a0 (vtable 0x106d34f40, pc) calls the generic engine-graph builder
+    0x1026e8150 -> 0x1026e8170 with member filter 0x102788670 (selects the member at +0xb8 = Send).
+3c. Builder 0x1026e8170 (pc): for an exported member whose converter dynamic_casts to ALevelUserFloatConverter
+    (0x106d158c8) it creates TUserFloatLevelConverterDesc (vtable 0x106d26ca8, typeinfo
+    "N12_GLOBAL__N_135TUserFloatLevelConverterDesc") with kind = 0x102684110 (= converter +0x28). Other converter
+    classes (Linear, Log, Log10, ...) get other descriptors. Its factory slot +0x28 = 0x1026f8ca0 (pc): new
+    AConvertLevel, curve := desc kind (0x10258a090 at 0x1026f8ccd OK, esi = [desc+0x18]).
+    Inferred: the send value reaching OTrackOutVolumeProcessor Send<k> is SAudioLevel(0, position) with the
+    0.00032 floor (2c). Not traced: the node-to-port connection of that AConvertLevel to Send<k>.
+3d. OTrackOutVolumeProcessor (Engine; SEnable 0x171b50, ctor 0x172af0; 12 TSendVolumes blocks at
+    this+0x8e8+k*0x1b0, 13 ramped inputs of 0x18 bytes each, 4 outputs at +0x138..+0x180 of the block,
+    sent to ports +0x88/+0x208/+0x388/+0x508 + k*0x20). Handler pointers resolved with engine_ptrs.py:
+      in[0]  SendsOn            OnSendsOn 0x1742c0 (all 12 blocks)
+      in[1]  send output k connected  OnSendOutsConnected 0x174410 (bitmask; 1.0 if bit k set, else 0)
+      in[2]  SendIsPost<k>      0x17b900 (via __invoke 0x17b9f0 ...)
+      in[3]  Send<k> level      0x17ad00 (via __invoke 0x17adf0 ...)
+      in[4..7] track panned volumes LtoL, LtoR, RtoL, RtoR = TVolumePanner outputs (+0x780..+0x7c8)
+               copied in 0x173c00 after OnVolume 0x173bb0 / OnPanRampEvent<0..3> (TVolumePanner::Calc 0x1a26d0,
+               the X2 pan-law matrix with Volume as its 5th input)
+      in[8]  GroupOn            OnGroupOn 0x173fc0 (ctor default 1.0)
+      in[9..12] group volumes LtoL..RtoR  OnGroupVolumeRampEvent<9..12> (ctor defaults 1, 0, 0, 1)
+    Main out: TVolumeSwitch (block +0x7f8; Calc 0x1719e0) = MainOn x panned volumes -> ports +8/+0x28/+0x48/+0x68.
+3e. TSendVolumes::Calc 0x171a20 OK (full objdump read; SGroupedVolumes 0x1a2470 OK). With s = in, A = (s4..s7),
+    B = (s9..s12), G = A.B as 2x2 (G0 = a0b0+a1b2, G1 = a0b1+a1b3, G2 = a2b0+a3b2, G3 = a2b1+a3b3):
+      if s3 == 0 or s0 == 0: all four outputs 0; else, with K = s0*s1*s3 and t = s2*s8:
+      out0 = K*((1-s2)*s8 + t*G0); out1 = K*t*G1; out2 = K*t*G2; out3 = K*((1-s2)*s8 + t*G3).
+    Pre-fader (IsPost 0): send gain x identity (no pan law, no track volume, no crossfade, no volume floor).
+    Post-fader (IsPost 1): send gain x (pan-law matrix including the floored, crossfaded volume) x group matrix.
+    Exact float evaluation order (mulps lanes) is the disassembly's; see X candidates.
+    Not traced here: which logic value drives SendIsPost<k> (LiveSet SendsPre) and SendsOn (speaker/solo).
+
+4. Main and cue
+---------------
+  - Main track mixer is MainTrackDevice; its volume uses the same converter class kind (not re-traced here).
+    Either wiring branch (2a) applies SAudioLevel(1, position) and the 0.00032 floor; the crossfade branch
+    adds the crossfade factor. Which branch main takes depends on slot 0x370 (not traced).
+  - Cue (PreHear) volume: same TrackDevice wiring; whether it is the preview level: not traced (T1 irrelevant).
+
+5. Q-019 status (proposed)
+--------------------------
+  Settled statically (S), with conditions. Stored volume gain g is sent as position p = min(1, max(0,
+  SControlLevel(1, g))) (manual: AUserFloat slot 0x208; create: ATimeableFloat slot 0x310; envelope events:
+  owner provider, see 1d); the engine applies SAudioLevel(1, p), the crossfade factor where wired, and the
+  floor 0.00032 -> 0. Round trip p -> g is exact in range (X2, per-object conversions 0x101aecbd0/0x101aecc90;
+  the by-mode registry variants 0x101aed3a0/0x101aed490 are the same code over the global registry, S).
+  Out of range: g > 1.99526238 -> p = 1 -> +6 dB (1.99526238); g < 0.0003162277571 (incl. 0, negative) -> p = 0 ->
+  0.0003162277571 -> floored to silence. Sends: same with kind 0 (send curve), AConvertLevel(0) and the floor.
+  Remaining conditions: (i) owner of a loaded envelope = AFloatAutomationTarget (1d); (ii) AConvertLevel(0)
+  node connected to Send<k> (3c); (iii) mocker flag unset (2d); (iv) arm64 equivalence of 1d and 3b-3c not compared.
+
+6. X candidates (pure)
+----------------------
+  - Live x86 twin of TSendVolumes::Calc (Engine 0x171a20) and TVolumePanner::Calc (Engine 0x1a26d0; Live x86
+    0x101b719e0 already X2) and TVolumeSwitch::Calc (0x1719e0): 13/5 floats in, 4 out. Locate via the Live x86
+    __invoke lambdas 0x101b49530.. / 0x101b4a100.. callees.
+  - ALevelUserFloatConverter slots +0x28/+0x30 (x86 0x102683d70/0x102683da0) on a hand-built 0x38-byte object
+    (kind at +0x28) after building the global curve registry (needs the registry static initializer; X2 built
+    per-object curves only): checks clamp behaviour for g = 0, 2.0, -1.
+  - OConvertLevelRampEventProcessor::OnIn body (Live x86 callee of 0x101b1a1c0) with RangeType 0 and 1: floor edge
+    at 0.0003199999919 / next float32.

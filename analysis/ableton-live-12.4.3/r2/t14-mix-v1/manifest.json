@@ -1,0 +1,86 @@
+{
+ "id": "T14-MIX-V1",
+ "packet": "T1.4 mix graph and automation in playback: static tracing of the x86_64 Ableton Live Engine (named) and both Live slices, plus extracted execution (ADR 0003, label X)",
+ "target": "Ableton Live 12 Suite 12.4.3; Live x86_64 slice for X runs",
+ "slices": {
+  "live_x86_64": {
+   "path": "/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64",
+   "sha256": "1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0",
+   "image_base": "0x100000000"
+  },
+  "engine_x86_64": {
+   "path": "/var/tmp/sound-analysis/helpers/Ableton_Live_Engine_x86_64/Ableton_Live_Engine_x86_64.x86_64",
+   "sha256": "028df12e65ce5c31ce5195872e9c44ea430bd91429543f4bec858fddf35843de",
+   "image_base": "0x0",
+   "note": "static only (symbol donor); not executed"
+  },
+  "live_arm64": {
+   "path": "analysis/ableton-live-12.4.3/derived/Live.arm64",
+   "sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad",
+   "image_base": "0x100000000",
+   "note": "static comparison only (fma-scan.txt)"
+  }
+ },
+ "harness": {
+  "harness/xexec.c": "851696ae9fac7b2d9791604a30b570b6e04a5cb8deb675dce7d927478a752d54",
+  "harness/xexec.py": "5685e93cc781f1076ba688e308b55112fb58ee51064cf9bdd7f7120f40fc85f0",
+  "built_loader": {
+   "path": "/var/tmp/sound-analysis/xexec-t14/xexec",
+   "sha256": "188b1197bd69ab4700ae47eade48f00982a2d11139d865f3cee46e64b80d3078"
+  },
+  "note": "xexec.c is an unchanged copy of x2-mixer-v1/harness/xexec.c (poke command, --patch, 256-call check); xexec.py changes only BIN; tools/xexec was not modified"
+ },
+ "tools": {
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "objdump": "GNU objdump (GNU Binutils for Ubuntu) 2.42",
+  "python": "3.13.9",
+  "glibc": "2.39",
+  "kernel": "7.0.0-38-generic"
+ },
+ "commands": [
+  "sh run.sh"
+ ],
+ "executed_live_application": false,
+ "executed_original_code": "Live x86_64 functions listed in addresses.json \"run\", in the xexec harness",
+ "static_notes": [
+  "notes-mix.txt",
+  "notes-solo.txt",
+  "notes-automation.txt",
+  "notes-q019.txt"
+ ],
+ "files": {
+  "addresses.json": "ce80fa42158548e67387addd26a59a5faea8b3a1d61b3701b5e4bb17af4b1ac4",
+  "corpus_lookup.py": "7f3d5f4da47c53cc0fa703814258c7f55326b19129e1a6f422178c1b3d9ea03b",
+  "engine_ptrs.py": "d442792ea3310970d39db4b94d72183de92959dfef37aab931c08a2ac9d04de5",
+  "excerpts-automation-engine.jsonl": "9a8dbfd7bf22e36095f1a8c689a3a38bc394a9ede9089a935f74237d9a50bfd8",
+  "excerpts-automation-live-arm64.jsonl": "f14f112354a5d5aa8395c5d6118648f9143c7ab59862fda6c041e26c4fe5712b",
+  "excerpts-automation-live-x86.jsonl": "f5c51a56f8ca144235a4d9ddd278ed7119b02cf6c823f7e7c6b5cff5f6e7d929",
+  "excerpts-mix-engine.jsonl": "b9c3da58a4bea79c0d8ea1ca777ae075e8443f2979326a34f7af0e256483b649",
+  "excerpts-mix-live-x86.jsonl": "0e520a81bf179b87f5d28e12385043e0c82950ac4872f7a69bd7dbb99a956fb3",
+  "excerpts-q019-engine.jsonl": "9eaf7b108bfba24343853d8703e128bc65d79f84235ffc7eab5ee87be5b1d5c7",
+  "excerpts-q019-live-arm64.jsonl": "602df48c65b90d519793de33a231db43823c8a76ae00363089b820dbc124a595",
+  "excerpts-q019-live-x86.jsonl": "8d349d0838d90547c2cb975859e105eafe757252666bbdb489a4c86eab245baa",
+  "excerpts-solo-engine.jsonl": "ec0688a04c307762c78472db0c17375c7d3579f68bb24b9a2e6fc2c9feda8ffe",
+  "excerpts-solo-live-arm64.jsonl": "72fd7c29e73e6c0df0a61aec678d4970ecb6c6338ae04e75b3046eda46669b2d",
+  "excerpts-solo-live-x86.jsonl": "a8666eb548b178865b6a487ea464be2e1bbb9eaacaadf087b8474cc5d8e5109b",
+  "fma-scan.txt": "afb7945ca2c03792d8856efd8aa3dd8efabad49b1175526dfd33103ee558babf",
+  "fp_scan.py": "0cacf9654a48ee7a2c0e2c44017fdcfe87849d80f1feaca9801bc1917eabb62e",
+  "harness/xexec.c": "851696ae9fac7b2d9791604a30b570b6e04a5cb8deb675dce7d927478a752d54",
+  "harness/xexec.py": "5685e93cc781f1076ba688e308b55112fb58ee51064cf9bdd7f7120f40fc85f0",
+  "make_evidence.py": "8a63376d331da58698cba29979341210b16fcf5a18630457f8d906a014122739",
+  "match-engine.txt": "0266819ffd84f0766fccd450533e1481a0ad3350c764a52d9453d900f5518409",
+  "match_engine.py": "6f1516374b6dab0655c5ea45ed68d3e73f5df66947435aef448ca21bc14dc3a7",
+  "notes-automation.txt": "8daa782490b23ad17a2419fbfd23e74b67a471b9cc702b18dedbff1a02ccfa51",
+  "notes-mix.txt": "60b01bf8b07f91c292675b0fe87931eabdff4f5e2f92fa8d30eaec4121216dd8",
+  "notes-q019.txt": "e3f5d65696074bc81f19fc4d0820fc75334fc140ba91b92906ada67de869e2f9",
+  "notes-solo.txt": "fe5c809d39e8c12abaae8e0ef41f0f9149f4c528f2629d8cbea422acf65c9467",
+  "ptrscan.py": "56e87ef6060370f725be93f7e2eb84845697180578fee568bc5e8ff7871e5f2e",
+  "q019_ptrscan.py": "87ec8ca17b0ac1946ddc955c8f7b395d0b79ac79d1ae9ccbe89c5e34403580d9",
+  "raw/runs.jsonl": "a397cce7d2397b18b6f36e3b775a5003969afd9d5f9535631a9db4f7bdab139d",
+  "results/mix.json": "42a833f365f4d7b0351f7cc71b7418ccbe4651869ea18d79458b887d79f70dfc",
+  "run.sh": "cd995b50af26384d43953446ee105c1683111a165a7121494333fc2035d1f087",
+  "run_mix.py": "a667885337ad16605519af2324f499625fcf10ef172758f7ae8447b24f44522b",
+  "twin_search.py": "e9e7bf829a8dd17054fef4709ee2f4c3f645013fc8d7816b96326b7fca98b86c",
+  "x86-disasm.txt": "360e99f0831ae4315dcc73c7c1f4a6e583d3ff09871d7137b35ff034c0c701e4"
+ }
+}

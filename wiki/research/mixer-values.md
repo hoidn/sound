@@ -346,11 +346,23 @@ command and an `--patch` option that redirects Live's two shared-memory allocato
 (`0x101ac2ea0`, `0x101ac7a40`) to a zero-filling `aligned_alloc`, so the curve objects can
 be built without the real pool. `tools/xexec` was not modified. The x86_64 functions and
 their arm64 counterparts are in
-[addresses.json](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/addresses.json);
+[addresses.json](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/addresses.json) (see the
+correction below);
 per-value results in `results/mixer.json`; argv/stdout of all 110 runs in `raw/runs.jsonl`;
 objdump of every function in `x86-disasm.txt`; the fused-multiply-add census in
 `fma-scan.txt`. Substituted libraries (glibc `exp10f`, `cos`, `cosf`) are **not Apple's**;
 see the ±1 ulp notes below.
+
+*Correction 2026-10-18 (T1.4):* x2-mixer-v1's `addresses.json` swaps two arm64 functions.
+
+- It labels arm64 `0x101ac3c94` as position → gain. That function is gain → position (a
+  binary search over the 101-point gain table).
+- arm64 `0x101ac3bac` is position → gain. That is the function the engine's crossfade stage
+  `0x101aede40` calls.
+
+The file is hashed evidence and is left unchanged. No X result depends on the label: the
+runs used the x86_64 functions `0x101aecbd0` and `0x101aecc90`. Source:
+[t14-mix-v1 notes-q019.txt](../../analysis/ableton-live-12.4.3/r2/t14-mix-v1/notes-q019.txt) §1b.
 
 **Fader curves (X; settles PRB-S9-01 numerics, bears on Q-019).** The curve builder
 `0x101aecd40` (arm64 `0x101ac35d8`), position → gain `0x101aecbd0` (arm64 `0x101ac3498`) and
@@ -445,7 +457,10 @@ function):
   fader position `gain → position(stored gain)`, or something else), and where sends are
   converted and floored. The conversions themselves are now X (above) and the round trip is
   exact, but the value that reaches the port is a logic → engine data-flow question, not a pure
-  function, so it is not settleable by extracted execution.
+  function, so it is not settleable by extracted execution. *Resolved statically 2026-10-18
+  (T1.4):* the fader position, clamped to [0, 1]. Sends use the send curve through a level node
+  with the floor. Conditions are listed in
+  [mix graph](mix-graph.md#q-019-values-on-the-volume-and-send-ports).
 - Effect of out-of-range or alternative-spelling values after load, and what a 12.4.3 save
   writes for them (loader/writer path, not isolated).
 - Where return-track holders get `EnabledByUser` false; the meaning of `SoloSink`; whether the

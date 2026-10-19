@@ -1,0 +1,152 @@
+T1.4 fork: automation during playback (static only; no X runs). 2026-10-18.
+Slices: Engine x86_64 (image base 0, VA == file offset, names from corpus aliases),
+Live x86_64 (base 0x100000000), Live arm64 (derived/Live.arm64). "pc" = read in Ghidra
+pseudocode only; "✓" = branch/constant confirmed in objdump of the shipped bytes.
+Excerpts: excerpts-automation-{engine,live-x86,live-arm64}.jsonl (corpus records + line SHA-256).
+Helpers written here: ptrscan.py (find qword pointers to a function), twin_search.py
+(masked byte search for Live x86 twins of Engine functions).
+
+1. WHO EVALUATES THE ENVELOPE DURING PLAYBACK
+1a. Logic side builds a point list and sends it to the engine (pc).
+  - ATimeableFloatOceanCreator vtable (Live x86 0x106d40c68) slot 0x90 = 0x102823cb0
+    (arm64 0x1026f1e4c): iterates the envelope with 0x102518300/0x1025187f0/0x102518360/
+    0x102518440 (arm64 0x1023fc708/0x1023fcc90/0x1023fc764/0x1023fc860) and fills
+    times[] (double, beats) and values[] (float); times[0] is replaced by -10000000.0
+    (0x105dae938; arm64 0x1058464f8). Message "OFloatAutomation.Create" (ID cache
+    0x1075311a0) with NumEvents, EventTimesPtr, values ptr. ✓ 0x102823d63..0x102823d8f:
+    call 0x102518360 returns time in xmm0 (movsd -> times[i]) and value in xmm1 (movss -> values[i]).
+  - Iterator current (0x102518360): plain event -> (event time at +0x50, value = event value
+    passed through the A1 converter step 0x101565810). Curved event (0x1028b0940: any of the
+    4 curve controls != 0.5) -> sub-iterator 0x102520a60 builds the cubic Bezier
+    P0=(t0,v0), P1=(t0+x1*dt, v0+y1*dv), P2=(t0+x2*dt, v0+y2*dv), P3=(t1,v1) and emits 15
+    interior points at Bezier parameter s=(i+1)*0.0625, i=0..14 (0x1011e6ac0; constants
+    1.0 @0x105a577f0, 0.0625 @0x105b38e98; done test index==15 @0x1011e6aa0); Bezier
+    evaluated in double by 0x1011f1610 (Bernstein form, x and y), value stored as float.
+    arm64: 0x101208178 (==0xf), 0x101208198 ((i+1.0)*0.0625), 0x101212cc4 (eval).
+    => the engine receives a POLYLINE: each curved segment becomes 16 straight pieces at
+    uniform Bezier parameter (not uniform time). Inferred: playback on curved segments is
+    piecewise-linear between these points, NOT the exact bisection value of
+    SPEC-AUTOMATION-ENVELOPES REQ-010 (X, 0x102526870). Difference = chord error of 16 pieces.
+  - Song tempo is different: ATimeableSongTempoOceanCreator slot 0x90 = 0x102827920 sends a
+    list rasterized by 0x10269f5d0 at 0.25-beat steps (0x105b38f80 = 0.25) with linear
+    interpolation; tempo player settings N=0 (0x102827140) -> held steps in the engine.
+1b. Engine side (named): OAutomation (ctor 0x13fd20, members 0x13fc70: Handle, SlotUniqueId,
+  GrooveHandle, PinGrooveRandom, NumEvents, EventTimesPtr); OFloatAutomation adds values
+  (+0x38, FloatValue 0x1685e0). +0x28 is the GROOVE (time warp of event times), not a value
+  converter. No value conversion exists between the logic-side value and the engine player.
+  - Event lookup (OAutomationPlayer::ScheduleNewEvent 0x141110, ScheduleData::ProcessAutomationAt
+    0x140310, pc): t' = song beat (scheduler status +0x70) minus automation offset (+0x40),
+    quantized sign(t)*floor(|t|*3843840+0.5)/3843840 (0x15bdfe0 = 1/3843840, 0x15bdfe8 =
+    3843840.0, roundsd mode 9 = floor); index = upper_bound(times, t') - 1 = last event with
+    time <= t'. At a step (two events at t) this selects the LAST event at t (cf. REQ-010 step
+    mode U: playback behaves as evaluator mode 1).
+  - Next event is scheduled as an absolute BEAT event (ProcessAndScheduleNext 0x141f30 ->
+    OScheduler::ScheduleAbsoluteBeatEvent), i.e. sample-accurate, independent of buffer size
+    (scheduler splits buffers at event sample times: InitNumSamplesToNextEvent etc.).
+  - Units: beats; samples per beat = status +0x28 (TStatus::PredictedLongSampleTime 0x1096d0
+    uses +0x28 as samples/beat, +0x30 beats/sample, +0x0 int sample rate, SecondsToBeats 0x109700).
+
+2. HOW OFTEN VALUES ARE APPLIED (Float automation)
+  - Player create message (engine OFloatAutomationPlayer::SRegisterMessages 0x168610):
+    CurrentValue f32, IsRamped bool, IsMidiControllerAutomation bool, Default f32,
+    SegmentUpdateInData f64, MinSegmentUpdateInSamples i32, SmoothingLengthInMs f64,
+    SmoothingUpdateInSamples i32 (ctor 0x168780; event fields +0x68/+0x70/+0x78/+0x80).
+  - Logic sender (Live x86 0x1028b01e0, arm64 0x102777174; AFloatAutomationPlayerOceanCreator
+    vtable 0x106d4c0f0 slot 0x28): SegmentUpdateInData = (max-min)/N of the parameter
+    (slot 0x1f8 range) if N >= 1 else 1.7976931348623155e308 (= "off").
+  - Settings come from the parameter's automation target (setter Live x86 0x1026014a0 /
+    0x102601930, arm64 0x1024dd238 / 0x1024dd63c; fields +0x80 N, +0x84 MinSeg, +0x88
+    SmoothUpd, +0x38 ms, +0x8d bit2 ramped). Every ATimeableFloat/Bool/Enum/Value/SongTempo,
+    AMayFollowScaleMixin<...>, ATimeablePluginFloat/Enum gets, from vtable slot 0x110 (post-
+    construction hook 0x101479bf0 -> slot 0x110), 0x10282b410 (arm64 0x1026f8e74):
+    ✓ 0x10282b42d..0x10282b43f: xorps xmm0 (0 ms), esi=0x3e8 (N=1000), edx=0xc8 (MinSeg=200),
+    ecx=0 (no smoothing). Track-mixer Volume/Pan/Send/crossfader: no override found
+    (ATrackDevice ctor 0x10284e830 and its float setup 0x1028229b0 make no settings call; the
+    direct callers of the setters are rack-chain mixer 0x1024fa7c0 (4 ms/5000/16/2 and
+    2 ms/5000/8/2), Song Tempo 0x102827140 (0/0/200/0), time signature, and device classes
+    (Auto Filter Legacy, Beat Repeat, Chorus, Shaper "Amount..."); AFloatAutomationTarget
+    slot 0x240/0x248 presets 4 ms/128/256/8 ramped and 0/1000/200/0 ramped (callers unknown)).
+    => Inferred: track mixer float automation uses N=1000, MinSeg=200 samples, no smoothing.
+  - Engine segment math (named, Live x86 twins byte-matched, ✓ identical bytes for 0x150050..
+    0x1500ad vs 0x101b1f3a0..0x101b1f3fd):
+    OFloatAutomationSegment::Init(v0,v1,durSamples,offSamples) 0x1500b0 (Live 0x101b1f400):
+      slope = (v1-v0)/dur (double, per sample); value = v0 + max(0,off)*slope clamped to
+      [min(v0,v1), max(v0,v1)]; v0==v1 -> constant.
+    BringValueToProcessor 0x168c30 (Live 0x101b37f40): dur = (t_next' - t_i)*samples/beat
+      (t_next' after groove), off = min(dur, (now - event song time)*samples/beat);
+      ✓ 0x168ca6 cmp $-1 (no next event) / 0x168cac cmpb $1,0x173 (SegmentUpdate set):
+      if no next event OR SegmentUpdateInData off -> Init(v0): value HELD (step) to next event.
+    Ramp length L (CalcStepForNormalSegmentRuns 0x16a240, Live 0x101b39550; same in
+      SetNextSegment 0x168e70 / Process 0x169d70): ✓ L = cvttsd2si(dataStep/|slope|),
+      L = min(L, 0x10000); if MinSeg > L then L = MinSeg; L = 0 if slope == 0 or status
+      +0x68 (transport playing, cf. RunningBeatTime 0x109810) != 1. step = L*slope (SetStep).
+    SendRamp 0x169c00 (Live 0x101b38f10): sends TRampEvent{target = float(cur+step), L samples}
+      to each processor; if target passes the segment bound, the ramp is shortened to
+      floor((bound-cur)*L/step) samples ending on the line. Process 0x169d70 runs after L samples
+      (ScheduleRelativeSampleEvent) and advances cur.
+    => Inferred trajectory: linear in sample time between consecutive points, delivered as
+      linear ramps of L samples, L = clamp(trunc(((max-min)/1000)/|slope|), 200, 65536); i.e.
+      at most every 200 samples and at least every 65536; a new ramp starts at every point's
+      exact sample time. Deviation from the exact line <= one data step ((max-min)/1000) and
+      only within the last ramp before a point (shortened ramp then hold). When the transport
+      is stopped L=0: the value jumps (no ramp). Per-sample interpolation inside a ramp is
+      the consumer's ramp interpolator (not traced here).
+  - Smoothing branch (SmoothingUpdateInSamples>0: SSmoothBetweenTwoSegments 0x14ff90 blends
+    old/new segment over SmoothingLengthInMs*rate/1000 samples (0x15bade0 = 1000.0); 0.01
+    threshold 0x15bafe8) applies only to settings with ms > 0 (not the default).
+  - Bool/Enum players: discrete values (not traced further; REQ-011 X).
+
+3. AUTOMATED VS MANUAL VALUE; OVERRIDE; SESSION CLIPS (pc, engine names)
+  - Per track automation index (OAsyncTrack +0x70; AutomationIndex 0x12b910):
+    -1 = arrangement (BackToArrangement 0x137690 activates -1), >= 0 = playing session
+    slot, -2 = none (e.g. past end of unlooped slot clip, ActivateAutomations 0x136700).
+  - OAsyncValueTimeable::ActivateAutomation 0x13d800 (Live 0x101b0cb60): index -1 -> the
+    arranger automation (OTimeable automations[-1], members 0x1669e0 "ArrangerAutomation") is
+    played if it has > 1 events; index >= 0 -> only a clip ENVELOPE for that slot is played
+    (ActivateEnvelopeAutomation 0x1344e0 via OClipTimeable::GetEnvelopeActivationParameters);
+    if the timeable has no envelope (HasAutomationEnvelopes 0x167030 false) the player is
+    deactivated and ActivateManualValue (vslot 0x38 -> 0x13de60) sends the manual value.
+    => Inferred: while a session clip plays on a track, that track's arrangement automation
+    is not applied; each parameter takes its Manual value unless the playing clip has an
+    envelope for it. With no session clip launched (index -1) arrangement envelopes drive.
+  - Override: OAsyncValueTimeable +0x66 overridden flag (SetAutomationOverridden 0x13dac0,
+    IsAutomationOverridden 0x13d5c0, ReEnableAutomation 0x13e7d0); a manual change while
+    automated sets it; launching/stopping may clear it per the +0xb4 re-enable scope. Not
+    T1-relevant without manual edits (render scripts have none). Stored override state:
+    LiveSet/AutomationMode is the arrangement automation-arm button (schema RemoteableBool),
+    not an override record; not traced.
+  - While stopped: OAutomationPlayer::StatusChanged 0x141b60 reschedules on beat-time
+    changes; ScheduleNewEvent uses status +0x70; value at the stopped position applied with
+    L=0 (jump). (pc)
+  - Clip envelope time base: automation offset +0x40 and OAsyncTrack::ClipAutomationOffset
+    0x134750 exist; not traced (stays U).
+
+4. UNITS AT THE ENGINE PORT (for Q-019)
+  - Values reaching the player = logic event values through 0x101565810 (A1: identity for
+    ordinary envelopes) -> STORED units (volume: gain). Player CurrentValue/Default are the
+    parameter's stored value/default. No position conversion on the automation path up to
+    OFloatAutomationProcessor::Send 0x16a540 (out port TRampEvent). Whether the volume port
+    consumer then applies position->gain is the Q-019 fork's question; if it does, an
+    automated stored gain would need the same gain->position step as the manual value.
+
+X CANDIDATES (Live x86_64, pure or nearly):
+  - 0x101b1f400 OFloatAutomationSegment::Init(this rdi, v0 xmm0 f32, v1 xmm1 f32, dur xmm2 f64,
+    off xmm3 f64) -> fields +0 value, +0x10 slope, +0x18 lo, +0x20 hi (40-byte buffer).
+  - 0x101b1f3d0 ConvertDataStepToSampleStep(this, dataStep xmm0) -> xmm0; 0x101b1f3a0 SetStep.
+  - 0x101b39550 CalcStepForNormalSegmentRuns needs a scheduler status object (not pure).
+  - 0x1011f1610 Bezier eval (s xmm0, double P[8] in rdi) -> (x xmm0, y xmm1); with
+    0x102520a60-style control points reproduces the 15 interior points (arm64 0x101212cc4 may
+    fuse multiply-adds: compare).
+  - Beat-time quantization (inline in 0x101b0f660 / 0x101b10460) is arithmetic only.
+
+SPEC EFFECT (proposal):
+  - A2 (drive from song position): S (pc): engine player looks up the last event at or before
+    the quantized song beat, schedules point times as sample-accurate beat events.
+  - Step at t: S, playback uses the last event at t.
+  - Curved segments: playback = 16-piece polyline (S); REQ-010 exact Bezier value is the
+    logic evaluator's value, not the rendered value -> spec must say which; T1 render should
+    use the polyline (S, X-able via 0x1011f1610).
+  - Application rate: S (default settings inferred for mixer parameters): linear in samples
+    between points, ramps of 200..65536 samples, error <= range/1000; stopped -> jump.
+  - Session clip vs arrangement automation: S/inferred as above; clip envelope time base U.
+  - Override/Re-enable: U, not T1-relevant without edits.

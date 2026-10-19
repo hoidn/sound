@@ -1,0 +1,88 @@
+T1.1 static trace: sample file references (FileRef / SampleRef) in 12.0_12402 Live Sets.
+Fork of the T1.1 analyst, 2026-10-18. Image Live.arm64 (analysis/ableton-live-12.4.3/derived), arm64 corpus
+/var/tmp/sound-analysis/corpus, x86_64 corpus /var/tmp/sound-analysis/corpus-x86, x86_64 slice
+/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64 (objdump via r2/x2-notes-launch-v1/xtool.py dis).
+Strength: P = observed in pseudocode (corpus-excerpts*.jsonl); D = confirmed in x86 disassembly (objdump-x86.txt);
+B = checked against shipped bytes (fileref-survey.json, crc-check.txt, duration-check.txt); I = inferred.
+All addresses arm64 unless marked x86.
+
+1 Members and stored values
+- AFileRef registry 0x1014e7ad4 (P): RelativePathType +0x28 int, RelativePath +0x30 str, Path +0x38 str, Type +0x24 int,
+  LivePackName +0x40, LivePackId +0x48, OriginalFileSize +0x58 int64, OriginalCrc +0x60 int, SourceHint +0x50; all base
+  type (-4), no runtime-only flag. Same order as schema FileRef. Ctor 0x1014e7fbc (P): Type 0, RelativePathType 0,
+  strings empty, size 0, crc 0. Vtable 0x106674bd0: loader +0x140 = generic 0x101487310, writer +0x138 = generic
+  0x101486cdc, post-load +0xd0 = 0x101486fa8 (generic); AFileRef does no resolution itself (vtable-reads.txt).
+- RelativePathType names 0x1014e8b88 (P; x86 0x1014d94a0 P): 0 Unknown, 1 Document, 2 Library, 3 Project,
+  4 IdBased, 5 "Live Pack (<LivePackName>)", 6 UserLibrary, 7 Builtin; other "???".
+- AMediaFileRef registry 0x1027998a4 (P): FileRef +0x88, LastModDate +0xa0, SourceContext +0xa8, SampleUsageHint +0x70.
+  ASampleRef registry 0x102875ec0 (P): DefaultDuration +0xe8, DefaultSampleRate +0xec, SamplesToAutoWarp +0x100.
+  ASampleRef ctor 0x1028760d0 (P): SamplesToAutoWarp entries KNone, KOnlyLong, KAllExceptShort.
+- Type: the save-side update 0x1014e8eb8 (P) always sets Type 2. Meaning of 0/1/2 not traced (U).
+  Shipped (B): every SampleRef FileRef has Type 2 (10,440); Type 0/1 only in 14 OriginalFileRefs.
+- OriginalFileSize / OriginalCrc: computed by 0x1014e98cc (P): file size, and CRC 0x101279eac over the first
+  min(size, 0x4000) bytes using step 0x1011b6e88 (P): poly 0x8005, MSB first, init 0, no reflection, no final xor,
+  16-bit result (CRC-16/UMTS). Written to FileRef by 0x1014e986c (P). B: crc_check.py, 2,984 of 2,984 Core Library
+  files referenced by shipped sets match size and CRC.
+- DefaultDuration / DefaultSampleRate: B (duration_check.py): equal to the file's sample frames and integer sample rate
+  for 2,983 of 2,983 WAV/AIFF entries (1 Ogg not checked). ASampleRef slot +0xf8 0x102877bc4 (P) sets them from the
+  loaded sample object (frames +0xa0, (int) float rate +0xc0) in one mode.
+- LastModDate: 0x1014e7678 (P) = file last_write_time converted with system_clock::to_time_t (seconds since epoch),
+  0 on error.
+
+2 Resolution on load
+- ASampleRef post-load +0xd0 = 0x102877af8 (P): packs DefaultDuration/DefaultSampleRate/SamplesToAutoWarp into a
+  pending default-info record (+0xcc..+0xe0), then calls AMediaFileRef post-load 0x10279aba8 (P):
+  generic post-load, then 0x10279aae0 (P): base = parent folder (0x103e96bc4, P) of the path returned by slot +0x78 of
+  the load context object (I: the document being read), then descriptor = 0x1014e8504(FileRef, base).
+- 0x1014e8504 (P; x86 0x1014d8e20 P/D):
+  a. RelativePathType 4: empty descriptor (no path).
+  b. If base non-empty, RelativePath non-empty and a resolution context is on the global stack (deque at
+     0x106f4fc70/88/90; pushed by 0x1014ec7dc/0x1014ec98c/0x1014ecba8 (P), callers include the save-envelope callers
+     0x1018ed778 and 0x102971090 cited by SPEC-ALS-CONTAINER): candidates 0x1014ead80 (P) by type:
+     0 and 1 -> base / RelativePath; 3 -> project root found from base (0x1014eb654) / RelativePath; 5 -> pack root
+     looked up by LivePackId / RelativePath; 6 -> user library root / RelativePath; 7 -> built-in content root /
+     RelativePath; 2 -> none. A context flag (+0x19) can substitute one candidate (0x1014eb534; not traced).
+     0x1014e9d78 (P) takes the first candidate that exists; for a missing candidate of type 2, 5 or 7 it tries a
+     library relocation 0x1014ea694 (P; skipped when a registry flag 0x1011aeb80 is found); if none exists it returns
+     the first candidate. 0x1014e8504 then tests existence (0x103e897f8, P); if it exists the descriptor is that path
+     with the (OriginalFileSize, OriginalCrc) identity when either is non-zero.
+  c. Otherwise (no context, no base, empty RelativePath, or the joined file absent):
+     - types 0, 1, 2, 6 with Path non-empty (and a registry flag not found, I: normal run) -> the absolute Path,
+       with no size/CRC identity (x86 0x1014d90e5: lea 0x38(%r14), identity zeroed; else branch 0x1014d9057..0x1014d90e3 picks 0x30 or 0x38 with identity; D);
+     - else Path when type 0 or RelativePath empty, otherwise the unjoined RelativePath, with identity if non-zero.
+     So for types 3, 5, 7 the absolute Path is not used when a non-empty RelativePath fails to resolve (P/D).
+  d. Non-empty RelativePath with type != 0 also yields an info string "<TypeName>:<RelativePath>" (P).
+- Result goes to 0x102799ea4 (P) -> media manager singleton (0x10279c0e4/0x10279bee0) 0x10279a170 (P): a media file
+  object keyed by path, created with the descriptor and LastModDate (0x10278dc4c, P). No throw on any traced branch:
+  an unresolved file does not refuse the set (S for the traced path; I for the whole load).
+- Missing status: media manager slot +0xc8 0x10279d1e8 -> 0x10279d228 (P) sets a Boolean "missing files" status from a
+  non-empty set at +0x50 (filtered to the current document when one exists). Keys sStatusTextMissingFiles (0x100308ef0),
+  sDialog*MissingMediaFiles (0x1003a1624), OnMissingFilesStatusChanged, Internal/MissingFileSearch. Who inserts into
+  +0x50 and what text is shown: not traced (U).
+- ASampleRef slot +0x228 0x102876594 (P): the sample object is fetched from a sample manager by media file; if absent it
+  is created seeded with the pending DefaultDuration/DefaultSampleRate record, or with duration -1 / rate -1 when there
+  is none (I: unknown length until the file is read). Whether a file whose real frames or rate differ overrides or is
+  flagged: not traced (U).
+- LastModDate vs the file's current time: compared only in 0x10279a744 (P), which is reached from slots +0xe8/+0xf8
+  (I: pre-save update), not from the post-load hook. Effect of a stale LastModDate on load (analysis file reuse): U.
+
+3 File content
+- Extension registry 0x10127ec24 (P): .aif/.aiff "Macintosh AIFF", .wav "Windows Wave", .bwf/.rf64, .flac, .eflac,
+  .m4a, .mp3, .ogg, .sd2, .wv, .wma, .mp4/.m4v, .mov, ... Live imports AudioToolbox ExtAudioFile*/AudioFileOpenWithCallbacks
+  (strings 0x1079f82a0..). Which formats decode for a clip, and whether by extension or content: not traced (U).
+- Shipped sample references: .wav 11,427, .aif 6,861, .ogg 1 (all FileRefs, fileref-survey.json, B).
+
+4 Written on save (writer read; caller order inferred)
+- 0x10279a590 (slot +0xe8, P): base = parent of the target document path, then 0x10279a744 (P): if the resolved file
+  exists and differs from the media file path or its mtime differs from LastModDate -> 0x1014e8eb8 (P):
+  Path := absolute file path, Type := 2, SourceHint := given; if a context is on the stack and base non-empty,
+  0x1014e9230 (P; x86 0x1014d99d0 D) picks the first that applies: 7 Builtin (0x1014eb788), 5 Live Pack with
+  LivePackName/LivePackId (0x1014ebbe8), 6 UserLibrary (0x1014ec26c), 3 Project (0x1014ec018), 1 Document
+  (0x1014ec53c); otherwise RelativePathType 0 and RelativePath empty. Types 7/5/6/3 require the file inside the root
+  (x86 mov $0x1,%r8d before call 0x1014dc470; D); Document passes 0 (xor %r8d,%r8d; D), so RelativePath may contain "..",
+  produced when 0x103e9e994 holds (I: same volume). Context flag +0x18 set -> no relative path (P).
+  Then 0x1014e986c recomputes OriginalFileSize/OriginalCrc when changed, and LastModDate := media file's (P).
+- B: shipped RelativePathType 1 RelativePaths start with ".." (7,322); type 5 always has LivePackName and LivePackId;
+  type 0 always has an empty RelativePath (4,273).
+- U: whether 12.4.3 writes all nine FileRef children for every reference (4 shipped FileRefs lack SourceHint), text
+  of SourceHint, and the project-root rule of 0x1014eb654 (only the explicit-project branch read).

@@ -57,6 +57,15 @@ Out of T1:
 | Timing | Launch and note positions are sample-exact at the stated sample rate, as each spec's arithmetic gives them |
 | Whole-mix audio | Composed from verified parts as the playback specs state. No render of Live itself exists to compare against, so whole-mix results are spec conformance, not measured compatibility |
 
+## Render conventions
+
+The offline render is T1's test vehicle. Live has no equivalent of it, so these
+conventions define the vehicle. They describe no Live behavior.
+
+- **Settled start (2026-10-18, from SPEC-MIX-GRAPH A1).** A render starts from a
+  settled state. Every ramp the loaded state starts has finished before the first
+  rendered sample: switch fades, crossfade-assign ramps and the first matrix values.
+
 ## Consequences
 
 - Specification work targets the gaps that T1 needs (see

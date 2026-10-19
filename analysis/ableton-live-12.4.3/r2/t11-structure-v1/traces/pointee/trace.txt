@@ -1,0 +1,97 @@
+T1.1 pointee / NextPointeeId trace (static; arm64 corpus pseudocode, arm64 image reads, x86_64 objdump)
+Image arm64: analysis/ableton-live-12.4.3/derived/Live.arm64 (base 0x100000000). x86_64: helpers/Live_x86_64/Live_x86_64.x86_64.
+Pseudocode records: corpus-excerpts.jsonl. Image reads: image_reads.py -> image-reads.txt. x86 disassembly: x86-*.txt
+(objdump -D -b binary -m i386:x86-64 --adjust-vma=0x100000000). Labels: P = pseudocode observed, D = disassembly
+confirmed (x86 unless stated), R = image data read, I = inferred.
+
+== Classes and members
+0x10153e150  registers APointee (class DAT_106e0d398, members fn 0x10153575c) and APtrBase (DAT_106e0d460, fn 0x101535b34). P
+0x10153575c  APointee member "mId" -> "Id" at +0x24, type -4, flags 4 (attribute). P; name string R (0x1062acd64 = L"mId")
+0x101535b34  APtrBase member "mPointeeId" -> "PointeeId" at +0x24, type -4, flags 0 (child element <PointeeId Value=..>). P
+Schema 12.0_12402: Pointee{Id}, FloatAutomationTarget/EnumAutomationTarget/BoolAutomationTarget/TimeableModulationTarget/
+  UserFloatModulationTarget{Id, LockEnvelope}; PtrBase{PointeeId} used by AutomationEnvelope/ClipEnvelope EnvelopeTarget and
+  SignalModulationConnection Source/Target.
+APointee subclasses sharing post-load hook 0x101535954 at vtable +0xd0 (R, by typeinfo name): APointee, ABoolAutomationTarget,
+  AEnumAutomationTarget, AEnvelopeTarget, AFloatAutomationTarget, AMultiPurposeEnvelopeTarget, ATimeableAutomationTarget,
+  ATimeableModulationTarget, AUserFloatModulationTarget. Register slot +0x80 = 0x101535924 -> 0x10154368c(doc, pointee). R
+0x10153f91c  ADocument (DAT_106e0dd00; ASong's base per 0x1026b987c) members: mNextPointeeId +0x140 type -4 flags 0;
+  mNextDontSavePointeeId +0x144 flags 3 (runtime only); mOverwriteProtectionNumber +0xf8 flags 0. P
+0x10153fbbc  ADocument ctor: *(u64*)(doc+0x140) = [0x105818b28] = {+0x140: 1, +0x144: -1000}. P; constant R
+
+== List-item Ids (reader)
+0x10152b77c  attribute handler: for a list member when reader flag +0x61 set, attribute "Id" (0x101489054) parsed with the int
+  rule 0x1002fd908; parse failure or value < 0 -> throw "Illegal value for 'Id' attribute"; result stored at node+0x1c
+  (absent = INT_MIN). MajorVersion (+0xbc) < 5: mixing Id/no-Id members throws "Some list members have Ids, others don't.";
+  MajorVersion >= 5 and +0x61 set: a member without Id throws "Not all list members have Ids.". Non-list "Id" attributes go
+  through the ordinary field match (APointee "Id"). P
+0x1014674b4  list loader: per child: unknown class -> 0x10148229c "Unknown class \"{}\" found"; class refused by list slot
+  +0x190 -> "Illegal class of list member ({})"; explicit Id inserted in a set, duplicate -> log "DocumentCorrupt: <id>" then
+  0x101488e64 "Non-unique list ids" (corrupt-document throw); Id-less member gets a running index; entry created by list slot
+  +0x198(list, id, ...). P; x86 0x10145f320 D (set insert fail -> 0x10147fea0 with string 0x1060f6a7a, ud2).
+0x101468408  list writer: per entry writes Id="<entry slot +0x28>" when writer test 0x101520ae8 is true. P
+0x101488e64 / 0x10148229c  corrupt-document throw (key global 0x106f4f708 = sErrorDocumentCorruptWhileReading per N2). P
+
+== Pointee post-load hook
+0x101535954  if pointee+0x24 == 0 and DAT_106f50550 == 0 -> 0x101488e64 "Invalid Pointee Id." (corrupt-document). P;
+  x86 0x101525600 D (cmpl $0,0x24; cmpb flag; call 0x10147fea0; no return).
+0x101535944  setter of DAT_106f50550; set to 1 then 0 around preset extraction (0x100338ec8 "Extracting preset components"),
+  device-preset load (0x1024a9d74 "Wrong device class found"), 0x1024ad0f0, 0x100338a44, 0x101856bc8 (compound browser). P
+  I: not set on the Live Set open path (not traced from File > Open).
+
+== Document post-load pointee check (runs in LSong::AfterRead_Virtual)
+ASong vtable +0xd0 = 0x102695f70 -> 0x102695f78 (LSong::AfterRead_Virtual). R
+0x102695f78  first action: 0x101554fdc(scope, doc, std::function vtable 0x1067f4948) -> synchronous call of lambda
+  0x1026b0160 = 0x1015441a8(ASong, stream). Lambda typeinfo "LSong::AfterRead_Virtual(AStreamDevice*)::{lambda()#1}". P, R
+0x1015441a8  (also ADocument vtable +0xd0):
+  1. 0x10154e9c8 walks every compound; for each APointee: max = max(max, Id) (signed, start 0); Id != 0 -> count[Id]++. P;
+     x86 0x10153df90 D (cmovle, test eax / je).
+  2. if doc+0x140 (NextPointeeId) <= max -> 0x10148229c(stream, "NextPointeeId is too low: {next} must be bigger than {max}")
+     corrupt-document. P; x86 0x101533b4e-0x101533b57 (cmp; jge 0x10153400e) and 0x10153400e-0x10153404a D.
+  3. drop count==1 entries; if any remain: log "PointeeId N is used K times." then doc vtable +0x308(doc, dupset, name). P
+     ASong +0x308 = 0x1026968e4 -> 0x102686a3c (repair); ADocument +0x308 = 0x10154e8cc (no-op). R
+  4. if DAT_106e0cec1 == 0: 0x101543b5c walks all compounds calling slot +0x80 (APointee: register). P
+  5. doc vtable +0x318: ASong = 0x1026968ec -> 0x1026869b0 (dangling purge); ADocument = 0x10154464c (no-op). R, P
+  6. 0x101543d48 walk with +0x179 set (untraced purpose).
+0x10154368c  register(doc, p): Id 0 -> assign doc+0x140 (then ++) or, inside a don't-save hierarchy (0x1014892bc), doc+0x144
+  (then --); then +0x140 = max(+0x140, Id+1), +0x144 = min(+0x144, Id-1); insert Id->p in map +0x118; duplicate -> log
+  "Tried to register Pointee with duplicate ID" and 0x1054148ec assertion "Inserted" Document.cpp:0x530 -> abort(). P;
+  x86 0x101533040 D (counter updates at +0x140/+0x144; duplicate -> 0x1059662a0: line 0x530, call abort stub).
+0x1015438a8  unregister; missing -> log + abort. P
+
+== Duplicate repair (0x102686a3c, LSong)
+  - global DAT_106f54587 (scoped flag set by drag code 0x10179fda0, 0x1017a0790) set -> throw error key
+    sErrorCorruptDocumentNonUniquePointeeIdsWhileDragging (0x10700c6c8). P
+  - else message box key sErrorCorruptDocumentNonUniquePointeeIds (0x10700c6b0) with buttons ACommonTexts sControlYes
+    (0x106e0ba78) and sControlNo (0x106e0baa8) (init 0x10121f0e4); 0x101241fa4 shows it; result 1 -> throw 0x101242de0
+    (exception with empty texts, flag +0x28 = 1). P. I: result 1 = second button (No) -> open abandoned.
+  - Yes: tracks = 0x10267a5b8 (0x102679020 list + ASong+0x268, the main track; I: PreHearTrack not included). For each track,
+    0x1026b5da8 collects pointees whose Id is in the duplicate set; for each: Id := 0, register (new Id = next counter, i.e.
+    from NextPointeeId upward), unregister, log "Changed pointee ID ... from A to B"; 0x1026b6588 collects APtrBase in the same
+    track with PointeeId == A. If the track held one pointee with A (or no pointer): 0x102687768 rewrites each pointer to B
+    (0x101536074), log "Updated pointee ID of APtr". If two or more pointees with A in the track and pointers exist: log
+    "non-unique within this track and there are pointers pointing to this ID", 0x102687430 removes each pointer's owner
+    ("Removing pointer to ambiguous pointee ID"), or throws sErrorNonUniquePointeeIdsRepairFailed (0x10700c6e0) when the owner
+    shape is unexpected. Every pointee with a duplicated Id inside a track is renumbered, including the first. P
+  - after: ASong vtable +0x218 (untraced) and message sDialogRepairSuccessfulPleaseSave (0x10700c6f8). P
+0x100580cc4  test-step table: "notified that the set is corrupt and prompted whether or not I want Live to repair it" ->
+  sErrorCorruptDocumentNonUniquePointeeIds; "notified that the repair has been successful and that I should save the
+  repaired set" -> sDialogRepairSuccessfulPleaseSave. P
+
+== Dangling envelope purge
+0x1026869b0  if application (DAT_106f54e20) byte +0x350 (ctor 0x1018499a4 stores 1; no clearing writer found): for each
+  track (0x10267a428) 0x102711618: per clip (thunk 0x10275a1dc(track,1)) 0x102456050 removes ClipEnvelopes whose target is
+  dangling, log "Purging dangling clip envelope with PointeeId"; then 0x1024067e8 removes track AutomationEnvelopes whose
+  EnvelopeTarget is dangling, log "Purging dangling automation envelope with PointeeId". P
+0x101536090  dangling = no resolved object and (PointeeId == 0 or registry lookup 0x1015439b4 fails). P
+0x101535e0c  APtr resolve: lookup fails -> log "Invalid Pointee ID" then 0x1054147b8 assertion "mpObject" APtr.cpp:0xab
+  -> abort(). P (reached only if a dangling pointer survives the purge).
+0x102695f78 later (per track, same gate) 0x102711584 -> 0x102406378: further purge "Purging empty|half-dangling automation
+  envelope for ..." by target/device relation (0x1024dd434) and an automation test; conditions not interpreted. P
+
+== Translators (older documents only)
+0x10148ec98 registers 0x170 (368) 0x1014b47ac on document classes (Id/NextPointeeId handling, "NextPointeeId is too low: ")
+  and 0x171 (369) 0x1014b4a8c (track and timeable classes; helpers 0x1014f5d7c, 0x1014f6558). P. Not run for 12.0_12402.
+
+== Save
+Generic writer (N1: slot +0x138 0x101486cdc) writes flag-4 members as attributes and flags-0 members as elements: APointee Id
+  attribute = held +0x24; NextPointeeId element = doc+0x140 (the registry counter). I: no save-time renumbering found; not traced.

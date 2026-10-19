@@ -366,6 +366,26 @@ cannot build), Pan and most device Float parameters `ALinearUserFloatConverter` 
 of its constructor `0x101566480`). Inferred: envelopes of Volume, Pan and device Float parameters
 all evaluate in stored units. Not shown: the evaluator run with a real loaded parameter attached.
 
+*Correction 2026-10-18 (T1.4):* the "A1 resolved" paragraph above is wrong for Volume and
+Send.
+
+- **Which provider.** `0x10275c5a0` builds a separate provider for one consumer. It is not
+  the provider that the owner cast in `0x102687e00` returns.
+- **What the owner returns.** For an owner that is the parameter's `AFloatAutomationTarget`,
+  slot +8 (`0x10281abe0`, pc) returns the parameter's own converter. So Volume and Send
+  values are fader positions (`ALevelUserFloatConverter` slot +0x28, gain → position). Pan
+  stays in stored units, because its converter is the identity on [−1, 1].
+- **Condition.** The owner identity of a loaded envelope is untraced.
+- **Playback.** It does not use this evaluator for Float envelopes. The logic side sends a
+  point list and the engine evaluates it:
+  - curves become a 16-piece polyline;
+  - the first event's time becomes −10⁷ beats;
+  - at a step the later event applies.
+
+The X results above stay true of the evaluator with an identity conversion. See
+[mix graph](mix-graph.md#automation-in-playback) and
+[SPEC-AUTOMATION-ENVELOPES](../specs/automation-envelopes.md) r4.
+
 **Corrections.**
 
 - Revision 2's Bool/Enum no-conversion claim rested on unretained scratch lookups. It is now
@@ -390,8 +410,11 @@ measured.
 - Behaviour for unsorted events, duplicate event Ids, an event without `Time` or
   `Value`, and values outside the parameter range (AE-C04, AE-C08).
 - The value converter for ordinary parameters, so the interpolation domain (AE-C11). Resolved
-  2026-10-18 (X2): stored units, see the results above.
-- Which mode display, playback and the Live Object Model use at a step (AE-C13).
+  2026-10-18 (X2): stored units, see the results above. Corrected 2026-10-18 (T1.4): stored
+  units for Pan, fader positions for Volume and Send, under the owner condition of the
+  correction above.
+- Which mode display and the Live Object Model use at a step (AE-C13). Playback uses the
+  later event (T1.4, [mix graph](mix-graph.md#automation-in-playback)).
 - Whether the post-load hook that resets curves runs for a Live Set open (AE-C10).
 - Precedence of `Manual` over an envelope, automation override and re-enable,
   the meaning of `LockEnvelope`, recording and undo: not traced.

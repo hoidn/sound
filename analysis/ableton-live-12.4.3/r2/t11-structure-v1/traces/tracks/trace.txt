@@ -1,0 +1,64 @@
+T1.1 track/return/send/scene/clip-slot load rules - static trace log (2026-10-18)
+Images: arm64 Live.arm64 (r2/../derived/Live.arm64, corpus /var/tmp/sound-analysis/corpus);
+x86_64 slice /var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64 (corpus-x86).
+Tools: corpus_lookup.py (s9) and corpus_lookup_x86.py (copy, C=corpus-x86), vtable_owner.py, read_ptrs.py,
+scan_ptrs.py (s6 copies), xtool.py (x2 copy; objdump -b binary of the slice), class_names.py (new),
+slot_counts.py (new). Strength: P = arm64 pseudocode; D86 = x86 disassembly confirmed; I = inferred.
+Load sequence reused from wiki/research/automation-envelopes.md (0x101486fe4: loader, root post-load
+hook, then post-order walk 0x101487198 calling compound slot +0x100 on every compound) - its A3 caveat
+(which document kinds reach it) applies to every refusal below.
+
+1. Error routine. 0x101488e64(ctx, text) -> 0x10148229c (throw corrupt-document, same error object as
+   container REQ-009 list) (P). x86 counterpart 0x10147fea0 (D86 call sites below).
+2. Compound slot +0x100 = post-load validation. Base 0x101487c3c is empty (P). Overrides found
+   (vtable-owner.txt): ASong/ALiveDocument 0x1026969d8; APlayerTrack/AAudioTrack/AMidiTrack 0x1025cb248;
+   AAutomationEnvelope 0x1024050d8; AClipEnvelope 0x10245194c; ATimeable* 0x1026fc558; Simpler holders
+   0x102daaedc. ASendTrack and AGroupTrack keep the base no-op (vtable-send-group.txt).
+3. ASong +0x100: 0x1026969d8 -> 0x102687a7c(*(this+0x1b0)) (P); x86 0x1027b1a00 (D86, x86-1027b1a00.txt).
+   tracks = Tracks list (0x10267a428 -> 0x102679020 reads ASong+0x618 = mpTracks ptr; P).
+   Predicate X(t) = classOf(t) is-a APlayerTrack (desc 0x106e4d458, class-names.tsv) OR t.slot+0x230
+   (arm64 0x102754188, x86 0x10288b600; P, D86). Slot +0x230 = IsGroup: AGroupTrack 0x1023bf25c returns 1,
+   ASendTrack and AMidiTrack base 0x102708774 return 0. Slot +0x238 = IsReturn: ASendTrack 0x1023c279c
+   returns 1, AGroupTrack/base 0x10270877c return 0 (P).
+   - empty list, or no X track -> "Set has no player tracks" (D86 1027b1a48..1027b1a7c, 1027b1ac5).
+   - an X track after a non-X (return) track -> "Return tracks out of order" (D86 1027b1a7e..1027b1ac3).
+   - grouping: per track, stack of open group Ids; a track with TrackGroupId != -1 (track+0x400,
+     0x102709884 / x86 0x10283c170) must have slot +0x550 true and a non-empty stack whose top equals its
+     TrackGroupId after popping, else "Track grouping corrupt"; a group track pushes its Id
+     (0x101482908, item Id - I); a group with 0 members -> "Empty track group"; then groove pool check
+     0x1027b22d0 (x86) -> "GroovePool corrupted" (P x86).
+4. APlayerTrack +0x100: 0x1025cb248 (arm64 P), x86 0x1026f1720 (D86, x86-1026f1720.txt):
+   freeze = track.slot+0x278 (device chain: AMidiTrack 0x10291e36c +0x680, AAudioTrack 0x1027de9ec +0x668)
+   -> chain slot +0x200; if non-null: main = chain slot +0x1f8 (0x10270cec4 = track slot +0x300);
+   compare ClipSlotList sizes (0x10265d5e0: ASequencerDevice sub-object +0x1c0 -> +0x18 list; registration
+   0x102659ea4 class ASequencerDevice) -> "Slot count mismatch.".
+   Chain slots: AAudioTrackDeviceChain +0x1f8 0x1027df668 returns +0x80 (mpMainSequencer at 0x78),
+   +0x200 0x1027df670 returns +0x98 (mpFreezeSequencer at 0x90); AMidiTrackDeviceChain 0x10291f940/948
+   same offsets (P; registrations 0x1027df318, 0x10291f524).
+   Chain ctors 0x10291f76c (MIDI) and 0x1027df560 (audio) create both sequencers (freeze: 0x1027d8e48 ->
+   0x1027d8ea0 AAudioSequencer) (P). Sequencer base 0x10265b258 -> 0x10265b61c creates the ClipSlotList as a
+   new empty list (0x10156b17c) (P). => freeze sequencer always non-null; ClipSlotList starts empty.
+   NOT a scene-count check. No load-path comparison of ClipSlotList length with scene count found:
+   callers of 0x10265d5e0 and of scene count 0x10267dc2c (ASong+0x280 list size) intersect only in
+   0x1025cb248/0x1025cb2b8 (player post-load: freeze-related per-scene loop, no resize) (P).
+   Shipped (slot-counts.txt): 215 .als tracks and 350 .alc tracks: main slots == scenes and freeze == main.
+   Released fixtures without FreezeSequencer but with ClipSlot: automation-envelopes-v1 21, clip-launch-v1 49,
+   warp-markers-v1 17 (grep, handoff/*/fixtures).
+5. ASong post-load +0xd0: 0x102695f70 -> 0x102695f78(*(this+0x1b0), ctx) (P); x86 0x1027c1640 (D86,
+   x86-1027c1640.txt 1027c18a2..1027c18f3). R = 0x10267c60c: number of consecutive IsReturn tracks counted
+   from the end of the Tracks list (P). For each Tracks entry: n = holders (0x10271d9cc, mixer+0x360 list);
+   n < R -> 0x10271d824 appends R-n holders (0x102659a78 new holder; if the mixer owner is-a
+   AAbstractSendTrack (desc 0x106e42838) -> 0x102659620(holder,0): holder+0x58 (mpEnabledByUser at 0x50,
+   registration 0x102658bc4) set false - I); n > R -> "Track has more send knobs than set has return
+   tracks." (corrupt-document). Then 0x10271cea8 binds holders (not read).
+6. ASong ctor 0x10266f738 (P): +0x200 PreHearTrack created (0x1025ce7c0), +0x218 SendsPre empty list,
+   +0x260 MainTrack created (0x1025766cc), +0x278 Scenes empty list, +0x610 Tracks empty list.
+   Member offsets from 0x10266c21c (mpTracks 0x610, mpMainTrack 0x260, mpPreHearTrack 0x200,
+   mpSendsPre 0x218, mpScenes 0x278).
+7. SendsPre: only edit paths (0x10267bfc0 create track, 0x102681404 move) write ASong+0x220; no load check
+   found (P). Unknown.
+8. 0x100d75c58 "clipSlots(track).size() == slotCount": FlipModelLib FTrackList.cpp (Push model), not the
+   document loader (P).
+9. List-item Ids: D - TrackGroupId of grouped tracks equals the GroupTrack's Id (Live 11 * Empty.als: 76;
+   Podcast & Radio.als: 0). No uniqueness or renumbering check for track/scene/slot Ids found. Slot Ids
+   are 0..n-1 in 199 of 238 .als tracks; scene Ids 0..n-1 in 15 of 26 .als.

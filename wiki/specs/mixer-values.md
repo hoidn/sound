@@ -4,7 +4,7 @@ type: spec
 status: draft
 updated: 2026-10-18
 access: analysis
-revision: 3
+revision: 4
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -42,7 +42,7 @@ decoded XML.
 Excluded: rack chain mixers; `GlobalGrooveAmount`; automation and clip envelopes on
 mixer parameters and their interpolation (SPEC-AUTOMATION-ENVELOPES candidates);
 MIDI and key mapping of mixer parameters and the scaling of a controller value to a
-fader (Q-009 area); routing, solo, monitoring and send pre/post; text entry into
+fader (Q-009 area); routing, solo, monitoring and send pre/post (their T1 rules are in [SPEC-MIX-GRAPH](mix-graph.md)); text entry into
 value fields; arrow-key and mouse edits; edits after load except the track creation
 named in MV-027 and MV-028; documents older than `12.0_12402` and their migration
 (for example `TrackSendHolder/Active` before `12.0_12001`); the exact text of error
@@ -56,13 +56,18 @@ display) shows which text.
 | D | Documented in shipped bytes: the schema files or the 376 Live Sets and clips in the 12.4.3 bundle. These were written by Live 12.4d1 or 12.1d1, not by a 12.4.3 save |
 | S | Static derivation from the 12.4.3 executable or shipped bytes; not an observed run |
 | X | Extracted execution: the original x86_64 function was run in a harness on the recorded inputs ([ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code), packet [x2-mixer-v1](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json), and the x1 pilot for text). X shows what the code computes for those inputs with glibc substitutes; it does not show that Live reaches the code, nor what the user hears. The release target is arm64; equivalence is checked by comparing the two slices (noted per clause) |
-| S/Q-019 | Static derivation that holds only if the stored gain reaches the audio path through the volume curve's round trip (see REQ-011 and [Q-019](../questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine)) |
+| S/Q-019 | Static derivation that rests on the Q-019 result of [SPEC-MIX-GRAPH](mix-graph.md) r1: the logic layer sends fader positions and the engine applies the curve and the floor. Revision 4: settled statically under that spec's conditions A3 to A5 (envelope owner, send conversion node, wiring branch), which a static trace could settle ([Q-019](../questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine)) |
 | U | Unknown; no expected result, or only a static reading that must not be graded. A PRB ID names the Phase 4 probe that would have settled it. No reference observation is available (ADR 0003), so the clause stays unknown unless the static route or an extracted-execution run named with it settles it |
 
-Only D, S and X clauses may enter a release. S/Q-019 clauses need Q-019 settled first;
-extracted execution has run the fader-curve conversions and confirmed their round trip is
-exact, but the value the logic layer puts on the engine port is a caller question that
-extracted execution cannot settle (REQ-011), so Q-019 is still open. Every clause about *audio
+Only D, S and X clauses may enter a release. An S/Q-019 clause may enter one only together
+with the conditions it names. Revision 4 applies the T1.4 static trace
+([mix graph](../research/mix-graph.md#q-019-values-on-the-volume-and-send-ports)):
+
+- The logic layer puts the fader position on the engine's volume and send ports.
+- The engine applies the curve of REQ-005, the crossfade factor and the floor.
+- The round trip of REQ-005 is exact (X).
+
+Every clause about *audio
 output* (REQ-011, 013, 014) rests on a computed gain, X where the gain function was run and
 static otherwise; no original-versus-candidate rendered-audio measurement is available
 (ADR 0003), so these clauses support no audio compatibility claim. U clauses block the
@@ -298,7 +303,7 @@ Applies to `Pan`, `SplitStereoPanL` and `SplitStereoPanR`.
 
 ### REQ-MIXER-VALUES-011 — volume gain applied to audio and the silence floor
 
-- **S/Q-019.** The gain applied to the track's audio equals the stored volume gain g
+- **S/Q-019 (A5 of SPEC-MIX-GRAPH for A or B assignments).** The gain applied to the track's audio equals the stored volume gain g
   for g in [0.0003162277571, 1.99526238], except that any resulting gain at or below
   float32(0.00032) = 0.0003199999919 (−69.897 dB) is replaced by exactly 0. Hence the
   stored minimum (−70 dB) renders silence, and so does any stored gain in
@@ -307,26 +312,44 @@ Applies to `Pan`, `SplitStereoPanL` and `SplitStereoPanR`.
   text is `-inf dB` (REQ-006).
 - **S.** The silence test is applied after the crossfade factor (REQ-014), and the
   resulting gain also scales the pan law (REQ-013).
-- **Condition.** Static evidence shows the audio path converts a *fader position* to
-  gain with the volume curve (REQ-005) and then applies the floor, for every
-  track-mixer variant traced. The conversion of the stored gain into that position
-  was not located. Extracted execution confirms the curve round trip is **exact**: a stored
-  gain through gain → position then position → gain returns the stored gain bit-for-bit
-  (REQ-005, X). So if the position is the stored gain mapped by gain → position, g is
-  preserved; if the stored gain were used as the position directly, a stored `1` would render
-  at +6.0 dB. Which value the logic layer actually puts on the port is a caller/state question,
-  not a self-contained function, so extracted execution cannot settle it; no reference
-  observation is available (ADR 0003, PRB-S9-01). It stays unknown (Q-019); only locating the
-  logic → engine volume-port value statically can discriminate.
-- **U.** Volume change ramp length and smoothing.
+- **S/Q-019 (revision 4; replaces the revision-3 condition).** The logic layer sends
+  p = the volume position of g, clamped to [0, 1]: the gain → position conversion of REQ-005
+  (converter slot +0x28, x86_64 `0x102683d70` ✓). It does so for the manual value, at
+  timeable creation and for envelope points.
+  - The engine computes curve 1 of p, applies the crossfade factor (REQ-014) and then the
+    floor.
+  - Because the round trip of REQ-005 is exact (X), the applied gain equals g for g in
+    range.
+  - Remaining conditions are those of
+    [REQ-MIX-GRAPH-003](mix-graph.md#req-mix-graph-003--volume-gain): the wiring branch for
+    A or B assignments (A5), and the envelope owner for automated volume (A3).
+- **S.** Volume changes have no smoothing beyond ramps:
+  - A constant volume produces no ramp after the start.
+  - Automated volume moves linearly in fader position through ramps of 200 to 65,536
+    samples ([REQ-MIX-GRAPH-014](mix-graph.md#req-mix-graph-014--how-often-automated-values-are-applied)).
+  - The gain is curve 1 evaluated at each ramp end, linear in between, applied per sample
+    ([REQ-MIX-GRAPH-009](mix-graph.md#req-mix-graph-009--when-gains-change)).
+
+  This replaces revision 3's U on ramp length and smoothing.
 
 ### REQ-MIXER-VALUES-012 — send gain applied to audio
 
-- **U.** Which gain a stored send value applies to the signal sent to a return, whether
-  the send curve (REQ-005) and a silence floor are applied, and where (Q-019). No
-  reference observation is available (ADR 0003, PRB-S9-01). The static path that
-  delivers the send level to the mix applies no curve itself; resolving the part that
-  would convert the send is the remaining static route.
+- **S/Q-019 (A4 of SPEC-MIX-GRAPH).** The gain a stored send value s applies to the signal
+  sent to its return is g = floor(curve0(r)). Here r is the send-curve position of s (send
+  converter of kind 0, ✓ x86_64 `0x102788389`), clamped to [0, 1], and the floor is that of
+  REQ-011. Revision 4 settles this statically.
+  - For s in [0.0003162277571, 1] the round trip is exact (X), so g = s.
+  - A send at or below 0.0003199999919 contributes nothing; this includes the stored
+    minimum and the shipped `0.00031622799`.
+  - The engine converts through a level node of the send curve (✓ `0x1026f8ccd`); its
+    connection to the send port is condition A4.
+- **X, S.** Where the gain applies:
+  - Pre-fader sends carry g times the device-chain output.
+  - Post-fader sends carry g times the track's pan-law and volume matrix.
+  - Pre or post is chosen per return by `LiveSet/SendsPre`.
+
+  These rules are canonical in
+  [REQ-MIX-GRAPH-005](mix-graph.md#req-mix-graph-005--sends-pre-and-post).
 
 ### REQ-MIXER-VALUES-013 — pan law
 
@@ -348,12 +371,20 @@ Applies to `Pan`, `SplitStereoPanL` and `SplitStereoPanR`.
   by sin/cos with no lift: default splits (−1, +1) pass L and R unchanged (X: 1 and 1, with
   6·10⁻¹⁷ cross-feed); splits (0, 0) send each input to both outputs at −3.01 dB (X: 0.707107
   each). That w = 0 for pan mode 0 and w = 1 for pan mode 1 is still S (next bullet).
-- **U.** The mapping from pan mode to w and any ramp between them were not traced.
-  The static reading is w = 0 for pan mode 0 and w = 1 for pan mode 1; MV-035 to
-  MV-037 assume it. No reference observation is available (ADR 0003, PRB-S9-02,
-  PRB-S9-03); tracing how the pan-mode amount is derived from `PanMode` could settle
-  it.
-- **U.** Pan and split-pan ramp lengths, and smoothing when the pan mode changes.
+- **S (revision 4).** w is the stored `PanMode` code: w = 0 for pan mode 0 and w = 1 for
+  pan mode 1. The track's `PanMode` passes through a ramp node into the pan-mode amount, so
+  a change ramps w linearly over 75 samples
+  ([REQ-MIX-GRAPH-004](mix-graph.md#req-mix-graph-004--main-matrix),
+  [REQ-MIX-GRAPH-010](mix-graph.md#req-mix-graph-010--fade-lengths); wiring pseudocode). It
+  replaces revision 3's U; MV-035 to MV-037 rest on it.
+- **S (revision 4).** Pan and split-pan ramps:
+  - Constant values produce no ramp after the start.
+  - Automated values move along their segments through ramps of 200 to 65,536 samples
+    (REQ-MIX-GRAPH-014).
+  - The pan-law matrix is evaluated at the end of the shortest running input ramp and is
+    linear in between (REQ-MIX-GRAPH-009, X).
+
+  It replaces revision 3's U.
 
 ### REQ-MIXER-VALUES-014 — crossfade effect
 
@@ -378,8 +409,17 @@ Applies to `Pan`, `SplitStereoPanL` and `SplitStereoPanR`.
 
 ### REQ-MIXER-VALUES-015 — out-of-range and alternative stored values
 
+- **S/Q-019 (revision 4), rendering of out-of-range volume and send.** The position
+  conversion clamps to [0, 1]
+  ([REQ-MIX-GRAPH-003](mix-graph.md#req-mix-graph-003--volume-gain), 005). So:
+  - a volume above 1.99526238 renders at 1.99526238 (+6 dB);
+  - a send above 1 renders at 1;
+  - a volume or send below 0.0003162277571, including 0 and negative values, renders
+    silence.
+
+  This assumes the value is held as written (next clause).
 - **U.** What opening, displaying, rendering and saving do for any value outside the
-  domains of REQ-002 to 004 and 009: a volume below 0.0003162277571 (0 and negative
+  domains of REQ-002 to 004 and 009, except the rendering clause above: a volume below 0.0003162277571 (0 and negative
   values included) or above 1.99526238; a send below 0.0003162277571 (0 and negative
   values included) or above 1; a pan or split pan outside [−1, 1]; a pan mode other
   than 0 or 1; a crossfade assign outside 0–2; a crossfader outside [−1, 1]; a
@@ -400,8 +440,9 @@ Applies to `Pan`, `SplitStereoPanL` and `SplitStereoPanR`.
 - Determinism: the text and save rules (REQ-006, 007, 010) are deterministic for a
   given float32 value. The curve gains depend on the platform `exp10` and `log10` and
   may differ in the last float32 ulp.
-- Timing: only the 2 ms crossfade-assign ramp (REQ-014) is derived. Volume and pan
-  ramps are unknown. Automation, undo and edits after load are out of scope.
+- Timing: the 2 ms crossfade-assign ramp (REQ-014) is derived here. Revision 4: volume, pan
+  and send changes follow the per-sample ramp rules of [SPEC-MIX-GRAPH](mix-graph.md)
+  (REQ-MIX-GRAPH-009, 010, 014). Undo and edits after load are out of scope.
 - Interaction: REQ-011 and REQ-013 combine as gain → crossfade factor → silence floor
   → pan matrix.
 
@@ -475,9 +516,9 @@ render (ADR 0003).
 | MV-037 | 013 | R | TT with the sine on the left channel only; A pan mode `1`, splits `0`/`0` | Left and right outputs each −3.01 dB; gains MV-048 | S; gains X (MV-048); w mapping U; render not measured |
 | MV-038 | 014 | R | TT, A assign None; crossfader `-1`, `0`, `1` in three renders | Same level in all three | S |
 | MV-039 | 014 | R | TT, renders with A assign A at crossfader c and with A assign B at −c, for c in {−1, −0.5, 0, 0.5} | Pairwise equal levels; absolute levels from MV-047 | S; curve levels X (MV-047); render not measured |
-| MV-040 | 012 | U | TT, A send `0.5011872053`, R volume `1`, return routed to M | Return level unresolved | U |
-| MV-041 | 015 | U | A `Volume/Manual` = `2`; open, display, render, save | Unresolved (static reading: opens; text `6.021 dB`) | U |
-| MV-042 | 015 | U | A `Volume/Manual` = `0`; separately `-1` | Unresolved (static reading: opens; text `-inf dB`) | U |
+| MV-040 | 012 | R | TT, A send `0.5011872053` (post-fader, `SendPreBool` `false`), R volume `1`, return routed to M | Main level +3.53 dB relative (A plus R: 1.5011872 times the A-only output) | S/Q-019 (A4 and A7 of SPEC-MIX-GRAPH); gains X; render not measured |
+| MV-041 | 015 | U | A `Volume/Manual` = `2`; open, display, render, save | Unresolved (static reading: opens; text `6.021 dB`). Render part S/Q-019: +6.0 dB if held as written | U |
+| MV-042 | 015 | U | A `Volume/Manual` = `0`; separately `-1` | Unresolved (static reading: opens; text `-inf dB`). Render part S/Q-019: silence if held as written | U |
 | MV-043 | 015 | U | A `Pan/Manual` = `1.5` | Unresolved | U |
 | MV-044 | 015 | U | A `CrossFadeState/Manual` = `3`; separately `PanMode` `2` | Unresolved | U |
 | MV-045 | 015 | U | Open B0 unchanged, save | Saved `MidiControllerRange` texts unresolved (static reading: `0.00031622799`/`1.99526203` kept) | U |
@@ -499,27 +540,31 @@ assumed for plain decimal text only (see the reading assumption above).
 
 Count: 48 cases. 6 are extracted execution (X): MV-018 (On/Off text), MV-023 to MV-025
 (fader-curve conversions and round trip), MV-047 (crossfade curve levels) and MV-048 (pan-law
-gains). 20 are static or documented (MV-001 to MV-017, MV-019, MV-026, MV-046). 11 are audio
+gains). 20 are static or documented (MV-001 to MV-017, MV-019, MV-026, MV-046). 12 are audio
 renders with static or X-derived gain expectations that remain unmeasured against a reference
-(MV-029 to MV-039; MV-029 to MV-034 also conditional on Q-019; the gains of MV-035 to MV-039
-are X via MV-047/MV-048). 11 are ungraded (MV-020 to MV-022 and MV-027, which grade only
-REQ-010's U part; MV-028; MV-040 to MV-045). The dB and pan value texts of MV-002 to MV-017
+(MV-029 to MV-040). MV-029 to MV-034 and MV-040 rest on the Q-019 result and its conditions,
+and the gains of MV-035 to MV-039 are X via MV-047/MV-048. 10 are ungraded (MV-020 to MV-022
+and MV-027, which grade only REQ-010's U part; MV-028; MV-041 to MV-045). The dB and pan value texts of MV-002 to MV-017
 were independently confirmed by the x1 extracted-execution pilot
 ([extracted execution](../research/extracted-execution.md)); they keep the S label here because
 the x2 packet did not re-run them.
 
 ## Open questions
 
-[Q-019](../questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine) holds:
-the conversion of a stored volume into the fader position the audio path uses
-(REQ-011); the send gain path (REQ-012); out-of-range values (REQ-015); `SoloSink`
-(REQ-008); which surface shows which text (REQ-006, 007). Extracted execution (x2) narrows
-it but cannot close it: the fader-curve conversions both ways are now X and their round trip
-is exact (REQ-005, REQ-011), so the arithmetic that would carry a stored gain to and from a
-position is settled; the value the logic layer actually places on the engine volume and send
-ports depends on callers and held state, not a self-contained function, so it stays unknown
-under ADR 0003. The pan law (REQ-013), crossfade curves (REQ-014) and On/Off text (REQ-008)
-are now X. The
+[Q-019](../questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine). Revision 4:
+the engine-port value (REQ-011) and the send gain path (REQ-012) are settled statically by
+T1.4 ([SPEC-MIX-GRAPH](mix-graph.md) r1). The logic layer sends fader positions; the engine
+applies the curve, the crossfade factor and the floor. Conditions A3 to A5 of that spec remain.
+
+Still open:
+
+- out-of-range values on open and save (REQ-015);
+- which surface shows which text (REQ-006, 007);
+- the cue volume (REQ-002).
+
+`SoloSink` (REQ-008): SPEC-MIX-GRAPH r1 reads it statically as the Solo/Cue button state.
+Applying that here is left to a later revision. The pan law (REQ-013), crossfade curves (REQ-014)
+and On/Off text (REQ-008) are X (revision 3). The
 [probe batch](../../analysis/ableton-live-12.4.3/r2/s9-mixer-v1/probe-batch.json)
 PRB-S9-01 to 08 records what observation would have settled; under ADR 0003 it will not run,
 and the extracted-execution results are in [x2-mixer-v1](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json).
@@ -552,11 +597,11 @@ which disassembled the cited sites in `derived/Live.arm64` (RVM-01, RVM-07).
 | 008 | `0x1026ec1cc` ✓ s9-0004 (bool init writes 1 to value and Manual). On/Off text: `0x10271b660.c` lines 284–287 (s9-0001) pass the text object from `0x10143b884` (corpus record kept; vtable `0x106670bc8`) to `0x1026ec1cc`; `image-reads.txt` gives that vtable's `+0x28` as `0x10143ba28`, which returns "Off" for 0.0 and "On" otherwise (✓ RC §2: call site `0x10271bcb0`–`0x10271bcc4`, `0x10143ba28`–`0x10143ba40`, strings `0x105af67ac`, `0x105bafc64`). **X (x2):** `0x1014353b0` (x86 twin of `0x10143ba28`) run — value ≠ 0 → "On", 0 → "Off". "Solo-Cue" with `SoloPrehearSinkController` | S; X for On/Off; SoloSink U |
 | 009 | Constructor call `0x1026ef060(xf, 1, ["A","None","B"], …)` at `0x10271bf38` ✓ s9-0001; wrapper `0x1026ef060` passes arguments through (pseudocode); `0x1026ef0dc` ✓ d8-0002 passes index x1 to `0x101567bfc` for value and Manual; curve names `0x102672204`, helpers `0x101aed36c` ✓. Curve binding (✓ RC §3): the set constructor `0x102672448` (C1 record, kept in the review's `corpus-excerpts-review.jsonl`) loads member `[this+0x1f0]`, calls the name list at `0x1026740d8` and the enum init `0x101567bfc` with index 2 at `0x1026740f8`; the LiveSet registry call at `0x10266e148`–`0x10266e174` names the member at `0x1e8` `mpCrossfadeCurve` (+8 convention). Census: `CrossfadeCurve` in the 376 documents of `inputs-documents.tsv`, 2 in 375 and 6 in 1 (recounted 2026-10-18) | S (default index upgraded from inferred) + D |
 | 010 | N1 writer rule ([transport-state native](../research/transport-state-native.md#writer-number-format)); `static-survey.json` `lexical_rule_match` | S + D |
-| 011 | Consumers of the volume port output, `0x1027200f8` ✓ d8-0001: when an integer read from the track (`0x10248256c(track,1)`, slot 0x370) is ≥ 0, port +0x68 `Out` → crossfade unit +0x28 `Volume` (`0x1027202b8`–`0x1027202e8`), unit `Volume` → track-out +0x20 (`0x102720300`); otherwise `0x10246a3d4(+0xa8, 1)` at `0x102720378` sets an `AConvertLevel` (`0x10246a1a4` ✓, same constructor as `SNewCompound<AConvertLevel>`) to curve 1 and `Out` → converter → track-out `Volume` (`0x102720394`–`0x1027203c4`). `OCrossFadeVolumeProcessor` `0x101aede40` ✓ applies `0x101ac3bac(x,1)` then `≤ 0x39a7c5ac → 0`; `OConvertLevelRampEventProcessor::OnIn` `0x101aee660` ✓ d8-0002 and `OConvertLevelProcessor::OnIn` `0x101aee5e8` ✓ apply curve then the same floor. Port binding: volume port +0x68 and pan port +0x50 are one class (`0x1024f5674`, vtable `0x1067c7a48`) bound to timeables +0x318 and +0x2d0 by slot 0xb8 (`0x102720bd4`–`0x102720be8` ✓); bind `0x1024f5c08` ✓ d8-0001 wires a sub-unit (`0x1024f4b08` ✓: `TimeablePlayer`, `ModulationPlayer`, `Modulator` = `FloatModulatorProcessor`, `Out`); combiner `0x101b09ac8` ✓ is linear with a clamp. Default envelope event = constructor default value in the stored (gain) domain, `0x1026f0d84` (pseudocode). Gain → position conversion site not found | S/Q-019 |
-| 012 | `OTrackOutVolumeProcessor::OnSend<k>` `0x101b191d4` → `0x101b18bb4` → `0x101b10efc` (pseudocode, no curve); send unit `0x1025c36ec` ✓ d8-0001 is built from a node graph cached per class descriptor (`0x1025d2264`), whose node list was not resolved; an `AConvertLevel` node factory with a configurable curve exists (`0x1025d2aa8`, no direct caller) | U |
-| 013 | Matrix `0x101b3b95c` ✓ s9-0002; ramp inputs `0x101afb494` ✓. Input names, D8: `0x101b10fe4` ✓ d8-0002 registers `PanModeAmount`, `Pan`, `StereoSplitPanL`, `StereoSplitPanR`, `Volume` with handler pointers `0x1065423f8`/`400`/`408`/`410`/`4a0` → `OnPanRampEvent<0..3>` `0x101b18834`/`880`/`8cc`/`918` and `OnVolume` `0x101b18964` (pointer reads). Index meaning upgraded from inferred (port order) to static; `PanModeAmount` from `PanMode` not traced. **X (x2):** the matrix (x86 `0x101b719e0`) run on [w, pan, splitL, splitR, vol] gives MV-048's gains; glibc `cos`, ±1 ulp | S; gains X (MV-048); w mapping inferred |
+| 011 | Consumers of the volume port output, `0x1027200f8` ✓ d8-0001: when an integer read from the track (`0x10248256c(track,1)`, slot 0x370) is ≥ 0, port +0x68 `Out` → crossfade unit +0x28 `Volume` (`0x1027202b8`–`0x1027202e8`), unit `Volume` → track-out +0x20 (`0x102720300`); otherwise `0x10246a3d4(+0xa8, 1)` at `0x102720378` sets an `AConvertLevel` (`0x10246a1a4` ✓, same constructor as `SNewCompound<AConvertLevel>`) to curve 1 and `Out` → converter → track-out `Volume` (`0x102720394`–`0x1027203c4`). `OCrossFadeVolumeProcessor` `0x101aede40` ✓ applies `0x101ac3bac(x,1)` then `≤ 0x39a7c5ac → 0`; `OConvertLevelRampEventProcessor::OnIn` `0x101aee660` ✓ d8-0002 and `OConvertLevelProcessor::OnIn` `0x101aee5e8` ✓ apply curve then the same floor. Port binding: volume port +0x68 and pan port +0x50 are one class (`0x1024f5674`, vtable `0x1067c7a48`) bound to timeables +0x318 and +0x2d0 by slot 0xb8 (`0x102720bd4`–`0x102720be8` ✓); bind `0x1024f5c08` ✓ d8-0001 wires a sub-unit (`0x1024f4b08` ✓: `TimeablePlayer`, `ModulationPlayer`, `Modulator` = `FloatModulatorProcessor`, `Out`); combiner `0x101b09ac8` ✓ is linear with a clamp. Default envelope event = constructor default value in the stored (gain) domain, `0x1026f0d84` (pseudocode). Gain → position conversion site not found Revision 4 (T1.4, [t14-mix-v1](../../analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json), `notes-q019.txt` §1–2): volume converter `ALevelUserFloatConverter` kind 1 (✓ x86_64 `0x10284f013`); slot +0x28 = clamped gain → position ✓ `0x102683d70`; manual value AUserFloat slot 0x208 ✓ `0x1015650c0`; timeable creation slot 0x310 `0x10282ea20` (pc); envelope points via the owner provider (pc, condition A3); x86_64 wiring `0x102853480` = arm64 `0x1027200f8`, curve-1 converter ✓ `0x102853727`; ramps `notes-mix.txt`. | S/Q-019 |
+| 012 | `OTrackOutVolumeProcessor::OnSend<k>` `0x101b191d4` → `0x101b18bb4` → `0x101b10efc` (pseudocode, no curve); send unit `0x1025c36ec` ✓ d8-0001 is built from a node graph cached per class descriptor (`0x1025d2264`), whose node list was not resolved; an `AConvertLevel` node factory with a configurable curve exists (`0x1025d2aa8`, no direct caller) Revision 4: send converter kind 0 ✓ `0x102788389`; level node of the holder graph builder ✓ `0x1026f8ccd` (connection to `Send<k>` pc, condition A4); send matrix `TSendVolumes::Calc` x86_64 `0x101b40d30` (X, t14) = arm64 `0x101b10efc`. | U |
+| 013 | Matrix `0x101b3b95c` ✓ s9-0002; ramp inputs `0x101afb494` ✓. Input names, D8: `0x101b10fe4` ✓ d8-0002 registers `PanModeAmount`, `Pan`, `StereoSplitPanL`, `StereoSplitPanR`, `Volume` with handler pointers `0x1065423f8`/`400`/`408`/`410`/`4a0` → `OnPanRampEvent<0..3>` `0x101b18834`/`880`/`8cc`/`918` and `OnVolume` `0x101b18964` (pointer reads). Index meaning upgraded from inferred (port order) to static; `PanModeAmount` from `PanMode` not traced. **X (x2):** the matrix (x86 `0x101b719e0`) run on [w, pan, splitL, splitR, vol] gives MV-048's gains; glibc `cos`, ±1 ulp Revision 4: `PanMode` → `PanModeRamp` (75-sample `OMakeRampProcessor`) → `PanModeAmount`, x86_64 builder `0x102866450` (pc); fade time X (t14); matrix ramp recompute `0x101b27860` (X, t14). | S; gains X (MV-048); w mapping inferred |
 | 014 | `0x101aedff0` ✓ (target 1 − state, 0.002 s ramp), `0x101aee124` ✓ (factor off when target 0), `0x101aede40` ✓ (x = (c·s′ + 1)·64 into a 129-point table; byte table `0x105bb3a43`), Dipped `0x101aee8b8` ✓; other shapes pseudocode. **X (x2):** all seven `OCrossFadeHelper::CrossfadeToLevel*` (x86 `0x101b1a470`–`0x101b1a8e0`) run — levels in MV-047; T(−1)=1, T(+1)=0; table builder `0x101b191e0` fills T(i/64−1); glibc `cosf`, Dipped/Intermediate have one arm64 `fmadd` (≤1 ulp) | S; shapes X (MV-047); per-track application U |
-| 015 | Loader direct store (N1 rule, not re-traced for mixer classes; schema `12.0_12402` types `Tempo` as `TimeableSongTempo` and the mixer floats as `TimeableFloat`); `rare_value_docs` (Driver Error Compensation, Playing Software Instruments, Recording Audio, 8-Track Template, Podcast & Radio) | U |
+| 015 | Loader direct store (N1 rule, not re-traced for mixer classes; schema `12.0_12402` types `Tempo` as `TimeableSongTempo` and the mixer floats as `TimeableFloat`); `rare_value_docs` (Driver Error Compensation, Playing Software Instruments, Recording Audio, 8-Track Template, Podcast & Radio) Revision 4: rendering clause from the clamp in `0x102683d70` ✓ and the floor (REQ-MIX-GRAPH-003, 005). | U |
 
 Corrections and contradictions:
 
@@ -606,6 +651,7 @@ Not drafted from the candidates, or narrowed:
 | 1 | 2026-10-17 | First draft from candidates MX-01–MX-15 and two D8 query rounds. 15 requirements: 3 D/S only (001, 004, 009); 9 D/S with U parts (002, 003, 005, 006, 007, 008, 010, 013, 014); 1 S/Q-019 with a U part (011); 2 U only (012, 015). 45 unexecuted cases: 27 static or documented, 11 renders needing measurement (6 also conditional on Q-019), 7 unresolved |
 | 2 | 2026-10-18 | Applies the mixer-values-v1 staging findings and review ([plan](mixer-values-handoff-plan.md#review-outcome), [review](../../handoff/mixer-values-v1/REVIEW.md)). Applied: F1, F2 and RVM-01 (citations for the REQ-008 On/Off text and the REQ-009 curve binding; curve census and initial code 2); RVM-02 (REQ-002 upper bound); F7 and review fix 3 (MV-001 no longer grades `EnabledByUser` or R's own send; new REQ-003 U clause); F3 (candidate list below); F4 (MV-020–022 relabelled U, and MV-027 for the same reason); F5 (malformed-text sentence replaced by a stated reading assumption); F6 (REQ-015 lists every out-of-domain value); F8 (0.00005 dB width at −69.7 dB, ±0.0005 dB and three-decimal halfway points); F9 (new MV-046, pan 0.33 → `17R`); RVM-03 and RVM-04 (display assumption; `On`/`Off` among the text forms); RVM-07 (split-pan text object confirmed, row 007; code-name assumption stated). Rejected: none. ADR 0003: probe-dependent clauses stay U and name a static route where one exists. Requirement counts unchanged. 46 unexecuted cases: 24 static or documented, 11 renders with static expectations only (6 also conditional on Q-019), 11 ungraded |
 | 3 | 2026-10-18 | Extracted execution of the x86_64 slice ([x2-mixer-v1](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json), label X; ADR 0003). New X label (evidence table). REQ-005 position ↔ gain conversions are X, with an exact round trip (bears on Q-019); REQ-008 On/Off text is X; REQ-013 pan-law gains are X; REQ-014 crossfade curve shapes are X. REQ-011's condition now cites the exact round trip; the engine-port value stays unknown (Q-019 narrowed, not closed). New cases MV-047 (crossfade curve levels) and MV-048 (pan-law gains), both X; MV-018, MV-023–025 relabelled X; MV-035–039 note the X-derived gains while the render stays unmeasured. Slice comparison recorded (`fma-scan.txt`): no `fma`/`fmaf` call in these functions, ≤1 ulp differences at the dB-table landing points and the Dipped/Intermediate curves, outside any graded value. `derive_curves.py` `gain_to_norm` correction. Requirement count unchanged. 48 cases: 6 X, 20 static/documented, 11 unmeasured renders, 11 ungraded |
+| 4 | 2026-10-18 | T1.4 static trace ([SPEC-MIX-GRAPH](mix-graph.md) r1, [t14-mix-v1](../../analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json)). Q-019's engine-port value is settled statically with SPEC-MIX-GRAPH's conditions A3 to A5; the S/Q-019 label is redefined accordingly. REQ-011: the logic layer sends the clamped fader position, and the volume ramp and smoothing U is replaced by the mix-graph ramp rules. REQ-012: the U becomes S/Q-019, the send-curve gain with the floor, pre and post per REQ-MIX-GRAPH-005. REQ-013: both U clauses become S (w = `PanMode`, 75-sample ramp; pan ramps per the mix-graph rules). REQ-015: the rendering of out-of-range volume and send becomes S/Q-019; open, display and save stay U. MV-040 becomes a render case; MV-041 and 042 note their render parts. Requirement count unchanged. 48 cases: 6 X, 20 static or documented, 12 unmeasured renders, 10 ungraded |
 
 Before the 2026-10-18 review, revision 1 proposed a first candidate with MV-001–026.
 Those cases exercise REQ-001 to 010; its list (001, 002, 003, 004, 006, 007, 009 and
@@ -619,6 +665,8 @@ Released 2026-10-18: [mixer-values-v1](../../handoff/mixer-values-v1/README.md),
 A later release revision may now add the REQ-005 fader-curve conversions, the REQ-013 pan-law
 gains and the REQ-014 crossfade curve shapes as X-supported clauses (MV-023–025, MV-047, MV-048),
 and REQ-008's On/Off text as X; these are computed-gain and text results, not a rendered-audio
-comparison, so they still carry no audio compatibility claim (ADR 0003). REQ-011 and REQ-012 stay
-out: Q-019 (the engine-port value) is narrowed by the exact curve round trip but not settled by
-extracted execution.
+comparison, so they still carry no audio compatibility claim (ADR 0003). Revision 4: REQ-011 and
+REQ-012 could join a later release only with SPEC-MIX-GRAPH's Q-019 conditions (A3 to A5) stated.
+They remain computed-gain contracts without a reference measurement. mixer-values-v1 is not
+contradicted by revision 4. It releases no audio-path clause, and it leaves `SoloSink`'s meaning,
+the curves and every effect on audio unreleased.

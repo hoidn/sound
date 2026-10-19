@@ -375,6 +375,7 @@ no experimental contradiction has been established yet.
 - Progress 2026-10-18 (r2): [SPEC-MIXER-VALUES](specs/mixer-values.md) r2 applies the mixer-values-v1 review. New gap: what `EnabledByUser` changes (REQ-003). SPEC-AUTOMATION-ENVELOPES r2: every Float envelope value passes through the same unresolved per-target converter.
 - Progress 2026-10-18 (X2, r3): both fader-curve conversions and their exact round trip, the pan law, the seven crossfade curves and the `On`/`Off` text are settled by [extracted execution](research/extracted-execution.md) (`r2/x2-mixer-v1`). The value that reaches the engine ports depends on callers and state and stays open.
 - Progress 2026-10-18 (X2 envelopes): automation envelopes evaluate in stored units. Volume's dB converter sits on a separate display path that uses the fader table (`0x101ae2d30`).
+- Progress 2026-10-18 (T1.4): settled statically, with conditions A3 to A5 and an arm64 check ([mix graph](specs/mix-graph.md)). Live sends fader positions to the engine, not stored gains: for the manual value, at track creation and for envelope points. The engine applies the fader curve, the crossfade factor and the silence floor. `SoloSink` is the Solo button.
 
 ## Q-020 Automation envelope load robustness
 
@@ -394,6 +395,7 @@ no experimental contradiction has been established yet.
   needs a Pan variant (Volume 0 is below its stored minimum) and PRB-S6-07 a variant without `Id`.
 - Progress 2026-10-18 (r2): [SPEC-AUTOMATION-ENVELOPES](specs/automation-envelopes.md) r2 applies the automation-envelopes-v1 review; dangling-target inputs remain excluded.
 - Progress 2026-10-18 (X2, r3): evaluating an envelope before its first event crashes in both evaluators (extracted execution, `r2/x2-envelope-warp-v1`), so that input stays excluded. The load-robustness items remain open.
+- Progress 2026-10-18 (T1.1): envelopes with dangling targets are removed on open ([Live Set structure](specs/live-set-structure.md) REQ-014), so REQ-002's exclusion can narrow.
 
 ## Q-021 Warp playback mapping and load handling
 
@@ -407,3 +409,35 @@ no experimental contradiction has been established yet.
 - Next action: no reference observation is available (ADR 0003). Static routes: trace the other callers of the scripting interpolation into playback; the open-path check flag (A1) and the auto-warp trigger (A2); the save path (A4); the TransientEnvelope curve; the preference store at load. Per-mode audio stays unknown.
 - Progress 2026-10-18 (r2): [SPEC-WARP-MARKERS](specs/warp-markers.md) r2 applies the warp-markers-v1 review: A2 split into opening (A2) and saving (A4); REQ-015 restated as inclusive bounds.
 - Progress 2026-10-18 (X2, r3): the scripting beat and sample conversion, the shadow-marker formula and the REQ-015 and 016 edges are settled by extracted execution, which reproduces the shipped shadows exactly. No caller connects these functions to playback, so the playback mapping stays open.
+
+## Q-022 Live Set structure load rules
+
+- State: open; owner: analyst.
+- Affects: FEAT-PERSISTENCE, every Live Set fixture, [SPEC-LIVE-SET-STRUCTURE](specs/live-set-structure.md).
+- Evidence: [Live Set structure](research/live-set-structure.md); `r2/t11-structure-v1`.
+- Settled 2026-10-18: every open route runs the validation walk (A1). A track with clip
+  slots but no freeze sequencer is refused (A2; rests on the arm64 call graph). 204
+  released fixtures fail these rules (see the catalog note).
+- Gap: sets whose slot count differs from their scene count; SendsPre count different
+  from the number of returns; missing or mismatched samples; decoding of formats other
+  than PCM; which `RelativePathType` a save picks; device class per chain (A6);
+  duplicate or negative pointee Ids; list items without Ids; outputs other than Main.
+- Next action: rebuild the affected fixtures on T11-MIN in superseding releases; trace
+  the remaining items statically where T1 needs them.
+
+## Q-023 Mix-graph T1 conditions
+
+- State: open; owner: analyst.
+- Affects: FEAT-AUDIO, FEAT-AUTOMATION, [SPEC-MIX-GRAPH](specs/mix-graph.md).
+- Evidence: [mix graph](research/mix-graph.md); `r2/t14-mix-v1`.
+- Gap:
+  - A1, render start: proposed for T1 as a settled state; a test-vehicle convention, not Live behavior;
+  - A2, whether a saved solo takes effect on load;
+  - A3 to A5, the Q-019 conditions;
+  - A8;
+  - the effect of a send with `EnabledByUser` false;
+  - what a single-event envelope applies;
+  - the time base of clip envelopes;
+  - the summation order on the main bus.
+- Progress 2026-10-18: A1 is recorded as a T1 render convention in [ADR 0004](decisions/adr-0004-target-scope-t1.md#render-conventions).
+- Next action: trace A2 to A5 statically.

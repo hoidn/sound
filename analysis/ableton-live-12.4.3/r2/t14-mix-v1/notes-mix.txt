@@ -1,0 +1,101 @@
+T1.4 notes: track mixing stage, sends, summing and ramps (parent context). 2026-10-18.
+Slices: Engine x86_64 (Ableton Live Engine.bundle, image base 0, VA == file offset, named via
+corpus aliases), Live x86_64 (base 0x100000000), Live arm64 (derived/Live.arm64).
+"pc" = Ghidra pseudocode only; "dis" = checked in objdump; "X" = run in run_mix.py
+(results/mix.json). Excerpts: excerpts-mix-engine.jsonl, excerpts-mix-live-x86.jsonl.
+Live x86 twins: same function size in LC_FUNCTION_STARTS and >= 87 % equal bytes
+(match_engine.py; the minimum was 87 %, ORampInterpolator::Extrapolate 56/64), or a constant VA offset 0x1019cf310 inside the track-out region
+(engine 0x171a20..0x17e560 <-> Live 0x101b40d30..0x101b4d870, confirmed on 7 functions).
+
+1. Processors of one track's output stage (engine SEnable port lists, handler names resolved
+   from the registration pointers with engine_ptrs.py) [pc + names]
+ - OTrackOutVolumeProcessor (SEnable 0x171b50): event inputs MainOn, PanModeAmount, Pan,
+   StereoSplitPanL, StereoSplitPanR, Volume, GroupOn, GroupVolume{LtoL,LtoR,RtoL,RtoR},
+   GroupVolumesTransaction, SendOutsConnected, SendsOn, Send0..Send11, SendIsPost0..11.
+   Outputs: the main 2x2 matrix (to OTrackOutProcessor MainVolume*), the meter matrix and
+   one 2x2 matrix per send (to SendVolume<k>*).
+ - OTrackOutProcessor (SEnable 0x175550): audio in InL/InR, InMonitorL/R; event inputs
+   MainVolume{LtoL..RtoR}, MeterVolume*, SendVolume<k>{LtoL..RtoR} k=0..11, PreVolume, InX,
+   InMonitorX, InMonitorControl, InAudioOutRoutingInfo; audio out OutL/R, OutRoutingL/R,
+   OutMeterL/R, PreHearL/R and 12 send outputs.
+ - OCrossFadeVolumeProcessor: Volume (fader position ramp), CrossFade, CrossFadeState, Curve;
+   output a gain ramp into OTrackOutVolumeProcessor Volume (x2-mixer-v1, D8).
+ - Live x86 wiring, ATrackOutUnit builder 0x102866450 [pc]: Speaker + SoloPrehear ->
+   Switches -> Split -> MainOnRamp/SendsOnRamp/PrehearOnRamp (OMakeRampProcessor) ->
+   Volumes MainOn/SendsOn; PanMode -> PanModeRamp (OMakeRampProcessor) -> PanModeAmount;
+   Pan, StereoSplitPanL/R, Volume -> Volumes; PrePostState -> OTrackOutSplitPrePostState
+   -> Out<k> -> IsPostRamp<k> (OMakeRampProcessor) -> SendIsPost<k>; Send<k> -> Send<k>.
+
+2. Main matrix [pc; X for the parts named]
+ - Volume-panner block (inputs 0 PanModeAmount, 1 Pan, 2 SplitL, 3 SplitR, 4 Volume gain):
+   on any input event all inputs advance to the current sample, the new ramp is set, then
+   the recompute (engine 0x158510, Live 0x101b27860) takes L = the smallest non-zero
+   remaining input ramp length, extrapolates every input to L, evaluates TVolumePanner::Calc
+   (the pan law, 0x101b719e0) there and sets the four outputs to ramp to those values over L.
+   X: volume ramp 1 -> 0.5 over 100 samples gives outputs (0.5,0,0,0.5) over 100; a pan ramp
+   to -1 over 50 started at sample 20 gives (0.919239, 0, 0, 6.5e-6) over 50, i.e. the pan
+   law at pan -1, volume 0.65 (the volume extrapolated to sample 70).
+ - TVolumeSwitch::Calc (0x1719e0 / 0x101b40cf0): out[i] = MainOn * matrix[i]. X.
+ - Only the outputs' target and length are sent (ORampInterpolator::GetRamp); the receiver
+   ramps from its own current value.
+
+3. Sends [X for TSendVolumes::Calc; pc for the layout]
+ - Per send block, 13 inputs: 0 SendsOn (OnSendsOn 0x1742c0, all 12 blocks), 1 SendOutsConnected
+   bit k (OnSendOutsConnected 0x174410), 2 SendIsPost (OnSendIsPost<k>, FUN 0x17b900 sets
+   +0x918), 3 Send level (OnSend<k>, FUN 0x17ad00 sets +0x930), 4..7 the track's panned
+   volume matrix (copied from the volume-panner outputs in 0x173c00), 8 GroupOn (OnGroupOn
+   0x173fc0), 9..12 group matrix (OnGroupVolumeRampEvent<9..12>).
+ - Constructor 0x172af0 [pc]: for every send, input 8 = 1 and inputs 9..12 = (1, 0, 0, 1).
+ - X (TSendVolumes::Calc 0x101b40d30): out = in3 * in0 * in1 * in8 * (p * (G o M) + (1 - p) * I)
+   with p = in2, M = in4..7, G = in9..12 (matrix product: track then group), I = identity;
+   any of in0, in1, in3, in8 equal to 0 gives 0. So a pre-fader send (p = 0) carries the
+   device-chain output times the send level only: no pan, no volume, no crossfade factor.
+ - Pre/post selection: LiveSet/SendsPre is turned into a 12-bit mask (bit k = SendPreBool k)
+   by Live x86 0x1027bde00 [pc] ("bitset set argument out of range" beyond 12) and sent to
+   every track's PrePostState input; OTrackOutSplitPrePostStateProcessor::OnIn 0x171250 [pc]
+   sends SendIsPost<k> = 0 when bit k is set, else 1, only for changed bits. Constructor
+   0x1710d0 initial mask 0xfff with "changed" state, so the first value is always sent.
+ - IsPost, SendsOn and MainOn changes pass through OMakeRampProcessor (duration
+   NAudioTraits::STrackFadeTime, X: 75 samples) [pc wiring].
+
+4. Per-sample application and summing [pc]
+ - OTrackOutProcessor main gains: OnMainVolumeLtoL 0x176c00 etc.: with a ramp length n > 0,
+   slope = (target - current) / n in float32; |slope| < 1e-12 sets the value at once; n = 0
+   sets the value at once. The audio function runs once per sample. Main gains
+   (CalcStereo<1,0>, engine 0x17e560, Live x86 0x101b4d870 dis): addps slope, store, then
+   mulps with the input: advanced before use; outputs are float32 fields (+0x38..+0x4c).
+   Send/pre-hear gains (CalcStereo<0,1>, 0x17d0f0, Live x86 0x101b4c400 dis): mulps with the
+   input first, then addps slope: used before advancing; outputs added in binary64 (addsd). The per-sample functions take no
+   sample count: the engine calls them per sample between events (OScheduler
+   NumSamplesToNextEvent / ProcessNextEvents).
+ - Send outputs (CalcStereo<0,1> 0x17d0f0): out_acc += (double)(inL*g + inR*g') for each
+   destination channel: the destination's accumulator is binary64. How several float32 main
+   outputs are summed into one input (main bus) was not followed to the end.
+ - OTrackInProcessor::CalcNormalInverse 0x1702e0: the receiving track input reads its
+   binary64 accumulators, converts to float32, adds the direct input, clears them each sample.
+   Clipped variants (CalcNormalClipped 0x170330) limit to +/-1000 (0x447a0000); their use
+   (feedback routing) was not traced.
+ - The ramp end: OMakeRampProcessor schedules OnRampEnd after RampDuration samples and resends
+   (value, 0), which sets the receivers exactly; automation ramps are re-sent by the
+   automation player at each update (notes-automation.txt).
+
+5. ORampInterpolator (X): value (binary64) += k * slope on Inc(k), remaining clamps at 0;
+   SetRamp(target, n): slope = (target - value)/n in binary64, |slope| < 1e-12 or n <= 0 sets
+   the value; GetRamp/Extrapolate return 0 for |value| < 1e-12 and clamp k to remaining.
+
+6. Slice comparison (fma-scan.txt)
+ - arm64 TSendVolumes::Calc 0x101b10efc: no fused op; its SGroupedVolumes 0x101b3b720 fuses
+   four multiply-adds (x86 0x101b71780 separate). With the identity group matrix every
+   product is exact, so the results agree for every ungrouped track.
+ - arm64 Extrapolate 0x101aff494 fuses value + k*slope in binary64; x86 rounds twice. The
+   result is rounded to float32 afterwards; a difference needs a binary64 tie at float32
+   precision (not observed in any run).
+ - SetRamp, the panner recompute and the send recompute have no fused op in either slice.
+
+7. Not traced / unknown
+ - The engine's audio-function scheduling with code generation (SUseEngineCodeGeneration)
+   versus the interpreter: both call the same per-sample functions (inferred).
+ - The device output stage after the main track (audio device, export): outside T1's
+   main-track signal.
+ - Which ATrackOutUnit variant the main track builds (the builder has callers 0x102866290,
+   0x102866370, 0x1028663f0, 0x102866440): inferred the same stage.

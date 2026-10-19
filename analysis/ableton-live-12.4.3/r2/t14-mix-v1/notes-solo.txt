@@ -1,0 +1,148 @@
+T1.4 fork notes: mute (Mixer/Speaker) and solo. Static tracing only, no X run.
+Corpora: engine = helpers/Ableton_Live_Engine_x86_64 (VA == file offset, named);
+Live x86 = corpus-x86 (base 0x100000000); arm64 = corpus (derived/Live.arm64).
+Marks: [dis] = branch read in objdump of the slice; [pc] = Ghidra pseudocode only;
+[byte] = engine function bytes found verbatim in Live x86 (python find of the engine bytes).
+Records relied on: excerpts-solo-engine.jsonl, excerpts-solo-live-x86.jsonl,
+excerpts-solo-live-arm64.jsonl (corpus_lookup.py excerpt; chunk, offset, line SHA-256).
+Registry offsets use the +8 convention (registry offset + 8 = member offset), as in
+SPEC-MIXER-VALUES appendix row 009.
+
+1. Stored fields
+- Mixer/SoloSink is the track's Solo/Cue button. ATrackDevice ctor Live x86 0x10284e830
+  (arm64 0x10271b660): member param_1[0x3e] = +0x1f0 initialised false (FUN_101554680(..,0,..)),
+  named "Solo-Cue", controller ATrackDevice::SoloPrehearSinkController [pc]. Registry 0x10284dd80:
+  mpSoloSink 0x1e8 (+0x1f0, saved), mpSoloPrehear 0x1d0 (+0x1d8, flag 3 = not saved, runtime),
+  mpSpeaker 0x328 (+0x330), mpLocalEffectiveSessionMixerSoloState 0x370 (+0x378) [pc].
+  Schema 12.0_12402: TrackDevice has SoloSink (RemoteableBool), no other solo member.
+- Speaker: same ctor, param_1[0x66] = +0x330, initial 1, name "Speaker On" [pc].
+- LiveSet/SoloInPlace: LSong registry 0x1027957f0 mpSoloInPlace 0x2d0 (+0x2d8, saved) [pc].
+- LiveSet/SoloOrPflSavedValue: LSong registry 0x1027957f0 mSoloOrPflSavedValue 0x1e0 (saved Bool);
+  runtime switch mpSoloOrPfl 0x338 (+0x340, flag 3, not saved; registry 0x102793ee0).
+  LSong::SoloOrPflController (0x1027d8ae0) stores the new switch value at song+0x1e0 (the saved
+  value), so saved value = last Solo/Cue switch value; true = Solo mode, false = Cue [pc].
+  Which load step copies the saved value into the runtime switch: not traced (inferred).
+- Exclusive solo is a preference: mpExclusiveSolo in ASongPrefData (class DAT_10752fa98 named
+  in 0x1027e6340; registry 0x1027ce420) [pc]. It only changes what a button press clears
+  (0x1028511b0 calls FUN_1027c0750(song,0) to clear others). Not in the Live Set.
+- D: shipped sets: SoloSink false 290/290, SoloInPlace true 25 / false 1, SoloOrPflSavedValue
+  true 26/26 (count over every .als in the bundle, grep of the decoded XML).
+
+2. Engine: switch word and its effect
+- TSoloPrehearType names (table 0x15cbd60, SSoloPrehearName 0x11ab10) [dis]:
+  0 None, 1 Solo, 2 Following Solo, 3 Muted For Player Solo, 4 Indirectly Muted For Player
+  Solo, 5 Muted For Return Solo, 6 Prehear.
+- Predicates [dis]: SIsSpeakerIrrelevant 0x11ab30 = type in {1,3,4}; SIsSoloOrPrehear 0x11ab50 =
+  type in {1,6}; SIsMutedForSolo 0x11ab70 = type in {3,4,5}. Live x86 [byte]: 0x101ae9e90,
+  0x101ae9eb0, 0x101ae9ed0.
+- OTrackOutSwitchesProcessor (ports In Speaker, In SoloPrehear, Out Out; SEnable 0x170920):
+  OnSpeaker 0x170ab0 stores speaker != 0 at +0x28; OnSoloPrehear 0x170c40 stores (int)type at
+  +0x2c; Calc 0x170ba0 computes the word, sends it on change [dis]. Word, s = speaker:
+    type 0 None:            bit0 = s, bit1 = s            (3s)
+    type 1 Solo:            bit0 = 1, bit1 = 1            (3, speaker ignored)
+    type 2 Following:       bit0 = s, bit1 = s            (3s)
+    type 3 Muted (player):  0
+    type 4 Indirectly muted: bit0 = s, bit3 = 1           (s | 8)
+    type 5 Muted (return solo): bit1 = s                  (2s)
+    type 6 Prehear:         bit0 = s, bit1 = s, bit2 = 1  (3s | 4)
+    other values: as None.
+  Live x86 [byte]: OnSpeaker 0x101b3fdc0, Calc 0x101b3feb0 (bytes and jump table identical),
+  OnSoloPrehear 0x101b3ff50; inlined copies in the __invoke thunks 0x101b48fc0, 0x101b490a0.
+- OTrackOutSplitSwitchesProcessor::OnIn 0x170eb0 (ports In; Out MainOn, SendsOn, PrehearOn;
+  SEnable 0x170ce0) [dis]: bit0 -> MainOn, bit1 -> SendsOn, bit2 -> PrehearOn, each sent as
+  1.0 or 0.0 only on change. Bit 3 goes only to OTrackOutDisplayTypeProcessor::OnSwitches
+  0x1717a0 (meter display) [pc]. Live x86 [byte] 0x101b401c0 (and inlined 0x101b49140).
+- Wiring (Live x86 0x102866450, arm64 0x102731438) [pc]: Speaker and SoloPrehear -> Switches
+  (OTrackOutSwitchesProcessor) -> Split (OTrackOutSplitSwitchesProcessor); MainOn -> MainOnRamp,
+  SendsOn -> SendsOnRamp, PrehearOn -> PrehearOnRamp; MainOnRamp -> Volumes(OTrackOutVolumeProcessor)
+  port MainOn; SendsOnRamp -> Volumes port SendsOn. The ramps are OMakeRampProcessor
+  (creator 0x1024311b0 stores the duration at +0x120; engine create parameter "RampDuration",
+  0x157680) with duration FUN_101b0ee70().
+- Ramp duration [dis, Live x86]: FUN_101b0ee70 returns clamp(G, 10, 4096) samples; G is set by
+  FUN_101b0ecb0 to 0x4b = 75 unless a developer-option override table entry exists
+  (FUN_101188890 returns nothing when the table flag DAT_1073bb210 is not set). arm64 [pc]:
+  FUN_101ae3a04 same clamp, FUN_101ae385c same default 0x4b. A fixed sample count, not ms.
+- OMakeRampProcessor::OnIn 0x157890 [pc]: on a new value, emits a ramp event {target, length =
+  RampDuration} and schedules ramp end after RampDuration samples (OnRampEnd 0x157930 resends
+  with length 0). Interpolation shape is the ramp consumer's (parent's ramp topic).
+- OTrackOutVolumeProcessor: OnMainOn 0x173a40 feeds the ramp into the main matrix calc at
+  +0x7f8 and resends the four main matrix ramps; TVolumeSwitch::Calc 0x1719e0 = out[i] =
+  in[0]*in[1+i] (MainOn times each LtoL/LtoR/RtoL/RtoR entry) [pc]. OnSendsOn 0x1742c0 sets
+  the SendsOn ramp of all 12 send slots (stride 0x1b0, 12 iterations) and resends their four
+  ramps [pc]. Inferred: SendsOn scales every send, pre and post alike (the per-send formula is
+  the parent's TSendVolumes topic).
+=> Speaker off (types 0, 2): main and all sends ramp to 0 over 75 samples; prehear too.
+
+3. Logic: per-track solo type (Live x86; arm64 counterparts in brackets)
+- ATrackDevice::OnSoloPrehearSink 0x10285cf50 [0x102728dc8] [pc]: if SoloSink (+0x1f0) or the
+  rack session-mixer solo (+0x378) is set: SoloPrehear = 1 when song+0x340 (Solo/Cue switch)
+  is true, else 6; otherwise 0. Registered on SoloSink by 0x10284fe70 (called from 0x10269fa10).
+- LSong::OnSoloMayHaveChanged -> 0x1027b32f0 [0x102689224] [pc]: if the switch (song+0x340) is
+  Solo and some track has type 1 or 6 (0x1027d9d40): build ATrackDependencyGraph
+  (vtable 0x106d44ad0, typeinfo name 21ATrackDependencyGraph; [0x1067ff840]), slot +0x30
+  0x10284a740 builds it, slot +0x40 0x10284d080 [0x102719e80] applies with arg = SoloInPlace
+  (song+0x2d8). Otherwise (Cue mode, or no solo): every track gets 6 if it had 1 or 6, else 0.
+- Graph build: edges source -> destination. 0x10284abf0 adds audio routing edges (output and
+  input routings); 0x10284b210 adds an edge track -> return for each send holder whose mpActive
+  (+0x88; holder registry 0x102780470: mpEnabledByUser +0x58, mpDisabledByRouting +0x70,
+  mpActive +0x88) is set [pc]; 0x10284b780 adds device-related edges (type 2, class
+  DAT_107531280, not identified; likely side-chains). 0x102860790: node+0x00 map = successors,
+  node+0x18 map = predecessors [pc].
+- Seeds and classes (0x10284c580 [0x102719690]) [pc]: soloed = current type 1 or 6.
+  Class A = APlayerTrack (DAT_10752c348, name in 0x1026fcc00) or vtable slot 0x230 true (not
+  identified; group?). Class R = AAbstractSendTrack (DAT_107521728, name in 0x1029cb0b0).
+  Main and PreHear are in neither class.
+- Core 0x10284d180 [0x102719f88] [pc]:
+  a) if no track is soloed: nothing changes (all keep 0).
+  b) every non-soloed track of class A or R gets 3 (Muted For Player Solo).
+  c) if SoloInPlace is on and no soloed track is a return: every return gets 0.
+  d) from each soloed track, walking predecessors (0x102861c10): a predecessor reached from a
+     non-return gets 2 unless it is 1; a predecessor reached from a return gets 5 if it is 3.
+     The walk continues upstream.
+  e) from each soloed track, walking successors (0x102862370): a successor that is not a return
+     and not 1 gets 2 when the node it is reached from is 0, 1 or 2.
+  f) 0x10284ce00 [0x102719c10]: for each routing edge in the list at +0x88, if both ends are 3
+     the source becomes 4.
+  The result is written to each track's SoloPrehear (0x10284d080) and reaches the engine port
+  SoloPrehear.
+- Consequences for audio (combining 2 and 3):
+  * Player track soloed, SoloInPlace on: soloed tracks play (speaker ignored); other player
+    tracks silent and send nothing; returns play normally and so carry only the sends of soloed
+    (and following) tracks; main plays.
+  * Player track soloed, SoloInPlace off: returns are also muted (3).
+  * Return soloed (either SoloInPlace): other returns muted; tracks that send to it (active send)
+    get 5: no main output, sends on if their speaker is on; other player tracks muted.
+  * Tracks feeding a soloed track by routing follow (2). Main is never muted by solo.
+  * Cue mode (switch false): no muting at all; soloed tracks get 6 = main and sends as usual plus
+    the prehear output. The main mix is the same as with no solo.
+
+4. Cue mode for T1
+- Cue mode does not change MainOn/SendsOn of any track (type 6 keeps bits 0,1 = speaker). For a
+  render of the main track's output only, Cue mode = no solo. What reaches a physical output when
+  cue and main share channels is an output-routing question outside the main mix: exclude.
+
+Unknown / not traced
+- That opening a set with SoloSink true runs OnSoloPrehearSink and the recompute (the observer is
+  registered by 0x10284fe70; whether registration notifies at once or load fires the change is
+  not traced). Static route: FUN_10154c420 and the post-load notification path.
+- Copy of SoloOrPflSavedValue into the runtime switch on load (not traced).
+- Class-A vtable slot 0x230 meaning; the device edges of 0x10284b780; the effect of a main or
+  PreHear track with SoloSink true; main-track Speaker false.
+- Ramp shape of MainOn/SendsOn (linear assumed; parent's ORampInterpolator topic), and how the
+  MainOn ramp combines with a simultaneous volume ramp (TVolumeSwitch product, combiner +0x7f8).
+- Developer-option override of the 75-sample ramp (option keys are runtime hashes).
+Outside scope, noted for the parent: send edges use mpActive, a derived holder member next to
+mpEnabledByUser and mpDisabledByRouting (bears on SPEC-MIXER-VALUES REQ-003's EnabledByUser U);
+OnPanModeChanged is registered together with OnSoloPrehearSink in 0x10284fe70 (pan-mode w mapping).
+
+X candidates (Live x86 slice, all self-contained)
+- 0x101ae9e90 / 0x101ae9eb0 / 0x101ae9ed0 (edi = type 0..7) -> al.
+- Switches: 0x30-byte zeroed object, +0x10 = address of any `ret`, call 0x101b3fdc0(obj, xmm0 =
+  speaker 0.0/1.0) then 0x101b3ff50(obj, xmm0 = type as float), read dword +8. Sweep type 0..7
+  x speaker {0,1}; expected the table in 2.
+- Split: 0x58-byte zeroed object, +0x08/+0x20/+0x38 = `ret` address, call 0x101b401c0(obj,
+  xmm0 = word as float), read bytes +0x50/+0x51/+0x52 (MainOn, SendsOn, PrehearOn bits).
+- Ramp length: call 0x101b0ecb0 then 0x101b0ee70 -> eax (expect 75). Reads the option table
+  flag DAT_1073bb210 (zero in bss) so no override.
+- Harder: the graph core 0x10284d180 with a hand-built node table (libc++ maps via 0x102860790
+  and vector<bool> bitsets); feasible but needs std::map node layout.

@@ -1,0 +1,61 @@
+T1.1 follow-up: A1 (does opening a Live Set run the post-load checks?) and A2 (are freeze slots added while
+a set is read?). Static; arm64 corpus pseudocode (P), x86_64 disassembly (D86, x86-load-sequence.txt), image
+reads (R: vtable-owners.txt, chain-vtable-slots.txt), direct-call reachability (reach.txt, reach.py).
+Records relied on: corpus-excerpts.jsonl (arm64, 39), corpus-excerpts-x86.jsonl (11). Regenerate: sh run_a1a2.sh.
+
+== A1: open path (arm64; x86 counterparts in brackets)
+User open: ALiveApp vtable 0x10659ad00 slot +0x730 = 0x101854f54 [x86 0x10186edc0] "Loading Document For User":
+  for exactly one document among the given paths -> 0x10184e56c [0x101868370] -> app slot +0x840. P, R
+Command line: 0x10184df98 [0x101867dc0] "Loading command-line document..." -> 0x10184e56c -> slot +0x840. P
+Restore (crash recovery): 0x10185139c "Restore Document" -> 0x1018517cc "Open document: " -> slot +0x840. P
+ALiveApp slot +0x840 = 0x1002e6e00 [0x10035eec0] (R; the only ALiveApp entry): files of type mask 0x3000
+  (types 12 ".abl" and 13 ".ablbundle", Note sets, registry 0x10127ec24) go to an import path; every other
+  file, .als included, goes to 0x1018536d4 [0x10186d760] "Loading document ". P; D86 for the x86 call.
+0x1018536d4 opens a file stream and calls the general reader 0x10148389c [0x10147ad50]; gzip is reopened and
+  dispatched again; "<?" goes to the XML reader 0x101484108 [0x10147b550]. P
+0x101484108 creates the reading context with 0x101478258 -> 0x10151e0d8 [0x10146e9f0 -> 0x10150cb10],
+  parses (0x1015289c8), refuses an unknown root class, then calls the load step 0x101486fe4 [0x10147e150]
+  with that context for every document it returns. P
+Context constructor 0x10151e0d8 stores 1 at +0x2c on both branches. P; D86 0x10150cb5d / 0x10150cb7f
+  (movb $0x1,0x2c(%rbx)).
+Only 0x1015192b8 stores 0 at +0x2c; its callers 0x101546518 and 0x101547ef4 are the undo-history stream
+  (CreamAction/History.cpp). P
+Load step 0x101486fe4 [0x10147e150]: create root, call slot +0xc8, loader +0x140; if context +0x2c is set
+  (0x1015192c0 [0x1015084b0: movzbl 0x2c(%rdi)]) call the root's +0xd0 (ASong: LSong::AfterRead_Virtual
+  0x102695f78); then call the walk 0x101487198 [0x10147e2e0] unconditionally. D86 0x10147e23c-0x10147e26d.
+Walk 0x101487198 [0x10147e2e0]: recurse into members, then tail-call the object's +0x100.
+  D86 0x10147e37a-0x10147e39b (mov 0x100(%rax),%rax ... jmp *%rax).
+Member post-load steps (+0xd0) in the generic loader run when context +0x2c is set (N1); set here, as above.
+Version-aware reader 0x10146c0d4 -> 0x10146c258: returns the parsed node tree for XML (no object created,
+  no load step) and is not reached from 0x1002e6e00 or 0x1018536d4 (reach.txt). P
+=> A1 settled (S, both slices): a .als opened by the user, from the command line or by restore is read by
+   the XML reader, whose load step runs the member post-load steps, the song's root post-load step and the
+   validation walk. Remaining inference: that menu and OS open events use these app entries; every app
+   path found ends in slot +0x840, and slot +0x840 has the one ALiveApp implementation.
+
+== A3: preset exemption
+Setter 0x101535944 callers: 0x100338a44, 0x100338ec8 (preset extraction), 0x1024a9d74, 0x1024ad0f0 (device
+  presets), 0x102536cc4, 0x101856bc8 (debug "Compound Hierarchy" browser). None is reached from
+  0x1002e6e00 or 0x1018536d4 within 6 direct calls (reach.txt). P => A3 settled (S) for the traced paths.
+
+== A2: freeze slots
+Chain constructors: audio 0x1027df560 calls 0x1027e3118 for +0x78 (session) and +0x90 (freeze); MIDI
+  0x10291f76c creates the session sequencer (0x102907470) and the freeze sequencer (0x1027d8e48) at +0x90.
+  0x1027e3118 allocates 0x330 bytes and constructs an AAudioSequencer (0x1027d8ea0). Getters +0x200 return
+  +0x98 (0x1027df670, 0x10291f948). The sequencer base creates ClipSlotList empty (tracks trace). P
+Slot insertion into a sequencer's ClipSlotList outside the list loader: 0x10265d22c, only via 0x10265e1d8,
+  whose callers are 0x1023bfed4 (group-track slot insert), 0x1025776b4 / 0x10257770c (AMainTrack slots +0x2f8
+  / +0x2e8) and 0x1025cde68 (APlayerTrack +0x2e8: insert into session and freeze). APlayerTrack +0x2f8
+  0x1025cdf38 calls +0x2e8 n times. Song-level callers: InsertScene 0x10268dfc8 (edit paths 0x10267d264
+  create track, 0x10267dc3c, 0x10268ea60, 0x10268eddc) and create track 0x10267bfc0. P, R
+None of these is reached by direct calls from the song post-load 0x102695f78, the track post-loads 0x1025cb2b8
+  (MIDI) and 0x1027de958 (audio), the chain post-load 0x1023c6d80, the list loader 0x1014674b4, the load step
+  0x101486fe4 or the generic loader 0x101487310 (depth 5), and none of the reached functions calls slot
+  +0x2e8 (reach.txt). The MIDI track post-load's per-scene loop (0x1025cb568) runs only for a frozen track and
+  updates the engine. P
+=> A2 settled (S, arm64 call graph): a track read without FreezeSequencer keeps a freeze sequencer with no
+   slots, and the validation walk compares it with the session list (x86 0x1026f1720 D86). Remaining
+   inference: no virtual call outside the enumerated ones inserts slots during reading.
+
+== Extracted execution
+Not used: the checks read whole object graphs (song, tracks, sequencers); none is a self-contained function.
