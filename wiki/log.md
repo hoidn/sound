@@ -2285,3 +2285,11 @@ approved it with narrowing. The grid functions are framed as values, not launch
 timing. The global setting is a scale value only. Whether a document with an
 out-of-range follow time opens is excluded. The manifest SHA-256 is
 `02c0212fe8d5b454e3d44e64cd0dbd20299919dddf135032693ba33eee8b6024`.
+
+## [2026-10-18] maintenance | Catalog closes the fixture defect
+
+Every release with refused fixtures is now superseded by one whose fixtures pass
+the structure checks. The catalog intro is regenerated from its table (23
+releases, 13 current), and its defect note now records the correction. The spec
+index, project page and gate table (T1.5) are updated. By user direction, no
+further work is being dispatched. playback-core-v1 is staged but unreviewed.

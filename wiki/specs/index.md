@@ -9,16 +9,11 @@ access: analysis
 # Behavioral specification index
 
 Specifications define what must be observable, independent of the original's
-internal implementation. This directory contains analyst-side drafts. Fourteen
-reviewed releases approve explicitly partial clauses only. The
-[handoff catalog](../../handoff/index.md) lists them. The MIDI configuration line is
-[midi-config-v1](../../handoff/midi-config-v1/README.md), then
-[v2](../../handoff/midi-config-v2/README.md), then
-[v3](../../handoff/midi-config-v3/README.md); MIDI REQ-001, REQ-004 and the runtime
-clauses remain unreleased. The other ten are one release per draft spec below:
-transport-state-v2 (superseding v1), als-container-v1 and the eight revision 1 releases of
-2026-10-18. Each handoff plan's review outcome lists the corrections owed to its
-draft spec.
+internal implementation. This directory contains analyst-side drafts. 23 reviewed releases approve
+explicitly partial clauses only; 13 are current. The
+[handoff catalog](../../handoff/index.md) lists them with their supersession chains.
+Each handoff plan's Review outcome section lists the corrections owed to its draft
+spec.
 
 | Page                                                                 | Purpose                                                                                                                                                                                                                                                                                                                                                   |
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

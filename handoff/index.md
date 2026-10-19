@@ -8,35 +8,26 @@ access: handoff
 
 # Reviewed implementation handoffs
 
-Fourteen finite releases exist, eleven of them current;
-midi-config-v1, midi-config-v2 and transport-state-v1 are superseded. midi-config-v3 is a strict superset of v2, which is a strict superset of v1. v3 adds the value each map mode
-produces from incoming controller values. transport-state-v2 (which corrects v1's number-text rule) and
-als-container-v1 cover a Live Set's transport values and its container and
-version envelope. The eight first releases of 2026-10-18 cover these areas:
+23 finite releases exist, and 13 are current:
+als-container-v1, automation-envelopes-v2, browser-index-v1, bundled-device-parameters-v1, clip-launch-v2, live-set-structure-v1, midi-config-v4, midi-note-storage-v2, mix-graph-v1, mixer-values-v2, plugin-discovery-v1, transport-state-v3, warp-markers-v2. The other 10 are superseded:
+automation-envelopes-v1, clip-launch-v1, midi-config-v1, midi-config-v2, midi-config-v3, midi-note-storage-v1, mixer-values-v1, transport-state-v1, transport-state-v2, warp-markers-v1. Each row's Supersedes column gives the chain. Approval
+is limited to explicitly partial requirement clauses. Expectations are labelled
+by provenance: static-derived, extracted execution of the original x86_64 code
+(ADR 0003), or composed spec conformance (ADR 0004). Nothing has been compared
+with a running Live. A fresh restricted implementation workspace is still
+required.
 
-- clip and scene launch settings;
-- MIDI clip notes;
-- mixer values and their display text;
-- automation envelope storage;
-- bundled device preset parameters;
-- browser content kinds and tag sidecars;
-- plug-in search folders and candidates;
-- warp markers.
-
-Approval is limited to explicitly partial requirement clauses, and runtime
-compatibility is unverified. A fresh restricted implementation workspace is
-still required.
-
-> **Known fixture defect (found 2026-10-18).**
+> **Fixture defect, corrected 2026-10-18.**
 > [SPEC-LIVE-SET-STRUCTURE](../wiki/specs/live-set-structure.md) shows that opening a
-> Live Set always runs a validation walk. That walk refuses a set with no audio,
-> MIDI or group track, and a track with clip slots but no freeze sequencer. Under that rule,
-> fixtures in six releases would be refused, although their cases expect them to
-> open. The six are transport-state-v1 and v2, automation-envelopes-v1,
-> clip-launch-v1, midi-note-storage-v1 and warp-markers-v1: 204 fixtures and 178
-> cases. Do not implement or verify against those "opens" expectations.
-> Superseding releases with corrected fixtures are being prepared. The payloads
-> stay unchanged, because releases are immutable. Evidence is in the
+> Live Set always runs a validation walk. The walk refuses a set with no audio,
+> MIDI or group track, and a track whose clip slots lack a freeze sequencer. Under
+> that rule, 204 fixtures in six releases would be refused although their cases
+> expect "opens": transport-state-v1 and v2, automation-envelopes-v1,
+> clip-launch-v1, midi-note-storage-v1 and warp-markers-v1. Each one is
+> superseded by a release with valid fixtures: transport-state-v3,
+> automation-envelopes-v2, clip-launch-v2, midi-note-storage-v2 and
+> warp-markers-v2. Do not implement against the superseded payloads. They are
+> left unchanged because releases are immutable. Evidence is in the
 > [audit](../analysis/ableton-live-12.4.3/r2/t11-structure-v1/released-fixture-audit.json).
 
 | Release | Target scope | Spec revisions | Review record | Manifest SHA-256 | Supersedes |

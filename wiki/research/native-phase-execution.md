@@ -161,7 +161,7 @@ defines them). M1–M6 above remain the revision 1 record.
 | T1.2 Device audio | **Feasibility gate passed 2026-10-18:** Corpus renders are bit-repeatable and explained against the static model; [SPEC-DEVICE-CORPUS](../specs/device-corpus.md) r1. Analog, Tension and Electric render; Collision needs work; Amp and Cabinet wait on a user decision (Q-025) | Reference render agrees with the static DSP model, then one spec per device |
 | T1.3 Playback core | **Draft done 2026-10-18:** [SPEC-PLAYBACK-CORE](../specs/playback-core.md) r1; clip-launch r4 and warp r4 corrected | Draft SPEC-PLAYBACK-CORE |
 | T1.4 Mix graph and automation in playback | **Draft done 2026-10-18:** [SPEC-MIX-GRAPH](../specs/mix-graph.md) r1; automation r4 and mixer r4 corrected; Q-019 settled with conditions | Draft SPEC-MIX-GRAPH |
-| T1.5 Releases | Pending T1.1 to T1.4 drafts | Reviewed releases for every T1 family |
+| T1.5 Releases | **First round done 2026-10-18:** the six releases with invalid fixtures are superseded; midi-config-v4, mixer-values-v2, live-set-structure-v1 and mix-graph-v1 released. playback-core-v1 is staged but unreviewed (dispatch paused by user direction). Device specs are unreleased | Reviewed releases for every T1 family |
 | T1.6 Implementation workspace | Pending user decision (bwrap sandbox proposed) | Restricted workspace provisioned |
 | T1.7 Candidate and verification | Pending T1.5 and T1.6 | Candidate passes released expectations |
 | S5 Clip launch | **Done 2026-10-17:** [clip launch](clip-launch.md), 23 candidates, 11 probes; SPEC-CLIP-LAUNCH draft started | Research page with candidate requirements |
