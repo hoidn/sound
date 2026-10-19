@@ -1,0 +1,1552 @@
+{
+ "schema": "playback-core-traceability-v1",
+ "spec": "SPEC-PLAYBACK-CORE r1 (with SPEC-CLIP-LAUNCH r4 REQ-015/017 arithmetic restated)",
+ "evidence_root": "analysis/ableton-live-12.4.3/",
+ "evidence_manifest_sha256": "40f57a923afe1859fb7285ef2197f0cd01c443a8593e1fec18ef2e151d31d5af",
+ "evidence": {
+  "clock": "r2/t13-playback-v1/transport/results/fire.json (1,216 placements), sweep.json (4,000), plus_one_check.json (240,000 classified); spec REQ-001/002",
+  "stop": "r2/t13-playback-v1/transport/results/stop_resume.json",
+  "loop": "r2/t13-playback-v1/transport/results/loop.json",
+  "tempo": "spec REQ-003 binary32 tempo (S; DoSetTempo spb bit-equal in fire.json)",
+  "launch": "r2/x2-notes-launch-v1/results/launch.json boundary_cases (B, X); r2/t13-playback-v1/launch/results.json (pre-delay 0 on MIDI, 16 of 16); launch/matching.tsv and x86-fireclip-caller-tree.txt (path S)",
+  "grid": "r2/x2-notes-launch-v1/results/launch.json grid table (REQ-CLIP-LAUNCH-015, 6,463 of 6,463)",
+  "midi": "r2/t13-playback-v1/midi/results/clip-position.json (234 inputs), note-events.json (12 cases), cases.json",
+  "midi-static": "r2/t13-playback-v1/midi/excerpts.jsonl (priority table, pass and cut rules; x86_64-only, spec A1)",
+  "audio": "r2/t13-playback-v1/audio/results/inc.json (78), kernels.json, gain.json, quant.json; audio/summary.txt",
+  "audio-static": "r2/t13-playback-v1/audio/corpus-excerpts.jsonl (first frame, fraction 0, past-end hold; spec A1, A3)",
+  "structure": "r2/t11-structure-v1/make_fixture.py rules; schema_check.py and fixture_audit.py results in author-validation.json"
+ },
+ "assumptions": {
+  "AS-1": "spec A1 (x86_64-only matches) and the arm64 equivalence of every X result",
+  "AS-2": "spec A3",
+  "AS-3": "spec A4",
+  "AS-4": "SPEC-CLIP-LAUNCH A4 (grid anchor 0)",
+  "AS-5": "glibc powf and exp10f bindings of REQ-017 and REQ-019 (spec appendix, Harness)"
+ },
+ "cases": {
+  "PLAYBACK-CORE-001": {
+   "source": "PBC-001",
+   "fixture": "fixtures/clock-120.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-002": {
+   "source": "PBC-002",
+   "fixture": "fixtures/clock-140.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-003": {
+   "source": "PBC-003 (120 BPM)",
+   "fixture": "fixtures/clock-120.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-004": {
+   "source": "PBC-003 (128 BPM)",
+   "fixture": "fixtures/clock-128.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-005": {
+   "source": "PBC-003 (binary32 121.2 BPM)",
+   "fixture": "fixtures/clock-121.2.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "tempo"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-006": {
+   "source": "PBC-004",
+   "fixture": "fixtures/clock-93.3.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "tempo"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-007": {
+   "source": "PBC-005",
+   "fixture": "fixtures/clock-90.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-008": {
+   "source": "PBC-006",
+   "fixture": "fixtures/clock-140-start.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-009": {
+   "source": "PBC-007 (observed through a 1 Bar press)",
+   "fixture": "fixtures/clock-120-bar.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-010": {
+   "source": "PBC-008 (observed through a 1/4 press)",
+   "fixture": "fixtures/clock-140-quarter.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "stop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-011": {
+   "source": "PBC-009 (observed through a press after the listed jumps)",
+   "fixture": "fixtures/loop-4-8-120.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "loop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-012": {
+   "source": "PBC-010 (observed through a press after the listed jumps)",
+   "fixture": "fixtures/loop-4-8-140.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "loop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-013": {
+   "source": "PBC-011 (observed through a press after the listed jumps)",
+   "fixture": "fixtures/loop-4-8-140.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "loop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-014": {
+   "source": "PBC-012 (observed through a press after the listed jumps)",
+   "fixture": "fixtures/loop-2-third.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "loop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-015": {
+   "source": "PBC-013 (observed through a press after the listed jumps)",
+   "fixture": "fixtures/loop-4-8-120.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "loop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-016": {
+   "source": "PBC-016 (observed through a 1/4T press)",
+   "fixture": "fixtures/loop-0-half.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid",
+    "loop"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-017": {
+   "source": "PBC-020/021/022/024 with CLC-031",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-018": {
+   "source": "PBC-020/021/022/024 with CLC-031",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-019": {
+   "source": "PBC-020/021/022/024 with CLC-032",
+   "fixture": "fixtures/launch-g3.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-020": {
+   "source": "PBC-020/021/022/024 with CLC-032",
+   "fixture": "fixtures/launch-g3.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-021": {
+   "source": "PBC-020/021/022/024 with CLC-033",
+   "fixture": "fixtures/launch-g2.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-022": {
+   "source": "PBC-020/021/022/024 with CLC-033",
+   "fixture": "fixtures/launch-g2.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-023": {
+   "source": "PBC-020/021/022/024 with CLC-034",
+   "fixture": "fixtures/launch-g1.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-024": {
+   "source": "PBC-020/021/022/024 with CLC-034",
+   "fixture": "fixtures/launch-g1.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-025": {
+   "source": "PBC-020/021/022/024 with CLC-035",
+   "fixture": "fixtures/launch-s34.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-026": {
+   "source": "PBC-020/021/022/024 with CLC-035",
+   "fixture": "fixtures/launch-s34.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-027": {
+   "source": "PBC-020/021/022/024 with CLC-036",
+   "fixture": "fixtures/launch-s34-g1.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-028": {
+   "source": "PBC-020/021/022/024 with CLC-036",
+   "fixture": "fixtures/launch-s34-g1.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-029": {
+   "source": "PBC-020/021/022/024 with CLC-037",
+   "fixture": "fixtures/launch-s68.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-030": {
+   "source": "PBC-020/021/022/024 with CLC-037",
+   "fixture": "fixtures/launch-s68.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-031": {
+   "source": "PBC-020/021/022/024 with CLC-038",
+   "fixture": "fixtures/launch-s78.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-032": {
+   "source": "PBC-020/021/022/024 with CLC-038",
+   "fixture": "fixtures/launch-s78.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-033": {
+   "source": "PBC-020/021/022/024 with CLC-039",
+   "fixture": "fixtures/launch-s54-g3.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-034": {
+   "source": "PBC-020/021/022/024 with CLC-039",
+   "fixture": "fixtures/launch-s54-g3.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-035": {
+   "source": "PBC-020/021/022/024 with CLC-040",
+   "fixture": "fixtures/launch-g5.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-036": {
+   "source": "PBC-020/021/022/024 with CLC-040",
+   "fixture": "fixtures/launch-g5.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-037": {
+   "source": "PBC-020/021/022/024 with CLC-041",
+   "fixture": "fixtures/launch-g6.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-038": {
+   "source": "PBC-020/021/022/024 with CLC-041",
+   "fixture": "fixtures/launch-g6.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-039": {
+   "source": "PBC-020/021/022/024 with CLC-042",
+   "fixture": "fixtures/launch-g7.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-040": {
+   "source": "PBC-020/021/022/024 with CLC-042",
+   "fixture": "fixtures/launch-g7.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-041": {
+   "source": "PBC-020/021/022/024 with CLC-043",
+   "fixture": "fixtures/launch-g8.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-042": {
+   "source": "PBC-020/021/022/024 with CLC-043",
+   "fixture": "fixtures/launch-g8.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-043": {
+   "source": "PBC-020/021/022/024 with CLC-044",
+   "fixture": "fixtures/launch-g9.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-044": {
+   "source": "PBC-020/021/022/024 with CLC-044",
+   "fixture": "fixtures/launch-g9.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-045": {
+   "source": "PBC-020/021/022/024 with CLC-045",
+   "fixture": "fixtures/launch-g10.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-046": {
+   "source": "PBC-020/021/022/024 with CLC-045",
+   "fixture": "fixtures/launch-g10.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-047": {
+   "source": "PBC-020/021/022/024 with CLC-046",
+   "fixture": "fixtures/launch-g11.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-048": {
+   "source": "PBC-020/021/022/024 with CLC-046",
+   "fixture": "fixtures/launch-g11.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-049": {
+   "source": "PBC-020/021/022/024 with CLC-047",
+   "fixture": "fixtures/launch-g12.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-050": {
+   "source": "PBC-020/021/022/024 with CLC-047",
+   "fixture": "fixtures/launch-g12.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-051": {
+   "source": "PBC-020/021/022/024 with CLC-048",
+   "fixture": "fixtures/launch-g13.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-052": {
+   "source": "PBC-020/021/022/024 with CLC-048",
+   "fixture": "fixtures/launch-g13.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-053": {
+   "source": "PBC-020/021/022/024 with CLC-049",
+   "fixture": "fixtures/launch-c8.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-054": {
+   "source": "PBC-020/021/022/024 with CLC-049",
+   "fixture": "fixtures/launch-c8.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-055": {
+   "source": "PBC-020/021/022/024 with CLC-050a",
+   "fixture": "fixtures/launch-c68-5.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-056": {
+   "source": "PBC-020/021/022/024 with CLC-050a",
+   "fixture": "fixtures/launch-c68-5.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-057": {
+   "source": "PBC-020/021/022/024 with CLC-050b",
+   "fixture": "fixtures/launch-c68-5.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-058": {
+   "source": "PBC-020/021/022/024 with CLC-050b",
+   "fixture": "fixtures/launch-c68-5.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-059": {
+   "source": "PBC-020/021/022/024 with CLC-051",
+   "fixture": "fixtures/launch-c68-0.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-060": {
+   "source": "PBC-020/021/022/024 with CLC-051",
+   "fixture": "fixtures/launch-c68-0.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-061": {
+   "source": "PBC-020/021/022/024 with CLC-054 (t = 3.99)",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-062": {
+   "source": "PBC-020/021/022/024 with CLC-054 (t = 3.99)",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-063": {
+   "source": "PBC-020/021/022/024 with CLC-054 (t = 4 exactly)",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-064": {
+   "source": "PBC-020/021/022/024 with CLC-054 (t = 4 exactly)",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-065": {
+   "source": "PBC-024 with CLC-064",
+   "fixture": "fixtures/launch-g8.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-066": {
+   "source": "PBC-025",
+   "fixture": "fixtures/launch-base-120.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-067": {
+   "source": "PBC-026 (CLC-052)",
+   "fixture": "fixtures/launch-c1.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-068": {
+   "source": "PBC-026 (CLC-052)",
+   "fixture": "fixtures/launch-c1.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1"
+   ]
+  },
+  "PLAYBACK-CORE-069": {
+   "source": "CLC-053",
+   "fixture": "fixtures/launch-g0.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3"
+   ]
+  },
+  "PLAYBACK-CORE-070": {
+   "source": "PBC-027",
+   "fixture": "fixtures/launch-base.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-3",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-071": {
+   "source": "PBC-040",
+   "fixture": "fixtures/midi-pulse.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-072": {
+   "source": "PBC-041",
+   "fixture": "fixtures/midi-startrel.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-073": {
+   "source": "PBC-042",
+   "fixture": "fixtures/midi-cut.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-074": {
+   "source": "new: REQ-013 note-off at Le",
+   "fixture": "fixtures/midi-off-at-end.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-075": {
+   "source": "PBC-043",
+   "fixture": "fixtures/midi-zero.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-076": {
+   "source": "PBC-044",
+   "fixture": "fixtures/midi-unlooped.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-077": {
+   "source": "PBC-045",
+   "fixture": "fixtures/midi-unlooped-held.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-078": {
+   "source": "PBC-046",
+   "fixture": "fixtures/midi-disabled.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-079": {
+   "source": "PBC-047",
+   "fixture": "fixtures/midi-at-end.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-080": {
+   "source": "new: REQ-012 velocity clause",
+   "fixture": "fixtures/midi-velocity.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-081": {
+   "source": "PBC-049",
+   "fixture": "fixtures/midi-pulse-110.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-082": {
+   "source": "PBC-050",
+   "fixture": "fixtures/midi-pulse-90.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "midi",
+    "midi-static",
+    "launch",
+    "grid"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-083": {
+   "source": "PBC-060",
+   "fixture": "fixtures/audio-direct-hiq.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-084": {
+   "source": "PBC-060 (HiQ off)",
+   "fixture": "fixtures/audio-direct.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-085": {
+   "source": "PBC-062",
+   "fixture": "fixtures/audio-linear.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-086": {
+   "source": "PBC-065",
+   "fixture": "fixtures/audio-octave.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4",
+    "AS-5"
+   ]
+  },
+  "PLAYBACK-CORE-087": {
+   "source": "PBC-066",
+   "fixture": "fixtures/audio-gain-6db.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4",
+    "AS-5"
+   ]
+  },
+  "PLAYBACK-CORE-088": {
+   "source": "PBC-066",
+   "fixture": "fixtures/audio-gain-zero.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4",
+    "AS-5"
+   ]
+  },
+  "PLAYBACK-CORE-089": {
+   "source": "PBC-066",
+   "fixture": "fixtures/audio-gain-10.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4",
+    "AS-5"
+   ]
+  },
+  "PLAYBACK-CORE-090": {
+   "source": "PBC-066",
+   "fixture": "fixtures/audio-gain-20.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4",
+    "AS-5"
+   ]
+  },
+  "PLAYBACK-CORE-091": {
+   "source": "PBC-067 (new value)",
+   "fixture": "fixtures/audio-loopstart.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4"
+   ]
+  },
+  "PLAYBACK-CORE-092": {
+   "source": "new: REQ-017 step at 44,100 Hz",
+   "fixture": "fixtures/audio-direct.als",
+   "evidence": [
+    "structure",
+    "clock",
+    "launch",
+    "grid",
+    "audio",
+    "audio-static"
+   ],
+   "assumptions": [
+    "AS-1",
+    "AS-2",
+    "AS-4"
+   ]
+  }
+ },
+ "parent_cases_not_released": {
+  "PBC-014, PBC-015, PBC-068": "tempo changes during a render: outside this release's named scope",
+  "PBC-020 with CLC-062": "LaunchQuantisation -99 read as Global rests on an unreleased load rule",
+  "PBC-023": "relaunch at beat 8 coincides with the playing clip's wrap and note events (order U); on-line presses carried as CLC-054 at t = 4",
+  "PBC-024 at 48,000 Hz": "no request sample has song beat exactly 10/3 at 90 BPM, 48 kHz",
+  "PBC-028 to PBC-032": "audio pre-delay above 0 or Fade on: activation observable only through crossfade and fade values (U, Q-024)",
+  "PBC-048, PBC-080 to PBC-094, PBC-096": "clip stops (REQ-022): outside this release's named scope",
+  "PBC-095": "REQ-023: first sample after Play U",
+  "PBC-051, PBC-063, PBC-069": "unresolved (U) in the draft",
+  "PBC-061, PBC-064": "REQ-021 end sample not observable through the released outputs (Fade off)"
+ }
+}
