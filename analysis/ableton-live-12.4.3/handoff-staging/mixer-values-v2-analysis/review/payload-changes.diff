@@ -1,0 +1,436 @@
+--- before/README.md
++++ after/README.md
+@@ -1,9 +1,11 @@
+ # Track mixer values in Live Set documents, release 2
+ 
+-**Staged candidate; not reviewed; not released.** Read [the contract](spec.md),
+-[the cases](cases.json), [the role instructions](AGENTS.md) and
+-[the manifest](manifest.json). This package is not an implementation input
+-until a separate review approves it and it is published.
++**Reviewed local release.** Read [the contract](spec.md), [cases](cases.json),
++[role instructions](AGENTS.md), [the manifest](manifest.json) and
++[the review disposition](REVIEW.md). The stated partial scope, with the
++narrowing recorded in the review, is approved as a contract for a fresh,
++restricted implementation workspace. Such a workspace has not been provisioned
++by this release.
+ 
+ The finite scope is how the decoded XML of one Live Set format version stores
+ each track's mixer values (volume, pan, pan mode, split-stereo pans, sends,
+@@ -30,7 +32,7 @@
+ 
+ ## Supersession
+ 
+-When published, this release supersedes mixer-values-v1, which stays
++This release supersedes mixer-values-v1, which stays
+ immutable. Its 37 case records are carried unchanged: the same IDs, inputs,
+ purposes, expectations, labels and comparators. Its fixtures are replaced. The
+ mixer-values-v1 fixtures are minimal documents that lack parts of a Live Set,
+@@ -49,9 +51,10 @@
+    changes in these ways:
+    - track order MIDI, audio, return (was audio, MIDI, return); track Ids 1,
+      2 and 3 (were 11, 12 and 13);
+-   - each track gains `Name`, `Color`, `AutomationEnvelopes` (empty, except
+-     the main track's tempo and time-signature envelopes), `TrackGroupId` −1
+-     (not on the main track) and `AudioOutputRouting`;
++   - each track except the cue track gains `Name`, `Color`,
++     `AutomationEnvelopes` (empty, except the main track's tempo and
++     time-signature envelopes), `TrackGroupId` −1 (not on the main track) and
++     `AudioOutputRouting`;
+    - the MIDI and audio tracks gain session and freeze clip lists with two
+      empty clip slots each; the MIDI, audio, return and main tracks gain an
+      empty device list;
+--- before/AGENTS.md
++++ after/AGENTS.md
+@@ -1,10 +1,9 @@
+ # Package role and access instructions
+ 
+-This is a staged, unreviewed handoff candidate. It is not an implementation
+-input. Only a release that a separate review approved and published may be used
+-for implementation, in a fresh, restricted implementation workspace that
+-contains only permitted materials. Do not begin clean implementation in an
+-analyst checkout.
++This is a reviewed local release for its explicit partial scope. Application
++implementation requires a fresh, restricted implementation workspace containing
++only permitted materials. Publication of this package does not provision one.
++Do not begin clean implementation in an analyst checkout.
+ 
+ In an approved implementation workspace, the permitted inputs are the published
+ release, neutral governance, approved public sources, and independently
+--- before/spec.md
++++ after/spec.md
+@@ -8,8 +8,9 @@
+ are in scope. No other clause of a listed requirement is implicitly approved.
+ This document is self-contained.
+ 
+-**Status: staged candidate; not reviewed; not released.** Do not implement from
+-it. A separate review must approve it first.
++**Status: reviewed local release.** A separate review approved the clauses
++below with the narrowing recorded in [the review disposition](REVIEW.md).
++Implementation requires a fresh, restricted implementation workspace.
+ 
+ ## What the contract means
+ 
+@@ -247,10 +248,12 @@
+ - **Round trip (extracted execution).** For the seven gains of
+   MIXER-VALUES-058 to 064, each a point of its curve, converting the gain to a
+   position and that position back to a gain gives the same binary32 gain
+-  exactly. This does not hold for every gain: between −6 dB and 0 dB on the
+-  volume curve there are about 2.5 million binary32 positions for about 8.4
+-  million binary32 gains, so most gains between curve points cannot return
+-  unchanged. Other gains have no round-trip expectation.
++  exactly. This does not hold for every gain. On the volume curve, from the
++  point at position 0.7 (about −6 dB) to the point at 0.85 (0 dB), there are
++  about 8.4 million binary32 gains but only about 2.5 million binary32
++  positions, so most gains in that range cannot return unchanged. Other gains
++  have no round-trip expectation: neither an exact return nor a bound on the
++  difference is released.
+ - Expectations exist only for the inputs of MIXER-VALUES-038 to 064. Which
+   fader, control or audio path uses these conversions is not released, and
+   positions are not stored in documents.
+@@ -321,23 +324,25 @@
+ 
+ - The pan law maps five binary32 inputs, a pan-mode
+   amount w, the pan p, the left and right split pans sL and sR, and a gain v,
+-  to four binary32 gains. With θ(x) = (x + 1)·π/4:
++  to four binary32 gains named L→L, L→R, R→L and R→R. With
++  θ(x) = (x + 1)·π/4:
+   - L→L = v·(w·cos θ(sL) + (1 − w)·max(10^−5, √2·cos θ(p)));
+   - L→R = v·w·sin θ(sL);
+   - R→L = v·w·cos θ(sR);
+   - R→R = v·(w·sin θ(sR) + (1 − w)·max(10^−5, √2·sin θ(p))).
+ 
+-  Output left = L→L·input left + R→L·input right, and output right =
+-  L→R·input left + R→R·input right. The formula is static-derived. The
+-  original program's code for it was run by extracted execution at the inputs
+-  of the cases, and every result agrees with it within the comparison.
+-- Consequences: with w = 0 the pan is a balance control without cross-feed;
+-  at p = −1, L→L is √2 (+3.01 dB) and R→R is 10^−5 (−100 dB), not 0. With
+-  w = 1 and split pans −1 and 1 the matrix is the identity; with split pans 0
+-  and 0 every gain is 0.7071068 (−3.01 dB). With v = 0 every gain is 0.
+-- The original computes the cosines in binary64. Where the formula gives 0 at
+-  a quarter turn, it gives about 6·10^−17 instead (MIXER-VALUES-070); the
+-  comparison absorbs this.
++  The names are labels for the four computed values. Which signal each gain
++  scales, and whether, where and when the audio path applies the gains, are
++  not released. The formula is static-derived. The original program's code
++  for it was run by extracted execution at the inputs of the cases, and every
++  result agrees with it within the comparison.
++- Consequences: with w = 0, L→R and R→L are 0; at p = −1, L→L is √2
++  (+3.01 dB) and R→R is 10^−5 (−100 dB), not 0. With w = 1 and split pans −1
++  and 1, L→L and R→R are 1, and L→R and R→L are 0 within the comparison; with
++  split pans 0 and 0 every gain is 0.7071068 (−3.01 dB). With v = 0 every gain
++  is 0.
++- In MIXER-VALUES-070 the original gives about 6·10^−17 for L→R and R→L,
++  where the formula gives 0. The comparison's bound of 10^−12 absorbs this.
+ - Expectations exist only for the inputs of MIXER-VALUES-065 to 073, which
+   have w and v each 0 or 1. Which w and v the audio path supplies for a track,
+   including which w belongs to which `PanMode` code and any ramp between them,
+@@ -346,9 +351,10 @@
+ ### REQ-MIXER-VALUES-014 — partial: crossfade curve levels (computed values)
+ 
+ - **Extracted execution.** Each crossfade curve code c of
+-  REQ-MIXER-VALUES-009 has a level T_c(x), a binary32 value, at a curve
+-  position x from −1 to 1. MIXER-VALUES-074 to 080 list each curve's level at
+-  x = −1, −0.5, −0.25, 0, 0.25, 0.5 and 1.
++  REQ-MIXER-VALUES-009 gives a level T_c(x), a binary32 value, at each of the
++  curve positions x = −1, −0.5, −0.25, 0, 0.25, 0.5 and 1. MIXER-VALUES-074
++  to 080 list these levels. No level is released for any other position, and
++  the listed levels do not define one, for example by interpolation.
+ - Consequences: every curve gives 1 at −1 and 0 at 1, and no level rises as x
+   increases among the listed positions. At 0 the levels are: Dipped 0.5,
+   Intermediate 0.5821068, Constant Power 0.7071068, and 1 for Slow Fade,
+@@ -447,11 +453,12 @@
+   unknown.
+ 
+ Parts of released requirements that are not released: in REQ-MIXER-VALUES-005,
+-any binding of the curves to faders, controls or audio, and inputs other than
+-those of the cases; in REQ-MIXER-VALUES-013, the inputs the audio path supplies,
+-ramps, other inputs, and the application to audio; in REQ-MIXER-VALUES-014,
+-levels at other positions, the crossfader and assignment mapping, ramps and the
+-application to audio.
++any binding of the curves to faders, controls or audio, inputs other than
++those of the cases, and the round trip of other gains; in
++REQ-MIXER-VALUES-013, the inputs the audio path supplies, ramps, other inputs,
++which signal each gain scales, and the application to audio; in
++REQ-MIXER-VALUES-014, levels at other positions, the crossfader and assignment
++mapping, ramps and the application to audio.
+ 
+ Inputs with **no expectation** in this release:
+ 
+@@ -540,7 +547,8 @@
+ - `PreHearTrack`, whose `DeviceChain` holds the cue mixer.
+ - `SendsPre` with one `SendPreBool` (`Id="0"`, `false`).
+ - `Scenes`, with two scenes (`Id` 0 and 1, named `Scene 1` and `Scene 2`,
+-  colour −1, tempo 120 and time signature 201, both disabled).
++  colour −1, tempo 120 and time signature 201, both disabled, and a follow
++  action that is not enabled).
+ - `Transport` (loop off, loop start 0, loop length 8, position 0),
+   `GlobalQuantisation` 4, `AutoQuantisation` 0 and `CrossfadeCurve` 2.
+ 
+@@ -559,4 +567,4 @@
+ No fixture contains shipped file content, program code or assets. Expected
+ results are newly authored behavioral data. No public source or dependency is
+ approved or included. Review status is recorded in
+-[the manifest](manifest.json).
++[the manifest](manifest.json) and [the review disposition](REVIEW.md).
+--- before/cases.json
++++ after/cases.json
+@@ -2,7 +2,7 @@
+  "schema": "mixer-values-cases-v1",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "scope": "mixer-values-v2 partial requirement clauses only (see spec.md)",
+- "status": "staged candidate; not reviewed; not released",
++ "status": "released-reviewed",
+  "fixture_origin": "Independently authored complete minimal Live Sets from one template set; no shipped file copied or excerpted; computed cases have no fixture",
+  "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+  "representation": {
+--- before/manifest.json
++++ after/manifest.json
+@@ -1,8 +1,8 @@
+ {
+  "schema": "handoff-manifest-v1",
+  "release_id": "mixer-values-v2",
+- "release_status": "staged candidate; not reviewed; not released",
+- "release_date": null,
++ "release_status": "released",
++ "release_date": "2026-10-18",
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+   "id": "SPEC-MIXER-VALUES",
+@@ -18,13 +18,13 @@
+   "REQ-MIXER-VALUES-002": "Volume is a binary32 linear gain; expectations from 0.0003162277571 to 1.99526238 only",
+   "REQ-MIXER-VALUES-003": "One send per return track on audio, MIDI, group and return mixers, none on main and cue; send is a binary32 linear gain from 0.0003162277571 to 1; documents with one return track only",
+   "REQ-MIXER-VALUES-004": "Pan and split pans are binary32 values from -1 to 1; pan mode codes 0 Stereo and 1 Split Stereo",
+-  "REQ-MIXER-VALUES-005": "Volume and send fader curves (101 points each) and the position-to-gain and gain-to-position conversions as computed values at the listed inputs only; exact round trip at the seven listed curve points only; no fader, control or audio binding",
++  "REQ-MIXER-VALUES-005": "Volume and send fader curves (101 points each) and the position-to-gain and gain-to-position conversions as computed values at the listed inputs only; exact round trip at the seven listed curve points only; neither an exact return nor a bound for the round trip of other gains; no fader, control or audio binding",
+   "REQ-MIXER-VALUES-006": "Volume and send value text: binary32 decibels, -inf dB at or below -69.7, otherwise three decimals with trailing zeros removed to one, unit dB; inputs near text boundaries excluded",
+   "REQ-MIXER-VALUES-007": "Pan value text: C within +-0.01, otherwise 50 times the magnitude rounded, with L or R; exact halfway values excluded",
+   "REQ-MIXER-VALUES-008": "Track switch Boolean with text On and Off (static-derived; also extracted execution); SoloSink meaning not released",
+   "REQ-MIXER-VALUES-009": "Crossfade assignment codes A, None, B; crossfader location and range; crossfade curve codes 0 to 6 and their names; curve levels only as released in REQ-MIXER-VALUES-014",
+-  "REQ-MIXER-VALUES-013": "Pan-law gain matrix as computed values for w and v each 0 or 1 at the listed inputs only; which w and v the audio path supplies, ramps and application to audio not released",
+-  "REQ-MIXER-VALUES-014": "Levels of the seven crossfade curves at positions -1, -0.5, -0.25, 0, 0.25, 0.5 and 1 as computed values; the crossfader-to-position mapping, assignment, application to audio and ramps not released"
++  "REQ-MIXER-VALUES-013": "Pan-law gains as computed values for w and v each 0 or 1 at the listed inputs only; the gain names are labels only; which w and v the audio path supplies, which signal each gain scales, ramps and application to audio not released",
++  "REQ-MIXER-VALUES-014": "Levels of the seven crossfade curves at positions -1, -0.5, -0.25, 0, 0.25, 0.5 and 1 as computed values; no level at other positions, by interpolation or otherwise; the crossfader-to-position mapping, assignment, application to audio and ramps not released"
+  },
+  "unreleased_requirements": [
+   "REQ-MIXER-VALUES-010",
+@@ -57,7 +57,7 @@
+   ],
+   "behavior": [
+    "what is written on save (REQ-MIXER-VALUES-010)",
+-   "the gains the audio path computes from stored values and where and when it applies them: the volume and send gain and silence limit (REQ-MIXER-VALUES-011, 012), which w and v feed the pan law, the crossfade factor of an assigned track, ramps and rendered audio",
++   "the gains the audio path computes from stored values and where and when it applies them: the volume and send gain and silence limit (REQ-MIXER-VALUES-011, 012), which w and v feed the pan law, which signal each pan-law gain scales, the crossfade factor of an assigned track, ramps and rendered audio",
+    "out-of-range and alternative stored values (REQ-MIXER-VALUES-015)",
+    "fader positions shown, and the mapping of controllers and faders to the conversions of REQ-MIXER-VALUES-005",
+    "which crossfader end favours A or B, crossfade levels at other positions",
+@@ -70,12 +70,24 @@
+  "fixture_origin": "independently authored complete minimal Live Sets from one template set; no shipped file content or program code; computed cases have no fixture",
+  "approved_public_sources": [],
+  "review": {
+-  "status": "pending",
+-  "reviewers": [],
+-  "date": null,
+-  "findings": [],
+-  "disposition": null,
+-  "record": null
++  "status": "approved",
++  "reviewers": [
++   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
++  ],
++  "date": "2026-10-18",
++  "findings": [
++   "RVM2-01 medium: REQ-005 said most gains between curve points cannot return unchanged; extracted execution of 1,601 random gains gives 765 that do not; narrowed to the counting fact for -6 to 0 dB on the volume curve, no exactness or bound for other gains; no case affected",
++   "RVM2-02 medium: REQ-013 stated how the gains scale the input channels and called the pan a balance control; that is application to audio; narrowed: gain names are labels, which signal each gain scales and application excluded; no case affected",
++   "RVM2-03 low: REQ-014 implied a level at every position; narrowed to the seven listed positions, no level defined elsewhere; no case affected",
++   "RVM2-04 low: REQ-013 described internal arithmetic for the 6e-17 cross-feed; restated as a result of MIXER-VALUES-070 absorbed by the 1e-12 bound",
++   "RVM2-05 low: change list said each track gains name, colour, envelopes, group and routing; the cue track gains none; scenes' follow action not described; corrected in README, fixture_changes and fixture provenance",
++   "RVM2-06 editorial: payload status set to reviewed release; review record added",
++   "RVM2-07 info: forward snap of REQ-005 confirmed by extracted execution at all 101 points of both curves",
++   "RVM2-08 info: all 37 fixtures pass the structural checker; none is expected to be refused",
++   "RVM2-09 info: no case exercises a group track or other computed inputs; no expectation invented"
++  ],
++  "disposition": "Approved with listed narrowing, only for the explicit partial clauses; 80 cases; case records MIXER-VALUES-001 to 037 carried from mixer-values-v1 on rebuilt fixtures; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
++  "record": "REVIEW.md"
+  },
+  "supersedes": "mixer-values-v1",
+  "entrypoint": "README.md",
+@@ -113,7 +125,7 @@
+    "template_set": [
+     "every fixture is rebuilt from a new template set; each case's edits are the mixer-values-v1 edits, unchanged",
+     "track order MIDI, audio, return (was audio, MIDI, return); track Ids 1, 2 and 3 (were 11, 12 and 13)",
+-    "each track gains Name (MIDI: Lead/Lead; audio: empty/2-Audio; return: empty/A-Return; main: empty/Main), Color, AutomationEnvelopes with an empty list (main: one-event tempo and time-signature envelopes), TrackGroupId -1 (not on main) and AudioOutputRouting (AudioOut/Main; main: AudioOut/External/S0)",
++    "each track except the cue track gains Name (MIDI: Lead/Lead; audio: empty/2-Audio; return: empty/A-Return; main: empty/Main), Color, AutomationEnvelopes with an empty list (main: one-event tempo and time-signature envelopes), TrackGroupId -1 (not on main) and AudioOutputRouting (AudioOut/Main; main: AudioOut/External/S0)",
+     "MIDI and audio tracks gain a session clip list (MainSequencer) and a FreezeSequencer list with two empty clip slots each; MIDI, audio, return and main tracks gain an empty device list (DeviceChain/DeviceChain/Devices)",
+     "each mixer gains On (true) as its first child; each value element with a Manual child gains an AutomationTarget with an Id, all but Speaker a MidiControllerRange (volume 0.0003162277571 to 1.99526238, sends 0.0003162277571 to 1, pans and crossfader -1 to 1, crossfade assignment 0 to 2) and all but Speaker and CrossFadeState a ModulationTarget; the main mixer gains Tempo (120) and TimeSignature (201) before CrossFade",
+     "LiveSet gains NextPointeeId 67 (pointee Ids 1 to 66), SendsPre with one SendPreBool Id 0 false, two scenes, Transport (loop off, start 0, length 8, position 0), GlobalQuantisation 4 and AutoQuantisation 0",
+@@ -274,18 +286,23 @@
+  "files": [
+   {
+    "path": "AGENTS.md",
+-   "sha256": "3c8d43bdb9073f10b22d32ff1190fd574fad06841d5c1dbb594fa73527cddae9",
+-   "bytes": 1440
++   "sha256": "35fb12d479830cd85ba4eb16815c687f796b562edc464f5490c4cf93f5c4f45a",
++   "bytes": 1411
+   },
+   {
+    "path": "README.md",
+-   "sha256": "75a9f05098fb5724c9bd8a503750499c16e7a95510e78d29ebe0e2c60809886d",
+-   "bytes": 6155
++   "sha256": "f7eb5e03a33957fc4a4081b2443fc023b8268b408a32fddd6d9831523048866f",
++   "bytes": 6275
++  },
++  {
++   "path": "REVIEW.md",
++   "sha256": "77255a76b96671a1e10cd3d92352d286068fe2ae2c6cae218f3d73a877d7879a",
++   "bytes": 9789
+   },
+   {
+    "path": "cases.json",
+-   "sha256": "d5dcb1dea6edd2eb5fc5ac028c51cf7d5df18529c87bda5ba1e332dfaacab9e1",
+-   "bytes": 65371
++   "sha256": "57ed29b17c1424ff5337805d7086ccc714386ab074cf90e2a9948f3dc84dbd1f",
++   "bytes": 65344
+   },
+   {
+    "path": "fixtures/MIXER-VALUES-001.xml",
+@@ -474,8 +491,8 @@
+   },
+   {
+    "path": "spec.md",
+-   "sha256": "9d7e4edcf255b4c4e43024007b8110bd45cfc126594e7f6c58991be4d94544dc",
+-   "bytes": 30826
++   "sha256": "2dfa867e2bb987e4848478628b3ae429a5746249106ad26d088d0e10b5454426",
++   "bytes": 31378
+   }
+  ]
+ }
+--- before/REVIEW.md
++++ after/REVIEW.md
+@@ -0,0 +1,127 @@
++# Review disposition
++
++Release: mixer-values-v2, 2026-10-18.
++
++Reviewer: separate review agent (Claude Opus 5.5), launched by the
++coordinator in its own handoff-review context. It did not author this candidate
++and will not implement it. The one reviewer performed the scope and evidence,
++supersession, fixture-validity, quality and sanitization, evidence-identity and
++fixture-sharing checks. Publication metadata outside this package is left to
++the coordinator.
++
++## Scope and checks
++
++Approval covers only the explicit partial clauses of REQ-MIXER-VALUES-001 to
++009, 013 and 014 in [the contract](spec.md). REQ-MIXER-VALUES-010, 011, 012
++and 015 remain unreleased.
++
++- Supersession. The mixer-values-v1 manifest digest equals the catalog value
++  and the superseded digest recorded here, and every file it lists still
++  matches. The 37 carried case records are equal to mixer-values-v1's, in the
++  same order and with the same serialized text. Each listed mixer-values-v1
++  fixture digest matches its file.
++- Fixture change. In all 37 fixtures every mixer value text, `EnabledByUser`
++  and the crossfade curve are equal to the mixer-values-v1 fixture of the same
++  case. No element of a mixer-values-v1 fixture is missing and no element
++  count changed; the added elements are those of the change list. Each fixture
++  differs from MIXER-VALUES-001 only in its case's value lines, at most three.
++  The tracks are MIDI 1, audio 2 and return 3 in every fixture.
++- Fixture validity. The analysts' structural checker for Live Sets was run
++  unchanged on an exported copy of every fixture. It finds no schema deviation,
++  no structural refusal and no shape of unknown outcome in any of the 37, and
++  every case effect is consistent. All 37 are expected to open; none is
++  expected to be refused. The reviewer's own check of the shapes that checker
++  does not evaluate (a base value element without `Value`, a repeated member,
++  a track of an unaccepted class) found none. The same checker finds no refusal
++  in the mixer-values-v1 fixtures but a shape of unknown outcome in all 37 (a
++  missing send setting per return track), as the supersession states.
++- Carried expectations. The reviewer's own restatement of the contract agrees
++  with all 37 carried expected results and with the worked examples of
++  REQ-006 and REQ-007. No fixture falls under an exclusion. A mutation of any
++  listed field is caught.
++- Computed expectations. Every one of the 43 computed cases was re-run by
++  extracted execution of the same x86_64 code. All 43 results
++  equal the payload exactly. All 101 points of both fader curves, read back
++  through position to gain, equal the reviewer's restatement of the REQ-005
++  construction with the snap applied to each point before the next is
++  computed. Under a snap applied only to the finished points, 37 volume points
++  would differ by one to three binary32 steps; the send curve is unaffected.
++  The reviewer's restatement of both conversions also agrees with the original
++  on 1,601 further gains and positions. The curve points of the round-trip
++  cases lie at least 0.167 of a binary32 step from a rounding midpoint, and a
++  one-step change of either curve point that MIXER-VALUES-051 uses moves its
++  position by at most 3.8·10⁻⁹. The pan-law formula agrees with every result
++  within the comparison.
++- Round trip of other gains. Of 1,601 random binary32 gains on both curves,
++  none a curve point, 765 did not return unchanged through both conversions of
++  the original code, by up to two binary32 steps. Volume 0.3 returns
++  0.30000004. From −6 dB to 0 dB on the volume curve, 44 of 61 sampled gains
++  did not return. The contract now claims only the seven run curve points and
++  the counting fact for that range (RVM2-01).
++- Sanitization was checked by the reviewer's own scan of every payload file.
++  No source code, recovered program text, internal identifiers, addresses,
++  analyst paths, private evidence links, planning identifiers or per-case
++  evidence fields are present. The flagged words are the provenance label
++  "x86_64 slice, glibc substitutions", "decompilation" in the forbidden-inputs
++  list of `AGENTS.md`, and "probe" in the comparison obligation, all as in
++  earlier releases.
++- Scope. No runtime, timing, display or audio result is released. No
++  expectation depends on an open question. Exclusions appear in both the
++  contract and the manifest and agree. Reference and candidate execution have
++  not run, and no compatibility is claimed.
++- In a copy outside the analyst checkout, every Markdown link resolves inside
++  the package, every case input exists, and every listed hash and size matches.
++  The 37 fixtures are distinct, well-formed XML, ASCII with LF endings and a
++  final newline. They contain no shipped file content and no sample.
++
++## Scope rulings
++
++- Computed values without an observation channel. Accepted. The cases state
++  values that a candidate computes from listed inputs, and the comparison
++  obligation says that the original application offers no observation of them.
++  They are not compatibility evidence.
++- Exact round trip under the stated exponential assumption. Accepted for the
++  seven curve points only. Gains between curve points have no round-trip
++  expectation and no bound.
++- The 10⁻¹² bound for pan-law gains and crossfade levels. Accepted. It admits
++  both 0 and the original's 6·10⁻¹⁷ for the cross-feed of MIXER-VALUES-070 and
++  for a level of 0. For every other expected value it admits nothing beyond the
++  two binary32 neighbours.
++- Crossfade positions. Released only at multiples of 1/4, which are also
++  multiples of 1/64. The extracted execution at ±0.95 is not released.
++- Pan-mode amount. Released for w of 0 and 1 without the mapping from the
++  stored pan mode, which is labelled inconsistently in the parent.
++- Template set. It holds no clip, sample or device and no envelope on a mixer
++  value. Opening rests on static-derived structural rules, which the checker
++  measures.
++
++## Findings
++
++| ID | Severity | Finding | Resolution |
++| --- | --- | --- | --- |
++| RVM2-01 | Medium | REQ-005 said that most gains between curve points cannot return unchanged. Extracted execution of 1,601 random gains shows 765 that do not return, under half. The counting argument holds only for the range it names. | Narrowed. The contract states the counting fact for the volume curve from −6 dB to 0 dB only, and that neither an exact return nor a bound is released for other gains. The manifest scope says the same. No case affected. |
++| RVM2-02 | Medium | REQ-013 stated how the four gains scale the input channels into the outputs, and called the pan a balance control without cross-feed. Both describe the application to audio, which this release excludes. | Narrowed. The gain names are labels for computed values. Which signal each gain scales, and whether, where and when the audio path applies them, are excluded in the contract and the manifest. The consequences are restated as values. No case affected. |
++| RVM2-03 | Low | REQ-014 said that each curve has a level at every position from −1 to 1. At other positions the original gives values that the listed ones do not suggest, and how levels are applied is excluded. | Narrowed. Levels are released at the seven listed positions only. The listed levels define no level at other positions, for example by interpolation. No case affected. |
++| RVM2-04 | Low | REQ-013 described the original's internal arithmetic and placed the cross-feed difference at a quarter turn, which fits R→L but not L→R. | Restated as a result. In MIXER-VALUES-070 the original gives about 6·10⁻¹⁷ for L→R and R→L where the formula gives 0, and the 10⁻¹² bound absorbs it. |
++| RVM2-05 | Low | The change list said that each track gains a name, colour, automation envelopes, group and output routing. The cue track gains none of them. The fixture provenance omitted the scenes' follow action. | Corrected in README change 1, the manifest's fixture changes and the fixture provenance. The element comparison found no other unlisted change. |
++| RVM2-06 | Editorial | README, AGENTS, contract, cases and manifest described an unreviewed candidate. | Status set to reviewed local release. This record added and linked. Manifest review and status fields filled; inventory re-hashed by the reviewer. |
++| RVM2-07 | Info | The REQ-005 snap feeds each point forward. | Confirmed by extracted execution at all 101 points of both curves. The contract states it that way. |
++| RVM2-08 | Info | Fixture validity. | All 37 fixtures pass the structural checker. None is expected to be refused. |
++| RVM2-09 | Info | No case exercises a group track or a computed input other than those listed. | The group-track rules are supported but untested; other computed inputs have no expectation. No expectation was invented. |
++
++## Disposition
++
++**Approved with listed narrowing** (RVM2-01 to RVM2-05), only for the explicit
++partial clauses in the contract. All 80 cases are kept. The 37 carried case
++records and expectations are mixer-values-v1's, on rebuilt fixtures. Expected
++results are static-derived or extracted execution, as labeled per case.
++Extracted execution ran the original program's x86_64 code with glibc in place
++of the macOS libraries; the arm64 build is inferred to give the same results
++within each comparison. Neither reference nor candidate application cases have
++run, and no compatibility pass is claimed. Candidate-only checks cannot replace
++independent reference observations. An isolated implementation workspace
++remains a prerequisite.
++
++This release supersedes mixer-values-v1, which stays immutable. This
++disposition concerns the local reviewed-handoff workflow; it does not authorize
++external publication. Preserve this release unchanged.

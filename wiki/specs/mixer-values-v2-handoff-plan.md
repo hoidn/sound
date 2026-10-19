@@ -9,6 +9,21 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 # Second mixer-values handoff: candidate and review plan
 
+## Review outcome
+
+Released 2026-10-18 as [mixer-values-v2](../../handoff/mixer-values-v2/README.md), approved with listed narrowing RVM2-01 to 05 by a separate review agent ([review record](../../handoff/mixer-values-v2/REVIEW.md)). All 80 cases are kept, and no record, fixture or expectation changed. The narrowings are wording.
+
+- **Round trip:** gain to fader position and back is not exact. In 1,601 random gains run through the original code, 765 (about 48%) did not return exactly, by up to 2 steps. The claim is now limited to −6 to 0 dB, with no bound.
+- **Forward snap:** matches the original at all 101 points.
+- **REQ-014:** limited to the seven positions.
+- **REQ-013:** the text on how gains are applied to audio is removed.
+- **Change list:** the missing cue track is added.
+
+For the spec author:
+- remove the "bit-exact" claim from REQ-005, 011 and 015, from REQ-MIX-GRAPH-003 and from Q-019;
+- F2 should say 1 to 3 steps;
+- MV-047 and MV-048 need absolute bounds.
+
 ## Decision and boundary
 
 Stage a superseding candidate, mixer-values-v2, from

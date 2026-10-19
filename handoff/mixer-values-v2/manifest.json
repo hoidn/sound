@@ -1,0 +1,498 @@
+{
+ "schema": "handoff-manifest-v1",
+ "release_id": "mixer-values-v2",
+ "release_status": "released",
+ "release_date": "2026-10-18",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "specification": {
+  "id": "SPEC-MIXER-VALUES",
+  "parent_revision": 4,
+  "release_revision": 4
+ },
+ "feature_ids": [
+  "FEAT-AUDIO",
+  "FEAT-PERSISTENCE"
+ ],
+ "partial_requirement_scopes": {
+  "REQ-MIXER-VALUES-001": "Mixer location per track type and the value elements read; same rules for every track type; homonymous elements elsewhere are different values",
+  "REQ-MIXER-VALUES-002": "Volume is a binary32 linear gain; expectations from 0.0003162277571 to 1.99526238 only",
+  "REQ-MIXER-VALUES-003": "One send per return track on audio, MIDI, group and return mixers, none on main and cue; send is a binary32 linear gain from 0.0003162277571 to 1; documents with one return track only",
+  "REQ-MIXER-VALUES-004": "Pan and split pans are binary32 values from -1 to 1; pan mode codes 0 Stereo and 1 Split Stereo",
+  "REQ-MIXER-VALUES-005": "Volume and send fader curves (101 points each) and the position-to-gain and gain-to-position conversions as computed values at the listed inputs only; exact round trip at the seven listed curve points only; neither an exact return nor a bound for the round trip of other gains; no fader, control or audio binding",
+  "REQ-MIXER-VALUES-006": "Volume and send value text: binary32 decibels, -inf dB at or below -69.7, otherwise three decimals with trailing zeros removed to one, unit dB; inputs near text boundaries excluded",
+  "REQ-MIXER-VALUES-007": "Pan value text: C within +-0.01, otherwise 50 times the magnitude rounded, with L or R; exact halfway values excluded",
+  "REQ-MIXER-VALUES-008": "Track switch Boolean with text On and Off (static-derived; also extracted execution); SoloSink meaning not released",
+  "REQ-MIXER-VALUES-009": "Crossfade assignment codes A, None, B; crossfader location and range; crossfade curve codes 0 to 6 and their names; curve levels only as released in REQ-MIXER-VALUES-014",
+  "REQ-MIXER-VALUES-013": "Pan-law gains as computed values for w and v each 0 or 1 at the listed inputs only; the gain names are labels only; which w and v the audio path supplies, which signal each gain scales, ramps and application to audio not released",
+  "REQ-MIXER-VALUES-014": "Levels of the seven crossfade curves at positions -1, -0.5, -0.25, 0, 0.25, 0.5 and 1 as computed values; no level at other positions, by interpolation or otherwise; the crossfader-to-position mapping, assignment, application to audio and ramps not released"
+ },
+ "unreleased_requirements": [
+  "REQ-MIXER-VALUES-010",
+  "REQ-MIXER-VALUES-011",
+  "REQ-MIXER-VALUES-012",
+  "REQ-MIXER-VALUES-015"
+ ],
+ "compatibility_dimensions": {
+  "project-files": "static-derived expectations for values read from documents; reference execution not-run",
+  "ui-text": "static-derived value texts and code names; the place that shows them is not specified; reference execution not-run",
+  "file-format-written": "excluded (REQ-MIXER-VALUES-010)",
+  "audio": "excluded (REQ-MIXER-VALUES-011 and 012; application of the computed gains of 005, 013 and 014)",
+  "behavior": "editing, fader positions shown and controller mapping excluded",
+  "timing": "excluded",
+  "computed-values": "extracted-execution fader-curve conversions, pan-law gains and crossfade curve levels at the listed inputs; no observation channel in the original application; reference execution not-run"
+ },
+ "exclusions": {
+  "inputs_without_expectation": [
+   "number text other than an optional minus sign, digits and an optional point with digits, for example exponents, a plus sign, spaces, empty text, inf, nan, hexadecimal or # forms; a missing Value attribute",
+   "Boolean text other than true and false; code text other than unsigned decimal digits",
+   "volumes outside 0.0003162277571 to 1.99526238, sends outside 0.0003162277571 to 1, pans, split pans and crossfader outside -1 to 1, pan mode other than 0 and 1, crossfade assignment other than 0 to 2, crossfade curve other than 0 to 6",
+   "volumes and sends whose exact decibel value lies within 0.00005 dB of -69.7, of +-0.0005, or of a number halfway between two consecutive multiples of 0.001",
+   "pan and split pan values -0.75, -0.25, 0.25 and 0.75",
+   "documents with no return track or more than one; send holders not equal to one per return track; holder Id other than 0; EnabledByUser other than true on audio, MIDI and group holders and false on the return track's own holder; SoloSink other than false",
+   "missing, duplicated or unknown mixer value elements; value elements in another order; a track without a mixer; any KeyMidi child in a mixer",
+   "automation, clip envelopes, modulation or MIDI and key mappings that target a mixer value",
+   "documents whose structure differs from the template set other than in the mixer value texts the cases change, including another number of tracks, scenes, clip slots, send holders or SendsPre items, a SendPreBool other than false, and added clips, devices or envelopes",
+   "computed inputs other than those listed in the cases: other positions, gains, pan-law inputs (including w or v other than 0 and 1) and crossfade positions; round trips of gains other than the seven listed",
+   "other envelopes, format versions, compressed containers and document kinds; host locales whose decimal separator is not '.'"
+  ],
+  "behavior": [
+   "what is written on save (REQ-MIXER-VALUES-010)",
+   "the gains the audio path computes from stored values and where and when it applies them: the volume and send gain and silence limit (REQ-MIXER-VALUES-011, 012), which w and v feed the pan law, which signal each pan-law gain scales, the crossfade factor of an assigned track, ramps and rendered audio",
+   "out-of-range and alternative stored values (REQ-MIXER-VALUES-015)",
+   "fader positions shown, and the mapping of controllers and faders to the conversions of REQ-MIXER-VALUES-005",
+   "which crossfader end favours A or B, crossfade levels at other positions",
+   "which part of the user interface shows which text, and any other form of the same value, such as digits without the unit or without -inf",
+   "editing after opening, including text entry, keys, mouse, remote control and MIDI; creating tracks and the values of new mixers and send holders; undo",
+   "the meaning of EnabledByUser, SoloSink and SendPreBool; the return mixer's own send; whether the cue volume is the preview level; crossfader value text",
+   "whether a set with another structure opens; the rules that decide it"
+  ]
+ },
+ "fixture_origin": "independently authored complete minimal Live Sets from one template set; no shipped file content or program code; computed cases have no fixture",
+ "approved_public_sources": [],
+ "review": {
+  "status": "approved",
+  "reviewers": [
+   "separate review agent (Claude Opus 5.5) in a coordinator-launched handoff-review context; not the author; will not implement"
+  ],
+  "date": "2026-10-18",
+  "findings": [
+   "RVM2-01 medium: REQ-005 said most gains between curve points cannot return unchanged; extracted execution of 1,601 random gains gives 765 that do not; narrowed to the counting fact for -6 to 0 dB on the volume curve, no exactness or bound for other gains; no case affected",
+   "RVM2-02 medium: REQ-013 stated how the gains scale the input channels and called the pan a balance control; that is application to audio; narrowed: gain names are labels, which signal each gain scales and application excluded; no case affected",
+   "RVM2-03 low: REQ-014 implied a level at every position; narrowed to the seven listed positions, no level defined elsewhere; no case affected",
+   "RVM2-04 low: REQ-013 described internal arithmetic for the 6e-17 cross-feed; restated as a result of MIXER-VALUES-070 absorbed by the 1e-12 bound",
+   "RVM2-05 low: change list said each track gains name, colour, envelopes, group and routing; the cue track gains none; scenes' follow action not described; corrected in README, fixture_changes and fixture provenance",
+   "RVM2-06 editorial: payload status set to reviewed release; review record added",
+   "RVM2-07 info: forward snap of REQ-005 confirmed by extracted execution at all 101 points of both curves",
+   "RVM2-08 info: all 37 fixtures pass the structural checker; none is expected to be refused",
+   "RVM2-09 info: no case exercises a group track or other computed inputs; no expectation invented"
+  ],
+  "disposition": "Approved with listed narrowing, only for the explicit partial clauses; 80 cases; case records MIXER-VALUES-001 to 037 carried from mixer-values-v1 on rebuilt fixtures; expectations static-derived or extracted execution as labeled; reference and candidate execution not-run; restricted implementation workspace required",
+  "record": "REVIEW.md"
+ },
+ "supersedes": "mixer-values-v1",
+ "entrypoint": "README.md",
+ "case_count": 80,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside package)"
+ ],
+ "expectation_provenance_labels": {
+  "static-derived; not observed reference output": "derived from evidence reviewed before sanitization",
+  "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 code that computes the value ran on the case's inputs, on a Linux x86_64 host with glibc in place of the macOS system libraries (base-10 exponential and cosine); nothing that supplies these inputs from a document, a control or the audio path ran, and nothing that applies the results to audio"
+ },
+ "stated_assumptions": [
+  "Static-derived (carried): a mixer number written as plain decimal text is read as the nearest binary32 number; a code's name is its list entry; some display shows the value texts, computed from the value as read; the base-10 logarithm may differ in the last binary32 digit, so inputs near a text boundary have no expectation.",
+  "The macOS arm64 build computes these values as the x86_64 build does, within each case's comparison. Its fused multiply-adds can change the last binary32 digit of the Dipped and Intermediate levels, of the pan-law gains (through binary64 intermediate results only) and of the three curve points next to the bottom of each fader curve; the comparisons cover these, and MIXER-VALUES-051, which uses one of those points, moves by less than 1e-8 for a one-step change. All extracted-execution cases depend on it.",
+  "The reference's base-10 exponential and cosine are within one binary32 step of glibc's at these inputs; the comparisons allow one step.",
+  "The round-trip cases (MIXER-VALUES-058 to 064) compare exactly. They assume that the reference's base-10 exponential gives each of the curve points involved as the binary32 value nearest to the exact result, as the glibc run did; each exact result lies at least 0.16 of a binary32 step from a rounding midpoint, so an exponential that errs by less than 0.66 of a step gives the same points."
+ ],
+ "supersession": {
+  "relationship": "replaces mixer-values-v1: every mixer-values-v1 clause and case record is carried with the same expectations, and its fixtures are replaced by complete sets; mixer-values-v1 stays immutable, but its fixtures lack set content whose absence has an unknown effect on opening",
+  "superseded_manifest_sha256": "5f6b8401b9324d0cf3d60da47d190e61b93e1935f96995128021f29c9f39cd60",
+  "restated_cases": "MIXER-VALUES-001 to 037: case records identical to mixer-values-v1; fixture files rebuilt",
+  "changes": [
+   "fixtures: all 37 rebuilt as complete Live Sets from the template set (fixture_changes); case records MIXER-VALUES-001 to 037 unchanged; no expectation changed",
+   "preconditions: the statement that set content absent from a fixture cannot change a judged outcome is withdrawn; every fixture holds the template set's structure, and documents with another structure have no expectation",
+   "REQ-MIXER-VALUES-005 released in part: both fader curves and both conversions as computed values at the listed inputs, and the exact round trip for seven curve points; cases 038 to 064",
+   "REQ-MIXER-VALUES-013 released in part: pan-law gains as computed values for w and v of 0 or 1 at the listed inputs; cases 065 to 073",
+   "REQ-MIXER-VALUES-014 released in part: levels of the seven crossfade curves at seven positions as computed values; cases 074 to 080; REQ-MIXER-VALUES-009 now points to it for the curve levels",
+   "REQ-MIXER-VALUES-008: the On/Off rule is also supported by extracted execution; cases 001 and 030 keep their records and the static-derived label",
+   "provenance: the extracted-execution label is new and carried by every new case; its definition names what ran and what did not; stated assumptions added for it",
+   "representation: action compute with function, inputs and per-function comparators; open cases unchanged",
+   "comparison obligation: each fixture is the set itself; computed cases have no observation channel in the original application",
+   "exclusions: REQ-005, 013 and 014 move from unreleased to partial and their remainders are listed; added: documents whose structure differs from the template set, computed inputs other than those listed, the meaning of SendPreBool, where and when the audio path applies the computed gains, whether a set with another structure opens"
+  ],
+  "fixture_changes": {
+   "template_set": [
+    "every fixture is rebuilt from a new template set; each case's edits are the mixer-values-v1 edits, unchanged",
+    "track order MIDI, audio, return (was audio, MIDI, return); track Ids 1, 2 and 3 (were 11, 12 and 13)",
+    "each track except the cue track gains Name (MIDI: Lead/Lead; audio: empty/2-Audio; return: empty/A-Return; main: empty/Main), Color, AutomationEnvelopes with an empty list (main: one-event tempo and time-signature envelopes), TrackGroupId -1 (not on main) and AudioOutputRouting (AudioOut/Main; main: AudioOut/External/S0)",
+    "MIDI and audio tracks gain a session clip list (MainSequencer) and a FreezeSequencer list with two empty clip slots each; MIDI, audio, return and main tracks gain an empty device list (DeviceChain/DeviceChain/Devices)",
+    "each mixer gains On (true) as its first child; each value element with a Manual child gains an AutomationTarget with an Id, all but Speaker a MidiControllerRange (volume 0.0003162277571 to 1.99526238, sends 0.0003162277571 to 1, pans and crossfader -1 to 1, crossfade assignment 0 to 2) and all but Speaker and CrossFadeState a ModulationTarget; the main mixer gains Tempo (120) and TimeSignature (201) before CrossFade",
+    "LiveSet gains NextPointeeId 67 (pointee Ids 1 to 66), SendsPre with one SendPreBool Id 0 false, two scenes, Transport (loop off, start 0, length 8, position 0), GlobalQuantisation 4 and AutoQuantisation 0",
+    "indentation is one tab per level (was two spaces); XML declaration, envelope attributes, ASCII text, LF line endings and the final newline unchanged; mixer value texts unchanged"
+   ],
+   "per_fixture": {
+    "fixtures/MIXER-VALUES-001.xml": {
+     "mixer_values_v1_sha256": "b9e943f264c173a258dadc464cb6392b416900d5305aaddb326896962914ddea",
+     "case_edits": "none (the template set)"
+    },
+    "fixtures/MIXER-VALUES-002.xml": {
+     "mixer_values_v1_sha256": "a50bc351c665598d39f4c56dc114463fe731557cced8d5656eb68aaa01761253",
+     "case_edits": "audio Volume/Manual 0.5011872053"
+    },
+    "fixtures/MIXER-VALUES-003.xml": {
+     "mixer_values_v1_sha256": "f54b97e6d0b10344685ca4b7a6e8b33d889ad96965f6fd26dd337e5dea6d57c1",
+     "case_edits": "main Volume/Manual 0.7367056608"
+    },
+    "fixtures/MIXER-VALUES-004.xml": {
+     "mixer_values_v1_sha256": "502f6d7a4bfaeafd26e4848926207f569a89ca5ac69794fe70f7b24debd659b1",
+     "case_edits": "audio Volume/Manual 0.5"
+    },
+    "fixtures/MIXER-VALUES-005.xml": {
+     "mixer_values_v1_sha256": "b3e4036ac02fa9be79edcefd8669d5b1a758d89fa099ad3d9ab6df4d8bf9a4a2",
+     "case_edits": "audio Volume/Manual 0.25"
+    },
+    "fixtures/MIXER-VALUES-006.xml": {
+     "mixer_values_v1_sha256": "e4824d8bc0a71e5b0ecf2a6137197459179e735e5cbaf7db68d45d56e0e182d0",
+     "case_edits": "audio Volume/Manual 1.99526238"
+    },
+    "fixtures/MIXER-VALUES-007.xml": {
+     "mixer_values_v1_sha256": "a80920148efab9edf520c1115c2927c8aaaa782b4bef426518f08a308d1d293b",
+     "case_edits": "audio Volume/Manual 0.0003162277571"
+    },
+    "fixtures/MIXER-VALUES-008.xml": {
+     "mixer_values_v1_sha256": "4779e854612155a1527da9302773639a480ea448a44f554518ac32575cfea9ed",
+     "case_edits": "audio Volume/Manual 0.99999"
+    },
+    "fixtures/MIXER-VALUES-009.xml": {
+     "mixer_values_v1_sha256": "bba57c0c886dfd077384da45e8092b0bf89ed2184e2ca496f4601e87b7340168",
+     "case_edits": "audio Volume/Manual 0.0003311311302"
+    },
+    "fixtures/MIXER-VALUES-010.xml": {
+     "mixer_values_v1_sha256": "a7b35f3f70c6415bf55060d02be525bc83399b156665692dc27586f44bf6db92",
+     "case_edits": "audio Volume/Manual 0.0003235936455"
+    },
+    "fixtures/MIXER-VALUES-011.xml": {
+     "mixer_values_v1_sha256": "5b7e46f3ed118592de0f7b8602f5e62cf06a5a97e129c8adfe2570f2d2656cab",
+     "case_edits": "audio Volume/Manual 0.30725"
+    },
+    "fixtures/MIXER-VALUES-012.xml": {
+     "mixer_values_v1_sha256": "a70ad84a41aa1eabcf9b2a5d305c1af7a256447170d7291f7c02b9ea45ad2025",
+     "case_edits": "midi Volume/Manual 0.03548133373"
+    },
+    "fixtures/MIXER-VALUES-013.xml": {
+     "mixer_values_v1_sha256": "83d2b01759c2a91dc1a5856573609930ed08f75690bdd7096f72fbeef5433eca",
+     "case_edits": "return Volume/Manual 1.5"
+    },
+    "fixtures/MIXER-VALUES-014.xml": {
+     "mixer_values_v1_sha256": "20bdebf1b1ef7ac18e09e6de17f2d06392e1d590dafd46c5617c49ef00f8bcfe",
+     "case_edits": "cue Volume/Manual 1.99526238"
+    },
+    "fixtures/MIXER-VALUES-015.xml": {
+     "mixer_values_v1_sha256": "60084697216d4a6e871d644f2a7d5ec6a2e42b120163ddf914fb5cbfe2753d61",
+     "case_edits": "audio Send/Manual 0.1"
+    },
+    "fixtures/MIXER-VALUES-016.xml": {
+     "mixer_values_v1_sha256": "b213a768ddf161421ec558637383394f1b04af1e5debeec825fdf85e37a8c0cc",
+     "case_edits": "audio Send/Manual 1"
+    },
+    "fixtures/MIXER-VALUES-017.xml": {
+     "mixer_values_v1_sha256": "b48cb69ad1b8f77699e006004b700bae4c09482e2d7adab87b6fceff738a75c7",
+     "case_edits": "midi Send/Manual 0.0003311311302"
+    },
+    "fixtures/MIXER-VALUES-018.xml": {
+     "mixer_values_v1_sha256": "4fc54703e398c7db84f5f19c59880caf1367170c8ca8ff8d490f88b6b82b0cd2",
+     "case_edits": "audio Pan/Manual -0.6"
+    },
+    "fixtures/MIXER-VALUES-019.xml": {
+     "mixer_values_v1_sha256": "31d2c148ba26d6ddbdad9fccbb164f91be69451cc9aa0252d5f04a9cfda76bf4",
+     "case_edits": "audio Pan/Manual 0.004999999888"
+    },
+    "fixtures/MIXER-VALUES-020.xml": {
+     "mixer_values_v1_sha256": "a22edc17135abb2b2bbbbceb312424c198cc335d7f76074225805853218fe36e",
+     "case_edits": "audio Pan/Manual 0.01"
+    },
+    "fixtures/MIXER-VALUES-021.xml": {
+     "mixer_values_v1_sha256": "9f9a16e8a7604b928936a5f066c87206a4238e3914e65367817085a3147e4ee7",
+     "case_edits": "audio Pan/Manual 0.0101"
+    },
+    "fixtures/MIXER-VALUES-022.xml": {
+     "mixer_values_v1_sha256": "fa7664956d072297986f1e3bcfe2dd00419d3d274e43f02d73f9ec49c5323c55",
+     "case_edits": "audio Pan/Manual -0.0101"
+    },
+    "fixtures/MIXER-VALUES-023.xml": {
+     "mixer_values_v1_sha256": "be9924f9ea3ad6009026eee53a2b4f9ced869b8417dac3f4e749082660ceef76",
+     "case_edits": "audio Pan/Manual 1"
+    },
+    "fixtures/MIXER-VALUES-024.xml": {
+     "mixer_values_v1_sha256": "c8b1f2d1a10dcd458e94b0f300be4136c9c22165c9da57a703a9b70866f4f681",
+     "case_edits": "audio Pan/Manual -1"
+    },
+    "fixtures/MIXER-VALUES-025.xml": {
+     "mixer_values_v1_sha256": "6c05a75f584e99850537d9593fc46d4290fad9bf6d09368ba2f02eac5b5ea28e",
+     "case_edits": "audio Pan/Manual 0.33"
+    },
+    "fixtures/MIXER-VALUES-026.xml": {
+     "mixer_values_v1_sha256": "0a67756c9678691c37e0e905bcf0b4467a0b51ed4542100fcb7c6a96bcf54d50",
+     "case_edits": "main Pan/Manual 0.2"
+    },
+    "fixtures/MIXER-VALUES-027.xml": {
+     "mixer_values_v1_sha256": "795073eab6bceae12204f5b54ec789c0b9e677260e4956a1d0f541f6fec54543",
+     "case_edits": "audio PanMode 1; audio SplitStereoPanL/Manual -0.5; audio SplitStereoPanR/Manual 0.5"
+    },
+    "fixtures/MIXER-VALUES-028.xml": {
+     "mixer_values_v1_sha256": "a2f637b426211cd6a749769c783d724328a28b49de20f206fbf148909d2b1d6c",
+     "case_edits": "audio CrossFadeState/Manual 0"
+    },
+    "fixtures/MIXER-VALUES-029.xml": {
+     "mixer_values_v1_sha256": "e9b5a11809ab3332a5bb313ccd02d34ee0c7dc4a45b2ad71e258e41d53c3ef1c",
+     "case_edits": "audio CrossFadeState/Manual 2"
+    },
+    "fixtures/MIXER-VALUES-030.xml": {
+     "mixer_values_v1_sha256": "40444786f07b7b2025d84b8127ca8d1b0e2de17df6f65f3689772b171c818fb9",
+     "case_edits": "audio Speaker/Manual false"
+    },
+    "fixtures/MIXER-VALUES-031.xml": {
+     "mixer_values_v1_sha256": "7731338b03fbbf58becd67240119fc9e5db75de0bec35846a84244ed2d48c7a1",
+     "case_edits": "set CrossfadeCurve 0"
+    },
+    "fixtures/MIXER-VALUES-032.xml": {
+     "mixer_values_v1_sha256": "7b07d3939159411d9d153146c42c03821ada40e92740cfab22a74d987e6e2f2e",
+     "case_edits": "set CrossfadeCurve 1"
+    },
+    "fixtures/MIXER-VALUES-033.xml": {
+     "mixer_values_v1_sha256": "1428d32c98cdac0ba1175e4d47049f1287caf5c379218fb981ac3c692976367a",
+     "case_edits": "set CrossfadeCurve 3"
+    },
+    "fixtures/MIXER-VALUES-034.xml": {
+     "mixer_values_v1_sha256": "5ecf7ab4d0c145c9124e05075a5dadfea6f3231fb2d6a7e6793bd0e516cddebe",
+     "case_edits": "set CrossfadeCurve 4"
+    },
+    "fixtures/MIXER-VALUES-035.xml": {
+     "mixer_values_v1_sha256": "21d85e3f0366d834f87b59bf56f20435d3e332ace70b1b532cfa21acbdb6fa50",
+     "case_edits": "set CrossfadeCurve 5"
+    },
+    "fixtures/MIXER-VALUES-036.xml": {
+     "mixer_values_v1_sha256": "4aee9008c8d070ac4af5d14918bc392e5a4c55741c3b7daeb172a08c287ea350",
+     "case_edits": "set CrossfadeCurve 6"
+    },
+    "fixtures/MIXER-VALUES-037.xml": {
+     "mixer_values_v1_sha256": "93c3022b89bf9f3b114079822ac21a6ad2138866c135147e6183c1b44b3b416f",
+     "case_edits": "main CrossFade/Manual -0.25"
+    }
+   }
+  }
+ },
+ "files": [
+  {
+   "path": "AGENTS.md",
+   "sha256": "35fb12d479830cd85ba4eb16815c687f796b562edc464f5490c4cf93f5c4f45a",
+   "bytes": 1411
+  },
+  {
+   "path": "README.md",
+   "sha256": "f7eb5e03a33957fc4a4081b2443fc023b8268b408a32fddd6d9831523048866f",
+   "bytes": 6275
+  },
+  {
+   "path": "REVIEW.md",
+   "sha256": "77255a76b96671a1e10cd3d92352d286068fe2ae2c6cae218f3d73a877d7879a",
+   "bytes": 9789
+  },
+  {
+   "path": "cases.json",
+   "sha256": "57ed29b17c1424ff5337805d7086ccc714386ab074cf90e2a9948f3dc84dbd1f",
+   "bytes": 65344
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-001.xml",
+   "sha256": "0fafdfb2cf7c14c522c2baf1fc0b6c80a7d00106d648d0ead87ebd740c1db768",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-002.xml",
+   "sha256": "f7e3c547f9af5ed4cc0482065faa2983193b0a5721b1349698e1fcfdb185412d",
+   "bytes": 19220
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-003.xml",
+   "sha256": "114528d45b3c47850fa417bd65df9eebf6d5c811afcd7c5824542bf9bbf0f1e2",
+   "bytes": 19220
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-004.xml",
+   "sha256": "b0d39da51de972cabd550f7bcf74219ad6838f4ba74ca058ba741c731acdc80a",
+   "bytes": 19211
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-005.xml",
+   "sha256": "bb9eba7635643d4d0ecef070f6709b628dfe1d97ea7655c75e0945da19edbfc4",
+   "bytes": 19212
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-006.xml",
+   "sha256": "9b85fa67288cede2fc2e9c6a9507a158e8664e0d66a1e32dfc9bd1f01acaf766",
+   "bytes": 19218
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-007.xml",
+   "sha256": "3bbabc1b762c458c3515c10d727dfc4394da7ba2591a775d767adf62052d30cb",
+   "bytes": 19223
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-008.xml",
+   "sha256": "649e95bf460b7993cbfd3ca97cf8b504a018f883b24d5b96ae247615691d7740",
+   "bytes": 19215
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-009.xml",
+   "sha256": "bbdf03ba6b6713391293d77b81ed4594bca584625586f86f23f690bb9f8c4d59",
+   "bytes": 19223
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-010.xml",
+   "sha256": "cfe697f28f545c36d444ffe25dbcdf6508c789916dd4ea8a0caa8065704822ed",
+   "bytes": 19223
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-011.xml",
+   "sha256": "ef4785258571562639730ff897f2fcb7fce264804bcf7a8525d4bbcec6a17084",
+   "bytes": 19215
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-012.xml",
+   "sha256": "dbfc7777dfcc5f2e30b47393215a9d9db287fda664dded9bef8449ff58bb4f3b",
+   "bytes": 19221
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-013.xml",
+   "sha256": "b593cd6c276065fe3ed67b08484a6cf8297569ebe762d6d03fd68e65fcbcff5f",
+   "bytes": 19211
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-014.xml",
+   "sha256": "4b99ded6348080f17c4d307a8f6993d7abb1adc108c19eacf194c17d4ae78a87",
+   "bytes": 19218
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-015.xml",
+   "sha256": "1e7f9a128549a8634b2f406e9e7b74732e597e9e944b6f4d21718de9fa675c23",
+   "bytes": 19197
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-016.xml",
+   "sha256": "b7615ecd2e7d464874a043cd097b18f6a888bd4ecf969100393ff8d21b30ebc3",
+   "bytes": 19195
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-017.xml",
+   "sha256": "bb5e74107c32d3b18d72f0a702b1a75da8123331ff8b9889e80677702ea93bc4",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-018.xml",
+   "sha256": "55052e98fd60f169b7ac6971789c2b6470ebc750144be24c97c20be198602882",
+   "bytes": 19212
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-019.xml",
+   "sha256": "6f599848f952ed3f694379556cf0271f32fc51ea51d05c4234bd7647343da728",
+   "bytes": 19222
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-020.xml",
+   "sha256": "46ee9f8927a401ed83dad5f0b52fd7d4c883d77fffeabc538e4c4ece79d4306a",
+   "bytes": 19212
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-021.xml",
+   "sha256": "c0453cb0777bc1707cb53c287ae86b1deed579072a9a194f42946facf2ca0f9b",
+   "bytes": 19214
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-022.xml",
+   "sha256": "6fa48a10912870c56b245b1ebcb6cd0bf5e89007b7b7672a7a5b4d3e86c4e089",
+   "bytes": 19215
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-023.xml",
+   "sha256": "89cd5a933d8d546d3cb575229d9728c35b92464b0d9089294c8fae3af44957a6",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-024.xml",
+   "sha256": "0188156615148f363d7df8d832ef889396d5cebd02e0ccd880577c41cceb7058",
+   "bytes": 19210
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-025.xml",
+   "sha256": "b4a3d66d7abfb44b203a1a0a42bbf3794e911df592895ba164ed5a497a8ca576",
+   "bytes": 19212
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-026.xml",
+   "sha256": "763810859e110f587591b679f3b382683f6dbf4be3ada14cac4531ce862811ce",
+   "bytes": 19211
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-027.xml",
+   "sha256": "af1a607e4b0b6f470ba514e7d4f05f364ac32d390d517f6dc10414543feff88d",
+   "bytes": 19213
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-028.xml",
+   "sha256": "004a3fb8cfcb62739b73740b640167d9f832648f4554809927556005c8ac2b92",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-029.xml",
+   "sha256": "2a74ff354b97f6098f658c5b0a2d6fb096980aeab59ad7bbf7e2ccfa1466825d",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-030.xml",
+   "sha256": "cc839eddb914a8f7e6362d529eed73abf59d2818aadfeb867be686b317f672f3",
+   "bytes": 19210
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-031.xml",
+   "sha256": "1b994f0def2cca4c4fee611260e287b705b4f1e64fbfabec654d8103589245c7",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-032.xml",
+   "sha256": "f0ed0becd07acb4413db85f953ac5b0f02fa2f95154013777eab8d310b976041",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-033.xml",
+   "sha256": "5bb5814bfc1702926f138b3906567f03c6a3fb0c84ad7239f26e4a97ac51ebed",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-034.xml",
+   "sha256": "a1e3572662020ff1a0fe8b06d86c4de84214d9b8e83237713f43da153d64398a",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-035.xml",
+   "sha256": "2cf164bf944ebe2f450299f6c09114503eef7bddc02c565008cff150e1aaa068",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-036.xml",
+   "sha256": "6742d7a47b6b03d8cba856e092a00277b1f40d5a4e9837b15a667ddfa23fcea7",
+   "bytes": 19209
+  },
+  {
+   "path": "fixtures/MIXER-VALUES-037.xml",
+   "sha256": "42549171d8830944b990b4c810e7602998fe434f50099612588e6b8479cafd5e",
+   "bytes": 19213
+  },
+  {
+   "path": "spec.md",
+   "sha256": "2dfa867e2bb987e4848478628b3ae429a5746249106ad26d088d0e10b5454426",
+   "bytes": 31378
+  }
+ ]
+}

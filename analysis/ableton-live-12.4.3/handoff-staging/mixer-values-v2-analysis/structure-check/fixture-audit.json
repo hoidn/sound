@@ -1,0 +1,1005 @@
+{
+ "id": "T11-RELEASED-FIXTURE-AUDIT",
+ "spec": "SPEC-LIVE-SET-STRUCTURE revision 1 (A1, A2, A3 settled statically; A5 still an assumption)",
+ "method": "Audit every released fixture against the structural load rules of SPEC-LIVE-SET-STRUCTURE r1.\n\nUsage: python3 -I fixture_audit.py <schema.txt> <handoff dir> <out.json>\nRead-only on handoff/. For each release, each fixture file is classified (Live Set, device preset,\ndeliberately unparseable, or not a Live Set document) and linked to the cases that use it with their\nexpectations. For a Live Set, the traced refusals are evaluated:\n  REQ-002  no audio, MIDI or group track; a player track after a return track     (validation walk)\n  REQ-006  an audio or MIDI track whose freeze slot count differs from its session slot count (walk)\n  REQ-013  a mixer with more send holders than trailing return tracks              (root post-load)\n  REQ-015  a pointee present with Id 0 or without Id; NextPointeeId not above the largest pointee Id\n  REQ-016  a negative or duplicate list-item Id (S-cond A5)\nand two shapes with no load check (REQ-006 slots != scenes, REQ-013 SendsPre != returns) are noted.\nFor a fixture that would be refused, the minimal addition taken from T11-MIN's skeleton is recorded\nas XML text with its insertion point, applied to a copy, and the copy is re-checked. The addition\nonly adds elements; no existing element or value changes, so what the case tests is kept.\nEnvelope, value-text and field-level refusals belong to the other specs and are not evaluated.",
+ "basis": {
+  "REQ-002, REQ-006": "validation walk, run by the XML reader's load step on every open (A1 settled)",
+  "REQ-006 freeze count": "the freeze sequencer is constructed with an empty slot list and no load step adds slots (A2 settled)",
+  "REQ-013, REQ-015 NextPointeeId": "root post-load step, enabled by the reading context's flag, which the XML reader's context sets (A1 settled)",
+  "REQ-015 Id 0": "member post-load step; preset exemption not set on the set-open path (A3 settled)",
+  "REQ-016": "generic list loader (S-cond A5)"
+ },
+ "totals": {
+  "fixtures": 37,
+  "live_sets": 37,
+  "refused": 0,
+  "cases_contradicted": 0,
+  "cases_not_isolating": 0
+ },
+ "releases": [
+  {
+   "release": "mixer-values-v2",
+   "summary": {
+    "fixtures": 37,
+    "live_sets": 37,
+    "refused": 0,
+    "cases_contradicted": [],
+    "cases_not_isolating": [],
+    "with_unknown_shapes": 0
+   },
+   "fixtures": [
+    {
+     "fixture": "fixtures/MIXER-VALUES-001.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-001",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 1.0,
+          "text": "0.0 dB"
+         },
+         "audio/Pan": {
+          "value": 0.0,
+          "text": "C"
+         },
+         "audio/SplitStereoPanL": {
+          "value": -1.0,
+          "text": "50L"
+         },
+         "audio/SplitStereoPanR": {
+          "value": 1.0,
+          "text": "50R"
+         },
+         "audio/PanMode": {
+          "value": 0,
+          "name": "Stereo"
+         },
+         "audio/Speaker": {
+          "value": true,
+          "text": "On"
+         },
+         "audio/CrossFadeState": {
+          "value": 1,
+          "name": "None"
+         },
+         "audio/Send": {
+          "value": 0.0003162277571391314,
+          "text": "-inf dB"
+         },
+         "midi/Volume": {
+          "value": 1.0,
+          "text": "0.0 dB"
+         },
+         "midi/Pan": {
+          "value": 0.0,
+          "text": "C"
+         },
+         "midi/SplitStereoPanL": {
+          "value": -1.0,
+          "text": "50L"
+         },
+         "midi/SplitStereoPanR": {
+          "value": 1.0,
+          "text": "50R"
+         },
+         "midi/PanMode": {
+          "value": 0,
+          "name": "Stereo"
+         },
+         "midi/Speaker": {
+          "value": true,
+          "text": "On"
+         },
+         "midi/CrossFadeState": {
+          "value": 1,
+          "name": "None"
+         },
+         "midi/Send": {
+          "value": 0.0003162277571391314,
+          "text": "-inf dB"
+         },
+         "return/Volume": {
+          "value": 1.0,
+          "text": "0.0 dB"
+         },
+         "return/Pan": {
+          "value": 0.0,
+          "text": "C"
+         },
+         "return/SplitStereoPanL": {
+          "value": -1.0,
+          "text": "50L"
+         },
+         "return/SplitStereoPanR": {
+          "value": 1.0,
+          "text": "50R"
+         },
+         "return/PanMode": {
+          "value": 0,
+          "name": "Stereo"
+         },
+         "return/Speaker": {
+          "value": true,
+          "text": "On"
+         },
+         "return/CrossFadeState": {
+          "value": 1,
+          "name": "None"
+         },
+         "main/Volume": {
+          "value": 1.0,
+          "text": "0.0 dB"
+         },
+         "main/Pan": {
+          "value": 0.0,
+          "text": "C"
+         },
+         "main/CrossFade": {
+          "value": 0.0
+         },
+         "cue/Volume": {
+          "value": 1.0,
+          "text": "0.0 dB"
+         },
+         "set/CrossfadeCurve": {
+          "value": 2,
+          "name": "Constant Power"
+         }
+        },
+        "send_counts": {
+         "audio": 1,
+         "midi": 1,
+         "main": 0,
+         "cue": 0
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-002.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-002",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.5011872053146362,
+          "text": "-6.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-003.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-003",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "main/Volume": {
+          "value": 0.7367056608200073,
+          "text": "-2.654 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-004.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-004",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.5,
+          "text": "-6.021 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-005.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-005",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.25,
+          "text": "-12.041 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-006.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-006",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 1.9952623844146729,
+          "text": "6.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-007.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-007",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.0003162277571391314,
+          "text": "-inf dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-008.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-008",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.9999899864196777,
+          "text": "0.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-009.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-009",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.0003311311302240938,
+          "text": "-69.6 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-010.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-010",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.00032359364558942616,
+          "text": "-inf dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-011.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-011",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Volume": {
+          "value": 0.3072499930858612,
+          "text": "-10.25 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-012.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-012",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "midi/Volume": {
+          "value": 0.03548133373260498,
+          "text": "-29.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-013.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-013",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "return/Volume": {
+          "value": 1.5,
+          "text": "3.522 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-014.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-014",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "cue/Volume": {
+          "value": 1.9952623844146729,
+          "text": "6.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-015.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-015",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Send": {
+          "value": 0.10000000149011612,
+          "text": "-20.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-016.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-016",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Send": {
+          "value": 1.0,
+          "text": "0.0 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-017.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-017",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "midi/Send": {
+          "value": 0.0003311311302240938,
+          "text": "-69.6 dB"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-018.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-018",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": -0.6000000238418579,
+          "text": "30L"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-019.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-019",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": 0.004999999888241291,
+          "text": "C"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-020.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-020",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": 0.009999999776482582,
+          "text": "C"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-021.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-021",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": 0.010099999606609344,
+          "text": "1R"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-022.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-022",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": -0.010099999606609344,
+          "text": "1L"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-023.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-023",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": 1.0,
+          "text": "50R"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-024.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-024",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": -1.0,
+          "text": "50L"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-025.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-025",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Pan": {
+          "value": 0.33000001311302185,
+          "text": "17R"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-026.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-026",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "main/Pan": {
+          "value": 0.20000000298023224,
+          "text": "10R"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-027.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-027",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/PanMode": {
+          "value": 1,
+          "name": "Split Stereo"
+         },
+         "audio/SplitStereoPanL": {
+          "value": -0.5,
+          "text": "25L"
+         },
+         "audio/SplitStereoPanR": {
+          "value": 0.5,
+          "text": "25R"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-028.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-028",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/CrossFadeState": {
+          "value": 0,
+          "name": "A"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-029.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-029",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/CrossFadeState": {
+          "value": 2,
+          "name": "B"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-030.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-030",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "audio/Speaker": {
+          "value": false,
+          "text": "Off"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-031.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-031",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "set/CrossfadeCurve": {
+          "value": 0,
+          "name": "Dipped"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-032.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-032",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "set/CrossfadeCurve": {
+          "value": 1,
+          "name": "Intermediate"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-033.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-033",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "set/CrossfadeCurve": {
+          "value": 3,
+          "name": "Slow Fade"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-034.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-034",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "set/CrossfadeCurve": {
+          "value": 4,
+          "name": "Slow Cut"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-035.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-035",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "set/CrossfadeCurve": {
+          "value": 5,
+          "name": "Fast Cut"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-036.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-036",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "set/CrossfadeCurve": {
+          "value": 6,
+          "name": "Transition"
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    },
+    {
+     "fixture": "fixtures/MIXER-VALUES-037.xml",
+     "kind": "live-set",
+     "cases": [
+      {
+       "id": "MIXER-VALUES-037",
+       "action": "open",
+       "expected": {
+        "outcome": "opens",
+        "values": {
+         "main/CrossFade": {
+          "value": -0.25
+         }
+        }
+       },
+       "effect": "consistent"
+      }
+     ],
+     "refused_by_traced_rules": false,
+     "refusals": [],
+     "unknown_shapes": []
+    }
+   ]
+  }
+ ]
+}

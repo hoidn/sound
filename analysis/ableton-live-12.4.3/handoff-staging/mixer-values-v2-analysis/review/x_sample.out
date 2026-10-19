@@ -1,0 +1,59 @@
+== 1. every compute case re-run through the harness ==
+MIXER-VALUES-038 position-to-gain exact comparator pass
+MIXER-VALUES-039 position-to-gain exact comparator pass
+MIXER-VALUES-040 position-to-gain exact comparator pass
+MIXER-VALUES-041 position-to-gain exact comparator pass
+MIXER-VALUES-042 position-to-gain exact comparator pass
+MIXER-VALUES-043 position-to-gain exact comparator pass
+MIXER-VALUES-044 position-to-gain exact comparator pass
+MIXER-VALUES-045 position-to-gain exact comparator pass
+MIXER-VALUES-046 position-to-gain exact comparator pass
+MIXER-VALUES-047 position-to-gain exact comparator pass
+MIXER-VALUES-048 position-to-gain exact comparator pass
+MIXER-VALUES-049 position-to-gain exact comparator pass
+MIXER-VALUES-050 gain-to-position exact comparator pass
+MIXER-VALUES-051 gain-to-position exact comparator pass
+MIXER-VALUES-052 gain-to-position exact comparator pass
+MIXER-VALUES-053 gain-to-position exact comparator pass
+MIXER-VALUES-054 gain-to-position exact comparator pass
+MIXER-VALUES-055 gain-to-position exact comparator pass
+MIXER-VALUES-056 gain-to-position exact comparator pass
+MIXER-VALUES-057 gain-to-position exact comparator pass
+MIXER-VALUES-058 round-trip exact comparator pass
+MIXER-VALUES-059 round-trip exact comparator pass
+MIXER-VALUES-060 round-trip exact comparator pass
+MIXER-VALUES-061 round-trip exact comparator pass
+MIXER-VALUES-062 round-trip exact comparator pass
+MIXER-VALUES-063 round-trip exact comparator pass
+MIXER-VALUES-064 round-trip exact comparator pass
+MIXER-VALUES-065 pan-law exact comparator pass
+MIXER-VALUES-066 pan-law exact comparator pass
+MIXER-VALUES-067 pan-law exact comparator pass
+MIXER-VALUES-068 pan-law exact comparator pass
+MIXER-VALUES-069 pan-law exact comparator pass
+MIXER-VALUES-070 pan-law exact comparator pass
+MIXER-VALUES-071 pan-law exact comparator pass
+MIXER-VALUES-072 pan-law exact comparator pass
+MIXER-VALUES-073 pan-law exact comparator pass
+MIXER-VALUES-074 crossfade-level exact comparator pass
+MIXER-VALUES-075 crossfade-level exact comparator pass
+MIXER-VALUES-076 crossfade-level exact comparator pass
+MIXER-VALUES-077 crossfade-level exact comparator pass
+MIXER-VALUES-078 crossfade-level exact comparator pass
+MIXER-VALUES-079 crossfade-level exact comparator pass
+MIXER-VALUES-080 crossfade-level exact comparator pass
+43/43 equal the payload exactly; 43/43 pass their comparator
+== 2. curve points G[k] through position -> gain at binary32(k/100) ==
+volume: X points differing from the forward-snap restatement: 0 []
+volume: X points differing from an end-only snap: 37 [45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 67, 68, 69, 70, 72, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84] (steps [1, 2, 3])
+  G[50], G[70] X: 0.1995263397693634 0.5011872053146362  end-only snap: 0.1995263248682022 0.5011871457099915
+send: X points differing from the forward-snap restatement: 0 []
+send: X points differing from an end-only snap: 0 [] (steps [])
+== 3. round trip of random binary32 gains (gain -> position -> gain), both through the harness ==
+volume: 801 gains (0 on a curve point); not returned exactly 385; worst 2 binary32 steps; steps histogram {0: 416, 1: 331, 2: 54}
+  restatement agrees with X: gain -> position 801/801, position -> gain 801/801
+  of these, 61 lie from G[70] (-6 dB) to below G[85] (0 dB); not returned exactly 44
+  volume 0.3: 0.30000001192092896 -> position 0.5885320901870728 -> gain 0.30000004172325134
+send: 800 gains (0 on a curve point); not returned exactly 380; worst 2 binary32 steps; steps histogram {0: 420, 1: 340, 2: 40}
+  restatement agrees with X: gain -> position 800/800, position -> gain 800/800
+processes 70; largest call count per process 201 (limit 256)

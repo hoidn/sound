@@ -1,0 +1,2292 @@
+{
+ "schema": "mixer-values-cases-v1",
+ "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+ "scope": "mixer-values-v2 partial requirement clauses only (see spec.md)",
+ "status": "released-reviewed",
+ "fixture_origin": "Independently authored complete minimal Live Sets from one template set; no shipped file copied or excerpted; computed cases have no fixture",
+ "oracle_status": "Static-derived and extracted-execution expectations (label per case); neither the reference application nor a candidate executed",
+ "representation": {
+  "mixers": "audio, midi, return, main, cue (see spec.md); set for the Live Set itself",
+  "values": "<mixer>/<element> -> value (binary32 number, Boolean or integer code) and text or name",
+  "send_counts": "mixer -> number of sends",
+  "note": "project comparison representation, not an API of the original application or a required design",
+  "compute": "action compute: function and inputs in the compute field; no input fixture (see spec.md)",
+  "computed": "gain, position, gains (L->L, L->R, R->L, R->R) or levels (position, level) as binary32 numbers; comparator per case"
+ },
+ "cases": [
+  {
+   "id": "MIXER-VALUES-001",
+   "kind": "positive",
+   "purpose": "Template document: every value at its template text",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-002",
+    "REQ-MIXER-VALUES-003",
+    "REQ-MIXER-VALUES-004",
+    "REQ-MIXER-VALUES-006",
+    "REQ-MIXER-VALUES-007",
+    "REQ-MIXER-VALUES-008",
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-001.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 1.0,
+      "text": "0.0 dB"
+     },
+     "audio/Pan": {
+      "value": 0.0,
+      "text": "C"
+     },
+     "audio/SplitStereoPanL": {
+      "value": -1.0,
+      "text": "50L"
+     },
+     "audio/SplitStereoPanR": {
+      "value": 1.0,
+      "text": "50R"
+     },
+     "audio/PanMode": {
+      "value": 0,
+      "name": "Stereo"
+     },
+     "audio/Speaker": {
+      "value": true,
+      "text": "On"
+     },
+     "audio/CrossFadeState": {
+      "value": 1,
+      "name": "None"
+     },
+     "audio/Send": {
+      "value": 0.0003162277571391314,
+      "text": "-inf dB"
+     },
+     "midi/Volume": {
+      "value": 1.0,
+      "text": "0.0 dB"
+     },
+     "midi/Pan": {
+      "value": 0.0,
+      "text": "C"
+     },
+     "midi/SplitStereoPanL": {
+      "value": -1.0,
+      "text": "50L"
+     },
+     "midi/SplitStereoPanR": {
+      "value": 1.0,
+      "text": "50R"
+     },
+     "midi/PanMode": {
+      "value": 0,
+      "name": "Stereo"
+     },
+     "midi/Speaker": {
+      "value": true,
+      "text": "On"
+     },
+     "midi/CrossFadeState": {
+      "value": 1,
+      "name": "None"
+     },
+     "midi/Send": {
+      "value": 0.0003162277571391314,
+      "text": "-inf dB"
+     },
+     "return/Volume": {
+      "value": 1.0,
+      "text": "0.0 dB"
+     },
+     "return/Pan": {
+      "value": 0.0,
+      "text": "C"
+     },
+     "return/SplitStereoPanL": {
+      "value": -1.0,
+      "text": "50L"
+     },
+     "return/SplitStereoPanR": {
+      "value": 1.0,
+      "text": "50R"
+     },
+     "return/PanMode": {
+      "value": 0,
+      "name": "Stereo"
+     },
+     "return/Speaker": {
+      "value": true,
+      "text": "On"
+     },
+     "return/CrossFadeState": {
+      "value": 1,
+      "name": "None"
+     },
+     "main/Volume": {
+      "value": 1.0,
+      "text": "0.0 dB"
+     },
+     "main/Pan": {
+      "value": 0.0,
+      "text": "C"
+     },
+     "main/CrossFade": {
+      "value": 0.0
+     },
+     "cue/Volume": {
+      "value": 1.0,
+      "text": "0.0 dB"
+     },
+     "set/CrossfadeCurve": {
+      "value": 2,
+      "name": "Constant Power"
+     }
+    },
+    "send_counts": {
+     "audio": 1,
+     "midi": 1,
+     "main": 0,
+     "cue": 0
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-002",
+   "kind": "positive",
+   "purpose": "Audio volume 0.5011872053 (-6 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-002",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-002.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.5011872053146362,
+      "text": "-6.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-003",
+   "kind": "positive",
+   "purpose": "Main volume 0.7367056608, three decimals",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-002",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-003.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "main/Volume": {
+      "value": 0.7367056608200073,
+      "text": "-2.654 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-004",
+   "kind": "positive",
+   "purpose": "Audio volume 0.5, three decimals",
+   "requirements": [
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-004.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.5,
+      "text": "-6.021 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-005",
+   "kind": "positive",
+   "purpose": "Audio volume 0.25, three decimals above 10 dB magnitude",
+   "requirements": [
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-005.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.25,
+      "text": "-12.041 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-006",
+   "kind": "boundary",
+   "purpose": "Audio volume at the top of its range (+6 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-002",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-006.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 1.9952623844146729,
+      "text": "6.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-007",
+   "kind": "boundary",
+   "purpose": "Audio volume at the bottom of its range (-70 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-002",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-007.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.0003162277571391314,
+      "text": "-inf dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-008",
+   "kind": "boundary",
+   "purpose": "Audio volume 0.99999: rounds to zero decibels, no minus sign",
+   "requirements": [
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-008.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.9999899864196777,
+      "text": "0.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-009",
+   "kind": "boundary",
+   "purpose": "Audio volume 0.0003311311302 (-69.6 dB), above the -inf limit",
+   "requirements": [
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-009.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.0003311311302240938,
+      "text": "-69.6 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-010",
+   "kind": "boundary",
+   "purpose": "Audio volume 0.0003235936455 (-69.8 dB), at or below the -inf limit",
+   "requirements": [
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-010.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.00032359364558942616,
+      "text": "-inf dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-011",
+   "kind": "positive",
+   "purpose": "Audio volume 0.30725: trailing zero removed, two decimals remain",
+   "requirements": [
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-011.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Volume": {
+      "value": 0.3072499930858612,
+      "text": "-10.25 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-012",
+   "kind": "positive",
+   "purpose": "MIDI track volume 0.03548133373 (-29 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-012.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "midi/Volume": {
+      "value": 0.03548133373260498,
+      "text": "-29.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-013",
+   "kind": "positive",
+   "purpose": "Return track volume 1.5, positive with three decimals",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-013.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "return/Volume": {
+      "value": 1.5,
+      "text": "3.522 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-014",
+   "kind": "boundary",
+   "purpose": "Cue volume at the top of its range (+6 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-002",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-014.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "cue/Volume": {
+      "value": 1.9952623844146729,
+      "text": "6.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-015",
+   "kind": "positive",
+   "purpose": "Audio send 0.1 (-20 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-003",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-015.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Send": {
+      "value": 0.10000000149011612,
+      "text": "-20.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-016",
+   "kind": "boundary",
+   "purpose": "Audio send at the top of its range (0 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-003",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-016.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Send": {
+      "value": 1.0,
+      "text": "0.0 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-017",
+   "kind": "boundary",
+   "purpose": "MIDI track send 0.0003311311302 (-69.6 dB), above the -inf limit",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-003",
+    "REQ-MIXER-VALUES-006"
+   ],
+   "input": "fixtures/MIXER-VALUES-017.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "midi/Send": {
+      "value": 0.0003311311302240938,
+      "text": "-69.6 dB"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-018",
+   "kind": "positive",
+   "purpose": "Audio pan -0.6",
+   "requirements": [
+    "REQ-MIXER-VALUES-004",
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-018.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": -0.6000000238418579,
+      "text": "30L"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-019",
+   "kind": "boundary",
+   "purpose": "Audio pan 0.004999999888, inside the centre band",
+   "requirements": [
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-019.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": 0.004999999888241291,
+      "text": "C"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-020",
+   "kind": "boundary",
+   "purpose": "Audio pan 0.01, at the edge of the centre band",
+   "requirements": [
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-020.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": 0.009999999776482582,
+      "text": "C"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-021",
+   "kind": "boundary",
+   "purpose": "Audio pan 0.0101, just right of the centre band",
+   "requirements": [
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-021.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": 0.010099999606609344,
+      "text": "1R"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-022",
+   "kind": "boundary",
+   "purpose": "Audio pan -0.0101, just left of the centre band",
+   "requirements": [
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-022.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": -0.010099999606609344,
+      "text": "1L"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-023",
+   "kind": "boundary",
+   "purpose": "Audio pan 1 (hard right)",
+   "requirements": [
+    "REQ-MIXER-VALUES-004",
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-023.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": 1.0,
+      "text": "50R"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-024",
+   "kind": "boundary",
+   "purpose": "Audio pan -1 (hard left)",
+   "requirements": [
+    "REQ-MIXER-VALUES-004",
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-024.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": -1.0,
+      "text": "50L"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-025",
+   "kind": "boundary",
+   "purpose": "Audio pan 0.33: the stored binary32 value, not the decimal, is rounded",
+   "requirements": [
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-025.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Pan": {
+      "value": 0.33000001311302185,
+      "text": "17R"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-026",
+   "kind": "positive",
+   "purpose": "Main pan 0.2",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-026.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "main/Pan": {
+      "value": 0.20000000298023224,
+      "text": "10R"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-027",
+   "kind": "positive",
+   "purpose": "Audio pan mode 1 with split pans -0.5 and 0.5",
+   "requirements": [
+    "REQ-MIXER-VALUES-004",
+    "REQ-MIXER-VALUES-007"
+   ],
+   "input": "fixtures/MIXER-VALUES-027.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/PanMode": {
+      "value": 1,
+      "name": "Split Stereo"
+     },
+     "audio/SplitStereoPanL": {
+      "value": -0.5,
+      "text": "25L"
+     },
+     "audio/SplitStereoPanR": {
+      "value": 0.5,
+      "text": "25R"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-028",
+   "kind": "positive",
+   "purpose": "Audio crossfade assignment code 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-028.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/CrossFadeState": {
+      "value": 0,
+      "name": "A"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-029",
+   "kind": "positive",
+   "purpose": "Audio crossfade assignment code 2",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-029.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/CrossFadeState": {
+      "value": 2,
+      "name": "B"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-030",
+   "kind": "positive",
+   "purpose": "Audio track switch false",
+   "requirements": [
+    "REQ-MIXER-VALUES-008"
+   ],
+   "input": "fixtures/MIXER-VALUES-030.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "audio/Speaker": {
+      "value": false,
+      "text": "Off"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-031",
+   "kind": "boundary",
+   "purpose": "Crossfade curve code 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-031.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "set/CrossfadeCurve": {
+      "value": 0,
+      "name": "Dipped"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-032",
+   "kind": "positive",
+   "purpose": "Crossfade curve code 1",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-032.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "set/CrossfadeCurve": {
+      "value": 1,
+      "name": "Intermediate"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-033",
+   "kind": "positive",
+   "purpose": "Crossfade curve code 3",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-033.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "set/CrossfadeCurve": {
+      "value": 3,
+      "name": "Slow Fade"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-034",
+   "kind": "positive",
+   "purpose": "Crossfade curve code 4",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-034.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "set/CrossfadeCurve": {
+      "value": 4,
+      "name": "Slow Cut"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-035",
+   "kind": "positive",
+   "purpose": "Crossfade curve code 5",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-035.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "set/CrossfadeCurve": {
+      "value": 5,
+      "name": "Fast Cut"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-036",
+   "kind": "boundary",
+   "purpose": "Crossfade curve code 6",
+   "requirements": [
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-036.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "set/CrossfadeCurve": {
+      "value": 6,
+      "name": "Transition"
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-037",
+   "kind": "positive",
+   "purpose": "Main crossfader -0.25",
+   "requirements": [
+    "REQ-MIXER-VALUES-001",
+    "REQ-MIXER-VALUES-009"
+   ],
+   "input": "fixtures/MIXER-VALUES-037.xml",
+   "action": "open",
+   "expected": {
+    "outcome": "opens",
+    "values": {
+     "main/CrossFade": {
+      "value": -0.25
+     }
+    }
+   },
+   "expectation_provenance": "static-derived; not observed reference output",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "outcome exact; each listed value exact (binary32 compared after exact widening; Booleans and codes exact); text and name exact strings; send counts exact; unlisted values not judged"
+  },
+  {
+   "id": "MIXER-VALUES-038",
+   "kind": "computation",
+   "purpose": "Volume curve, position to gain: position 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "volume",
+    "position": 0.0
+   },
+   "expected": {
+    "gain": 0.0003162277571391314
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-039",
+   "kind": "computation",
+   "purpose": "Volume curve, position to gain: position 0.25",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "volume",
+    "position": 0.25
+   },
+   "expected": {
+    "gain": 0.03630783036351204
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-040",
+   "kind": "computation",
+   "purpose": "Volume curve, position to gain: position 0.5",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "volume",
+    "position": 0.5
+   },
+   "expected": {
+    "gain": 0.1995263397693634
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-041",
+   "kind": "computation",
+   "purpose": "Volume curve, position to gain: position 0.7",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "volume",
+    "position": 0.699999988079071
+   },
+   "expected": {
+    "gain": 0.5011872053146362
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-042",
+   "kind": "computation",
+   "purpose": "Volume curve, position to gain: position 0.85",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "volume",
+    "position": 0.8500000238418579
+   },
+   "expected": {
+    "gain": 1.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-043",
+   "kind": "computation",
+   "purpose": "Volume curve, position to gain: position 1",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "volume",
+    "position": 1.0
+   },
+   "expected": {
+    "gain": 1.9952623844146729
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-044",
+   "kind": "computation",
+   "purpose": "Send curve, position to gain: position 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "send",
+    "position": 0.0
+   },
+   "expected": {
+    "gain": 0.0003162277571391314
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-045",
+   "kind": "computation",
+   "purpose": "Send curve, position to gain: position 0.25",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "send",
+    "position": 0.25
+   },
+   "expected": {
+    "gain": 0.018197033554315567
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-046",
+   "kind": "computation",
+   "purpose": "Send curve, position to gain: position 0.5",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "send",
+    "position": 0.5
+   },
+   "expected": {
+    "gain": 0.10000011324882507
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-047",
+   "kind": "computation",
+   "purpose": "Send curve, position to gain: position 0.7",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "send",
+    "position": 0.699999988079071
+   },
+   "expected": {
+    "gain": 0.251188725233078
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-048",
+   "kind": "computation",
+   "purpose": "Send curve, position to gain: position 0.85",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "send",
+    "position": 0.8500000238418579
+   },
+   "expected": {
+    "gain": 0.5011872053146362
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-049",
+   "kind": "computation",
+   "purpose": "Send curve, position to gain: position 1",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "position-to-gain",
+    "curve": "send",
+    "position": 1.0
+   },
+   "expected": {
+    "gain": 1.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: the expected binary32 value or one of its two binary32 neighbours"
+  },
+  {
+   "id": "MIXER-VALUES-050",
+   "kind": "computation",
+   "purpose": "Volume curve, gain to position: gain 0.5 (-6.021 dB), between two curve points",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "volume",
+    "gain": 0.5
+   },
+   "expected": {
+    "position": 0.6994736790657043
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-051",
+   "kind": "computation",
+   "purpose": "Volume curve, gain to position: gain 0.001 (-60 dB), near the bottom",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "volume",
+    "gain": 0.0010000000474974513
+   },
+   "expected": {
+    "position": 0.03462362661957741
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-052",
+   "kind": "computation",
+   "purpose": "Volume curve, gain to position: gain 2, above the top point",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "volume",
+    "gain": 2.0
+   },
+   "expected": {
+    "position": 1.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-053",
+   "kind": "computation",
+   "purpose": "Volume curve, gain to position: gain 1 (0 dB), a curve point",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "volume",
+    "gain": 1.0
+   },
+   "expected": {
+    "position": 0.8500000238418579
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-054",
+   "kind": "computation",
+   "purpose": "Volume curve, gain to position: gain the curve point at position 0.5 (-14 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "volume",
+    "gain": 0.1995263397693634
+   },
+   "expected": {
+    "position": 0.5
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-055",
+   "kind": "computation",
+   "purpose": "Send curve, gain to position: gain 0.1 (-20 dB), just below a curve point",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "send",
+    "gain": 0.10000000149011612
+   },
+   "expected": {
+    "position": 0.4999997615814209
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-056",
+   "kind": "computation",
+   "purpose": "Send curve, gain to position: gain 1 (0 dB), the top point",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "send",
+    "gain": 1.0
+   },
+   "expected": {
+    "position": 1.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-057",
+   "kind": "computation",
+   "purpose": "Send curve, gain to position: gain the bottom point (-70 dB)",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "gain-to-position",
+    "curve": "send",
+    "gain": 0.0003162277571391314
+   },
+   "expected": {
+    "position": 0.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "position: within 1e-6 of the expected value"
+  },
+  {
+   "id": "MIXER-VALUES-058",
+   "kind": "computation",
+   "purpose": "Volume curve, round trip: the -70 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "volume",
+    "gain": 0.0003162277571391314
+   },
+   "expected": {
+    "gain": 0.0003162277571391314
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-059",
+   "kind": "computation",
+   "purpose": "Volume curve, round trip: the -6 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "volume",
+    "gain": 0.5011872053146362
+   },
+   "expected": {
+    "gain": 0.5011872053146362
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-060",
+   "kind": "computation",
+   "purpose": "Volume curve, round trip: the 0 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "volume",
+    "gain": 1.0
+   },
+   "expected": {
+    "gain": 1.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-061",
+   "kind": "computation",
+   "purpose": "Volume curve, round trip: the +6 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "volume",
+    "gain": 1.9952623844146729
+   },
+   "expected": {
+    "gain": 1.9952623844146729
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-062",
+   "kind": "computation",
+   "purpose": "Send curve, round trip: the -70 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "send",
+    "gain": 0.0003162277571391314
+   },
+   "expected": {
+    "gain": 0.0003162277571391314
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-063",
+   "kind": "computation",
+   "purpose": "Send curve, round trip: the -6 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "send",
+    "gain": 0.5011872053146362
+   },
+   "expected": {
+    "gain": 0.5011872053146362
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-064",
+   "kind": "computation",
+   "purpose": "Send curve, round trip: the 0 dB curve point returns exactly",
+   "requirements": [
+    "REQ-MIXER-VALUES-005"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "round-trip",
+    "curve": "send",
+    "gain": 1.0
+   },
+   "expected": {
+    "gain": 1.0
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "gain: exactly the expected binary32 value, which equals the input gain"
+  },
+  {
+   "id": "MIXER-VALUES-065",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 0: pan -1",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 0.0,
+    "pan": -1.0,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 1.4142135381698608,
+     "L->R": 0.0,
+     "R->L": 0.0,
+     "R->R": 9.999999747378752e-06
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-066",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 0: pan -0.5",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 0.0,
+    "pan": -0.5,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 1.3065630197525024,
+     "L->R": 0.0,
+     "R->L": 0.0,
+     "R->R": 0.5411961078643799
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-067",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 0: pan 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 0.0,
+    "pan": 0.0,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 1.0,
+     "L->R": 0.0,
+     "R->L": 0.0,
+     "R->R": 1.0
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-068",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 0: pan 0.5",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 0.0,
+    "pan": 0.5,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 0.5411961078643799,
+     "L->R": 0.0,
+     "R->L": 0.0,
+     "R->R": 1.3065630197525024
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-069",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 0: pan 1",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 0.0,
+    "pan": 1.0,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 9.999999747378752e-06,
+     "L->R": 0.0,
+     "R->L": 0.0,
+     "R->R": 1.4142135381698608
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-070",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 1: split pans -1 and 1",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 1.0,
+    "pan": 0.0,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 1.0,
+     "L->R": 6.123234262925839e-17,
+     "R->L": 6.123234262925839e-17,
+     "R->R": 1.0
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-071",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 1: split pans 0 and 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 1.0,
+    "pan": 0.0,
+    "split_left": 0.0,
+    "split_right": 0.0,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 0.7071067690849304,
+     "L->R": 0.7071067690849304,
+     "R->L": 0.7071067690849304,
+     "R->R": 0.7071067690849304
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-072",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 1: split pans -0.5 and 0.5",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 1.0,
+    "pan": 0.0,
+    "split_left": -0.5,
+    "split_right": 0.5,
+    "v": 1.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 0.9238795042037964,
+     "L->R": 0.3826834261417389,
+     "R->L": 0.3826834261417389,
+     "R->R": 0.9238795042037964
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-073",
+   "kind": "computation",
+   "purpose": "Pan-law gains, w = 0: pan -1, v = 0",
+   "requirements": [
+    "REQ-MIXER-VALUES-013"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "pan-law",
+    "w": 0.0,
+    "pan": -1.0,
+    "split_left": -1.0,
+    "split_right": 1.0,
+    "v": 0.0
+   },
+   "expected": {
+    "gains": {
+     "L->L": 0.0,
+     "L->R": 0.0,
+     "R->L": 0.0,
+     "R->R": 0.0
+    }
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-074",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 0 (Dipped): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 0,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 0.7913215160369873
+     },
+     {
+      "position": -0.25,
+      "level": 0.6475036144256592
+     },
+     {
+      "position": 0.0,
+      "level": 0.5
+     },
+     {
+      "position": 0.25,
+      "level": 0.3572852611541748
+     },
+     {
+      "position": 0.5,
+      "level": 0.22323836386203766
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-075",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 1 (Intermediate): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 1,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 0.8469309210777283
+     },
+     {
+      "position": -0.25,
+      "level": 0.7226948142051697
+     },
+     {
+      "position": 0.0,
+      "level": 0.5821067690849304
+     },
+     {
+      "position": 0.25,
+      "level": 0.4324764609336853
+     },
+     {
+      "position": 0.5,
+      "level": 0.27884775400161743
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-076",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 2 (Constant Power): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 2,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 0.9315910935401917
+     },
+     {
+      "position": -0.25,
+      "level": 0.8371664881706238
+     },
+     {
+      "position": 0.0,
+      "level": 0.7071067690849304
+     },
+     {
+      "position": 0.25,
+      "level": 0.5469481348991394
+     },
+     {
+      "position": 0.5,
+      "level": 0.3635079562664032
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-077",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 3 (Slow Fade): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 3,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 1.0
+     },
+     {
+      "position": -0.25,
+      "level": 1.0
+     },
+     {
+      "position": 0.0,
+      "level": 1.0
+     },
+     {
+      "position": 0.25,
+      "level": 0.915773332118988
+     },
+     {
+      "position": 0.5,
+      "level": 0.6772815585136414
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-078",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 4 (Slow Cut): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 4,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 1.0
+     },
+     {
+      "position": -0.25,
+      "level": 1.0
+     },
+     {
+      "position": 0.0,
+      "level": 1.0
+     },
+     {
+      "position": 0.25,
+      "level": 1.0
+     },
+     {
+      "position": 0.5,
+      "level": 0.9949778318405151
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-079",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 5 (Fast Cut): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 5,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 1.0
+     },
+     {
+      "position": -0.25,
+      "level": 1.0
+     },
+     {
+      "position": 0.0,
+      "level": 1.0
+     },
+     {
+      "position": 0.25,
+      "level": 1.0
+     },
+     {
+      "position": 0.5,
+      "level": 1.0
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  },
+  {
+   "id": "MIXER-VALUES-080",
+   "kind": "computation",
+   "purpose": "Crossfade curve code 6 (Transition): levels at seven positions",
+   "requirements": [
+    "REQ-MIXER-VALUES-014"
+   ],
+   "input": null,
+   "action": "compute",
+   "compute": {
+    "function": "crossfade-level",
+    "curve": 6,
+    "positions": [
+     -1.0,
+     -0.5,
+     -0.25,
+     0.0,
+     0.25,
+     0.5,
+     1.0
+    ]
+   },
+   "expected": {
+    "levels": [
+     {
+      "position": -1.0,
+      "level": 1.0
+     },
+     {
+      "position": -0.5,
+      "level": 1.0
+     },
+     {
+      "position": -0.25,
+      "level": 1.0
+     },
+     {
+      "position": 0.0,
+      "level": 1.0
+     },
+     {
+      "position": 0.25,
+      "level": 0.75
+     },
+     {
+      "position": 0.5,
+      "level": 0.5
+     },
+     {
+      "position": 1.0,
+      "level": 0.0
+     }
+    ]
+   },
+   "expectation_provenance": "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred",
+   "reference_execution": "not-run",
+   "candidate_execution": "not-run",
+   "comparator": "each listed gain or level: the expected binary32 value, one of its two binary32 neighbours, or within 1e-12 of it"
+  }
+ ]
+}

@@ -2202,3 +2202,14 @@ Corrections:
 
 Open, under Q-025: grid phase, the event frame base, stop-processing, and the
 block in which an automated value arrives.
+
+## [2026-10-18] release | mixer-values-v2
+
+[mixer-values-v2](../handoff/mixer-values-v2/README.md) has 80 cases: v1's 37 on
+rebuilt fixtures, plus 43 computed cases from extracted execution. A separate review
+agent approved it with narrowing. The review confirmed that the gain-to-position
+round trip is not exact: 765 of 1,601 random gains, run through the original code,
+come back up to 2 steps off. The earlier "bit-exact" claim in the mixer and
+mix-graph specs and in Q-019 is therefore wrong, and is listed for correction. The
+manifest SHA-256 is
+`a79d427a2266ec637d18aad9cbd690c1656ddeea629b4c04501f6817389a6ae8`.

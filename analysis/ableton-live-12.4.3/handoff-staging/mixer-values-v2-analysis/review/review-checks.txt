@@ -1,0 +1,85 @@
+mixer-values-v2 handoff review: reviewer checks (analyst side; not payload). 2026-10-18.
+Reviewer: separate review agent (Claude Opus 5.5). Scripts in this directory; run with python3 -I -B.
+Export copy: session scratchpad export/rv-mv2/mixer-values-v2 (cp -a of the staging dir after all edits; diff -r identical).
+Pre-review payload kept as session scratchpad mv2-before-review (draft manifest 791c22e5...ef3ac0 = plan page).
+
+Evidence identity. handoff/mixer-values-v1/manifest.json SHA-256 5f6b8401...39cd60 = catalog = supersession digest; all
+v1 files match; 37 per-fixture v1 digests match. x2-mixer-v1: 12 files in its manifest match (manifest 662481cd...); slice
+1bae9a97...be999b0 and built loader c275e0d7...6234 match. s9-mixer-v1 89 files, d8-mixer-v1 30 files: all match.
+t11-structure-v1 make_fixture.py, schema_check.py, fixture_audit.py match its manifest. Schema 12.0_12402.txt b7c9d4c7...
+
+(a) Round trip between curve points (x_sample.py -> x_sample.out). Original x86_64 code, X2 harness and run_mixer.py
+constants imported unchanged; one curve build + <= 200 conversions per process (largest 201 calls, limit 256; 70
+processes). 801 volume + 800 send log-uniform binary32 gains (seed 20261019), none a curve point:
+  volume 385/801 not returned exactly (steps {0:416, 1:331, 2:54}); send 380/800 ({0:420, 1:340, 2:40}); worst 2 steps.
+  volume 0.3 -> position 0.58853209 -> 0.30000004 (one step). In [G70, G85) (-6..0 dB): 44/61 not returned.
+  Reviewer restatement of both conversions (spec.md REQ-005 text) = X for all 1,601 positions and 1,601 gains back.
+=> Author F1 confirmed (author's model, 4000 per curve: 1905/2023, worst 2/3 steps; X sample here: worst 2). Payload
+   sentence "most gains between curve points cannot return unchanged" contradicted overall (~48%); counting argument
+   holds only in -6..0 dB. Narrowed (RVM2-01).
+(b) Forward snap. All 101 G[k] of both curves read through position->gain at binary32(k/100): X = reviewer forward-snap
+    restatement at 101/101 on both curves; end-only snap differs at 37 volume points (k 45-65, 67-70, 72, 74-84), by
+    1, 2 or 3 steps (plan F2 says "a binary32 step"); send 0. G[50], G[70] X 0.19952634, 0.50118721; end-only
+    0.19952632, 0.50118715. spec.md REQ-005 states the forward rule ("before the next value is computed from it").
+    x86-disasm.txt builder: abs/compare per point inside the loop (consistent).
+(c) MV-047/MV-048. All 43 computed cases re-run: 43/43 equal the payload exactly, 43/43 pass their comparator.
+    Positions released: -1, -0.5, -0.25, 0, 0.25, 0.5, 1 (multiples of 1/64); +-0.95 absent from payload (scan).
+    X at 0.95: Dipped/Intermediate/Constant Power/Slow Fade -0.0, Slow Cut 0, Fast Cut 0.2588, Transition 0.05;
+    at -0.95 all 1.0 - function values off the grid are not what a table/interpolation reader would infer; REQ-014
+    wording narrowed to the seven positions (RVM2-03). 1e-12 bound: admits 0 and 6.123e-17 (070 L->R and R->L,
+    where the formula gives 0: sin 0 and cos pi/2); for 9.99999975e-6 the binary32 step is 9.09e-13 so the bound
+    admits only the neighbours; levels at +1 are X 0.0. Comparators stated so they can hold under I7/I9 as stated.
+    REQ-013 "cosines in binary64 ... at a quarter turn" restated as a result (RVM2-04).
+(d) Values only. REQ-013 "Output left = L->L.input left + ..." and "balance control without cross-feed" describe the
+    application to audio (parent: matrix application is SPEC-MIX-GRAPH, S/Q-019). Removed; labels are names; which
+    signal each gain scales excluded in spec.md and manifest (RVM2-02). REQ-005 and REQ-014 already exclude binding
+    and application.
+(e) Fixture validity (brief addendum). T11 checker unchanged on the exported fixtures:
+  - schema_check.py (schema-check-export.jsonl): 37 rows, 0 deviations, one rule row for all: player_tracks 2,
+    returns last (1), 0 grouped, 2 scenes, freeze == main == scenes, holders == returns, main/cue no sends, SendsPre
+    present and == returns, 66 pointees unique nonzero, NextPointeeId 67 > 66, 0 dangling envelopes, list Ids unique.
+  - fixture_audit.py (t11-fixture-audit-export.json): 37 Live Sets, 0 refused, 0 unknown shapes, 0 contradicted,
+    0 not isolating; all case effects consistent. No fixture is expected to be refused.
+  - Released v1 fixtures (schema-check-v1-released.jsonl; audit in scratchpad): 0 refused, 37 unknown shapes
+    (SendsPre absent) - supersession reason true.
+  - review_checks.lss001 (shapes the checker does not evaluate): none.
+    Change list: element paths v1 -> v2 for all 37: none removed, no count changed; added roots = README change 1
+    items, except the cue track gains no Name/Color/AutomationEnvelopes/TrackGroupId/AudioOutputRouting (README said
+    "each track") and the scenes' FollowAction (not described) -> corrected (RVM2-05). Value texts of every mixer
+    value, EnabledByUser, SoloSink, PanMode and CrossfadeCurve equal v1 per case (37/37); each fixture differs from
+    001 in <= 3 value lines.
+
+Expectations, carried. review_checks.py (own restatement, independent of build_mv2/seal_mv2/build_mv1) on the export
+(review-checks-export.json): 37/37 agree, no exclusion hit, mutation of every listed field caught, REQ-006/007 examples
+all reproduce. Records 001-037 equal v1 (dict and json.dumps) 37/37. margins.py (margins.out): round-trip point
+midpoint margins volume {0: 0.195, 70: 0.167, 85: 0.5, 100: 0.377}, send {0: 0.195, 85: 0.167, 100: 0.5} (>= 0.16 as
+stated); case 051 uses G[3], G[4]; a one-step change moves its position by <= 3.73e-9 (< 1e-8 as stated).
+
+Package (export). sha256sum -c of the 42 listed files: all OK (sha256sum-export.txt). Inventory equals the directory;
+no symlinks; links README 7, spec 7, REVIEW 1, AGENTS 0, all resolve inside the package; every case input exists; no
+unused fixture. Fixtures ASCII, LF, final newline, distinct, 19,195-19,223 bytes. Own scan hits: provenance label
+"x86_64 slice", "decompilation" (AGENTS forbidden list), "probe" (comparison obligation), "129" inside a number, 0.95
+in REVIEW's ruling; all benign. build_mv2.py verify on the export (author-verify-after-review.json): no hash, inventory,
+link, input or fixture problem; deny-list hit only "decompil" in REVIEW.md (the forbidden-inputs mention).
+
+Payload edits: apply_review_edits.py (status lines; REQ-005 round trip; REQ-013 labels, consequences, 070 note;
+REQ-014 positions; exclusion paragraph; scene follow action; README cue-track exception and supersession wording;
+cases.json status only), REVIEW.md written, finalize_manifest.py (scopes 005/013/014, behavior exclusion,
+fixture_changes cue track, status, release date, review fields, re-hash). Diff: payload-changes.diff. Fixtures and
+case records unchanged; 80 cases.
+Final manifest SHA-256: a79d427a2266ec637d18aad9cbd690c1656ddeea629b4c04501f6817389a6ae8.
+
+For the spec author (outside this package):
+ (1) REQ-005 X bullet "for a stored gain g, gain -> position -> gain returns g bit-exactly" is false between curve
+     points (X: 765 of 1,601 random gains, up to 2 steps). Also fix line 68 evidence paragraph, REQ-011 "applied gain
+     equals g", REQ-015 "for s in [0.0003162277571, 1] the round trip is exact (X), so g = s", REQ-MIX-GRAPH-003's X
+     bullet and Q-019's progress line.
+ (2) REQ-005 S construction: say the 0.0001 snap replaces each point before the next is computed (X at 101/101). The
+     plan's F2 should say 1 to 3 binary32 steps, not one.
+ (3) MV-048 "within 1 float32 ulp" cannot hold for the 6.1e-17 cross-feed vs a formula 0 (and both L->R and R->L,
+     not only the quarter-turn one); add an absolute bound. MV-047 should name its positions as table points
+     (multiples of 1/64) and note that the functions at +-0.95 are not interpolations; zero levels need an absolute
+     bound too.
+ (4) REQ-013 X bullet presents the L', R' application as X; X ran the matrix only; application is S (SPEC-MIX-GRAPH).
+     F3 labels (S vs U vs inferred) still to reconcile.
+Not copied to handoff/; plan page, spec pages, indexes, coverage and log untouched; no git operation.
