@@ -1,0 +1,3913 @@
+{
+  "schema": "bounded-family-required-predicate-route-inventory-v1",
+  "family": "SPEC-WARP-MARKERS",
+  "revision": 5,
+  "status": "pending-independent-structure-review",
+  "outcomes": [
+    {
+      "id": "WPR-001",
+      "requirement": "REQ-WARP-MARKERS-001",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          106,
+          111
+        ],
+        "anchor_line": 106,
+        "anchor": "An audio clip stores",
+        "span_sha256": "74c69caee6bb9c8de7f307cc981c40f50c3989c26f7b71e8bc49c3ccf0caed56"
+      },
+      "predicate": "AudioClip stores named warp state in empty Value-bearing children and WarpMarkers.",
+      "route": "S",
+      "basis": [
+        "shape"
+      ],
+      "premises": [
+        "target-version"
+      ],
+      "missing_joins": [
+        "actual-load-save-receiver"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001"
+      ]
+    },
+    {
+      "id": "WPR-002",
+      "requirement": "REQ-WARP-MARKERS-001",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          112,
+          113
+        ],
+        "anchor_line": 112,
+        "anchor": "A Sampler or Simpler",
+        "span_sha256": "449716bbd9dda2b80b33389564cda09ad30a389cf8bf0503a64624f857b60392"
+      },
+      "predicate": "SampleWarpProperties under each MultiSamplePart stores marker list,mode,settings and IsWarped.",
+      "route": "S",
+      "basis": [
+        "shape"
+      ],
+      "premises": [
+        "target-version"
+      ],
+      "missing_joins": [
+        "actual-samplepart-receiver"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001"
+      ]
+    },
+    {
+      "id": "WPR-003",
+      "requirement": "REQ-WARP-MARKERS-001",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          114,
+          115
+        ],
+        "anchor_line": 114,
+        "anchor": "texture fluctuation",
+        "span_sha256": "cea8d7efbce99896be585418b9e883951ab5a87971f4321b731ba47676bfd447"
+      },
+      "predicate": "FluctuationTexture is stored field name;FluxTexture is absent.",
+      "route": "S",
+      "basis": [
+        "shape"
+      ],
+      "premises": [
+        "target-version"
+      ],
+      "missing_joins": [],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001"
+      ]
+    },
+    {
+      "id": "WPR-004",
+      "requirement": "REQ-WARP-MARKERS-001",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          116,
+          117
+        ],
+        "anchor_line": 116,
+        "anchor": "runtime warp-mode chooser",
+        "span_sha256": "9c49acca2c313ca9d12163387405174104b7b8b288bee448865b4c393e6a99fa"
+      },
+      "predicate": "DisplayWarpMode/RightTempo are runtime state excluded from stored document fields.",
+      "route": "S",
+      "basis": [
+        "shape",
+        "writer"
+      ],
+      "premises": [
+        "target-version"
+      ],
+      "missing_joins": [
+        "runtime-member-writer-omission"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001"
+      ]
+    },
+    {
+      "id": "WPR-005",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          123,
+          126
+        ],
+        "anchor_line": 123,
+        "anchor": "`WarpMarkers` contains",
+        "span_sha256": "ad860fae29027ba04ea8b77ea31edfc83dc884df6b30810ecf18a1089236317c"
+      },
+      "predicate": "Markers store Id/SecTime/BeatTime attributes,with binary64 positions.",
+      "route": "S",
+      "basis": [
+        "shape",
+        "text"
+      ],
+      "premises": [
+        "double-dispatch-assumed"
+      ],
+      "missing_joins": [
+        "field-parser-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-003",
+        "WMK-004",
+        "WMK-005"
+      ]
+    },
+    {
+      "id": "WPR-006",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          127,
+          129
+        ],
+        "anchor_line": 127,
+        "anchor": "text is read",
+        "span_sha256": "ce246755b2943637538bb9818622af40441712e4101ec54b135d300f049427fe"
+      },
+      "predicate": "Double positions parse longest numeric prefix,Invalid->DBL_MAX,#16hex rawbits;no numerical prefix refuses.",
+      "route": "S",
+      "basis": [
+        "text",
+        "errors"
+      ],
+      "premises": [
+        "double-dispatch-assumed"
+      ],
+      "missing_joins": [
+        "public-catch",
+        "field-parser-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-003",
+        "WMK-004",
+        "WMK-005"
+      ]
+    },
+    {
+      "id": "WPR-007",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          130,
+          130
+        ],
+        "anchor_line": 130,
+        "anchor": "loaded value is held",
+        "span_sha256": "95c913a53aff57c63b8f8cdf8b13b3c894a224fe6e9c361bbe21657fc2ccb75b"
+      },
+      "predicate": "Opening holds positions without clamp,range check or grid rounding.",
+      "route": "S",
+      "basis": [
+        "load"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-003",
+        "WMK-004",
+        "WMK-005"
+      ]
+    },
+    {
+      "id": "WPR-008",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          131,
+          132
+        ],
+        "anchor_line": 131,
+        "anchor": "On save both",
+        "span_sha256": "58426c43cf927a81f46eb50d85912551810954979d540c6784a41357fc172301"
+      },
+      "predicate": "Position text uses Double writer rule on held values.",
+      "route": "S",
+      "basis": [
+        "writer",
+        "text"
+      ],
+      "premises": [
+        "A4"
+      ],
+      "missing_joins": [
+        "actual-save-receiver",
+        "persistence-lifecycle"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-003",
+        "WMK-004",
+        "WMK-005"
+      ]
+    },
+    {
+      "id": "WPR-009",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          133,
+          136
+        ],
+        "anchor_line": 133,
+        "anchor": "Duplicate `Id`s",
+        "span_sha256": "c5311df2255bb8c562eb96ef2de870f74175d19a56d5be2ed0bda37cde80af94"
+      },
+      "predicate": "Duplicate/negative/noninteger marker IDs conditionally refuse via shared list-loader A5,not unconditional refusal.",
+      "route": "S",
+      "basis": [
+        "list-id",
+        "errors"
+      ],
+      "premises": [
+        "structure-A5-open"
+      ],
+      "missing_joins": [
+        "shared-list-binding",
+        "public-catch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-003",
+        "WMK-004",
+        "WMK-005"
+      ]
+    },
+    {
+      "id": "WPR-010",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          137,
+          138
+        ],
+        "anchor_line": 137,
+        "anchor": "Whether `Id` is preserved",
+        "span_sha256": "66ee921f5439d715d36858622ffc244a27b42fad1e482d59a9385670cb8a49a5"
+      },
+      "predicate": "Marker Id preservation and absent-Id outcome remain unknown,excluded from comparisons.",
+      "route": "no-established-route",
+      "basis": [
+        "list-id"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "missing-id",
+        "list-id-preservation"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-003",
+        "WMK-004",
+        "WMK-005"
+      ]
+    },
+    {
+      "id": "WPR-011",
+      "requirement": "REQ-WARP-MARKERS-003",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          151,
+          152
+        ],
+        "anchor_line": 151,
+        "anchor": "audio clip list of at least",
+        "span_sha256": "239f03f05f04ac55942bb035ae1b857a429f98f57ce5b41b7ed83ef141961fe8"
+      },
+      "predicate": "Strictly increasing >=2-marker AudioClip opens and holds stored values/order.",
+      "route": "S",
+      "basis": [
+        "load"
+      ],
+      "premises": [
+        "A2",
+        "sorted-input"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-002"
+      ]
+    },
+    {
+      "id": "WPR-012",
+      "requirement": "REQ-WARP-MARKERS-003",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          153,
+          153
+        ],
+        "anchor_line": 153,
+        "anchor": "A later save",
+        "span_sha256": "62a36144fa75210d35f814c5e2c9be786943ea5bad8e23fccf332605ffa91407"
+      },
+      "predicate": "Save preserves well-formed marker values and order.",
+      "route": "no-established-route",
+      "basis": [
+        "writer"
+      ],
+      "premises": [
+        "A4"
+      ],
+      "missing_joins": [
+        "persistence-lifecycle",
+        "actual-save-receiver"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-001",
+        "WMK-002"
+      ]
+    },
+    {
+      "id": "WPR-013",
+      "requirement": "REQ-WARP-MARKERS-004",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          159,
+          160
+        ],
+        "anchor_line": 159,
+        "anchor": "whose `WarpMarkers` has no",
+        "span_sha256": "7d804e0af23b0826d0ba846a94f2aea8491ed7b4fb1cfa0b6c9dad34ea04ae9b"
+      },
+      "predicate": "Empty AudioClip marker list raises corrupt-document refusal with empty-array detail.",
+      "route": "S",
+      "basis": [
+        "load",
+        "errors"
+      ],
+      "premises": [
+        "A1-settled"
+      ],
+      "missing_joins": [
+        "public-catch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-006",
+        "WMK-007"
+      ]
+    },
+    {
+      "id": "WPR-014",
+      "requirement": "REQ-WARP-MARKERS-004",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          161,
+          162
+        ],
+        "anchor_line": 161,
+        "anchor": "have no such check",
+        "span_sha256": "e79b77bf4464c388e73db2e11b52e1b8a3f0612ceee03d36581045c07bb907ce"
+      },
+      "predicate": "Empty SampleWarpProperties marker list does not raise that refusal.",
+      "route": "S",
+      "basis": [
+        "load"
+      ],
+      "premises": [
+        "A1-settled"
+      ],
+      "missing_joins": [
+        "actual-samplepart-receiver"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-006",
+        "WMK-007"
+      ]
+    },
+    {
+      "id": "WPR-015",
+      "requirement": "REQ-WARP-MARKERS-004",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          163,
+          163
+        ],
+        "anchor_line": 163,
+        "anchor": "list is then empty",
+        "span_sha256": "a2eab89588c11eed00bc03899d0d3a178db82a375fdc864644d44a3a9a4c0d5c"
+      },
+      "predicate": "Sample-part list stays empty after opening.",
+      "route": "S",
+      "basis": [
+        "load"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-006",
+        "WMK-007"
+      ]
+    },
+    {
+      "id": "WPR-016",
+      "requirement": "REQ-WARP-MARKERS-004",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          164,
+          164
+        ],
+        "anchor_line": 164,
+        "anchor": "What the user sees",
+        "span_sha256": "08af087417653704e956502b2101d1155abffcfbb87934856d9c957c85969d85"
+      },
+      "predicate": "Empty-list error presentation and remaining loaded state remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "errors",
+        "integration"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "public-catch",
+        "failed-load-state"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-006",
+        "WMK-007"
+      ]
+    },
+    {
+      "id": "WPR-017",
+      "requirement": "REQ-WARP-MARKERS-005",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          170,
+          170
+        ],
+        "anchor_line": 170,
+        "anchor": "one-marker audio clip",
+        "span_sha256": "36a8cebf26bf7b6a854b004b871d93f5bdd90c4d1c506c65f3b5569111a59c05"
+      },
+      "predicate": "One-marker AudioClip passes only the empty-array check.",
+      "route": "S",
+      "basis": [
+        "load"
+      ],
+      "premises": [
+        "A1-settled"
+      ],
+      "missing_joins": [
+        "post-load-single-marker"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-008",
+        "WMK-009",
+        "WMK-010",
+        "WMK-011"
+      ]
+    },
+    {
+      "id": "WPR-018",
+      "requirement": "REQ-WARP-MARKERS-005",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          171,
+          171
+        ],
+        "anchor_line": 171,
+        "anchor": "What a one-marker list",
+        "span_sha256": "4f325d50eb98ebe574d28af10f07cc658b84a2b9b4368a198c6c12d0010ec692"
+      },
+      "predicate": "Subsequent one-marker held/display/save state remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "load",
+        "conversion"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "post-load-single-marker",
+        "UI-state",
+        "persistence-lifecycle"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-008",
+        "WMK-009",
+        "WMK-010",
+        "WMK-011"
+      ]
+    },
+    {
+      "id": "WPR-019",
+      "requirement": "REQ-WARP-MARKERS-005",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          172,
+          174
+        ],
+        "anchor_line": 172,
+        "anchor": "Lists out of order",
+        "span_sha256": "9027843c69c9c63c395173096f2b2219d0224e8811665c11b1f7a2c646ec2358"
+      },
+      "predicate": "Unordered,inverted-beat or duplicateSecTime lists:refuse/sort/keep outcome remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "load",
+        "conversion"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "malformed-order",
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-008",
+        "WMK-009",
+        "WMK-010",
+        "WMK-011"
+      ]
+    },
+    {
+      "id": "WPR-020",
+      "requirement": "REQ-WARP-MARKERS-006",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          180,
+          181
+        ],
+        "anchor_line": 180,
+        "anchor": "without `SecTime`",
+        "span_sha256": "52b5f951d69992c7f1713609e3fd902d5982af115f153b55548ae56ff1a5803d"
+      },
+      "predicate": "Absent position attribute retains constructor DBL_MAX;Invalid parses same value.",
+      "route": "S",
+      "basis": [
+        "load",
+        "text"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-012",
+        "WMK-013"
+      ]
+    },
+    {
+      "id": "WPR-021",
+      "requirement": "REQ-WARP-MARKERS-006",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          182,
+          182
+        ],
+        "anchor_line": 182,
+        "anchor": "Whether such a set opens",
+        "span_sha256": "bd7d1adcb21d98919b4cc5899f1118d5ffeb6d111b06fcec0f3a7c13644a381e"
+      },
+      "predicate": "Missing/Invalid-position set admission,shown state and saved output remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "load",
+        "errors"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "sentinel-survival",
+        "UI-state",
+        "persistence-lifecycle"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-012",
+        "WMK-013"
+      ]
+    },
+    {
+      "id": "WPR-022",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          188,
+          192
+        ],
+        "anchor_line": 188,
+        "anchor": "last element",
+        "span_sha256": "1ec97074168a34f004ff50abbaab787416e7d8d8e0af11fd9c3410d1ba054919"
+      },
+      "predicate": "AudioClip treats last list element as shadow;extrapolation uses sharedREQ008 mapping rather than another arithmetic outcome.",
+      "route": "S",
+      "basis": [
+        "shadow",
+        "conversion"
+      ],
+      "premises": [
+        "A2",
+        "A3"
+      ],
+      "missing_joins": [
+        "actual-active-map"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-014",
+        "WMK-015"
+      ]
+    },
+    {
+      "id": "WPR-023",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          193,
+          194
+        ],
+        "anchor_line": 193,
+        "anchor": "Where Live creates",
+        "span_sha256": "c87eb17276f6f99a557bd29188a67ce360d756ce3d1c0b5345cf63ad36a846a1"
+      },
+      "predicate": "Shadow creation/replacement sets beat to rounded(previousBeat+1/32),conditional on reaching such operation.",
+      "route": "S",
+      "basis": [
+        "shadow",
+        "grid"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "shadow-trigger",
+        "caller-arguments"
+      ],
+      "candidate_batches": [
+        "WPB-03"
+      ],
+      "case_ids": [
+        "WMK-014",
+        "WMK-015"
+      ]
+    },
+    {
+      "id": "WPR-024",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          195,
+          198
+        ],
+        "anchor_line": 195,
+        "anchor": "Which user operations create",
+        "span_sha256": "761808973754b6d727e7f84a4e00c84ef59d1d7e5f11584f2f3163ffab429f03"
+      },
+      "predicate": "User operations triggering shadow replacement and resulting times remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "shadow"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "shadow-trigger",
+        "caller-arguments"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-014",
+        "WMK-015"
+      ]
+    },
+    {
+      "id": "WPR-025",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          201,
+          201
+        ],
+        "anchor_line": 201,
+        "anchor": "different spacing is kept",
+        "span_sha256": "d7c96f1af0d9542d7e35966a4c8257ab9571fd03aa373e77c1d2c677a9046144"
+      },
+      "predicate": "Non1/32 shadow spacing held on opening.",
+      "route": "S",
+      "basis": [
+        "load",
+        "shadow"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-014",
+        "WMK-015"
+      ]
+    },
+    {
+      "id": "WPR-027",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          204,
+          205
+        ],
+        "anchor_line": 204,
+        "anchor": "Whether a later edit",
+        "span_sha256": "cc4711ca8b5e1e9ea57535efbbbe7b0c45f55abc95f47ed61a926c04fe801d7e"
+      },
+      "predicate": "Edit/save replacement of unusual shadow spacing remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "shadow",
+        "writer"
+      ],
+      "premises": [
+        "A4"
+      ],
+      "missing_joins": [
+        "shadow-trigger",
+        "persistence-lifecycle"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-014",
+        "WMK-015"
+      ]
+    },
+    {
+      "id": "WPR-028",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          204,
+          205
+        ],
+        "anchor_line": 205,
+        "anchor": "sampler list's last marker",
+        "span_sha256": "cc4711ca8b5e1e9ea57535efbbbe7b0c45f55abc95f47ed61a926c04fe801d7e"
+      },
+      "predicate": "Sampler last-marker shadow role remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "shadow"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "sampler-shadow-role"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-014",
+        "WMK-015"
+      ]
+    },
+    {
+      "id": "WPR-029",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          214,
+          215
+        ],
+        "anchor_line": 214,
+        "anchor": "available for audio",
+        "span_sha256": "826df04bb8d52884e67599af49fa9c3f1ddce45c3b6dd1683b2d55142bed1cf9"
+      },
+      "predicate": "Conversion API requires audio clip and IsWarped true;otherwise raises error.",
+      "route": "S",
+      "basis": [
+        "api",
+        "conversion"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "public-script-dispatch",
+        "actual-clip-receiver"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-030",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          216,
+          218
+        ],
+        "anchor_line": 216,
+        "anchor": "takes a position t",
+        "span_sha256": "fce6b70450b9110aed6de0e2f6e0c78d74225708503dfeb3f6439011490f16f6"
+      },
+      "predicate": "sample_to_beat_time takes frames t,divides by actual clip sample rate and selects matching stored segment.",
+      "route": "S",
+      "basis": [
+        "api",
+        "conversion"
+      ],
+      "premises": [
+        "A2",
+        "A3"
+      ],
+      "missing_joins": [
+        "sample-reference-rate",
+        "public-script-dispatch",
+        "table-binding"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-031",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          216,
+          218
+        ],
+        "anchor_line": 218,
+        "anchor": "It returns b",
+        "span_sha256": "fce6b70450b9110aed6de0e2f6e0c78d74225708503dfeb3f6439011490f16f6"
+      },
+      "predicate": "Forward seconds-to-beats arithmetic uses selected segment and double-fma interpolation.",
+      "route": "X",
+      "basis": [
+        "conversion"
+      ],
+      "premises": [
+        "sorted-n>=2",
+        "recorded-inputs"
+      ],
+      "missing_joins": [
+        "table-binding"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-032",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          219,
+          220
+        ],
+        "anchor_line": 219,
+        "anchor": "computes",
+        "span_sha256": "ca0b040f6da13bf3abc7dc0bfd56f24a0d3dadbaf95309b3dcf2a2246e16ba51"
+      },
+      "predicate": "Inverse beat-to-seconds arithmetic uses selected beat segment.",
+      "route": "X",
+      "basis": [
+        "conversion"
+      ],
+      "premises": [
+        "sorted-n>=2",
+        "recorded-inputs"
+      ],
+      "missing_joins": [
+        "table-binding"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-033",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          219,
+          220
+        ],
+        "anchor_line": 220,
+        "anchor": "returns x \u00d7 R",
+        "span_sha256": "ca0b040f6da13bf3abc7dc0bfd56f24a0d3dadbaf95309b3dcf2a2246e16ba51"
+      },
+      "predicate": "Inverse API converts seconds result to sample frames with actual clip sample rate.",
+      "route": "S",
+      "basis": [
+        "api",
+        "conversion"
+      ],
+      "premises": [
+        "A2",
+        "A3"
+      ],
+      "missing_joins": [
+        "sample-reference-rate",
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-034",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          221,
+          223
+        ],
+        "anchor_line": 221,
+        "anchor": "Before the first marker",
+        "span_sha256": "1945d4ce8903ca9edc2ebcdb878243819cebbe9bb2e15645f7397ee132509669"
+      },
+      "predicate": "First segment extends before first marker;shadow segment extends at/after last visible marker,without clamp.",
+      "route": "X",
+      "basis": [
+        "conversion"
+      ],
+      "premises": [
+        "sorted-n>=2",
+        "recorded-inputs"
+      ],
+      "missing_joins": [
+        "table-binding"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-035",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          234,
+          235
+        ],
+        "anchor_line": 234,
+        "anchor": "Results for n = 1",
+        "span_sha256": "511fe8e133d4eaf11d938e0ff776e735696be1673119b870cbcb41e568628d1a"
+      },
+      "predicate": "Conversion behavior for single-marker,equal coordinates or unsorted list remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "conversion"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "degenerate-map"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-036",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          234,
+          235
+        ],
+        "anchor_line": 234,
+        "anchor": "result after",
+        "span_sha256": "511fe8e133d4eaf11d938e0ff776e735696be1673119b870cbcb41e568628d1a"
+      },
+      "predicate": "Post-edit conversion-table rebuild/invalidation and resulting conversion remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "conversion"
+      ],
+      "premises": [
+        "A3"
+      ],
+      "missing_joins": [
+        "table-reindex-rebuild"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": [
+        "WMK-016",
+        "WMK-017",
+        "WMK-018",
+        "WMK-019",
+        "WMK-020"
+      ]
+    },
+    {
+      "id": "WPR-038",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          251,
+          261
+        ],
+        "anchor_line": 251,
+        "anchor": "current song beat",
+        "span_sha256": "436bdd9cd4d5c8f068a606ce7cc46b7e2dbaec16c0505ca588562ae3c1b99f27"
+      },
+      "predicate": "Warped play-position path subtracts clip start,uses optional clip time map,converts marker beats to file seconds and multiplies file rate.",
+      "route": "S",
+      "basis": [
+        "playback",
+        "conversion"
+      ],
+      "premises": [
+        "donor-function-matches"
+      ],
+      "missing_joins": [
+        "active-voice-binding",
+        "sample-reference-rate",
+        "time-map"
+      ],
+      "candidate_batches": [
+        "WPB-01"
+      ],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-039",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          251,
+          261
+        ],
+        "anchor_line": 257,
+        "anchor": "**Frame clamp.**",
+        "span_sha256": "436bdd9cd4d5c8f068a606ce7cc46b7e2dbaec16c0505ca588562ae3c1b99f27"
+      },
+      "predicate": "FileBeatToFileSmpl clamps file frame to0..lastFrame on selected path.",
+      "route": "S",
+      "basis": [
+        "playback"
+      ],
+      "premises": [
+        "donor-function-matches"
+      ],
+      "missing_joins": [
+        "voice-frame-path"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-040",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          262,
+          271
+        ],
+        "anchor_line": 262,
+        "anchor": "warping off",
+        "span_sha256": "58b3f412d7067a9d83676e0e1391218df2fd033a4dc2336bf3a6479d6bfd2492"
+      },
+      "predicate": "Unwarped Session start/read position derives loop-start seconds/fixed readstep,not markers.",
+      "route": "no-established-route",
+      "basis": [
+        "playback"
+      ],
+      "premises": [
+        "playback-owner-premises"
+      ],
+      "missing_joins": [
+        "active-voice-binding",
+        "delivered-audio"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-041",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          262,
+          271
+        ],
+        "anchor_line": 265,
+        "anchor": "unwarped warper uses",
+        "span_sha256": "58b3f412d7067a9d83676e0e1391218df2fd033a4dc2336bf3a6479d6bfd2492"
+      },
+      "predicate": "Unwarped Arrangement start has extrapolating marker-conversion path.",
+      "route": "S",
+      "basis": [
+        "playback"
+      ],
+      "premises": [
+        "donor-function-matches"
+      ],
+      "missing_joins": [
+        "active-voice-binding",
+        "arm64-branch-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-042",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          272,
+          281
+        ],
+        "anchor_line": 273,
+        "anchor": "which file sample each",
+        "span_sha256": "5d21c75f8ca22d7ca02be866629a47aa5422706b810be4833e0a5ccc11732d8c"
+      },
+      "predicate": "Mode-specific warped output sample reads,grain/rate/algorithm behavior remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "playback"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "DSP-algorithms",
+        "voice-output"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-043",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          272,
+          281
+        ],
+        "anchor_line": 275,
+        "anchor": "the time map's effect",
+        "span_sha256": "5d21c75f8ca22d7ca02be866629a47aa5422706b810be4833e0a5ccc11732d8c"
+      },
+      "predicate": "Groove/time-map effect remains excluded U.",
+      "route": "no-established-route",
+      "basis": [
+        "playback"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "time-map"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-044",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          272,
+          281
+        ],
+        "anchor_line": 276,
+        "anchor": "preload and rounding",
+        "span_sha256": "5d21c75f8ca22d7ca02be866629a47aa5422706b810be4833e0a5ccc11732d8c"
+      },
+      "predicate": "Warped preload/rounding behavior remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "playback"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "preload-rounding"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-045",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          272,
+          281
+        ],
+        "anchor_line": 277,
+        "anchor": "whether `PlayPosFileSmpl`",
+        "span_sha256": "5d21c75f8ca22d7ca02be866629a47aa5422706b810be4833e0a5ccc11732d8c"
+      },
+      "predicate": "Whether play-position routine drives audio or only feedback remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "playback"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "voice-output",
+        "feedback-vs-audio"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-046",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          272,
+          281
+        ],
+        "anchor_line": 278,
+        "anchor": "arm64 correspondence beyond",
+        "span_sha256": "5d21c75f8ca22d7ca02be866629a47aa5422706b810be4833e0a5ccc11732d8c"
+      },
+      "predicate": "Detailed ARM caller correspondence remains U beyond equal caller counts.",
+      "route": "no-established-route",
+      "basis": [
+        "playback"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "arm64-caller-correspondence"
+      ],
+      "candidate_batches": [],
+      "case_ids": []
+    },
+    {
+      "id": "WPR-047",
+      "requirement": "REQ-WARP-MARKERS-010",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          290,
+          294
+        ],
+        "anchor_line": 290,
+        "anchor": "An absent setting element",
+        "span_sha256": "26c05c5d221623054e71b714903770eac74fd4c2e1e36a36494f6eb81e14eb52"
+      },
+      "predicate": "Missing setting or missing Value keeps eight stated constructor defaults without refusal,conditional on opening.",
+      "route": "S",
+      "basis": [
+        "defaults",
+        "load"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-022"
+      ]
+    },
+    {
+      "id": "WPR-048",
+      "requirement": "REQ-WARP-MARKERS-010",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          295,
+          296
+        ],
+        "anchor_line": 295,
+        "anchor": "created at 100",
+        "span_sha256": "34b961d0a6b8220526b15ab580ee134faee4323bec0f92f36ee721b6cc59e10f"
+      },
+      "predicate": "TransientEnvelope creation stores100 without clamp despite remoteable max1.0;range remains U.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "parameter-range-interpretation"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-022"
+      ]
+    },
+    {
+      "id": "WPR-049",
+      "requirement": "REQ-WARP-MARKERS-010",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          297,
+          299
+        ],
+        "anchor_line": 297,
+        "anchor": "new `SampleWarpProperties`",
+        "span_sha256": "dbca887e9db07715d3ca591f57068568933d6c56b5de77525f50169a254f275d"
+      },
+      "predicate": "New sample WarpMode maps preference0..5->0,1,2,3,4,6;new clip uses same if preference store exists,else0.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "preference-store-presence"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-022"
+      ]
+    },
+    {
+      "id": "WPR-050",
+      "requirement": "REQ-WARP-MARKERS-010",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          300,
+          302
+        ],
+        "anchor_line": 300,
+        "anchor": "`WarpMode` an audio clip gets",
+        "span_sha256": "2df598b1f9077c5c50110117b8fd72234013b0f186a464ebb57309c02bc16770"
+      },
+      "predicate": "Absent-loaded WarpMode and preference factory value remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "defaults",
+        "load"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "preference-store-presence",
+        "preference-factory"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-022"
+      ]
+    },
+    {
+      "id": "WPR-051",
+      "requirement": "REQ-WARP-MARKERS-011",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          308,
+          311
+        ],
+        "anchor_line": 308,
+        "anchor": "Codes 0 to 4 and 6",
+        "span_sha256": "412e567a795db8ead54493b0521e9b77849237f4b1078294d272f020aa77d398"
+      },
+      "predicate": "Six chooser entries map0Beats,1Tones,2Texture,3RePitch,4Complex,6ComplexPro;code5 omitted.",
+      "route": "S",
+      "basis": [
+        "enums"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-chooser-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-023"
+      ]
+    },
+    {
+      "id": "WPR-052",
+      "requirement": "REQ-WARP-MARKERS-011",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          308,
+          311
+        ],
+        "anchor_line": 310,
+        "anchor": "Shorter four- and five-entry",
+        "span_sha256": "412e567a795db8ead54493b0521e9b77849237f4b1078294d272f020aa77d398"
+      },
+      "predicate": "When shorter chooser lists selected remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "enums"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "chooser-variant-selection"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-023"
+      ]
+    },
+    {
+      "id": "WPR-053",
+      "requirement": "REQ-WARP-MARKERS-011",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          314,
+          315
+        ],
+        "anchor_line": 314,
+        "anchor": "held as stored after",
+        "span_sha256": "63bcb37ae5096a9ba1f7b623fbdee4975bea08c80cb33f85c8934fb3382003ef"
+      },
+      "predicate": "Valid WarpMode held unchanged after opening.",
+      "route": "S",
+      "basis": [
+        "load",
+        "enums"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-023"
+      ]
+    },
+    {
+      "id": "WPR-054",
+      "requirement": "REQ-WARP-MARKERS-012",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          323,
+          323
+        ],
+        "anchor_line": 323,
+        "anchor": "`TransientResolution` codes",
+        "span_sha256": "fdbf9eaf28215040303511cd36fc3518bc2999d9e54dc13c37151c470ea8a951"
+      },
+      "predicate": "TransientResolution codes0..6 with default6.",
+      "route": "S",
+      "basis": [
+        "enums",
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-024"
+      ]
+    },
+    {
+      "id": "WPR-055",
+      "requirement": "REQ-WARP-MARKERS-012",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          324,
+          324
+        ],
+        "anchor_line": 324,
+        "anchor": "`TransientLoopMode` codes",
+        "span_sha256": "14f73a7068e94b34c3d1db07a629ca30cc560fe78d0500811b1656ffcf424b30"
+      },
+      "predicate": "TransientLoopMode codes0..2 with default2.",
+      "route": "S",
+      "basis": [
+        "enums",
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-024"
+      ]
+    },
+    {
+      "id": "WPR-056",
+      "requirement": "REQ-WARP-MARKERS-012",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          325,
+          325
+        ],
+        "anchor_line": 325,
+        "anchor": "A code in these lists",
+        "span_sha256": "f14a627d077db38e891acf42006084058c6682a447fda13bf264df7d37a27868"
+      },
+      "predicate": "Valid transient codes held unchanged after opening.",
+      "route": "S",
+      "basis": [
+        "load",
+        "enums"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-024"
+      ]
+    },
+    {
+      "id": "WPR-057",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          336,
+          345
+        ],
+        "anchor_line": 340,
+        "anchor": "GranularityTones` ",
+        "span_sha256": "946fc3a1ca4dfe5ed19bb04c85278f7c1a58313524ff426a3fc1df4db4dd89da"
+      },
+      "predicate": "GranularityTones constructor range12..100/default30.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-058",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          336,
+          345
+        ],
+        "anchor_line": 341,
+        "anchor": "GranularityTexture` ",
+        "span_sha256": "946fc3a1ca4dfe5ed19bb04c85278f7c1a58313524ff426a3fc1df4db4dd89da"
+      },
+      "predicate": "GranularityTexture constructor range2..263/default65.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-059",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          336,
+          345
+        ],
+        "anchor_line": 342,
+        "anchor": "FluctuationTexture` ",
+        "span_sha256": "946fc3a1ca4dfe5ed19bb04c85278f7c1a58313524ff426a3fc1df4db4dd89da"
+      },
+      "predicate": "FluctuationTexture constructor range0..100/default25.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-060",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          336,
+          345
+        ],
+        "anchor_line": 343,
+        "anchor": "ComplexProFormants` ",
+        "span_sha256": "946fc3a1ca4dfe5ed19bb04c85278f7c1a58313524ff426a3fc1df4db4dd89da"
+      },
+      "predicate": "ComplexProFormants constructor range0..100/default100.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-061",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          336,
+          345
+        ],
+        "anchor_line": 344,
+        "anchor": "ComplexProEnvelope` ",
+        "span_sha256": "946fc3a1ca4dfe5ed19bb04c85278f7c1a58313524ff426a3fc1df4db4dd89da"
+      },
+      "predicate": "ComplexProEnvelope constructor range8..256/default128 and integer-step curve.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "actual-parameter-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-062",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          336,
+          345
+        ],
+        "anchor_line": 345,
+        "anchor": "TransientEnvelope` ",
+        "span_sha256": "946fc3a1ca4dfe5ed19bb04c85278f7c1a58313524ff426a3fc1df4db4dd89da"
+      },
+      "predicate": "TransientEnvelope constructor minimum0/default100;effective maximum unresolved.",
+      "route": "S",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "parameter-range-interpretation"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-063",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          349,
+          349
+        ],
+        "anchor_line": 349,
+        "anchor": "A value within its range",
+        "span_sha256": "a00441edb246d6c5e60ecd32073c38037cc6a5beafede361d75e515814cb49f1"
+      },
+      "predicate": "In-range setting held as stored after opening.",
+      "route": "S",
+      "basis": [
+        "load",
+        "defaults"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-064",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          353,
+          355
+        ],
+        "anchor_line": 353,
+        "anchor": "range of `TransientEnvelope`",
+        "span_sha256": "46a64cb2d671ba2aa65bb680c6df21b81cb09a3858c35dda4c3307d1d452aa1e"
+      },
+      "predicate": "TransientEnvelope range conflict(remoteable0..1,curve/shipped0..100) remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "defaults"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "parameter-range-interpretation"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-021",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-065",
+      "requirement": "REQ-WARP-MARKERS-014",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          364,
+          366
+        ],
+        "anchor_line": 365,
+        "anchor": "does not cause a refusal",
+        "span_sha256": "f7999ee3ddc9d358168a8670ea91632508a506b83ac8f7ba35f1b335b01a79a6"
+      },
+      "predicate": "Well-formed out-of-range mode/transient/setting values load unchecked and remain held.",
+      "route": "S",
+      "basis": [
+        "load",
+        "enums"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "completion-auto-warp"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-025",
+        "WMK-026",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-066",
+      "requirement": "REQ-WARP-MARKERS-014",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          367,
+          368
+        ],
+        "anchor_line": 367,
+        "anchor": "The value Live then uses",
+        "span_sha256": "3ef0428eea92c37a616fed5aa60802f089172a973e05690caa9775613f473992"
+      },
+      "predicate": "Out-of-range effective/display/saved values remain U,including code5WAV,7,-1.",
+      "route": "no-established-route",
+      "basis": [
+        "load",
+        "writer"
+      ],
+      "premises": [
+        "A4"
+      ],
+      "missing_joins": [
+        "setting-consumer",
+        "UI-state",
+        "persistence-lifecycle"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-025",
+        "WMK-026",
+        "WMK-027"
+      ]
+    },
+    {
+      "id": "WPR-067",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          377,
+          379
+        ],
+        "anchor_line": 377,
+        "anchor": "not an audio clip",
+        "span_sha256": "4ae40956f1078b6a9255dc254d5b8d88b2a37a1d0835d3cd3b04b3bbd2b9c623"
+      },
+      "predicate": "Add rejects nonaudio/unwarped clip or sample-time outside0..length includingNaN,in stated first-failure order.",
+      "route": "S",
+      "basis": [
+        "edits",
+        "api"
+      ],
+      "premises": [
+        "A2",
+        "sample-length-seconds-assumed"
+      ],
+      "missing_joins": [
+        "sample-reference-length",
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-068",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          380,
+          383
+        ],
+        "anchor_line": 380,
+        "anchor": "new marker goes before",
+        "span_sha256": "b38281cb956e4911cfc421aa0026cb68b63dd4473c30cf3d810d877d1fa6428e"
+      },
+      "predicate": "Add locates insertion before first visibleSecTime>p or shadow;before-first has no left neighbor.",
+      "route": "S",
+      "basis": [
+        "edits"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-069",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          384,
+          385
+        ],
+        "anchor_line": 384,
+        "anchor": "q, as given",
+        "span_sha256": "1d1a64adf0f8e50dc6a7e88a8f804f7ba9eb51577d7d086308983c3516d4c046"
+      },
+      "predicate": "Add rejects original beat below left/above right,skipping absent neighbors and shadow right.",
+      "route": "S",
+      "basis": [
+        "edits"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-070",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          386,
+          390
+        ],
+        "anchor_line": 386,
+        "anchor": "q is then rounded",
+        "span_sha256": "72830b49fc2343fb988d5ef89b59f792683f736b6ff17dc8a2d06c36d3fa8cf9"
+      },
+      "predicate": "Add rounds beat before inclusive neighbor bounds check;NaN roundedbeat rejected;missing-left/shadow-right have no bound.",
+      "route": "S",
+      "basis": [
+        "edits",
+        "grid",
+        "bounds"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [
+        "WPB-02",
+        "WPB-03"
+      ],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-071",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          391,
+          397
+        ],
+        "anchor_line": 391,
+        "anchor": "bounds are computed exactly",
+        "span_sha256": "a5dbd18e44cf505b89f0b89271cb6d09a83457d46408747b00630980afe2b573"
+      },
+      "predicate": "Neighbor-bound arithmetic uses rounded binary64 subtraction,multiply5/60 or999/60,addition and minmax without fusion.",
+      "route": "X",
+      "basis": [
+        "bounds"
+      ],
+      "premises": [
+        "recorded-inputs"
+      ],
+      "missing_joins": [],
+      "candidate_batches": [
+        "WPB-02"
+      ],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-072",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          398,
+          400
+        ],
+        "anchor_line": 398,
+        "anchor": "For \u0394s \u2260 0",
+        "span_sha256": "07f18e10bef3d0eb4ff2608184cfc85604412f8eb78618b193ca454a21011760"
+      },
+      "predicate": "Nonzero-distance exact-real interpretation is5..999BPM;at zero distance both computed bounds equal neighborBeat.",
+      "route": "S",
+      "basis": [
+        "bounds",
+        "edits"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "floating-boundary-interpretation"
+      ],
+      "candidate_batches": [
+        "WPB-02"
+      ],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-073",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          401,
+          403
+        ],
+        "anchor_line": 401,
+        "anchor": "passes every check raises",
+        "span_sha256": "1ec05895dfd788c1302717fe4d3dd20531e15267b9159249afb2cad15cc8eb49"
+      },
+      "predicate": "Accepted add raises no error;equal existingSecTime orBeatTime may keep list unchanged,includingzero-distance acceptedadd.",
+      "route": "S",
+      "basis": [
+        "edits"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "insertion-callees",
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-074",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          404,
+          407
+        ],
+        "anchor_line": 404,
+        "anchor": "find the first marker",
+        "span_sha256": "478d980d23cfa372bb1293afd0afbcf7752a0291744582a8392189dd5fc618cb"
+      },
+      "predicate": "Remove/move find first exact roundedbeat match;missing/shadow refuses;neither requireswarped.",
+      "route": "S",
+      "basis": [
+        "edits",
+        "grid"
+      ],
+      "premises": [
+        "A2",
+        "weak-lookup-support"
+      ],
+      "missing_joins": [
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [
+        "WPB-03"
+      ],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-075",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          408,
+          410
+        ],
+        "anchor_line": 409,
+        "anchor": "list has fewer than three",
+        "span_sha256": "5a4fb7794885eb8c47172510362a5070094d3649867cc1e69702213efd2eb463"
+      },
+      "predicate": "Accepted remove raises noerror and leaves listunchanged when count<3.",
+      "route": "S",
+      "basis": [
+        "edits"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "delete-callees",
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-077",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          416,
+          418
+        ],
+        "anchor_line": 416,
+        "anchor": "resulting list after any other",
+        "span_sha256": "7fd3964044147b4e28f4d3a9b66d9392bfc635a5649be37b2a5f45419263124b"
+      },
+      "predicate": "Other accepted add/remove result and resulting shadow remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "edits",
+        "shadow"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "insertion-callees",
+        "shadow-trigger"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-078",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          416,
+          418
+        ],
+        "anchor_line": 417,
+        "anchor": "limits of `move_warp_marker`",
+        "span_sha256": "7fd3964044147b4e28f4d3a9b66d9392bfc635a5649be37b2a5f45419263124b"
+      },
+      "predicate": "Move-distance limits and accepted move result remain U.",
+      "route": "no-established-route",
+      "basis": [
+        "edits"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "move-callees"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-079",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          416,
+          418
+        ],
+        "anchor_line": 417,
+        "anchor": "warp modes the scripting",
+        "span_sha256": "7fd3964044147b4e28f4d3a9b66d9392bfc635a5649be37b2a5f45419263124b"
+      },
+      "predicate": "warp_mode setter admissible mode list remains U.",
+      "route": "no-established-route",
+      "basis": [
+        "edits",
+        "enums"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "mode-setter-type-selection"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-080",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          416,
+          418
+        ],
+        "anchor_line": 418,
+        "anchor": "whether interactive edits",
+        "span_sha256": "7fd3964044147b4e28f4d3a9b66d9392bfc635a5649be37b2a5f45419263124b"
+      },
+      "predicate": "Whether interactive edits share API limits remains outsidedefined scope and U.",
+      "route": "no-established-route",
+      "basis": [
+        "edits"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "interactive-binding"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-015",
+        "WMK-028",
+        "WMK-029",
+        "WMK-030",
+        "WMK-031",
+        "WMK-032",
+        "WMK-033",
+        "WMK-034",
+        "WMK-035",
+        "WMK-036",
+        "WMK-037",
+        "WMK-038",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-081",
+      "requirement": "REQ-WARP-MARKERS-016",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          424,
+          427
+        ],
+        "anchor_line": 424,
+        "anchor": "Live's marker beat setter",
+        "span_sha256": "4dfa1ffb62a46a772a3242383a150357de696fd81525bc33e02d975d01813caf"
+      },
+      "predicate": "Marker setter/add/lookups route beats through grid;special finite sentinels/+infinity bypass.",
+      "route": "S",
+      "basis": [
+        "grid",
+        "edits"
+      ],
+      "premises": [],
+      "missing_joins": [
+        "setter-lookup-binding"
+      ],
+      "candidate_batches": [
+        "WPB-03"
+      ],
+      "case_ids": [
+        "WMK-003",
+        "WMK-035",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-082",
+      "requirement": "REQ-WARP-MARKERS-016",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          428,
+          437
+        ],
+        "anchor_line": 428,
+        "anchor": "rounding is exactly",
+        "span_sha256": "9c09c831b5c4d778c6d049201c41aeb74a4706310f229683ae02cb66432e51c6"
+      },
+      "predicate": "q uses specified per-operation binary64 sequence,including-0->+0 and near-halfway behavior;ARM matches exact fused-product sequence.",
+      "route": "X",
+      "basis": [
+        "grid"
+      ],
+      "premises": [
+        "recorded-inputs"
+      ],
+      "missing_joins": [
+        "original-marker-setup"
+      ],
+      "candidate_batches": [
+        "WPB-03"
+      ],
+      "case_ids": [
+        "WMK-003",
+        "WMK-035",
+        "WMK-039"
+      ]
+    },
+    {
+      "id": "WPR-084",
+      "requirement": "REQ-WARP-MARKERS-016",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          439,
+          439
+        ],
+        "anchor_line": 439,
+        "anchor": "does not round `SecTime`",
+        "span_sha256": "3579e30b439faa3e8ebb62c1eb221c58e7fd8a6ae1623f97267ff46f6bc99b01"
+      },
+      "predicate": "Scripting add leaves SecTime unrounded.",
+      "route": "S",
+      "basis": [
+        "edits"
+      ],
+      "premises": [
+        "A2"
+      ],
+      "missing_joins": [
+        "public-script-dispatch"
+      ],
+      "candidate_batches": [],
+      "case_ids": [
+        "WMK-003",
+        "WMK-035",
+        "WMK-039"
+      ]
+    }
+  ],
+  "auxiliary_clause_records": [
+    {
+      "id": "WPA-001",
+      "requirement": "REQ-WARP-MARKERS-002",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          139,
+          142
+        ],
+        "anchor_line": 139,
+        "anchor": "**Inferred.**",
+        "span_sha256": "0cd64199bad00118a94b35f582a13d0f1ddfbf1187b9295b1eeb6e9bd4f5e339"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "SecTime sample-seconds/BeatTime clip-beats origin remains inferred,not a separate requirement."
+    },
+    {
+      "id": "WPA-002",
+      "requirement": "REQ-WARP-MARKERS-003",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          148,
+          150
+        ],
+        "anchor_line": 148,
+        "anchor": "In shipped documents",
+        "span_sha256": "bab23d6d98face4f13ea884e1d6ffdf5aae45f4ad6be911bab64e8e957194c17"
+      },
+      "disposition": "shipped-evidence-only",
+      "description": "Shipped count/order/minimum corpus facts corroborate,not required outcomes."
+    },
+    {
+      "id": "WPA-003",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          199,
+          200
+        ],
+        "anchor_line": 199,
+        "anchor": "In shipped lists",
+        "span_sha256": "121f8b2d9c89c69118e30311cc5aaa61eb1838d9e26c6854c988208dcadb95d3"
+      },
+      "disposition": "shipped-evidence-only",
+      "description": "Shipped1/32 and1/16/1/64 spacing counts are evidence,not extra outcomes."
+    },
+    {
+      "id": "WPA-004",
+      "requirement": "REQ-WARP-MARKERS-008",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          224,
+          233
+        ],
+        "anchor_line": 224,
+        "anchor": "two conversion cores",
+        "span_sha256": "e1ad9a82070ea50b0da590e99789626582f8ddd3c0de6c80b8ff6d16b0b66310"
+      },
+      "disposition": "shared-reference",
+      "description": "Executed M1/M2 core values support existing arithmetic predicates;M0 WMK019 was computed,not executed."
+    },
+    {
+      "id": "WPA-005",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          251,
+          261
+        ],
+        "anchor_line": 255,
+        "anchor": "**Extensions.**",
+        "span_sha256": "436bdd9cd4d5c8f068a606ce7cc46b7e2dbaec16c0505ca588562ae3c1b99f27"
+      },
+      "disposition": "shared-reference",
+      "description": "Playback extension refers to REQ008 general mapping,not another required arithmetic outcome."
+    },
+    {
+      "id": "WPA-006",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          251,
+          261
+        ],
+        "anchor_line": 259,
+        "anchor": "What this establishes",
+        "span_sha256": "436bdd9cd4d5c8f068a606ce7cc46b7e2dbaec16c0505ca588562ae3c1b99f27"
+      },
+      "disposition": "shared-reference",
+      "description": "Mechanism summary does not establish delivered samples."
+    },
+    {
+      "id": "WPA-007",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          262,
+          271
+        ],
+        "anchor_line": 267,
+        "anchor": "scripting conversion refuses",
+        "span_sha256": "58b3f412d7067a9d83676e0e1391218df2fd033a4dc2336bf3a6479d6bfd2492"
+      },
+      "disposition": "shared-reference",
+      "description": "Unwarped API refusal already counted under REQ008."
+    },
+    {
+      "id": "WPA-008",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          282,
+          284
+        ],
+        "anchor_line": 282,
+        "anchor": "**Correction (revision 4).**",
+        "span_sha256": "cde0380ab38d1ea3900b15360dc838aa892b825de17af10e0918e5cd06227ae5"
+      },
+      "disposition": "historical-correction",
+      "description": "Historical no-caller claim superseded by retained donor/caller evidence;no extra outcome."
+    },
+    {
+      "id": "WPA-009",
+      "requirement": "REQ-WARP-MARKERS-010",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          300,
+          302
+        ],
+        "anchor_line": 301,
+        "anchor": "**Inferred:**",
+        "span_sha256": "2df598b1f9077c5c50110117b8fd72234013b0f186a464ebb57309c02bc16770"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "DefaultWarpMode preference display-name inference is not a requirement."
+    },
+    {
+      "id": "WPA-010",
+      "requirement": "REQ-WARP-MARKERS-011",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          312,
+          313
+        ],
+        "anchor_line": 312,
+        "anchor": "Code 5 is REX",
+        "span_sha256": "6a7f6a12d3bc367b5b6ee84e8477a363deeca39ddc6e96c44b089c19a6ede241"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "REX label inferred from stored code list;not established display text."
+    },
+    {
+      "id": "WPA-011",
+      "requirement": "REQ-WARP-MARKERS-011",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          316,
+          317
+        ],
+        "anchor_line": 316,
+        "anchor": "chooser shows the label",
+        "span_sha256": "6fd225eeee032c3aa93f786107f4c907ec9b94e8cf21549ad686e49ddb4b41a6"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "Stored-value->shown chooserlabel and shipped mode counts are inference/evidence."
+    },
+    {
+      "id": "WPA-012",
+      "requirement": "REQ-WARP-MARKERS-012",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          326,
+          328
+        ],
+        "anchor_line": 326,
+        "anchor": "**Inferred.** The `TransientResolution`",
+        "span_sha256": "a74d04e0caa452a6cc5d0ca738f6e05c2134cccb648a85b543e9465ffe502799"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "Stored transient code names are not proven displayed labels."
+    },
+    {
+      "id": "WPA-013",
+      "requirement": "REQ-WARP-MARKERS-012",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          329,
+          330
+        ],
+        "anchor_line": 329,
+        "anchor": "stored loop-mode names",
+        "span_sha256": "b8ec93974bb644282453dd5d0df4acf67e2d4287401dc42802d80db6cc611ef9"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "Loop names/display labels remain inferred."
+    },
+    {
+      "id": "WPA-014",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          347,
+          348
+        ],
+        "anchor_line": 347,
+        "anchor": "parameter names are those",
+        "span_sha256": "4fd717b6fc43195b0b6884b380424f3604f3d088f4376ae63333116b8c2dce56"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "Constructor parameter names are inferred UI text only."
+    },
+    {
+      "id": "WPA-015",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          350,
+          352
+        ],
+        "anchor_line": 350,
+        "anchor": "Every shipped audio clip",
+        "span_sha256": "6412cd7c2c6a91aac7b91f00495a517115ac1d1d144a3afbc9a0a05868174c5c"
+      },
+      "disposition": "shipped-evidence-only",
+      "description": "Shipped settings/ranges are corroboration,not outcome count."
+    },
+    {
+      "id": "WPA-016",
+      "requirement": "REQ-WARP-MARKERS-013",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          356,
+          358
+        ],
+        "anchor_line": 356,
+        "anchor": "Beats uses the three",
+        "span_sha256": "a2003f20726d3bb8b272974ca2d0064f115a36ef7f2e20cd6980f22de5c9c8c0"
+      },
+      "disposition": "inferred-no-requirement",
+      "description": "Mode->setting audio-effect allocation is inference/outsideaudio scope."
+    },
+    {
+      "id": "WPA-017",
+      "requirement": "REQ-WARP-MARKERS-016",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          440,
+          440
+        ],
+        "anchor_line": 440,
+        "anchor": "All 22,029",
+        "span_sha256": "7a07218f7494835f153ad8e77bfb8fa587c7cf56c8e4e811e7cf253facba3acf"
+      },
+      "disposition": "shipped-evidence-only",
+      "description": "Shipped grid census corroborates;does not prove editing/reconstruction."
+    },
+    {
+      "id": "WPA-018",
+      "requirement": "REQ-WARP-MARKERS-007",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          202,
+          203
+        ],
+        "anchor_line": 202,
+        "anchor": "refuses to delete or move",
+        "span_sha256": "ad4fa3e902a702f64f4b3ea6c24e442a3fab211afb3a023c0c4aef82a004715e"
+      },
+      "disposition": "shared-reference-or-mechanism-only",
+      "description": "API forbids shadow delete/move and excludes shadow as add right-neighbor. Already covered by direct required mapping/grid/edit predicates;no independent required outcome counted."
+    },
+    {
+      "id": "WPA-019",
+      "requirement": "REQ-WARP-MARKERS-009",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          241,
+          250
+        ],
+        "anchor_line": 241,
+        "anchor": "conversion cores of REQ",
+        "span_sha256": "46d01c63a25f052bd36cebd76cf1e3fe413a48d9cfd76c10d2b9c842c3abe7ca"
+      },
+      "disposition": "shared-reference-or-mechanism-only",
+      "description": "Engine warper callers statically use same marker-list conversion cores;not merely scripting helpers. Already covered by direct required mapping/grid/edit predicates;no independent required outcome counted."
+    },
+    {
+      "id": "WPA-020",
+      "requirement": "REQ-WARP-MARKERS-015",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          411,
+          415
+        ],
+        "anchor_line": 411,
+        "anchor": "Inside the former uncertainty",
+        "span_sha256": "a117895e08c21da09b90c0ad58f0f6dc84584344a90157513ba7e005d44f4b49"
+      },
+      "disposition": "shared-reference-or-mechanism-only",
+      "description": "Former edge bands use exact X-settled bounds/q sequences;not exact-real idealization;API comparisons remain static. Already covered by direct required mapping/grid/edit predicates;no independent required outcome counted."
+    },
+    {
+      "id": "WPA-021",
+      "requirement": "REQ-WARP-MARKERS-016",
+      "source": {
+        "path": "wiki/specs/warp-markers.md",
+        "revision": 5,
+        "lines": [
+          438,
+          438
+        ],
+        "anchor_line": 438,
+        "anchor": "Load does not round",
+        "span_sha256": "7bf6db429bc18f2d73c00dfa86936e32a9ce1e4a2fe7f0a3826a7e5faaea4a4c"
+      },
+      "disposition": "shared-reference-or-mechanism-only",
+      "description": "Loaded BeatTime stays unrounded,distinct from setter grid. Already covered by direct required mapping/grid/edit predicates;no independent required outcome counted."
+    }
+  ],
+  "cases": [
+    {
+      "id": "WMK-001",
+      "source_line": 514,
+      "row_sha256": "462f2f882cfa1c4783a4e89470937f11e52b6811a062471c866ea0b0eb87c9b5",
+      "requirements": [
+        "REQ-WARP-MARKERS-001",
+        "REQ-WARP-MARKERS-002",
+        "REQ-WARP-MARKERS-003"
+      ],
+      "kind": "S",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-001",
+        "WPR-002",
+        "WPR-003",
+        "WPR-004",
+        "WPR-005",
+        "WPR-006",
+        "WPR-007",
+        "WPR-008",
+        "WPR-009",
+        "WPR-010",
+        "WPR-011",
+        "WPR-012"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-002",
+      "source_line": 515,
+      "row_sha256": "86878d2ee09b1fa5566a06a036af680c02e16d31ef50469a7f45267ff4618484",
+      "requirements": [
+        "REQ-WARP-MARKERS-003"
+      ],
+      "kind": "S",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-011",
+        "WPR-012"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-003",
+      "source_line": 516,
+      "row_sha256": "cebd568655d515a9c0b2975f83c6b07c90c74440f338e023ca3826cd2c66fc85",
+      "requirements": [
+        "REQ-WARP-MARKERS-002",
+        "REQ-WARP-MARKERS-016"
+      ],
+      "kind": "S",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-005",
+        "WPR-006",
+        "WPR-007",
+        "WPR-008",
+        "WPR-009",
+        "WPR-010",
+        "WPR-081",
+        "WPR-082",
+        "WPR-084"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-004",
+      "source_line": 517,
+      "row_sha256": "e6b5bf0fc0c1c7446a90bbcc6f87fbf536bade63dcd10977ac3ecd55fe2a41d0",
+      "requirements": [
+        "REQ-WARP-MARKERS-002"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-005",
+        "WPR-006",
+        "WPR-007",
+        "WPR-008",
+        "WPR-009",
+        "WPR-010"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-005",
+      "source_line": 518,
+      "row_sha256": "e0a893da7a9fb1ff67d0541b8d208b6fc746478f2e85da99f2948405a3c16b44",
+      "requirements": [
+        "REQ-WARP-MARKERS-002"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-005",
+        "WPR-006",
+        "WPR-007",
+        "WPR-008",
+        "WPR-009",
+        "WPR-010"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-006",
+      "source_line": 519,
+      "row_sha256": "c05746e3874e697dde143bf0f6aa394d69c3f7fa41a7558821b6f51b6d9d69ba",
+      "requirements": [
+        "REQ-WARP-MARKERS-004"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-013",
+        "WPR-014",
+        "WPR-015",
+        "WPR-016"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-007",
+      "source_line": 520,
+      "row_sha256": "24dfb9cbc1a22714af2e2a1aa24ca29730f8a9355b0c6778e8a0a4f5eb8153ac",
+      "requirements": [
+        "REQ-WARP-MARKERS-004"
+      ],
+      "kind": "P",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-013",
+        "WPR-014",
+        "WPR-015",
+        "WPR-016"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-008",
+      "source_line": 521,
+      "row_sha256": "497b4f29837e91977a0bc0fe8e165aa194e2b0763ba9a2b695da0e098a49dcd3",
+      "requirements": [
+        "REQ-WARP-MARKERS-005"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-017",
+        "WPR-018",
+        "WPR-019"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-009",
+      "source_line": 522,
+      "row_sha256": "3149778a25a57d986949b6126c4a459aa60ca62da47ba85745b5bd7e81d9586d",
+      "requirements": [
+        "REQ-WARP-MARKERS-005"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-017",
+        "WPR-018",
+        "WPR-019"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-010",
+      "source_line": 523,
+      "row_sha256": "b92e675adb477d69edc32e0393de6cd1fc3d6a410de1d5a5ec5461c7d5c0ca24",
+      "requirements": [
+        "REQ-WARP-MARKERS-005"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-017",
+        "WPR-018",
+        "WPR-019"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-011",
+      "source_line": 524,
+      "row_sha256": "9cafe3c85bfbf19bbfc578cafa46139afadbf7d3831709fbbe8de6bb58c36b0c",
+      "requirements": [
+        "REQ-WARP-MARKERS-005"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-017",
+        "WPR-018",
+        "WPR-019"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-012",
+      "source_line": 525,
+      "row_sha256": "53ea623b5d9152a453e87458d682d990caa19756d249a53ba5d66e49a29a5e89",
+      "requirements": [
+        "REQ-WARP-MARKERS-006"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-020",
+        "WPR-021"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-013",
+      "source_line": 526,
+      "row_sha256": "411d9487119b39b11c98fdc850261666df09158006809b086d2c94e76e42fe95",
+      "requirements": [
+        "REQ-WARP-MARKERS-006"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-020",
+        "WPR-021"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-014",
+      "source_line": 527,
+      "row_sha256": "a97b2c54ad471390532e2e3b9a3ce98c3b9dda1b5446d369b96ecdc048e5d9e0",
+      "requirements": [
+        "REQ-WARP-MARKERS-007"
+      ],
+      "kind": "S",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-022",
+        "WPR-023",
+        "WPR-024",
+        "WPR-025",
+        "WPR-027",
+        "WPR-028"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-015",
+      "source_line": 528,
+      "row_sha256": "bac36a61bffac7f1fefa3153d6fe02eba91b6d2bbc561cb634d5a8df83405136",
+      "requirements": [
+        "REQ-WARP-MARKERS-007",
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-022",
+        "WPR-023",
+        "WPR-024",
+        "WPR-025",
+        "WPR-027",
+        "WPR-028",
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-016",
+      "source_line": 529,
+      "row_sha256": "c68214f91bc5f46377fa836bcef8f2a510fabc3b62066146be5d20d74567c6b3",
+      "requirements": [
+        "REQ-WARP-MARKERS-008"
+      ],
+      "kind": "P",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-029",
+        "WPR-030",
+        "WPR-031",
+        "WPR-032",
+        "WPR-033",
+        "WPR-034",
+        "WPR-035",
+        "WPR-036"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-017",
+      "source_line": 530,
+      "row_sha256": "977d07c71afa82baaeaac198f35b7e89ddf90f0357bf1d9ff0c33461415be13d",
+      "requirements": [
+        "REQ-WARP-MARKERS-008"
+      ],
+      "kind": "P",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-029",
+        "WPR-030",
+        "WPR-031",
+        "WPR-032",
+        "WPR-033",
+        "WPR-034",
+        "WPR-035",
+        "WPR-036"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-018",
+      "source_line": 531,
+      "row_sha256": "be281f49f1ad9569ffa82ba50e4cfa71a34decef904f47f139e47b20c1a1441b",
+      "requirements": [
+        "REQ-WARP-MARKERS-008"
+      ],
+      "kind": "P",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-029",
+        "WPR-030",
+        "WPR-031",
+        "WPR-032",
+        "WPR-033",
+        "WPR-034",
+        "WPR-035",
+        "WPR-036"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-019",
+      "source_line": 532,
+      "row_sha256": "f28d8a8996c4024fc8883155314d4614e2a5d8352115ed537aeac0388e2c20ee",
+      "requirements": [
+        "REQ-WARP-MARKERS-008"
+      ],
+      "kind": "P",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-029",
+        "WPR-030",
+        "WPR-031",
+        "WPR-032",
+        "WPR-033",
+        "WPR-034",
+        "WPR-035",
+        "WPR-036"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-020",
+      "source_line": 533,
+      "row_sha256": "8e8fe09170e1fe241b8d881309879ad357fdf5b8d2c61f9f56eb4af79e612669",
+      "requirements": [
+        "REQ-WARP-MARKERS-008"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-029",
+        "WPR-030",
+        "WPR-031",
+        "WPR-032",
+        "WPR-033",
+        "WPR-034",
+        "WPR-035",
+        "WPR-036"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-021",
+      "source_line": 534,
+      "row_sha256": "d25068d40a54b6b7a49dc789afaad5c7b31d4cfba70dda0bc18faf29d486fac7",
+      "requirements": [
+        "REQ-WARP-MARKERS-010",
+        "REQ-WARP-MARKERS-013"
+      ],
+      "kind": "M",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-047",
+        "WPR-048",
+        "WPR-049",
+        "WPR-050",
+        "WPR-057",
+        "WPR-058",
+        "WPR-059",
+        "WPR-060",
+        "WPR-061",
+        "WPR-062",
+        "WPR-063",
+        "WPR-064"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-022",
+      "source_line": 535,
+      "row_sha256": "12e44df841f3431551b941e36d78e9b71e538db0e0361071a40161de62085deb",
+      "requirements": [
+        "REQ-WARP-MARKERS-010"
+      ],
+      "kind": "U",
+      "unresolved": true,
+      "navigation_predicates": [
+        "WPR-047",
+        "WPR-048",
+        "WPR-049",
+        "WPR-050"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-023",
+      "source_line": 536,
+      "row_sha256": "fd246830f6a7cbb7477bc66002ced807c788959f1448e9256b8b69c9abc521b6",
+      "requirements": [
+        "REQ-WARP-MARKERS-011"
+      ],
+      "kind": "S",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-051",
+        "WPR-052",
+        "WPR-053"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-024",
+      "source_line": 537,
+      "row_sha256": "0466481c6e5d5ecbcb5e9dcd73ad16cb6965c6b4ebf81537c420948b51bab2a9",
+      "requirements": [
+        "REQ-WARP-MARKERS-012"
+      ],
+      "kind": "S",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-054",
+        "WPR-055",
+        "WPR-056"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-025",
+      "source_line": 538,
+      "row_sha256": "b2bf486fdeeaec326edc145c7d2142b083bcacb2dcdda0966d90318a8ea42c99",
+      "requirements": [
+        "REQ-WARP-MARKERS-014"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-065",
+        "WPR-066"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-026",
+      "source_line": 539,
+      "row_sha256": "83ed8aeb638557030bb435735a55a7fc8ee1340e4d0744826a0665cf307cd600",
+      "requirements": [
+        "REQ-WARP-MARKERS-014"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-065",
+        "WPR-066"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-027",
+      "source_line": 540,
+      "row_sha256": "7bb2f460487fbe0963bc5f8ad83afe673b77f6c8f6c1f18d26920e6a01924978",
+      "requirements": [
+        "REQ-WARP-MARKERS-013",
+        "REQ-WARP-MARKERS-014"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-057",
+        "WPR-058",
+        "WPR-059",
+        "WPR-060",
+        "WPR-061",
+        "WPR-062",
+        "WPR-063",
+        "WPR-064",
+        "WPR-065",
+        "WPR-066"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-028",
+      "source_line": 541,
+      "row_sha256": "3eff41c4f21f367e454794d9dc45d6d03e57e7e4679e3f1650afd960ea098bc8",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-029",
+      "source_line": 542,
+      "row_sha256": "d1ab9538d8eaefd0830318720e9f2e9a22520c627b10e1be14c855f85d8010a7",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-030",
+      "source_line": 543,
+      "row_sha256": "3623e381125c88b4fdd8ce3a9e50a8a004ce22139c9d23c866a0385b9ec8d025",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-031",
+      "source_line": 544,
+      "row_sha256": "0a1d700d73148ea22300fafe7c4f38a49a53eb74f9f1164afe9fafdb9a6ab820",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-032",
+      "source_line": 545,
+      "row_sha256": "9b3ed34bf06fa83efe48695d9b063134976201daafdc36fedcc03e39731218fa",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "N",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-033",
+      "source_line": 546,
+      "row_sha256": "54e422643d22a23e045659b6bd793871fe0961186df39a1d009169b63f8c05a1",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "P",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-034",
+      "source_line": 547,
+      "row_sha256": "d5fa0d3955547413690fa19b752b2dc22e032f3642363206af6c042c65161ade",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-035",
+      "source_line": 548,
+      "row_sha256": "6047d0eb798ede7b7de6d45f47e0fff65174151338fe2f92f3669c99874e57e4",
+      "requirements": [
+        "REQ-WARP-MARKERS-015",
+        "REQ-WARP-MARKERS-016"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080",
+        "WPR-081",
+        "WPR-082",
+        "WPR-084"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-036",
+      "source_line": 549,
+      "row_sha256": "2b38e17c74e562b5aea6aeb366cddb17da4d2507099906267b54074d9da17f32",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-037",
+      "source_line": 550,
+      "row_sha256": "78d10e9b9e94aeb5f6cfbbfc7d0eb2d82fe3e7ce3e40108f18603ceac2502db9",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-038",
+      "source_line": 551,
+      "row_sha256": "2ec1b080b7aecdc5d22769529f6e1861631e8f8f5f6c60924a62d73e02661e42",
+      "requirements": [
+        "REQ-WARP-MARKERS-015"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    },
+    {
+      "id": "WMK-039",
+      "source_line": 552,
+      "row_sha256": "d36ce8352a3a621a982474ba9f77c636615ae86571046af0aa2a5741760332bf",
+      "requirements": [
+        "REQ-WARP-MARKERS-015",
+        "REQ-WARP-MARKERS-016"
+      ],
+      "kind": "B",
+      "unresolved": false,
+      "navigation_predicates": [
+        "WPR-067",
+        "WPR-068",
+        "WPR-069",
+        "WPR-070",
+        "WPR-071",
+        "WPR-072",
+        "WPR-073",
+        "WPR-074",
+        "WPR-075",
+        "WPR-077",
+        "WPR-078",
+        "WPR-079",
+        "WPR-080",
+        "WPR-081",
+        "WPR-082",
+        "WPR-084"
+      ],
+      "navigation_limit": "requirement association only,not predicate exercise or runtime execution"
+    }
+  ],
+  "counting": "Required context/output/state/error predicates only. Helpers,numeric examples,shipped counts,inferences and repeated references excluded. RequirementIDs/cases/inputrows are navigation units,not outcome denominator. Route inventory,not grades/coverage/frozenwholeproductdenominator.",
+  "route_definitions": {
+    "X": "Required bounded calculation has retained original-function route for recorded inputs;composition/public binding remains distinct.",
+    "S": "Static/conditional predicate route under stated premises;not observed opening,scripting dispatch,save or audio.",
+    "no-established-route": "No complete established route for currentobservable under ADR0003/thispacket;futurestaticrecovery not ruledout."
+  },
+  "counts": {
+    "required_predicates": 80,
+    "by_route": {
+      "S": 50,
+      "no-established-route": 25,
+      "X": 5
+    },
+    "requirement_ids": 16,
+    "case_ids": 39,
+    "auxiliary_records": 21
+  },
+  "protected_research_prefix": {
+    "path": "wiki/research/warp-markers.md",
+    "bytes": 31693,
+    "sha256": "9b8f717d8661ae9a636bfb4aa3856a6f2d42763ecf1f38b52e233d23ca04f88a"
+  },
+  "preserved_dispositions": "32gradable/7unresolved;006refusalonly,025-027openingonly;009unreleased and nocase;019M0computednotexecuted;shadowappendhelperauxiliary,noacceptancecase. Current partialv2:63cases,withdrawn samplepart/deviceplacement retained.",
+  "new_original_calls": 0,
+  "new_behavior_grades": 0
+}

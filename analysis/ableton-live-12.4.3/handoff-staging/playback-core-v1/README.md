@@ -1,9 +1,9 @@
 # Playback core: transport, launch timing and clip playback, release 1
 
-**Unreviewed candidate.** Read [the contract](spec.md), [the cases](cases.json),
-[the role instructions](AGENTS.md) and [the manifest](manifest.json). The
-partial scope stated there is proposed for review. It is not approved, and no
-implementation workspace has been provisioned.
+**Reviewed handoff.** Read [the contract](spec.md), [the cases](cases.json),
+[the role instructions](AGENTS.md), [the manifest](manifest.json) and
+[the review disposition](REVIEW.md). Approval covers only the explicit partial
+clauses. A fresh restricted implementation workspace remains required.
 
 The finite scope is an offline render of a Live Set's session at a stated
 sample rate, driven by a script of transport and launch actions on stated

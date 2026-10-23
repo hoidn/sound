@@ -1,0 +1,214 @@
+{
+  "retained_utc": "2026-10-20T13:00:43.662847+00:00",
+  "status": "PROPOSED_PARTIAL_EXACT_SELECTED_BRANCH_OPERAND_DATA; independent review pending",
+  "selection": {
+    "start_va": "0x1065411b0",
+    "end_va_exclusive": "0x1065411b8",
+    "bytes": 8,
+    "source_export_utc": null,
+    "timestamp_note": "Analyst retention UTC separate; no export UTC inferred.",
+    "scope": "One selected8Bword only, after fresh fullimageidentity/MachOheader/load-command/filebackedmapping verification.",
+    "excluded": "No neighborbytes/otheroperands/tableenumeration, resulting targetmetadata/body, opcode/instruction, native/runtime/numeric execution, callee/source export or word-role inference."
+  },
+  "image": {
+    "path": "analysis/ableton-live-12.4.3/derived/Live.arm64",
+    "bytes": 149711904,
+    "sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad"
+  },
+  "header": {
+    "bytes": 32,
+    "raw_hex": "cffaedfe0c000001000000000200000035000000201b00008580a10000000000",
+    "sha256": "98b5dddb7b5adfed03951ff2a4753e888ee9547b7603f6623e3834befab249bb",
+    "magic": "0xfeedfacf",
+    "cpu_type": "0x100000c",
+    "cpu_subtype": 0,
+    "filetype": 2,
+    "ncmds": 53,
+    "sizeofcmds": 6944,
+    "flags": "0xa18085",
+    "reserved": 0
+  },
+  "load_command_validation": {
+    "file_offset": 32,
+    "bytes": 6944,
+    "sha256": "b37084be6877bd6f3afdfea02c3277f04ace94bd551750842397c48fb4ea3fc7",
+    "all53command_sizes_valid_and_sum_exact": true,
+    "all_segment_mappings": [
+      {
+        "command_index_0based": 0,
+        "command_file_offset": 32,
+        "name": "__PAGEZERO",
+        "vmaddr": "0x0",
+        "vmsize": 4294967296,
+        "fileoff": 0,
+        "filesize": 0
+      },
+      {
+        "command_index_0based": 1,
+        "command_file_offset": 104,
+        "name": "__TEXT",
+        "vmaddr": "0x100000000",
+        "vmsize": 105873408,
+        "fileoff": 0,
+        "filesize": 105873408
+      },
+      {
+        "command_index_0based": 2,
+        "command_file_offset": 1376,
+        "name": "__DATA_CONST",
+        "vmaddr": "0x1064f8000",
+        "vmsize": 6995968,
+        "fileoff": 105873408,
+        "filesize": 6995968
+      },
+      {
+        "command_index_0based": 3,
+        "command_file_offset": 2248,
+        "name": "__DATA",
+        "vmaddr": "0x106ba4000",
+        "vmsize": 4915200,
+        "fileoff": 112869376,
+        "filesize": 2490368
+      },
+      {
+        "command_index_0based": 4,
+        "command_file_offset": 3360,
+        "name": "__LINKEDIT",
+        "vmaddr": "0x107054000",
+        "vmsize": 34357248,
+        "fileoff": 115359744,
+        "filesize": 34352160
+      }
+    ]
+  },
+  "mapping": {
+    "segment": {
+      "command_index_0based": 2,
+      "command_file_offset": 1376,
+      "name": "__DATA_CONST",
+      "vmaddr": "0x1064f8000",
+      "vmsize": 6995968,
+      "fileoff": 105873408,
+      "filesize": 6995968
+    },
+    "unique_full_filebacked_matches": 1,
+    "file_offset": 106172848,
+    "end_file_offset_exclusive": 106172856,
+    "formula": "segment.fileoff + (VA - segment.vmaddr)",
+    "interval_inside_vmsize_filesize_and_file": true,
+    "no_zerofill_substitution": true
+  },
+  "word": {
+    "va": "0x1065411b0",
+    "end_va_exclusive": "0x1065411b8",
+    "file_offset": 106172848,
+    "bytes": 8,
+    "raw_hex": "a853160201000000",
+    "sha256": "3d5fdb0d1a5f8a2fc5416aa0eb9eea0826fce2a7895acd46432aa8c6fdab55c3",
+    "u64_little_endian": "0x1021653a8",
+    "classification": "Unclassified retained pointer-valued operand data. No target/type/role/callability assigned."
+  },
+  "conditional_source_association": {
+    "query": {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-callback-branch-helpers-frontier-2026-10-20.json",
+      "bytes": 19511,
+      "sha256": "7589fe60a66187c20a449fe10632b37784ca03a983128d0d25894bd85808a012"
+    },
+    "review": {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-callback-branch-helpers-review.json",
+      "bytes": 3599,
+      "sha256": "77de87158613dc2fe94680232bb1419fb65e2865965bdd715e45cb1017ebc83b"
+    },
+    "source_fact_pointer": "/source_facts/2",
+    "source": {
+      "entry": "0x10215f3e0",
+      "lines_1based": [
+        31,
+        34
+      ],
+      "text": "  if (*(char *)(param_1 + 0x161) == '\\x01') {\n    FUN_101aa4b94(*(undefined8 *)(param_1 + 0x260),PTR___invoke_1065411b0);\n    return;\n  }\n",
+      "bytes": 138,
+      "sha256": "6013df521fc16025815f1b9c936d5cc30fc76ecadb412868f4573fe1dc58fb76"
+    },
+    "recovered_predicates": "R+0x148 andR+0x149 each equal1 atfirstgate; R+0x162 equals1 atits branch; R+0x161 equals1 on reachedbranch. Receiver/object/normalABI/nointerference premises remain unproved.",
+    "claim": "On that selected source path10215f3e0 supplies operandPTR___invoke_1065411b0 with handlewordR+0x260 to101aa4b94. This query records imagebytes at the exact literal operand address only.",
+    "limit": "No runtime load/binding/invocation, helper effect, actualR/P association, callback ABI, processing role (including any silence claim) or audio/publicMute behavior follows."
+  },
+  "next_frontier": {
+    "decision": "STOP before targetmetadata/body or any otherword",
+    "scope": "Separate independent datareview and Rootselection are required before interpreting or following the resulting u64value."
+  },
+  "preservation": {
+    "before": [
+      {
+        "path": "analysis/ableton-live-12.4.3/derived/Live.arm64",
+        "bytes": 149711904,
+        "sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-callback-branch-helpers-frontier-2026-10-20.json",
+        "bytes": 19511,
+        "sha256": "7589fe60a66187c20a449fe10632b37784ca03a983128d0d25894bd85808a012"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-callback-branch-helpers-review.json",
+        "bytes": 3599,
+        "sha256": "77de87158613dc2fe94680232bb1419fb65e2865965bdd715e45cb1017ebc83b"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-registered-callback-endpoint-frontier-2026-10-20.json",
+        "bytes": 13126,
+        "sha256": "a1bf760ea749e059cd468be53fe54f77a506db63f6ef4f392d47d25e7be24cab"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-registered-callback-endpoint-review.json",
+        "bytes": 2900,
+        "sha256": "217e824aa30754fab703fca873d82e1d2863ee673fd73b8f80606a86532fac3d"
+      }
+    ],
+    "after": [
+      {
+        "path": "analysis/ableton-live-12.4.3/derived/Live.arm64",
+        "bytes": 149711904,
+        "sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-callback-branch-helpers-frontier-2026-10-20.json",
+        "bytes": 19511,
+        "sha256": "7589fe60a66187c20a449fe10632b37784ca03a983128d0d25894bd85808a012"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-callback-branch-helpers-review.json",
+        "bytes": 3599,
+        "sha256": "77de87158613dc2fe94680232bb1419fb65e2865965bdd715e45cb1017ebc83b"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-registered-callback-endpoint-frontier-2026-10-20.json",
+        "bytes": 13126,
+        "sha256": "a1bf760ea749e059cd468be53fe54f77a506db63f6ef4f392d47d25e7be24cab"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-registered-callback-endpoint-review.json",
+        "bytes": 2900,
+        "sha256": "217e824aa30754fab703fca873d82e1d2863ee673fd73b8f80606a86532fac3d"
+      }
+    ],
+    "unchanged": true
+  },
+  "checks": {
+    "fresh_fullimage_identity_exact": true,
+    "header_and_all_load_commands_checked": true,
+    "unique_filebacked_selected8B_interval": true,
+    "sourceBRANCH03_span_operand_exact": true,
+    "raw8LEu64_reconstruction": true,
+    "all_five_provider_pins_unchanged": true
+  },
+  "documentary_expected": null,
+  "documentary_comparison": null,
+  "actual_expected": null,
+  "actual_comparison": null,
+  "all_utility_application_outcomes": "U/unexecuted",
+  "new_normative_ids": 0,
+  "new_cases_or_grades": 0,
+  "complete": false
+}

@@ -1,0 +1,33 @@
+{
+  "id": "RESPONSE-MPE-TUNING-GROOVES-R2",
+  "date": "2026-10-19",
+  "review": "../reviews/mpe-tuning-grooves-review.json",
+  "reviewed_manifest_r1_sha256": "548d47418b71b5e85b25a11cea01bbe37d37268b53ae91a6ec6c20fe9c3a9cce",
+  "preservation": "Before any edits, copied the exact r1 manifest and all 26 hash/size-verified payloads to revisions/author-r1/. Four r1 snapshots are included. Original root manifest bytes remain unchanged; current files are pinned by manifest-author-r2.json.",
+  "findings": [
+    {
+      "id": "MTG-REVIEW-001",
+      "disposition": "applied",
+      "correction": "GRV-010 now has a nonidentity MIDI setup: distinct-pitch notes at beats 0.1/0.6 with duration 0.1, Base 1/8, Quantize100, Timing/Random/Velocity0, Global Amount100. MIDI comparator requires stored starts0/0.5 and assignmentNone. Audio comparator requires only assignmentNone; existing markers unrestricted, all marker deltas U.",
+      "evidence": "manual-12-using-grooves.txt0037 establishes nearest Base grid at Quantize100,0070 content-independent zero-other-controls mode,0050-0051 Commit writes MIDI result and resets assignment. No assumption that nonzero Timing guarantees edits."
+    },
+    {
+      "id": "MTG-REVIEW-002",
+      "disposition": "applied",
+      "correction": "REQ-GROOVE-007 says separately per voice; statistical independence and cross-voice/cross-clip correlations explicitly U. GRV-007 remains U with no guaranteed separation or RNG/statistical oracle.",
+      "evidence": "manual-12-using-grooves.txt0041 describes differing per-voice fluctuations, without a joint distribution."
+    },
+    {
+      "id": "MTG-REVIEW-003",
+      "disposition": "applied",
+      "correction": "MPE-005 uses symbolic distinct admissible interior Pressure UI values a,b,c. Compare displayed entered c only under that precondition. REQ-MPE-005 states admissibility; numeric domain/instantiation, invalid text/range/rounding and storage/MIDI codec remain U.",
+      "evidence": "manual-12-editing-mpe.txt0045 supports typed value editing, without Pressure numeric admissibility domain."
+    }
+  ],
+  "counts": {"requirements":53,"cases":83,"D12":52,"U":31,"exact_target_U":83,"executed":0},
+  "source_bytes_changed": false,
+  "source_discovery": false,
+  "shared_files_modified": false,
+  "runtime_original_code_hardware_or_candidate_execution": false,
+  "requested_next_step": "Focused independent re-review of corrected MPE-005, GRV-010, REQ-GROOVE-007 and r1/r2 preservation/integrity."
+}

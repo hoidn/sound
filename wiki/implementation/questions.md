@@ -2,13 +2,14 @@
 id: IMPL-QUESTIONS
 type: questions
 status: active
-updated: 2026-10-09
+updated: 2026-10-20
 access: implementation
 ---
 
 # Implementation clarification requests
 
-No handoff-specific clarification requests exist yet. No handoff has been released.
+No handoff-specific clarification requests are recorded yet. Available releases
+and their finite scopes are listed in the [handoff catalog](../../handoff/index.md).
 
 | ID | Handoff and requirement | Behavioral ambiguity | Candidate-side case | State | Reviewed response |
 | --- | --- | --- | --- | --- | --- |

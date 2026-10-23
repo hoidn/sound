@@ -1,0 +1,102 @@
+{
+  "scope": "Author data checks only; no independent approval/new originals/binary acquisition",
+  "checks": [
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "-B",
+        "analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/run_batch.py",
+        "--check-data"
+      ],
+      "exit": 0,
+      "stdout_json": {
+        "status": "PASS",
+        "input_rows": 117,
+        "negative_controls": [
+          "omit-final-vector",
+          "duplicate-bitpair",
+          "wrong-endian",
+          "missing-known-control",
+          "wrong-target",
+          "firstN-cap-truncation",
+          "parser-trailing-junk"
+        ],
+        "strtod_bits": 117,
+        "original_calls": 0,
+        "binary_custody_reads": 0
+      },
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "-B",
+        "analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/analyze.py",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout_json": {
+        "status": "PASS",
+        "summary": {
+          "children": 117,
+          "calls": 117,
+          "historical_controls_agree": 8,
+          "new_discovery_pairs": 109,
+          "new_expected_values_predeclared": 0,
+          "input_unique_bitpatterns": 117,
+          "output_finite": 107,
+          "output_nonfinite": 10,
+          "timeouts": 0,
+          "nonzero_exits": 0,
+          "called_imports": 0
+        },
+        "controls": [
+          "signed-zero identity",
+          "subnormal retained",
+          "infinity distinct from NaN",
+          "exact qNaN signs/payload identities",
+          "reject invalid bitwidth/encoding ''",
+          "reject invalid bitwidth/encoding '0'",
+          "reject invalid bitwidth/encoding 'not-binary64'"
+        ],
+        "new_original_calls": 0
+      },
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "-B",
+        "analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/check-data.py"
+      ],
+      "exit": 0,
+      "stdout_json": {
+        "status": "PASS",
+        "complete_union": 117,
+        "controls": 8,
+        "new_prior_NULL": 109,
+        "source_input_census_all": 8,
+        "negative_controls": [
+          "one new input omitted",
+          "boundary replaced while count117",
+          "oldcontrol expectation changed",
+          "newNULL filled after observation",
+          "one child omitted",
+          "nonzero exit",
+          "timeout",
+          "parser negativezero sign lost",
+          "unexpected thirdparty target",
+          "custody change",
+          "declared endian reversal lost"
+        ],
+        "original_calls": 0,
+        "binary_reads": 0,
+        "model_comparator_runs": 0
+      },
+      "stderr": ""
+    }
+  ]
+}

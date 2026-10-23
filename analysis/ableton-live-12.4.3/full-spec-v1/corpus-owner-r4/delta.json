@@ -1,0 +1,55 @@
+{
+  "canonical": "wiki/specs/device-corpus.md",
+  "before": "spec-before-r3.md",
+  "after": "spec-r4.md",
+  "replacements": [
+    {
+      "old": "revision: 3\n",
+      "new": "revision: 4\n"
+    },
+    {
+      "old": "  were not rendered.\n",
+      "new": "  are not graded as general waveforms. Only Ramp Up now has the single finite audio\n  expectation DCO-029 below; Square, Triangle, Ramp Down, Spin and other Ramp Up\n  vectors remain unrendered here.\n- **X; proposed finite project criterion.** DCO-029 fixes one Free Ramp Up comparison\n  input and its captured output, without recovering an internal LFO waveform law.\n  It differs from DCO-020 only in host LfoType=3 instead of 0; all other host\n  values and input/protocol remain fixed. Its per-channel waveform RMS criterion\n  is stated separately below. This does not accept A1 or assert Live uses this\n  host protocol. The [capture review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-up-review.json)\n  supports only the declared extracted calls.\n"
+    },
+    {
+      "old": "any start-up ramp.\n",
+      "new": "any start-up ramp. **DCO-029 is the sole exception to selecting rows by general\nsignal class:** only its dedicated finite Ramp row applies. The older modal,\npitch and timing comparisons retain their separate case scopes.\n"
+    },
+    {
+      "old": "| Timing | Start-up silence and ramps | Exact frames |",
+      "new": "| Timing | Start-up silence and ramps | Exact frames |\n| DCO-029 only: Free Ramp Up, exact frozen input/protocol | Every frame4096\u201316383inclusive, each channel independently; no fitting, alignment or alternate windows | Relative waveform RMS \u22640.01; both channel energies positive and full-file samples finite |"
+    },
+    {
+      "old": "Why not a sample-by-sample maximum error.",
+      "new": "For DCO-029, decode exactly16384stereo interleaved little-endian binary32 frames\nand widen to binary64. For each channel compute\n`sqrt(math.fsum((candidate-reference)^2)/math.fsum(reference^2))` on all\nframes4096through16383inclusive. Subtraction/products, fsum, sqrt and inclusive\ncomputed-binary64 comparison define rounding, with no acceptance epsilon. Both\nreference and candidate must have positive energy per channel. Reject any\nnonfinite sample anywhere or invalid length. No gain/phase/offset fitting,\nchannel mixing or time alignment is allowed. The [frozen engineering proposal](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-lfo-ramp-criterion/README.md)\ncontains the standalone evaluator and finite controls. Its [independent criterion\nreview](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-criterion-review.json)\napproves only this finite engineering method/budget; owner adoption and release\nreview are separate gates, not consequences of captured bytes alone.\n\nThis1%budget permits at most1e-4error energy/reference energy per channel. It is\nan explicit finite engineering choice, not a recovered device tolerance,\ninaudibility claim, Apple/arm64 error bound or worst-case mixed-libm guarantee.\nThe two [reviewed math-substitution captures](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-sensitivity-review.json)\nhave relative errors0.00635\u20130.00709; selected wrappers advance even exact results\ntoward \u00b1infinity. Those observations and rejection controls do not establish a\nportability envelope. Finite prefix differences before4096are outside this\nmetric; concentrated/onset/tail errors can fit its aggregate budget. DCO-029\ndoes not grade startup, all phases, full cycles, absence of a right-channel\nphase wrap, Sync, Spin, random shapes, stored mapping or actual Live delivery.\n\nWhy not a sample-by-sample maximum error."
+    },
+    {
+      "old": "All renders are 16,384 frames, stereo binary32, interleaved, with block 512, from\n",
+      "new": "The original DCO-001\u2013028 renders are 16,384 frames, stereo binary32, interleaved, with block 512, from\n"
+    },
+    {
+      "old": "### Cases\n",
+      "new": "DCO-029 uses the same generated I1 impulse at44100Hz and exact38host values of\nDCO-020, except LfoType=3. Its new [frozen capture](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-lfo-ramp-up/README.md)\nretains the complete script, input pin, stopped0/0/120transport, present-input\nflag1, MXCSR0x1f80 and no reset/event history. Baseline Sine output exactly\nmatched the retained DCO-020 bytes before Ramp capture. The captured file is\n`raw/ramp-up.f32`,131072bytes, SHA-256\n`40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec`.\nHost decimals0.8and0.3 mean their binary32 values; no stored-value conversion is\nimplied. Sensitivity variants are supporting observations, not additional cases.\nDCO-029 does not extend the earlier block-size, repeatability, rate/reset, clock,\nFTZ/DAZ or MXCSR invariance observations to this new vector. Only the exact\ndeclared call history has this finite expectation; no second nominal Ramp run\nor original-application execution is claimed.\n\n### Cases\n"
+    },
+    {
+      "old": "| DCO-028 | 002, 008 | U | A Live Set storing ExcitationX 0 | Graded only if A1 is accepted: as DCO-013 at host 0 | `hit_0` |",
+      "new": "| DCO-028 | 002, 008 | U | A Live Set storing ExcitationX 0 | Graded only if A1 is accepted: as DCO-013 at host 0 | `hit_0` |\n| DCO-029 | 001, 011 | P | Exact DCO-020 host/input/protocol, only LfoType=3 (Free Ramp Up); I1 at44100Hz,16384frames/block512 | Dedicated per-channel post4096waveform RMS \u22640.01 only; positive energies/full-file finite validation; finite engineering criterion, no Live/application grade | New `raw/ramp-up.f32` (`40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec`) |"
+    },
+    {
+      "old": "| 3 | 2026-10-19 | Independent review distinguishes DCO-023's before-parameters rate sequence from the earlier after-parameters scenario; the latter remains excluded from device-corpus-v1 because its changed output is not retained in the payload. DCO-021 states gain separately from output for its 0.5 input. The reviewed finite metric does not approve the broader draft formulas or unlisted scenarios. |",
+      "new": "| 3 | 2026-10-19 | Independent review distinguishes DCO-023's before-parameters rate sequence from the earlier after-parameters scenario; the latter remains excluded from device-corpus-v1 because its changed output is not retained in the payload. DCO-021 states gain separately from output for its 0.5 input. The reviewed finite metric does not approve the broader draft formulas or unlisted scenarios. |\n| 4 | 2026-10-19 | Proposes one finite Free Ramp Up host-input audio case DCO-029 with its own explicit 1%per-channel waveform-RMS budget. All13requirement IDs/28earlier case rows, A1 and174modal omissions remain unchanged. Independent criterion/owner review and successor release are separate gates; no complete-profile or actual Live/candidate claim. |"
+    },
+    {
+      "old": "- **libm.** Apple's libm against glibc for the functions the device calls. The metric assumes\n  that they differ by at most one ulp.",
+      "new": "- **libm.** Apple's libm against glibc for the functions the device calls. The older metric assumes\n  that they differ by at most one ulp. DCO-029 instead makes an explicit finite\n  engineering acceptance choice; its two coherent substitution observations do\n  not prove that assumption or bound mixed per-call differences."
+    }
+  ],
+  "append": "\n\nRevision4 preserves the revision3 finite release and its immutable payloads.\nThe [R4 successor record](../../analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r4/README.md)\nretains exact R3before/R4proposal snapshots and text deltas. A proposed v2\nrelease maps canonical DCO-029 to CORPUS-AUDIO-020-02, appending one evaluation\nto existing group020; this does not rename DCO-025\u2013028 or create29release groups.\nNo successor is published merely by this draft.\n",
+  "status": "proposed owner successor; finite criterion independently approved, separate owner/release review pending",
+  "new_case": "DCO-029",
+  "planned_release_evaluation": "CORPUS-AUDIO-020-02",
+  "old_case_rows_preserved": 28,
+  "requirement_ids_preserved": 13,
+  "new_application_grades": 0,
+  "omitted_modal_occurrences_unchanged": 174
+}

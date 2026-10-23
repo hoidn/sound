@@ -1,0 +1,170 @@
+[
+  {
+    "id": "REQ-TUNING-001",
+    "preconditions": "No loaded tuning; browse Tunings or add SCL/ASCL to a Places folder.",
+    "contract": "Default pitch system is 12TET. Core tunings are available in Tunings; user files appear under User tag. Hover/select shows description and number of notes per octave in Info View. Browser indexing latency/errors U. The same description is shown when hovering the name of a loaded tuning.",
+    "evidence": "T1",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-002",
+    "preconditions": "Double-click tuning in browser, or select+Enter; alternatively drag external SCL/ASCL into Tuning section.",
+    "contract": "Load tuning into Set. Browser operations open initially hidden Tuning section; view menu also opens it. Loaded tuning is saved with Set. Precise reference defaults, multiple drop ordering and missing-file behavior U. The browser view control menu opens the section; the triangle beside the loaded file name expands additional settings and Tuning displays the loaded system name.",
+    "evidence": "T2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-003",
+    "preconditions": "Tuning loaded; view/hover/play piano roll note.",
+    "contract": "Ruler displays tuning notes rather than conventional MIDI pitches; hover reports pitch/frequency in Status Bar and piano-roll/keyboard audition produces specified pitch in a compatible setup. Exact pitch generation/error tolerance U.",
+    "evidence": "T2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-004",
+    "preconditions": "Retune Set disabled; change/remove loaded tuning.",
+    "contract": "Existing piano-roll note positions/indices stay; labels/pitches follow new system and may sound different. No destructive-retune confirmation appears in this mode. Preserve note index does not imply preserved frequency.",
+    "evidence": "T2, H2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-005",
+    "preconditions": "Enable Retune Set On Loading Tuning Systems and load/change tuning. The explicit entry is Options > Retune Set On Loading Tuning Systems.",
+    "contract": "Confirmation precedes retuning; existing notes are moved toward closest available pitches. Overlapping original pitches can map to one new pitch, deleting or shortening a note. Exact matching, ties, survivor, cancellation and bypassed-track treatment U.",
+    "evidence": "T2, H2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-006",
+    "preconditions": "Load tuning with scale-aware clips/devices present.",
+    "contract": "Clip View/Control Bar Scale Mode choosers disappear and scale-aware devices' Use Current Scale is disabled. This applies also to loaded 12-TET tuning. Hidden scale data, previous enable-state restoration and device-specific fallback U.",
+    "evidence": "T2, H3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-007",
+    "preconditions": "Expand Tuning section; change reference Octave/Note without changing Ref. Pitch/Freq.",
+    "contract": "Controls choose reference identity and update displayed frequency to match it without audible pitch change. Exact rescaled number and transient/controller output U.",
+    "evidence": "T3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-008",
+    "preconditions": "Loaded tuning; change Ref. Pitch/Freq.",
+    "contract": "Adjust reference frequency, raising/lowering Set note pitches accordingly. This is the reference edit producing audible change; no global UI frequency control without a loaded tuning is asserted. Exact frequency mapping, limits and held-note transition U.",
+    "evidence": "T3, H3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-009",
+    "preconditions": "Change Lowest Note or Highest Note's octave/pitch-class coordinates.",
+    "contract": "Editing one updates the other while preserving number of intervening notes. Domain limits, nonmonotonic-frequency meaning and endpoint clamping U except documented file-range rules below.",
+    "evidence": "T3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-010",
+    "preconditions": "Save loaded tuning using disk button; optionally select link arrow.",
+    "contract": "Save current tuning as ASCL into browser Tunings. If linked page exists arrow can open related tuning site; absent link grays arrow. Save/overwrite/cancel, URI filtering and browser launch failures U. ASCL SOURCE/LINK metadata does not guarantee a clickable URI.",
+    "evidence": "T3, A5",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-011",
+    "preconditions": "Select tuning in section and press Delete.",
+    "contract": "Remove it and return to default 12TET. Note-position versus retuned-note consequences depend on Retune Set option, not an unconditional restoration of original pitches. Exact confirmation on removal and undo grouping U.",
+    "evidence": "T2–T3, H2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-012",
+    "preconditions": "Loaded tuning; enable a MIDI track's Bypass Tuning. The track tuning controls appear in MIDI track I/O while a tuning is loaded; no converse unloaded-hide law is asserted.",
+    "contract": "Track ignores tuning, its clips show 12TET notes, and instruments/plugins receive original MIDI without retuning. Tracks containing Drum Racks automatically bypass tuning. Automatic toggle lifecycle after rack removal/nesting and layout interaction U.",
+    "evidence": "T4, H2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-013",
+    "preconditions": "Choose All Keys / Black Keys Only / White Keys Only / Closest in Pitch to Keyboard. Use the MIDI track In/Out layout chooser with a tuning loaded.",
+    "contract": "Map tuning notes respectively to all keys, black keys centered at C#3, white keys centered at C3, or nearest keyboard pitches. Exact mapping tables, ties, out-of-range keys and incoming-channel behavior U.",
+    "evidence": "T5",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-014",
+    "preconditions": "Choose Custom Controller Layout, open ellipsis and edit valid layout.",
+    "contract": "Open Configure MIDI Layout; custom layout is saved/recalled with Set. Allowed map domains, duplicate/unmapped keys, apply/cancel/undo and output routing semantics U.",
+    "evidence": "T5",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-015",
+    "preconditions": "Use tuning with external hardware, plugin or Max receiver.",
+    "contract": "Receiver must support and enable MPE, with per-note bend range ±48 semitones for the documented path. Incompatible/range-mismatched setups can be out of tune; there is no required precise failure sound. Manual's general built-in-instrument support is qualified by FAQ's Drum Synth exception; individual device scope remains U.",
+    "evidence": "T1, H3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-016",
+    "preconditions": "Import SCL intervals lacking a reference, ASCL, or paired KBM.",
+    "contract": "SCL intervals do not supply absolute frequency; Live generates a 440-Hz reference near middle of MIDI range. ASCL can carry reference; KBM is unsupported. Exact generated note choice is U except documented ASCL range positioning below; unsupported KBM UI response U.",
+    "evidence": "H3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-017",
+    "preconditions": "ASCL extension text follows pitch list using ! @ABL directives.",
+    "contract": "Extensions are SCL comments; arguments use spaces, double quotes enclose spaces, UTF-8 is required. Files containing extensions with non-UTF-8 bytes must be rejected by a compliant extension parser. Extra initial ! disables a directive. Error UI and transactional recovery U.",
+    "evidence": "A1",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-018",
+    "preconditions": "ASCL REFERENCE_PITCH and NOTE_NAMES.",
+    "contract": "Reference arguments: octave integer -2..8, zero-based degree less than pitch count, nonzero positive frequency in Hz. NOTE_NAMES supplies one name per degree beginning at implied zero. Nonfinite, duplicate/missing/mismatched directives and out-of-domain handling U.",
+    "evidence": "A2",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-019",
+    "preconditions": "Optional ASCL NOTE_RANGE_BY_FREQUENCY or NOTE_RANGE_BY_INDEX.",
+    "contract": "More than one range directive is an error. Frequency bounds are 4..21000 Hz, max optional; index octave bounds -99..99, upper endpoint optional. Index form requires an earlier REFERENCE_PITCH. Range start is specified index or first note at/above minimum frequency; max is limited by 127 further steps, 21kHz and optional bound. Exact ties/cap priority and malformed reversal U.",
+    "evidence": "A3",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-020",
+    "preconditions": "No ASCL range directive.",
+    "contract": "General description centers available notes around A3 440Hz with 64 below and 63 above; twelve-note systems instead put pitch nearest A3 440Hz at index 69. Exact non-12-note center/tie and interaction with nonstandard explicit reference remain U.",
+    "evidence": "A4",
+    "documentary_grade": "D12",
+    "target": "U"
+  },
+  {
+    "id": "REQ-TUNING-021",
+    "preconditions": "ASCL SOURCE/LINK metadata and nonmonotonic tuning with index range.",
+    "contract": "SOURCE text describes origin; LINK describes URL and software may restrict direct access. Index bounds mean first/last tuning positions even when not lowest/highest frequency. UI safety policy, sorting/normalization and actual URI launch behavior U.",
+    "evidence": "A3, A5",
+    "documentary_grade": "D12",
+    "target": "U"
+  }
+]

@@ -1,0 +1,129 @@
+{
+  "id": "CORPUS-MIDI-GATE-RELEASE-INDEPENDENT-PREFLIGHT",
+  "reviewer": "/root/synthesis_finish",
+  "review_utc": "2026-10-20T08:04:35.587297+00:00",
+  "disposition": "REQUIRED FOCUSED PROVENANCE-ACCOUNTING CORRECTION before Root selects original calls. The bounded scripts, source/format guards and continuation distinction otherwise assess favorably. No collector, diagnostic or original execution occurred; this review does not authorize a capture.",
+  "reviewed_identity": {
+    "manifest": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release-preparation/manifest-preflight.json",
+      "bytes": 2024,
+      "sha256": "2e82b1e26bcf675bf2c2eb9fbcd677a648858a497cdaec715369cd9b31f74054"
+    },
+    "collector": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release-preparation/capture-once.py",
+      "bytes": 11207,
+      "sha256": "9ccf668ee567de9f3a7caef9eca24a76bbe5933fdcc5eca9b9106c90639ebbb6"
+    },
+    "checker": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release-preparation/check.py",
+      "bytes": 6674,
+      "sha256": "e47cbe81169171766d92b012be925ceb883dc7d33cb58fa46db4a893981cbf59"
+    },
+    "diagnostic": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release-preparation/describe.py",
+      "bytes": 3296,
+      "sha256": "352c56eca4f5e47aa6a1581d3e79fe93ee6e9e00761cd77af33191b91edac084"
+    },
+    "proposal": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release-preparation/proposal.json",
+      "bytes": 14189,
+      "sha256": "bcaa0898df745fc984a62afb3c751d132b8ebc4d62feb71aaae49fbb9dd3f249"
+    },
+    "source_contexts": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release-preparation/source-contexts.json",
+      "bytes": 7172,
+      "sha256": "73a15913489eb2997576be2721e78723136ae52c0fac2ce0ff8610df7876b19c"
+    }
+  },
+  "required_findings": [
+    {
+      "id": "CMGR-PREFLIGHT-001",
+      "severity": "required before intended capture selection",
+      "title": "Separate attempted launch, returned child PID and successful capture; spawning alone does not establish original-device execution",
+      "locations": [
+        "capture-once.py:82 row initialization",
+        "capture-once.py:87–97 Popen/wait/exception branch",
+        "capture-once.py:89 actual_original_x86_capture=True immediately after Popen",
+        "capture-once.py:148–156 append and native_children=len(runs)"
+      ],
+      "problem": "run() catches a Popen exception and returns a failed attempt row with no PID. The caller still appends that row and records native_children=len(runs), so the ordinary failed-launch path is counted as a native child. If Popen returns, actual_original_x86_capture is set true before exit/log/output validation; successful spawn of the native loader does not prove that original device exports or a successful original capture occurred.",
+      "independent_source_basis": "The fresh driver loads the bundle and resolves exports before opening script/output or executing create/rate/Calc. Missing export, loader failure, initialization/fault, script/output-open failure and other early exits can precede the requested capture. A returned loader PID proves only the identified process launch boundary, not all downstream original execution. On failure the available logs may support a narrower original-call observation or leave it unknown.",
+      "concrete_paths": [
+        {
+          "scenario": "Popen raises without returning a child object/PID",
+          "frozen_metadata": "Failed row is appended; native_children becomes1, although no successful native-loader launch is recorded. actual_original_x86_capture remainsfalse.",
+          "correct_distinction": "One attempted launch; zero returned/known loader PIDs; zero valid captures. Do not claim that no OS subprocess ever briefly existed solely from the exception: the known boundary is Popen did not return a usable child."
+        },
+        {
+          "scenario": "Popen returns PID, loader exits before original device exports/capture",
+          "frozen_metadata": "actual_original_x86_capture istrue even though full capture is invalid and original-device execution may be absent/unknown.",
+          "correct_distinction": "One returned loader child; zero valid captures. Original-device execution must be separately supported by retained source/log observations, or remain unknown."
+        },
+        {
+          "scenario": "Returned child times out or fails after partial original work",
+          "frozen_metadata": "actual_original_x86_capture staystrue without distinguishing partial/unknown execution from a valid complete capture.",
+          "correct_distinction": "Retain spawned/timeout/failure evidence; do not promote it to a successful capture. Partial original-call evidence is distinct from completion."
+        }
+      ],
+      "why_material": "The packet is designed to retain failed outcomes and account for a tightly bounded original-execution selection. Miscounting launch attempts as native children and overclaiming execution from spawn makes that failure evidence misleading, even though valid_capture correctly prevents continuation after structural failure. This is a provenance defect, not an observed extra call or failure of the silent-output policy.",
+      "minimum_remedy": [
+        "Preserve all11 frozen preparation files/manifest and this required-finding review. Make a minimal additive successor, retaining scripts/vectors/event coordinates/source pins/protocol/diagnostic windows and stop policy.",
+        "Record explicit per-row attempt/Popen-returned-PID state and aggregate attempt, known spawned-loader and valid-capture counts. Name each count according to the boundary actually observed; do not use len(attempt rows) as spawned/native-child count.",
+        "Rename/remove the premature actual_original_x86_capture flag or make its meaning accurately conditional. A child-created/loader-spawned flag must not assert original exports executed. Successful complete captures can be recorded after current clean status/log/length/finiteness validation; failed paths must retain unknown or precisely supported partial-execution provenance.",
+        "Add bounded data-only/AST or separately isolated analyst accounting fixtures for failed Popen, returned early loader failure, timeout/invalid capture and success. Do not launch the collector/native device to exercise the correction. Re-review the exact focused successor before Root chooses the new original calls."
+      ],
+      "not_observed": "No actual launch failure, timeout, original execution or changed output was observed here. The finding is independently established from the complete source control flow.",
+      "execution_result": null
+    }
+  ],
+  "independence_and_read_scope": {
+    "author": "/root/modulation_finish authored this preparation. Root raised the accounting concern; reviewer independently traced the exact branches and confirmed it rather than treating the suggestion as proof.",
+    "reviewer_prior_work": "Reviewer authored prior descriptive spectral diagnostic/advisory, reviewed earlier capture/method/owner/handoff packets, and performed the earlier full harness-readiness source/ELF review. Those carried roles are disclosed; this is not a clean implementation context or a new independent approval of reviewer-authored measurement criteria.",
+    "fresh_full_sources": "Read all11207-byte collector,6674-byte checker,3296-byte optional diagnostic,14189-byte proposal,7172-byte source-context catalog and README/prepared report. Fresh complete8128-byte xdev.c and1830-byte xdev.h read, including loader-before-output, command parsing, event packing, block partition, Calc call, fwrite and status paths. Scripts compared exactly to the independently read historical38-value note60 script, with only the named gate/off edits.",
+    "carried_harness_scope": "Exact loader12247B/bindings9881B/C++shim20075B and installed149632B executable identities match the prior full26440-byte readiness review. Their full behavior is carried as that as-of review, not claimed freshly reread here. No new helper/provider/export analysis or native load. Existing binary/bundle bytes were read only for declared hash/slice identity.",
+    "execution": "Only current read-only check.py --check and refusing --write/--capture invocations ran after full source inspection. No collector or diagnostic invocation/import, no preparation functions invoked, no original/native or candidate call, no FFT/fit/model/comparator, network or tooling installation."
+  },
+  "favorable_bounded_assessment": {
+    "selection": "Three fixed potential children in A gate1-held/B gate1-off/C gate0-off order. All retain the full38-value historical note60 vector and order; only MidiGate13 changes1 forA/B, with MidiPitch12=1/LFO17=0. A on1537/status90/key60/velocity100;B/C append off8193/status80/key60/velocity64. Historical gate0-held is explicitly an older fourth data input, not a matched new recapture.",
+    "protocol_and_budget": "Each fresh instance uses44100Hz,16384frames/512, unchanged stereo impulse4096, input flag1, stopped0/0/120transport, XDEV_TIME0 and MXCSR1f80. No reset/warmup/other event/second process/parameter update/retry. Source requests73 direct exports each,219total below256; count excludes loader initializers/imports/nested original calls and is not an observed execution total.",
+    "driver_events": "Fresh source accepts status80 as a byte with no driver status-specific filter, zero-initializes trailing record fields, preserves insertion order and forwards events only inside done<=frame<done+k after subtracting block start. Both requested events land at local1:1537→1536+1,8193→8192+1. Full C source shape/pinned ABI does not prove Corpus’s intended note-off admission, update cadence, release path or Live event base.",
+    "immutability_and_outputs": "Collector checks exact seal/pins/scripts/impulse before creating an absent final directory, uses exclusive file opens and no shell, copies prepared bytes, records argv/full selected environment/limits/times/logs/raw identities, disables cores and applies30-second waits with timeout kill/wait. No removal/reuse of partial output. Unexpected external termination or unhandled I/O can leave incomplete evidence; README qualifies it as incomplete, not pass.",
+    "continuation": "Structural continuation depends on exit0/no timeout/exception/stderr/fault/trap, cxx-failbits0, expected command/event/parameter/create/rate/destroy logs and exact full finite131072-byte output. First structurally invalid attempt stops remaining names, with no retry. Silent or unchanged finite output is valid evidence and continues; productivity flags are not valid_capture terms.",
+    "positivity_scope": "4096..8191 both-channel nonzero/peak/mean-square exceeding prefix is only an applicability diagnostic before any prospective release inference. Absence is neither a rejected capture nor a silence/no-effect pass.8192..16383 is described as command-block-onward, not proved event/release onset. No tail/envelope/pitch/gate law, threshold, normative ID or grade is selected.",
+    "diagnostic": "Optional describe.py is separate, stdout-only and restricted to the exact proposed final path with three structurally valid rows. It verifies raw identities/fullfinite format and reports fixed-window energies/nonzero counts and absolute sample differences. No FFT, estimator, normalization, fit, acceptance threshold, automatic call or actual noteoff inference. Historical comparison is clearly older and unmatched in process/time.",
+    "reference_and_unknowns": "Immutable R5 snapshot and adoption receipt support selected REQ013 unknown context. All general MIDI/source binding/A1/old174omissions and Live/arm64/candidate behavior remain unknown. Prior successful harness observations do not prove future gate/release captures or a general operating capability."
+  },
+  "mechanical_verification": {
+    "payloads": 10,
+    "tree_files": 11,
+    "source_pins": 21,
+    "manifest": "Exact2024B SHA2e82b1e26bcf675bf2c2eb9fbcd677a648858a497cdaec715369cd9b31f74054 and every10 payload identity match, no extra preparation file. All21 source pins and declared x86 slice match; finite Mach-O header identity is data only, not execution proof.",
+    "scripts": "Exact historical-script transformations independently confirmed: gate1-held changes only index13; gate1-off changes index13 and appends declared off; gate0-off appends declared off only. No unexpected values/order/commands.",
+    "source_spans": "Every retained driver line span equals exact pinned source lines; stored REQ013 context is a literal substring of the immutable R5 provider. No invented source-export UTC; it remainsnull.",
+    "current_check": "Exit0, sealedtrue,32watchedpaths unchanged;12 rejected mutations for wrong gate/status/velocity/frame/missing param/extra process/reset/reversed queue and bad short/extra/NaN/Inf data. All-zero finite output structurally admitted. AST verifies one Popen site and productivity not in valid_capture; this does not validate the defective count/flag semantics.",
+    "refusals": [
+      {
+        "flag": "--write",
+        "exit": 1
+      },
+      {
+        "flag": "--capture",
+        "exit": 1
+      }
+    ],
+    "final_directory": "Proposed final capture directory absent before/after review. No captured result exists or is approved."
+  },
+  "preservation": {
+    "watched_paths": 236,
+    "before_map_sha256": "94b0db504ab737c7eb1629f047bdd7d6d7dd0fbd4c3b30751f8dff3550b09cc7",
+    "scope": "Frozen11-file preparation,21explicit providers, prior capture/ownerR5 trees and immutable Corpusv1/v2 trees, deduplicated. Began after initial source reads/pin checks and before current checker/refusals and report writing; not retroactive start-of-read monitoring.",
+    "after_equal": true,
+    "project_write_only": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-gate-release-preflight-review.json",
+    "collector_invocations": 0,
+    "diagnostic_invocations": 0,
+    "collector_or_diagnostic_imports": 0,
+    "original_native_calls": 0,
+    "frozen_canonical_shared_edits": 0
+  },
+  "final_scope": "Do not select/execute these frozen preparation bytes until CMGR-PREFLIGHT-001 is corrected and the focused successor reviewed. All favorable findings are source/readiness observations, not capture authorization, gate/release behavior, criterion adoption, candidate grade or complete profile."
+}

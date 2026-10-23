@@ -2,7 +2,7 @@
 id: RESEARCH-LIVE-SET-STRUCTURE
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64 (x86_64 slice for disassembly checks)
 ---
@@ -96,6 +96,66 @@ which `12.0_12402` no longer declares, and two `MidiClip` children out of the ne
 found registry order equal to schema order for `Transport`, `AClip`, `AFollowAction` and
 `ASong`). The checker is therefore a usable conformance test for a written set, with one gap:
 whether a `-4` member is an attribute or an element must be taken from shipped documents.
+
+## Analyst checker: versioned correction (2026-10-19)
+
+For future schema checks, use the analyst utility
+[t11-schema-checker-v2/schema_check.py](../../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/schema_check.py).
+Its [manifest](../../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/manifest.json)
+pins the source files, schemas, real input fixtures and retained test results.
+It imports the sealed T11 v1 schema walker and measurements, then corrects only
+`11.0_405` scene and main-track measurements. Always supply the schema matching
+the document's `MinorVersion`; the utility does not migrate a document.
+
+Example from the repository root (the schema path is the retained bundle on this
+host):
+
+```sh
+python3 -I -B analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/schema_check.py "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Schema/11.0_405.txt" handoff/clip-launch-v2/fixtures/CLIP-LAUNCH-041.xml
+```
+
+**Observed tooling defect.** The original checker validates that fixture against
+its own `11.0_405` schema with zero deviations, but reports `scenes: 0`,
+`scenes_present: false` and `main_slots_equal_scenes: false`. The fixture has two
+`SceneNames` entries, with two session slots and two freeze slots per player
+track. That schema declares `SceneNames` and `MasterTrack`, whereas v1's
+structural measurements look only for `Scenes` and `MainTrack`. V1 also skips
+send holders on `MasterTrack` when reporting `main_prehear_no_sends`. This is an
+analyst measurement defect, not new evidence about the application's reader.
+
+The versioned successor recognizes those two names for `11.0_405` without
+renaming or modifying the input. All five released `CLIP-LAUNCH-041` to 045
+fixtures now report two scenes, matching slot counts and no unknown shape
+under the existing read-only classification rules. A changed fixture with one
+scene still reports a mismatch, and a send holder added to the older main track
+is detected. Other versions retain the old measurements.
+
+[Regression tests](../../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/test_schema_check.py)
+were run before and after the fix. The
+[validation record](../../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/validation.json)
+retains commands, statuses, input hashes and per-fixture changes: v1 exits 1
+with seven failure instances; the successor passes all eight tests. The
+`12.0_12402` schema results (or existing malformed-value exceptions) of 596
+released Live Sets remain identical. CLI output for a current fixture and a
+malformed input also matches v1. All 74 files listed by the T11 v1 manifest
+still match their hashes and sizes; the old checker and manifest are unchanged.
+
+**Integration boundary.** The
+[caller inventory](../../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/caller-inventory.json)
+records 23 existing source references. Historical build/review scripts retain
+their pinned v1 dependency. The clip-launch-v2 author already applies the two
+renames to a probe copy in `fixtures_v2.measure`; that workaround and its
+retained results remain unchanged. V1 `fixture_audit.py` still uses the old
+measurements and version-12 repair templates: its older-schema unknown-shape
+warnings and proposals to insert `Scenes` are not reliable. For a new old-schema
+review, read the successor's `rules` result; the old audit's read-only
+`refusals` and `unknowns` functions can classify that result. Do not apply its
+version-12 repair suggestions to an older document.
+
+This change handles the retained `11.0_405` names only. It does not establish
+other older layouts, fix inherited malformed-value handling, execute original
+program code, or prove that a document opens in Live. No release payload or
+prior evidence was rewritten.
 
 ## Document skeleton
 
@@ -464,3 +524,70 @@ optional or "write it".
 - Shipped documents were written by 12.4d1 and 12.1d1, not by a 12.4.3 save.
 - The corpora are Ghidra pseudocode; a branch is "confirmed" only where x86_64 disassembly
   was read (marked in the traces).
+
+
+## 2026-10-20 — combined structure/container route map (pending review)
+
+The [combined family route packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/structure.md)
+proposes a bounded cut of approved integration I-01/I-02/I-10 for the current
+18 Live Set structure and nine ALS container requirement bodies. Its
+[ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/route-ledger.json)
+records 196 local predicate/context rows (129 S, one existing CRC X, 66 without
+an established complete route), not a frozen required-outcome denominator or
+coverage/completion claim. The shared integer parser remains an auxiliary X
+dependency; helper steps and numeric case instances are not extra outcomes.
+
+This is **pending independent structure review**, not new normative evidence or
+a selected execution. Existing 34 Live Set and 35 ALS case objects are retained
+by exact identity; envelope acceptance remains distinct from a Set opening,
+and stored fields remain distinct from active song/audio state. Generic save,
+public Save admission, file replacement/durability, reopen and error recovery
+remain separately qualified. No requirement, case, released byte, expectation
+or grade changes. The packet's exact source spans, input sets, 33-row minimal
+status crosswalk and six missing bridges are navigation for a later reviewed
+batch. Existing unresolved malformed/range/load-precedence and save/media
+assumptions remain unknown. This additive pointer preserves the earlier
+research and its as-of evidence.
+
+
+### Combined family route review adopted — 2026-10-20
+
+The [frozen Live Set/ALS map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-structure-als-routes-v1-review.json)
+with no finding. Its 196 bounded rows (one CRC X / 129 S / 66 without an
+established route), 33 crosswalk rows and 69 current case objects remain separate
+units; none is a whole-product denominator or new grade. Envelope acceptance
+is distinct from Set opening. Five unspecified-class refusal cases still require
+refusal, while sample fallback codes 2–7, active state, public Save/reopen,
+repair UI and error recovery remain unresolved. Source/trace/unwind associations
+are carried retained evidence, with no new original-body proof or execution.
+Requirements, cases, released bytes and existing conditional qualifications remain
+unchanged. The reviewed map supplies context for subsequent enumerated batches.
+
+## Complete one-byte CRC class selection — 2026-10-21
+
+The next eligible1-X combined Structure/ALS route is LSSO-008-CRC, the already-recorded checksum step at x86_64 `0x101191310` (arm64 static counterpart `0x1011b6e88`). Select the complete finite class **initial CRC zero × all256one-byte inputs**. Three exact historical observations (00→0000, FF→0202, B7→03B2, hexadecimal16-bit results) are inherited from `out/x-crc.json#/runs/2…4`, without oldraw/original replay or fabricated fresh receipts. Execute253new bytes in ascending order excluding00/B7/FF, in **two sequential children of127/126calls**. Each call allocates fresh byte and four-byte CRC buffers, so254/252buffers stay below the existing256buffer limit. One253-call child would exceed that buffer bound.
+
+The [existing CRC driver](../../analysis/ableton-live-12.4.3/r2/t11-structure-v1/x-crc/x_crc.py),3,357bytes/SHA-256 `6b5ba8578106e0639fcea5fffb952099d66b6ace95748189eb8d29a3170ffcd7`, lines47–52, supplies `call 0x101191310 hex:HH i:1 buf:4 dump b1 4`. Retained harness C lines308–313 zero the owned buffers; lines359–368 route data pointer, length1 and CRC-word pointer. For child-local call j, dump b(2j+1). There is no receiver/init/patch/stub/FP argument or rolling accumulator reuse. The semantic result is low16 of the four dumped bytes read little-endian, **not RAX**; retain allfour bytes and four saved64-bit carriers without promoting upper16 or volatile register values.
+
+The [T11 manifest](../../analysis/ableton-live-12.4.3/r2/t11-structure-v1/manifest.json),11,984bytes/SHA-256 `6981daa7706850fc2ab7c607ac01b39c990b65cd0037a1d073cf01630a49db2e`, pins the existing `/var/tmp/sound-analysis/xexec-t11/xexec`,74,096bytes/SHA-256 `48dd0ba0c8d8c9de0d492f950ded67575885e7ccb62623eeb550d0334f5b7b40`, and existing x86 slice163,716,848bytes/SHA-256 `1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0`. Harness source20,282bytes/SHA-256 `63ef178734c86c0fd42c2a4ca4c4f96426e5d339a0cadbdfc3c0367786b6e117` and driver6,632bytes/SHA-256 `dd63656a4b4b47fead5d3d15c32d2b724e94460ff87bbd63dff181dc439c5460` are retained method authority; importing the old Runner would build, so it must not run. [Old result summary](../../analysis/ableton-live-12.4.3/r2/t11-structure-v1/out/x-crc.json),2,536bytes/SHA-256 `7705690b9ba9064748fdeaab23dc883990e1ee09ef8f9440450f5fc0092d5d82`, supplies the three inherited joins. The [approved family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/manifest.json),3,450bytes/SHA-256 `e746d49177ba94e897c8eaedd1c92ccc5c6d431d427803a69c579933b9334d65`, preserves actual matching/Open/Save gaps.
+
+Mix authors and runs the selected packet; Root is sole actual/source peer after seal. Freeze all253plans/inputbytes/zero seeds/dump indices/newcode/harness/sourceauthority/executable/image/environment before once execution. Verify fresh custody hashes against the retained identities before anycall; no build/Runner import/newmodel/tool/provider/patch. Freeze the already-recorded integer CRC16/poly8005/MSB-first/init0/no-final-XOR oracle before capture; no fitting.20s perchild/DEVNULL/core0/newprocessgroup/fullstdoutstderr/allocatedbuffers/raw4Boutputs/carriers/importuses/PID/UTC/argv/status/timeout/custody and first-anomaly-stop/no-retry apply. Within-child queued calls cannot be stopped retroactively. One frozenmanifest/one independent review, no extra preparation gate. New portable comparator selection is deferred; actualARM/public/filematching/Open/Save behavior is not established. No case/grade/release/site or whole-product closure from selection. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## Whole one-byte CRC actual adoption — 2026-10-21
+
+The [frozen CRC packet](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-structure-crc-one-byte-v1/manifest.json),3,914bytes/SHA-256 `6fa51f7563748b22e1b7a136a7bb4a85fed4f5fac069b14d5f3528b22917acf1`, passed [Root's sole actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/structure-crc-one-byte-v1-review.json),437,123bytes/SHA-256 `c9e1d4279f5c98dd51bb9dde7a19e9807f8f3ca97101f40d43139b557fa37d7b`, with no blockers/corrections and source window CLEAR. All21payloads/1,724,586bytes and22files remain read-only. The3,816-byte pre-call manifest/SHA-256 `ece35f53bc9ba9acecc651014887f877d579372ff99723137b40cf29e9aa9f33` froze every input/plan/code/protocol/context before calls.
+
+**All253fresh semantic CRC16 results agree exactly with the predeclared existing integer rule.** Two sequential children (127/126calls;254/252fresh owned buffers) completed once at10:22:06.615273–10:22:07.204455UTC, outerPID1390942/children1390944 and1390945, both exit0/empty stderr/no timeout/retry. Together with three inherited summary joins00/B7/FF, the class covers all256one-byte inputs at initial zero. Every CRC16 result is distinct. The old three retain no fabricated raw fullword/carriers/PID/UTC; oldraw/originals were not replayed.
+
+Root read the full new collector117lines/9,267bytes, checker83lines/8,279bytes and one-time preparer5,713bytes inertly, plus README/assessment/all256inputplans/context/precall, all253calls/buffers/dumps/four64-bit carriers and both full raw output streams/receipts. Retained protocol reading covered the exact x_crc.py and selected existing driver/build/parser, C mapping/call-adapter/zero-buffer/argument/dump spans as data; no oldRunner/import/build or original body/native/provider acquisition. Fourteen input/twenty-two packet negatives plus18independent negatives and three positive controls pass; independent polynomial division matches all256frozen oracles. Safe owned checking launches no originals or external runtime/oldraw reads.
+
+The semantic result is **low16 little-endian memory**, not RAX. Allfour output bytes are retained, including253nonzero varying upper16 observations; upper16/full32 and return carriers have no portable CRC expectation. Positive controls accept a changed upper16/RAX at the projection layer while raw retention hashes still require exact recorded bytes. Target-entry registers/initial memory are not independently traced: zeroed fresh seed buffers and three integer arguments are inherited tool intent. Eighteen **common pre-batch identities** (six runtime/twelve frozen files) match both child after-endpoints, not separately sampled per-child before hashes. Both children declare1,882symbols/zero counted code-import uses; declarations, slots and uses are separate, without exhaustive effects/continuous/executed-provider proof. Raw stdout/stderr200,570bytes were closed and hashed without explicit raw-FD fsync; JSON was fsynced. Recorded success does not test all interruption/timeout/cleanup/directory/power-loss paths; after-wait checks cannot stop already queued calls.
+
+The fixed seed-zero/length-one class does not establish other seeds/lengths/rolling histories, actual file reads/sample matching/Open/Save/public receiver/lifecycle or ARM execution. Portable comparator/full32 expectation remain NULL. The complete256-point approved summary is the next owner peer's authority; Mix prepares a finite R3 annex with253new IDs/three references and all18old requirement bodies/40old rows/34released objects preserved. R2 stays canonical until owner approval, no new grade/release/site. Current adopted newIDs3,915after MixR3, not outcomes/passes. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## Live Set owner R3 finite CRC annex adoption — 2026-10-21
+
+[Canonical R3](../specs/live-set-structure.md) is adopted after [Auto's sole new-wording/mapping/IDs/preservation review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/owner-live-set-structure-r3-finite-crc-v1-review.json),142,934bytes/SHA-256 `72771a2042f243fbfd9802ef856d0cacd0e173e6e78302b280c80aac60bba16e`, with no blockers/corrections/CLEAR. Root adopts by citation, without repeating actual or owner review. The [owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-live-set-structure-r3-finite-crc-v1/manifest.json),3,685-byte manifest/SHA-256 `f249786e6169c08bf960a5f57603b482a693a4bb28a9ca9dfa40e8a4f23a757a`, has12read-only payloads/799,501bytes. Exact applied owner:63,820bytes/SHA-256 `fa157546dc41cf942c856273cb1afb6e488be9ee53ba2fdeff6496d85a52155e`.
+
+LSS-CRC-001…253 add253native low16 checksum cases; three historical summary references receive no newIDs/receipts. Auto joined all256points to Root's approved summary only, without actual/source/raw/provider/model/original rereads. Twenty-two author/fourteen independent controls and full R2 reversal pass. All18requirement bodies including008,40old canonical rows and34inherited released-object hash records are preserved. Release fixtures/cases were not reopened or re-evaluated in this owner review. Nativeexpectedlow16 remains the predeclared integer rule, not a fitted result; expectedfull32/portableexpected/comparator NULL, upper16/RAX provenance only. These fixed initial-zero/one-byte cases do not establish actual sample-file matching/Open/Save/public/ARM/lifecycle behavior. No new release, grade or site; requiredU/productOPEN. Current owneradoptions are4,994newfiniteIDs after [MixerR7](mixer-values.md#mixer-owner-r7-regular-node-annex-adoption--2026-10-21) is separately adopted, never a required-outcome denominator/pass count. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate.

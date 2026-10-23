@@ -1,0 +1,13 @@
+# Owned main-xexec reproduction build preparation
+
+Preparation only. No compiler, version probe, loader, new ELF, original function or rebuilt output has run. This is one future owned-tool build, not new execution capability or a Utility behavior case.
+
+The fixed source recipe is the current/X1 `xexec.py` recipe: `/usr/bin/gcc -O1 -g -Wall -Wextra -no-pie -o NEW/xexec /home/ollie/Documents/sound/tools/xexec/xexec.c -ldl -lm`. NEW is only `depth-utility-xexec-owned-build`; cwd is explicitly `/home/ollie/Documents/sound`. The new destination must be absent. The default `/var/tmp/sound-analysis/xexec/xexec` and current source stay immutable. No Runner import or implicit mtime build occurs.
+
+The inspected prior Corpus owned-build method supplies this receipt pattern. The main-xexec recipe uses one C source and no extra warning flag. Filesystem metadata pins `/usr/bin/gcc` resolution and compiler-driver bytes. This is not a hermetic toolchain: transitive compiler, assembler, linker, CRT, headers, library and runtime dependencies are not proven by that hash. Current source differs X1 only by the 77-byte 256-call guard; current binary binding is still unproved.
+
+Future `python3 -B build-once.py --build-selected` is permitted only after Root and independent full-code preflight plus a separate frozen Root selection/outer receipt. Exact minimal PATH/LANG/LC_ALL, core0, DEVNULL, one new process group, one top-level compiler attempt, 45-second timeout, stdout/stderr, attempted-versus-returned-PID status and before/after maps are retained. Compiler subtools are not individually counted. Ordinary timeout/error kills the selected live compiler group; pretry setup, default SIGTERM, uncatchable/I/O failures and escaped/lingering descendants need outer custody and checks. No output execution, old-source or old-binary write, retry or repair loop.
+
+Successful new binary bytes would provide a finite source/compiler-input/output event. Optional whole-byte comparison to the old loader is reported exactly; mismatch stays unresolved and is not repaired. A successful build does not prove original function ABI, import setup, MXCSR, object validity, runtime binding or public Mute/audio behavior. No FP-control feature or harness change is selected.
+
+Read full [build-once.py](build-once.py) and [check.py](check.py) before `python3 -B check.py --check`. Read-only checks verify fixed command/path/cwd/environment and seven unsafe mutations, source AST/accounting/exclusive guards, parent delta and all input pins without importing/running build main, compiler or loader. Root separately selects any actual build and independent actual review; future X calls remain unselected.

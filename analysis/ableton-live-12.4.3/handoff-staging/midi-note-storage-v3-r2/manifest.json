@@ -1,0 +1,556 @@
+{
+  "schema": "handoff-manifest-v1",
+  "release_id": "midi-note-storage-v3",
+  "release_status": "final-seal-pending",
+  "release_date": null,
+  "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+  "specification": {
+    "id": "SPEC-MIDI-NOTE-STORAGE",
+    "parent_revision": 5,
+    "release_revision": 5
+  },
+  "feature_ids": [
+    "FEAT-MIDI",
+    "FEAT-PERSISTENCE"
+  ],
+  "partial_requirement_scopes": {
+    "REQ-MIDI-NOTE-STORAGE-001": "Notes element children and order, key track children, MidiNoteEvent-only key track notes (other elements refused), structure written in order on save",
+    "REQ-MIDI-NOTE-STORAGE-002": "Attribute types; any order; repeated attribute refused; decimal number text, Invalid in Duration and TimeOffset, Boolean text and integer text forms as listed in spec.md; -0 reads as negative zero (expectations only in Time, Duration, Velocity, OffVelocity and Probability)",
+    "REQ-MIDI-NOTE-STORAGE-003": "Defaults 0, 1 and true for omitted VelocityDeviation, Probability and IsEnabled, per note",
+    "REQ-MIDI-NOTE-STORAGE-004": "Saved attribute order; omission of VelocityDeviation 0, Probability 1 and IsEnabled true",
+    "REQ-MIDI-NOTE-STORAGE-005": "Velocity, OffVelocity, Probability and Duration limits on opening, exact at the binary32 bounds; negative zero: Velocity -0 becomes 1, OffVelocity and Probability -0 kept, Duration -0 kept by the limits; Time, VelocityDeviation and NoteId not limited",
+    "REQ-MIDI-NOTE-STORAGE-006": "Rounding of Time, Duration and TimeOffset to multiples of 1/3,843,840 by the stated binary64 formula, half away from zero, including next to halfway points; -0 stored as +0; a value rounding to zero from below stored as -0",
+    "REQ-MIDI-NOTE-STORAGE-007": "A note outside the clip loop and a note whose Duration is positive zero load and save unchanged; a Duration of -0 is saved as 0 (REQ-MIDI-NOTE-STORAGE-006)",
+    "REQ-MIDI-NOTE-STORAGE-008": "Non-zero NoteIds unique within the clip; NoteId 0 repeatable",
+    "REQ-MIDI-NOTE-STORAGE-009": "Next id raise, numbering of NoteId 0 notes in ascending key and document order, saved next id; NoteId absent from every note",
+    "REQ-MIDI-NOTE-STORAGE-010": "Sorted key tracks and strictly ascending notes keep their order; overlapping or equal-Time notes of one key do not refuse (saved text excluded)",
+    "REQ-MIDI-NOTE-STORAGE-013": "Per-note list and event structure; curve-control default 0.5 and omission; TimeOffset and Value always written",
+    "REQ-MIDI-NOTE-STORAGE-014": "List removal by NoteId 0, CC and NoteId naming no stored note; duplicate NoteId and CC refused; Invalid TimeOffset dropped; Value limits; stable sort; empty lists removed; lists strictly inside their note unchanged",
+    "REQ-MIDI-NOTE-STORAGE-016": "Saved number text with 17 or 9 significant-digit rule, positive zero 0 and negative zero -0, plain integers, IsEnabled false",
+    "REQ-MIDI-NOTE-STORAGE-015": "Six exact supplied Notes/group inputs only, GroupType0/Probability1, conditional input representation and A1 ordinary Set-read checks with supplied group counter: four local identifier-rule refusals and two local nonrefusals. No public Set-open or save assertion."
+  },
+  "unreleased_requirements": [
+    "REQ-MIDI-NOTE-STORAGE-011",
+    "REQ-MIDI-NOTE-STORAGE-012",
+    "REQ-MIDI-NOTE-STORAGE-017"
+  ],
+  "compatibility_dimensions": {
+    "project-files": "72 carried static-derived/extracted-execution reading and saving cases, unchanged; six new static-derived local Notes/group data comparisons only; reference application and candidate not run",
+    "behavior-after-open": "excluded (editing, playback, recording, undo)",
+    "ui": "excluded (REQ-MIDI-NOTE-STORAGE-017)",
+    "audio": "excluded",
+    "timing": "excluded"
+  },
+  "expectation_provenance_labels": {
+    "static-derived; not observed reference output": "derived from evidence reviewed before sanitization",
+    "extracted execution (x86_64 slice, glibc substitutions); arm64 equivalence inferred": "the original program's x86_64 build computed the judged values on a Linux x86_64 host, with glibc in place of the macOS system libraries: the value limits and time-grid rounding applied to the value of the case's text, the reading of the text -0, and the saved text of the resulting value; locating the notes, reading other text, opening and saving remain static-derived"
+  },
+  "stated_assumptions": [
+    "Opening a set and saving it without other changes changes the notes only as the release states; a refusal raised while the notes are read stops the reading of the document (as in midi-note-storage-v1).",
+    "Decimal number text is read and written with exact, correctly rounded conversions; exact decimal ties on save round to even (as in midi-note-storage-v1). No case lies on a tie. MNS-072 depends on the reading at full precision: a value one binary64 step below the nearest value to its text would be stored as 0.",
+    "The macOS arm64 build computes these limits, roundings, readings and texts as the x86_64 build does. All cases with the extracted-execution label depend on it.",
+    "The reference's decimal reading of -0 gives negative zero, as the glibc run did. MNS-073 depends on it; the results of MNS-074 are the same for either zero.",
+    "The reference's number text on save keeps the sign of negative zero, as the glibc run did. MNS-023 and MNS-073 depend on it.",
+    "For MNS-054 to059 only: A1 ordinary Set-read validation enabled; compare the supplied conditional group data and supplied group counter. Whole-load counter repair, public catch/lifecycle, final group save and later effects are unknown and not contracted."
+  ],
+  "exclusions": {
+    "inputs_without_expectation": [
+      "a note without Time, Duration, Velocity or OffVelocity; NoteId absent from some but not all notes; an event without TimeOffset or Value",
+      "MidiKey outside 0 to 127, a key track without MidiKey, two key tracks with the same key, key tracks not in ascending key order, an empty key track, repeated key track or list Id values",
+      "notes of one key not in strictly ascending Time after rounding, or overlapping, beyond the not-refused outcome of REQ-MIDI-NOTE-STORAGE-010",
+      "a kept list with an event at or before offset 0 or at or after its note's Duration",
+      "NaN, infinite, # and hexadecimal number text, inf and nan words, leading whitespace other than U+0020; Invalid outside Duration and TimeOffset; magnitudes of 1,000,000 or more other than Invalid; negative zero read in VelocityDeviation, an event's TimeOffset or Value, or a curve control; saved values whose log10 is within 1e-12 of an integer without being an exact power of ten",
+      "integer text with spaces on both sides of the digits or a + with trailing spaces; a - sign; accepted integer values above 1,000,000; MidiKey, CC, list NoteId and Id text other than plain decimal (a leading - only in CC)",
+      "a missing structural element; unknown attributes or child elements in the note structures; non-empty NoteProbabilityGroups outside the exact six REQ-015 fixture inputs",
+      "documents that break more than one refusal rule",
+      "other containers, envelopes, format versions and document kinds, including clip files"
+    ],
+    "behavior": [
+      "what is shown after a refusal and what remains open (REQ-MIDI-NOTE-STORAGE-017)",
+      "group behavior outside the six local comparisons, final group save/default omission, whole-load group-counter repair, unsupported enum values/playback meanings and later missing-note effects (REQ-MIDI-NOTE-STORAGE-015)",
+      "key track and list Id values on save; whether empty key tracks are kept (REQ-MIDI-NOTE-STORAGE-012)",
+      "MIDI key range and repeated keys (REQ-MIDI-NOTE-STORAGE-011)",
+      "re-sorting, trimming or merging of unsorted or overlapping notes; adjustment of per-note lists at their note's edges",
+      "meaning of the values: time units, muting, chance, expression controllers",
+      "editing, playback, recording, undo; the rest of the clip and the set"
+    ],
+    "parent_cases_not_released": [
+      "MNS-011",
+      "MNS-024",
+      "MNS-034",
+      "MNS-035",
+      "MNS-037",
+      "MNS-038",
+      "MNS-053",
+      "MNS-060"
+    ],
+    "parent_cases_narrowed": {
+      "MNS-036": "outcome only; saved notes not judged"
+    }
+  },
+  "fixture_origin": "72 independently authored v2 gzip Set fixtures retained byte-identically; six full authored Sets replace only the Notes content of the structurally repaired v2 MNS-001 carrier with reviewed concrete group data; no shipped file or program code",
+  "approved_public_sources": [],
+  "review": {
+    "status": "final-seal-pending",
+    "reviewers": [
+      "independent handoff content reviewer /root/family_route_review"
+    ],
+    "date": "2026-10-20T21:40:29.434860+00:00",
+    "content_review": {
+      "id": "REVIEW-MIDI-NOTE-STORAGE-V3-HANDOFF-CONTENT",
+      "sha256": "60147aa28eeb2b68785940294059dce2fcf62696ed1df5c57064b5f8398f483a",
+      "disposition": "content-approvable-with-required-final-seal-metadata-correction",
+      "publication_disposition": "withheld-until-corrected-final-seal-independent-review"
+    },
+    "findings": [
+      {
+        "id": "MIDI-V3-H01",
+        "severity": "medium",
+        "category": "release-metadata",
+        "disposition": "correction prepared in separate successor; independent final-seal review pending",
+        "correction": "Removed stale copied v2-to-v1 supersession object. The single active supersedes object names v2 with its exact manifest hash, 72 unchanged carried case records/fixtures and current six-local-case v3 change list; current case_count remains78."
+      }
+    ],
+    "disposition": "Behavioral content approvable; H01 correction prepared. Publication remains withheld until separate bounded independent final-seal review."
+  },
+  "supersedes": {
+    "release_id": "midi-note-storage-v2",
+    "manifest_sha256": "697f09ffc4951d5f3b6d67c20b8f851d68671078a0b3d730a220383f94d2dd15",
+    "status": "proposed; becomes effective only after independent approval and local publication",
+    "restated_cases": "all72 v2 case objects and gzip fixture bytes unchanged",
+    "changes": [
+      "partial REQ-015 six exact local group reader cases added; four refused and two admitted",
+      "validate-notes/local_reader_outcome is a bounded project comparison projection, with no public API or implementation pipeline required",
+      "no final group state, save, counter repair, later effects or public lifecycle expectation added"
+    ]
+  },
+  "entrypoint": "README.md",
+  "case_count": 78,
+  "inventory_excludes": [
+    "manifest.json (self-hash recorded outside package)"
+  ],
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 1756,
+      "sha256": "631fe549b1a246f635c1ffb487a793830aff4164aa05413786cc4969f78b2623"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2436,
+      "sha256": "5e07ee82f5369d5db27ec758e38e467ef51a553c1b002b135954605ba45f9c4a"
+    },
+    {
+      "path": "REVIEW.md",
+      "bytes": 2401,
+      "sha256": "4b10e04952b508eaf3ac2679d577dce8efd2acbebbe0f498ddd55c3f36927a46"
+    },
+    {
+      "path": "cases.json",
+      "bytes": 122876,
+      "sha256": "a8d09c178267317c2641131eab34dba807f076ba9705a7515f29cfefac097fa4"
+    },
+    {
+      "path": "fixtures/MNS-001.als",
+      "bytes": 643,
+      "sha256": "22e95d92c56146e6421facb4b119ef6f33b35208f786386d36862fd9328ab90f"
+    },
+    {
+      "path": "fixtures/MNS-002.als",
+      "bytes": 664,
+      "sha256": "04793e86e670a951a78a6021b1494e0e93b7fd66de2bd9ea4ee8da13a9e9a3b8"
+    },
+    {
+      "path": "fixtures/MNS-003.als",
+      "bytes": 669,
+      "sha256": "8483f46ac8d3fe3d64e7b8a46c993806ba994f1c5ef99e8e23e8d9eff85af071"
+    },
+    {
+      "path": "fixtures/MNS-004.als",
+      "bytes": 675,
+      "sha256": "1199d9c61c2b502867695e8a181bb2cd79549760b966a2f713eae11b17fb33a5"
+    },
+    {
+      "path": "fixtures/MNS-005.als",
+      "bytes": 654,
+      "sha256": "5a6117d5899b42788abbb5eaee9eaceff93ab34083d72592559e949e46f3d764"
+    },
+    {
+      "path": "fixtures/MNS-006.als",
+      "bytes": 656,
+      "sha256": "5e4a24b34e85766d455c36b48c06785ac94878c89b6959bd3b78592f70e3abc6"
+    },
+    {
+      "path": "fixtures/MNS-007.als",
+      "bytes": 645,
+      "sha256": "5135bee013e9107e4e3918f3339b19a444945009c6c771a0de48a7f3cc3354d7"
+    },
+    {
+      "path": "fixtures/MNS-008.als",
+      "bytes": 646,
+      "sha256": "922fde23b911fbb505aa7b53723ad861b78eeab4e88c05a3962544952e2808b2"
+    },
+    {
+      "path": "fixtures/MNS-009.als",
+      "bytes": 642,
+      "sha256": "345e08db064d11f7f7a2e291f73e1482d57dfcab3908f682b0f459f69d4c9705"
+    },
+    {
+      "path": "fixtures/MNS-010.als",
+      "bytes": 647,
+      "sha256": "045bbf8b1e4c6246bac9d4bf75a74bd64cb49139150ee4a0a1c2928416954bbb"
+    },
+    {
+      "path": "fixtures/MNS-012.als",
+      "bytes": 646,
+      "sha256": "de1d12e647a099c85cfa402fbb756943a6c6bcd9e8f85757689ea1e1332d9005"
+    },
+    {
+      "path": "fixtures/MNS-013.als",
+      "bytes": 649,
+      "sha256": "a167d87e029a354828f1cd05de0ad8f2c255f0097ee3ce4a2069d5708faff539"
+    },
+    {
+      "path": "fixtures/MNS-014.als",
+      "bytes": 645,
+      "sha256": "35c03b4c87e12a92b96e2b80211b65962fdea363daf667ea34e937bb53895db3"
+    },
+    {
+      "path": "fixtures/MNS-015.als",
+      "bytes": 650,
+      "sha256": "0c5c3f62eba90876a4ef4d34f19c3012e44b040bb2a7abf2b79d5aada95bb8de"
+    },
+    {
+      "path": "fixtures/MNS-016.als",
+      "bytes": 655,
+      "sha256": "3fd2094598c5c5a201e1b501b42876c01a0106c7fecbe4b51b3ce7ebee0868a2"
+    },
+    {
+      "path": "fixtures/MNS-017.als",
+      "bytes": 655,
+      "sha256": "066677e32000953464ebbbcacc8670724184b76a9c10cc18330bceb53372db58"
+    },
+    {
+      "path": "fixtures/MNS-018.als",
+      "bytes": 656,
+      "sha256": "09604f835e54e23d5537ae6ba920383621383f1cd67b7d9e48db5004cce8031c"
+    },
+    {
+      "path": "fixtures/MNS-019.als",
+      "bytes": 656,
+      "sha256": "ee0e4049f01456c50a3de03bdcc299a671c39833522a77aefc39b361f103f072"
+    },
+    {
+      "path": "fixtures/MNS-020.als",
+      "bytes": 652,
+      "sha256": "7efa0532f6329a55fb043dddc05aca6d998746bac953a2a0635b85146cd98f93"
+    },
+    {
+      "path": "fixtures/MNS-021.als",
+      "bytes": 651,
+      "sha256": "d3528516324a49eb6d466a4588a6f816d3d83df1517180ff9365a0501ff4ff57"
+    },
+    {
+      "path": "fixtures/MNS-022.als",
+      "bytes": 653,
+      "sha256": "1c3b6d1266532285f86544d3e2805a87c82fcf5c24fdd16bdd72681afb8a2215"
+    },
+    {
+      "path": "fixtures/MNS-023.als",
+      "bytes": 650,
+      "sha256": "225c93a729ff87b90abb9ac60cf1b27eec9587b3e6a07a27ef7bd31fe4af2353"
+    },
+    {
+      "path": "fixtures/MNS-025.als",
+      "bytes": 645,
+      "sha256": "eff04772debcc2b028ee895398707da0d834e5cbedbddfb66a991af8ba0aa2c4"
+    },
+    {
+      "path": "fixtures/MNS-026.als",
+      "bytes": 640,
+      "sha256": "aecd363a40582f62f32f7f8086210b38d953fb72c67e4a1d697d4c2688f2ac5f"
+    },
+    {
+      "path": "fixtures/MNS-027.als",
+      "bytes": 641,
+      "sha256": "1a2b13f319e64a6f64ddac1866d7371edd79663a82843dbd3ad12edbb7af0982"
+    },
+    {
+      "path": "fixtures/MNS-028.als",
+      "bytes": 643,
+      "sha256": "d87443ecee5d85550001b5ae29ef5464161c0ee7286c876a0b0b026fd8e9d1c5"
+    },
+    {
+      "path": "fixtures/MNS-029.als",
+      "bytes": 636,
+      "sha256": "529034f0a703e2c5fc8582f150cf46784f526d06cc1761b37b4ca58660e91d43"
+    },
+    {
+      "path": "fixtures/MNS-030.als",
+      "bytes": 631,
+      "sha256": "1288b50b2d61da68d5e54e639501f797130afd99be03e572a37f9ee6bd324d44"
+    },
+    {
+      "path": "fixtures/MNS-031.als",
+      "bytes": 641,
+      "sha256": "7d31c1fc051e998a3ab472b97856d621745db3aade457afc9a768b3d7d79270a"
+    },
+    {
+      "path": "fixtures/MNS-032.als",
+      "bytes": 644,
+      "sha256": "82ea5aafd48da02e1a54ad926f9930162628545221ae608f7f04f840aaeb64e6"
+    },
+    {
+      "path": "fixtures/MNS-033.als",
+      "bytes": 637,
+      "sha256": "61463cb04388947e146273d4328f0f74ead94e9627f774fa8f6cd127c8ee380c"
+    },
+    {
+      "path": "fixtures/MNS-036.als",
+      "bytes": 647,
+      "sha256": "ebf2823341ec38a173a3bee7dd7710b375bc0bdc8e1193523a9c9d3700a1b433"
+    },
+    {
+      "path": "fixtures/MNS-039.als",
+      "bytes": 705,
+      "sha256": "0d8192ea1a6ee7534af45c11eec8e9bd847ff5d2e43af1eacbdf10deb5c37cc4"
+    },
+    {
+      "path": "fixtures/MNS-040.als",
+      "bytes": 727,
+      "sha256": "2632dbceca99c1600beb7180cf18edb6099b5193fcdbfe2c30375e2e966db471"
+    },
+    {
+      "path": "fixtures/MNS-041.als",
+      "bytes": 714,
+      "sha256": "9312a1b746226036339661e9a597a6721c9bb4d492775db16eda7ada23ba8d3b"
+    },
+    {
+      "path": "fixtures/MNS-042.als",
+      "bytes": 721,
+      "sha256": "c126640e96630447fd32b8145203188309f30e792e67f1c5eec26ddf3f34e966"
+    },
+    {
+      "path": "fixtures/MNS-043a.als",
+      "bytes": 702,
+      "sha256": "c1dd819a3ad72d92ea09e4e03f8f9378b34a488e733665568936470907e5fcf5"
+    },
+    {
+      "path": "fixtures/MNS-043b.als",
+      "bytes": 704,
+      "sha256": "95577c9c441f8b4a9cf133f5641c6399c034e6d15ba2a19037168a36f755ed97"
+    },
+    {
+      "path": "fixtures/MNS-043c.als",
+      "bytes": 704,
+      "sha256": "0c38e9553160950f9af2243984f59464815f2bca6cb6fbcae2c22bac0291b4ae"
+    },
+    {
+      "path": "fixtures/MNS-043d.als",
+      "bytes": 705,
+      "sha256": "ecdd231ecaebaea1b82d67d2490310e2e9c0b6da0538e2a7225e66509dc81f11"
+    },
+    {
+      "path": "fixtures/MNS-043e.als",
+      "bytes": 705,
+      "sha256": "3f6c7f83facb8a712bd7d1746f2604eabf19263a260071298c223aec6b33dfff"
+    },
+    {
+      "path": "fixtures/MNS-043f.als",
+      "bytes": 705,
+      "sha256": "8b00db45190fb217388cf3609f67f5123069d32a0c7129a49cfc20b3e5d8e1e4"
+    },
+    {
+      "path": "fixtures/MNS-044a.als",
+      "bytes": 701,
+      "sha256": "60e322050e8a9a45bdeb678bf947484dce848ed12ca89c31bcf5cc83ff026eff"
+    },
+    {
+      "path": "fixtures/MNS-044b.als",
+      "bytes": 705,
+      "sha256": "cad26be6dc9b3ecb3537b632843f79b708af85bcfee72f6c4fdec3a64429a926"
+    },
+    {
+      "path": "fixtures/MNS-044c.als",
+      "bytes": 703,
+      "sha256": "f4f82b2704bcc09d0788b31b21e781e3bcd4803e66ad9cc840eefaf2686af4fb"
+    },
+    {
+      "path": "fixtures/MNS-045a.als",
+      "bytes": 706,
+      "sha256": "f0d41a94f75fabb74953814bd9f9bd4d9442266e236a7f2a830933b70e266d13"
+    },
+    {
+      "path": "fixtures/MNS-045b.als",
+      "bytes": 708,
+      "sha256": "f179f6da53c241837d20fe067ab14a2b9036c68964ed6d67ae08936b745798ee"
+    },
+    {
+      "path": "fixtures/MNS-046.als",
+      "bytes": 717,
+      "sha256": "8479e8ee7baed44263663bcf361419fb1c86f09b1136eb22559291c4667835ce"
+    },
+    {
+      "path": "fixtures/MNS-047.als",
+      "bytes": 707,
+      "sha256": "1daaad48f1ce5dd7f9105496ffbbe3d6f20a92c497cdcb404c8172e7269c529a"
+    },
+    {
+      "path": "fixtures/MNS-048.als",
+      "bytes": 703,
+      "sha256": "9fc53b7a602b2c069bfcb9efdb5862d046c2b965cf8056deecf4f9afbc051773"
+    },
+    {
+      "path": "fixtures/MNS-049a.als",
+      "bytes": 706,
+      "sha256": "7e74206556e3f543b406476bb0434d7bbbc333be7525e9b4ba4202336313aab1"
+    },
+    {
+      "path": "fixtures/MNS-049b.als",
+      "bytes": 710,
+      "sha256": "3829622c920960b908cf2badd6a9f3a9db86620da63d0af90d0554a203a2e5d4"
+    },
+    {
+      "path": "fixtures/MNS-050.als",
+      "bytes": 673,
+      "sha256": "d09998e8197184519d92d4589428b2699dd942bd06595aca995193c4fa84ef87"
+    },
+    {
+      "path": "fixtures/MNS-051a.als",
+      "bytes": 709,
+      "sha256": "a2a5142f66733c3f37be85ecb3120b8b30c1d9fffb487e7297d1f0a2e3ebc193"
+    },
+    {
+      "path": "fixtures/MNS-051b.als",
+      "bytes": 704,
+      "sha256": "0e5335e22548d4511824c46ed39385fd87024f03617bf9bc1756969bbab61c81"
+    },
+    {
+      "path": "fixtures/MNS-052.als",
+      "bytes": 716,
+      "sha256": "c6d34b7b259557f53fa680e9edd6a7a38a4125487738180b107f7a22e68487ad"
+    },
+    {
+      "path": "fixtures/MNS-054.als",
+      "bytes": 687,
+      "sha256": "19ba93f4b625b5e93c6e6374a99388c824934cd759aa22fa9432f6b5fada8357"
+    },
+    {
+      "path": "fixtures/MNS-055.als",
+      "bytes": 687,
+      "sha256": "3e4c7029e696593e8b666649812577ef413f825f768b9ffe2d7a016fde038d0d"
+    },
+    {
+      "path": "fixtures/MNS-056.als",
+      "bytes": 699,
+      "sha256": "54c1f3a0cc65aa6eed77f20eca93ccddd44d5fe6048a69fb374327659f861e63"
+    },
+    {
+      "path": "fixtures/MNS-057.als",
+      "bytes": 695,
+      "sha256": "a00f437058d1580fef52e8333434ebce1eadb41797eb9365789dcce293c1e1c9"
+    },
+    {
+      "path": "fixtures/MNS-058.als",
+      "bytes": 686,
+      "sha256": "2abb68e505edde9e7440bf8dfed602dc8dce076127a5be64693558c2156ece36"
+    },
+    {
+      "path": "fixtures/MNS-059.als",
+      "bytes": 686,
+      "sha256": "051b59594190c82145e812439b7d9bda52fa0ab9fc0ffed1a891a4ff56aee7f4"
+    },
+    {
+      "path": "fixtures/MNS-061.als",
+      "bytes": 647,
+      "sha256": "1bcfcac67a54f27cd9e25495cda0e3bc65ee190e553834c1490946bda0f5785c"
+    },
+    {
+      "path": "fixtures/MNS-062.als",
+      "bytes": 647,
+      "sha256": "eb264b51e5d84e20d7204d3b994f8c4c841a5ece28576acb96de0b57d29ef933"
+    },
+    {
+      "path": "fixtures/MNS-063.als",
+      "bytes": 644,
+      "sha256": "5cc54b2d2e9b2027f6d0989240ee9f6352b6aa5b5915876166ac372815684738"
+    },
+    {
+      "path": "fixtures/MNS-064.als",
+      "bytes": 653,
+      "sha256": "6c5d862e90b9a39c125a59a8d2d9fa9ccbabb408559f9c60f3adee4e7cece982"
+    },
+    {
+      "path": "fixtures/MNS-065.als",
+      "bytes": 648,
+      "sha256": "f8d021934e77aaccacc980a2d6913a5e674c9a45cb0fd9989b7bb4fe04db0f65"
+    },
+    {
+      "path": "fixtures/MNS-066.als",
+      "bytes": 660,
+      "sha256": "09bfd6a9292b36b89631db39c70abd7eb34cf73968f401b329dc6ebf8e04f03d"
+    },
+    {
+      "path": "fixtures/MNS-067.als",
+      "bytes": 647,
+      "sha256": "11005f9a10411421e146d6b835643214d94e096f499c44f123f6919ea4dbe1ae"
+    },
+    {
+      "path": "fixtures/MNS-068.als",
+      "bytes": 648,
+      "sha256": "efb337852741b52d7ad78753b2494e7b8baa90e841de1ecdf546755db7b03bbd"
+    },
+    {
+      "path": "fixtures/MNS-069.als",
+      "bytes": 705,
+      "sha256": "c7b321f56a12018178a2166595c539f6eb7b3543d8b72f312eb5796120a554f7"
+    },
+    {
+      "path": "fixtures/MNS-070.als",
+      "bytes": 640,
+      "sha256": "f7c14c7f4b00e79fdbd45e3535c0c96e0d3c0121822b0a6d1fe63161967ff23c"
+    },
+    {
+      "path": "fixtures/MNS-071a.als",
+      "bytes": 703,
+      "sha256": "4883806b6781a69f0609a7bc1166bacbc7d8a6f384749141496ca5ae746a9cdb"
+    },
+    {
+      "path": "fixtures/MNS-071b.als",
+      "bytes": 705,
+      "sha256": "c41a73ea434961632a66118a9c5b3e2b672825d365d2bf63bc8294a8c768bb3c"
+    },
+    {
+      "path": "fixtures/MNS-072.als",
+      "bytes": 657,
+      "sha256": "437e7550715ad0c9a9bece4d1119748a427d4f62ceb147a7b4c36a5c4ce00860"
+    },
+    {
+      "path": "fixtures/MNS-073.als",
+      "bytes": 652,
+      "sha256": "809857268ca57e456500678af8c840f06b387a5268eda540ea1e962d090b8f4a"
+    },
+    {
+      "path": "fixtures/MNS-074.als",
+      "bytes": 650,
+      "sha256": "6fc4a503bb013b21f9f348cb02b364817a7498665b3e28718812bf7db84894a2"
+    },
+    {
+      "path": "fixtures/MNS-075.als",
+      "bytes": 656,
+      "sha256": "d5cb4dce8eb7fa204fefd44f4e131f47cc7faf39a466af803fcc025a6df4f449"
+    },
+    {
+      "path": "spec.md",
+      "bytes": 34553,
+      "sha256": "9596075d59f2b675f58c3103243ea23ddfbeb528370b591f6f1d6a0111090c58"
+    }
+  ],
+  "case_units": {
+    "carried_v2": 72,
+    "new_local_group_cases": 6,
+    "public_load_or_save_success_observations": 0,
+    "local_static_refusals": 4,
+    "local_static_nonrefusals": 2
+  }
+}

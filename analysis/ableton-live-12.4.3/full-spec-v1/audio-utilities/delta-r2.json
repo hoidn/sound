@@ -1,0 +1,408 @@
+{
+  "role": "Bounded partial owner R2, AS-OF AUTHOR FREEZE review pending; current disposition shared indexes.",
+  "clause_changes": [
+    {
+      "id": "REQ-DEVICE-UTILITY-005",
+      "before": {
+        "title": "Mid/Side view and endpoints",
+        "contract": "The Width context menu switches between Width and Mid/Side controls. At 100M audio is summed to mono; from 0 toward 100S the stereo/out-of-phase components are emphasized. At 100S only the side signal is heard and the output channels are 180 degrees out of phase. Left/Right Channel Mode disables this control. Parameter remapping, endpoint gain and remembered hidden values are U.",
+        "locator": "utility:B06–B07",
+        "grade": "D12",
+        "id": "REQ-DEVICE-UTILITY-005"
+      },
+      "after": {
+        "title": "Mid/Side view and endpoints",
+        "contract": "The Width context menu switches between Width and Mid/Side controls. At 100M audio is summed to mono; from 0 toward 100S the stereo/out-of-phase components are emphasized. At 100S only the side signal is heard and the output channels are 180 degrees out of phase. Left/Right Channel Mode disables this control. Parameter remapping, endpoint gain and remembered hidden values are U. The published 0 to 100M range acts as a continuous mono-to-stereo controller. This source description supplies no interpolation, matrix, normalization or numerical continuity oracle.",
+        "locator": "utility:B06–B07",
+        "grade": "D12",
+        "id": "REQ-DEVICE-UTILITY-005"
+      }
+    },
+    {
+      "id": "REQ-DEVICE-UTILITY-013",
+      "before": {
+        "title": "DC filtering",
+        "contract": "DC filters out DC offsets and extremely low frequencies below the audible range. Cutoff, filter response, startup/transient behavior, numerical precision and interaction order are U. The manual’s audibility discussion does not establish sample-exact output.",
+        "locator": "utility:B14",
+        "grade": "D12",
+        "id": "REQ-DEVICE-UTILITY-013"
+      },
+      "after": {
+        "title": "DC filtering",
+        "contract": "DC filters out DC offsets and extremely low frequencies below the audible range. Cutoff, filter response, startup/transient behavior, numerical precision and interaction order are U. The manual’s audibility discussion does not establish sample-exact output. A sonic effect requires both relevant DC/extremely low-frequency content and nonlinear processing after Utility, such as a compressor or waveshaper. This is a necessary condition, not a promise of audible change for every such signal or setting.",
+        "locator": "utility:B14",
+        "grade": "D12",
+        "id": "REQ-DEVICE-UTILITY-013"
+      }
+    }
+  ],
+  "canonical_pages": [
+    {
+      "path": "wiki/specs/device-utility.md",
+      "before_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/device-utility-before-r2.md",
+      "before_sha256": "71af09fbf7f6c972e2e9d19103db88f6acff7977f4ef072902cf640fe6bb62c6",
+      "after_sha256": "fc9198d06c41ddbd68a8c19342df300aafbd888b8bfc652821482e0611fef77f",
+      "after_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/device-utility-r2.md",
+      "edits": [
+        {
+          "before_span": [
+            100,
+            101
+          ],
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "before_span": [
+            4024,
+            4024
+          ],
+          "before": "",
+          "after": " The published 0 to 100M range acts as a continuous mono-to-stereo controller. This source description supplies no interpolation, matrix, normalization or numerical continuity oracle."
+        },
+        {
+          "before_span": [
+            6775,
+            6775
+          ],
+          "before": "",
+          "after": ". A sonic effect requires both relevant DC/extremely low-frequency content and nonlinear processing after Utility, such as a compressor or waveshaper. This is a necessary condition, not a promise of audible change for every such signal or setting"
+        },
+        {
+          "before_span": [
+            15453,
+            15454
+          ],
+          "before": "C",
+          "after": "Historical R1 c"
+        },
+        {
+          "before_span": [
+            16406,
+            16406
+          ],
+          "before": "",
+          "after": ".\n\n## Revision 2 bounded acceptance additions\n\nThe [current R2 catalogs](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/cases-r2.json) retain every original requirement and case record except the two explicitly appended Utility contract qualifiers. This page's original case table and historical counts describe R1. Current Utility: 15 requirements, 41 cases; 26 D12, 3 retained-file-only Dpkg and 12 U.\n\nNew cases add actual guarded histories rather than treating old endpoint, button or flag actions as broader evidence. Every new documentary and actual expected/comparison field is null; source claims are descriptions, not detector, signal, timing or numerical oracles. All application outcomes remain exact-target U and unexecuted. Six historical file grades across the family are preserved, not rerun or promoted to application evidence.\n\n- `DUT-038` (UAS-G01): Independent reset copies; admitted active nonmuted stereo source with genuinely nonzero side content and nonzero processed output. No transparent neutral-chain assumption. Before EACH Left and Right branch, genuinely operate Width and Mid/Side separately in a supporting Channel Mode and independently observe a productive nonzero contribution from BOTH controls. Then choose Left; attempt Width and Mid/Side. Reset and re-establish BOTH productive histories; choose Right and attempt both controls again. Record disabled UI separately from ungraded signal observations. Source: `utility:B05–B07`.\n\n- `DUT-039` (UAS-G02): Admitted active Mid/Side path with independently established nonzero stereo/side contribution and nonmuted output; genuine productive control change first. Choose Mid/Side Mode through the Width context menu. On matched reset histories set 0, an actually admitted interior setting between 0 and 100M, then 100M; separately set 0, an admitted interior setting between 0 and 100S, then 100S. Record displayed states and ungraded signal observations. No invented numeric interior value or monotonic sonic metric. Source: `utility:B06`.\n\n- `DUT-040` (UAS-G03): Valid admitted Utility before downstream reverb, then a separate matched delay-line history; independently productive source/effect and active nonmuted wet/output route. With Utility Mute off, establish actual nonzero input at Utility and independently observe a sustained NONZERO downstream reverb tail BEFORE enabling Utility Mute. Enable Mute and record Utility-position input versus downstream output without a tail waveform or duration oracle. On a reset admitted delay-line configuration re-establish its own sustained NONZERO tail before Mute and repeat; an enabled effect or silent tail is not a baseline. Source: `utility:B13`.\n\n- `DUT-041` (UAS-G04): Matched admitted histories with relevant low/DC content independently established AND genuinely productive nonlinear effect AFTER Utility, active nonmuted output. Keep downstream placement/settings fixed on matched copies, toggle Utility DC off/on and record controls and ungraded signal observations. Use an independently admitted productive compressor or waveshaper; do not assume every qualifying setup changes audibly. Retain DUT-022 direct filter action separately. Source: `utility:B14`.\n\n[R2 delta and disposition](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/delta-r2.json) records all nine audit groups and remaining limits. AS-OF AUTHOR FREEZE: independent review pending; current disposition is routed through the [shared spec index](index.md). This is partial adoption, with zero complete device profiles"
+        },
+        {
+          "before_span": [
+            18239,
+            18239
+          ],
+          "before": "",
+          "after": "\n| 2 | 2026-10-19 | Bounded source-audit qualifiers and guarded acceptance histories; original R1 cases preserved |\n"
+        }
+      ]
+    },
+    {
+      "path": "wiki/specs/device-tuner.md",
+      "before_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/device-tuner-before-r2.md",
+      "before_sha256": "b2b3b087307d7f4ba59c85a7e825c2a6ed54687171ef638e908b331809ced576",
+      "after_sha256": "179f2d8e1f56ea408f9adac65095f8129db592eba38f19c28a6920561c8d8e74",
+      "after_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/device-tuner-r2.md",
+      "edits": [
+        {
+          "before_span": [
+            98,
+            99
+          ],
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "before_span": [
+            13445,
+            13446
+          ],
+          "before": "C",
+          "after": "Historical R1 c"
+        },
+        {
+          "before_span": [
+            14398,
+            14398
+          ],
+          "before": "",
+          "after": ".\n\n## Revision 2 bounded acceptance additions\n\nThe [current R2 catalogs](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/cases-r2.json) retain every original requirement and case record except the two explicitly appended Utility contract qualifiers. This page's original case table and historical counts describe R1. Current Tuner: 12 requirements, 35 cases; 16 D12, 1 retained-file-only Dpkg and 18 U.\n\nNew cases add actual guarded histories rather than treating old endpoint, button or flag actions as broader evidence. Every new documentary and actual expected/comparison field is null; source claims are descriptions, not detector, signal, timing or numerical oracles. All application outcomes remain exact-target U and unexecuted. Six historical file grades across the family are preserved, not rerun or promoted to application evidence.\n\n- `DTU-033` (UAS-G05): Genuinely accepted clean monophonic detector display with independently admitted in-tune/out-of-tune and sharp/flat contexts relative to a matched reference/target/tuning. Nonzero ordinary input alone or input-frequency formula is not detector truth. Using lower-left view buttons select Classic; actually present independently admitted in-tune then out-of-tune histories and observe green/red roles. Select Histogram and separately present BOTH in-tune and out-of-tune histories and observe green/red roles there. Return to Classic; present admitted sharp then flat histories and observe the higher/lower tuning arrows themselves, independently of ball positions. Select Target Mode and present a genuinely admitted in-tune history to observe the central outline and ball-within-outline context; retain separate old sharp/right and flat/left actions. No pixel, cent band, exact glyph or detector truth inferred from source frequency. Source: `tuner:B05, B07–B08`.\n\n- `DTU-034` (UAS-G06): Independent clean monophonic detection genuinely accepted, ordinary nonzero incoming signal at Tuner and usable detector display; reference/tuning held. These are prerequisites for future contrasts, not proved by named fixture formulas. On separate reset histories re-establish the accepted monophonic positive BEFORE each old unsupported-input contrast: two independent simultaneous tones; silence then noise; half-semitone boundary sweep; source removal; and the old level/frequency/channel/numeric probes where admitted. Record actual display and through-audio observations without assuming inaccurate input must give an error or absent pitch. Keep DTU-017–019, 026–027 and 030–032 as their original U records; no new detection limit or deadline. Source: `tuner:B02–B03, B13 (intended input only)`.\n\n- `DTU-035` (UAS-G09): Matched histories with genuinely effective loaded tuning, accepted monophonic Tuner display and nonzero input; independently admitted reference/control route. Selected FAQ is as-of 12.1, not target corroboration. Observe reference/notes with a known valid loaded tuning after a genuine detector positive, then compare a separately admitted matched tuning/reference history. Attempt IgnoreTuningSystem only IF an independently evidenced Tuner UI route is found; otherwise retain route/outcome U and do not substitute stored field editing or TUN-015 external-receiver setup. No reference formula, override/default precedence or promised toggle. Source: `selected S06 FAQ lines 61–62 as-of Live 12.1; tuner:B21; DTU-028 context`.\n\n[R2 delta and disposition](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/delta-r2.json) records all nine audit groups and remaining limits. AS-OF AUTHOR FREEZE: independent review pending; current disposition is routed through the [shared spec index](index.md). This is partial adoption, with zero complete device profiles"
+        },
+        {
+          "before_span": [
+            16221,
+            16221
+          ],
+          "before": "",
+          "after": "\n| 2 | 2026-10-19 | Bounded source-audit qualifiers and guarded acceptance histories; original R1 cases preserved |\n"
+        }
+      ]
+    },
+    {
+      "path": "wiki/specs/device-spectrum.md",
+      "before_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/device-spectrum-before-r2.md",
+      "before_sha256": "86dca8523b2349aced5f1b2bb18a69a036ea1c904b18cabcbcbeb2009a3a56e5",
+      "after_sha256": "d89e94b7367276e74a1f9d94e87a397b17b27e33807dc99c0381d60d0d26f9f0",
+      "after_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/device-spectrum-r2.md",
+      "edits": [
+        {
+          "before_span": [
+            101,
+            102
+          ],
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "before_span": [
+            14280,
+            14281
+          ],
+          "before": "C",
+          "after": "Historical R1 c"
+        },
+        {
+          "before_span": [
+            15233,
+            15233
+          ],
+          "before": "",
+          "after": ".\n\n## Revision 2 bounded acceptance additions\n\nThe [current R2 catalogs](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/cases-r2.json) retain every original requirement and case record except the two explicitly appended Utility contract qualifiers. This page's original case table and historical counts describe R1. Current Spectrum: 14 requirements, 36 cases; 21 D12, 2 retained-file-only Dpkg and 13 U.\n\nNew cases add actual guarded histories rather than treating old endpoint, button or flag actions as broader evidence. Every new documentary and actual expected/comparison field is null; source claims are descriptions, not detector, signal, timing or numerical oracles. All application outcomes remain exact-target U and unexecuted. Six historical file grades across the family are preserved, not rerun or promoted to application evidence.\n\n- `DSP-035` (UAS-G07): Genuinely usable NONZERO incoming analysis through an admitted active stream, not AnalyzeOn flags alone; independently reset manual/Auto histories. Explicitly select Range. Successfully operate BOTH minimum and maximum Range sliders and independently observe changed displayed range; drag amplitude legending vertically to scroll and horizontally to zoom and observe successful manual zoom. THEN select Auto and attempt those same Range sliders AND zoom. Separately change admitted nonzero incoming level under Auto and record ungraded scaling observations. Do not treat flags or mere control presence as productive manual history. Source: `spectrum:B10`.\n\n- `DSP-036` (UAS-G08): Admitted active NONZERO analysis; Max enabled with a genuinely visible accumulated nonzero maximum independently observed BEFORE each clearing/visibility contrast. Create and actually observe retained maximum history, lower input, then click display with Max enabled. Rebuild and observe a fresh genuine maximum before a separately independently admitted song-restart event; if its UI route/event is not established keep that branch U, never substitute guessed transport stop/start. Rebuild visible history before toggling Max off; record visibility separately from unknown accumulation retention. Preserve DSP-033 single/double-click interaction as U and both DSP-018/019 display routes unchanged. Source: `spectrum:B02, B08; DSP-033 interaction U`.\n\n[R2 delta and disposition](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/delta-r2.json) records all nine audit groups and remaining limits. AS-OF AUTHOR FREEZE: independent review pending; current disposition is routed through the [shared spec index](index.md). This is partial adoption, with zero complete device profiles"
+        },
+        {
+          "before_span": [
+            17071,
+            17071
+          ],
+          "before": "",
+          "after": "\n| 2 | 2026-10-19 | Bounded source-audit qualifiers and guarded acceptance histories; original R1 cases preserved |\n"
+        }
+      ]
+    },
+    {
+      "path": "wiki/research/device-audio-utilities.md",
+      "before_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/research-before-r2.md",
+      "before_sha256": "7636434445c1c0fcde04f64cd081a6a06f4949b9339e69973c843012d5fa3029",
+      "after_sha256": "6ce57db15d4d2087ea7e315c0ae156cd784b3f7e859be81e4ce7d8f2617e1c04",
+      "after_provider": "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/research-r2.md",
+      "edits": [
+        {
+          "before_span": [
+            118,
+            119
+          ],
+          "before": "1",
+          "after": "2"
+        },
+        {
+          "before_span": [
+            9682,
+            9682
+          ],
+          "before": "",
+          "after": "\n## Revision 2 source-audit adoption\n\nThe independently approved full selected-section audit assessed 46 blocks and 101 qualified judgments, not the complete Audio Effects chapter or all device behavior. [Current R2 catalogs](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/cases-r2.json) preserve all 103 R1 cases verbatim and append nine bounded histories: four Utility, three Tuner, two Spectrum. Current totals: 41 requirement IDs, 112 cases (63 D12 documentary, six historical Dpkg file-only, 43 U); every application outcome remains target U/unexecuted. The original tables/counts above describe R1. No file grade is reexecuted.\n\nOnly Utility 005 and 013 append source qualifiers: continuous 0-to-100M controller context, and relevant low/DC content PLUS nonlinear processing AFTER Utility as a necessary, not sufficient, sonic condition. No exact DSP, interpolation, detector, FFT/window-3, color threshold, pixel, CPU or timing law follows. The [nine-group ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/delta-r2.json) maps actual guarded actions and retained subsets. All nine new documentary/actual expected and comparison fields are null; their source claims do not grade outcomes.\n\nBoth Width AND Mid/Side must be genuinely productive before Left/Right no-function contrasts; sustained NONZERO downstream tails precede Mute; DC requires known low/DC plus productive downstream nonlinear processing, without promised audibility. Tuner colors in BOTH views, Classic arrows and in-tune Target require genuinely accepted monophonic contexts, not inferred frequency truth. Independent positive detection precedes unsupported-input absence/negative histories. Spectrum requires actual manual Range AND zoom before Auto, and genuinely visible maximum history before each clear/restart contrast. Both units/views and both display routes remain preserved. Song-restart route and Max double-click interaction stay U.\n\nSelected S06 FAQ states as of Live 12.1 that Tuner's reference follows selected tuning. This remains a separately guarded U probe: IgnoreTuningSystem has a UI action only IF independently found; TUN-015 is external MPE-receiver configuration and gives no Tuner result. The three audit questions, full lifecycle/algorithm gaps and exact 12.4.3 applicability remain open. Source date-only capture has unknown UTC; images and destinations were not inspected.\n\n[Preservation and historical consumer inventory](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/consumer-history-r2.json) retains old exact canonical providers and qualified pointers. They are as-of contexts, not mutable live gates; old validators/reviews remain historical and were not replayed. [R2 manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/manifest-author-r2.json) seals current owner evidence/delta. AS-OF AUTHOR FREEZE: independent review pending; current disposition is routed through the shared research/spec indexes. No runtime execution, coverage completion or handoff release.\n"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "audit_group": "UAS-G01",
+      "audit_pointer": "/proposals/0",
+      "case_id": "DUT-038",
+      "case_pointer": "/profiles/utility/cases/37",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "No Right sample routing, width matrix,100identity, normalization, processing order or remembered hidden-value law.",
+      "assessment_ids": [
+        "UAS-A085"
+      ]
+    },
+    {
+      "audit_group": "UAS-G02",
+      "audit_pointer": "/proposals/1",
+      "case_id": "DUT-039",
+      "case_pointer": "/profiles/utility/cases/38",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "No coefficient, matrix, pan/gain/summing normalization, monotonic sonic metric, interpolation, exact endpoint equality or numeric/signal comparator.",
+      "assessment_ids": [
+        "UAS-A080",
+        "UAS-A082"
+      ]
+    },
+    {
+      "audit_group": "UAS-G03",
+      "audit_pointer": "/proposals/2",
+      "case_id": "DUT-040",
+      "case_pointer": "/profiles/utility/cases/39",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "Source permits cutting input without turning off downstreamoutput; it does not promise tail duration, waveform, numeric attenuation or complete engine order. Delay/reverb algorithms stay their owners.",
+      "assessment_ids": [
+        "UAS-A097",
+        "UAS-A099"
+      ]
+    },
+    {
+      "audit_group": "UAS-G04",
+      "audit_pointer": "/proposals/3",
+      "case_id": "DUT-041",
+      "case_pointer": "/profiles/utility/cases/40",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "Necessary condition only, not sufficient audibility; no exact cutoff/filter/attenuation/settling, waveform/tolerance or nonlinear implementation. All sonic comparisons null.",
+      "assessment_ids": [
+        "UAS-A101"
+      ]
+    },
+    {
+      "audit_group": "UAS-G05",
+      "audit_pointer": "/proposals/4",
+      "case_id": "DTU-033",
+      "case_pointer": "/profiles/tuner/cases/32",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "No numeric in-tune band, cents/frequency formula, probability, exact color/pixel/glyph, output note guarantee, Strobe rate or detector acquisition tolerance.",
+      "assessment_ids": [
+        "UAS-A040",
+        "UAS-A041",
+        "UAS-A044",
+        "UAS-A045"
+      ]
+    },
+    {
+      "audit_group": "UAS-G06",
+      "audit_pointer": "/proposals/5",
+      "case_id": "DTU-034",
+      "case_pointer": "/profiles/tuner/cases/33",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "Possible inaccuracy is not mandatory error/no-pitch/absence. Detector, supported range/confidence, latency, transparent sample equality and all old lifecycle outcomes remain U.",
+      "assessment_ids": [
+        "UAS-A032",
+        "UAS-A035",
+        "UAS-A036",
+        "UAS-A058"
+      ]
+    },
+    {
+      "audit_group": "UAS-G09",
+      "audit_pointer": "/proposals/8",
+      "case_id": "DTU-035",
+      "case_pointer": "/profiles/tuner/cases/34",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "Selected19context audit/FAQtwo lines and currentTuningR3 boundary only, not wholeFAQ/currentdevice applicability. No overrideformula/defaultprecedence/tuningreference math, UI toggle promise or duplicate TUN015 case.",
+      "assessment_ids": [
+        "UAS-A068",
+        "UAS-A069"
+      ]
+    },
+    {
+      "audit_group": "UAS-G07",
+      "audit_pointer": "/proposals/6",
+      "case_id": "DSP-035",
+      "case_pointer": "/profiles/spectrum/cases/34",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "No Auto margins/hysteresis/time, Range ordering/domain, FFT/bin normalization, pixel or signal/timing/numeric comparator.",
+      "assessment_ids": [
+        "UAS-A024",
+        "UAS-A028",
+        "UAS-A029"
+      ]
+    },
+    {
+      "audit_group": "UAS-G08",
+      "audit_pointer": "/proposals/7",
+      "case_id": "DSP-036",
+      "case_pointer": "/profiles/spectrum/cases/35",
+      "disposition": "bounded actual action/prerequisite adoption; outcomes and residual contexts U",
+      "remaining": "No new songrestart gesture, event count/order, acquisition delay, Max-off history-clearing law, complete reset scope or timer/window/FFT algorithm.",
+      "assessment_ids": [
+        "UAS-A004",
+        "UAS-A018",
+        "UAS-A019"
+      ]
+    }
+  ],
+  "source_questions": [
+    {
+      "id": "UAS-Q01",
+      "blocks": [
+        "FX:B1089"
+      ],
+      "question": "DCsonicnecessarycondition: low/DC AND downstreamnonlinear context, no sufficiency or numeric filter/audio law; preserve actualDUT022filter subset.",
+      "quotes": [
+        {
+          "block": "FX:B1089",
+          "json_pointer": "/blocks/45/text",
+          "quote": "The DC switch filters out DC offsets and extremely low frequencies that are far below the audible range. It will only have a sonic effect if a signal contains these frequencies and is processed after Utility with nonlinear effects such as compressors or waveshapers."
+        }
+      ],
+      "documentary_expected": null,
+      "documentary_comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "complete": false
+    },
+    {
+      "id": "UAS-Q02",
+      "blocks": [
+        "FX:B1075"
+      ],
+      "question": "Reference default/domain versus selectedFAQasof12.1Tunerreference: matched tuning/controlroute remains U, no field→UI inference or TUN015Tunercoverage.",
+      "quotes": [
+        {
+          "block": "FX:B1075",
+          "json_pointer": "/blocks/31/text",
+          "quote": "The Reference slider allows you to change the tuning reference that Tuner uses when analyzing incoming signals. By default this is set to 440 Hz, which is “standard” concert tuning, but it can be changed to any value between 410-480 Hz."
+        }
+      ],
+      "documentary_expected": null,
+      "documentary_comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "complete": false
+    },
+    {
+      "id": "UAS-Q03",
+      "blocks": [
+        "FX:B1045",
+        "FX:B1051",
+        "FX:B1054"
+      ],
+      "question": "Songrestart event/resetorder/Maxsingle-doubleclick interaction and emptyaltinlineDevice_unfold glyph remain U; actualDSP018019routes preserved without pixel inference.",
+      "quotes": [
+        {
+          "block": "FX:B1045",
+          "json_pointer": "/blocks/1/text",
+          "quote": "Spectrum performs real-time frequency analysis of incoming audio signals. The results are represented in a graph, with dB along the vertical axis and frequency/pitch along the horizontal. The peak levels are retained on the graph until the song is restarted. Note that Spectrum is not an audio effect, but rather a measurement tool — it does not alter the incoming signal in any way."
+        },
+        {
+          "block": "FX:B1051",
+          "json_pointer": "/blocks/7/text",
+          "quote": "Max toggles the display of the accumulated maximum amplitude. With Max enabled, you can reset the maximum amplitude by clicking in the display."
+        },
+        {
+          "block": "FX:B1054",
+          "json_pointer": "/blocks/10/text",
+          "quote": "To get an even better view, you can toggle the location of the display between the device chain and Live’s main window by clicking the button in Spectrum’s title bar or by double-clicking in the display."
+        }
+      ],
+      "documentary_expected": null,
+      "documentary_comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "complete": false
+    }
+  ],
+  "common_future_prerequisites": {
+    "all": "All future fixtures/assets/results absent; valid admitted independent inputs and actual known state before any comparison. All new audit outcomes null/U/unexecuted. No source/currentmanual/package value proves exact12.4.3 runtime.",
+    "audio": "Actual NONZERO ordinary admitted input and independently nonzero processed/analysis contribution through appropriate active nonmuted route BEFORE suppression/no-effect/stop/absent-result contrasts; enabled/config flags and mathematical signal definitions do not prove productive operation.",
+    "utility": "BOTH Width AND Mid/Side genuine nonzero control baselines; sustained NONZERO downstream tail BEFORE Mute; DCsoniccontext needs low/DC PLUS nonlinear AFTER Utility, necessary not sufficient.",
+    "tuner": "Genuinely accepted clean monophonic detector positive with matched reference/tuning before detectorabsence/invalidinput; UIcontrols themselves need no sound. No exactly correct note/color threshold from input frequency alone.",
+    "spectrum": "Ordinary NONZERO analysis, successful manual Range AND zoom before Auto disablement; genuine accumulated maximum BEFORE click/restart. No FFT/window3/schema-derived units or CPU benchmark.",
+    "package": "Six Dpkg retained-file assertions keep their original Dpkg grade and exact historicalCreator12.4d1 scopes. Hash retained files only; no decode or application load. No package/factorydefault/UI behavior promotion.",
+    "lifecycle": "All41 concrete historical U cases remain full actions, null outcomes. No redundant generic lifecycle case or invented missingpositive proof replaces them."
+  },
+  "source_claim_policy": "All103 old case records including56D12/sixDpkg/41U fields unchanged. Nine new source_claim descriptions only; expected/comparison/documentary/actual fields null, targetU/unexecuted. Zero complete profiles.",
+  "read_scope": "Full46selected source blocks,101judgments/9groups,41old clauses/103fullcase actions/fixtures;19 literalresource URLs/captions only, no pixels/destinations/full1137chapter. SelectedS06asof12.1 and TUN015external-receiver context only.",
+  "forbidden": "No original/native/vendor/runtime/UI/hardware/network/install/newsignal generation/oldmain/decodes/replay/adapter/candidate."
+}

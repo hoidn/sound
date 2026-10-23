@@ -1,0 +1,654 @@
+[
+  {
+    "id": "REQ-DYN-COMPRESSOR-001",
+    "device": "compressor",
+    "title": "Threshold and ratio",
+    "provenance": "D12",
+    "text": "Threshold sets the onset of compression; Ratio sets the documented input/output level-change relation above it. The manual illustrates ratio 3 with input increases of 3 dB and 6 dB producing output increases of 1 dB and 2 dB. Ratio 1 disables compression. These are documentary level-change examples, not calibrated steady-state or sample oracles; unrelated gain and mix processing remains separate.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B002",
+      "manual-compressor-blocks.json#compressor:B003",
+      "manual-compressor-blocks.json#compressor:B004"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-002",
+    "device": "compressor",
+    "title": "Knee",
+    "provenance": "D12",
+    "text": "Knee controls the gradual onset of compression. At 0 dB the manual describes no compression below threshold and full compression at/above it. Its 10 dB knee, -20 dB threshold example describes onset at -30 dB and full compression at -10 dB. No interpolation formula, detector calibration or equality outcome in the effective audio is established.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B008"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-003",
+    "device": "compressor",
+    "title": "Output and automatic makeup",
+    "provenance": "D12",
+    "text": "Out controls output level; the Output meter shows that level and the orange Gain Reduction meter shows gain reduction. Makeup automatically compensates for threshold/ratio changes. With external sidechain active, automatic Makeup is unavailable. Its compensation amount and transition behavior are unknown.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B005",
+      "manual-compressor-blocks.json#compressor:B006",
+      "manual-compressor-blocks.json#compressor:B023"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-004",
+    "device": "compressor",
+    "title": "Audio Dry/Wet",
+    "provenance": "D12",
+    "text": "The main Dry/Wet balances compressed and uncompressed audio: 100% selects compressed audio and 0% is documented as effectively bypassed. This does not establish bit identity, latency cancellation, a mixing curve or a bypass ramp.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B007"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-005",
+    "device": "compressor",
+    "title": "Display modes",
+    "provenance": "D12",
+    "text": "The display offers Collapsed, Transfer Curve and Activity views. Transfer Curve uses input level horizontally and output level vertically with dotted knee bounds. Activity shows light-gray input, with GR selecting orange reduction or Output selecting darker-gray output. Collapsed shows essential controls and hides Lin/Log.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B009",
+      "manual-compressor-blocks.json#compressor:B010",
+      "manual-compressor-blocks.json#compressor:B011",
+      "manual-compressor-blocks.json#compressor:B012",
+      "manual-compressor-blocks.json#compressor:B018"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-006",
+    "device": "compressor",
+    "title": "Attack, release and Auto Release",
+    "provenance": "D12",
+    "text": "Attack describes response toward maximum compression after exceeding threshold; Release describes recovery below threshold. Auto Release adapts release to incoming audio. Time labels do not establish time-constant definitions or an envelope function.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B013",
+      "manual-compressor-blocks.json#compressor:B014"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-007",
+    "device": "compressor",
+    "title": "Lookahead selections",
+    "provenance": "D12",
+    "text": "Lookahead offers 0, 1 and 10 ms; delaying the input is the documented means of anticipating peaks. Actual latency, compensation, fractional-sample treatment and state when switching are unknown.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B016"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-008",
+    "device": "compressor",
+    "title": "Peak, RMS and Expand modes",
+    "provenance": "D12",
+    "text": "Peak responds to short peaks; RMS is documented as less sensitive to very short peaks. Expand supplies upward expansion above threshold: its 1:2 example describes a 1 dB input increase yielding a 2 dB output increase; 1:1 has no expansion. These descriptions supply no RMS window or peak guarantee.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B017"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-009",
+    "device": "compressor",
+    "title": "Lin and Log envelopes",
+    "provenance": "D12",
+    "text": "Expanded views expose Lin/Log. Lin response depends on Attack/Release; Log gives more sharply compressed peaks a faster release than less compressed material. Neither label defines the envelope mathematics.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B018"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-010",
+    "device": "compressor",
+    "title": "External trigger and gain",
+    "provenance": "D12",
+    "text": "Unfolding sidechain exposes source routing. When enabled, a chosen internal routing point drives the detector. Sidechain Gain adjusts trigger input; sidechain Dry/Wet 100% uses only that source, 0% bypasses external sidechain. Normal sidechain operation does not add its audio directly to the output.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B020",
+      "manual-compressor-blocks.json#compressor:B021",
+      "manual-compressor-blocks.json#compressor:B022"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-011",
+    "device": "compressor",
+    "title": "Sidechain EQ and Listen",
+    "provenance": "D12",
+    "text": "The sidechain EQ selects detector frequency content from internal or external input. The headphones button auditions only sidechain input, bypassing normal compressed output. Frequency/Q are documented in the low-pass ducking example; no filter response, listen gain or channel law is established.",
+    "evidence": [
+      "manual-compressor-blocks.json#compressor:B024",
+      "manual-compressor-blocks.json#compressor:B025",
+      "manual-compressor-blocks.json#compressor:B032"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-001",
+    "device": "gate",
+    "title": "Opening threshold and return",
+    "provenance": "D12",
+    "text": "Threshold sets gate sensitivity and can be edited by dragging its blue horizontal display line. Return is hysteresis between opening and closing levels, shown by an orange line; greater hysteresis is documented to reduce rapid chatter. Detector calibration, ties and exact return subtraction are unknown.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B002",
+      "manual-gate-blocks.json#gate:B004",
+      "manual-gate-blocks.json#gate:B005"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-002",
+    "device": "gate",
+    "title": "Flip",
+    "provenance": "D12",
+    "text": "Flip reverses gating: below-threshold audio passes. Its combination with hysteresis, Floor and envelope history does not yet have an effective numerical oracle.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B006"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-003",
+    "device": "gate",
+    "title": "Attack, Hold and Release",
+    "provenance": "D12",
+    "text": "Attack describes the closed-to-open transition after the signal rises above threshold. After it falls below threshold, Hold runs before closure over Release. No equality rule, envelope curve or exact sample count is established.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B008",
+      "manual-gate-blocks.json#gate:B009"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-004",
+    "device": "gate",
+    "title": "Floor boundaries",
+    "provenance": "D12",
+    "text": "Floor sets closed-state attenuation. The documented -inf dB endpoint mutes and 0.00 dB gives no closed-state attenuation; intermediate settings attenuate. This does not establish timing, active-state identity or numeric gain conversion.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B010"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-005",
+    "device": "gate",
+    "title": "Lookahead",
+    "provenance": "D12",
+    "text": "Gate offers Lookahead 0, 1 and 10 ms to anticipate the opening signal by delaying input. Exact latency and switching transients are unknown.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B007"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-006",
+    "device": "gate",
+    "title": "Input/output display",
+    "provenance": "D12",
+    "text": "The display depicts input in light gray and output in darker gray with white outline. While sidechain Listen is on, it instead shows the sidechain input level in green. Meter calibration, sampling and history length are unknown.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B003",
+      "manual-gate-blocks.json#gate:B016"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-007",
+    "device": "gate",
+    "title": "External sidechain",
+    "provenance": "D12",
+    "text": "Unfolding exposes Sidechain; a selected track replaces the normal gate trigger. Gain changes external trigger level; external Dry/Wet 100% uses only sidechain and 0% bypasses it. The trigger audio is not directly mixed into normal output.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B011",
+      "manual-gate-blocks.json#gate:B012",
+      "manual-gate-blocks.json#gate:B013"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-008",
+    "device": "gate",
+    "title": "Sidechain EQ and Listen",
+    "provenance": "D12",
+    "text": "EQ isolates trigger frequency content from the gated signal or external track. Headphones Listen auditions only trigger input in place of gate output. Filter response and listen normalization remain unknown.",
+    "evidence": [
+      "manual-gate-blocks.json#gate:B015",
+      "manual-gate-blocks.json#gate:B016"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-001",
+    "device": "glue-compressor",
+    "title": "Threshold, ratio and implicit knee",
+    "provenance": "D12",
+    "text": "Threshold/Ratio govern compression above threshold. There is no user-adjustable knee; the documented knee becomes sharper with increasing ratio. No hardware identity or knee law follows from the analog-model description.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B002",
+      "manual-glue-compressor-blocks.json#glue-compressor:B003"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-002",
+    "device": "glue-compressor",
+    "title": "Attack/release units and Auto",
+    "provenance": "D12",
+    "text": "Attack is labeled in milliseconds, Release in seconds. Release A selects adaptive release, documented with a slower base and faster transient response. Those descriptions do not establish two constants or their combination law.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B004"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-003",
+    "device": "glue-compressor",
+    "title": "Dry/Wet and Range boundaries",
+    "provenance": "D12",
+    "text": "Main Dry/Wet 100% selects compressed audio and 0% is effectively bypassed. Range limits compression amount; 0 dB means no compression. This does not remove Makeup/Soft Clip, define stored Range conversion, or establish bit identity.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B005"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-004",
+    "device": "glue-compressor",
+    "title": "Makeup and needle",
+    "provenance": "D12",
+    "text": "Makeup applies compensating gain. The needle reports gain reduction in dB; its relation to Makeup is practical guidance rather than an automatic equality rule.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B006",
+      "manual-glue-compressor-blocks.json#glue-compressor:B008"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-005",
+    "device": "glue-compressor",
+    "title": "Soft Clip and indication",
+    "provenance": "D12",
+    "text": "Soft Clip enables a fixed waveshaper. The manual states a -0.5 dB maximum with Soft Clip and warns that oversampled loud peaks can still exceed 0 dB. The Clip LED is red above 0 dB output and yellow for clipped peaks with Soft Clip enabled. The exception prevents a universal output bound; waveshape and threshold calibration remain unknown.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B007",
+      "manual-glue-compressor-blocks.json#glue-compressor:B008",
+      "manual-glue-compressor-blocks.json#glue-compressor:B016"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-006",
+    "device": "glue-compressor",
+    "title": "Oversampling option",
+    "provenance": "D12",
+    "text": "The title-bar context menu toggles Oversampling, documented as internal processing at twice current sample rate with increased CPU use and possible output above 0 dB even with Soft Clip. No interpolation/decimation filter, scheduling or performance tolerance is established.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B016"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-007",
+    "device": "glue-compressor",
+    "title": "External sidechain",
+    "provenance": "D12",
+    "text": "Unfolding exposes external source routing; a chosen internal routing point drives detection. Gain changes external trigger level. External Dry/Wet 100% is external-only, 0% bypasses external sidechain; detector audio is not directly heard in normal output.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B010",
+      "manual-glue-compressor-blocks.json#glue-compressor:B011",
+      "manual-glue-compressor-blocks.json#glue-compressor:B012"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-008",
+    "device": "glue-compressor",
+    "title": "Sidechain EQ and Listen",
+    "provenance": "D12",
+    "text": "EQ restricts detector frequency content from compressed input or external source. Headphones Listen sends only sidechain input in place of compressor output. The filter and listen calibration are unknown.",
+    "evidence": [
+      "manual-glue-compressor-blocks.json#glue-compressor:B013",
+      "manual-glue-compressor-blocks.json#glue-compressor:B014"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-001",
+    "device": "limiter",
+    "title": "Ceiling, input gain and reduction meter",
+    "provenance": "D12",
+    "text": "Ceiling sets the documented maximum output. If incoming peaks do not exceed it, the device applies no limiting. Input Gain acts before limiting; the meter shows reduction at ceiling/threshold. This is not proof of bit identity below ceiling, effective peak calibration or universal bound under all modes.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B002",
+      "manual-limiter-blocks.json#limiter:B003",
+      "manual-limiter-blocks.json#limiter:B004",
+      "manual-limiter-blocks.json#limiter:B006"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-002",
+    "device": "limiter",
+    "title": "Maximize relabeling and output role",
+    "provenance": "D12",
+    "text": "Maximize changes Ceiling to Threshold and Input Gain to Output. Lowering Threshold amplifies limiter-stage output by the inverse of the Threshold value in the documented control sense; Output sets device target output level. No stored-value transform or effective gain formula is specified.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B007"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-003",
+    "device": "limiter",
+    "title": "Release and Auto availability",
+    "provenance": "D12",
+    "text": "Release controls recovery after audio falls below ceiling/threshold; Auto adapts release continuously to input characteristics and deactivates the manual Release control. The recovery curve and adaptive state remain unknown.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B008",
+      "manual-limiter-blocks.json#limiter:B009"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-004",
+    "device": "limiter",
+    "title": "Lookahead options and relative latency",
+    "provenance": "D12",
+    "text": "Lookahead offers 1.5, 3 and 6 ms. Longer lookahead increases documented latency and changes attack response. Exact host compensation, sample delays and switching behavior are unknown.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B010"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-005",
+    "device": "limiter",
+    "title": "Ceiling modes",
+    "provenance": "D12",
+    "text": "Ceiling modes are Standard, Soft Clip and True Peak. Standard is the manual-described default, not an established 12.4.3 constructor. Soft Clip adds clipping near ceiling and an LED that flashes for clipping; True Peak is documented to prevent inter-sample peaks. Algorithms and test reconstruction are unknown.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B011"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-006",
+    "device": "limiter",
+    "title": "L/R and M/S routing",
+    "provenance": "D12",
+    "text": "Routing selects L/R or M/S processing. M/S encodes before limiting and decodes to stereo afterward; it is documented to add latency. No mid/side normalization or latency value is established. Independent L/R processing is subject to the Link control, rather than unconditional independence.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B005",
+      "manual-limiter-blocks.json#limiter:B012"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-007",
+    "device": "limiter",
+    "title": "Link endpoints",
+    "provenance": "D12",
+    "text": "Link controls how much channel gain reduction is shared, for the pair selected by Routing. At 100%, either channel needing compression causes limiting in both; at 0%, channels are independent. Intermediate linking and separate mode memories are unknown.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B005"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-008",
+    "device": "limiter",
+    "title": "Downstream gain interaction",
+    "provenance": "D12",
+    "text": "Later processing can add gain. The documented final-output precaution is placing Limiter last in the Main chain and keeping Main volume below 0 dB. The device alone does not establish the final mixer/output ceiling.",
+    "evidence": [
+      "manual-limiter-blocks.json#limiter:B013"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-001",
+    "device": "multiband-dynamics",
+    "title": "Band count and crossovers",
+    "provenance": "D12",
+    "text": "Up to three bands each support Above and Below thresholds and compression/expansion. High/Low toggles disable those bands; with both off only Mid controls incoming audio. Crossovers divide ranges: the manual uses Low=500 Hz, High=2000 Hz to illustrate low/mid/high frequency regions. No crossover order, phase or boundary gain is established.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B002",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B012",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B014"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-002",
+    "device": "multiband-dynamics",
+    "title": "Activators, solos and band gain ordering",
+    "provenance": "D12",
+    "text": "Each band has activator/solo. An inactive band bypasses its dynamics and gain controls; solo mutes other bands. Per-band Input precedes dynamics and Output follows. Bypass need not remove crossover filtering; summation and multi-solo policy are unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B015"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-003",
+    "device": "multiband-dynamics",
+    "title": "Meter roles",
+    "provenance": "D12",
+    "text": "Large bars show band output and small bars input; aligned tops denote no processing. The scale is dB. Display calibration, latency and history are unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B016"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-004",
+    "device": "multiband-dynamics",
+    "title": "Threshold drag and modifiers",
+    "provenance": "D12",
+    "text": "Dragging the left/right block edges horizontally edits Below/Above thresholds. Ctrl on Windows or Cmd on macOS edits the same threshold across bands. Alt/Option edits both thresholds of one band; Shift gives finer adjustment. Numeric step, clipping and tie rules are unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B017"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-005",
+    "device": "multiband-dynamics",
+    "title": "Ratio drag, modifiers and reset",
+    "provenance": "D12",
+    "text": "Dragging block interiors vertically edits level behavior/ratio. Ctrl/Cmd affects the same block in every band; Alt/Option affects both blocks in one band; Shift gives finer adjustment. Double-click resets selected region volume to its default; that default value is not established here.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B018",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B019"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-006",
+    "device": "multiband-dynamics",
+    "title": "Four processing directions",
+    "provenance": "D12",
+    "text": "Lowering Above volume is downward compression; raising Above is upward expansion. Lowering Below is downward expansion; raising Below is upward compression. Each edits the ratio, not a separate output-gain-only parameter. Actual transfer curves are unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B005",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B006",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B008",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B009",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B010",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B011",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B019"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-007",
+    "device": "multiband-dynamics",
+    "title": "Numeric editor pages",
+    "provenance": "D12",
+    "text": "T, B and A choose Time (attack/release), Below (threshold/ratio) and Above (threshold/ratio) columns for every band. Numeric and graphical edits expose the same documented quantities; exact conversion is unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B020"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-008",
+    "device": "multiband-dynamics",
+    "title": "Attack/release crossing direction",
+    "provenance": "D12",
+    "text": "Above attack starts after upward threshold crossing and release after downward crossing; Below attack starts after downward crossing and release after upward crossing. The same named band times describe both regions, but exact envelope combination is unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B021",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B022"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-009",
+    "device": "multiband-dynamics",
+    "title": "Soft Knee and RMS/Peak",
+    "provenance": "D12",
+    "text": "Soft Knee starts dynamics gradually approaching thresholds. Peak reacts to short peaks; RMS is less sensitive to very short crossings. Neither establishes knee width, RMS window or detector linkage.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B023",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B024"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-010",
+    "device": "multiband-dynamics",
+    "title": "Global Output, Time and Amount",
+    "provenance": "D12",
+    "text": "Global Output adjusts overall output gain. Time scales all Attack/Release durations together while retaining their relative times. Amount adjusts all-band dynamics intensity; at 0% each dynamics ratio is effectively 1. This does not bypass gains or crossover filters, specify the Amount curve, or prove whole-device identity.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B025",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B026",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B027"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-011",
+    "device": "multiband-dynamics",
+    "title": "External sidechain",
+    "provenance": "D12",
+    "text": "Unfolding Sidechain allows a selected internal routing point to replace trigger input. Gain changes external trigger level; external Dry/Wet 100% is external-only and 0% bypasses external sidechain. It is detector-only in normal output. No undocumented sidechain EQ control is required by this clause.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B029",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B030",
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B031"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-012",
+    "device": "multiband-dynamics",
+    "title": "Sidechain Listen",
+    "provenance": "D12",
+    "text": "Headphones Listen auditions only sidechain input, bypassing normal device output. Its relation to band detectors and channel normalization remains unknown.",
+    "evidence": [
+      "manual-multiband-dynamics-blocks.json#multiband-dynamics:B032"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-012",
+    "device": "compressor",
+    "title": "Installed schema and single-preset vocabulary",
+    "provenance": "Dpkg",
+    "text": "The latest retained 12.0_12402 schema declares Compressor2 at line 1381 with the fields listed in the appendix. One retained shipped preset has root /Ableton/Compressor2; all five sampled files declare Creator Ableton Live 12.4d1 and MinorVersion 12.0_12402. These observations establish stored vocabulary/examples only, not legal runtime ranges, enum labels, current defaults or DSP.",
+    "evidence": [
+      "schema-fields.json#class=Compressor2",
+      "package-values.json#class=Compressor2"
+    ]
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-013",
+    "device": "compressor",
+    "title": "Effective audio, timing and boundary behavior",
+    "provenance": "U",
+    "text": "Effective threshold/knee/ratio calibration, peak/RMS/Expand detection, Lin/Log and Auto envelope functions, stereo detector linking, main/sidechain mixture laws and filter response, makeup values, exact lookahead/host compensation and control smoothing remain U.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-COMPRESSOR-014",
+    "device": "compressor",
+    "title": "Automation, persistence and lifecycle",
+    "provenance": "U",
+    "text": "For Compressor, parameter automation/modulation priority and ramps, undo transaction grouping, preset/save restoration, legacy migration, malformed input responses, cancellation, missing routing, transport discontinuity and deletion/teardown behavior are U. Generic chain and storage owners do not establish these device outcomes. The finite cases identify concrete unresolved outputs rather than prescribe fallback policy.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-GATE-009",
+    "device": "gate",
+    "title": "Installed schema and single-preset vocabulary",
+    "provenance": "Dpkg",
+    "text": "The latest retained 12.0_12402 schema declares Gate at line 2630 with the fields listed in the appendix. One retained shipped preset has root /Ableton/Gate; all five sampled files declare Creator Ableton Live 12.4d1 and MinorVersion 12.0_12402. These observations establish stored vocabulary/examples only, not legal runtime ranges, enum labels, current defaults or DSP.",
+    "evidence": [
+      "schema-fields.json#class=Gate",
+      "package-values.json#class=Gate"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GATE-010",
+    "device": "gate",
+    "title": "Effective audio, timing and boundary behavior",
+    "provenance": "U",
+    "text": "Effective detector threshold/equality and Return hysteresis, Flip interaction, attack/hold/release curves, Floor-to-gain calibration, stereo detector linking, sidechain filtering/mix and listen gain, lookahead/host compensation and parameter smoothing remain U.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-GATE-011",
+    "device": "gate",
+    "title": "Automation, persistence and lifecycle",
+    "provenance": "U",
+    "text": "For Gate, parameter automation/modulation priority and ramps, undo transaction grouping, preset/save restoration, legacy migration, malformed input responses, cancellation, missing routing, transport discontinuity and deletion/teardown behavior are U. Generic chain and storage owners do not establish these device outcomes. The finite cases identify concrete unresolved outputs rather than prescribe fallback policy.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-009",
+    "device": "glue-compressor",
+    "title": "Installed schema and single-preset vocabulary",
+    "provenance": "Dpkg",
+    "text": "The latest retained 12.0_12402 schema declares GlueCompressor at line 2670 with the fields listed in the appendix. One retained shipped preset has root /Ableton/GlueCompressor; all five sampled files declare Creator Ableton Live 12.4d1 and MinorVersion 12.0_12402. These observations establish stored vocabulary/examples only, not legal runtime ranges, enum labels, current defaults or DSP.",
+    "evidence": [
+      "schema-fields.json#class=GlueCompressor",
+      "package-values.json#class=GlueCompressor"
+    ]
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-010",
+    "device": "glue-compressor",
+    "title": "Effective audio, timing and boundary behavior",
+    "provenance": "U",
+    "text": "Effective ratio-dependent knee, compression/Range/Makeup conversion, automatic envelope and stereo linking, waveshaper, oversampling filters and aliasing, Soft Clip peak caveat, sidechain filter/mix/listen, host latency and automation smoothing remain U.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-GLUE-COMPRESSOR-011",
+    "device": "glue-compressor",
+    "title": "Automation, persistence and lifecycle",
+    "provenance": "U",
+    "text": "For Glue Compressor, parameter automation/modulation priority and ramps, undo transaction grouping, preset/save restoration, legacy migration, malformed input responses, cancellation, missing routing, transport discontinuity and deletion/teardown behavior are U. Generic chain and storage owners do not establish these device outcomes. The finite cases identify concrete unresolved outputs rather than prescribe fallback policy.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-LIMITER-009",
+    "device": "limiter",
+    "title": "Installed schema and single-preset vocabulary",
+    "provenance": "Dpkg",
+    "text": "The latest retained 12.0_12402 schema declares Limiter at line 3754 with the fields listed in the appendix. One retained shipped preset has root /Ableton/Limiter; all five sampled files declare Creator Ableton Live 12.4d1 and MinorVersion 12.0_12402. These observations establish stored vocabulary/examples only, not legal runtime ranges, enum labels, current defaults or DSP.",
+    "evidence": [
+      "schema-fields.json#class=Limiter",
+      "package-values.json#class=Limiter"
+    ]
+  },
+  {
+    "id": "REQ-DYN-LIMITER-010",
+    "device": "limiter",
+    "title": "Effective audio, timing and boundary behavior",
+    "provenance": "U",
+    "text": "Effective ceiling and gain calibration, release/auto response, Link interpolation, L/R and M/S normalization/coupling, Maximize gain law, Soft Clip transfer, True Peak reconstruction/bound, exact lookahead/mode latency and host compensation remain U.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-LIMITER-011",
+    "device": "limiter",
+    "title": "Automation, persistence and lifecycle",
+    "provenance": "U",
+    "text": "For Limiter, parameter automation/modulation priority and ramps, undo transaction grouping, preset/save restoration, legacy migration, malformed input responses, cancellation, missing routing, transport discontinuity and deletion/teardown behavior are U. Generic chain and storage owners do not establish these device outcomes. The finite cases identify concrete unresolved outputs rather than prescribe fallback policy.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-013",
+    "device": "multiband-dynamics",
+    "title": "Installed schema and single-preset vocabulary",
+    "provenance": "Dpkg",
+    "text": "The latest retained 12.0_12402 schema declares MultibandDynamics at line 5279 with the fields listed in the appendix. One retained shipped preset has root /Ableton/MultibandDynamics; all five sampled files declare Creator Ableton Live 12.4d1 and MinorVersion 12.0_12402. These observations establish stored vocabulary/examples only, not legal runtime ranges, enum labels, current defaults or DSP.",
+    "evidence": [
+      "schema-fields.json#class=MultibandDynamics",
+      "package-values.json#class=MultibandDynamics"
+    ]
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-014",
+    "device": "multiband-dynamics",
+    "title": "Effective audio, timing and boundary behavior",
+    "provenance": "U",
+    "text": "Crossover magnitude/phase and summation, band bypass and simultaneous solos, Above/Below/Amount transfer, knee/envelope/detector/linking laws, common Time scaling conversion, gain calibration, sidechain band/channel coupling and latency remain U.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DYN-MULTIBAND-DYNAMICS-015",
+    "device": "multiband-dynamics",
+    "title": "Automation, persistence and lifecycle",
+    "provenance": "U",
+    "text": "For Multiband Dynamics, parameter automation/modulation priority and ramps, undo transaction grouping, preset/save restoration, legacy migration, malformed input responses, cancellation, missing routing, transport discontinuity and deletion/teardown behavior are U. Generic chain and storage owners do not establish these device outcomes. The finite cases identify concrete unresolved outputs rather than prescribe fallback policy.",
+    "evidence": []
+  }
+]

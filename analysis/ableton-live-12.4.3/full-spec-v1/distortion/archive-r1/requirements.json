@@ -1,0 +1,789 @@
+[
+  {
+    "id": "REQ-DST-DRUM-BUSS-001",
+    "device": "drum-buss",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares DrumBuss; the frozen single shipped preset has /Ableton/DrumBuss. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=DrumBuss",
+      "package-values.json#class=DrumBuss"
+    ]
+  },
+  {
+    "id": "REQ-DST-DRUM-BUSS-002",
+    "device": "drum-buss",
+    "title": "input order and distortion choices",
+    "provenance": "D12",
+    "contract": "Trim reduces the input ahead of processing. Comp enables an input compressor ahead of distortion; its attack/release/ratio descriptions do not specify numerical settings. Drive increases the level entering distortion. Soft denotes waveshaping, Medium limiting, and Hard clipping with bass emphasis. No transfer equation, threshold, normalization or compressor envelope is supplied.",
+    "evidence": [
+      "manual-drum-buss-blocks.json#drum-buss:B003",
+      "manual-drum-buss-blocks.json#drum-buss:B004",
+      "manual-drum-buss-blocks.json#drum-buss:B005",
+      "manual-drum-buss-blocks.json#drum-buss:B006",
+      "manual-drum-buss-blocks.json#drum-buss:B007",
+      "manual-drum-buss-blocks.json#drum-buss:B008",
+      "manual-drum-buss-blocks.json#drum-buss:B009"
+    ]
+  },
+  {
+    "id": "REQ-DST-DRUM-BUSS-003",
+    "device": "drum-buss",
+    "title": "mid/high shaping",
+    "provenance": "D12",
+    "contract": "Crunch controls sine-shaped mid/high distortion; Damp is a low-pass stage. Transients addresses frequencies above 100 Hz: positive settings emphasize attack and sustain, while negative settings add attack and reduce sustain. Exact crossover, transient detector, boost and damping laws are U.",
+    "evidence": [
+      "manual-drum-buss-blocks.json#drum-buss:B013",
+      "manual-drum-buss-blocks.json#drum-buss:B014",
+      "manual-drum-buss-blocks.json#drum-buss:B015"
+    ]
+  },
+  {
+    "id": "REQ-DST-DRUM-BUSS-004",
+    "device": "drum-buss",
+    "title": "low enhancement and tuning",
+    "provenance": "D12",
+    "contract": "Boom sets resonant bass enhancement and has a Bass Meter. Freq sets its frequency; Force To Note moves that frequency to the nearest MIDI-note frequency. Decay affects the incoming post-distortion lows at Boom=0 and both incoming and resonant lows at Boom>0. Exact tuning reference, rounding ties, decay curves and zero-Boom residuals are U.",
+    "evidence": [
+      "manual-drum-buss-blocks.json#drum-buss:B017",
+      "manual-drum-buss-blocks.json#drum-buss:B018",
+      "manual-drum-buss-blocks.json#drum-buss:B019",
+      "manual-drum-buss-blocks.json#drum-buss:B020"
+    ]
+  },
+  {
+    "id": "REQ-DST-DRUM-BUSS-005",
+    "device": "drum-buss",
+    "title": "audition and output",
+    "provenance": "D12",
+    "contract": "Boom Audition solos the low enhancer. Dry/Wet balances dry and processed paths; Output Gain sets processed-path gain. Neither these balances nor audition establish a mixer curve, compensated level or sample-exact bypass.",
+    "evidence": [
+      "manual-drum-buss-blocks.json#drum-buss:B021",
+      "manual-drum-buss-blocks.json#drum-buss:B023",
+      "manual-drum-buss-blocks.json#drum-buss:B024"
+    ]
+  },
+  {
+    "id": "REQ-DST-DRUM-BUSS-006",
+    "device": "drum-buss",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Drum Buss, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-DYNAMIC-TUBE-001",
+    "device": "dynamic-tube",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Tube; the frozen single shipped preset has /Ableton/Tube. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Tube",
+      "package-values.json#class=Tube"
+    ]
+  },
+  {
+    "id": "REQ-DST-DYNAMIC-TUBE-002",
+    "device": "dynamic-tube",
+    "title": "models and drive/bias",
+    "provenance": "D12",
+    "contract": "Models A, B and C have distinct saturation characteristics. A at low Bias is described as non-distorting until a signal threshold is reached; C is described as continually distorting; B is intermediate. Drive sets input to the tube, Bias changes the operating point, and Tone changes the spectral distribution of distortion. The words low and threshold supply no measured boundary, and silence is not evidence of nonlinear processing.",
+    "evidence": [
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B002",
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B003",
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B004",
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B005"
+    ]
+  },
+  {
+    "id": "REQ-DST-DYNAMIC-TUBE-003",
+    "device": "dynamic-tube",
+    "title": "envelope sign",
+    "provenance": "D12",
+    "contract": "Envelope applies input-level-following modulation to Bias. Positive values increase distortion on loud input; negative values reduce it. Modulation depth grows with Envelope magnitude. Detector response, scaling, sign crossing and compensation are U.",
+    "evidence": [
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B006"
+    ]
+  },
+  {
+    "id": "REQ-DST-DYNAMIC-TUBE-004",
+    "device": "dynamic-tube",
+    "title": "zero envelope boundary",
+    "provenance": "D12",
+    "contract": "Attack and Release set follower response timing. At Envelope=0 they have no effect through that follower path. This documentary no-effect rule does not specify static Bias distortion or an equality tolerance.",
+    "evidence": [
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B007"
+    ]
+  },
+  {
+    "id": "REQ-DST-DYNAMIC-TUBE-005",
+    "device": "dynamic-tube",
+    "title": "output and quality",
+    "provenance": "D12",
+    "contract": "Output cuts or boosts final signal level. The title context menu exposes Hi-Quality, documented to reduce aliasing at increased CPU cost. Oversampling factor, filters, delay and numerical/CPU targets are U. The schema DryWet field does not establish an additional exposed control.",
+    "evidence": [
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B008",
+      "manual-dynamic-tube-blocks.json#dynamic-tube:B009"
+    ]
+  },
+  {
+    "id": "REQ-DST-DYNAMIC-TUBE-006",
+    "device": "dynamic-tube",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Dynamic Tube, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-EROSION-001",
+    "device": "erosion",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Erosion2; the frozen single shipped preset has /Ableton/Erosion2. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Erosion2",
+      "package-values.json#class=Erosion2"
+    ]
+  },
+  {
+    "id": "REQ-DST-EROSION-002",
+    "device": "erosion",
+    "title": "modulation and XY controls",
+    "provenance": "D12",
+    "contract": "Current Erosion modulates a short delay using sine and filtered-noise carriers. Display X changes carrier/noise-center frequency; Y changes Amount. Alt on Windows or Option on macOS with vertical drag changes Filter Width. Playback display shows spectrum/modulation. Delay length, carrier phase and audio formula are U.",
+    "evidence": [
+      "manual-erosion-blocks.json#erosion:B002",
+      "manual-erosion-blocks.json#erosion:B003"
+    ]
+  },
+  {
+    "id": "REQ-DST-EROSION-003",
+    "device": "erosion",
+    "title": "carrier blend and disabled width",
+    "provenance": "D12",
+    "contract": "Noise Blend=0% uses only sine, and 100% only noise. At 0% Filter Width is grayed out and has no effect on the sine carrier. Carrier icons change emphasis with blend. Width changes noise-band bandwidth away from the sine-only endpoint; exact bandwidth mapping and blend gain law are U.",
+    "evidence": [
+      "manual-erosion-blocks.json#erosion:B004",
+      "manual-erosion-blocks.json#erosion:B005"
+    ]
+  },
+  {
+    "id": "REQ-DST-EROSION-004",
+    "device": "erosion",
+    "title": "stereo carrier",
+    "provenance": "D12",
+    "contract": "Stereo Width morphs the modulation source from mono at 0% to stereo at 100%; exact correlation, image metric and noise sequence remain U.",
+    "evidence": [
+      "manual-erosion-blocks.json#erosion:B006"
+    ]
+  },
+  {
+    "id": "REQ-DST-EROSION-005",
+    "device": "erosion",
+    "title": "legacy loading boundary",
+    "provenance": "D12",
+    "contract": "The manual says pre-12.4 Sets containing Erosion load Erosion Legacy. This current Erosion2 contract does not define legacy Erosion algorithms, parameters, migration rewriting or an upgrade action. Exact 12.4.3 old-Set loading remains U.",
+    "evidence": [
+      "manual-erosion-blocks.json#erosion:B007"
+    ]
+  },
+  {
+    "id": "REQ-DST-EROSION-006",
+    "device": "erosion",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Erosion, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-OVERDRIVE-001",
+    "device": "overdrive",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Overdrive; the frozen single shipped preset has /Ableton/Overdrive. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Overdrive",
+      "package-values.json#class=Overdrive"
+    ]
+  },
+  {
+    "id": "REQ-DST-OVERDRIVE-002",
+    "device": "overdrive",
+    "title": "input filter",
+    "provenance": "D12",
+    "contract": "The distortion stage follows a band-pass filter. Its XY vertical axis controls bandwidth and horizontal axis center position; slider boxes address the same parameters. Filter transfer and frequency bounds are U.",
+    "evidence": [
+      "manual-overdrive-blocks.json#overdrive:B003"
+    ]
+  },
+  {
+    "id": "REQ-DST-OVERDRIVE-003",
+    "device": "overdrive",
+    "title": "drive zero and post tone",
+    "provenance": "D12",
+    "contract": "Drive sets distortion intensity; 0% is explicitly not a zero-distortion guarantee. Tone is post-distortion EQ; higher values add high-frequency content. No nonzero-distortion oracle for arbitrary silence/low signals, threshold or tone response is supplied.",
+    "evidence": [
+      "manual-overdrive-blocks.json#overdrive:B004",
+      "manual-overdrive-blocks.json#overdrive:B005"
+    ]
+  },
+  {
+    "id": "REQ-DST-OVERDRIVE-004",
+    "device": "overdrive",
+    "title": "dynamics",
+    "provenance": "D12",
+    "contract": "Dynamics changes compression associated with increasing distortion: lower Dynamics applies more internal compression and makeup gain, while higher values apply less. Exact detector, compression curve, recovery and makeup normalization are U.",
+    "evidence": [
+      "manual-overdrive-blocks.json#overdrive:B006"
+    ]
+  },
+  {
+    "id": "REQ-DST-OVERDRIVE-005",
+    "device": "overdrive",
+    "title": "wet balance",
+    "provenance": "D12",
+    "contract": "Dry/Wet balances processed and dry signals; 100% is documented for return-track use. Exact balance law, latency alignment, endpoint precision and gain remain U.",
+    "evidence": [
+      "manual-overdrive-blocks.json#overdrive:B007"
+    ]
+  },
+  {
+    "id": "REQ-DST-OVERDRIVE-006",
+    "device": "overdrive",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Overdrive, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-PEDAL-001",
+    "device": "pedal",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Pedal; the frozen single shipped preset has /Ableton/Pedal. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Pedal",
+      "package-values.json#class=Pedal"
+    ]
+  },
+  {
+    "id": "REQ-DST-PEDAL-002",
+    "device": "pedal",
+    "title": "models and gain zero",
+    "provenance": "D12",
+    "contract": "Pedal types are Overdrive, Distortion and Fuzz, with distinct saturation character. Gain controls distortion intensity; 0% does not guarantee zero distortion. Output sets global output gain. Prior input level affects response; no curve or zero-Gain equality is specified.",
+    "evidence": [
+      "manual-pedal-blocks.json#pedal:B003",
+      "manual-pedal-blocks.json#pedal:B004",
+      "manual-pedal-blocks.json#pedal:B005",
+      "manual-pedal-blocks.json#pedal:B006",
+      "manual-pedal-blocks.json#pedal:B007",
+      "manual-pedal-blocks.json#pedal:B008"
+    ]
+  },
+  {
+    "id": "REQ-DST-PEDAL-003",
+    "device": "pedal",
+    "title": "post-distortion adaptive EQ",
+    "provenance": "D12",
+    "contract": "The three-band EQ follows distortion and increases resonance with EQ boost. Bass is a 100 Hz peak band; Mid switch positions select 500 Hz, 1 kHz and 2 kHz, with a narrower low-position band and wider high-position band. Treble is shelving at 3.3 kHz. These documented nominal frequencies do not supply filter coefficients, boost scaling or tolerances.",
+    "evidence": [
+      "manual-pedal-blocks.json#pedal:B009",
+      "manual-pedal-blocks.json#pedal:B010",
+      "manual-pedal-blocks.json#pedal:B011",
+      "manual-pedal-blocks.json#pedal:B012",
+      "manual-pedal-blocks.json#pedal:B013",
+      "manual-pedal-blocks.json#pedal:B014",
+      "manual-pedal-blocks.json#pedal:B015",
+      "manual-pedal-blocks.json#pedal:B016"
+    ]
+  },
+  {
+    "id": "REQ-DST-PEDAL-004",
+    "device": "pedal",
+    "title": "sub shelf",
+    "provenance": "D12",
+    "contract": "Sub enables a shelf that boosts below 250 Hz; it can interact with Bass cut/boost. Exact boost amount, shelving law and net cancellation are U.",
+    "evidence": [
+      "manual-pedal-blocks.json#pedal:B018"
+    ]
+  },
+  {
+    "id": "REQ-DST-PEDAL-005",
+    "device": "pedal",
+    "title": "wet balance and quality",
+    "provenance": "D12",
+    "contract": "Dry/Wet sets processed/dry balance. Hi-Quality in the title context menu is documented to reduce aliasing with more CPU usage. No oversampling ratio, anti-alias filter, CPU or latency target follows.",
+    "evidence": [
+      "manual-pedal-blocks.json#pedal:B019",
+      "manual-pedal-blocks.json#pedal:B020"
+    ]
+  },
+  {
+    "id": "REQ-DST-PEDAL-006",
+    "device": "pedal",
+    "title": "signal-chain and recipe controls",
+    "provenance": "D12",
+    "contract": "Upstream gain/EQ/compression alters Pedal response. The documented kick, fizzle, broken-speaker and sub recipes select existing type/EQ/Sub/Gain/Output/DryWet controls; their subjective character is not a numerical compatibility metric. Recipe values are not defaults.",
+    "evidence": [
+      "manual-pedal-blocks.json#pedal:B023",
+      "manual-pedal-blocks.json#pedal:B025",
+      "manual-pedal-blocks.json#pedal:B026",
+      "manual-pedal-blocks.json#pedal:B027",
+      "manual-pedal-blocks.json#pedal:B029",
+      "manual-pedal-blocks.json#pedal:B030",
+      "manual-pedal-blocks.json#pedal:B031",
+      "manual-pedal-blocks.json#pedal:B033",
+      "manual-pedal-blocks.json#pedal:B034",
+      "manual-pedal-blocks.json#pedal:B036"
+    ]
+  },
+  {
+    "id": "REQ-DST-PEDAL-007",
+    "device": "pedal",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Pedal, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-REDUX-001",
+    "device": "redux",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Redux2; the frozen single shipped preset has /Ableton/Redux2. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Redux2",
+      "package-values.json#class=Redux2"
+    ]
+  },
+  {
+    "id": "REQ-DST-REDUX-002",
+    "device": "redux",
+    "title": "downsampling rate and jitter",
+    "provenance": "D12",
+    "contract": "Rate selects a degraded sample rate; reducing it can add imaging/inharmonic content depending on source spectrum. Jitter randomizes the downsample clock and can add noise/stereo spread. Exact resampling phase, algorithm, noise distribution and stereo correlation are U.",
+    "evidence": [
+      "manual-redux-blocks.json#redux:B003",
+      "manual-redux-blocks.json#redux:B005",
+      "manual-redux-blocks.json#redux:B006",
+      "manual-redux-blocks.json#redux:B007"
+    ]
+  },
+  {
+    "id": "REQ-DST-REDUX-003",
+    "device": "redux",
+    "title": "pre/post filters",
+    "provenance": "D12",
+    "contract": "Pre filters before downsampling, reducing bandwidth and also stereo width when Jitter is used. Post low-passes after downsampling to reduce imaging. Post-Filter Octave expresses octaves relative to half the displayed Rate; no exact filter slope or Nyquist clipping law follows.",
+    "evidence": [
+      "manual-redux-blocks.json#redux:B008",
+      "manual-redux-blocks.json#redux:B009"
+    ]
+  },
+  {
+    "id": "REQ-DST-REDUX-004",
+    "device": "redux",
+    "title": "bits and shape",
+    "provenance": "D12",
+    "contract": "Bits describes the encoding bit count; reducing it reduces dynamic range and adds quantization noise/distortion. Higher Shape allocates finer resolution to smaller amplitudes; its net effect depends on input dynamics. Rounding, saturation, dithering and compander formula are U.",
+    "evidence": [
+      "manual-redux-blocks.json#redux:B011",
+      "manual-redux-blocks.json#redux:B012",
+      "manual-redux-blocks.json#redux:B013"
+    ]
+  },
+  {
+    "id": "REQ-DST-REDUX-005",
+    "device": "redux",
+    "title": "DC offset and wet balance",
+    "provenance": "D12",
+    "contract": "DC Shift offsets amplitude before quantization, changing low-bit distortion. Dry/Wet balances processed/dry paths, with 100% documented for returns. Offset magnitude, DC removal, integer conventions and mix law are U.",
+    "evidence": [
+      "manual-redux-blocks.json#redux:B014",
+      "manual-redux-blocks.json#redux:B015"
+    ]
+  },
+  {
+    "id": "REQ-DST-REDUX-006",
+    "device": "redux",
+    "title": "legacy and unmatched state",
+    "provenance": "U",
+    "contract": "Current Redux2 controls do not establish Redux Legacy behavior, old-Set migration or the semantics of the stored EcoProcessing field. No exposed control or processing-performance law is inferred from that field.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-REDUX-007",
+    "device": "redux",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Redux, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-ROAR-001",
+    "device": "roar",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Roar; the frozen single shipped preset has /Ableton/Roar. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Roar",
+      "package-values.json#class=Roar"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-002",
+    "device": "roar",
+    "title": "input and color compensation",
+    "provenance": "D12",
+    "contract": "Drive controls input level before gain stages. Positive Tone tilts toward highs and negative Tone toward lows; Tone Frequency sets its low shelf frequency. Color Compensation applies a mirrored filter after distortion stages to complement pre-shaper coloring. No exact inverse transfer or level normalization is inferred.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B004",
+      "manual-roar-blocks.json#roar:B005",
+      "manual-roar-blocks.json#roar:B006",
+      "manual-roar-blocks.json#roar:B007",
+      "manual-roar-blocks.json#roar:B008"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-003",
+    "device": "roar",
+    "title": "routing modes",
+    "provenance": "D12",
+    "contract": "Seven routing modes are documented. Single uses one stage. Serial concatenates two, with Blend between stage 1 and the combined result. Parallel independently processes two, with Blend between their outputs. Multi Band splits Low/Mid/High with two crossovers. Mid Side processes mono/stereo content separately. Feedback separately processes input and feedback. Delay sends a delayed stage-1 signal into stage 2 without feedback-gain scaling on that first repeat; stage-2 output feeds back with gain. All except Single and Multi Band have Blend. Crossover law, blend law, exact feedback topology and delays are U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B009",
+      "manual-roar-blocks.json#roar:B010",
+      "manual-roar-blocks.json#roar:B011",
+      "manual-roar-blocks.json#roar:B012",
+      "manual-roar-blocks.json#roar:B013",
+      "manual-roar-blocks.json#roar:B014",
+      "manual-roar-blocks.json#roar:B015"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-004",
+    "device": "roar",
+    "title": "gain-stage controls",
+    "provenance": "D12",
+    "contract": "Available gain stages have independent Stage on/off, shaper on/off, Shaper Amount, Shaper Bias and Filter Frequency. Amount can be dragged on the shaper visualization. Bias offsets the signal to produce asymmetry and can silence output at unspecified extremes. Shaper Level compensates output changes manually; no automatic loudness matching is implied.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B017",
+      "manual-roar-blocks.json#roar:B018",
+      "manual-roar-blocks.json#roar:B019",
+      "manual-roar-blocks.json#roar:B020",
+      "manual-roar-blocks.json#roar:B033",
+      "manual-roar-blocks.json#roar:B034"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-005",
+    "device": "roar",
+    "title": "twelve shapers",
+    "provenance": "D12",
+    "contract": "The shaper list contains Soft Sine, Digital Clip, Bit Crusher, Diode Clipper, Tube Preamp, Half Wave Rectifier, Full Wave Rectifier, Polynomial, Fractal, Tri Fold, Noise Injection and Shards. Their documented characters include soft/hard clipping, quantization/companding, asymmetry/rectification, folding and noise/time-varying shapes. Names and visualization do not establish transfer functions, harmonic amplitudes, seeds or equality to other devices.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B021",
+      "manual-roar-blocks.json#roar:B022",
+      "manual-roar-blocks.json#roar:B023",
+      "manual-roar-blocks.json#roar:B024",
+      "manual-roar-blocks.json#roar:B025",
+      "manual-roar-blocks.json#roar:B026",
+      "manual-roar-blocks.json#roar:B027",
+      "manual-roar-blocks.json#roar:B028",
+      "manual-roar-blocks.json#roar:B029",
+      "manual-roar-blocks.json#roar:B030",
+      "manual-roar-blocks.json#roar:B031",
+      "manual-roar-blocks.json#roar:B032"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-006",
+    "device": "roar",
+    "title": "filters and order",
+    "provenance": "D12",
+    "contract": "Filter types are LP, BP, HP, Notch, Peak, Morph, Comb, Resampling and Dispersion. Pre places the filter before the shaper, so it does not directly filter newly generated harmonics. All except Resampling have Resonance; Peak has Peak Gain and Morph has a morph parameter. LP/BP/HP/Notch/Comb give their named attenuation forms; Morph moves LP through BP toward HP; Dispersion shifts frequency-dependent timing without documented level change. Filter coefficients, order, resonance limits and phase response remain U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B035",
+      "manual-roar-blocks.json#roar:B036",
+      "manual-roar-blocks.json#roar:B037",
+      "manual-roar-blocks.json#roar:B038",
+      "manual-roar-blocks.json#roar:B039",
+      "manual-roar-blocks.json#roar:B040",
+      "manual-roar-blocks.json#roar:B041",
+      "manual-roar-blocks.json#roar:B042",
+      "manual-roar-blocks.json#roar:B043"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-007",
+    "device": "roar",
+    "title": "LFO sources and timing",
+    "provenance": "D12",
+    "contract": "The Mod Sources/Matrix panel is opened by its toggle. LFO1 and LFO2 select sine, triangle, square, up or down. Rate modes are Free, Synced, Triplet, Dotted and Sixteenth; Free uses Hertz and others beat divisions. Morph sculpts shape and Smooth smooths transitions. Initial phase, sync reset, tempo-change response and numerical waveforms are U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B045",
+      "manual-roar-blocks.json#roar:B046",
+      "manual-roar-blocks.json#roar:B047",
+      "manual-roar-blocks.json#roar:B048"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-008",
+    "device": "roar",
+    "title": "envelope follower and listen",
+    "provenance": "D12",
+    "contract": "The follower tracks input with Attack/Release. Hold completes attack before release. Threshold and Gain set sensitivity/strength; Frequency/Width select its analysis band. Envelope Input Listen auditions that input. Exact detector/window/timing and listen routing beyond the documented audition remain U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B049",
+      "manual-roar-blocks.json#roar:B050",
+      "manual-roar-blocks.json#roar:B051",
+      "manual-roar-blocks.json#roar:B052",
+      "manual-roar-blocks.json#roar:B053"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-009",
+    "device": "roar",
+    "title": "noise source",
+    "provenance": "D12",
+    "contract": "Noise types are Simplex, Wander, S & H and Brown. Rates can be Hertz or tempo-synced and smoothed. Simplex/Wander are differently interpolated random signals; S & H changes a held random value per Noise Rate interval; Brown is low-passed white noise. Exact PRNG, distribution, shared seed, rate/tempo reset and noise bandwidth are U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B054",
+      "manual-roar-blocks.json#roar:B055",
+      "manual-roar-blocks.json#roar:B056",
+      "manual-roar-blocks.json#roar:B057"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-010",
+    "device": "roar",
+    "title": "matrix editing and display",
+    "provenance": "D12",
+    "contract": "With Matrix open, clicking a parameter selects a target; sources form columns and targets rows. Vertical cell drag changes assignment amount. Global Modulation Amount scales overall application. X clears matrix assignments. Header expansion exposes all stages and matrix targets/sources; LEDs indicate source activity with source-associated color. Undo, modulation sum, clipping, destination units and zero-depth identity remain U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B058",
+      "manual-roar-blocks.json#roar:B059",
+      "manual-roar-blocks.json#roar:B060",
+      "manual-roar-blocks.json#roar:B061"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-011",
+    "device": "roar",
+    "title": "feedback modes and processing",
+    "provenance": "D12",
+    "contract": "Feedback modes are Time, Synced, Triplet, Dotted and Note; Note sets a pitched feedback ring. Feedback Amount sets reinjection; in-loop compression can attenuate feedback on loud input. Invert reverses feedback polarity. Gate on fades feedback after input ceases; Gate off permits indefinite feedback. Frequency/Width set a feedback band-pass. Infinite duration is conditional on established nonzero feedback and sustaining path; no decay rate, stability, tail threshold or silence-generation guarantee follows.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B064",
+      "manual-roar-blocks.json#roar:B065",
+      "manual-roar-blocks.json#roar:B066",
+      "manual-roar-blocks.json#roar:B067",
+      "manual-roar-blocks.json#roar:B068"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-012",
+    "device": "roar",
+    "title": "global compression and output",
+    "provenance": "D12",
+    "contract": "Compression Amount controls output compression and hence feedback. Sidechain HP filters the compressor analysis signal to reduce low-frequency response. Output Gain sets wet level followed by hard clipping, then Dry/Wet balance. Neither clip threshold, gain law, compressor constants nor final-output peak under dry mixing is specified.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B070",
+      "manual-roar-blocks.json#roar:B071",
+      "manual-roar-blocks.json#roar:B072",
+      "manual-roar-blocks.json#roar:B073"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-013",
+    "device": "roar",
+    "title": "external audio sidechain",
+    "provenance": "D12",
+    "contract": "The default follower source is main input. External SC enables a selectable external source and Post FX/Post Mixer tap. Mix=100% follows only external, 0% only internal. SC Gain changes analysis level without changing the source track volume. Sidechain Listen bypasses Roar output to audition the sidechain. Missing source, feedback during listen, tap latency and changes during routing are U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B075",
+      "manual-roar-blocks.json#roar:B076",
+      "manual-roar-blocks.json#roar:B077",
+      "manual-roar-blocks.json#roar:B078",
+      "manual-roar-blocks.json#roar:B081"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-014",
+    "device": "roar",
+    "title": "MIDI feedback note",
+    "provenance": "D12",
+    "contract": "MIDI > FB Note uses a selected MIDI source, Pre FX/Post FX tap, and MIDI to set feedback pitch in Note mode. The manual says Feedback Mode and Feedback Amount are inactive while MIDI sidechain is active. Note priority, channel, velocity, transpose, note-off, sustain and held-note teardown are U.",
+    "evidence": [
+      "manual-roar-blocks.json#roar:B079",
+      "manual-roar-blocks.json#roar:B080"
+    ]
+  },
+  {
+    "id": "REQ-DST-ROAR-015",
+    "device": "roar",
+    "title": "unmatched installed controls",
+    "provenance": "U",
+    "contract": "Stored HiQuality, SteppedDiscreteParameterModulation and other schema members do not independently establish exposed controls, automation steps, DSP quality or latency. Mode switching and automation of discrete controls remain unknown at exact build.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-ROAR-016",
+    "device": "roar",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Roar, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-SATURATOR-001",
+    "device": "saturator",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Saturator; the frozen single shipped preset has /Ableton/Saturator. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Saturator",
+      "package-values.json#class=Saturator"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-002",
+    "device": "saturator",
+    "title": "eight curves and visualization",
+    "provenance": "D12",
+    "contract": "Curve choices are Analog Clip, Soft Sine, Bass Shaper, Medium Curve, Hard Curve, Sinoid Fold, Digital Clip and Waveshaper. Analog/Digital Clip are documented linear below an unspecified clipping point, with smoother versus immediate transition. Sinoid Fold folds at increasing input. Shaper Curve display relates live input to the curve; exact transfer functions and clipping levels are U.",
+    "evidence": [
+      "manual-saturator-blocks.json#saturator:B003",
+      "manual-saturator-blocks.json#saturator:B004",
+      "manual-saturator-blocks.json#saturator:B005",
+      "manual-saturator-blocks.json#saturator:B006",
+      "manual-saturator-blocks.json#saturator:B008",
+      "manual-saturator-blocks.json#saturator:B009"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-003",
+    "device": "saturator",
+    "title": "bass threshold",
+    "provenance": "D12",
+    "contract": "Bass Shaper has a displayed threshold from 0 to -50 dB. Below threshold it is documented linear; above it clipping increases smoothly. Lower thresholds give softer clipping, higher thresholds harder clipping. Input/drive normalization, exact dB reference, continuity and quantitative curve remain U.",
+    "evidence": [
+      "manual-saturator-blocks.json#saturator:B007"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-004",
+    "device": "saturator",
+    "title": "color filters and drive",
+    "provenance": "D12",
+    "contract": "Drive sets pre-shaper input gain. Color enables EQ before shaping and an inverted counterpart after it. Amt Lo addresses low-frequency saturation; Amt Hi, Frequency and Width address a second band. Positive amounts increase saturation and negatives reduce it in their band. Expanded curve handles address Amt Lo and Amt Hi/Frequency. No exact EQ cancellation or filter law follows.",
+    "evidence": [
+      "manual-saturator-blocks.json#saturator:B011",
+      "manual-saturator-blocks.json#saturator:B012",
+      "manual-saturator-blocks.json#saturator:B013",
+      "manual-saturator-blocks.json#saturator:B016",
+      "manual-saturator-blocks.json#saturator:B017",
+      "manual-saturator-blocks.json#saturator:B018"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-005",
+    "device": "saturator",
+    "title": "post clip and output",
+    "provenance": "D12",
+    "contract": "Post Clip Mode can select Soft Clip or Hard Clip for all curve types; the manual bounds output by the Output setting in these modes. Soft Clip applies an Analog Clip instance to the output. Dry/Wet balances dry/processed signals, with 100% for returns. This does not assert a peak bound on a mixture containing an unconstrained dry path; threshold, normalization and precision remain U.",
+    "evidence": [
+      "manual-saturator-blocks.json#saturator:B010",
+      "manual-saturator-blocks.json#saturator:B014",
+      "manual-saturator-blocks.json#saturator:B015"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-006",
+    "device": "saturator",
+    "title": "waveshaper controls and zero influence",
+    "provenance": "D12",
+    "contract": "Waveshaper activates six expanded controls. Waveshaper Drive sets their influence: 0% removes their curve influence and 100% fully applies it. Curve adds mainly third harmonics; Depth superposes a sine component with no influence at 0%; Linear changes the linear region jointly with Curve/Depth; Damp flattens near center; Period sets ripple density relative to Depth. This Drive is distinct from main input Drive. Equations, inactive-control persistence and no-effect equality tolerances remain U.",
+    "evidence": [
+      "manual-saturator-blocks.json#saturator:B020",
+      "manual-saturator-blocks.json#saturator:B022",
+      "manual-saturator-blocks.json#saturator:B023",
+      "manual-saturator-blocks.json#saturator:B024",
+      "manual-saturator-blocks.json#saturator:B025",
+      "manual-saturator-blocks.json#saturator:B026",
+      "manual-saturator-blocks.json#saturator:B027"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-007",
+    "device": "saturator",
+    "title": "context quality and input DC filter",
+    "provenance": "D12",
+    "contract": "The context menu exposes Hi-Quality and Pre-DC Filter. Hi-Quality reduces aliasing with higher CPU cost; Pre-DC Filter removes input DC offsets. Factor, kernels, transient response, attenuation, latency and CPU metric remain U.",
+    "evidence": [
+      "manual-saturator-blocks.json#saturator:B029"
+    ]
+  },
+  {
+    "id": "REQ-DST-SATURATOR-008",
+    "device": "saturator",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Saturator, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  },
+  {
+    "id": "REQ-DST-VINYL-DISTORTION-001",
+    "device": "vinyl-distortion",
+    "title": "installed representation",
+    "provenance": "Dpkg",
+    "contract": "The pinned schema declares Vinyl; the frozen single shipped preset has /Ableton/Vinyl. Its Creator is historical Ableton Live 12.4d1 and MinorVersion is 12.0_12402. Exact field records are in schema-fields.json and package-values.json. These facts establish vocabulary and one stored example only; neither constructor defaults, GUI bounds, automation legality, model indices nor DSP are inferred.",
+    "evidence": [
+      "schema-fields.json#class=Vinyl",
+      "package-values.json#class=Vinyl"
+    ]
+  },
+  {
+    "id": "REQ-DST-VINYL-DISTORTION-002",
+    "device": "vinyl-distortion",
+    "title": "tracing and pinch bands",
+    "provenance": "D12",
+    "contract": "Tracing Model adds even harmonics; Pinch adds odd harmonics, typically opposing in phase between channels. Each band has Drive, Freq and Q: vertical XY changes Drive, horizontal changes Freq, and Alt/Option vertical changes Q. Overall Drive changes both models. Exact harmonic/phase laws, band activation and distortion transfer remain U.",
+    "evidence": [
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B003",
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B004",
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B005"
+    ]
+  },
+  {
+    "id": "REQ-DST-VINYL-DISTORTION-003",
+    "device": "vinyl-distortion",
+    "title": "mode and pinch stereo",
+    "provenance": "D12",
+    "contract": "Soft and Hard are distinct vinyl-distortion modes. Stereo/mono determines whether Pinch distortion is stereo or mono. No disk-speed model, transfer curve, stereo gain law or broad input downmixing rule is inferred.",
+    "evidence": [
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B006",
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B007"
+    ]
+  },
+  {
+    "id": "REQ-DST-VINYL-DISTORTION-004",
+    "device": "vinyl-distortion",
+    "title": "crackle generator",
+    "provenance": "D12",
+    "contract": "Crackle adds generated noise. Density sets noise density, while Volume changes noise gain independently of harmonic distortion controls. Exact event distribution, seed, spectrum, density-zero output, silence behavior and channel relation are U.",
+    "evidence": [
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B002",
+      "manual-vinyl-distortion-blocks.json#vinyl-distortion:B008"
+    ]
+  },
+  {
+    "id": "REQ-DST-VINYL-DISTORTION-005",
+    "device": "vinyl-distortion",
+    "title": "automation, state, errors and teardown",
+    "provenance": "U",
+    "contract": "For Vinyl Distortion, exact parameter automation/clip-modulation/macro precedence, mode-change smoothing, sample/block-rate behavior, transport history, preset/Set reopen and migration, undo/redo transactions, malformed/invalid input handling, cancellation rollback and teardown are unresolved. Schema persistence vocabulary does not resolve these behaviors. No failure response, silence, continuity, reset, equality, timing or accepted-input policy is asserted.",
+    "evidence": []
+  }
+]

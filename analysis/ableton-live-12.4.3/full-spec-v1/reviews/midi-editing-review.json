@@ -1,0 +1,214 @@
+{
+  "id": "REVIEW-MIDI-EDITING-TOOLS-R1",
+  "reviewer": "independent analyst /root/arrangement_spec",
+  "date_utc": "2026-10-19T20:12:10.094623+00:00",
+  "disposition": "approved-as-partial-analyst-draft-with-nonblocking-fixture-notes",
+  "scope": "All 43 requirement rows, all 57 scenario definitions, all 17 tool sections and editor source sections in retained official HTML/derived text, research boundaries, schema presence correlation and frozen manifest. This is not a handoff/implementation/compatibility release review.",
+  "reviewed_manifest_sha256": "f4ba2c5197501b3d685bc05ba2642eb41bde4fc38c5752d44aa6bda45aaf9488",
+  "reviewed_inputs": {
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases.json": "f08104c0f7d893d81f0aec920ca7b44d7fc5a686c8dfbd1ebb760dfc231eaf8f",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/capture.py": "41e83b7d94313197dae9d01c83683b928ee1c73f0515c39c1730217fd2a62b71",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-editing-midi-2026-10-19.html": "7675902a8115a7a329c693bbfca3efb360493ece560ed83c754ee8d2a99a5ca2",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-editing-midi.txt": "49680f05471b98253e09f19e85ad1943163d4c169bdeeda563209e230c245137",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-midi-tools-2026-10-19.html": "ebe83b52ba7b11ada85691f524f8e817534c604eac1c0edd4aa9c7b9327fd6ab",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-midi-tools.txt": "1ca9dd57e0da22b7aff0b89662ca90df1cceb60f8101c856c88a90f558b61f59",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/schema-correlation.json": "598704046b86e4385aad2ff94d5d88f9cda889194ee95c9547293cd5900a6474",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/sources.json": "17750cae2154f931471fdea1d5e4626130d664c8cbe060cdff6d832c630aa99a",
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validate.py": "ff22d40ce5fbd43b600be78cfe7172104f650eb2b35bce2fac3b7738c30a06ea",
+    "wiki/specs/midi-editing-tools.md": "2c9e58f56b7d5c0850e1df1124b0f0d2b6ad11116bd4c850816f58c757053bc3",
+    "wiki/research/midi-editing-tools.md": "d9c237fd6916870e781f06fd1ad97f31d72ce8f08d909a3c3580d6e2bae70d19",
+    "analysis/ableton-live-12.4.3/full-spec-v1/inventory/12.0_12402.txt": "b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299",
+    "analysis/ableton-live-12.4.3/full-spec-v1/inventory/midi-tools.json": "79084729fbf8195600e5cfcae43fe8dcdeb92ad279d4d47dcefb447c859ccb2a"
+  },
+  "blocking_findings": [],
+  "nonblocking_notes": [
+    {
+      "id": "MED-REVIEW-001",
+      "severity": "low",
+      "location": "acceptance-cases.json: MED-040, MED-041, MED-043",
+      "observation": "Range/voice predicates on generated notes do not themselves reject empty output. These cases are explicitly partial, all exact-build U, and no whole-tool conformance is claimed, so this does not block the current bounded draft. It would be insufficient as a successful executable generator comparator by itself.",
+      "next_action": "Before selecting these cases for handoff, use a fully stated nonempty generation scenario and require generation success/nonempty material where supported, or keep that obligation separately U. Do not invent exact random note counts or phase."
+    },
+    {
+      "id": "MED-REVIEW-002",
+      "severity": "low",
+      "location": "wiki/specs/midi-editing-tools.md: REQ-MIDI-EDIT-028",
+      "observation": "The positive Gaps wording says a gap is inserted after the chosen count, while the retained Chop section gives the more precise example that a gap replaces a pattern note after two notes. No time-expansion law is claimed in this draft and pattern algorithms remain U, so no contradictory graded result currently follows.",
+      "next_action": "At fixture/handoff refinement, preserve the source distinction between replacing a pattern position with a gap and inserting additional timeline duration; include the documented positive-2/negative-2 pattern examples if that behavior is selected."
+    }
+  ],
+  "conflict_checks": {
+    "C1": "Retained introduction and detailed generator usage differ on existing-content replacement. REQ-023 and MED-050 correctly retain occupied-target semantics U, without inferring a pitch/time overlap predicate.",
+    "C2": "Retained Editing MIDI states settings-open shortcut; Tools states apply-without-opening shortcut. MED-051 keeps shortcut result U, and explicit menu/tool cases remain distinct.",
+    "C3": "Retained LFO section contains incompatible Notes-view visibility prose. REQ-031 and MED-052 retain display U; generated expression and display are not equated."
+  },
+  "per_tool_source_checks": [
+    {
+      "tool": "Arpeggiate",
+      "requirement": "REQ-MIDI-EDIT-027",
+      "case": "MED-027",
+      "source": "T3",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Chop",
+      "requirement": "REQ-MIDI-EDIT-028",
+      "case": "MED-028",
+      "source": "T4",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Connect",
+      "requirement": "REQ-MIDI-EDIT-029",
+      "case": "MED-029",
+      "source": "T5",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Glissando",
+      "requirement": "REQ-MIDI-EDIT-030",
+      "case": "MED-030",
+      "source": "T6",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "LFO",
+      "requirement": "REQ-MIDI-EDIT-031",
+      "case": "MED-031",
+      "source": "T7",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Ornament",
+      "requirement": "REQ-MIDI-EDIT-032",
+      "case": "MED-032",
+      "source": "T8",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Quantize",
+      "requirement": "REQ-MIDI-EDIT-033",
+      "case": "MED-033",
+      "source": "T9",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Recombine",
+      "requirement": "REQ-MIDI-EDIT-034",
+      "case": "MED-034",
+      "source": "T10",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Span",
+      "requirement": "REQ-MIDI-EDIT-035",
+      "case": "MED-035",
+      "source": "T11",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Strum",
+      "requirement": "REQ-MIDI-EDIT-036",
+      "case": "MED-036",
+      "source": "T12",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Time Warp",
+      "requirement": "REQ-MIDI-EDIT-037",
+      "case": "MED-037",
+      "source": "T13",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Velocity Shaper",
+      "requirement": "REQ-MIDI-EDIT-038",
+      "case": "MED-038",
+      "source": "T14",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Rhythm",
+      "requirement": "REQ-MIDI-EDIT-039",
+      "case": "MED-039",
+      "source": "T15",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Seed",
+      "requirement": "REQ-MIDI-EDIT-040",
+      "case": "MED-040",
+      "source": "T16",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Shape",
+      "requirement": "REQ-MIDI-EDIT-041",
+      "case": "MED-041",
+      "source": "T17",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Stacks",
+      "requirement": "REQ-MIDI-EDIT-042",
+      "case": "MED-042",
+      "source": "T18",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    },
+    {
+      "tool": "Euclidean",
+      "requirement": "REQ-MIDI-EDIT-043",
+      "case": "MED-043",
+      "source": "T19",
+      "result": "bounded documented clauses supported; named numerical/random/edge laws remain U"
+    }
+  ],
+  "numeric_checks": {
+    "MED-011": "C-sharp to lower C for C-major equal-distance Fit to Scale matches retained E11 text.",
+    "MED-012": "Quarter-grid Humanize bound on one-beat grid gives \u00b10.25 beat; factor-two duration does not change loop, from E12.",
+    "MED-014_015": "Velocity deviation 60..80 and Chance 25..75 follow explicit source examples, with RNG law withheld.",
+    "MED-019": "Loop length doubles, copied note at 5 and previously later note shifts to 9 preserve documented distance from loop end.",
+    "MED-031": "Clip bend \u00b160 permits Amount \u00b1120, base \u00b160; Attack100 resets Decay0, directly documented.",
+    "MED-032": "One-grid flam duration at \u00b1100 follows source, without expression-carryover law.",
+    "MED-035": "Starts0,2,5 and endpoint8 yield Legato lengths2,3,3 and half-min-distance Staccato length1.",
+    "MED-039": "One4/4bar,8steps at1/8 then1/16 gives one then two repetitions as in source; AccentFrequency1 accents every note.",
+    "MED-040": "1/8 musical note equals0.5 quarter-note beat; ranges/voices constraints do not invent density/count law."
+  },
+  "mechanical_checks": {
+    "sealed_manifest_sha256": "pass before and after review",
+    "all_11_payload_hashes_and_sizes": "pass",
+    "both_external_dependency_hashes": "pass",
+    "two_HTML_to_numbered_text_reproductions": "pass, exact byte-for-byte derived text reproduction from retained HTML",
+    "author_validate_script": "pass; read-only outputs only",
+    "requirement_case_sequences": "43 requirements;57 cases; first43 map one-to-one",
+    "case_labels": {
+      "D12": 43,
+      "U": 14,
+      "exact_target_U": 57,
+      "executed": 0
+    },
+    "tool_denominator": "12 transformations plus5 generators",
+    "schema_correlation": "23 Algorithm classes:15 native-tool plus8filter; presence only, not runtime proof",
+    "source_locators": "42 heading/text range entries resolved; chapter body retained separately from global navigation footer",
+    "relative_file_and_heading_links": "pass",
+    "frontmatter": "pass",
+    "git_diff_check": "pass"
+  },
+  "boundary_checks": {
+    "version": "Every D12 clause and case remains exact12.4.3 U; source title/version does not pin patch.",
+    "storage": "Schema names/fields support presence only; no editor/load/save/algorithm guarantee promoted.",
+    "negative_boundary_lifecycle": "Selection Escape, incompatible tool input and known limits separated from edit rollback; malformed data, invalid controls, teardown, save, undo grouping, sounding notes, Max errors and RNG remain explicit U cases.",
+    "fixtures": "Authored JSON scenarios only; no generatedALS, loadability, executed transform or audio output claimed.",
+    "case_strength": "Finite documented-field predicates only; no full-tool or full-F04 coverage claim."
+  },
+  "execution_limits": {
+    "ran_Live": false,
+    "ran_extracted_original_code": false,
+    "ran_candidate": false,
+    "installed_tools": false,
+    "modified_author_files": false,
+    "modified_shared_catalog": false,
+    "compatibility_pass": false
+  },
+  "remaining_scope": "Full MPE editor/input/output, tuning, groove, conversions, MIDI interchange, general Clip View, exact algorithms and lifecycle remain unclosed; this review establishes only bounded analyst-draft consistency."
+}

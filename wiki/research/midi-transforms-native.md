@@ -2,7 +2,7 @@
 id: RESEARCH-MIDI-TRANSFORMS-NATIVE
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64 (Live.arm64 SHA-256 3a99ceea…383cfad); X2 runs on the x86_64 slice (1bae9a97…be999b0)
 ---
@@ -374,6 +374,16 @@ current values, gives these largest differences:
 A decision within about one ulp(R) of its bound can also differ. The new
 Value Scaling and boundary cases therefore use lo = 0.
 
+Reconciled 2026-10-19 against the
+[midi-config-v4 review](../../handoff/midi-config-v4/REVIEW.md#findings): lo = 0
+removes this slice difference, but does not bound binary32 error against the exact
+Value Scaling formula. RV4-06 models 96τ, 386τ and 408τ on 0–1, 0–3 and 0–127;
+they are examples, not a general bound. RV4-01 excludes stepped targets within
+8τ of a half-integer, and RV4-02 uses k × τ after k relative messages on a
+non-stepped parameter. The full precision scope and explicit X-case exceptions
+belong to [SPEC-MIDI-USER-MAPPING r6](../specs/midi-user-mapping.md#timing-and-state).
+These corrections preserve the earlier measured cross-slice results.
+
 **Master-volume display (PRB-S4-05): unknown.** No self-contained function
 decides it:
 
@@ -523,3 +533,13 @@ a verified virtual MIDI port, as for the [S4 batch](midi-closure-r2.md#phase-4-p
 - Feedback bytes (PRB-S4-13), pitch-bend and note mappings, and the Zoom > 1
   centered-pickup branch are outside this question; script mappings always use
   Zoom 1.0.
+
+## MIDI relative-byte whole-class adoption — 2026-10-21
+
+**Observed, finite direct-function scope.** The [frozen relative-byte packet](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-midi-user-relative-bytes-v1/manifest.json), manifest 6,340 bytes / SHA-256 `2e37f16146ff4c91db95401b67e526db3d5e8a4fb4f62a94b8d7b88609bc0471`, passed [Root's sole actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-user-relative-bytes-v1-review.json), 606,283 bytes / SHA-256 `0521b2175f5b432d798053f35d33e19310f8dc33a8771771e2d86f60f772cac6`. Its complete `reviewed_points` catalog joins all 1,024 mode/byte inputs: 1,006 fresh target observations and 18 exact inherited X1/X2 observations. All 34 payloads / 4,695,705 bytes and the manifest remain read-only. Historical results inherit their provenance; no old originals were replayed or process receipts invented.
+
+The finite class is eight relative modes × every legal byte 0…127, at the existing UNIT state only: current 0.5, range [0,1], nonstepped, sensitivity 1, reversed 0, prior FLT_MAX. Numeric modes 1/2/3/4/6/7/8/9 mean AccelSignedBit/AccelBinaryOffset/AccelTwoCompliment/AccelSignedBit2/LinearSignedBit/LinearBinaryOffset/LinearTwoCompliment/LinearSignedBit2, using inherited X1 lines 85–87 and X2 lines 100–102 name binding. The supplied 16-byte record is `{float(byte), FLT_MAX, int(mode), 1.0f}`. Existing initializer 0x101bc1360 and unpatched target 0x101bb27b0 supply the direct route; no receiver, GDB, simulated accessor/setter/notification or new construction model was used.
+
+Eight sequential children completed once at 09:22:31.997380–09:22:34.666714 UTC, all exit zero with empty stderr and no timeout/retry. They made 1,006 target calls plus eight initializers: **1,014 original calls**, at most 128 calls / 127 buffers per child. All 1,006 low-XMM0 binary32 results exactly match the predeclared finite oracle; all buffers remain byte-exact and all outputs finite. The catalog has 129 distinct result bit patterns in [0.25,0.75]. Each of the four saved result carriers is only 64 bits; this is not a 128-bit SIMD capture, and upper XMM0 bits are not the semantic output. Root independently checked all fresh records and historical joins, the full collector/checkers and partition/lane/boundary controls. Fourteen input, eighteen record and sixteen independent controls pass; 33 recorded custody pairs per child agree.
+
+The retained image, loader, imports and environment remain qualified as detailed in the review. Used imports are only the existing allocation/atexit/pthread-key stubs. Endpoint hashes/PID/interpreter strings do not attest continuous custody or executed provider bytes; anomaly checks after the queued child loop cannot retroactively prevent already queued calls. Input/receipt JSON was fsynced, while raw output was closed and hashed without explicit fsync; power-loss/failure-path durability is not established. There is no instruction/fenv trace. No general range/state law, actual MIDI ingress, parameter binding, current-value receiver, setter, accumulation/pairing/takeover, deferred delivery, lifecycle or ARM/Apple/public claim follows. This does not cover all 19 X contexts in the family map. Portable comparators remain NULL. The later [R7 owner adoption](midi-user-mapping.md#midi-user-owner-r7-finite-annex-adoption--2026-10-21) reuses these admitted observations; no grade, release or site is added. Frozen routes remain 691 X / 1,076 S / 3,857 none; main Live remains 25,071+24=25,095 of 268,015, with bundle sites separate. Required U/product OPEN.

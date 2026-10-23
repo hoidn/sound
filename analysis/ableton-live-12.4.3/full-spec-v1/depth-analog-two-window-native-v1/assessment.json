@@ -1,0 +1,288 @@
+{
+  "id": "ANALOG-TWO-WINDOW-NATIVE-V1-ASSESSMENT",
+  "created_utc": "2026-10-21T05:08:36.775350+00:00",
+  "disposition": "AUTHOR_COMPLETE_BOUNDED_CONDITIONAL_LOCAL_CARRIER_AND_STORE_RELATION; independent review pending",
+  "selected_scope": {
+    "intervals": [
+      [
+        "0x15e0",
+        "0x16c8",
+        232,
+        58
+      ],
+      [
+        "0x1774c",
+        "0x17838",
+        236,
+        59
+      ]
+    ],
+    "selected_content_bytes": 468,
+    "decoded_words": 117,
+    "fresh_headers_tables_globals_callees_or_providers": 0,
+    "native_original_instruction_execution": 0
+  },
+  "capture": {
+    "start_utc": "2026-10-21T05:04:30.615256+00:00",
+    "end_utc": "2026-10-21T05:04:30.856973+00:00",
+    "outer_pid": 1326782,
+    "decoder_pids": [
+      1326786,
+      1326787
+    ],
+    "attempts": 2,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "stderr_bytes": [
+      0,
+      0
+    ],
+    "timeout": [
+      false,
+      false
+    ],
+    "cleanup": [
+      "process-group-already-gone",
+      "process-group-already-gone"
+    ],
+    "equal_before_after_custody_identities": 23,
+    "read_model": "Full pinned image/tool hashes before and after solely custody; exactly468 content bytes extracted. No header acquisition, analysis, emulation or original execution. No continuous between-check mutation monitoring.",
+    "failure_limit": "Both normal runs completed. Timeout/SIGTERM/descendant escape/fault/power-loss paths not exercised; no crash-durability claim."
+  },
+  "symbols": {
+    "P": "X0 at selected caller0x15e0 entry",
+    "Q": "X0 at selected callee0x1774c entry",
+    "B": "X0 on normal return from0x1774c to0x1608"
+  },
+  "conclusion": {
+    "P_equals_Q": "conditional-normal-call-path machine-carrier fact within captured words",
+    "Q_equals_B": "conditional-normal-return machine-carrier fact assuming unread callees preserve required callee-saved state/stack",
+    "P_equals_B": "conditional composition of the two local facts, not an observed runtime call",
+    "store": "0x1610 stores64-bit address value0x580c0 through B; under composition this is through P",
+    "formal_ABI_or_class_identity": "unknown",
+    "factory_object_or_actual_Live_instance_identity": "unknown",
+    "public_A1_delivery_and_REQ022_behavior": "unknown",
+    "new_resolved_indirect_sites": 0,
+    "new_cases_grades_releases_or_inventory_units": 0,
+    "coverage": "OPEN-required-unsupported-remains-U"
+  },
+  "premises": [
+    "Execution enters the selected entry and follows the ordinary BL/RET path, without exception, fault, nonlocal control transfer or externally imposed state change.",
+    "Incoming pointer and referenced storage are valid and do not alias/corrupt these stack frames or saved state; pointer arithmetic and stores are meaningful. This capture does not prove allocation size or legal state.",
+    "Unread callees1b138/1ac0c/1b058/1b0fc and1de3c return normally and preserve the required callee-saved X19-X24, SP and saved-frame/return state. Their actual conformance/effects were not inspected or executed.",
+    "BL/RET and the decoded ARM64 register/field interpretation apply to this pinned little-endian image. No blanket ABI, class or constructor identity is inferred.",
+    "Whole-image/tool before-after equality supplies bounded custody checks, not a continuous mutation or power-loss guarantee."
+  ],
+  "claims": [
+    {
+      "id": "ANA-N01",
+      "status": "observed-static-words-plus-conditional-local-dataflow",
+      "PCs": [
+        "0x15e0",
+        "0x15f4",
+        "0x1600",
+        "0x1604"
+      ],
+      "text": "Caller saves X24/X23,X22/X21,X20/X19,X29/X30 in64-byte frame, copies incomingX0=P toX19 at15f4, derives X20 while leavingX0 unchanged, then BLs1774c at1604. Whole10-word entry-through-call prefix is raw checked. Hence incomingQ at that call is P on the normal call path."
+    },
+    {
+      "id": "ANA-N02",
+      "status": "observed-static-words-plus-explicit-callee-premise",
+      "PCs": [
+        "0x1774c",
+        "0x17760",
+        "0x17820",
+        "0x17824",
+        "0x17828",
+        "0x1782c",
+        "0x17830",
+        "0x17834"
+      ],
+      "text": "Callee saves the matching frame and copies incomingX0=Q toX19 at17760. At17820 it moves X19 intoX0; following pair restores modify X29/X30,X20/X19,X22/X21,X24/X23/SP, not X0, then RET X30. Therefore B=Q only under normal return, valid stack and unread-callee preservation of X19/frame. No callee effects or ABI conformance were independently proven."
+    },
+    {
+      "id": "ANA-N03",
+      "status": "observed-static-address-and-store-plus-conditional-composition",
+      "PCs": [
+        "0x1608",
+        "0x160c",
+        "0x1610"
+      ],
+      "text": "Raw ADR field yields address580c0 inX8 at1608, followed by NOP and64-bit STR X8,[X0] at1610. No intervening call occurs. Thus B receives the address constant; P receives it under the local conditional P=Q=B composition. No memory at580c0, vtable slot, class, object ownership or actualLive receiver is read/proved."
+    },
+    {
+      "id": "ANA-N04",
+      "status": "raw-field-checked-decoder-qualification",
+      "PCs": [
+        "0x15ec",
+        "0x16b4",
+        "0x17758",
+        "0x17824"
+      ],
+      "text": "Rizin prints malformed pair offset [sp,0lr] at all four sites. Unchanged output is retained. Raw words a9037bfd/a9437bfd specify64-bit GPR pairs X29/X30, baseSP, scaled signed imm7=6 =>48bytes, signed-offset mode2, correct store/load bit. Raw pair checks also confirm X19 at SP+40 and final SP+64 restoration; ESIL is unused."
+    },
+    {
+      "id": "ANA-N05",
+      "status": "observed-static-call-store-reload",
+      "PCs": [
+        "0x17804",
+        "0x17808",
+        "0x17810",
+        "0x17814",
+        "0x1781c"
+      ],
+      "text": "1ac0c return inX0 is stored throughX23 at17808, then passed to1b058 with W1=0. After that call,17814 reloadsX0 from[X23] before1b0fc with W1=1. This actual reload is raw checked; equality with the earlier helper return is not assumed, since unread callee/state may intervene."
+    },
+    {
+      "id": "ANA-N06",
+      "status": "observed-static-control-transfer-arithmetic-only",
+      "PCs": [
+        "0x1604",
+        "0x1670",
+        "0x16ac",
+        "0x177b0",
+        "0x17804",
+        "0x17810",
+        "0x1781c"
+      ],
+      "text": "All seven BL signed26-bit relative targets are independently calculated. Only1604 enters the other selected body; the other targets1de3c(twice),1b138,1ac0c,1b058,1b0fc remain unread. No exception/nonreturn behavior, ownership, allocator, processing or initialization success is inferred."
+    },
+    {
+      "id": "ANA-N07",
+      "status": "observed-static-address-arithmetic-only",
+      "PCs": [
+        "0x1608",
+        "0x1614",
+        "0x1640",
+        "0x1674",
+        "0x17764",
+        "0x17770",
+        "0x17780",
+        "0x177c0",
+        "0x177c8"
+      ],
+      "text": "All eight ADR fields are raw checked.177c0 produces59680 and the following ADD #0x10 forms59690. These addresses are not dereferenced by this investigation. In particular no580c0 table or5579c string content is acquired."
+    },
+    {
+      "id": "ANA-N08",
+      "status": "bounded-proof-improvement",
+      "text": "The source-only missing-argument ambiguity at15e0 ->1774c is narrowed to an explicit conditional machine register path, and the subsequent580c0 store is associated with that same incoming pointer under stated premises. Earlier C/metadata signatures remain unchanged and fallible. This is a local proof improvement, not a complete factory/dispatch/public chain, formal constructor/ABI, successful object construction or audio/parameter behavior."
+    }
+  ],
+  "whole117_read_map": [
+    {
+      "start": "0x15e0",
+      "last": "0x15f4",
+      "words": 6,
+      "assessment": "Caller frame/saved-register/FP setup, incomingX0 copiedX19; raw pairs/carrier checked."
+    },
+    {
+      "start": "0x15f8",
+      "last": "0x1600",
+      "words": 3,
+      "assessment": "W8 immediate fragments and X20 derived fromX0; no X0 write before selected call. Exact words included in prefix check."
+    },
+    {
+      "start": "0x1604",
+      "last": "0x1604",
+      "words": 1,
+      "assessment": "BL1774c signed relative target checked; selected callee follows."
+    },
+    {
+      "start": "0x1608",
+      "last": "0x1610",
+      "words": 3,
+      "assessment": "ADR580c0,NOP,store through returnedX0; raw field checks."
+    },
+    {
+      "start": "0x1614",
+      "last": "0x163c",
+      "words": 11,
+      "assessment": "Derived pointer/address writes and clears; saved X20-X24 used. No allocation/lifetime or persistent post-helper state proof."
+    },
+    {
+      "start": "0x1640",
+      "last": "0x1670",
+      "words": 13,
+      "assessment": "Address/literal/FP-register preparation and first unread1de3c call. Literal values are setup operands, not sample-rate/calibration law."
+    },
+    {
+      "start": "0x1674",
+      "last": "0x16ac",
+      "words": 15,
+      "assessment": "Second address/literal/FP-register preparation and unread1de3c call. No callee expansion or result law."
+    },
+    {
+      "start": "0x16b0",
+      "last": "0x16c4",
+      "words": 6,
+      "assessment": "Moves preserved callerX19 intoX0, restores frame and returns. Conditional caller returns ownP; callee preservation/valid frame required."
+    },
+    {
+      "start": "0x1774c",
+      "last": "0x17760",
+      "words": 6,
+      "assessment": "Callee frame/saved-register/FP setup, incomingX0 copiedX19; raw checks."
+    },
+    {
+      "start": "0x17764",
+      "last": "0x1778c",
+      "words": 11,
+      "assessment": "Three address constants and stores/derived local pointers; addresses only, no class/vtable contents."
+    },
+    {
+      "start": "0x17790",
+      "last": "0x177ac",
+      "words": 8,
+      "assessment": "Derived interior pointer, vector zero/store and helper argument setup; source-state legality/size unknown."
+    },
+    {
+      "start": "0x177b0",
+      "last": "0x177b0",
+      "words": 1,
+      "assessment": "BL1b138 target checked, unread helper."
+    },
+    {
+      "start": "0x177b4",
+      "last": "0x177cc",
+      "words": 7,
+      "assessment": "DerivedX23 and ADR59680+16, store resulting59690; data contents unread."
+    },
+    {
+      "start": "0x177d0",
+      "last": "0x17800",
+      "words": 13,
+      "assessment": "Zero/vector clears and literal-bit store. No numeric/sample-rate/ownership/initialization-success meaning inferred."
+    },
+    {
+      "start": "0x17804",
+      "last": "0x1781c",
+      "words": 7,
+      "assessment": "Three unread calls; helper-return store then post-helper reload retained, call/selected memory fields checked."
+    },
+    {
+      "start": "0x17820",
+      "last": "0x17834",
+      "words": 6,
+      "assessment": "Return own preservedX19 viaX0, restore pair frame, RET; raw checks with explicit premises."
+    }
+  ],
+  "read_scope": {
+    "fresh": "All117 decoded rows and their exact468 raw bytes; complete collector source, source/map/pin metadata, before/after receipts and child outputs; narrow independent raw fields listed inmechanical-check.",
+    "inherited": "Prior source projections/context/approval, H4 mapping and existing method model. No parent source universe/release replay.",
+    "raw_checker_limit": "Narrow field arithmetic is not a second complete disassembler. Other decoded operations are retained and read as static context; ESIL, printed malformed operands and function metadata alone do not prove behavior."
+  },
+  "preserved_gaps": [
+    "Actual factory/allocation caller toP receiver",
+    "Relevant580c0 slot words/targets and dynamicvptr continuity",
+    "All six prior wrapper sites and three setter transfers",
+    "Stored/current-value/parameter-unit delivery/A1",
+    "Actual I07/I08 instance/output binding",
+    "A2 event origin/grid/clock",
+    "REQ022 smoothing/latching/history/settling and100ms",
+    "Lifecyle/calibration/public input admission/ARM numerical equivalence"
+  ],
+  "no_successor_selected": true
+}

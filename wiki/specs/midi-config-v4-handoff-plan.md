@@ -2,7 +2,7 @@
 id: PLAN-MIDI-CONFIG-V4-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -18,7 +18,11 @@ Released 2026-10-18 as [midi-config-v4](../../handoff/midi-config-v4/README.md),
 - **Superset wording:** "strict superset" now reads "superset with two precision corrections".
 - **Ruling:** the 8τ band stands, and Value Scaling moves stay excluded.
 
-For the spec author (revision 6): the 3.8τ figure for the Value Scaling move error should read 96 to 408τ. Carry both precision corrections into the spec.
+Draft reconciliation, 2026-10-19: [revision 6](midi-user-mapping.md#revision-and-handoff)
+records the reviewer's 96–408τ model examples, RV4-01's stepped half-integer exclusion
+and RV4-02's k × τ comparison for repeated relative messages. It also distinguishes
+the value passed to the setter from an unknown stepped value after a Value Scaling move
+(RV4-05). No released expectation changed.
 
 ## Decision and boundary
 
@@ -51,8 +55,8 @@ every case. No reference application or candidate has run, and no compatibility
 is claimed.
 
 This page is the analyst-side plan and traceability record, not an
-implementation input. The candidate is **unreviewed and unpublished**. Nothing has
-been written into `handoff/`.
+implementation input. The staging and gate sections below record the pre-review candidate;
+the released outcome above governs current status.
 
 ## Scope
 
@@ -96,8 +100,9 @@ Proposed for a spec revision 6. This page does not edit the spec.
   Value Scaling cases at lo = 0. It does not say that the original's binary32
   move can lie farther than τ from the exact formula even at lo = 0.
   [precision-model.txt](../../analysis/ableton-live-12.4.3/handoff-staging/midi-config-v4-analysis/precision-model.txt)
-  shows up to 3.8τ for 14-bit pairs on 0–1 and 3.3τ on 0–3 (c = 0, previous
-  and new targets close to max). It uses the binary32 operation-order model of
+  originally showed up to 3.8τ for 14-bit pairs on 0–1 and 3.3τ on 0–3 (c = 0, previous
+  and new targets close to max). The review later found 96τ on 0–1, 386τ on
+  0–3 and 408τ on 0–127; neither sample is a general bound (RV4-06). It uses the binary32 operation-order model of
   `run_x2.py` (`models`, `vs32`), not X. The candidate excludes Value Scaling
   moves outside the ten cases that state one: 129, 133, 137, 138, 143 to 145,
   153, 155 and 161. All have lo = 0 and lie within 0.16τ of the exact rule.
@@ -225,7 +230,7 @@ Not checked: reference or candidate execution, the arm64 slice at run time,
 any proof of I1 to I8, and an independent restatement. The restatement, the
 table and the X results share one evidence chain; none is an oracle.
 
-## Review gates still required
+## Pre-review gates (historical)
 
 1. **Scope review** in a separate context. Read the 34 new cases one by one
    against the X2 results and E11 to E16. Rule on F1 and F2, including the
@@ -254,7 +259,11 @@ table and the X results share one evidence chain; none is an oracle.
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate with 161 cases: 127 carried and
-34 new, all X-labelled. It covers partial REQ-MIDI-USER-002, 003 and 005 to 013;
-001 and 004 remain unreleased. It is not published, and midi-config-v3 remains
-the current MIDI release.
+Released 2026-10-18 as midi-config-v4 with 161 cases: 127 carried and 34 new.
+It is current and supersedes v3 with two precision corrections. Partial
+REQ-MIDI-USER-002, 003 and 005 to 013 are released; 001 and 004 remain unreleased.
+Draft revision 6 reconciles the reviewed precision limits; no case expectation changed.
+
+## Later draft R7 — 2026-10-21
+
+The [reviewed R7 owner](../research/midi-user-mapping.md#midi-user-owner-r7-finite-annex-adoption--2026-10-21) adds1,006finite fixed-UNIT relative-byte cases and18inherited references. Its native x86 result bits have NULL portable comparators; no UI/parameter receiver/public/ARM law follows. All161 midi-config-v4 objects remain byte-exact. The release stays current and partial; no new release is selected.

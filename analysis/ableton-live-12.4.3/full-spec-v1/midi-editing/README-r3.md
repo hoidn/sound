@@ -1,0 +1,23 @@
+# MIDI editor gesture increment, revision 3
+
+This partial owner successor adopts twelve concrete future editor actions from selected subsets of eleven independently reviewed Editing MIDI audit groups. It is not all38groups, a full MIDI Tools audit or a completed behavioral topic. Independent owner semantic review is pending as of author freeze; the wiki spec index owns subsequent status.
+
+The [source audit](../midi-editing-source-audit/README.md) and [separate source review](../reviews/midi-editing-source-audit-review.json) retain244blocks/506facets against43clauses/60actions. Version12 capture2026-10-19 is date-only, UTC unknown; target12.4.3 applicability remainsU. All original source bytes and25old packet files are preserved in place, including old checkers/reports/seals and exact [spec](spec-r2.md)/[research](research-r2.md) providers. No old checker or original function/module/script is invoked. Active MIDI Tools/MPE author pins remain as-of, not evolving canonical identity gates.
+
+Current [spec snapshot](spec-r3.md) and [research snapshot](research-r3.md) retain43requirement IDs, refining only001/002/005/006/009/014 with exact public source entry/role wording. Other37rows, including all17tool contracts, are exact. [Current72cases](acceptance-cases-r3.json) retain60old records verbatim and append MED061–072. [Delta](delta-r3.json) and [manual increment](gesture-increment-r3.json) preserve each changed field and selected source pointers. There are57D12 documentary proposals/15U cases; all72 actual outcomes stay null/U/unexecuted. Eight new cases have limited named/control/identity comparators, four have null documentary comparators. Legacy expected/comparator fields are documentary only, not target oracles.
+
+The concrete contexts are named grid controls/original offset, remaining empty-clip entries, Draw/PitchLockOff/erase, early/late copy-drag, Deactivate menus, Double/Halve, actual Reverse/Legato utilities, Humanize Amount then button, Velocity Randomize/Ramp and foreground Chance with FocusOff. Existing finite FitScale/Stretch/Span/Seed and MED058–060 Interval records are exact. MED020 really performs foreground Velocity; MED072 adds Chance. New Reverse ordering has no precise pivot/coordinate law; Legato/Double/Halve/random results keep numerical comparators null. Ramp grades admitted first/last values only, not new intermediate samples. Humanize remains null/U under Q053, without using retained private coefficients. C1/C2/C3/Q052 and Follow/X/crop contexts stay unresolved.
+
+[Future prerequisites](fixtures-r3.json) require owned valid nonempty editor data, actual admitted controls/values, declared selection/modes/focus and separate exact resets. Genuine productive matched operation precedes erase, no-effect or exclusion; failed/empty/unsupported inputs remainU. Pure editor-data cases require no instrument/audio/hardware. Nothing supplies a random stream, no-change probability, note/clipboard codec, hidden target precedence, default, curve/sample, RGB/threshold or timing law. No ALS/MIDI/audio or reference result is supplied.
+
+[History inventory](prior-files-r3.json), [immutable inputs](inputs-r3.json) and [qualified consumers](consumer-impact-r3.json) preserve old context and distinguish active author inputs. No generic resolver, old-consumer edit, historical replay adapter or blanket old-green requirement is introduced. Later owner advances retain these R3 snapshots/checks as history; current semantic assumptions need their own review.
+
+Inspect [checker](check-r3.py) and all called owned pure Browser definitions before use. It has no write mode:
+
+```sh
+python3 -B analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/check-r3.py --check
+```
+
+Eight meaningful mutation fixtures reject old-record changes, invented actual/Humanize oracles, weakened positive baselines, false offline hardware requirements, wrong source associations, erased prior Velocity actions and changed tool contracts. Integrity checks cover exact delta, source raw spans/pointers, nulls, historical providers, current43Browser IDs, authored whitespace/links and before/after identities. These are analyst tool checks, not sufficient semantic approval. The single `manifest-author-r3.json` seal preserves this snapshot after successful checks.
+
+During author preflight, the draft delta/prose initially counted seven named/five null new comparators. Counting the actual twelve records corrected this to eight/four before the seal; no old record or source changed. Any later checker failures are retained in the author report. No original/vendor/native/runtime/UI/OS/MIDI/audio/Max/API/hardware/network/account/install/candidate or source capture ran.

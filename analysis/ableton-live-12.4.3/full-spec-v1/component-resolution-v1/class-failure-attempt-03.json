@@ -1,0 +1,17 @@
+{
+  "utc": "2026-10-20T18:31:54.729767+00:00",
+  "attempt": 3,
+  "method_bytes": 18860,
+  "method_sha256": "2cc65f5808ce876b89ce4fec6acc195f2bc5f908c0c11bdae2628e733ce230c4",
+  "exit": 1,
+  "outputs_written": false,
+  "exact_emit_state": {
+    "segment": 3,
+    "offset": 18446744073709600528,
+    "kind": 1,
+    "symbol": "_OBJC_CLASS_$_NSDictionary",
+    "opcode_payload_offset": 214
+  },
+  "diagnosis": "The actual blocker is unsigned64 offset wrap in dyld ADD_ADDR_ULEB metadata; current Python bigint kept 2**64 + 48912. Existing inspected xexec.c uses uint64_t off and unsigned addition. Interpret offset arithmetic modulo2**64, retaining bounds after normalization; no binding applied or original code executed. Earlier zero-fill explanation was not the observed cause.",
+  "native_execution": false
+}

@@ -1,0 +1,15 @@
+# Corpus receiver construction: fixed144-byte static-data preparation
+
+AS-OF AUTHOR FREEZE: independent code review and Root preflight remain pending; actual decoding requires a separate explicit Root selection. No decoder or original instructions ran during preparation.
+
+The sole byte provider is the already retained240-byte file pinned in input-selection.json. The future collector will copy offset0 length144 to an exclusive new directory and request exactly `pDj 144` at0x39a0. Root selected this physical study cap explicitly. Neither the next linker start nor the old240-byte capture establishes a complete native function. The96 remaining retained bytes stay opaque; whole240-byte identity hashing reads their bytes without interpreting them. Preparation checks do not slice or decode the selected bytes.
+
+The inherited strict variable-width validator is unchanged. It requires contiguous integer offsets, sizes1..15, non-invalid types and opcode strings, canonical byte strings, exact byte agreement and complete144-byte coverage. A partial final instruction or any malformed row fails closed, without retry or expansion. The owned pDj fixture is finite method precedent, not a universal decoder/CFG guarantee.
+
+The collector makes at most one30-second decoder attempt, retains pre-attempt and returned-PID receipts, raw stdout/stderr, failure/status and before/after maps; core dumps are disabled and stdin is DEVNULL. Root outer custody must supply minimal environment, process-group cleanup, broad frozen maps and final inventory. The inherited collector itself kills only its direct child; early pre-map I/O failures and collector-wide unhandled failures remain outer responsibilities. The new directory must be absent. No original-image path is an input or opened by this collector.
+
+Run only `python3 -B check.py --check` for offline readiness. It extracts only the fully read pure validator definition via AST and runs synthetic data controls, checks literal/source boundaries, pin identities, exact parent reconstruction and unchanged watches. It never imports the collector, runs Rizin, or extracts instruction bytes. Other checker arguments refuse. The future collector argument is not authorized by this README.
+
+The exact collector change removes the old image/header/load-command/extraction path and substitutes retained-file identity plus fixed prefix selection; the input-selection metadata replaces header-map.json. Other changes are fixed paths,144 geometry, output names and explicit96-byte retained suffix. delta.json records every collector/checker changed line and all nine preserved parent files. Old packets and reviews are unchanged in place; no archives were copied and no historical checker was replayed. Callback and metadata providers are as-of context, not renewed semantic approval.
+
+All new documentary and actual expected/comparison fields remain null, target U. This preparation establishes no native extent, current object identity, callback or processor join, public behavior, compatibility, case grade or family completion.

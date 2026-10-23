@@ -1,0 +1,7 @@
+# Analog R7 finite release-velocity owner proposal
+
+Root selected this narrow author task after the sole actual/source review. Only the approved complete 128-point review summary and current R6 owner/retained owner catalogs/release inventory metadata are inputs. No actual packet, source, raw audio, provider, old helper or original was opened or run during owner authoring.
+
+The reversible five-fragment delta proposes R7: one finite REQ004 append, one annex, metadata and revision row. 127 new IDs DAN-345–471 cover release bytes 0–63 / 65–127; byte 64 references existing DAN-028/CONTROL-DAN028-P1 without another ID or fresh receipt. Native expected identities/descriptors are newly adopted finite observations, original waveform priors and portable expected/comparator/grade stay NULL. No broad release, dispatch/timing, public, ARM, calibration or portable law.
+
+Run only `python3 -I -B check.py --check` after reading its complete source. It reads staged data, canonical owner, the pinned approved review, retained prior owner catalogs and release MANIFEST only; actual payload paths explicitly refused. Full reverse-to-R6 and body/row/ID/object/catalog/old-annex/tolerance/state/U/release preservation plus meaningful in-memory negatives are checked. No canonical application by author. Root is sole new wording/mapping/IDs/preservation peer; actual approval inherited by citation, no repeat observation review.

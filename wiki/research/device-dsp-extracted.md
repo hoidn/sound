@@ -2,7 +2,7 @@
 id: RESEARCH-DEVICE-DSP-EXTRACTED
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 device bundles, x86_64 slices (Corpus, Analog; probe of the other five)
 ---
@@ -16,7 +16,21 @@ by the static [Corpus DSP model](corpus-dsp-static.md)? Can the instrument path 
 audio out) be driven? What metric should a device spec state, and what would the other five
 devices need?
 
-**Answer (X, draft). The gate passes.**
+**Current reading boundary (2026-10-20).** The feasibility results below describe
+the historical t12 packet. Current Corpus acceptance criteria and ungraded modal
+omissions belong to the [canonical draft](../specs/device-corpus.md) and
+[current released handoff](../../handoff/device-corpus-v5/README.md). Aggregate
+historical modal comparisons and perturbation results below are not general
+frequency/error bounds, full-profile coverage or Live/arm64 compatibility proof.
+The [build-provenance gate](corpus-dsp-static.md#build-provenance-gate--2026-10-20)
+records prerequisites for that parked observer/setup route. It does not gate
+unchanged standing harness batches. Current selections follow
+[plan revision4, second amendment](full-live-specification-plan.md#second-amendment--batch-adoption-authorization-scope-and-x-count-ordering-2026-10-21)
+and [design12](full-live-specification-design.md#revision-12--review-once-batch-adoption-and-authorization-scope--2026-10-21):
+one frozen standing packet, one sole independent actual/source review. D-01 is
+answered; public/ARM/receiver and unsupported required behavior remain U.
+
+**Historical answer (X, draft). The finite feasibility gate passed.**
 
 - **Loading.** A loader adapted from the [extracted-execution harness](extracted-execution.md)
   loads the Corpus, Analog, Tension, Collision and Electric slices. It creates instances and
@@ -77,9 +91,12 @@ Live side (S, from [N5](device-parameter-mapping-native.md#how-live-loads-a-bund
 loads `<resources>/Devices/Mac/<Name>.bundle` and resolves the seven exports by name. It queries
 `GetPlugInfoU`. It calls `CreateInstanceU()` and then `SetSampleRateU(handle, rate)` with the
 current rate. Parameters are flushed as `SetParameterA(handle, index, value)` with the index
-order and conversions of N5 and [N6](device-tables-native.md). Selector 6 enables a reset
-sequence: 1,024 frames of warm-up processing in blocks of at most the selector-5 size, then
-`ResetA`, then the latest index-0 value again. Live sets flush-to-zero around `SetSampleRateU`,
+order and conversions of N5 and [N6](device-tables-native.md). The reviewed
+[processing-protocol trace](device-host-protocol.md#initialization-reset-sample-rate-and-teardown)
+distinguishes ordinary Reset/NewRate (no warm-up) from ResetAndDispatch: four
+1,024-frame helper requests, then reset and cached index-0 restoration for the
+reset-capable primary. This corrects the earlier one-warm-up shorthand; the
+exact initialization/reset audio remains unknown. Live sets flush-to-zero around `SetSampleRateU`,
 `SetParameterA` and `ResetA` (arm64).
 
 Bundle side (X and S, x86_64 disassembly in this packet). The calling convention is System V.
@@ -149,6 +166,14 @@ precision 6. No stream extraction set the fail bit (`cxx-failbits 0` in every lo
 
 ## Corpus results
 
+The 64-render study below is the historical t12-device-dsp-v1 packet. The later
+[finite Ramp capture review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-up-review.json),
+[math-sensitivity review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-sensitivity-review.json)
+and [finite engineering criterion review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-criterion-review.json)
+have separate bounded dispositions. They do not extend the older invariance
+checks to new vectors, alter historical evidence, or establish Live/arm64
+compatibility. Owner and handoff adoption remain separate review gates.
+
 Cases: 64 renders of 16,384 frames at 44.1 kHz or 48 kHz ([`run_corpus.py`](../../analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/run_corpus.py)).
 Each render goes CreateInstanceU, SetSampleRateU, then all 38 host values. Those are Live's
 values for a fresh Corpus, equal to N5's `sent_for_default` (asserted), with the case's
@@ -169,7 +194,7 @@ of amplitude 0.25, seeded white noise (RMS 0.1) or a constant 0.5, the same on b
 | Rate 44,100 then 48,000 against 48,000 directly (parameters after the rates) | Bit-identical |
 | Rate 48,000 then 44,100 against 44,100 directly | Max 2.5 × 10⁻⁷; the output is scaled by 1.0000043 |
 | Parameters at 44,100, then rate 48,000, against rate first | Max 1.2 × 10⁻⁶, rel RMS 3.3 × 10⁻⁵ |
-| N5's reset sequence (1,024 silent frames, ResetA, index 0 again) before the case | Equal within 4.6 × 10⁻²⁰ (the 10⁻²² offset floor), defaults and Tube |
+| Historical one-warm-up harness variant (1,024 silent frames, ResetA, index 0 again) before the case | Equal within 4.6 × 10⁻²⁰ (the 10⁻²² offset floor), defaults and Tube |
 | ResetA alone, Tube | The output equals the Pipe render within 3 × 10⁻²⁷ |
 | Transpose 12, FineTranspose 50, PitchBendRange 24, DecayOnNoteOff host 0, MidiMode 1, with MidiPitch and MidiGate off | Bit-identical to the defaults |
 | Decay 0.503 against 0.5 (the same controller step) | Bit-identical |
@@ -181,6 +206,11 @@ the [resonator report](../../analysis/ableton-live-12.4.3/r2/corpus-dsp-v1/repor
 Live sends index 0 again after ResetA (S), and that undoes it. The random LFO shapes are seeded
 from the clock each time the engine is built. Inferred: in Live their output differs between
 instances and sessions, so no reference render can fix it.
+
+Current interpretation (2026-10-19): the measured one-warm-up variant above is
+preserved as executed harness evidence. It is not the four-helper grouped-reset
+path later identified in Live, and never established Live insertion history.
+No retained output, fixture history or released device comparison is changed.
 
 ### Static model
 
@@ -271,7 +301,11 @@ The "bundle" set sends nothing.
   | Live defaults, 48 kHz | 0.323 | 261.478 Hz | 56,055 |
   | The engine's built-in patch | 0.100 | — | 26,180 |
 
-  A4 gives 440.193 Hz. Both channels are identical. The activity flag stays 1 while sounding.
+  A4 gives 440.193 Hz. Both channels are identical. The activity flag is 1 for
+  the first two host blocks after creation, then 0 until a note and 1 while sounding
+  ([Analog protocol](device-analog-dsp.md#corrections-to-other-pages)). C4’s
+  261.537 Hz is the rounded result of the settled pitch law, not an error
+  relative to 12-TET; see [Analog DSP](device-analog-dsp.md).
 - **Determinism.** A re-run, blocks of 64 and 256, and flush-to-zero with denormals-are-zero are
   all bit-identical. Blocks of 333 differ, because the note-on falls inside a block and is
   placed differently (below).
@@ -282,8 +316,10 @@ The "bundle" set sends nothing.
   note-on can therefore sound up to a period minus one frame before its timestamp. The rule held
   for all 250 note-ons (blocks of 512, 64 and 333; both rates) and all 50 note-offs tested
   (`timing`).
-- **Not done.** Analog's parameter meaning, polyphony and voice allocation, MIDI controllers,
-  and a comparison with a static model (none exists).
+- **Follow-up 2026-10-19.** [Analog DSP](device-analog-dsp.md) and
+  [the Analog draft](../specs/device-analog.md) now specify parameter meaning,
+  polyphony and voice allocation with exact pitch/filter/envelope laws. Their
+  remaining gaps are canonical there; the feasibility run above is historical.
 
 ## Floating-point substitutions and the arm64 slice
 
@@ -301,6 +337,13 @@ leaves out floor, modf, ldexp, fabs and sqrt, which are exact everywhere (`resul
 
 Inferred: if Apple's libm is within one ulp of glibc, the substitution moves Corpus mode
 frequencies by about one ulp bound. It does not move them beyond that.
+
+**Current disposition (2026-10-20):** that historical inference is not an
+adopted error bound. Finite perturbation observations do not establish the
+actual Apple-library error, a general transfer bound, or a graded expectation
+for omitted/underfit modes. Use the canonical draft's explicit per-case
+criteria and unknowns; retain this paragraph as the original study's inference.
+
 
 **arm64.** [`fma_scan.py`](../../analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/fma_scan.py)
 decodes the arm64 `__text` (`results/fma_scan.txt`):
@@ -339,19 +382,28 @@ usable. A one-ulp change moves a 66 Hz mode by 6.8 × 10⁻⁴, which is 4 % of 
 
 ## Effort for the other five devices
 
+The table below records the feasibility-stage assessment. Subsequent drafts
+now cover [Electric](../specs/device-electric.md), [Tension](../specs/device-tension.md),
+[Analog](../specs/device-analog.md) and [Collision](../specs/device-collision.md).
+Collision’s constructor/preset difference resolves the initial silence question;
+see its canonical research. Amp and Cabinet remain blocked by user decision
+2026-10-19, while the other five device handoffs proceed.
+
 From [`probe_others.py`](../../analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/probe_others.py)
 (`results/other_devices.json`) and the import lists:
 
 | Device | Status with this harness | Remaining work |
 | --- | --- | --- |
 | Tension | Creates and renders C4 with the built-in patch (peak 0.79) and with N6's 129 values (peak 0.38). It imports 13 symbols Analog does not; six needed new bindings, now added (`__exp10`, `__exp10f`, `__sincos_stret`, `div`, `exit` as a trap, `ostream << double`) | Low harness effort. Spec work: parameters, polyphony, events (it shares Analog's wrapper and very likely its grid rule, but that is not tested) |
-| Electric | Renders C4 with the built-in patch (peak 0.40) and N5's 33 values (peak 0.32). Its 10 extra imports are covered by the same additions | Low harness effort; spec work as for Tension |
+| Electric | Renders C4 with the built-in patch (peak 0.40) and N5's 33 values (corrected peak 0.296; [Electric DSP](device-electric-dsp.md) settles the rounded N5 Volume default and startup-ramp caveat). Its 10 extra imports are covered by the same additions | Low harness effort; spec work as for Tension |
 | Collision | Runs. With the built-in patch the output is implausible: non-zero from frame 0, peak 38, clip flag set. With N6's 139 values a note gives silence (≤ 4 × 10⁻²² throughout) | Medium. The parameter path must be understood first: mode-8 scaled entries, whether new instances use the Defaults preset, and the note path |
 | Amp, Cabinet | `MH_DYLIB` with 12 dylibs (Cocoa, AppKit, Foundation, CoreFoundation, Security, libobjc, …), 313 imports, 216 of them not used by Analog. They trap in a static initializer at `dladdr` | High. Needs CoreFoundation strings, bundles and run-loop timers, an Objective-C runtime, pthreads, and the Authorization and `CFUserNotification` calls of the licence code. `CreateInstanceU` refuses unless the main bundle's identifier is `com.ableton.live` (H4), so the harness would have to answer as Live. Models are built per sample rate (six rates). Faking the host identity needs a user decision |
 
-Analog itself needs no harness work. Its noise and its random keyboard error probably draw from
-the clock-seeded `rand`, and would then be reproducible only within one engine build. This is
-inferred and not tested.
+Analog itself needs no harness work. **Updated 2026-10-19:**
+[Analog extracted execution](device-analog-dsp.md#corrections-to-other-pages)
+establishes clock-seeded noise and KeyboardError (X). The random-like LFO
+shapes are seed-independent in those tests; their closed forms remain unknown.
+The earlier seed claim above applies to Corpus, not Analog.
 
 ## Corrections to other pages
 
@@ -390,3 +442,13 @@ sh analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/run.sh
 ```
 
 This needs gcc, python3 with numpy and scipy, node, objdump, and the app bundle.
+
+
+## Later bounded MIDI capture successor — 2026-10-19
+
+The coverage exclusions above describe this original study. Later
+[two held-note captures](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-pitch-review.json) passed bounded independent evidence review
+for MidiPitch on/LFO off at note60versus72 under the declared44100Hz harness
+sequence. Qualified observations and remaining state/timing/calibration gaps
+belong to [Corpus research](corpus-dsp-static.md#later-bounded-midi-pitch-evidence--2026-10-19).
+No Live MIDI-sidechain, general REQ013 or candidate grade is added.

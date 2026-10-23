@@ -1,0 +1,70 @@
+{
+  "scope": "Author retained-data checks only; no original execution or independent approval",
+  "checks": [
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "-B",
+        "analysis/ableton-live-12.4.3/full-spec-v1/batch-analog-envelope-modes-v1/run_batch.py",
+        "--check-inputs"
+      ],
+      "exit": 0,
+      "stdout_json": {
+        "status": "PASS",
+        "inputs": 21,
+        "negative_controls": [
+          "omit-one-vector",
+          "duplicate-id",
+          "wrong-mode-alphabet",
+          "wrong-binary32-vector",
+          "wrong-script-pin",
+          "wrong-direct-call-bound"
+        ],
+        "original_calls": 0,
+        "image_runtime_reads": 0
+      },
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-I",
+        "-B",
+        "analysis/ableton-live-12.4.3/full-spec-v1/batch-analog-envelope-modes-v1/analyze.py",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout_json": {
+        "status": "PASS",
+        "mode": "--check",
+        "summary": {
+          "children": 21,
+          "outputs": 21,
+          "bytes": 7408800,
+          "changed_vectors_byte_identical_to_baseline": 16,
+          "changed_vectors_byte_different_from_baseline": 4,
+          "all_finite": true,
+          "all_channels_byte_identical": true,
+          "direct_export_calls_from_scripts_and_log": 6153,
+          "CalcA": 1827,
+          "nested_original_calls": "unknown; initializers/constructor/library callees not counted",
+          "retries": 0,
+          "timeouts": 0,
+          "nonzero_exits": 0
+        },
+        "author_data_controls": [
+          "signed-zero bit/numeric separation",
+          "right-channel-only difference retained",
+          "NaN not finite",
+          "infinity not finite",
+          "all-zero first frame remains null",
+          "zero-based first-nonzero frame",
+          "empty/truncated frame geometry rejected"
+        ],
+        "new_original_execution": 0
+      },
+      "stderr": ""
+    }
+  ]
+}

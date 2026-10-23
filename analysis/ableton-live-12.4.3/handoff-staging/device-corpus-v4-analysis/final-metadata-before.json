@@ -1,0 +1,454 @@
+{
+  "captured_utc": "2026-10-20T09:56:48.465038+00:00",
+  "reviewed_manifest_sha256": "8b306ac4e25128b2790bdb46e8e9bd1dae9e6fe06770755a4b126bc714f78c5d",
+  "texts": {
+    "README.md": "# Corpus audio comparison, release4 DRAFT\n\nThis is a frozen review candidate, not an approved or released handoff. Exact\nparent revision6 has separate independent approval/adoption and the finite\nmethod has its own approval. This package's independent handoff review is pending.\nRead [contract](spec.md), [cases](cases.json), [measurement](compare.py),\n[roles](AGENTS.md) and [pending review](REVIEW.md). The [manifest](manifest.json)\nbinds the exact adopted source and pending package disposition.\n\nAll25oldgroups/71evaluation objects and80physicalF32fixtures are preserved.\nOnly026-01 (parent DCO-032) and one exact reference are added:26groups/72evals,\n81physicalF32fixtures. Complete38-value inputs, On1537/Off3073 for key60/channel0,\nvelocities100/64, MidiPitch1/MidiGate1/DecayOnNoteOff positive0/LFOoff, unit impulse\n4096,44100Hz/16384frames/block512 and fresh-state/stopped/input-present protocol\nare explicit. Host/test frames are not Live/internal onset; no extra minus1.\n\nThe dedicated fixed1%per-channel post4096waveform rule has full-file finite and\npositive-energy validity, no fitting, and its own exact reference hash gate.\nPrefix0..4095 is finite-only; aggregate RMS does not grade exact tail/silence,\nenvelope or a general gate/decay law. Deliberately zeroed late reference can\npass. No stored/UI conversion, flag law, native-pole uncertainty, architecture\ninvariance or application/candidate grade is claimed.\n\nOnly the new comparator's data-only functions were tested in private preparation:\nall71oldselfevaluations passed4793measurements; newBself passed2,4795total.\nThe311tiny old nonzero errors were retained. This is carried preparation evidence,\nnot a new numerical batch caused by packaging or a candidate-device result.\nOld metrics, labels, error text,71objects and Ramp reference guard are preserved;\nthe comparator adds one9-line branch and a separate4-lineBhashguard.\n\nThe dependency remains Python/NumPy/SciPy; availability does not authorize\ninstallation. Event, scope and numerical details in the contract control any\nlater reviewed package. Nothing here authorizes publication or implementation.\n",
+    "REVIEW.md": "# Pending independent release4 handoff review\n\nThis frozen review candidate has not received release4 handoff approval. The prior\nrelease3 review is carried only for its unchanged finite scope. Exact parent\nrevision6 is independently reviewed/adopted and the finite method separately\napproved. The new package's independent review is a distinct pending gate.\n\nThe draft preserves25oldgroups/71evaluations and80physicalF32fixtures, adding\nonly026-01/DCO-032 and oneBreference with a dedicated metric/identity guard.\nNo original application, arm64 device or candidate device ran in this preparation.\nThis pending record grants no criterion/owner/release/application approval.\n",
+    "spec.md": "# Corpus: finite reference-output contract, release4 review candidate\n\nThis draft carries the reviewed finite release3 scope and one additional\nfinite portion of SPEC-DEVICE-CORPUS revision6. The exact parent revision6 has\nseparate independent approval and has been adopted; the finite method also\nhas separate approval. This package awaits its own independent handoff review;\n[REVIEW.md](REVIEW.md) is a pending disposition, not inherited package approval.\nAll expected audio derives from extracted execution of original\nx86_64 device code under a fixed protocol, with Linux mathematical libraries.\nCorrespondence with the target Ableton Live 12 Suite 12.4.3 arm64 build is inferred\nfrom static work; the application and arm64 device were never executed.\n\n## Input and protocol\n\nEvery evaluation in [cases.json](cases.json) specifies an exact stereo input,\n38 named comparison-domain parameter values, a sample rate and a block size.\nThese named numerical vectors are comparison inputs, not a claimed original API,\nfile representation or required architecture. Values are exactly the binary32\nnumbers represented by the JSON decimals. Do not replace them with rounded\nprinted defaults or convert them from a presumed physical scale. For example,\nFilterMidFreq values in these vectors are normalized comparison inputs, not Hz.\nOnly the enumerated vectors have expectations; no interpolation is released.\n\nFor each evaluation:\n\n1. Begin with a fresh device state. If `before_parameters` is empty, set the\n   evaluation's sample rate.\n2. Otherwise the `before_parameters` actions supply the complete initial sample-rate\n   sequence, in order. Its final rate is the evaluation's sample rate.\n3. Apply all parameter values in the given `parameter_order`, once each.\n4. Apply any `after_parameters` actions, in order.\n5. Process the supplied signal from frame 0, in `block_frames` chunks (the last\n   chunk may be shorter). Input is present on both channels. No MIDI events are\n   supplied except the exact events specified for groups025 and026 below. The comparison\n   transport is stopped, position 0, tempo 120 BPM.\n6. Produce exactly 16,384 frames. Output one binary32 value for left and then\n   right, little endian, no header. Neither align nor resample the output.\n\n`set_sample_rate` changes the comparison sample rate. `process_silence` processes\nthat many zero input frames with the stated block size; discard their output\nbefore processing the supplied signal. `reset` clears device state by the\ncomparison reset operation. `set_parameter` applies the stated named value.\nThese history actions describe test inputs, not an implementation interface.\nCases 023 and 024 exercise rate history and reset; all other parameters remain\nconstant. Case 022 varies the host block size. No real-time timing is specified.\n\n## Held-note inputs: group025 only\n\nEvaluations025-01 (parent DCO-030) and025-02 (DCO-031) use the complete38-value\nvectors and ordered event lists in cases.json. MidiPitch is1, MidiGate and LFO\nare0. Both have one note_on at absolute host/test coordinate1537, channel0,\nvelocity100; only key60 versus72 differs. Channels are zero-based. Deliver in\nthe containing block starting1536 with local offset1, preserving listed order.\nNo extra adapter-minus-one correction, scheduling quantization or alignment is\npermitted. This convention does not prove Live's event origin or require an\ninternal candidate event representation. No note_off, other event, reset,\nwarm-up or later parameter change is supplied; the note is held until the\nfinite capture ends. Destruction/release after that boundary is not compared.\n\nThese use the same generated stereo impulse at4096,44100Hz,16384frames/block512,\nstopped transport0/0/120 and present input. The captured reference environment\nuses round-to-nearest-even with denormals enabled and fixed clock-derived seed;\nthis does not impose candidate architecture or establish floating-mode/clock\ninvariance. All unlisted MIDI inputs and histories remain excluded.\n\n## Partial requirements\n\nRequirement numbers retain their parent identifiers. Each clause applies only\nto the exact inputs and measurement windows of its listed cases.\n\n| Requirement | Finite partial clause |\n| --- | --- |\n| REQ-DEVICE-CORPUS-001 | The protocol above and listed outputs; case022 block variants, case024 warm-up/reset variants, and only the explicit group025/026 event inputs |\n| REQ-DEVICE-CORPUS-004 | The dry/wet, drive and default stereo output represented in cases 001, 002, 016, 017 and 021; no general gain formula |\n| REQ-DEVICE-CORPUS-005 | Modal output of cases 001\u2013008, 015 and 017, only measured modes and impulse windows; no full mode enumeration or synthesis formula |\n| REQ-DEVICE-CORPUS-006 | The listed pitch and detune vectors in cases 009 and 010, only measured modes and impulse windows |\n| REQ-DEVICE-CORPUS-007 | The listed decay, material, inharmonicity, brightness, ratio and bleed vectors in cases 011, 012 and 015 |\n| REQ-DEVICE-CORPUS-008 | Host position and pickup comparison vectors in cases 013 and 014; no claim about stored document position controls |\n| REQ-DEVICE-CORPUS-009 | The eight Pipe/Tube reference outputs in case 018, at the supplied radii, opening and rates; no general waveguide model |\n| REQ-DEVICE-CORPUS-010 | The two fixed filter vectors in case 019; changes during processing and coefficient ramps excluded |\n| REQ-DEVICE-CORPUS-011 | The Free-running Sine trajectory in020-01 and the single finite Ramp Up waveform in020-02 (parent DCO-029), each only its stated measurement window; no general LFO law, random shapes or Sync |\n| REQ-DEVICE-CORPUS-012 | Startup gain in case 021, rate history in case 023 and warm-up/reset in case 024; other automation and timing excluded |\n| REQ-DEVICE-CORPUS-013 | Only exact held-note60/72 outputs025-01/02 plus the single On/Off output026-01 and their stated measurements; all general MIDI behavior and Live side-chain routing excluded |\n\nRequirements002 (stored-to-comparison mapping) and003 (controller formulas) are\nunreleased. Requirement013 is released only for the bounded subset above. The full parameter equations and general\nclaims of the parent are not part of these finite partial clauses.\n\n## Measurement criterion\n\nThis is a reviewed project criterion for the enumerated finite comparisons. It accounts for plausible\nfloating-point differences without asserting that any tolerance is a measured\narm64 error bound. The reference itself was produced with substituted libraries.\nA candidate must meet every applicable check independently for left and right.\nNo time alignment, gain normalization, channel mixing or fitted phase shift is\npermitted. [compare.py](compare.py) defines the numerical details below and the\nfinite JSON mode centers specify exactly which modes are graded.\n\nAll arithmetic in measurement uses binary64. Read samples as binary32 then widen.\nReject non-finite samples or estimates, absent or unmeasurable required modes,\nzero energy denominators and invalid output lengths. A missing observation fails.\n\n**Relative RMS.** For the stated frames, compute\n`sqrt(sum((candidate-reference)^2)/sum(reference^2))` per channel.\n\n**Modal impulse outputs.** Compare frames 4096 through 4351 with relative RMS\nat most 0.002. For every listed center and cutoff, mix each full output down by\n`exp(-i 2\u03c0 center n / sample_rate)`, low-pass with a Hamming FIR designed by\n`scipy.signal.firwin` (scale true), length\n`min(4001, floor(3.3*sample_rate/cutoff) bitwise-OR 1)`. Use causal filtering.\nFit straight lines to unwrapped phase and log magnitude on frames\n`4096 + filter_length` through 16383, with times corrected by the FIR delay\n`(filter_length-1)/2`. The frequency is center plus phase slope times rate/(2\u03c0);\nthe per-frame log radius is the log-magnitude slope. Complex amplitude is twice\nthe fitted complex exponential extrapolated to frame 4096.\n\nApply these limits against the identically measured reference:\n\n- frequency error at most `reference_frequency * 4 * (3*2^-25/theta^2 + 2^-23)`,\n  where `theta = 2\u03c0*reference_frequency/sample_rate`;\n- absolute per-frame log-radius error at most `8*2^-25`;\n- `abs(candidate_complex_amplitude/reference_complex_amplitude - 1)` at most 0.005.\n\nFor the preceding modal cases, eligibility is frozen in the cases. Centers came from static pole estimates;\nonly reference modes whose resolved frequency estimate is within 1e-4 relative\nof that center are retained. Each cutoff is min(100 Hz, 0.4 times the nearest\nsignificant-mode gap). The omission of other modes is a coverage limit. It must\nnot be interpreted as those modes passing or as permission for arbitrary added\nlong-term energy. This finite metric does not establish complete spectral equality.\nGroup025 uses the case-specific eligibility decision stated below.\n\n**Sine.** On frames 8192 through 16383, fit sin and cos at the exact supplied\nfrequency by least squares, independently in each output. Form complex gain as\nsin coefficient plus i times cos coefficient. Candidate/reference gain must differ\nby at most 0.01 dB in magnitude and 0.5 degrees in phase, with wrapped phase.\n\n**Noise.** On frames 8192 through 16383, apply NumPy's symmetric Hann window and\nan 8192-point real FFT. Band lower edges are `1000*2^(j/3)` for j=-11\u202612;\nupper edges are lower times `2^(1/3)`. Include bins at the lower edge and exclude\nthose at the upper edge. Sum squared magnitudes per band; require each candidate/\nreference ratio to lie within 0.01 dB. Every band needs at least four bins and\npositive energy. This fixes the approximate 80 Hz\u201316 kHz lower-edge range.\n\n**Pipe and Tube.** Compare all frames 4096 through 16383 with relative RMS at\nmost 0.0001. **Filter.** Compare frames 8192 through 16383 with that same limit\nand the noise-band checks.\n\n**LFO.** Mix down at 261.62 Hz, then causally low-pass with an 801-tap Hamming\nFIR, cutoff 80 Hz. For t=5296,6296,\u2026,15296, inspect filtered frames t+300 through\nt+500 inclusive. Average the 200 consecutive unwrapped phase differences and\nconvert to frequency. Candidate/reference estimates must differ by at most 0.2 Hz.\nThis does not grade the LFO's amplitude or all of its spectrum.\n\n**Finite Ramp Up (020-02, parent DCO-029).** This evaluation was added in release2.\nIt uses the Sine evaluation020-01 input/protocol and all38 comparison values,\nexcept LfoType is3 instead of0. Compare every frame4096through16383inclusive\nindependently for each channel. Require full-file finite samples and positive\nreference AND candidate energy on that interval. Use binary64 subtraction and\nproducts, `math.fsum` for the two energy sums and squared-error sum, then\n`math.sqrt(error_energy/reference_energy)`. Both computed channel errors must\nbe inclusively at most0.01, with no epsilon. The tool checks the exact nominal\nRamp reference SHA-256. The older modal, Sine-trajectory and startup metrics do\nnot additionally apply to this evaluation.\n\nThe1%budget is an explicit finite engineering acceptance choice, permitting at\nmost1e-4 error energy/reference energy per channel. Two coherent math-import\nsubstitution observations fall below it, but do not form an architecture error\nbound, a guarantee for arbitrary mixed math errors, or a measured original\napplication tolerance. Aggregate RMS can admit concentrated, onset or late-tail\ndefects. Finite differences in frames0through4095 are outside this metric;\nnonfinite samples anywhere still fail. No full-cycle/absence-of-phase-wrap,\nSync/Spin/random, stored mapping, original Live delivery or candidate claim\nfollows. The supplied reference is a finite output capture, not LFO sample data.\nThe reference environment uses round-to-nearest-even with denormals enabled;\nthis is not a required candidate architecture. No block-size, repeatability,\nclock, reset, rate or floating-mode invariance is established for020-02.\n\n**Startup.** The original has a numerical floor of about 1e-22, not bitwise\nsilence. Frames 0\u201399 must stay at or below 1e-18 absolute on each channel, and\nframe 100 must exceed that floor. Compare the rising gain on frames 100\u2013199 and\nthe settled gain on frames 199\u201316383 separately with relative RMS at most 0.0001.\nThe onset/ramp frame boundaries are exact. The floor threshold is a reviewed\nproject comparison convention; the reference is not asserted to output zeros.\n\n## Case-specific held-note criterion\n\nOnly the modal measurement branch applies to025-01/02: the first256 frames\n4096through4351 inclusive and every frozen point on both channels. All points\nhave cutoff100Hz, giving1455-tap FIRs and fits on5551through16383 inclusive,\nwith727-frame delay correction and complex amplitude extrapolated to4096.\nThe frequency, per-frame log-radius and complex-amplitude limits above are\nunchanged. No startup, Sine-trajectory, Ramp or other general signal-class\ncomparison additionally applies. Full-file exact length and finite samples\nare mandatory; required modes must be measurable with finite nonzero amplitude\nand reference denominators. Both channels must have positive post4096 energy;\na missing or zero active signal cannot yield the required measurable modes.\n\nFrames0through4095 have format/finiteness validation only. There is no prefix\nwaveform budget, silence/floor, energy, phase, onset, event-time or startup\naccuracy claim. Finite prefix corruption can pass. No phase/gain correction,\ncentering adjustment, failed-point removal, alternate scoring window or wider\nthreshold is permitted. All expected mode values are measured from the exact\nreference, not equated to a navigation center or inferred note-frequency law.\n\n025-01 copies all32 points of evaluation013-04 exactly. Its reference bytes\nfrom4096onward equal that earlier reference; full files differ. All FIR input\nsupport for the fixed fitted segment is inside that identical region. That\ncase alone cannot reject ignoring the note or MidiPitch: the earlier fixed-pitch\noutput satisfies every scored sample and descriptor.\n\n025-02 uses an explicit POST-OBSERVATION finite engineering eligibility\nexception for this case only, instead of the earlier recovered-pole condition.\nThe16 navigation centers/channel and100Hz cutoff were fixed before reference\ncalibration. After observing the reference diagnostics, the first15 points per\nchannel were selected without refitting:30points total. Both mode16 estimates\nare omitted because full/half-window estimates were materially sensitive. This\nwas a disclosed engineering choice after reference observation and before any\ncandidate result, not a predeclared subset or automatic stability criterion.\nThe full32-point evidence remains retained. These2new omitted observations are\nungraded, separate from the unchanged historical174omissions. The total initial\n256-frame waveform still includes the omitted component; omission does not\nprove absence or permit arbitrary added energy.\n\nThe unchanged numerical budgets are adopted here as finite project engineering\nlimits, not a recovered vendor tolerance, transferred native4ULP guarantee,\ninaudibility claim, Apple/arm64 bound or mathematical-library error envelope.\nConditional pole estimates and the reference/control evidence do not prove\nactual native coefficients, p1 state, source binding or physical note accuracy.\nObserved significant regular-mode gaps support100Hz within that inspected list;\ncomplete nearest-significant-gap, hidden-spectrum and estimator-uncertainty\nproof remain absent. Half-window sensitivity is descriptive, not a new scoring\nthreshold. The wrong-note60 control is strongly rejected by the selected025-02\nmeasurements, but shared harmonics mean frequency-only checks can pass; it is\nnot a universal note classifier. A reference-self pass is not a candidate grade.\n\n## Fixed noteOn/Off input: group026 only\n\nEvaluation026-01 maps to parent DCO-032 only. Use its complete38-value ordered\nvector with MidiPitch1, MidiGate1, LFOoff and comparison DecayOnNoteOff positive0.\nThis is a comparison-domain host value, not proof of stored/UI conversion or a\nphysical decay constant. After parameters, supply exactly note_on key60/channel0/\nvelocity100 at absolute host/test1537, then note_off for the same key/channel\nwith releasevelocity64 at3073. Deliver them in containing blocks1536 and3072,\nrespectively, each at local offset1, in listed order. Do not subtract again or\ninfer Live's event base, internal delivery/onset or note admission from these\ncoordinates. No second note, bend, sustain, warmup, reset or later update occurs.\n\nUse the existing stereo unit impulse4096 at44100Hz,16384frames/block512,input\npresent, stopped0/0/120 transport and fresh state. The reference environment\nuses round-to-nearest-even with denormals enabled (floating control0x1f80) and\nfixed clock input0. These describe reference production; they do not mandate\ncandidate architecture or establish seed, floating-mode, clock or other\ninvariance. The record boundary and destruction are not an extra\nrelease-envelope test. Native processing return/output flags are NOT an oracle\nor application scheduling rule in this contract.\n\n## Case-specific zero-endpoint waveform criterion\n\nOnly `noteoff_decay_zero_waveform` applies to026-01. Its reference SHA must be\n`a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829`.\nThe existing Ramp-specific guard remains separate and unchanged. Require exactly\n16384interleaved stereo little-endian binary32 frames; widen to binary64 and\nreject any nonfinite sample anywhere. Reference AND candidate scored energy\nmust be positive in each channel; invalid/missing/zero-energy output fails.\n\nFor EVERY frame4096through16383inclusive, independently on EACH channel compute\n`sqrt(math.fsum((candidate-reference)**2)/math.fsum(reference**2))`.\nSubtraction/products round as binary64, followed by `fsum`, division and `sqrt`.\nBoth computed errors must be inclusively at most0.01, with no epsilon. The\nmathematical1e-4error-energy ratio describes the budget, not an alternative\nrounded comparison. No alignment, gain/phase/offset fitting, channel mixing,\ntransient deletion, alternate window, modal fit or additional metric applies.\n\nThis1%budget is an explicit finite engineering choice for this one input.\nIt is not an original tolerance, inaudibility claim, calibrated uncertainty,\nnative-pole/ULP/vendor/Apple/arm64 bound, portability guarantee or a transfer of\nRamp sensitivity observations. No B-specific sensitivity/repeatability envelope\nis established. The fixed held/gate0/other-endpoint wrong-waveform controls are\nstrongly rejected, but share identical scored bytes and supply ONE distinct\ncontrast, not independent guarantees that all wrong implementations fail.\n\nFrames0..4095 are length/finiteness-only; finite prefix corruption can pass.\nAggregate RMS can hide concentrated/onset/low-energy-tail errors. Deliberately\nzeroing the reference's last8192frames yields errors about2.04e-7left/2.02e-7right\nand passes. This exposes a limit: the criterion does not grade exact silence,\ntail floor, envelope, decay constant or local release timing. The reference\nitself is not zeroed; every captured scored sample remains included. No general\ngate/NoteOff/DecayOnNoteOff law or source binding is recovered from this input.\nAll old comparisons,174historical modal omissions and two note72mode16 omissions\nremain unchanged; no profile or application compatibility completion follows.\n\n## Exclusions and limits\n\nOnly the enumerated inputs, protocols and measurements have expectations.\nExcluded are project loading/saving, default insertion behavior, stored-to-device\nposition conversion, device placement or the Live audio chain, UI text, automation\nbeyond the explicit history actions, all MIDI side-chain behavior except the\nthree explicitly listed event-bearing histories, random LFO shapes, Sync,\nall unlisted vectors/rates/signals/histories, reporting/CPU behavior and real-time\nscheduling. This package accepts no assumption that the original application uses\nthis protocol in every circumstance. Unmeasured modes and output properties\nremain unknown. No whole-application or arm64 compatibility pass can be inferred.\n\n\n## Historical changes from release1 to release2\n\nCarries all24 existing groups and68 evaluations, histories, values, signals,\nreferences and measurement rules unchanged. Adds only020-02 within group020,\nmapped to parent DCO-029, and its dedicated finite waveform metric. Release2\nhas24groups/69evaluations,69reference files containing62distinct byte streams,\nand nine generated input signals. Release1 remains immutable. This strict finite\nextension does not complete any device profile or whole behavioral family.\n\n## Historical changes from release2 to release3\n\nPreserve all69 previous evaluation objects,78 physical input/reference fixtures\nand the measurement code byte-for-byte. Add only group025 with two evaluations,\nmapped to parent DCO-030/031, and two retained reference files. Release3\nhas25groups/71evaluations,71reference files containing64distinct byte streams,\nand nine generated inputs. Prior releases remain immutable. This does not\napprove general MIDI behavior, source binding, stored mapping/A1, Live routing,\narm64, note-off/gate/sustain/bend/priority/velocity/channels/boundaries, invariance,\ncomplete spectra, all omitted modes or a complete profile. No candidate ran.\n\n## Proposed changes from release3 to release4\n\nPreserve all25oldgroups/71evaluation objects and80physical signal/reference\nfixtures. Add only group026/026-01 and one exact reference. There are26groups/\n72evaluations and81physicalF32fixtures: nine inputs and72references. The\ncomparator adds only the dedicated branch and independent reference guard;\nall old branches/labels/errors and Ramp guard are literal unchanged. Method\nand exact parent adoption have separate approval; handoff approval is pending. This draft is not an implementation target or publication.\n",
+    "manifest.json": "{\n  \"schema\": \"handoff-manifest-v1\",\n  \"release_id\": \"device-corpus-v4\",\n  \"release_status\": \"draft-pending-independent-handoff-review\",\n  \"release_date\": null,\n  \"target\": \"Ableton Live 12 Suite 12.4.3 / macOS arm64; reference audio from original x86_64 device code\",\n  \"specification\": {\n    \"id\": \"SPEC-DEVICE-CORPUS\",\n    \"parent_revision\": 6,\n    \"parent_revision_status\": \"independently-reviewed-adopted\",\n    \"parent_sha256\": \"07a89f25de6b3c987d448e0e049bdd7dfaec52f479532b3aca3faddedcd511cd\",\n    \"release_revision\": 4\n  },\n  \"feature_ids\": [\n    \"FEAT-DEVICES\"\n  ],\n  \"partial_requirement_scopes\": {\n    \"REQ-DEVICE-CORPUS-001\": \"Only the finite input/output comparisons and measurement windows listed; exact event-bearing histories in025-01/02 and026-01, no general synthesis or application integration.\",\n    \"REQ-DEVICE-CORPUS-004\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-005\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-006\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-007\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-008\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-009\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-010\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-011\": \"Original finite Sine trajectory plus only the listed Ramp Up waveform in020-02 (parent DCO-029); distinct metrics, no general LFO law/Sync/Spin/random/application claim.\",\n    \"REQ-DEVICE-CORPUS-012\": \"Only the finite input/output comparisons and measurement windows listed in spec.md and cases.json; no general synthesis formula or original application integration\",\n    \"REQ-DEVICE-CORPUS-013\": \"Only exact025-01/02held-note outputs and026-01On1537/Off3073gate1/host34positivezeroBoutput with their dedicated measurements; all general MIDI/gate/decay/Live-sidechain behavior excluded.\"\n  },\n  \"unreleased_requirements\": [\n    \"REQ-DEVICE-CORPUS-002\",\n    \"REQ-DEVICE-CORPUS-003\"\n  ],\n  \"compatibility_dimensions\": {\n    \"audio\": \"Preserved v3 finite expectations plus one fixedB waveform comparison under a separately approved finite engineering budget; handoff approval pending; no application/arm64/candidate grade.\",\n    \"timing\": \"Specified startup and history actions only\",\n    \"project-files\": \"excluded\",\n    \"ui\": \"excluded\",\n    \"real-time\": \"excluded\"\n  },\n  \"exclusions\": {\n    \"inputs_without_expectation\": [\n      \"Unlisted vectors/signals/rates/histories; random/synchronizedLFO; all MIDI inputs except exact025-01/02 and026-01.\"\n    ],\n    \"behavior\": [\n      \"Project loading/saving and device placement; stored-value mapping; Live chain integration; general synthesis formulas; unmeasured modes and output properties; real-time scheduling; arbitrary automation; UI and reporting\"\n    ]\n  },\n  \"fixture_origin\": \"Mathematically generated input signals and original-device output captures; no shipped music, project documents, executable or recovered program code\",\n  \"approved_public_sources\": [],\n  \"review\": {\n    \"status\": \"pending-independent-handoff-review\",\n    \"reviewers\": [],\n    \"date\": null,\n    \"findings\": [],\n    \"disposition\": \"Pending separate independent finite handoff review. Parent and method approvals do not grant package/release approval.\",\n    \"record\": \"REVIEW.md\"\n  },\n  \"reference_execution\": \"Original x86_64 device code executed previously; original application and arm64 execution not-run\",\n  \"candidate_execution\": \"not-run\",\n  \"entrypoint\": \"README.md\",\n  \"case_count\": 26,\n  \"evaluation_count\": 72,\n  \"inventory_excludes\": [\n    \"manifest.json\"\n  ],\n  \"files\": [\n    {\n      \"path\": \"AGENTS.md\",\n      \"sha256\": \"579360e913aef599a06530635dc35123af0848f8530993a83ff4d1efa0073a58\",\n      \"bytes\": 1272\n    },\n    {\n      \"path\": \"README.md\",\n      \"sha256\": \"ab96299da30f288676c5ec959f0aa9142e8779a38f2f0d9e7d832e0dfbedba26\",\n      \"bytes\": 2130\n    },\n    {\n      \"path\": \"REVIEW.md\",\n      \"sha256\": \"424e84ae8b8ab1df1fc3a8115c2a2942328a247b68f989462e96bf00220954c2\",\n      \"bytes\": 674\n    },\n    {\n      \"path\": \"cases.json\",\n      \"sha256\": \"8da3feaae687a5097e239c84ccf4a933cc84add6413dd9633bb5c87b51c5927b\",\n      \"bytes\": 392413\n    },\n    {\n      \"path\": \"compare.py\",\n      \"sha256\": \"9964de11da79eb61c0624d34e402d238cd5c466093d15ccc91fd630ac4c54110\",\n      \"bytes\": 8830\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-001-01.f32\",\n      \"sha256\": \"2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-002-01.f32\",\n      \"sha256\": \"6f0c3c5755159b57ac4f63d33bd202019037729b870f301cfc06a0c278fb032c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-003-01.f32\",\n      \"sha256\": \"0bfe85cbffe2dead0be673749c7a92de26430782c5db572db6862f0bc494674b\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-004-01.f32\",\n      \"sha256\": \"9d5bf9671f8ae56ed50064e4bcaa37ba9df96b77cfa69a89fbe7f37fdfb8cc4d\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-005-01.f32\",\n      \"sha256\": \"0dae8b9ca0f8361d074c2e5e3b01a92c00b2de8cd8f08d07def8a0c6757acf0d\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-006-01.f32\",\n      \"sha256\": \"0e09e31e5bdb89785aeb3e47bc69cc439186007d6a1710dc11c6cfac79b8b905\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-007-01.f32\",\n      \"sha256\": \"0bba47a8201f4294cb7ff91350072b0755c3cf9365b478f617a85b7a79407055\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-008-01.f32\",\n      \"sha256\": \"2754ccc144af54fa0f032048da12911142976d423719533d34efa16c27213990\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-008-02.f32\",\n      \"sha256\": \"55a2719cc96ad35c3f11ac0b2721f7ed8f426704d96297fc0a57fa3a984e191f\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-009-01.f32\",\n      \"sha256\": \"4892f2c8cef289c2f3438105705017e6d5d14fc2c38910791ca682007653cd5c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-009-02.f32\",\n      \"sha256\": \"744218144705a5d70f6a913b289f1f34b52c624df1919986d25b9b7374df3084\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-009-03.f32\",\n      \"sha256\": \"9348753254be643820dfc02bec969845b61719977f7575650a37a73d56ba6239\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-009-04.f32\",\n      \"sha256\": \"b36ea666d72f741af5f18578c2324c18026885298987a1128374f5caec18600d\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-010-01.f32\",\n      \"sha256\": \"9bf6418bb89af3441e397cc3d10ae073fd5b3a249dde78a3bd9bff573d9e5dac\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-011-01.f32\",\n      \"sha256\": \"2b15b5885a2e2e3df9758d2ab951e03682e2d83b3b2132c97607b0c0c90cd102\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-011-02.f32\",\n      \"sha256\": \"28b5578a717c819d1b3eaa074242c0e49f6f6ae322796ef1728fb17c072924e6\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-011-03.f32\",\n      \"sha256\": \"09cac9e288256df64bd55b241c432ba72b33c5fab9dfef0930046896f9af841b\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-011-04.f32\",\n      \"sha256\": \"11ca4e190642aae2c4e25a591e639457bf4a7a9c24ca403618077f94b9b730e5\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-012-01.f32\",\n      \"sha256\": \"588932026e426898f1fd3b8b77335c02a136d28cc5b9472e0a5cb9d07219ecbf\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-012-02.f32\",\n      \"sha256\": \"4880eb0a3bef5520bc0f35a8bb27eb7ed5caf53aa75856313a8a24fe91769896\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-012-03.f32\",\n      \"sha256\": \"a5809e792d1167c21f60465aee3c76e10460c56adb0ffe4dd7815fcc9e7ea22a\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-012-04.f32\",\n      \"sha256\": \"9a99604a0c9f0c04306a4e52adb3a145fe836747560e9a468fc2e8bd82d8b3f2\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-013-01.f32\",\n      \"sha256\": \"6e45645ba2a12f526f4977d58ca4b6602f59643f8cb6c4b3d5381b979bde1cae\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-013-02.f32\",\n      \"sha256\": \"edd753e4333a4a5a27062355f7d58af0d3177de45745d7dd99f80f45141c8111\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-013-03.f32\",\n      \"sha256\": \"402448e0a4ce2314b7fb3c185abf0d478d455cd383d18de410797660760c75a3\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-013-04.f32\",\n      \"sha256\": \"0ba4838bbcd030ffcdc82d40613ad4354cbf3e001c60ffa541e082c92f15080f\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-013-05.f32\",\n      \"sha256\": \"eeea8682c76ef638dbc585720238c20fb10e660c5a32fa935227397a7a6fde96\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-014-01.f32\",\n      \"sha256\": \"67dc35d6b8b87200749cc02b060ddf13970f0a339d35eb2823331dfe29180aa8\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-014-02.f32\",\n      \"sha256\": \"54a1636fed782a5ad471d8a8a7886f9d3f81bf169fdedac26b0d6b5ea6be663f\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-014-03.f32\",\n      \"sha256\": \"b3fde374f7c254241cbec5a6b999387aaaa71b62ba27bd24a71ea4e9eb892887\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-014-04.f32\",\n      \"sha256\": \"51349b0daf1f400c46ba0362c25c680348a379d4c7976a4895292932ff965adc\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-014-05.f32\",\n      \"sha256\": \"fee2a6f457b5e5c3f292afbe878841438fe30a03b74ada39dc994d752adb669e\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-014-06.f32\",\n      \"sha256\": \"176987a9af7fa5f81cc119f46ea118c916bdec0618b66a14abb6263f6188358b\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-01.f32\",\n      \"sha256\": \"734cd9372d2e79484fbd130e82130287bf50986dcfcd2a950e4dec272d7d20e9\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-02.f32\",\n      \"sha256\": \"c4fcd19592e025d486f7848feadf3900487df7d0338a607dc587f1d66ae7e5e8\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-03.f32\",\n      \"sha256\": \"682afe2dfa4ff30fdb27d9ab60a1353c27b1b570833b384fd31cf99011c05224\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-04.f32\",\n      \"sha256\": \"e139a2f67e1894889bb26a3985d2c703cf267a051cbd29691b93599b73a50323\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-05.f32\",\n      \"sha256\": \"497630c8edc3e956fbfd2df38823ffe2689e48e4ddecc7fe8005965c4f0ed7b2\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-06.f32\",\n      \"sha256\": \"d8a375140d852d8601a786196b5c0946389b1023e49f75e13591b53b73511f64\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-015-07.f32\",\n      \"sha256\": \"ccd8c17e861a561ce3df9c73f16343729af4637fd5b9c412aa15616552fbb5b6\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-01.f32\",\n      \"sha256\": \"b6391c64b0f7e0375f519b0ea48d89377cac13d19fdf87e16518828af6848e9c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-02.f32\",\n      \"sha256\": \"eca95f1044f8e7bf4d95f35873a561cfa4244a215636858433308fb888a113dd\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-03.f32\",\n      \"sha256\": \"8db4b3c2088d9580f5f296beebd8b48963238e1e440804c5fda1514de655a13f\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-04.f32\",\n      \"sha256\": \"d0d540f1312654e966c2c4165758da945106f416c455f5610dff1c055e18acd2\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-05.f32\",\n      \"sha256\": \"a2877996962cd044f6046b9482f7bdb281240119648ed87dee3130d7e7ac804c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-06.f32\",\n      \"sha256\": \"533a57dcaa1ac6aa99d312e8565f2336bff968e44b8720526c808c9c731a0c5a\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-07.f32\",\n      \"sha256\": \"847648f0013f033e4852e36d10697bfff554ac65455314e9dd5c8647b8952d6c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-016-08.f32\",\n      \"sha256\": \"abd6045cca6123fcd6ac9c2490ae6b4e56ef77efdd72546251c4ef7439f55308\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-017-01.f32\",\n      \"sha256\": \"f8b95bc7163a5076add2f5b49b8afce534bbaf31a763c099fca1a6fed91f78fb\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-01.f32\",\n      \"sha256\": \"8501b4446b0f48c57d24fa1f6d310b53c7a040de2ce360af4599ac0614720934\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-02.f32\",\n      \"sha256\": \"33debbae9b7f52c21a5a6a1001b0e038d6417e05fb14b9884db7e0437815910a\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-03.f32\",\n      \"sha256\": \"abe823b4b06493fd6c2b2b59986204753e7b9cfbb68ebd24653d1f643f7eb64d\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-04.f32\",\n      \"sha256\": \"1531b7689103af0b7691dd67b0c1f268c834275a97fed38eb5bddbba60062591\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-05.f32\",\n      \"sha256\": \"9f36bc1a6417f4041c4ccb05741d577cc4e6b27411320eea8cece461279fc219\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-06.f32\",\n      \"sha256\": \"ecccc12b413911fd4873c87e698f9bfdb98b806449301fedcd0972bee703b291\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-07.f32\",\n      \"sha256\": \"114ea2d2661940fa8d0b116d971a90877ad631fe67c52893208779441345473a\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-018-08.f32\",\n      \"sha256\": \"a90a778aa2cb0b265582c9b7606a67350d491e6750c0e482c238a21c7e0e3ab1\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-019-01.f32\",\n      \"sha256\": \"45261a1418cb709875f0427abe65c5d3dbd70be3451225e7d88c313b5cb108af\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-019-02.f32\",\n      \"sha256\": \"10a645af1efdb3022808c29e2ea86594521dc7613f2e03e640ae643ee8691518\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-020-01.f32\",\n      \"sha256\": \"fadb3e890a943e637f440b83048d80a9153cc428e9c2840775057a0cc383028c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-020-02.f32\",\n      \"sha256\": \"40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-021-01.f32\",\n      \"sha256\": \"93469eb93211f0e083330a26e6ae691feaa14765e91801b339ca6723ac9e89c9\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-022-01.f32\",\n      \"sha256\": \"2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-022-02.f32\",\n      \"sha256\": \"2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-022-03.f32\",\n      \"sha256\": \"2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-022-04.f32\",\n      \"sha256\": \"2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-023-01.f32\",\n      \"sha256\": \"6f0c3c5755159b57ac4f63d33bd202019037729b870f301cfc06a0c278fb032c\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-024-01.f32\",\n      \"sha256\": \"2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-024-02.f32\",\n      \"sha256\": \"abe823b4b06493fd6c2b2b59986204753e7b9cfbb68ebd24653d1f643f7eb64d\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-025-01.f32\",\n      \"sha256\": \"5866c6b9e4915336648da87bd92c38927cb3e532fe81ab38b5300664c7bb984f\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-025-02.f32\",\n      \"sha256\": \"f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"reference/CORPUS-AUDIO-026-01.f32\",\n      \"sha256\": \"a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-01.f32\",\n      \"sha256\": \"03a7d8daa68e79547578a53d7fed8e6cc872e0e81a22368615f0fa61b7b083f6\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-02.f32\",\n      \"sha256\": \"03a7d8daa68e79547578a53d7fed8e6cc872e0e81a22368615f0fa61b7b083f6\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-03.f32\",\n      \"sha256\": \"a10c71c06d24b26a856e4d9eded539f2cd03d195b327ef091e57a44dc9fbbe05\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-04.f32\",\n      \"sha256\": \"808c4d9eea35f8ab1fc863ef31e19db86b4e40ee63ceecdf882a91c756b36c60\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-05.f32\",\n      \"sha256\": \"1041f7de80c7663cd9640ffef1c0fa64b8c2960c0f2d79399779fdf6c4b05067\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-06.f32\",\n      \"sha256\": \"c9114312c09e73263ce029ddd37b1a087f6db522eee54d4a22b21a262c857797\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-07.f32\",\n      \"sha256\": \"26041de4c5c3d9db626e148131d3ff7e15f3364fa0663139cfc3b2803cd3985e\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-08.f32\",\n      \"sha256\": \"6805d44a29f0db856444760dbeef824c9fd64b632eccef614bc70ce6d952f730\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"signals/input-09.f32\",\n      \"sha256\": \"0288e3482c14fa8260c5b12a9481dd0bcab5316a6193fb2cb5cd012f9360fe45\",\n      \"bytes\": 131072\n    },\n    {\n      \"path\": \"spec.md\",\n      \"sha256\": \"3379b64240731322bd066c2322eddb54105863ed07abd61c3eb65f63cdf1d83c\",\n      \"bytes\": 21871\n    }\n  ],\n  \"supersedes\": \"device-corpus-v3\",\n  \"change_list\": [\n    \"Preserve all25oldgroups/71evaluation objects and80physicalF32fixtures; no old scope broadened.\",\n    \"Add only026-01 mapped to DCO-032 and oneBreference with exact38host values and On1537/Off3073.\",\n    \"Comparator adds only9line dedicatedbranch and4line independentBhashguard; alloldbranches/labels/errors/Rampguard preserved.\",\n    \"Prefixfinite-only and aggregate late-tail limitation explicit; no general gate/decay/flag/UI/source/Live law, invariance or complete profile.\"\n  ],\n  \"readiness\": {\n    \"finite_method\": \"Independently approved exact identity-gated Bfinite engineering method only\",\n    \"parent_owner\": \"Exact independently approvedR6adopted\",\n    \"handoff_review\": \"Pending independent package review; not released\",\n    \"numeric_validation\": \"Actual NEWcomparator preparation71oldselfevaluations/4793measurements plus Bself2=4795pass;311tinyoldnonzeroerrorsretained; carried not rerun for relabeling\"\n  }\n}\n"
+  },
+  "cases_status": "draft-pending-independent-handoff-review",
+  "cases_sha256": "8da3feaae687a5097e239c84ccf4a933cc84add6413dd9633bb5c87b51c5927b",
+  "all_before_files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 1272,
+      "sha256": "579360e913aef599a06530635dc35123af0848f8530993a83ff4d1efa0073a58"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2130,
+      "sha256": "ab96299da30f288676c5ec959f0aa9142e8779a38f2f0d9e7d832e0dfbedba26"
+    },
+    {
+      "path": "REVIEW.md",
+      "bytes": 674,
+      "sha256": "424e84ae8b8ab1df1fc3a8115c2a2942328a247b68f989462e96bf00220954c2"
+    },
+    {
+      "path": "cases.json",
+      "bytes": 392413,
+      "sha256": "8da3feaae687a5097e239c84ccf4a933cc84add6413dd9633bb5c87b51c5927b"
+    },
+    {
+      "path": "compare.py",
+      "bytes": 8830,
+      "sha256": "9964de11da79eb61c0624d34e402d238cd5c466093d15ccc91fd630ac4c54110"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 20042,
+      "sha256": "8b306ac4e25128b2790bdb46e8e9bd1dae9e6fe06770755a4b126bc714f78c5d"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-001-01.f32",
+      "bytes": 131072,
+      "sha256": "2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-002-01.f32",
+      "bytes": 131072,
+      "sha256": "6f0c3c5755159b57ac4f63d33bd202019037729b870f301cfc06a0c278fb032c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-003-01.f32",
+      "bytes": 131072,
+      "sha256": "0bfe85cbffe2dead0be673749c7a92de26430782c5db572db6862f0bc494674b"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-004-01.f32",
+      "bytes": 131072,
+      "sha256": "9d5bf9671f8ae56ed50064e4bcaa37ba9df96b77cfa69a89fbe7f37fdfb8cc4d"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-005-01.f32",
+      "bytes": 131072,
+      "sha256": "0dae8b9ca0f8361d074c2e5e3b01a92c00b2de8cd8f08d07def8a0c6757acf0d"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-006-01.f32",
+      "bytes": 131072,
+      "sha256": "0e09e31e5bdb89785aeb3e47bc69cc439186007d6a1710dc11c6cfac79b8b905"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-007-01.f32",
+      "bytes": 131072,
+      "sha256": "0bba47a8201f4294cb7ff91350072b0755c3cf9365b478f617a85b7a79407055"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-008-01.f32",
+      "bytes": 131072,
+      "sha256": "2754ccc144af54fa0f032048da12911142976d423719533d34efa16c27213990"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-008-02.f32",
+      "bytes": 131072,
+      "sha256": "55a2719cc96ad35c3f11ac0b2721f7ed8f426704d96297fc0a57fa3a984e191f"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-009-01.f32",
+      "bytes": 131072,
+      "sha256": "4892f2c8cef289c2f3438105705017e6d5d14fc2c38910791ca682007653cd5c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-009-02.f32",
+      "bytes": 131072,
+      "sha256": "744218144705a5d70f6a913b289f1f34b52c624df1919986d25b9b7374df3084"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-009-03.f32",
+      "bytes": 131072,
+      "sha256": "9348753254be643820dfc02bec969845b61719977f7575650a37a73d56ba6239"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-009-04.f32",
+      "bytes": 131072,
+      "sha256": "b36ea666d72f741af5f18578c2324c18026885298987a1128374f5caec18600d"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-010-01.f32",
+      "bytes": 131072,
+      "sha256": "9bf6418bb89af3441e397cc3d10ae073fd5b3a249dde78a3bd9bff573d9e5dac"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-011-01.f32",
+      "bytes": 131072,
+      "sha256": "2b15b5885a2e2e3df9758d2ab951e03682e2d83b3b2132c97607b0c0c90cd102"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-011-02.f32",
+      "bytes": 131072,
+      "sha256": "28b5578a717c819d1b3eaa074242c0e49f6f6ae322796ef1728fb17c072924e6"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-011-03.f32",
+      "bytes": 131072,
+      "sha256": "09cac9e288256df64bd55b241c432ba72b33c5fab9dfef0930046896f9af841b"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-011-04.f32",
+      "bytes": 131072,
+      "sha256": "11ca4e190642aae2c4e25a591e639457bf4a7a9c24ca403618077f94b9b730e5"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-012-01.f32",
+      "bytes": 131072,
+      "sha256": "588932026e426898f1fd3b8b77335c02a136d28cc5b9472e0a5cb9d07219ecbf"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-012-02.f32",
+      "bytes": 131072,
+      "sha256": "4880eb0a3bef5520bc0f35a8bb27eb7ed5caf53aa75856313a8a24fe91769896"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-012-03.f32",
+      "bytes": 131072,
+      "sha256": "a5809e792d1167c21f60465aee3c76e10460c56adb0ffe4dd7815fcc9e7ea22a"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-012-04.f32",
+      "bytes": 131072,
+      "sha256": "9a99604a0c9f0c04306a4e52adb3a145fe836747560e9a468fc2e8bd82d8b3f2"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-013-01.f32",
+      "bytes": 131072,
+      "sha256": "6e45645ba2a12f526f4977d58ca4b6602f59643f8cb6c4b3d5381b979bde1cae"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-013-02.f32",
+      "bytes": 131072,
+      "sha256": "edd753e4333a4a5a27062355f7d58af0d3177de45745d7dd99f80f45141c8111"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-013-03.f32",
+      "bytes": 131072,
+      "sha256": "402448e0a4ce2314b7fb3c185abf0d478d455cd383d18de410797660760c75a3"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-013-04.f32",
+      "bytes": 131072,
+      "sha256": "0ba4838bbcd030ffcdc82d40613ad4354cbf3e001c60ffa541e082c92f15080f"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-013-05.f32",
+      "bytes": 131072,
+      "sha256": "eeea8682c76ef638dbc585720238c20fb10e660c5a32fa935227397a7a6fde96"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-014-01.f32",
+      "bytes": 131072,
+      "sha256": "67dc35d6b8b87200749cc02b060ddf13970f0a339d35eb2823331dfe29180aa8"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-014-02.f32",
+      "bytes": 131072,
+      "sha256": "54a1636fed782a5ad471d8a8a7886f9d3f81bf169fdedac26b0d6b5ea6be663f"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-014-03.f32",
+      "bytes": 131072,
+      "sha256": "b3fde374f7c254241cbec5a6b999387aaaa71b62ba27bd24a71ea4e9eb892887"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-014-04.f32",
+      "bytes": 131072,
+      "sha256": "51349b0daf1f400c46ba0362c25c680348a379d4c7976a4895292932ff965adc"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-014-05.f32",
+      "bytes": 131072,
+      "sha256": "fee2a6f457b5e5c3f292afbe878841438fe30a03b74ada39dc994d752adb669e"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-014-06.f32",
+      "bytes": 131072,
+      "sha256": "176987a9af7fa5f81cc119f46ea118c916bdec0618b66a14abb6263f6188358b"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-01.f32",
+      "bytes": 131072,
+      "sha256": "734cd9372d2e79484fbd130e82130287bf50986dcfcd2a950e4dec272d7d20e9"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-02.f32",
+      "bytes": 131072,
+      "sha256": "c4fcd19592e025d486f7848feadf3900487df7d0338a607dc587f1d66ae7e5e8"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-03.f32",
+      "bytes": 131072,
+      "sha256": "682afe2dfa4ff30fdb27d9ab60a1353c27b1b570833b384fd31cf99011c05224"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-04.f32",
+      "bytes": 131072,
+      "sha256": "e139a2f67e1894889bb26a3985d2c703cf267a051cbd29691b93599b73a50323"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-05.f32",
+      "bytes": 131072,
+      "sha256": "497630c8edc3e956fbfd2df38823ffe2689e48e4ddecc7fe8005965c4f0ed7b2"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-06.f32",
+      "bytes": 131072,
+      "sha256": "d8a375140d852d8601a786196b5c0946389b1023e49f75e13591b53b73511f64"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-015-07.f32",
+      "bytes": 131072,
+      "sha256": "ccd8c17e861a561ce3df9c73f16343729af4637fd5b9c412aa15616552fbb5b6"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-01.f32",
+      "bytes": 131072,
+      "sha256": "b6391c64b0f7e0375f519b0ea48d89377cac13d19fdf87e16518828af6848e9c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-02.f32",
+      "bytes": 131072,
+      "sha256": "eca95f1044f8e7bf4d95f35873a561cfa4244a215636858433308fb888a113dd"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-03.f32",
+      "bytes": 131072,
+      "sha256": "8db4b3c2088d9580f5f296beebd8b48963238e1e440804c5fda1514de655a13f"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-04.f32",
+      "bytes": 131072,
+      "sha256": "d0d540f1312654e966c2c4165758da945106f416c455f5610dff1c055e18acd2"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-05.f32",
+      "bytes": 131072,
+      "sha256": "a2877996962cd044f6046b9482f7bdb281240119648ed87dee3130d7e7ac804c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-06.f32",
+      "bytes": 131072,
+      "sha256": "533a57dcaa1ac6aa99d312e8565f2336bff968e44b8720526c808c9c731a0c5a"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-07.f32",
+      "bytes": 131072,
+      "sha256": "847648f0013f033e4852e36d10697bfff554ac65455314e9dd5c8647b8952d6c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-016-08.f32",
+      "bytes": 131072,
+      "sha256": "abd6045cca6123fcd6ac9c2490ae6b4e56ef77efdd72546251c4ef7439f55308"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-017-01.f32",
+      "bytes": 131072,
+      "sha256": "f8b95bc7163a5076add2f5b49b8afce534bbaf31a763c099fca1a6fed91f78fb"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-01.f32",
+      "bytes": 131072,
+      "sha256": "8501b4446b0f48c57d24fa1f6d310b53c7a040de2ce360af4599ac0614720934"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-02.f32",
+      "bytes": 131072,
+      "sha256": "33debbae9b7f52c21a5a6a1001b0e038d6417e05fb14b9884db7e0437815910a"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-03.f32",
+      "bytes": 131072,
+      "sha256": "abe823b4b06493fd6c2b2b59986204753e7b9cfbb68ebd24653d1f643f7eb64d"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-04.f32",
+      "bytes": 131072,
+      "sha256": "1531b7689103af0b7691dd67b0c1f268c834275a97fed38eb5bddbba60062591"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-05.f32",
+      "bytes": 131072,
+      "sha256": "9f36bc1a6417f4041c4ccb05741d577cc4e6b27411320eea8cece461279fc219"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-06.f32",
+      "bytes": 131072,
+      "sha256": "ecccc12b413911fd4873c87e698f9bfdb98b806449301fedcd0972bee703b291"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-07.f32",
+      "bytes": 131072,
+      "sha256": "114ea2d2661940fa8d0b116d971a90877ad631fe67c52893208779441345473a"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-018-08.f32",
+      "bytes": 131072,
+      "sha256": "a90a778aa2cb0b265582c9b7606a67350d491e6750c0e482c238a21c7e0e3ab1"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-019-01.f32",
+      "bytes": 131072,
+      "sha256": "45261a1418cb709875f0427abe65c5d3dbd70be3451225e7d88c313b5cb108af"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-019-02.f32",
+      "bytes": 131072,
+      "sha256": "10a645af1efdb3022808c29e2ea86594521dc7613f2e03e640ae643ee8691518"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-020-01.f32",
+      "bytes": 131072,
+      "sha256": "fadb3e890a943e637f440b83048d80a9153cc428e9c2840775057a0cc383028c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-020-02.f32",
+      "bytes": 131072,
+      "sha256": "40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-021-01.f32",
+      "bytes": 131072,
+      "sha256": "93469eb93211f0e083330a26e6ae691feaa14765e91801b339ca6723ac9e89c9"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-022-01.f32",
+      "bytes": 131072,
+      "sha256": "2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-022-02.f32",
+      "bytes": 131072,
+      "sha256": "2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-022-03.f32",
+      "bytes": 131072,
+      "sha256": "2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-022-04.f32",
+      "bytes": 131072,
+      "sha256": "2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-023-01.f32",
+      "bytes": 131072,
+      "sha256": "6f0c3c5755159b57ac4f63d33bd202019037729b870f301cfc06a0c278fb032c"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-024-01.f32",
+      "bytes": 131072,
+      "sha256": "2264a81b565341a95935cd5a5540f05d964da53b4f358859d72d0e081f3b1f17"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-024-02.f32",
+      "bytes": 131072,
+      "sha256": "abe823b4b06493fd6c2b2b59986204753e7b9cfbb68ebd24653d1f643f7eb64d"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-025-01.f32",
+      "bytes": 131072,
+      "sha256": "5866c6b9e4915336648da87bd92c38927cb3e532fe81ab38b5300664c7bb984f"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-025-02.f32",
+      "bytes": 131072,
+      "sha256": "f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc"
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-026-01.f32",
+      "bytes": 131072,
+      "sha256": "a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829"
+    },
+    {
+      "path": "signals/input-01.f32",
+      "bytes": 131072,
+      "sha256": "03a7d8daa68e79547578a53d7fed8e6cc872e0e81a22368615f0fa61b7b083f6"
+    },
+    {
+      "path": "signals/input-02.f32",
+      "bytes": 131072,
+      "sha256": "03a7d8daa68e79547578a53d7fed8e6cc872e0e81a22368615f0fa61b7b083f6"
+    },
+    {
+      "path": "signals/input-03.f32",
+      "bytes": 131072,
+      "sha256": "a10c71c06d24b26a856e4d9eded539f2cd03d195b327ef091e57a44dc9fbbe05"
+    },
+    {
+      "path": "signals/input-04.f32",
+      "bytes": 131072,
+      "sha256": "808c4d9eea35f8ab1fc863ef31e19db86b4e40ee63ceecdf882a91c756b36c60"
+    },
+    {
+      "path": "signals/input-05.f32",
+      "bytes": 131072,
+      "sha256": "1041f7de80c7663cd9640ffef1c0fa64b8c2960c0f2d79399779fdf6c4b05067"
+    },
+    {
+      "path": "signals/input-06.f32",
+      "bytes": 131072,
+      "sha256": "c9114312c09e73263ce029ddd37b1a087f6db522eee54d4a22b21a262c857797"
+    },
+    {
+      "path": "signals/input-07.f32",
+      "bytes": 131072,
+      "sha256": "26041de4c5c3d9db626e148131d3ff7e15f3364fa0663139cfc3b2803cd3985e"
+    },
+    {
+      "path": "signals/input-08.f32",
+      "bytes": 131072,
+      "sha256": "6805d44a29f0db856444760dbeef824c9fd64b632eccef614bc70ce6d952f730"
+    },
+    {
+      "path": "signals/input-09.f32",
+      "bytes": 131072,
+      "sha256": "0288e3482c14fa8260c5b12a9481dd0bcab5316a6193fb2cb5cd012f9360fe45"
+    },
+    {
+      "path": "spec.md",
+      "bytes": 21871,
+      "sha256": "3379b64240731322bd066c2322eddb54105863ed07abd61c3eb65f63cdf1d83c"
+    }
+  ]
+}

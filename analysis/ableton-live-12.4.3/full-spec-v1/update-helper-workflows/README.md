@@ -1,0 +1,9 @@
+# Static update helper roles — partial analyst packet
+
+This bounded packet cites retained H6 Swapper/control-flow and selected H6 bytecode/N4 Live-side contexts. It proposes 30 requirements (21 S, 1 inference, 8 unknown) and 37 future evidence cases. All target outcomes and documentary/actual comparators are null/U, all cases unexecuted, and zero requirements complete. S denotes static-source support, never observed runtime behavior. Independent semantic review is pending.
+
+`evidence.json` gives exact existing-file line spans or JSON pointers, normalized excerpt hashes, and retained decompiler warnings. `source.json` pins original helper/selected bytecode bytes as hash-only data, historical manifests, retained decoder provenance and existing owner context. Full Live fat identity is inherited, not freshly hashed. No original code, helper, decoder or bytecode was imported or executed; no recapture, native analysis, updater, installation, service or candidate operation occurred.
+
+From the repository root, run `python3 -B analysis/ableton-live-12.4.3/full-spec-v1/update-helper-workflows/validate.py`. It reads static inputs and this packet's guarded author derivation, checks pins/locators/browser IDs/cases/nulls/snapshots/links/whitespace, and never rewrites frozen outputs. It does not establish application compatibility. `author.py --write` refuses after the manifest exists; do not regenerate older packets.
+
+The wiki spec/research snapshots retain the authoritative scope and unknowns. Installation/auth/update policy/recovery and project/media/ALS owners remain separate. Exact CLI codec, path validation, wait units/defaults, process matching, file effects/durability, complete status/error mapping, marker/report contents and whole-service/platform closure remain U. Future proposals require independently admitted real identities, owned disposable contexts and a successful paired baseline; they do not authorize execution.

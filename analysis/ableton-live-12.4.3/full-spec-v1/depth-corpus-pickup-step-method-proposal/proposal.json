@@ -1,0 +1,120 @@
+{
+  "id": "CORPUS-PICKUP-STEP-METHOD-PROPOSAL",
+  "created_utc": "2026-10-20T10:23:32.331187+00:00",
+  "status": "FROZEN PROPOSAL ONLY; no metric calculation or measurement-code execution, applicability or owner/handoff adoption",
+  "parent_requirement": "REQ-DEVICE-CORPUS-012 behavior over time",
+  "distinct_observable": "Exact finite audio I/O after ONE post-initialization host parameter update on the same running instance. This is a dynamic control-input witness, not a measured transition model.",
+  "input_contract": {
+    "provider": "depth-corpus-pickup-step-capture/proposal.json",
+    "source_vector": "exact releasedCORPUS-AUDIO-006-01 all38binary32values/order, Membrane3/Quality3/MidiPitch0/MidiGate0/LFOoff",
+    "reference_history": "fresh child/instance;44100Hz,16384stereo frames,512blocks, stereoimpulse4096; sameinputFILE process8192/512 \u2192 param15 .75 \u2192 process8192/512; stopped0/0/120,inputflag1eachblock,referenceMXCSR1f80/time0; noevents/info/reset/warmup/extra updates/bend/seed perturbation",
+    "control_history": "Identical two-process history, boundaryparam15 repeats initialbinary32 .10000000149011612; unchangedListeningXR .8999999761581421. Actualcontrol is separately reviewed, not an assumed no-op or process-splitting invariance."
+  },
+  "proposed_kind": "pickup_step_waveform",
+  "reference_identity": {
+    "file": "depth-corpus-pickup-step-capture/raw/left-step.f32",
+    "bytes": 131072,
+    "sha256": "1336d90115bd24c058e556aa95e9140014d168dad7111dec64eb8edd1d977e73"
+  },
+  "definition": {
+    "format": "Exactly131072bytes/16384frames, headerless interleaved little-endian binary32 stereo; no short/extra/truncated data. Decode eachbinary32sample exactly tobinary64; everyfull-file sample must befinite.",
+    "windows": [
+      {
+        "name": "pre-step productive baseline",
+        "start_inclusive": 4096,
+        "end_exclusive": 8192
+      },
+      {
+        "name": "post-step response",
+        "start_inclusive": 8192,
+        "end_exclusive": 16384
+      }
+    ],
+    "per_window_per_channel": "R=math.fsum(r[n]*r[n]); Y=math.fsum(y[n]*y[n]); requirefinite R>0 andY>0. D=math.fsum((y[n]-r[n])*(y[n]-r[n])); E=math.sqrt(D/R). Subtractions/products/division/sqrt usebinary64 and math.fsum defines reduction. Emitfour separateerrors: preL/preR/postL/postR.",
+    "acceptance_proposed": "ALLfour finiteE<=0.01 inclusive, with noepsilon. Invalidsize/nonfinite/zero-energy/hashwrong isunsatisfied, neverpass. No pooledenergy/channel/window average.",
+    "rationale_for_split": "Scorethe actualproductivepre-step context as well as the response; separatepostwindow prevents a correct strongpre-step segment from masking an omittedstep. ScoreALL8192..16383, including thefirsteight unchangedframes; no detected-onset shift,4000-frame split,transition exclusion or fittedretargeting.",
+    "prefix": "Frames0..4095 arefinite-only; no prefixwaveform/floor/onset grade.",
+    "no_fitting": "No gain,phase,offset,alignment,tempo,timewarp,baseline subtraction,stepcurve,envelope,pole,decay orwindowfit; no FFT or model.",
+    "reference_trust": "A later real-file evaluator must enforce the exact stepSHA beforecomparison. Pure synthetic arithmetic fixtures may use explicit syntheticreferences, but cannot bypass the realcase identity gate. Keep existingRamp andNoteOff guards literally scoped to their own refs; no blanketkind bypass/configuration option."
+  },
+  "engineering_budget": {
+    "tau": 0.01,
+    "meaning": "A NEW explicit1%per-channel/per-window aggregate waveformRMS engineeringbudget for this one finitehistory. Mathematically this permits errorenergy up to1e-4referenceenergy; that explanation is not a differently rounded implementation test.",
+    "why_this_metric": "The intervention yields a nonstationary finite response; directwaveform comparison captures both baseline andpoststep I/O without requiring a calibrated modal/transition estimator. Separatewindows andchannels give a bounded declaredwaveform neighborhood that an ignoredstep/right-channel-corruption control mustnot hide.",
+    "why_this_budget": "Choose a finite nonzero1%RMS allowance as project engineering policy before anycandidate result or proposedmetric run, not as an estimate of referencevariation. It is reviewable/rejectable on its own scope. The objective is to admit only the stated aggregatecloseness neighborhood and reject the planned gross controls; no special duration/inaudibility/pixel/ULP criterion is implied.",
+    "selection_timing": "Post-observation method proposal: the independently reviewed pair and fixedwindowdescriptions were already read. No normalizeddistance or newmeasurement was executed by this author; no candidate consulted. Not a preregisteredcapture experiment.",
+    "existing_metrics": "Ramp/B1% and olderwaveform/filter0.0001 concern different frozen histories. Arithmetic can be reused, but NONE of their sensitivity/uncertainty/applicability evidence transfers. Selecting0.0001 just because it exists would not justify it for this dynamichistory.",
+    "calibrated_uncertainty": null,
+    "repeatability_or_library_architecture_envelope": null,
+    "physical_pole_or_transition_model": null
+  },
+  "existing_observations_carried_not_recomputed": {
+    "review": "reviews/corpus-pickup-step-actual-review.json#/actual_observations",
+    "facts": [
+      "Both actualhistories have genuine productiveL/R output before8192, and their pre-step samples matchbitwise.",
+      "The entirecontrolraw equals the old006reference; this is observedonehistory identity, not generalno-op/resegmentation invariance.",
+      "Poststep L differs, poststep R isbitidentical for thisactualpair. FirstLdifference8200 isnot proved8framelatency."
+    ],
+    "actual_new_metric_errors": null,
+    "actual_new_metric_passes": null
+  },
+  "planned_controls_no_results_claimed": [
+    {
+      "id": "self",
+      "test": "Exactstep reference as candidate shouldsatisfy allfourchecks; validates arithmetic/identity only, no candidategrade."
+    },
+    {
+      "id": "ignored-step",
+      "test": "Actualmatchedcontrolraw as candidate againststepref mustreject via postL. Baselinebothchannels andpostR are expectedzeroerror from reviewedbitidentity, not independentnegativecontrasts. Do not claim bothchannelsreject. If postLdoesnotreject the chosencriterion isinsufficient: STOP/review without widening orwindowsearch."
+    },
+    {
+      "id": "right-only-error",
+      "test": "Keepreferenceexcept scale postR by1.02, independently then preR by1.02. Each must reject itsownwindow/channel, whileotherchecks remainunchanged. Quantizegeneratedfiles tobinary32 andretain actualrounding/errors; do not assumeexact0.02. This is a waveform sensitivity test, not a generalrightinvariance law."
+    },
+    {
+      "id": "invalid-zero-trust",
+      "test": "Short/extrafile, NaN/Infanywhere includingprefix, zeroonechannel/window andallzero mustrefuse; wrongreferenceSHA mustrefuse even onselfcomparison. Candidatefilehas no referenceidentity requirement. Testreferencegate separately from puremath fixtures."
+    },
+    {
+      "id": "boundary",
+      "test": "Directcomputederrorlimit E=0,tau,nextafter(tau,+inf),nonfinite; inclusive<=withoutfuzz. Wholefilepositivefixture with exactf32 values r=100,y=101 in ascoredregion tests the1%boundary; adjacentrepresentablebinary32 y values straddle. Retainactualroundedresults; do not use1+tau algebra as if subtraction wereexact."
+    },
+    {
+      "id": "concentrated-error-limit",
+      "test": "At fixedframe16383, add to rightcandidate a perturbationa=0.005*sqrt(referencepostRenergy), quantizing the changed sample tobinary32. Retain actualroundederror; the intended comfortableaggregatepass is an explicitlimit, not a localpeak bound. No newtest executed now."
+    },
+    {
+      "id": "timing-splice-sensitivity",
+      "test": "Fixed delaysd=1and512: keepcandidateequalreferencebefore8192, fill[8192,8192+d) frommatchedcontrol, thenforn>=8192+d use stepref[n-d], separatelybothchannels. Retainallfourerrors/outcomes. Theseareartificialwaveformsplices, NOT physicallysimulatedparameterlatency/newnativecaptures. Passinglocalizedcontrols is a disclosedsensitivitylimit, not a reason tofit/shift/scoredframes."
+    },
+    {
+      "id": "tail-and-window-limits",
+      "test": "Zero exactly[15872,16384)bothchannels; separatelychangeonlyfiniteprefix[0,4096). Retainwhether tailcontrolpasses/fails; prefixchange is deliberatelyungraded. Aggregatecanhidelocal/low-energy-tailerrors. No threshold/windowchange toforce desiredtail/timingoutcomes."
+    }
+  ],
+  "stop_conditions": [
+    "No newmeasurement calculation or measurement-code execution in this proposal. SeparateexplicitRootselection and fullnewsource inspection are required beforeanowneddata-only evaluator run.",
+    "In laterselectedvalidation, stopon self/format/trust/boundary failure or inabilitytorejectignoredstep andspecifiedright-only2%controls. Retain allresults/failures; do not widen1%, tunechannels/windows/excludefirsteightframes or addalignment.",
+    "Passingfinitecontrols wouldsupport only thedeclaredaggregatecriterion, not newphysical smoothing/generalposition/Live law. Furtherowner/handoffadoption needs independentreview."
+  ],
+  "nonclosure": [
+    "No4000frame ramp,200x20step, onset8frames, coefficienttiming, latency, linearity/settling or target0.75terminalstate ismeasured bythiscriterion.",
+    "No generalrightchannelinvariance/crosschannelrouting or permitted1%crosschannelchange law; onlytheexactrightreference iscompared for thisfixture.",
+    "No storedpositionA1, publicLiveprotocol, arm64correspondence, rate/block/reset/transport/instance/lifecycle/generalhistory invariance.",
+    "No carryofRamp/Bcalibration, nativepole/ULP/vendor/Apple/inaudibility/uncertainty evidence; no guaranteeallcorrectindependentcandidates onotherlibrariesarchitectures fallinside1%.",
+    "All13oldIDs/32R6rows, all72publishedv4evaluationobjects,174oldmodalomissions andbothnote72mode16omissions remainimmutable/ungradedasbefore."
+  ],
+  "adoption_path": "Independentmethodproposal review; separatelyselectedowneddata-only evaluator/controlresults; separatequalifiedREQ012owner successor/currentcase andhandoffreview. No presentnormativeID, case or releasedcomparator edit.",
+  "relationship": "Author preparedcurrentcapture scripts/collector, but didnotexecuteoriginalcalls orauthor the independentactualreview. This is method authorship, not independentapprovalofitsownmethod/capture.",
+  "read_scope": "Freshfull17197Bactualreview/all38fixedwindowdescriptionrows and relevantimmutableR6REQ012; fullcurrentv4compare8830B and priorBcriterion asDATA. Rawfiles/manifests/providers hashed only; no audio samples decoded/newmetrics/oldcomparator/main/FFT/fit/model/collector/nativeexecution. CopiedcaptureREADME retainsas-ofpreparationtext; actualstatus comesfromreview/manifest. Initial guessedreviewfilenames absent; actualreview path was discovered andread fully.",
+  "expected": null,
+  "comparison": null,
+  "grade": null,
+  "new_normative_ids": 0,
+  "new_cases": 0,
+  "new_original_calls": 0,
+  "candidate_results_consulted": false,
+  "coverage_credit": 0,
+  "complete": false,
+  "new_measurement_code_or_metric_execution": false
+}

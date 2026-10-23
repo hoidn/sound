@@ -1,0 +1,293 @@
+{
+  "retained_utc": "2026-10-20T15:55:58.986581+00:00",
+  "status": "STATIC_OWN_PUBLIC_TOOL_SOURCE_DIAGNOSIS_AND_ONE_ENVIRONMENT_CANDIDATE_ONLY",
+  "author": "modulation_finish",
+  "selection": {
+    "archives_exact": [
+      "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Utility/lib/Utility-src.zip",
+      "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic-src.zip"
+    ],
+    "entry_suffix": "ghidra/util/SystemUtilities.java",
+    "names_first_cap": 20,
+    "matching_entries": 1,
+    "uncompressed_source_cap": 30000,
+    "selected_entry_bytes": 16710,
+    "other_entry_content_reads": 0,
+    "source_read_only": true
+  },
+  "archives_names_metadata": [
+    {
+      "archive": {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Utility/lib/Utility-src.zip",
+        "bytes": 136403,
+        "sha256": "000651d6632bb4c128b8366e56e5157338c1dc24d1e265c74e1a48114df2efc8"
+      },
+      "entry_count": 102,
+      "matching_entry_metadata": [
+        {
+          "name": "ghidra/util/SystemUtilities.java",
+          "uncompressed_bytes": 16710,
+          "compressed_bytes": 5384,
+          "CRC32": 371814503,
+          "compression_method": 8
+        }
+      ]
+    },
+    {
+      "archive": {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic-src.zip",
+        "bytes": 730707,
+        "sha256": "391951647be9c4244053034791679457a99728383d94dbcd33bf1708734e9de0"
+      },
+      "entry_count": 490,
+      "matching_entry_metadata": []
+    }
+  ],
+  "selected_source_entry": {
+    "archive": {
+      "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Utility/lib/Utility-src.zip",
+      "bytes": 136403,
+      "sha256": "000651d6632bb4c128b8366e56e5157338c1dc24d1e265c74e1a48114df2efc8"
+    },
+    "entry": "ghidra/util/SystemUtilities.java",
+    "bytes": 16710,
+    "sha256": "58b222704a34196a5b4cd2afaf633681e8cb6fb70e6d47be4bcacd16c0afe0d9",
+    "CRC32": 371814503,
+    "full_entry_read": true,
+    "extracted_file_created": false,
+    "source_to_compiled_class_proof": false
+  },
+  "critical_spans": [
+    {
+      "provider": "Utility-src.zip!/ghidra/util/SystemUtilities.java",
+      "lines_1based": [
+        454,
+        491
+      ],
+      "byte_start": 14459,
+      "byte_end_exclusive": 15872,
+      "bytes": 1413,
+      "sha256": "d5a1a2574c4ada7aa5ff8da89a4496d6878266b9e9e60cd258f440c00a1722ce",
+      "text": "\tpublic static int getDefaultThreadPoolSize() {\n\n\t\tInteger cpuOverride = getCPUOverride();\n\t\tif (cpuOverride != null) {\n\t\t\treturn cpuOverride;\n\t\t}\n\n\t\t//\n\t\t// The basic choice of (available processors + 1) is based upon the book\n\t\t// Java: Concurrency in Practice.  This is for CPU-bound processing.  Further, the basic\n\t\t// idea is that there is enough overhead with context switching that you can add an\n\t\t// extra thread over the number of cores so that you can maximize usage while context\n\t\t// switching is taking place.\n\t\t//\n\t\tint numProcessors = Math.max(1, Runtime.getRuntime().availableProcessors() + 1);\n\n\t\t//\n\t\t// We enforce an upper bound here.  There is likely diminishing returns with\n\t\t// more threads, and if there are too many, other resource limits can be hit.\n\t\t//\n\t\t// Note: the user can still override this with the tool option *for GUI usage*.\n\t\t//       Users can set the system property cpu.core.override to specify an exact\n\t\t//       value to use for non-GUI usage.\n\t\t//\n\t\tif (numProcessors > 10) {\n\t\t\t// TODO: This bound is fairly arbitrary, probably could be made even lower\n\t\t\tnumProcessors = 10;\n\t\t}\n\n\t\t// Note:  this serves only to limit the number of cores possible, not to increase\n\t\tInteger cpuCoreLimit = getCPUCoreLimit();\n\t\tif (cpuCoreLimit == null) {\n\t\t\treturn numProcessors;\n\t\t}\n\n\t\tint parseInt = Math.max(1, cpuCoreLimit + 1);\n\t\treturn Math.min(parseInt, numProcessors);\n\t}\n"
+    },
+    {
+      "provider": "Utility-src.zip!/ghidra/util/SystemUtilities.java",
+      "lines_1based": [
+        493,
+        523
+      ],
+      "byte_start": 15873,
+      "byte_end_exclusive": 16708,
+      "bytes": 835,
+      "sha256": "ab5939119d9d996a1ab14c572521ba2d5c256bad6cde09df5990f1a0ea79bebc",
+      "text": "\tprivate static Integer getCPUOverride() {\n\t\tString cpuOverrideString = System.getProperty(\"cpu.core.override\");\n\t\tif (cpuOverrideString == null || cpuOverrideString.trim().isEmpty()) {\n\t\t\treturn null;\n\t\t}\n\n\t\ttry {\n\t\t\treturn Integer.parseInt(cpuOverrideString);\n\t\t}\n\t\tcatch (NumberFormatException e) {\n\t\t\tMsg.debug(SystemUtilities.class,\n\t\t\t\t\"Unable to parse cpu.core.override value: \" + cpuOverrideString, e);\n\t\t}\n\t\treturn null;\n\t}\n\n\tprivate static Integer getCPUCoreLimit() {\n\t\tString cpuLimitString = System.getProperty(\"cpu.core.limit\");\n\t\tif (cpuLimitString == null || cpuLimitString.trim().isEmpty()) {\n\t\t\treturn null;\n\t\t}\n\n\t\ttry {\n\t\t\treturn Integer.parseInt(cpuLimitString);\n\t\t}\n\t\tcatch (Exception e) {\n\t\t\tMsg.debug(SystemUtilities.class,\n\t\t\t\t\"Unable to parse cpu.core.limit value: \" + cpuLimitString, e);\n\t\t}\n\t\treturn null;\n\t}\n"
+    },
+    {
+      "provider": "support/analyzeHeadless",
+      "lines_1based": [
+        22,
+        25
+      ],
+      "byte_start": 1209,
+      "byte_end_exclusive": 1439,
+      "bytes": 230,
+      "sha256": "8e68d4b771f5195cda9a965880a799edb3be2768658407e22dbec047821c971b",
+      "text": "VMARG_LIST=\"-XX:ParallelGCThreads=2 -XX:CICompilerCount=2 -Djava.awt.headless=true\"\n\n# Apply Java options from externally set environment variables\nVMARG_LIST=\"${VMARG_LIST} ${GHIDRA_JAVA_OPTIONS} ${GHIDRA_HEADLESS_JAVA_OPTIONS}\"\n"
+    },
+    {
+      "provider": "support/analyzeHeadless",
+      "lines_1based": [
+        42,
+        43
+      ],
+      "byte_start": 2154,
+      "byte_end_exclusive": 2388,
+      "bytes": 234,
+      "sha256": "923793c8b582e4835d86d9af16f1c7cdc1b54286295d409e573ddba1e9154f08",
+      "text": "# DEBUG_ADDRESS set via environment for launch.sh\nDEBUG_ADDRESS=${DEBUG_ADDRESS} \"${SCRIPT_DIR}\"/launch.sh \"${LAUNCH_MODE}\" jdk Ghidra-Headless \"${GHIDRA_HEADLESS_MAXMEM}\" \"${VMARG_LIST}\" ghidra.app.util.headless.AnalyzeHeadless \"$@\"\n"
+    },
+    {
+      "provider": "support/launch.sh",
+      "lines_1based": [
+        180,
+        184
+      ],
+      "byte_start": 5931,
+      "byte_end_exclusive": 6148,
+      "bytes": 217,
+      "sha256": "2476f1126f4b1466bc2cd2c5759e54cc6fa72efac28cae0492072dfd3468a60a",
+      "text": "\n# Get the configurable VM arguments from the launch properties\nwhile IFS=$'\\r\\n' read -r line; do\n\tVMARGS_FROM_LAUNCH_PROPS+=(\"$line\")\ndone < <(\"${JAVA_CMD}\" -cp \"${LS_CPATH}\" LaunchSupport \"${INSTALL_DIR}\" -vmargs)\n"
+    },
+    {
+      "provider": "support/launch.sh",
+      "lines_1based": [
+        237,
+        240
+      ],
+      "byte_start": 7611,
+      "byte_end_exclusive": 7811,
+      "bytes": 200,
+      "sha256": "0ff0e5d527a4099447d10eeb30e0f0719079576e78bdcad0ac45f3d4b25dfa5a",
+      "text": "else\n\tset -o noglob; \"${JAVA_CMD}\" \"${VMARGS_FROM_LAUNCH_PROPS[@]}\" \"${VMARGS_FROM_LAUNCH_SH[@]}\" ${VMARGS_FROM_CALLER} -showversion -cp \"${CPATH}\" ghidra.Ghidra ${CLASSNAME} \"${ARGS[@]}\"\n\texit $?\nfi\n"
+    },
+    {
+      "provider": "support/launch.properties",
+      "lines_1based": [
+        63,
+        74
+      ],
+      "byte_start": 2981,
+      "byte_end_exclusive": 3595,
+      "bytes": 614,
+      "sha256": "a98746c71df315614132789605aebb39b1578af2a52c46477630f65b23ac9924",
+      "text": "\n# The following property will limit the number of processor cores that Ghidra\n# will use for thread pools. If not specified, it will use the default number \n# of processors returned from Runtime.getRuntime().getAvailableProcessors(). \n# Otherwise, it will use the min of the value returned from Runtime and the \n# value specified by the following property.\nVMARGS=-Dcpu.core.limit=\n\n# The following property is a way to exactly specify the number of processor \n# cores that Ghidra will use for thread pools.  Note: this will supersede the \n# above 'cpu.core.limit' value if it is set.\nVMARGS=-Dcpu.core.override=\n"
+    }
+  ],
+  "source_findings": [
+    {
+      "id": "POOL-S01",
+      "source_spans": [
+        0,
+        1
+      ],
+      "fact": "getDefaultThreadPoolSize firstcallsgetCPUOverride; ifnon-null, returnsparsedoverrideDIRECTLY. getCPUOverride reads cpu.core.override, mapsnull/trimempty to null, otherwiseparseInt(originalstring), catchesNumberFormatException andreturnsnull.",
+      "limits": "Methodsourceonly, notcompiledclass/runtimeexecution. Parseusesoriginaluntrimmedstring aftertrimemptycheck, so proposedvalue mustbe exact2 notwhitespacepadded."
+    },
+    {
+      "id": "POOL-S02",
+      "source_spans": [
+        0,
+        1
+      ],
+      "fact": "Withoutoverride, sourcecomputes max(1,availableProcessors()+1), capsat10, then ifparsedcpu.core.limit exists returnsmin(max(1,limit+1),thatvalue). Empty/unparsablelimit fallsback. ForrelevantloggedR=2,L=2, thissourcepathreturns3; parsedoverride2wouldreturn2 directly.",
+      "limits": "Relevantsmallinteger sourcealgebra only, no Java/methodexecution or generalresource/performance claim; integeroperations retain Java semantics. cpu.core.limit=2 alone doesnotpromise pool2."
+    },
+    {
+      "id": "POOL-S03",
+      "source_spans": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fact": "Installedlaunch.properties includesblank -Dcpu.core.limit= and -Dcpu.core.override=. analyzeHeadless appends GHIDRA_JAVA_OPTIONS and GHIDRA_HEADLESS_JAVA_OPTIONS intoVMARG_LIST andpassesit ascallerargument5 tolaunch.sh. launch.sh appendsLaunchSupport-returned VMARGS thenlaunch-scriptVMARGS thencallerVMARGS onforegroundJava command.",
+      "limits": "Shellsourceargumentconstruction observed; LaunchSupportcompiledbehavior/JVMduplicate-D precedence notnewlyproved ortraced here. No LaunchSupport/Jar/class/Javap/otherclass opened orrun."
+    }
+  ],
+  "R2_context": {
+    "manifest": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/manifest.json",
+      "bytes": 5799,
+      "sha256": "1505e0b9266d43d11975b4c3b26bc544349fbd21f3e045ea929d22bb5ab99170"
+    },
+    "failure_peer": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-r2-actual-failure-review.json",
+      "bytes": 7233,
+      "sha256": "27557566455577c68d630d769d279a0581b62ecae0f21c57c7dc203060665fe0"
+    },
+    "stdout": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/headless.stdout",
+      "bytes": 7485,
+      "sha256": "37c14948dbf5c381daad2c63b08c8b91d9a146b862d3760406931e2cc9721db1"
+    },
+    "stdout_line_1based": 55,
+    "diagnostic_values": {
+      "java_version": "21.0.12.1",
+      "maxMemory": 4294967296,
+      "availableProcessors": 2,
+      "defaultPool": 3,
+      "cpu_core_override": "",
+      "cpu_core_limit": "2"
+    },
+    "stderr": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/headless.stderr",
+      "bytes": 1700,
+      "sha256": "4889031a0815391d121f37c7e2f5cf92a3cbf97bbae23cfe59c9781e0a3c7b3e"
+    },
+    "stderr_observation": "RetainedNOTE shows JDK_JAVA_OPTIONS contains -Dcpu.core.override=2 and -Dcpu.core.limit=2; diagnosticlaterreportsoverrideempty.",
+    "qualification": "Valuesare readwhileformingexceptionmessage aftercompoundguardhasdecidedthrow, notatomiccaptureofearlierpredicateoperands orfirstmismatch. Peerconfirmsclosedfailuregate; launcherexit0 wasnotfixturesuccess, driverexit1/2invalidstatuses/noactualidentity/export. R1historicalcause remainsunknown, notretroactivelydiagnosed."
+  },
+  "diagnosis": {
+    "supported": "ReporteddefaultPool3 isconsistentwith exactsourcefallbackgivenemptyoverride/runtime2/limit2. Sourceexplainswhyonlylimitingcores2 didnotyieldstrictdefaultPool2.",
+    "hypothesis": "EarlyJDK_JAVA_OPTIONS override may be superseded by laterblanklaunch-property VMARGS; shellsourceorder plusR2diagnostics supports testinga latecallerargument. Actualoverwritingactor/compiledcode/classbinding/orderisnotuniquelyproved.",
+    "no_other_class_needed": "Selectedclasscontainsallthree pool/propertymethods. No additionalclass/sourcequery justified forthisstaticdecision."
+  },
+  "proposed_minimal_environment_delta": {
+    "status": "PROPOSED_ONLY_PENDING_NEW_PREPARATION_REVIEW_AND_ROOT_FIXTURE_SELECTION",
+    "key": "GHIDRA_HEADLESS_JAVA_OPTIONS",
+    "value": "-Dcpu.core.override=2",
+    "change_count": 1,
+    "scope": "Setthissingleexistinglauncher-supported environmentkey toexactstring above; preserve allotherR2environment/JDKoptions/heap/processor/limit/input/guard/supervision/sourcebytes unchanged inany separatelyauthorizedsuccessor.",
+    "rationale": "Headlessscriptplacesit intofinalcallerVMARGS afterlaunchprops; ifcompiled/runtimepropertyreading matchesselectedsourceandnewpropertyreachesmethod, parsedoverride2returns2beforefallback.",
+    "not_selected": "No prep/codechange/launcherinvocation/runtime/probe/originalslice/export/comparator selected. No guardweakening or acceptanceofpool3."
+  },
+  "future_fixture_gate": "RootmustseparatelyselectreviewedR3preparation thenONEownedfixture toverifyexactjava/heap/availableProcessors/defaultPool/override/limit guards andsuccessfulidentity/artifacts. A sourcetextformula or prospectiveargumentorder isnotasuccessfulfixture/APIcapability. Originalgate remainsCLOSED untilrequiredreviewedgates.",
+  "fresh_read_scope": "Completeonlyselected16710B SystemUtilities.java fromZIP, names-onlytwoarchiveentrylists, fullinstalledalreadyRoot-namedlaunch.properties/7812Blaunch.sh/2388BanalyzeHeadless asdata; exactR2stdout/stderr/runstatus/resources and7233Bfailurepeer asdata. NootherZIPentrycontent, library/class/Jar/bytecode/Javap/Java/Ghidra/compiler/native/decoder/originalexecution, extractionoutsideentry orsourceexpansion.",
+  "preservation": {
+    "before": [
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Utility/lib/Utility-src.zip",
+        "bytes": 136403,
+        "sha256": "000651d6632bb4c128b8366e56e5157338c1dc24d1e265c74e1a48114df2efc8"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic-src.zip",
+        "bytes": 730707,
+        "sha256": "391951647be9c4244053034791679457a99728383d94dbcd33bf1708734e9de0"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/launch.properties",
+        "bytes": 8654,
+        "sha256": "5a0fa4849ee760fa36fda8183be56c008bfb73199b9dc21359125e47abd6ae83"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/launch.sh",
+        "bytes": 7812,
+        "sha256": "32be94ba54ee447c2a71d0191398de4fa7998817f078c315f996350d06df31b5"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+        "bytes": 2388,
+        "sha256": "302880328a0024ee24cfe0326d4d9a61c2237116d95f2e0e0df090f747f95e30"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/manifest.json",
+        "bytes": 5799,
+        "sha256": "1505e0b9266d43d11975b4c3b26bc544349fbd21f3e045ea929d22bb5ab99170"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/headless.stdout",
+        "bytes": 7485,
+        "sha256": "37c14948dbf5c381daad2c63b08c8b91d9a146b862d3760406931e2cc9721db1"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/headless.stderr",
+        "bytes": 1700,
+        "sha256": "4889031a0815391d121f37c7e2f5cf92a3cbf97bbae23cfe59c9781e0a3c7b3e"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/run-status.json",
+        "bytes": 1061,
+        "sha256": "3f91d1c0e223fb4c366d6ed33e8a06042a3d34568bf98d6a5fde11cd89a9d5f0"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture-r2/resources.jsonl",
+        "bytes": 1598,
+        "sha256": "51c6662863757b278dcd1589075473b9b89870f6b78dd3587a5f4781551efb5e"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-r2-actual-failure-review.json",
+        "bytes": 7233,
+        "sha256": "27557566455577c68d630d769d279a0581b62ecae0f21c57c7dc203060665fe0"
+      }
+    ],
+    "after_equal_before": true,
+    "paths": 11,
+    "scope": "Finitearchive/script/log/peer identityinterval; no configuration/frozenpacket/source edits. ZIPtimestamps notusedassourceexportUTC."
+  },
+  "source_export_utc": null,
+  "new_requirements": 0,
+  "new_cases_or_grades": 0,
+  "complete": false
+}

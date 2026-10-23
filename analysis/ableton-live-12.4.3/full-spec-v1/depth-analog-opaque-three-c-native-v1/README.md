@@ -1,0 +1,7 @@
+# Analog complete opaque-three frontier
+
+Root selected exactlywhole1cf3c216B54words/C1082B35lines,1ed6c212B53words/C1253B51lines,20cc0224B56words/C1262B51lines. TotalNEWnative652B163words/C3597B137lines/no warnings. Allinternal/nonthunk/exported/errorNULL/notpartial/nottimedout;undefinedmetadata signatures remainrecovery. Boundedapprovedinventoryoverlapfoundnoexactpriorwhole target, notglobalabsence.
+
+Allsource/authority/code/inputidentities freeze BEFOREsemanticCreading andcapture. ExistingfixedRizin/H4method:3sequential30schildren/oneexclusiveattempt/no retry/groupcleanup, zero datawords, no analysis/emulation/originalruntime. Wholeimage/tool/sourcechunkhashes arecustodyonly, separatefrom652selectedcodebytes. Readcollector/checker fully beforeallowedchecks; neverreruncapture orimportoldhelpers.
+
+Auto(automation_actual_review) isSOLE independent combinedsource/actualpeer afterfinalseal; Rootadoptsbycitation, nointermediategate. Parent600callsitecomposition inheritedbyapprovedreportcitationonly, no parentbody/source/controlreplay. Assesswhole3setselfcontained/purefunctionXeligibility explicitly; metadata/names alone neveradmit receiver/state/input/oracle. No recursivecallee/global/newword/header/fixup/provider/model/originalruntimefollowing;no sharedwiki/spec/case/grade/site/release edit orautomatic successor. Requiredunsupported behaviorU/OPEN.

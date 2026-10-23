@@ -1,0 +1,496 @@
+{
+  "simpler": [
+    {
+      "number": 1,
+      "title": "Load and replace sample",
+      "anchor": "simpler",
+      "body": "Dropping a sample from the browser loads it. Dropping an audio clip from Session or Arrangement uses its start/end or loop-bounded region and retains its Warp Markers and warp settings. Dragging another sample or using sample Hot-Swap replaces the loaded sample. The precedence when clip start/end and loop bounds disagree is unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-001"
+    },
+    {
+      "number": 2,
+      "title": "Playback mode selection",
+      "anchor": "playback-modes",
+      "body": "Expose Classic, One-Shot and Slicing modes. Classic is the documented initial mode with polyphonic playback and ADSR/looping; One-Shot is monophonic and has no looping; Slicing selects sample regions chromatically without modifying the original file. User defaults may replace initial settings.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-002"
+    },
+    {
+      "number": 3,
+      "title": "Classic region and percentage controls",
+      "anchor": "classic-playback-mode",
+      "body": "In Classic, absolute flags delimit the available region. Start and Length are percentages of that region. Length 50% selects half its duration. The Loop amount is active only while Loop is enabled. The precise Start/Length constraint and clamp rule at the region end remains unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-003"
+    },
+    {
+      "number": 4,
+      "title": "Classic looping, snap and fades",
+      "anchor": "classic-playback-mode",
+      "body": "Loop enables repeated playback while a note is held. Snap moves region/loop markers to zero crossings using the left channel of stereo samples; it does not guarantee a click-free right channel. Fade crossfades loop endpoints. The title-bar option selects constant-power (documented default) or linear loop fades; Fade is unavailable with Warp enabled (context-menu-options-for-simpler). Exact crossfade coefficients are unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-004"
+    },
+    {
+      "number": 5,
+      "title": "Voice limits and repeated pitch",
+      "anchor": "classic-playback-mode",
+      "body": "Voices sets the simultaneous voice limit. When exceeded, the oldest voices are removed in favor of new voices. With Retrig enabled a sustaining copy of the same note is cut on its next trigger; with Retrig disabled same-note voices can overlap. A useful audible retrigger comparison requires Voices>1 and a long release. Exact stealing fade/tie ordering is unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-005"
+    },
+    {
+      "number": 6,
+      "title": "One-Shot Trigger, Gate and fade",
+      "anchor": "one-shot-playback-mode",
+      "body": "One-Shot uses absolute region flags, has no Loop/Length/Voices controls and is always monophonic. Trigger plays the sample after note release. Gate begins Fade Out at note release and reaches silence after its configured duration. In Trigger, Fade Out is placed before the sample-region end. Fade In starts at note onset. Endpoint rounding and fade curves are unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-006"
+    },
+    {
+      "number": 7,
+      "title": "Automatic and manual slice creation",
+      "anchor": "slicing-playback-mode",
+      "body": "Slice By Transient places slices according to detected transients; raising Sensitivity increases detected slices up to 64. Beat uses the selected beat division. Region divides the available region into equal durations. Manual adds no automatic slices; double-click within the region creates one. Exact detection thresholds and musical-boundary rounding remain unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-007"
+    },
+    {
+      "number": 8,
+      "title": "Editing slice markers",
+      "anchor": "slicing-playback-mode",
+      "body": "Automatic slice lines are blue and manually created lines white. Double-click an existing slice to delete; drag to move; double-click between slices to insert. In Transient mode Alt/Option-click toggles manual/automatic identity; manual slices survive Sensitivity changes. Marker collision and out-of-region movement rules remain unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-008"
+    },
+    {
+      "number": 9,
+      "title": "Slice playback and fade extent",
+      "anchor": "slicing-playback-mode",
+      "body": "Mono permits one slice; Poly allows multiple slices and exposes Classic Voices/Retrig behavior; Thru is monophonic and continues from the triggered slice through the rest of the region. Trigger/Gate behaves as in One-Shot. Mono/Poly fades span an individual slice; Thru fades span from the selected slice to region end. The lowest mapped note and overflow note behavior are not established here.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-009"
+    },
+    {
+      "number": 10,
+      "title": "Warp mode interaction",
+      "anchor": "warp-controls",
+      "body": "With Warp off, note pitch changes playback speed. Warp on follows Set tempo independently of the played pitch. Warp as sets a chosen musical duration. The ÷2 command doubles playback speed and ×2 halves it, as documented. Warp modes/marker storage belong to warp-markers.md; this clause provides no resampling, stretch or transient DSP oracle.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-010"
+    },
+    {
+      "number": 11,
+      "title": "Filter control availability",
+      "anchor": "filter-1",
+      "body": "Expose low-pass, high-pass, band-pass, notch and Morph with 12/24 dB slopes. Clean and OSR support every filter type; MS2/SMP/PRD are documented for low-pass/high-pass. Drive is present for low-pass/high-pass/band-pass with non-Clean circuits. Morph traverses low-pass → band-pass → high-pass → notch → low-pass and has context-menu snap choices. Cutoff accepts velocity, key, envelope and LFO modulation. Transfer functions and circuit nonlinearities are unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-011"
+    },
+    {
+      "number": 12,
+      "title": "Envelopes",
+      "anchor": "envelopes-2",
+      "body": "Amplitude, filter and pitch have ADSR controls, editable by values or graph handles. Attack reaches peak, Decay reaches Sustain, and note release begins Release toward zero. Pitch/filter envelope amounts govern their influence. Amplitude Loop/Trigger restarts after Decay when held, returning from sustain to initial over Time; Beat/Sync repeats after Rate. Precise envelope curves, clock alignment and mode-switch continuity remain unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-012"
+    },
+    {
+      "number": 13,
+      "title": "Per-voice LFO",
+      "anchor": "lfo",
+      "body": "LFO offers sine, square, triangle, descending/ascending saw and random; rate is 0.01–30 Hz or tempo divisions. Attack fades its depth in. Retrigger resets each new note to Offset; Offset has no effect while retrigger is off. Key scales rate by note pitch, with zero giving equal rate across voices. Destinations are Volume/Pitch/Pan/Filter. Random distribution and exact phase/sample math are unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-013"
+    },
+    {
+      "number": 14,
+      "title": "Gain, output and stereo spread",
+      "anchor": "global-parameters-1",
+      "body": "Sample Gain precedes the output Volume stage after the filter; these are separate controls. Output Volume accepts velocity and LFO modulation. Pan accepts random and LFO modulation. Spread creates two detuned voices per note, one left and one right; its on/off decision is taken at Note On. Changing Spread later does not change whether that held note acquired the paired voices. Exact detune/pan/gain laws are unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-014"
+    },
+    {
+      "number": 15,
+      "title": "Pitch reference, transpose and glide",
+      "anchor": "global-parameters-1",
+      "body": "Without tuning or additional pitch modulation, C3 plays the sample at original pitch. Transpose spans ±48 semitones, Detune ±50 cents, and pitch bend sensitivity is documented as ±5 semitones. Glide is monophonic; Portamento is polyphonic; Time controls transition duration from the prior note pitch to the new one. MPE/tuning interactions and the exact glide trajectory are unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-015"
+    },
+    {
+      "number": 16,
+      "title": "Non-destructive crop and reverse",
+      "anchor": "context-menu-options-for-simpler",
+      "body": "Crop retains only the Start/End-bounded sample region in a new copy. Reverse also creates a processed copy. The original sample bytes are preserved. Generated names, directories, repeated operation deduplication and failure atomicity are unknown; media ownership belongs to project-media-workflows.md.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-016"
+    },
+    {
+      "number": 17,
+      "title": "Convert to Sampler and slice to racks",
+      "anchor": "context-menu-options-for-simpler",
+      "body": "Simpler → Sampler converts the preset. Sampler has no Simpler warp/slice functionality, so conversion of those modes carries no sound-equivalence promise. In Slicing, Slice to Drum Rack replaces this Simpler with a rack containing one pad per current slice. Slice to New MIDI Track instead adds a rack track and a clip playing slices in order. Generic rack/track/clip rules remain with device-racks.md and live-set-structure.md.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-017"
+    },
+    {
+      "number": 18,
+      "title": "Sample management and normalization",
+      "anchor": "context-menu-options-for-simpler",
+      "body": "Manage Sample opens the File Manager for the sample; Show in Browser selects it there. Show in Finder/Explorer reveals the backing folder but is unavailable for official Ableton Pack samples. Normalize Volumes adjusts sample gain so the peak uses available headroom; exact peak scanning, gain rounding and silent-file handling remain unknown.",
+      "strength": "D",
+      "id": "REQ-SIMPLER-018"
+    },
+    {
+      "number": 19,
+      "title": "Persistence and dependent media",
+      "anchor": null,
+      "body": "Exact save/reopen restoration of device modes, layer/slot assignments, markers, modulation, voice options and external media references is unknown. Stored fields in shipped content do not prove writer coverage, crash recovery or reload equivalence. Generic Set/media container behavior remains with live-set-structure.md and project-media-workflows.md.",
+      "strength": "U",
+      "id": "REQ-SIMPLER-019"
+    },
+    {
+      "number": 20,
+      "title": "Undo and redo",
+      "anchor": null,
+      "body": "Undo grouping, restoration of device/sample settings, marker/layer edits, generated files, conversion and routing changes are unknown. No promise of file deletion or resurrection is derived from a non-destructive operation.",
+      "strength": "U",
+      "id": "REQ-SIMPLER-020"
+    },
+    {
+      "number": 21,
+      "title": "Malformed or unavailable sample failure",
+      "anchor": null,
+      "body": "Acceptance of corrupt/truncated/unsupported audio, zero-length or missing samples, dependency resolution, out-of-range imported controls and failed allocation is unknown. No silence/no-crash or atomic rollback promise is invented.",
+      "strength": "U",
+      "id": "REQ-SIMPLER-021"
+    },
+    {
+      "number": 22,
+      "title": "Cancellation and voice teardown",
+      "anchor": null,
+      "body": "Cancel during sample replacement/import/conversion and remove or bypass while held notes play: resource cleanup, voice tail, pending-note handling and state restoration are unknown. Sample-rate changes, transport stop/restart and device reset have no established output oracle here.",
+      "strength": "U",
+      "id": "REQ-SIMPLER-022"
+    },
+    {
+      "number": 23,
+      "title": "DSP, scheduling and modulation fidelity",
+      "anchor": null,
+      "body": "Interpolation, filter/warp/stretch/saturation equations, gain/pan curves, modulation sums, random sequences, denormal/overload handling and sample-accurate note/control order are unknown. No numeric audio-error tolerance, performance bound or exact12.4.3 parity follows from manual descriptions.",
+      "strength": "U",
+      "id": "REQ-SIMPLER-023"
+    }
+  ],
+  "sampler": [
+    {
+      "number": 1,
+      "title": "Multisample layers and focus",
+      "anchor": "the-zone-tab",
+      "body": "Zone toggles a separate editor above Device View; Key/Vel/Sel select its range editor. Every contained sample is listed as a layer. Selecting a layer exposes it in the Sample tab. With Auto Select enabled, all layers eligible for the arriving note through key, velocity and selector zones are selected for that note duration. Simultaneous selection/ending-note tie behavior is unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-001"
+    },
+    {
+      "number": 2,
+      "title": "Key and velocity eligibility",
+      "anchor": "key-zones",
+      "body": "Each layer responds only within its key zone and Note On velocity zone. Newly imported key zones cover the full MIDI note range. Velocity zones span 1–127. The manual inconsistently describes full key coverage as “127” while naming C-2–G8; do not derive a 127-versus-128 endpoint rule from that wording. Zone-edge inclusivity and fade weighting are not independently resolved. See also velocity-zones.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-002"
+    },
+    {
+      "number": 3,
+      "title": "Sample selector latch",
+      "anchor": "sample-select-zones",
+      "body": "Each layer also has a 0–127 sample-select zone. A layer is eligible only if that zone overlaps the current selector. The selector affects availability at trigger time: moving it while a sample plays does not switch that playing voice to a different sample. Selector fade and exact boundary inclusivity are unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-003"
+    },
+    {
+      "number": 4,
+      "title": "Zone fades and edits",
+      "anchor": "the-zone-tab",
+      "body": "Zone edges resize ranges, zone bodies move them and upper corners set fades. Lin/Pow switches all zone fades between linear and constant-power modes. Range normalization on overlapping/crossed/zero-width edges, the exact gain law and endpoint rounding remain unknown; names alone do not prove sin/cos coefficients.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-004"
+    },
+    {
+      "number": 5,
+      "title": "Layer management and range distribution",
+      "anchor": "the-sample-layer-list",
+      "body": "Layer menu supports Delete, Duplicate, Rename and sorting by name/key/velocity/selector in both directions. Select All With Same Range uses the currently active editor. Distribute Ranges Equally spans C-2–G8; Around Root Key allocates ranges around differing roots without overlaps, distributing equal-root layers evenly. Exact division remainder/tie rules are unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-005"
+    },
+    {
+      "number": 6,
+      "title": "Round Robin modes",
+      "anchor": "round-robin-sample-playback",
+      "body": "With RR enabled, layers sharing the same key zone cycle by mode. Forward goes top→bottom and wraps; Backward bottom→top and wraps. Other excludes an immediate repeat; Random permits repeats. Reset Interval restarts at its chosen musical interval: Forward from top, Backward from bottom, and Other/Random from the sample first played. These are current manual clauses only; target applicability and interactions with unequal velocity/selector ranges, one eligible layer and stopped transport remain unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-006"
+    },
+    {
+      "number": 7,
+      "title": "Per-layer sample controls",
+      "anchor": "the-sample-tab",
+      "body": "Sample tab values generally apply to selected layer. Root Key sets its reference note; sample Detune spans ±50 cents; Volume ranges from attenuation to +24 dB; Pan controls that sample. Reverse and RAM/interpolation are explicitly global exceptions. Sample chooser changes edited layer. Exact root mapping under tuning is unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-007"
+    },
+    {
+      "number": 8,
+      "title": "Reverse and display-only controls",
+      "anchor": "the-sample-tab",
+      "body": "Global Reverse plays from Sample End backwards through any active sustain loop toward Sample Start without generating a new file. Snap uses left-channel zero crossings for sample/loop points and does not ensure right-channel continuity. Vertical Zoom changes display only. B/M/L/R chooses displayed channels, without specifying any output-channel processing.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-008"
+    },
+    {
+      "number": 9,
+      "title": "Sample extent, sustain loop and Link",
+      "anchor": "sample-playback",
+      "body": "Sample Start/End bound playback; end terminates even if volume envelope continues. With no sustain loop, playback ends at Sample End or completion of envelope release. Forward sustain loops return Loop End→Loop Start; back-and-forth loops reverse at both ends. With release mode Off they keep looping during volume-envelope release. Link makes effective Sample Start equal Loop Start, disabling but retaining the original Sample Start value for restoration when Link is disabled. Values can display samples or min:sec:ms.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-009"
+    },
+    {
+      "number": 10,
+      "title": "Release modes and loop crossfades",
+      "anchor": "sample-playback",
+      "body": "Release modes require active sustain looping. Release Enabled proceeds linearly toward Sample End on envelope release. Release Loop mode goes to Sample End then jumps to Release Loop start; back-and-forth release reverses between those points until the volume envelope ends. Crossfade is independently available for sustain/release loops with constant-power default or title-menu linear selection; loop Detune adjusts their pitch. Exact transition at a note-off coincident with a loop edge is unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-010"
+    },
+    {
+      "number": 11,
+      "title": "Envelope stages and repetition",
+      "anchor": "sample-playback",
+      "body": "Attack moves Initial→Peak; Decay Peak→Sustain; Release moves toward End on Note Off. Zero slope is linear; positive slopes move faster at the beginning, negative slopes faster at the end. Loop restarts after Decay, Beat/Sync after a musical Repeat interval; Sync aligns to song time. Trigger ignores Note Off. Velocity scales segments, not Beat/Sync beat-time. Exact curves/clock rounding remain unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-011"
+    },
+    {
+      "number": 12,
+      "title": "Interpolation and RAM",
+      "anchor": "sample-playback",
+      "body": "Interpolation is global, offering Normal, Good and Best quality. RAM is global and loads the entire multisample into RAM when enabled. Quality names provide no filter kernel or numeric fidelity contract. Allocation failure, streaming transition and memory-budget outcomes remain unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-012"
+    },
+    {
+      "number": 13,
+      "title": "Modulation oscillator",
+      "anchor": "the-modulation-oscillator-osc",
+      "body": "Each voice has an FM/AM modulation oscillator; its signal is not directly audible as an independent sound source. It has 21 waveform choices, modulation amount and velocity amount, plus an envelope. Fixed enables frequency Freq×Multi independent of input pitch; with Fixed off, Coarse/Fine are used. Exact waveforms, FM scaling and AM law remain unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-013"
+    },
+    {
+      "number": 14,
+      "title": "Pitch envelope, zone shift and glide",
+      "anchor": "the-pitch-envelope",
+      "body": "Pitch envelope affects sample and enabled modulation oscillator; Amount sets influence in semitones. Global Transpose/Detune act in semitones/cents. Key Zone Shift changes selection of sample layers while retaining played pitch. Spread creates two detuned voices per note. Glide is mono and Portamento poly, with Time defining transition duration. Pitch paths under alternate tuning and exact portamento law are unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-014"
+    },
+    {
+      "number": 15,
+      "title": "Filter and waveshaper routing",
+      "anchor": "the-filter",
+      "body": "Filter provides low-pass/high-pass/band-pass/notch/Morph,12/24 dB and circuit choices with the same documented availability as Simpler REQ-SIMPLER-011. Its own filter envelope requires enable and nonzero Amount. Shaper offers Soft/Hard/Sine/4bit; the routing control selects shaper→filter or filter→shaper. Transfer functions and oversampling are unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-015"
+    },
+    {
+      "number": 16,
+      "title": "Global articulation and voice control",
+      "anchor": "the-volume-envelope-and-global-controls",
+      "body": "Volume envelope articulates the instrument; Time globally scales all envelope lengths and Time<Key varies that scaling by note pitch. Global Pan and random pan act across samples. Voices allows up to32 simultaneous voices. Retrigger reuses already-playing same-note voices instead of adding them. Voice stealing order, smoothing and any counting interaction with Spread remain unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-016"
+    },
+    {
+      "number": 17,
+      "title": "Auxiliary envelope and LFO routing",
+      "anchor": "the-modulation-tab",
+      "body": "An auxiliary loopable envelope has A/B destinations and independent amounts; the manual describes29 destinations. Three LFOs expose sine/square/triangle/down-saw/up-saw/sample-and-hold,0.01–30 Hz or beat-time from1/64 note to8 bars. Retrig resets at note onset; Offset sets phase. LFO1 has Volume/Pan/Filter/Pitch amounts; LFO2/3 have A/B destinations and Phase/Spin stereo modes. Phase keeps channel rates equal; Spin can make right run up to50% faster. Exact destination enumeration and random sequences remain unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-017"
+    },
+    {
+      "number": 18,
+      "title": "MIDI modulation assignments",
+      "anchor": "the-midi-tab",
+      "body": "Key, Note On velocity, Release Velocity, Aftertouch, Mod Wheel, Foot Controller and Pitch Bend can each target A/B destinations with amounts. Pitch Bend Range spans0–24 semitones. The manual mentions14-bit pitch-wheel input; MIDI decoding is a separate owner. MPE assignment, destination clamps, simultaneous-source combination and note-off velocity handling beyond these assignments are unknown.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-018"
+    },
+    {
+      "number": 19,
+      "title": "Import, preset actions and conversion",
+      "anchor": "importing-third-party-multisamples",
+      "body": "The documented import list includes REX (Standard/Suite), ACID Loops and Soundtrack Loops. Drop from browser imports into User Library/Sampler/Imports, possibly as an Instrument Rack with multiple Samplers. ACID/Soundtrack tags are not accessible. Title menu can save current state as default and convert Sampler→Simpler. Exact supported versions, library decoding, migration and conversion loss remain unknown; project/media and racks retain generic ownership.",
+      "strength": "D",
+      "id": "REQ-SAMPLER-019"
+    },
+    {
+      "number": 20,
+      "title": "Persistence and dependent media",
+      "anchor": null,
+      "body": "Exact save/reopen restoration of device modes, layer/slot assignments, markers, modulation, voice options and external media references is unknown. Stored fields in shipped content do not prove writer coverage, crash recovery or reload equivalence. Generic Set/media container behavior remains with live-set-structure.md and project-media-workflows.md.",
+      "strength": "U",
+      "id": "REQ-SAMPLER-020"
+    },
+    {
+      "number": 21,
+      "title": "Undo and redo",
+      "anchor": null,
+      "body": "Undo grouping, restoration of device/sample settings, marker/layer edits, generated files, conversion and routing changes are unknown. No promise of file deletion or resurrection is derived from a non-destructive operation.",
+      "strength": "U",
+      "id": "REQ-SAMPLER-021"
+    },
+    {
+      "number": 22,
+      "title": "Malformed or unavailable sample failure",
+      "anchor": null,
+      "body": "Acceptance of corrupt/truncated/unsupported audio, zero-length or missing samples, dependency resolution, out-of-range imported controls and failed allocation is unknown. No silence/no-crash or atomic rollback promise is invented.",
+      "strength": "U",
+      "id": "REQ-SAMPLER-022"
+    },
+    {
+      "number": 23,
+      "title": "Cancellation and voice teardown",
+      "anchor": null,
+      "body": "Cancel during sample replacement/import/conversion and remove or bypass while held notes play: resource cleanup, voice tail, pending-note handling and state restoration are unknown. Sample-rate changes, transport stop/restart and device reset have no established output oracle here.",
+      "strength": "U",
+      "id": "REQ-SAMPLER-023"
+    },
+    {
+      "number": 24,
+      "title": "DSP, scheduling and modulation fidelity",
+      "anchor": null,
+      "body": "Interpolation, filter/warp/stretch/saturation equations, gain/pan curves, modulation sums, random sequences, denormal/overload handling and sample-accurate note/control order are unknown. No numeric audio-error tolerance, performance bound or exact12.4.3 parity follows from manual descriptions.",
+      "strength": "U",
+      "id": "REQ-SAMPLER-024"
+    }
+  ],
+  "impulse": [
+    {
+      "number": 1,
+      "title": "Eight sample slots and editing focus",
+      "anchor": "sample-slots",
+      "body": "Impulse has eight sample slots, loadable by dragging samples from browser/Session/Arrangement or per-slot Hot-Swap. Delete/Backspace removes loaded sample. Clicking a slot exposes that slot’s parameters. Hover controls offer play, solo, mute and Hot-Swap. Replacement settings retention and multi-drop distribution remain unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-001"
+    },
+    {
+      "number": 2,
+      "title": "Trigger mapping and editor labels",
+      "anchor": "sample-slots",
+      "body": "Default C3 triggers the leftmost slot and remaining slots are mapped across the C3–C4 octave. The manual does not enumerate the six middle pitches; these remain unknown. With MIDI Editor Fold enabled, all eight slot labels appear even for keys without stored notes. Pitch/Scale MIDI effects may transpose/rearrange incoming triggers; those devices own transformation behavior.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-002"
+    },
+    {
+      "number": 3,
+      "title": "Parameters captured at new notes",
+      "anchor": "sample-slots",
+      "body": "Per-sample parameter changes take effect for newly triggered notes, leaving playing notes unchanged; this also applies to those parameters changed by clip envelopes or automation. This clause does not establish the update timing of mute/solo/Link/global controls. Continuous curves and same-timestamp note/control ordering are unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-003"
+    },
+    {
+      "number": 4,
+      "title": "Reciprocal link of slots7 and8",
+      "anchor": "sample-slots",
+      "body": "Slot8’s Link switch joins slots7/8 so triggering either stops playback of the other. It does not establish choke behavior among other slots. Note-simultaneity order and click suppression are unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-004"
+    },
+    {
+      "number": 5,
+      "title": "Start, transpose and stretch",
+      "anchor": "start-transpose-and-stretch",
+      "body": "Start offsets playback up to100 ms from source beginning. Per-slot Transpose spans±48 semitones and accepts velocity/random modulation. Stretch spans−100%…100%; negative shortens and positive lengthens; Modes A/B select alternate algorithms, with velocity modulation of Stretch. Exact time/pitch transfer, endpoint−100 behavior and random laws are unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-005"
+    },
+    {
+      "number": 6,
+      "title": "Filter and saturation controls",
+      "anchor": "filter",
+      "body": "Per-slot filter offers type/Frequency/Resonance and velocity/random frequency modulation. Per-slot Saturator can be enabled/disabled and Drive changes input boost/distortion (saturator-and-envelope). Filter response, nonlinear shape, gain compensation and oversampling are unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-006"
+    },
+    {
+      "number": 7,
+      "title": "Trigger/Gate decay",
+      "anchor": "saturator-and-envelope",
+      "body": "Per-slot Decay reaches a documented maximum10.0 seconds. Trigger begins decay with the note; Gate waits for Note Off before starting decay. This differs from Simpler’s One-Shot Trigger/Gate envelope. Sample-end truncation, envelope equation and minimum Decay are unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-007"
+    },
+    {
+      "number": 8,
+      "title": "Per-slot and global controls",
+      "anchor": "pan-and-volume",
+      "body": "Each sample has Pan/Volume; Pan accepts velocity/random modulation and Volume velocity modulation. Global Volume and Transpose act on all samples; global Time controls both stretch and decay (global-controls). Exact global/per-slot composition, units/limits for global Time and whether a global change affects held voices are unknown.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-008"
+    },
+    {
+      "number": 9,
+      "title": "Mixed and individual outputs",
+      "anchor": "individual-outputs",
+      "body": "An inserted instance feeds its track’s audio chain. Routing can select the overall instrument signal or individual sample slots as sources for other tracks. Source naming, pre/post-fader and mute/solo effects on separate outputs, channel layout and latency belong to unresolved routing interaction; no sum identity or duplicate-feed law is inferred.",
+      "strength": "D",
+      "id": "REQ-IMPULSE-009"
+    },
+    {
+      "number": 10,
+      "title": "Persistence and dependent media",
+      "anchor": null,
+      "body": "Exact save/reopen restoration of device modes, layer/slot assignments, markers, modulation, voice options and external media references is unknown. Stored fields in shipped content do not prove writer coverage, crash recovery or reload equivalence. Generic Set/media container behavior remains with live-set-structure.md and project-media-workflows.md.",
+      "strength": "U",
+      "id": "REQ-IMPULSE-010"
+    },
+    {
+      "number": 11,
+      "title": "Undo and redo",
+      "anchor": null,
+      "body": "Undo grouping, restoration of device/sample settings, marker/layer edits, generated files, conversion and routing changes are unknown. No promise of file deletion or resurrection is derived from a non-destructive operation.",
+      "strength": "U",
+      "id": "REQ-IMPULSE-011"
+    },
+    {
+      "number": 12,
+      "title": "Malformed or unavailable sample failure",
+      "anchor": null,
+      "body": "Acceptance of corrupt/truncated/unsupported audio, zero-length or missing samples, dependency resolution, out-of-range imported controls and failed allocation is unknown. No silence/no-crash or atomic rollback promise is invented.",
+      "strength": "U",
+      "id": "REQ-IMPULSE-012"
+    },
+    {
+      "number": 13,
+      "title": "Cancellation and voice teardown",
+      "anchor": null,
+      "body": "Cancel during sample replacement/import/conversion and remove or bypass while held notes play: resource cleanup, voice tail, pending-note handling and state restoration are unknown. Sample-rate changes, transport stop/restart and device reset have no established output oracle here.",
+      "strength": "U",
+      "id": "REQ-IMPULSE-013"
+    },
+    {
+      "number": 14,
+      "title": "DSP, scheduling and modulation fidelity",
+      "anchor": null,
+      "body": "Interpolation, filter/warp/stretch/saturation equations, gain/pan curves, modulation sums, random sequences, denormal/overload handling and sample-accurate note/control order are unknown. No numeric audio-error tolerance, performance bound or exact12.4.3 parity follows from manual descriptions.",
+      "strength": "U",
+      "id": "REQ-IMPULSE-014"
+    }
+  ]
+}

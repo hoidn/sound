@@ -1,0 +1,87 @@
+"""Finite Session successor author data; no source/example/vendor execution."""
+from pathlib import Path
+import json,sys
+P=Path(__file__).resolve().parent;ROOT=P.parents[3];A=P.parent/'session-grid-source-audit'
+load=lambda p:json.loads(p.read_text())
+def build():
+ oldr=load(P/'requirements.json');oldc=load(P/'cases.json');blocks={r['id']:r for r in load(P/'source-blocks.json')}
+ def evidence(numbers):
+  return [dict(block=f'SV-B{n:03}',anchor=blocks[f'SV-B{n:03}']['anchor'],html_line=blocks[f'SV-B{n:03}']['html_line']) for n in numbers]
+ req=dict(id='REQ-SESSION-VIEW-030',title='Standard scene Edit command entrypoints',strength='D12',target_applicability='U',contract='The retained Session chapter names Cut, Copy, Paste and Duplicate as standard Edit menu commands for scenes. This clause specifies their scene entrypoint roles only; clipboard representation, exact insertion, naming, content copying, device/media ownership and undo/transaction outcomes remain unknown.',evidence=evidence([60]))
+ # Each tuple is case suffix, requirement, groups, source blocks, action, source claim, sensitive-oracle flag.
+ rows=[
+ ('041',1,['G01'],[12],
+ 'Use independently valid nonempty clips in nonadjacent slots A/C/E on an admitted track. Declare launch mode/global and clip quantization, actual focus/selection and arm/record states. After an independently productive launch with active transport and unmuted nonzero output, request C then A then E in reset histories using the named launch controls. Keep requested, selected and actually playing clip identities separate; missing or failed positive context stays U.',
+ 'Grid order does not prescribe clip request order. This finite nonsequential request history does not establish all permutations, transition sound or launch timestamps.',False),
+ ('042',4,['G02'],[15],
+ 'On disposable originals select clip A, then A/B in separate reset histories; actually invoke Edit Info Text from the Edit menu and from the clip context menu separately, and enter owned text. Retain exact selection/foreground/focus and offered command identities. Preserve SV004 Edit/context Rename and admitted palette trial. Unoffered or unsupported multi-selection entry stays U, never a successful command.',
+ 'Edit and clip-context Edit Info Text are Session metadata entrypoints. Shared annotation/rename/color semantics remain with Clip View004/005.',False),
+ ('043',12,['G02'],[24,44],
+ 'Use distinct owned interior scenes B/D, with one selected then an admitted multi-selection on reset copies. Actually invoke Edit-menu and scene-context Rename and Edit Info Text separately; use the scene-context palette. Separately invoke Scene View title-context Rename and color for single and multiple selected scenes. Preserve the original SV012 actual Tab rename route. Retain offered control/selection identities; failed or unoffered context stays U.',
+ 'The source names scene Edit/context metadata entrypoints and Scene View title Rename/color for single/multiple selections. It supplies no multi-name transformation or grammar.',False),
+ ('044',5,['G03'],[16,25,54],
+ 'On reset five-scene originals with known selection, explicitly Shift-click adjacent clips/scenes and use the literal Ctrl-click nonadjacent scene context. For grid clip selection use the separately qualified Ctrl(Win)/Cmd(Mac) paragraph54 context; retain OS/layout/focus instead of substituting Cmd for unqualified scene Ctrl. Actually drag each admitted selection and rubber-band from an empty slot. Separately repeat SV013 B/D nonadjacent drag versus stated Ctrl+Up/Down movement and record order/numbers. Missing dispatch or failed positive selection stays U.',
+ 'Specific selection modifiers precede existing move actions. Nonadjacent drag and stated scene keyboard movement retain their distinction; no platform alias, exact index or collision rule follows.',False),
+ ('045',8,['G04'],[20],
+ 'After a productive visible launch/control baseline on known nonempty clips, retain visible controls and single-track width; drag a title edge to an independently admitted narrow presentation and actually invoke an offered clip launch/control there. Reset and preserve SV008 ordinary versus Alt(Win)/Option(Mac) all-track resizing. Keep active transport/nonzero output for playback observations. Unavailable control or failed baseline stays U, not successful hidden-control absence.',
+ 'Narrow Session tracks retain Clip Launch and essential controls. No minimum pixel width, complete layout or hidden-control threshold is asserted.',False),
+ ('046',10,['G05'],[22],
+ 'Use a known populated scene B with two compatible nonempty clips on distinct tracks, independently productive clip playback and active unmuted nonzero output. Explicitly declare transport, arm/record and Start Recording on Scene Launch; use an admitted nonrecording baseline for this trial. Actually invoke Scene Launch and allow the uncancelled request to complete, retaining requested/playing identities. In a separate reset history keep SV010 nonzero quantization, independently confirmed pending request and actual Cancel Scene Launch. Missing populated/positive/pending prerequisites stays U.',
+ 'Scene Launch requests the row clips; the uncancelled populated-row trial is distinct from pending-cancel. Simultaneous audio/sample timing, empty armed slots and cancellation deadlines remain ungraded.',False),
+ ('047',14,['G06'],[28,29,30],
+ 'Record independently identified fresh/opened Set visibility and preference/history before revealing Main scene controls; do not construct a default from unspecified state. On separate reset copies type then Enter and drag offered controls, preserving SV014 both-enabled trial. Also actually launch tempo-only, meter-only and both-assigned interior scenes with each intended assignment explicitly enabled and unrelated assignment state retained. Keep known productive scene launch/output, actual project/control states and transport. Missing eligibility or failed positive launch stays U.',
+ 'Main scene controls support the documented entry and assignment contexts. Initial hidden wording is not target constructor proof; numerical assignment, precedence and timing are source claims only.',True),
+ ('048',20,['G06'],[31,41],
+ 'After positively opening Scene View through each original SV020 named context, select single scene B then admitted B/D multi-selection on reset copies. Actually edit offered upper Tempo and Signature sliders separately, retaining scene identities, per-control enable states and displayed values before/after. Do not infer editing from panel presence or assume a mixed-value policy; unoffered/failed context stays U.',
+ 'Scene View Tempo/Signature sliders edit the selected scene(s). Only named editing entrypoints are compared; numerical transforms and mixed-state policy remain U.',False),
+ ('049',17,['G07'],[34,35],
+ 'Retain OS/layout, main-window keyboard-navigation preference and actual text focus. Start with an independently selected clip slot then scene and actually use left/right to offered tempo/meter controls. Reset selected tempo then selected meter and use first Enter to select scene, second Enter to request launch. Separately start scene-name, tempo and meter text editing and actually use Tab/Shift-Tab across controls and first/last control boundaries on interior scenes, preserving SV017 original tempo-Enter/name-Tab routes. Verify a productive ordinary traversal first; absence/dispatch failure stays U.',
+ 'The retained traversal roles have distinct slot/scene/control and text-edit starting contexts. No fixed control order, last-scene wrap, global shortcut arbitration or launch deadline is supplied.',False),
+ ('050',20,['G08'],[43],
+ 'On reset copies first establish an actual admitted custom color on known single scene B, then open Scene View and inspect name/position-number/color title roles. Separately use an independently identified unassigned-color state only if available, then B/D multi-selection with known selected identities/count. Keep original SV020 all entrypoints and SV012 metadata actions. Missing proof of assigned/unassigned history stays U, not an inferred default.',
+ 'Single-scene title color is conditional on assignment; multi-selection shows selection count. Palette pixels, color precedence and unassigned default are not asserted.',False),
+ ('051',21,['G09'],[47,48],
+ 'Preserve SV021 independently confirmed looping, group-playing, monitored audio/MIDI and Arrangement contexts. For the loop trial retain a known nonempty loop region and actual successful launch/nonzero output; inspect named left/right display roles before/after independently observed loop cycles. Reset to a genuinely playing one-shot and record remaining minutes:seconds presentation. Retain independently observed playback states, not a calibrated time/count oracle. Missing playback/region baseline stays U.',
+ 'Loop length/played-loop and one-shot remaining-time meanings are documentary context only. No numeric/time rounding, cycle-boundary, update-rate, scheduling or pixel comparator is supplied.',True),
+ ('052',24,['G11'],[58],
+ 'Independently play nonempty track A material with active transport and unmuted nonzero output; use an empty sceneC/trackA slot with actual control presence known. Actually invoke Edit Add/Remove Stop Button to remove its stop control, inspect presence and launch C, retaining arm/record/preferences. Reset the same productive history, actually add using the Edit command and repeat matched scene launch. Preserve SV024 restored-stop comparison; failed positive, absent source or unsupported control stays U, never a no-effect pass.',
+ 'Edit Add/Remove Stop Button supplies both grid control-editing entrypoints. The composed scene stop/no-effect signal and timing relation remains ungraded under existing SV024.',False),
+ ('053',30,['G12'],[60],
+ 'Use owned uniquely named interior selected scenes with nonempty stored clips and an independently admitted destination/clipboard. Separately actually invoke Edit Cut, Copy, Paste and Duplicate on reset copies; establish a genuinely successful scene Copy/Paste baseline before any failure/cancel variant. Retain selection/order/content identities as ungraded observations. Unavailable entrypoint or failed baseline stays U; do not assume an insertion index, name transformation or complete copy-field set.',
+ 'The chapter names standard scene Cut/Copy/Paste/Duplicate Edit entrypoints. No clipboard format, copied-content, exact insertion or transaction law is added.',False),
+ ('054',27,['G15'],[75,76],
+ 'Preserve SV027 separated Arrangement times to Session copy/paste and AW004 actual reverse copy context. Use two independently valid owned compatible clips and positive accepted-transfer baseline; on reset copies actually perform both-direction admitted copy/paste and drag through independently identified selectors. Do not derive their glyphs or hit targets from blank-alt filenames. Separately enable Second Window through View menu, then source Ctrl+Shift+W(Win)/Cmd+Shift+W(Mac) in declared layout/focus contexts, before actual between-window drags each direction. Missing selector/window/transfer baseline stays U.',
+ 'Named transfer methods and explicitly qualified Second Window entrypoints support these finite contexts. Attempted temporal ordering is not exact tiling, metadata/file equivalence or scheduling.',False),
+ ('055',28,['G16'],[77],
+ 'On disposable originals use an owned Arrangement time selection with known nonempty eligible audio A/MIDI B clips plus a separately identified empty selected audio track; retain which selected tracks actually contain at least one clip. Select Session scene C as destination anchor. In separate resets actually invoke Create-menu and Arrangement-selection context Consolidate Time to New Scene, after a genuinely productive eligible consolidation baseline. Inspect new scene/clip/reference observations; empty-track/opposite sample condition, unsupported partial overlaps or failed baseline stays U. Preserve SV028 audio/MIDI positive and existing AR019-023 ordinary consolidation cases.',
+ 'Both menu entrypoints and positive at-least-one-audio-clip eligibility are documentary roles. No converse empty-track file rule, sample bytes, normalization, format/rate or transaction comparator is supplied.',True),
+ ('U-ARRANGEMENT-STOP',29,['G14'],[72,74],
+ 'On separate disposable originals independently establish genuinely playing nonempty Arrangement clips on A/B with active transport and enabled unmuted nonzero outputs. Retain Session clip/override/monitor/arm/record states. Actually invoke an independently identified Clip Stop on A, then Main Track Status Stop All Clips in a separately restored productive Arrangement history. Retain per-track playback/output observations and compare existing Session-stop and AR044-046 override/return histories separately. Missing Arrangement baseline stays U, never successful silence. Do not choose a Session-only or all-tracks interpretation of the literal source.',
+ 'SourceB072 says ClipStop stops Arrangement/produces silence; B074 says StopAllClips disables all Arrangement clips. These source contexts remain unresolved; no output/stop/timing law is adopted.',True),
+ ('U-COPY-INDEPENDENCE',29,['G17'],[74],
+ 'After an independently verified successful Session-to-Arrangement clip copy by an admitted route, retain exact original states of both copies and shared sample references. On disposable reset copies change one independently admitted clip-only metadata field on one copy and inspect the other copy and sample reference separately. Missing productive transfer, admitted field or known before-state stays U. No universal field independence, sample/file/device unsharing, undo or persistence result is assumed.',
+ 'Session and Arrangement clip-state independence is documentary context, not proof that every field or referenced file/device is independent. The bounded counterfactual remains ungraded.',True),
+ ]
+ new=[]
+ for suffix,n,groups,sources,action,claim,sensitive in rows:
+  unknown=suffix.startswith('U-')
+  new.append(dict(id='SV-'+suffix,requirements=[f'REQ-SESSION-VIEW-{n:03}']+(['REQ-SESSION-VIEW-013'] if suffix=='044' else ['REQ-SESSION-VIEW-014'] if suffix=='048' else []),kind='unresolved' if unknown else 'documented-context',provenance='U' if unknown else 'D12',preconditions=['F-SV-GRID','F-SV-R3','per-case-context-overrides-fixture-defaults'],setup_and_action=action,source_claim=claim,documentary_expected=None if sensitive else claim,documentary_comparator=None if sensitive else 'Only named offered controls, actual entrypoint/selection/request identities and explicit visible state roles; no numeric/time/signal/file/hidden-state law.',expected=None,comparison=None,target_grade='U',executed=False,evidence=evidence(sources),source_context=[dict(catalog='../session-grid-source-audit/source-blocks.json',json_pointer=f'/{number-1}',block=f'SV-B{number:03}') for number in sources],audit_groups=['SGA-'+g for g in groups]))
+ adoption=[]
+ for g in load(A/'proposed-deltas.json'):
+  linked=[c for c in new if g['id'] in c['audit_groups']]
+  state='external-owner-pending' if g['id'] in ['SGA-G10','SGA-G13'] else 'bounded-U-probe-only' if g['id'] in ['SGA-G14','SGA-G17'] else 'bounded-local-source-context'
+  adoption.append(dict(group=g['id'],title=g['title'],source_blocks=g['source_blocks'],disposition=state,current_case_pointers=[dict(id=c['id'],catalog='cases-r3.json',json_pointer=f'/{40+new.index(c)}') for c in linked],limits=g['limits'],coverage_credit=0,complete=False))
+ delta=dict(old_requirements=29,old_cases=40,old_requirements_verbatim=True,old_cases_verbatim=True,changed_old_fields=[],new_requirement_ids=[req['id']],new_case_ids=[r['id'] for r in new],local_groups=13,U_only_groups=['SGA-G14','SGA-G17'],external_pending_groups=['SGA-G10','SGA-G13'],all_target='null/U/unexecuted',complete_topics=0)
+ fixture=dict(id='F-SV-R3',role='Authored future context only; no ALS/media/controller/recording provided or executed.',base='fixtures.json#F-SV-GRID',prerequisites='Independently valid owned nonempty material and admitted exact controls/mode/history/focus; explicit transport/arm/record/quantization/preferences, reset copies. Use genuinely successful matched baseline before absence/stop/no-effect/empty trials. Missing/failed prerequisites remain U.',group_probe=dict(catalog='../mixing-workflows/cases-r2.json',json_pointer='/45',id='MXW-U-GROUP-SLOT',role='Existing productive populated/empty group-context U action reused, not duplicated or graded.'),Arrangement_stop_positive_required=True,numeric_signal_file_timing_oracles=None,expected=None,comparison=None,target='U',executed=False)
+ return {'requirements-r3.json':oldr+[req],'cases-r3.json':oldc+new,'audit-adoption-r3.json':adoption,'delta-r3.json':delta,'fixtures-r3.json':fixture}
+def main():
+ assert sys.dont_write_bytecode and sys.argv[1:] in (['--write'],['--check'])
+ writing=sys.argv[1:]==['--write']
+ if writing:assert not (P/'manifest-author-r3.json').exists(),'refuse write after seal'
+ for name,value in build().items():
+  if writing:
+   assert not (P/name).exists(),'refuse replace authored outputs'
+   (P/name).write_text(json.dumps(value,indent=2)+'\n')
+  else:assert load(P/name)==value,name
+ print('SessionR3 finite author data '+('written before seal' if writing else 'readonly reconstruction matched'))
+if __name__=='__main__':main()

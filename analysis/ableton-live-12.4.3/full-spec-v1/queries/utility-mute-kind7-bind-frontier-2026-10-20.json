@@ -1,0 +1,202 @@
+{
+  "retained_utc": "2026-10-20T12:10:07.640589+00:00",
+  "status": "PROPOSED_PARTIAL_CONDITIONAL_STATIC_SOURCE_QUERY; independent Root review pending",
+  "scope": {
+    "selection": "Exact reached kind7 consumer direct callee 0x102324f44 only. Metadata checked before full C read; nonthunk complete warning-free 286 C bytes <=6000 cap; 24 native-byte metadata, no native instruction read.",
+    "source_export_utc": null,
+    "source_export_utc_note": "No timestamp fabricated from filesystem metadata. Analyst retention UTC above is separate.",
+    "fresh_read": "One complete 286-byte C body and its exact metadata/raw row; existing caller/context reused as immutable source data.",
+    "excluded": "No other new callee/caller body, image word, instruction/opcode, numerical calculation, source export, original/native execution or source import."
+  },
+  "full_selected_record": {
+    "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-01644.jsonl",
+    "line_1based": 1,
+    "raw_row_terminator": "LF excluded from raw_bytes/raw_sha256",
+    "raw_bytes": 661,
+    "raw_sha256": "d230064634a568e607356c1b1951c0b992c5cf706ab705d77a67038a7eee762c",
+    "record": {
+      "entry": "0x102324f44",
+      "name": "FUN_102324f44",
+      "thunk": false,
+      "body_bytes": 24,
+      "body_ranges": [
+        [
+          "0x102324f44",
+          "0x102324f5b"
+        ]
+      ],
+      "signature": "undefined FUN_102324f44()",
+      "state": "exported",
+      "error": null,
+      "timed_out": false,
+      "partial_code": false,
+      "warnings": [],
+      "ms": 3,
+      "code_bytes": 286,
+      "code_sha256": "a3eaa5e298248a4244fc985542e39bbc5848dfcfd00559ef3f9f98d3e7ad3e9d",
+      "code": "\nvoid FUN_102324f44(long param_1,undefined1 param_2,undefined8 *param_3)\n\n{\n  undefined8 uVar1;\n  \n  *(undefined1 *)(param_1 + 0x4c) = param_2;\n  uVar1 = *param_3;\n  *(undefined1 *)(param_1 + 0x20) = *(undefined1 *)(param_3 + 1);\n  *(undefined8 *)(param_1 + 0x18) = uVar1;\n  return;\n}\n\n"
+    }
+  },
+  "direct_caller_context": {
+    "provider": {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-kind7-unit-frontier-2026-10-20.json",
+      "bytes": 7915,
+      "sha256": "238940ec5642a841ec7facbacfabdf90689fd7dc1ed1ced02c1f6bf51c9dec0a"
+    },
+    "record_pointer": "/full_selected_record/record",
+    "entry": "0x10232d250",
+    "argument_span": {
+      "lines_1based": [
+        23,
+        24
+      ],
+      "text": "  local_48 = param_2;\n  FUN_102324f44(lVar2,3,&local_48);\n",
+      "bytes": 58,
+      "sha256": "b5f8504a92bd95a5f56589a3915b2e5d3da779cd5c4a323cdc0a5877fcefe3c0"
+    },
+    "storage_graph_span": {
+      "lines_1based": [
+        25,
+        30
+      ],
+      "text": "  *(undefined1 *)(lVar2 + 100) = 1;\n  *(undefined1 *)(lVar2 + 0x65) = uVar3;\n  *(undefined1 *)(lVar2 + 0x66) = uVar3;\n  *(long *)(lVar2 + 0x50) = param_1;\n  *(long *)(lVar2 + 0x58) = param_2;\n  FUN_102322e58(param_1,lVar2);\n",
+      "bytes": 224,
+      "sha256": "2d863d5140d5cd3865826fb54c185a4a517417c81b52747d145125055644792a"
+    },
+    "interpretation": "Caller projects U from unread helper102311b5c, sets local_48=E and passes bind(U,3,&local_48). Separate caller stores U+0x50=graph G and U+0x58=entry E, then invokes unread attachment helper. These caller stores are not performed by the selected bind body."
+  },
+  "source_facts": [
+    {
+      "id": "BIND-01",
+      "source": {
+        "lines_1based": [
+          7,
+          7
+        ],
+        "text": "  *(undefined1 *)(param_1 + 0x4c) = param_2;\n",
+        "bytes": 45,
+        "sha256": "76832ee733ef0a395560687ca52fed93a30215621332f570ce08466b6c9198a0"
+      },
+      "predicate": "Under a valid destination U and recovered signature/normal ABI, byte U+0x4c receives the second argument. The retained kind7 caller passes literal 3; this byte is not the separate entry+0x100 kind7 value.",
+      "documentary_expected": null,
+      "comparison": null
+    },
+    {
+      "id": "BIND-02",
+      "source": {
+        "lines_1based": [
+          8,
+          10
+        ],
+        "text": "  uVar1 = *param_3;\n  *(undefined1 *)(param_1 + 0x20) = *(undefined1 *)(param_3 + 1);\n  *(undefined8 *)(param_1 + 0x18) = uVar1;\n",
+        "bytes": 129,
+        "sha256": "22134e1e0675269bb430cb3d2e69d606f2655765e48c0e2948dfb00ca6057721"
+      },
+      "predicate": "For valid source pointer P (recovered undefined8*), the eight-byte word at P is copied to U+0x18. Under the caller/ABI premise P=&local_48 after local_48=entry E, that word is E. The byte at P+8 is separately copied to U+0x20. This byte is not a dereference of E+8.",
+      "documentary_expected": null,
+      "comparison": null
+    },
+    {
+      "id": "BIND-03",
+      "source": {
+        "lines_1based": [
+          2,
+          12
+        ],
+        "text": "void FUN_102324f44(long param_1,undefined1 param_2,undefined8 *param_3)\n\n{\n  undefined8 uVar1;\n  \n  *(undefined1 *)(param_1 + 0x4c) = param_2;\n  uVar1 = *param_3;\n  *(undefined1 *)(param_1 + 0x20) = *(undefined1 *)(param_3 + 1);\n  *(undefined8 *)(param_1 + 0x18) = uVar1;\n  return;\n}\n",
+        "bytes": 284,
+        "sha256": "5c352e896b66ce50bf622fbf0dbdd74aa117cfc237368576baa6a98d174c167a"
+      },
+      "predicate": "Within this complete retained C projection there are no callee invocations or entry+0x110 reads/calls. This is function-local source evidence only; it does not establish native instruction completeness, global callback absence, or what later helpers do.",
+      "documentary_expected": null,
+      "comparison": null
+    }
+  ],
+  "conditional_result": "Given valid U/P, normal recovered call/argument semantics and no intervening writes, the local binder records byte3 at U+0x4c and E at U+0x18, with a separately copied adjacent-source byte at U+0x20. It does not itself show callback-field use, graph attachment semantics or actual model/processor/public Mute delivery.",
+  "distinctions": [
+    "Consumer entry+0x100 four-byte kind7 is distinct from binder byte U+0x4c literal3 and from caller U+0x64 byte1 (decimal100). No type/class/subtype semantics are inferred from numeric labels.",
+    "P+8 is relative to address-of-local_48 source storage. Recovered local names/local_40=0 do not independently prove machine stack adjacency or that copied byte is zero. It is not entry E+8.",
+    "U+0x18 is an eight-byte source word copied from P; U+0x20 is a separate one-byte copy. These are distinct from caller U+0x50 graph and U+0x58 entry associations.",
+    "The selected binder has no graph argument in its recovered signature and no visible callback invocation; no inference is made about later graph consumers, unread helpers or runtime routes."
+  ],
+  "unknowns": [
+    "Actual U construction/type/extent/admission and target object identity; caller helper remains unread in this task.",
+    "Native argument/register/frame layout and correspondence to recovered C; exact P+8 source-byte identity/value remains unknown.",
+    "Upstream helper returned-entry identity/X21/last-BL semantics; separately assigned review cannot be assumed proved here.",
+    "Any later use of stored U+0x18/U+0x20/U+0x4c, entry+0x110 callback invocation, graph attachment semantics, lifetime and actual runtime reachability.",
+    "Public Mute model-to-descriptor-to-unit-to-processor endpoint delivery, application behavior, actual current type word and runtime initializer order."
+  ],
+  "next_frontier": "STOP. The directly selected binder does not reveal callback consumption. Root must separately select any next source; no automatic traversal of caller attachment102322e58 or generic helpers.",
+  "checks": {
+    "raw_row_and_full_record_exact": true,
+    "metadata_first_and_body_cap": true,
+    "code_bytes_and_sha256_exact": true,
+    "caller_argument_and_graph_spans_exact": true,
+    "source_spans_reconstruct_from_complete_body": true,
+    "pointer_stride_note": "undefined8* +1 corresponds to byte offset8 in recovered C, not entry-object indirection. No native ABI proof added.",
+    "whitespace": "No trailing whitespace in newly authored JSON outside escaped retained source text."
+  },
+  "preservation": {
+    "before": [
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-01644.jsonl",
+        "bytes": 156217,
+        "sha256": "59520f92ac3765b67e6dc8284a919b46f402c49e22e6e8f51cf2fe76a933cbb9"
+      },
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/run.json",
+        "bytes": 555,
+        "sha256": "614a0d70de180c5ca399d855c72c83e3b536fe242508d932f663cd85e191b378"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-kind7-unit-frontier-2026-10-20.json",
+        "bytes": 7915,
+        "sha256": "238940ec5642a841ec7facbacfabdf90689fd7dc1ed1ced02c1f6bf51c9dec0a"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-kind7-unit-frontier-review.json",
+        "bytes": 8430,
+        "sha256": "2e3d4e3a1c33430639c2f68fef882061ff34438694204d12bfe88146e846a80e"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-connection-frontier-2026-10-19.json",
+        "bytes": 105444,
+        "sha256": "105b86956f6dd874d8270ae890d3264e47b4a78c2f339a5f2d14822699d4ea80"
+      }
+    ],
+    "after": [
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-01644.jsonl",
+        "bytes": 156217,
+        "sha256": "59520f92ac3765b67e6dc8284a919b46f402c49e22e6e8f51cf2fe76a933cbb9"
+      },
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/run.json",
+        "bytes": 555,
+        "sha256": "614a0d70de180c5ca399d855c72c83e3b536fe242508d932f663cd85e191b378"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-kind7-unit-frontier-2026-10-20.json",
+        "bytes": 7915,
+        "sha256": "238940ec5642a841ec7facbacfabdf90689fd7dc1ed1ced02c1f6bf51c9dec0a"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-kind7-unit-frontier-review.json",
+        "bytes": 8430,
+        "sha256": "2e3d4e3a1c33430639c2f68fef882061ff34438694204d12bfe88146e846a80e"
+      },
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-connection-frontier-2026-10-19.json",
+        "bytes": 105444,
+        "sha256": "105b86956f6dd874d8270ae890d3264e47b4a78c2f339a5f2d14822699d4ea80"
+      }
+    ],
+    "unchanged": true
+  },
+  "all_utility_application_outcomes": "U/unexecuted; no runtime assertion or grading",
+  "actual_expected": null,
+  "actual_comparison": null,
+  "new_normative_ids": 0,
+  "new_cases_or_grades": 0,
+  "complete": false
+}

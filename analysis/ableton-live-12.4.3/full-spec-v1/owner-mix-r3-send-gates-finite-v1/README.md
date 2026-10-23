@@ -1,0 +1,13 @@
+# Mix R3 finite send-gate owner proposal
+
+Unreleased analyst proposal. Root's sole actual review is approved and pinned. Auto is the sole reviewer of the added wording, mapping, IDs and preservation; that review and canonical application are pending. No canonical owner, shared page, old case row, release or grade has been edited.
+
+This packet proposes only revision metadata, an append-only revision row and a narrow observation annex to `wiki/specs/mix-graph.md`. MG-042–066 are25 unused finite observation IDs, with portable expected/comparator/grade NULL. Seven historical records remain references, not new IDs or fresh calls. The full two-context ×16-Boolean-tuple catalog is explicit. Its G1 supplied matrix does not establish public grouped tracks, which remain excluded. MainOn/current receiver/public/ARM/calibration/lifecycle claims and existing U are unchanged.
+
+`owner-before.json` pins the entire R2 predecessor, all16 whole requirement bodies, all34 old rows/IDs and protected sections before any edit. `owner.delta.json` contains only two reversible replacement fragments and an append-file reference, avoiding a full duplicate spec. Every requirement body, old row, general precision/assumption/state/error/U condition and published28-case scope remains byte exact. Root owns canonical application and shared routing after review.
+
+The owner checker consumes the staged catalog and Root's approved actual summary. It must not reopen actual batch outputs, scripts, raw bytes, executable/image/providers, native/source bodies or rerun metrics/originals. This is mapping and wording review, not a second actual review. Authoring both this proposal and the actual batch is disclosed; the actual peer is Root and the owner-wording peer is Auto.
+
+Approved actual report: `../reviews/mix-send-gates-v1-review.json`, 57,280 B, SHA256 `7d6a67be34f37502485961629700525812a847ee807e15904e85aa00f87e0f8e`. It approves25 fresh observations plus7 inherited joins, not a new portable oracle. The owner checker reads only that report's approved summary for observation mapping.
+
+Run the inspected data-only owner check with `/usr/bin/python3 -I -B check.py --check`. It opens only this staged packet, the canonical owner and the pinned sole actual peer report. The composed proposal is52,173 B, SHA256 `aa4b28842cc9e92354f5a6da7d37a681cd94a956cd5a763e498c2485a910ed2c`; reversal reconstructs the43,761 B R2 predecessor exactly. The full owner is not duplicated in this packet. `composition.json` records that identity and the harmless staging assertion history. Fifteen meaningful negative controls cover preservation, mapping, historical joins and refusal of portable-grade promotion.

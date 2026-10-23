@@ -1,0 +1,100 @@
+[
+  {
+    "id": "REQ-ARRANGEMENT-009",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "### REQ-ARRANGEMENT-009 — Consolidate adjacent material per track\n\nD-manual (A6.13): Consolidate, also Cmd-J, combines selected adjacent clip material\ninto one new clip on each selected track; selection may span multiple tracks.\nThe result can be moved and edited as a clip. Inclusion of empty gaps, mixed\nclip-type selections, single-clip behavior, output metadata and note-merging\nrules are U.\n\n",
+    "text_sha256": "a1d8ee94023110e374021098c1f03d4bafff816f939f5d37a9809a7980f54090",
+    "read_scope": "Selected exact current-asof contract text; no mutable canonical dependency."
+  },
+  {
+    "id": "REQ-ARRANGEMENT-010",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "### REQ-ARRANGEMENT-010 — Audio consolidation signal and destination\n\nD-manual (A6.13): audio consolidation creates a new sample per selected audio\ntrack from the signal before that track's effects and mixer, incorporating clip\nattenuation, Warp, pitch and applicable clip envelopes. Saved Sets place results\nunder Project `Samples/Processed/Consolidate`; unsaved Sets use the configured\nTemporary Folder. Exact output rate, sample format, naming, sample values,\nnormalization, disk-failure handling and transaction cleanup are U. This is a\nsignal-placement contract, not a calibrated waveform comparator.\n\n",
+    "text_sha256": "acfc6f876d26cc3d23c26e40ddfe92e9e155c1dac9d3c1009bf6e1e4e3e3068c",
+    "read_scope": "Selected exact current-asof contract text; no mutable canonical dependency."
+  },
+  {
+    "id": "REQ-ARRANGEMENT-020",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "### REQ-ARRANGEMENT-020 — Session overrides Arrangement per track\n\nD-manual (C3.6–3.7): changing between Session and Arrangement views changes the\nview without changing playing clips. A track plays at most one clip, from\nSession or Arrangement. Launching a Session clip takes that track over from\nArrangement while other tracks can keep playing Arrangement. Arrangement does\nnot automatically resume on that track; Back to Arrangement is the documented\nreturn action. Stop-slot and stop-all interactions are U here.\n\n",
+    "text_sha256": "3c65257e133877477027cc613b055bd5ba8634aaf89b520094c6cf4c4aed641f",
+    "read_scope": "Selected exact current-asof contract text; no mutable canonical dependency."
+  },
+  {
+    "id": "REQ-ARRANGEMENT-021",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "### REQ-ARRANGEMENT-021 — Return one or all tracks to Arrangement\n\nD-manual (C3.7): the global Back to Arrangement control lights when one or more\ntracks are playing Session instead of Arrangement; activating it returns all\ntracks to Arrangement playback. A track's Back to Arrangement control restores\nthat track individually. Exact return sample, fade, pending launch cancellation,\nbehavior over an empty Arrangement region and stopped-transport behavior are U.\n\n",
+    "text_sha256": "9105641f0a2d2f248e8955793990dabb9758f5b9d80d12dad36090130835c6fe",
+    "read_scope": "Selected exact current-asof contract text; no mutable canonical dependency."
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-031",
+    "snapshot": "owner-snapshots/recording-comping.md",
+    "text": "### REQ-RECORDING-COMPING-031 — Session performance into Arrangement\n\n**D12, R7 §7.5.** Arrangement Record captures Session clip launches and their\nproperty changes into Arrangement on the appropriate tracks/song positions;\nit also records eligible mixer/device automation and tempo/meter changes\nincluded in the names of launched scenes.\nPress Record again or stop playback to finish. This produces Arrangement clips\nwithout new audio data. Session/Arrangement clips are independent. Playback\nownership and return controls belong to\n[REQ-ARRANGEMENT-020](arrangement-editing.md#req-arrangement-020--session-overrides-arrangement-per-track)\nand [REQ-ARRANGEMENT-021](arrangement-editing.md#req-arrangement-021--return-one-or-all-tracks-to-arrangement).\n**U:** recording tempo/meter changes from scene fields without the documented\nscene-name condition, precise clip segment boundaries, automation arming\ndependencies and quantized transition latency. Automation write detail belongs\nto the automation contract.\n\n",
+    "text_sha256": "8e3f4becdf088ad335e4f7fb7364fa2ee89de5f20a8cf0eab9555a742fcf7da2",
+    "read_scope": "Selected exact current-asof contract text; no mutable canonical dependency."
+  },
+  {
+    "id": "AR-007",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-007 | 004 | negative | Try placing audio clip on M; repeat MIDI on A | Neither successfully inserts the incompatible clip type (D C3.8); feedback U |",
+    "text_sha256": "902e0e2052581c517ad62732ca323c14141e5586f465d0517196150259c7f73b",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-019",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-019 | 009 | positive | Adjacent A clips at 0–4/4–8; select both; Consolidate | One editable A clip represents selected material (D A6.13); exact metadata U |",
+    "text_sha256": "571c1d5f5a73e37a04a4b60fe8d7b493fb3fe75853c1568697264613e750ab5c",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-020",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-020 | 009 | positive | Repeat AR-019 simultaneously on A/B | One consolidated clip for each selected track (D A6.13) |",
+    "text_sha256": "b175dbb1a5a885a2365edfb8b0a92f74dcbf69e98891a8d4170fe4be7813ed28",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-021",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-021 | 010 | positive | Save Set in Project; consolidate A/B | New samples placed under that Project's Samples/Processed/Consolidate (D A6.13); naming/format U |",
+    "text_sha256": "d6401a715cc70b03e10998ce2bccaf1494d5af54ab13e617d863ac5b0be681cb",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-022",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-022 | 010 | boundary | Unsaved Set, configured Temporary Folder; consolidate A | Generated sample uses Temporary Folder (D A6.13); relocation after save U |",
+    "text_sha256": "5f299c70084fb5201684c87bc37ba0c6289904391e40853237aa05416eca91df",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-023",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-023 | 010 | negative | Compare consolidation with track effect on/off and altered mixer; same clip processing | Consolidated source signal precedes effects/mixer and includes clip processing (D A6.13); no numerical render comparator established |",
+    "text_sha256": "f4c3698bd01575ba2cb51925ddb525b237f5c974eb8bd8a5c9509d4fb5535d09",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-044",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-044 | 020 | positive | A/B Arrangement playing; launch Session clip on A | A plays Session, B keeps Arrangement; view switches leave clip choice unchanged (D C3.6–7) |",
+    "text_sha256": "14e2392ef664d45ef1eef2c515c1e4dd2d61a4122f7c831d2fe66be9a7af06fd",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-045",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-045 | 021 | positive | A/B overridden by Session; use A's Back to Arrangement | A resumes Arrangement; B remains overridden (D C3.7); transition sample U |",
+    "text_sha256": "5febfe7dd267bf8b80f721e6286e7c4ded5f7ff9d7e31a638209e38694f27169",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  },
+  {
+    "id": "AR-046",
+    "snapshot": "owner-snapshots/arrangement-editing.md",
+    "text": "| AR-046 | 021 | positive | A/B overridden; activate global Back to Arrangement | Both return to Arrangement; button indicates override while Session tracks active (D C3.7); transition/empty-region rules U |",
+    "text_sha256": "b472175e67840376af28d0167c4639eb5dc78455adc1168eb468c6a9b67e55c5",
+    "read_scope": "Selected exact scenario action/qualified documentary predicate, not an executed oracle."
+  }
+]

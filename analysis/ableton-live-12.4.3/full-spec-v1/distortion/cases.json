@@ -1,0 +1,3836 @@
+[
+  {
+    "id": "DST-DRUM-BUSS-001",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class DrumBuss; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-002",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Drum Buss; inspect /Ableton/DrumBuss, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-003",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Open Drum Buss, enumerate distortion choices, toggle Comp and adjust Trim and Drive.",
+    "expected": "Soft, Medium and Hard are available; Comp, Trim and Drive are separately addressable controls.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-004",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-003",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use S2 with Boom=0, change Crunch, Damp and Transients independently through negative, zero and positive displayed values; establish active-path prerequisites and capture envelope/spectrum.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-005",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-004",
+    "kind": "boundary",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Set Freq to a displayed non-note value, invoke Force To Note; set Boom to 0% and then 50%, changing Decay at each.",
+    "expected": "Force To Note is exposed and updates Freq to a note frequency; Boom and Decay remain separate controls. Exact frequency and all audio outcomes U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-006",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-005",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With Boom=50% and independently established resonant output, toggle Boom Audition; then compare Dry/Wet=0%,50%,100% and Output=-12 dB,0 dB using S2.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-007",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "DriveAmount",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-008",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "DriveAmount"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-009",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-010",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-011",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set DriveAmount/Manual/@Value to NaN",
+        "set DriveAmount/Manual/@Value to 1e309",
+        "remove device element",
+        "set DriveType/Manual/@Value to999"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-012",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "DriveAmount",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-013",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-014",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-015",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-016",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-017",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-001",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Tube; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-002",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Dynamic Tube; inspect /Ableton/Tube, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-003",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Enumerate A/B/C and adjust Drive, Bias and Tone separately.",
+    "expected": "A, B and C are selectable; Drive, Bias and Tone are separate controls.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-004",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-003",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use S2 and record negative, zero and positive Envelope settings at fixed nonzero Drive/Bias; establish follower response and wet distortion baselines before comparing.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-005",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-004",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At Envelope=0, compare minimum and maximum displayed Attack and Release with S2. Positive baseline: at a nonzero Envelope, establish that both controls affect an active follower path; hold Bias/Drive/model/output fixed. If baseline fails remain U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-006",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-005",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Open title context menu and toggle Hi-Quality; adjust Output.",
+    "expected": "Hi-Quality is a context-menu option; Output is separately adjustable.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-007",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "Bias",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-008",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "Bias"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-009",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-010",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-011",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set Bias/Manual/@Value to NaN",
+        "set Bias/Manual/@Value to 1e309",
+        "remove device element",
+        "set Type/Manual/@Value to999"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-012",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "Bias",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-013",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-014",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-015",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-016",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-017",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-001",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Erosion2; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-002",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Erosion; inspect /Ableton/Erosion2, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-003",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Play S1; drag display X and Y separately. Before the positive modifier-Y branch, select Noise Blend=100%, verify the accepted nonzero value and that Filter Width is enabled, then modifier-drag Y. If that enabled-state prerequisite is not established, leave the branch U.",
+    "expected": "Ordinary X changes Freq; ordinary Y changes Amount; modifier Y changes Filter Width. Spectrum/modulation presentation is available during playback.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-004",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-003",
+    "kind": "boundary",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Set Noise Blend to 0%,50%,100%; inspect Filter Width and carrier icons.",
+    "expected": "At 0% Filter Width is gray; sine and noise indicators change relative prominence with blend.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-005",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-003",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At accepted Noise Blend=0%, verify Filter Width is gray, then modifier-drag Y and record whether the inactive stored width changes; this disabled-state gesture outcome is U. Separately vary stored/automated Filter Width using S1. First establish audible noise-width effect at Blend=100%, Amount>0, active wet path. Isolate mono/stereo and carrier blend; no established baseline means U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-006",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-004",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With nonzero Amount and accepted Noise Blend=100%, test Stereo Width=0%,50%,100% using only S1 first-second segment: 1 second of 500 Hz sine, peak0.1, identical L/R, phase0 at segment start. Do not use S1 second/third seconds. Establish width-sensitive modulation and nonmuted processed output independently first; otherwise U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-007",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-005",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Obtain separately pinned pre-12.4 Set with Erosion and a current Erosion2 Set; load copies and inspect device identity, values, saving and undo. No qualifying old Set is retained here.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-008",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "NoiseBlend",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-009",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "NoiseBlend"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-010",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-011",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-012",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set NoiseBlend/Manual/@Value to NaN",
+        "set NoiseBlend/Manual/@Value to 1e309",
+        "remove device element"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-013",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "NoiseBlend",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-014",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-015",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-016",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-017",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-018",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-001",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Overdrive; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-002",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Overdrive; inspect /Ableton/Overdrive, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-003",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Drag XY horizontally then vertically and compare corresponding slider boxes.",
+    "expected": "Horizontal movement addresses filter frequency; vertical movement addresses bandwidth.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-004",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-003",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At Drive=0%, use S1 at several levels with Tone held fixed and Dry/Wet=100%; require independent nonlinear-path baseline. Repeat Drive=50%,100% and lower/higher Tone.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-005",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-004",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use S2 at Dynamics=0%,50%,100%, Drive=50% and 100%, fixed band-pass and Tone, nonmuted full wet output; compare attack and level only after active-path baseline.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-006",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-005",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Set Dry/Wet=0%,50%,100% with S1 on a single track, then in an isolated return; disable other sends and direct output when measuring return.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-007",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "Drive",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-008",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "Drive"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-009",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-010",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-011",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set Drive/Manual/@Value to NaN",
+        "set Drive/Manual/@Value to 1e309",
+        "remove device element"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-012",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "Drive",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-013",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-014",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-015",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-016",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-017",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-001",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Pedal; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-002",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Pedal; inspect /Ableton/Pedal, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-003",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-002",
+    "kind": "boundary",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Enumerate types; set Gain=0% then 50%; adjust global Output.",
+    "expected": "Overdrive, Distortion and Fuzz are available; Gain and Output are independent controls.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-004",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-003",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Move Mid Frequency through left, center, right; set EQ knobs negative, neutral and positive.",
+    "expected": "Three Mid Frequency switch positions are available, documented as 500 Hz, 1 kHz and 2 kHz.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-005",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-004",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use S3; compare Sub off/on with Bass=-100%,0%,100%, fixed model/Gain. Require active processed low-frequency baseline.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-006",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-005",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Open title menu and toggle Hi-Quality; set Dry/Wet=0%,50%,100%.",
+    "expected": "Hi-Quality is available in the context menu; Dry/Wet is a distinct control.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-007",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-006",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With Fuzz, Sub off, Gain=50%, Bass=Mid=-100%, Treble=100%, Output=-20 dB, start Dry/Wet=0% and raise it on S2. Independently establish wet output and input level before sound comparison.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-008",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "Gain",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-009",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "Gain"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-010",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-011",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-012",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set Gain/Manual/@Value to NaN",
+        "set Gain/Manual/@Value to 1e309",
+        "remove device element",
+        "set Type/Manual/@Value to999"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-013",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "Gain",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-014",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-015",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-016",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-017",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-018",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-007",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-001",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Redux2; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-002",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Redux; inspect /Ableton/Redux2, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-003",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-002",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use S1 at displayed Rate=4000 Hz and 12000 Hz, Jitter=0% and 50%, Pre/Post filters off. Host rate is independently varied later; device Rate is not the host rate.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-004",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-003",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "With Rate=8000 Hz, enable Pre and Post independently; set Post-Filter Octave=-1,0,+1.",
+    "expected": "Pre and Post are separate switches; Post-Filter Octave is expressed relative to Rate/2. Exact audio cutoff remains U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-005",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-004",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use S3 at displayed Bits=4 and 8 with Shape=0% and 50%; compare low and high input levels after active-path baseline. Device Rate fixed; Jitter off and filters fixed.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-006",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-005",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At Bits=4, toggle DC Shift on S3, then test Dry/Wet=0%,50%,100%; establish nonmuted quantized wet output and isolate the return if used.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-007",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-006",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Obtain independently pinned Redux Legacy state; compare loading, device identity and controls with current Redux2; inspect EcoProcessing changes separately without assuming GUI meaning.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-008",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "SampleRate",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-009",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "SampleRate"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-010",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-011",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-012",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set SampleRate/Manual/@Value to NaN",
+        "set SampleRate/Manual/@Value to 1e309",
+        "remove device element"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-013",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "SampleRate",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-014",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-015",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-016",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-017",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-018",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-007",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-001",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Roar; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-002",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Roar; inspect /Ableton/Roar, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-003",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Adjust Drive, Tone Amount and Tone Frequency; toggle Color Compensation.",
+    "expected": "Input controls are distinct and Color Compensation is switchable.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-004",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-003",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Select Single, Serial, Parallel, Multi Band, Mid Side, Feedback, Delay and inspect Blend, stage tabs and crossover controls.",
+    "expected": "All seven choices are available; Blend is provided except Single/Multi Band; Multi Band provides Low and High crossovers.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-005",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-004",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "In Serial and Multi Band, adjust each displayed stage independently; toggle Stage and Shaper; drag shaper display and adjust Bias and Shaper Level.",
+    "expected": "Stage/shaper toggles are distinct; visualization dragging addresses Shaper Amount.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-006",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-005",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Enumerate all twelve choices in stage 1 and switch each at a fixed Shaper Amount.",
+    "expected": "Exactly the twelve documented shaper labels are selectable; audio consequences remain U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-007",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-006",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Select each of nine filters; inspect Resonance, Peak Gain and Morph; toggle Pre.",
+    "expected": "Nine types are selectable; Resonance is available except Resampling; Peak and Morph expose their respective controls.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-008",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-007",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Open Mod Sources; for each LFO enumerate five waveforms and five modes, then adjust Morph and Smooth.",
+    "expected": "Each LFO has the documented five waveform/mode choices; Rate units change between Hz and tempo divisions.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-009",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-008",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With S2, set a nonzero Env-to-Shaper Amount matrix route, test Hold off/on, Attack/Release, Threshold/Gain and analysis Frequency/Width; independently establish modulation and audible wet path; audition Input Listen.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-010",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-009",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Select all four Noise types; switch rate between free and synchronized, adjust Smooth.",
+    "expected": "Four named types and free/synchronized rate choices are available; no sequence equality asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-011",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-010",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Add LFO1-to-stage-1 Shaper Amount and Env-to-Dry/Wet routes, set nonzero cell amounts, expand panel, use X.",
+    "expected": "Selected targets appear as rows; sources occupy columns; X clears matrix assignments. Parameter bases and audio after clear are U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-012",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-011",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Enumerate five Feedback modes, toggle Invert/Gate and adjust feedback Filter Frequency/Width.",
+    "expected": "Five modes and separate Invert, Gate and filter controls are available; tail/audio outcomes remain U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-013",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-012",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use nonmuted full wet S2; vary compression and sidechain HP at fixed feedback, then Output Gain and Dry/Wet. Disable unrelated modulation; capture peaks only after positive baseline.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-014",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-013",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Use distinct S2 main and S3 sidechain tracks with source audible output isolated; enable External SC, choose Post FX then Post Mixer, set Mix=0%,50%,100%, toggle Listen.",
+    "expected": "External source/tapping controls, Mix, SC Gain and Listen are available; selected tapping point updates. Audio/no-effect outcomes U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-015",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-014",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Set Note mode; enable MIDI > FB Note, choose a dedicated MIDI source and each tapping point; inspect Feedback Mode and Feedback Amount.",
+    "expected": "MIDI source and tapping selections are available; the manual describes Feedback Mode and Amount as inactive while MIDI sidechain is active.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-016",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-015",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Inspect available menu controls and stored fields without inferring equivalence; compare preset variants only if independently retained.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-017",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "Stage1_Shaper_Amount",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-018",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "Stage1_Shaper_Amount"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-019",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-020",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-021",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set Stage1_Shaper_Amount/Manual/@Value to NaN",
+        "set Stage1_Shaper_Amount/Manual/@Value to 1e309",
+        "remove device element",
+        "set Input_RoutingMode/@Value to999"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-022",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "Stage1_Shaper_Amount",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-023",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-024",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-025",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-026",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "Remove/reconnect external audio and MIDI sources as a separate Roar subcase if active."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-027",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-016",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-001",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Saturator; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-002",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Saturator; inspect /Ableton/Saturator, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-003",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Enumerate eight Curve Types; select Waveshaper and open expanded view.",
+    "expected": "Eight named choices are selectable; expanded Waveshaper controls can be shown.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-004",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-003",
+    "kind": "boundary",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Select Bass Shaper; set threshold to 0,-25,-50 dB; request values beyond displayed bounds without assuming clamp/reject.",
+    "expected": "The documented threshold endpoints are 0 and -50 dB; legal endpoint values are representable. Out-of-range outcome U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-005",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-004",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Toggle Color, open expanded view and move first/second handles while observing Amt Lo, Amt Hi and Frequency.",
+    "expected": "First handle addresses Amt Lo; second addresses Amt Hi/Frequency according to drag axis. Color can be enabled independently.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-006",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-005",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Use independently verified nonmuted wet-only path, Dry/Wet=100%, Color negative and positive, select Soft Clip then Hard Clip at Output=-12 dB and 0 dB. Also examine Dry/Wet=0% separately without applying wet peak bound.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-007",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-006",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Select Waveshaper and expand; distinguish main Drive from Waveshaper Drive; enumerate six controls.",
+    "expected": "Waveshaper Drive, Curve, Depth, Linear, Damp and Period are active in Waveshaper mode.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-008",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-006",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At Waveshaper Drive=0%, vary Curve/Depth/Linear/Damp/Period. Separately at Depth=0%, vary Period. Establish positive influence at Drive=100% and Depth>0, selected Waveshaper, nonzero nonlinear wet output, fixed color/post clip; otherwise U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-009",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-007",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Open context menu and toggle Hi-Quality and Pre-DC Filter separately.",
+    "expected": "Both menu controls are available and independently switchable.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-010",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "PreDrive",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-011",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "PreDrive"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-012",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-013",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-014",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set PreDrive/Manual/@Value to NaN",
+        "set PreDrive/Manual/@Value to 1e309",
+        "remove device element",
+        "set Type/Manual/@Value to999"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-015",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "PreDrive",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-016",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-017",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-018",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-019",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-020",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-008",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-001",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-001",
+    "kind": "positive",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Parse exact PKG-SCHEMA bytes and select class Vinyl; compare all declared fields and class start line with schema-fields.json.",
+    "expected": "Exact class, line and field attributes match retained source.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-002",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-001",
+    "kind": "persistence",
+    "provenance": "Dpkg",
+    "exact_target_applicability": "installed bytes only",
+    "input": "Decode frozen package preset for Vinyl Distortion; inspect /Ableton/Vinyl, root attributes and recorded field XML.",
+    "expected": "Exact class/root attributes/field XML match package-values.json; no load/save behavior asserted.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-003",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-002",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "For Tracing and Pinch separately drag X, Y and modifier-Y; compare Freq/Drive/Q, then change overall Drive.",
+    "expected": "Each model exposes frequency, drive and Q adjustment by the documented XY gestures; global Drive is distinct.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-004",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-003",
+    "kind": "positive",
+    "provenance": "D12",
+    "exact_target_applicability": "unknown",
+    "input": "Select Soft then Hard and toggle Stereo/Mono with Pinch active.",
+    "expected": "Two modes and a Stereo/Mono switch are available; audio behavior remains U.",
+    "comparison": "Exact named source/state/UI properties only; no DSP, sample, timing or CPU metric.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-005",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-004",
+    "kind": "positive",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Test Density=0%,50%,100% with nonzero Crackle Volume, then vary Volume at fixed Density on silence S0 and active S1; first establish generator output independently, not just harmonic path.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-006",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "automation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "parameter": "Drive",
+      "sequence": [
+        "record current displayed value",
+        "automate at0s,0.5s,1s using recorded legal low/mid/high values",
+        "apply opposing clip modulation",
+        "perform manual edit",
+        "re-enable automation",
+        "map to rack macro and repeat"
+      ],
+      "observe": [
+        "effective control ownership",
+        "undo grouping",
+        "audio discontinuity",
+        "stage/mode gating"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-007",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "boundary",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1",
+      "sequence": [
+        "record displayed control endpoints and current factory state",
+        "enter each endpoint and one display step inside",
+        "switch every mode at each endpoint",
+        "set all documented zero/inactive depths",
+        "restore captured starting state"
+      ],
+      "observe": [
+        "accepted domain",
+        "disabled controls",
+        "retained values",
+        "audio stability"
+      ],
+      "numeric_parameter": "Drive"
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-008",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "persistence",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "load retained named preset copy",
+        "record all controls/modes/quality/routing and matrix assignments if present",
+        "save new Set and new preset",
+        "close and reopen each",
+        "compare displayed/stored state and audible continuation"
+      ],
+      "observe": [
+        "loss/migration",
+        "source identity",
+        "modulation memory",
+        "tail/random state"
+      ],
+      "not_a_default": "The retained named preset is not an initialized constructor."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-009",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "undo",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "record all controls",
+        "change numeric control, mode if present, quality/routing if present",
+        "Undo each action",
+        "Redo each action",
+        "delete device and Undo"
+      ],
+      "observe": [
+        "transaction grouping",
+        "restored identity/state",
+        "automation references",
+        "audible tail/seed"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-010",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "malformed",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "base": "frozen preset copy; never modify retained bytes",
+      "mutations": [
+        "truncate decompressed XML at midpoint",
+        "set Drive/Manual/@Value to NaN",
+        "set Drive/Manual/@Value to 1e309",
+        "remove device element",
+        "set SoftHard/Manual/@Value to999"
+      ],
+      "observe": [
+        "rejection/repair",
+        "error text",
+        "prior-state mutation",
+        "partial processing"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-011",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "parameter": "Drive",
+      "sequence": [
+        "enter text nan",
+        "enter 1e309",
+        "enter empty text",
+        "enter just outside displayed legal bounds"
+      ],
+      "observe": [
+        "accepted/clamped/rejected state",
+        "error",
+        "undo"
+      ],
+      "note": "UI entry and malformed-file loading are different trust boundaries."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-012",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "cancellation",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "sequence": [
+        "start preset replacement and cancel chooser before selection",
+        "enter hot-swap and exit without selection",
+        "start numeric drag and press Escape before release"
+      ],
+      "observe": [
+        "restoration versus commit",
+        "undo entry",
+        "focus",
+        "partial routing/state mutation"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-013",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "transport",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "play from0s",
+        "stop at0.75s",
+        "seek to0.25s",
+        "restart",
+        "loop0.25–0.75s three times"
+      ],
+      "observe": [
+        "follower/history reset",
+        "buffer content",
+        "feedback/generator/phase continuity if present",
+        "first output samples"
+      ]
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-014",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "rate",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S1 and S2 regenerated at each host rate",
+      "host_sample_rates_hz": [
+        44100,
+        48000,
+        96000
+      ],
+      "block_sizes": [
+        64,
+        512
+      ],
+      "sequence": [
+        "record control values and warmup",
+        "process identical-duration inputs",
+        "change rate/block while active if host permits",
+        "compare real-time and offline export"
+      ],
+      "observe": [
+        "rate-dependent state",
+        "latency",
+        "aliasing",
+        "random stream",
+        "reset/error"
+      ],
+      "device_rate_not_host_rate": true
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-015",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "teardown",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S2",
+      "sequence": [
+        "process nonzero input with automation and audible wet path",
+        "delete device during playback",
+        "Undo deletion",
+        "close Set during processing"
+      ],
+      "observe": [
+        "tail/feedback/noise cessation",
+        "stale references",
+        "automation restoration",
+        "error/hang"
+      ],
+      "routing": "No device-specific external sidechain is established by this manual section."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-016",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-005",
+    "kind": "negative",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": {
+      "signal": "S0 then S1",
+      "sequence": [
+        "activate then bypass device",
+        "compare silent input and active signal",
+        "toggle processed/dry endpoints only if a control is independently available",
+        "isolate direct/return/rack paths"
+      ],
+      "observe": [
+        "bypass latency",
+        "generator tails",
+        "state memory",
+        "wet output"
+      ],
+      "prerequisite": "Apply P-AUDIO independently for any effect or no-effect claim; no silence implies bypass or absent algorithm."
+    },
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-018",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Test Soft/Medium/Hard on S1 at low/high levels, Comp off/on, Drive at minimum/mid/maximum displayed values; fix Trim and output. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DRUM-BUSS-019",
+    "device": "drum-buss",
+    "requirement": "REQ-DST-DRUM-BUSS-004",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With S2 and independently audible Boom=50%, compare Decay min/max at Boom=0% and >0%; test Force To Note near each side of a semitone midpoint and the exact midpoint, tuning reference unresolved. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-018",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "For A/B/C sweep input level and Bias at recorded endpoints with Envelope=0; do not infer threshold from an inactive path. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-EROSION-019",
+    "device": "erosion",
+    "requirement": "REQ-DST-EROSION-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Test modern Erosion2 at Blend=0%,50%,100%, Amount=0 and >0 on S1, compare ordinary/modifier XY control routes; do not compare generated noise sample equality. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-OVERDRIVE-018",
+    "device": "overdrive",
+    "requirement": "REQ-DST-OVERDRIVE-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Compare band-pass bandwidth/center endpoints on S3 with Drive>0 and fixed Dynamics/Tone/full-wet output. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-019",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Test Overdrive/Distortion/Fuzz with Gain=0%,50%,100% on S1 and S2; hold post EQ and Output fixed and independently establish distorted wet output. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-020",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-003",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At each Mid Frequency position and Bass/Mid/Treble neutral/cut/boost, use S3; measure documented band tendencies without invented Q/boost tolerance. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-REDUX-019",
+    "device": "redux",
+    "requirement": "REQ-DST-REDUX-003",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "At Rate=8000Hz test Pre/Post off/off,on/off,off/on,on/on; Post-Filter Octave=-1,0,+1; Jitter=0%,50%. Establish bandwidth and width baselines independently. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-028",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-003",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Test Single, Serial, Parallel, Multi Band, Mid Side, Feedback and Delay using S1/S2/S3; for each independently establish active stage output and stage-sensitive contrast. Hold other stages/shapers at contrasting known settings, test Blend endpoints only where present; test both crossovers only in Multi Band. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-029",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-005",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "For each of twelve shapers use S1 at two input levels, nonzero Shaper Amount, Bias=0, then recorded positive/negative Bias. Disable feedback and compression, bypass filter, full wet and fixed output; establish active nonlinear baseline per shaper. Noise/Shards remain statistical/sequence U. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-030",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-006",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Test all nine filter types on S3 with shaper on, contrasting Amount>0, Pre off/on. Establish both filter-sensitive and nonlinear baselines; isolate generated harmonics to distinguish Pre placement. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-031",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-007",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "For LFO1/2 assign nonzero amount to a proven active stage-1 Amount target; test five waveforms and five rate modes with Morph/Smooth endpoints, tempo60/120BPM and stop/seek. Zero matrix depth tests require independent positive depth effect. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-032",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-009",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Assign Noise at nonzero depth to active Shaper Amount, test four types, free/synced rates and Smooth min/max on S1. PRNG state/seed/distribution and repeatability have no oracle. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-033",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-011",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Establish nonzero feedback with S2 in Feedback/Delay modes; test all five feedback modes, Invert off/on and Gate off/on, remove input for5s. Gate-off persistence requires independently established sustaining feedback, not merely Amount>0; no universal infinite-tail pass. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-034",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-013",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With independently effective Env-to-Shaper Amount modulation, test Mix=0/100 using distinct internal S2 and external S3, selected PostFX/PostMixer path, SC Gain changes, Listen off/on and missing source. Isolate source track audible path; active nonzero matrix and wet output required. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-ROAR-035",
+    "device": "roar",
+    "requirement": "REQ-DST-ROAR-014",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "In Feedback Note mode route MIDI notes60,64,67 separately then overlapping, sustain on/off and note-offs; verify MIDI source path and nonzero pitched feedback first. Compare MIDI source deletion and Listen separately; pitch mapping/priority unknown. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-021",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "For eight curves use S1 at low/high levels, Drive fixed, Color off, Post Clip disabled only if independently available, full wet. Repeat with Color on and contrasting amounts; curves and clipping thresholds remain U. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-022",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-006",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "With Waveshaper active and full wet, test each six-control endpoint, Depth=0 and >0, Waveshaper Drive=0% and 100%; establish nonzero positive-depth/drive baseline before any no-effect comparison. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-SATURATOR-023",
+    "device": "saturator",
+    "requirement": "REQ-DST-SATURATOR-007",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Compare Hi-Quality off/on on S1 near Nyquist, then Pre-DC Filter off/on on S3 including DC segment; establish nonzero nonlinear and DC output baselines separately. No aliasing/CPU/delay tolerance specified. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-DYNAMIC-TUBE-019",
+    "device": "dynamic-tube",
+    "requirement": "REQ-DST-DYNAMIC-TUBE-005",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Compare Hi-Quality off/on on S1 high-frequency segment, at nonzero distortion with fixed model/drive/bias/output; no factor, aliasing metric or CPU target specified. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-PEDAL-021",
+    "device": "pedal",
+    "requirement": "REQ-DST-PEDAL-005",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Compare Hi-Quality off/on with high-frequency S1, nonzero Gain and active processed output; no aliasing/CPU/latency target specified. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  },
+  {
+    "id": "DST-VINYL-DISTORTION-017",
+    "device": "vinyl-distortion",
+    "requirement": "REQ-DST-VINYL-DISTORTION-002",
+    "kind": "signal-interaction",
+    "provenance": "U",
+    "exact_target_applicability": "unknown",
+    "input": "Isolate Tracing then Pinch by independently established band on/off/zero paths; test Soft/Hard, Stereo/Mono and Q/Frequency/Drive endpoints on S1/S3; disable or independently isolate Crackle before harmonic comparisons. Apply P-AUDIO; if prerequisites are not independently established, outcome remains U.",
+    "expected": null,
+    "comparison": "Ungraded: retain observations and prerequisites; no pass/fail or invented tolerance.",
+    "execution": "unexecuted against original and candidate"
+  }
+]

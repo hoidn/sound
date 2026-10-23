@@ -1,0 +1,74 @@
+{
+  "file": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_bind.c",
+    "bytes": 9881,
+    "sha256": "0884c8f03174db209afa4dd3853b42de2d90035e0c1655effa7c5d04367617f2"
+  },
+  "fresh_read_spans": [
+    [
+      1,
+      110
+    ],
+    [
+      111,
+      175
+    ]
+  ],
+  "roles": [
+    {
+      "lines": [
+        33,
+        50
+      ],
+      "role": "pf/pd nextafter directions and23 selected ordinary wrapper entries; no inexactness test"
+    },
+    {
+      "lines": [
+        52,
+        60
+      ],
+      "role": "fixed sincos/exp10 wrappers also use pf/pd"
+    },
+    {
+      "lines": [
+        153,
+        175
+      ],
+      "role": "getenv+atoi, choose perturbed families before ordinary libm; fixed bindings already returned"
+    }
+  ],
+  "full_source_asof": "/* xdev_bind.c: which macOS import gets which Linux definition. Each binding keeps the contract\n * the call site relies on. Anything not listed stays trapped (see xdev_load.c).\n * Substitutions that can change numbers (libm, rand, time) are listed in the evidence README. */\n#define _GNU_SOURCE\n#include \"xdev.h\"\n#include <dlfcn.h>\n#include <locale.h>\n#include <math.h>\n#include <stdarg.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <time.h>\n#include <unistd.h>\n\nstatic void say(const char *m) { if (write(2, m, strlen(m)) < 0) _exit(88); }\n\nstatic long guard_value = 0x2f8a6b1c4d3e5f71;\n__attribute__((noreturn)) static void x_stack_chk_fail(void) { say(\"TRAP ___stack_chk_fail (stack smashed)\\n\"); _exit(86); }\nstatic void *x_new(size_t n) { void *p = malloc(n ? n : 1); if (!p) { say(\"xdev: operator new failed\\n\"); _exit(2); } return p; }\nstatic void x_delete(void *p) { free(p); }\nstatic void x_bzero(void *p, size_t n) { memset(p, 0, n); }\nstatic int x_atexit(void *f, void *a, void *d) { (void)f; (void)a; (void)d; return 0; }  /* destructors never run */\n/* macOS memset_pattern16(b, pattern16, len): repeat the 16-byte pattern, last copy truncated. */\nstatic void x_memset_pattern16(void *b, const void *pat, size_t n)\n{ for (size_t i = 0; i < n; i += 16) memcpy((char *)b + i, pat, n - i < 16 ? n - i : 16); }\n/* macOS newlocale(mask, \"C\" or NULL, base) gives the C locale; masks differ from glibc's. */\nstatic locale_t x_newlocale(int mask, const char *name, locale_t base)\n{\n    if (name && strcmp(name, \"C\") && strcmp(name, \"POSIX\")) { say(\"TRAP _newlocale (non-C locale)\\n\"); _exit(86); }\n    (void)mask; (void)base; return newlocale(LC_ALL_MASK, \"C\", 0);\n}\n/* Sensitivity test only: with XDEV_LIBM_ULP=+1 or -1 in the environment, every inexact libm result\n * (not floor, modf, ldexp, fabs, sqrt, which are exact everywhere) is moved one ulp up or down. */\nstatic int ulp_dir;\nstatic float pf(float r) { return ulp_dir ? nextafterf(r, ulp_dir > 0 ? INFINITY : -INFINITY) : r; }\nstatic double pd(double r) { return ulp_dir ? nextafter(r, ulp_dir > 0 ? INFINITY : -INFINITY) : r; }\n#define WF(f) static float w_##f(float x) { return pf(f(x)); }\n#define WD(f) static double w_##f(double x) { return pd(f(x)); }\nWF(sinf) WF(cosf) WF(tanf) WF(atanf) WF(expf) WF(logf) WF(log10f) WF(exp2f) WF(tanhf)\nWD(sin) WD(cos) WD(tan) WD(atan) WD(exp) WD(log) WD(log10) WD(exp2) WD(tanh) WD(cbrt)\nstatic float w_powf(float x, float y) { return pf(powf(x, y)); }\nstatic double w_pow(double x, double y) { return pd(pow(x, y)); }\nstatic float w_atan2f(float y, float x) { return pf(atan2f(y, x)); }\nstatic double w_atan2(double y, double x) { return pd(atan2(y, x)); }\nstatic const struct { const char *name; void *fn; } perturbed[] = {\n    {\"sinf\", w_sinf}, {\"cosf\", w_cosf}, {\"tanf\", w_tanf}, {\"atanf\", w_atanf}, {\"expf\", w_expf}, {\"logf\", w_logf},\n    {\"log10f\", w_log10f}, {\"exp2f\", w_exp2f}, {\"tanhf\", w_tanhf}, {\"sin\", w_sin}, {\"cos\", w_cos}, {\"tan\", w_tan},\n    {\"atan\", w_atan}, {\"exp\", w_exp}, {\"log\", w_log}, {\"log10\", w_log10}, {\"exp2\", w_exp2}, {\"tanh\", w_tanh},\n    {\"cbrt\", w_cbrt}, {\"powf\", w_powf}, {\"pow\", w_pow}, {\"atan2f\", w_atan2f}, {\"atan2\", w_atan2} };\n\n/* macOS __sincosf_stret(x) returns {sinf x, cosf x} packed in xmm0. */\ntypedef struct { float s, c; } sincos_pair;\nstatic sincos_pair x_sincosf_stret(float x) { sincos_pair r; sincosf(x, &r.s, &r.c); r.s = pf(r.s); r.c = pf(r.c); return r; }\n/* macOS __sincos_stret(x) returns {sin x, cos x} in xmm0 and xmm1. */\ntypedef struct { double s, c; } sincos_pair_d;\nstatic sincos_pair_d x_sincos_stret(double x) { sincos_pair_d r; sincos(x, &r.s, &r.c); r.s = pd(r.s); r.c = pd(r.c); return r; }\nstatic double x_exp10(double x) { return pd(exp10(x)); }\nstatic float x_exp10f(float x) { return pf(exp10f(x)); }\n__attribute__((noreturn)) static void x_exit(int c) { (void)c; say(\"TRAP _exit (the bundle called exit)\\n\"); _exit(86); }\n/* macOS libc rand(): Park-Miller \"minimal standard\" generator, x' = 16807 x mod (2^31 - 1), as in\n * FreeBSD-derived libc (seed 0 replaced by 123459876). Inferred from that source lineage, not\n * read from Apple's binary. Every use is counted (\"used _rand N\"). */\nstatic unsigned long rand_next = 1;\nstatic int x_rand(void)\n{\n    long hi, lo, x;\n    if (rand_next == 0) rand_next = 123459876;\n    hi = rand_next / 127773; lo = rand_next % 127773;\n    x = 16807 * lo - 2836 * hi;\n    if (x < 0) x += 0x7fffffff;\n    return (int)((rand_next = x) % 0x80000000UL);\n}\nstatic void x_srand(unsigned seed) { rand_next = seed; }\n/* time() is fixed so that srand(time(0)) seeds identically in every run (Live seeds with the clock).\n * XDEV_TIME=N in the environment fixes it at N instead of 0 (seed-dependence test). */\nstatic long x_time(long *t)\n{\n    long v = getenv(\"XDEV_TIME\") ? atol(getenv(\"XDEV_TIME\")) : 0;\n    if (t) *t = v;\n    return v;\n}\n/* macOS ctype: __maskrune(c, mask) for c outside 0..127; the C locale has no such classes. */\nstatic unsigned long x_maskrune(int c, unsigned long mask) { (void)c; (void)mask; return 0; }\n\n/* _DefaultRuneLocale: magic[8], encoding[32], two function pointers, invalid_rune (int32),\n * then __runetype[256] at offset 60, __maplower[256], __mapupper[256]. C-locale classes with\n * Apple's _CTYPE_* bits: A 0x100, C 0x200, D 0x400, G 0x800, L 0x1000, P 0x2000, S 0x4000,\n * U 0x8000, X 0x10000, B 0x20000, R 0x40000; printable characters also carry SW1 0x40000000. */\nstatic struct __attribute__((packed)) {\n    char magic[8], encoding[32]; void *sget, *sput; int32_t invalid; uint32_t runetype[256];\n    int32_t maplower[256], mapupper[256];\n} rune;\nstatic void init_rune(void)\n{\n    memcpy(rune.magic, \"RuneMagA\", 8); strcpy(rune.encoding, \"NONE\"); rune.invalid = 0xfffd;\n    for (int c = 0; c < 256; c++) {\n        uint32_t m = 0;\n        if (c < 128) {\n            if (c < 32 || c == 127) m |= 0x200;\n            if ((c >= 9 && c <= 13) || c == 32) m |= 0x4000;\n            if (c == 9 || c == 32) m |= 0x20000;\n            if (c >= 32 && c < 127) m |= 0x40000 | 0x40000000;\n            if (c > 32 && c < 127) m |= 0x800;\n            if (c >= '0' && c <= '9') m |= 0x400 | 0x10000 | (uint32_t)(c - '0');\n            if (c >= 'A' && c <= 'Z') m |= 0x8000 | 0x100;\n            if (c >= 'a' && c <= 'z') m |= 0x1000 | 0x100;\n            if ((c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) m |= 0x10000 | (uint32_t)((c | 32) - 'a' + 10);\n            if (c > 32 && c < 127 && !(m & (0x400 | 0x100))) m |= 0x2000;\n        }\n        rune.runetype[c] = m;\n        rune.maplower[c] = (c >= 'A' && c <= 'Z') ? c + 32 : c;\n        rune.mapupper[c] = (c >= 'a' && c <= 'z') ? c - 32 : c;\n    }\n}\n\nstatic const struct { const char *mach; void *addr; int data; } fixed[] = {\n    {\"_memcpy\", memcpy}, {\"_memmove\", memmove}, {\"_memset\", memset}, {\"_memcmp\", memcmp},\n    {\"_bzero\", x_bzero}, {\"___bzero\", x_bzero}, {\"_memset_pattern16\", x_memset_pattern16},\n    {\"_strlen\", strlen}, {\"_strcmp\", strcmp}, {\"_strncmp\", strncmp}, {\"_strcpy\", strcpy}, {\"_strdup\", strdup},\n    {\"_malloc\", malloc}, {\"_calloc\", calloc}, {\"_realloc\", realloc}, {\"_free\", free},\n    {\"__Znwm\", x_new}, {\"__Znam\", x_new}, {\"__ZdlPv\", x_delete}, {\"__ZdaPv\", x_delete},\n    {\"___cxa_atexit\", x_atexit},\n    {\"_atof\", atof}, {\"_atoi\", atoi}, {\"_sscanf\", sscanf}, {\"_sprintf\", sprintf},\n    {\"_fprintf\", fprintf}, {\"_fwrite\", fwrite},\n    {\"_newlocale\", x_newlocale}, {\"_uselocale\", uselocale}, {\"_freelocale\", freelocale},\n    {\"___sincosf_stret\", x_sincosf_stret}, {\"___sincos_stret\", x_sincos_stret}, {\"___exp10\", x_exp10},\n    {\"___exp10f\", x_exp10f}, {\"_div\", div}, {\"_exit\", x_exit}, {\"_rand\", x_rand}, {\"_srand\", x_srand}, {\"_time\", x_time},\n    {\"___maskrune\", x_maskrune},\n    {\"___stack_chk_guard\", &guard_value, 1}, {\"___stack_chk_fail\", x_stack_chk_fail},\n    {\"___stderrp\", &stderr, 1}, {\"__DefaultRuneLocale\", &rune, 1},\n};\nstatic const char *libm[] = {\n    \"atanf\", \"cbrt\", \"cos\", \"cosf\", \"exp\", \"expf\", \"floorf\", \"ldexpf\", \"logf\", \"log\", \"modf\", \"modff\",\n    \"sin\", \"sinf\", \"tanf\", \"tan\", \"pow\", \"powf\", \"sqrt\", \"sqrtf\", \"floor\", \"ceil\", \"ceilf\", \"fmod\",\n    \"fmodf\", \"log10\", \"log10f\", \"exp2f\", \"exp2\", \"atan\", \"atan2\", \"atan2f\", \"tanh\", \"tanhf\", \"ldexp\", NULL };\n\n/* Itanium RTTI: libstdc++ implements the same ABI (type_info layouts, __dynamic_cast). */\nstatic void *libstdcxx(const char *sym, int *is_data)\n{\n    static const char *code[] = { \"___dynamic_cast\", NULL };\n    static const char *data[] = { \"__ZTVN10__cxxabiv117__class_type_infoE\", \"__ZTVN10__cxxabiv120__si_class_type_infoE\",\n                                  \"__ZTVN10__cxxabiv121__vmi_class_type_infoE\", NULL };\n    static void *h;\n    for (int d = 0; d < 2; d++)\n        for (const char **n = d ? data : code; *n; n++)\n            if (!strcmp(sym, *n)) {\n                if (!h && !(h = dlopen(\"libstdc++.so.6\", RTLD_NOW))) { say(\"xdev: dlopen libstdc++\\n\"); _exit(2); }\n                *is_data = d;\n                return dlsym(h, sym + 1);\n            }\n    return NULL;\n}\n\nvoid *xdev_binding(const char *sym, int *is_data)\n{\n    static int ready;\n    if (!ready) { init_rune(); ready = 1; }\n    void *r = libstdcxx(sym, is_data);\n    if (r) return r;\n    for (size_t i = 0; i < sizeof fixed / sizeof *fixed; i++)\n        if (!strcmp(sym, fixed[i].mach)) { *is_data = fixed[i].data; return fixed[i].addr; }\n    if (getenv(\"XDEV_LIBM_ULP\")) ulp_dir = atoi(getenv(\"XDEV_LIBM_ULP\"));\n    for (size_t i = 0; ulp_dir && i < sizeof perturbed / sizeof *perturbed; i++)\n        if (sym[0] == '_' && !strcmp(sym + 1, perturbed[i].name)) return perturbed[i].fn;\n    for (int i = 0; libm[i]; i++)\n        if (sym[0] == '_' && !strcmp(sym + 1, libm[i])) {\n            static void *h;\n            if (!h && !(h = dlopen(\"libm.so.6\", RTLD_NOW))) { say(\"xdev: dlopen libm\\n\"); _exit(2); }\n            return dlsym(h, libm[i]);\n        }\n    return xdev_cxx_binding(sym, is_data);\n}\n",
+  "qualification": "All-up/down family results are finite sensitivity experiments, not a mixed-call rounding envelope, Apple libm or arm64 emulation.",
+  "ordinary_perturbed_entries": [
+    "sinf",
+    "cosf",
+    "tanf",
+    "atanf",
+    "expf",
+    "logf",
+    "log10f",
+    "exp2f",
+    "tanhf",
+    "sin",
+    "cos",
+    "tan",
+    "atan",
+    "exp",
+    "log",
+    "log10",
+    "exp2",
+    "tanh",
+    "cbrt",
+    "powf",
+    "pow",
+    "atan2f",
+    "atan2"
+  ],
+  "fixed_wrappers_also_using_pf_pd": [
+    "___sincosf_stret",
+    "___sincos_stret",
+    "___exp10",
+    "___exp10f"
+  ],
+  "author_readback_note": "The as-run collector metadata said25ordinarywrapperfamilies. Readback counted23actual entries; this source-context role was corrected beforeseal. Collector code/rawcaptures remain exact as-run."
+}

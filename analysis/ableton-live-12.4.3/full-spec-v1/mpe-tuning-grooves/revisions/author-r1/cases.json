@@ -1,0 +1,1287 @@
+[
+  {
+    "id": "MPE-001",
+    "requirement": "REQ-MPE-001",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Controller selected as MIDI input; individually selectable input channel.",
+    "action": "Enable controller MPE mode.",
+    "expected": "Track input is All Channels; individual channel selection unavailable.",
+    "comparator": "Compare selected channel and allowed channel choices; incoming MIDI handling outside this case.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M1"
+  },
+  {
+    "id": "MPE-002",
+    "requirement": "REQ-MPE-002",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "MIDI clip with notes made without MPE hardware; Note Expression closed.",
+    "action": "Open Note Expression with tab or Alt/Option+3.",
+    "expected": "Pitch overlay and Slide/Pressure/Velocity/Release Velocity controls accessible; Slide/Pressure default-visible.",
+    "comparator": "Compare dimension names and visibility in an uncustomized view; optional Pitch lane U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M1,M2"
+  },
+  {
+    "id": "MPE-003",
+    "requirement": "REQ-MPE-003",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "No expression lanes enabled.",
+    "action": "Click triangle, then hide; Alt/Option-click triangle; resize one lane then total split.",
+    "expected": "All lanes shown from empty state; visibility toggles hide with lanes; resizing affects selected lane or total group.",
+    "comparator": "Compare visible selectors and relative lane sizes; no pixel/minimum-size assertion.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M2"
+  },
+  {
+    "id": "MPE-004",
+    "requirement": "REQ-MPE-004",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Two notes with distinct Pressure envelopes.",
+    "action": "Select first note then its Pressure envelope.",
+    "expected": "First note/curve editable and highlighted; second dimmed; background drag defines selection.",
+    "comparator": "Compare selected-note identity and editable breakpoint set.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-005",
+    "requirement": "REQ-MPE-005",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Pressure envelope has points at local beats 0.25 and 0.75 with values 20 and 40.",
+    "action": "Click middle segment, delete added point by click; choose Edit Value on first and enter 30.",
+    "expected": "One point added then removed; edited point displays 30.",
+    "comparator": "Compare point count changes +1/-1 and final entered value; numeric rounding beyond these integers U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-006",
+    "requirement": "REQ-MPE-006",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "One note, interior Pressure points at 0.25/0.5/0.75; middle time region selected.",
+    "action": "Drag middle segment vertically; Shift-drag a selected point horizontally.",
+    "expected": "Segment region gets edge breakpoints and moves together; Shift restricts axis.",
+    "comparator": "Compare edge-point presence and unchanged perpendicular coordinates; drag thresholds/clipping U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-007",
+    "requirement": "REQ-MPE-007",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "Note Expression grid off, Notes-tab grid on.",
+    "action": "Toggle Expression grid on; switch tabs; save/reopen clip.",
+    "expected": "Expression grid independent of other tab and saved with clip.",
+    "comparator": "Compare per-tab enabled state and reopened Expression-grid state; full clip save errors U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-008",
+    "requirement": "REQ-MPE-008",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Straight interior Pressure segment.",
+    "action": "Alt/Option-drag segment then Alt/Option-double-click.",
+    "expected": "Curve becomes curved, then straight.",
+    "comparator": "Compare curve/straight visual state only; numerical sample interpolation U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-009",
+    "requirement": "REQ-MPE-009",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Nonzero non-Pitch envelope with several selected points, values away from limits.",
+    "action": "Scale via outside-note hover gesture; separately select all points and move vertically.",
+    "expected": "First adjusts proportionally; second moves all chosen values equally; Pitch lacks proportional gesture.",
+    "comparator": "Compare relative versus equal movement of nonzero values; scale amount/origin and clipping U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-010",
+    "requirement": "REQ-MPE-010",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Note starts at beat 1, duration 2; expression local points 0.5 and 1.5.",
+    "action": "Move note start to beat 3; separately stretch duration by x2.",
+    "expected": "Move carries expression +2 beats in clip time; stretch carries expression timing with doubled note.",
+    "comparator": "Compare +2 absolute time translation; stretch corresponding interior times 1 and 3 relative to new note start; exact endpoints U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-011",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Unfolded Note Expression with grid off and bend above note.",
+    "action": "Modifier-edit bend near an unambiguous semitone; invoke Zoom to Clip Selection.",
+    "expected": "Pitch snaps to nearest semitone; zoom includes selected bends.",
+    "comparator": "Compare displayed semitone and visible selected bend extent; half-semitone tie and folded lane state U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-012",
+    "requirement": "REQ-MPE-012",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Two selected notes with Pressure and Slide, third unselected.",
+    "action": "Choose Clear All Envelopes in Note Expression.",
+    "expected": "Selected notes expression envelopes clear.",
+    "comparator": "Compare absence of selected curves; velocity/default reset and unselected-state guarantee U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-013",
+    "requirement": "REQ-MPE-013",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Note Expression Pitch/Pressure/Slide target and visible one-quarter-beat grid.",
+    "action": "Turn Draw Mode on, draw over interior region; repeat holding B temporarily.",
+    "expected": "Grid drawing creates steps at visible grid width; holding B temporarily toggles Draw Mode.",
+    "comparator": "Compare step horizontal widths 0.25 beat and restored mode on release; point samples/endpoints U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M4"
+  },
+  {
+    "id": "MPE-014",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "MPE-enabled plugin with MIDI out and saved default configuration.",
+    "action": "Save its enabled MPE default; create instance from default.",
+    "expected": "MPE enable state recalled; MPE output supported when enabled.",
+    "comparator": "Compare default-enabled flag; exact emitted messages and blue-meter timing U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M2,M5"
+  },
+  {
+    "id": "MPE-015",
+    "requirement": "REQ-MPE-015",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "External Instrument or MIDI track with valid MIDI To target; MPE-enabled plugin instance.",
+    "action": "Choose MPE then MPE Settings in each output route; open plugin context entry.",
+    "expected": "Settings dialog accessible through three documented entry points.",
+    "comparator": "Compare dialog presence/associated target in each location; commit/cancel U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M6"
+  },
+  {
+    "id": "MPE-016",
+    "requirement": "REQ-MPE-016",
+    "kinds": [
+      "positive",
+      "negative",
+      "boundary"
+    ],
+    "setup": "Two tracks share an external output; no sounding notes.",
+    "action": "Configure one lower zone, one upper; inspect single-track zone choices.",
+    "expected": "Lower global channel 1; upper global channel 16; each track one zone.",
+    "comparator": "Compare configured labels/global channels and inability to select both zones as one track configuration; message allocation U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7"
+  },
+  {
+    "id": "MPE-017",
+    "requirement": "REQ-MPE-017",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "MPE output settings with no sounding notes.",
+    "action": "Select multi-channel mode and choose note-channel range 3..8.",
+    "expected": "Configuration exposes chosen arbitrary note-channel range.",
+    "comparator": "Compare displayed endpoints 3 and 8; emitted ordering, upper/lower limits and global-channel exclusion U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7"
+  },
+  {
+    "id": "MPE-018",
+    "requirement": "REQ-MPE-018",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Controller and compatible MPE instrument, both with known bend-range setting.",
+    "action": "Set matching ranges; separately mismatch them.",
+    "expected": "Matching range is required configuration for correct tracking; mismatch cannot be graded to a precise sound.",
+    "comparator": "Compare matched setup values only; output pitch curve, failure size, default and codec remain U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "H1"
+  },
+  {
+    "id": "TUN-001",
+    "requirement": "REQ-TUNING-001",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "No tuning loaded; valid user ASCL located in browser Places.",
+    "action": "Browse Tunings/User; hover file.",
+    "expected": "User file discoverable; Info View contains tuning description/note count.",
+    "comparator": "Compare listed file and known description/count; indexing delay U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T1"
+  },
+  {
+    "id": "TUN-002",
+    "requirement": "REQ-TUNING-002",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "Browser Tuning section hidden; valid shipped tuning.",
+    "action": "Load by double-click then, reset, Enter; save/reopen Set.",
+    "expected": "Tuning section opens and loaded tuning retained in Set.",
+    "comparator": "Compare tuning identity across methods and reopen; bitwise serialization U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2"
+  },
+  {
+    "id": "TUN-003",
+    "requirement": "REQ-TUNING-003",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning with documented degree name and reference.",
+    "action": "Hover tuning note in piano roll and audition.",
+    "expected": "Status Bar reports pitch/frequency corresponding to displayed tuning note.",
+    "comparator": "Compare known degree label; audio and arbitrary frequency equation/tolerance U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2"
+  },
+  {
+    "id": "TUN-004",
+    "requirement": "REQ-TUNING-004",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Clip has note indices 60 and 64; Retune Set disabled.",
+    "action": "Change tuning then remove.",
+    "expected": "Indices 60/64 retained; no destructive-retune confirmation; ruler labels can change.",
+    "comparator": "Compare indices exactly and confirmation absence; frequencies U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H2"
+  },
+  {
+    "id": "TUN-005",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Existing melody; Retune Set enabled and a distinct valid tuning selected.",
+    "action": "Load new tuning.",
+    "expected": "Retune confirmation shown before destructive retuning.",
+    "comparator": "Compare confirmation presence; closest-pitch arithmetic/tie/collision survivor and actual note output U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H2"
+  },
+  {
+    "id": "TUN-006",
+    "requirement": "REQ-TUNING-006",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Scale Mode visible and scale-aware device Use Current Scale on.",
+    "action": "Load retained 12-TET ASCL.",
+    "expected": "Scale choosers hidden; device Use Current Scale unavailable.",
+    "comparator": "Compare visibility/enabled state even though loaded file describes 12TET; preserved hidden state U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H3"
+  },
+  {
+    "id": "TUN-007",
+    "requirement": "REQ-TUNING-007",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning; reference display captured; stable compatible sustained test note.",
+    "action": "Change reference Octave/Note identity without directly editing frequency.",
+    "expected": "Displayed reference frequency updates while sounding pitch does not change.",
+    "comparator": "Compare before/after pitch equality under identity-only edit; exact new displayed number and measured tolerance U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3"
+  },
+  {
+    "id": "TUN-008",
+    "requirement": "REQ-TUNING-008",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning with reference 440Hz in compatible setup.",
+    "action": "Edit Ref. Pitch/Freq to 432Hz.",
+    "expected": "Reference control reads 432Hz and note pitches lower.",
+    "comparator": "Compare numeric reference value and direction only; absolute frequencies, settling time and held-note policy U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3,H3"
+  },
+  {
+    "id": "TUN-009",
+    "requirement": "REQ-TUNING-009",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Tuning range with N intervening indices captured.",
+    "action": "Change Lowest Note by one tuning position, then separately Highest Note.",
+    "expected": "Other endpoint updates keeping N intervening positions.",
+    "comparator": "Compare index-count invariant, avoiding limits; frequency monotonicity U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3"
+  },
+  {
+    "id": "TUN-010",
+    "requirement": "REQ-TUNING-010",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Loaded tuning edited to reference 432Hz; separate tuning without LINK.",
+    "action": "Save tuning via disk button; inspect arrow for unlinked tuning.",
+    "expected": "ASCL output has current tuning; no-link arrow disabled.",
+    "comparator": "Compare saved tuning/reference metadata and disabled arrow; save dialog path/overwrite/error U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3,A5"
+  },
+  {
+    "id": "TUN-011",
+    "requirement": "REQ-TUNING-011",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning selected; Retune Set off.",
+    "action": "Press Delete.",
+    "expected": "Default 12TET restored, existing note indices retained.",
+    "comparator": "Compare loaded tuning absence and unchanged indices; previously heard pitch need not be restored.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,T3,H2"
+  },
+  {
+    "id": "TUN-012",
+    "requirement": "REQ-TUNING-012",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded non-12TET tuning; two MIDI tracks, one with Drum Rack.",
+    "action": "Enable Bypass on other track.",
+    "expected": "Bypassed track displays 12TET and passes original MIDI; Drum Rack track automatically bypasses.",
+    "comparator": "Compare bypass state/ruler and input/output note-number identity at documented abstraction; exact MIDI bytes U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T4,H2"
+  },
+  {
+    "id": "TUN-013",
+    "requirement": "REQ-TUNING-013",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning and external keyboard input.",
+    "action": "Choose Black Keys Only then White Keys Only.",
+    "expected": "Layout choices center at C#3 and C3 respectively.",
+    "comparator": "Compare selected mapping mode and center labels; full note table and boundary keys U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T5"
+  },
+  {
+    "id": "TUN-014",
+    "requirement": "REQ-TUNING-014",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "Custom layout editable for a MIDI track.",
+    "action": "Choose Custom, open ellipsis, make one valid mapping edit; save/reopen Set.",
+    "expected": "Custom dialog opens and mapping is recalled.",
+    "comparator": "Compare edited mapping state before/after reopen; exact valid domain and duplicate mapping U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T5"
+  },
+  {
+    "id": "TUN-015",
+    "requirement": "REQ-TUNING-015",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "External MPE-capable receiver or plugin with documented bend setting.",
+    "action": "Enable MPE and set per-note bend range \u00b148.",
+    "expected": "Configured prerequisites for tuning receiver met.",
+    "comparator": "Compare capability/enable and range settings; arbitrary receiver sound and Live auto-negotiation U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T1,H3"
+  },
+  {
+    "id": "TUN-016",
+    "requirement": "REQ-TUNING-016",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Valid SCL has intervals but no reference; optional KBM available.",
+    "action": "Load SCL; separately attempt KBM selection.",
+    "expected": "Live supplies 440Hz reference near middle of MIDI range; KBM unsupported.",
+    "comparator": "Compare reference frequency 440Hz and documented unsupported classification only; generated note index and KBM UI U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "H3"
+  },
+  {
+    "id": "TUN-017",
+    "requirement": "REQ-TUNING-017",
+    "kinds": [
+      "negative",
+      "malformed"
+    ],
+    "setup": "Valid SCL pitch list followed by Ableton directive with deliberately non-UTF-8 byte in a name.",
+    "action": "Import through extension parser.",
+    "expected": "Non-UTF-8 extension input is rejected by documented compliant-parser rule.",
+    "comparator": "Compare rejection rather than accepted extended tuning; dialog/recovery state U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A1"
+  },
+  {
+    "id": "TUN-018",
+    "requirement": "REQ-TUNING-018",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Valid 12-entry ASCL, REFERENCE_PITCH 3 9 440.0 and twelve NOTE_NAMES.",
+    "action": "Import.",
+    "expected": "Reference fields describe octave 3 degree 9 at 440Hz; name list begins at degree zero.",
+    "comparator": "Compare reference identity/frequency and degree-zero name; extra directives and parser normalization U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A2"
+  },
+  {
+    "id": "TUN-019",
+    "requirement": "REQ-TUNING-019",
+    "kinds": [
+      "negative",
+      "malformed"
+    ],
+    "setup": "Valid ASCL with both NOTE_RANGE_BY_INDEX and NOTE_RANGE_BY_FREQUENCY directives.",
+    "action": "Import.",
+    "expected": "Multiple range directives are an error.",
+    "comparator": "Compare presence of range-validation error; transaction recovery/error text and refusal stage U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A3"
+  },
+  {
+    "id": "TUN-020",
+    "requirement": "REQ-TUNING-020",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Valid 12-note ASCL without range; reference suitable for unambiguous nearest A3.",
+    "action": "Import.",
+    "expected": "Note closest to A3 440Hz placed at tuning index 69 in twelve-note special case.",
+    "comparator": "Compare nearest-note/index relationship; ties and arbitrary explicit-reference recentering U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A4"
+  },
+  {
+    "id": "TUN-021",
+    "requirement": "REQ-TUNING-021",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Valid nonmonotonic tuning with earlier REFERENCE_PITCH, explicit index range, SOURCE/LINK.",
+    "action": "Import and inspect order/range labels/metadata.",
+    "expected": "Index range means first/last positions rather than sorted frequency extrema; origin/link represented.",
+    "comparator": "Compare preserved degree order/range positions and metadata; software may restrict clickable URL.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A3,A5"
+  },
+  {
+    "id": "GRV-001",
+    "requirement": "REQ-GROOVE-001",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Valid AGR and two distinct editable MIDI clips; empty pool.",
+    "action": "Double-click AGR; then drag onto first clip.",
+    "expected": "Groove appears in pool inactive then becomes assigned to first clip.",
+    "comparator": "Compare pool presence, inactive visual state and clip assignment; duplicate import U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G1,G2"
+  },
+  {
+    "id": "GRV-002",
+    "requirement": "REQ-GROOVE-002",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Audio clip A Warp on and reset copy B Warp off.",
+    "action": "Assign same groove.",
+    "expected": "A supports groove through Warp; B has no supported effect without Warp.",
+    "comparator": "Compare prerequisites/assignment availability; exact auto-enable/refusal UI and audio output U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G1"
+  },
+  {
+    "id": "GRV-003",
+    "requirement": "REQ-GROOVE-003",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Pool hidden; two clips assigned same groove.",
+    "action": "Use shortcut/view toggle; change Timing while playing.",
+    "expected": "Pool shows/hides; shared groove setting influences using clips.",
+    "comparator": "Compare pool visibility and shared setting identity; actual timing/update latency U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G2"
+  },
+  {
+    "id": "GRV-004",
+    "requirement": "REQ-GROOVE-004",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Groove events exactly at 0/0.5 beat, Base 1/8; clip notes at same positions; Quantize/Random/Velocity zero.",
+    "action": "Apply Timing 100%.",
+    "expected": "Grid-aligned groove contributes no timing displacement to corresponding notes.",
+    "comparator": "Compare clip note times unchanged for these exact aligned inputs; correspondence outside this setup U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3"
+  },
+  {
+    "id": "GRV-005",
+    "requirement": "REQ-GROOVE-005",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Clip starts 0.1/0.6 beats; Base 1/8; Timing/Random/Velocity zero.",
+    "action": "Set Quantize 100%, then reset and 0%.",
+    "expected": "Straight-stage positions 0/0.5 at 100%; original 0.1/0.6 at 0%.",
+    "comparator": "Compare documented straight quantization endpoints, away from ties; sample emission U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3"
+  },
+  {
+    "id": "GRV-006",
+    "requirement": "REQ-GROOVE-006",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Off-grid groove, clip starts captured; Quantize/Random/Velocity zero.",
+    "action": "Set Timing zero.",
+    "expected": "No groove-pattern timing displacement.",
+    "comparator": "Compare represented/playback event times equal originals under zero active influences; engine samples U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3,G6"
+  },
+  {
+    "id": "GRV-007",
+    "requirement": "REQ-GROOVE-007",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Chord contains two simultaneous voices; Random nonzero, other influences zero.",
+    "action": "Play repeated loops; retain each voice onset.",
+    "expected": "Documented random influence may separate voices; no fixed stream, distribution or guaranteed distinct realization.",
+    "comparator": "U: no documented statistical threshold, numeric bound or complete random oracle; do not grade one coincident outcome as failure.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3"
+  },
+  {
+    "id": "GRV-008",
+    "requirement": "REQ-GROOVE-008",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Groove with alternating quieter/louder velocities; clip with otherwise uniform notes.",
+    "action": "Compare Velocity +100%, 0%, -100%.",
+    "expected": "Control accepts documented endpoints; zero removes velocity influence; negative reverses emphasis.",
+    "comparator": "Compare allowed endpoints, no influence at zero, qualitative emphasis reversal only; exact velocity values U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3,G6"
+  },
+  {
+    "id": "GRV-009",
+    "requirement": "REQ-GROOVE-009",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Grooves assigned; settings captured and Quantize nonzero.",
+    "action": "Set Global Amount 100% then 130%.",
+    "expected": "100% uses assigned intensities; 130% endpoint available; control-bar slider visible.",
+    "comparator": "Compare allowed values/control visibility; precise composite effect and Quantize-scaling outcome U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3"
+  },
+  {
+    "id": "GRV-010",
+    "requirement": "REQ-GROOVE-010",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Separate MIDI and Warp-enabled audio clip with assigned groove.",
+    "action": "Commit each.",
+    "expected": "MIDI notes receive movement, audio receives appropriate Warp Markers; each assignment becomes None.",
+    "comparator": "Compare assignment reset and marker/note edit presence with nonzero timing setup; exact content/random sample U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G4"
+  },
+  {
+    "id": "GRV-011",
+    "requirement": "REQ-GROOVE-011",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Valid groove in browser/pool and empty MIDI destination.",
+    "action": "Drag groove to MIDI track; edit resulting clip.",
+    "expected": "New editable MIDI clip contains groove material.",
+    "comparator": "Compare clip creation and editable notes, without asserting unknown conversion defaults.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G5"
+  },
+  {
+    "id": "GRV-012",
+    "requirement": "REQ-GROOVE-012",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Clip has distinct material inside playing region and outside it.",
+    "action": "Extract via context menu and separately drag into pool.",
+    "expected": "New groove created considering playing portion only.",
+    "comparator": "Compare creation by both routes; exact event/volume detector and endpoint inclusion U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G5"
+  },
+  {
+    "id": "GRV-013",
+    "requirement": "REQ-GROOVE-013",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Two different groove files; identical notes 0.1/0.6; Base 1/8, Quantize100, Timing/Random/Velocity0.",
+    "action": "Apply without Commit and compare.",
+    "expected": "Both produce same straight quantization 0/0.5; source clip data unchanged before commit.",
+    "comparator": "Compare equal scheduled positions at documentary event abstraction and unchanged original note starts; sample schedule U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G6"
+  },
+  {
+    "id": "GRV-014",
+    "requirement": "REQ-GROOVE-014",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Playing clip with assigned groove; valid alternate grooves.",
+    "action": "Enable clip Groove Hot-Swap and choose alternatives; inspect pool save control.",
+    "expected": "Groove selection can change while playback continues; pool save/hot-swap available.",
+    "comparator": "Compare assigned groove identities and controls; disruption-free/sample-continuous switching U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G1,G2"
+  },
+  {
+    "id": "MPE-019",
+    "requirement": "REQ-MPE-005",
+    "kinds": [
+      "malformed",
+      "negative"
+    ],
+    "setup": "Numeric expression field open.",
+    "action": "Enter NaN, infinity, letters, empty text and out-of-domain finite value separately.",
+    "expected": "U: acceptance/rejection, clipping, dialog and prior-data preservation.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-020",
+    "requirement": "REQ-MPE-017",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "MPE/multichannel output settings.",
+    "action": "Choose 0,17,reversed and empty note-channel ranges; mismatch bend ranges.",
+    "expected": "U: accepted UI ranges, clamps/defaults, channel-bend codec and negotiation.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7,H1"
+  },
+  {
+    "id": "MPE-021",
+    "requirement": "REQ-MPE-010",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Zero-duration note or points exactly at/beyond note ends.",
+    "action": "Resize/stretch/move/trim across endpoints.",
+    "expected": "U: reconstruction, removal/resampling, value and same-time order.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3; storage-013/014"
+  },
+  {
+    "id": "MPE-022",
+    "requirement": "REQ-MPE-015",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Output settings dialog open with prior configuration.",
+    "action": "Change zone/range then cancel or dismiss with Escape.",
+    "expected": "U: immediate versus deferred application, previous-state restoration.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M6,M7"
+  },
+  {
+    "id": "MPE-023",
+    "requirement": "REQ-MPE-006",
+    "kinds": [
+      "undo"
+    ],
+    "setup": "Two notes with known curves.",
+    "action": "Perform multi-point drag/clear, undo, redo and new edit.",
+    "expected": "U: transaction count, exact restored curves and redo invalidation.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-024",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "persistence"
+    ],
+    "setup": "Edited curves, grid, lanes and output settings plus saved plugin default.",
+    "action": "Save/reopen Set/clip/default in each supported route.",
+    "expected": "U: fields beyond documented grid/default state, normalization, errors and history.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3,M5"
+  },
+  {
+    "id": "MPE-025",
+    "requirement": "REQ-MPE-016",
+    "kinds": [
+      "boundary",
+      "teardown"
+    ],
+    "setup": "Held notes routed through lower zone.",
+    "action": "Change zone/range/MPE enable or disconnect/reconnect target.",
+    "expected": "U: note-off/reset, channel reuse, stuck-note prevention and live transition timing.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7"
+  },
+  {
+    "id": "MPE-026",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "teardown"
+    ],
+    "setup": "MPE notes/changes in flight.",
+    "action": "Delete clip/plugin/track then close Set.",
+    "expected": "U: release/reset ordering, cleanup/resource failure and last modulation state.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M2,M5"
+  },
+  {
+    "id": "MPE-027",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Folded Note Expression, Glissando/LFO-generated Pitch Bend and optional lane states.",
+    "action": "Compare under exact tab/fold/lane preconditions from both chapters.",
+    "expected": "U: same-control/context correspondence; consult MIDI editing/tools C3 before claiming contradiction.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3; midi-editing-tools C3"
+  },
+  {
+    "id": "TUN-022",
+    "requirement": "REQ-TUNING-017",
+    "kinds": [
+      "malformed",
+      "negative"
+    ],
+    "setup": "Malformed SCL/ASCL variants: empty/truncated pitch count, invalid ratio denominator, unknown/duplicate directive, invalid quote/BOM.",
+    "action": "Import each independently.",
+    "expected": "U: rejection/repair, error text and preserved Set state; UTF-8 known case remains TUN-017.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A1,A2"
+  },
+  {
+    "id": "TUN-023",
+    "requirement": "REQ-TUNING-018",
+    "kinds": [
+      "boundary",
+      "malformed"
+    ],
+    "setup": "REFERENCE_PITCH octave -3/9, degree -1/count, frequency 0/negative/NaN/infinity; reversed ranges.",
+    "action": "Import each variant.",
+    "expected": "U: response for numeric invalidity, clamping/error policy and retained data.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A2,A3"
+  },
+  {
+    "id": "TUN-024",
+    "requirement": "REQ-TUNING-020",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Equal-distance reference/nearest-retuned degree and non-12-note tuning without range.",
+    "action": "Load/change tuning.",
+    "expected": "U: tie direction, exact generated reference, base-frequency math and cap priority.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A3,A4"
+  },
+  {
+    "id": "TUN-025",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "negative",
+      "boundary"
+    ],
+    "setup": "Two time-overlapping notes map to same target; also just-touching notes and overlapping equal pitches.",
+    "action": "Confirm automatic retuning.",
+    "expected": "U: deleted/shortened survivor, overlap predicate, ordering and attached expression consequences.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H2"
+  },
+  {
+    "id": "TUN-026",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Retune confirmation displayed; existing notes/tuning snapshotted.",
+    "action": "Cancel then repeat with dialog close/Escape.",
+    "expected": "U: whether tuning and/or notes revert, dialog dismissal and partial application.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2"
+  },
+  {
+    "id": "TUN-027",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "undo"
+    ],
+    "setup": "Set retuned with noncolliding notes; repeat with colliding notes.",
+    "action": "Undo, redo, then make another edit.",
+    "expected": "U: complete undo transaction scope and collision restoration; FAQ supplies one undo recipe only.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "H2"
+  },
+  {
+    "id": "TUN-028",
+    "requirement": "REQ-TUNING-002",
+    "kinds": [
+      "persistence"
+    ],
+    "setup": "Loaded tuning, custom reference/range/layout/bypass; original file removed after save.",
+    "action": "Reopen Set and inspect.",
+    "expected": "U: embedded-content completeness and all settings/error paths beyond documented loaded tuning/layout persistence.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,T5,H3"
+  },
+  {
+    "id": "TUN-029",
+    "requirement": "REQ-TUNING-014",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Custom layout dialog open with known prior map.",
+    "action": "Change duplicate/unmapped keys, then cancel/save-dialog cancel.",
+    "expected": "U: valid map domain, immediate/deferred application and restored map.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T5"
+  },
+  {
+    "id": "TUN-030",
+    "requirement": "REQ-TUNING-012",
+    "kinds": [
+      "teardown"
+    ],
+    "setup": "Active notes with tuning and bypassed/drum track.",
+    "action": "Delete tuning/track/rack; close Set or unplug controller.",
+    "expected": "U: reset/note-off/cleanup ordering and implicit bypass after rack removal.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T4"
+  },
+  {
+    "id": "TUN-031",
+    "requirement": "REQ-TUNING-008",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Held note and running transport under compatible tuning receiver.",
+    "action": "Change reference, range, layout or tuning while held.",
+    "expected": "U: held-note pitch migration, smoothing, allocation and scheduling boundary.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,T3,T5"
+  },
+  {
+    "id": "TUN-032",
+    "requirement": "REQ-TUNING-006",
+    "kinds": [
+      "negative",
+      "teardown"
+    ],
+    "setup": "Scale-aware device active before tuning, bypassed/nested Drum Racks and Drum Synth present.",
+    "action": "Load/remove tuning and add/remove racks.",
+    "expected": "U: restored scale-enabled state, nested/individual device exceptions and layout/bypass interaction.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T1,T2,T4,H3"
+  },
+  {
+    "id": "GRV-015",
+    "requirement": "REQ-GROOVE-001",
+    "kinds": [
+      "malformed",
+      "negative"
+    ],
+    "setup": "Empty/truncated AGR, unsupported AGR variant, unresolved clip/assignment identity.",
+    "action": "Load/drop each independently.",
+    "expected": "U: refusal/repair, error presentation and preservation of current assignments.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G1,G2"
+  },
+  {
+    "id": "GRV-016",
+    "requirement": "REQ-GROOVE-002",
+    "kinds": [
+      "negative",
+      "boundary"
+    ],
+    "setup": "Assigned audio groove and Warp toggled off during playback.",
+    "action": "Disable then re-enable Warp.",
+    "expected": "U: assignment/enable UI, deferred effect, commit availability and restoration.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G1"
+  },
+  {
+    "id": "GRV-017",
+    "requirement": "REQ-GROOVE-004",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Base-grid tie, negative times, loop edges, several source/target notes per grid slot.",
+    "action": "Apply Quantize and Timing at extremes.",
+    "expected": "U: ties, source-target pairing, repetition, note durations and endpoint wrap.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3"
+  },
+  {
+    "id": "GRV-018",
+    "requirement": "REQ-GROOVE-012",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Distinct transients/notes exactly at playing-region start/end; loop/start offset variants.",
+    "action": "Extract audio/MIDI groove.",
+    "expected": "U: inclusive boundaries, transient detector, gain/velocity measure and phase.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G5"
+  },
+  {
+    "id": "GRV-019",
+    "requirement": "REQ-GROOVE-014",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Save/hot-swap dialog open; groove already shared by two clips.",
+    "action": "Choose replacement/edit then cancel/save failure.",
+    "expected": "U: transaction state, old assignments and interrupted write recovery.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G1,G2"
+  },
+  {
+    "id": "GRV-020",
+    "requirement": "REQ-GROOVE-010",
+    "kinds": [
+      "undo"
+    ],
+    "setup": "MIDI and audio groove committed; pool parameter edit before commit.",
+    "action": "Undo/redo each edit and commit.",
+    "expected": "U: grouped history, old markers/notes/assignment restoration and random realization.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G4"
+  },
+  {
+    "id": "GRV-021",
+    "requirement": "REQ-GROOVE-003",
+    "kinds": [
+      "persistence"
+    ],
+    "setup": "Shared pool settings, global amount, inactive groove and two clip assignments.",
+    "action": "Save/reopen Set, including missing original AGR.",
+    "expected": "U: full retained groove contents/settings and error/normalization policy.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G2,G3"
+  },
+  {
+    "id": "GRV-022",
+    "requirement": "REQ-GROOVE-001",
+    "kinds": [
+      "negative",
+      "teardown"
+    ],
+    "setup": "Two clips use same groove.",
+    "action": "Delete pool entry, delete one clip, close Set.",
+    "expected": "U: assignment None/fallback/removal, other-clip effects and resource teardown.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G2"
+  },
+  {
+    "id": "GRV-023",
+    "requirement": "REQ-GROOVE-010",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Nonzero Random then repeated commits from reset inputs.",
+    "action": "Commit/reload/undo/recommit.",
+    "expected": "U: RNG family/seed, correlations, random realization captured and reproducibility.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G3,G4"
+  },
+  {
+    "id": "GRV-024",
+    "requirement": "REQ-GROOVE-003",
+    "kinds": [
+      "boundary",
+      "teardown"
+    ],
+    "setup": "Playing groove clip and held MIDI notes.",
+    "action": "Change Base/Global Amount then stop/delete clip/track and close Set.",
+    "expected": "U: update latency, scheduled-event replacement, note-offs and teardown sequence.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "G2,G3"
+  }
+]

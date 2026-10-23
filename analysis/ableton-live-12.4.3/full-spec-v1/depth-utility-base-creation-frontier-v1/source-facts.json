@@ -1,0 +1,289 @@
+{
+  "status": "author-pending-independent-review",
+  "roles": [
+    {
+      "entry": "0x101aff380",
+      "role_inference": "Explicit20byte zeroing helper; limited source composition.",
+      "formal_constructor_established": false,
+      "formal_destructor_established": false,
+      "actual_public_factory_established": false,
+      "native_return_register_established": false
+    },
+    {
+      "entry": "0x101bc3aa0",
+      "role_inference": "Initialization-shaped on internal V; native return and incoming receiver unresolved.",
+      "formal_constructor_established": false,
+      "formal_destructor_established": false,
+      "actual_public_factory_established": false,
+      "native_return_register_established": false
+    },
+    {
+      "entry": "0x10214b954",
+      "role_inference": "H-building/forwarding-shaped caller; actual factory/allocation role unresolved.",
+      "formal_constructor_established": false,
+      "formal_destructor_established": false,
+      "actual_public_factory_established": false,
+      "native_return_register_established": false
+    },
+    {
+      "entry": "0x1023a1004",
+      "role_inference": "Base/model initialization and reference/callback-shaped source; actual construction/ownership/lifecycle unresolved.",
+      "formal_constructor_established": false,
+      "formal_destructor_established": false,
+      "actual_public_factory_established": false,
+      "native_return_register_established": false
+    }
+  ],
+  "facts": [
+    {
+      "id": "BF01",
+      "entry": "0x101aff380",
+      "record_index": 0,
+      "code_lines": [
+        2,
+        8
+      ],
+      "span_sha256": "0da799c029a841955dd60f709a75fd72e0c9aa5b9dedf3f288b1ea6e97dd7449",
+      "classification": "observed-static",
+      "claim": "A source-call argument Z receives zero writes to bytes Z+[0..7],Z+[8..15],Z+[16..19],then returns. This is20bytes of explicit stores,not a whole object,public default,or runtime call result.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": null,
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF02",
+      "entry": "0x101aff380",
+      "record_index": 0,
+      "code_lines": [
+        5,
+        7
+      ],
+      "span_sha256": "511e574c866efe48d8c2bd47d2c194c27b869fef908b07495624b530eec65d45",
+      "classification": "inferred-source-composition",
+      "claim": "Substituting the nine predecessor10215f2b8 source arguments Q+0x168 through Q+0x228 yields nine disjoint20byte write intervals,each starting0x18 apart; none intersects prior Q+0x15f..0x162 flag-store interval. This removes that one explicit-source overlap concern only. No flag preservation,current Mute/default,or execution law follows.",
+      "premises": [
+        "The nine predecessor calls use the displayed Q+offset arguments as projected.",
+        "Same Q,valid/nonwrapping memory,and no hidden/unrecovered effects; native ABI/call correctness/actual invocation remain unknown."
+      ],
+      "predecessor_dependency": {
+        "entry": "0x10215f2b8",
+        "code_lines": [
+          17,
+          26
+        ],
+        "provider": "class-selected-records"
+      },
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF03",
+      "entry": "0x101bc3aa0",
+      "record_index": 1,
+      "code_lines": [
+        2,
+        16
+      ],
+      "span_sha256": "6089aa037101d34d6d54134497b88d9caa3830c8f19dfcc2bca82c691c31e93b",
+      "classification": "observed-static",
+      "claim": "Own C is void(void). Internal V is the recovered result of unread101a9fdec; it receives vptr operand10675e340 and stores at+8,+16,+24,+32,+40. Global lambda operand is only a retained expression. Helper role is initialization-shaped inference; original allocation/receiver/ABI and global meaning remain unknown.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": null,
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF04",
+      "entry": "0x101bc3aa0",
+      "record_index": 1,
+      "code_lines": [
+        2,
+        16
+      ],
+      "span_sha256": "6089aa037101d34d6d54134497b88d9caa3830c8f19dfcc2bca82c691c31e93b",
+      "classification": "inferred-cross-projection-limit",
+      "claim": "The own projection ends bare return and does not explicitly return V,while predecessor10215f2b8 consumes its return as B. Projections therefore do not establish B=V,B=Q,or callable native return/implicit incoming-register continuity. void is not proof of native no-return-value either.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": {
+        "entry": "0x10215f2b8",
+        "code_lines": [
+          8,
+          10
+        ],
+        "provider": "class-selected-records"
+      },
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF05",
+      "entry": "0x10214b954",
+      "record_index": 2,
+      "code_lines": [
+        10,
+        16
+      ],
+      "span_sha256": "2cbabe3553b5803c24e0774316ffb2756576342524e1dbf2f1cfe717165cb591",
+      "classification": "observed-static",
+      "claim": "Caller H is the recovered result of unreadthunk101aa0448(0x28),then unread101aa7a88(H,arg1,local34+0x268,local35),then selectedthunk(*(H+0x18),arg1,arg2),then unread101aa7c10(H); source returns H. The0x28 operand is not allocation success,ownership,capacity,publicfactory,or actual Utility instance. Helpers defining locals remain unread.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": null,
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF06",
+      "entry": "0x10214b954",
+      "record_index": 2,
+      "code_lines": [
+        14,
+        14
+      ],
+      "span_sha256": "9910c3bd13b69ae9c2d4c518d41ccc57654e392d0ad24a8d1fe8fac92d2b4981",
+      "classification": "inferred-source-index-association",
+      "claim": "Source call forwards the loaded word at H+0x18 as first syntactic thunk argument,caller arg1 second,caller arg2 third. Predecessorindex associates this thunk spelling with four-byte10215f3d8 resolving10215f2b8. Target projection names only Q and int*param2; its omitted third argument/native ABI and actual pointee/control mapping remain unknown. Do not identify nearby10214b918 or substitute its role.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": {
+        "provider": "class-call-associations",
+        "pointer": "/hits/0",
+        "target_entry": "0x10215f3d8",
+        "resolved_entry": "0x10215f2b8"
+      },
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF07",
+      "entry": "0x1023a1004",
+      "record_index": 3,
+      "code_lines": [
+        11,
+        38
+      ],
+      "span_sha256": "b47ad22ee28e2d1d9d48ea1abbd8e621a280dc98c49bbbc308e96708d7aac4c0",
+      "classification": "observed-static",
+      "claim": "V is recovered return of unread10247e678; four base address-point operands go to V+0/+0x50/+0x58/+0x1b8 and zeros to V+0x1d0/+0x1d8. Separate incoming T=param1 is supplied to member-helper expressions at T+0x1e0/T+0x1f8 and explicit byte zero at T+0x210. V=T is not established; vptr/layout does not prove a constructed/live model.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": null,
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF08",
+      "entry": "0x1023a1004",
+      "record_index": 3,
+      "code_lines": [
+        39,
+        69
+      ],
+      "span_sha256": "f80741fbefac2b2cf990f9463c39b2c8e8abdcad4fe0044008f74a0665771805",
+      "classification": "observed-static",
+      "claim": "Two separately named call results J1/J2 of unread1012d9850(0x28) receive T and T+0x1b0/T+0x1b4,table operands and reference-count-shaped operations; T+0xb8/T+0xc0 are updated after conditional old-reference decrements. These are source-local ownership-shaped inferences,not proved allocation,reference-count correctness,parameter lanes,host buffers or successful lifecycle. J1/J2 may alias; their inequality,disjointness and live identities are not established.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": null,
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF09",
+      "entry": "0x1023a1004",
+      "record_index": 3,
+      "code_lines": [
+        70,
+        83
+      ],
+      "span_sha256": "340f668ab939684bb302fa38efd82b92acc3822ee16b7311a7d75c9deffc1eff",
+      "classification": "inferred-cross-projection-limit",
+      "claim": "After further T-field stores and callbacks carrying T/symbol operands to unread helpers,the source explicitly returns T. Predecessor102f4fadc consumes a no-argument helper call result as outer model B; own helper projection names incoming T. The projection-only association can be written B=T conditionally if native call/argument/return recovery agrees,but those missing joins prevent an established B=T/current model identity.",
+      "premises": [
+        "Only source own return param1 is established as a projection.",
+        "Predecessor no-argument call and helper incoming parameter disagree in recovered signature; implicit ABI/incoming register is unknown."
+      ],
+      "predecessor_dependency": {
+        "entry": "0x102f4fadc",
+        "code_lines": [
+          7,
+          11
+        ],
+        "provider": "class-selected-records"
+      },
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    },
+    {
+      "id": "BF10",
+      "entry": "0x1023a1004",
+      "record_index": 3,
+      "code_lines": [
+        73,
+        82
+      ],
+      "span_sha256": "31a745ffd7c14cc878c6a341b58918a323064824da92b68ed51d42be1de41635",
+      "classification": "observed-static",
+      "claim": "Recovered lambda/IsComparingABController/OnCompareABUndoFlankChanged operands and T are supplied to unread helper expressions. Names do not establish actual controller registration,callback delivery,current values,Undo/AB behavior,time/order or public lifecycle.",
+      "premises": [
+        "Recovered source projection only; ordinary completion and valid/nonalias memory are not established at runtime."
+      ],
+      "predecessor_dependency": null,
+      "native_pc": null,
+      "actual_instance_established": false,
+      "public_bridge_established": false
+    }
+  ],
+  "source_unit_meaning": "Four retained C1 projections; source facts/compositions are auxiliary,not outcome/case/numeric-example denominator.",
+  "encountered_symbols_are_data": true,
+  "unselected_prefix_callees": [
+    "0x101ad08a0",
+    "0x102231400"
+  ],
+  "selected_successor": null,
+  "projection_gaps": [
+    {
+      "id": "VOID-CONSUMED",
+      "helper": "0x101bc3aa0",
+      "own_C_return": "void",
+      "caller_consumes_return": true,
+      "native_return_established": false,
+      "implicit_incoming_register_established": false
+    },
+    {
+      "id": "MODEL-ARG-OMITTED",
+      "helper": "0x1023a1004",
+      "own_C_return": "param_1",
+      "own_C_named_arguments": 1,
+      "predecessor_C_named_arguments": 0,
+      "outer_B_equals_T_established": false
+    },
+    {
+      "id": "THUNK-EXTRA-ARG",
+      "caller": "0x10214b954",
+      "source_call_arguments": 3,
+      "target_projection_named_arguments": 2,
+      "native_argument_correspondence_established": false
+    }
+  ]
+}

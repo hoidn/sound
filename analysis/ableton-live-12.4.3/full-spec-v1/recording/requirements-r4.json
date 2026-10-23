@@ -1,0 +1,314 @@
+[
+  {
+    "id": "REQ-RECORDING-COMPING-001",
+    "title": "input and arm selection",
+    "contract": "**D12, R19 §19.1–19.2.** A track records the input selected in its In/Out\ncontrols. Audio inputs can be mono/stereo; MIDI input can select device/channel;\nanother track can be the source. Session and Arrangement Arm controls address\nthe same tracks. In the documented ordinary arm operation, clicking one Arm\ndisarms other tracks; Ctrl on Windows/Cmd on macOS allows multiple arms.\nFor multiple selected tracks, clicking an Arm arms the other selected tracks.\nArming selects the track. **U:** preference-dependent exceptions, implicit arm,\nfrozen/nonrecordable tracks and arm changes during recording.",
+    "raw_start": 2336,
+    "raw_end": 2996,
+    "quote": "### REQ-RECORDING-COMPING-001 — input and arm selection\n\n**D12, R19 §19.1–19.2.** A track records the input selected in its In/Out\ncontrols. Audio inputs can be mono/stereo; MIDI input can select device/channel;\nanother track can be the source. Session and Arrangement Arm controls address\nthe same tracks. In the documented ordinary arm operation, clicking one Arm\ndisarms other tracks; Ctrl on Windows/Cmd on macOS allows multiple arms.\nFor multiple selected tracks, clicking an Arm arms the other selected tracks.\nArming selects the track. **U:** preference-dependent exceptions, implicit arm,\nfrozen/nonrecordable tracks and arm changes during recording.\n\n",
+    "line": 51
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-002",
+    "title": "input monitoring",
+    "contract": "**D12, R17 §17.1.** Auto passes input when armed and inhibits monitoring while\nclips play. In continuously passes input and suppresses clip output regardless\nof arm. Off disables monitoring; it permits recording with external monitoring.\nA Monitor choice applies to all selected tracks. This clause specifies a\nselection/gating result, not a latency or signal-processing tolerance.\n**U:** factory/new-track defaults: R19 §19.2 calls monitoring of armed tracks\nthe default, while R17 §17.1 describes reset defaults of Off for audio and Auto\nfor MIDI. Preserve the contextual distinction; do not impose one global default.",
+    "raw_start": 2996,
+    "raw_end": 3668,
+    "quote": "### REQ-RECORDING-COMPING-002 — input monitoring\n\n**D12, R17 §17.1.** Auto passes input when armed and inhibits monitoring while\nclips play. In continuously passes input and suppresses clip output regardless\nof arm. Off disables monitoring; it permits recording with external monitoring.\nA Monitor choice applies to all selected tracks. This clause specifies a\nselection/gating result, not a latency or signal-processing tolerance.\n**U:** factory/new-track defaults: R19 §19.2 calls monitoring of armed tracks\nthe default, while R17 §17.1 describes reset defaults of Off for audio and Auto\nfor MIDI. Preserve the contextual distinction; do not impose one global default.\n\n",
+    "line": 62
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-003",
+    "title": "Arrangement record start",
+    "contract": "**D12, R19 §19.3.1.** With Start Playback with Record enabled, Arrangement\nRecord starts recording. Disabled, Record waits for Play or a Session clip\nlaunch. Shift while pressing Record reverses that preference's behavior.\nRecording creates clips on armed tracks. **U:** exact scheduler order at the\nstart event and pressing Record again before the delayed start.",
+    "raw_start": 3668,
+    "raw_end": 4091,
+    "quote": "### REQ-RECORDING-COMPING-003 — Arrangement record start\n\n**D12, R19 §19.3.1.** With Start Playback with Record enabled, Arrangement\nRecord starts recording. Disabled, Record waits for Play or a Session clip\nlaunch. Shift while pressing Record reverses that preference's behavior.\nRecording creates clips on armed tracks. **U:** exact scheduler order at the\nstart event and pressing Record again before the delayed start.\n\n",
+    "line": 73
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-004",
+    "title": "Arrangement MIDI overdub",
+    "contract": "**D12, R19 §19.3.1.** With MIDI Arrangement Overdub enabled, a new MIDI clip\ncombines the track's existing MIDI signal and new input. The function applies\nto MIDI tracks. It does not define an audio overdub operation. **U:** overlapping\nsame-pitch note merge/retrigger rules and exact behavior with Overdub disabled.",
+    "raw_start": 4091,
+    "raw_end": 4467,
+    "quote": "### REQ-RECORDING-COMPING-004 — Arrangement MIDI overdub\n\n**D12, R19 §19.3.1.** With MIDI Arrangement Overdub enabled, a new MIDI clip\ncombines the track's existing MIDI signal and new input. The function applies\nto MIDI tracks. It does not define an audio overdub operation. **U:** overlapping\nsame-pitch note merge/retrigger rules and exact behavior with Overdub disabled.\n\n",
+    "line": 81
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-005",
+    "title": "punch gates",
+    "contract": "**D12, R19 §19.3.1.** Enabled Punch-In prevents recording before the Arrangement\nloop start. Enabled Punch-Out prevents recording after its loop end. These\nallow a pre-roll without recording over protected material. **U:** ownership of\nan event exactly at either endpoint, held-note splitting, sample alignment and\nmoving the loop/punch points during recording.",
+    "raw_start": 4467,
+    "raw_end": 4875,
+    "quote": "### REQ-RECORDING-COMPING-005 — punch gates\n\n**D12, R19 §19.3.1.** Enabled Punch-In prevents recording before the Arrangement\nloop start. Enabled Punch-Out prevents recording after its loop end. These\nallow a pre-roll without recording over protected material. **U:** ownership of\nan event exactly at either endpoint, held-note splitting, sample alignment and\nmoving the loop/punch points during recording.\n\n",
+    "line": 88
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-006",
+    "title": "retention across audio loop passes",
+    "contract": "**D12, R19 §19.3.1.** Arrangement loop recording retains audio across passes.\nThe resulting sample can contain the whole recorded run; Clip View's loop\nbrace selects the last pass and moving its markers can audition prior passes.\nThe manual also describes repeated Undo to unroll the recording. Take-lane\ncreation is REQ-018. **U:** partial last passes, segmentation between files,\npass-specific Undo granularity and disk reclamation.",
+    "raw_start": 4875,
+    "raw_end": 5379,
+    "quote": "### REQ-RECORDING-COMPING-006 — retention across audio loop passes\n\n**D12, R19 §19.3.1.** Arrangement loop recording retains audio across passes.\nThe resulting sample can contain the whole recorded run; Clip View's loop\nbrace selects the last pass and moving its markers can audition prior passes.\nThe manual also describes repeated Undo to unroll the recording. Take-lane\ncreation is REQ-018. **U:** partial last passes, segmentation between files,\npass-specific Undo granularity and disk reclamation.\n\n",
+    "line": 96
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-007",
+    "title": "Session slot record and playback",
+    "contract": "**D12, R19 §19.3.2.** Empty slots on armed tracks show record controls. Session\nRecord records the selected scene in armed tracks; the recording clip has a red\nlaunch control. Pressing Session Record again changes recording to loop\nplayback. A slot's record control starts that slot; its launch control changes\nit to loop playback. Clip Stop or transport Stop stops the clip. A non-None\nGlobal Quantization is the documented setup for musically cut clips.\n**U:** exact recording start/end scheduling and occupied-slot behavior.",
+    "raw_start": 5379,
+    "raw_end": 5974,
+    "quote": "### REQ-RECORDING-COMPING-007 — Session slot record and playback\n\n**D12, R19 §19.3.2.** Empty slots on armed tracks show record controls. Session\nRecord records the selected scene in armed tracks; the recording clip has a red\nlaunch control. Pressing Session Record again changes recording to loop\nplayback. A slot's record control starts that slot; its launch control changes\nit to loop playback. Clip Stop or transport Stop stops the clip. A non-None\nGlobal Quantization is the documented setup for musically cut clips.\n**U:** exact recording start/end scheduling and occupied-slot behavior.\n\n",
+    "line": 105
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-008",
+    "title": "scene launch and New",
+    "contract": "**D12, R19 §19.3.2.** By default a scene launch does not record its empty armed\nslots; Start Recording on Scene Launch enables that behavior. New stops clips\nin armed tracks and selects a scene available for new recordings, creating a\nscene when needed. The captured manual exposes New in Key/MIDI Map Mode.\n**U:** the scene-search ordering and interaction with follow actions.",
+    "raw_start": 5974,
+    "raw_end": 6407,
+    "quote": "### REQ-RECORDING-COMPING-008 — scene launch and New\n\n**D12, R19 §19.3.2.** By default a scene launch does not record its empty armed\nslots; Start Recording on Scene Launch enables that behavior. New stops clips\nin armed tracks and selects a scene available for new recordings, creating a\nscene when needed. The captured manual exposes New in Key/MIDI Map Mode.\n**U:** the scene-search ordering and interaction with follow actions.\n\n",
+    "line": 115
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-009",
+    "title": "Session MIDI overdub",
+    "contract": "**D12, R19 §19.3.3.** In an armed MIDI track with a looping clip, Session Record\nadds played notes on successive passes. Further presses toggle between\noverdub and playback so rehearsal input is not added while overdub is off.\nUndo can remove the last take while overdubbing; note editing remains\navailable. **U:** precise take grouping, duplicate-note handling and Undo while\na note is held. This is independent of Arrangement Overdub (REQ-004).",
+    "raw_start": 6407,
+    "raw_end": 6909,
+    "quote": "### REQ-RECORDING-COMPING-009 — Session MIDI overdub\n\n**D12, R19 §19.3.3.** In an armed MIDI track with a looping clip, Session Record\nadds played notes on successive passes. Further presses toggle between\noverdub and playback so rehearsal input is not added while overdub is off.\nUndo can remove the last take while overdubbing; note editing remains\navailable. **U:** precise take grouping, duplicate-note handling and Undo while\na note is held. This is independent of Arrangement Overdub (REQ-004).\n\n",
+    "line": 123
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-010",
+    "title": "stopped-transport step recording",
+    "contract": "**D12, R19 §19.3.4.** With the MIDI track armed, clip editor Preview enabled\nand an insert marker placed, Right Arrow advances by the editor grid and adds\nheld notes. Continuing to hold while advancing extends them. Left Arrow with\nthose keys held removes newly entered notes. Transport need not run.\n**U:** grid-off behavior, event timing while keys change and undo grouping.",
+    "raw_start": 6909,
+    "raw_end": 7353,
+    "quote": "### REQ-RECORDING-COMPING-010 — stopped-transport step recording\n\n**D12, R19 §19.3.4.** With the MIDI track armed, clip editor Preview enabled\nand an insert marker placed, Right Arrow advances by the editor grid and adds\nheld notes. Continuing to hold while advancing extends them. Left Arrow with\nthose keys held removes newly entered notes. Transport need not run.\n**U:** grid-off behavior, event timing while keys change and undo grouping.\n\n",
+    "line": 132
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-011",
+    "title": "record quantization and undo",
+    "contract": "**D12, R19 §19.5.** Record Quantization aligns incoming notes to the selected\nsubdivision. For Arrangement recording its quantization is a separate Undo\nstep: Undo can remove quantization while retaining the recording. The setting\ncannot change during ordinary Session/Arrangement recording; during overdub\nwith Clip View Loop on, changes apply immediately and their quantization is\nnot separately undoable. These are distinct documented modes. Enum/storage\nvalues remain [REQ-CLIP-LAUNCH-006](clip-launch.md#req-clip-launch-006--record-quantization-values).\n**U:** rounding/ties, note-off treatment, mixed-grid selection and exact input\ntimestamps. No grid formula is imported from clip launching.",
+    "raw_start": 7353,
+    "raw_end": 8115,
+    "quote": "### REQ-RECORDING-COMPING-011 — record quantization and undo\n\n**D12, R19 §19.5.** Record Quantization aligns incoming notes to the selected\nsubdivision. For Arrangement recording its quantization is a separate Undo\nstep: Undo can remove quantization while retaining the recording. The setting\ncannot change during ordinary Session/Arrangement recording; during overdub\nwith Clip View Loop on, changes apply immediately and their quantization is\nnot separately undoable. These are distinct documented modes. Enum/storage\nvalues remain [REQ-CLIP-LAUNCH-006](clip-launch.md#req-clip-launch-006--record-quantization-values).\n**U:** rounding/ties, note-off treatment, mixed-grid selection and exact input\ntimestamps. No grid formula is imported from clip launching.\n\n",
+    "line": 140
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-012",
+    "title": "count-in",
+    "contract": "**D12, R19 §19.6.** A non-None count-in delays recording until it finishes.\nThe Arrangement Position display shows its bars/beats/sixteenths in blue;\nthe documented two-bar example counts from −2.1.1 to 1.1.1, when recording\nbegins. **U:** buffered input during count-in, held notes crossing its end,\nalready-running transport and combining count-in with punch/pre-roll.",
+    "raw_start": 8115,
+    "raw_end": 8529,
+    "quote": "### REQ-RECORDING-COMPING-012 — count-in\n\n**D12, R19 §19.6.** A non-None count-in delays recording until it finishes.\nThe Arrangement Position display shows its bars/beats/sixteenths in blue;\nthe documented two-bar example counts from −2.1.1 to 1.1.1, when recording\nbegins. **U:** buffered input during count-in, held notes crossing its end,\nalready-running transport and combining count-in with punch/pre-roll.\n\n",
+    "line": 152
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-013",
+    "title": "recording metronome",
+    "contract": "**D12, R19 §19.4–19.4.1.** The enabled metronome starts with playback or a clip\nlaunch; Preview Volume controls its level. Auto tick division follows the meter\ndenominator. A selected division that no longer fits a bar falls back to Auto,\nthen returns if a later meter permits it. With Enable Only While Recording and\nthe metronome enabled, it sounds during recording; enabled Punch-In postpones\nthat sound to the punch-in point. **U:** tick sample waveform, phase and latency.",
+    "raw_start": 8529,
+    "raw_end": 9061,
+    "quote": "### REQ-RECORDING-COMPING-013 — recording metronome\n\n**D12, R19 §19.4–19.4.1.** The enabled metronome starts with playback or a clip\nlaunch; Preview Volume controls its level. Auto tick division follows the meter\ndenominator. A selected division that no longer fits a bar falls back to Auto,\nthen returns if a later meter permits it. With Enable Only While Recording and\nthe metronome enabled, it sounds during recording; enabled Punch-In postpones\nthat sound to the punch-in point. **U:** tick sample waveform, phase and latency.\n\n",
+    "line": 160
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-014",
+    "title": "Capture MIDI eligibility",
+    "contract": "**D12, R19 §19.10.** Capture MIDI retrieves recently played input from armed or\ninput-monitored MIDI tracks without prior Record. **U:** buffer capacity,\neviction, clear/reset triggers, no-input behavior, controllers, MPE expression\nand the relationship of armed eligibility to suppressed Auto monitoring.",
+    "raw_start": 9061,
+    "raw_end": 9426,
+    "quote": "### REQ-RECORDING-COMPING-014 — Capture MIDI eligibility\n\n**D12, R19 §19.10.** Capture MIDI retrieves recently played input from armed or\ninput-monitored MIDI tracks without prior Record. **U:** buffer capacity,\neviction, clear/reset triggers, no-input behavior, controllers, MPE expression\nand the relationship of armed eligibility to suppressed Auto monitoring.\n\n",
+    "line": 169
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-015",
+    "title": "Capture MIDI in an empty stopped Set",
+    "contract": "**D12, R19 §19.10.1.** In an empty stopped Set, Capture creates a phrase clip\non each monitored MIDI track, in the currently focused Session or Arrangement\nview. It infers tempo within 80–160 BPM and loop boundaries, and starts loop\nplayback. Material preceding the chosen phrase remains before the start\nmarker. **U:** the detection algorithm, exact phrase, tempo or alignment for\narbitrary input; tempo-automated Sets use REQ-017's documented branch.",
+    "raw_start": 9426,
+    "raw_end": 9950,
+    "quote": "### REQ-RECORDING-COMPING-015 — Capture MIDI in an empty stopped Set\n\n**D12, R19 §19.10.1.** In an empty stopped Set, Capture creates a phrase clip\non each monitored MIDI track, in the currently focused Session or Arrangement\nview. It infers tempo within 80–160 BPM and loop boundaries, and starts loop\nplayback. Material preceding the chosen phrase remains before the start\nmarker. **U:** the detection algorithm, exact phrase, tempo or alignment for\narbitrary input; tempo-automated Sets use REQ-017's documented branch.\n\n",
+    "line": 176
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-016",
+    "title": "single-note Capture MIDI",
+    "contract": "**D12, R19 §19.10.1 note.** With a single note in the first captured MIDI clip,\nthe documented loop bounds are that note's start/end and the inferred tempo\nproduces a one-, two-, four- or eight-bar loop. **U:** how the bar count is\nchosen, zero-duration input, tempo at exact boundaries and held/incomplete notes.",
+    "raw_start": 9950,
+    "raw_end": 10323,
+    "quote": "### REQ-RECORDING-COMPING-016 — single-note Capture MIDI\n\n**D12, R19 §19.10.1 note.** With a single note in the first captured MIDI clip,\nthe documented loop bounds are that note's start/end and the inferred tempo\nproduces a one-, two-, four- or eight-bar loop. **U:** how the bar count is\nchosen, zero-duration input, tempo at exact boundaries and held/incomplete notes.\n\n",
+    "line": 185
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-017",
+    "title": "Capture MIDI in an established Set",
+    "contract": "**D12, R19 §19.10.2.** If transport runs, other clips exist, or tempo is\nautomated, Capture uses the existing tempo instead of changing it. It selects\na loop from the played phrase and retains preceding material. Playing over a\nrunning clip on the same track and pressing Capture adds the material to that\nclip. **U:** stopped/nonplaying occupied-slot placement, capture repeated\nwithout new input and collisions with ordinary recording/overdub.",
+    "raw_start": 10323,
+    "raw_end": 10838,
+    "quote": "### REQ-RECORDING-COMPING-017 — Capture MIDI in an established Set\n\n**D12, R19 §19.10.2.** If transport runs, other clips exist, or tempo is\nautomated, Capture uses the existing tempo instead of changing it. It selects\na loop from the played phrase and retains preceding material. Playing over a\nrunning clip on the same track and pressing Capture adds the material to that\nclip. **U:** stopped/nonplaying occupied-slot placement, capture repeated\nwithout new input and collisions with ordinary recording/overdub.\n\n",
+    "line": 192
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-018",
+    "title": "recording takes",
+    "contract": "**D12, R21 §21.1, §21.3.** Arrangement recording creates take lanes and clips\non armed audio/MIDI tracks. Recording over existing clips adds a lane per pass,\nincluding looping passes. Existing lanes are reused when no other clip exists\nafter the punch-in point. The latest recorded clip is copied to the main lane\nand is available for playback. **U:** the reuse search order, first-pass\npreexisting-main preservation and partial-pass clipping. The manual's reuse\ncondition does not establish a greedy lane-allocation algorithm.",
+    "raw_start": 10838,
+    "raw_end": 11416,
+    "quote": "### REQ-RECORDING-COMPING-018 — recording takes\n\n**D12, R21 §21.1, §21.3.** Arrangement recording creates take lanes and clips\non armed audio/MIDI tracks. Recording over existing clips adds a lane per pass,\nincluding looping passes. Existing lanes are reused when no other clip exists\nafter the punch-in point. The latest recorded clip is copied to the main lane\nand is available for playback. **U:** the reuse search order, first-pass\npreexisting-main preservation and partial-pass clipping. The manual's reuse\ncondition does not establish a greedy lane-allocation algorithm.\n\n",
+    "line": 201
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-019",
+    "title": "lane visibility",
+    "contract": "**D12, R21 §21.1–21.2.** Audio/MIDI Arrangement tracks have a main lane and\ncan have multiple take lanes. Show Take Lanes toggles their visibility; inserting\na lane unfolds them. Take lanes are hidden in Automation Mode; requesting\ntheir display or insertion exits that mode. **U:** display persistence and\naccessibility/focus transitions beyond these actions.",
+    "raw_start": 11416,
+    "raw_end": 11827,
+    "quote": "### REQ-RECORDING-COMPING-019 — lane visibility\n\n**D12, R21 §21.1–21.2.** Audio/MIDI Arrangement tracks have a main lane and\ncan have multiple take lanes. Show Take Lanes toggles their visibility; inserting\na lane unfolds them. Take lanes are hidden in Automation Mode; requesting\ntheir display or insertion exits that mode. **U:** display persistence and\naccessibility/focus transitions beyond these actions.\n\n",
+    "line": 211
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-020",
+    "title": "lane management",
+    "contract": "**D12, R21 §21.2.** Selected tracks accept Insert Take Lane. Lanes can be\nduplicated, deleted, reordered within their track, renamed and resized.\nDelete All Take Lanes removes all lanes; Delete All Unused Take Lanes removes\nlanes lacking recorded material used in the main comp. **U:** sample-file\ndeletion, undo/redo grouping, linked tracks and edge conditions in unused-lane\nclassification. Deleting a lane is not evidence of deleting its audio file.",
+    "raw_start": 11827,
+    "raw_end": 12330,
+    "quote": "### REQ-RECORDING-COMPING-020 — lane management\n\n**D12, R21 §21.2.** Selected tracks accept Insert Take Lane. Lanes can be\nduplicated, deleted, reordered within their track, renamed and resized.\nDelete All Take Lanes removes all lanes; Delete All Unused Take Lanes removes\nlanes lacking recorded material used in the main comp. **U:** sample-file\ndeletion, undo/redo grouping, linked tracks and edge conditions in unused-lane\nclassification. Deleting a lane is not evidence of deleting its audio file.\n\n",
+    "line": 219
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-021",
+    "title": "audition",
+    "contract": "**D12, R21 §21.1, §21.5.** The main lane is normally heard; take lanes are\nheard through Audition. The speaker control or T auditions a take lane. Only\none lane per track may be auditioned; different tracks may audition together.\nWhen a selection spans lanes/tracks, the last selected lane per track is used.\n**U:** audition/record overlap, switch timing, gaps, teardown and suppression of\nthe main lane during every audition boundary.",
+    "raw_start": 12330,
+    "raw_end": 12809,
+    "quote": "### REQ-RECORDING-COMPING-021 — audition\n\n**D12, R21 §21.1, §21.5.** The main lane is normally heard; take lanes are\nheard through Audition. The speaker control or T auditions a take lane. Only\none lane per track may be auditioned; different tracks may audition together.\nWhen a selection spans lanes/tracks, the last selected lane per track is used.\n**U:** audition/record overlap, switch timing, gaps, teardown and suppression of\nthe main lane during every audition boundary.\n\n",
+    "line": 228
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-022",
+    "title": "comp copies and source independence",
+    "contract": "**D12, R21 §21.6.** Enter or Copy Selection to Main Lane copies selected take\nmaterial to the main lane. Main/take clips are independent copies: editing one\ndoes not edit the other. This describes clip content independence, not a second\nphysical audio file. Take clips allow ordinary Arrangement edits and can be\ncopied/dragged to Session slots. **U:** cross-type paste refusal and exact\nnon-grid boundary handling.",
+    "raw_start": 12809,
+    "raw_end": 13295,
+    "quote": "### REQ-RECORDING-COMPING-022 — comp copies and source independence\n\n**D12, R21 §21.6.** Enter or Copy Selection to Main Lane copies selected take\nmaterial to the main lane. Main/take clips are independent copies: editing one\ndoes not edit the other. This describes clip content independence, not a second\nphysical audio file. Take clips allow ordinary Arrangement edits and can be\ncopied/dragged to Session slots. **U:** cross-type paste refusal and exact\nnon-grid boundary handling.\n\n",
+    "line": 237
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-023",
+    "title": "choosing alternate comp material",
+    "contract": "**D12, R21 §21.6.** Ctrl on Windows/Cmd on macOS with Up/Down replaces selected\nmain material with previous/next take clips, skipping empty lanes. A take-lane\ntime selection also moves to the chosen take. Draw Mode copies a dragged take\nselection to main on release; clicking a take with a main time selection\nreplaces the corresponding interval. **U:** dragging cancellation, endpoint\nties, cross-track selections and the no-alternative boundary.",
+    "raw_start": 13295,
+    "raw_end": 13810,
+    "quote": "### REQ-RECORDING-COMPING-023 — choosing alternate comp material\n\n**D12, R21 §21.6.** Ctrl on Windows/Cmd on macOS with Up/Down replaces selected\nmain material with previous/next take clips, skipping empty lanes. A take-lane\ntime selection also moves to the chosen take. Draw Mode copies a dragged take\nselection to main on release; clicking a take with a main time selection\nreplaces the corresponding interval. **U:** dragging cancellation, endpoint\nties, cross-track selections and the no-alternative boundary.\n\n",
+    "line": 246
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-024",
+    "title": "source highlights",
+    "contract": "**D12, R21 §21.7.** Used take material is highlighted with the track color;\nunused material is desaturated. Highlights require matching clip positions and\nproperties. Dragging the highlight edge adjusts the split between adjacent\ncomp pieces. **U:** the complete property equivalence predicate, floating-point\ntolerances and effects of unmatched edits. A shared TakeId alone does not prove\nthat two clips match.",
+    "raw_start": 13810,
+    "raw_end": 14274,
+    "quote": "### REQ-RECORDING-COMPING-024 — source highlights\n\n**D12, R21 §21.7.** Used take material is highlighted with the track color;\nunused material is desaturated. Highlights require matching clip positions and\nproperties. Dragging the highlight edge adjusts the split between adjacent\ncomp pieces. **U:** the complete property equivalence predicate, floating-point\ntolerances and effects of unmatched edits. A shared TakeId alone does not prove\nthat two clips match.\n\n",
+    "line": 255
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-025",
+    "title": "comp crossfades",
+    "contract": "**D12, R21 §21.6.** With Create Fades on Clip Edges enabled, adjacent comp clips\nreceive four-millisecond crossfades. The documented manual crossfade command\nalso applies to selected clips. **U:** curve law, overlap/minimum-length rules,\nrounding at sample rates and numerical render output. Four milliseconds is a\ndocumented duration, not a measured waveform tolerance.",
+    "raw_start": 14274,
+    "raw_end": 14695,
+    "quote": "### REQ-RECORDING-COMPING-025 — comp crossfades\n\n**D12, R21 §21.6.** With Create Fades on Clip Edges enabled, adjacent comp clips\nreceive four-millisecond crossfades. The documented manual crossfade command\nalso applies to selected clips. **U:** curve law, overlap/minimum-length rules,\nrounding at sample rates and numerical render output. Four milliseconds is a\ndocumented duration, not a measured waveform tolerance.\n\n",
+    "line": 264
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-026",
+    "title": "recorded audio files",
+    "contract": "**D12, R19 §19.7–19.8; R17 §17.2.1.** Recording File Type and Bit Depth settings\nchoose the recorded sample format. Mono input records mono; other selected\naudio input records stereo. Recorded media belongs under the Set project's\n`Samples/Recorded`; before saving, its location follows Temporary Folder.\n**U:** naming/collision policy, precise first-save move/copy transaction,\nencoding details, disk-full/write failure, unsaved close and unused-file cleanup.\nSample-reference structure remains SPEC-LIVE-SET-STRUCTURE's contract.",
+    "raw_start": 14695,
+    "raw_end": 15282,
+    "quote": "### REQ-RECORDING-COMPING-026 — recorded audio files\n\n**D12, R19 §19.7–19.8; R17 §17.2.1.** Recording File Type and Bit Depth settings\nchoose the recorded sample format. Mono input records mono; other selected\naudio input records stereo. Recorded media belongs under the Set project's\n`Samples/Recorded`; before saving, its location follows Temporary Folder.\n**U:** naming/collision policy, precise first-save move/copy transaction,\nencoding details, disk-full/write failure, unsaved close and unused-file cleanup.\nSample-reference structure remains SPEC-LIVE-SET-STRUCTURE's contract.\n\n",
+    "line": 272
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-027",
+    "title": "stored lane inventory",
+    "contract": "**D12403, E-SCHEMA; E-DOCS.** Both AudioTrack and MidiTrack declare TakeLanes.\nIts nested TakeLanes list holds TakeLane entries and a folded-state field.\nTakeLane declares name, annotation, height, selection, clip automation and\nAudition fields, with `ClipAutomation/Events` holding saved clips. AudioClip and\nMidiClip declare TakeId. Shipped documents corroborate concrete lane entries\nand MIDI clips. This requirement inventories stored state; it does not assert\nallocation, source matching, numeric range, save/restore behavior or how TakeId\nis generated. Existing document specs govern common field parsing.",
+    "raw_start": 15282,
+    "raw_end": 15950,
+    "quote": "### REQ-RECORDING-COMPING-027 — stored lane inventory\n\n**D12403, E-SCHEMA; E-DOCS.** Both AudioTrack and MidiTrack declare TakeLanes.\nIts nested TakeLanes list holds TakeLane entries and a folded-state field.\nTakeLane declares name, annotation, height, selection, clip automation and\nAudition fields, with `ClipAutomation/Events` holding saved clips. AudioClip and\nMidiClip declare TakeId. Shipped documents corroborate concrete lane entries\nand MIDI clips. This requirement inventories stored state; it does not assert\nallocation, source matching, numeric range, save/restore behavior or how TakeId\nis generated. Existing document specs govern common field parsing.\n\n",
+    "line": 282
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-028",
+    "title": "save, undo, redo and deletion lifecycle",
+    "contract": "**U.** Other than the documented Undo clauses in REQ-006, 009 and 011, no\nrecording/comp transaction boundary or redo result is established. Persistence\nof an in-progress record, captured history, audition state, lane fold/selection,\ncomp linkage, unsaved recordings and physical sample ownership remains open.\nSchema declarations cannot settle these behaviors. No recovery guarantee follows\nfrom the presence of a saved clip.",
+    "raw_start": 15950,
+    "raw_end": 16451,
+    "quote": "### REQ-RECORDING-COMPING-028 — save, undo, redo and deletion lifecycle\n\n**U.** Other than the documented Undo clauses in REQ-006, 009 and 011, no\nrecording/comp transaction boundary or redo result is established. Persistence\nof an in-progress record, captured history, audition state, lane fold/selection,\ncomp linkage, unsaved recordings and physical sample ownership remains open.\nSchema declarations cannot settle these behaviors. No recovery guarantee follows\nfrom the presence of a saved clip.\n\n",
+    "line": 293
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-029",
+    "title": "cancellation, failure and teardown",
+    "contract": "**U.** Stop is a documented recording/clip control (REQ-007, 031), but cancel\nbefore start, stop during count-in, disconnecting an input, disk full, permission\nfailure, sample-write failure, device/track deletion, closing the Set while\nrecording and process failure have no established transition or error wording.\nRetained media, final note-offs, retry and rollback results must remain ungraded.",
+    "raw_start": 16451,
+    "raw_end": 16917,
+    "quote": "### REQ-RECORDING-COMPING-029 — cancellation, failure and teardown\n\n**U.** Stop is a documented recording/clip control (REQ-007, 031), but cancel\nbefore start, stop during count-in, disconnecting an input, disk full, permission\nfailure, sample-write failure, device/track deletion, closing the Set while\nrecording and process failure have no established transition or error wording.\nRetained media, final note-offs, retry and rollback results must remain ungraded.\n\n",
+    "line": 302
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-030",
+    "title": "recording timing",
+    "contract": "**U.** No bound is established for input-to-note/sample timestamp, monitor or\nrecord latency compensation, buffer scheduling, punch inclusivity, click-free\nswitching, jitter or real-time capacity. The monitoring-latency preference\ndocumented by R17 §17.1 has no numeric transfer rule here. Clip-launch and\nplayback-core timing results cannot be substituted for the recording path.",
+    "raw_start": 16917,
+    "raw_end": 17349,
+    "quote": "### REQ-RECORDING-COMPING-030 — recording timing\n\n**U.** No bound is established for input-to-note/sample timestamp, monitor or\nrecord latency compensation, buffer scheduling, punch inclusivity, click-free\nswitching, jitter or real-time capacity. The monitoring-latency preference\ndocumented by R17 §17.1 has no numeric transfer rule here. Clip-launch and\nplayback-core timing results cannot be substituted for the recording path.\n\n",
+    "line": 310
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-031",
+    "title": "Session performance into Arrangement",
+    "contract": "**D12, R7 §7.5.** Arrangement Record captures Session clip launches and their\nproperty changes into Arrangement on the appropriate tracks/song positions;\nit also records eligible mixer/device automation and tempo/meter changes\nincluded in the names of launched scenes.\nPress Record again or stop playback to finish. This produces Arrangement clips\nwithout new audio data. Session/Arrangement clips are independent. Playback\nownership and return controls belong to\n[REQ-ARRANGEMENT-020](arrangement-editing.md#req-arrangement-020--session-overrides-arrangement-per-track)\nand [REQ-ARRANGEMENT-021](arrangement-editing.md#req-arrangement-021--return-one-or-all-tracks-to-arrangement).\n**U:** recording tempo/meter changes from scene fields without the documented\nscene-name condition, precise clip segment boundaries, automation arming\ndependencies and quantized transition latency. Automation write detail belongs\nto the automation contract.",
+    "raw_start": 17349,
+    "raw_end": 18361,
+    "quote": "### REQ-RECORDING-COMPING-031 — Session performance into Arrangement\n\n**D12, R7 §7.5.** Arrangement Record captures Session clip launches and their\nproperty changes into Arrangement on the appropriate tracks/song positions;\nit also records eligible mixer/device automation and tempo/meter changes\nincluded in the names of launched scenes.\nPress Record again or stop playback to finish. This produces Arrangement clips\nwithout new audio data. Session/Arrangement clips are independent. Playback\nownership and return controls belong to\n[REQ-ARRANGEMENT-020](arrangement-editing.md#req-arrangement-020--session-overrides-arrangement-per-track)\nand [REQ-ARRANGEMENT-021](arrangement-editing.md#req-arrangement-021--return-one-or-all-tracks-to-arrangement).\n**U:** recording tempo/meter changes from scene fields without the documented\nscene-name condition, precise clip segment boundaries, automation arming\ndependencies and quantized transition latency. Automation write detail belongs\nto the automation contract.\n\n",
+    "line": 318
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-032",
+    "title": "remote recording actions",
+    "contract": "**D12, R19 §19.9.** Arrangement Record, transport, track Arm, Session Record,\nNew, individual slots and relative Session navigation can be assigned through\nkey/MIDI mapping. Step recording navigators can also be mapped. These are\nalternate triggers for this draft's actions. **U:** simultaneous mappings,\nconflicts, press/release edges and remote action timing; controller protocol\ndetails belong to their respective feature families.",
+    "raw_start": 18361,
+    "raw_end": 18855,
+    "quote": "### REQ-RECORDING-COMPING-032 — remote recording actions\n\n**D12, R19 §19.9.** Arrangement Record, transport, track Arm, Session Record,\nNew, individual slots and relative Session navigation can be assigned through\nkey/MIDI mapping. Step recording navigators can also be mapped. These are\nalternate triggers for this draft's actions. **U:** simultaneous mappings,\nconflicts, press/release edges and remote action timing; controller protocol\ndetails belong to their respective feature families.\n\n",
+    "line": 334
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-033",
+    "title": "take-to-main navigation and folding",
+    "contract": "**D12/target-U.** From a selected take lane, Left Arrow navigates to the main lane and folds all take lanes. This names the documented lane-focus input and visible folding role, not a global key alias, default, accessibility/animation timing or persistence law. Exact 12.4.3 action remains U.",
+    "source_references": [
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/recording-comping-source-audit/audit.json",
+        "pointer": "/blocks/7",
+        "block_id": "CMP:B008"
+      }
+    ]
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-034",
+    "title": "file-to-take input roles",
+    "contract": "**D12/target-U.** Samples and MIDI files can be dragged onto take lanes from the Browser or platform File Explorer/Finder in admitted audio/MIDI contexts. With multiple samples selected, Ctrl on Windows or Cmd on macOS while dragging inserts each sample into sequential tracks. The latter scope is multiple samples, not a claim about multi-MIDI-file distribution. Supported-file admission, ordering, decoder/format grammar, copy ownership, cancellation and exact-build outcome remain U.",
+    "source_references": [
+      {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/recording-comping-source-audit/audit.json",
+        "pointer": "/blocks/25",
+        "block_id": "CMP:B026"
+      }
+    ]
+  }
+]

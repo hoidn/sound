@@ -1,0 +1,45 @@
+{
+  "reviewed_utc": "2026-10-20T12:19:06.412800+00:00",
+  "disposition": "REQUIRES_FOCUSED_ROW_VALIDITY_CORRECTION; no extraction/decoder selected",
+  "manifest": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-membrane-builder-call-instructions-preparation/manifest.json",
+    "bytes": 1596,
+    "sha256": "f4e6401400eec3528b48aa258d8f1872496e9b857c2f04f5016ba7cfb7bc071a"
+  },
+  "fresh_read": "Full6515Bcollector/6493Bchecker/proposal/README; remaining header/input/seal checks pending. Only pure AST rowguard expression evaluated on synthetic metadata; no collector/main/decoder/image instruction executed.",
+  "required_findings": [
+    {
+      "id": "MEMCALL-PREFLIGHT-001",
+      "location": "collect-once.py decoded rows all(...) predicate",
+      "problem": "type != invalid and opcode is str admits type ill/opcode invalid with matching size/address/bytes. Success contract requires valid3decodedrows.",
+      "synthetic_guard_accepts_invalid": true,
+      "evidence_rows": [
+        {
+          "offset": 149636,
+          "size": 4,
+          "type": "ill",
+          "opcode": "invalid",
+          "bytes": "00000000"
+        },
+        {
+          "offset": 149640,
+          "size": 4,
+          "type": "ill",
+          "opcode": "invalid",
+          "bytes": "00000000"
+        },
+        {
+          "offset": 149644,
+          "size": 4,
+          "type": "ill",
+          "opcode": "invalid",
+          "bytes": "00000000"
+        }
+      ],
+      "required_change": "Separately freeze successor explicitly rejecting invalid/ill types and absent/invalid opcode strings, preserving3/size/address/rawbytechecks. Add focused negative row fixtures to readonly checker; preserveR1/no extraction before corrected preflight."
+    }
+  ],
+  "reviewer_precheck_failure": "First scratch eval supplied START only as locals; generator comprehension uses globals and raised NameError before report write. Corrected eval namespace; synthetic invalid rows pass actual source guard. No collector/source/tool failure.",
+  "limits": "Historical constructor invalid rows had size0/maxoffset and were rejected by otherguards; no claim those exactrows pass or unexecuted12Bselection failed. No actual tooloutput produced.",
+  "new_cases_or_grades": 0
+}

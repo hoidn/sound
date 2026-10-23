@@ -1,0 +1,183 @@
+{
+  "id": "utility-mute-candidate-name-frontier-2026-10-20",
+  "retained_utc": "2026-10-20T11:04:16.833307+00:00",
+  "status": "Exploratory retained-source result only; independent review pending as of query freeze",
+  "selection": {
+    "entry": "0x101482918",
+    "metadata_displayed_separately_before_body": true,
+    "metadata_first_location_search": "rg -l -F exact JSON entry literal across retained chunk files; filenames only, no matching JSONL bodies printed",
+    "complete_C_byte_limit": 3000,
+    "actual_C_bytes": 271,
+    "native_body_bytes": 16,
+    "selected_new_full_bodies": 1,
+    "additional_callee_bodies": 0,
+    "new_image_words_or_instructions": 0,
+    "native_original_or_source_calls": 0
+  },
+  "full_selected_record": {
+    "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-00796.jsonl",
+    "source_line_1based": 19,
+    "raw_row_bytes_excluding_LF": 786,
+    "raw_row_sha256": "c97652ca12ad3e637703863a740afc5d57334738d1823f156c15ec02c587bc04",
+    "record": {
+      "entry": "0x101482918",
+      "name": "FUN_101482918",
+      "thunk": false,
+      "body_bytes": 16,
+      "body_ranges": [
+        [
+          "0x101482918",
+          "0x101482927"
+        ]
+      ],
+      "signature": "undefined FUN_101482918()",
+      "state": "exported-with-warnings",
+      "error": null,
+      "timed_out": false,
+      "partial_code": false,
+      "warnings": [
+        "/* WARNING: Could not recover jumptable at 0x000101482924. Too many branches */",
+        "/* WARNING: Treating indirect jump as call */"
+      ],
+      "ms": 0,
+      "code_bytes": 271,
+      "code_sha256": "7ee7d769a5df14c15e6db115fdf9175f8d07d9f0fe51910623a56675998657f4",
+      "code": "\nvoid FUN_101482918(long param_1)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x000101482924. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(long **)(param_1 + 0x18) + 0x18))();\n  return;\n}\n\n"
+    }
+  },
+  "source_export": {
+    "provider": {
+      "path": "/var/tmp/sound-analysis/corpus/decomp/run.json",
+      "bytes": 555,
+      "sha256": "614a0d70de180c5ca399d855c72c83e3b536fe242508d932f663cd85e191b378"
+    },
+    "program": "Live.arm64",
+    "executable_sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad",
+    "export_utc": null,
+    "image_not_read": true
+  },
+  "caller": {
+    "provider": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-mute-model-routing/records.json",
+      "bytes": 141045,
+      "sha256": "ea158a34ae400d87ef39934af815bca960de04e7da3b59f28e96b4d0ef3585a1"
+    },
+    "pointer": "/functions/26/record/code",
+    "entry": "0x1025c1ea8",
+    "lines_1based_inclusive": [
+      461,
+      474
+    ],
+    "text": "              puVar8 = (undefined8 *)FUN_1012d9850(0x30);\n              FUN_101482918(&local_90,plVar21);\n              FUN_10128ed98(puVar8);\n              *puVar8 = &PTR_FUN_1067e18f8;\n              uVar7 = FUN_1012908d8(&local_90);\n              puVar8[3] = uVar7;\n              *(undefined1 *)(puVar8 + 4) = extraout_w1_02;\n              if ((local_90 != (int *)0x0) &&\n                 (iVar3 = *local_90, *local_90 = iVar3 + -1, iVar3 + -1 == 0)) {\n                FUN_101449efc();\n              }\n              *puVar8 = &PTR_thunk_FUN_10128edf8_1067e1d18;\n              uVar2 = (**(code **)(*plVar21 + 0x330))(plVar21);\n              *(undefined1 *)(puVar8 + 5) = uVar2;\n",
+    "sha256": "81e0c6e36d62f0f054ff14faf95afda052e63caf81b5170891c55f08f3629ee4",
+    "role": "Already retained conditional bool-descriptor branch calls FUN101482918(&local90,plVar21), then packages local90 through1012908d8 into descriptor+18/+20; a separate candidate virtual330 result populates+28. This is not proof the reached candidate is D+358 or actual runtime admission succeeds."
+  },
+  "direct_source_fact": {
+    "pointer": "/full_selected_record/record/code",
+    "lines_1based_inclusive": [
+      7,
+      7
+    ],
+    "text": "  (**(code **)(**(long **)(param_1 + 0x18) + 0x18))();\n",
+    "sha256": "cdc5e775785fb60e0627c7bd01afd23a0ffdd806649bd3ece35f41931e3073d1",
+    "conditional_interpretation": "Using only recovered expression layout: let R=param1, T=*(long**)(R+0x18), V=*T. The indirect target is loaded from V+0x18, then invoked in the decompiler projection with no recovered operands. This is a delegated virtual dispatch through the pointer at recoveredR+18, not a direct literal/name-buffer or metadata-map-key return."
+  },
+  "ABI_and_warning_limit": {
+    "warnings_preserved": [
+      "/* WARNING: Could not recover jumptable at 0x000101482924. Too many branches */",
+      "/* WARNING: Treating indirect jump as call */"
+    ],
+    "signature": "Export metadata says undefined FUN101482918(); projected definition is void FUN101482918(long param1), while caller shows output-like local90 address plus candidateplVar21. No instruction data was read; do not assign recoveredparam1 to either calleroperand or conclude hidden-return/output/receiver ABI.",
+    "conditional_only": "The complete exported text is retained and not marked partial, but indirect jump/call recovery warnings remain material. Ordinary validpointer/vtable/layout and native argument mapping are premises. Targetslot and receiver identity/currentcontents are not established by literal offset spelling.",
+    "not_derived": "No string content/encoding, prefix stripping, mpMute/Mute equality, actual name-source type, concrete virtual target, name getter return or map-key equality."
+  },
+  "conclusion": "The direct name-production helper frontier stops at an immediate delegated virtual+18 dispatch reached through recoveredreceiver+18, with unresolved caller/receiver/outputABI. This does not settle cachedQ versus declaration-associatedkey. It names a concrete source/ABI boundary rather than a no-route or absence result.",
+  "remaining_predicate": {
+    "proposal": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-lookup-join-proposal-2026-10-20.json",
+      "bytes": 12669,
+      "sha256": "d6760295cd0b6096da5d75588edcd0138731e1bd1da3455087325c14b2ca6dfd"
+    },
+    "pointer": "/smallest_needed_predicate",
+    "status": "Unresolved: same admittedD358 candidate\u2192cachednameQ\u2192sameM88entry\u2192N30=-1/N38=350\u2192D350wrapper+8. Separate sameunit/processorP/publicgesture join also unresolved."
+  },
+  "stop_boundary": "STOP. No vtable target word, direct/indirect callee metadata/body, type/name/string helper, caller/alias sweep or machine instruction read is selected by this query. A future bounded selection requires Root; nothing recursively followed.",
+  "read_scope": "Fresh metadata printed alone first, then all271Cbytes/16native-body metadata with bothwarnings; exact existing caller461\u2013474span only. No complete new enumeration read, other source body, native word or runtime state. Prior lookup proposal/canonical context carried as-of, not behavioral proof.",
+  "preservation": {
+    "before": [
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-00796.jsonl",
+        "bytes": 168212,
+        "sha256": "3f6c4d583159450b1628a3eb40dd7253621cebd850bef455c16d15fed4066f19"
+      },
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/run.json",
+        "bytes": 555,
+        "sha256": "614a0d70de180c5ca399d855c72c83e3b536fe242508d932f663cd85e191b378"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-lookup-join-proposal-2026-10-20.json",
+        "bytes": 12669,
+        "sha256": "d6760295cd0b6096da5d75588edcd0138731e1bd1da3455087325c14b2ca6dfd"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-mute-model-routing/records.json",
+        "bytes": 141045,
+        "sha256": "ea158a34ae400d87ef39934af815bca960de04e7da3b59f28e96b4d0ef3585a1"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/device-audio-utilities.md",
+        "bytes": 30418,
+        "sha256": "9de21525838928fbca4d2a26924ec3ab7d850aef0a3eb806cf52bdab853bccfa"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-preprocessed-node-constructor-frontier-2026-10-20.json",
+        "bytes": 21304,
+        "sha256": "fc679c8b29848e2fd9459ac1268468904aae5785917ba7a51d34b21e3f31e145"
+      }
+    ],
+    "scope": "Six selected existing source/history/as-of canonical files watched after the selected reads during query retention; not whole-session/workspace proof.",
+    "after": [
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-00796.jsonl",
+        "bytes": 168212,
+        "sha256": "3f6c4d583159450b1628a3eb40dd7253621cebd850bef455c16d15fed4066f19"
+      },
+      {
+        "path": "/var/tmp/sound-analysis/corpus/decomp/run.json",
+        "bytes": 555,
+        "sha256": "614a0d70de180c5ca399d855c72c83e3b536fe242508d932f663cd85e191b378"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-lookup-join-proposal-2026-10-20.json",
+        "bytes": 12669,
+        "sha256": "d6760295cd0b6096da5d75588edcd0138731e1bd1da3455087325c14b2ca6dfd"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-mute-model-routing/records.json",
+        "bytes": 141045,
+        "sha256": "ea158a34ae400d87ef39934af815bca960de04e7da3b59f28e96b4d0ef3585a1"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/device-audio-utilities.md",
+        "bytes": 30418,
+        "sha256": "9de21525838928fbca4d2a26924ec3ab7d850aef0a3eb806cf52bdab853bccfa"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-preprocessed-node-constructor-frontier-2026-10-20.json",
+        "bytes": 21304,
+        "sha256": "fc679c8b29848e2fd9459ac1268468904aae5785917ba7a51d34b21e3f31e145"
+      }
+    ],
+    "unchanged": true
+  },
+  "application_expected": null,
+  "comparison": null,
+  "grade": null,
+  "new_requirements": 0,
+  "new_cases": 0,
+  "new_grades": 0,
+  "all38Utility_application_outcomes": "U/unexecuted",
+  "complete": false,
+  "no_route_or_absence_claim": false
+}

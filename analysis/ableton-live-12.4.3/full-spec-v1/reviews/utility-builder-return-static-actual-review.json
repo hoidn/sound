@@ -1,0 +1,80 @@
+{
+  "review_id": "UTILITY-BUILDER-RETURN-ACTUAL-REVIEW-2026-10-20",
+  "reviewed_utc": "2026-10-20T12:07:48.266896+00:00",
+  "disposition": "APPROVED_PARTIAL_CONDITIONAL_STATIC_DATA",
+  "required_findings": [],
+  "reviewed_manifest": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-builder-return-instruction-data/manifest.json",
+    "bytes": 1855,
+    "sha256": "1b6ceaf4e295dce15a623ad50acd835074a2bb4f085732c447cc972c79e44a2b"
+  },
+  "evidence": [
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-builder-return-actual-review-evidence/check-selected-data.py",
+      "bytes": 7377,
+      "sha256": "422f7fb5489c2837ebb492f51d8a468fc9febd80d0ba6bfff02cfd1f0d20cca4"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-builder-return-actual-review-evidence/result.json",
+      "bytes": 11705,
+      "sha256": "c2e27513b5b1f88175676c4c45a550ec6cc2a5e18c03de70a2a4db52449af083"
+    }
+  ],
+  "root_receipt": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-builder-return-root-execution/receipt.json",
+    "bytes": 1165,
+    "sha256": "8aa56bb0aeb5bacca47212843d8c814c26f4111f76af7c25d6deafde1b37ae48"
+  },
+  "root_count_correction": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-builder-return-root-assessment-addendum.json",
+    "bytes": 454,
+    "sha256": "06d8f3223b6a5a132773951b8813fae7073b05add1378e38a8cdfe8018148786"
+  },
+  "independence_and_scope": {
+    "contribution_disclosure": "Reviewer authored the tail-window design/preparation and earlier helper source query. Root independently preflighted that preparation, selected and performed the one static decoder run, and authored the frozen assessment/addendum. This review freshly checks actual retained data and register fields; it is not an independent reapproval of the reviewer's own preparation method.",
+    "fresh_scope": "Full actual manifest/status/extraction/invocation/root assessment/addendum/receipt, all24 opcode/byte rows; all11 payload identities; complete durable12-row inner and2182-row outer paired identity maps. Fresh full image SHA/header/load-command/uniqueTEXTmapping and exactly96 selected image bytes. New own stdlib bitfield checker fully read before one run.",
+    "excluded": "No supplied collector/decoder re-execution, source/native function call, ESIL/emulation, additional body/callee/caller/word/window, target import lookup, numerical model/fit or application operation."
+  },
+  "verification": {
+    "sealed_inventory": "11 payloads/12 files, exact manifest membership/bytes/hashes verified; raw96B SHAfa726e5e8b75f46b9b7f4400d92745aed4a5ecaf47fa89eab6b7dc977e96760e. All24 retained addresses/size4/bytes and extraction words equal raw data.",
+    "image": "Fresh149711904B image SHA3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad before/after. Exact32Bheader and6944B/53 boundedloadcommands verified; one complete file-backedTEXTmapping gives fileoffset27951308 for101aa80cc..101aa812b. Exactlysame96B read; no neighbor bytes.",
+    "instruction_check": "Independent integer masks/operand fields for all24 selected words: MOVZ_W/MOV_X, signed-byte/load, CMP/CSEL, STUR_W/STUR_D, SIMD MOVI, LDP offset/post, BL signed target and RET. Two small synthetic checks validate negative BL displacement and rejection of an unselected encoding. No machine instruction was executed.",
+    "recorded_execution": "Root receipt/status agree: one collector run exit0; one static-decoder attempt, returnedPID339764/exit0, empty decoderstderr,6355Bstdout. This records decoder execution, not original instruction execution.",
+    "preservation": "12 unique inner paths before==after, same12 incremental rows;2182 unique outer rows before==after. These are retained historical paired maps, not a fresh live rehash of all2182 paths.25 reviewer-scoped artifact identities stayed exact; image independently hashed before/after separately. Maps reside in evidence output to avoid duplicate ledgers.",
+    "accounting": "Own checker first run passed. No data/semantic failure hidden or rerun; only new reviewer evidence/report files written."
+  },
+  "register_assessment": [
+    {
+      "range": "0x101aa80cc..0x101aa80fc",
+      "finding": "Two opaqueBL operands target1011b5044. Native80f4 is MOVX0,X21,80f8 MOVW2,#ff,80fc BL1054d70a0. Prior LDRSB/CMP/CSEL selects X1 fromX9/X20 underLT; this is native input selection, not name/equality proof."
+    },
+    {
+      "range": "0x101aa8100..0x101aa811c",
+      "finding": "ExactlyEIGHT rows: STURW19[X25,-20];MOVIV0.2D allones;STURD0[X25,-1c];fiveLDP register restores (four offset, one postindexed). StoreD0/modifyV0 does not write generalX0. None of these eight instructions definesX0. LDPs restore ordinary callee-savedGPRs/FP/LR/SP under validstack/nointerference premises."
+    },
+    {
+      "range": "0x101aa8120",
+      "finding": "RET throughX30. Thus on the straight normal path after opaqueBL returns, X0 survives unchanged to normalRET. This establishes last-call-result survival only, not what that result denotes."
+    },
+    {
+      "range": "0x101aa8124..0x101aa8128",
+      "finding": "Two further BL operands after RET, targeting101aae2fc and10024a858. Their callers/paths/targetsemantics were not followed. No outside-window failure/controlflow or safety law inferred."
+    }
+  ],
+  "correction_disposition": "Root's original assessment says six postBL rows; immutable addendum correctly changes this to eight8100..811c followed byRET8120. Both historical files retained unchanged. Corrected count does not change scoped no-X0-definition conclusion.",
+  "remaining_premises": [
+    "X21 origin as appended entry E lies outside selected window. X25/sourceparameter origins also not proved here.",
+    "BL1054d70a0 remains an opaque target: no independently inspected import identity, implementation or return contract. Projected strncpy association is a conditional external premise, not instruction-data proof.",
+    "Only if X21=E and that call returns its original destination under applicable ABI/normal-return premises does returnedX0=E and caller's later+110 store address that entry. Those premises remain open; the unconditional return-pointer gap is not closed.",
+    "Runtimebuildervptr/invocation/registration membership, actualC=load64(D+358), name/key equality, sameunit/processor/publicMute delivery and wholeapplication compatibility remain unresolved."
+  ],
+  "application_expected": null,
+  "comparison": null,
+  "grade": "U/unexecuted",
+  "all38Utility_application_outcomes": "U/unexecuted",
+  "new_requirements": 0,
+  "new_cases": 0,
+  "new_grades": 0,
+  "complete": false,
+  "conclusion": "Approve retained actual96B data, exact register-local survival and count addendum only. No callee identity, returned-entry identity or behavioral closure adopted."
+}

@@ -1,0 +1,252 @@
+clause_id	requirement	route	join	observable	ledger_outcome	counted
+PBR-001	001	X	local	Clock uses sample/beat anchor and binary64 samples-per-beat (SR/T)*60.	PBR-001	true
+PBR-002	001	X	local	Beats-per-sample is binary64 reciprocal of samples-per-beat.	PBR-002	true
+PBR-003	001	X	local	Song beat derives from anchor plus elapsed samples, without per-sample accumulation.	PBR-003	true
+PBR-004	001	X	local	Play changes the clock anchor.	PBR-033	false
+PBR-005	001	X	local	Continue changes the clock anchor.	PBR-046	false
+PBR-006	001	X	local	Song-loop jump changes the clock anchor.	PBR-056	false
+PBR-007	001	X	local	Tempo change changes the clock anchor.	PBR-027	false
+PBR-008	001	S	local	Other position jumps change the clock anchor.	PBR-008	true
+PBR-009	001	N	scheduler	Event positions relative to anchor are independent of host buffer size.	PBR-009	true
+PBR-010	002	S	local	Event beat is rounded to lattice before scheduling.	PBR-010	true
+PBR-011	002	S	local	During event handling the current song beat equals its lattice beat.	PBR-011	true
+PBR-012	002	X	local	Nonintegral exact sample position uses P(b).	PBR-012	true
+PBR-013	002	X	local	Integral exact position uses P when binary64 product does not exceed it.	PBR-013	true
+PBR-014	002	X	local	Remaining integral class permits P or P+1.	PBR-014	true
+PBR-015	002	N	clock	Which permitted P/P+1 value occurs in the application render.	PBR-015	true
+PBR-016	002	N	event	Per-note expression precedes note-off at same beat.	PBR-016	true
+PBR-017	002	N	event	Note-off precedes clip wrap/end at same beat.	PBR-017	true
+PBR-018	002	N	event	Clip wrap/end precedes note-on at same beat.	PBR-018	true
+PBR-019	002	S	local	Song-loop end brace has priority before start brace.	PBR-019	true
+PBR-020	002	N	order	Launch order relative to same-beat note events.	PBR-020	true
+PBR-021	002	N	order	Stop order relative to same-beat note events.	PBR-021	true
+PBR-022	003	S	local	Song tempo is binary32 BPM with modulation one.	PBR-022	true
+PBR-023	003	S	local	Tempo is limited to20 through999 and out-of-range values use nearer bound.	PBR-023	true
+PBR-024	003	S	local	Stopped tempo request applies at once at engine request boundary.	PBR-024	true
+PBR-025	003	S	local	Playing tempo request waits until first quarter-beat line at/after request.	PBR-025	true
+PBR-026	003	S	local	An exact quarter line in binary32 beat-times-four applies immediately.	PBR-026	true
+PBR-027	003	X	local	Tempo application re-anchors at applying sample/beat with new tempo.	PBR-027	true
+PBR-028	003	N	midi	Later note positions follow new tempo.	PBR-028	true
+PBR-029	003	N	event	Later launches follow new tempo.	PBR-029	true
+PBR-030	003	N	audio	Unwarped audio speed does not change with tempo.	PBR-030	true
+PBR-031	004	X	local	Supplied Play start beat is lattice rounded.	PBR-031	true
+PBR-032	004	X	local	Negative supplied Play start beat is raised to zero.	PBR-032	true
+PBR-033	004	X	local	Supplied start beat is anchored at first played render sample.	PBR-033	true
+PBR-034	004	X	local	Event at supplied start beat is due on first played sample.	PBR-034	true
+PBR-035	004	S	local	Start chooses loop start when loop-is-song-start is on.	PBR-035	true
+PBR-036	004	S	local	Otherwise Start chooses available insert marker.	PBR-036	true
+PBR-037	004	S	local	Otherwise Start chooses earlier arrangement selection end.	PBR-037	true
+PBR-038	004	S	local	Otherwise Start chooses zero.	PBR-038	true
+PBR-039	004	N	start	Session-playing/visible nonloop Start rounds down to bar line.	PBR-039	true
+PBR-040	004	N	start	Which start-choice state holds after opening a set.	PBR-040	true
+PBR-041	004	N	start	Whether loaded CurrentTime sets the insert marker.	PBR-041	true
+PBR-042	004	N	start	Bar-floor helper and Session-visible condition.	PBR-042	true
+PBR-043	004	S	local	No count-in occurs when start would not begin recording.	PBR-043	true
+PBR-044	005	X	local	Stop at engine request sample freezes song beat there.	PBR-044	true
+PBR-045	005	X	local	Stopped clock does not advance after Stop.	PBR-045	true
+PBR-046	005	X	local	Continue resumes held beat with anchor at resume sample.	PBR-046	true
+PBR-047	005	S	local	Play after Stop requests a start beat under REQ004.	PBR-047	true
+PBR-048	005	N	clip	Play position change re-bases playing clips.	PBR-248	false
+PBR-049	005	N	second-stop	Position after second Stop while already stopped.	PBR-049	true
+PBR-050	005	N	public	User Stop control effects beyond these requests.	PBR-050	true
+PBR-051	005	N	public	User Continue control effects beyond these requests.	PBR-051	true
+PBR-052	005	N	public	User Play control effects beyond these requests.	PBR-052	true
+PBR-053	006	S	local	Effective song-loop start is at least zero.	PBR-053	true
+PBR-054	006	S	local	Effective song-loop length is at least one beat.	PBR-054	true
+PBR-055	006	X	local	Song-loop end jumps to start on placed sample.	PBR-055	true
+PBR-056	006	X	local	Every song-loop jump re-anchors the clock.	PBR-056	true
+PBR-057	006	X	local	Loop end at/before Play beat is not reached on that pass.	PBR-057	true
+PBR-058	006	S	local	Loop end before loop-on request does not jump on that pass.	PBR-058	true
+PBR-059	006	X	local	Playing from at/after loop end never loops.	PBR-059	true
+PBR-060	006	N	clip	Song-loop jump does not restart a playing session clip.	PBR-060	true
+PBR-061	006	N	clip	Later clip-event beats shift backward by song loop length.	PBR-061	true
+PBR-062	006	N	event	Later clip events use new anchor and can differ one sample from independent placement.	PBR-062	true
+PBR-063	007	N	public	Clip launch button admits stated quantized launch request.	PBR-063	true
+PBR-064	007	N	public	ClipSlot.fire without arguments admits stated quantized launch request.	PBR-064	true
+PBR-065	007	S	local	Selected slot-fire producer supplies no explicit time.	PBR-065	true
+PBR-066	007	S	local	Selected slot-fire producer supplies fire velocity one.	PBR-066	true
+PBR-067	007	S	local	Selected slot-fire producer disables legato.	PBR-067	true
+PBR-068	007	S	local	Selected slot-fire producer supplies no quantization override.	PBR-068	true
+PBR-069	007	S	global	Clip quantization k>=2 uses k-1 with clip time signature.	PBR-069	true
+PBR-070	007	S	global	Global zero/stored-99 uses set global quantization and current song signature.	PBR-070	true
+PBR-071	007	S	global	Clip None/global None gives no grid.	PBR-071	true
+PBR-072	007	S	global	Out-of-range quantization gives no grid.	PBR-072	true
+PBR-073	007	N	public	Which other interface gestures reach launch path.	PBR-073	true
+PBR-074	008	X	local	Boundary arithmetic lattice-rounds request song beat.	PBR-074	true
+PBR-075	008	X	local	Positive-grid boundary B follows dependency REQ-CLIP-LAUNCH017.	PBR-075	true
+PBR-076	008	S	local	MIDI predelay getter returns zero.	PBR-076	true
+PBR-077	008	X	fields	Audio predelay is zero with no previous clip.	PBR-077	true
+PBR-078	008	X	fields	Audio predelay is zero unless old/new session clips both have Fade on.	PBR-078	true
+PBR-079	008	X	fields	Audio predelay with both Fade on is smaller of clip crossfade lengths.	PBR-079	true
+PBR-080	008	X	fields	Crossfade length is smaller of half region and4ms in beats.	PBR-080	true
+PBR-081	008	X	fields	Unwarped region seconds convert to beats using tempo.	PBR-081	true
+PBR-082	008	S	local	Near-boundary B moves to B+grid only if playing before request sample.	PBR-082	true
+PBR-083	008	S	local	Otherwise near-boundary predelay reduces to B-t.	PBR-083	true
+PBR-084	008	S	local	MIDI zero-predelay does not push on-line launch to next line.	PBR-084	true
+PBR-085	009	S	local	Activation record time E is lattice(B-o).	PBR-085	true
+PBR-086	009	S	local	E<=t while already playing selects immediate activation branch.	PBR-086	true
+PBR-087	009	N	activation	Clip activates at placed E or immediately at R.	PBR-087	true
+PBR-088	009	N	clip	Launched clip start counts from B.	PBR-088	true
+PBR-089	009	N	clip	Old clip is replaced at activation sample.	PBR-089	true
+PBR-090	009	N	midi	Replacement ends old clip notes.	PBR-144	false
+PBR-091	009	N	crossfade	Replacement cuts old audio short over crossfade.	PBR-209	false
+PBR-092	009	N	crossfade	Audio content between E and B when predelay is positive.	PBR-092	true
+PBR-093	010	S	local	No-grid preparation uses B=lattice(t) and o=0.	PBR-093	true
+PBR-094	010	N	activation	No-grid activation occurs for press beat.	PBR-094	true
+PBR-095	010	N	midi	First no-grid MIDI note uses lattice event placement and may be R+1.	PBR-095	true
+PBR-096	010	S	local	Stopped Fire requests song position before starting transport.	PBR-096	true
+PBR-097	010	S	local	Stopped Fire uses start beat directly when it is a locator.	PBR-097	true
+PBR-098	010	N	start	Stopped Fire uses nonlocator downbeat from untraced helper.	PBR-098	true
+PBR-099	010	N	command	Start beat zero stopped launch starts transport/clip at render sample zero for any grid.	PBR-099	true
+PBR-100	010	N	chase	Which notes are chased at stopped launch.	PBR-100	true
+PBR-101	010	N	order	Notification order when launch start beat is off grid.	PBR-101	true
+PBR-102	011	S	local	MIDI region start uses lattice(LoopStart+StartRelative).	PBR-102	true
+PBR-103	011	S	local	MIDI Ls uses LoopStart.	PBR-103	true
+PBR-104	011	S	local	MIDI Le uses LoopEnd.	PBR-104	true
+PBR-105	011	S	local	MIDI loop state uses LoopOn.	PBR-105	true
+PBR-106	011	S	local	OutMarker does not enter selected session playback mapping.	PBR-106	true
+PBR-107	011	S	local	HiddenLoopStart/HiddenLoopEnd do not enter selected session playback mapping.	PBR-107	true
+PBR-108	011	S	local	CurrentStart/CurrentEnd do not enter selected session playback mapping.	PBR-108	true
+PBR-109	011	N	midi-unwarped	MIDI playback when IsWarped is false.	PBR-109	true
+PBR-110	011	X	local	Clip-time computation uses lattice(S+d).	PBR-110	true
+PBR-111	011	X	local	Looped clip time folds into half-open[Ls,Le).	PBR-111	true
+PBR-112	011	X	local	Fold result equal to Le maps to Ls and is lattice rounded.	PBR-112	true
+PBR-113	011	X	local	Unlooped clip-time computation marks end when time reaches Le.	PBR-113	true
+PBR-114	011	X	local	Start below Ls advances through Ls before looping.	PBR-114	true
+PBR-115	011	X	local	Start at/above Le folds into loop.	PBR-115	true
+PBR-116	011	S	local	First pass ends at lattice(B+Le-S).	PBR-116	true
+PBR-117	011	S	local	Later passes last Le-Ls with lattice-rounded wrap beats.	PBR-117	true
+PBR-118	011	N	midi	First-pass note c sounds at lattice(B-S+c).	PBR-118	true
+PBR-119	011	N	midi	Later-pass note c sounds at lattice(Wk-Ls+c).	PBR-119	true
+PBR-120	012	S	local	Each key with notes uses one monophonic player shared by track clips.	PBR-120	true
+PBR-121	012	N	midi	Enabled stored note sends note-on at Time.	PBR-121	true
+PBR-122	012	N	midi	Note-on carries unrounded binary32 Velocity.	PBR-122	true
+PBR-123	012	N	midi	Enabled stored note sends note-off at lattice(Time+Duration).	PBR-123	true
+PBR-124	012	N	midi	Note-off carries OffVelocity.	PBR-124	true
+PBR-125	012	N	midi	Zero-length note sends note-off one lattice step after note-on.	PBR-125	true
+PBR-126	012	N	midi	Disabled note emits neither event.	PBR-126	true
+PBR-127	012	N	midi	Same-Time note after previous emitted same-key note is omitted.	PBR-127	true
+PBR-128	012	N	midi	Zero-length note followed by same-Time same-key note is omitted.	PBR-128	true
+PBR-129	012	N	overlap	Delivered result for notes overlapping earlier same-key note.	PBR-129	true
+PBR-130	012	N	midi	Retrigger sends same-sample note-off64 before note-on.	PBR-130	true
+PBR-131	013	N	midi	Note starts only inside half-open pass window.	PBR-131	true
+PBR-132	013	N	midi	Launch does not start note spanning S.	PBR-132	true
+PBR-133	013	N	midi	Loop wrap does not start note spanning Ls.	PBR-133	true
+PBR-134	013	N	midi	Note-on exactly at Le never plays.	PBR-134	true
+PBR-135	013	N	midi	Note-off exactly at Le precedes wrap with OffVelocity.	PBR-135	true
+PBR-136	013	N	chase	Song-start chase notes and range.	PBR-136	true
+PBR-137	013	N	chase	Song-jump chase notes and range.	PBR-137	true
+PBR-138	014	N	midi	Held note at wrap receives note-off at wrap.	PBR-138	true
+PBR-139	014	N	midi	Wrap cut velocity is64 if Ls state is start/note-on.	PBR-139	true
+PBR-140	014	N	midi	Other wrap cut uses last pre-Ls note-off velocity.	PBR-140	true
+PBR-141	014	N	midi	Unlooped end sends note-off64 to every held note on end sample.	PBR-141	true
+PBR-142	014	N	midi	Clip stop sends note-off64 to held notes on stop sample.	PBR-142	true
+PBR-143	014	N	midi	Transport Stop sends note-off64 to held notes on Stop sample.	PBR-143	true
+PBR-144	014	N	midi	Replacing launch sends note-off64 on launch sample.	PBR-144	true
+PBR-145	014	N	midi	Replacement preserves held note if new clip starts inside same-key note.	PBR-145	true
+PBR-146	014	N	panic	Additional all-notes-off callback messages at transport Stop.	PBR-146	true
+PBR-147	014	N	panic	Additional panic callback messages at transport Stop.	PBR-147	true
+PBR-148	015	N	attribute	Instrument velocity uses clamped v*(1-a*(1-f)).	PBR-148	true
+PBR-149	015	N	attribute	VelocityAmount zero preserves stored instrument velocity.	PBR-149	true
+PBR-150	015	S	local	Application capability flag gates deviation/probability.	PBR-150	true
+PBR-151	015	X	local	Flag-clear builder sets deviation zero.	PBR-151	true
+PBR-152	015	X	local	Flag-clear builder sets probability one.	PBR-152	true
+PBR-153	015	X	local	Flag-set builder clamps deviation to keep velocity1..127.	PBR-153	true
+PBR-154	015	N	random	Flag-set velocity draws uniformly from per-player sequence.	PBR-154	true
+PBR-155	015	N	midi	Probability<=0 never sends note.	PBR-155	true
+PBR-156	015	N	midi	Probability1 always admits note through probability gate.	PBR-156	true
+PBR-157	015	N	random	Interior probability controls randomized note admission.	PBR-157	true
+PBR-158	015	N	random	Probability groups control randomized admission.	PBR-158	true
+PBR-159	015	N	capability	Capability flag value for Live12 Suite12.4.3.	PBR-159	true
+PBR-160	015	N	random	Application random sequence seed.	PBR-160	true
+PBR-161	015	N	midi	GrooveId-1 preserves delivered note times.	PBR-161	true
+PBR-162	016	N	expression	Initial TimeOffset<=0 expression rounds half away from zero.	PBR-162	true
+PBR-163	016	N	expression	Initial expression accompanies note-on.	PBR-163	true
+PBR-164	016	N	expression	Later expression emits at lattice(note-on beat+TimeOffset).	PBR-164	true
+PBR-165	016	N	expression-between	Expression values between stored points.	PBR-165	true
+PBR-166	016	N	expression	Bundled instrument response to expression.	PBR-166	true
+PBR-167	017	S	local	Unwarped LoopStart is seconds of file time.	PBR-167	true
+PBR-168	017	S	local	Unwarped LoopEnd is seconds of file time.	PBR-168	true
+PBR-169	017	S	local	Unwarped StartRelative is seconds of file time.	PBR-169	true
+PBR-170	017	S	fields	Transposition is binary32 coarse+0.01*fine clamped+/-48.	PBR-170	true
+PBR-171	017	X	fields	Read-step function computes binary32 pitch power times file/SR ratio.	PBR-171	true
+PBR-172	017	S	fields	Read-step conversion rounds to nearest32.32 fixed point.	PBR-172	true
+PBR-173	017	S	fields	First-frame calculation truncates file-rate*LoopStart with zero fraction.	PBR-173	true
+PBR-174	017	N	audio	Clip output advances first-frame+k*step accumulated exactly in fixed point.	PBR-174	true
+PBR-175	017	X	local	File-position quantization uses2^-24 frame grid.	PBR-175	true
+PBR-176	017	N	audio	Zero-predelay first clip output occurs at launch activation sample.	PBR-176	true
+PBR-177	017	N	audio-offset	Output for nonzero audio StartRelative.	PBR-177	true
+PBR-178	017	N	audio-offset	Output for clip starting late relative to launch.	PBR-178	true
+PBR-179	018	N	audio	Step-one clip output copies file frames apart from gain for either HiQ.	PBR-179	true
+PBR-180	018	N	audio	HiQ-off clip output uses linear interpolation.	PBR-180	true
+PBR-181	018	N	audio	HiQ-on clip output uses16-tap Kaiser sinc with stated beta/cutoff/phases.	PBR-181	true
+PBR-182	018	N	audio	HiQ step>1.125 uses FIR2X followed by8th-order allpass decimation.	PBR-182	true
+PBR-183	018	S	fields	Selected session-clip interpolation chooser does not use cubic.	PBR-183	true
+PBR-184	018	N	chunk	Which internal sample type a16-bit file uses.	PBR-184	true
+PBR-185	018	N	padding	File-start padding affecting FIR output.	PBR-185	true
+PBR-186	018	N	padding	File-end padding affecting FIR output.	PBR-186	true
+PBR-187	018	N	padding	Chunk-edge padding affecting FIR output.	PBR-187	true
+PBR-188	018	N	quality	Resampling frequency-response quality measure.	PBR-188	true
+PBR-189	018	N	quality	Resampling aliasing quality measure.	PBR-189	true
+PBR-190	018	N	quality	Resampling group-delay quality measure.	PBR-190	true
+PBR-191	018	S	local	arm64 linear interpolation fuses one operation under retained comparison bound.	PBR-191	true
+PBR-192	019	X	fields	Gain mapping round trip within1.2e-7 relative of binary32 SampleVolume.	PBR-192	true
+PBR-193	019	X	fields	Gain mapping clamps to stated-70..+24dB limits.	PBR-193	true
+PBR-194	019	X	fields	Gain mapping zero SampleVolume gives-70dB.	PBR-194	true
+PBR-195	019	N	audio	Clip gain multiplies each interpolated output value.	PBR-195	true
+PBR-196	019	N	audio	Mono clip gives identical left/right output.	PBR-196	true
+PBR-197	019	S	local	Selected16-bit PCM scaling is int16/32768.	PBR-197	true
+PBR-198	019	N	decoder	24-bit file scaling at clip output.	PBR-198	true
+PBR-199	019	N	decoder	32-bit file scaling at clip output.	PBR-199	true
+PBR-200	019	N	decoder	AIFF scaling at clip output.	PBR-200	true
+PBR-201	019	N	decoder	Compressed-file scaling at clip output.	PBR-201	true
+PBR-202	019	N	decoder	Output for files with more than two channels.	PBR-202	true
+PBR-203	019	N	update	Gain changes during playback.	PBR-203	true
+PBR-204	019	N	update	Transposition changes during playback.	PBR-204	true
+PBR-205	019	N	update	VelocityAmount>0 at clip output.	PBR-205	true
+PBR-206	020	N	fade	Fade-on clip starts at zero over minimum4ms/half-region.	PBR-206	true
+PBR-207	020	N	fade	Fade curve follows3x^2-2x^3.	PBR-207	true
+PBR-208	020	N	fade	Fade control points at most32 samples apart with linear ramps between.	PBR-208	true
+PBR-209	020	N	crossfade	Replacement cuts old clip over minimum new fade/4ms.	PBR-209	true
+PBR-210	020	N	audio	Fade-off output has clip gain from first sample.	PBR-210	true
+PBR-211	020	N	audio	Past-file read position stays on last frame.	PBR-211	true
+PBR-212	020	N	fade	Fade-on past-file value holds then ramps to zero over about4ms of file frames.	PBR-212	true
+PBR-213	020	N	audio	Fade-off past-file output is silence.	PBR-213	true
+PBR-214	020	N	fade	Exact per-sample fade gains.	PBR-214	true
+PBR-215	020	N	fade-stop	Fade-out at stop.	PBR-215	true
+PBR-216	021	S	local	Unwarped read step computation is tempo independent.	PBR-216	true
+PBR-217	021	N	audio	Tempo change preserves played file positions.	PBR-217	true
+PBR-218	021	N	end	Unwarped session clip plays once then stops irrespective of LoopOn.	PBR-218	true
+PBR-219	021	S	fields	Unwarped duration uses region seconds divided by pitch ratio.	PBR-219	true
+PBR-220	021	X	local	End-beat function rounds duration up to whole sample then lowers beat half lattice step.	PBR-220	true
+PBR-221	021	S	local	Tempo change reschedules unwarped end in seconds.	PBR-221	true
+PBR-222	021	N	end	Exact scheduled end sample is distinguishable in an acceptance observable.	PBR-222	true
+PBR-223	021	N	unwarped-loop	Other observable effects of unwarped LoopOn=true.	PBR-223	true
+PBR-224	022	N	public	Track Clip Stop button admits no-explicit-time stop.	PBR-224	true
+PBR-225	022	N	hasstop	Empty slot HasStop=true admits stop.	PBR-225	true
+PBR-226	022	N	hasstop	Empty slot HasStop=false has no stop effect.	PBR-226	true
+PBR-227	022	N	public	Stop All Clips reaches every track.	PBR-227	true
+PBR-228	022	S	global	Stop uses global grid/current song signature ignoring own launch quantization.	PBR-228	true
+PBR-229	022	S	local	Stop preparation immediate if transport stopped.	PBR-229	true
+PBR-230	022	S	local	Stop preparation immediate if track has no playing clip.	PBR-230	true
+PBR-231	022	S	local	Stop preparation immediate if grid None.	PBR-231	true
+PBR-232	022	S	local	Stop preparation immediate on same sample playback started.	PBR-232	true
+PBR-233	022	N	clip	Stopped-track stop unassigns clip so next Play does not restart it.	PBR-233	true
+PBR-234	022	X	local	Quantized stop boundary arithmetic computes B for selected grid.	PBR-234	true
+PBR-235	022	S	local	MIDI stop predelay getter returns zero.	PBR-235	true
+PBR-236	022	X	fields	Audio stop predelay is playing clip fade crossfade or zero if Fade off.	PBR-236	true
+PBR-237	022	N	activation	Clip stops at placed lattice(B-o) or immediately when E<=t.	PBR-237	true
+PBR-238	022	S	local	Track holds one pending launch/stop.	PBR-238	true
+PBR-239	022	S	local	Later stop replaces pending launch.	PBR-239	true
+PBR-240	022	S	local	Later launch replaces pending stop.	PBR-240	true
+PBR-241	022	X	local	Warped unlooped past-end predicate is inclusive at start+Le-Ls.	PBR-241	true
+PBR-242	022	N	midi	Warped unlooped MIDI clip self-stops at that end.	PBR-242	true
+PBR-243	022	N	pending	Pending stop persistence across transport Stop.	PBR-243	true
+PBR-244	022	N	pending	Pending stop persistence across position jump.	PBR-244	true
+PBR-245	023	S	local	Transport Stop preserves playing-clip assignment.	PBR-245	true
+PBR-246	023	N	midi	Transport Stop ends sounding MIDI notes.	PBR-143	false
+PBR-247	023	N	clip	Same assigned clips sound again at next Play.	PBR-247	true
+PBR-248	023	N	clip	Stopped position change re-bases assigned clip start to new position.	PBR-248	true
+PBR-249	023	S	local	Continue preserves assigned clip positions.	PBR-249	true
+PBR-250	023	N	restart	Exact first clip-output sample at restart.	PBR-250	true
+PBR-251	023	N	chase	Which notes are chased at restart.	PBR-251	true

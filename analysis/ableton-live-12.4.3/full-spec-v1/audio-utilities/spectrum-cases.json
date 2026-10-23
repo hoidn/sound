@@ -1,0 +1,654 @@
+{
+  "device": "Spectrum",
+  "revision": 1,
+  "target": "Ableton Live 12 Suite 12.4.3",
+  "status": "partial draft; all runtime cases unexecuted",
+  "requirements": [
+    {
+      "title": "analysis and transparent audio",
+      "contract": "Spectrum performs real-time analysis of incoming audio; its graph has vertical dB and horizontal frequency/pitch axes. It is a measurement tool and does not alter incoming audio. Graph refresh timing and audio-through precision/latency are U.",
+      "locator": "spectrum:B02",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-001"
+    },
+    {
+      "title": "Block measurement size",
+      "contract": "Block chooses the number of samples analyzed per measurement. Larger settings improve accuracy and increase CPU demand according to the manual. The supported sample-count list, FFT size mapping, overlap, zero padding and accuracy/CPU bounds are U.",
+      "locator": "spectrum:B03",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-002"
+    },
+    {
+      "title": "analysis channel",
+      "contract": "Channel selects analysis of left, right or both. The channel-combination algorithm, stereo summation/normalization and cancellation behavior of Both are U. This setting is not documented as changing audio output.",
+      "locator": "spectrum:B04, B02",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-003"
+    },
+    {
+      "title": "Refresh",
+      "contract": "Refresh controls how often analysis occurs. Faster response trades greater CPU use for accuracy in the manual’s description. Exact domain, units, scheduling, update quantization, hidden-view behavior and wall-clock versus transport coupling are U.",
+      "locator": "spectrum:B05",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-004"
+    },
+    {
+      "title": "Avg",
+      "contract": "Avg selects how many sample blocks are averaged for each display update. At one, each block is shown; larger values smooth the display over time. The domain, accumulation method, reset/priming, decibel-versus-linear averaging and weighting/window are U.",
+      "locator": "spectrum:B06",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-005"
+    },
+    {
+      "title": "Graph",
+      "contract": "Graph switches between a single interpolated line and discrete frequency bins. Interpolation, bin positions, pixel rendering and amplitude calibration are U.",
+      "locator": "spectrum:B07",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-006"
+    },
+    {
+      "title": "maximum trace and reset",
+      "contract": "Peak levels are retained until the song restarts. Max toggles display of accumulated maximum amplitude; when Max is enabled, clicking the display resets the maximum. Whether Max off clears accumulation, reset scope, restart event definition and reset timing are U.",
+      "locator": "spectrum:B02, B08",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-007"
+    },
+    {
+      "title": "horizontal scaling",
+      "contract": "Scale X offers linear, logarithmic and semitone. Logarithmic and semitone use the same scaling, with top legends in Hz or note names respectively. Exact axis domain, note tuning reference, legend rounding and sample-rate-dependent limits are U.",
+      "locator": "spectrum:B09",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-008"
+    },
+    {
+      "title": "pointer readout",
+      "contract": "Hovering the display shows a box with amplitude, frequency and note name at pointer location. This is a location readout, not a documented peak-picking or pitch-detector result. Units/rounding, off-graph behavior and frequency-to-note tie rules are U.",
+      "locator": "spectrum:B10",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-009"
+    },
+    {
+      "title": "manual range navigation",
+      "contract": "Range/Auto selects manual or automatic dynamic range. In Range mode, amplitude-legending drags scroll vertically and zoom horizontally; Range sliders set minimum/maximum amplitude shown. Slider domain, allowed ordering, zoom limits and gestures outside the legending are U.",
+      "locator": "spectrum:B10",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-010"
+    },
+    {
+      "title": "Auto range",
+      "contract": "Auto scales the display to incoming level; Range sliders and zooming are disabled. Algorithm, margins, hysteresis, decay and retained manual range are U.",
+      "locator": "spectrum:B10",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-011"
+    },
+    {
+      "title": "display location",
+      "contract": "The title-bar button or double-click in the display toggles graph placement between device chain and Live’s main window. Geometry, focus/selection, keyboard accessibility and view/preset retention are U.",
+      "locator": "spectrum:B11",
+      "grade": "D12",
+      "id": "REQ-DEVICE-SPECTRUM-012"
+    },
+    {
+      "title": "target stored analysis state",
+      "contract": "Latest schema and eleven shipped Spectrum presets contain range/axis, analysis, Length, Window, channel, averaging and refresh fields. Window=3 is an observed stored code in these presets, not a named window function, selectable UI control, FFT kernel or mathematical law. Preset labels do not prove block counts or enum meanings.",
+      "locator": "PKG-SCHEMA:SpectrumAnalyzer; package-values.json device=Spectrum",
+      "grade": "Dpkg",
+      "id": "REQ-DEVICE-SPECTRUM-013"
+    },
+    {
+      "title": "numerical and lifecycle gaps",
+      "contract": "Exact 12.4.3 applicability of every D12 clause is U. FFT/window/kernel, dB normalization/floor, sample rates, latency, displayed numerical tolerances, silence/nonfinite handling, persistence, automation availability, undo/redo, cancellation, malformed state, engine/device failure and teardown have no target outcomes here.",
+      "locator": "No outcome evidence",
+      "grade": "U",
+      "id": "REQ-DEVICE-SPECTRUM-014"
+    }
+  ],
+  "cases": [
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-001"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO; Spectrum enabled",
+      "actions": "Capture audio before/after; inspect graph axes",
+      "parameters": {},
+      "expected": "Documented signal is unaltered; graph axes are dB and frequency/pitch. Numerical audio equality/latency U.",
+      "evidence": "spectrum:B02",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-001"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-002"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Select smallest and largest offered Block options",
+      "parameters": {},
+      "expected": "Each option represents a sample count per measurement; larger option is documented as higher accuracy/cost. Exact counts and measured cost U.",
+      "evidence": "spectrum:B03",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-002"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-003"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Choose Left, Right, then Both",
+      "parameters": {},
+      "expected": "Analysis target follows chosen channel; Both combination and spectral levels U.",
+      "evidence": "spectrum:B04",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-003"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-004"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Choose two offered Refresh values",
+      "parameters": {},
+      "expected": "Refresh changes analysis frequency; exact units and observed cadence U.",
+      "evidence": "spectrum:B05",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-004"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-005"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-BURST",
+      "actions": "Set Avg 1",
+      "parameters": {
+        "Avg": 1
+      },
+      "expected": "Each block is shown according to manual; precise timing and priming U.",
+      "evidence": "spectrum:B06",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-005"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-005"
+      ],
+      "kind": "positive",
+      "setup": "SIG-BURST",
+      "actions": "Compare Avg 1 with a larger offered value",
+      "parameters": {},
+      "expected": "Larger Avg smooths the display over time; averaging law and tolerance U.",
+      "evidence": "spectrum:B06",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-006"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-006"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Toggle Graph",
+      "parameters": {},
+      "expected": "View switches between interpolated line and discrete bins.",
+      "evidence": "spectrum:B07",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-007"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-007"
+      ],
+      "kind": "positive",
+      "setup": "SIG-BURST; Max enabled",
+      "actions": "Allow peak then lower input level",
+      "parameters": {},
+      "expected": "Accumulated maximum is shown and retained; calibration/decay law U.",
+      "evidence": "spectrum:B02, B08",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-008"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-007"
+      ],
+      "kind": "positive",
+      "setup": "A retained maximum; Max enabled",
+      "actions": "Click display",
+      "parameters": {},
+      "expected": "Maximum amplitude is reset; first post-reset measurement and sample timing U.",
+      "evidence": "spectrum:B08",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-009"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-007"
+      ],
+      "kind": "boundary",
+      "setup": "A retained maximum",
+      "actions": "Restart song",
+      "parameters": {},
+      "expected": "Peak retention ends on restart according to manual; exact restart gesture/event is ungraded.",
+      "evidence": "spectrum:B02",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-010"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-007"
+      ],
+      "kind": "positive",
+      "setup": "Max visible",
+      "actions": "Toggle Max off",
+      "parameters": {},
+      "expected": "Display of maximum is toggled off; accumulation retention U.",
+      "evidence": "spectrum:B08",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-011"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-008"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Cycle Linear, Logarithmic, Semitone Scale X",
+      "parameters": {},
+      "expected": "Three modes are offered; Logarithmic and Semitone share scaling, with Hz versus note legends.",
+      "evidence": "spectrum:B09",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-012"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-009"
+      ],
+      "kind": "positive",
+      "setup": "Graph visible",
+      "actions": "Hover a fixed interior location",
+      "parameters": {},
+      "expected": "Box reports amplitude, frequency and note at pointer location. Numerical rounding U.",
+      "evidence": "spectrum:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-013"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-010"
+      ],
+      "kind": "positive",
+      "setup": "Range mode; graph visible",
+      "actions": "Drag amplitude legend vertically, then horizontally",
+      "parameters": {},
+      "expected": "Vertical motion scrolls amplitude; horizontal motion zooms.",
+      "evidence": "spectrum:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-014"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-010"
+      ],
+      "kind": "positive",
+      "setup": "Range mode",
+      "actions": "Change minimum and maximum Range sliders",
+      "parameters": {},
+      "expected": "Displayed amplitude range follows sliders; valid ordering and numerical bounds U.",
+      "evidence": "spectrum:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-015"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-011"
+      ],
+      "kind": "negative",
+      "setup": "Auto mode selected",
+      "actions": "Attempt Range-slider editing and amplitude zoom",
+      "parameters": {},
+      "expected": "Range sliders and zooming are disabled.",
+      "evidence": "spectrum:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-016"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-011"
+      ],
+      "kind": "positive",
+      "setup": "SIG-LEVEL-STEP; Auto mode",
+      "actions": "Change input level",
+      "parameters": {},
+      "expected": "Display automatically scales with input level; margins/settling U.",
+      "evidence": "spectrum:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-017"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-012"
+      ],
+      "kind": "positive",
+      "setup": "Display in device chain",
+      "actions": "Click title-bar display button twice",
+      "parameters": {},
+      "expected": "Display toggles to main window then device chain.",
+      "evidence": "spectrum:B11",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-018"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-012"
+      ],
+      "kind": "positive",
+      "setup": "Display in device chain",
+      "actions": "Double-click display twice",
+      "parameters": {},
+      "expected": "Display toggles between same two locations. Max-click interaction U.",
+      "evidence": "spectrum:B11",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DSP-019"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-013"
+      ],
+      "kind": "file observation",
+      "setup": "Retained Accurate Fast.adv",
+      "actions": "Decode XML",
+      "parameters": {},
+      "expected": "Length=3, Window=3, ChannelMode=2, NumAverages=3, MinRefreshTime=40; no enum/kernel/units assertion.",
+      "evidence": "package/Spectrum/Accurate Fast.adv:.//SpectrumAnalyzer",
+      "provenance": "Dpkg",
+      "target_grade": "Dpkg",
+      "execution": "unexecuted",
+      "comparison": "Exact retained-file values only; does not grade application load, UI or signal behavior.",
+      "id": "DSP-020"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-013"
+      ],
+      "kind": "file observation",
+      "setup": "Retained Spectrum.adv",
+      "actions": "Decode XML",
+      "parameters": {},
+      "expected": "Length=2, Window=3, NumAverages=1, MinRefreshTime=100, ScaleXMode=1; saved settings, not factory default proof.",
+      "evidence": "package/Spectrum/Spectrum.adv:.//SpectrumAnalyzer",
+      "provenance": "Dpkg",
+      "target_grade": "Dpkg",
+      "execution": "unexecuted",
+      "comparison": "Exact retained-file values only; does not grade application load, UI or signal behavior.",
+      "id": "DSP-021"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "negative",
+      "setup": "SIG-SILENCE",
+      "actions": "Inspect dB floor, automatic range and maxima",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-022"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-IMPULSE and off-bin sine",
+      "actions": "Measure all offered Block sizes/refresh/Avg endpoints",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-023"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "malformed",
+      "setup": "Copy of Spectrum preset",
+      "actions": "Set Length=99, Window=99, NumAverages=0 and MinRefreshTime=-1 separately",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-024"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "error",
+      "setup": "Range editing",
+      "actions": "Enter inverted bounds, NaN and inf where editable",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-025"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "cancel",
+      "setup": "Manual range text edit/menu active",
+      "actions": "Type change then Escape; dismiss context menu",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-026"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "undo",
+      "setup": "Known graph, Avg and Range state",
+      "actions": "Change settings; Undo/Redo each",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-027"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "persistence",
+      "setup": "Nondefault Block/Window/channel/range/Max/Avg/Refresh and expanded display",
+      "actions": "Save Set and preset; reopen; compare settings and peak history",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-028"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "teardown",
+      "setup": "Streaming audio with expanded display",
+      "actions": "Delete Spectrum; Undo; disable/re-enable audio engine; close Set",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-029"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "timing",
+      "setup": "SIG-BURST",
+      "actions": "Change sample rate/block size; stop/start/locate transport; hide device view",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-030"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "numerical",
+      "setup": "SIG-440, SIG-IMPULSE and SIG-NOISE",
+      "actions": "Measure bin centers, normalization, window, FFT resolution and numerical output",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-031"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "channel",
+      "setup": "SIG-ANTIPHASE",
+      "actions": "Compare Both with Left and Right analysis",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-032"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "interaction",
+      "setup": "Max enabled; expanded Spectrum",
+      "actions": "Double-click display and compare maximum resets with single click",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-033"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-SPECTRUM-014"
+      ],
+      "kind": "automation",
+      "setup": "Spectrum with parameter mapping/automation lists",
+      "actions": "Enumerate exposed controls; automate any supported analysis control; cancel edit",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DSP-034"
+    }
+  ]
+}

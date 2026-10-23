@@ -1,0 +1,49 @@
+{
+  "id": "corpus-x86-selected-script-compatibility-author-correction-2026-10-20",
+  "retained_utc": "2026-10-20T15:03:37.957598+00:00",
+  "author": "synthesis_finish",
+  "preserved_parent": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-x86-selected-script-compatibility-2026-10-20.json",
+    "bytes": 17898,
+    "sha256": "7d107fbed9d5df98664842e102e6bc0a25452f4a307edeb2533b9a17675d5138"
+  },
+  "finding": "AUTHOR-READBACK-001: erroneous escaped source quotation in X86COMP-08",
+  "original_record_pointer": "/findings/7",
+  "original_record_preserved": {
+    "id": "X86COMP-08",
+    "source": "SelectedNativeExport.java:104 and RecoveryNativeExport.java:92",
+    "kind": "Narrow warning-representation caveat",
+    "facts": "Both source expressions use code.split(\"\\\\\\\\R\") before searching each resulting string forWARNING, rather than an asserted tested newline parser here. C text itself is retained.",
+    "consequence": "Per-line warning extraction is not independently validated in this staticreview; preserve complete diagnostic/C/sourcewarnings and do not treat warning-free metadata as semantic/nativecorrectness. No Java/regex test or change selected."
+  },
+  "exact_source": [
+    {
+      "provider": {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/SelectedNativeExport.java",
+        "bytes": 9094,
+        "sha256": "dd5ca8bc9572b34298904c281a067ffa6942f46fb7c165e27a544c104251931c"
+      },
+      "line_1based": 104,
+      "exact_source_line": "                for(String line:code.split(\"\\\\R\"))if(line.toUpperCase(Locale.ROOT).contains(\"WARNING\"))warnings.add(line.trim());",
+      "exact_expression": "code.split(\"\\\\R\")",
+      "source_backslashes_before_R": 2
+    },
+    {
+      "provider": {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryNativeExport.java",
+        "bytes": 12389,
+        "sha256": "22de52d0cedbbff9a3d5ddeb1db5d113b02d2ba91ebe7f3b36babc70b422128a"
+      },
+      "line_1based": 92,
+      "exact_source_line": "                for(String line:code.split(\"\\\\R\"))if(line.toUpperCase(Locale.ROOT).contains(\"WARNING\"))warnings.add(line.trim());",
+      "exact_expression": "code.split(\"\\\\R\")",
+      "source_backslashes_before_R": 2
+    }
+  ],
+  "effective_correction": "Withdraw X86COMP-08 as a warning-extraction compatibility concern. Actual Java source uses two source backslashes beforeR, which is the normal Java-string spelling of regex newline escape. The parent displayed quotation had four, introduced by author JSON/string escaping. No warning-splitting defect is established by selected source. Complete warnings/C still must be preserved as ordinary evidence limits.",
+  "unchanged": "All X86COMP-01 through07 source findings, explicitARMrefusal/body mutation/analysis/noanalysis/data-access/FS/partial-failure/checkpoint/4GiBheap/Support unknowns and narrowfuturex86proposal remain unchanged. No source/script/root canonical file changed; no execution/readiness/compatibility grade promoted.",
+  "chronology": "Parent query was already frozen. Immediate source-quote readback compared literalbackslash counts, detected this author-only representation error, and retained this additive correction. No Java/regex test, scriptbody expansion, tool/project/code/native/original execution or implementation.",
+  "new_ids_cases_or_grades": 0,
+  "actual_expected": null,
+  "comparison": null
+}

@@ -1,0 +1,19 @@
+# Corpus v3 handoff staging: private author record
+
+The following original author record is preserved as an as-of checkpoint before source adoption. Current source-gate status follows at the end.
+
+The sibling `device-corpus-v3/` is an unreviewed draft. It contains25groups/71evaluations and87files including its mutable draft manifest. The method has separate finite approval; parent R5 owner and handoff approvals remain pending. No final manifest is sealed and nothing is published. Only this private sibling contains analyst paths, source/review pins or parent draft snapshots.
+
+`author-provenance-draft.json` records all85 released-v2 identities, exact frozen method inputs, actual raw providers and the unsealed R5 author snapshot. `parent-r5-author-draft-asof.md` is that exact historical snapshot, not an approved canonical source pin; the checker does not read its changing original path. The draft manifest deliberately has no final parent hash or reviewer identity.
+
+`check-draft.py` was fully read before its executions. `--check-draft` verifies complete inventory/links/sanitization, all24old case groups as literal JSON text, all69old evaluations and78physical fixtures, exact new parameter bits/events/reference bytes,32/30point objects and seven unsafe metadata mutations. It imports no measurement code in that mode. `--check-numeric` additionally invokes only the byte-identical public measurement functions, under explicit bytecode disable/restore, after Root authorized this selected use. It never runs a collector, device, candidate, private model, comparator CLI or batch `run()`.
+
+Author numerical attempt01 passed the two new reference-self comparisons:98+92=190measurements. The selected wrong-note60 contrast failed64/92checks as expected. Short/extra files, NaN prefix, Inf final sample and either silent channel were rejected. Current numerical libraries were NumPy2.3.1/SciPy1.16.0. These are measurement tests, not a candidate or application grade. The old4603measurements are carried prior-v2 approval and were not rerun; do not claim a current4793measurement batch.
+
+`numeric-validation-attempt-01.json` retains every measured result; both that run and structural checks watched201inputs/files unchanged. After the numeric run, only truthful README/REVIEW/manifest readiness wording changed, disclosed in `post-numeric-metadata-change.json`; all vectors, fixtures and measurement code stayed exact. The pre-change manifest is retained. `structural-validation-final-draft.json` checks the resulting draft without a numerical rerun. Separate refusal/whitespace evidence rejects write/capture arguments and checks every newly owned text file, including untracked files.
+
+This checker is scoped to the present draft: it intentionally expects pending owner/handoff status and an unassigned parent hash. Final owner adoption, independent review and manifest finalization are coordinator tasks. Preserve these author reports when later metadata changes; no historical adapter or new framework is implied.
+
+The source gate is now complete: the exact51090-byte R5 snapshot equals the independently reviewed and adopted canonical at this checkpoint. `source-gate-change.json` and `author-provenance-review-candidate.json` pin the owner review, adoption receipt and owner seal. No future mutable canonical hash gate is introduced. `check-review-candidate.py` is the current read-only integrity entrypoint; it checks that exact snapshot/receipt association while retaining handoff-pending status. The old checker/provenance and every earlier report remain historical bytes.
+
+The public candidate is now frozen for independent handoff review only. Its manifest inventory is not a finalized release approval. `candidate-freeze.json` identifies all public/private candidate bytes except itself. Only the coordinator may finalize metadata after separate review and publish.

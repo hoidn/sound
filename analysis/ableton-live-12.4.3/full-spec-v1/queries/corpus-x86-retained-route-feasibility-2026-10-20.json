@@ -1,0 +1,151 @@
+{
+  "id": "corpus-x86-retained-route-feasibility-2026-10-20",
+  "retained_utc": "2026-10-20T14:49:34.756496+00:00",
+  "author": "synthesis_finish",
+  "disposition": "CAP STOP:56 filename candidates exceeds20; retained Corpus x86 route remains unassessed",
+  "target": {
+    "description": "Corpus X86_64 exact selected slice, not main Live or arm64 Corpus",
+    "slice_bytes": 250352,
+    "slice_sha256": "03be50fae8abee39dcaafec743d82ab4c908d548977354528aa1b8dd3919b00d",
+    "identity_context": "Root-selected known target identity carried; no fresh image/slice read in this navigation task."
+  },
+  "selection": "Filename-level discovery under existing /var/tmp/sound-analysis and r2; count-first20cap. If above20, stop before candidate manifest/run/project metadata. No bodies/projectdatabase/image/opcode/tools/provider/install allowed.",
+  "routing_providers": [
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/r2-corpus-tooling.md",
+      "bytes": 21865,
+      "sha256": "5651ddece70847a279fda6d45bebe9bd3de3b5d956c53767d992c8084f9fa5e7"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/native-phase-execution.md",
+      "bytes": 42126,
+      "sha256": "4b38dd70ed8d506180902589ac511c9fc7c1208733986b34c646cf9301a958c5"
+    }
+  ],
+  "routing_selected_spans": [
+    {
+      "provider": "/home/ollie/Documents/sound/wiki/research/r2-corpus-tooling.md",
+      "first_line": 11,
+      "last_line": 17,
+      "text": "Analyst-only tooling for [roadmap revision 2](native-decompilation-roadmap.md#revision-2-proposal--2026-10-17)\nPhase 1 items C1 (bulk decompile) and C2 (derived indexes). It runs against an\nalready analyzed, saved Ghidra project, opened read-only. It was validated on\n`Push2DisplayProcess.arm64`. It has **not** been run on `Live.arm64`; the Live\nnumbers below are projections. Nothing here is application code or crosses the\nhandoff boundary.\n"
+    },
+    {
+      "provider": "/home/ollie/Documents/sound/wiki/research/r2-corpus-tooling.md",
+      "first_line": 18,
+      "last_line": 48,
+      "text": "## Design\n\n**C1, [R2BulkDecompile.java](../../tools/ghidra/R2BulkDecompile.java).** One\nheadless JVM, `-process PROGRAM -noanalysis -readOnly`, opens no transaction.\nEligible functions are all non-external functions in `FunctionManager` address\norder; externals are counted as excluded. Behavior:\n\n- A fixed pool of `threads` workers, each with its own `DecompInterface` (C code\n  and syntax tree, default options) and the 60-second per-function timeout used\n  by `RecoveryNativeExport.java`.\n- Chunk *k* holds eligible functions `[k*chunk, (k+1)*chunk)`. Each chunk is one\n  JSONL file. It is built in memory, written to a temp file, fsynced and\n  committed by hard link, so a committed chunk is never replaced.\n- Each record holds the entry (`0x\u2026` in the default space, `SPACE:0x\u2026`\n  otherwise, the same canonical form as `export_native_corpus.address()`),\n  the qualified name, thunk flag, body bytes, body ranges, listing signature and\n  state. It also holds the error, `timed_out`, `partial_code`, warnings (decompiler\n  message plus `WARNING` lines), milliseconds, code byte count, code SHA-256 and\n  the exact code text.\n- `exported` and `exported-with-warnings` require complete code. `failed`\n  requires an error message. Partial code on failure is kept and flagged; it is\n  never promoted.\n- If the decompiler cannot start or an I/O error occurs, the run aborts and the\n  chunk stays pending. Such a failure is never recorded as a function failure.\n- `run.json` pins the program name, executable SHA-256, language, compiler,\n  Ghidra version, eligible count, SHA-256 of the eligible entry list, chunk size\n  and timeout. A rerun with any difference aborts.\n- A rerun validates every committed chunk against the pinned list and code\n  hashes, then skips it. Failures are not retried.\n- `coverage.json` is rebuilt from committed files at the end of every\n  invocation, under a file lock shared by concurrent JVMs. Its counts for"
+    },
+    {
+      "provider": "/home/ollie/Documents/sound/wiki/research/r2-corpus-tooling.md",
+      "first_line": 283,
+      "last_line": 300,
+      "text": "## Live run command\n\nRun this after G0.3 has finished and its process has released `projects/LiveR2`,\nsince one process holds the project lock. The A/B sample (5% of chunks)\nmeasures Live throughput, latency spread, bytes and memory. The full run then\nresumes and skips the sampled chunks.\n\n```sh\nR=/var/tmp/sound-analysis REPO=/home/ollie/Documents/sound\nG=$HOME/.local/opt/ghidra_12.1.4_PUBLIC MEASURE=$REPO/analysis/ableton-live-12.4.3/r2/c-tooling-v1/measure.sh\nexport JAVA_HOME=$HOME/.local/opt/jdk-21.0.12.1+1 PATH=$HOME/.local/opt/jdk-21.0.12.1+1/bin:/usr/bin:/bin\nunset JAVA_TOOL_OPTIONS _JAVA_OPTIONS GHIDRA_JAVA_OPTIONS\nexport XDG_CONFIG_HOME=$R/ghidra-home/config XDG_CACHE_HOME=$R/ghidra-home/cache\nexport GHIDRA_HEADLESS_JAVA_OPTIONS=\"-Duser.home=$R/ghidra-home -Djava.io.tmpdir=$R/tmp -XX:ParallelGCThreads=8\"\nexport GHIDRA_HEADLESS_MAXMEM=48G\nlive() { local name=$1; shift\n  $MEASURE $R/corpus/logs/$name $G/support/analyzeHeadless $R/projects LiveR2 -process Live.arm64 \\\n    -noanalysis -readOnly -scriptPath $REPO/tools/ghidra -log $R/corpus/logs/$name/headless.log \"$@\"; }"
+    },
+    {
+      "provider": "/home/ollie/Documents/sound/wiki/research/r2-corpus-tooling.md",
+      "first_line": 319,
+      "last_line": 367,
+      "text": "## Measured on Live \u2014 2026-10-17\n\nThe coordinator ran the command above through\n[`c1-live-v1/run.sh`](../../analysis/ableton-live-12.4.3/r2/c1-live-v1/run.sh) against\n`projects/LiveR2`, while a query server held a hard-linked copy and other analyses\nran. Evidence and timings: [c1-live-v1 manifest](../../analysis/ableton-live-12.4.3/r2/c1-live-v1/manifest.json).\n\n| Run | Functions | Wall | Peak group RSS | Rate between first and last chunk |\n| --- | --- | --- | --- | --- |\n| Sample, 1 instance, shard 0/40 | about 10,500 | 1:09 | 10.8 GB | about 181 per second |\n| Sample, 14 instances, shard 1/40 | about 10,500 | 2:18 | 14.4 GB | about 82 per second |\n| Full, 14 instances, plus C2 | 418,417 (sampled chunks validated and skipped) | 13:13 | 29.0 GB | about 848 per second over a two-minute window |\n\nThe short samples reversed the Push2 result, but the full run with 14 instances\nsustained about 4.7 times the one-instance sample rate. Inferred, not measured:\nthe 14-instance sample was dominated by per-instance cache warm-up over a small\nslice. Outcome: 320,967 exported, 97,387 exported with warnings, 63 failed;\n`r2_corpus.py` reports the corpus complete with no stale temporary files and the\nindexes consistent. Sizes: corpus 755 MB, indexes 679 MB. Index counts: 452,752\nstrings, 1,599,830 direct call edges, 268,015 indirect call sites, 420,470 aliases\nand only 80 symbol-named vtables, so vtable recovery in Live needs constructor and\nvtable-store tracing.\n\n## Live x86_64 cross-check corpus \u2014 2026-10-17\n\nLive's x86_64 slice (SHA-256 `1bae9a97\u2026be999b0`) was analyzed in its own project\n(1:39:43 wall, 33.8 GB peak RSS; 414,791 non-external functions, 557,145 strings)\nand decompiled with the same settings in 17:17: 317,021 exported, 97,725 with\nwarnings, 45 failed; indexes verified (1,572,950 call edges, 271,501 indirect\nsites, 80 symbol-named vtables). Evidence:\n[c1-live-x86-v1 manifest](../../analysis/ableton-live-12.4.3/r2/c1-live-x86-v1/manifest.json).\nThis is a second compile of the same source for cross-checking arm64 readings; the\nspecifications are derived from the arm64 build.\n\n## Limitations and unknowns\n\n- **Untested paths.** The decompiler start-failure and I/O abort paths were not\n  exercised. No Push2 function produced partial code.\n- **Leftover temp files.** A hard kill during a commit can leave a\n  `.chunk-*.tmp` file. It is ignored, and the verifier reports it.\n- **String references.** `strings.jsonl` follows data references only one level.\n  Typeinfo-name and metadata strings stay without a function. References from\n  Ghidra's `Entry Point` pseudo-space appear as `from: \"Entry Point:0x0\"`, type\n  `EXTERNAL`.\n- **Vtables.** Vtable candidates require a symbol, so stripped classes are\n  absent. The slot scan is a heuristic and does not separate secondary tables in\n  a group.\n- **Indirect calls.** `indirect.jsonl` does not recover vtable offsets from\n  computed calls; read the pseudocode for those."
+    },
+    {
+      "provider": "/home/ollie/Documents/sound/wiki/research/native-phase-execution.md",
+      "first_line": 193,
+      "last_line": 233,
+      "text": "## Execution evidence\n\nThe full-analysis evidence root is [native-live-arm64-v1](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/).\nPreflight retains host/input identity, installed-provider source references,\ntransport review and exporter review. `transport-pilot-v2` retains the owned\nrequests/results, resource samples and bounded provider-log captures. The inventory request stopped at the disk floor; its failed response and\n`RESOURCE_STOP.json` are retained. No inventory or pseudocode was returned by\nthat run. Owned processes were reconciled with no survivors and ephemeral\ninput cleanup was recorded in `transport-pilot-v2/post-stop/cleanup.json`.\n\nA separately reviewed bounded route, `ghidra-selected-entry-noanalysis-v1`,\nthen ran three batches: [v1](../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v1/run-status.json),\n[v2](../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v2/run-status.json),\nand [v3](../../analysis/ableton-live-12.4.3/native-live-arm64-targeted-v3/run-status.json).\nIt exported 17 pseudocode files across 24 selected entries; seven failed body\nvalidation. Each run retains assembly, metadata, method, resource samples,\ncleanup result and a checksum manifest. These are selected-entry results,\nnot a discovered inventory or default-profile corpus. The three manifests\nwere independently verified (27, 75 and 35 files respectively).\n\nThe additional disk capacity and aggregate resource guard support one\nfull-analysis retry with a new spool and resource record; the previous failure\nremains immutable. The intended reduced pool size did not take effect.\nThe retry in `transport-retry-v3` completed analysis and returned a full retained\ninventory. The provider session completed the bounded exports below and then closed with\na retained observation snapshot; no analyzer remains running.\n[Retry preflight](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/retry-v3.json)\npins 12.1 GiB available disk, requested CPU settings, tooling and review hashes.\nThe actual JVM [command capture](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/diagnostics/command-line-v1.json)\nand [properties](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/transport-retry-v3/diagnostics/system-properties-v1.json)\nshow those requested CPU settings were not effective.\n[Monitor scope](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/monitor-aggregate-scope-review-v1.json)\nand [quality review](../../analysis/ableton-live-12.4.3/native-live-arm64-v1/preflight/monitor-aggregate-quality-review-v1.json)\npassed before launch. The historical sample replay does not establish that\nthis policy would have prevented the earlier disk stop.\n\nThe browser at `browse/index.html` is a regenerated view of committed evidence.\nIt will be refreshed at each exported batch/checkpoint; existing `#python` links\nremain stable. Learning and program-map links are added alongside native code.\nA refresh reflects the last generation, not live process state.\n"
+    },
+    {
+      "provider": "/home/ollie/Documents/sound/wiki/research/native-phase-execution.md",
+      "first_line": 444,
+      "last_line": 475,
+      "text": "## Linux workstation provisioning \u2014 2026-10-17\n\nThe analysis moved to a Linux workstation: Ubuntu 24.04, kernel 7.0.0-38-generic,\nx86_64, 32 logical CPUs, 125 GiB RAM. `/home` (1.8 TiB) had 4.4 GiB free before\nand 2.7 GiB after the installs; the root filesystem had 37 GiB free but is not\nuser-writable outside `/tmp` and `/var/tmp` because `sudo` requires a password.\nThe [installed source page](sources/ableton-live-12.4.3.md) records the bundle's\nnew location and the byte-identical re-derivation of both arm64 slices.\n\nInstalled without root under `~/.local/opt`, with archive digests verified\nagainst the publishers' published values and pinned in the retained\n[provisioning manifest](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/manifest.json):\n\n| Component | Identity | Note |\n| --- | --- | --- |\n| Ghidra | 12.1.4 (`ghidra_12.1.4_PUBLIC_20260921.zip`, SHA-256 `ddac49f9\u2026d2d4db`) | Same version as the macOS captures |\n| JDK | Eclipse Temurin `jdk-21.0.12.1+1` | Same version as the macOS JDK; the system package is a JRE without `javac` |\n| REA | `rea-agents` 6.5.0 on Node 22.23.2 via nvm | macOS used 6.3.0; 6.5.0 source inspected 2026-10-17, see [query route](r2-query-route.md#rea-650-cannot-open-a-saved-project); startup deadline now defaults to 330 s |\n\n`rea doctor --provider ghidra` reports the provider available: installation,\nheadless script, `linux_x86_64` native decompiler and JDK all accepted. Hopper,\nIDA and JADX are absent and no agent-client MCP registration was created; the\ncoordinator and CLI do not need one. The [doctor output](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/rea-doctor-ghidra.json)\nis retained.\n\n**Smoke test.** `rea analyze` on the re-derived Push2 slice with an 8 GiB heap\ncompleted in 71.22 s wall with 2.32 GB peak resident memory and reported 13,611\nprocedures and 14,769 strings, the same counts the macOS pipeline check\nrecorded in [decompilation preparation](ableton-decompilation-preparation.md).\nRetained as [analyze.json](../../analysis/ableton-live-12.4.3/linux-provisioning-v1/push2-smoke/analyze.json)\n(evidence `ev_8906461b71a01f3f5d418748146c914915b7ac77fd8f11b086a166e162415baf`).\nThe ephemeral project left no measurable residue on the root filesystem. This"
+    }
+  ],
+  "filename_discovery": {
+    "roots": [
+      "/var/tmp/sound-analysis",
+      "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2"
+    ],
+    "predicate": "Case-sensitive Corpus OR corpus substring in directory/project names; JSON filename also requires manifest/project/run. .rep contents not traversed; no symlink directories followed.",
+    "candidate_rule_details": [
+      "Any directory basename with case-sensitive Corpus or corpus substring.",
+      "Any filename with that substring and suffix .gpr/.rep, or suffix .json also containing manifest/project/run case-insensitively.",
+      "No followlinks; prune .rep directory contents. No source body/codefield/content search or alternative predicate."
+    ],
+    "directories_visited": 1713,
+    "errors": [],
+    "candidate_count": 56,
+    "cap": 20,
+    "per_root_counts": {
+      "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2": 23,
+      "/var/tmp/sound-analysis": 33
+    },
+    "per_kind_counts": {
+      "directory-name": 43,
+      "project-or-identity-metadata-filename": 13
+    },
+    "sorted_full_filename_catalog_sha256": "f15e93b12589f0d6547bdf28e8641f0c7f18f5271e1b7219b894fd8e67720330",
+    "catalog_digest_algorithm": "SHA256 UTF8 JSON sorted keys/separators comma colon of lexically path-sorted filename dictionaries {root,path,kind}.",
+    "candidate_metadata_opened": 0,
+    "matching_paths_displayed_or_retained_in_this_query": 0,
+    "no_first20_subset": true
+  },
+  "observations": [
+    {
+      "grade": "S documented route only",
+      "pointer": "r2-corpus-tooling.md:20-44",
+      "claim": "Existing bulk C1 route requires an already analyzed saved project; its run metadata pins program/executable hash/language/compiler/tool identity. Such candidate metadata could distinguish x86 versus arm64, but none was opened because cap stopped."
+    },
+    {
+      "grade": "S documented distinct target",
+      "pointer": "r2-corpus-tooling.md:342-351",
+      "claim": "Documented x86 cross-check is main Live slice/project, not the250352B Corpus plug-in. It cannot establish a retained Corpus x86 project or cross-architecture parity."
+    },
+    {
+      "grade": "S documented bounded alternative route",
+      "pointer": "native-phase-execution.md:203-211",
+      "claim": "A historical selected-entry noanalysis route is documented for arm64 Live; this establishes a route name/context only, not ready current Corpus x86 support or an executed new task."
+    },
+    {
+      "grade": "S documented installed-path context only",
+      "pointer": "r2-corpus-tooling.md:291-299 and native-phase-execution.md:453-466",
+      "claim": "Docs name existing Ghidra12.1.4/JDK directories and reviewed scripts. This task did not run/version-probe/install or freshly verify their metadata. Main Live old capacity/cold-reopen state is not automatically a gate or forecast for small Corpus."
+    }
+  ],
+  "stop_and_remaining": {
+    "current_result": "Neither available retained Corpus x86 decompilation/project nor absence is established.56 lexical candidates include potential unrelated/numerical/globalcorpus paths; names alone are navigation, not target identity.",
+    "why_no_fresh_alternative_preparation": "The condition no retainedx86route is not established. Do not choose first20, silently narrow, open manifests or design/launch a fresh pipeline past this cap. Root must separately select a concrete scope or enlarged metadata bound.",
+    "minimum_later_identity_test": "If Root separately selects candidate metadata, compare program/executable/slice hash250352B03be50... with language/architecture and saved project path. ARM Corpus644 counts alone cannot substitute for x86 identity.",
+    "future_route_only": "If existing exactx86 project/export identity is not found under separately selected scope, propose one selected-function Ghidra import/analyze/export using alreadyinstalled reviewed selected-entry script metadata; require new bounded preflight. No wholebundle/functionexport/pipeline selected now."
+  },
+  "read_scope_and_limits": {
+    "fresh_routing_scope": "Selected source paragraphs/headings/spans retained above only for tooling/project routing.",
+    "incidental_display": "Initial combined full-page display was oversized/truncated and included broader MainLive historical material. It is not claimed as complete fresh semantic read or evidence of current host capacity; bounded routing spans were then explicitly reread.",
+    "filename_scope": "os.walk/scandir-style filename metadata only,1713directories. Whole project databases were not opened or .rep contents traversed.",
+    "candidate_bodies_or_project_headers_read": 0,
+    "new_decompiled_code_or_source_helpers_read": 0,
+    "fresh_raw_or_slice_bytes_read": 0,
+    "tool_or_original_or_native_execution": 0,
+    "new_code_or_pipeline_authored": 0,
+    "no_global_absence_or_compatibility_inference": true
+  },
+  "preservation": {
+    "provider_watch_before": [
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/r2-corpus-tooling.md",
+        "bytes": 21865,
+        "sha256": "5651ddece70847a279fda6d45bebe9bd3de3b5d956c53767d992c8084f9fa5e7"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/native-phase-execution.md",
+        "bytes": 42126,
+        "sha256": "4b38dd70ed8d506180902589ac511c9fc7c1208733986b34c646cf9301a958c5"
+      }
+    ],
+    "provider_watch_after_equal": true,
+    "scope": "Two current mutable routing pages watched from this retention step; prior identity display pins the same firstpage hash. As-of embedded spans are authoritative; no future live canonical gate. No historical packets, canonical/shared docs, project or tool files edited."
+  },
+  "new_ids_cases_or_grades": 0,
+  "actual_expected": null,
+  "comparison": null,
+  "complete": false
+}

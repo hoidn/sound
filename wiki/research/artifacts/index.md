@@ -2,7 +2,7 @@
 id: NAV-ABLETON-ARTIFACTS
 type: index
 status: active
-updated: 2026-10-17
+updated: 2026-10-20
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -61,6 +61,9 @@ retained output.
 | I want to… | Open | What is available |
 | --- | --- | --- |
 | Understand the application bundle | [Package map and findings](../ableton-package-structure.md#bundle-map) | Core, helpers, dependencies and resource boundaries |
+| Inspect component and integration recovery | [Component layer](../program-structure.md#native-component-layer-and-indirect-resolution--2026-10-20), [scenario map](../program-structure.md#t1-scenario-integration-map--2026-10-20) | Reviewed bounded class/dispatch inventory and source-qualified cross-component boundaries; explicit unknown joins, no runtime or behavior grade |
+| Inspect family route inventory | [Atlas family cuts](../program-structure.md#family-route-cuts--2026-10-20), [current selector](../full-live-specification-plan.md#current-selection--revision-4-amended-2026-10-20) | Atlas owns bounded per-family evidence/review dispositions; selector owns current work. Counts identify routes and missing joins, never outcome grades |
+| Inspect extracted family batches | [Reviewed mix leaf batch](../../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/README.md), [reviewed Analog history batch](../../../analysis/ableton-live-12.4.3/full-spec-v1/batch-analog-change-history-v1-actual/README.md) | Finite retained results and permanent substitutions; independent reviews are linked from canonical research. New discoveries remain ungraded; no public delivery or general law follows |
 | Read default-profile main Live pseudocode | [Native corpus browser](../../../analysis/ableton-live-12.4.3/browse/index.html#native), [coverage ledger](../../../analysis/ableton-live-12.4.3/native-live-arm64-v1/coverage.json) | Retained exports appear immediately; optionally load all inventoried addresses for search |
 | Preview or download an exact native revision | [Offline code reader](../../../analysis/ableton-live-12.4.3/native-compact-view-v2/index.html), [interaction and publication checks](../native-compact-storage.md#read-revisions-interaction-fix--2026-10-12) | 2,028 retained revisions with exact code bytes, original/resolved profiles and warnings; 100 rows per page, code loaded on selection |
 | Audit or extract compact native artifacts | [Mirror manifest](../../../analysis/ableton-live-12.4.3/native-compact-mirror-v1/manifest.json), [measured experiment](../native-compact-storage.md#measured-mirror--2026-10-10) | Exact archived revisions and source envelopes; original files remain available |

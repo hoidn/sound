@@ -1,0 +1,160 @@
+{
+  "id": "corpus-a1-constructor-instructions-r2",
+  "retained_utc": "2026-10-20T10:44:21.560678+00:00",
+  "status": "Complete selected static decode supports conditional normal-return X0 identity; STOP before any other code or data.",
+  "full_read_scope": {
+    "selected_code_bytes": 288,
+    "selected_words": 72,
+    "all72_decoded_opcodes_freshly_read": true,
+    "other_source_bodies_read": 0,
+    "other_original_bytes_read": 0,
+    "original_execution": false,
+    "synthetic_control_repeated": false
+  },
+  "read_groups": [
+    {
+      "indices": [
+        0,
+        5
+      ],
+      "scope": "Stack allocation and register saves; X19 receives entry X0 at index5."
+    },
+    {
+      "indices": [
+        6,
+        12
+      ],
+      "scope": "Base helper call, intermediate vptr address computation/stores through returned X0, and X20 receives that result. No base helper body or table contents read."
+    },
+    {
+      "indices": [
+        13,
+        24
+      ],
+      "scope": "First member initialization, stack-carried temporary and local conditional decrement/helper paths merging at index23; none explicitly assigns X19."
+    },
+    {
+      "indices": [
+        25,
+        38
+      ],
+      "scope": "Second member initialization through X21, corresponding local conditional paths merging at index36, member stores/flag zero; none explicitly assigns X19."
+    },
+    {
+      "indices": [
+        39,
+        56
+      ],
+      "scope": "Member/helper setup using X20/X21 and instructions loading global address contents. Actual global words, callback identities and helper bodies are not inspected; no instruction explicitly assigns X19."
+    },
+    {
+      "indices": [
+        57,
+        63
+      ],
+      "scope": "Member load, opaque global callback-word load and stack pair with X19, argument preparation and helper call. No callback body/content proof or processing-role inference."
+    },
+    {
+      "indices": [
+        64,
+        71
+      ],
+      "scope": "X0 is assigned X19 before helper101486414, assigned X19 again after it, then only stack restores, SP adjustment and RET. Final X0 is not subsequently written."
+    }
+  ],
+  "normal_return_proof": {
+    "entry_save": {
+      "index": 5,
+      "address": "0x1026e8e64",
+      "instruction": "mov x19, x0"
+    },
+    "local_branches": [
+      {
+        "index": 17,
+        "instruction": "cbz x0",
+        "target_index": 23
+      },
+      {
+        "index": 21,
+        "instruction": "b.ne",
+        "target_index": 23
+      },
+      {
+        "index": 30,
+        "instruction": "cbz x0",
+        "target_index": 36
+      },
+      {
+        "index": 34,
+        "instruction": "b.ne",
+        "target_index": 36
+      }
+    ],
+    "x19_assignment_scope": "After index5 there is no explicit instruction destination assigning X19 until index68 restores the caller X19. BL callees are not inspected and must obey callee-save assumptions. Stores/calls must not invalidate saved state or alter control flow outside these represented paths.",
+    "last_result_assignment": {
+      "index": 66,
+      "address": "0x1026e8f58",
+      "instruction": "mov x0, x19"
+    },
+    "epilogue_indices": [
+      67,
+      68,
+      69,
+      70,
+      71
+    ],
+    "return": {
+      "index": 71,
+      "address": "0x1026e8f6c",
+      "instruction": "ret"
+    },
+    "conclusion": "For an invocation reaching the represented normal RET, returned X0 equals entry X0, subject to the explicit premises below. This identity no longer depends on the decompiled return-param_1 text."
+  },
+  "premises": [
+    "Ordinary ARM64 callee-save X19 preservation by every normal-returning direct helper; helper code was not read or verified.",
+    "Valid stack/frame/object state, valid return addresses and ABI; no exceptions, nonlocal exits, memory faults or control-flow corruption on the considered path.",
+    "No aliasing or interference that corrupts stack saves, relevant object state or retained entry X19; no actual invocation was observed.",
+    "Instruction decoding/bitfield interpretations are faithful for this selected raw span; no emulator executed them."
+  ],
+  "factory_composition": "Combined with the separately reviewed factory argument/dataflow, the allocated pointer is supplied as constructor entry X0; this constructor returns that pointer on its qualified normal path; the factory stores final vptr constants through that returned pointer and stores its preserved allocation through entry X8. Caller/result-pointer validity, callee saves and other pre-existing object/model associations remain conditional.",
+  "decoder_limit": {
+    "first_attempt_preserved": "../depth-corpus-a1-constructor-instructions/manifest.json",
+    "correction": "Only -f added to static decode command, plus destination changed to a byte-identical sibling raw copy.",
+    "result": "One corrected decode returns72 valid four-byte rows matching all288 bytes with empty stderr. Supports the block-size diagnosis for this bounded command; not a global decoder guarantee or original execution.",
+    "verbatim_pair_rendering": "Rows3/67 render FP/LR pair address as [sp, 0lr]. Output retained unchanged; selected-word bitfields independently establish baseSP, FP/LR and signed scaled offset+0x30.",
+    "pair_bitfields": [
+      {
+        "index": 3,
+        "address": "0x1026e8e5c",
+        "word_le": "0xa9037bfd",
+        "rt": 29,
+        "rt2": 30,
+        "base": 31,
+        "scaled_signed_offset": 48
+      },
+      {
+        "index": 67,
+        "address": "0x1026e8f5c",
+        "word_le": "0xa9437bfd",
+        "rt": 29,
+        "rt2": 30,
+        "base": 31,
+        "scaled_signed_offset": 48
+      }
+    ]
+  },
+  "unknowns": [
+    "No processing virtual slot/current-cell+0x48/+0x50 consumer resolved.",
+    "Opaque module+0x38 is not interpreted as pointer, token or interface.",
+    "No other table word, callback, base/helper or global data content was read.",
+    "No scheduling, active runtime object, public/Live behavior, no-route or A1 closure."
+  ],
+  "A1": "unknown",
+  "application_expected": null,
+  "application_comparison": null,
+  "grade": null,
+  "new_requirements": 0,
+  "new_cases": 0,
+  "coverage_credit": 0,
+  "complete": false
+}

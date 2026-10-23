@@ -1,0 +1,92 @@
+{
+  "N6_pin": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/n6-device-tables-v1/out/conversions.tsv",
+    "bytes": 83847,
+    "sha256": "3fd82068ee78c017beb340583c41b5f99deca1fab7903fce76fb1ccc4bf2626c"
+  },
+  "N6_line": 6,
+  "N6_row": {
+    "device": "UltraAnalog",
+    "index": "4",
+    "stored_name": "Transpose",
+    "class": "TimeableFloat",
+    "stored_domain": "-12..12",
+    "user_converter": "legacyint(-12..12)",
+    "internal_range": "-12..12",
+    "default": "0",
+    "default_preset": "0",
+    "default_note": "equal",
+    "mode": "MultiplyOffset mult=1 off=12",
+    "emitted_range": "0..24",
+    "sent_for_default": "12",
+    "bundle_kind": "3",
+    "bundle_range": "0..24",
+    "bundle_virtual": "False",
+    "crosscheck": "exact",
+    "source": "0x1031a3acc FUN_1026f0b58#4 \"Semitone\""
+  },
+  "old335_input_spans": [
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-analog-v1/measure.py",
+        "bytes": 45175,
+        "sha256": "30f341905cfc753f8992a715db5196718f060ec7b2d38ca977f13be667564101"
+      },
+      "lines": [
+        38,
+        42
+      ],
+      "sha256": "d88941bd5030a654cb7fab900e42c845c2621d4ae76c4c4b418f82bdf1bfd65e",
+      "text": "def held(st, key=60, fs=44100, secs=1.0, vel=100):\n    \"\"\"Render a key held for secs from frame on = 100 control periods; returns (left channel, on, off).\"\"\"\n    on = (fs // 1000) * 100\n    off = on + int(secs * fs)\n    y, _ = an.render(st, an.note(key, vel, on, off), fs=fs, frames=off + fs // 5)\n",
+      "use": "Inputdeclarations/possiblehistorylengths only; any incidental resultfunction references are DATA, never evaluated/interpreted asDSP/f0proof."
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-analog-v1/measure.py",
+        "bytes": 45175,
+        "sha256": "30f341905cfc753f8992a715db5196718f060ec7b2d38ca977f13be667564101"
+      },
+      "lines": [
+        52,
+        65
+      ],
+      "sha256": "8a3dd23559dab57c5fb5dcec93394ac8f8976eed67cfa8367f282ff8eb092ef2",
+      "text": "def area_pitch():\n    items = [dict(key=k, fs=fs) for fs in (44100, 48000) for k in range(24, 109)]\n    items += [dict(key=60, fs=fs, osc_oct=o) for fs in (44100, 48000) for o in (-3, -2, -1, 1, 2, 3)]\n    items += [dict(key=60, fs=fs, osc_semi=s) for fs in (44100, 48000) for s in range(-12, 13) if s]\n    items += [dict(key=k, fs=44100, octave=o) for k in (48, 72) for o in (-3, -1, 1, 2)]\n    items += [dict(key=k, fs=44100, transpose=t) for k in (48, 72) for t in (-12, -7, -1, 1, 5, 12)]\n    grid = [i / 16 for i in range(17)] + [0.3, 0.503, 0.7]\n    items += [dict(key=60, fs=fs, detune=v) for fs in (44100, 48000) for v in grid if v != 0.5]\n    items += [dict(key=60, fs=44100, fine=v) for v in grid if v != 0.5]\n    items += [dict(key=k, fs=44100, stretch=v) for k in (24, 48, 69, 96, 108) for v in (0, 0.25, 0.75, 1)]\n    items += [dict(key=k, fs=44100, stretch=s, transpose=t, octave=o, fine=f) for k in (36, 84)\n              for s, t, o, f in ((0, 5, 0, 0.5), (1, 0, 1, 0.5), (0, 0, 0, 0), (1, -7, -1, 1))]\n    names = dict(osc_oct=C1 + 'OscillatorOct', osc_semi=C1 + 'OscillatorSemi', detune=C1 + 'OscillatorDetune',\n                 octave='Octave', transpose='Transpose', fine='KeyboardFineTune', stretch='KeyboardStretch')\n",
+      "use": "Inputdeclarations/possiblehistorylengths only; any incidental resultfunction references are DATA, never evaluated/interpreted asDSP/f0proof."
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-analog-v1/measure.py",
+        "bytes": 45175,
+        "sha256": "30f341905cfc753f8992a715db5196718f060ec7b2d38ca977f13be667564101"
+      },
+      "lines": [
+        66,
+        70
+      ],
+      "sha256": "a9ca8a396396428270bb61f4a8c10e1d9e1b1147fea2f171366e69f4ac913bba",
+      "text": "\n    def run(it):\n        ch = {names[k]: v for k, v in it.items() if k in names}\n        m = model.osc_freq(**it)\n        y, on, off = held(probe(**ch), it['key'], it['fs'], secs=1.0 if m > 200 else 4.0)\n",
+      "use": "Inputdeclarations/possiblehistorylengths only; any incidental resultfunction references are DATA, never evaluated/interpreted asDSP/f0proof."
+    }
+  ],
+  "old_histories": {
+    "on44100": 4400,
+    "possible_offs": [
+      48500,
+      180800
+    ],
+    "possible_exclusive_ends": [
+      57320,
+      189620
+    ],
+    "input_duration_choices_seconds": [
+      1.0,
+      4.0
+    ],
+    "source_branch_condition": "Not evaluated; BOTH possiblehistories differfromP1",
+    "P1_off": 35270,
+    "P1_exclusive_end": 44100
+  },
+  "scoped_intersection": "Onlyhost12inherited at exactP1; existingR3mode20/keys/velocity/channels retainbaselineTranspose12. OldDAN011a combinedOctave1/Transpose7/FineTune.75 uses26460heldhistory. Old335declaredpitchhistory differs. No universalhistoricalabsence.",
+  "source_origin_limit": "Retained current sourcepins are inherited historical authority, not independent originalsourceversion/execution attestation; any residual report binding remainsU."
+}

@@ -1,0 +1,145 @@
+--- wiki/specs/midi-note-storage.md (r4)
++++ wiki/specs/midi-note-storage.md (r5 draft)
+@@ -2,8 +2,8 @@
+ id: SPEC-MIDI-NOTE-STORAGE
+ type: spec
+ status: draft
+-revision: 4
+-updated: 2026-10-19
++revision: 5
++updated: 2026-10-20
+ access: analysis
+ target: Ableton Live 12 Suite 12.4.3 / macOS
+ ---
+@@ -358,23 +358,35 @@
+ 
+ - **D.** The schema defines `NoteProbabilityGroups` as a list of groups. Each group has a
+   group type, a list of note ids, a probability and a 64-bit `GroupId`. The group generator
+-  holds `NextId`. No shipped document contains a group.
++  holds `NextId`. No shipped document in the retained survey contains a group.
++- **S (registered-class route).** A group is a `NoteProbabilityGroup` list item with its
++  own `Id` attribute. Its children, in order, are `GroupType`, `Notes`, `Probability` and
++  `GroupId`. `GroupId` is a child with a `Value` attribute, not an attribute of the group.
++  `GroupType` and `Probability` have `Value` attributes. The group's `Notes` array contains
++  `NoteId` elements, each with a `NoteId` attribute holding the note's integer id.
++  The group's list `Id` is distinct from `GroupId`. Fragment G supplies the concrete form.
++  This is a conditional static derivation through the registered constructors and generic
++  loader/writer/array translator, not an observed open/save or proof of final saved state.
++- **S (code/label association).** The group enum associates indices 0 and 1 with the
++  internal labels `PlayAll` and `PlayOne`, respectively. Construction selects 0 and
++  probability 1. The cases use these constructor choices; this does not establish their
++  playback meaning, UI names or admission of other enum values.
+ - **S.** When the clip has at least one group, the groups are checked in document order. Each
+   `GroupId` must be greater than 0 and greater than the previous group's id. Each must also
+   be below the group generator's `NextId`, compared as unsigned values. Otherwise the
+-  document is refused.
+-- **S.** A group's note ids are not checked against the clip's notes. A group naming a missing
+-  note does not make the document refused.
+-- **U.** These are unknown. No reference observation is available (ADR 0003). A static
+-  reading of the group class registration and of its writer could settle the shape and the
+-  saved text:
+-  - the XML shape of a group, including whether `GroupId` is an attribute;
+-  - the group type values;
++  document is refused. This retains the established A1 load-context premise.
++- **S.** A group's note ids are not checked against the clip's notes in the selected
++  registration path. A group naming a missing note does not itself cause that path to
++  refuse the document. Later listeners, playback and public lifecycle effects remain U.
++- **U.** No reference observation is available (ADR 0003). These remain unknown:
+   - what a group naming a missing note does after load;
+-  - the saved group text;
+-  - whether the group generator's `NextId` is raised on load.
+-
+-  The cases for this requirement are blocked until the group shape is known.
++  - the final saved group text, including default omission and normalized values;
++  - whether the group generator's `NextId` is raised anywhere across the complete load path;
++  - unsupported enum values and the playback meaning of the code/label associations.
++
++  Revision 5 supplies a conditional group shape for all six existing group cases.
++  Their reader admission/refusal expectations are static derivations under A1; saved
++  group state, later effects and actual public/candidate execution are not graded.
+ 
+ ### REQ-MIDI-NOTE-STORAGE-016 — number and Boolean text on save
+ 
+@@ -506,9 +518,28 @@
+ </EventLists>
+ ```
+ 
+-**Fragment G.** The probability-group cases replace F0's `<NoteProbabilityGroups />`. The
+-group shape is unknown, so they are marked "blocked". No reference observation will record it
+-(ADR 0003). A static derivation of the shape (REQ-015) would unblock them.
++**Fragment G.** The probability-group cases replace F0's `<NoteProbabilityGroups />` with
++this registered-class shape. This is the positive MNS-058 group; the table changes GroupId,
++order, note ids and group `NextId` for the other five cases. All use GroupType 0 and
++Probability 1. List Ids are 0, then 1 when a second group is present, independently of
++GroupId. The fully materialized [six Notes fragments](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-probability-groups-v1/case-proposals.json)
++preserve the same F0 notes and note counter. They are used under B0/F0, not as complete Sets.
++
++```xml
++<NoteProbabilityGroups>
++  <NoteProbabilityGroup Id="0">
++    <GroupType Value="0" />
++    <Notes><NoteId NoteId="1" /><NoteId NoteId="2" /></Notes>
++    <Probability Value="1" />
++    <GroupId Value="1" />
++  </NoteProbabilityGroup>
++</NoteProbabilityGroups>
++<ProbabilityGroupIdGenerator><NextId Value="2" /></ProbabilityGroupIdGenerator>
++```
++
++The 054–057 refusal cases use notes 1 and 2 in each group. MNS-059 alone names missing
++note 99. Conditional static shape and local registration do not establish final Save,
++missing-note playback effects or the absence of all group-counter repair.
+ 
+ **Case kinds.** P positive, N negative (refused), B boundary, M missing input, S save text,
+ U unresolved. Expected results are static derivations, shipped-document facts or, for the
+@@ -571,12 +602,12 @@
+ | MNS-051 | 002, 014 | B | (a) e2 `TimeOffset="Invalid"`; (b) e1 and e2 `TimeOffset="Invalid"` | (a) L1 saved with e1 only; (b) L1 not saved | B0+F1 |
+ | MNS-052 | 014, 009 | B | n2 `NoteId="0"`; add a list `NoteId="4" CC="-2"` with one event `TimeOffset="0.0625" Value="1"` | Loads; n2 saved with `NoteId="4"`; the added list not saved | B0+F1 |
+ | MNS-053 | 014 | U | (a) e1 `TimeOffset="0"`; (b) e2 `TimeOffset="0.25"` (equal to n1's Duration); (c) e2 `TimeOffset="0.5"`; (d) e1 `TimeOffset="-0.1"` | Unresolved; no reference observation (ADR 0003); static route in REQ-014 | B0+F1 |
+-| MNS-054 | 015 | N | G: one group, `GroupId` 0, notes 1 and 2; group `NextId` 1 | Refused (blocked) | B0+F0+G |
+-| MNS-055 | 015 | N | G: one group, `GroupId` 5; group `NextId` 1 | Refused (blocked) | B0+F0+G |
+-| MNS-056 | 015 | N | G: two groups, `GroupId` 2 then 1; group `NextId` 3 | Refused (blocked) | B0+F0+G |
+-| MNS-057 | 015 | N | G: two groups, `GroupId` 1 then 1; group `NextId` 2 | Refused (blocked) | B0+F0+G |
+-| MNS-058 | 015 | P | G: one group, `GroupId` 1, notes 1 and 2; group `NextId` 2 | Loads (blocked); saved group text unresolved | B0+F0+G |
+-| MNS-059 | 015 | B | G: one group, `GroupId` 1, naming note 99; group `NextId` 2 | Loads (not refused; blocked); later effect unresolved | B0+F0+G |
++| MNS-054 | 015 | N | G: one group, `GroupId` 0, notes 1 and 2; group `NextId` 1 | Refused (S, A1) | B0+F0+G |
++| MNS-055 | 015 | N | G: one group, `GroupId` 5; group `NextId` 1 | Refused (S, A1) | B0+F0+G |
++| MNS-056 | 015 | N | G: two groups, `GroupId` 2 then 1; group `NextId` 3 | Refused (S, A1) | B0+F0+G |
++| MNS-057 | 015 | N | G: two groups, `GroupId` 1 then 1; group `NextId` 2 | Refused (S, A1) | B0+F0+G |
++| MNS-058 | 015 | P | G: one group, `GroupId` 1, notes 1 and 2; group `NextId` 2 | Loads (S, A1); saved group text U | B0+F0+G |
++| MNS-059 | 015 | B | G: one group, `GroupId` 1, naming note 99; group `NextId` 2 | Loads (S, A1; no missing-note refusal); later effect U | B0+F0+G |
+ | MNS-060 | 017 | U | MNS-026 | User-visible outcome unresolved; no reference observation (ADR 0003) | B0+F0 |
+ | MNS-061 | 002 | P | n1 `NoteId=" 1"`, n2 `NoteId="+2"`, n3 `NoteId="3 "` | Loads; saved NoteIds `1`, `2`, `3`; `NextId` 4 | B0+F0 |
+ | MNS-062 | 002 | N | n3 `NoteId="+-3"` | Refused | B0+F0 |
+@@ -668,7 +699,7 @@
+ | 012 | List writer `0x101468408` (pseudocode) writes the stored id. The reader's handling of `Id` was not traced. Empty-KeyTrack removal at the start of `0x1028f5864` is gated by global `DAT_106f54e20`+0x350 and `0x10185138c` | D / S / U |
+ | 013 | Event constructor `0x1025c77fc`, reset `0x1025c7b04`, omit predicate `0x1025c7b10` (s7-0004) | D / S |
+ | 014 | List post-load `0x10292b730` ✓ (s7-0002): `CC + 2 > 0x82` skip, `0x1011afdac`, DBL_MAX drop, clamp `0x1011afc18`/`0x1011afc2c` (−8192/8191 for −2, else 0/127), stable sort `0x1029307b8`. Store post-load `0x10292cd70` ✓ (s7-0002): erase when NoteId is 0 or CC is out of range or invalid; a (NoteId, CC) set size different from the list count throws `Multiple sets of per-note controller change events with the same note ID and CC number`. Orphans `0x1028f64d0` (s7-0003) use the pre-assignment id list. **Boundary step** (found in d4-0001 ✓; re-established in review RVN-02): in `0x1028f5864` at `0x1028f5bec`–`0x1028f5c0c` (retained S7 disassembly), each note's NoteId (`0x1028da61c`) and Duration (`0x1028dea48`) go to `0x10292c960`. That function (review excerpts) calls `0x10292b9ec` for each list of that NoteId, then removes lists whose event count is 0 (`0x10292caa4`, `0x10292cb58`). `0x10292b9ec` (review excerpts; early return decoded from the image, review-checks section 3) returns early when the list is empty, or when the first offset is > 0 (`fcmp; b.le`) and the last is < Duration (`b.mi`). Otherwise it builds an envelope (`0x1025c442c`, `0x1025c4708`) and calls vtable `+0x308` with the ranges [−1.7976931348623155e308, 0.0] (`0x105847020`, read with `read_consts.py`) and [rounded Duration, 1.7976931348623155e308]. That call's semantics were not traced. In the Chuck Sutton Intro demo, 3,204 of 5,491 non-empty lists start at an offset ≤ 0 and 1,012 end at or after the note's Duration (ad-hoc count, not retained) | S; boundary adjustment U |
+-| 015 | Group check `0x1028f5640` ✓ (s7-0002): id 0 or id ≤ previous (signed, starting at 0) fails. `0x102920ecc` (corpus) is `id < NextId` unsigned. Registration `0x1028f5770` (corpus) does not check the note. The failure throws `Note-group ids are corrupt.` | S; shape U |
++| 015 | Group check `0x1028f5640` ✓ (s7-0002): id 0 or id ≤ previous (signed, starting at 0) fails. `0x102920ecc` (corpus) is `id < NextId` unsigned. Registration `0x1028f5770` (corpus) does not check the note. The failure throws `Note-group ids are corrupt.` Shape/type follow the reviewed [group source batch](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-probability-groups-v1/README.md): registrations `10292627c`/`102925eb4`, group constructor `102926720`, label builder `1029265f4`, enum initialization `101567bfc`, array/list/generic writers and five inherited conditional class tables. Expanded C beyond the 4/176/244-byte callback/registration bodies is excluded; separate post-load `1028f5864` owns validation. [Independent source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-probability-groups-v1-review.json) approves conditional shape/proposals only | S; registered-class shape/type association, final save/later effects/counter repair U |
+ | 016 | `0x10152205c` ✓ (s7-0001): Double `0x101520dbc`, Float `0x101520c70`, Int64 plain, Bool. Rule in REQ-TRANSPORT-STATE-011. `documents.checks` `fmt_ok` 2,054,618 | S; corroborated |
+ | 017 | Throws through `0x101488e64` and `0x10148229c`; the top-level catch was not traced | S / U |
+ 
+@@ -745,6 +776,7 @@
+ | 2 | 2026-10-18 | Applies the staging and review findings of midi-note-storage-v1 ([plan](midi-note-storage-handoff-plan.md#review-outcome), [review](../../handoff/midi-note-storage-v1/REVIEW.md)) and ADR 0003. Applied: RVN-01 (A1 widened to every gated post-read step and established statically); RVN-02 and F10 (the REQ-014 boundary step cited from the review excerpts); RVN-03 (REQ-009 precondition: KeyTracks stored in ascending key order); RVN-04 and F2 (MNS-001 and the comparators no longer cover probability groups or the group `NextId`); RVN-09 and F4 (`Invalid` stated in REQ-002 and REQ-013; MNS-017 and MNS-051 list 002); RVN-11 (A2 restated for both constructions; A3 added); RVN-12 and F1 in part (the release's authored-set construction noted); F3 (plain decimal text for `MidiKey`, `CC`, list `NoteId` and `Id`); F5 (REQ-010 order clause excludes overlap); F6 (list order and event attribute order U and not compared); F7 (signed 64-bit limit; leading zeros counted); F8 (MNS-061 to MNS-071 added); F9 (MNS-003 judges n2 and lists 003); the plan's case disposition (unstated event `Value` 1 in MNS-041 and MNS-046); release alignment (positive zero in REQ-005; REQ-014 in REQ-016). Rejected: copying d4-0001 into the retained run, since the review excerpts carry identical code and this revision edits wiki pages only; F1's PRB-S7-09 extension, since no probe will run (ADR 0003). No change needed: RVN-05 to RVN-08 and RVN-10, which concern only the release package or confirm the draft. Probe wording replaced under ADR 0003. 17 requirements: 4 without unknown parts, 12 with D or S clauses and unknown parts, 1 unknown and excluded (011). 71 unexecuted cases: 56 gradable (MNS-036 and MNS-070 for the outcome only), 6 blocked by the group shape, 9 unresolved |
+ | 3 | 2026-10-18 | Extracted execution (packet X2, evidence label X added). REQ-005, 006 and 016 examples become X with an S path; the REQ-006 formula is confirmed bit for bit, including values next to halfway points, where it differs from exact rounding. Negative zero settled: REQ-006's and REQ-016's U clauses become X (`-0`), and REQ-005 states −0 for each value. REQ-011 stays excluded; its static route was traced in both slices and no range guard exists. Errors found: none in the clauses; the x86 pseudocode's NaN reading is wrong, as revision 1 found for arm64. MNS-023 becomes gradable (`-0`); MNS-072 to 075 added. 17 requirements: 5 without unknown parts (003, 004, 005, 008, 016), 11 with D, S or X clauses and unknown parts, 1 unknown and excluded (011). 75 unexecuted cases: 61 gradable (17 backed by X, 44 static or documented; MNS-036 and MNS-070 for the outcome only), 6 blocked by the group shape, 8 unresolved |
+ | 4 | 2026-10-19 | applies midi-note-storage-v2 F1 to F3 and RVN2-01 to 03, 07. REQ-002 states the negative-zero reading for the five covered note attributes; REQ-006 excepts negative zero from on-grid identity; REQ-007 names positive-zero duration and retains normalization. MNS-072 to 075 list REQ-002, and MNS-073 also REQ-004. Counts and expectations unchanged. |
++| 5 | 2026-10-20 | One six-case probability-group refinement from the independently reviewed conditional source batch. REQ-015 and Fragment G now state GroupId child/NoteId attribute form, distinct list Id and 0/1 label association; all six existing group setups become concrete. Four refusals and two admission-only outcomes no longer depend on unknown shape. All 16 other requirement bodies and 69 other case rows are unchanged; 17 IDs/75 cases retained. Final group save, later missing-note effects, whole-load counter repair and unsupported enum/playback meanings remain U. No original/candidate execution or new release. Owner refinement pending independent review. |
+ 
+ Before the 2026-10-18 review, a first release candidate could
+ contain the gradable cases of REQ-002 to 009, REQ-014 and REQ-016, under assumptions A1
+@@ -757,5 +789,13 @@
+ clauses on 2026-10-18 with 72 cases, superseding v1 and rebuilding its structurally invalid
+ fixtures. The [v2 review](../../handoff/midi-note-storage-v2/REVIEW.md) RVN2-01 to 03 and
+ RVN2-07 support revision 4's negative-zero wording and requirement references; no case
+-expectation changes. The draft still has 17 requirements and 75 cases (61 gradable,
++expectation changes. At revision 4 the draft had 17 requirements and 75 cases (61 gradable,
+ 6 blocked by the group shape, 8 unresolved).
++
++
++Revision 5 retains all 17 requirement IDs and 75 case IDs. There are now 67 statically or
++locally X-derived reader/computation cases (17 backed by X, 50 S or D), including admission-only
++036, 058, 059 and 070, and eight unresolved cases. No case was executed against Live or a
++candidate. Saved group text and later missing-note effects remain ungraded within 058/059.
++The current partial release remains midi-note-storage-v2 with 72 cases and excludes REQ-015.
++This draft successor is **pending independent owner review**, separate from source approval.

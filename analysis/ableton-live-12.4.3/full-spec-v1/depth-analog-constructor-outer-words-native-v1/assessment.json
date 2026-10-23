@@ -1,0 +1,238 @@
+{
+  "id": "ANALOG52-BOUNDED-NATIVE-AND-LITERAL-ASSESSMENT",
+  "disposition": "AUTHOR_READY_FOR_ONE_INDEPENDENT_ACTUAL_REVIEW",
+  "scope": {
+    "code_bytes": 4,
+    "decoded_rows": 1,
+    "literal_bytes": 48,
+    "literal_words": 6,
+    "total_content_bytes": 52
+  },
+  "fresh_read": {
+    "complete_native_rows": 1,
+    "complete_raw_code_bytes": 4,
+    "complete_raw_literal_words": 6,
+    "complete_raw_literal_bytes": 48,
+    "expanded_C_read": false,
+    "new_headers_or_fixup_or_provider_bytes": 0,
+    "prior_native_content_replayed": 0,
+    "prior_five_words_replayed": 0,
+    "ESIL_used_as_proof": false
+  },
+  "native_fact": {
+    "id": "AN52-01",
+    "kind": "unconditional-local-B-preserving-X0-and-X30",
+    "locator": "capture/1760.bin bytes0..3; capture/1760.stdout.json row1",
+    "raw_hex": "a0ffff17",
+    "instruction_word_little_endian": "0x17ffffa0",
+    "opcode_mask": "word & 0xfc000000 == 0x14000000; B not BL",
+    "signed_imm26": -96,
+    "byte_displacement": -384,
+    "arithmetic": "0x1760 + (-96 *4) =0x15e0",
+    "target": "0x15e0",
+    "effect": "This single A64 B changes PC, does not write X0, X30, SP or other general registers. No instructions from destination are newly read or executed.",
+    "not_proof": "Metadata range4B is not proof of complete dynamic control flow/exception handling/formal ABI or construction role."
+  },
+  "conditional_composition": {
+    "id": "AN52-02",
+    "A_equals_prior_P_Q_B": "conditional-normal-path-only",
+    "basis": [
+      "Inherited509 review:3a2c saves first unread509f4 return A inX19;3a30 BL1760 has X0=A on selected normal path.",
+      "New1760 unconditional B15e0 neither changes X0 nor linkX30, so selected entry15e0 receives currentA and original3a30link.",
+      "Inherited117 review:15e0 saves entryP, forwards currentX0 asQ to1774c;1774c returnsB=Q under its normal-path/state/callee-preservation conditions;15e0 stores580c0 through returnedB."
+    ],
+    "premises": [
+      "Execution reaches selected3a30 with inherited A carrier and valid code/state.",
+      "Unread509f4 and preceding calls returned normally; no allocator/construction meaning inferred.",
+      "Inherited caller-saved/live register and callee-save requirements actually hold across unread calls.",
+      "All relevant stack/state memory is valid and nonaliasing as required by earlier selected loads/stores.",
+      "No asynchronous, helper or alias interference changes the required carriers/return path.",
+      "The separately reviewed15e0/1774c normal-return and stack-restoration path is taken; source C is not substituted for ABI proof.",
+      "The saved3a30link and stack remain valid; no exception/tail escape or opaque mutation defeats composition."
+    ],
+    "local_contribution": "Removes previously unread1760 forwarding edge on this conditional local call path. A can be identified with priorP/Q/B on that path, carrying the previously reviewed580c0 store through the returned pointer.",
+    "A_equals_O": "unknown",
+    "R_binding": "unknown",
+    "C_binding": "unknown",
+    "not_established": [
+      "A and O are distinct allocations",
+      "actual factory/object/class/constructor identity or complete construction",
+      "universal ABI or allocation ownership",
+      "R=A/P/O",
+      "C=A/P/O or any known addresspoint",
+      "first-word stability after later unread calls"
+    ]
+  },
+  "literal_interpretation": {
+    "id": "AN52-03",
+    "basis": "Inherited198ec ADR595f8 and198f4 STP through incomingO; operand offsets from reviewed509 paths. New reads only exact six on-disk words at literal595f8+10/38/50/58/60/68.",
+    "words": [
+      {
+        "start": "0x59608",
+        "file_offset": 366088,
+        "bytes": 8,
+        "raw_hex": "28a1010000000000",
+        "sha256": "da1feff29c03db00ecccf60b96740d1f27e8abe11b978c10753145a50f6c8de3",
+        "literal_base": "0x595f8",
+        "operand_offset": "0x10",
+        "stored_integer_little_endian": "0x1a128",
+        "inherited_operand_path": "1a244 current-receiver+10 tail; factory3a70 passes O conditionally",
+        "runtime_target": "unknown",
+        "target_followed": false
+      },
+      {
+        "start": "0x59630",
+        "file_offset": 366128,
+        "bytes": 8,
+        "raw_hex": "8ca1010000000000",
+        "sha256": "803d355ff911c774ce3fb6904d6eaa9633f71ff221f3ae96e3c7097c501679c2",
+        "literal_base": "0x595f8",
+        "operand_offset": "0x38",
+        "stored_integer_little_endian": "0x1a18c",
+        "inherited_operand_path": "17624 current-receiver+38 call; wrapper receiver not linked automatically",
+        "runtime_target": "unknown",
+        "target_followed": false
+      },
+      {
+        "start": "0x59648",
+        "file_offset": 366152,
+        "bytes": 8,
+        "raw_hex": "609a010000000000",
+        "sha256": "e0209270042197002dc3e2b4329c97555a38e463a72e1ff7280372b7dc848bf0",
+        "literal_base": "0x595f8",
+        "operand_offset": "0x50",
+        "stored_integer_little_endian": "0x19a60",
+        "inherited_operand_path": "1717c current-receiver+50 SetRate extra path, outside declared nine",
+        "runtime_target": "unknown",
+        "target_followed": false
+      },
+      {
+        "start": "0x59650",
+        "file_offset": 366160,
+        "bytes": 8,
+        "raw_hex": "e09a010000000000",
+        "sha256": "edb86dbacd5dfcdbfd0390a46fcb671b93e24b188aa1389c870692dfec7a7482",
+        "literal_base": "0x595f8",
+        "operand_offset": "0x58",
+        "stored_integer_little_endian": "0x19ae0",
+        "inherited_operand_path": "176bc current-receiver+58 call; wrapper receiver not linked automatically",
+        "runtime_target": "unknown",
+        "target_followed": false
+      },
+      {
+        "start": "0x59658",
+        "file_offset": 366168,
+        "bytes": 8,
+        "raw_hex": "609b010000000000",
+        "sha256": "89b038ca6da668214033ff6e3c241c7234912daf741c2f2fc8274e8003284ec4",
+        "literal_base": "0x595f8",
+        "operand_offset": "0x60",
+        "stored_integer_little_endian": "0x19b60",
+        "inherited_operand_path": "17404 current-receiver+60 processing path, receiver is post-probeX0",
+        "runtime_target": "unknown",
+        "target_followed": false
+      },
+      {
+        "start": "0x59660",
+        "file_offset": 366176,
+        "bytes": 8,
+        "raw_hex": "149a010000000000",
+        "sha256": "e390393ec3fc0b14be99bb9d452245d73978d2b214130ca50ef844806570a479",
+        "literal_base": "0x595f8",
+        "operand_offset": "0x68",
+        "stored_integer_little_endian": "0x19a14",
+        "inherited_operand_path": "17074 factory-returned current receiver+68;17424 processing current receiver+68",
+        "runtime_target": "unknown",
+        "target_followed": false
+      }
+    ],
+    "runtime_pointer_or_target_proved": false,
+    "current_O_table_continuity": "unknown",
+    "runtime_encoding": "Relocation/rebase/PAC/slide/lazy/runtime pointer encoding remains unknown. Numeric stored integers are not confirmed code addresses or implementations. No fixup/linkedit content acquired.",
+    "scope_of_association": "Literal-base arithmetic only. If current receiver actually O and current[O] still equals selected literal addresspoint in the relevant encoding, these raw on-disk offsets are corresponding stored positions; those premises are not established.",
+    "no_target_follow": true,
+    "forbidden_unread": [
+      "0x58150 assumed580c0+90",
+      "all unknown current[C]+c8/d0/d8 words",
+      "all six stored-integer destinations"
+    ]
+  },
+  "receiver_frontier": {
+    "id": "AN52-04",
+    "A": "First509f4 result, saved at3a2c; conditional priorP/Q/B join improved by this branch only.",
+    "O": "Second509f4 result saved3a40;198dc writes595f8, then unread1a368 may mutate;3a48 storesA atO+8. A/O equality and inequality remain unproved.",
+    "R": "Tracked current receiver in18640 after local guards; current[R]+90 override remains unknown, so580c0+90 cannot be assumed.",
+    "C": "Reloaded current[R+8], then current[C]+c8/d0/d8; no established current addresspoint or runtime callback delivery.",
+    "current_O": "Later1a23c+10 target/effects unread, so stable595f8 across that or other calls is unproved.",
+    "processing": "172ec stack probe precedes argument capture; processing carrier is post-probeX0. Entry-original arguments are not proved preserved by this capture.",
+    "computed_dispatch": "187d8 and unread53276 byte table unchanged/inherited, not newly resolved."
+  },
+  "required_contribution": {
+    "id": "AN52-05",
+    "owner": "Analog REQ002/A1 and REQ022 receiver-state/history premise",
+    "improvement": "Conditional local A\u2192P/Q/B construction-path carrier join, plus exact literal stored words at the six selected operand offsets.",
+    "remaining": "Actual loadedLive model admission/current value\u2192same runtime processor/parameter index/receiver\u2192callback delivery\u2192audio output remains unknown. No parameter-history, mode, timing, lifecycle, settlement or waveform calibration law follows."
+  },
+  "actual_capture": {
+    "id": "AN52-06",
+    "started_utc": "2026-10-21T05:52:32.412310+00:00",
+    "finished_utc": "2026-10-21T05:52:32.626157+00:00",
+    "outer_pid": 1338706,
+    "decoder_pid": 1338708,
+    "attempts": 1,
+    "exit_code": 0,
+    "stderr_bytes": 0,
+    "timed_out": false,
+    "cleanup": "process-group-already-gone",
+    "recorded_custody_pairs": 17,
+    "recorded_custody_unchanged": true,
+    "method": "capture-once.py exactly as pre-call pinned; fixed one4B raw file decoded using existing Rizin -NN -n -x -f arm64/little pdj1; sixwords never decoded.",
+    "limits": [
+      "Before/after full image/tool hashes are custody only, not continuous mutation detection.",
+      "Only selected52 content bytes read apart from whole-file custody hashes and retained metadata pins.",
+      "Raw and JSON descriptors explicitly flushed/fsynced by save; no directory fsync/power-loss guarantee.",
+      "Successful child does not test timeout/SIGTERM/fault/escaped-descendant cleanup paths.",
+      "No original native instructions, ABI invocation, emulation or source-derived model execution."
+    ]
+  },
+  "claims_not_established": {
+    "id": "AN52-07",
+    "actual_Live_binding": false,
+    "formal_ABI_or_constructor": false,
+    "runtime_slot_targets": false,
+    "public_control_or_audio_delivery": false,
+    "A1_A2_lifecycle_timebase_calibration": false,
+    "native_numeric_ARM_vs_x86_law": false,
+    "site_resolution_or_grades": false
+  },
+  "counts": {
+    "id": "AN52-08",
+    "main_inventory": "25095 of268015 unchanged",
+    "selected_new_bundle_native_rows": 1,
+    "selected_new_literal_words": 6,
+    "new_resolved_bundle_runtime_sites": 0,
+    "declared_prior_bundle_operand_sites": 9,
+    "extra_SetRate_operand_path": "1717c separately labeled, no addition to declarednine or mainLive universe",
+    "original_instructions_executed": 0,
+    "new_case_grade_release_changes": 0
+  },
+  "required_status": "U/OPEN unchanged",
+  "inherited_approvals": [
+    {
+      "path": "reviews/analog-1774c-receiver-source-v1-review.json",
+      "sha256": "cf6b9443deb2094eaa0040481d815c1a49e1accedb77e1823d4de5e91119d741",
+      "scope": "Source return relation only; metadata/raw native not replayed."
+    },
+    {
+      "path": "reviews/analog-two-window-native-v1-review.json",
+      "sha256": "bf1ce616a056fa9139e89ac308d3bc8c2ac5500f189db9e84c65767ca756fe88",
+      "scope": "Conditional117-row468B P/Q/B and580c0 store context by citation; not replayed."
+    },
+    {
+      "path": "reviews/analog-whole-receiver-native-v1-review.json",
+      "sha256": "5c46a69e3f3d5a8b813cd1762beb4b3126fd0e5cbc3987d518ada66eaa499de0",
+      "scope": "Conditional509-row2036B and fiveword40B carrier/operand context by citation; not replayed."
+    }
+  ],
+  "successor_selection": "None. No word target/callee or R/C table acquired, no automatic follow-up."
+}

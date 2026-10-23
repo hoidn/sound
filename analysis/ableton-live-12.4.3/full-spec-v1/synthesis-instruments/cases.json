@@ -1,0 +1,3815 @@
+[
+  {
+    "id": "SYN-DF-001",
+    "requirements": [
+      "REQ-SYN-DF-001"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Open each oscillator chooser and select every listed waveform; do not equate similarly named waveforms across instruments.",
+    "documentary_expected": "Osc 1 offers Sine, Triangle, Shark Tooth, Saturated, Saw, Pulse and Rectangle; Osc 2 offers Sine, Triangle, Saturated, Saw and Rectangle.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B009",
+      "drift:B022"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-002",
+    "requirements": [
+      "REQ-SYN-DF-002"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Solo Osc 1, move Shape 0 to 50 to 100%, then enable Osc 2 and vary its Detune; inspect named controls and display response, without waveform equality.",
+    "documentary_expected": "Osc 1 Oct transposes octaves and Shape changes its waveform display; Osc 2 Oct transposes octaves and Detune uses semitones. Combined display includes enabled oscillator/noise output.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B010",
+      "drift:B023",
+      "drift:B028"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-003",
+    "requirements": [
+      "REQ-SYN-DF-003"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Shape 0%, Osc 1 enabled and audible, select LFO with rate 2 Hz and nonzero amount; compare Shape Mod 0%, +50%, -50%, then hold distinct notes for Key with each sign. Quantitative response remains U.",
+    "documentary_expected": "Osc 1 Shape sources are Env 1, Env 2/Cyc, LFO, Key, Velocity, Modwheel, Pressure and Slide. Shape Mod Amount spans -100% to 100%; positive Shape Mod can act even with Shape 0%. Key modulation reverses direction with amount sign.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B011",
+      "drift:B012",
+      "drift:B013",
+      "drift:B014",
+      "drift:B015",
+      "drift:B016",
+      "drift:B017",
+      "drift:B018",
+      "drift:B019",
+      "drift:B020"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-004",
+    "requirements": [
+      "REQ-SYN-DF-004"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Open both Pitch Mod source menus and set LFO and Env 2, amounts +25% and -25%; select LFO Ratio. Check controls only; exact FM law remains U.",
+    "documentary_expected": "Two pitch modulation sources affect both oscillators, each with amount -100% to 100%; Ratio-mode LFO pitch modulation is documented as able to produce FM tones.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B025",
+      "drift:B026"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-005",
+    "requirements": [
+      "REQ-SYN-DF-005"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Solo Osc 1, enable filter routing and low-pass cutoff 500 Hz; move cutoff 500 to 2000 Hz, then route Osc 1 around filter and repeat. Keep output audible; no numerical bypass equivalence is asserted.",
+    "documentary_expected": "Osc 1, Osc 2 and white-noise generator have independent enables/gains and individual filter-routing arrows. Routing off bypasses the filter for that source.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B030",
+      "drift:B031",
+      "drift:B033"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-006",
+    "requirements": [
+      "REQ-SYN-DF-006"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Filter routing on, Osc 1 Saw audible; compare -12, -6, 0 and +6 dB oscillator gain with fixed filter settings and output attenuation. Measure future distortion rather than assigning a transfer curve.",
+    "documentary_expected": "The manual describes oscillator gain -6 dB and saturation changes above 0 dB in the filter path; it supplies no transfer curve or measured thresholds for this build.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B032"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-007",
+    "requirements": [
+      "REQ-SYN-DF-007"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Play separated identical notes with Osc 1/2 enabled, no modulation and Drift minimized; compare R on/off. Exact phase, seed and waveform comparator remain U.",
+    "documentary_expected": "Oscillator R on resets both oscillator phases at each note; R off is free-running.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B034"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-008",
+    "requirements": [
+      "REQ-SYN-DF-008"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select both Types; drag each filter dot and inspect corresponding controls; set Key 0.00 then 1.00 while playing low/high notes. Grade controls only, not filter response.",
+    "documentary_expected": "Low-pass Type I is labelled 12 dB/octave and Type II 24 dB/octave. Freq/Res and high-pass HP are separate; display dots adjust HP horizontally and LP frequency/resonance horizontally/vertically. Key 0.00 disables note influence on LP frequency; 1.00 follows note direction.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B038",
+      "drift:B041",
+      "drift:B042",
+      "drift:B043"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-009",
+    "requirements": [
+      "REQ-SYN-DF-009"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Choose LFO and Env 2 for the two Freq Mod slots; enter -100%, 0% and +100% and inspect displayed values.",
+    "documentary_expected": "Two independent low-pass cutoff modulation slots each have amount -100% to 100%.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B044"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-010",
+    "requirements": [
+      "REQ-SYN-DF-010"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Audible oscillator, nonzero Sustain and Release; send note on at beat 1 and off at beat 3, then edit envelope via display and knobs. Capture future stage behavior without invented curve/tolerance.",
+    "documentary_expected": "Envelope 1 controls amplitude of both oscillators and noise; Attack reaches peak, Decay reaches Sustain, Sustain holds until note ends, Release returns to zero. Knobs/display and 1/2 selectors edit the selected envelope.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B049",
+      "drift:B050",
+      "drift:B051",
+      "drift:B052",
+      "drift:B053",
+      "drift:B054",
+      "drift:B055"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-011",
+    "requirements": [
+      "REQ-SYN-DF-011"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Route Env 2 to Osc 1 Shape with nonzero amount; switch ADSR/Cycling and each time mode, adjust Tilt/Hold, send separated notes. Compare visible modes/units only.",
+    "documentary_expected": "Env 2 is a modulation source and can switch ADSR to Cycling; Cycling restarts on each MIDI note, offers Tilt/Hold and Rate/Ratio/Time/Sync using Hz/ratio/ms/beat divisions.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B057",
+      "drift:B058",
+      "drift:B059",
+      "drift:B060",
+      "drift:B061"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-012",
+    "requirements": [
+      "REQ-SYN-DF-012"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enumerate all nine LFO waves and four time modes, select R on/off, route LFO to Shape with +25%, adjust LFO Amount. No random distribution or one-shot curve is graded.",
+    "documentary_expected": "LFO time modes are Rate, Ratio, Time and Sync. Nine waveforms include Sine, Triangle, Saw Up/Down, Square, Sample & Hold, Wander, Linear Envelope and Exponential Envelope. R resets per note; off free-runs; Amount and its modulation source/depth control intensity.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B063",
+      "drift:B064",
+      "drift:B065",
+      "drift:B066",
+      "drift:B067",
+      "drift:B068",
+      "drift:B069",
+      "drift:B070",
+      "drift:B071",
+      "drift:B072",
+      "drift:B073",
+      "drift:B074",
+      "drift:B075"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-013",
+    "requirements": [
+      "REQ-SYN-DF-013"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Fill three slots with LFO->Osc 1 Shape, Velocity->LP Frequency and Slide->Main Volume; inspect menus and amounts, exercise each source independently.",
+    "documentary_expected": "Mod section has up to three source/destination slots with -100% to 100% amount. Sources are Env 1, Env 2/Cyc, LFO, Key, Velocity, Modwheel, Pressure, Slide; destinations include oscillator gains/shape/detune, Noise Gain, LP Frequency/Resonance, HP Frequency, LFO/Cyc rate and Main Volume.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B077",
+      "drift:B078",
+      "drift:B079",
+      "drift:B080"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-014",
+    "requirements": [
+      "REQ-SYN-DF-014"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "At Voices 32 hold respectively 33/17/9 distinct notes in Poly/Stereo/Unison; separately compare Mono Thickness 0/50 and two overlapping notes. Capture voice loss/identity as U; do not assume a stealing order.",
+    "documentary_expected": "Voice modes Poly, Mono, Stereo and Unison use respectively one, up to four, two and four voices per note. At Voices 32, Poly/Stereo/Unison permit 32/16/8 notes. Mono Thickness 0 uses one audible voice; new held-note onset chokes the previous note.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B083",
+      "drift:B084",
+      "drift:B085",
+      "drift:B086",
+      "drift:B087",
+      "drift:B088",
+      "drift:B089",
+      "drift:B090",
+      "drift:B091"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-015",
+    "requirements": [
+      "REQ-SYN-DF-015"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Use fixed audible patch, repeat eight same notes at Drift minimum/interior/maximum, then repeat a held chord. Retain future distributions; do not demand bit equality.",
+    "documentary_expected": "Drift changes per-voice oscillator and filter variation; no seed, distribution, repeatability or exact zero-variation law is supplied.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B092"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-016",
+    "requirements": [
+      "REQ-SYN-DF-016"
+    ],
+    "device": "Drift",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono, audible sustain, Legato off/on, Glide above zero; compare two overlapping notes with separated notes as a control.",
+    "documentary_expected": "Mono Legato allows a new held-overlap note to change pitch without restarting envelopes; Glide sets overlapping-note pitch-slide time.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B093"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-017",
+    "requirements": [
+      "REQ-SYN-DF-017"
+    ],
+    "device": "Drift",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect Transpose -48/0/+48; send equal-pitch notes at velocities 32/96 with nonzero Vel > Vol; send per-note bend on one of two held notes with Note PB off/on, then global bend. Grade labels/state only; per-note sound isolation remains U.",
+    "documentary_expected": "Volume and Vel > Vol control output/velocity; Transpose spans -48 to +48 semitones. Note PB toggles per-note pitch bend independently of global PB Range.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drift:B094",
+      "drift:B095"
+    ],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DS-001",
+    "requirements": [
+      "REQ-SYN-DS-001"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Load owned sample A by drag/drop, then B by browser double-click; set Start 25%, Length 50%, Shift-drag Start and inspect waveform. Actual double-click focus/routing preconditions must be retained.",
+    "documentary_expected": "Browser double-click or waveform drag/drop loads a sample. Start and Length use percentages of total sample length; Shift-drag Start gives fine adjustment and waveform zoom. Start/Length/Gain update the display.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B005",
+      "drum-sampler:B006",
+      "drum-sampler:B007",
+      "drum-sampler:B009"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-002",
+    "requirements": [
+      "REQ-SYN-DS-002"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect all named endpoints and zero; play velocities 32 and 96 with nonzero Velocity to Volume, keeping sample/global gains distinct.",
+    "documentary_expected": "Sample Gain spans -70 to +24 dB, Transpose -48 to +48 semitones, Detune -50 to +50 cents, global Volume -36 to +36 dB. Pan changes stereo position and Velocity to Volume controls velocity response.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B008",
+      "drum-sampler:B014",
+      "drum-sampler:B041",
+      "drum-sampler:B042"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-003",
+    "requirements": [
+      "REQ-SYN-DS-003"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, start 0%, full length, effect/filter off; compare short and long notes in Trigger with finite Hold and inf, then Gate with same Attack/Decay. Check Hold eligibility separately; stage/timing output remains U.",
+    "documentary_expected": "Trigger uses Attack/Hold/Decay and continues through Hold after note release; Hold inf plays the full sample. Gate disables Hold and starts Decay at note release.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B010",
+      "drum-sampler:B011",
+      "drum-sampler:B012",
+      "drum-sampler:B013",
+      "drum-sampler:B015"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-004",
+    "requirements": [
+      "REQ-SYN-DS-004"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Use retained sample A and a browser corpus with identified related files; next, previous, Return to Reference, choose B and Save as Similarity Reference, return again. Missing similarity-result ordering remains U; do not invent search matches.",
+    "documentary_expected": "Next/Previous Similar Sample cycle related samples; Show Similar Files opens browser results; Return to Reference returns to initial reference and Save as Similarity Reference replaces it. Waveform hot-swap replaces sample; title hot-swap replaces instrument.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B017",
+      "drum-sampler:B018",
+      "drum-sampler:B019"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-005",
+    "requirements": [
+      "REQ-SYN-DS-005"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enumerate nine effects with section enabled; for each drag X/Y vertically then horizontally and inspect named controls; compare section disabled eligibility.",
+    "documentary_expected": "Playback Effect On gates nine choices: Stretch, Loop, Pitch Env, Punch, 8-Bit, FM, Ring Mod, Sub Osc and Noise. Each has two controls; X/Y vertical edits first, horizontal second.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B021",
+      "drum-sampler:B022",
+      "drum-sampler:B023"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-006",
+    "requirements": [
+      "REQ-SYN-DS-006"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, effect On Stretch, nontrivial Factor 2 and Grain Size 20 ms, compare Factor 1; retain future duration/pitch evidence without tolerance.",
+    "documentary_expected": "Stretch changes sample length without intended pitch change; Factor is a speed multiple and Grain Size uses milliseconds. Exact grain/window/interpolation law is unknown.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B024"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-007",
+    "requirements": [
+      "REQ-SYN-DS-007"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, Start 25%, effect On Loop with nonzero Offset and 50 ms Length; compare changed Start and Offset independently during a long Trigger Hold.",
+    "documentary_expected": "Loop repeats a sample region; Loop Offset is relative to sample start and Loop Length is milliseconds.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B025"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-008",
+    "requirements": [
+      "REQ-SYN-DS-008"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, effect On Pitch Env, global Transpose +12 st; compare Amount -50/0/+50% with nonzero Pitch Envelope Decay and enough Hold to hear return.",
+    "documentary_expected": "Pitch Env Amount -100% to +100% sets signed pitch change and Decay returns to base pitch defined by global controls.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B026"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-009",
+    "requirements": [
+      "REQ-SYN-DS-009"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A transient, effect On Punch, compare nonzero Amount with zero, two nonzero Releases and audible unmuted output.",
+    "documentary_expected": "Punch applies transient ducking; Amount controls reduction and Release controls return to zero gain reduction. Exact attack/envelope law is unknown.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B027"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-010",
+    "requirements": [
+      "REQ-SYN-DS-010"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, effect On 8-Bit, compare two distinct nonzero Sample Rate and Decay Time settings, retaining actual displayed values before any output measurement.",
+    "documentary_expected": "8-Bit offers Sample Rate and Decay Time for its low-pass behavior; no bit-depth/aliasing/kernel equivalence follows from the name.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B028"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-011",
+    "requirements": [
+      "REQ-SYN-DS-011"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, effects On; separately FM then Ring Mod, nonzero Amount/Frequency, compare short and long global Decay using notes long enough for both. No FM or ring multiplication formula is assigned.",
+    "documentary_expected": "FM modulates sample pitch with a sine; Ring Mod modulates amplitude with low-rate tremolo and higher-rate ring-modulation character. Both have Amount/Frequency and modulation decay follows global Decay.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B029",
+      "drum-sampler:B030",
+      "drum-sampler:B034"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-012",
+    "requirements": [
+      "REQ-SYN-DS-012"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A, effect On Sub Osc with nonzero Amount, inspect 30/120 Hz; repeat Noise with nonzero Amount and low/high Color, change Attack/Decay in each.",
+    "documentary_expected": "Sub Osc and Noise layer a generator following device Attack/Decay. Sub Frequency spans 30-120 Hz; Noise Color filters noise.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B031",
+      "drum-sampler:B032"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-013",
+    "requirements": [
+      "REQ-SYN-DS-013"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "For each of these six enabled effects with nonzero audible effect settings, compare MIDI 48/60/72 and Transpose 0/+12 while keeping other parameters fixed; do not assume a mathematical scaling law.",
+    "documentary_expected": "Time/frequency controls of Stretch, Loop, FM, Ring Mod, Sub Osc and Noise follow global pitch and played MIDI pitch; exact scaling is not supplied.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B033"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-014",
+    "requirements": [
+      "REQ-SYN-DS-014"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select all four filter types with sample playing and Filter On; inspect named controls, then disable filter. Numerical responses remain U.",
+    "documentary_expected": "Filter On gates four types: 12 dB LP, 24 dB LP, 24 dB HP and Peak. LP/HP expose Resonance/Frequency; Peak exposes Peak Gain/Frequency.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B036",
+      "drum-sampler:B037",
+      "drum-sampler:B038"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-015",
+    "requirements": [
+      "REQ-SYN-DS-015"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enable filter and selected effect, choose each destination with nonzero amount; change Velocity/Slide independently; change effect type while targeting FX1/2 and inspect target identity.",
+    "documentary_expected": "Mod source is Velocity or Slide (MPE); destinations are Filter, Attack, Hold, Decay, FX1 and FX2. FX1/FX2 address current effect controls; amount controls depth.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B043",
+      "drum-sampler:B044",
+      "drum-sampler:B045",
+      "drum-sampler:B046",
+      "drum-sampler:B047"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-016",
+    "requirements": [
+      "REQ-SYN-DS-016"
+    ],
+    "device": "Drum Sampler",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Fresh documented instance versus retained preset are separate setups; inspect context toggles, compare per-note bend off/on and Envelope Follows Pitch off/on at MIDI 48/72. Constructor default and acoustic equality for 12.4.3 remain U.",
+    "documentary_expected": "Enable Per-Note Pitch Bend is documented enabled by default. Envelope Follows Pitch scales envelope relative to sample pitch so it affects the same portion when transposed.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B050",
+      "drum-sampler:B051"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-017",
+    "requirements": [
+      "REQ-SYN-DS-017"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Sample A Start 25% Length 50%, invoke conversion in disposable Set; inspect sample identity and these two positions only; preserve other differences as U.",
+    "documentary_expected": "Drum Sampler > Simpler replaces the instrument retaining sample Start and Length positions; other parameter translations are not established.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B052"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-018",
+    "requirements": [
+      "REQ-SYN-DS-018"
+    ],
+    "device": "Drum Sampler",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "In test-owned Drum Rack save default pad, drop sample A onto empty pad, inspect instrument; restore test preference afterward. Existing filled-pad replacement policy is U.",
+    "documentary_expected": "Save as Default Pad from a Drum Rack pad context makes new samples on empty pads load Drum Sampler.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "drum-sampler:B053",
+      "drum-sampler:B054"
+    ],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-ME-001",
+    "requirements": [
+      "REQ-SYN-ME-001"
+    ],
+    "device": "Meld",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Assign one nonzero A route and a distinct B route; expand, Copy A to B, inspect values, then X in selected B. Scope of unrelated engine state remains U.",
+    "documentary_expected": "Expanded View reveals all modulation sources/targets; A/B selects engine matrix, Copy to A/B copies modulation values and X clears active modulation values.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B005"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-002",
+    "requirements": [
+      "REQ-SYN-ME-002"
+    ],
+    "device": "Meld",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enable both engines and both filters; disable A then restore, disable Filter A while A remains on; inspect toggles and audible positive baseline.",
+    "documentary_expected": "Engines A/B enable independently. Disabling an engine deactivates its filter; a filter can be disabled without disabling its engine.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B007",
+      "meld:B066"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-003",
+    "requirements": [
+      "REQ-SYN-ME-003"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Use nonchromatic C major then D minor scale with Use Current Scale off/on; inspect st/sd and Pitch Quant target with nonzero route. Exact tuned output remains U.",
+    "documentary_expected": "Engine Octaves/Semitones/Cents pitch controls become scale-degree transposition when Use Current Scale follows Live Scale Mode; Pitch Quant target is included.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B008",
+      "meld:B096"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-004",
+    "requirements": [
+      "REQ-SYN-ME-004"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "For A then B, select each named type and inspect its two macro labels. Do not assert an exact menu count from the overview.",
+    "documentary_expected": "Oscillator macros depend on selected type: Basic Shapes Shape/Tone; Dual Basic Shapes Shape/Detune; Noisy Shapes Shape/Rough; Square Sync Freq 1/2; Square 5th 5th Amt/P Width; Sub Tone/Aux; four Swarms Motion/Spacing; Harmonic Fm Amount/Ratio; Fold Fm Amount/Shape; Squelch Amount/Feedback; Simple Fm Amount/Ratio; Chip Tone/Rate. Overview type count is unresolved.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B009",
+      "meld:B011",
+      "meld:B012",
+      "meld:B013",
+      "meld:B014",
+      "meld:B015",
+      "meld:B016",
+      "meld:B017",
+      "meld:B018",
+      "meld:B019",
+      "meld:B020",
+      "meld:B021",
+      "meld:B022",
+      "meld:B023"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-005",
+    "requirements": [
+      "REQ-SYN-ME-005"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Solo enabled engine A Shepard’s Pi with audible gain and nonzero Width; compare Rate 49.9/50.0/50.1 plus 0/100. No-movement means Rate movement only; static signal still plays.",
+    "documentary_expected": "Shepard’s Pi Rate 0.0-49.9 descends, 50.0 has no movement, 50.1-100.0 ascends; Width changes octave count.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B024"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-006",
+    "requirements": [
+      "REQ-SYN-ME-006"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select each listed type on both engines and inspect macro labels; compare Bitgrunge Mult minimum/maximum with active audible output as ungraded signal observations.",
+    "documentary_expected": "Remaining described macros are Tarp Decay/Tone; Extratone Pitch/Env Amount; Noise Loop Rate/Fade; Filtered Noise Freq/Width; Bitgrunge Freq/Mult; Crackle Density/Intensity; Rain Tone/Rate; Bubble Density/Spread; Chord Shape/Inversion. Named descriptions do not prove kernels or RNG.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B025",
+      "meld:B026",
+      "meld:B027",
+      "meld:B028",
+      "meld:B029",
+      "meld:B030",
+      "meld:B031",
+      "meld:B032",
+      "meld:B033"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-007",
+    "requirements": [
+      "REQ-SYN-ME-007"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "If Chord exists, select it with engine A enabled, compare no scale, C major and D minor with Use Current Scale on; vary Shape/Inversion. Retain actual menu context and do not infer exact chord lists.",
+    "documentary_expected": "Chord uses four sawtooth oscillators with Shape intervals and Inversion order. With Use Current Scale, chords use selected scale; with no scale set, incoming root uses major. Availability/version/context remains unresolved.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B033"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-008",
+    "requirements": [
+      "REQ-SYN-ME-008"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select each mode on Amp and Mod envelopes, adjust graph breakpoints/diamonds and numeric fields; inspect Initial/Peak/Final on Mod only. Exact loop event timing is U.",
+    "documentary_expected": "Amp/Mod envelopes offer ADSR and slopes; Trigger plays all segments ignoring Sustain, Loop repeats entire envelope without holding Sustain, AD Loop repeats Attack/Decay. Mod envelope adds Initial/Peak/Final.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B035",
+      "meld:B036",
+      "meld:B037",
+      "meld:B038"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-009",
+    "requirements": [
+      "REQ-SYN-ME-009"
+    ],
+    "device": "Meld",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Create differing A/B envelope values, enable Link and edit A Attack then B Mod Release; inspect corresponding linked values. Behavior of preexisting differences at link activation remains U.",
+    "documentary_expected": "Link Envelopes links corresponding engine Amplitude and Modulation envelopes.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B039"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-010",
+    "requirements": [
+      "REQ-SYN-ME-010"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enumerate LFO types and inspect source identities; route LFO1 and LFO1 FX to different targets with nonzero amounts; select FX1/2 serial effects and nonzero macro settings. Effect menu identities beyond retained prose remain U.",
+    "documentary_expected": "Each engine has LFO 1 and 2 with Hz/sync, Phase Offset and Retrigger. LFO 1 types are Basic Shapes, Ramp, Wander, Alternate, Euclid, Pulsate; FX1/2 each describe eighteen serial effects. LFO 1 and processed LFO1 FX are separate sources. LFO 2 offers Sine, Tri, Saw Up/Down, Rectangle, Random S&H.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B041",
+      "meld:B042",
+      "meld:B043",
+      "meld:B044"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-011",
+    "requirements": [
+      "REQ-SYN-ME-011"
+    ],
+    "device": "Meld",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select A, click Filter Frequency, assign LFO1 +25; click Volume without amount then Pan. Inspect retained/temporary rows; repeat B without assuming routes are copied.",
+    "documentary_expected": "Matrix source columns/target rows accept signed modulation. Clicking parameter adds it to selected engine matrix; unmodulated temporary row disappears on next selection. Additive/multiplicative target assignment and complete units remain U.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B046",
+      "meld:B047",
+      "meld:B048"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-012",
+    "requirements": [
+      "REQ-SYN-ME-012"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Two simultaneous distinct notes and independent expression events; route each source separately to audible target with nonzero depth and event control. Random sampling distribution, seeding and per-note isolation tolerance remain U.",
+    "documentary_expected": "Velocity and Pitch sources use note values for that note duration; Random gets new value at note trigger. MIDI Pitch Bend/Press/Wheel and MPE Note Pitch Bend/Slide/Press supply sources, including clip envelopes.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B051",
+      "meld:B052",
+      "meld:B053",
+      "meld:B054"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-013",
+    "requirements": [
+      "REQ-SYN-ME-013"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A Basic Shapes only, tracking off/on, note 48 then 72, no scale then D minor. Keep engine/octave/cents and modulation fixed; exact note-to-frequency codec remains U.",
+    "documentary_expected": "Osc Key Tracking off produces C3 constant pitch, or scale root in C3 octave when scale mode active; on follows incoming note.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B057"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-014",
+    "requirements": [
+      "REQ-SYN-ME-014"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Reset off/on; inspect Phase Spread eligibility, then route Spread to eligible phase behavior with nonzero amount; compare Spread off/on under repeated notes, signal output ungraded.",
+    "documentary_expected": "Phase Reset enables Phase Spread. With Reset on, Spread off sets start phase zero; Spread on follows Spread matrix source.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B058"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-015",
+    "requirements": [
+      "REQ-SYN-ME-015"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect both settings per engine and named scale-aware types under C major/D minor; do not silently add Chord to the six-type list.",
+    "documentary_expected": "Oscillator Scale Awareness lists Dual Basic Shapes, Swarm Sine/Triangle/Saw/Square and Chip. Filter Scale Awareness lists Plate and Membrane Resonators. These per-engine settings are distinct from Use Current Scale.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B059",
+      "meld:B060",
+      "meld:B061"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-016",
+    "requirements": [
+      "REQ-SYN-ME-016"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Two overlapping notes, Glide Time nonzero; compare Porta/Gliss and Mono/Poly, scale off/on. Repeat at Glide Time zero as negative control with positive baseline retained.",
+    "documentary_expected": "Portamento slides continuously and Glissando in discrete steps, using scale degrees when scale awareness is on. Both Mono and Poly permit Glide, audible only with Glide Time above zero.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B062",
+      "meld:B063",
+      "meld:B064"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-017",
+    "requirements": [
+      "REQ-SYN-ME-017"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select each named filter with engine/filter enabled; inspect two macro labels and move Frequency/Q/Drive where present. No circuit equivalence follows.",
+    "documentary_expected": "Filter types have Frequency and type-dependent macros. SVF 12/24 L-B-H-N morphs LP/BP/HP/notch; MS2 LP/HP, OSR BP, LP Crunch, LP Switched Res Lofi and Filther are described. Q emphasizes cutoff and Drive saturates input.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B067",
+      "meld:B068",
+      "meld:B069",
+      "meld:B070",
+      "meld:B071",
+      "meld:B072",
+      "meld:B073",
+      "meld:B074",
+      "meld:B075"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-018",
+    "requirements": [
+      "REQ-SYN-ME-018"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select each named filter, inspect its two macros and change them independently with audible positive baseline; do not equate Redux filter with standalone Redux device.",
+    "documentary_expected": "Eq Peak Boost/width and Eq Notch Cut/width, Phaser Feedback/Spread, Redux Crush/Lofi, Vowel Morph and Comb +/- Feedback/Damp have distinct roles.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B076",
+      "meld:B077",
+      "meld:B078",
+      "meld:B079",
+      "meld:B080"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-019",
+    "requirements": [
+      "REQ-SYN-ME-019"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enable A filter with each resonator type and audible sustained stimulus; compare scale awareness off/on across C major/D minor and macro changes. Exact mode frequencies/decays remain U.",
+    "documentary_expected": "Plate and Membrane Resonators describe first 32 modes of rectangular plate/circular membrane and scale-following resonant frequencies with Filter Scale Awareness.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B081",
+      "meld:B082"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-020",
+    "requirements": [
+      "REQ-SYN-ME-020"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Solo engine A with broadband oscillator, Volume audible; compare Tone negative/zero/positive then Pan left/right; repeat B. No crossover or gain law is assigned.",
+    "documentary_expected": "Per-engine Volume/Pan and Tone Filter are separate; positive Tone reduces lows and negative Tone reduces highs.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B084",
+      "meld:B085"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-021",
+    "requirements": [
+      "REQ-SYN-ME-021"
+    ],
+    "device": "Meld",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Both engines audible, nonzero Drive; toggle Limit while holding chord and inspect controls; do not assert threshold, gain reduction or output ceiling.",
+    "documentary_expected": "Mixer Drive is per voice after engine mixer settings and before per-voice limiter; Limit gates limiter after both engines mixed and global Drive applied. Global Volume sets output.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B086",
+      "meld:B094",
+      "meld:B095"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-022",
+    "requirements": [
+      "REQ-SYN-ME-022"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Compare Mono Legato off/on using overlap and separated notes; then Poly voices 2 and 12 with one extra held note. Stealing order and release-tail accounting remain U.",
+    "documentary_expected": "Mono permits Legato: overlap with Legato on reuses current envelope position, off restarts envelope. Poly exposes 2-12 voices.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B089",
+      "meld:B090",
+      "meld:B091"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-023",
+    "requirements": [
+      "REQ-SYN-ME-023"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Active A/B with audible output: Spread unassigned then mapped to Pan with nonzero amount; Stacked Voices Off then a displayed enabled count, compare Spread 0/interior/max. No-effect case retains mapped positive baseline.",
+    "documentary_expected": "Stacked Voices duplicates both engines including filters/modulation/mix. Spread offsets stacked voices, or notes in held chord when Stacked Voices Off. Spread has no effect without a matrix target.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B092",
+      "meld:B093"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-024",
+    "requirements": [
+      "REQ-SYN-ME-024"
+    ],
+    "device": "Meld",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Capture selected target and matrix context before changing signs on a time-related target; compare a Pan target separately. Target-dependent law stays U until context is established.",
+    "documentary_expected": "The matrix paragraph says negative values speed envelopes/LFOs and positive slow them, but the applicable target/preconditions are unspecified; do not generalize that statement to all destinations.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "meld:B047"
+    ],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-OP-001",
+    "requirements": [
+      "REQ-SYN-OP-001"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select all eleven displayed algorithms with A carrier and B active audible modulation; inspect icons and automate two selections in a disposable clip. No private FM algorithm is reconstructed.",
+    "documentary_expected": "Four oscillators use eleven predefined algorithms; icons describe top-to-bottom routing. Algorithm selector supports MIDI mapping, automation and real-time modulation.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B006",
+      "operator:B092"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-002",
+    "requirements": [
+      "REQ-SYN-OP-002"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Open A-D Wave menus and select listed families; distinguish looped/white noise from deterministic waveform tests.",
+    "documentary_expected": "Wave chooser includes sine, resynthesized saw/square/triangle variants, Sine 4/8 Bit, Saw D, Square D, Noise Looped, Noise White and User. Numeric harmonic names denote retained harmonic counts, not exact output samples.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B011",
+      "operator:B013"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-003",
+    "requirements": [
+      "REQ-SYN-OP-003"
+    ],
+    "device": "Operator",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "On A User waveform edit partials 1/3/5, Shift-edit 3, inspect status number/amplitude; choose 16/32/64 and Repeat off, even/odd/all and Normalize, copy to B. Exact level compensation remains U.",
+    "documentary_expected": "Harmonics editor offers 16/32/64 partials, Shift constrains editing to one harmonic, Repeat off truncates above chosen count, even/odd/all drawing and Normalize; waveform copy/paste works across oscillators.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B014",
+      "operator:B015",
+      "operator:B016",
+      "operator:B018"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-004",
+    "requirements": [
+      "REQ-SYN-OP-004"
+    ],
+    "device": "Operator",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Export test-owned User waveform, retain bytes/path, import into B oscillator. Cross-device import semantics belong to their owners and remain ungraded here.",
+    "documentary_expected": "Waveform context exports .ams to User Library Samples/Waveforms; browser drag imports .ams into an oscillator; Simpler/Sampler are also documented consumers.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B017"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-005",
+    "requirements": [
+      "REQ-SYN-OP-005"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select A Fixed off/on, inspect controls, enter displayed 0.1 Hz endpoint and two valid multipliers; compare MIDI 48/72 with all pitch modulation off. Grade controls only; actual frequency ungraded.",
+    "documentary_expected": "Osc Coarse/Fine set note-relative ratios; Fixed replaces controls with Frequency Hz and Multiplier and ignores note pitch, with described low endpoint 0.1 Hz. The manual states fixed frequency is Freq multiplied by Multi; no note-frequency formula is supplied.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B020",
+      "operator:B171",
+      "operator:B172",
+      "operator:B173",
+      "operator:B174",
+      "operator:B175"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-006",
+    "requirements": [
+      "REQ-SYN-OP-006"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A audible fixed patch, velocity 32/64/96, positive then negative Osc < Vel; Q off/on. Retain audible baseline and do not invent quantization rounding.",
+    "documentary_expected": "Osc < Vel controls signed velocity pitch response; Q quantizes it as Coarse changes.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B021",
+      "operator:B184",
+      "operator:B185"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-007",
+    "requirements": [
+      "REQ-SYN-OP-007"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Compare unmodulated A Feedback nonzero/zero, then algorithm where active B modulates A and repeat A Feedback; B must have nonzero level/envelope. Test R on/off with identical separated notes; no bit comparator.",
+    "documentary_expected": "Each oscillator Level/envelope responds to Vel/Key; Phase and R control note-start phase/free-run. Feedback acts only on oscillators not modulated by another oscillator.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B022",
+      "operator:B023",
+      "operator:B024",
+      "operator:B180",
+      "operator:B181",
+      "operator:B182",
+      "operator:B187",
+      "operator:B188"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-008",
+    "requirements": [
+      "REQ-SYN-OP-008"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect switches on a newly documented patch and retained preset separately; compare Tone low/high at high note with enabled audible oscillator; grade switches only.",
+    "documentary_expected": "Antialias and Interpolation are independently selectable, Tone affects high-frequency content. Manual new-patch default Antialias on does not prove installed constructor/preset defaults or a numerical alias bound.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B026",
+      "operator:B090",
+      "operator:B095",
+      "operator:B096"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-009",
+    "requirements": [
+      "REQ-SYN-OP-009"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "LFO On, active Dest A A and filter, Dest B Pan, all amounts nonzero; inspect Low/Hi/Sync, R and Rate < Key and enumerate waves. No waveform/rate interpolation tolerance is inferred.",
+    "documentary_expected": "LFO routes Dest A to selected oscillators/filter and Dest B to one extra target; global Amount, Vel and envelope scale depths. Range Low describes 50 seconds-30 Hz, Hi 8 Hz-12 kHz and Sync tempo; R resets/free-runs; Rate < Key 100% doubles per octave.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B028",
+      "operator:B029",
+      "operator:B030",
+      "operator:B032",
+      "operator:B033",
+      "operator:B157",
+      "operator:B167"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-010",
+    "requirements": [
+      "REQ-SYN-OP-010"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Audible A with attack/decay/release nonzero; send Note Off separately during attack/decay/sustain and compare; edit filter/pitch slopes and End; copy A shape to B. Curves and numeric time-to-level tolerances remain U.",
+    "documentary_expected": "Seven envelopes cover oscillators/filter/pitch/LFO; oscillator Attack is documented linear and Decay/Release exponential, ending -inf dB. Filter/pitch slopes and End vary. Note Off starts Release from current value. Shapes copy across oscillators.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B035",
+      "operator:B036",
+      "operator:B037",
+      "operator:B038",
+      "operator:B046",
+      "operator:B190",
+      "operator:B191",
+      "operator:B192",
+      "operator:B193",
+      "operator:B194",
+      "operator:B195",
+      "operator:B196",
+      "operator:B201"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-011",
+    "requirements": [
+      "REQ-SYN-OP-011"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect each mode; with 120 BPM running/stopped transport send note deliberately off-grid and short Note Off; retain future repeated-onset evidence without assigning tick rounding or loop restart level.",
+    "documentary_expected": "Envelope modes include Loop, Beat, Sync and Trigger. Beat repeats note-relative without quantizing notes; Sync first repeat nearest sixteenth while song plays, otherwise Beat-like. Trigger ignores Note Off. Loop restart level is unresolved.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B039",
+      "operator:B040",
+      "operator:B042",
+      "operator:B197",
+      "operator:B198"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-012",
+    "requirements": [
+      "REQ-SYN-OP-012"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Separate Loop, Beat and Sync on A envelope with Initial -24 dB, Sustain -12 dB, nonzero Attack and Loop Time; hold note across repeats while stopped/running. Expected restart segment is U for every mode until resolved.",
+    "documentary_expected": "Loop restart wording differs: overview says current level to peak, Loop Time listing says sustain-to-initial then restart, Beat/Sync listing says current-to-peak. Applicability to the same mode/preconditions is unresolved.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B041",
+      "operator:B198",
+      "operator:B199"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-013",
+    "requirements": [
+      "REQ-SYN-OP-013"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Envelope Beat then Sync while transport runs, Repeat fixed, vary global Time and Time < Vel with two velocities; paired Loop mode control. Capture repetition versus segment behavior without a rounding law.",
+    "documentary_expected": "Global Time, Time < Key and per-envelope Time < Vel scale envelope segments; Beat/Sync repetition beat-time is not changed by global Time or Time < Vel.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B043",
+      "operator:B089",
+      "operator:B097",
+      "operator:B200"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-014",
+    "requirements": [
+      "REQ-SYN-OP-014"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Pitch envelope On, Dest A A and LFO active with nonzero amount, Dest B Pan, inspect signed amounts and toggles. Keep target positive baseline before disabling.",
+    "documentary_expected": "Pitch envelope can target A-D and LFO via Dest A and another Dest B; amount +100% follows levels and -100% inverts sign; envelope On gates it.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B044",
+      "operator:B045",
+      "operator:B126",
+      "operator:B127",
+      "operator:B133",
+      "operator:B134",
+      "operator:B135",
+      "operator:B136",
+      "operator:B137"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-015",
+    "requirements": [
+      "REQ-SYN-OP-015"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enumerate type/circuit eligibility and slopes; select Morph and each snap context option; inspect Drive eligibility without assigning coefficients.",
+    "documentary_expected": "Filter types LP/HP/BP/notch/Morph offer 12/24 dB slopes. Clean/OSR apply all types; MS2/SMP/PRD LP/HP. Non-Clean LP/HP/BP expose Drive. Morph sweeps LP/BP/HP/notch and context snaps to named responses.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B050",
+      "operator:B051",
+      "operator:B052",
+      "operator:B053",
+      "operator:B054",
+      "operator:B055",
+      "operator:B056",
+      "operator:B057",
+      "operator:B058",
+      "operator:B059"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-016",
+    "requirements": [
+      "REQ-SYN-OP-016"
+    ],
+    "device": "Operator",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Invoke Play by Key after setting arbitrary frequency/key amount, inspect 466 Hz and 100%; enable one modulation route at a time. Frequency codec/tuning interaction stays U.",
+    "documentary_expected": "Filter Frequency responds to velocity/key/envelope/LFO; key 100% doubles per octave around C3. Play by Key sets Freq 466 Hz and Freq < Key 100%; this command is distinct from a global tuning formula.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B060",
+      "operator:B061",
+      "operator:B062",
+      "operator:B063",
+      "operator:B064",
+      "operator:B065",
+      "operator:B146",
+      "operator:B148"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-017",
+    "requirements": [
+      "REQ-SYN-OP-017"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Filter On with audible A, choose shaper and nonzero Shaper Drive; compare Drive settings at Dry/Wet 100% positive baseline then at 0%. Do not claim bit-identical bypass.",
+    "documentary_expected": "Shaper chooser/Drive act on filtered path; Dry/Wet 0% bypasses shaper and shaper drive.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B066",
+      "operator:B151",
+      "operator:B152",
+      "operator:B153"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-018",
+    "requirements": [
+      "REQ-SYN-OP-018"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Voices 2: hold notes 48,60,72 in order; then Voices 1 overlapping 48/60; global R off/on duplicate note-on while old note held. Duplicate note-off pairing and Spread voice accounting remain U.",
+    "documentary_expected": "Voices supports up to 32; excess notes cut oldest notes. Voices 1 plays overlapping notes legato without retriggering envelopes. Global R retriggers an already enabled note rather than adding a voice.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B069",
+      "operator:B070",
+      "operator:B093",
+      "operator:B094"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-019",
+    "requirements": [
+      "REQ-SYN-OP-019"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Route Wheel to Pan and Filter Frequency, nonzero depths; select Off and confirm route control state. Compare Feedback only on eligible oscillator, Fixed Frequency only with Fixed on, Morph only in Morph. No universal source-depth law is assigned.",
+    "documentary_expected": "Velocity, Key, Aftertouch, Pitch Bend and Mod Wheel each route to two targets with independent amounts; fixed Time < Key and PB Range coexist. Targets include Off, oscillator volume/crossfades/feedback/fixed pitch/FM Drive, filter controls, shaper, LFO, pitch envelope, Volume/Pan/Tone/Time; eligibility is target-specific.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B071",
+      "operator:B072",
+      "operator:B098",
+      "operator:B099",
+      "operator:B100",
+      "operator:B101",
+      "operator:B103",
+      "operator:B104",
+      "operator:B105",
+      "operator:B106",
+      "operator:B107",
+      "operator:B108",
+      "operator:B109",
+      "operator:B110",
+      "operator:B111",
+      "operator:B112",
+      "operator:B113",
+      "operator:B114",
+      "operator:B115",
+      "operator:B116",
+      "operator:B117",
+      "operator:B118",
+      "operator:B119",
+      "operator:B120",
+      "operator:B121",
+      "operator:B122",
+      "operator:B123",
+      "operator:B124"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-020",
+    "requirements": [
+      "REQ-SYN-OP-020"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Voices 4, nonzero Glide Time, overlapping and separated notes with Glide off/on; keep audible positive transition baseline.",
+    "documentary_expected": "Glide is polyphonic, starts new note at prior-note pitch then slides; legato Glide does not retrigger envelopes; Glide Time has no effect if Glide off.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B074",
+      "operator:B131",
+      "operator:B132"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-021",
+    "requirements": [
+      "REQ-SYN-OP-021"
+    ],
+    "device": "Operator",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Play held note A with Spread 0 then raise Spread without new note; trigger B with Spread nonzero, lower Spread while B held; keep distinguishable notes. Exact held-note detune updates and voice-budget interaction remain U.",
+    "documentary_expected": "Spread uses two detuned voices per note panned L/R; whether a note uses Spread is determined at Note On.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B075",
+      "operator:B076",
+      "operator:B128"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-022",
+    "requirements": [
+      "REQ-SYN-OP-022"
+    ],
+    "device": "Operator",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Hold audible note and change Transpose; separately inspect envelope-level commands and oscillator copy in disposable patch. Sound change remains qualitative/ungraded; command scope must be retained.",
+    "documentary_expected": "Transpose changes already-playing notes. Context commands copy oscillator parameters, set all envelope levels to maximum/minimum/middle, edit harmonics and export .ams.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B129",
+      "operator:B207",
+      "operator:B208",
+      "operator:B209",
+      "operator:B210"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-023",
+    "requirements": [
+      "REQ-SYN-OP-023"
+    ],
+    "device": "Operator",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect fresh instance context then retained preset separately; two held notes with independent per-note bend, toggle off/on, compare global bend. Exact-build default, bend range and note isolation remain U.",
+    "documentary_expected": "Enable Per-Note Pitch Bend is documented on by default and can be disabled in device-title context.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "operator:B211"
+    ],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-WT-001",
+    "requirements": [
+      "REQ-SYN-WT-001"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select both tabs and expanded view, inspect controls, step arrows across final table of a category and reverse; no fixed factory table list is inferred.",
+    "documentary_expected": "Two oscillators enable independently; tabs select editing, expanded view redistributes controls. Gain/Pan/Semi/Detune are per oscillator. Category/table choosers and arrows traverse category boundaries.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B003",
+      "wavetable:B008",
+      "wavetable:B009",
+      "wavetable:B010"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-002",
+    "requirements": [
+      "REQ-SYN-WT-002"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Import owned WAV A and AIFF B, inspect chooser folder context and Raw off/on. Do not invent import segmentation, resampling or normalization kernels.",
+    "documentary_expected": "Dropping WAV/AIFF on visualization imports it; choosers/arrows then browse its folder. Raw bypasses automatic sample preprocessing.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B011",
+      "wavetable:B012"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-003",
+    "requirements": [
+      "REQ-SYN-WT-003"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Move Wave Position via slider then display, switch linear/polar and inspect retained position; no screenshot/pixel or spectral equivalence criterion.",
+    "documentary_expected": "Dragging visualization or Wave Position selects table position. Linear/polar show same data with distinct layouts.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B013",
+      "wavetable:B014"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-004",
+    "requirements": [
+      "REQ-SYN-WT-004"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Set effect parameters to nonzero 25% and 50%, cycle FM/Classic/Modern and inspect retained values; inspect signed Tune landmarks without inferring intermediate formula.",
+    "documentary_expected": "Oscillator effects are FM (Amt/Tune), Classic (PW/Sync), Modern (Warp/Fold). Two effect values persist across effect-type changes. FM Tune +/-50% and +/-100% describe +/-1 and +/-2 octave modulator offsets.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B015",
+      "wavetable:B016",
+      "wavetable:B017",
+      "wavetable:B018",
+      "wavetable:B019"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-005",
+    "requirements": [
+      "REQ-SYN-WT-005"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Disable main oscillators, Sub On and Gain audible; compare Tone 0/interior and octave switches with Transpose 0/+12. Exact waveform/frequency law remains U.",
+    "documentary_expected": "Sub enables independently with Gain, Tone 0% sine/increasing harmonics, and one/two octave-down switches relative to note/global Transpose.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B021",
+      "wavetable:B022",
+      "wavetable:B023"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-006",
+    "requirements": [
+      "REQ-SYN-WT-006"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enable both filters, enumerate type/circuit/slope eligibility; drag each dot, inspect controls and Morph positions. No circuit equivalence to Operator or EQ Eight is asserted.",
+    "documentary_expected": "Each filter offers LP/HP/BP/notch/Morph, 12/24 dB slopes; Clean/OSR all types and MS2/SMP/PRD LP/HP. Non-Clean LP/HP/BP expose Drive. Display dots adjust Frequency/Resonance; Morph traverses LP/BP/HP/notch.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B026",
+      "wavetable:B027",
+      "wavetable:B028",
+      "wavetable:B029",
+      "wavetable:B030",
+      "wavetable:B031",
+      "wavetable:B032",
+      "wavetable:B033",
+      "wavetable:B034"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-007",
+    "requirements": [
+      "REQ-SYN-WT-007"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Use distinct main waves/pans, Sub audible and both filters enabled with different cutoffs; select Serial/Parallel/Split, solo each source and disable its Split filter. Preserve active positive baselines and unmuted output.",
+    "documentary_expected": "Serial sends mains through Filter 1 then 2; Parallel feeds mains to both; Split assigns Osc 1/2 to Filter 1/2 and halves Sub to both. Split leaves corresponding oscillator audible when its filter is off.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B035",
+      "wavetable:B036",
+      "wavetable:B037",
+      "wavetable:B038"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-008",
+    "requirements": [
+      "REQ-SYN-WT-008"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Route Env2 and LFO1 to one documented multiplicative target such as Amount, then one other target with retained context; compare one/two active routes. Do not equate displayed percentages with internal normalized values.",
+    "documentary_expected": "Matrix uses source columns/target rows. Additive values sum then add to parameter, neutral 0; multiplicative values multiply then multiply parameter, neutral 1 minimum 0. Source units, depth scaling, clamps and each target assignment remain unresolved except explicit labels.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B040",
+      "wavetable:B041",
+      "wavetable:B042",
+      "wavetable:B043",
+      "wavetable:B044",
+      "wavetable:B045",
+      "wavetable:B046",
+      "wavetable:B047",
+      "wavetable:B048",
+      "wavetable:B049",
+      "wavetable:B050"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-009",
+    "requirements": [
+      "REQ-SYN-WT-009"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Click Pan unassigned then Gain, assign Gain nonzero modulation and click Pan again; switch MIDI tab and inspect shared row; click Env2 source header.",
+    "documentary_expected": "Clicked parameter appears temporarily; nonzero modulation keeps its row, otherwise next selected parameter replaces it. Matrix and MIDI tabs share rows; source headers jump to source panels.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B051",
+      "wavetable:B052",
+      "wavetable:B089"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-010",
+    "requirements": [
+      "REQ-SYN-WT-010"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Route audible Env2 to oscillator position and to Time with nonzero amount, LFO1 to Pan; change Time sign then route LFO1->Time separately. Exact self-exclusion and composed rate law remain U.",
+    "documentary_expected": "Time scales all modulator times, negative faster/positive slower. A modulator assigned to Time does not scale itself through that route but still scales other destinations.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B053"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-011",
+    "requirements": [
+      "REQ-SYN-WT-011"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Click each named target and inspect matrix eligibility; route one active source with nonzero depth at each, retaining audible nonzero base amount.",
+    "documentary_expected": "Global Matrix Amount, LFO Amount, instrument Volume and Unison Amount are documented multiplicative destinations.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B054",
+      "wavetable:B079",
+      "wavetable:B093",
+      "wavetable:B105"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-012",
+    "requirements": [
+      "REQ-SYN-WT-012"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect all three envelopes, change breakpoints and slope diamonds with positive/zero/negative values; inspect absence of Amp Initial/Peak/Final.",
+    "documentary_expected": "Amp, Env2 and Env3 have Time/Slope; Env2/3 also Initial/Peak/Final, absent on Amp. Positive slopes start fast then slow; negative slow then fast; zero linear. Sustain/Initial are documented multiplicative where present.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B058",
+      "wavetable:B059",
+      "wavetable:B060",
+      "wavetable:B061",
+      "wavetable:B062",
+      "wavetable:B063",
+      "wavetable:B064",
+      "wavetable:B065",
+      "wavetable:B066"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-013",
+    "requirements": [
+      "REQ-SYN-WT-013"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Audible Amp envelope and Env2 routed nonzero to position; compare None/Trigger/Loop with short/long held notes, nonzero release and sustain. Exact loop retrigger/voice end timing is U.",
+    "documentary_expected": "Envelope None holds Sustain until Note Off; Trigger plays all segments at Note On; Loop repeats whole envelope without Sustain hold until voice ends.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B061",
+      "wavetable:B067",
+      "wavetable:B068",
+      "wavetable:B069",
+      "wavetable:B070"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-014",
+    "requirements": [
+      "REQ-SYN-WT-014"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Enumerate five waves on LFO1/2; inspect Shape changes and Hz/sync units. Random distribution is not assigned.",
+    "documentary_expected": "Two LFOs offer Sine, Saw, Triangle, Square and Random with waveform-dependent Shape. Sync switches rate Hz/beat divisions.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B072",
+      "wavetable:B073",
+      "wavetable:B074",
+      "wavetable:B075",
+      "wavetable:B076",
+      "wavetable:B077",
+      "wavetable:B078"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-015",
+    "requirements": [
+      "REQ-SYN-WT-015"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Route audible LFO1 to Pan with nonzero depth, nonzero Attack/Offset; send repeated notes with Retrigger off/on; inspect Offset matrix ineligibility. Exact phase and fade law remain U.",
+    "documentary_expected": "LFO Offset sets start phase and cannot be modulated; Attack fades in after Note On; Retrigger resets phase on each new note.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B080",
+      "wavetable:B081",
+      "wavetable:B082"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-016",
+    "requirements": [
+      "REQ-SYN-WT-016"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Route each source separately with nonzero amount; for Note use enabled audible filter and 100%; for Random repeat eight notes. Codec, seed/distribution and MPE extension are U.",
+    "documentary_expected": "MIDI Velocity/Note apply through note duration; Note 100% Filter Frequency tracks pitch around C3. Pitch Bend/Aftertouch/Wheel can use clip envelopes; Random samples at each new note.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B085",
+      "wavetable:B086",
+      "wavetable:B087",
+      "wavetable:B088"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-017",
+    "requirements": [
+      "REQ-SYN-WT-017"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Switch Mono/Poly during separated then overlapping notes, inspect Poly Voices/Glide eligibility, set nonzero Glide in Mono. Allocation/held-note transition remains U.",
+    "documentary_expected": "Transpose uses semitones; Mono is single voice with legato envelopes and permits Glide; Poly enables Poly Voices and disables Glide.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B092",
+      "wavetable:B094",
+      "wavetable:B095",
+      "wavetable:B096"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-018",
+    "requirements": [
+      "REQ-SYN-WT-018"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Select none then each of six modes with enabled main oscillator and Unison Amount nonzero; inspect names. No detune grid, RNG or stereo equation is supplied.",
+    "documentary_expected": "Unison choices are none, Classic, Shimmer, Noise, Phase Sync, Position spread and Random note. They differ in detune, phase reset, stereo and position/randomization roles.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B097",
+      "wavetable:B098",
+      "wavetable:B099",
+      "wavetable:B100",
+      "wavetable:B101",
+      "wavetable:B102",
+      "wavetable:B103"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-019",
+    "requirements": [
+      "REQ-SYN-WT-019"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Poly Voices fixed, one main oscillator audible; select each unison mode with Voices two displayed values and Amount 0/nonzero. Capture displayed values before future signal comparisons.",
+    "documentary_expected": "Unison Voices controls oscillators per main wavetable oscillator; Amount is mode-dependent intensity, distinct from Poly Voices note count.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B104",
+      "wavetable:B105"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-020",
+    "requirements": [
+      "REQ-SYN-WT-020"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-control",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Inspect Hi-Quality on/off with a fixed modulated patch; do not assert numerical output parity, CPU percentage or private scheduler implementation.",
+    "documentary_expected": "Hi-Quality context switch controls quality; off is documented modulation every 32 samples and lower-power filters. CPU saving up to 25% is a conditional manual claim, not a required timing benchmark.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B107",
+      "wavetable:B108",
+      "wavetable:B109"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-021",
+    "requirements": [
+      "REQ-SYN-WT-021"
+    ],
+    "device": "Wavetable",
+    "kind": "documented-state",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Compare fresh instance, retained Core Library preset and identified pre-11.1 user preset/Set if available; do not substitute a historical Creator string for load behavior. Unavailable old fixture remains U.",
+    "documentary_expected": "As of Live 11.1 the manual describes Hi-Quality off for new/Core Library instances while earlier user presets/Sets retain on for consistency; enabling may produce subtle differences. Migration boundaries for this target are unresolved.",
+    "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B110",
+      "wavetable:B111"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-022",
+    "requirements": [
+      "REQ-SYN-WT-022"
+    ],
+    "device": "Wavetable",
+    "kind": "signal-obligation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Osc 1 only, no oscillator effects/modulation/unison, filters bypassed, audible output; future low/mid/high MIDI notes require retained render and defined alias metric before grading. Do not convert prose into a numerical guarantee.",
+    "documentary_expected": "Manual claims unmodulated raw oscillator output is band-limited with no aliasing at any pitch. No spectral measurement definition, finite pitch-domain fixture or tolerance accompanies this claim.",
+    "documentary_comparator": null,
+    "expected": null,
+    "target_grade": "U",
+    "comparison": null,
+    "executed": false,
+    "source_blocks": [
+      "wavetable:B007"
+    ],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-DF-U-BOUNDARY",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "boundary",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Transpose -48/0/48 and attempted -49/49 st; Shape Mod -100/0/100 and attempted -101/101%; Voices 32 with 33 held notes in Poly. Enter documented endpoints then adjacent and out-of-range numeric values for named controls in a disposable patch; add one simultaneous note beyond selected voice limit.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Clamp/reject/rounding policy, voice-tail budget and extreme behavior are not established.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-AUTOMATION",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "automation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Transpose 0 to +12 st; Shape Mod 0 to +50%; Mono to Poly. Record two valid different displayed control values and a mode change over beats 1-4; stop and re-enable automation; compare playback with manual edits.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Eligibility, interpolation/smoothing, modulation-versus-automation precedence and re-enable behavior remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-TRANSPORT",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "transport",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Hold note/captured playback, stop, seek backward and restart at 120 BPM with synced modulation active; send final Note Off.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Reset/free-run/retrigger, repeated-note ownership and tail policy on transport changes remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-PERSISTENCE",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "persistence",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Save test-owned Set and device preset, close/reopen and reload; compare visible named settings/routes. For imported/sample media relocate source in a disposable copy and reopen.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Device setting/media preservation, missing-file recovery and migration outcome remain U; stored fields prove no load law.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-UNDO",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "undo-redo",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Edit a named mode, modulation route/depth and envelope; undo three operations then redo three, noting each visible state and any still-held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Undo grouping, sound state rewind and redo invalidation are U; local matrix clear/copy is not proof of global history behavior.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-MALFORMED",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "malformed",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Use test-owned copies only: invalid numeric text, truncated user media where relevant and a disposable saved state with one invalid control value; attempt import/load.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Failure message, rejection/normalization, unchanged-state guarantee and crash resistance are U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-CANCEL",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "cancellation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Begin preset/media hot-swap or file dialog where exposed, change preview selection, then cancel before commitment; compare active state and held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Cancellation availability, rollback scope and preview side effects remain U; absence of a documented cancel command does not make case inapplicable.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-TEARDOWN",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "teardown",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. While notes/releases/modulation are active, remove device, close Set and disconnect expression source in separate trials; observe output and persistent state.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Note-off cleanup, tail cutoff, resource release, disconnection behavior and error recovery remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-SAMPLE-RATE",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "sample-rate",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Repeat fixed patch at 44.1, 48 and 96 kHz with controlled 64/256-frame host blocks; then change rate while stopped and while a note is held if supported.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Rate-change support, timing/phase/filter/envelope continuity, block invariance and numerical tolerances remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DF-U-TUNING-MPE",
+    "requirements": [
+      "REQ-SYN-DF-LIFECYCLE"
+    ],
+    "device": "Drift",
+    "kind": "tuning-mpe",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Mono Legato on, Thickness interior, nonzero Glide, Cycling Env2 -> Osc1 Shape and LFO -> cutoff with nonzero depths; oscillator/filter routing active; Note PB on. Use two held notes with independent per-note bend, pressure and slide; apply C major then an identified non-12-tone tuning, compare global bend and source disconnection.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Per-device tuning participation, bend codecs/ranges, unsupported-source handling and exact expression isolation remain U; no equal-temperament formula is assumed.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DF"
+  },
+  {
+    "id": "SYN-DS-U-BOUNDARY",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "boundary",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Sample Gain -70/0/24 and attempted -71/25 dB; Detune -50/0/50 and attempted -51/51 cents; Trigger Hold inf then Gate. Enter documented endpoints then adjacent and out-of-range numeric values for named controls in a disposable patch; add one simultaneous note beyond selected voice limit.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Clamp/reject/rounding policy, voice-tail budget and extreme behavior are not established.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-AUTOMATION",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "automation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Sample Start 0 to 25%; Sample Gain -12 to -6 dB; Trigger to Gate. Record two valid different displayed control values and a mode change over beats 1-4; stop and re-enable automation; compare playback with manual edits.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Eligibility, interpolation/smoothing, modulation-versus-automation precedence and re-enable behavior remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-TRANSPORT",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "transport",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Hold note/captured playback, stop, seek backward and restart at 120 BPM with synced modulation active; send final Note Off.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Reset/free-run/retrigger, repeated-note ownership and tail policy on transport changes remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-PERSISTENCE",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "persistence",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Save test-owned Set and device preset, close/reopen and reload; compare visible named settings/routes. For imported/sample media relocate source in a disposable copy and reopen.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Device setting/media preservation, missing-file recovery and migration outcome remain U; stored fields prove no load law.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-UNDO",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "undo-redo",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Edit a named mode, modulation route/depth and envelope; undo three operations then redo three, noting each visible state and any still-held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Undo grouping, sound state rewind and redo invalidation are U; local matrix clear/copy is not proof of global history behavior.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-MALFORMED",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "malformed",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Use test-owned copies only: invalid numeric text, truncated user media where relevant and a disposable saved state with one invalid control value; attempt import/load.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Failure message, rejection/normalization, unchanged-state guarantee and crash resistance are U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-CANCEL",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "cancellation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Begin preset/media hot-swap or file dialog where exposed, change preview selection, then cancel before commitment; compare active state and held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Cancellation availability, rollback scope and preview side effects remain U; absence of a documented cancel command does not make case inapplicable.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-TEARDOWN",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "teardown",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. While notes/releases/modulation are active, remove device, close Set and disconnect expression source in separate trials; observe output and persistent state.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Note-off cleanup, tail cutoff, resource release, disconnection behavior and error recovery remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-SAMPLE-RATE",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "sample-rate",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Repeat fixed patch at 44.1, 48 and 96 kHz with controlled 64/256-frame host blocks; then change rate while stopped and while a note is held if supported.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Rate-change support, timing/phase/filter/envelope continuity, block invariance and numerical tolerances remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-DS-U-TUNING-MPE",
+    "requirements": [
+      "REQ-SYN-DS-LIFECYCLE"
+    ],
+    "device": "Drum Sampler",
+    "kind": "tuning-mpe",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned sample A Start 25% Length 50%, Gate envelope, active Loop playback effect and filter, Slide -> FX1 nonzero; separately Trigger Hold inf. Use two held notes with independent per-note bend, pressure and slide; apply C major then an identified non-12-tone tuning, compare global bend and source disconnection.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Per-device tuning participation, bend codecs/ranges, unsupported-source handling and exact expression isolation remain U; no equal-temperament formula is assumed.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#DS"
+  },
+  {
+    "id": "SYN-ME-U-BOUNDARY",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "boundary",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Poly Voices 2 and 12 with 3 and 13 held notes; Shepard’s Pi Rate 49.9/50.0/50.1; Glide Time zero then displayed nonzero. Enter documented endpoints then adjacent and out-of-range numeric values for named controls in a disposable patch; add one simultaneous note beyond selected voice limit.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Clamp/reject/rounding policy, voice-tail budget and extreme behavior are not established.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-AUTOMATION",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "automation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. engine A Semitones 0 to +12 with scale off; engine A Pan center to right; Mono to Poly. Record two valid different displayed control values and a mode change over beats 1-4; stop and re-enable automation; compare playback with manual edits.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Eligibility, interpolation/smoothing, modulation-versus-automation precedence and re-enable behavior remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-TRANSPORT",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "transport",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Hold note/captured playback, stop, seek backward and restart at 120 BPM with synced modulation active; send final Note Off.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Reset/free-run/retrigger, repeated-note ownership and tail policy on transport changes remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-PERSISTENCE",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "persistence",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Save test-owned Set and device preset, close/reopen and reload; compare visible named settings/routes. For imported/sample media relocate source in a disposable copy and reopen.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Device setting/media preservation, missing-file recovery and migration outcome remain U; stored fields prove no load law.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-UNDO",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "undo-redo",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Edit a named mode, modulation route/depth and envelope; undo three operations then redo three, noting each visible state and any still-held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Undo grouping, sound state rewind and redo invalidation are U; local matrix clear/copy is not proof of global history behavior.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-MALFORMED",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "malformed",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Use test-owned copies only: invalid numeric text, truncated user media where relevant and a disposable saved state with one invalid control value; attempt import/load.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Failure message, rejection/normalization, unchanged-state guarantee and crash resistance are U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-CANCEL",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "cancellation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Begin preset/media hot-swap or file dialog where exposed, change preview selection, then cancel before commitment; compare active state and held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Cancellation availability, rollback scope and preview side effects remain U; absence of a documented cancel command does not make case inapplicable.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-TEARDOWN",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "teardown",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. While notes/releases/modulation are active, remove device, close Set and disconnect expression source in separate trials; observe output and persistent state.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Note-off cleanup, tail cutoff, resource release, disconnection behavior and error recovery remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-SAMPLE-RATE",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "sample-rate",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Repeat fixed patch at 44.1, 48 and 96 kHz with controlled 64/256-frame host blocks; then change rate while stopped and while a note is held if supported.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Rate-change support, timing/phase/filter/envelope continuity, block invariance and numerical tolerances remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-ME-U-TUNING-MPE",
+    "requirements": [
+      "REQ-SYN-ME-LIFECYCLE"
+    ],
+    "device": "Meld",
+    "kind": "tuning-mpe",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A/B engines and filters on, nonzero cross-engine modulation, linked envelopes, stacked voices enabled with Spread -> Pan nonzero, Glide nonzero, Use Current Scale on. Use two held notes with independent per-note bend, pressure and slide; apply C major then an identified non-12-tone tuning, compare global bend and source disconnection.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Per-device tuning participation, bend codecs/ranges, unsupported-source handling and exact expression isolation remain U; no equal-temperament formula is assumed.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#ME"
+  },
+  {
+    "id": "SYN-OP-U-BOUNDARY",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "boundary",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Voices 1/2/32 with 2/3/33 held notes; Fixed Frequency displayed 0.1 Hz then attempted negative frequency; envelope Initial -24 dB/Sustain -12 dB. Enter documented endpoints then adjacent and out-of-range numeric values for named controls in a disposable patch; add one simultaneous note beyond selected voice limit.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Clamp/reject/rounding policy, voice-tail budget and extreme behavior are not established.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-AUTOMATION",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "automation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Transpose 0 to +12 st; A Level -12 to -6 dB; two explicitly retained Algorithm icons. Record two valid different displayed control values and a mode change over beats 1-4; stop and re-enable automation; compare playback with manual edits.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Eligibility, interpolation/smoothing, modulation-versus-automation precedence and re-enable behavior remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-TRANSPORT",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "transport",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Hold note/captured playback, stop, seek backward and restart at 120 BPM with synced modulation active; send final Note Off.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Reset/free-run/retrigger, repeated-note ownership and tail policy on transport changes remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-PERSISTENCE",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "persistence",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Save test-owned Set and device preset, close/reopen and reload; compare visible named settings/routes. For imported/sample media relocate source in a disposable copy and reopen.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Device setting/media preservation, missing-file recovery and migration outcome remain U; stored fields prove no load law.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-UNDO",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "undo-redo",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Edit a named mode, modulation route/depth and envelope; undo three operations then redo three, noting each visible state and any still-held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Undo grouping, sound state rewind and redo invalidation are U; local matrix clear/copy is not proof of global history behavior.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-MALFORMED",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "malformed",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Use test-owned copies only: invalid numeric text, truncated user media where relevant and a disposable saved state with one invalid control value; attempt import/load.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Failure message, rejection/normalization, unchanged-state guarantee and crash resistance are U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-CANCEL",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "cancellation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Begin preset/media hot-swap or file dialog where exposed, change preview selection, then cancel before commitment; compare active state and held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Cancellation availability, rollback scope and preview side effects remain U; absence of a documented cancel command does not make case inapplicable.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-TEARDOWN",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "teardown",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. While notes/releases/modulation are active, remove device, close Set and disconnect expression source in separate trials; observe output and persistent state.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Note-off cleanup, tail cutoff, resource release, disconnection behavior and error recovery remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-SAMPLE-RATE",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "sample-rate",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Repeat fixed patch at 44.1, 48 and 96 kHz with controlled 64/256-frame host blocks; then change rate while stopped and while a note is held if supported.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Rate-change support, timing/phase/filter/envelope continuity, block invariance and numerical tolerances remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-OP-U-TUNING-MPE",
+    "requirements": [
+      "REQ-SYN-OP-LIFECYCLE"
+    ],
+    "device": "Operator",
+    "kind": "tuning-mpe",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "A carrier/B modulator active in retained algorithm, nonzero B level/envelope, LFO/pitch envelope routes active, Loop envelope, Voices 2, nonzero Spread/Glide. Use two held notes with independent per-note bend, pressure and slide; apply C major then an identified non-12-tone tuning, compare global bend and source disconnection.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Per-device tuning participation, bend codecs/ranges, unsupported-source handling and exact expression isolation remain U; no equal-temperament formula is assumed.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#OP"
+  },
+  {
+    "id": "SYN-WT-U-BOUNDARY",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "boundary",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. FM Tune -100/-50/0/50/100%; LFO Shape low/interior/high displayed values; Poly Voices chosen 2 with 3 held notes; attempt numeric text abc. Enter documented endpoints then adjacent and out-of-range numeric values for named controls in a disposable patch; add one simultaneous note beyond selected voice limit.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Clamp/reject/rounding policy, voice-tail budget and extreme behavior are not established.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-AUTOMATION",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "automation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. oscillator Semi 0 to +12; Pan center to right; FM to Classic effect. Record two valid different displayed control values and a mode change over beats 1-4; stop and re-enable automation; compare playback with manual edits.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Eligibility, interpolation/smoothing, modulation-versus-automation precedence and re-enable behavior remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-TRANSPORT",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "transport",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Hold note/captured playback, stop, seek backward and restart at 120 BPM with synced modulation active; send final Note Off.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Reset/free-run/retrigger, repeated-note ownership and tail policy on transport changes remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-PERSISTENCE",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "persistence",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Save test-owned Set and device preset, close/reopen and reload; compare visible named settings/routes. For imported/sample media relocate source in a disposable copy and reopen.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Device setting/media preservation, missing-file recovery and migration outcome remain U; stored fields prove no load law.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-UNDO",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "undo-redo",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Edit a named mode, modulation route/depth and envelope; undo three operations then redo three, noting each visible state and any still-held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Undo grouping, sound state rewind and redo invalidation are U; local matrix clear/copy is not proof of global history behavior.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-MALFORMED",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "malformed",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Use test-owned copies only: invalid numeric text, truncated user media where relevant and a disposable saved state with one invalid control value; attempt import/load.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Failure message, rejection/normalization, unchanged-state guarantee and crash resistance are U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-CANCEL",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "cancellation",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Begin preset/media hot-swap or file dialog where exposed, change preview selection, then cancel before commitment; compare active state and held note.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Cancellation availability, rollback scope and preview side effects remain U; absence of a documented cancel command does not make case inapplicable.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-TEARDOWN",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "teardown",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. While notes/releases/modulation are active, remove device, close Set and disconnect expression source in separate trials; observe output and persistent state.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Note-off cleanup, tail cutoff, resource release, disconnection behavior and error recovery remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-SAMPLE-RATE",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "sample-rate",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Repeat fixed patch at 44.1, 48 and 96 kHz with controlled 64/256-frame host blocks; then change rate while stopped and while a note is held if supported.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Rate-change support, timing/phase/filter/envelope continuity, block invariance and numerical tolerances remain U.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  },
+  {
+    "id": "SYN-WT-U-TUNING-MPE",
+    "requirements": [
+      "REQ-SYN-WT-LIFECYCLE"
+    ],
+    "device": "Wavetable",
+    "kind": "tuning-mpe",
+    "preconditions": [
+      "common-setup",
+      "positive-signal-guard"
+    ],
+    "setup_and_action": "Owned imported wavetable A with Raw off, both main oscillators active, Split filters, Env2/LFO1 routes nonzero, Loop envelope, Poly Voices set, Unison Classic nonzero. Use two held notes with independent per-note bend, pressure and slide; apply C major then an identified non-12-tone tuning, compare global bend and source disconnection.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "unknown": "Per-device tuning participation, bend codecs/ranges, unsupported-source handling and exact expression isolation remain U; no equal-temperament formula is assumed.",
+    "source_blocks": [],
+    "fixture": "stimulus-recipes.json#WT"
+  }
+]

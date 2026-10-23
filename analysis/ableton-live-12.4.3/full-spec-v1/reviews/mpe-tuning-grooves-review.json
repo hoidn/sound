@@ -1,0 +1,118 @@
+{
+  "id": "REVIEW-MPE-TUNING-GROOVES-R1",
+  "reviewer": "independent analyst /root/arrangement_spec",
+  "date_utc": "2026-10-19T20:34:38.681892+00:00",
+  "disposition": "changes-requested-for-Commit-case-preconditions",
+  "scope": "All three canonical specs (53 requirements), all83 authored cases, shared research, retained manual chapter bodies, rendered support text, source/package records, snapshots and author manifest. No release, application or extracted execution review.",
+  "reviewed_manifest_sha256": "548d47418b71b5e85b25a11cea01bbe37d37268b53ae91a6ec6c20fe9c3a9cce",
+  "reviewed_snapshot_hashes": [
+    {
+      "canonical": "wiki/specs/mpe-workflows.md",
+      "snapshot": "mpe-workflows-author-r1.md",
+      "sha256": "77d9004ce21be326c1bae129b3e6f30b64a0321c5a3cd8f5c64989dadecf71d6"
+    },
+    {
+      "canonical": "wiki/specs/tuning-systems.md",
+      "snapshot": "tuning-systems-author-r1.md",
+      "sha256": "a4e43e3c14aa8cf0954a0f35092b589abf7d42de4e14efe7bc0bbf1b70a2dcf4"
+    },
+    {
+      "canonical": "wiki/specs/groove-workflows.md",
+      "snapshot": "groove-workflows-author-r1.md",
+      "sha256": "0a89fcd11139d9d7909eb6753ce84225970fdd6575840addf726c051338d1b19"
+    },
+    {
+      "canonical": "wiki/research/mpe-tuning-grooves.md",
+      "snapshot": "mpe-tuning-grooves-author-r1.md",
+      "sha256": "be879245fbb09bf36d5c6331762be941a9886db501550549de32f3d691903137"
+    }
+  ],
+  "findings": [
+    {
+      "id": "MTG-REVIEW-001",
+      "severity": "medium",
+      "required_for_review_completion": true,
+      "location": "cases.json:GRV-010",
+      "problem": "The setup only requires an assigned groove, while the expected result/comparator requires MIDI movement and marker/note edit presence. The comparator adds a nonzero timing setup, but a nonzero Timing control does not guarantee displacement: the same draft REQ-GROOVE-004 and retained G3 explicitly say a grid-aligned groove contributes no displacement. Committing an identity result can correctly reset assignment without producing the required visible note edit. Audio may likewise already have appropriate markers; no new-marker count/identity policy is established.",
+      "evidence": [
+        "manual-12-using-grooves.txt:0035 (grid-aligned groove contributes no timing displacement)",
+        "manual-12-using-grooves.txt:0050\u20130051 (Commit writes result and resets assignment)",
+        "wiki/specs/groove-workflows.md:REQ-GROOVE-004 and REQ-GROOVE-010"
+      ],
+      "requested_change": "Give the MIDI case a documented nonidentity setup, for example the existing0.1/0.6-beat inputs with Base1/8, Quantize100 and Timing/Random/Velocity0, then compare committed note positions0/0.5 and assignmentNone. For audio, grade only the supported assignment/appropriate-marker subset with explicit input-marker preconditions, or keep marker-change details U. Do not infer that nonzero Timing alone forces edits."
+    },
+    {
+      "id": "MTG-REVIEW-002",
+      "severity": "low",
+      "required_for_review_completion": false,
+      "location": "wiki/specs/groove-workflows.md:REQ-GROOVE-007",
+      "problem": "The word independently can be read as statistical independence between voices. Retained G3 documents differing per-voice randomization, without specifying a joint distribution or cross-voice correlation law. GRV-007 correctly remains U and explicitly rejects a statistical threshold, so no passing statistical oracle currently follows.",
+      "requested_change": "Prefer separately per voice and explicitly leave statistical independence/cross-voice correlation U. Preserve the current no-guaranteed-separation and no-RNG-oracle limits."
+    },
+    {
+      "id": "MTG-REVIEW-003",
+      "severity": "low",
+      "required_for_review_completion": false,
+      "location": "cases.json:MPE-005",
+      "problem": "The case fixes Pressure UI values20,40,30 although the spec explicitly leaves expression UI domains/scaling unknown and the cited prose supplies no such admissibility range. The Edit Value property is documented, but the scenario should not silently certify those particular inputs as accepted.",
+      "requested_change": "At fixture refinement use three distinct confirmed-accepted interior Pressure UI values or state accepted-value preconditions symbolically, then compare the displayed entered value. Keep invalid/range/codec behavior U; do not derive Pressure units from note storage."
+    }
+  ],
+  "semantic_checks": {
+    "MPE": "Controller All Channels constraint, five dimensions, lane/selection/breakpoint gestures, independent grid, envelope translation/stretch, temporary modifiers, default configuration and output-zone labels are supported by retained prose. No pitch-bend codec, channel allocation, interpolation, numeric domain/default or receiver audio law invented.",
+    "tuning": "Retune-off index retention, confirmation for retune-on, scale UI disablement including loaded12TET, identity-only reference edits versus frequency edits, bypass, controller-layout names/persistence and\u00b148 receiver prerequisite are source-supported. ASCL parser obligations remain documentary with exact-build U; no frequency/tie/collision-survivor/nearest-note algorithm inferred.",
+    "grooves": "Warp prerequisite, shared pool controls, straight quantization endpoints, negative velocity emphasis, global amount scope, playing-portion extraction, assignment reset and non-destructive quantization are supported. GRV-010 needs the precondition correction above; note timing correspondence, audio velocity, random law and marker construction remain U.",
+    "folded_Pitch_context": "Pass: MPE-011/027 distinguish hidden over-note Pitch from optional folded Pitch Bend lane and link MIDI tools C3. No new contradiction is declared without matched tab/fold/lane controls.",
+    "ownership": "Per-note storage remains canonical for file fields/validation, MIDI tools for destructive note operations/tool expression generation, MPE for attached-expression editor consequences, tuning for loaded tuning/layout, and groove for application/commit. No duplicated format/automation evaluator or candidate interface introduced.",
+    "lifecycle": "Each topic explicitly enumerates positive, negative, boundary, malformed, cancellation, undo, persistence and teardown scenarios. Documented grid/default/tuning/layout persistence clauses are not generalized to full state/rollback. Sounding-note transitions, failure recovery and cleanup remain U."
+  },
+  "source_checks": {
+    "manual_HTML_payloads": 3,
+    "manual_HTML_to_numbered_text_identity": "pass for all3, exact reproduction from retained HTML",
+    "manual_source_identity": "Official Live12 chapter URLs/date/hash/headings retained; patch/publication revision unspecified and exact12.4.3 U throughout",
+    "rendered_support_capture": "Exact retained web-rendered response hash verified; three official source URLs/embedded line locators retained. Direct403 failures documented. No publisher rawHTML byte identity is claimed or established.",
+    "ASCL_version_boundary": "Source declares directive description as ofLive12.1; this is not silently promoted to12.4.3 parser observation.",
+    "schema_presence": "Nine exact class blocks verified against original installed schema SHA-256 b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299; no behavioral enum or numeric law follows.",
+    "shipped_examples": "Three retained originals hash/byte match installed files; AGR/ADV derivations match. AGR CreatorLive10.1.6 and Drift CreatorLive12.4d1 remain historical; ASCL text is an input artifact only.",
+    "image_limit": "Figures not visually inspected; named visible controls/colors are supported by prose, no image-only fidelity claim."
+  },
+  "integrity_checks": {
+    "manifest_payloads": 26,
+    "canonical_snapshot_byte_identity": 4,
+    "payload_hashes_and_sizes": "pass before and after review",
+    "requirement_ids": {
+      "MPE": 18,
+      "TUNING": 21,
+      "GROOVE": 14,
+      "total": 53
+    },
+    "case_ids": {
+      "MPE": 27,
+      "TUN": 32,
+      "GRV": 24,
+      "total": 83
+    },
+    "case_grades": {
+      "D12": 52,
+      "U": 31,
+      "exact_build_U": 83,
+      "executed": 0
+    },
+    "requirement_case_references": "pass, all53 referenced; contiguous unique case ranges",
+    "per_topic_required_case_categories": "pass",
+    "relative_file_and_heading_links": "pass",
+    "frontmatter": "pass",
+    "git_diff_check": "pass"
+  },
+  "execution_limits": {
+    "ran_original_application": false,
+    "ran_original_code_or_hardware": false,
+    "ran_candidate": false,
+    "installed_tools": false,
+    "ran_author_validator": false,
+    "author_validator_reason": "Validator mutates validation, author snapshots and manifest; independent read-only equivalents used.",
+    "modified_author_or_shared_files": false,
+    "compatibility_pass": false
+  },
+  "remaining_risk": "All three domains remain partial; exact-build behavior, numerical codecs/algorithms, scheduling, lifecycle and application compatibility remain unestablished. Only this review JSON was written."
+}

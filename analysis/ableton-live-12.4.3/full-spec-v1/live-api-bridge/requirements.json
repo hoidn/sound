@@ -1,0 +1,715 @@
+[
+  {
+    "id": "REQ-LAPI-BRIDGE-001",
+    "section": "Paths and identity",
+    "title": "Reachable public hierarchy",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "The public overview describes a hierarchy of Live objects with single children and object lists, exposing only part of Live. Reachability, available members and types must be independently established; the inventory is not all application internals or complete API closure.",
+    "source_blocks": [
+      "OV:B0004",
+      "OV:B0005",
+      "OV:B0006"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-002",
+    "section": "Paths and identity",
+    "title": "Path syntax and relative context",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Overview paths are unquoted navigation terms with zero-based list indices; more than one path may identify the same object. Relative paths begin from current hierarchy position. These source roles do not prescribe a complete argument grammar, quote parser or native index encoding.",
+    "source_blocks": [
+      "OV:B0008",
+      "OV:B0009",
+      "OV:B0010",
+      "OV:B0011"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-003",
+    "section": "Paths and identity",
+    "title": "Root families",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "The overview/path reference names live_app, live_set, control_surfaces with an index and this_device as root roles. Control-surface access depends on the controller; this_device is device-relative. Root availability, identity and lifetime are not universal constants.",
+    "source_blocks": [
+      "OV:B0013",
+      "OV:B0014",
+      "PATH:B0100"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-004",
+    "section": "Paths and identity",
+    "title": "Canonical path and parent roles",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Multiple paths can lead to one object; the overview describes a unique canonical path, returned by live.object getpath, and a get-only canonical_parent child. Its own-track example is not an unconditional parent-is-track law for nested devices or roots.",
+    "source_blocks": [
+      "OV:B0016",
+      "OV:B0017",
+      "OV:B0019"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-005",
+    "section": "Paths and identity",
+    "title": "Object IDs and no-object sentinel",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "The overview describes id plus integer tokens, with id 0 denoting no object, device-scoped IDs assigned when navigated, normally stable while an object exists, and possible move-as-delete/create exceptions. Deletion/replacement and nonreuse/nonstorage prose are documentary contexts, not target ID allocation or durable identity laws.",
+    "source_blocks": [
+      "OV:B0021",
+      "OV:B0022",
+      "OV:B0023",
+      "OV:B0024",
+      "OV:B0025"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-006",
+    "section": "Paths and identity",
+    "title": "Children, properties and call roles",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Types describe available children/properties/functions; children may be single, lists or absent. getcount applies to lists, while get/set and call access eligible state/functions. Not all children/properties are observable or settable. Individual LOM member capability remains separately unresolved.",
+    "source_blocks": [
+      "OV:B0027",
+      "OV:B0028",
+      "OV:B0030",
+      "OV:B0031",
+      "OV:B0032",
+      "OV:B0033",
+      "OV:B0035",
+      "OV:B0036",
+      "OV:B0038"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-007",
+    "section": "Paths and identity",
+    "title": "Notifications versus polling",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "The overview distinguishes explicit navigation/get/call polling from spontaneous notifications for path-object changes and property values. This supplies event roles only, not cadence, coalescing, delivery order, queue policy or a complete notification set.",
+    "source_blocks": [
+      "OV:B0060",
+      "OV:B0061",
+      "OV:B0062"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-008",
+    "section": "Paths and identity",
+    "title": "Notification mutation context",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Overview and observer prose says Live Set changes cannot be triggered directly while receiving notifications, and suggests deferred interaction in relevant contexts. This is a documented restriction/caution, not a prescribed candidate thread, queue architecture or guaranteed deferlow cure.",
+    "source_blocks": [
+      "OV:B0063",
+      "OV:B0107",
+      "OBS:B0004"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-009",
+    "section": "live.path",
+    "title": "Navigation and path following outlets",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.path selects objects for other bridges; its left output gives navigation identity and middle output follows the object currently at the path. A nonexistent path is described as yielding no-object IDs rather than an error. Path following is distinct from retaining one particular object.",
+    "source_blocks": [
+      "OV:B0076",
+      "OV:B0080",
+      "OV:B0081",
+      "PATH:B0004"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-010",
+    "section": "live.path",
+    "title": "Initial path and absolute path message",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.path accepts an optional initial path and a path message for root-starting absolute paths. Root/name acceptance and initialization readiness remain target U; the initial argument is not proof of a ready Live API during patch load.",
+    "source_blocks": [
+      "PATH:B0007",
+      "PATH:B0099",
+      "PATH:B0100"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-011",
+    "section": "live.path",
+    "title": "goto relative/up and list-member boundary",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "goto is documented for absolute or relative paths and up, selecting individual list members rather than the list itself. Its root list omits this_device while other source contexts include it; the omission does not settle that root\u2019s goto acceptance.",
+    "source_blocks": [
+      "PATH:B0102",
+      "PATH:B0103"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-012",
+    "section": "live.path",
+    "title": "Count and child enumeration",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "getcount reports a named list child\u2019s count via the right outlet; getchildren reports available child names there. These are documented output roles, not stable list ordering, inherited-member closure or exact tuple/empty representation for target builds.",
+    "source_blocks": [
+      "PATH:B0063",
+      "PATH:B0064",
+      "PATH:B0069",
+      "PATH:B0072",
+      "PATH:B0073",
+      "PATH:B0078"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-013",
+    "section": "live.path",
+    "title": "Current path response",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.path getpath reports its current navigation path via the right outlet. This differs from live.object canonical getpath and does not require path spelling to match a canonical alias.",
+    "source_blocks": [
+      "PATH:B0080",
+      "PATH:B0081",
+      "PATH:B0086"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-014",
+    "section": "live.path",
+    "title": "Combined bang/getid documented role",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "The combined bang, getid section describes emitting current-path identity through left and middle outputs, with no-object sentinel when absent. The separate standalone getid section is a placeholder and remains unsupported; no blank is filled from memory.",
+    "source_blocks": [
+      "PATH:B0088",
+      "PATH:B0089"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-015",
+    "section": "live.object",
+    "title": "Select current object by ID",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.object operates on selected Live objects; id assignment is described for either inlet, with right-inlet use suggested for clarity and no assignment output described. This is not input routing, ID scope or rejection parity for arbitrary tokens.",
+    "source_blocks": [
+      "OBJ:B0004",
+      "OBJ:B0061",
+      "OBJ:B0062"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-016",
+    "section": "live.object",
+    "title": "Current identity and type",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "getid or bang/getid reports current identity and gettype its object class; getid describes no-object when unbound. These output roles do not specify every invalid/deleted-ID branch, exact names or message interleaving.",
+    "source_blocks": [
+      "OBJ:B0059",
+      "OBJ:B0060",
+      "OBJ:B0071",
+      "OBJ:B0072",
+      "OBJ:B0081",
+      "OBJ:B0082"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-017",
+    "section": "live.object",
+    "title": "Canonical getpath and getinfo roles",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "getpath reports canonical current-object path. getinfo describes identity/type/description/children/properties/functions and a terminating done role, with repeatable description lines. No fixed line order/cardinality or complete inherited-member specification follows.",
+    "source_blocks": [
+      "OBJ:B0063",
+      "OBJ:B0064",
+      "OBJ:B0079",
+      "OBJ:B0080"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-018",
+    "section": "live.object",
+    "title": "Read child versus child list",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "get on an eligible list child reports element IDs; on a single child it reports that child ID. Source examples are not exact runtime IDs, alias names, empty-list formatting or universal child availability laws.",
+    "source_blocks": [
+      "OBJ:B0115",
+      "OBJ:B0116",
+      "OBJ:B0121",
+      "OBJ:B0124",
+      "OBJ:B0125",
+      "OBJ:B0130"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-019",
+    "section": "live.object",
+    "title": "Read value versus value list",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "get reads single-value and list properties, with types and capabilities delegated to the LOM. Example routing labels, names and numbers do not override current native/domain owners or define a complete return grammar.",
+    "source_blocks": [
+      "OBJ:B0133",
+      "OBJ:B0134",
+      "OBJ:B0139",
+      "OBJ:B0142",
+      "OBJ:B0143",
+      "OBJ:B0148"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-020",
+    "section": "live.object",
+    "title": "Set child versus child list",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "set has separate single-child and child-list roles accepting eligible object identities. Not all children are writable; no assignment response is described. Complete mutation, list ordering, cross-device IDs and rollback remain U.",
+    "source_blocks": [
+      "OBJ:B0099",
+      "OBJ:B0100",
+      "OBJ:B0103",
+      "OBJ:B0104"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-021",
+    "section": "live.object",
+    "title": "Set property versus value list",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "set writes eligible single/list property values; not all properties can be set and their types come from the LOM. No assignment response is described. Bounds, clamping, serialization, automation ownership and numerical conversion require separate evidence.",
+    "source_blocks": [
+      "OBJ:B0107",
+      "OBJ:B0108",
+      "OBJ:B0111",
+      "OBJ:B0112"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-022",
+    "section": "live.object",
+    "title": "Function call role",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "call names a current-object function and optional typed parameters, with result output described by the public source. Actual callable members, signatures, side effects, return types and errors are not completed by this generic bridge clause.",
+    "source_blocks": [
+      "OV:B0038",
+      "OBJ:B0089",
+      "OBJ:B0090",
+      "OBJ:B0095"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-023",
+    "section": "Persistence",
+    "title": "Persistent Mapping Inspector option",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.object, live.observer and live.remote~ references name an Inspector Use Persistent Mapping option. Its save/restore/editor-move association prose is retained separately from overview/JS dynamic-ID cautions; default, cross-run numeric ID and exact-target persistence remain U.",
+    "source_blocks": [
+      "OBJ:B0152",
+      "OBJ:B0153",
+      "OBS:B0123",
+      "OBS:B0124",
+      "REM:B0081",
+      "REM:B0082"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-024",
+    "section": "live.observer",
+    "title": "Observe eligible property and changes",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.observer selects an eligible object/property and describes initial/current value plus later change notifications through its left output. An optional argument selects property/child. Not all properties are observable and notification timing/count/order are unproven.",
+    "source_blocks": [
+      "OBS:B0004",
+      "OBS:B0007",
+      "OBS:B0061",
+      "OBS:B0062"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-025",
+    "section": "live.observer",
+    "title": "Observe single child versus child list",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Observer property selection can target an observable child ID or child list; single-child source mentions no-object and list source permits no output for an empty result. Capability and representation differ and are not generalized to every child.",
+    "source_blocks": [
+      "OBS:B0070",
+      "OBS:B0071",
+      "OBS:B0079",
+      "OBS:B0080"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-026",
+    "section": "live.observer",
+    "title": "Binding and bang role",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Observer ID assignment accepts either inlet with right suggested; bang queries current selected property/object. The source describes no action without matching property/object, but invalid tokens, deleted objects and no-effect behavior remain target U.",
+    "source_blocks": [
+      "OBS:B0112",
+      "OBS:B0113",
+      "OBS:B0120",
+      "OBS:B0121"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-027",
+    "section": "live.observer",
+    "title": "Observer metadata outputs",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "getproperty, gettype and getid describe current selection/type/identity through observer right output, distinct from value output left. Child-list type information is described as limited; no complete typed schema or cross-outlet order follows.",
+    "source_blocks": [
+      "OBS:B0088",
+      "OBS:B0089",
+      "OBS:B0096",
+      "OBS:B0097",
+      "OBS:B0104",
+      "OBS:B0105"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-028",
+    "section": "live.remote~",
+    "title": "DeviceParameter binding and release",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.remote~ binds a DeviceParameter identity through the right inlet, describes no effect for non-parameter IDs, reports mapped identity via getid, and uses id 0 to release control/re-enable parameter. Nonparameter rejection, release ordering and restoration stay U.",
+    "source_blocks": [
+      "REM:B0004",
+      "REM:B0006",
+      "REM:B0075",
+      "REM:B0076",
+      "REM:B0078",
+      "REM:B0079"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-029",
+    "section": "live.remote~",
+    "title": "Parameter LOM path UI entry",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "The reference describes Copy LOM Path in a parameter context menu as available in Live 12, and live.path or live.map as ways to select a parameter. This does not specify the separate live.map object, exact path alias, menu eligibility for every control or target-build support.",
+    "source_blocks": [
+      "REM:B0006"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-030",
+    "section": "live.remote~",
+    "title": "Message and signal control roles",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Integer/float messages and signal input address the selected parameter through left inlet. Source prose distinguishes buffer/ramp scheduling from realtime signal application; sample-accurate/single-buffer claims are context, not target timing or candidate architecture requirements.",
+    "source_blocks": [
+      "REM:B0006",
+      "REM:B0063",
+      "REM:B0064",
+      "REM:B0066",
+      "REM:B0067",
+      "REM:B0073",
+      "REM:B0074"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-031",
+    "section": "live.remote~",
+    "title": "Ramp and smoothing controls",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "smoothing describes event ramp time and signal temporal sampling; a value/time list requests a ramp and a new ramp overrides a current ramp. No source default/example is promoted to target interpolation, sample count, rate law or interruption arithmetic.",
+    "source_blocks": [
+      "REM:B0010",
+      "REM:B0011",
+      "REM:B0069",
+      "REM:B0070"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-032",
+    "section": "live.remote~",
+    "title": "Normalized-mode role",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "normalized toggles between source-described automatic parameter-range scaling and caller-supplied parameter-domain values. This is not a conversion formula, native/stored-unit equivalence, valid range for every target or complete parameter behavior law.",
+    "source_blocks": [
+      "REM:B0012",
+      "REM:B0013"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-033",
+    "section": "live.remote~",
+    "title": "Automation, undo and envelope context",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Remote control is described as disabling parameter interaction/automation without changing saved Set value or creating Undo steps, while reference prose also says envelopes remain active. Automation versus envelope identity and restoration are unresolved contexts, not a blanket disable-all law.",
+    "source_blocks": [
+      "OV:B0087",
+      "REM:B0006"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-034",
+    "section": "live.thisdevice",
+    "title": "Initialization and reload notification",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "live.thisdevice describes left-outlet bang when the Max device/containing patcher is opened and completely initialized, including Live API in the JS/overview context, and again for preset load or device save/reload. Generic loadbang is not proof of Live API readiness.",
+    "source_blocks": [
+      "OV:B0100",
+      "INIT:B0004",
+      "JS:B0004"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-035",
+    "section": "live.thisdevice",
+    "title": "Enabled and preview state context",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Description distinguishes device-enabled middle output and preview right output in Live, with inactive state outputs when used in Max alone. getstate text says device state on rightmost output, leaving exact state meaning/context unresolved rather than merging enabled and preview.",
+    "source_blocks": [
+      "INIT:B0004",
+      "INIT:B0060",
+      "INIT:B0061"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-036",
+    "section": "live.thisdevice",
+    "title": "Explicit bang and mouse entry",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Explicit bang, double-click and loadbang message roles describe left bang output. Those manual/message actions do not imply the device/API has reached the automatic complete-initialization condition.",
+    "source_blocks": [
+      "INIT:B0056",
+      "INIT:B0057",
+      "INIT:B0058",
+      "INIT:B0059",
+      "INIT:B0062",
+      "INIT:B0063"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-037",
+    "section": "live.thisdevice",
+    "title": "Device width message and save caveat",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "setwidth changes Max for Live device width and its source says this is not automatically saved in preset/Set; the reset setting returns width calculation from visible objects. Exact pixels/default sizing, persistence mechanism and unrelated layout behavior remain unknown.",
+    "source_blocks": [
+      "INIT:B0064",
+      "INIT:B0065"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-038",
+    "section": "JavaScript LiveAPI",
+    "title": "Initialized JavaScript access context",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "LiveAPI offers js access to path/object/observer roles, with source cautions against global-code use and high-priority execution and a live.thisdevice readiness recommendation. Legacy constructor context is retained. No JS engine version, scheduler architecture or full runtime compatibility is imposed.",
+    "source_blocks": [
+      "JS:B0003",
+      "JS:B0004",
+      "JS:B0005",
+      "JS:B0006",
+      "OV:B0090"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-039",
+    "section": "JavaScript LiveAPI",
+    "title": "Constructor and callback roles",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "Constructor accepts optional callback and path or valid API identity; callback is described for referred-object or observed-property changes. Complete overload grammar, callback values/reentrancy and cross-instance ID acceptance are unresolved.",
+    "source_blocks": [
+      "JS:B0031",
+      "JS:B0032",
+      "JS:B0033",
+      "JS:B0039",
+      "JS:B0042"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-040",
+    "section": "JavaScript LiveAPI",
+    "title": "Follow-object versus follow-location modes",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "LiveAPI mode distinguishes following the particular referred object across movement from following the object occupying a hierarchy location. Source defaults/examples are not exact-target numeric mode, move-as-recreate, ID lifetime or bank-selection laws.",
+    "source_blocks": [
+      "JS:B0109",
+      "JS:B0110",
+      "JS:B0111"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-041",
+    "section": "JavaScript LiveAPI",
+    "title": "Path, ID and validity properties",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "goto navigates and reports object/no-object through callback; id is dynamic and not to be reused across runs per JS text. path and unquotedpath distinguish quoting and are Set-dependent; valid describes whether a Live object is referred to. Complete grammar, validity timing and persistent bindings remain U.",
+    "source_blocks": [
+      "JS:B0096",
+      "JS:B0097",
+      "JS:B0105",
+      "JS:B0106",
+      "JS:B0114",
+      "JS:B0115",
+      "JS:B0116",
+      "JS:B0138",
+      "JS:B0139",
+      "JS:B0140",
+      "JS:B0141",
+      "JS:B0142"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-042",
+    "section": "JavaScript LiveAPI",
+    "title": "Children and info/type metadata",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "children/getcount expose current-path child information; info/type describe object metadata and patcher identifies containing context. These bridge roles do not complete inherited member semantics, child cardinalities, source code architecture or exact class/type unions.",
+    "source_blocks": [
+      "JS:B0058",
+      "JS:B0059",
+      "JS:B0072",
+      "JS:B0073",
+      "JS:B0107",
+      "JS:B0108",
+      "JS:B0112",
+      "JS:B0113",
+      "JS:B0135",
+      "JS:B0136"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-043",
+    "section": "JavaScript LiveAPI",
+    "title": "get, getstring, set and call roles",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "JS get/getstring read property values/lists with distinct described representations; set writes and call invokes eligible members. Printed get type annotation is narrower than the generic description; complete return unions, member signatures, type conversion and errors require separate evidence.",
+    "source_blocks": [
+      "JS:B0043",
+      "JS:B0044",
+      "JS:B0060",
+      "JS:B0061",
+      "JS:B0062",
+      "JS:B0084",
+      "JS:B0085",
+      "JS:B0086",
+      "JS:B0123",
+      "JS:B0124"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-044",
+    "section": "JavaScript LiveAPI",
+    "title": "Observed property and type",
+    "provenance": "D-current-public",
+    "target_applicability": "U",
+    "contract": "property selects an observed property, child or child list and proptype describes selected type; callback changes are documented roles only. Capabilities, initial callback timing, mutation while handling and stale targets remain unresolved.",
+    "source_blocks": [
+      "JS:B0117",
+      "JS:B0118",
+      "JS:B0119",
+      "JS:B0120",
+      "JS:B0121",
+      "JS:B0122"
+    ]
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-VERSION",
+    "section": "Unknown obligations",
+    "title": "Version, members and source contexts",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Current LOM index declares Live12.4.5; bridge Max versions are unpinned. Exact12.4.3 applicability, complete 45-reference/588-direct-member/inherited capabilities, aliases, roots and source-context discrepancies remain U.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-IDENTITY",
+    "section": "Unknown obligations",
+    "title": "ID, root and persistence lifecycle",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Overview/JS dynamic/nonstored IDs versus optional Persistent Mapping save/editor-move prose are not reconciled into one lifetime law. Root/device/Set scope, deletion/reorder, invalid/stale/cross-device IDs, path aliases and reopened bindings need evidence.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-GRAMMAR",
+    "section": "Unknown obligations",
+    "title": "Argument, type and error grammar",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Malformed paths/quotes, unknown names, child/list capability, overloaded messages/functions, callback/result types, nonfinite/out-of-range values and read-only/nonobservable outcomes have no new complete parser, diagnostic or repair law.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-ORDER",
+    "section": "Unknown obligations",
+    "title": "Scheduling, notifications and reentrancy",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Delivery/count/coalescing/order across outlets/callbacks, notification-time reads/mutations, initialization races, remote ramp/buffer/sample timing and rate/transport transitions remain unknown. No thread/queue architecture or latency mandate follows.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-REMOTE",
+    "section": "Unknown obligations",
+    "title": "Signal and parameter ownership",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Remote normalization/smoothing/ramp, no-effect nonparameter tests, automation/modulation/manual control, saved value and release restoration need independently positive active paths and remain numerically ungraded.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-STATE",
+    "section": "Unknown obligations",
+    "title": "History, cancellation and durable state",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Save/reopen, migration, preset/editor moves, Undo/Redo grouping, cancellation, concurrent mutations and persistent-mapping default/state consequences remain U beyond source roles.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-LOSS",
+    "section": "Unknown obligations",
+    "title": "Unavailable context and source loss",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Object/property/device/track/Set/patcher/controller/media/engine disappearance, observer invalidation, unbinding/rebinding and recoverability require evidence. Missing API/Max capability is an unmet prerequisite, not a refusal or silence pass.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-LAPI-BRIDGE-U-TEARDOWN",
+    "section": "Unknown obligations",
+    "title": "Teardown and pending work",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Device/patch/Set close, Live/editor transition or quit with active observer/callback/remote ramp/control has no established flush, cleanup, completion, crash or silence deadline.",
+    "source_blocks": []
+  }
+]

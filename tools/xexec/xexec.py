@@ -9,7 +9,8 @@ Each run is a fresh process with a timeout, so a fault or trap ends only that ru
 run(tokens, skip={addr: [gdb expr, ...]}) runs the same process under gdb: each time execution
 reaches addr, the expressions are printed as one "HIT addr v1 v2 ..." line and the function is
 left at once with gdb `return` (its body does not run; use it only for void functions).
-Dependencies: gcc (build), gdb (skip only), the x86_64 slice (default path below, or XEXEC_SLICE).
+run(tokens, gdb_script=path) loads an owned GDB script instead of the skip script.
+Dependencies: gcc (build), gdb (skip or introspection), the x86_64 slice.
 """
 import os
 import re
@@ -83,9 +84,13 @@ class Runner:
         self.bin, self.slice, self.timeout = build(), slice_path, timeout
         self.log = []                                # (argv, Result) for every run, for evidence
 
-    def run(self, tokens, skip=None):
+    def run(self, tokens, skip=None, gdb_script=None):
+        if skip and gdb_script:
+            raise ValueError('skip and gdb_script are mutually exclusive')
         argv = [str(self.bin), self.slice, *map(str, tokens)]
         cmd = argv
+        if gdb_script:
+            cmd = ['gdb', '-q', '-batch', '-nx', '-x', str(gdb_script), '--args', *argv]
         if skip:
             script = ['set pagination off', 'set confirm off', 'break xcall', 'run', 'delete 1']
             for addr, exprs in skip.items():

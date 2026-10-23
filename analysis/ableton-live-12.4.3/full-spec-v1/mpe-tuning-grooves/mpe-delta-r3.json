@@ -1,0 +1,208 @@
+{
+  "requirements": 18,
+  "new_requirement_IDs": [],
+  "changed_requirement_records": [
+    {
+      "index": 0,
+      "id": "REQ-MPE-001",
+      "fields": {
+        "preconditions": {
+          "before": "Enable a controller's MPE mode in MIDI settings; choose that controller as track input.",
+          "after": "Enable a controller's MPE mode in MIDI settings; choose that controller as track input. Enable that controller in Link, Tempo & MIDI Settings before selecting it as track input."
+        },
+        "contract": {
+          "before": "Input channel selection is fixed to All Channels. Receiving/recording per-note expression requires the controller's MPE mode. Disabled-mode interpretation and hot-unplug outcome U.",
+          "after": "Input channel selection is fixed to All Channels. Receiving/recording per-note expression requires the controller's MPE mode. Disabled-mode interpretation and hot-unplug outcome U. This source order does not establish hot-enabling an already selected controller. Ordinary recording eligibility remains with the recording owner."
+        },
+        "evidence": {
+          "before": "M1",
+          "after": "M1; MPE-B003, MPE-B004, MPE-B005"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "id": "REQ-MPE-004",
+      "fields": {
+        "preconditions": {
+          "before": "Note Expression open; select a note or expression dimension.",
+          "after": "Note Expression open; select a note or expression dimension. Actually drag the envelope background for a time selection."
+        },
+        "contract": {
+          "before": "Selected note has an overlay and editable Pitch/Slide/Pressure breakpoints; Velocity/Release Velocity use markers. Other notes/envelopes are dimmed. Selecting a line exposes its draggable breakpoints/segments; background drag defines selection.",
+          "after": "Selected note has an overlay and editable Pitch/Slide/Pressure breakpoints; Velocity/Release Velocity use markers. Other notes/envelopes are dimmed. Selecting a line exposes its draggable breakpoints/segments; background drag defines selection. Note selection and background selection are separate inputs; Pitch/Slide/Pressure use envelopes while Velocity/Release Velocity use markers."
+        },
+        "evidence": {
+          "before": "M3",
+          "after": "M3; MPE-B015, MPE-B016"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "id": "REQ-MPE-006",
+      "fields": {
+        "preconditions": {
+          "before": "Drag a selected breakpoint or a selected line segment.",
+          "after": "Drag a selected breakpoint or a selected line segment. Select a segment by clicking near it, or Shift-clicking directly on it, then drag with the left mouse button held."
+        },
+        "contract": {
+          "before": "Selected breakpoints move together. Segment in a time selection inserts breakpoints at selection edges and moves that section together. Shift-drag restricts an axis and supports finer vertical adjustment. Dragging horizontally over a neighbor can remove it. Thresholds/equal-time ordering/clipping U.",
+          "after": "Selected breakpoints move together. Segment in a time selection inserts breakpoints at selection edges and moves that section together. Shift-drag restricts an axis and supports finer vertical adjustment. Dragging horizontally over a neighbor can remove it. Thresholds/equal-time ordering/clipping U. Selected-point group movement, selected-time segment movement, axis restriction, fine vertical adjustment and horizontal neighbor crossing are distinct admitted gestures; no resolution ratio is specified."
+        },
+        "evidence": {
+          "before": "M3",
+          "after": "M3; MPE-B020, MPE-B022, MPE-B025, MPE-B026, MPE-B027"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "id": "REQ-MPE-007",
+      "fields": {
+        "preconditions": {
+          "before": "Use Note Expression grid, Ctrl+4 (Win)/Cmd+4 (Mac), then save clip.",
+          "after": "Use Note Expression grid, Ctrl+4 (Win)/Cmd+4 (Mac), then save clip. The Options Snap to Grid entry is another documented input."
+        },
+        "contract": {
+          "before": "Grid starts disabled, is separate from other tabs and is saved with clip. Enabled edits snap to neighboring breakpoint times; creation near grid lines snaps. Pixel thresholds, grid storage and load failures U.",
+          "after": "Grid starts disabled, is separate from other tabs and is saved with clip. Enabled edits snap to neighboring breakpoint times; creation near grid lines snaps. Pixel thresholds, grid storage and load failures U. Actual neighboring-time movement and near-grid creation are distinct from merely toggling or saving the grid."
+        },
+        "evidence": {
+          "before": "M3",
+          "after": "M3; MPE-B023, MPE-B024"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "id": "REQ-MPE-009",
+      "fields": {
+        "preconditions": {
+          "before": "Click outside a note then drag a highlighted non-Pitch expression vertically; alternatively select all breakpoints in one envelope then drag.",
+          "after": "Click outside a note then drag a highlighted non-Pitch expression vertically; alternatively select all breakpoints in one envelope then drag. For equal group movement select the envelope, then Ctrl+A Windows/Cmd+A Mac before vertical or horizontal dragging."
+        },
+        "contract": {
+          "before": "First gesture proportionally scales Slide/Pressure/Velocity/Release Velocity over note duration, also across selected notes. Second adds equal value/time movement to selected breakpoints. Pitch is excluded from proportional scaling. Scale origin, zero crossing and clipping U.",
+          "after": "First gesture proportionally scales Slide/Pressure/Velocity/Release Velocity over note duration, also across selected notes. Second adds equal value/time movement to selected breakpoints. Pitch is excluded from proportional scaling. Scale origin, zero crossing and clipping U. The outside-note hover gesture applies to each named non-Pitch dimension and multiple selected notes; the equal group gesture also moves time horizontally."
+        },
+        "evidence": {
+          "before": "M3",
+          "after": "M3; MPE-B029, MPE-B030"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "id": "REQ-MPE-011",
+      "fields": {
+        "preconditions": {
+          "before": "Pitch edit/draw with grid off; hold Alt (Win)/Cmd (Mac). Open Note Expression and invoke Zoom to Clip Selection.",
+          "after": "Pitch edit/draw with grid off; hold Alt (Win)/Cmd (Mac). Open Note Expression and invoke Zoom to Clip Selection. Z is the other documented Zoom to Clip Selection entry."
+        },
+        "contract": {
+          "before": "Modifier snaps Pitch to nearest semitone; with grid on it bypasses this behavior. Zoom includes pitch bends in selected time. Chapter 12 says Fold hides over-note Pitch envelopes; availability of a separate folded Pitch Bend lane is unresolved. Tie direction U.",
+          "after": "Modifier snaps Pitch to nearest semitone; with grid on it bypasses this behavior. Zoom includes pitch bends in selected time. Chapter 12 says Fold hides over-note Pitch envelopes; availability of a separate folded Pitch Bend lane is unresolved. Tie direction U. Literal Pitch modifiers are Alt on Windows and Cmd on macOS, including Draw Mode; this is distinct from the Alt/Option curve gesture. Folded over-note Pitch and an optional Pitch Bend lane are not equated."
+        },
+        "evidence": {
+          "before": "M3",
+          "after": "M3; MPE-B033, MPE-B034, MPE-B035"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "id": "REQ-MPE-012",
+      "fields": {
+        "preconditions": {
+          "before": "Select one or multiple notes in Note Expression and invoke Clear All Envelopes.",
+          "after": "Select one or multiple notes in Note Expression and invoke Clear All Envelopes. Invoke the MIDI Note Editor context menu or a per-note expression lane context menu."
+        },
+        "contract": {
+          "before": "Clear all selected notes' expression envelopes. Whether note velocities/release velocities reset, resulting defaults, undo scope and note data beyond envelopes U.",
+          "after": "Clear all selected notes' expression envelopes. Whether note velocities/release velocities reset, resulting defaults, undo scope and note data beyond envelopes U. Each menu provides the selected-note envelope-clearing role; marker reset/defaults and unselected-data policy remain U."
+        },
+        "evidence": {
+          "before": "M3",
+          "after": "M3; MPE-B036"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "id": "REQ-MPE-014",
+      "fields": {
+        "preconditions": {
+          "before": "MPE controller values pass a MIDI track meter; use an MPE-enabled plug-in.",
+          "after": "MPE controller values pass a MIDI track meter; use an MPE-enabled plug-in. Independently distinguish per-note changes passing the selected track meter from generic Control Bar activity."
+        },
+        "contract": {
+          "before": "Meter's lowest dot indicates per-note changes in blue. Plug-in MPE mode is saved with device default configuration; MPE-enabled plug-ins with MIDI outs can output MPE. Plug-in failures, expression destinations and emitted encoding U.",
+          "after": "Meter's lowest dot indicates per-note changes in blue. Plug-in MPE mode is saved with device default configuration; MPE-enabled plug-ins with MIDI outs can output MPE. Plug-in failures, expression destinations and emitted encoding U. The enabled and disabled plug-in MPE Mode states are both included in the documented device-default saving role. A blue lowest track-meter dot is not proof of note delivery, isolated audio or plug-in MIDI output; those need independently admitted input/route/receiver context."
+        },
+        "evidence": {
+          "before": "M2, M5",
+          "after": "M2, M5; MPE-B013, MPE-B045, MPE-B046, MPE-B047"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "id": "REQ-MPE-015",
+      "fields": {
+        "preconditions": {
+          "before": "Select external output target in External Instrument or track MIDI To; choose MPE then MPE Settings. For plug-in use MPE-enabled device context menu.",
+          "after": "Select external output target in External Instrument or track MIDI To; choose MPE then MPE Settings. For plug-in use MPE-enabled device context menu. After choosing MPE, reopen the menu to choose MPE Settings; the plug-in entry is in its device-title-bar context menu."
+        },
+        "contract": {
+          "before": "Open MPE/Multi-channel Settings for that routing target. Track mixer access applies in Session/Arrangement. Missing target and modal cancel behavior U.",
+          "after": "Open MPE/Multi-channel Settings for that routing target. Track mixer access applies in Session/Arrangement. Missing target and modal cancel behavior U. Session and Arrangement mixer routes must each use their actual selected MIDI To target; merely seeing a menu does not open its associated dialog."
+        },
+        "evidence": {
+          "before": "M6",
+          "after": "M6; MPE-B055, MPE-B056, MPE-B057"
+        }
+      }
+    }
+  ],
+  "unchanged_requirement_records": 9,
+  "old_MPE_records_verbatim": 27,
+  "shared_original_records_verbatim": 83,
+  "Groove_R3_records_unchanged": 34,
+  "Tuning_records_unchanged": 32,
+  "new_case_ids": [
+    "MPE-028",
+    "MPE-029",
+    "MPE-030",
+    "MPE-031",
+    "MPE-032",
+    "MPE-033",
+    "MPE-034",
+    "MPE-035",
+    "MPE-036",
+    "MPE-037",
+    "MPE-038",
+    "MPE-039",
+    "MPE-040",
+    "MPE-041",
+    "MPE-042",
+    "MPE-043",
+    "MPE-044",
+    "MPE-045",
+    "MPE-046",
+    "MPE-047",
+    "MPE-048",
+    "MPE-049",
+    "MPE-050"
+  ],
+  "current_MPE_cases": 50,
+  "current_MPE_D12": 39,
+  "current_MPE_U": 11,
+  "logical_current_union": 116,
+  "bounded_groups": 13,
+  "actual_expected": null,
+  "actual_comparison": null,
+  "target": "U",
+  "executed": false,
+  "complete_topics": 0
+}

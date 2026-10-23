@@ -2,7 +2,7 @@
 id: PLAN-BUNDLED-DEVICE-PARAMETERS-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -26,6 +26,12 @@ reaches a case: the stored-field claims in REQ-011, the Corpus side-chain list a
 the inexact labels.
 
 Applied in revision 2 (2026-10-18); rejected: none (RVB-03 and RVB-07 to RVB-09 concern only the release text).
+
+Draft reconciliation, 2026-10-19: revision 3 incorporates the later Electric
+extracted-execution result: Polyphony index p permits p + 2 voices. Its exact
+`Voices` display text remains unknown. The rounded N5 Volume default is corrected
+in its canonical research page to 0.7047892213; no published bytes or case
+expectations changed.
 
 ## Decision and boundary
 
@@ -246,7 +252,7 @@ members are described, not named.
 
 Not checked: any reference or candidate execution, and any proof of I1 to I6.
 
-## Review gates still required
+## Pre-review gates (historical)
 
 1. **Scope review** in a separate context. Check every included clause and the
    82 expectations against the locators. Rule on I1 to I6, on releasing the
@@ -272,8 +278,8 @@ Not checked: any reference or candidate execution, and any proof of I1 to I6.
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate: 82 cases, partial
-REQ-BUNDLED-DEVICE-PARAMETERS-001 to 004, 006, 007, 011, 012 and 014, with 005,
-008, 009, 010, 013 and 015 unreleased. It is not published, and no handoff
-exists for SPEC-BUNDLED-DEVICE-PARAMETERS. This page has no catalog link yet;
-the spec index was left unchanged as the staging brief requires.
+Released 2026-10-18 as bundled-device-parameters-v1 with 82 cases, partial
+REQ-001 to 004, 006, 007, 011, 012 and 014; 005, 008 to 010, 013 and 015 remain
+unreleased. It is the current partial release. Revision 2 applies its review;
+revision 3 adds the later X voice-count meaning of Electric Polyphony without
+changing this immutable release or any case expectation.

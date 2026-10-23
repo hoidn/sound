@@ -1,0 +1,590 @@
+{
+  "collector_before": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/collect-once.py",
+    "bytes": 8925,
+    "sha256": "b4bc44c65f76fd588d73febab87b735fd36aa5710d6bc7c06e66322ba6d412af"
+  },
+  "collector_after": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-receiver-construction-span-preparation/collect-once.py",
+    "bytes": 8099,
+    "sha256": "17d1acb9db858cfafef7d7c67acf8965bc40de7a8ea4b49a56d3e02073a1c4a6"
+  },
+  "checker_before": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/check.py",
+    "bytes": 11849,
+    "sha256": "c4f7f6a102f418bfe808bf55ac8191b300eb131a19c0c550d53eb09c6bc115da"
+  },
+  "checker_after": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-receiver-construction-span-preparation/check.py",
+    "bytes": 11959,
+    "sha256": "46c789dc723da5217c3ccb3def328425266a6ce6f682de672c5b30b0c41542ee"
+  },
+  "collector_line_operations": [
+    {
+      "old_start": 7,
+      "old_end": 8,
+      "new_start": 7,
+      "new_end": 7,
+      "old_lines": [
+        "import struct\n"
+      ],
+      "new_lines": []
+    },
+    {
+      "old_start": 12,
+      "old_end": 13,
+      "new_start": 11,
+      "new_end": 12,
+      "old_lines": [
+        "OUT = HERE.parent / 'depth-utility-x86-process-span'\n"
+      ],
+      "new_lines": [
+        "OUT = HERE.parent / 'depth-corpus-x86-receiver-construction-span'\n"
+      ]
+    },
+    {
+      "old_start": 14,
+      "old_end": 16,
+      "new_start": 13,
+      "new_end": 15,
+      "old_lines": [
+        "IMAGE = Path('/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64')\n",
+        "START, LENGTH = 0x104b8c7b0, 904\n"
+      ],
+      "new_lines": [
+        "RETAINED = HERE.parent / 'depth-corpus-x86-receiver-construction-entry-instructions/receiver-entry-240.bin'\n",
+        "START, LENGTH = 0x39a0, 144\n"
+      ]
+    },
+    {
+      "old_start": 89,
+      "old_end": 118,
+      "new_start": 88,
+      "new_end": 101,
+      "old_lines": [
+        "        metadata = json.loads((HERE / 'header-map.json').read_text())\n",
+        "        assert identity(IMAGE) == metadata['image']\n",
+        "        with IMAGE.open('rb') as stream:\n",
+        "            header = stream.read(32)\n",
+        "            assert header.hex() == metadata['header_hex']\n",
+        "            values = struct.unpack('<IiiIIIII', header)\n",
+        "            assert values[0] == 0xfeedfacf and values[1:3] == (0x1000007, 3)\n",
+        "            assert values[4] == 54 and values[5] == 6832 and 32 + values[5] <= metadata['image']['bytes']\n",
+        "            commands = stream.read(values[5])\n",
+        "            assert commands.hex() == metadata['load_commands_hex']\n",
+        "            assert hashlib.sha256(commands).hexdigest() == metadata['load_commands_sha256']\n",
+        "            segments, cursor = [], 0\n",
+        "            for _ in range(values[4]):\n",
+        "                command, size = struct.unpack_from('<II', commands, cursor)\n",
+        "                assert size >= 8 and cursor + size <= len(commands)\n",
+        "                if command == 0x19:\n",
+        "                    name, va, vs, fo, fs, mp, ip, ns, fl = struct.unpack_from('<16sQQQQiiII', commands, cursor + 8)\n",
+        "                    assert fo + fs <= metadata['image']['bytes']\n",
+        "                    segments.append(dict(name=name.rstrip(b'\\0').decode(), vmaddr=va, vmsize=vs,\n",
+        "                                         fileoff=fo, filesize=fs, maxprot=mp, initprot=ip, nsects=ns, flags=fl))\n",
+        "                cursor += size\n",
+        "            assert cursor == len(commands) and segments == metadata['segments']\n",
+        "            matches = [s for s in segments if s['vmaddr'] <= START and START + LENGTH <= s['vmaddr'] + s['filesize']]\n",
+        "            assert matches == [metadata['selected_segment']] and matches[0]['name'] == '__TEXT'\n",
+        "            assert matches[0]['initprot'] & 4\n",
+        "            slice_file_offset = matches[0]['fileoff'] + START - matches[0]['vmaddr']\n",
+        "            assert slice_file_offset == metadata['slice_file_offset'] == 0x4b8c7b0\n",
+        "            assert metadata['length'] == LENGTH\n",
+        "            stream.seek(slice_file_offset)\n"
+      ],
+      "new_lines": [
+        "        metadata = json.loads((HERE / 'input-selection.json').read_text())\n",
+        "        assert identity(RETAINED) == metadata['retained_input']\n",
+        "        assert metadata['retained_input']['bytes'] == 240\n",
+        "        assert metadata['selected_offset'] == 0 and metadata['selected_bytes'] == LENGTH\n",
+        "        assert metadata['start'] == hex(START) and metadata['end_exclusive'] == hex(START + LENGTH)\n",
+        "        assert metadata['uninterpreted_retained_suffix_bytes'] == 96\n",
+        "        prior = Path(metadata['prior_extraction']['path'])\n",
+        "        assert identity(prior) == metadata['prior_extraction']\n",
+        "        source_record = json.loads(prior.read_text())\n",
+        "        assert source_record['start'] == hex(START) and source_record['bytes'] == 240\n",
+        "        assert source_record['end_exclusive'] == hex(START + 240)\n",
+        "        assert source_record['raw_sha256'] == metadata['retained_input']['sha256']\n",
+        "        with RETAINED.open('rb') as stream:\n"
+      ]
+    },
+    {
+      "old_start": 120,
+      "old_end": 121,
+      "new_start": 103,
+      "new_end": 104,
+      "old_lines": [
+        "        with (OUT / 'process-span-904.bin').open('xb') as stream:\n"
+      ],
+      "new_lines": [
+        "        with (OUT / 'receiver-span-144.bin').open('xb') as stream:\n"
+      ]
+    },
+    {
+      "old_start": 122,
+      "old_end": 126,
+      "new_start": 105,
+      "new_end": 110,
+      "old_lines": [
+        "        save('extraction.json', {'image': identity(IMAGE), 'header_map': identity(HERE / 'header-map.json'),\n",
+        "                               'slice_file_offset': slice_file_offset, 'start': hex(START),\n",
+        "                               'end_exclusive': hex(START + LENGTH), 'bytes': LENGTH,\n",
+        "                               'raw_sha256': hashlib.sha256(raw).hexdigest()})\n"
+      ],
+      "new_lines": [
+        "        save('extraction.json', {'source_kind': 'already-retained-prefix-only',\n",
+        "                               'retained_input': identity(RETAINED), 'input_selection': identity(HERE / 'input-selection.json'),\n",
+        "                               'selected_offset': 0, 'start': hex(START), 'end_exclusive': hex(START + LENGTH),\n",
+        "                               'bytes': LENGTH, 'raw_sha256': hashlib.sha256(raw).hexdigest(),\n",
+        "                               'uninterpreted_retained_suffix_bytes': 96, 'original_image_read': False})\n"
+      ]
+    },
+    {
+      "old_start": 128,
+      "old_end": 129,
+      "new_start": 112,
+      "new_end": 113,
+      "old_lines": [
+        "                '-c', 'pDj 904', str(OUT / 'process-span-904.bin')]\n"
+      ],
+      "new_lines": [
+        "                '-c', 'pDj 144', str(OUT / 'receiver-span-144.bin')]\n"
+      ]
+    },
+    {
+      "old_start": 152,
+      "old_end": 152,
+      "new_start": 136,
+      "new_end": 137,
+      "old_lines": [],
+      "new_lines": [
+        "        coverage['uninterpreted_retained_suffix_bytes'] = 96\n"
+      ]
+    },
+    {
+      "old_start": 153,
+      "old_end": 154,
+      "new_start": 138,
+      "new_end": 139,
+      "old_lines": [
+        "        status['validation'] = 'PASSvalid-variable-length-rows/exact904B-span-only'\n"
+      ],
+      "new_lines": [
+        "        status['validation'] = 'PASSvalid-variable-length-rows/exact144B-span-only'\n"
+      ]
+    },
+    {
+      "old_start": 162,
+      "old_end": 164,
+      "new_start": 147,
+      "new_end": 149,
+      "old_lines": [
+        "        (OUT / 'process-span-904.stdout.json').write_bytes(stdout)\n",
+        "        (OUT / 'process-span-904.stderr').write_bytes(stderr)\n"
+      ],
+      "new_lines": [
+        "        (OUT / 'receiver-span-144.stdout.json').write_bytes(stdout)\n",
+        "        (OUT / 'receiver-span-144.stderr').write_bytes(stderr)\n"
+      ]
+    }
+  ],
+  "checker_line_operations": [
+    {
+      "old_start": 2,
+      "old_end": 3,
+      "new_start": 2,
+      "new_end": 3,
+      "old_lines": [
+        "import ast, copy, hashlib, json, struct, sys\n"
+      ],
+      "new_lines": [
+        "import ast, copy, hashlib, json, sys\n"
+      ]
+    },
+    {
+      "old_start": 4,
+      "old_end": 5,
+      "new_start": 4,
+      "new_end": 5,
+      "old_lines": [
+        "OUT = HERE.parent / 'depth-utility-x86-process-span'\n"
+      ],
+      "new_lines": [
+        "OUT = HERE.parent / 'depth-corpus-x86-receiver-construction-span'\n"
+      ]
+    },
+    {
+      "old_start": 14,
+      "old_end": 15,
+      "new_start": 14,
+      "new_end": 15,
+      "old_lines": [
+        "    assert len(settings) == 1 and ast.literal_eval(settings[0].value) == (0x104b8c7b0, 904)\n"
+      ],
+      "new_lines": [
+        "    assert len(settings) == 1 and ast.literal_eval(settings[0].value) == (0x39a0, 144)\n"
+      ]
+    },
+    {
+      "old_start": 21,
+      "old_end": 23,
+      "new_start": 21,
+      "new_end": 27,
+      "old_lines": [
+        "                    \"'pDj 904'\", 'child.communicate(timeout=30)', 'if OUT.exists():',\n",
+        "                    'stream.seek(slice_file_offset)', 'raw = stream.read(LENGTH)',\n"
+      ],
+      "new_lines": [
+        "                    \"'pDj 144'\", 'child.communicate(timeout=30)', 'if OUT.exists():',\n",
+        "                    \"with RETAINED.open('rb') as stream:\", 'raw = stream.read(LENGTH)',\n",
+        "                    \"assert metadata['selected_offset'] == 0 and metadata['selected_bytes'] == LENGTH\",\n",
+        "                    \"assert metadata['uninterpreted_retained_suffix_bytes'] == 96\",\n",
+        "                    \"assert source_record['raw_sha256'] == metadata['retained_input']['sha256']\",\n",
+        "                    \"coverage['uninterpreted_retained_suffix_bytes'] = 96\",\n"
+      ]
+    },
+    {
+      "old_start": 31,
+      "old_end": 32,
+      "new_start": 35,
+      "new_end": 36,
+      "old_lines": [
+        "    assert text.index(\"save('before-map.json'\") < text.index('stream.seek(slice_file_offset)')\n"
+      ],
+      "new_lines": [
+        "    assert text.index(\"save('before-map.json'\") < text.index(\"with RETAINED.open('rb') as stream:\")\n"
+      ]
+    },
+    {
+      "old_start": 36,
+      "old_end": 36,
+      "new_start": 40,
+      "new_end": 43,
+      "old_lines": [],
+      "new_lines": [
+        "    assert 'IMAGE' not in text and 'header-map.json' not in text and 'struct.' not in text\n",
+        "    retained = [n for n in tree.body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'RETAINED' for t in n.targets)]\n",
+        "    assert len(retained) == 1 and ast.unparse(retained[0].value) == \"HERE.parent / 'depth-corpus-x86-receiver-construction-entry-instructions/receiver-entry-240.bin'\"\n"
+      ]
+    },
+    {
+      "old_start": 42,
+      "old_end": 43,
+      "new_start": 49,
+      "new_end": 50,
+      "old_lines": [
+        "    namespace = {'START': 0x104b8c7b0, 'LENGTH': 904}\n"
+      ],
+      "new_lines": [
+        "    namespace = {'START': 0x39a0, 'LENGTH': 144}\n"
+      ]
+    },
+    {
+      "old_start": 59,
+      "old_end": 62,
+      "new_start": 66,
+      "new_end": 66,
+      "old_lines": [
+        "    context = inputs['asof_context']\n",
+        "    snapshot = identity(HERE / context['retained_provider'])\n",
+        "    assert (snapshot['bytes'], snapshot['sha256']) == (context['source_identity']['bytes'], context['source_identity']['sha256'])\n"
+      ],
+      "new_lines": []
+    },
+    {
+      "old_start": 69,
+      "old_end": 74,
+      "new_start": 73,
+      "new_end": 80,
+      "old_lines": [
+        "    restored = text\n",
+        "    for op in reversed(delta['collector_literal_operations']):\n",
+        "        assert restored.count(op['after']) == op['occurrences']\n",
+        "        restored = restored.replace(op['after'], op['before'])\n",
+        "    assert restored.encode() == Path(delta['collector_before']['path']).read_bytes()\n"
+      ],
+      "new_lines": [
+        "    def reconstruct(current, operations):\n",
+        "        lines = current.splitlines(keepends=True)\n",
+        "        for op in reversed(operations):\n",
+        "            assert lines[op['new_start']:op['new_end']] == op['new_lines']\n",
+        "            lines[op['new_start']:op['new_end']] = op['old_lines']\n",
+        "        return ''.join(lines)\n",
+        "    assert reconstruct(text, delta['collector_line_operations']).encode() == Path(delta['collector_before']['path']).read_bytes()\n"
+      ]
+    },
+    {
+      "old_start": 75,
+      "old_end": 80,
+      "new_start": 81,
+      "new_end": 86,
+      "old_lines": [
+        "    restored_checker = checker_source\n",
+        "    for op in reversed(delta['checker_literal_operations']):\n",
+        "        assert restored_checker.count(op['after']) == op['occurrences']\n",
+        "        restored_checker = restored_checker.replace(op['after'], op['before'])\n",
+        "    assert restored_checker.encode() == Path(delta['checker_before']['path']).read_bytes()\n"
+      ],
+      "new_lines": [
+        "    assert reconstruct(checker_source, delta['checker_line_operations']).encode() == Path(delta['checker_before']['path']).read_bytes()\n",
+        "    parent_tree = ast.parse(Path(delta['collector_before']['path']).read_text())\n",
+        "    parent_validator = next(n for n in parent_tree.body if isinstance(n, ast.FunctionDef) and n.name == 'validate_span')\n",
+        "    own_validator = next(n for n in ast.parse(text).body if isinstance(n, ast.FunctionDef) and n.name == 'validate_span')\n",
+        "    assert ast.dump(parent_validator) == ast.dump(own_validator)\n"
+      ]
+    },
+    {
+      "old_start": 82,
+      "old_end": 83,
+      "new_start": 88,
+      "new_end": 89,
+      "old_lines": [
+        "    raw = bytes(i % 256 for i in range(904))\n"
+      ],
+      "new_lines": [
+        "    raw = bytes(i % 256 for i in range(144))\n"
+      ]
+    },
+    {
+      "old_start": 86,
+      "old_end": 87,
+      "new_start": 92,
+      "new_end": 93,
+      "old_lines": [
+        "            rows.append(dict(offset=0x104b8c7b0 + used, size=size, type='synthetic',\n"
+      ],
+      "new_lines": [
+        "            rows.append(dict(offset=0x39a0 + used, size=size, type='synthetic',\n"
+      ]
+    },
+    {
+      "old_start": 90,
+      "old_end": 91,
+      "new_start": 96,
+      "new_end": 97,
+      "old_lines": [
+        "    varied, remaining, size = [], 904, 1\n"
+      ],
+      "new_lines": [
+        "    varied, remaining, size = [], 144, 1\n"
+      ]
+    },
+    {
+      "old_start": 94,
+      "old_end": 95,
+      "new_start": 100,
+      "new_end": 101,
+      "old_lines": [
+        "    for sizes in ([1] * 904, [15] * 60 + [4], varied):\n"
+      ],
+      "new_lines": [
+        "    for sizes in ([1] * 144, [15] * 9 + [9], varied):\n"
+      ]
+    },
+    {
+      "old_start": 96,
+      "old_end": 97,
+      "new_start": 102,
+      "new_end": 103,
+      "old_lines": [
+        "        assert result['rows'] == len(sizes) and result['consumed_bytes'] == 904\n"
+      ],
+      "new_lines": [
+        "        assert result['rows'] == len(sizes) and result['consumed_bytes'] == 144\n"
+      ]
+    },
+    {
+      "old_start": 98,
+      "old_end": 99,
+      "new_start": 104,
+      "new_end": 105,
+      "old_lines": [
+        "        assert result['decoded_prefix_half_open'] == ['0x104b8c7b0', '0x104b8cb38']\n"
+      ],
+      "new_lines": [
+        "        assert result['decoded_prefix_half_open'] == ['0x39a0', '0x3a30']\n"
+      ]
+    },
+    {
+      "old_start": 100,
+      "old_end": 101,
+      "new_start": 106,
+      "new_end": 107,
+      "old_lines": [
+        "    good = rows_for([2] * 452)\n"
+      ],
+      "new_lines": [
+        "    good = rows_for([2] * 72)\n"
+      ]
+    },
+    {
+      "old_start": 103,
+      "old_end": 104,
+      "new_start": 109,
+      "new_end": 110,
+      "old_lines": [
+        "                         ('offset', 0x104b8c7b0), ('offset', True), ('bytes', '00'),\n"
+      ],
+      "new_lines": [
+        "                         ('offset', 0x39a0), ('offset', True), ('bytes', '00'),\n"
+      ]
+    },
+    {
+      "old_start": 111,
+      "old_end": 112,
+      "new_start": 117,
+      "new_end": 118,
+      "old_lines": [
+        "    bad.extend([[], None, good[:-1], good + [copy.deepcopy(good[-1])], rows_for([1] * 905)])\n"
+      ],
+      "new_lines": [
+        "    bad.extend([[], None, good[:-1], good + [copy.deepcopy(good[-1])], rows_for([1] * 145)])\n"
+      ]
+    },
+    {
+      "old_start": 121,
+      "old_end": 123,
+      "new_start": 127,
+      "new_end": 129,
+      "old_lines": [
+        "    mutations = [('0x104b8c7b0, 904', '0x104b8c7b1, 904'), ('0x104b8c7b0, 904', '0x104b8c7b0, 905'),\n",
+        "                 (\"'pDj 904'\", \"'pdj 904'\"), (\"'-NN'\", \"'-N'\"), (\"'-x'\", \"'-w'\"),\n"
+      ],
+      "new_lines": [
+        "    mutations = [('0x39a0, 144', '0x39a1, 144'), ('0x39a0, 144', '0x39a0, 145'),\n",
+        "                 (\"'pDj 144'\", \"'pdj 144'\"), (\"'-NN'\", \"'-N'\"), (\"'-x'\", \"'-w'\"),\n"
+      ]
+    },
+    {
+      "old_start": 130,
+      "old_end": 131,
+      "new_start": 136,
+      "new_end": 139,
+      "old_lines": [
+        "                 ('assert isinstance(rows, list) and 1 <= len(rows) <= LENGTH', 'assert isinstance(rows, list)')]\n"
+      ],
+      "new_lines": [
+        "                 ('assert isinstance(rows, list) and 1 <= len(rows) <= LENGTH', 'assert isinstance(rows, list)'),\n",
+        "                 (\"assert metadata['selected_offset'] == 0 and metadata['selected_bytes'] == LENGTH\", 'assert True'),\n",
+        "                 (\"coverage['uninterpreted_retained_suffix_bytes'] = 96\", \"coverage['uninterpreted_retained_suffix_bytes'] = 0\")]\n"
+      ]
+    },
+    {
+      "old_start": 136,
+      "old_end": 161,
+      "new_start": 144,
+      "new_end": 153,
+      "old_lines": [
+        "    m = json.loads((HERE / 'header-map.json').read_text())\n",
+        "    assert identity(Path(m['image']['path'])) == m['image']\n",
+        "    # Header/LC metadata only; no selected instruction-window seek/read.\n",
+        "    with Path(m['image']['path']).open('rb') as stream:\n",
+        "        header = stream.read(32); assert header.hex() == m['header_hex']\n",
+        "        values = struct.unpack('<IiiIIIII', header)\n",
+        "        assert values[0:3] == (0xfeedfacf, 0x1000007, 3) and values[4:6] == (54, 6832)\n",
+        "        commands = stream.read(values[5]); assert commands.hex() == m['load_commands_hex']\n",
+        "    assert hashlib.sha256(commands).hexdigest() == m['load_commands_sha256']\n",
+        "    segments, cursor = [], 0\n",
+        "    for _ in range(values[4]):\n",
+        "        command, size = struct.unpack_from('<II', commands, cursor)\n",
+        "        assert size >= 8 and cursor + size <= len(commands)\n",
+        "        if command == 0x19:\n",
+        "            n, va, vs, fo, fs, mp, ip, ns, fl = struct.unpack_from('<16sQQQQiiII', commands, cursor + 8)\n",
+        "            segments.append(dict(name=n.rstrip(b'\\0').decode(), vmaddr=va, vmsize=vs,\n",
+        "                                 fileoff=fo, filesize=fs, maxprot=mp, initprot=ip, nsects=ns, flags=fl))\n",
+        "        cursor += size\n",
+        "    assert cursor == len(commands) and segments == m['segments']\n",
+        "    matched = [s for s in segments if s['vmaddr'] <= 0x104b8c7b0 and 0x104b8cb38 <= s['vmaddr'] + s['filesize']]\n",
+        "    assert matched == [m['selected_segment']] and matched[0]['name'] == '__TEXT' and matched[0]['initprot'] & 4\n",
+        "    assert matched[0]['vmaddr'] == 0x100000000 and matched[0]['fileoff'] == 0\n",
+        "    assert matched[0]['fileoff'] + 0x104b8c7b0 - matched[0]['vmaddr'] == m['slice_file_offset'] == 0x4b8c7b0\n",
+        "    assert m['instruction_window_extracted'] is False\n",
+        "    assert (m['start'], m['end_exclusive'], m['length']) == ('0x104b8c7b0', '0x104b8cb38', 904)\n"
+      ],
+      "new_lines": [
+        "    m = json.loads((HERE / 'input-selection.json').read_text())\n",
+        "    assert identity(Path(m['retained_input']['path'])) == m['retained_input']\n",
+        "    assert m['retained_input']['bytes'] == 240\n",
+        "    assert m['retained_input']['path'] == str(HERE.parent / 'depth-corpus-x86-receiver-construction-entry-instructions/receiver-entry-240.bin')\n",
+        "    assert (m['selected_offset'], m['selected_bytes'], m['start'], m['end_exclusive']) == (0, 144, '0x39a0', '0x3a30')\n",
+        "    assert m['uninterpreted_retained_suffix_bytes'] == 96 and m['native_extent_claim'] is False\n",
+        "    assert identity(Path(m['prior_extraction']['path'])) == m['prior_extraction']\n",
+        "    prior = json.loads(Path(m['prior_extraction']['path']).read_text())\n",
+        "    assert (prior['start'], prior['end_exclusive'], prior['bytes'], prior['raw_sha256']) == ('0x39a0', '0x3a90', 240, m['retained_input']['sha256'])\n"
+      ]
+    },
+    {
+      "old_start": 162,
+      "old_end": 163,
+      "new_start": 154,
+      "new_end": 155,
+      "old_lines": [
+        "    assert proposal['selected_range'] == ['0x104b8c7b0', '0x104b8cb38'] and proposal['selected_bytes'] == 904\n"
+      ],
+      "new_lines": [
+        "    assert proposal['selected_range'] == ['0x39a0', '0x3a30'] and proposal['selected_bytes'] == 144\n"
+      ]
+    },
+    {
+      "old_start": 166,
+      "old_end": 167,
+      "new_start": 158,
+      "new_end": 159,
+      "old_lines": [
+        "                    '-m', '0x104b8c7b0', '-s', '0x104b8c7b0', '-q', '-c', 'pDj 904', str(OUT / 'process-span-904.bin')]\n"
+      ],
+      "new_lines": [
+        "                    '-m', '0x39a0', '-s', '0x39a0', '-q', '-c', 'pDj 144', str(OUT / 'receiver-span-144.bin')]\n"
+      ]
+    }
+  ],
+  "preserved_parent_files": [
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/README.md",
+      "bytes": 2591,
+      "sha256": "d49fec6c56cbca4f4f5a84a8e88c13cea22688270143de52ca68794c717821e1"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/author-check.json",
+      "bytes": 1194,
+      "sha256": "c5522766860b5798532e631f30a80360f486116339d28a26fe6529485bf5fede"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/check.py",
+      "bytes": 11849,
+      "sha256": "c4f7f6a102f418bfe808bf55ac8191b300eb131a19c0c550d53eb09c6bc115da"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/collect-once.py",
+      "bytes": 8925,
+      "sha256": "b4bc44c65f76fd588d73febab87b735fd36aa5710d6bc7c06e66322ba6d412af"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/delta.json",
+      "bytes": 14557,
+      "sha256": "c7d77855a6196a022bf493cd21342802a9d5947eb911928084e814fa1f4356ff"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/header-map.json",
+      "bytes": 15849,
+      "sha256": "e7032e9bc710e493db2e2cc90d72f34f13c9a9b559843a29fcad790ab78d642a"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/inputs.json",
+      "bytes": 29299,
+      "sha256": "7b215bd4424c70aa8b4fcd7e04a8423ca675d9790f318185ad4ebdccc45b7a5b"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/manifest.json",
+      "bytes": 1484,
+      "sha256": "be6aa9b2eed118adf7cc075834d93c01abcaaf44b7be136c2ea49e07ba388df0"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-process-span-preparation/proposal.json",
+      "bytes": 2434,
+      "sha256": "c1e78f2b26c62844329b7c4ce8ee2f16f99578b4dbe39dd9beeb1a0ef2344fb6"
+    }
+  ],
+  "validator": "Byte-identical pure definition retained; START/LENGTH globals fixed to new selection.",
+  "scope_change": "No original-image provider/header/extraction remains. Only retained240 opaque identity and future first144 selection,96 opaque suffix. No execution during preparation."
+}

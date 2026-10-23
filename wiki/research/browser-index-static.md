@@ -2,7 +2,7 @@
 id: RESEARCH-BROWSER-INDEX-STATIC
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-20
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -510,3 +510,69 @@ the stopping condition, under [ADR 0002](../decisions/adr-0002-static-first-anal
 - Shipped-file statistics count structure only. No tag lists or pack contents
   are reproduced beyond the 10 top-level category names and the single unresolved
   Builtin item.
+
+## Browser family route cut — 2026-10-20
+
+**Author map; pending independent structure review.** The
+[bounded browser map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-browser-index-routes-v1/structure.md)
+extends the approved component/integration map at I-01/I-02 document/media,
+I-06/I-12 delivery and I-10 save boundaries under amended plan4 item4. The
+Live↔browser service, actual indexed-item identity, selected view/filter,
+sidecar enumeration/enqueue, preview player and write/flush/refresh lifecycle
+joins remain unknown. No new graph traversal, native/provider/binary read,
+original/model/comparator/build/fixture/schema run, behavior grade or release.
+
+The [route ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-browser-index-routes-v1/route-ledger.json)
+holds 83 bounded observable/context partitions: 35 conditional S, 48
+no-established-route, 0 X across all 13 current r2 requirements and state/error/quit
+contexts. These counts are inventory, not a whole-family/product denominator
+or a compatibility pass. The 68 draft IDs (66 active/two withdrawn), 26 released objects,
+extension/label instances and source/helper records are different units;
+none pads the route count. The current owner, release and cases remain unchanged.
+
+[Exact source locators and limits](../../analysis/ableton-live-12.4.3/full-spec-v1/family-browser-index-routes-v1/source-map.json)
+reference 48 already retained provider records, 20 C-expression spans, 11 text/review
+spans and three SQL/string row locators without recapturing source or copying specs.
+Fifteen qualified relationships and eight missing bridges preserve the
+folder-direct-files versus pack-descendants distinction from RVB-01. Six
+historically reviewed apply/query/slot/built-in bodies are not in the retained
+record set; the old review remains evidence with that limitation. In-memory
+pruning/changed flag is not disk write-back. Conditional empty-document file
+removal is not proof that BI-069's edit becomes empty. Actual watch delivery,
+SQLite ordering/commit/durability, cache rebuild success and public refresh
+are not supplied by SQL/task/string associations.
+
+Own compiled-pseudocode, UUID and color/binding models are historical static
+checks, not extracted original execution; none is imported or rerun. No
+existing helper original-function ABI/harness model is established, so no X batch
+is selected. Main Live and Ableton Index addresses remain separate image
+domains; main resolved indirect inventory stays 25,071/268,015 with zero new credit.
+[Data-only author checks](../../analysis/ableton-live-12.4.3/full-spec-v1/family-browser-index-routes-v1/author-check.json)
+cover selected hashes/spans, route integrity and ten negative controls; parent
+seal, independent review and atlas/shared routing remain pending.
+
+The old process-role unknowns above are historical. The already retained
+[Live-side Index section](helper-launch-live-side.md#index) supplies conditional
+launch/options/controller/restart evidence; this map does not reopen it as a
+new investigation. It still does not establish actual service startup/event
+consumption, browser UI recovery or a whole-product lifecycle result.
+
+
+## Family route review approval — 2026-10-20
+
+The [independent structure review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-browser-index-routes-v1-review.json),
+SHA256 `23fcd358dcc1e059ef517d73652f625d12be4696ce4f49dcf82cff13ce7dad1a`,
+approves manifest `b63323fea02863ba326e664b73bf99aaee58611e0c6908b5d494e747ab3ccd6b`
+as bounded structure only. All 83 contexts/13 requirements are represented;
+35 conditional static routes, 48 without an established route and zero X
+remain inventory, not grades or a complete denominator. The earlier pending
+section is author history.
+
+Selected retained records/spans, current owner contexts and 68 draft/26 release
+navigation IDs were checked. Nine selected full retained C bodies were read;
+missing complete apply/query/slot/built-in bodies and original native-PC
+meanings remain inherited review limits. Helper and main images stay distinct,
+with no new indirect-site credit. Folder direct-file negatives, pack ancestor
+queries, held-state pruning versus disk write-back and active I1/I2/I5/I6/I7
+qualifications remain. Own compiled pseudocode/UUID/color models are not X.
+No original/model/SQLite execution, norm/case/release/grade or complete family.

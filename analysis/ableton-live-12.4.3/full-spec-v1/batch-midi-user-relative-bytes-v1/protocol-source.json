@@ -1,0 +1,81 @@
+{
+  "method_spans": [
+    {
+      "source": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/run_pilot.py",
+        "bytes": 27066,
+        "sha256": "b467d65afadaa5d64c98c5e970a6de88bf73e3b8e8ebc62d8de093fbf119579e"
+      },
+      "lines_inclusive": [
+        219,
+        225
+      ],
+      "offset": 12770,
+      "bytes": 393,
+      "sha256": "f9c5e77a27dbadb8ff9f5addcf96ef2593805b554cfeff035ac5340eae6fbdc9",
+      "text": "def midi_value(cur, lo, hi, v, mode, quantized):\n    data = struct.pack('<ffif', v, FLT_MAX, mode, 1.0).hex()\n    rng = as_f64(struct.unpack('<Q', struct.pack('<ff', lo, hi))[0])\n    res = R.run(['call', hex(MIDI_TU_INIT), 'call', hex(MIDI_VALUE), flt(cur), dbl(rng),\n                 'hex:' + data, f'i:{int(quantized)}', 'i:0'])\n    return as_f32(res.calls[-1]['xmm0']) if res.ok else None\n\n"
+    },
+    {
+      "source": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/x2-midi-v1/run_x2.py",
+        "bytes": 38921,
+        "sha256": "e607befb96cf7a74b34469ccf831365c07071e6f130800cedc5e3cd0a6415444"
+      },
+      "lines_inclusive": [
+        507,
+        523
+      ],
+      "offset": 28619,
+      "bytes": 898,
+      "sha256": "7f9b7a98ea3c8a07b311a6012f522a2839af026e0abf7e7ff201219c5f3513f3",
+      "text": "def value_batch(v_list, lo, hi, reversed_):\n    \"\"\"X: the value function alone, up to BATCH calls per process after the initializer (no gdb).\"\"\"\n    rng = dbl(as_f64(struct.unpack('<Q', struct.pack('<ff', min(lo, hi), max(lo, hi)))[0]))\n    out = []\n    for k in range(0, len(v_list), BATCH):\n        toks = ['call', hex(MIDI_TU_INIT)]\n        for v in v_list[k:k + BATCH]:\n            toks += ['call', hex(VALUE_FN), flt(0.5), rng, 'hex:' + struct.pack('<ffif', v, FLT_MAX, 0, 1.0).hex(),\n                     'i:0', f'i:{int(reversed_)}']\n        res = R.run(toks)\n        LOG.append((['<Runner>'] + [str(t) for t in toks[:12]] + ['...'], None, res))\n        if not res.ok or len(res.calls) != len(v_list[k:k + BATCH]) + 1:\n            raise RuntimeError(f'value batch failed {res.trap} {res.fault} {res.stderr[-300:]}')\n        out += [as_f32(c['xmm0']) for c in res.calls[1:]]\n    return out\n\n\n"
+    },
+    {
+      "source": {
+        "path": "/home/ollie/Documents/sound/tools/xexec/xexec.c",
+        "bytes": 20282,
+        "sha256": "63ef178734c86c0fd42c2a4ca4c4f96426e5d339a0cadbdfc3c0367786b6e117"
+      },
+      "lines_inclusive": [
+        271,
+        287
+      ],
+      "offset": 14514,
+      "bytes": 987,
+      "sha256": "de0db84739d3d4e2de51069b27182839683c6ee464617462d706933619a40bef",
+      "text": "/* xcall(fn, ints[6], fps[8], out[4]): out = rax, rdx, xmm0, xmm1 */\nvoid xcall(uint64_t fn, const uint64_t *ints, const uint64_t *fps, uint64_t *out);\n__asm__(\n    \".globl xcall\\nxcall:\\n\"\n    \" push %rbp\\n mov %rsp,%rbp\\n push %rbx\\n push %r12\\n push %r13\\n push %r14\\n push %r15\\n sub $8,%rsp\\n\"\n    \" mov %rdi,%r12\\n mov %rcx,%r13\\n mov %rsi,%r11\\n\"\n    \" movq 0(%rdx),%xmm0\\n movq 8(%rdx),%xmm1\\n movq 16(%rdx),%xmm2\\n movq 24(%rdx),%xmm3\\n\"\n    \" movq 32(%rdx),%xmm4\\n movq 40(%rdx),%xmm5\\n movq 48(%rdx),%xmm6\\n movq 56(%rdx),%xmm7\\n\"\n    \" mov 0(%r11),%rdi\\n mov 8(%r11),%rsi\\n mov 16(%r11),%rdx\\n mov 24(%r11),%rcx\\n\"\n    \" mov 32(%r11),%r8\\n mov 40(%r11),%r9\\n mov $8,%eax\\n\"\n    \" call *%r12\\n\"\n    \" mov %rax,0(%r13)\\n mov %rdx,8(%r13)\\n movq %xmm0,16(%r13)\\n movq %xmm1,24(%r13)\\n\"\n    \" add $8,%rsp\\n pop %r15\\n pop %r14\\n pop %r13\\n pop %r12\\n pop %rbx\\n pop %rbp\\n ret\\n\");\n\nstatic struct { uint8_t *p; size_t n; } bufs[256];\nstatic int nbufs;\nstatic uint64_t rets[256];\n"
+    },
+    {
+      "source": {
+        "path": "/home/ollie/Documents/sound/tools/xexec/xexec.c",
+        "bytes": 20282,
+        "sha256": "63ef178734c86c0fd42c2a4ca4c4f96426e5d339a0cadbdfc3c0367786b6e117"
+      },
+      "lines_inclusive": [
+        330,
+        385
+      ],
+      "offset": 17215,
+      "bytes": 3067,
+      "sha256": "d9c02d5d9571fa223545abac5f15facec3a2035a10b7727bcbef7316a0f1324a",
+      "text": "    if (list_imports)\n        for (int i = 0; i < nstubs; i++)\n            printf(\"import %s %s slots=%ld\\n\", stubs[i].data ? \"linux-data\" : stubs[i].target ? \"linux\" : \"trap\",\n                   stubs[i].name, stubs[i].slots);\n    static uint8_t altstack[65536];\n    stack_t ss = { .ss_sp = altstack, .ss_size = sizeof altstack };\n    sigaltstack(&ss, NULL);\n    struct sigaction sa = { .sa_sigaction = fault, .sa_flags = SA_SIGINFO | SA_ONSTACK };\n    sigaction(SIGSEGV, &sa, NULL); sigaction(SIGBUS, &sa, NULL); sigaction(SIGILL, &sa, NULL); sigaction(SIGFPE, &sa, NULL);\n    while (a < argc) {\n        if (!strcmp(argv[a], \"dump\")) {\n            if (a + 2 >= argc) die(\"dump EXPR LEN\");\n            uint64_t p = expr(argv[a + 1]); size_t n = expr(argv[a + 2]);\n            printf(\"dump %s 0x%lx \", argv[a + 1], p); hexout((uint8_t *)p, n); printf(\"\\n\");\n            a += 3; continue;\n        }\n        if (strcmp(argv[a], \"call\") || a + 1 >= argc) die(\"expected call or dump at %s\", argv[a]);\n        uint64_t fn = num(argv[a + 1]), ints[6] = {0}, fps[8] = {0}, out[4];\n        int ni = 0, nf = 0, first = nbufs;\n        for (a += 2; a < argc && strcmp(argv[a], \"call\") && strcmp(argv[a], \"dump\"); a++) {\n            const char *s = argv[a], *v = strchr(s, ':');\n            if (!v) die(\"bad argument %s\", s);\n            v++;\n            if (!strncmp(s, \"d:\", 2) || !strncmp(s, \"f:\", 2)) {\n                if (nf == 8) die(\"too many fp args\");\n                double x = strtod(v, NULL); float f = (float)x; uint64_t bits = 0;\n                if (*s == 'd') memcpy(&bits, &x, 8); else memcpy(&bits, &f, 4);\n                fps[nf++] = bits; continue;\n            }\n            if (ni == 6) die(\"too many integer args (stack arguments unsupported)\");\n            if (!strncmp(s, \"i:\", 2)) ints[ni++] = num(v);\n            else if (!strncmp(s, \"ref:\", 4)) ints[ni++] = expr(v);\n            else if (!strncmp(s, \"buf:\", 4)) ints[ni++] = (uint64_t)bufs[newbuf(num(v), NULL, 0)].p;\n            else if (!strncmp(s, \"str:\", 4)) ints[ni++] = (uint64_t)bufs[newbuf(strlen(v) + 1, v, strlen(v) + 1)].p;\n            else if (!strncmp(s, \"hex:\", 4)) {\n                size_t n = strlen(v) / 2; uint8_t tmp[4096];\n                if (n > sizeof tmp) die(\"hex too long\");\n                for (size_t i = 0; i < n; i++) sscanf(v + 2 * i, \"%2hhx\", &tmp[i]);\n                ints[ni++] = (uint64_t)bufs[newbuf(n, tmp, n)].p;\n            } else die(\"bad argument %s\", s);\n        }\n        if (ncalls == 256) die(\"too many calls in one process (limit 256)\");\n        fflush(stdout);\n        xcall(fn, ints, fps, out);\n        rets[ncalls] = out[0];\n        printf(\"call %d 0x%lx rax=0x%lx rdx=0x%lx xmm0=0x%lx xmm1=0x%lx\\n\", ncalls++, fn, out[0], out[1], out[2], out[3]);\n        for (int k = first; k < nbufs; k++) { printf(\"out b%d 0x%lx \", k, (uint64_t)bufs[k].p); hexout(bufs[k].p, bufs[k].n); printf(\"\\n\"); }\n        fflush(stdout);\n    }\n    for (int i = 0; i < nstubs; i++)\n        if (stubs[i].uses) printf(\"used %s %ld\\n\", stubs[i].name, stubs[i].uses);\n    return 0;\n}\n"
+    }
+  ],
+  "owner_span": {
+    "source": {
+      "path": "/home/ollie/Documents/sound/wiki/specs/midi-user-mapping.md",
+      "bytes": 69980,
+      "sha256": "c877decaa447ee773bf49fefd17b93f42c47e406354d6107883a940d32a85aea"
+    },
+    "lines_inclusive": [
+      184,
+      211
+    ],
+    "offset": 11618,
+    "bytes": 1743,
+    "sha256": "7798632e5d9ba34102948c682ebdf5c2b49bed1fce8d4975422d85fac3afb7a2",
+    "text": "- **S. Relative.** In the eight relative modes, data value v decodes to a\n  signed step d by the table below. A parameter that is not stepped becomes\n  current + (max \u2212 min) \u00d7 d/256, clamped to the interval between min and max. A\n  stepped parameter moves one unit per message, toward max when d > 0 and\n  toward min otherwise, so a decoded 0 moves it toward min. With min < max that\n  is +1 and \u22121; with a reversed range it is \u22121 when d > 0 and +1 otherwise\n  (revision 4). The result is clamped to the interval between min and max and\n  rounded as for Absolute (E12, E13).\n\n  | Mode | d for data value v |\n  | --- | --- |\n  | `LinearSignedBit` | v \u2264 64: +v; v \u2265 65: \u2212(v \u2212 64) |\n  | `LinearSignedBit2` | v \u2264 64: \u2212v; v \u2265 65: +(v \u2212 64) |\n  | `LinearTwoCompliment` | v \u2264 64: +v; v \u2265 65: v \u2212 128 |\n  | `LinearBinaryOffset` | v \u2212 64 |\n  | `AccelSignedBit` | v \u2264 64: +A(v); v \u2265 65: \u2212A(v \u2212 64) |\n  | `AccelSignedBit2` | v \u2264 64: \u2212B(v); v \u2265 65: +B(v \u2212 64) |\n  | `AccelTwoCompliment` | v \u2264 65: +B(v); v \u2265 66: \u2212B(128 \u2212 v) |\n  | `AccelBinaryOffset` | v \u2265 64: +B(v \u2212 64); v \u2264 63: \u2212B(64 \u2212 v) |\n\n  A(k) is 1, 2, 3, 4, 5, 8, 10, 20, 50 for k = 1\u20269 and 20 for any other k,\n  including 0. B(k) is 1, 2, 3, 4, 5, 8, 20, 50 for k = 1\u20268 and 50 for any\n  other k, including 0. Hence `AccelSignedBit` 10\u201364 gives +20,\n  `AccelBinaryOffset` 64 gives +50 and `AccelTwoCompliment` 65 gives +50.\n- **S. Takeover exemptions.** Takeover can act only on absolute target values\n  (`Absolute` messages and completed `Absolute14Bit` pairs) of continuous\n  parameters. Relative messages, the other parameter kinds and `Absolute`\n  messages of the crossfader are never subject to it, whatever the takeover\n"
+  },
+  "old_raw_limits": "Original X1 records lack process PID/UTC; none fabricated. No new invocation of them.",
+  "review": "handoff/midi-config-v4/REVIEW.md: old case expectations and 52-value scope reviewed; family review by citation, no repeat observation review."
+}

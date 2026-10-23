@@ -1,0 +1,1628 @@
+[
+  {
+    "id": "RML-001",
+    "requirements": [
+      "REQ-RML-001"
+    ],
+    "title": "Both-view visibility",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "In separate Session and Arrangement trials show/hide I/O through both menus and Ctrl+Alt+I on Windows or Ctrl+Option+I on macOS with the intended mixer focus; retain visible state.",
+    "documentary_expected": "Track I/O controls can be shown or hidden in Session and Arrangement using the mixer View controls or the documented platform shortcut.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B002",
+      "routing:B003"
+    ]
+  },
+  {
+    "id": "RML-002",
+    "requirements": [
+      "REQ-RML-002"
+    ],
+    "title": "Typed choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Inspect audio track A, MIDI track M without instrument, a separate MIDI track with a qualifying instrument, and return R. Record offered From/To labels and options without instantiating an unproven instrument or treating presence as output proof.",
+    "documentary_expected": "Audio From and MIDI From select their respective track input types. Tracks output audio except MIDI tracks without an instrument, which output MIDI; return inputs come from sends.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B004",
+      "routing:B005",
+      "routing:B007"
+    ]
+  },
+  {
+    "id": "RML-003",
+    "requirements": [
+      "REQ-RML-003"
+    ],
+    "title": "Dependent channel choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On a separately verified available audio input and MIDI input select two admitted categories in turn and inspect their lower lists. Do not assert all categories have the same channel set or ordering.",
+    "documentary_expected": "The upper routing chooser selects a source/destination category; the lower chooser supplies its available channel or sub-selection.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B008"
+    ]
+  },
+  {
+    "id": "RML-004",
+    "requirements": [
+      "REQ-RML-004"
+    ],
+    "title": "Multiple selected audio tracks",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Select two compatible audio tracks with distinct initial inputs, then choose one actually available Ext. In channel and one output in separate reset trials; inspect both selected tracks and an unselected control.",
+    "documentary_expected": "External audio input/output chooser changes and MIDI input chooser changes apply to the selected tracks described by the chapter.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B019",
+      "routing:B026"
+    ]
+  },
+  {
+    "id": "RML-005",
+    "requirements": [
+      "REQ-RML-004"
+    ],
+    "title": "Multiple selected MIDI inputs",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Select two MIDI tracks, choose an available port/channel input; inspect both and an unselected MIDI track. This clause does not infer multi-track MIDI-output behavior.",
+    "documentary_expected": "External audio input/output chooser changes and MIDI input chooser changes apply to the selected tracks described by the chapter.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B019",
+      "routing:B026"
+    ]
+  },
+  {
+    "id": "RML-006",
+    "requirements": [
+      "REQ-RML-005"
+    ],
+    "title": "Monitor and clip discrimination",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PATH: establish distinguishable nonzero external/internal input A and a clip B on the receiver, with known active device/output routing. Compare Off/Auto/In, armed/disarmed and clip stopped/playing independently under the linked recording clause. Retain device contribution and both stimulus identities; no latency or sample oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B010",
+      "routing:B011",
+      "routing:B012",
+      "routing:B013",
+      "routing:B014",
+      "routing:B016"
+    ]
+  },
+  {
+    "id": "RML-007",
+    "requirements": [
+      "REQ-RML-005"
+    ],
+    "title": "Monitor selection and recording independence",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With two selected receiving tracks use each offered Monitor button and inspect selected state; separately arm with Off using recording owner context and record observations only. Do not interpret In as a prohibition on arming/recording or infer a fresh-track default.",
+    "documentary_expected": "Monitoring passes selected input through the track device chain to its output. Off/Auto/In gating, arm interaction and selected-track Monitor dispatch are owned by REQ-RECORDING-COMPING-002; ordinary arming belongs to REQ-RECORDING-COMPING-001. No competing monitor-default rule is introduced here.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B010",
+      "routing:B011",
+      "routing:B012",
+      "routing:B013",
+      "routing:B014",
+      "routing:B016"
+    ]
+  },
+  {
+    "id": "RML-008",
+    "requirements": [
+      "REQ-RML-006"
+    ],
+    "title": "Reset scope",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On a disposable audio and MIDI track first choose a non-reset Monitor mode, expand I/O and focus the intended Monitor controls; invoke Edit Return to Default and separately the documented Delete reset. Retain focus and before/after state; do not apply Delete to a selected track header.",
+    "documentary_expected": "With I/O expanded, the documented Monitor reset command restores Off for audio and Auto for MIDI. This is a reset-context statement, not a universal new-track/custom-default/armed-track default.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B017"
+    ]
+  },
+  {
+    "id": "RML-009",
+    "requirements": [
+      "REQ-RML-007"
+    ],
+    "title": "Keep-latency control",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Select In then Auto separately on a test recording track; inspect the offered context option, toggle it off/on and retain visible state and label. The source uses closely related label variants; exact target spelling/default loading is U.",
+    "documentary_expected": "In/Auto monitoring documents an enabled-by-default option to keep monitoring latency in recorded material, with manual switching through those Monitor controls. This establishes an option and context, not a timestamp correction formula or global constructor default.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B015"
+    ]
+  },
+  {
+    "id": "RML-010",
+    "requirements": [
+      "REQ-RML-007"
+    ],
+    "title": "Recorded timing boundary",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With independent positive input/monitor/record baselines, record distinct F-AUDIO transients with the option off/on in fresh trials. Retain source/monitor/record positions and timing uncertainty; do not subtract assumed driver, device or round-trip values.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B015"
+    ]
+  },
+  {
+    "id": "RML-011",
+    "requirements": [
+      "REQ-RML-008"
+    ],
+    "title": "Enabled channel inventory",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EXTERNAL prerequisites: inspect Ext. In/Out channel choosers and Configure. Compare only the independently known enabled mono channel and stereo pair with the list. Actual port inventory, device availability and activation failures are U.",
+    "documentary_expected": "Ext. In selects interface input channels; Audio Settings and channel configuration determine available mono/stereo inputs/outputs. Configure opens that settings route.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B019",
+      "routing:B020"
+    ]
+  },
+  {
+    "id": "RML-012",
+    "requirements": [
+      "REQ-RML-009"
+    ],
+    "title": "Rename one configured channel",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On an admitted disposable configuration record device identity, rename one channel to owned text, Tab to the next, then inspect the relevant chooser. Restore the original name; device switching/reconnection and persistence are separate U probes.",
+    "documentary_expected": "Renaming configured audio channels changes their chooser names; names are associated with the audio device. Tab advances between names in the configuration dialog.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B021"
+    ]
+  },
+  {
+    "id": "RML-013",
+    "requirements": [
+      "REQ-RML-010"
+    ],
+    "title": "Visible meter roles",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With F-EXTERNAL/F-MIDI positive known inputs inspect audio and MIDI chooser meters. Record idle/active states without inferring routing merely from a meter or grading a numeric threshold. Do not deliberately overload physical outputs.",
+    "documentary_expected": "External audio input entries expose activity/overload meters; MIDI input channel entries expose activity meters. Their calibration, red threshold, detector/window, hold and refresh timing are not established here.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B019",
+      "routing:B026"
+    ]
+  },
+  {
+    "id": "RML-014",
+    "requirements": [
+      "REQ-RML-011"
+    ],
+    "title": "Port and channel choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Inspect MIDI From for two independently available ports and distinct channels, All Ins and All Channels; retain offered choices.",
+    "documentary_expected": "MIDI From can select one external port or All Ins, and one channel or All Channels; the All choices describe merged inputs. No merge ordering or duplicate-event policy is supplied.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B026"
+    ]
+  },
+  {
+    "id": "RML-015",
+    "requirements": [
+      "REQ-RML-011"
+    ],
+    "title": "Merged and selected MIDI streams",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI: independently identify two note streams on separate ports/channels, then compare single-port/single-channel with the All choices and a mismatched channel. Keep an active admitted positive recipient and note lifetimes; record events/output without a timestamp or duplicate-order oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B026"
+    ]
+  },
+  {
+    "id": "RML-016",
+    "requirements": [
+      "REQ-RML-012"
+    ],
+    "title": "Separate port roles",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On available test input/output ports inspect Track/Sync/Remote separately and track their visible states. Do not send clock/resync to real gear or infer control-surface support.",
+    "documentary_expected": "The MIDI settings distinguish Track for note/CC traffic, Sync for clock/timecode use and Remote for controller mapping/feedback. These roles do not establish sync protocol, arbitrary hardware support or mapping takeover behavior.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B028",
+      "routing:B030",
+      "routing:B031",
+      "routing:B032",
+      "routing:B035",
+      "routing:B045",
+      "routing:B046",
+      "routing:B047"
+    ]
+  },
+  {
+    "id": "RML-017",
+    "requirements": [
+      "REQ-RML-012"
+    ],
+    "title": "Track versus mapped message delivery",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI: retain an unmatched note/CC positive track baseline; separately compare the same eligible message with a deliberate Remote mapping and Track/Remote combinations. Mapping law remains with the MIDI owner; capture visible indicators and recipient output as U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B028",
+      "routing:B030",
+      "routing:B031",
+      "routing:B032",
+      "routing:B035",
+      "routing:B045",
+      "routing:B046",
+      "routing:B047"
+    ]
+  },
+  {
+    "id": "RML-018",
+    "requirements": [
+      "REQ-RML-013"
+    ],
+    "title": "MIDI To port and channel",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On a MIDI track without instrument inspect two actually offered external destinations/channels. F-EXTERNAL must independently identify the recipient before any future delivery observation; device-level External Instrument selectors are linked, not duplicated.",
+    "documentary_expected": "A MIDI-output track selects a destination port and output channel through its To chooser pair. External Instrument is an alternative device-owned round-trip route, not the same controls.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B056",
+      "routing:B057"
+    ]
+  },
+  {
+    "id": "RML-019",
+    "requirements": [
+      "REQ-RML-014"
+    ],
+    "title": "Indicator directions and categories",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With available test ports independently identify incoming/outgoing track and remote events, inspect indicator locations; inspect sync-pair visibility only after configuring an available external sync source. Figures were not inspected, so no pixel layout or icon detail is required.",
+    "documentary_expected": "Control-Bar MIDI indicators distinguish sync, remote and track traffic and incoming/outgoing direction. Sync indicators have an external-sync-source visibility condition; mapped remote messages are described as consumed before MIDI tracks.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B060",
+      "routing:B061",
+      "routing:B062",
+      "routing:B063",
+      "routing:B064",
+      "routing:B065"
+    ]
+  },
+  {
+    "id": "RML-020",
+    "requirements": [
+      "REQ-RML-014"
+    ],
+    "title": "Consumed remote messages",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Repeat one known mapped and one unmatched message with a positive Track recipient baseline and explicit Remote assignment. Record category indications and track delivery; no codec, event filtering beyond the described mapping, latency or sample ordering is invented.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B060",
+      "routing:B061",
+      "routing:B062",
+      "routing:B063",
+      "routing:B064",
+      "routing:B065"
+    ]
+  },
+  {
+    "id": "RML-021",
+    "requirements": [
+      "REQ-RML-015"
+    ],
+    "title": "Compatible output target list",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Create A/B audio sources, receiver C and a MIDI-only control. Inspect compatible Audio To choices and C before/after assigning A and B to C. No unsupported type-conversion or graph-cycle policy is assumed.",
+    "documentary_expected": "A track may choose another compatible receiver as output without changing that receiver’s own I/O settings; multiple senders can address that receiver. Source/destination signal types must be compatible.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B071",
+      "routing:B072",
+      "routing:B074"
+    ]
+  },
+  {
+    "id": "RML-022",
+    "requirements": [
+      "REQ-RML-015"
+    ],
+    "title": "Many-to-one delivery",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO/F-PATH: independently prove A->C and B->C with C input monitoring active, known effects/mixer and nonmuted output; then route both, vary only one source at a time, and inspect each contribution. Numeric summing/clipping belongs to linked owners and remains ungraded here.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B071",
+      "routing:B072",
+      "routing:B074"
+    ]
+  },
+  {
+    "id": "RML-023",
+    "requirements": [
+      "REQ-RML-016"
+    ],
+    "title": "Compatible input target list",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Record A source routing, choose A as Audio From on B then C, select an admitted tap on each, and inspect A route values after each assignment.",
+    "documentary_expected": "Selecting a compatible source as another track’s input taps it without otherwise changing the source’s routing; more receivers can tap that source.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B073",
+      "routing:B075"
+    ]
+  },
+  {
+    "id": "RML-024",
+    "requirements": [
+      "REQ-RML-016"
+    ],
+    "title": "One-to-many delivery",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PATH: establish active nonzero A and independent positive B/C receiver paths, with competing direct A output isolated only after retaining it. Compare A contributions at B/C and source direct path without treating duplicate signals or silence as an oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B073",
+      "routing:B075"
+    ]
+  },
+  {
+    "id": "RML-025",
+    "requirements": [
+      "REQ-RML-017"
+    ],
+    "title": "Three audio tap choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Choose active audio source A as receiver B Audio From and enumerate the three named taps; record actual source identity and chooser selection.",
+    "documentary_expected": "Audio From another track offers Pre FX, Post FX and Post Mixer: before devices, after devices/before mixer and after mixer respectively. Finite device/mixer calculations remain with their owners.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B077",
+      "routing:B078",
+      "routing:B079",
+      "routing:B080",
+      "routing:B081"
+    ]
+  },
+  {
+    "id": "RML-026",
+    "requirements": [
+      "REQ-RML-017"
+    ],
+    "title": "Device and mixer perturbations at taps",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PATH: independently characterize a nonzero distinguishable device contribution and mixer perturbation on A. At each tap compare changes to only the device, then only mixer volume/pan, using nonzero receiver/output and paired active baselines. No transfer coefficient or exact null is specified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B077",
+      "routing:B078",
+      "routing:B079",
+      "routing:B080",
+      "routing:B081"
+    ]
+  },
+  {
+    "id": "RML-027",
+    "requirements": [
+      "REQ-RML-018"
+    ],
+    "title": "Tap and receiver solo contexts",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Fresh F-PATH trials with one source/receiver and positive contribution at all three taps: solo the receiver for each tap, then separately build A/B->C and solo C/A in reset trials. Record active source/return paths and Solo-in-Place preference. No calibrated silence or bypass matrix oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B074",
+      "routing:B079",
+      "routing:B080",
+      "routing:B081"
+    ]
+  },
+  {
+    "id": "RML-028",
+    "requirements": [
+      "REQ-RML-019"
+    ],
+    "title": "Named chain tap choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Use a retained, explicitly named two-chain rack and a Drum Rack with an actual return chain; inspect offered receiver Audio From chain/tap labels. Do not assume empty racks expose nonexistent chains.",
+    "documentary_expected": "Routing choices can expose Instrument/Effect Rack chain Pre FX/Post FX/Post Mixer and Drum Rack return-chain points, with documented chain-point solo behavior. Rack chain processing and drum return ownership remain with SPEC-DEVICE-RACKS.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B083",
+      "routing:B084",
+      "routing:B085",
+      "routing:B086",
+      "routing:B087"
+    ]
+  },
+  {
+    "id": "RML-029",
+    "requirements": [
+      "REQ-RML-019"
+    ],
+    "title": "Chain tap isolation",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Independently prove each selected chain/return signal and isolate other chains; select each admitted point on a receiver and compare chain device/mixer perturbations and receiver solo. No rack-path kernel or chain sum is inferred.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B083",
+      "routing:B084",
+      "routing:B085",
+      "routing:B086",
+      "routing:B087"
+    ]
+  },
+  {
+    "id": "RML-030",
+    "requirements": [
+      "REQ-RML-020"
+    ],
+    "title": "MIDI tap list",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Use source M with an independently qualified instrument and MIDI effects plus receiver N with its own qualified instrument. Inspect N MIDI From M and Post FX choice; this does not infer routing audio into a MIDI input.",
+    "documentary_expected": "When one MIDI track takes MIDI from another, the chapter describes tapping after MIDI effects and before the source instrument, permitting layered receivers even when the source track ultimately outputs audio.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B124",
+      "routing:B125"
+    ]
+  },
+  {
+    "id": "RML-031",
+    "requirements": [
+      "REQ-RML-020"
+    ],
+    "title": "MIDI before source instrument",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI/F-PATH: retain distinct positive MIDI-effect contribution and both audible instruments. Compare source MIDI-effect changes with source-instrument-only timbre changes on the receiver, without demanding waveform or event-timing equality.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B124",
+      "routing:B125"
+    ]
+  },
+  {
+    "id": "RML-032",
+    "requirements": [
+      "REQ-RML-021"
+    ],
+    "title": "Track and instrument destination choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On a qualifying named instrument host inspect sender MIDI To lower choices Track In and that instrument; retain actual instrument identity and channel context.",
+    "documentary_expected": "A MIDI sender targeting an instrument-hosting track can address Track In or the offered instrument directly. Direct instrument targeting bypasses the receiving track’s recording/monitoring stage in the chapter’s example.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B102",
+      "routing:B103"
+    ]
+  },
+  {
+    "id": "RML-033",
+    "requirements": [
+      "REQ-RML-021"
+    ],
+    "title": "Direct instrument with receiver monitoring variations",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI: prove positive instrument output first; compare direct instrument versus Track In while receiver Monitor/Arm changes under the recording owner. Keep the host activator/output audible before interpreting any no-effect result; no event/latency oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B102",
+      "routing:B103"
+    ]
+  },
+  {
+    "id": "RML-034",
+    "requirements": [
+      "REQ-RML-022"
+    ],
+    "title": "No Input Arm presentation",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On a qualifying instrument host with MIDI arriving directly from another track, select No Input and inspect Arm presentation. Restore a valid input before testing normal arm under the recording owner.",
+    "documentary_expected": "In the documented instrument-container setup, selecting MIDI No Input hides its Arm control; it does not make its routed instrument output immune to the host track’s Activator.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B104"
+    ]
+  },
+  {
+    "id": "RML-035",
+    "requirements": [
+      "REQ-RML-022"
+    ],
+    "title": "Container activation boundary",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With an independently known nonzero sender/direct instrument/return baseline, compare host Activator on/off without assuming the sender itself stops. Held-note lifetime, tails and exact silence remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B104"
+    ]
+  },
+  {
+    "id": "RML-036",
+    "requirements": [
+      "REQ-RML-023"
+    ],
+    "title": "Qualified port availability",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With independently identified multi-output instrument and sidechain-capable effect inspect offered individual output, MIDI part/channel and sidechain choices. Native device integrated selectors and track To selectors are separate entrypoints; external-device controls remain with their owner.",
+    "documentary_expected": "Multi-output instruments and sidechain-capable devices may expose named routing destinations/sources. Availability is device-specific: Impulse’s automatic removal of a tapped slot from its own mix must not be generalized to arbitrary plug-ins.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B106",
+      "routing:B107",
+      "routing:B109",
+      "routing:B110",
+      "routing:B120",
+      "routing:B121",
+      "routing:B122"
+    ]
+  },
+  {
+    "id": "RML-037",
+    "requirements": [
+      "REQ-RML-023"
+    ],
+    "title": "Auxiliary and sidechain contribution",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PATH with independently characterized positive main/auxiliary outputs and distinct sidechain donor: vary donor and auxiliary contribution in separate fresh trials, preserving carrier, return and nonzero wet path. Do not assert universal slot-removal, duplicate suppression or a plug-in API.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B106",
+      "routing:B107",
+      "routing:B109",
+      "routing:B110",
+      "routing:B120",
+      "routing:B121",
+      "routing:B122"
+    ]
+  },
+  {
+    "id": "RML-038",
+    "requirements": [
+      "REQ-RML-024"
+    ],
+    "title": "Processing and recording receiver routes",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Configure processor A Monitor In and recorder B Monitor Off with Audio From A Post FX; then Post Mixer. Inspect route selections; source arm/record transitions stay with their owner.",
+    "documentary_expected": "The chapter uses a monitored processing track and separate recording receivers taking Post FX, or Post Mixer when its level/pan is wanted. Recording transitions/media semantics belong to SPEC-RECORDING-COMPING.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B091",
+      "routing:B092",
+      "routing:B093",
+      "routing:B095",
+      "routing:B096"
+    ]
+  },
+  {
+    "id": "RML-039",
+    "requirements": [
+      "REQ-RML-024"
+    ],
+    "title": "Recorded tap contribution",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With independent nonzero source, processing and record baselines capture a short disposable trial at each tap while changing only A mixer controls; do not assert timing, sample identity, encoding or preserved source files.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B091",
+      "routing:B092",
+      "routing:B093",
+      "routing:B095",
+      "routing:B096"
+    ]
+  },
+  {
+    "id": "RML-040",
+    "requirements": [
+      "REQ-RML-025"
+    ],
+    "title": "Sends Only choice",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With actual return R and known send mapping inspect source A Output Type Sends Only and its relevant send, then ordinary Main routing in separate reset trials.",
+    "documentary_expected": "Multiple track outputs can feed a submix track that outputs to Main. Sends Only with a nonzero selected send uses its corresponding return as submixer; this describes routing roles, not a send-gain law.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B098",
+      "routing:B100"
+    ]
+  },
+  {
+    "id": "RML-041",
+    "requirements": [
+      "REQ-RML-025"
+    ],
+    "title": "Sends Only with active return",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PATH: first prove A->R nonzero send/return contribution with R routed to audible Main and a known return effect; then select Sends Only, retain the positive return path and distinguish direct versus return contributions. Zero send, muted return or dry-only routing is inconclusive.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B098",
+      "routing:B100"
+    ]
+  },
+  {
+    "id": "RML-042",
+    "requirements": [
+      "REQ-RML-026"
+    ],
+    "title": "Main versus custom child routing",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On disposable A/B/C tracks put A Audio To Main and B Audio To C, then group A/B; inspect each output selector and C. Do not equate the group folder with a forced destination or infer nested/ungroup transactions.",
+    "documentary_expected": "Grouping retargets Main-routed children to the group; existing custom destinations are retained.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B099",
+      "mixing:B039"
+    ]
+  },
+  {
+    "id": "RML-043",
+    "requirements": [
+      "REQ-RML-027"
+    ],
+    "title": "Return and Main presentation",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With existing return R/Main inspect absence of clip playback slots and offered output/device controls; numerical summing and output-stage clipping remain outside this case.",
+    "documentary_expected": "Returns combine sent audio; Main is the usual final destination. Neither plays clips.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B005",
+      "mixing:B048",
+      "mixing:B051",
+      "mixing:B055"
+    ]
+  },
+  {
+    "id": "RML-044",
+    "requirements": [
+      "REQ-RML-028"
+    ],
+    "title": "Return tap option",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Inspect two existing returns with independent Pre/Post choices and change one at a time, recording selection state only.",
+    "documentary_expected": "Pre/Post is per return; the finite send-stage law remains in SPEC-MIX-GRAPH.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "mixing:B054"
+    ]
+  },
+  {
+    "id": "RML-045",
+    "requirements": [
+      "REQ-RML-028"
+    ],
+    "title": "Tap and separate monitor destination",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PATH/F-EXTERNAL: compare the independently identified pre/post source contributions at a positive return, then an actually available separate output. Existing finite send coefficients are not rederived; arbitrary routing, external mix and timing remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "mixing:B054"
+    ]
+  },
+  {
+    "id": "RML-046",
+    "requirements": [
+      "REQ-RML-029"
+    ],
+    "title": "Cue setup choices",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-CUE: independently identify two dedicated stereo output pairs; inspect Main Out, Cue Out, Solo/Cue mode and Cue Volume. Keep destination identities distinct and capture actual offered controls. No qualifying interface is asserted present here.",
+    "documentary_expected": "Cue requires distinct Main/Cue destinations on a qualifying multi-output interface; Cue mode replaces Solo controls and offers Cue Volume.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "mixing:B074",
+      "mixing:B075",
+      "mixing:B076",
+      "mixing:B077",
+      "mixing:B078",
+      "mixing:B079"
+    ]
+  },
+  {
+    "id": "RML-047",
+    "requirements": [
+      "REQ-RML-030"
+    ],
+    "title": "Cue and Main discrimination",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-CUE: independently characterize nonzero output on both destination pairs, then use distinct track A and owned browser preview B. Compare track Cue on/off with Activator on/off, keeping Cue Volume positive and hardware mixer isolated. No crosstalk, gain or timing tolerance is supplied.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "mixing:B078",
+      "mixing:B080"
+    ]
+  },
+  {
+    "id": "RML-048",
+    "requirements": [
+      "REQ-RML-031"
+    ],
+    "title": "Resampling selector",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On an audio recorder inspect Resampling as input type and Main source role; arm only under the recording owner.",
+    "documentary_expected": "An audio track’s Resampling input takes Main. During resampling its own output is suppressed from the recording; recording and media storage outcomes retain their existing owners.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B067",
+      "routing:B068",
+      "routing:B069"
+    ]
+  },
+  {
+    "id": "RML-049",
+    "requirements": [
+      "REQ-RML-031"
+    ],
+    "title": "Resampling self-contribution boundary",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Retain active nonzero Main A and a distinct recorder-clip B positive baseline; in a separate armed Resampling recording compare contributions without assuming feedback cancellation, exact duration, audio equality or file format.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B067",
+      "routing:B068",
+      "routing:B069"
+    ]
+  },
+  {
+    "id": "RML-050",
+    "requirements": [
+      "REQ-RML-032"
+    ],
+    "title": "Compensation control",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Inspect Options Delay Compensation on a fresh documented context and a saved Set separately, toggle off/on and retain visible state. Fresh-instance preferences and target default remain U.",
+    "documentary_expected": "Options exposes Delay Compensation, documented on by default for built-in devices and plug-ins including returns. The synchronization goal supplies no measured alignment, device-reporting contract or scheduling algorithm.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B002",
+      "compensation:B003"
+    ]
+  },
+  {
+    "id": "RML-051",
+    "requirements": [
+      "REQ-RML-032"
+    ],
+    "title": "Compensation composition",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LATENCY: establish independently known nonzero dry and delayed-device branches plus active return; compare compensation off/on using retained stimuli and uncertainties. Do not derive compensation samples from source prose or infer alignment from the switch alone.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B002",
+      "compensation:B003"
+    ]
+  },
+  {
+    "id": "RML-052",
+    "requirements": [
+      "REQ-RML-033"
+    ],
+    "title": "Reduced-latency option eligibility",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Compare Delay Compensation off/on and inspect availability/state of Reduced Latency When Monitoring without assuming how a disabled option’s stored value is retained.",
+    "documentary_expected": "Reduced Latency When Monitoring is available with Delay Compensation on and changes compensation for input-monitored tracks while other compensated paths can remain different. Lowest-latency/in-sync language is an uncalibrated goal, not a zero-latency or alignment oracle.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B004"
+    ]
+  },
+  {
+    "id": "RML-053",
+    "requirements": [
+      "REQ-RML-033"
+    ],
+    "title": "Input monitoring versus return latency",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LATENCY: compare Monitor In, armed Auto with no clip, Auto during clip playback, and Off under the linked monitoring owner. In separate trials toggle Reduced Latency When Monitoring with compensation on, using independent main/return baselines. Numeric alignment, graph membership and transition ordering remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B004"
+    ]
+  },
+  {
+    "id": "RML-054",
+    "requirements": [
+      "REQ-RML-034"
+    ],
+    "title": "Track Delay units and availability",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Show Track Delay via Track Options in mixer and Arrangement, inspect ms/sample unit toggle, then Delay Compensation off/on. Enter two admitted small values on a disposable stopped track, recording units; no range, conversion, rounding or retained-time equality is asserted.",
+    "documentary_expected": "Track Delay offers sample/ms units and is unavailable with Delay Compensation off. It is distinct from automatic compensation and device-owned Hardware Latency controls.",
+    "documentary_comparator": "Compare only named visible options, accepted chooser selections, eligibility and explicit state relationships; no audio, MIDI-delivery, meter calibration, latency, timing or private-state oracle.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B006",
+      "mixing:B082",
+      "mixing:B083",
+      "mixing:B084",
+      "mixing:B085",
+      "mixing:B087"
+    ]
+  },
+  {
+    "id": "RML-055",
+    "requirements": [
+      "REQ-RML-034"
+    ],
+    "title": "Track Delay and clock-dependent effects",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With F-LATENCY positive source/effect paths, compare two admitted Track Delay values and a separately characterized tempo-synced effect following a qualifying delayed device. The compensation chapter warns of timing-sensitive effects after delay; exact phase, clock policy and audible artifact thresholds remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B006",
+      "mixing:B082",
+      "mixing:B083",
+      "mixing:B084",
+      "mixing:B085",
+      "mixing:B087"
+    ]
+  },
+  {
+    "id": "RML-056",
+    "requirements": [
+      "REQ-RML-035"
+    ],
+    "title": "Input versus output meter context",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With independently known F-AUDIO input A and distinct clip B, compare Monitor In/Auto/Off under the existing gating owner while inspecting the same track meter. Record input/output and peak/RMS observations, without a numeric detector, level, refresh or latency oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "mixing:B009"
+    ]
+  },
+  {
+    "id": "RML-057",
+    "requirements": [
+      "REQ-RML-U-SIGNAL"
+    ],
+    "title": "Unresolved mono/stereo matrix",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO/F-EXTERNAL: independently identify mono input, stereo input and mono output; retain channel-discriminating A/B positives. Record in each input mode and route to mono output, distinguishing recorded format from processed channel signals. The manual’s duplicate/sum-and-attenuate description does not supply target precision, clipping or coefficients for a new numeric oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "routing:B023",
+      "routing:B024"
+    ]
+  },
+  {
+    "id": "RML-058",
+    "requirements": [
+      "REQ-RML-U-LATENCY"
+    ],
+    "title": "Rate, blocks and latency calibration",
+    "kind": "sample-rate",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LATENCY: retain calibrated physical/software path identity and input/output timestamps with uncertainties, then compare supported 44.1/48/96 kHz and 64/512-frame configurations while stopped and separately active. Record actual accepted settings, reporting changes, errors and recovery. No device or driver change occurs here.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B002",
+      "compensation:B004",
+      "compensation:B005",
+      "compensation:B006",
+      "compensation:B007"
+    ]
+  },
+  {
+    "id": "RML-059",
+    "requirements": [
+      "REQ-RML-U-LATENCY"
+    ],
+    "title": "Transport and synchronized routes",
+    "kind": "transport",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On positive input/tap/return/cue paths with independently known delayed devices compare stop/start, seek, loop and a 120 to 90 BPM change. Monitor In/Auto/Off are separate reset trials. Record phase/note/tail continuity without a sample deadline.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "compensation:B002",
+      "compensation:B004",
+      "compensation:B005",
+      "compensation:B006",
+      "compensation:B007"
+    ]
+  },
+  {
+    "id": "RML-060",
+    "requirements": [
+      "REQ-RML-U-STATE"
+    ],
+    "title": "Save, reopen and missing route identity",
+    "kind": "persistence",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On disposable Set with A->group->Main, A->R send, B tap, MIDI source/channel and qualifying cue choices, save/reopen. Repeat with renamed/reordered source, device or port unavailable. Record identity, diagnostics and restoration without fabricating a saved encoding or repair policy.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-061",
+    "requirements": [
+      "REQ-RML-U-STATE"
+    ],
+    "title": "Monitor default contexts",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Compare fresh audio/MIDI tracks with no custom defaults, loaded presets/template, monitor reset, armed state, clip playback and saved Set. Retain each context and preference. The routing chapter reset Off/Auto and its generic Auto wording do not settle a universal default.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-062",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Routing automation and control ownership",
+    "kind": "automation",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With positive active A/B/return paths attempt automation/mapping only for actually offered input/output, monitor, sends, Track Delay and latency options. Compare manual changes, overrides and re-enable at a recorded bar boundary; eligibility and scheduling remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-063",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Undo and redo of route changes",
+    "kind": "undo",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Record accepted source/channel/tap/Monitor and group destination state; edit three controls separately on test copies and Undo/Redo. Include source/receiver deletion in a separate trial; record grouping, held notes and output restoration without assuming atomicity.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-064",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Malformed route or numeric values",
+    "kind": "malformed",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On disposable copies only attempt unsupported route references in an independently understood saved-state format, and invalid numeric text NaN, inf or abc in offered delay controls. If the format/control is not established, retain that prerequisite rather than invent encoding. Observe rejection/repair and source preservation.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-065",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Routing chooser cancellation",
+    "kind": "cancel",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Begin an offered source/channel selection and dismiss without committing; separately open Configure and a monitor context menu then cancel. Retain previous values, output and any held note; no rollback or commit point is assumed.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-066",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Source loss and reconnection",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "After positive path calibration, remove the owned sender track in one reset trial; in a separately qualified physical trial disconnect the selected interface or MIDI donor and reconnect. Record stale names, diagnostics, note termination and route restoration. No real disconnect is performed here.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-067",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Feedback and cycle admission",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On an attenuated disposable software-only configuration inspect offered self-output, A->B->A and return-to-return route choices. Do not inject an unbounded loop; record availability/admission before any authorized finite future signal trial. Cycle prevention, stability, limiter and compensation through feedback remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-068",
+    "requirements": [
+      "REQ-RML-U-LIFECYCLE"
+    ],
+    "title": "Removal and engine teardown",
+    "kind": "teardown",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With independently active source, monitored receiver, return and held MIDI note, separately remove receiver, remove delayed device, suspend engine and close Set. Retain final output/state/diagnostics; no guaranteed silence, flush deadline, tail persistence or internal cleanup mechanism is asserted.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "RML-069",
+    "requirements": [
+      "REQ-RML-U-HARDWARE"
+    ],
+    "title": "Unavailable or refused configuration",
+    "kind": "recovery",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On a future disposable supported configuration request an unavailable device/channel or unsupported rate only through offered interfaces, then restore the known positive route. Retain permissions/refusal/error text and surviving settings; port names are not proof of hardware capability.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  }
+]

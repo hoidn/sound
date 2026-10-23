@@ -1,0 +1,26 @@
+{
+  "utc": "2026-10-20T13:01:06.036462+00:00",
+  "disposition": "REQUIRES_FOCUSED_NEW_PREPARATION_REVISION_BEFORE_SELECTED_EXTRACTION",
+  "scope": "Fullcollector/README read; focusedrowpredicate check only, remainingplan/delta/header preflight notcomplete",
+  "manifest": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-kind7-base-return-instruction-preparation/manifest-preparation.json",
+    "bytes": 4604,
+    "sha256": "8e2aac6e3efdcf9ce59b8867b86d369efc72311766c02b5d9a1745e1b878a7c2"
+  },
+  "finding": {
+    "id": "UTBASE-PREFLIGHT-001",
+    "guard": "len(decoded) == 8 and all((r['offset'] == START + 4 * i and r['size'] == 4 and (r.get('type') != 'ill') and (r.get('opcode') not in [None, 'invalid']) for i, r in enumerate(decoded)))",
+    "fixture": {
+      "offset": 4331744516,
+      "size": 4,
+      "type": "invalid",
+      "opcode": "",
+      "bytes": "00000000"
+    },
+    "eight_matching_rows_accepted": true,
+    "reason": "Matchingoffset/size rows with typeinvalid and emptyopcode satisfy predicate; bytesroundtrip is independentlypassable on matchingdata and doesnot establishdecodedvalidity. Mustreject invalid/illtypes plus absent/None/nonstring/empty/invalid/ill/none opcode withappropriatecase/whitespace normalization."
+  },
+  "activity": "OnlyASTpredicate on syntheticrows; noselectedinstructionbytes/imagewindow/collector/import/decoder/originalexecution",
+  "historical_limit": "Oldactual96B/32B evidence was independentlyverified valid. Thisfinding doesnot claim an oldactualdecodefailure or prove oldinvalidsize0rows passed. Preserve oldprep/actualbytes.",
+  "required_action": "NewfocusedR2prep, nevereditR1. Minimalguard/dest/manifestchanges with invalidrowfixtures andvalidcontrol. Noactualrunbeforefullpreflight."
+}

@@ -2,7 +2,7 @@
 id: RESEARCH-TRANSPORT-STATE-NATIVE
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -213,7 +213,18 @@ them into global time-range variables. The translator `0x101492afc` moves an
 unautomated parameter's single event from time 0.0 to −63,072,000.
 **Inferred:** −63,072,000 beats is the lower end of the automation time range, and
 a one-event envelope at that time encodes an unautomated value. Whether 12.4.3
-prefers that event or `Manual` when they disagree is **unknown** (PRB-N1-04/05).
+selects the envelope value, and under which owner state, remains partly **unknown**
+(PRB-N1-04/05). The retained
+[v3 review checks](../../analysis/ableton-live-12.4.3/handoff-staging/transport-state-v3-analysis/review/review-checks.txt)
+add a conditional static result (2026-10-19 reconciliation): the set-open validation
+`0x1026fc558` checks slot +0x200 for an envelope, slot +0x290 for enablement,
+and owner +0x2b8 bit 0 clear; if the envelope-derived value differs from `Manual`
+by at least 1e-12 (`0x102777640`), it sets `Manual` through `0x10156e6ec`.
+For song tempo, +0x200 is `0x1026f90d4` (envelope lookup) and +0x290 is
+`0x1026f9240` (true). No envelope means no replacement. The owner flag's meaning
+and the choice of envelope value were not interpreted, so this does not establish
+an unconditional first-event precedence or any scene/meter rule. See
+[REQ-TRANSPORT-STATE-012](../specs/transport-state.md#req-transport-state-012--precedence-between-stored-tempo-and-meter-sources).
 
 ## Writer number format
 
@@ -427,6 +438,19 @@ a stop condition.
 | PRB-N1-07 | A real 12.4.3 save: number text, child order, KeyMidi omission, envelopes, SchemaChangeCount |
 | PRB-N1-08 | Duplicate child, unknown child and unknown attribute outcomes |
 
+## Shared integer-converter lead, reconciled 2026-10-19
+
+The retained [note-storage review excerpts](../../analysis/ableton-live-12.4.3/handoff-staging/midi-note-storage-v1-analysis/review/corpus-excerpts.jsonl)
+contain int32 converter `0x1002fda78` (chunk-00132 offset 138125), which accepts
+a leading `-`. The retained N1 `corpus-excerpts.jsonl` record for `0x1002fd908`
+(chunk-00132 offset 135671) calls that exact converter. Thus note storage's Int
+fields (`MidiKey`, `CC`, list `Id`) and transport REQ-006 share the int32 parser
+and converter. NoteId/NextId use a separate signed-int64 converter
+`0x101524d8c` (review chunk-00813 offset 61888); its width and limits must not
+be imported into the transport rule. Transport REQ-006 already settled the
+int32 `-` spellings by X2 (`parse.json`, original x86 parser `0x100375650` and
+converter `0x100375790`), so the lead adds traceability, not a new unknown.
+
 ## Remaining unknowns
 
 - The user-visible outcome of a read error: dialog text, whether the previous set
@@ -446,3 +470,92 @@ Ghidra `FUN_` names are generated. Demangled names come from the symbol table an
 are evidence, not proof. The corpus pseudocode was cross-checked against dossier
 disassembly only for the branches marked ✓. Shipped documents are 12.4d1/12.1d1
 writes, not 12.4.3 saves.
+
+
+## Pending review: persistence family routes — 2026-10-20
+
+The [transport family structure proposal](../../analysis/ableton-live-12.4.3/full-spec-v1/family-transport-routes-v1/structure.md)
+cuts this owner from approved integration packet1b, boundaries I-01, I-02 and
+I-10. Its [route ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-transport-routes-v1/route-ledger.json)
+references all twelve revision5 requirements and separates existing X leaf
+conversion/format/meter routes, conditional S document paths, and predicates
+with no established route. The local inventory is108predicate/context rows
+(30 X,44 S,34 no-established-route), pending independent structure review.
+These are route inventory units, not a frozen required-outcome denominator,
+completed behavior count or grade. Required predicates share a row when they
+name the same outcome; helper computations and numeric instances are inputs
+or dependencies, not additional outcomes.
+
+[Exact predecessor and source pins](../../analysis/ableton-live-12.4.3/full-spec-v1/family-transport-routes-v1/pins.json)
+and the [input-set navigation](../../analysis/ableton-live-12.4.3/full-spec-v1/family-transport-routes-v1/input-sets.json)
+reuse N1/S1/X1/X2/currentv3 evidence without replay. Stored fields versus active
+song state, actual Save receiver and file lifecycle, malformed-error recovery,
+range effects and general precedence remain separate missing joins. Number-text
+library/rounding assumptions, the undecided band, older shipped-writer versions,
+and all existing S/X/U qualifications remain unchanged. No requirement, case,
+release or normative expectation changes; no original execution, provider,
+harness, decoder or numerical run occurred for this map. Root owns the atlas,
+independent review and any later batch selection.
+
+
+### Family route review adopted — 2026-10-20
+
+The [frozen transport family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-transport-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-transport-routes-v1-review.json)
+with no findings. The 108 bounded predicate/context rows cover the stated
+current-owner distinctions; 30 X / 44 S / 34 no-established-route remain route
+inventory, not grades. The review checked 19 relationships, five missing public
+bridges and the selected source/release identities. Typed member stores and
+number formatting do not establish active engine state, public Save/reopen,
+error recovery or general envelope/template precedence. Existing case/U and
+Apple-library/logarithm qualifications remain unchanged. Document structure and
+ALS-container mapping proceeds next; no original execution was selected here.
+
+
+## Transport whole316 typed-bit actual approval — 2026-10-21
+
+The [whole316 packet](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-transport-standing-leaves-v1/manifest.json) (30 payloads / 2,267,445 bytes; manifest SHA-256 `fcf5328bcfb2c2c160cf33bccb7627a29703c2cea539188bbe826bacab8c4236`) [passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/transport-standing-leaves-v1-review.json) with no findings (30,554 bytes; SHA-256 `2cdd28a03e473553e3cc8a0807dfaf5e4541ad623ec5d7368caa25e985507fb7`). Root adopts that bounded review by citation under design12; the same observations receive no second review.
+
+The finite class is158 exponent-all-ones IEEE words in upper/lower hex strings: each sign and width, with fraction0, every one-hot fraction bit and all fraction bits set. This gives316 distinct typed strings,313 new and three exact historical members. All316 intercepted SetValue argument words match REQ004/005's declared bit oracle; all50 sign-extended float HITs are masked to the selected low32 bits. These are integer-bit observations, including infinity/quiet-bit-clear/quiet-bit-set layouts, with no floating-value decode, signaling-exception, arithmetic, quieting or FP-state law. They do not cover all NaN payloads or IEEE words.
+
+Eight existing-model GDB groups contain316 conversions plus eight recorded empty-string initializers (324 direct entries), with26/55 calls and100/216 owned buffers per float/double group. All eight debugger exits are0 with separate normal-inferior-exit records; the inferior OS wait status was not separately collected. Four existing GDB return stubs skip the original SetValue bodies. This establishes supplied-model typed argument delivery, not real node storage, public Transport field admission, Open/Save, effective range, writer formatting or Apple/ARM equivalence.
+
+The reviewer checked the complete30-payload tree, all source/input/script/raw-bit joins,31 recorded before/after custody identities, twelve independent negative controls and the new data-only checker after full source reading. Each group declares1,882 bindings (1,795 trap /86 Linux /one Linux-data); the five actually counted allocation/guard/atexit names and2/2/1/1/1 counts agree. Zero counted strtod/libm use is not provider/global-data absence. All eight stderr files retain the same80-byte GDB index-cache warning. The stdout libthread_db identity is after-only, not a before pin or complete provider trace.
+
+Structural/status/import/custody checks occur after each group, so later within-group calls can precede detection; the collector stops subsequent groups on raised errors. Its import guard checks binding class, not an exact five-name whitelist; the reviewer independently checked the captured names/counts. Oracle mismatches would be retained rather than automatically fatal. The sole attempts required no retry or original fault recovery. JSON/raw files are closed and hashed without explicit fsync; byte sealing (observed POSIX0664) is not OS write protection or crash durability. Existing model/ABI/source-to-loader premises are inherited, not independently reconstructed here.
+
+Review approval clears the source-pin window for the next owner revision.313 finite new cases may be admitted directly while keeping three historical strings as supporting controls. No public, ARM, formatter, storage, calibration, native-site or whole-product credit follows. Required unsupported behavior stays U/OPEN. Frozen inventory remains691X /1,076S /3,857none across32 heterogeneous cuts (Analog199X predecessor scope); indirect25,071baseline +24conditional =25,095of268,015.
+
+
+## Transport owner r6 finite adoption — 2026-10-21
+
+The [R6 owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/manifest.json) (seven payloads /825,548 bytes; manifest SHA-256 `82782168fdf1baad59323329217659e20f5aeec080d4556e3a29efa6e31c1c6d`) directly adopts313 finite converter cases TS-038–350 and three historical input controls from the approved316 observations. [Added-wording/preservation review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/transport-owner-r6-added-wording-review.json) (3,168 bytes; SHA-256 `9bdcc53b61b96ccb9f14241fe2765d913357361e340363ebb583646c8e1fb018`) inherits the actual review without repeating it.
+
+The complete194-line owned checker was read before Root's invocation and passed15 negative controls. All12 prior requirement bodies remain exact prefixes, the other ten whole bodies and all37 legacy rows remain exact. Independent minimal-delta reversal reconstructs the full34,329-byte R5 predecessor. TS-023 stays withdrawn:350 IDs include that withdrawal,349 are nonwithdrawn, and three supporting controls are separate. These counts are navigation, not a required-outcome denominator.
+
+The new catalog keeps exact ASCII, integer words including payload/sign bits, raw sign-extension provenance and immutable input/result pointers; experimental type IDs are evidence locators, not a candidate API. Pure conversion bit comparison is separate from the legacy F0/public load/save comparators. Original SetValue bodies remain skipped. Public field/storage/range admission, formatter, FP state, ARM/Apple and application outcomes remain U; all old unknowns and logarithm/library qualifications remain. No new neutral fixture or release is supplied, and current v3's33 records remain unchanged. R5 mutable-source pins are historical as-of evidence, not future gates against R6. Unsupported required behavior keeps coverage OPEN.
+
+## Standing-class eligibility after finite adoption — 2026-10-21
+
+The [316-string batch and R6 adoption](#transport-owner-r6-finite-adoption--2026-10-21)
+cover the selected exponent-all-ones typed-word class: 313 new finite converter
+cases and three historical members. This does not exhaust strings or IEEE
+payloads, and it does not observe the SetValue bodies that the existing model
+skips. The [map input inventory](../../analysis/ableton-live-12.4.3/full-spec-v1/family-transport-routes-v1/input-sets.json)
+also retains 495 distinct valid meter pairs/codes, historical formatter/parser
+sets and their separate setup qualifications. These existing observations are
+not a new unrun enum class merely because 30 route rows carry X.
+
+The concrete remaining `sets.missing-five-fields`, `sets.range-contexts` and
+`sets.precedence-contexts` concern compatible constructed owners, field
+precedence, scene/envelope state and actual loaded/displayed/saved values.
+Their receiver/state prerequisites are not supplied by another typed-string
+sweep. The meter-list allocator/guard model and intercepted scalar conversion
+are separate scopes; neither proves public field admission or writer delivery.
+
+The reviewed metadata supplies no additional complete, missing standing class
+for selection here. That conditional result is not an exhaustive statement
+about all strings, ranges, locales or state histories. Public storage/range,
+Open/Save, formatter/library and Apple/ARM joins remain unknown. This assessment
+read canonical conclusions and retained input metadata only; it ran no original,
+parser, writer, model, comparator or tool and added no coverage or grade.

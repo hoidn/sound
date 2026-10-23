@@ -2,9 +2,9 @@
 id: SPEC-LIVE-SET-STRUCTURE
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
-revision: 1
+revision: 3
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -120,7 +120,9 @@ sequencer and the `ControllerTargets.0` to `ControllerTargets.130` elements of a
   content, as in REQ-TRANSPORT-STATE-008, including its exception for a versioned read whose
   `SchemaChangeCount` equals the schema's change count.
 - **S.** The set does not open when:
-  - a base value written as an element has no `Value` attribute (for example `<NextPointeeId />`);
+  - a value element whose class declares a `Value` member omits that attribute
+    (for example `<NextPointeeId />`); base-shaped elements without such a member
+    are not covered by this refusal;
   - a compound holds two children of the same name (REQ-TRANSPORT-STATE-008);
   - a list or slot child is not a known class, or is a class that list does not accept.
 - **U.** Which classes each list accepts beyond those shipped in it. Static route: the class
@@ -285,8 +287,11 @@ sequencer and the `ControllerTargets.0` to `ControllerTargets.130` elements of a
   0 or 1, the folder of the set file; 3, the project folder found from that folder; 5, the root
   of the pack with `LivePackId`; 6, the user library; 7, the built-in content. Type 2 gives no
   base, and type 4 gives no file at all. The first candidate that exists is used.
-- **S.** When the relative path gives no existing file, types 0, 1, 2 and 6 use the absolute
-  `Path` if it is not empty. Types 3, 5 and 7 do not use `Path`.
+- **S.** When the relative path gives no existing file, types 0 and 1 use the
+  absolute `Path` if it is not empty.
+- **U.** End-to-end resolution and fallback for codes 2 to 7: the branch reading
+  above does not cover relocation and missing-file search. No outcome for those
+  codes is graded (live-set-structure-v1 review RV1-03).
 - **S.** A sample that cannot be resolved does not stop the set from opening. The clip is kept
   and its file is marked missing.
 - **U.** What the user is shown for a missing file, the missing-file search, the
@@ -359,11 +364,15 @@ sequencer and the `ControllerTargets.0` to `ControllerTargets.130` elements of a
   and what `SendPreBool` selects, belong to the draft [SPEC-MIX-GRAPH](mix-graph.md)
   (REQ-MIX-GRAPH-001: send k and `SendPreBool` k belong to the k-th return, by list order).
 - **S.** When a mixer holds fewer send holders than R, holders are appended to make R.
-  An appended send has the new-send values of REQ-MIXER-VALUES-003 (−70 dB; `EnabledByUser`
-  true, but false on a return track's mixer, inferred).
+  Its gain is 0.0003162277571 (−70 dB), from the appended-holder constructor
+  chain `0x10271d824` → `0x102659a78` → `0x102658f54`, independently rechecked in
+  [review evidence](../../analysis/ableton-live-12.4.3/handoff-staging/live-set-structure-v1-analysis/review/review-checks.txt).
+  `EnabledByUser` is true for a new audio/MIDI holder; false on a return remains
+  an inference. The displayed `-inf dB` follows the released mixer text rule.
 - **S.** The set does not open when a mixer of a track in `Tracks` holds more send
   holders than R.
-- **U.** A `SendsPre` list whose length differs from the number of return tracks: no load check
+- **U.** A `SendsPre` list whose length differs from the total number of `ReturnTrack`
+  items, even when a return is out of order: no load check
   was found here (SPEC-MIX-GRAPH reports an error for a thirteenth item). **T1 limit:** a T1 set
   has one `SendPreBool` per return; a set with a different count is outside T1.
 - **D.** Every shipped return track outputs to `AudioOut/Main` (20 of 20).
@@ -378,9 +387,15 @@ sequencer and the `ControllerTargets.0` to `ControllerTargets.130` elements of a
   ([REQ-AUTOMATION-ENVELOPES-002](automation-envelopes.md#req-automation-envelopes-002--envelope-targets)).
   Every shipped track envelope names an `AutomationTarget` (355 of 355).
 - **S.** On opening, every track or clip envelope whose `PointeeId` is 0 or names no
-  pointee of the set is removed, and the set opens without it.
-- **U.** A further removal of "empty" or "half-dangling" envelopes follows; its conditions were
-  not read. Fixtures keep each envelope on a parameter of its own track.
+  pointee of the set is removed. If no other refusal applies, the set opens
+  without it; removal is not a promise that arbitrary other content opens.
+- **S.** A further removal precedes envelope validation: clip envelopes with exactly
+  one event, and track envelopes on Pan, Speaker or CrossFadeState with fewer
+  than two events are discarded. See [REQ-AUTOMATION-ENVELOPES-007](automation-envelopes.md#req-automation-envelopes-007--load-checks)
+  and automation-envelopes-v2 review RA2-01 to 03 for the target and discard-setting
+  assumptions. Other track targets may opt out.
+- **U.** Removal when an envelope’s target does not belong to its device. Fixtures
+  keep each envelope on a parameter of its own track.
 
 ### REQ-LIVE-SET-STRUCTURE-015 — pointee Ids and NextPointeeId
 
@@ -436,7 +451,7 @@ sequencer and the `ControllerTargets.0` to `ControllerTargets.130` elements of a
 
 ### REQ-LIVE-SET-STRUCTURE-018 — minimal T1 set
 
-- **S-cond (A4–A6).** The set T11-MIN (Acceptance cases) opens and holds the content listed
+- **S-cond (A4 for sample binding; A5 for list Ids).** The device-free set T11-MIN (Acceptance cases) opens and holds the content listed
   there. Its structure is the minimum a T1 writer writes; the table states for each element
   whether it is required, value-bearing or optional.
 
@@ -451,34 +466,34 @@ sequencer and the `ControllerTargets.0` to `ControllerTargets.130` elements of a
   | Declaration, `/Ableton` with `MajorVersion` 5 and `MinorVersion` `12.0_12402` | R | SPEC-ALS-CONTAINER 001–006; `SchemaChangeCount` optional (written 1) |
   | `/Ableton/LiveSet` | R | No document element is refused |
   | `NextPointeeId` | R | Greater than every pointee Id; absent reads 1 (REQ-015) |
-  | `Tracks` with at least one `MidiTrack` or `AudioTrack`, returns last | R | REQ-002 |
+  | `Tracks` with at least one audio, MIDI or group track, returns last | R | REQ-002 |
   | Track `Id` attribute | R | Non-negative integer, unique in `Tracks` (REQ-016); write it |
   | Track `Name` (`EffectiveName`, `UserName`), `Color` | W | Held as read; absent value unknown (REQ-003) |
-  | Track `AutomationEnvelopes/Envelopes` | V | Absent: no envelopes |
+  | Track `AutomationEnvelopes/Envelopes` | W | Write fixture content; absence default is not released here |
   | Track `TrackGroupId` −1 | W | Constructor default not read; −1 means not grouped |
   | `DeviceChain/AudioOutputRouting/Target` `AudioOut/Main` | W | REQ-005 |
-  | `DeviceChain/Mixer` and its value elements | V | REQ-MIXER-VALUES defaults for absent values |
+  | `DeviceChain/Mixer` and its value elements | W | Write the fixture values; defaults beyond this release are not established |
   | `Mixer/Sends/TrackSendHolder` (with `Id`), one per return | R/V | More than R is refused; fewer are appended (REQ-013) |
   | `DeviceChain/MainSequencer/ClipSlotList/ClipSlot` (with `Id`), one per scene | W | Count against scenes unknown (REQ-006) |
   | `ClipSlot/ClipSlot/Value`, `ClipSlot/HasStop` `true` | W | Empty `Value` is an empty slot |
   | `DeviceChain/FreezeSequencer/ClipSlotList` with as many empty slots | R | REQ-006 |
-  | `DeviceChain/DeviceChain/Devices/<device Id>` | V | REQ-012 placement (A6); absent parameters take REQ-BUNDLED-DEVICE-PARAMETERS-008 defaults |
+  | `DeviceChain/DeviceChain/Devices` | W | Empty in T11-MIN; device placement is excluded from the current structure release (REQ-012) |
   | `MidiClip` / `AudioClip` with `Id` and `Time` 0 | R | `Id` rules of REQ-016 |
-  | Clip `CurrentStart`, `CurrentEnd`, `Loop` | V | T1.3; write them |
-  | Clip `Name`, `Color` | V | Held as read |
+  | Clip `CurrentStart`, `CurrentEnd`, `Loop` | W | Write fixture values; playback defaults are outside this structure release |
+  | Clip `Name`, `Color` | W | Write fixture values; absence not graded |
   | Clip `LaunchMode`, `LaunchQuantisation` | W | REQ-CLIP-LAUNCH-010: absent gives a preference value |
-  | Clip `TimeSignature`, `Envelopes/Envelopes`, `Legato`, `VelocityAmount`, `FollowAction` | V | REQ-CLIP-LAUNCH-009 and 016 |
+  | Clip `TimeSignature`, `Envelopes/Envelopes`, `Legato`, `VelocityAmount`, `FollowAction` | W | Write fixture values; absence belongs to the clip contract |
   | `MidiClip/Notes` with all five children | W | REQ-MIDI-NOTE-STORAGE-001: a missing structural child is unknown |
-  | `AudioClip/IsWarped` `false`, `WarpMode` | V/W | T1 plays unwarped; absent `WarpMode` unknown ([Q-021](../questions.md#q-021-warp-playback-mapping-and-load-handling)) |
+  | `AudioClip/IsWarped` `false`, `WarpMode` | W | Write fixture values; absence is not a structure-release default |
   | `AudioClip/SampleRef/FileRef` with the nine children; `LastModDate`, `DefaultDuration`, `DefaultSampleRate` | V | REQ-008 to 010 |
-  | `AudioClip/WarpMarkers` with at least one marker (T11-MIN: two, the second 1/32 beat after the first) | R | REQ-WARP-MARKERS-004 refuses an empty list |
+  | `AudioClip/WarpMarkers` (T11-MIN: two, the second 1/32 beat after the first) | W | Write fixture markers; marker refusal belongs to the warp contract |
   | `MainTrack` with `DeviceChain/Mixer` (`Tempo`, `TimeSignature`, `CrossFade`) and the one-event tempo and time-signature envelopes | V | Absent: constructed, tempo 120 (REQ-004) |
   | `PreHearTrack` | O | Absent: constructed |
   | `SendsPre/SendPreBool` (`Id`, `Value` `false`), one per return | W | REQ-013 |
   | `Scenes/Scene` (with `Id`), one per slot, with `Name`, `Color`, `Tempo`, `IsTempoEnabled`, `TimeSignatureId`, `IsTimeSignatureEnabled` | W | REQ-006 |
   | `Transport` | V | REQ-TRANSPORT-STATE-007 defaults |
   | `GlobalQuantisation`, `AutoQuantisation` | W | REQ-CLIP-LAUNCH-008: absent is unknown |
-  | `CrossfadeCurve` | V | REQ-MIXER-VALUES-009 |
+  | `CrossfadeCurve` | W | Write fixture value; absence is not established by this structure release |
   | Each pointee element written (`AutomationTarget`, `ModulationTarget`, `Pointee`, …) | R/O | Nonzero unique `Id` (REQ-015); omitted ones get new Ids, so write the targets that envelopes name |
   | View state (`LomId`, `SelectedToolPanel`, `ViewData`, `AutomationLanes`, wrappers, …) | O | Constructor values |
 
@@ -533,29 +548,32 @@ X computed value, U unresolved (not graded).
 
 ### Fixtures
 
-**T11-MIN** is authored for this spec by `make_fixture.py` (appendix); it contains no shipped
-bytes. Files: `T11-MIN.als` (gzip, one member, FLG 0, MTIME 0) with the same content as
-`T11-MIN.xml` (882 lines, tab-indented, LF), and `Samples/T11-tone.wav` beside it (1 s, 44,100 Hz,
+**T11-MIN** is the reviewed device-free fixture of
+[live-set-structure-v1](../../handoff/live-set-structure-v1/fixtures/T11-MIN.als).
+It is derived from `make_fixture.py` by the analyst staging helper
+[`lss_cases.py:device_free`](../../analysis/ableton-live-12.4.3/handoff-staging/live-set-structure-v1-analysis/lss_cases.py)
+and contains no shipped bytes. Files: `T11-MIN.als` (gzip, one member, FLG 0,
+MTIME 0) with the same content as the release’s `T11-MIN.xml` (864 lines,
+tab-indented, LF), and `Samples/T11-tone.wav` beside it (1 s, 44,100 Hz,
 16-bit PCM, 2 channels, a 441 Hz sine at amplitude 8,192, 176,444 bytes, modification time
 1,760,000,000). Content:
 
 - envelope `MajorVersion="5" MinorVersion="12.0_12402" SchemaChangeCount="1"`;
-- `NextPointeeId` 69; 68 pointees with Ids 1 to 68;
+- `NextPointeeId` 67; 66 pointees with Ids 1 to 66;
 - `Tracks`: `MidiTrack Id="1"` named `Lead` (colour 15), `AudioTrack Id="2"` with an empty
   `UserName` and `EffectiveName` `2-Audio` (colour 3), `ReturnTrack Id="3"` (`A-Return`,
   colour 55); each with output `AudioOut/Main`, `TrackGroupId` −1 and a mixer at the new-mixer
   values with one send holder (`Id="0"`, −70 dB, `EnabledByUser` true, false on the return);
 - the MIDI track: two session slots and two empty freeze slots; slot 0 holds `MidiClip`
   `Two Notes` (4 beats, looped, 4/4, launch 0/0, two notes of key 60 at beats 0 and 2, length 1,
-  velocity 100); its device chain holds `UltraAnalog Id="0"` with only its `On` parameter; its
+  velocity 100); its device list is empty; its
   track envelope sets the volume target (Id 11) to 1 at L and 0.5 at beat 4;
 - the audio track: two session slots and two empty freeze slots; slot 0 holds `AudioClip` `Tone`
   (2 beats, looped, `IsWarped` false, `WarpMode` 0, markers (0 s, 0 beats) and
   (0.015625 s, 0.03125 beats)) whose `FileRef` is `RelativePathType` 1, `RelativePath`
   `Samples/T11-tone.wav`, `Path` `/T11/Samples/T11-tone.wav`, `Type` 2, empty pack fields,
   `OriginalFileSize` 176444, `OriginalCrc` 47018, with `LastModDate` 1760000000,
-  `DefaultDuration` 44100 and `DefaultSampleRate` 44100; its device chain holds `Amp Id="0"`
-  with only `On`;
+  `DefaultDuration` 44100 and `DefaultSampleRate` 44100; its device list is empty;
 - `MainTrack` (`Main`, colour 69) with tempo 120 and time signature 201, each with its
   one-event envelope, and crossfader 0; `PreHearTrack` with a mixer; `SendsPre` with one `false` item; two scenes
   (`Id` 0 and 1, `Scene 1` and `Scene 2`, colour −1, tempo 120 disabled, 201 disabled);
@@ -572,26 +590,26 @@ API or the user interface; a saved value is compared per attribute value after r
 
 | Case ID | Requirement | Kind | Setup/action | Expected result | Basis |
 | --- | --- | --- | --- | --- | --- |
-| LSS-001 | 001–016, 018 | P | Open T11-MIN | Opens; tracks `Lead`, `2-Audio`, `A-Return` in that order, then the main track; two scenes; MIDI slot 1 holds `Two Notes`, audio slot 1 holds `Tone`, the other slots are empty; the MIDI track holds Analog and the audio track Amp; each of the three tracks has one send | S-cond (A4–A6) |
+| LSS-001 | 001–016, 018 | P | Open T11-MIN | Opens; MIDI, audio and return tracks in that order, then the main track (displayed track names not graded); two scenes; MIDI slot 1 holds `Two Notes`, audio slot 1 holds `Tone`, the other slots are empty; both device lists are empty; each of the three tracks has one send | S-cond (A5 for list Ids; A4 for sample binding only) |
 | LSS-002 | 002 | N | Remove all three tracks and the `SendPreBool` | Does not open | S |
-| LSS-003 | 002 | N | Remove the MIDI and audio tracks, keep the return | Does not open | S |
-| LSS-004 | 002 | N | Move `ReturnTrack Id="3"` before `AudioTrack Id="2"` | Does not open | S |
-| LSS-005 | 002 | N | Remove `Tracks` | Does not open | S |
+| LSS-003 | 002 | N | Remove the MIDI and audio tracks, keep the return and its matching SendPreBool | Does not open | S |
+| LSS-004 | 002 | N | Move `ReturnTrack Id="3"` before `AudioTrack Id="2"`; empty every track’s Sends to isolate track order | Does not open | S |
+| LSS-005 | 002 | N | Remove `Tracks` and the SendPreBool | Does not open | S |
 | LSS-006 | 001, 002 | N | Add `<FooTrack Id="9" />` to `Tracks` | Does not open | S (unknown class) |
 | LSS-007 | 006 | N | Remove the audio track's `FreezeSequencer` | Does not open | S |
-| LSS-008 | 006 | N | Append `<ClipSlot Id="2"><ClipSlot><Value /></ClipSlot><HasStop Value="true" /></ClipSlot>` to the MIDI track's session list only | Does not open | S |
+| LSS-008 | 006 | N | Remove one MIDI freeze slot; keep both session slots and scenes to isolate the freeze count | Does not open | S |
 | LSS-009 | 006 | U | Append that slot to the MIDI track's session and freeze lists (3 slots, 2 scenes) | Unresolved | U |
 | LSS-010 | 006 | U | Remove `Scenes` | Unresolved | U |
 | LSS-011 | 006 | P | Change the scene Ids to 7 and 3 | Opens; the scene named `Scene 1` is first | D (shipped arbitrary Ids), S |
 | LSS-012 | 006 | P | Change the audio track's slot Ids to 7 and 3 | Opens; `Tone` is in the first slot | D, S |
 | LSS-013 | 013 | R | Empty the MIDI track's `Sends` | Opens; the MIDI track has one send, at −70 dB (shown `-inf dB`) | S; value REQ-MIXER-VALUES-003 |
-| LSS-014 | 013 | N | Add a second `TrackSendHolder Id="1"` to the audio track's `Sends` | Does not open | S |
+| LSS-014 | 013 | N | Add a second `TrackSendHolder Id="1"` with automation and modulation targets 67 and 68 to the audio track’s `Sends`; set `NextPointeeId` 69 | Does not open | S |
 | LSS-015 | 013 | U | Empty `SendsPre` | Unresolved | U |
 | LSS-016 | 003, 016 | N | Change the audio track's `Id` to 1 | Does not open | S-cond (A5) |
 | LSS-017 | 016 | N | Change the audio track's `Id` to `-1` | Does not open | S-cond (A5) |
 | LSS-018 | 016 | U | Remove the audio track's `Id` attribute | Unresolved | U |
 | LSS-019 | 003, 015 | P | Change the audio track's `Id` to 5 (also a pointee Id) | Opens | D (39 shipped tracks), S |
-| LSS-020 | 015 | N | `NextPointeeId` 68 | Does not open | S |
+| LSS-020 | 015 | N | `NextPointeeId` 66 | Does not open | S |
 | LSS-021 | 015 | N | Remove `NextPointeeId` | Does not open (it reads as 1) | S |
 | LSS-022 | 015 | P | `NextPointeeId` 100000 | Opens | S |
 | LSS-023 | 001 | N | `<NextPointeeId />` | Does not open | S |
@@ -600,27 +618,58 @@ API or the user interface; a saved value is compared per attribute value after r
 | LSS-026 | 015 | U | Set that Id to 5, the MIDI track's Pan target Id | Unresolved: a repair question is expected (S); the dialog and outcome are U | U |
 | LSS-027 | 015 | M | Remove the audio track's Pan `AutomationTarget` element | Opens | S |
 | LSS-028 | 014 | R | Set the MIDI track envelope's `PointeeId` to 999999 | Opens; the MIDI track has no envelope; after a save and reopen it still has none | S |
-| LSS-029 | 004 | M | Remove `MainTrack` | Opens; tempo 120 | S |
+| LSS-029 | 004 | M | First change the original main tempo to 137, then remove `MainTrack`; no user default set | Opens; tempo 120 | S |
 | LSS-030 | 004 | M | Remove `PreHearTrack` | Opens | S |
 | LSS-031 | 001 | P | Add `<Foo Value="1" />` as a child of the MIDI track | Opens; a save does not write `Foo` | S (REQ-TRANSPORT-STATE-008 rule; `SchemaChangeCount` 1 is not 5); S-cond (A7) for the save |
 | LSS-032 | 009 | P | Open from a new folder with `Samples` beside it | Opens; `Tone` references `Samples/T11-tone.wav` in the set's folder | S-cond (A4) |
 | LSS-033 | 009 | P | Delete `Samples/T11-tone.wav` | Opens; `Tone` is kept and its file is reported missing | S (opening); U (report) |
 | LSS-034 | 009 | P | `RelativePath` `Samples/absent.wav`; `Path` the absolute path of the sample at test time | Opens; `Tone` uses the file at `Path` | S (with or without A4) |
-| LSS-035 | 009 | P | As LSS-034 with `RelativePathType` 7 | Opens; `Tone`'s file is missing (`Path` not used) | S (with or without A4) |
+| LSS-035 | 009 | U | As LSS-034 with `RelativePathType` 7 | Unresolved end-to-end resolution; no graded file-binding result | U (RV1-03) |
 | LSS-036 | 008 | X | Compute the identity of `Samples/T11-tone.wav` | `OriginalFileSize` 176444, `OriginalCrc` 47018 | X (CRC), D (size) |
-| LSS-037 | 012 | P | Move `Amp Id="0"` to the return track's device list | Opens; the return track holds Amp | S-cond (A6) |
-| LSS-038 | 012 | U | Move `UltraAnalog Id="0"` to the audio track's device list | Unresolved | U |
-| LSS-039 | 001–017 | S | Open, save, reopen | Opens; tracks, names, colours, Ids, slots and their clips, scenes and their fields, devices, sends, the envelope and its target, and the sample reference resolving to the same file all as in LSS-001 | S-cond (A4–A7); text not graded (REQ-017) |
+| LSS-037 | 012 | P | Add `Amp Id="0"` to the return track’s empty device list | Opens; the return track holds Amp | S-cond (A6) |
+| LSS-038 | 012 | U | Add `UltraAnalog Id="0"` to the audio track’s empty device list | Unresolved | U |
+| LSS-039 | 001–017 | S | Open, save, reopen | Opens; tracks, names, colours, Ids, slots and their clips, scenes and their fields, empty device lists, sends, the envelope and its target, and the sample reference resolving to the same file all as in LSS-001 | S-cond (A4–A7); text not graded (REQ-017) |
 | LSS-040 | 011 | S | Open, save to a folder outside any project, reopen | The saved `FileRef` has `Path` the sample's absolute path and `Type` 2; `OriginalFileSize` 176444 and `OriginalCrc` 47018 | S-cond (A7); `RelativePathType` not graded (REQ-011 U) |
 
-Counts: 40 cases: 6 unresolved (LSS-009, 010, 015, 018, 026, 038) and 34 graded: 1 X (LSS-036),
+Counts: 40 cases: 7 unresolved (LSS-009, 010, 015, 018, 026, 035, 038) and 33 graded: 1 X (LSS-036),
 3 with a D part (011, 012, 019), the rest S or S-cond. LSS-033 grades the opening only. Omitted kinds: cancellation (no affordance), and
 group tracks (outside T1). Cases owned by other specs are not repeated here; their fixtures
 should adopt the T11-MIN skeleton (Open questions).
 
+## Finite local checksum cases for REQ-LIVE-SET-STRUCTURE-008
+
+**X — enumerated supplied-buffer scope only.** The
+[complete initial-zero one-byte catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-live-set-structure-r3-finite-crc-v1/catalog.json)
+records all 256 byte values at length 1 with a fresh zeroed four-byte CRC seed/output
+buffer. The selected checksum result is the low 16 bits of that buffer interpreted
+little-endian after the original x86_64 step `0x101191310`. The 253 new draft cases
+[LSS-CRC-001–LSS-CRC-253](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-live-set-structure-r3-finite-crc-v1/new-cases.json)
+use the exact native CRC16 expectations in that catalog, from the existing
+polynomial `0x8005`, MSB-first, initial-zero, no-reflection, no-final-xor rule frozen
+before the new calls. These expectations were not fitted to the results. The
+three previously observed bytes `00`, `b7` and `ff` retain their historical summary
+references and receive no new case IDs or process receipts.
+
+The four raw output bytes and saved RAX/RDX/XMM carriers are retained provenance.
+The upper 16 output bits and RAX are not the CRC16 criterion. Each new case's
+portable expected value and portable comparator remain **NULL**; no ARM or Apple
+execution equivalence, portable full-word criterion or candidate grade is selected.
+The local observations do not establish actual file reading, sample matching,
+Open/Save, public receiver or state/lifecycle delivery, other seeds, longer inputs
+or chunk histories. The existing REQ-008 clauses, their evidence scope, general
+static rules and unresolved application joins remain unchanged.
+
+The catalog and case rows cite the independently approved actual review through
+`approved_review_join`; the review pin and batch identity are recorded in this
+owner packet's manifest. This finite annex extends the draft only. The preceding
+40-row case table and all 34 cases and fixtures of `live-set-structure-v1` remain
+unchanged; no handoff release, released comparator, grade or site credit changes.
+The 256 input values are one local finite class, not a required-outcome denominator
+or family/product completion.
+
 ## Open questions
 
-Canonical gaps go to [Q-022](../questions.md) (proposed; not yet filed) and the existing
+Canonical gaps go to [Q-022](../questions.md#q-022-live-set-structure-load-rules) and the existing
 [Q-012](../questions.md#q-012-transport-state-load-and-save-semantics),
 [Q-020](../questions.md#q-020-automation-envelope-load-robustness) and
 [Q-021](../questions.md#q-021-warp-playback-mapping-and-load-handling). Items:
@@ -685,7 +734,7 @@ pseudocode record relied on is kept in `traces/*/corpus-excerpts*.jsonl`.
 | 015 | APointee `Id` registration `0x10153575c`; post-load `0x101535954` (P; x86 `0x101525600` D86) with preset flag `0x106f50550`; ADocument `NextPointeeId` +0x140, constructor value 1 (`0x10153fbbc`, constant `0x105818b28`); check `0x1015441a8` (P; x86 `0x10153df90`, `0x101533ae0` D86); registration `0x10154368c` (x86 `0x101533040` D86); repair `0x102686a3c` (P) | D; S; S |
 | 016 | List-item `Id` attribute `0x10152b77c` (P); duplicate Ids in the list loader (P; x86 `0x10145f320` D86, string `0x1060f6a7a`); survey `list_ids_unique` | D; S-cond (A5) |
 | 017 | Writer `0x101486cdc` (N1); list writer `0x101468408` (P) | S-cond (A7) |
-| 018 | `make_fixture.py`, `out/schema-check-fixture.jsonl` (no deviation; every rule measurement as REQ-002 to 016 require) | S-cond |
+| 018 | Released `live-set-structure-v1/fixtures/T11-MIN.als` and `T11-MIN.xml`; staging `lss_cases.py:device_free`; review RV1-01. Original `make_fixture.py` / `out/schema-check-fixture.jsonl` describe the earlier device-bearing fixture, not r2’s base | S-cond |
 
 **A1 to A3, settled by the follow-up trace** (`traces/a1a2/trace.txt`, `reach.txt`,
 `vtable-owners.txt`, `x86-load-sequence.txt`, `corpus-excerpts*.jsonl`; `sh traces/a1a2/run_a1a2.sh`):
@@ -725,7 +774,10 @@ Corrections and contradictions found:
 | --- | --- | --- |
 | 1 | 2026-10-18 | First draft from workstream T1.1 (packet t11-structure-v1): 18 requirements; 40 unexecuted cases on the authored fixture T11-MIN (34 graded: 1 X, 33 S, S-cond or D; 6 unresolved); T1 limits for 9 unknown clauses; released-fixture contradictions recorded |
 | 1 (revised in place, unreleased) | 2026-10-18 | Follow-up trace of the open path in both corpora settles A1, A2 and A3 statically; the clauses and cases that named them change from S-cond to S. No expectation changed. `released-fixture-audit.json` added: 233 released Live Set fixtures refused by the traced rules, 178 cases contradicted, each with its minimal T11-MIN addition |
+| 2 | 2026-10-19 | Apply live-set-structure-v1 review RV1-01 to 05 and staging F1 to F12: device-free T11-MIN (66 pointees, Next 67), isolated refusal mutations, class-specific Value rule, code 2–7 resolution ungraded, explicit send-constructor evidence, total-return SendsPre count, and write-only statuses where defaults belong to other contracts. REQ-014 clarifies removal and its open condition. LSS-035 now U; device-placement cases stay conditional. |
 
-Not released. A first release could carry REQ-001 to 018 with assumptions A4 to A7 stated, and
-cases LSS-001 to 008, 011 to 014, 016, 017, 019 to 025, 027 to 037, 039 and 040. It should be
-reviewed together with fixture revisions of the families named under Open questions.
+| 3 | 2026-10-21 | Add a finite local initial-zero one-byte CRC16 annex linked to REQ-008: 253 new draft cases and a 256-value catalog with three inherited summary references. The existing integer rule was frozen before the calls; only low16 little-endian output memory is the selected result. Portable expected values/comparators remain NULL. All 18 prior requirement bodies, 40 prior draft rows, 34 released case objects, fixtures and criteria remain unchanged; no public file/ARM/lifecycle law, grade or release. |
+
+Current release: [live-set-structure-v1](../../handoff/live-set-structure-v1/README.md),
+34 cases. Its device-free fixtures and narrowed scopes govern implementation;
+the broader draft device-placement and save clauses remain unreleased.

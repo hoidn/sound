@@ -7,8 +7,9 @@ Release: playback-core-v1. Only the clauses explicitly included below are in
 scope. No other clause of a listed requirement is implicitly approved. This
 document is self-contained.
 
-**Status: unreviewed candidate.** It has not passed handoff review and is not
-an implementation input.
+**Status: reviewed handoff**, approved with the clarifications in
+[the review disposition](REVIEW.md). Application implementation requires a
+fresh restricted workspace.
 
 ## What the contract means
 

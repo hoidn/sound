@@ -2,7 +2,7 @@
 id: PLAN-LIVE-SET-STRUCTURE-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -26,6 +26,10 @@ For the spec author:
 - add codes 2 to 7 to REQ-009;
 - add the track row to REQ-018;
 - cite a source for the added send's value.
+
+## Draft reconciliation (2026-10-19)
+
+Draft r2 applies the device-free fixture, class-specific Value refusal, isolated mutations, code 2–7 uncertainty, constructor evidence and total-return count. Only A4/A5 remain relevant to the released fixture; the device-placement assumption is excluded. The preparation instructions below are the historical staging plan.
 
 ## Decision and boundary
 
@@ -302,9 +306,13 @@ checker tests structure only.
    coverage, indexes and log. An isolated implementation workspace remains
    unprovisioned.
 
-## Current disposition
+## Historical staging disposition — 2026-10-18
 
 Staged on 2026-10-18 as an unreviewed candidate: 34 cases, partial
 REQ-LIVE-SET-STRUCTURE-001 to 010, 013 to 016 and 018, with 011, 012 and 017
 unreleased. It is not published, and no handoff exists for
 SPEC-LIVE-SET-STRUCTURE.
+
+## Current disposition — 2026-10-21
+
+The reviewed local [live-set-structure-v1](../../handoff/live-set-structure-v1/README.md) was released2026-10-18 as the review outcome above records. Its34objects remain current/immutable; preceding unpublished-candidate statements retain historical staging context. [Draft R3](../research/live-set-structure.md#live-set-owner-r3-finite-crc-annex-adoption--2026-10-21) adds253finite initial-zero/one-byte nativeCRC16 cases/three inheritedrefs while preserving all18bodies/40oldrows/released34scope. Full32/portableexpected/comparatorNULL; no actualfilematching/OpenSave/public/ARM/lifecycle law. No new release selected. Current implementation-workspace state belongs to [project status](../project.md#current-phase); old unprovisioned statements record staging time.

@@ -1,0 +1,190 @@
+{
+  "schema": "root-fixed-inner-entry-conditional-readback-v1",
+  "created_utc": "2026-10-21T00:56:27.652277+00:00",
+  "raw": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-inner-entry-native-v1/102247d20.bin",
+    "bytes": 352,
+    "sha256": "a9ea9ce7e18b8e8724340e090dd9eaec62f588364e2260f3a7345eea85c37d1c"
+  },
+  "rows": 64,
+  "bytes": 352,
+  "complete_byte_association": true,
+  "direct_branches": [
+    {
+      "pc": "0x102247d2d",
+      "bytes": "e8be499cff",
+      "signed_target": "0x101c0c6f0",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247d49",
+      "bytes": "e8f2419402",
+      "signed_target": "0x104b8bf40",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247d68",
+      "bytes": "e8d3449bff",
+      "signed_target": "0x101bfc240",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247daa",
+      "bytes": "e8813b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247db6",
+      "bytes": "e8753b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247dc2",
+      "bytes": "e8693b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247dce",
+      "bytes": "e85d3b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247dda",
+      "bytes": "e8513b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247de6",
+      "bytes": "e8453b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247df2",
+      "bytes": "e8393b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247dfe",
+      "bytes": "e82d3b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247e0a",
+      "bytes": "e8213b8eff",
+      "signed_target": "0x101b2b930",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247e5c",
+      "bytes": "eb00",
+      "signed_target": "0x102247e5e",
+      "kind": "jmp",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247e64",
+      "bytes": "e857ff97ff",
+      "signed_target": "0x101bc7dc0",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    },
+    {
+      "pc": "0x102247e6c",
+      "bytes": "e855548003",
+      "signed_target": "0x105a4d2c6",
+      "kind": "call",
+      "opcode_agrees": true,
+      "ESIL_used": false
+    }
+  ],
+  "rip_addresses": [
+    {
+      "pc": "0x102247d32",
+      "bytes": "488d051ff5a604",
+      "address": "0x106cb7258",
+      "dereferenced": false,
+      "global_bytes_read": false
+    },
+    {
+      "pc": "0x102247d5d",
+      "bytes": "f30f100d671ab703",
+      "address": "0x105db97cc",
+      "dereferenced": true,
+      "global_bytes_read": false
+    },
+    {
+      "pc": "0x102247d7e",
+      "bytes": "f20f10052a048303",
+      "address": "0x105a781b0",
+      "dereferenced": true,
+      "global_bytes_read": false
+    }
+  ],
+  "conditional_facts": [
+    {
+      "id": "UIE-01",
+      "claim": "Incoming Q=RDI is saved to RBX and T=RSI to R14 before unread direct call101c0c6f0. Those symbols are carriers only, not class/object identities.",
+      "premises": "Ordinary normal return, intact stack and callee-saved RBX/R14; valid source/destination memory and noninterference where later used."
+    },
+    {
+      "id": "UIE-02",
+      "claim": "RIP LEA computes106cb7258, adds16, stores106cb7268 through Q. This is a local address store, not a vtable/type/constructor/processor identity; no global bytes opened."
+    },
+    {
+      "id": "UIE-03",
+      "claim": "Q+48 and signed32-to-float load from T are passed to unread104b8bf40. Q+118 and a second signed32-to-float T load plus a 32bit value loaded from105db97cc (copied into XMM1 and XMM2) precede unread101bfc240. First and second T loads need not match without no-interference; constant numeric value unknown. SSE ESIL not used."
+    },
+    {
+      "id": "UIE-04",
+      "claim": "Nine calls to unread101b2b930 receive Q+168,+180,+198,+1b0,+1c8,+1e0,+1f8,+210,+228. These are address-carrier facts; helper writes/extent/values/ABI role unknown, no assumed20byte writes copied from ARM."
+    },
+    {
+      "id": "UIE-05",
+      "claim": "Local stores include byteQ+14c=0,dwordQ+148=0,qwordQ+150=opaque bits from105a781b0,qwordQ+158=1,dwordQ+15f=0,qwordQ+248=allones,dwordQ+250=0,byteQ+254=0. Earlier stores may be overwritten by unread helpers; no surviving final-zero/default claim absent explicit disjoint-write premises."
+    },
+    {
+      "id": "UIE-06",
+      "claim": "After nine opaque helper calls, RAX loads L=load64(T+10), stores L atQ+258, zeroes qwordQ+260 and16bytesQ+30..3f andqwordQ+40, writes dwordQ+8=32, restores saved registers and RETs with RAX=L. These final stores survive to RET only under valid nonaliasing stack/memory premises. L is loaded at that time, not proved equal to a prior helper return or Q/processor/model pointer. No claim L=0 or Q=L."
+    },
+    {
+      "id": "UIE-07",
+      "claim": "Post-RET suffix starts EB00 at102247e5c to102247e5e, saves RAX toR14, passesRBX to101bc7dc0,thenR14 to105a4d2c6,followed by15byteNOP. No entry/exception/destruction/cleanup execution established. Its EB00 ancillaryESIL names102287e5e inconsistent with rawPC+2+0 and agreeing opcode/jump102247e5e; exclude allESIL from this readback."
+    }
+  ],
+  "premise": "Every opaque call must return normally with callee-saved carriers/intact stack and valid memory. Aliasing and indirect writes remain unknown unless explicitly assumed. No ESIL used as semantics.",
+  "limits": "Physical cap, not formal function/CFG. No encountered callee/global/table/slot followed; no original execution, cross-slice identity, public binding, math leaf, lifecycle law, case/grade/site credit. All6G/38U/48inventory remain unchanged. User-confirmed unsupported coverage OPEN."
+}

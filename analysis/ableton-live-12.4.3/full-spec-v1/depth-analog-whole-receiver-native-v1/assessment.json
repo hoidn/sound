@@ -1,0 +1,566 @@
+{
+  "id": "ANALOG-WHOLE-RECEIVER-NATIVE-V1-ASSESSMENT",
+  "created_utc": "2026-10-21T05:21:58.351279+00:00",
+  "status": "AUTHOR_COMPLETE_PENDING_ROOT_INDEPENDENT_ACTUAL_REVIEW",
+  "fresh_scope": "All 509 decoded rows, all 2,036 raw code bytes and exactly five 8-byte stored words (40 bytes). No C text was retained or semantically read during the six-record metadata acquisition. All ten metadata objects, warnings and range geometry were read.",
+  "source_and_process_scope": {
+    "collector": "Full 246-line collector inspected before one actual run; 14 synthetic controls passed. It adapts the existing static extraction, process and custody pattern only for this fixed scope.",
+    "capture_start": "2026-10-21T05:15:43.200169+00:00",
+    "capture_end": "2026-10-21T05:15:44.106278+00:00",
+    "outer_pid": 1331685,
+    "child_receipts": [
+      {
+        "entry": "0x3a10",
+        "pid": 1331689,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x17044",
+        "pid": 1331690,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x17160",
+        "pid": 1331691,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x172c4",
+        "pid": 1331692,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x1760c",
+        "pid": 1331693,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x176a4",
+        "pid": 1331694,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x18640",
+        "pid": 1331695,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x198dc",
+        "pid": 1331696,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x199cc",
+        "pid": 1331697,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x1a23c",
+        "pid": 1331698,
+        "exit": 0,
+        "timeout": false,
+        "stderr_bytes": 0,
+        "cleanup": "process-group-already-gone"
+      }
+    ],
+    "raw_code_bytes": 2036,
+    "raw_data_bytes": 40,
+    "decoder_children": 10,
+    "before_after_custody_pairs": 21,
+    "all_children_exit0_stderr_empty_no_timeout": true,
+    "native_original_instruction_execution": 0,
+    "no_retry": true,
+    "cleanup": "All ten process groups were already gone during normal cleanup. Timeout, SIGTERM, fault and escaped-descendant paths were not exercised. No directory fsync or power-loss durability claim.",
+    "custody": "Full image/tool hashes before and after were custody checks only, separate from 2,076 selected content bytes. No continuous mutation monitor."
+  },
+  "symbols": {
+    "A": "First 0x509f4 return, saved in X19 at 0x3a2c.",
+    "O": "Second 0x509f4 return, saved in X20 at 0x3a40 and forwarded to 0x198dc, 0x199cc and 0x1a23c.",
+    "prior_P_Q_B": "The incoming/callee/returned carriers from the earlier independently approved 0x15e0/0x1774c packet. That conditional equality does not identify A with any of them.",
+    "R": "Current receiver tracked in X20 inside 0x18640 after index checks. Not automatically A, O or prior P.",
+    "C": "Pointer reloaded from current [R+8] in later dispatch paths. Not automatically any earlier carrier."
+  },
+  "conclusions": {
+    "A_equals_prior_P": "unknown; 0x3a30 calls unread 0x1760, not selected 0x15e0 directly.",
+    "O_equals_A_or_distinct_allocations": "unknown; two helper returns and size arguments establish neither allocation semantics nor equality or inequality.",
+    "O_plus8_contains_A": "Conditional local store at 0x3a48, under normal returns, required callee preservation and valid nonalias state/stack.",
+    "O_addresspoint_write": "0x198dc writes address value 0x595f8 through incoming O. Continuity of that value after unread calls is unknown.",
+    "table_runtime_pointer_encoding": "unknown",
+    "actual_Live_public_binding": "unknown",
+    "new_Analog_local_runtime_resolved_sites": 0,
+    "main_Live_resolved_sites": 25095,
+    "main_Live_site_universe": 268015,
+    "main_Live_baseline": 25071,
+    "main_Live_conditional": 24,
+    "new_cases_grades_releases_denominator_changes": 0,
+    "coverage": "OPEN-required-unsupported-remains-U"
+  },
+  "premises": [
+    "Execution follows the stated local normal-return/control paths, without exception, nonlocal exit, fault or external interference.",
+    "Receiver, vector and buffer storage must be valid and appropriately sized, with no corruption or aliasing of saved stack state. Sizes and offsets do not establish allocation, lifetime or legal state.",
+    "Unread callees preserve required callee-saved registers, SP and saved frames. In CalcA the special stack probe at 0x172ec occurs BEFORE X0 is captured: equating post-probe X0 with the entry receiver additionally requires argument preservation by that unread probe. Prior import attribution is inherited, not a fresh provider proof.",
+    "Raw field interpretation is ARM64 little endian for the pinned image. This is not a formal ABI, class or public instance proof.",
+    "No current vptr or field continuity is assumed across unread calls. Stored words are not promoted to relocated or authenticated runtime pointers."
+  ],
+  "claims": [
+    {
+      "id": "ANW01",
+      "PCs": [
+        "0x3a28",
+        "0x3a2c",
+        "0x3a30",
+        "0x3a3c",
+        "0x3a40",
+        "0x3a44",
+        "0x3a48",
+        "0x3a74"
+      ],
+      "status": "conditional-local-carrier/store",
+      "text": "0x3a10 tracks A and O separately, passes O to 0x198dc, stores A at [O+8], then returns O under the stated premises. Unread 0x509f4 and 0x1760 receive no allocator/constructor roles from names or size arguments. A=prior P and A!=O remain unknown."
+    },
+    {
+      "id": "ANW02",
+      "PCs": [
+        "0x198e8",
+        "0x198ec",
+        "0x198f4",
+        "0x1992c",
+        "0x19930"
+      ],
+      "status": "conditional-local-address-store",
+      "text": "0x198dc tracks incoming O. ADR produces 0x595f8, and STP X8,XZR,[X0] writes that address and zero through O. Unread 0x1a368 may affect state. The normal path returns O under preservation premises. This write is separate from the earlier reviewed 0x580c0 store through prior P; no allocation, class or initialization success follows."
+    },
+    {
+      "id": "ANW03",
+      "PCs": [
+        "0x3a5c",
+        "0x3a70",
+        "0x1a23c",
+        "0x1a240",
+        "0x1a244",
+        "0x17050",
+        "0x1705c",
+        "0x17074"
+      ],
+      "status": "conditional-local-route-with-missingvptrcontinuity",
+      "text": "O is forwarded to 0x199cc and 0x1a23c before Create uses its current returned receiver for a +0x68 dispatch. The rate helper dispatches through current vptr+0x10; that unread target may mutate vptr or state. The 0x595f8 write therefore does not fix later dispatch targets. None of the five 0x580c0 words is automatically an outer-O slot."
+    },
+    {
+      "id": "ANW04",
+      "PCs": [
+        "0x1761c",
+        "0x17620",
+        "0x17624",
+        "0x176b4",
+        "0x176b8",
+        "0x176bc",
+        "0x17328",
+        "0x173d8",
+        "0x173dc",
+        "0x173f4",
+        "0x17404",
+        "0x1740c",
+        "0x17410",
+        "0x17424"
+      ],
+      "status": "nine-scope-partial-operandproof-only",
+      "text": "Exported setter, reset and Calc load their current receiver addresspoints and the listed slots; receiver/slot carrier fields are raw checked. Actual factory receiver, current-value delivery, clock and output remain unbound. Calc has a stack probe before receiver capture and unread calls before processing; preservation premises remain material."
+    },
+    {
+      "id": "ANW05",
+      "PCs": [
+        "0x18754",
+        "0x18758",
+        "0x18768",
+        "0x187dc",
+        "0x18830",
+        "0x1884c",
+        "0x18850",
+        "0x18858",
+        "0x1886c",
+        "0x18870",
+        "0x18890",
+        "0x18894",
+        "0x188ac",
+        "0x188b0",
+        "0x188cc"
+      ],
+      "status": "conditional-receiver-levels/slotloads",
+      "text": "0x18640 override dispatch uses current R.vptr+0x90. Later paths reload C from current [R+8]. Tail 0x18890 uses C.vptr+0xc8 OR +0xd8 according to the local path; 0x188cc uses C.vptr+0xd0. Those receivers and slots are separate from the exported outer receiver and the five selected data words. Current C, its vptr, targets and legal indices remain unknown. No unread word or callee was followed."
+    },
+    {
+      "id": "ANW06",
+      "PCs": [
+        "0x187c4",
+        "0x187cc",
+        "0x187d0",
+        "0x187d4",
+        "0x187d8"
+      ],
+      "status": "local-computed-dispatch-with-unreadtable",
+      "text": "Raw fields confirm ADR 0x53276 as an unread byte-table base and ADR 0x187dc as a branch base, followed by an indexed byte load, scaled addition and BR X10. Table contents at 0x53276 remain UNREAD. The four local targets 0x187dc/0x1881c/0x18858/0x18894 are inherited map metadata, not newly resolved class implementations or a recovered index-to-target mapping."
+    },
+    {
+      "id": "ANW07",
+      "status": "raw-stored-data-only",
+      "text": "The five raw words have little-endian integer bit patterns 0x17e6c, 0x18640, 0x18e18, 0x18e28 and 0x19044. The stored integer at 0x580f8 numerically matches selected entry 0x18640. This is not a runtime pointer or call-target binding. Relocation, rebase and PAC encoding remain unknown. The other four values were not followed, queried or classified."
+    },
+    {
+      "id": "ANW08",
+      "status": "bounded-requiredgap-improvement",
+      "text": "Local carrier separation and all nine operand-load paths prevent an incorrect public binding through 0x580c0. They identify remaining receiver, vptr and child-method joins relevant to REQ002/A1 and REQ022. Actual Live control delivery, instance identity, arrival block, smoothing, latching, history, settling, 100 ms bounds, output, lifecycle and calibration remain unknown."
+    }
+  ],
+  "nine_site_scope": [
+    {
+      "site": "0x17074",
+      "receiver": "tracked factory returnO if same argument path",
+      "load": "current[O], slot+0x68",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x17624",
+      "receiver": "incoming X0 toexportedsetter",
+      "load": "current[X0],slot+0x38",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x17404",
+      "receiver": "X23 captured from post-stackprobe X0",
+      "load": "current[X23],slot+0x60",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x17424",
+      "receiver": "same trackedX23 if unreadcalls preserve requiredregisters",
+      "load": "reloaded current[X23],slot+0x68",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x176bc",
+      "receiver": "incomingX0 toexportedreset",
+      "load": "current[X0],slot+0x58",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x1a244",
+      "receiver": "incomingX0; O at selected3a70callunderpremises",
+      "load": "current[X0],slot+0x10",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x18768",
+      "receiver": "R tracked inX20 inside18640",
+      "load": "current[R],slot+0x90",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x18890",
+      "receiver": "C reloaded from current[R+8]",
+      "load": "current[C],slot+0xc8 OR +0xd8 accordingtolocalpath",
+      "target": "unknown; no runtime target resolution credit"
+    },
+    {
+      "site": "0x188cc",
+      "receiver": "C reloaded from current[R+8]",
+      "load": "current[C],slot+0xd0",
+      "target": "unknown; no runtime target resolution credit"
+    }
+  ],
+  "other_indirect_context_only": [
+    {
+      "site": "0x1717c",
+      "meaning": "SetRate uses current receiver+0x50; that word is unselected and target unknown."
+    },
+    {
+      "site": "0x172ec",
+      "meaning": "Stack probe through X16 from unread 0x58080. Prior index attributes chkstk; provider behavior and argument preservation are not freshly proved."
+    },
+    {
+      "site": "0x187d8",
+      "meaning": "Local byte-index dispatch, with no additional class/public route credit."
+    }
+  ],
+  "raw_words": [
+    {
+      "address": "0x580d0",
+      "bytes": "6c7e010000000000",
+      "littleendian_bits_hex": "0x17e6c",
+      "runtime_pointer": "unknown",
+      "target_followed": false
+    },
+    {
+      "address": "0x580f8",
+      "bytes": "4086010000000000",
+      "littleendian_bits_hex": "0x18640",
+      "runtime_pointer": "unknown",
+      "target_followed": false
+    },
+    {
+      "address": "0x58118",
+      "bytes": "188e010000000000",
+      "littleendian_bits_hex": "0x18e18",
+      "runtime_pointer": "unknown",
+      "target_followed": false
+    },
+    {
+      "address": "0x58120",
+      "bytes": "288e010000000000",
+      "littleendian_bits_hex": "0x18e28",
+      "runtime_pointer": "unknown",
+      "target_followed": false
+    },
+    {
+      "address": "0x58128",
+      "bytes": "4490010000000000",
+      "littleendian_bits_hex": "0x19044",
+      "runtime_pointer": "unknown",
+      "target_followed": false
+    }
+  ],
+  "whole509_read_map": [
+    {
+      "start": "0x3a10",
+      "last": "0x3a1c",
+      "words": 4,
+      "assessment": "Frame setup, saved register pairs andFP; no dynamic object validity proof."
+    },
+    {
+      "start": "0x3a20",
+      "last": "0x3a48",
+      "words": 11,
+      "assessment": "Two immediate arguments/two unread509f4 returns tracked asA andO; unread1760 called with first return; captured198dc called with second; storeA at[O+8]. Sizes/names do not prove allocations, distinctness or successful construction."
+    },
+    {
+      "start": "0x3a4c",
+      "last": "0x3a84",
+      "words": 15,
+      "assessment": "FP literal preparation, captured199cc and1a23c calls withO, then returnO under normal-return/callee-save premises. Unread rate target may change memory before later vptr load."
+    },
+    {
+      "start": "0x17044",
+      "last": "0x17088",
+      "words": 18,
+      "assessment": "Calls3a10, tracks returnedO, null branch, current[O]+68 call withO; returnsO on accepted branch or null-input branch. No success observation."
+    },
+    {
+      "start": "0x1708c",
+      "last": "0x170c4",
+      "words": 15,
+      "assessment": "Diagnostic literal/global references and unread50afc, cleanup3aac, zero return; no external addresses followed."
+    },
+    {
+      "start": "0x17160",
+      "last": "0x1718c",
+      "words": 12,
+      "assessment": "Null guard, signed integerX1 converted toS0, current receiver vptr+50 dispatch, returns1 only on normal local path. No rate correctness/host semantics inferred."
+    },
+    {
+      "start": "0x17190",
+      "last": "0x171bc",
+      "words": 12,
+      "assessment": "Null diagnostic path with unread50afc, returns0; no public error/lifecycle claim."
+    },
+    {
+      "start": "0x172c4",
+      "last": "0x17304",
+      "words": 17,
+      "assessment": "Large frame/stack probe172ec before argument capture, stack/global guard. Retained import attribution is inherited; preserving entryX0 across special probe is an explicit missing/conditional premise."
+    },
+    {
+      "start": "0x17308",
+      "last": "0x1734c",
+      "words": 18,
+      "assessment": "Null branch, post-probe argument capture includingX23=then-currentX0, local context setup1a368 and event translator197f8; both callees unread here."
+    },
+    {
+      "start": "0x17350",
+      "last": "0x173cc",
+      "words": 32,
+      "assessment": "Global-flag branches and output/context pointer selection, no globals read beyond encoded references or actual block/clock contract."
+    },
+    {
+      "start": "0x173d0",
+      "last": "0x17430",
+      "words": 25,
+      "assessment": "Context copy/staging, [X23]\u2192+60 call withX0=X23, optional+68 activity call, resultflagstore. Callback identities and output delivery unknown."
+    },
+    {
+      "start": "0x17434",
+      "last": "0x17474",
+      "words": 17,
+      "assessment": "Global-gated output processing setup, constants and loop branch. No amplitude/default/public audio law inferred."
+    },
+    {
+      "start": "0x17478",
+      "last": "0x174cc",
+      "words": 22,
+      "assessment": "Conditional two-channel float loads/multiplies/stores and comparisons/loop. Static projection only; no numeric oracle, calibration, valid buffers or actual output route proven."
+    },
+    {
+      "start": "0x174d0",
+      "last": "0x17514",
+      "words": 18,
+      "assessment": "Status path, null diagnostic, context cleanup1a41c; no helper expansion, error or lifecycle law."
+    },
+    {
+      "start": "0x17518",
+      "last": "0x17558",
+      "words": 17,
+      "assessment": "Stack guard comparison, statusreturn/frame restore and last unread failure call50a6c. Metadata end is not exception-flow or dynamic completeness proof."
+    },
+    {
+      "start": "0x1760c",
+      "last": "0x17630",
+      "words": 10,
+      "assessment": "Non-null receiver [X0]\u2192+38 dispatch, normal frame return; no actual factoryreceiver/current-value delivery proof."
+    },
+    {
+      "start": "0x17634",
+      "last": "0x17670",
+      "words": 16,
+      "assessment": "Null guarded diagnostic/global-flag path; no global contents or public failure semantics acquired."
+    },
+    {
+      "start": "0x176a4",
+      "last": "0x176c8",
+      "words": 10,
+      "assessment": "Non-null receiver [X0]\u2192+58 resetdispatch andnormal return; target/lifecyclebehaviorunknown."
+    },
+    {
+      "start": "0x176cc",
+      "last": "0x176f0",
+      "words": 10,
+      "assessment": "Diagnostic address/arguments, restoredframe and tailB50afc; callee unread, no returned-success assumption."
+    },
+    {
+      "start": "0x18640",
+      "last": "0x18690",
+      "words": 21,
+      "assessment": "Frame, index captureX19, receiver-relative vector begin/end, count arithmetic and bound branch; legal receiver/vector/index domain remains unknown."
+    },
+    {
+      "start": "0x18694",
+      "last": "0x186d4",
+      "words": 17,
+      "assessment": "Per-entry pointer/flag/type fields and comparisons from currentreceiverstate; no203indexed public admission proof."
+    },
+    {
+      "start": "0x186d8",
+      "last": "0x1870c",
+      "words": 14,
+      "assessment": "Bounds/entry diagnostics andbranches, global/stringreferencesnotfollowed."
+    },
+    {
+      "start": "0x18710",
+      "last": "0x18748",
+      "words": 15,
+      "assessment": "Type-dependent clamping/FP paths. No complete converter law/ARMoracle/runtime type mapping adopted."
+    },
+    {
+      "start": "0x1874c",
+      "last": "0x18798",
+      "words": 20,
+      "assessment": "Store result, overridecall currentR.vptr+90 withR/index/value, post-call flags and diagnostics. No override target or post-call memory continuity assumed."
+    },
+    {
+      "start": "0x1879c",
+      "last": "0x187b4",
+      "words": 7,
+      "assessment": "Shared restore/RET path; valid stack/callee preservation conditional."
+    },
+    {
+      "start": "0x187b8",
+      "last": "0x187d8",
+      "words": 9,
+      "assessment": "Typebound, ADR53276 unreadbytejumptable, ADR187dcbase, indexedbyte load andscaledoffset, BRX10; oldfourlocaltargetsareinheritedmetadata, tablebytesnotread."
+    },
+    {
+      "start": "0x187dc",
+      "last": "0x18818",
+      "words": 16,
+      "assessment": "Local187dc path obtains callback receiverC=[R+8], fields andFPconversion, branches to1884c; no runtime branch/type choice asserted."
+    },
+    {
+      "start": "0x1881c",
+      "last": "0x18854",
+      "words": 15,
+      "assessment": "Local1881c path computes ratio, reloadsC=[R+8], loads C.vptr+c8 intoX3, branches toepilogue; callbacksemanticunknown."
+    },
+    {
+      "start": "0x18858",
+      "last": "0x18890",
+      "words": 15,
+      "assessment": "Alternate localpath loadsC=[R+8] and C.vptr+d8 intoX3, restoresframe thenBRX3; branch source arms remain distinct."
+    },
+    {
+      "start": "0x18894",
+      "last": "0x188cc",
+      "words": 15,
+      "assessment": "Local18894 path loadsC, integerconversion, C.vptr+d0 intoX4, restoresframe thenBRX4; no legal input/target semantics asserted."
+    },
+    {
+      "start": "0x198dc",
+      "last": "0x1993c",
+      "words": 25,
+      "assessment": "Tracks incomingO, stores595f8/zero throughO, fieldconstants/clears andunread1a368, returnsO underpreservationpremises. Size/default/constructor success/class identity unknown."
+    },
+    {
+      "start": "0x199cc",
+      "last": "0x19a10",
+      "words": 18,
+      "assessment": "FP conditional/clamp-like conversion andreceiverfield updates, no calls, RET. Does not write first16bytes in the displayed path, but aliases/validmemory/callee effects outsidebody are not proven; no general timing law adopted."
+    },
+    {
+      "start": "0x1a23c",
+      "last": "0x1a244",
+      "words": 3,
+      "assessment": "Current receiver vptr+10 loaded intoX1 thenBRX1. From3a70 receiver is trackedO underpremises; current vptr andtarget/effectsunknown."
+    }
+  ],
+  "raw_checker_scope": "All 509 raw row/byte associations and 21 recorded custody pairs; narrow independent fields for factory carriers/store, 0x595f8 address/store, the nine branch carriers and receiver/slot loads, local jump base and direct transfers. This is not a second complete disassembler. ESIL is unused. Eight raw mutation controls plus assessment/read-map controls; no external image/tool/index/source reads by the checker.",
+  "context_review_inherited_after_capture": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-two-window-native-v1-review.json",
+    "bytes": 32082,
+    "sha256": "bf1ce616a056fa9139e89ac308d3bc8c2ac5500f189db9e84c65767ca756fe88",
+    "qualification": "Approval of the earlier 117-row capture arrived after this pre-call freeze and actual. It is recorded as a subsequent context approval, not retroactively added to pre-call inputs. No 117-row replay. The conditional prior P=Q=B / 0x580c0 store is inherited only within its reviewed scope."
+  },
+  "residuals_not_selected": [
+    "Unread native 0x1760 bridge between A and the prior 0x15e0 path.",
+    "Actual allocator/provider behavior, nonnull returns, equality/distinctness and legal state.",
+    "Current 0x595f8 continuity and outer slots +0x10/+0x38/+0x50/+0x58/+0x60/+0x68. Their addresses would be 0x59608/0x59630/0x59648/0x59650/0x59658/0x59660 ONLY IF the current vptr equals 0x595f8. None was read.",
+    "R+0x90 override word and C.vptr+0xc8/+0xd8/+0xd0; current R/C addresspoints are unknown.",
+    "Local jump-table bytes at 0x53276.",
+    "Fixups, rebase, PAC and runtime pointer interpretation.",
+    "Actual Live control/current-parameter/automation delivery, instance identity, timebase, output and lifecycle."
+  ],
+  "no_successor_selected": true,
+  "shared_files_changed": false
+}

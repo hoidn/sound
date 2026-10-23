@@ -2300,3 +2300,8241 @@ Added [the session handoff](research/session-handoff.md). It records the repo st
 the two user decisions still open (Q-025 Amp and Cabinet; T1.6 workspace), the
 undispatched work queue, and the pending spec corrections. Those corrections were
 previously held only in session scratch.
+
+## [2026-10-19] spec | Mixer round-trip correction resumed from handoff
+
+Applied mixer-values-v2 review RVM2-01 and RVM2-07 to
+[mixer values r5](specs/mixer-values.md), [mix graph r2](specs/mix-graph.md),
+[mixer research](research/mixer-values.md), Q-019, the release plan, spec index
+and FEAT-AUDIO coverage. General binary32 round-trip identity is withdrawn,
+including the send clause; the silence floor tests the computed gain. The
+seven released curve-point expectations retain their stated assumption.
+The table snap feeds forward. Published payloads are unchanged.
+
+Collision’s required wiki pages are absent, so its untracked evidence was not
+committed. No agents dispatched, no implementation, and no playback release.
+The [session handoff](research/session-handoff.md) records the remaining work.
+
+## [2026-10-19] lint | Mixer correction scope
+
+Checked frontmatter on all nine changed pages, 561 relative links and heading
+anchors, and append-only preservation of this log. No new unresolved link was
+found; 56 existing log links target absent historical evidence and remain
+unresolved. Verified all 42 mixer-values-v2 and 18 mix-graph-v1 payload hashes
+and byte sizes, plus both catalog manifest hashes. `git diff --check` passed.
+No original-code execution, full wiki audit or compatibility check was run.
+
+## [2026-10-19] spec | Parallel reconciliation of the continuation correction queue
+
+User authorized parallel subagents. Reconciled the retained review findings in
+[transport r5](specs/transport-state.md), [notes r4](specs/midi-note-storage.md),
+[MIDI mapping r6](specs/midi-user-mapping.md), [clip launch r5](specs/clip-launch.md),
+[warp r5](specs/warp-markers.md), [bundled parameters r3](specs/bundled-device-parameters.md),
+[mixer r5](specs/mixer-values.md), [mix graph r2](specs/mix-graph.md),
+[automation r5](specs/automation-envelopes.md) and
+[structure r2](specs/live-set-structure.md). Updated their plans, canonical
+research, question progress, feature coverage and spec index. No released
+payload changed. Untraced load outcomes, tempo precedence, song-time offsets,
+shadow caller inputs and protocol/metric gaps remain explicitly unknown.
+The Analog findings also correct the feasibility research's flag, pitch and
+randomness wording, and Electric's corrected probe peak is 0.296.
+
+## [2026-10-19] query | Collision recovered with explicit original-byte mapping
+
+Added [Collision research](research/device-collision-dsp.md) and its
+[partial draft](specs/device-collision.md): 18 requirements, 50 case IDs,
+41 retained renders and 380 event-grid checks. Both resonators are disabled in
+the constructor; the Defaults preset enables resonator 1. No original code
+was rerun. Noise metrics, unresolved modal portions, Live host protocol and
+arm64 equivalence remain open.
+
+Two files changed concurrently during recovery, outside the assigned workers:
+`run_collision.py` and `results/collision.json`. Preserved those edits and
+recovered the exact original bytes into separate paths, without overwriting
+the concurrent work. The read-only audit verifies all 103 original payloads
+through an explicit mapping and separately reports the two current-path
+mismatches. [Recovery manifest](../analysis/ableton-live-12.4.3/r2/t12-collision-v1/recovery-manifest.json):
+`146a8dd2e81964dd1a304d0847b5b626fcff88614cfc551499ef29d93bb439aa`.
+The concurrent extras have unknown execution provenance and are excluded.
+The historical full regeneration exceeds the current 256-call harness cap;
+retained fixture scripts stay below it (maximum 109 calls).
+
+## [2026-10-19] release | Playback core v1
+
+Published [playback-core-v1](../handoff/playback-core-v1/README.md) locally as a
+byte-identical copy of the independently reviewed staging package. It releases
+partial REQ-001 to 015 and 017 to 020; 016 and 021 to 023 remain unreleased.
+Manifest SHA-256:
+`c4dc2c5c2e6c963cadc5d06e314a38ad85d8ec9664dd4bb4a562119754b1e20b`.
+The catalog now holds 24 releases, 14 current.
+
+The separate reviewer independently reproduced all 92 expectations (592 MIDI
+events, 4,784 audio values), caught 92 mutated expectations, checked 58 set
+fixtures and verified 153 source artifacts and three images. The coordinator
+reran the retained `playback-core-v1-analysis/reviewer_check.py` on the final
+staging package: all checks passed, including an isolated temporary export,
+hashes, sizes, inputs, links, sanitizer and generated signals. Original and
+candidate applications were not run; this is a finite behavioral contract,
+not a compatibility pass. Updated playback r2, its plan, Q-024 and coverage.
+
+## [2026-10-19] decision | Keep blocked device and workspace work deferred
+
+The user chose to keep Amp and Cabinet blocked while finishing Corpus,
+Electric, Tension, Analog and Collision. Their host emulation and identity
+work remain unauthorized. The user also kept T1.6 pending and directed
+continued analyst/release work. No clean implementation workspace was
+provisioned and T1's seven-device scope was not silently reduced.
+
+## [2026-10-19] maintenance | Versioned older-schema structure checker
+
+Added the analyst [checker successor](../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/schema_check.py)
+and [regression tests](../analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/test_schema_check.py).
+The old checker hardcodes Scenes/MainTrack and reports zero scenes for an
+11.0_405 document using SceneNames/MasterTrack. The successor reuses the old
+schema walker and limits its corrected measurements to that old version.
+The original checker and all 74 sealed T11 files remain unchanged.
+
+The agent retained the failing old-checker baseline (seven assertion failures),
+eight passing successor tests and 596 unchanged current-schema fixture
+results, including the inherited malformed-value exception. Coordinator
+command `python -I -B analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/test_schema_check.py analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/schema_check.py`
+passed all eight tests. Updated [structure research](research/live-set-structure.md)
+and its index. Historical audit repair templates are not version-aware; use
+the successor's read-only classification guidance. No original code ran.
+
+## [2026-10-19] release | Corpus and bounded Collision audio
+
+Released [device-corpus-v1](../handoff/device-corpus-v1/README.md) after separate
+review: 24 case groups, 68 evaluations, 61 reference renders and nine generated
+signals. The independent reviewer checked vectors/history/output hashes,
+1,427 mode fits, 174 explicitly omitted mode occurrences, 17 analytical probes
+and an isolated export. Author and reviewer runs passed 4,601 measurements,
+272 audio mutations and seven malformed-file controls. Coordinator reran the
+final CLI: all 68 evaluations and 4,601 measurements passed. Final manifest:
+`9fa257fa0e76d666d17da3fc363bf0cfd2facd0db3542db05d22a4260b771af2`.
+Corpus r3 distinguishes the before-parameters rate history from an unretained
+after-parameters variant; the latter is excluded.
+
+Released [device-collision-v1](../handoff/device-collision-v1/README.md) after
+coordinator review separate from both candidate/draft authors. Only constructor
+effective silence and the calibrated 44.1 kHz Pipe render are released. The
+review independently verifies 278 binary32 inputs, exact events and processing,
+lossless WAV-to-f32 extraction, metric boundaries and isolated CLI failures.
+Final manifest:
+`c1ea731dcee088f9c6a64d786ddf2d36ad84a7799aba0af59b961dfb024d7da2`.
+Missing modal/noise/Tube/pitch-envelope calibration was not replaced with a
+wider arbitrary tolerance. Other Collision requirements remain unreleased.
+
+Neither release establishes general device/Live/arm64 equivalence. Their
+explicit comparison-domain vectors do not release stored-value mappings or
+application integration. No original or candidate renderer was executed in
+this continuation; reference self-comparison validates measurement plumbing.
+
+## [2026-10-19] release | Electric finite output scope and editorial correction
+
+[device-electric-v1](../handoff/device-electric-v1/README.md) was released with
+117 finite mono outputs and frozen stable measurement masks. Independent checks
+verified all 262 source payloads, 3,861 parameter values, exact histories and
+samples, 7,908 calibrated envelope/band values and 1,284 partial values. The
+maximum remeasurement difference was 1.81e-11. Final self/mutation/export tests
+passed: 117 outputs, 9,423 measurements, 351 mutations, seven invalid files.
+V1 manifest:
+`1f4e84947bf1ffa9fd605f73381a9778ad8ab4af1b6f9e14662458d606e0dd4f`.
+
+The coordinator's final metadata edit accidentally retained a leading "No"
+when replacing the last permission sentence, making it contradictory. The
+mistake was detected after local publication; v1 is preserved unchanged.
+An editorial-only device-electric-v2 candidate corrects the sentence, with
+all cases, comparison code and reference/input bytes unchanged. A separate
+review context is checking the supersession before publication. No restricted
+implementation workspace exists, so no implementation consumed the bad prose.
+Random/unstable portions, phase/polarity and complete waveform identity remain
+ungraded in both versions' finite numerical scope.
+
+## [2026-10-19] release | Electric v2 editorial supersession
+
+Published [device-electric-v2](../handoff/device-electric-v2/README.md) after a
+separate editorial review. It supersedes v1 solely for the contradictory
+permission sentence; all numerical artifacts and scope are identical. The
+reviewer verified 129 predecessor payloads, 126 unchanged files, three
+isolated representative evaluations and final prose/links/sanitization. The
+coordinator reran `device-electric-v2-analysis/review_editorial.py` before
+publication. Final manifest:
+`c53a829a459bba8a32311b3f537adc54607e2d05c0b2182ed007012b34591273`.
+V1's published bytes remain unchanged. Updated catalog, spec, plan and current
+routing; this corrects the preceding log entry's pending supersession.
+
+## [2026-10-19] release | Calibrated finite Tension outputs
+
+Published [device-tension-v1](../handoff/device-tension-v1/README.md), 27 finite
+mono outputs (26 stable settings and one repeated-strike sequence), partial
+REQ-001 and 004–012. Four chaotic settings and 37 uncalibrated outputs remain
+excluded. Independent review verified all 161 source payloads, external
+identities/slices, 129 binary32 components and exact protocol per case,
+135 retained calibration variants, twelve analytical probes, nine direct
+malformed-call controls and isolated export. Added comparison guards for
+finite/nonempty/shape/window and required-partial conditions, then reran all
+806 measurements, 81 mutations and seven invalid files successfully.
+
+Metadata promotion afterward preserved every case/evaluation object and all
+30 comparator/reference/signal files. The coordinator reran the retained final
+seal checker before copying the package unchanged. Manifest:
+`02f9a0166bd6538ecfca0dcbebaad79b2397b14c75ca8a6608b5de618a1ffa3d`.
+No original code or candidate renderer ran. Numerical-library perturbations
+support only the stated finite criterion, not arm64 equivalence or complete
+Tension behavior. Updated spec r2, plan, catalog, index and coverage routing.
+
+## [2026-10-19] release | Analog finite output comparisons
+
+Published [device-analog-v1](../handoff/device-analog-v1/README.md), 38 groups
+and 42 finite deterministic evaluations, after separate review by
+`collision_recovery`. Partial REQ-001, 004–008, 011–017 and 023 only. Review
+clarified exact nonzero onset and zero-based event channels, preserving all
+numerical case objects, comparator, signals and reference bytes. Independently
+verified all 137 source payloads, 203-component vectors and exact histories,
+40 stereo sample digests, 24 stationary windows, 21 frequency windows and
+601 eligible harmonics per channel. Three additional analytic signals checked
+the estimator. Final checks passed: 7,528 self measurements, 252 mutation
+rejections, seven malformed/missing files and isolated CLI export.
+
+The coordinator read final prose/review and verified all hashes/sizes before
+copying the approved package unchanged. Manifest:
+`b98157cd4cc77661f0755002318d8019789a51790138668ff721a50376f6e231`.
+Noise, uncalibrated modulation, glide/unison, arbitrary inputs and Live-side
+protocol remain excluded. No original code, arm64 device or candidate renderer
+was executed during this continuation.
+
+Updated the catalog (30 releases, 19 current), draft/plan, feature map,
+verification coverage, questions, execution ledger and session handoff. Five
+current device packages contain 256 finite evaluations; playback adds 92 cases.
+These are reviewed expectations, not a full-device or T1 compatibility pass.
+Amp/Cabinet stay blocked and T1.6 stays pending by user decision. Work remains
+uncommitted; concurrent Collision extras are preserved and excluded, with the
+103 original payloads verified through the explicit recovery mapping.
+
+## [2026-10-19] lint | Reconciled analyst release milestone
+
+Full wiki/catalog metadata scan: 139 pages, required fields/dates/access labels
+and 139 unique IDs valid; every non-index wiki page has a domain-index entry.
+Relative file/heading checks introduce no new failures against HEAD, including
+new pages and released exports. There remain 421 historical relative-link
+failures across the full wiki (many archived evidence paths are absent here);
+this is not a clean full-link pass. Retained
+[mechanical report](../analysis/ableton-live-12.4.3/handoff-staging/session-final-lint-2026-10-19.json).
+
+Verified all 30 catalog manifest pins and 1,788 listed payload hashes/sizes,
+with no unlisted release files; all 1,306 HEAD-published files below release
+directories are byte-identical. Raw tracked files and implementation docs have
+no changes; this is not a comprehensive raw-tree hash audit. The log's HEAD
+prefix is unchanged and `git diff --check` passes. Inspected untracked files:
+new analyst/release material remains uncommitted, and the entry-map pickle
+remains untracked. No commit or push was performed.
+
+A separate final consistency review caught and corrected five mutable-summary
+errors: playback's pinned parent r1 versus revised draft r2, MIDI v4's 161 case
+count, finite MIDI scheduling coverage, seven remaining 48 kHz P/P+1 draft rows,
+and the distinction between included no-grid launching and an unobservable
+immediate-activation clause. Updated the playback r2 revision record and clarified
+finite accepted metrics versus the broader proposed device metrics.
+
+Reran the versioned schema checker regression suite: eight tests pass, all 596
+current-schema results unchanged. Collision's read-only recovery audit verifies
+103 mapped original payloads and still reports two current-path mismatches;
+no original code ran. Fixture/tool checks and independent reviews do not establish
+Live, arm64 or candidate compatibility. User-deferred work remains pending.
+
+The separate reviewer rechecked all five summary corrections after the edits;
+targeted assertions pass with no remaining findings. No published bytes changed.
+
+## [2026-10-19] decision | Expand analyst target to full Live specification coverage
+
+The user directed continued execution and design/plan/roadmap updates until all
+of Live has specification coverage. Adopted [ADR 0005](decisions/adr-0005-full-live-specification-coverage.md),
+superseding only ADR 0004's freeze on specification families outside T1. T1's
+bounded implementation/comparison scope, Amp/Cabinet execution deferral,
+T1.6 pending decision and analyst-only boundary remain unchanged.
+
+Created [coverage design](research/full-live-specification-design.md) and
+[execution plan](research/full-live-specification-plan.md), with ten work packages;
+three active, seven pending, none complete. Added roadmap revision 4 and updated
+project, indexes, feature map, coverage, session handoff and execution routing.
+The plan table is the sole current work selector; no machine workflow/selector
+exists for this queue. Dispatched independent inventory, Arrangement/editing and
+recording/comping analyst packets with non-overlapping write ownership. Source
+captures and exact-build/manual-version uncertainty must be retained; page counts
+and finite released fixtures cannot close whole-product coverage.
+
+## [2026-10-19] spec | Partial browser interaction contract
+
+Created [browser workflows](specs/browser-workflows.md) and its
+[research owner](research/browser-workflows.md), separate from the existing native
+browser-index/sidecar contract. Retained current official chapter HTML, derived
+text, source metadata and declarative fixtures with hashes in the new browser
+packet. Ten documented-domain requirements have twelve acceptance setups; exact
+12.4.3 applicability is unknown throughout, and malformed/cancellation/teardown
+cases remain ungraded. Source HTML digest:
+`4e34895d5d37d6579e29cb65156b83c53672e89bd01b3bd8233596fc5b17e8b3`.
+
+Fixture assertions verify search intersection and collection membership only;
+no UI, original-code or candidate execution occurred. Added Q-027 for cross-cutting
+version/whole-product evidence gaps and updated source routing, feature map,
+coverage and plan. F-07 can prepare this known bounded gap independently; its
+complete reconciliation still depends on F-01. Separate draft review is pending;
+this is partial coverage, not a complete browser contract.
+
+## [2026-10-19] query | Reconciled whole-product discovery baseline
+
+Integrated [full inventory](research/full-live-coverage-inventory.md): 880 manual
+headings/708 leaves/43 chapters, 102 device/rack/Max profiles, 17 MIDI tools,
+412 schema classes, 149 controller/support directories and 13 service/plist
+identities. These overlap and are not added into one coverage percentage.
+Parsed 3,634 shipped documents without parser failure. Root independently
+verified all twelve payload hashes/sizes, all 880 manual URL/line locators,
+412 schema/field locators, device IDs/statuses and 261 external source hashes
+(715,732,194 bytes), retaining the independent inventory review. Approved only
+as a discovery baseline; zero device profiles are complete. Added the official
+[manual source register](research/sources/live-12-reference-manual.md).
+
+## [2026-10-19] spec | Reviewed partial Arrangement, recording and browser contracts
+
+Integrated [Arrangement editing](specs/arrangement-editing.md): 35 requirements,
+65 scenarios, independently reviewed by root against retained manual sections,
+64 original demo main-lane clips/9 locators and the exact retained native registry
+record. A reviewer concern about locator quantization was resolved by the explicit
+Layout passage; no Session scheduler arithmetic was imported. Evidence checker
+initially used the wrong chunk directory/newline hash convention; corrected the
+checker after inspecting original bytes, leaving all source evidence unchanged.
+
+Integrated [recording/comping](specs/recording-comping.md): 32 requirements and
+81 cases (65 documentary, four artifact audits, twelve unknown). Separate review
+required the recorded scene-name tempo/meter condition; author narrowed it,
+left the broader field-based branch unknown, added finite scene/format cases and
+linked override behavior to its Arrangement owner. Focused re-review approved
+the corrected partial draft; source payload hashes unchanged. All 77 application
+cases remain ungraded for the exact build. Recording manifest revision 2:
+`0b1dd1222cfded8bdddad25a367eb7822c743a6bd783f8f183458cb9a97656c1`.
+
+Independent [browser review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/governance-browser-review.json)
+approved ten requirements/twelve cases after fixture corrections: explicit first
+location, removing unsupported asset-hash invariance, and controlling reset,
+registered missing-folder and audible preview setup. These are documentary-domain
+partial contracts; every current-manual exact-build behavior remains unknown.
+Added FEAT-RECORDING and updated indexes, project, coverage, plan and handoff.
+No original code, application or candidate was executed. Existing releases remain
+unchanged. Continued parallel work on MIDI editing/tools, racks and the seven
+bundled devices' host protocol; the whole-product goal remains active/incomplete.
+
+## [2026-10-19] spec | Continue uncovered rack, MIDI and project/media packets
+
+Added catalog/feature/coverage routes for the new [rack](specs/device-racks.md)
+and [MIDI editor/tools](specs/midi-editing-tools.md) author drafts. Rack review is
+checking 28 requirements/61 cases, including four meaningful rack types; it found
+that generic macro naming and the same-unit/range presentation exception must be
+separated, and factory-default fixture preconditions must be explicit. MIDI review
+is checking 43 requirements/57 cases and individual clauses for 17 tools. Three
+manual ambiguities remain explicit; exact-build behavior remains unknown.
+
+Authored [project/media workflows](specs/project-media-workflows.md), 22 requirements
+and 34 scenarios, from a newly retained official chapter capture. Save/merge,
+templates, reference repair/replacement/collection, project-local unused files,
+Pack lifecycle and generic Undo History presentation are bounded documentary
+contracts; specific transaction, matching, format, timing and error outcomes are
+unknown. No project files or original executable were operated on; acceptance
+scenarios are definitions only. Source anchors/counts are checked; separate
+review is pending. Render/video/cache/ASD remain uncovered by this packet.
+
+Continued the host-protocol static packet separately from rack UI/common-device
+behavior. New protocol findings are not promoted before separate review. Updated
+the single work selector and shared indexes; no whole behavioral family or
+compatibility status is complete.
+
+## [2026-10-19] spec | Reviewed rack, MIDI editor, host and file workflow packets
+
+Independent reviews approved the corrected partial [rack](specs/device-racks.md)
+and [MIDI editor/tools](specs/midi-editing-tools.md) contracts: 28 requirements/61
+cases and 43/57 respectively. Rack corrections separate generic macro naming
+from unit presentation and pin factory/default/exclusion fixture preconditions.
+Seventeen MIDI tools have individual clauses; generator nonempty-output fixture
+refinements and source ambiguities remain open. No application behavior was run.
+
+Host review required a substantive classification correction. Eleven internal
+protocol models are research, not app-observable compatibility requirements.
+The revised [host draft](specs/bundled-device-hosting.md) has one conditional
+synthetic arithmetic composition and eleven unknown requirements; three math
+checks and 23 unknown application cases close no application requirements.
+Exact revision 1 is archived. Corrected N5/reset research distinguishes ordinary
+Reset/NewRate from ResetAndDispatch's four 1,024-frame helper requests, followed
+by reset and cached parameter restoration. Existing measured historical harness
+variants and immutable releases remain unchanged.
+
+Project/media review approved 22 requirements/34 scenarios after scoping retained
+clip properties, qualifying supported reference-changing operations and making
+the replacement fixture nonvacuous. Export review approved 23/34 after making
+dropout restart conditional on Live detecting it, requiring eligible Arrangement
+video and both encoder classes for that case, and distinguishing the effects
+inclusion option from disabling effects. Numerical/codec/error/transaction
+outcomes and exact-build applicability remain unknown. Retained reports live in
+individual packets under the full-spec-v1 reviews directory.
+
+## [2026-10-19] spec | Reviewed eight MIDI effects and three audio utilities
+
+Integrated [native MIDI effects](specs/native-midi-effects.md), 27 requirements/
+146 cases across eight devices. Separate full and focused reviews approved
+revision 2 after enabling the Note Length fixture's edited control, removing
+an unsupported Pitch Range unit and limiting Velocity to its documented output
+interval. All 33 current payloads verify; exact revision 1 and all 30 payloads
+remain archived. All 146 target outcomes remain unknown. Revision 2 seal:
+`17d74ef752829a992416eb725bd459c70dd8d4dd61ea2480d6eb17c794c11743`.
+
+Independent [audio-utilities review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/audio-utilities-review.json)
+approved [Utility](specs/device-utility.md), [Tuner](specs/device-tuner.md) and
+[Spectrum](specs/device-spectrum.md): 41 requirements/103 cases. It checked all
+44 payloads, 24 source hashes, 22 original package XML records and 46 manual
+blocks. Six file-only checks do not prove runtime behavior; all 97 application
+cases remain ungraded. DSP, detection, display calibration and combined controls
+retain explicit unknowns. No original code, candidate, audio or GUI was executed.
+
+Updated source register, spec/research indexes, feature/verification maps,
+inventory routing and current plan. Frozen inventory statuses remain discovery
+history; mutable routes now identify 18 partial native-device owners and four
+partial rack owners, with zero complete profiles. Continued parallel packets for
+MPE/tuning/grooves, sample instruments and filter/EQ devices. Whole-product
+coverage remains incomplete; deferrals and published handoffs are unchanged.
+
+## [2026-10-19] spec | Author hosting and media/cache/interchange contracts
+
+Created partial [plug-in hosting](specs/plugin-hosting.md), 21 requirements/
+40 cases, from a newly retained official Using Plug-Ins chapter. It adds observable
+panel/configuration/editor/sidechain/program workflows beyond discovery. The
+64/65-parameter boundary requires independent count/default prerequisites;
+unpublished/editorless parameters, deletion warnings and instance configuration
+have distinct cases. Opaque state, vendor compatibility, callbacks, timing,
+sidechain Mute branch identity and errors/undo/cancel/teardown remain unknown.
+Source HTML SHA-256:
+`df44bdab506fa5422fbe4da0fceaff6e8250e3117d9f5b53802889c83e3e7a1a`.
+
+Created partial [media/cache/interchange](specs/media-file-workflows.md),
+17 requirements/32 cases, reusing the exact Managing Files source. It covers
+format eligibility, cache controls, ASD/default-clip scope, MIDI file destinations
+and reference ownership, and Live Clip destination/device rules. It supplies no
+codec/file-format parser, numerical DSP or resource-bound oracle. Separate
+analysis/decoding readiness and option-interaction unknowns avoid a timing promise.
+Both packets retain exact source hashes, declarative fixtures/cases, metadata and
+JSON/table/requirement checks; all target outcomes remain U and no original code,
+application, media/cache/sidecar or candidate operation was performed. Separate
+semantic review is pending. Updated owning indexes, feature/verification maps and
+current work selector; no family completion or new release is claimed.
+
+## [2026-10-19] spec | Freeze MPE, tuning and groove author packet
+
+Integrated routing for three partial author drafts: [MPE](specs/mpe-workflows.md),
+[tuning](specs/tuning-systems.md) and [grooves](specs/groove-workflows.md), totaling
+53 requirements/83 cases (52 documentary proposals, 31 U). Independent review is
+active. Three exact official manual HTML captures and installed schema/shipped
+examples are retained; three supplemental official support pages returned HTTP403
+to the direct reader, so exact web-tool rendered responses are retained with that
+limitation rather than claimed as original publisher HTML. All83 exact-build
+outcomes remain U; MPE codec/channel allocation, tuning parser/math and groove
+random/numerical/commit/lifecycle semantics remain open. No original code or
+application was executed; updated current routing does not close any family.
+
+## [2026-10-19] lint | Whole-product wave documentation checkpoint
+
+Regenerated the existing requirements browser: 960 displayed requirement/candidate
+rows, not a count of closed behaviors. Ran the full wiki/catalog checker on180
+pages/180 unique IDs: required metadata/domain routing and delta links pass,
+zero new broken links, all30 release manifests/1,788 payload hashes and sizes
+verify, all1,306 HEAD-published files remain unchanged, published inventories
+have no unlisted files and the analyst log remains append-only. Historical421
+missing-source links remain; this is not a clean full-link result. Retained the
+scoped report as
+[documentation-lint-2026-10-19-v1.json](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v1.json).
+Earlier intermediate scans found only expected still-being-written packet links/
+missing provisional index entries; they were resolved before this checkpoint.
+`git diff --check` passes. No app, original-code or candidate test is implied.
+
+## [2026-10-19] spec | Filter/EQ review and continuing packet selection
+
+Independently read all108 source blocks and all65 requirements/126 cases for
+[four filter/EQ devices](specs/filter-eq-devices.md). Verified29 frozen payloads,
+seven source pins and original identities,11 schema classes,five compressed/XML
+pairs and four file-only assertions. Review requests active, observable and
+isolated modulation fixtures: the retained default stores both LFO and envelope
+amounts at zero, so unqualified no-effect checks can pass vacuously. It also asks
+for nonzero Scale inclusion setup and confirmed-lit EQ Three LED baselines.
+Preserved both source wording discrepancies as U and kept Legacy behavior
+unmapped. Sources and author packet are unchanged; report retained separately.
+
+Simpler/Sampler/Impulse author packet has61 requirements/88 cases and is under
+independent review; no target application case is executed. MPE/tuning/grooves
+focused review approved correction of nonidentity Commit, per-voice randomness
+wording and admissible Pressure setup. Updated inventory routes now identify25
+partially drafted native profiles, not complete profiles. Continued five-device
+dynamics authoring and selected F-08 navigation/accessibility/shortcut source
+capture as the next root packet. The current plan's ready subpackets cover all
+remaining native categories and broader UI/control/engine obligations; none is
+silently excluded to drain the queue.
+
+## [2026-10-19] spec | Reviewed MIDI and hosting corrections; expand UI/control routing
+
+Focused review approved MPE/tuning/groove revision2 after all three findings were
+corrected; all26 original payloads/seal remain preserved and all60 current payloads
+verify. Third-party hosting partial review approved21 requirements/40 cases with
+no findings. Media/cache/interchange review approved17/32 with two minor notes;
+root added the exact gain/pitch-default source citation and corrected locator
+count from seven to six in revision2, preserving all original six payloads and
+seal. Cases and source bytes remain unchanged; focused confirmation is pending.
+
+Authored [navigation/accessibility](specs/keyboard-navigation.md):21 requirements/
+42 cases from two exact official chapters, plus a separately unclosed292-row
+shortcut catalog in27 tables. Tab mode/Settings exception, Wrap, mixer neighbors,
+focus return, clip-edge/breakpoint cancel and reader support limits are explicit.
+Every per-command context and exact-build applicability obligation remains open.
+Before review a source self-check added the supporting sibling Learn anchor;
+exact revision1 was retained before that citation-only revision2. No UI/reader,
+original code or application was executed. Independent review remains pending.
+
+Integrated the [dynamics packet](specs/dynamics-devices.md),62 requirements/
+129 cases across five devices, under independent review. Inventory revision2
+now distinguishes the unchanged original discovery JSON from later partial
+routes and the new keyboard-binding dimension. Thirty native profiles have
+partial draft routes; zero are complete. Plan revision2 selects current work;
+roadmap adoption prose now points there rather than presenting an old next step.
+Coverage-design revision2 names the existing finite independent reviews as
+feasibility evidence for the analyst packet method, with no whole-product or
+runtime capability claim. Requirements browser rebuilt to1,043 display rows;
+`git diff --check` passes. Published handoffs and user deferrals remain unchanged.
+
+## [2026-10-19] spec | Approve corrected sample, filter/EQ and dynamics partial packets
+
+Focused review approved sample-instrument revision2, preserving all28 original
+payloads and verifying35 current payloads. Sampler's enabled-loop exception is
+restored; active LFO/filter paths and positive controls make two no-effect cases
+nonvacuous; sibling source anchors support the compound requirements/cases.
+Unlooped Sample End still needs a dedicated finite case. Counts remain61/88 and
+all target application cases remain U.
+
+Root focused review approved filter/EQ revision2: all30 current and29 archived
+payloads verify, source bytes and65 requirements are unchanged. Active isolated
+modulation, accepted controls, nonmuted wet paths and observed positive baselines
+are now prerequisites. Two random-signal comparisons were separated from gray-UI
+assertions, increasing cases to128 (78 documentary,4 file-only,46 U). Scale and
+LED preconditions were corrected. Both source mismatches and Legacy behavior
+remain U; Q-028 now routes the narrower evidence gap to its canonical owner.
+
+Dynamics independent review approved62 requirements/129 cases across five devices
+with no blockers. It verified26 payloads,7 sources,123 manual blocks and five
+original presets. Future U probes still need retained active-path settings and
+explicit sample-rate fixture handling before any executable comparison. No DSP,
+application or candidate result was established.
+
+An untracked-aware whitespace check found extra final blank lines in three root
+specs; ordinary tracked-only `git diff --check` had not covered them. Trimmed
+only those bytes after preserving each prior manifest/payload set. Independent
+confirmation approved media revision3 (33 current payloads) and hosting revision2
+(19 current payloads); original semantic reviews remain attributed, cases and
+sources unchanged. Keyboard revision3 received the same cleanup and is under
+full review. No immutable release was changed. Updated current catalogs,
+coverage, inventory and plan; continued delay/reverb and distortion authoring.
+
+## [2026-10-19] spec | Correct navigation prerequisites and author audio conversion
+
+Independent navigation review requested two medium corrections: shared main-window
+Tab focus mode must be ON, with deliberate global-OFF and Settings exceptions;
+compound help-text/existing-breakpoint clauses need exact sibling citations.
+Root preserved the entire prior53-payload revision, added the shared/inherited
+prerequisites and seven case actions, and supplied uniform machine-readable
+requirement/locator objects with complete case source routing. Existing Learn
+citation remains explicit. All source/292-binding bytes are unchanged;21
+requirements/42 cases remain all target-U. Revision4 is under focused re-review.
+
+Authored [audio-to-MIDI conversion](specs/audio-to-midi.md),14 requirements/29
+cases from newly retained official chapter HTML SHA-256
+`52c513cf72f707a5298d74c745015eccb5bc9db0f735a7e2219f7f77353e6123`.
+It owns audio-clip Slice/Harmony/Melody/Drums wrappers; Simpler-context conversion,
+generic racks/notes/warp/media remain separately owned. The128 threshold is
+scoped to Slice, not a blanket rack-chain or recognition-note cap. Explicit
+nonempty independently known slice plans are prerequisites, not outputs inferred
+from a candidate. Exact recognition/count/boundary/tuning/velocity algorithms,
+waveforms, assets and lifecycle outcomes remain unknown; no audio or original
+code was generated or executed. Source/locator/table/JSON/requirement and
+untracked-aware whitespace checks pass; separate review is active. Updated
+indexes, source register, feature/verification maps and current work selector.
+
+## [2026-10-19] maintenance | Preserve and remove trailing log padding
+
+Continuation inspection found2,222 NUL bytes after the existing log's final
+newline. All preceding UTF-8 text and the complete HEAD log prefix were intact.
+Preserved all188,416 original bytes, digest and repair measurements in
+[log-padding-repair-2026-10-19](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/log-padding-repair-2026-10-19/repair.json),
+then removed only the trailing nontext padding. Cause is unknown. No historical
+text was rewritten; a scan found no remaining NUL bytes in wiki Markdown.
+Prior agent handles were confirmed absent before resuming unfinished analyst
+packets from their actual files. This is continued work, not a compatibility pass.
+
+## [2026-10-19] spec | Review corrected workflows and additional device contracts
+
+Independent focused reviews approved navigation revision4 (21 requirements/42
+cases), audio-to-MIDI revision2 (14/29) and distortion revision2 (67/190).
+Full prior packet revisions remain preserved; source bytes and null exact-target
+outcomes were not promoted by citation, fixture or whitespace corrections.
+Retained reports are
+[navigation final](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/keyboard-navigation-review-final.json),
+[audio-to-MIDI final](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/audio-to-midi-review-final.json)
+and [distortion final](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/distortion-review-final.json).
+
+Delay/reverb revision2 corrected Echo's internal idle-shutdown statement to
+research context with an ungraded U/null application outcome. Independent
+[focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/delay-reverb-review-final.json)
+verified all32 preserved r1 payloads,33 current payloads and the narrow two-record
+delta:92 requirements (77 D12/15 U),149 cases (77 D12/7 file-only/65 U).
+The ten-device [modulation/pitch/loop draft](specs/modulation-pitch-loop-devices.md)
+passed a separate [partial-scope review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/modulation-pitch-loop-review.json):
+106 requirements,186 cases,49 frozen payloads. All exact-target outcomes are
+null/U and unexecuted;41 signal and90 lifecycle proposals have no grading oracle.
+Compound clauses and individual mode/negative branches still need expansion.
+
+Independent [spectral association review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/inventory-spectral-alias-review.json)
+confirmed eight shipped Spectral Resonator presets use Transmute and six Spectral
+Time presets use Spectral. The separately sealed revision2 companion changes only
+two artifact associations; original inventory bytes and all other100 rows are
+unchanged. Inventory canonical revision3 records the correction. Storage roots
+prove neither DSP nor exact-build documented behavior. Updated indexes, source
+register, feature/verification maps, current plan and session handoff. Synthesis,
+legacy and external-hardware authoring continue in parallel; all broader families
+remain open. No original/candidate execution, installation, release or public push.
+
+## [2026-10-19] spec | Extend native, legacy, Clip and Session coverage
+
+Independent partial-scope reviews approved synthesis instruments (109 requirements,
+154 proposed cases), eight legacy profiles (77/178) and shared Clip View (54/62).
+The legacy packet distinguishes45 Live11 precursor clauses,8 package observations
+and24 U requirements; every exact-target outcome remains null. The source folder
+scan preserves105 parsed gzip/XML presets and105 unparsed companion entries, not
+210 executable presets. New Clip View source contexts are routed through Q029;
+Humanize span and Add Interval gestures are not silently reconciled or replaced.
+
+Authored [Session grid/scenes](specs/session-view-workflows.md),29 requirements/40
+cases from77 retained Session source blocks. Independent review requested a narrow
+metadata ownership correction; revision2 keeps Session entrypoints/selection and
+routes shared metadata semantics to Clip View. Source/evidence/case actions and
+null target oracles are unchanged. The exact12-payload r1 archive is retained;
+[focused re-review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/session-view-workflows-review-final.json)
+approved revision2. Existing recording/Arrangement/launch owners retain their
+clauses, including the scene-name recording qualifier and unresolved timing.
+
+[External hardware](specs/external-hardware-devices.md) adds24 requirements/56
+cases for the two routing devices. Its review found all24 normative IDs omitted
+from the existing requirements browser by table formatting. Revision2 preserves
+r1 and all15 payloads, changes only presentation, and is
+[approved after focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/external-hardware-review-final.json).
+All63 current native profiles now have partial owners; none is complete.
+Hardware/plug-in prerequisites, gain/phase/MIDI/latency and lifecycle outcomes
+remain unknown. No hardware, plug-in or application was executed.
+
+A separate browser audit found10 modulation and5 synthesis U lifecycle clauses
+in bold prose omitted from search. Successor revisions now use existing supported
+requirement headings and expose106/106 and109/109 IDs. Filter/EQ revision3 narrows
+its stale Legacy source-absence prose to missing version-matched target evidence
+and links the reviewed D11 predecessor owner. The
+[editorial review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentary-routing-corrections-review.json)
+reconstructed all declared canonical deltas and verified prior archives; all
+requirement/case/source/evidence records are byte-unchanged. Browser code did not
+change. Unknowns were made discoverable without creating any behavioral oracle.
+
+## [2026-10-19] spec | Start Max, routing and video contracts
+
+The Max host/five-template packet is frozen with38 requirements/64 cases from42
+source blocks; source/control semantics were reviewed, with a required browser
+format correction pending. AMXD copies remain unparsed identity evidence; the
+public API, arbitrary patch behavior and20 shipped device profiles are separate
+obligations. Individual Max-device and general routing/monitoring/latency contracts
+are authoring in parallel. Routing reuses the retained chapter and separately
+captures mixing for cue policy; arm/monitor defaults stay with recording owner.
+
+Authored [video workflows](specs/video-workflows.md),18 requirements/28 cases from
+new official Working with Video HTML251,482bytes, SHA-256
+`76c940973456cf47c91157e308345544f058d0e98a9fa3f92ad6b88efc8a238a`.
+The39-block packet covers video-specific view/processing boundaries, window,
+partial streams, marker/scoring and pre-roll roles. Export/audio editing and Warp
+computations remain separately owned. No movie/frame/audio/decoder or application
+was executed; codec/timebase/gap/synchronization and all target outcomes are U.
+Independent video review is active. Updated indexes, inventory, feature/coverage
+maps, source register, question register, plan and session handoff. T1.6 and
+Amp/Cabinet host-emulation decisions remain unchanged; no release or public push.
+
+## [2026-10-19] spec | Review Max, video and routing; clarify discovery checks
+
+Max host/template revision2 preserves the original21-payload packet and changes
+only table/headings so all38 normative IDs appear in the unchanged browser.
+[Focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/max-for-live-hosting-review-final.json)
+approved the correction. Video partial scope (18 requirements/28 cases) passed
+[independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/video-workflows-review.json).
+Routing/monitoring/latency partial scope (40/69) passed
+[independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/routing-monitoring-latency-review.json):
+all226 source blocks,35 D12 clauses,69 actions and existing ownership gates were
+checked; numerical signal/latency and all target outcomes remain unknown.
+
+The twenty Max-device partial profiles (135 requirements/315 cases) passed
+[independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/max-for-live-devices-review.json).
+Current HTML supplies18 profiles; DS Sampler and Expression Control Legacy use
+explicitly dated2025 Version12 PDF sections. All15 dated blocks and218 current
+blocks were checked; Legacy excludes the current-device text above its heading.
+Twenty AMXD hashes remain unparsed file identity evidence, never patch execution.
+The author validator would rewrite a sealed result; root ran its assertion code
+in memory with only the final write omitted, verified the frozen result unchanged,
+and rehashed payloads afterward. No frozen evidence or checker was silently fixed.
+All102 inventoried device/rack/Max/tool/template rows now have partial owners;
+none is a complete device or a full behavioral-family closure.
+
+Design revision3 clarifies normative-ID browser equality including U, research
+context for internal-only statements, partial-review status and read-only frozen
+result checks. These strengthen the existing contract without changing scope,
+release gates or the sole plan selector. Session handoff now links current
+per-packet state instead of maintaining a competing detailed queue. Broader
+seven-device workflows and Session launch/follow actions continue in parallel;
+bounce/freeze authoring is assigned. Launch source paragraphs on Global/Follow
+quantization and A/B Chance retain context questions instead of inferred laws.
+
+## [2026-10-19] lint | Whole wiki and immutable release checkpoint
+
+Retained [checkpoint v2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v2.json)
+at21:45:08UTC:210 wiki/catalog pages and unique IDs, no metadata/index errors or
+new broken links;30 released manifests/1,788 payload sizes/hashes pass,1,306
+HEAD-published/governance files unchanged, exact release inventories and log HEAD
+prefix preserved. The421 historical missing-source links remain unresolved;
+this is not an all-links pass. The retained read-only checker is linked by digest
+in the report. Separately checked254 wiki/review text files with untracked-aware
+whitespace checks:zero findings; focused packet validators cover their sources,
+cases and snapshots. Regenerated the existing requirements browser:1,846 rows
+including references/candidates, not closed requirements or a coverage percentage.
+No browser code changed, so parser tests were not rerun. No whole application,
+original function, Max patch, audio/video, hardware or candidate ran in this work.
+Later source/author additions require their own next checkpoint; v2 is immutable.
+
+## [2026-10-19] spec | Review bundled, launch, Bounce/Freeze and synchronization workflows
+
+Continued the active full-product analyst goal with parallel, non-overlapping
+workers. Integrated independently approved partial drafts for seven bundled-device
+workflows (55 requirements/118 cases), Session launch/Follow (43/68), Bounce/Freeze
+(41/77) and synchronization (26/36). Their canonical specs/research, source register,
+feature/verification maps, indexes, current plan and continuation routing are updated.
+New Q030 links canonical Follow Global/chance/control-context questions; old finite
+launch unknowns remain unchanged. All exact-target outcomes/comparisons remain
+null/U/unexecuted. Documentary signal/timing/RNG claims are not numerical oracles.
+
+Independent reviews are retained in
+[bundled review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/bundled-device-workflows-review.json),
+[launch review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/session-launch-workflows-review.json),
+[Bounce/Freeze review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/bounce-freeze-workflows-review.json)
+and [sync review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/synchronization-workflows-review.json).
+All approve explicitly partial analyst scope with no required findings. Root checked
+review identity/seals and integrated their dispositions. Read-only source/payload,
+snapshot, browser-ID and focused link/whitespace checks passed. The Launch validator
+would rewrite its frozen result if replayed directly; the independent reviewer
+removed only that final write in memory, preserving every frozen byte. No original
+program/device/Max patch, peer/network sync, MIDI/audio/video/hardware or candidate
+ran; no release expanded. Amp/Cabinet emulation remains blocked; T1.6 remains pending.
+
+Broader Warp, automation/clip-envelope and remote-control contracts are now authoring
+in parallel. Exact-build/source-version, protocol/DSP/numeric/lifecycle and remaining
+manual/schema/controller/service obligations keep the full-product goal open.
+
+## [2026-10-19] lint | Workflow integration checkpoint v3
+
+[Retained read-only report](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v3.json)
+passed at21:57:18UTC:218 pages/unique IDs, no new broken links,30 release manifests,
+1,788 payload hashes/sizes and1,306 HEAD-published/governance files unchanged,
+exact release inventories and append-only log. The421 historical missing-source
+links remain unresolved. Separately checked273 current wiki/review text files with
+untracked-aware whitespace checks:zero findings. Existing requirements browser
+regenerated for the integrated four-packet source set; its row count is navigation,
+not closed behavioral coverage. No product tests or compatibility claims follow.
+
+## [2026-10-19] spec | Settings/help author freeze and manual reconciliation routes
+
+Authored [settings/Learn/Info](specs/settings-learning-workflows.md) partial draft:
+21 requirements/30 proposals from70 retained First Steps blocks, all target outcomes
+null/U/unexecuted. Source261023bytes SHA59601f2a…55e2746, author seal
+0c4d5064…fc4509c; exact parser/source/payload/snapshot/browser-ID/whitespace checks
+pass. Independent semantic review is pending. Q031 retains new-clip color preference
+context without silently changing the sealed Clip View owner. Installation/license,
+update/usage-data and service protocols remain U, not inferred from category prose.
+
+Added a separately sealed manual-routing companion under the
+[inventory](research/full-live-coverage-inventory.md), preserving all880heading/708leaf
+identities and the original inventory. Its frozen snapshot proposes607leaf entry
+points and leaves101without canonical owners; all708clause mappings remain pending,
+all target applicability U and zero topics complete. Root's initial extractor assertion
+caught the distinct Max surface prefix; the pre-freeze derivation now admits exactly
+the102known profile IDs, retaining all27Max profiles. Read-only `derive.py --check`
+passes; independent routing review pending. No denominator shrank or source baseline
+changed. Warp, automation/clip-envelope and remote-control authors continue in parallel.
+
+## [2026-10-19] spec | Warp, settings/help, stem and manual-routing reviews
+
+[Warp workflows](specs/warping-workflows.md) partial scope passed root independent
+review:50 requirements/88 cases; all131 retained source blocks,44D12clauses and88
+case actions/fixtures inspected. Read-only validation and independent14-payload
+hash checks before/after execution passed, including206links and exact50browser IDs.
+[Review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/warping-workflows-review.json)
+seal e3a3f1ff…351906 records no required findings. Q032 retains import/readiness
+contexts; no detector, automatic-map, timebase or DSP formula was introduced.
+
+Independent worker reviews approved [settings/help](specs/settings-learning-workflows.md)
+(21/30,70blocks,18visible documentary/12null) and [Stem Separation](specs/stem-separation.md)
+(18/29,32blocks,8visible/21null) as partial analyst drafts with no findings. Review
+reports preserve exact13-payload seals/snapshots/parser/source checks per packet.
+All target outcomes remain U/null/unexecuted. Scope retains Q031 color preference,
+Learn/new-feature availability, grouped-versus-nongroup effect/automation, region/
+file/model/private architecture and lifecycle limits. No original/runtime or
+processing ran and no installation/account/update/hardware action occurred.
+
+The [manual-routing review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/manual-routing-r3-review.json)
+approved navigation only: all880 original rows/708leaves/43chapters retained,607leaf
+candidate entry points and101missing-owner rows in the frozen snapshot,all708clause
+mappings pending and zero complete topics. Inventory revision4 links this companion;
+original inventory and earlier spectral ledger bytes remain unchanged. New owners
+need a later explicit routing revision; no coverage percentage follows from routing.
+
+Automation/clip-envelope is frozen for independent review (62/76,192blocks). Q033
+retains shortcut, sample-replacement and MIDI reset contexts. Remote-control review
+requires RC-REVIEW-001 Note On/Off predicate correction, with R1 preserved before
+resealing. Push1/Push2 documentary authoring is starting. Root retained exact Audio/
+MIDI Fact Sheet sources and reused the pinned complete Resources chapter for the
+next engine/resource packet; no behavioral conclusions are released from those reads.
+Shared indexes, feature/verification maps, sources, plan/questions and handoff updated.
+
+## [2026-10-19] spec | Correct remote predicate and approve automation partial scope
+
+Remote-control RC-REVIEW-001 corrected through preserved R1 archive and R2 seal
+69b03dab…bad9bb. Only REQ023 contract and RC023 source_claim now say relative
+slot increment means Note On, decrement means Note Off; action/fixtures/evidence/
+source/null outputs unchanged. Spec/research successor metadata/snapshots and
+response explain the revision. Exact R1manifest/all15payloads/freeze/validation
+were retained before edits. Focused [independent final review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/remote-control-workflows-review-final.json)
+verified19current payloads/18archive pins/precise two-field delta, unchanged37IDs/
+47cases and readonly validation. RC-REVIEW-001 resolved; partial scope approved,
+all target outcomes remain U. Codec/actual launch/feedback/149profile unknowns stay open.
+
+[Automation independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-workflows-review.json)
+approved partial62requirement/76case scope with no findings, reading all192blocks/
+54D12clauses and76actions. Exact17payloads/two sourcepins/13authoritypins and26
+immutable release payloads verified;62browser IDs/195links/snapshots/whitespace
+checks pass. Existing REQ-AUTOMATION-ENVELOPES-013, finite evaluator/mix/timebase/
+units and21released cases unchanged; Q033 contexts and all target nulls remain.
+
+Shared catalogs, source register, coverage, plan and handoff reconciled. Parallel
+Push1/2 and engine/resource/fact-sheet authors continue. Incremental manual clause/
+case citation crosswalk is authoring; the full708leaf semantic review remains open.
+Root retained current Cycling74 LOM index/API overview and began retaining only
+its45listed public reference pages. The index explicitly declaresLive12.4.5;
+all12.4.3applicability is unknown. No Max object, script, patch or original application
+was executed. Public API discovery will add a separate overlapping denominator,
+not shrink the existing product or imply complete Max interoperability.
+
+## [2026-10-19] spec | Review delivery, Browser, workspace and API discovery
+
+Independent [Push review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/push-controller-workflows-review.json)
+approved explicit partial65/77 scope, reading330 selected text blocks while
+mechanically reproducing706; the remaining376 passages were not claimed fully
+semantically reviewed. [Engine/resource review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/engine-resource-workflows-review.json)
+read all195 blocks/28 clauses/50 actions and approved partial scope. Neither
+historical timing data nor precision/thread prose establishes candidate architecture,
+performance tolerances, full hardware compatibility or target execution.
+
+[Delivery/recovery](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/delivery-recovery-workflows-review.json)
+passed partial45/60 review from300 official Help article.body blocks. An original
+HTML403 response remains separately retained; nine successful public Help JSON
+responses supply the actual article content. New source-family routing records
+exact identities. No installation/auth/account/reset/update/recovery operation ran.
+[API bridge](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-bridge-workflows-review.json)
+passed partial52/61 review from893 blocks, retaining seven source contexts and
+all actual API/numeric/message/timing/signal comparisons null.
+
+[Browser content](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/browser-content-workflows-review.json)
+passed partial56/71 review after all274 retained blocks/clauses/actions were read.
+The earlier Concepts source identity remains unchanged. Root authored and froze
+[workspace controls](../analysis/ableton-live-12.4.3/full-spec-v1/live-concepts/manifest-author-r1.json)
+from a separately identified later Concepts capture; independent
+[workspace review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/application-workspace-review.json)
+read all125 blocks/13 clauses/23 actions and approved partial scope. Existing
+Clip View/MIDI/keyboard/device ownership is preserved. Q037–Q040 route delivery,
+bridge, Browser and Scale/Fold/marker contexts; all required target outcomes remain U.
+
+The first [citation crosswalk review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/manual-citation-crosswalk-r4-review.json)
+accepted exact navigation for83 requirements/123 cases across four packets,
+not complete manual clauses. [Editorial-topic review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/nonbehavioral-manual-topics-review.json)
+accepted three named headings/two leaves as nonbehavioral source-topic dispositions,
+without removing any application help/branding/licensing obligation.
+
+The [public API inventory review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/max-api-inventory-review.json)
+verified45 LOM entries/588 explicit direct declarations/six bridges across53
+retained sources; this is discovery only. R1 bytes and65 payloads stayed intact.
+Metadata R2 retained R1 but focused review required clearer historical/current
+snapshot wording. A preserved R3 metadata-only successor resolves that finding;
+[final review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/max-api-inventory-review-r3-final.json)
+verified71 current payloads and exact predecessor preservation. Current public
+index names12.4.5, not target12.4.3. Typed per-member contracts for Clip/Sample,
+core/session and device/rack families are now authoring in parallel from unchanged
+R1 evidence, with exact direct-member denominators and no inheritance guesses.
+
+Root updated affected catalogs, feature/verification maps, source register,
+questions, plan and session handoff. No whole-product completion, runtime, public
+push or clean implementation work is claimed; Amp/Cabinet and T1.6 deferrals remain.
+
+## [2026-10-19] spec | Map public API direct members and preserve review corrections
+
+[Clip/Sample independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-clip-sample-review.json)
+approved the explicit five-reference/131-member partial scope,143 requirements/
+163 cases. Root read379 blocks and131 clauses, function/U actions and generated
+property capability policies; repeated property action strings were not claimed
+individually novel or separately reread. All actual documentary/target oracles null.
+[Device/rack review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-device-rack-review.json)
+approved ten-reference/95-member partial scope,103/113, after315 blocks/clauses/
+actions were read. Heading-only DrumPad.delete_all_chains remains semantic U.
+
+Root authored control/tuning: six references/28 declarations plus separately
+identified zero-member this_device root,107 blocks,33 requirements/41 cases.
+Independent review required engine-channel-message qualifier and ordering
+not-guaranteed wording. R1's15files were archived byte-exact before correction;
+R2seal5fee196d…51e2de pins34payloads. [Focused final review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-control-tuning-review-final.json)
+verified exactly two contract phrases/one source_claim change, unchanged actions/
+counts/sources/oracles, archive, current/historical links and read-only successor
+validator. Both required findings resolved; partial scope approved. Original
+validate.py is historical; use validate-r2.py for current successor checks.
+
+Core/Session ten-reference/226-member author packet234/262 was independently
+reviewed against all659blocks. [Review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-core-session-review.json)
+requires removing two unsupported Track beat labels, recording prose-supported
+capture_midi optionality and leaving SMPTE representation untyped. Author is
+preserving R1 before a narrow successor; no partial approval yet. Root authored
+specialized-device fourteen-reference/108-member packet113/123 from350blocks,
+seal8f9378de…fec16a with13payloads, frozen for independent review. It retains
+omitted Wavetable signature/types, Compressor owner context, Looper units/export
+gates and other cross-device differences rather than filling them by analogy.
+
+All45API references/588direct declarations now have partial mapping owners;
+none is semantically complete, one heading-only member has no source operation,
+and all actual member outcomes remain null/U/unexecuted. Inventory revision8
+records routing only; original inventory/source bytes unchanged. Coverage design
+revision5 makes cross-packet local case/question identities explicitly qualified
+by packet path/revision and ID or JSON pointer; no sealed IDs are renumbered.
+Questions Q041–Q045 route each member family distinctly. Shared catalogs,
+feature/verification maps, plan and handoff updated. A second literal manual
+citation cohort for Push/engine/Browser/workspace is authoring; null anchors are
+not repaired using an ancestor heading. No runtime/candidate/public push or
+scope reduction; Amp/Cabinet host route and T1.6 remain deferred.
+
+## [2026-10-19] spec | Approve corrected API scope and freeze exact member crosswalk
+
+Core/Session R2seal0829264f…b2941cf preserved17R1files and pins39currentpayloads.
+[Focused independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-core-session-review-final.json)
+resolved all three findings, verifying exact seven structured fields: three case
+actions and source-supported destination optionality/omission flags in requirement/
+member ledger. No source, count, contract, source_claim, other action or actual
+oracle changed. Use validate-author-r2.py; historical validator bytes remain intact.
+[Specialized-device review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/live-api-specialized-devices-review.json)
+read all350blocks/113clauses, checked89property declarations against the policy,
+19function actions individually and repeated U-probe policies, approving partial
+scope only. Source signature/unit/enum/context gaps remain explicit.
+
+Root froze [exact API member mappings](../analysis/ableton-live-12.4.3/full-spec-v1/inventory-revisions/r7-api-member-mappings/manifest.json),
+sealfe86b316…b59a2d,8payloads/193externalpins: all45original entries/588direct
+members occur exactly once across five independently reviewed partial families,
+587documentary direct roles/one heading-only semanticU. A zero-member root context
+is separately identified. All626requirements/702packet-qualified cases retain
+JSON pointers; only539unqualified case labels exist, so unqualified merging would
+lose163cases. Read-only derivation reproduces all source/packet/review/manifest
+pins, source provenance and null/U flags; companion navigation review pending.
+No member or entry is semantically complete and no API behavior was executed.
+
+The retained [documentation checkpoint v4](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v4.json)
+passed at22:49:17UTC for252pages/IDs,zero new broken links/errors,30release
+manifests/1788payloads/1306unchangedHEADpayloads and append-only log. The421
+historical missing-source links remain. A separate untracked-aware whitespace
+check passed330wiki/review text files; per-packet validators check packet files.
+The existing requirements browser was regenerated to3084rows; navigation count
+is not a completed-requirement or compatibility numerator. No browser code changed.
+Earlier live lint attempts during an author's unsealed manifest transition were
+incomplete snapshots, not retained passing evidence; v4 was captured after sealing.
+
+Shared indexes/maps/questions/plan/handoff reflect current partial approvals.
+Parallel work continues on the second manual citation cohort and eight exact APC
+startup capability modules; the latter uses an already installed compatible
+CPython3.11 only for bounded static marshal/dis decoding, never module imports or
+original function calls. No tooling installation, broader native sweep, candidate,
+hardware/runtime, public push or scope reduction; existing deferrals remain.
+
+## [2026-10-19] spec | Review mixer interactions and exact citation companions
+
+[API member mapping review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/api-member-mappings-r7-review.json)
+approved exact navigation only, independently reconstructing every45entry/
+588member owner and requirement/case pointer,626unique requirements and702
+qualified cases with539unqualified labels. All8payloads/193pins verified, including
+current corrected core/Session/control seals and their reviews. This does not
+reread/reapprove all588member semantics or close inherited/root/alias behavior.
+
+[Second manual citation review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/manual-citation-crosswalk-r6-review.json)
+approved navigation only for Push/engine/Browser/workspace:162requirements/
+221cases/1300packet-scoped blocks/eight source records;8payloads/148pins verified.
+Root independently replayed all1517requirement/case source-reference triples,
+original880row/order/metadata, exactURL/null-anchor joins and all221case flags.
+The290requirement matches include192D12 and98Ucontext refs;376remain unjoined,
+including330directnullPushanchors and46Browserrefs at14URLs absent from original
+TOC. No parent/fuzzy/alias join, semantic/full-leaf approval or U upgrade occurred.
+Inventory revision9 preserves these separate counts and original denominators.
+Q047 retains paragraph/unnumbered/capture/parser disposition work rather than
+asserting the numbered TOC exhausts product behavior. Fourteen Browser anchor
+causes are being examined in a new bounded source-only companion.
+
+Root authored [mixing interactions](../analysis/ableton-live-12.4.3/full-spec-v1/mixing-workflows/manifest-author-r1.json),
+seal7d1fd0bc…c37e2b,11payloads, reusing original276916byte Mixing source and
+94blocks. [Independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mixing-workflows-review.json)
+read all94blocks/18clauses/fiveUgroups/33actions and approved partial scope.
+Thirteen visible-role proposals and20null proposals retain all33target outputs
+null/U/unexecuted. New visibility/resizing/selection/group/crossfader entrypoints
+preserve existing numeric, routing, recording, Session, focus/mapping and storage
+owners. Q046 retains implicit-arm, group-slot, unnamed-curve half-range,
+EnableSend/nativeactivebit and multi-edit coordinate/platform contexts. No group,
+track, file or application operation was performed. Generic15U histories remain
+partial proposals, not exhaustive percontrol branch acceptance.
+
+Shared indexes/maps, source register, questions, plan and handoff updated. APC
+startup metadata is frozen for independent review; root explicitly requested
+review of whether opaque internal declaration facts belong in research rather
+than normative behavioral clauses. No metadata count is accepted as application
+coverage. Bounded Swapper/helper CLI/file/process analysis proceeds from retained
+function/control-flow evidence, without executing helpers or original bytecode.
+No implementation, public push, tooling install, host emulation or scope reduction.
+
+## [2026-10-19] spec | Keep internal startup facts out of behavioral coverage
+
+[APC independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/apc-controller-capabilities-review.json)
+verified eight pinned modules/149baseline rows,37accurate source-literal records,
+29opaque helper calls/21port declarations/threeTrue/fiveomitted auto-load contexts,
+all data-only decoding safeguards and integrity. Behavioral approval was withheld:
+APCC-REVIEW-001 requires moving the37opaque internal metadata clauses to research,
+retaining only the bounded observable startup unknowns in normative scope. Null
+oracles/REQ headings do not turn internal helper inputs into app behavior. Author
+will preserve R1 before reclassification; Q048 records this required boundary.
+No original module/function/helper or hardware was imported or executed.
+
+Coverage design revision6 clarifies both this existing externally observable
+contract and the difference between numbered publisher navigation and actual
+chapter headings/paragraphs. The original880TOCrows/708navigation leaves remain
+immutable and visible; source-supported additional headings require separate
+reviewed discovery, not a forced literal citation join. A bounded14Browser-heading
+disposition and a census of actual already retained manual chapter headings are
+in progress. No new source was fetched, scope excluded or completion gate relaxed.
+
+## [2026-10-19] spec | Preserve source discoveries and APC scope successor
+
+[Browser heading review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/browser-heading-dispositions-r8-review.json)
+independently reproduced14numbered h4 identities and exact outline ancestors,
+46unchanged unmatched R6pointers and both880entry numbered navigation sequences.
+Five actual Splice children andnine User Library children are absent from both
+retained navigation link lists; the original parser accepts their four-part
+numbers. Causal publication/capture history is unknown. Inventory revision10
+records these source discoveries separately, preserving all880rows/708historical
+navigation leaf flags and no direct joins/coverage credit. The initial R8checker
+had a tuple/list comparison defect; all6original payloads/seal were retained.
+Corrected readonly check.py and README-r2 are pinned by a9payload successor,
+seal7f4ac3cf…614bdd4,with42inputs. No source or historical result was rewritten.
+
+APC R2seal3a3a7779…b0d134 pins70payloads, retaining28R1payloads at their original
+paths, originalseal and29exact archived files. [Focused root review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/apc-controller-capabilities-review-final.json)
+resolved APCC-REVIEW-001 by verifying37metadata facts and37original proposals
+preserved as nonnormative META research with exact retired-ID/source/offset/case
+traces. Current requirements-r2/cases-r2 retain the original6U obligations/12U
+cases unchanged. Zero supported runtime contracts or behavioral credit; all149
+rows/eightselected/141other/_APCcontext remain intact. Matching installed3.11
+read-only validation passed; no original module/function/helper was called.
+Current Browser has sixAPCnormative UIDs,never the37retiredmetadata constraints.
+
+The helper workflow author froze30requirements/37proposals from22retained static
+flow evidence entries and34pins,seal634c3a44…b16958. Its21S/oneI/eightU roles
+await independent review; no operation/output comparator or runtime proof exists.
+Source-claim audits for Stem Separation and synchronization now inspect every
+paragraph/assertion against actual clauses/case branches, distinguishing missing
+requirements/contexts from research-only material. They must not infer full
+source/feature coverage from matching block IDs. Actual retained-chapter heading
+census is also authoring. No canonical domain owner or frozen source was changed
+by these audits at this writing.
+
+Shared indexes, maps, questions throughQ049, source/inventory/design/plan and
+session handoff updated. Existing requirements browser regenerated to3143rows,
+with exactly six current APC UIDs. A fresh untracked-aware whitespace check passed
+345wiki/reviewtext files. The retained v5documentation checkpoint checks258pages/
+IDs with no new errors/brokenlinks; historical421missing-source links remain,
+30releases/1788payloads/1306HEADpublishedpayloads immutable and log append-only.
+These checks establish documentation integrity, not original/candidate behavior.
+No runtime, public push, installation, clean implementation or deferral override.
+
+
+## 2026-10-19 — Review retained chapter-heading discovery and helper roles
+
+Root independently reviewed R9 captured-manual-heading census after reading the
+complete analyst parser/derivation. Read-only replay passed; a separate HTML
+parser reconstructed all1,088headings across44selected byte captures at43exact
+chapter URLs, including tags/attrs/IDs/numbers/text/line-column/outline/leaf state.
+All355catalog records/200physical bindings/283input pins replayed;299watched
+files unchanged. Census seal b7e48f67…a49294 and independent review
+fef7e3b7…29df01 retained. Separate discovery has1,066distinct headingURLs and
+833outline-leafURLs;186extra h4 URLs across18chapters include the14Browser
+headings. All880original URLs/708historical leaf flags/order remain unchanged.
+Eight unknown UTCs,20outline gaps and both Concepts hashes remain explicit.
+This is structural discovery only: no paragraph/behavior/target/complete credit.
+Inventory revision11, source register, questions and plan/handoff route this result.
+
+The independent helper reviewer read all eight retained Swapper bodies
+(2,050lines), selected launcher/startup/callback contexts, all30clauses/37actions
+and22evidence locators;10payloads/34pins and51watched files passed unchanged.
+Review01ac88ec…79dd accepts a partial static-role draft with no required findings.
+REQ006 remains inference about conditional wait/nowait, with constructor wiring,
+actual predicate/default/units/forever/PID selection U. Rollback attempt is not
+recovery, cleanup failure not restoration, marker warning not a proven new exit
+status, and selected guard not whole-callgraph closure. All37actual/documentary
+oracles remain null/U/unexecuted. Shared indexes, feature/coverage, Q049 and plan
+now record that bounded approval. No helper/source function or operation ran.
+
+Stem and synchronization retained-source audits are frozen and independently
+reviewing. Root assigned a separate read-only successor dependency assessment;
+no original owner, old source, citation packet or published handoff was changed.
+Full product goal remains active, with no complete behavioral family inferred.
+
+
+## 2026-10-19 — Reconcile source assertions before adopting owner revisions
+
+Independent Stem audit review84ca8ab8…90828 accepts the retained32-block semantic
+audit only:94facets,13delta groups/18future proposals; original18clauses/29actions
+remain exact.81requirement/88case pointers address16distinctrequirements/20cases;
+remaining source-silent U groups/cases are retained, not counted as paragraph
+coverage.20auditpayloads/27pins/all13original payloads passed;48watched files
+unchanged. Root read all13proposals and assigned a narrow preserved Stem ownerR2.
+Generated-clip eligibility/crop preparation and missing finite command/mask/region/
+file/lifecycle contexts are adoption targets, not approved current clauses yet.
+
+Independent Sync audit reviewa1dd4b9f…ae59db read54blocks/130units/26clauses/
+36actions/eightproposals and verified573historicalR4pointers;51files unchanged.
+Required findingSYNC-SOURCE-AUDIT-REVIEW-001: A079 maps hidden-Follow cessation
+to case012, but active input/visible control is not an established running
+Follower. Author is preparing a preserved audit correction with explicit
+positive-running-before-hide observation; oldaudit/source/owner unchanged.
+
+Design revision7 formalizes source-specific predicate/case comparison and narrow
+historical snapshot replay. A shared block citation or all-character assignment
+is no semantic completeness proof. Root integrated Q050, current plan/index and
+handoff; assigned independent Video chapter audit. All actual outcomes remain U,
+no new requirement is complete, no original code/application/service/hardware/
+installation/candidate operation occurred, and the full-product goal stays active.
+
+
+## 2026-10-19 — Draft First Steps retained-block audit, preserving failed link check
+
+Root read all70retained FirstSteps blocks,21existing clauses and30case actions.
+The settings-source-audit assigns130manual facet labels over those original
+blocks, not130source sentences/new requirements. Scoped clause/action pointers
+retain actual contracts/actions and distinguish incomplete case contexts,
+ungraded outcomes, cross-owner reconciliation, editorial and external-policy/
+linked-destination material. Eleven audit-only proposal groups identify explicit
+Learn first-open/return routes/player/resume/PiP histories, customization controls,
+platform driver entry, cross-owner/color context and operational checkpoints.
+All proposed documentary/actual outputs/comparators remain null/U/unexecuted;
+the original21requirements/30cases/source/canonical snapshots remain unchanged.
+Scope excludes pixels, glyphs, captions outside the70block extraction and linked
+destinations; this is not full raw-chapter or behavioral coverage. No new normative
+clause or application operation is adopted.
+
+First seal b2814de9…65ab53 preserved all7payloads. Its first read-only check failed
+on two README wiki links with one excess parent; no initial pass claimed. A
+preserved successor adds corrected README-r2, narrow check-r2 and correction
+record; alloriginal8files remain byte-identical. Current manifest-r2 seal
+e443795e…248186 has11payloads. Read-only check-r2 passes70block reconstruction,
+16originalpins/exactcase/clause pointers/null flags/manifest/links/whitespace/
+before-after identities plus4rejection fixtures (droppedblock,alteredtext,wrong
+pointer,gradedproposal). Independent semantic review is queued after Video audit.
+Design7/Q050 and plan distinguish the proposed findings from current owner
+contracts. Full product goal remains active; runtime/candidate/deferrals unchanged.
+
+
+## 2026-10-19 — Review Stem owner R2 and Video/First Steps source audits
+
+Root independently reviewed Stem owner R2 sealb05c7ea9…230b6; review88f90649…9a67b
+accepts a partial successor. All32source blocks,old18clauses/two newbridges and
+32current actions/full finite contexts read. Original18records remain verbatim;
+29old IDs/source claims/oracles preserved,17actions refined,016/017bridges and
+oneUavailabilitycase added.20requirements17D12/3U,32cases10qualifiedvisible/
+22null,allactualoutcomesU. Two newcontracts only bridge ordinary generated-clip
+eligibility and crop-preparation routes; timing/overlap remain research/U.
+42payloads/56pins/14original+14archivefiles/4preciseStemhistoricalpin resolutions,
+62links/20BrowserIDs/3redirectfixtures passed.87watchedfiles unchanged.
+An independent temporary review assertion initially omitted the disclosed
+refines_R1_case metadata field; inspection confirmed exactsameID pointers and
+the local check was corrected. This was not a source/spec failure or a false pass.
+
+Root independently reviewed Video audit seal27eee803…8f0c40; reviewe0fd3629…da8524
+accepts retained-text scope only. Read39blocks/18clauses/28actions/97facets/
+9groups12proposals/7captions5links/7localquestions. Independent HTML reconstruction
+matched39blocks and20resources,84requirement/84case pointers; all36payloads/
+31pins/59watchedfiles unchanged. TwoUgroups/twelveUcases remain source-silent,
+not paragraph credit. Explicit import-window appearance and Arrangement waveform
+update are genuinely distinct missing roles; Video R2 is authoring. Eightimage
+pixels/linkedcontent/codec/frame/audio/timing/target outcomes remain uninspected/U.
+
+Independent FirstSteps audit review1e46a543…0f5165 accepts70retained blocks only:
+130manualfacetlabels/21clauses/30actions/11proposal groups,27requirement+27case
+pointers over19documentary IDs. Elevenpayloads/16pins/30watchedfiles unchanged;
+all7failed-initial-seal payloads+manifest retained. No raw-caption/image/link or
+wholechapter closure. Exact cross-owner reconciliation is now authoring; initial
+findings distinguish source referrals from real clause/case predicates.
+
+Sync audit focused re-review00749158…1c44f3 accepts preserved R2 correction of
+A079/requiredfinding: active running Follower before hide is now an explicit
+missing-case proposal, never inferred from live input/visibility.40payloads/
+15oldroot+16archivefiles/9exactJSONdeltas/129otherunits unchanged;77watchedfiles
+unchanged. Owner R2 is authoring; no operation/default/restore/deadline law inferred.
+
+Root retained finite r4-cohort-historical-replay.py, with8known historical wiki
+reads resolved to exact four-owner R1snapshots. R4 exactcitation and Stem/Video
+source-audit outputs reproduced unchanged;146watchedfiles unchanged. Its first
+unsealed reporting attempt expected a status key absent from the old R4summary;
+the adapter now checks exactsummary equality rather than inventing a field.
+Current pass/report retained separately, no oldpin/tool/report/capture rewritten.
+This is historical structural replay, not current semantic approval. Shared
+indexes/maps/coverage/plan/Q050/source register/handoff updated; wholeLive goal
+remains active. No runtime, external publish, installation or clean implementation.
+
+
+## 2026-10-19 — Correct and review Settings, Video and synchronization successors
+
+Settings local R2 froze21unchangedrequirements/31cases,13refinedactions andone
+availability/first-open Ucase after a preflight snapshot-link-base mistake was
+fixed before sealing. Independent reviewbbc13085…6ac4e found SET-R2-REVIEW-001:
+expanded SET017 lost explicit Use System Device selection and OS-output switching.
+R3 preservesall37R2payloads+seal in place, changes exactly /16/setup_and_action
+and updates versioned case/delta/snapshots. It explicitly selects System Device,
+switches independently productive OS Sound A→B and inspects the named selection
+relation, with no audio/latency/failover/deadline oracle. R3seal4570f813…0adb6
+has45payloads. Focused review330d66b9…fdbad resolves the finding:21requirements/
+31IDs/otherfields/oracles unchanged,16pins/21BrowserIDs/62links/19anchors/
+3fixtures/all55watchedfiles unchanged. All31actualoutcomesU;G09/Q031remainopen.
+
+Video R2 reviewd9ed5acc…4716c read20clauses/34actions/39sourceblocks andpassed
+42payloads/66pins/20BrowserIDs/63links/6fixtures, butrequired two research prose
+corrections: stale unqualified R1counts and unqualified both-side positive
+playback for leading/trailing partial tracks. Research-only R3seal9adcc61b…0dcbd7
+preservesall42R2payloads+seal; exactly5text replacements update history/current
+counts, interior-only two-sided prerequisite, current snapshot metadata/links.
+Spec/catalogs/cases/IDs/oracles stayR2unchanged. Focused finalreviewd434abf4…c137c
+approvespartial successor:46payloads/101watchedfiles unchanged,20req18D12/2U,
+34cases12visible22null, allactualU;65links and prior6fixtures pass. No movie/audio/
+codec/frame/timing/default/constructor result or whole-family closure is implied.
+
+Sync ownerR2seal7ebf0944…b5e77 passed independent review1d46a3ec…4e4c3:
+27req25D12/2U,37cases8visible29null,68exactJSONdeltas,73pins/45payloads/
+27BrowserIDs/64links and109watchedfiles unchanged. Three existing sourcecontracts
+clarify documentaryvisibility/textualFollowplacement/Clock-hosttempo following;
+new025adds remaining A/B continuity context while Cjoins/leaves. Genuine active
+Follower interpretation before hide and A/Bpositive synchronization/output before
+Cchanges are explicit. Alltarget andsignal/timing outcomesnull/U. Initial failed
+rawHTML-whitespace preflight is preserved; final check excludes immutable rawHTML
+from authored-text whitespace, never rewrites the source or disguises failure.
+
+Root reviewed the G09companion:40subclaims from13paragraphs;55REQ/68case pointers,
+45distinctquoted predicates/58actions read;66payloads/32sourcepins/14as-ofowners/
+207exactlegacytranscription spans/99watchedfiles unchanged. Review7cb939ff…35172
+approveshistorical scopedmapping only, with no newlivecanonicalpins/normadoption.
+It preserves Q031nonadoption, exact legacy documentary field meanings and distinct
+RecordingRC002/RemoteRC002. Host-folder gaps are scoped: existingdiscovery002
+already owns system/customsearch effects; don'tduplicate releasedlaws. Default
+RecordingRC020 is not explicitlyOff. Q051 now routes concrete chooser/config/
+resync/explicit-analysis-On/scene-Off and summary-qualifier gaps. SettingsR4
+localconfiguration bridges, narrowResyncsource reconciliation and Warp audit are
+authoring; no complete topic/family follows from these reviewedpartial packets.
+
+A standalone historical Sync-audit R2 replay then correctly rejected its now-old
+Settingswiki pin after Settingsadvanced. The preserved finite R1cohort adapter
+v2adds that checker with exact8cohortcanonical→R1snapshot reads; oldadapter,
+pins/tools/results unchanged. Fresh reportv3passes R4 +Stem/Videoaudits+corrected
+Syncaudit:195watchedfiles unchanged,4checkeroutputs, no semantic/current-owner
+approval. CurrentcheckerSHAcc7be4b2…88469b retained separately. A fullwiki lint
+started during SettingsR4authoring found3references to its not-yet-written seal/
+validator; no passing checkpoint retained from that transient snapshot. Retry
+only after sealing. Existing30releases/1788payloads/1306HEADbytes remained exact,
+logappendonly and421historicalmissing-source baseline unchanged. No original,
+network/hardware/account/install/candidate operation, deferraloverride or publicpush.
+
+## [2026-10-19] spec | Review configuration, Resync source and explicit analysis histories
+
+Settings R4 configuration successor passed independent partial review
+[2fe2ff5d…4c53b](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/settings-learning-owner-r4-review.json):
+23requirements/33cases, two new Sample Editor/plug-in folder control roles,
+all21old requirements/31R3cases verbatim;136pins/56payloads/149outer files
+unchanged. Reviewer disclosed companion authorship and read the new owner
+against primary paragraphs and existing discovery/editor owners. Only
+SOR022/031/032 adopted; defaults, arbitrary path/app admission, scan/editor launch,
+remaining G09 gaps and Q031 stay U. A nonblocking original-seal wording note is
+retained; no frozen author bytes were rewritten. Shared indexes, feature map,
+coverage, plan, source register, Q051 and session handoff now route current R4.
+
+Root independently approved [Resync source reconciliation](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/resync-source-reconciliation-review.json),
+review84b1b418…04ff over seal73c27ff1…97e5: all27context blocks, complete10-block
+Sync subsection,14facets,11quoted actual owner predicates/actions,2proposed
+clauses/3future case groups and4captions read. Nine payloads/22pins/32watched
+files verified unchanged; inspected readonly checker passed four rejection
+fixtures. Named output options/button and three symbolic mode roles do not
+supply bytes, schedules, drift correction or successful hardware outcomes.
+Ordinary Clock/tempo-follow/Sync Delay/Song–Pattern roles stay distinct;
+shared-button/per-port fanout and preroll/transport/lifecycle remain U.
+Synchronization owner adoption is separately authoring, not approved by this
+source-only review.
+
+Root independently approved [Media R4](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/media-file-workflows-r4-review.json),
+review3ed66743…46ea9 over sealce0d45e7…5909. All17requirement sections and32case
+IDs/predicates/basis/unknown/target fields remain exact; only MF011/MF015 actions
+change to explicit On/Off, separate fresh no-ASD owned/writable copies and a
+completed productive matched analysis baseline. Read nine retained ASD paragraphs
+and SET-B058 plus changed/surrounding cases, not all Managing Files semantics.
+Readonly checker passed3rejection fixtures/57links/17Browser IDs;44payloads/
+22pins/62outer files unchanged. Legacy predicates remain documentary proposals;
+actual expectations/comparisons are absent unchanged, all target U/not-run.
+Four frozen external current-spec consumers and22as-of JSON identity records
+retain old bytes via exact snapshots; no consumer rewritten or replay claimed.
+Recording RC020 explicit-Off successor is now separately authoring.
+
+The finite historical R1 replay v2 also passed [independent tool review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/r4-cohort-historical-replay-v2-review.json),
+1408c321…22455: four outputs matched,195internal/200outer files unchanged,
+exact-path-only resolver/probes and method/argv restoration checked. It approves
+historical mechanical replay only, not current clauses or compatibility.
+
+After Settings R4 sealing, [full wiki checkpoint v6](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v6.json)
+passed at23:50:57UTC:258pages/unique IDs, no new broken links or metadata errors,
+421historical missing-source links retained,30releases/1788payloads/1306HEAD
+immutable bytes/exact release trees/log append-only verified. The prior transient
+future-link failure stays recorded above. [Untracked-aware whitespace v6](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v6.json)
+passed372wiki/top-level review text files; regenerated Browser has3150navigation
+rows, not complete requirements or behaviors. Warp source audit, Recording
+refinement and Resync owner work continue in parallel. No original application,
+function, media, hardware, account/network/install/candidate operation, release
+mutation, deferral override, commit or public push occurred in this wave.
+
+## [2026-10-19] spec | Review scene Off, Resync owner and Warp source audit
+
+[Recording R3 focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/recording-comping-r3-review.json)
+f883d4b0…e5971 approves only the explicit RC020Off action refinement over seal
+de5050c0…a6264. Root read all8retained Session-slot paragraph/list blocks, the
+changed action, recording008/RC020–021 context and current research; checked
+all32requirement sections/81case rows for exact preservation. Source defaults
+are not matched preference state. The future Off history requires genuine enabled
+recording, separate fresh empty armed slots and an active eligible source;
+no extra recording trigger may masquerade as scene launch. The81-row JSON is a
+new disclosed Markdown transcription, not an original catalog or measurement.
+All comparators/evidence/kinds/IDs and80other actions are exact. Readonly checker
+passed25payloads/20pins/56links/3fixtures/47outer files unchanged. Four artifact
+scenarios retain their old documentary identities and were not rerun;77application
+scenarios remain exact-build ungraded. Shared routes and Q051 now reflect review.
+
+[Synchronization R3 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/synchronization-owner-r3-review.json)
+2036f028…d94d7 approves29requirements/42cases over sealc9326c1d…d87e1, retaining
+27old clauses/37cases verbatim and7append operations. Only output-Sync/triangle/
+Hardware Resync/enabled Control Bar command and3symbolic modes are adopted.
+Independent raw-HTML reconstruction/complete Sync-subsection context,61payloads/
+48oldfiles/80immutablepins/83links/4fixtures/96outer files unchanged passed.
+Nine visible documentary roles/33null proposals, all42actual oracles null/U/
+unexecuted. Symbolic Stop→Start order is not bytes, total count, spacing, phase,
+drift correction or device success. Per-port fanout, exact enable location,
+default constructor and lifecycle remain U. Shared count/coverage/source routes
+now point to separately reviewed R3, preserving historical R1/R2 identities.
+
+[Warp source-audit review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/warping-source-audit-review.json)
+b2ff0863…b19d6 approves bounded retained-text reconciliation over sealb225aed9…f9700.
+Reviewer disclosed original R1-owner authorship and non-authorship of this audit;
+this is not renewed independent approval of the old owner. All131source blocks,
+248facets,50clauses/88actualactions,16proposal groups and74resource text/attributes/
+captions were read. Three additional null-oracle mutations and derive/readonly
+validation passed;25payloads/35pins/63outer files unchanged. Character accounting
+is omission detection only. Actual direct tempo edits, invoke-Warp-Sample,
+rough external nudge reference, saved-marker/manual variants and genuine active
+leader/Follower histories are gaps; already explicit018/021/022/008routes stay
+represented. Q032, source9/8example, short-marker/long-start distinction and
+native finite laws remain unchanged. Owner R2 adoption is separately authoring.
+Keyboard retained-source audit is authoring; reported shortcut differences need
+exact retained reconciliation, not silent correction of292discovery rows.
+
+The preserved [cohort replay v3 tool review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/r4-cohort-historical-replay-v3-review.json)
+aeb7ead3…ed88 approves finite mechanical history only. Eight outputs match retained
+reportv4 through12exact absolute historical reads;448internal/716independent
+files unchanged,48lookalike probes and restoration on injected failure checked.
+Media/Recording authorship relationship is disclosed. Old tools/reports retained.
+A separate [Recording-dependent owner replay review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/recording-consumer-historical-replay-review.json)
+2e701272…ce047 approves four old-dependency integrity replays through one exact
+Recording read, keeping current StemR2canonical untouched:197internal/303outer
+files unchanged, same old pin in each consumer, success/failure restoration and
+six negative path probes checked. These passes predate Warp advancement; they
+never imply a later direct replay pass or renewed source/owner semantics. The
+forthcoming Warp successor affects five old live-canonical pins; retain explicit
+historical resolution rather than rewriting any frozen pin/report/tool.
+
+Root made a bounded read-only Q031query of existing C1/C2 text, with no native
+project reopen/export or original execution. Track/clip-color preference-model
+factory/constructor and three small helper bodies were read; ShouldAssignRandomClipColor
+and DefaultClipColor suffix strings have no recorded references at those source
+rows. AutoColorScheme/picker references lead to registration metadata, not yet an
+observed creation predicate. A100894-byte function was metadata-only, not fully
+read. No Q031resolution, default, random distribution/inequality or normative
+behavior is claimed. Exact source retention and a bounded at-most16function
+follow-up were assigned separately. All source-only mechanisms remain research.
+Amp/Cabinet and T1.6deferrals,30immutable releases and the active unfinished
+full-product goal remain unchanged. No original/helper/candidate execution,
+account/network/hardware/media/install action, commit or public push occurred.
+
+## [2026-10-19] spec | Review Warp owner, Keyboard correction and Mixing audit
+
+Warp owner R2 passed [independent partial review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/warping-workflows-owner-r2-review.json):
+50same requirement IDs/91cases, four clause refinements,22old actions and three
+new U contexts. Shared routing/coverage now names that exact scope. Q032 and
+all target outcomes remain unknown. Two preserved finite Warp-dependency tool
+successors passed [mechanical review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/warp-dependency-historical-replay-review.json):
+twelve old checker outputs reproduced,611outer files unchanged, exact snapshot
+routes and failure cleanup checked. Earlier tools/reports were not rewritten.
+This replay does not approve current owner semantics or compatibility.
+
+The bounded retained-native Q031 [color context review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/clip-color-static-context-review.json)
+was inconclusive and research-only: no preference-to-new-clip creation boundary,
+behavioral requirement, case or coverage credit was established. Existing C1/C2
+text was read as data; no original function, native project, hardware or network ran.
+Q031/Q051 retain the limitation and next actual boundary to investigate.
+
+Q052 records two exact Keyboard source differences after a [seven-fragment raw check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/keyboard-shortcut-source-differences-check.json).
+The check initially used an incorrect temporary adjacent-key normalization and
+rejected an Export fragment; corrected table-only spacing and exact raw ranges
+passed. It did not repair retained source or choose dispatch. Full Keyboard audit
+review required KNA-REVIEW-001 for overly broad context association. The preserved
+R2 five-row/fifteen-field correction [passed focused independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/keyboard-navigation-source-audit-review-final.json),
+retaining all R1 bytes and292original bindings; no normative owner adoption.
+
+The full retained Mixing text audit [passed independent partial review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mixing-source-audit-review.json):
+94blocks/178claim-context records/23clauses/33actions/17proposed groups. Source
+text and literal resource attributes/captions were read; image pixels, chart and
+linked destinations remain uninspected. Q046 and genuinely productive context
+requirements stay open. Keyboard/Mixing owner successors and a complete retained
+Clip View text audit are now separately assigned. The plan remains the work
+selector; zero whole-product families are complete.
+
+[Documentation checkpoint v7](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v7.json)
+passed before the later audit-disposition updates:258pages, no new broken links,
+30releases/1,788payload identities and1,306HEAD payloads unchanged;421historical
+missing links remain. Requirements browser regenerated3,152rows as navigation
+only. Amp/Cabinet emulation and T1.6 remain deferred; no candidate or publication.
+
+## [2026-10-19] spec | Review local gestures and qualify historical checks
+
+[Mixing owner R2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mixing-workflows-owner-r2-review.json)
+passed focused partial review:31requirements/50cases, preserving all23old clauses
+and33case identities, eight action refinements/eight UI roles/17new cases.
+The complete nine-block Monitoring subsection reconciliation and seven selected
+compensation blocks [passed source-only review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/monitoring-source-reconciliation-review.json).
+Separate [Routing owner R2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/routing-monitoring-owner-r2-review.json)
+passed partial review:41requirements/70cases, blue In Activator display and
+explicit right-click gesture; all40old clauses/69case identities preserved.
+No color metric, default, timing, compensation formula or target outcome follows.
+
+[Keyboard owner R5](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/keyboard-navigation-owner-r5-review.json)
+passed independent partial review:40requirements/96cases,19new clauses/54newcases,
+ten old clause/four old action refinements;292discovery rows unchanged.
+Q052 retains Export and Windows note-modifier source differences. The selected
+macOS menu-resource query [passed inconclusive research-only review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/keyboard-menu-static-context-review.json):
+plain plist/XML data from three retained resources describes an application/Help
+scaffold; it establishes no matching dispatch, absence, requirement or coverage.
+No Objective-C unarchiver, selector or original application ran.
+
+[Design revision8](research/full-live-specification-design.md) [passed independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/full-spec-design-r8-review.json).
+Current successor checks validate source/deltas and preserve old checkers/pins/
+reports as revision-qualified history. Additive/editorial canonical advancement
+alone does not require another replay adapter or blanket green historical cohort.
+Concrete dependency questions, failed required checks, semantic changes and release
+gates still require appropriate narrow review/replay. Completion criteria and
+runtime/source/version/denominator boundaries are unchanged. No exact retained
+revision7 design snapshot was found; the review discloses that comparison limit.
+
+The complete180-block Clip View text audit [passed independent partial review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/clip-view-source-audit-review.json).
+Its separate [owner R2 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/clip-view-owner-r2-review.json)
+approves partial55requirements/92cases: six contract refinements, one old action,
+two documentary qualifiers, one admitted audio DuplicateLoop entry and30local
+trials. Group Assign reuses Mixing012/MXW012; actual Gain edits remain intact.
+Follow trials require genuine automatic scrolling before edit and an independently
+established pause, with separate resumption histories and no stopped moving-scroll
+law. Every374retained-record field delta was independently reconstructed;
+101watched paths stayed unchanged across both readonly checks. Root's initial
+resource comparison rejected added audit annotation fields; corrected exact raw-
+field projection passed, with no source/packet changes. Q031 qualifies former
+inheritance wording; Settings R4's frozen source question retains old R1 context.
+
+The retained MIDI Interval paragraph specifies selected-slider addition versus
+no-selection interval-setting followed by Add Interval for all clip notes.
+[MIDI owner R2 passed narrow independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-editing-interval-owner-r2-review.json):
+43unchanged clauses/57verbatim old cases plus three explicit selection/gesture
+trials. A productive matched button baseline precedes the no-effect slider trial.
+Five complete selected MIDI records/two Clip paragraphs were checked; this is
+not a renewed full244-block chapter review. MIDI capture UTC remains unknown;
+query UTC is separate. Q029 routes current evidence once to Q053; Humanize span/
+RNG and C1–C3 remain unresolved, all60actual outcomes null/U/unexecuted.
+
+The complete77-block Session grid audit [passed independent partial review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/session-grid-source-audit-review.json):
+142facets/29contracts/40actions/17audit-only proposals, all59literalresources,
+with91watched paths unchanged. Existing productive Mixing group-slot probes are
+reused; StopAll Arrangement source wording stays U. Session owner successor is
+authoring. Full Arrangement and MIDI chapter audits continue in parallel; the
+Arrangement audit includes the earlier omitted Transport/Playback and Arrangement
+Mixer sections. Root has begun the full32-block Grooves chapter audit against
+14contracts/24actions and selected Clip View/Racks contexts; no normative adoption.
+
+Shared specification/research indexes, feature map, verification coverage, source
+ledger, questions and execution selector now reflect these partial dispositions.
+[Documentation checkpoint v9](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v9.json)
+passed at2026-10-20T00:54:50UTC before later audit-assignment/log updates:
+258pages, no new broken links,30releases/1,788payload identities and1,306HEAD
+payloads unchanged;421historical missing-source links remain. Browser rebuilt
+3,181rows at00:54:46UTC, navigation only. All new target outcomes remain U and
+zero whole-product families complete. Amp/Cabinet emulation and T1.6 remain
+user-deferred; no candidate, tooling install, broad native/original execution,
+new release or public push occurred.
+
+## [2026-10-19] query | Freeze complete retained Grooves text audit
+
+The [Grooves source audit](../analysis/ableton-live-12.4.3/full-spec-v1/groove-source-audit/README.md)
+is frozen for independent review, sealabf0b335…db988:32complete chapter blocks,
+17literalresources,14actual contract rows/24actual actions and32whole-block
+assessments. Ten audit-only future groups retain exact old true subsets and
+selected Clip View/Racks contexts; no new normative owner or completed outcome.
+The five payloads use15immutable input pins and one exact as-of Rack snapshot;
+no future live-wiki gates, historical adapter or generic registry was added.
+The first unsealed checker failed on eager evaluation of two different row shapes;
+explicit shape selection fixed our checker only. [Postseal author checks](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/groove-source-audit-author-check.json)
+passed seven rejection fixtures and a decimal/heading/list/table/blank-image
+parser fixture, with24watched paths unchanged; write mode is unavailable.
+These are author mechanical checks, not independent semantic approval. All image
+pixels/destinations and actual target outcomes remain uninspected/U/unexecuted.
+
+
+## [2026-10-19] spec | Integrate Session and Groove contexts; review complete source audits
+
+[Session owner R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/session-view-owner-r3-review.json)
+passed focused independent partial review:30requirements/57cases, all29old clause
+and40oldcase records plus33old packet files exact. Seventeen new contexts include
+actual nonsequential launching, Edit scene commands and two U-only obligations;
+two external groups stay pending. Genuine playing/clipboard/clip baselines are
+retained; no sample/file/timing law or completed Session topic follows.
+
+The full32-block [Grooves audit R1 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/groove-source-audit-review.json)
+required GSA-REVIEW-001: Rack-chain advice incorrectly carried two primary Groove
+extraction references. [Preserved R2 focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/groove-source-audit-review-final.json)
+checks exactly those two removed arrays; every R1 byte and the correct external
+Racks022/RCK046 remain exact. Separate [Groove owner R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/groove-owner-r3-review.json)
+then passed independent partial review:14unchanged IDs/34cases,001/010/014 refined,
+24old actions verbatim plus ten source-context actions. Positive-velocity audio
+Commit creation/overwrite, chooser and actual double-click/Enter loading are now
+explicit; genuine effect/nonflat prior envelope baselines precede negative/output
+comparisons. GRV005/010/013 arithmetic and random unknowns are exact. All61old
+files/shared83 records remain exact; current distinct MPE/Tuning/Groove union93
+uses separate Groove-only catalog routing. Random advice stays research-only.
+The reviewer independently reproduced32sourceblocks/17resources and exact three-
+row/seven-field delta;105watched paths remained unchanged. Its initial scratch
+manifest-shape assumption failed before writes, was corrected in scratch only,
+and the complete check passed. No frozen artifact was repaired in place.
+
+The full164Arrangement/22selectedConcepts [source audit review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/arrangement-source-audit-review.json)
+required ASA-REVIEW-001: three assessments borrowed nonsequential launch coverage
+from a later Session revision. [Preserved R2 focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/arrangement-source-audit-review-final.json)
+checks exactly six string changes across manual/derived assessments. Old SV001's
+actual neighboring A/B gestures are described accurately; source any-order text
+stays intact. All32R1 files preserved,95watched paths unchanged; separate full R1
+semantic read is not claimed as another root full-source approval. Both6.3 and
+6.15 are included;19bounded owner groups are now assigned for successor authoring.
+
+The complete66-block [MPE source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mpe-source-audit-review.json)
+passed independent partial source review:110facets/18actual clauses/27actions,
+28literalresources/26selected external records/14Glissando-LFO context blocks/
+13audit-only proposals. Old60shared R2 payloads and all111watched paths remain
+exact. Source paragraphs, raw spans, actual predicates/actions, all assessment
+qualifiers/proposals and full readonly tooling were checked. Generic activity,
+per-note delivery, offline editing, plugin defaults/output and output zones remain
+distinct; Fold/C3 and numerical/protocol/build outcomes U. No normative adoption.
+The complete244-block [MIDI source audit](../analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/README.md)
+is separately frozen for independent review:506facets/144literalresources against
+43clauses/60actions and38audit-only groups. The separate full146-block MIDI Tools
+chapter audit is assigned next; root read all146 source blocks and current43rows/
+60actions before selection, without adopting missing actions as existing coverage.
+
+## [2026-10-19] query | Preserve inconclusive Humanize static context
+
+The [Humanize companion](../analysis/ableton-live-12.4.3/full-spec-v1/humanize-static-context/README.md)
+[passed independent inconclusive research review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/humanize-static-context-review.json):
+16full retained bodies/53631codebytes, all8warnings across6bodies,11selected index
+records, seven actual direct calls and64literal pointer words. The arm64 file's
+149711904bytes/SHA3a99cee…383cfad were freshly reverified. Ordinary read-only file
+mapping retained512bytes at constructor-written0x106916a18; displacement0x190
+holds literal0x10341c29c, proving no complete class boundary/ABI/actual dispatch.
+Only three inspected owned pure header-parser definitions were evaluated; no
+original code, loader, executable mapping, native project/decompiler or runtime.
+
+Private0.25/0.5 expressions, registration arguments and matching names do not bind
+the public panel/controller/kernel/grid/variation context or resolve Q053. Export
+UTC stays null and62other lexical hits remain unassigned. Author checks and an
+independent32-path watch passed; five unsupported-promotion fixtures were rejected.
+All results stay null/U/unexecuted with zero requirements/cases/behavioral credit.
+Shared source registers, Q050/Q053, indexes, feature/verification routing, selector
+and handoff now distinguish these reviewed scopes from queued author work. No
+whole-product family is complete. Amp/Cabinet emulation and T1.6 remain deferred;
+no candidate, tooling install, new release or public push occurred.
+
+## [2026-10-19] spec | Review MIDI, MPE and Arrangement successors
+
+The full244-block [MIDI source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-editing-source-audit-review.json)
+passed independent partial review:506facets/144resources/38audit-only groups
+against43actual clauses/60actions. The separate [gesture owner R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-editing-gesture-owner-r3-review.json)
+passed partial review:43unchanged IDs/72cases, six rows/nine append fields and
+twelve new actions for selected subsets of eleven groups. All60old records,
+17tool rows/actions and25old files remain exact. Eight new documentary pairs
+are named/four null; the preliminary author7/5 count was corrected before seal.
+Eight unsafe mutations were rejected;77independently watched paths stayed exact.
+Humanize/C1–C3/Q052 and remaining groups stay open.
+
+The [full MIDI Tools audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-tools-source-audit-review.json)
+passed independent partial source review:146blocks/302assessments/101literal
+resources,17tool profiles/21audit-only proposals. Root independently reconstructed
+raw spans/normalization/resources and checked actual predicates and all assessment
+qualifiers. Eleven negative/seventeen positive fixtures passed;51watched paths
+unchanged. Source capture is date-only with unknown UTC. Strum needs productive
+nonzero output before its zero-reset comparison; generator bounds/capacity/origin
+need actual nonempty output, not a nonzero Density flag. Separate Tools owner R4
+is authoring; source review adopts no normative law.
+
+[MPE owner R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mpe-owner-r3-review.json)
+passed independent partial review:18IDs/50cases, nine rows/27append fields,23new
+actions and27old records exact. Seventy-nine prior files and original shared83
+records remain exact. Ten new named UI outcomes/thirteen null documentary pairs
+retain actual null/U/unexecuted status. All157watched paths stayed exact. MPE50,
+Tuning32 and Groove34 now form116distinct cases across53IDs, without recounting
+the shared historical83. Full49-block Tuning source audit is authoring.
+
+[Arrangement R2 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/arrangement-editing-owner-r2-review.json)
+required ARR-R2-REVIEW-001: nine numeric/duration documentary expectations
+conflicted with no-numeric comparators and visible-only reporting. The minimum
+[preserved R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/arrangement-editing-owner-r3-review.json)
+passed independent focused review: exactly18fields null,43named/41null across
+84cases. All42requirement bodies, actions/source claims/original predicates and
+35R1/R2files/seals stay exact. Six unsafe fixtures and postseal write refusal
+passed;166independently watched paths unchanged. This carries the separate full
+186source/42clause/84action semantic review, not another claimed full source read.
+An initial scratch read requested nonexistent validation-author-r3.json; it failed
+before writes, then the actual validation-preseal-r3.json was read and checked.
+
+Root read the full124-block Racks chapter and all28clauses/61actual cases before
+assigning a compact full primary-source audit. Separate common Devices153blocks
+were parsed for navigation only, not read/audited as a complete chapter. Current
+Racks scope remains partial. Plans, questions, source registers, feature/coverage
+routing, indexes and handoff reflect reviewed increments and assigned work; no
+whole-product family is complete. All actual results remain null/U/unexecuted.
+
+## [2026-10-19] query | Retain inconclusive Humanize producer context
+
+The [producer follow-up](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/humanize-context-producer-followup.json)
+[passed independent inconclusive review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/humanize-context-producer-followup-review.json):16additional complete bodies/43730codebytes,
+12warnings across6records. Private context setter+0x28, seed+0x64 and generic
+indirect0x190 remain separate. The initializer uses qword index5/sixth slot at
+byteoffset0x28; canonical Q053 explicitly qualifies the report's retained ordinal
+wording. Decompiled FP/vector ABI discrepancies and actual public provider/units/
+panel/control/kernel bindings remain unresolved. All16watched paths stayed exact.
+No binary reread/mapping, original function, native project/decompiler, runtime,
+UI, hardware, network or candidate ran. Zero requirements/cases/behavioral credit;
+Q053 and all prior deferrals remain open.
+
+The previous v11 documentation lint and v9 whitespace reports passed at their
+recorded times. A later browser identity read used an incorrect nested path and
+failed after the whitespace report was written; correcting the read path verified
+the actual browser artifact. This was no browser-build or whitespace failure.
+Fresh routing checks follow this increment; old reports remain immutable.
+
+## [2026-10-19] lint | Check reviewed source and owner increments
+
+[Documentation lint v12](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v12.json)
+passed at2026-10-20T01:50:59UTC:258pages/IDs, zero new broken links/errors,421
+retained missing-source baseline links,30release manifests/1788payload identities
+and1306HEAD-published payloads unchanged; log append-only. Separate [whitespace
+v10](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v10.json)
+passed433wiki/review text files plus git diff --check. These are mechanical
+checks only, not semantic/build/runtime/compatibility proof.
+
+The regenerated [browser](../analysis/ableton-live-12.4.3/browse/specs/index.html)
+contains3189navigation rows,4160472bytes/SHAe1619905a51e53fe074a95c17af451d9ee3394a96304267b4c6b2e6a54b18a23.
+Requirement rows are not completed behaviors. Root next reads the full retained
+40-block audio-to-MIDI chapter against its14clauses/29actions; this is source
+reconciliation, with no conversion, audio asset generation or runtime execution.
+
+## [2026-10-19] spec | Review Tools source roles and Tuning adoption
+
+The [full MIDI Tools R4 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-tools-owner-r4-review.json)
+required three corrections despite passing integrity checks: Recombine Dimension
+chooser versus Rotation Steps columns/Position prerequisite; Strum Low/High
+breakpoint/keyboard gestures versus Tension; Euclidean shared Pattern Randomize
+versus individual voice controls. R4 remains exact. The minimum [preserved R5](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-tools-owner-r5-review.json)
+passed independent focused partial review: three appended clauses/three setup
+actions corrected, all source claims/pointers/oracles/guards and72earlier records
+exact. All55prior files remain exact; same43IDs/93cases (77D12/16U), actualnullU.
+Four source-role fixtures supplement ten retained meaningful guards;105watched
+paths unchanged and unsupported write mode refused. This carries the separate
+full146source/43clause/93action review for unchanged material; no second full
+source or numeric/RNG/curve/compatibility approval. C1–C3/MTA-Q04/Q052/Q053 stayU.
+
+The full [Tuning source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tuning-source-audit-review.json)
+passed independent partial source review:49primaryblocks/68assessments/32literal
+resources,21clauses/32actualactions,19selected rendered FAQ/ASCL contexts and
+35adjacent records. Root independently reconstructed49raw-span plaintexts and
+376qualified pointers;93watched paths unchanged,85pins/61old files retained.
+Large combined reads truncated; bounded rereads completed all missing checker,
+assessment and supplemental context text before approval. No full supplementary
+FAQ/ASCL/SCL grammar or adjacent-owner audit is claimed.
+
+The separate [Tuning owner R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tuning-owner-r3-review.json)
+passed independent partial review:21IDs/five append fields,43cases with32old
+records exact plus11bounded histories. Three new named UI documentary pairs/
+eight null remain actualnullU/unexecuted. Group10 retains TUN015 configuration
+and routes Tuner010/011/012/DTU028 without a duplicate case. Genuine effective
+tuning/nonzero output, working control/load/Save/enabled-link, Onconfirmation
+and recognized valid UTF8 import precede negative contrasts. SCLmiddle/ASCL69,
+nonmonotonic first-last, DrumSynth qualification, metadata/URI/API and source
+kinds/dates remain distinct. All97prior files/providers/seals exact;159watched
+paths unchanged/59new source-context pointers checked,14unsafe fixtures rejected.
+Author's preseal own-link exception was limited to its not-yet-created manifest;
+sealed checks pass. Logical MPE50/Tuning43/Groove34 union127 (94D12/33U) avoids
+recounting original shared83. No original/native/runtime/fixture/parser executed.
+
+## [2026-10-19] spec | Audit Racks and conversion; continue chain workflows
+
+The full124-block [Racks source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/racks-source-audit-review.json)
+passed independent partial review:264assessments/53literalresources/22audit-only
+groups against28clauses/61actualcases. Root read all primary text/resources/
+clauses/actions and264judgments grouped by155identical assessment/reference
+combinations,22full proposals/fourquestions/sevenCommonDevicesparagraphs and
+original RR01/RR02 reviews. Independent normalization/raw spans/disjoint text/
+871qualified actual-action pointers and53starttags checked;29watched paths exact.
+Twelve unsafe fixtures preserve true action subsets and reject borrowed keyfade/
+padlayer/Receive histories, missing noteANDCC, sustained tail, bothmapped controls,
+seventh-return support and invented inline glyphs. Source pixels/destinations
+remain uninspected. No new normative IDs/cases/coverage or complete topic follows.
+Racks owner R2 is authoring; common-device clauses/actions remain held exact.
+
+The full40-block [conversion source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/audio-to-midi-source-audit-review.json)
+passed independent partial review:40mixed whole-context judgments,14resources,
+14clauses/29actualactions/F1–4, five audit-only groups. Forty judgments are not
+an atomic-facet or completion denominator. Independent source normalization,
+source locations/starttags/canonical14bodies/29actions,23pins, eight unsafe
+fixtures and31watched paths passed. True Warp/custommapping/bothswap/bothplacement/
+alltransient-before-EACH-command subsets remain. No detector expected output,
+generic Rack/Convert cap, obligatory nonempty recognition or exact sound law.
+Conversion owner R3 is authoring with old29records preserved.
+
+Root and the new common Devices auditor separately read the full153-block
+Working with Instruments and Effects chapter. Its140literal resources and
+source-to-owner judgments are being reconciled in a separate audit; Racks
+primary audit covers only seven selected default paragraphs from that chapter.
+The Device A/B states/automation/copy/preset/default workflows need distinct
+reconciliation. Source134–139 permits custom Harmony/Melody device-or-Rack
+conversion defaults and last-added selection; conversion's supplied piano/synth
+Rack preview roles therefore require factory/no-custom histories. Root sent
+this exact six-paragraph qualifier to the conversion author before freeze.
+No broad default workflow is adopted from this coordination or source presence.
+
+Shared plan/indices/questions/source registers/coverage/handoff now route these
+reviewed partial scopes and parallel assignments. Every exact-target result
+remains unknown/unexecuted; no whole-product family is complete. Amp/Cabinet
+emulation and T1.6 remain deferred. No candidate, install, new release or public
+push occurred. Existing source bytes, published releases and previous reports
+remain immutable; source-claims do not prescribe implementation architecture.
+
+## [2026-10-19] lint | Check Tools R5 and Tuning R3 routing
+
+[Documentation lint v13](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v13.json)
+passed at2026-10-20T02:10:16UTC:258pages/IDs, zero new errors/broken links,421
+retained missing-source baseline links;30release manifests/1788payload hashes
+and1306HEAD-published payloads unchanged, log append-only. [Whitespace v11](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v11.json)
+passed441wiki/review text files plus git diff --check. Regenerated browser
+contains3189navigation rows,4163623bytes/SHAe6e0bc11e4eca46b75a16b95185bfa75bab69678661dbbc5ff225d9fe2a00dd6.
+Mechanical/source-retention checks are not semantic/build/runtime compatibility
+proof. Root continues independent reviews; primary Racks R2, conversion R3 and
+common Devices full-source audit authoring remain active. No release changed.
+
+## [2026-10-19] spec | Review common Devices and conversion; narrow Rack movement
+
+[Common Devices source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/device-chain-source-audit-review.json)
+approves partial full153-block chapter audit:153whole-context judgments,
+140literal resources/41selected adjacent records/20audit-only groups/four
+questions. Source text, proposals, literal resource roles and own tools read;
+verbose truncated outputs reread in bounded projections. All54immutable pins/
+four asof snapshots,153independent raw text/spans/locations and140starttags
+checked;14negative fixtures/parser/refused writer and60unchanged watch paths
+pass. Original28Rack clauses/61actions reuse the previously fully read exact
+baseline; no later-owner absence claim or new normative adoption.
+
+[Conversion R3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/audio-to-midi-owner-r3-review.json)
+passed independent partial review:14IDs/37cases,29old records exact; five clause
+appends/two selected-source qualifications/eight new histories. Factory/no-custom
+default contexts qualify Harmony/Melody preview structure; actual NONEMPTY
+recognized output precedes preview comparisons without guaranteeing recognition
+for every input. First sealed checker failed absolute versus relative path
+sets; preserved initial bytes/seal and exact two-line additive final checker
+retain the failure. Final checker passes with52unchanged watched paths. Current
+routes use README-r3-final.md; old guide remains immutable.
+
+[Primary Racks R2 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/racks-owner-r2-review.json)
+requires one correction:007/066/G05 wording conflates either-section edge
+resizing with moving the zone itself. Independent fade-section translation
+remains U; no source contradiction or impossibility claim. All mechanical
+checks pass/74watched unchanged. Parallel reviewer now authors the minimum
+preserved R3, root will independently review; approved source-audit shorthand
+gets an additive qualification. Utility/Tuner/Spectrum full46-block selected
+sections and native MIDI full112-block chapter audits continue in parallel.
+A scratch rg queried the wrong plan directory, returned missing-file, and was
+corrected before edits. Shared source/plan/indices/coverage/questions/handoff
+updated; design8/roadmap4 scope unchanged. No runtime/candidate/install/release/
+public push; every whole-product family remains incomplete.
+
+## [2026-10-19] lint | Check conversion and common-device review routing
+
+[Documentation lint v14](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v14.json)
+passed at2026-10-20T02:24:04UTC:258pages/IDs,zero new errors/broken links,421
+retained missing-source baseline links,30releases/1788payload hashes and1306
+HEAD-published payloads unchanged; log append-only. [Whitespace v12](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v12.json)
+passed445wiki/top-level review files plus git diff --check. Refreshed browser
+has3189navigation rows,4164969bytes/SHA9f3fdf9845f6d5d25f12f4cbf1f7cb66d3148d161de3e942fd78d9730d5189ff.
+Browser stdout was display-truncated; actual artifact independently read/hash
+checked. Mechanical checks are not runtime/semantic/compatibility proof.
+Racks focused R3 and two native-device source audits continue in parallel.
+
+## [2026-10-19] spec | Review Utility, Tuner and Spectrum source sections
+
+[Utilities source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/audio-utilities-source-audit-review.json)
+approves partial46-block three-section audit:35paragraphs/3listitems/8heads,
+93textparts+8heads=101qualified assessments,19literalresources and nineaudit-only
+groups/threequestions. Exact41clauses/103actions and all finite input definitions
+read previously and carried with byte/predicate checks; new101judgments,9groups,
+3questions and own19117byte checker fully read here. Fiftyimmutable pins/four
+asof snapshots exact; root independently checks46rawtexts/spans/locations and
+19starttags,60watched paths unchanged. Fourteen negative fixtures/inlineglyph
+fixture/refused writer pass. Six oldDpkg grades remain file-only,41Uactions
+retain exact do-not-grade instructions. No package decode or original execution.
+
+Utility controlpositive/tail/DCnonlinear qualifiers, genuine Tuner monophonic
+detection/bothviewcolors/arrows and Spectrum manual/Auto/Maxpositive histories
+remain audit proposals; no owner IDs/cases/coverage/completion adopted. Selected
+FAQtwo-line asof12.1 context/TUN015externalreceiver boundary is not wholeFAQ or
+Tuner runtime proof. Author's preseal ownchecker null-versus-instruction mistake
+was corrected before seal; no old data changed, firstsealedcheck passes.
+Worker continues full108-block filter/EQ selected sections (not all1137chapter);
+root read canonical research/intro, attempted absent packetREADME then selected
+actual files before delegation. Racks focusedR3/nativeMIDI112 audits continue.
+Shared plan/indices/questions/source/handoff updated; no design/roadmap scope
+change, release/candidate/install/public push or whole-product completion.
+
+## [2026-10-19] spec | Resolve Rack zone-gesture source roles
+
+[Root R3 focused review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/racks-owner-r3-review.json)
+approves partial28IDs/81cases after RACKS-R2-REVIEW-001. Fresh rawB044 read,
+full12-payload correction/ownchecker/pinnedR2pure safetyhelper read; no oldmain.
+Only007appended wording/066setup action and matchingtwo substantive planfields
+change. Either-section edge resizing and whole-zone lower-main interior move
+are distinct; independent fade translation U, not claimed absent in Live.
+All61oldrecords/all81sourceclaims/oracles/pointers/guards/counts and36R2files
+exact. Additive qualification preserves oldauditA089/A090/G05 and sourcebytes.
+Root additionally read all20currentcase-specific actions/commonrecipe, six
+appends and22groupledger; original full124-source R2review carried unchanged
+material only, not a fresh entire-source semantic reread. All18retained+3focused
+fixtures/10true subsets,28BrowserIDs/88links and63watchpaths pass, writer refused.
+Shared routes/coverage/source/Q050/handoff updated to reviewed81cases; no
+CommonDevices owner adoption, newactualoracle/targetpass/release. Utilities
+R2bounded owner authoring and nativeMIDI112/filterEQ108 sourceaudits continue.
+
+## [2026-10-19] spec | Review complete native MIDI-effect source chapter
+
+[Native MIDI source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/native-midi-effects-source-audit-review.json)
+approves partial full112-block chapter:76paragraphs/27listitems/9heads,
+235qualified assessments/19literal resources/21audit-only groups/sixquestions.
+Root freshly read all112texts/27clauses/146fullcasefields/oldreviews/threeR2
+corrections; all226part judgments read in160exact assessment/ref/disposition
+groups with explicit block/part memberships, plus structuralheadings. Full
+21proposals/sixquestions/30actual adjacent records and own15982byte checker
+read preseal; exact plan/checker/input hashes reconfirmed identical after freeze.
+No truncation in bounded native judgment/neighbor output. Root independently
+checks112rawtexts/spans/locations,19starttags and qualified actual pointers;
+14negativefixtures/45truecontexts/parser/refusedsealedwriter pass. Fiftypins/
+all32oldfiles/opaquearchive/twoasof snapshots/58rootwatchpaths exact.
+
+Old54D12/92U,80lifecycle rows and finite laws unchanged; no adequatefixture
+claim from enumeration, finite32RNG liveness/proportion, generalizedAltcycle/
+Holdreplacement/OffLatch law, inputtooutput proof from flags/presets/meters.
+ActualNONEMPTY productiveeffect and BOTH independently admitted event identities
+precede future negative/bounds/absence/order comparisons. No archive extraction,
+package decode/oldtool/original/native/runtime/UI/MIDI/audio/hardware/network
+execution, newIDs/cases/adoption/credit/completion. Source/plan/indices/questions/
+handoff updated. Author continues commonDevices R4 adoption independently;
+utilitiesR2 owner and filterEQ108 source audit proceed in parallel.
+
+## [2026-10-19] lint | Retain in-progress owner-link failure
+
+[Documentation lint v15](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v15.json)
+failed at2026-10-20T02:34:07UTC on one new link: the actively authored utilities
+research page refers to manifest-author-r2.json before its seal exists. Worker
+notified; root preserves this actual failure and will rerun after sealing, with
+no placeholder manifest or weakened gate. Metadata258pages/IDs,30releases/1788
+payload hashes/1306HEAD-published bytes and logappend checks otherwise pass;
+421existing missing-source links retained. [Whitespace v13](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v13.json)
+passes450wiki/review files plus gitdiffcheck. Browser refreshed3189rows,4165713
+bytes/SHAa6200dacbaeb37154e93dd8070efd904e30101401d86bf29546690eb9f65896f.
+No semantic/runtime proof; current in-progress link has not yet passed lint.
+
+## [2026-10-19] spec | Adopt bounded Utility, Tuner and Spectrum histories
+
+[OwnerR2 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/audio-utilities-owner-r2-review.json)
+approves partial41IDs/112cases,103oldrecords/41oldfiles exact. Nineactualfull
+actions/twoUtilityappends/ninegroupmappings/threequestions andcomplete current
+checker read; exact59filetree/62sealedpayloads/58pins/fourbefore-and-current
+pageproviders/14externalasofhashpointers independentlychecked. Eighteennegative
+fixtures/41BrowserIDs/142links/81watchpaths pass; unsupportedwriterrefused.
+
+Utility005 adds published continuous0→100M context;013 adds low/DC PLUS
+downstreamnonlinear necessary, not sufficient soniccondition. GenuineBOTH
+Width/MidSide, sustainedNONZEROtail, acceptedmonophonicTuner bothcolorstatesin
+BOTHviews/arrows/Target andSpectrumproductive manualRangeANDzoom/observedMax
+history precede contrasts. SelectedFAQasof12.1/conditionalIgnoreTuningSystem
+UI andexternalTUN015 remain distinct. Allnine newdocactualfieldsnull;63D12/
+6historicalfile-onlyDpkg/43U,all106applicationcases ungraded/unexecuted. No
+oldnumeric/sourcepredicate changed or newDSP/detector/timing/pixel/fileoracle.
+Presealchecker 'before'/'Before' token issue disclosed and corrected without
+datachange. Rootv15in-progressmanifest-linkfailure retained; seal nowexists
+and full lint rerun follows, no placeholder added. Shared routes/counts/source/
+questions/handoff updated. FilterEQ108audit frozen for rootreview; worker now
+authors nativeMIDI R3. Parallel commonDevicesR4 andDynamicsfive-section audit
+continue. Allwholeproductfamilies incomplete; no candidate/install/release/push.
+
+## [2026-10-19] spec | Review filter/EQ selected source and continue owner work
+
+[Filter/EQ source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/filter-eq-source-audit-review.json)
+approves partial108blocks/108whole-context judgments,65clauses128fullactions/
+finitefixtures,28literalresources and12audit-only groups/fourquestions. Root
+read everyselectedtext/actualrow/judgment/proposal/question/resource role; old
+FEQ001–003/finalR2 andselectedR3Legacyeditorial scope checked. Ownchecker
+fullyinspected before readonlycheck,105pins/99oldfiles/twoasofproviders/113watch
+paths exact,108rawtexts/spans/locations/28starttags reconstructed. Fifteennegative
+fixtures/inlineimage-listparser/refusedwriter pass. Reviewer phrase 'samecontrol
+ineligiblecontext' means samecontrol IN AN ELIGIBLE context, BEFORE an ineligible
+mode contrast; raw G02/G03 unambiguously preserve that positive prerequisite.
+No source bytes or frozenreports silently edited. AllnewdocactualnullU, no
+newIDs/cases/adoption/credit;12boundedhistories nowroot-owned R4authoring.
+
+[Full lint v16](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v16.json)
+passed at2026-10-20T02:38:30UTC afterUtilitiesR2sealing:258pages/IDs,zeroerrors
+or newbrokenlinks,421existingmissing-source baseline,30releases/1788payload
+hashes/1306HEAD-published bytes unchanged/logappend true. Originalv15failure
+preserved; no placeholder/gatechange. This check precedes the laterfilter-source
+routing/ownerR4edits, which need the next milestone check. NativeMIDI R3/common
+DevicesR4/Dynamicsfive-section sourceaudit continue in parallel; no original/
+candidate/runtime/install/release/publicpush/wholeLivecompletion.
+
+## [2026-10-19] spec | Freeze bounded filter/EQ owner R4 for independent review
+
+Root-authored [Filter/EQ R4](../analysis/ableton-live-12.4.3/full-spec-v1/filter-eq/README-r4.md)
+is sealed for independent review:manifest29ac67707e82680600fda77f7f3d80b490fa22eb7e4674e83b78fcf7c230c371,
+110payloads/109packetfiles. All65requirement bodies/all128oldcase objects/all99
+priorfiles/history exact, twelve compound actions appended:AF060–065/CEQ018/
+EQ8034–037/EQ3020;total140=90D12/4historicalfile-onlyDpkg/46U. Allnewdocactual
+pairsnull/U/unexecuted. Actions explicitlyoperate namedcontrols and genuine
+matchedpositive histories; sourcequestions/Legacy/numericDSP/lifecycleunknowns
+remain. Two currentcanonical snapshots/exactbeforeR3providers, nineexternal
+historicalhashpointers asof/7own+105inheritedpins preserved without replay or
+adapters. Own113linechecker17negativefixtures/108rawspans/133links and125
+postsealwatchpaths pass; unsupportedwriterrefused beforeoperations.
+
+First unsealedcheck failed on one renderedtrailingSpace ineach newMarkdown
+snapshot; root identified exacttwo lines, trimmedrenderedparagraph edge only
+andupdatedexactadoption reconstruction beforeseal. Casecommonprefix/source/
+alloldfiles unchanged; no failedsealedcheck. Scratchauthor helper stays /tmp,
+notanoldscriptreplay orimplementation. Independent worker reviews frozenR4;
+root cannotselfapprove. Other worker's CommonDevicesR4(38/101) andDynamics
+123-block source audit nowfrozen for rootindependentreview; nativeMIDI R3
+owner continues. Sharedroutes distinguish reviewedbaselines fromproposals.
+No runtime/newrelease/install/publicpush, and fullLive goal remains active.
+
+
+## [2026-10-19] spec | Review bounded filter/EQ and native MIDI successors
+
+Independent [Filter/EQ R4 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/filter-eq-owner-r4-review.json)
+approved partial65IDs/140cases,128old exact/twelve new null histories, no required
+findings. Reviewer freshly read full108selectedtexts/65clauses/128old+12newfields/
+fixtures/12groups4questions/28literalresources;110payloads/99oldfiles/7own105
+inheritedpins checked,17negativefixtures/133links/125outerwatch unchanged.
+Root authored R4 and did not selfapprove; target/detector/Type/Legacy/DSP U.
+
+Root independently [approved NativeMIDI R3 as partial](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/native-midi-effects-owner-r3-review.json):
+manifestee2ccef3d09a60315ba86b8c32e2cbd1cff39b69262d5128b6ae0bad24dbe52e,
+27IDs/176cases,146old objects/32old files/bothseals exact; one008LEDappend and30
+newall-null histories. Freshfull112selectedsource/30newfields/21groups/overlay/
+sixquestions/204linechecker and entirewikidelta read; earlier235judgments/27
+clauses146actions/19resources carried under exactpins. All47payloads/exact48files/
+60pins/sixasofhashpointers checked,16negativefixtures/58links/76outerwatch pass;
+unsupportedwrite refused. Preserved unsealed planned-seal-link failure and caught
+preseal doubleclick→mouseclick correction, no archive/oldtool/native execution.
+
+[CommonDevicesR4 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/racks-owner-r4-review.json)
+requires COMMON-R4-REVIEW-001 only:all20remaining_U copy inherited sourceaudit
+'no new normative ID/case adoption' as unqualified current statement despite10IDs/
+20cases adoption. FrozenR4 preserved; author assigned minimal additive metadata
+R5 with explicit AS-OF sourceaudit versus currentunknown outcomes and focused
+negative fixture. All38contracts101cases/sourceclaims/oracles/guards retained;
+root fullnewfields/sourcegroups read found no other unsupported observable law.
+No current38/101review promotion until R5 approved. Separate Dynamics123source
+review and sample309source-only authoring continue. Sharedplan/index/coverage/
+questions/source/session routes updated; fullmechanicalcheckpoint stillpending.
+No wholeLive completion/newrelease/candidate/install/publicpush.
+
+
+## [2026-10-19] spec | Resolve common-device ledger and review dynamics source
+
+Root [focused R5review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/racks-owner-r5-review.json)
+approves partial38IDs/101cases under originalR4semanticreview plus exact20field
+metadata correction, resolving COMMON-R4-REVIEW-001. Manifest2c0c2eccce1a39115089f7ab807a300fb6836b3ab80397ba4223de2191f70b60,
+74payloads/exact75tree;67oldfiles/seal/38contracts101objects/sourceclaims/oracles/
+guards/counts exact. Historicalsourceaudit no-adoption explicitlyAS-OF versus
+current10IDs20cases boundedadoption andcurrentunknown outcomes. Completeownchecker/
+20structures/canonicaldeltas read, five focused rejectionfixtures/110links pass,
+126outerwatch unchanged, unsupportedwrite refusedbeforeoperations. One exploratory
+read guessed absentdelta-r5.json and failedFileNotFoundError; response-r5.json is
+the actual routedartifact, no evidence mutation/validatorfailure. No duplicated
+behaviorcatalog/archive, oldconsumerreplay/adapter ornewsource/run.
+
+Separate [Dynamics source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/dynamics-source-audit-review.json)
+approves partial123blocks/123wholecontextjudgments/38literalresources,62clauses/
+129fullactions/sevenfixtures,20audit-only groups/fourquestions. Independent reviewer
+readall fresh, inspectedchecker/pinnedpureparser, verified105clause+105action+
+129reverse pointers/32pins/26oldpayload+seal;19negativefixtures/parser/11links and
+40outerwatch unchanged, unsupportedwrite refused. AllnewdocactualnullU/0adoption,
+47D12/5file-onlyDpkg/77U retained; N01/N02/targetDSP/lifecycle gaps open. Assigned
+boundedDynamics ownerR2, Delay/Reverb207-block and Sample309-block source audits
+continue in parallel. Sharedsoleplan/index/coverage/source/questions/session updated;
+no newdesign/roadmap revision needed under existingF06/F10. No completion/release/
+candidate/original/runtime/install/publicpush.
+
+
+## [2026-10-19] lint | Check current device successor routing
+
+[Documentation lint v17](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v17.json)
+passed at2026-10-20T02:58:48UTC:258pages/IDs, zeroerrors/newbrokenlinks,
+421retained missing-source baseline;30releases/1788payloads/1306HEADbytes unchanged,
+logappend true. [Whitespace v14](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v14.json)
+passed460wiki/topreviewtext files andgitdiffcheck. Requirementsbrowser rebuilt
+3199rows/4182628B/SHA72e56357f568ac371f08324667a9ff2668003e4a14c9f66d00926e15ea88fedc,
+including38Rack/CommonIDs; count changes are navigation only, no coveragepercentage.
+Checkpoint follows FilterR4/NativeR3/CommonR5/Dynamics-source integration andprecedes
+this checkpoint note/later in-progress worker packets. Existingv15actualfailure
+retained, no runtime/candidate/newrelease orwholeLivecompletion.
+
+
+## [2026-10-19] research | Prepare remaining native source reconciliation
+
+Root read all309selected sample-instrument texts from exact618718B instrument
+HTML3975fec856ada335526b35504ab3ca058dbf8f2885169944e0a819d45990fd6a,
+all61canonical bodies/88fullcasefields/fixturedefinitions andoriginalR1/R2response/
+finalreviews. All104literal resource roles reread incompactform afterinitial
+fullattribute outputtruncation; pixels/destinations uninspected. Pending sample
+audit judgments/checker have not yet been reviewed. Known sourcecaptureUTC is
+2026-10-19T20:27:58.247940+00:00, unlike audioeffect date-onlycapture.
+
+For nextdistortionpacket, root read canonicalresearch/scope, all216selectednine-h2
+source texts and67clausebodies (Redux/Roar center rereread aftertruncation).
+Original190case read remains inprogress, no fullcase/audit approval claimed.
+Purepinnedparser filters retained1137-block audiochapter, no wholechaptersemantic
+claim. No newartifact/owner adoption/originalrun. F06selector condensed toonecurrent
+scope perowner, records next216-block reconciliation; source-register history
+qualification prevents oldasoffreeze statements acting as currentselectors.
+Sample309/Delay207audits and DynamicsR2owner continue inparallel; wholeLiveopen.
+
+
+## [2026-10-19] spec | Review Dynamics bounded histories and continue device audits
+
+Root [approved DynamicsR2 as partial](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/dynamics-owner-r2-review.json):
+manifestc796efd8373836fcbce64d4e36dddb2bbf78ddc9dc691bbbaeb3136ec2942b60,
+62unchanged IDs/bodies/normativesection,129oldcaseobjects/27oldfiles exact;24new
+all-null histories,total153=47D12/5historicalfile-onlyDpkg/101U,148applicationcases
+ungraded/153actualoverlaynullUunexecuted. Fresh123primarytexts/24newfullfields/
+20groups/currentoverlay/fourquestions/175linechecker/canonicaldiff/originalreview/
+sevenfixtures read; earlier62clause129action38literalresource semanticreviews
+carried under exactpins, notclaimedfresh. All38sealedpayloads/exact39recursivefiles/
+41pins/15asofconsumerpointers/fivefiles checked;18negativefixtures/62BrowserIDs/
+60links/55outerwatch unchanged, unsupportedwrite refusedbeforeoperations.
+Optionaladvice remainsoptional; productive main/detector/Listen/BOTHchannel-band
+baselines, GlueoversamplingMAY>0, neutralamountsnotwholeidentity/N01/N02 preserved.
+No newnormative/numericDSP/latency/file/RNG/lifecycle law orcompletion.
+
+Sample309-block audit nowsealed for separate independentreview (33audit-only
+groups/sixquestions,manifest595a14d9fcc40a1d14ec4bff87c53dc3fb180c81d4fedc4659ca8d811cdace99).
+Root primary/oldcase/readprep doesnotapprove newauditjudgments; a different
+worker reviews whileitsauthor starts Distortion216-block source-only audit.
+Delay/Reverb207-block audit authoring continues. Sharedplan/index/coverage/
+source/questions/session updated; latestv17checkpoint predates laterworker/
+routingwrites, nextfullcheckpoint due afterreviews. AllLivegoal remainsactive;
+AmpCabhostemulation blocked/T1.6pending, no runtime/candidate/install/release/push.
+
+
+## [2026-10-19] review | Distinguish sample setups and displays from actions
+
+Independent [sample source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/sample-instruments-source-audit-review.json)
+requests SISA-REVIEW-001/002;34174B/SHA32faa7404b5b6efc41f629ac15cb1f7d1c1b27722a934f7aeb2529ece25769ec.
+A096/A100 overclaim SAMPLER011 genericSelectA/Detune/SelectB plus expectedchooser
+display as actualchooserinvocation; G18alreadyproposesactualSamplechooser.
+A260/G07 overclaim SIMPLER018 Warpas2bars SETUP as Warp-asbuttonaction; actual
+÷2/reset/×2 stays true. Author assigned minimal additive correctionledger/current
+view/checker/README/seal with focusednegativefixtures; preserve6originalauditfiles/
+65ownerhistoryfiles/61clauses88cases/source/oracles/guards. No originalowner
+contradiction, no adoption/credit. Full309source/309judgments/104literalresources/
+61bodies88fullfields/33groups6questions/fixtures/reviews read,239clause+155action+
+88reverse pointers checked;28negativefixtures/parser/68pins/78outerwatch pass.
+Mechanicalpass does not override requiredsemanticfindings. Distortion216source
+read/67clauses190inputs/48literalresources complete byauthor, oneunsealedplan
+preserved at safeboundary while Samplecorrected, thenresumes.
+
+Delay/Reverb207sourceauditfrozen (manifest6b9ef60cf2d6c862d11927b3e49c750d128565b479dfd16742449bef36df6e36),
+26audit-only groups/sevenquestions, nowunder separate review. Root readall207
+primarytexts/canonicalresearch/scope/109linechecker/first35of174exactnote-groups,
+notclaimedapproval; reviewerfreshlyreconcilesactualactionsversuslabels/setup.
+Itsauthor proceeds Modulation332-block source-only audit (106/186oldowner),
+allsource/semantic/code/rawboundaries retained. Sharedsoleplan/source/questions/
+research/session updated; no candidate/runtime/install/release/publicpush or
+wholeLivecompletion. AmpCab andT1.6 deferrals remain.
+
+
+## [2026-10-19] lint | Verify Dynamics and required Sample correction routing
+
+[Full lint v18](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v18.json)
+passed at2026-10-20T03:12:17UTC:258pages/IDs,zeroerrors/newbrokenlinks,
+421retained missing-source baseline,30releases/1788payloads/1306HEADbytesunchanged,
+logappend true. [Whitespace v15](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v15.json)
+passed464wiki/topreviewtext files plusgitdiffcheck. Browserrebuilt3199rows, unchanged
+4182628B/SHA72e56357f568ac371f08324667a9ff2668003e4a14c9f66d00926e15ea88fedc.
+Mechanicalpass includes Sample requiredfinding routes, not approvalofthatfrozen
+audit. Nextworkerreview/freezes requiretheir own checks; no source/runtime/
+compatibility/completion result. Root additionalDistortion prep readALL91
+stringinputcases'actualinputs/expected/req/provenance andfullP-AUDIO math; remaining
+99dictlifecycle cases notclaimedfreshfullread. Nothing authorizesnewdecodes.
+
+
+## [2026-10-19] docs | Clarify the current continuation queue
+
+Condensed only the latestactiveworker paragraph in session-handoff into actual
+currentassignments and linkedreviewdispositions. Counts remain in soleplan/indexes;
+older chronology, boundaryinstructions, failedchecks andappend-onlylog preserved.
+SampleR2correction, Delayreview, Distortionresumption andModulationaudit remain
+active; no newphase, completionpolicy, evidenceclaim orscope reduction.
+
+
+## [2026-10-19] spec | Approve source corrections and freeze bounded sample histories
+
+[Sample source R2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/sample-instruments-source-audit-r2-review.json)
+focused review resolves SISA-REVIEW-001/002: actual chooser invocation and Warp-as
+button actions are not inferred from expected display or setup.18literalfields
+corrected, alloriginal source/owner objects retained;83outerwatchunchanged.
+[Delay source R2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/delay-reverb-source-audit-r2-review.json)
+independent focused review resolves DRA-REVIEW-001 through one logical field in
+both catalogs: Filter toggle/inspection retained, gestures unexercised/U.
+93outerwatch unchanged/threeunsafevariants rejected; old207source contexts92/149
+owner exact. Sealed README denominator typo is nonblocking and qualified, no rewrite.
+
+Root authored/froze [Sample owner R3](../analysis/ableton-live-12.4.3/full-spec-v1/sample-instruments/README-r3.md):
+63IDs/102cases, all65oldfiles61oldobjects88oldcases exact; two UI clauses and14
+concrete entry/reset histories in13partial groups,20groups unadopted. Actual
+Warp-as/chooser operations, unlooped-only End and loop exceptions, opposite Spread
+latch, isolated filter routes, real repeated voices/sample-dependent FMAM and
+Impulse ClipEnvelope/automation/decay/routes have explicit productive prerequisites.
+All14new documentary pairs and102current actual pairs null/U/unexecuted; no
+output, numericlaw or complete group/profile claim. Currentcheck passed12unsafe
+variants/95unchangedwatched paths/158links; writer refused. Seal4d6efd98dbc388716997499085450c82cf35193006a7f56a75b626c54c781373,
+78payloads/79treefiles. Two checker spelling/key readback fixes occurred before
+first passing preflight; no failed seal or old tool execution. Separate independent
+owner review is queued after the synthesis source audit freeze.
+
+Distortion216 andModulation332source audits frozen under independent reviewers;
+third agent authors fullSynthesis567selected contexts. Sharedplan/indexes/coverage/
+source/Q050/session updated to current dispositions. Design8/roadmap4 already
+cover this queue; no phase or completion criterion change. AmpCab/T1.6 deferrals,
+clean-room/runtime boundaries and fullproduct active goal remain unchanged.
+
++
++## [2026-10-19] lint | Verify sample owner freeze and current audit routing
++
++[Documentation lint v19](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v19.json)
++passed2026-10-20T03:29:46UTC:258pages/IDs,zeroerrors/newbrokenlinks,421retained
++missing-source baseline;30releases1788payloads/1306HEADbytes exact,logappendtrue.
++[Whitespace v16](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v16.json)
++passed469wiki/topreviewtext files andgitdiffcheck. Browser rebuilt3201navigation
++rows,4185980B/SHAd72ff497c914f36fa86043b53b90ec942a11625a6ead756fcff8c9fdd069fb99.
++Sample currentsealedchecker independently rerunpass12unsafe95watch158links;
++semanticownerreview remains pending. Mechanicalpass grants no behavior,
++compatibility, completedprofile or fullLivecoverage. Session checkpoint pointer
++and this append follow that exact snapshot; next substantive review needs newchecks.
++
+
+## [2026-10-19] review | Approve bounded sample histories and corrected device source audits
+
+[Sample ownerR3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/sample-instruments-owner-r3-review.json)
+independently approved as partial63/102; two UIclauses14fullnewhistories/93cited
+primaryblocks/13partialgroups freshly reviewed.65oldfiles61oldobjects88oldcases
+exact; allnewdocnull/current102actualnullU;12unsafe95watch158links passed.
+[Modulation source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/modulation-pitch-loop-source-audit-review.json)
+independently approved as partial332contexts22proposals8Qs;106bodies186fullfields/
+105resources/recipe/priorreviews read,17unsafe122pins107oldfiles128watch exact.
+Separate bounded owner authoring now active, no selfapproval or completegroups.
+
+[Distortion sourceR2 focused approval](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/distortion-source-audit-r2-review.json)
+resolvesDSA-REVIEW-001: genuine9type/Pre actions+bothpositives retained; actual
+gain-stageFrequency notinferred frombaselines/source/analysis/feedbackcontrols.
+Fourliteralfields corrected,215otherassessments9othergroups unchanged; all89pins/
+83ownerhistory/67clauses190cases exact.7unsafevariants100internal102outerwatch
+passed/refusal. Root fullcurrentchecker/response/README/twofullcases/REQ006/
+fixtures/sixprimaryparagraphs read; full216/190sourceauditreview carried. Scratch
+full-derived-vs-manualgroup assertion failed before reportwriting; correct shared
+projection+literalrestoration passed with no packet/gate change. Sealed denominator
+ambiguity qualified nonblocking, no cosmetic revision requested.
+
+Root froze [External source audit](../analysis/ableton-live-12.4.3/full-spec-v1/external-hardware-source-audit/README.md),
+all20selectedcontexts(2h2/18p)/9literalresources/24clauses56fullfields/fixture/reviews
+freshly read.20wholecontextjudgments3audit-onlyproposals4Qs;39oldfiles49pins exact.
+12unsafevariants/parserfixture/57watch passed/writerrefused; no unsealed failure.
+Actual peakclicks/bothConfigure/Gain/Invert/DryWethistories/singlepluginchannel+aux
+andselected-unitrate actions retained; optionalguidance/disabledstate separated
+fromtiming/calibration. Separate review active; Synthesis567sourceaudit also under
+independentreview. Sharedrouting current; no release/runtime/configuration/
+hardware/candidate or profile/product completion. AmpCab/T1.6 deferrals retained.
+
++
++## [2026-10-19] spec | Freeze external control histories and retain failed modulation pointers
++
++[External source audit](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/external-hardware-source-audit-review.json)
++independently approved as partial, all20texts24bodies56fullfields/nineresources/
++threegroups4Qs reviewed;12jointnegative57watch49pins39oldfiles exact.
++Root froze [External ownerR3](../analysis/ableton-live-12.4.3/full-spec-v1/external-hardware/README-r3.md),
++24unchanged IDs/normativesection,56oldobjects39oldfiles exact+fournewallnull histories
++=60cases inthreepartialgroups;all60actualoverlaynullU. Actual settings comparison,
++two qualifyingpluginchannel entries andindependent OPTIONALunit-before-rate
++guidance histories preserve missingcalibration/hardware/plugin prerequisites.
++11unsafevariants67links59watchpassed/refusal; no unsealed/sealedcheck failure.
++Seal07c831ed625580667427d0b13e57e3065dbb23b941f90a0ad1f6cd26b2467721,
++49payload50tree; independentreview queued after Synthesis source correction.
++
++Modulation ownerR3sealed8ba80186176daff3a920f23abd94e24f83273f847ff4a5fe27a18fc172c0d36b
++passed itschecker butauthor independently found230invalid /cases/i pointers:
++208overlay+22adoption against a top-level list. This material sealeddefect is
++preserved; no approval/currentowner integration. Minimal successor authoring,
++actual dereference-to-ID and badprefix/index/duplicate/missing fixtures required.
++Originalchecker mirrored malformedprefix, so pass was insufficient. No action/
++oracle/body/count change claimed. Synthesis independentreview finishing two
++Operator adjacent-association issues; Delay/Reverb boundedowner authoring active.
++Sharedplan/index/coverage/source/Q050/session current; design/roadmap unchanged,
++wholeproduct goalactive andoriginalruntime/implementation/hardwaredeferrals retained.
++
+
+## [2026-10-19] review | Approve modulation pointers, external histories and synthesis associations
+
+[ModulationownerR4](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/modulation-pitch-loop-owner-r4-review.json)
+independently approved as partial106unchanged IDs/208cases. Rootfresh22fullnew
+objects148distinct primarytexts/all22proposals/recipe/remaining/deltas/current
+checker+selectedpinnedpureguards read; old106/186 andremaining184sourcecontexts
+carried fromseparatefullreview. Exact230pointer-onlydelta/all230newdereferences/
+230oldinvalidpaths independentlyverified; all118sealedR3files preserved,130pins/
+13consumerptrs6files152watch exact.8ref+20substantivefixtures/100links/106IDs pass,
+write refused. No oldimports/main/replay. Rootreview scratch syntax typo corrected
+before execution/reportwriting, no packet/gate change; no rootassertfailure.
+
+[ExternalownerR3](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/external-hardware-owner-r3-review.json)
+independently approved as partial24/60,4newnullhistories/56oldobjects39oldfiles
+exact. Reviewerfresh fournewfullobjects20texts9resources24bodies56oldactions
+projections/commonfixture/proposals/currentchecker; expanded69watch unchanged,
+4source3groupptrs actualdereferences/11negative/67links. No hardware/configuration
+or timing result, all60actualoverlaynullU.
+
+[Synthesis sourceR2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/synthesis-instruments-source-audit-r2-review.json)
+independentfocused approval resolvesSIA-REVIEW-001.25exactfields fixtwoadjacent
+Operator tableassociations+forward/reverse/G25/counts; actualOP015Morphsnaps versus
+unexercisedFilterDrive/continuousMorph andtrueOP017ShaperDrive distinguished.
+All6oldfiles88pins81ownerhistory/109clauses154cases/567source112resources unchanged.
+Rootfresh currentchecker25literalfields/seventexts/fourcompleteclauses+cases/G25/
+commonpositivecontext; fullR1semanticreview carried. Independentrecursiveexactdiff/
+restore/allforwardreverse37groupmaps/raw7spans/11negative101watchpass/refusal.
+Correctionauthor preseal incidental key/diff-granularity failures disclosed;
+no sealedfailure or oldtool/sourceexecution. Synthesisowner authoring nowactive.
+
+Delay/ReverbownerR3frozen pendingrootreview93IDs/176cases,27newnull/149oldexact;
+Distortionowner authoring67/200planned; freedreviewerauthorsLegacy114sourceaudit.
+RootLegacyprep read114texts/23literalroles77bodytexts/fullfixture/priorreview and
+all125Uactions in63+62untruncated batches. Earlier178caseprojectiontruncated;
+45D11/8Dpkg fullsemanticmetadata notclaimedfreshroot. Agentindependentlyreadsall
+178fullfields, including sourcecontent versus targetprobes; no decoder/folderscan.
+Sharedplan/indexes/coverage/source/Q050/session current, design8/roadmap4 sufficient.
+Fullproduct goalactive; alltargetoutcomesunknown andAmpCab/T1.6 deferrals unchanged.
+
+
+## [2026-10-19] review | Expand reviewed device histories and Legacy source coverage
+
+
+[Delay/Reverb ownerR3 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/delay-reverb-owner-r3-review.json)
+approved bounded partial93IDs/176cases,92old bodies149oldobjects72oldfiles exact,
+27newnullhistories/oneHybridUIclause; all176actualnullU,169appungraded7file-only.
+Rootfresh27fullnewfields26proposals/adoptions7Qs59distinctprimarytexts andfixtures;
+full207/92/149prior review carried distinctly.60source refs/59rawspans/sectionordinal
+confirmed, including identical Shimmer/Tides Damping text;95pins110watch exact,
+16unsafe/93BrowserIDs/230links pass; writer refused. No group/family completion.
+
+[Distortion ownerR3 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/distortion-owner-r3-review.json)
+approved bounded partial67unchanged IDs/200cases,190old objects83oldfiles exact,
+tennewnullhistories/all200actualnullU. Reviewerfresh10newfullcases/adoptions/
+proposals31directprimary+35neighborcontexts13actualclauses26oldfullcases/fixture/
+sixquestions; full216/67/190priorreview explicitly carried.31rawspans/4sourceR2
+fields/210actualptrs/103pins116watch/30negative+5ownpointerfixtures pass. Actual
+Roar gain-stage Frequency is distinct from analysis/feedback; trueErosion003006
+preserved. No new numericlaw/adapters or wholedevice closure.
+
+[Legacy source audit independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/legacy-devices-source-audit-review.json)
+approved partial source-only114wholecontexts23literalresources16proposals8Qs.
+994chapterblocks parsed only for filtering; all77clauses178cases44oldfiles53pins
+preserved;295actualcontract/casepointerderefs/114rawspans23tags/16negativefixtures
+pass,59rootwatch unchanged. Rootfresh114source-note pairs,16groups8questions,
+77bodies125Uactions preparation plus45D11metadata expectedwrapper/evidence equality
+and8fullDpkgrecords; historicalscan/decodes carried only, no renewedexecution.
+Scratch fullbody equality assertion failed because canonical requirement wraps
+D11expected in versionprefix/suffix; literalwrapper equality thenpassed without
+packet/gatechanges. All178exacttargetnull;45D11sourcechecks8filechecks125Utarget
+remain separate. Bounded Legacy owner nowauthoring, no sourceaudit adoption.
+SynthesisownerR3 frozen110/190pending independent review. Automation192 and
+Project§5.4–5.10 source audits selected within existing planF04/F07/F09; no newqueue.
+
+Documentation lint v20 failed on two in-progress Distortion manifest links before
+seal; report retained unchanged. Manifest now sealed, fresh v21 check follows.
+Design8/roadmap4 and soleplan phase order remain sufficient; shared routing and
+coverage updated. Amp/Cab emulation blocked, T1.6pending, allwholefamilies open.
+
+
+## [2026-10-19] review | Approve synthesis continuation and advance workflow audits
+
+
+[Synthesis ownerR3 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/synthesis-instruments-owner-r3-review.json)
+approved bounded partial110IDs/190cases,109old bodies154oldobjects81files exact;
+36newnullhistories/oneOP024shell-center-foldUIclause,37partialgroups/G19overlayonly.
+Reviewerfresh36fullnewactions37proposals/adoptions350unique selectedtexts361refs,
+25oldactions+ME003 andcurrentchecker/deltas/fixtures; full567source review carried
+explicitly, no freshall567claim.350rawspans/156historicalptrs/190actualoverlayIDs/
+25R2literalfields (19auditfields)/100pins115watch/16negative+5independentfixtures
+pass,110BrowserIDs72links/threeasofconsumers,writerrefused. LFO1-onlymacros,
+DS003TriggerGatebridge/G12twotype st-to-sdsemitones/G20noInfoView preserved;
+OperatorLoop/Meldcounts-unit/contextQs unresolved. All190actualnullU/unexecuted.
+Comping§21fullsource audit nowassigned afterreview, no wholeRecording sourceclaim.
+
+[Lint v21](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v21.json)
+passes after sealedDistortion manifest,258pages/IDs zero newerrors/links,421historic
+missingbaseline,30releases1788payload1306HEADunchanged/logappendtrue. Failedv20
+preserved. Browser regenerated3203navigationrows; no behaviorcredit. This result
+predates synthesis approval routing/checkpoint pointer edits; nextmilestone reruns.
+
+## [2026-10-19] decision | Plan revision 3: depth before breadth
+
+User direction: prioritize depth sooner. [Full Live specification plan](research/full-live-specification-plan.md#revision-3--depth-before-breadth-2026-10-19)
+revision 3 adds a selection rule (depth packets, then depth reviews, then
+breadth) and seven pending depth packets D-00–D-06: unknown-outcome route
+ledger, first complete device profile (Corpus), T1 unknown closure, in-binary
+device feasibility (Utility), in-binary devices by static trace/extracted
+execution, build applicability for documentary owners, first complete family
+contract. The former ready-subpacket table is retained as the deferred breadth
+queue; in-flight breadth packets finish. [Coverage design](research/full-live-specification-design.md#revision-9-depth-numerator--2026-10-19)
+revision 9 defines the depth numerator (graded / routed-U / no-route counts per
+owner; complete profiles; reviewed contracts). Scope, denominator, ADR 0002/0003/0005
+boundaries and closure gates unchanged. Routed pages: project status, research
+and spec indexes. The root coordinator session must re-read the plan before its
+next selection; nothing committed.
+
+
+## [2026-10-19] review | Approve Legacy histories and freeze file-management audit
+
+
+[Legacy ownerR2 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/legacy-devices-owner-r2-review.json)
+approves bounded partial77unchanged IDs/194records,178old objects44oldfiles exact,
+16newnullhistories/16partialgroups.45D11sourcecontent8historicalfile141targetU
+remain separate; all194actualoverlaynullU. Rootfresh16completefields in common+
+uniqueequalityprojection/fulladoption/overlay/deltas/checker, carries just-read
+114source/23roles77body125Uactions45D11metadata8filechecks underseparatereview.
+29source refs28distinctrawspans/16proposal16adoption16fixture actualptrs/6historic
+navigationptrs/60pins72watchpass,16unsafe+3independentbadptrs,77IDs190links.
+Finite ringingquery correctexistingUclause/conditionaloldSetUpgrade, actualCrisp/
+selectors/Width/mix/Drive preserve trueoldgestures. No numeric/default/targetlaw.
+An initialprojectiontruncation fullyreread; guessed separateconsumerfile absent,
+actualembeddednavigationcensusread, no packet/guard change. No authorcheckfailure.
+
+Project/source-only audit nowfrozen132wholecontexts83literalresources20groups8Qs,
+22oldclauses34oldcases6oldfiles preserved;315actualrefs18negative/16internalwatch,
+18expandedwatch unchanged/refusalpass,7payloads+seal. Independentreviewpending;
+no normativeadoption/atomicclaim. Automation192 andComping38sourceauditwork active.
+
+Project capture5.4–5.10 includesFAQ: initial diagnostic selected116withoutFAQ,
+corrected explicitsevensections132beforemanualplan/seal; not afailedcheck. Source
+onlypacket performsno fileoperation/install/editor/network/runtime/candidate.
+Design8/roadmap4/soleplan retained, no wholefamilycomplete.
+
+
+## [2026-10-19] review | Reconcile file-management and Comping source qualifiers
+
+
+[Project source independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/project-media-source-audit-review.json)
+approves source-only132contexts/83literalresources/22fullrows34fullactions20groups8Qs.
+Independent315actualreq-case pointers/132rawspans83tags/18unsafe19watchpass;
+7payloads8pins/two necessaryasofproviders exact. No requiredfindings, adoption or
+runtime/target/atomic/completioncredit. OriginalPMR01–03 corrections andnondefault
+fourmarker fixture preserved. Boundedowner nowauthoring23IDs/53cases planned,
+oneaggregate-manager UIclause/19newnullhistories, first-templateG06unadopted.
+Counts remain planned untilseal/review; current reviewedowner still22/34.
+
+[Comping source independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/recording-comping-source-audit-review.json)
+approves full38chaptercontexts24literalresources12selectedclauses29fullselected
+records/13groups6Qs/fiveimmutableexternalexcerpts. OtherRecordingchapters20clauses/
+52cases notfreshlyreaudited. Fourselectedartifactcases stayinventoryonly; old26
+files33pins intact. Rootfresh38texts24fullres12bodies29fullrecords/38notes13full
+proposals/sixQs5excerpts, currentchecker. Independent99assessment+proposalrefs,
+29originpointers/38rawspanslinecolumns/24tags/15negative+3ownbadptrs/41watchpass,
+write refused. Author137dereferencecensus also includes38source-pointer checks;
+root99count deliberately separate. Preseal APIindex tokenassertionfailure and
+incidentalshape queries disclosed; no sealedfailure or source/judgmentchange.
+BoundedRecordingowner authoring from32/81baseline, no newapprovalyet.
+
+LocalBrowser partition approved forsourceaudit:194selectedtexts95literalresources
+coverintro/local4.1–4.6,Placesintro,4.7.6–.8(including9UserLibraryh4),4.8–4.10.
+Remaining74service texts65resources inclfiveSpliceh4 stay outsidefreshsemantic
+scope.268wholeBrowserparse is filtering/discovery only;6selectedConceptssimilarity
+contexts distinct, not fullConcepts. No application/network/service operation.
+
+Shared plan/indexes/Q050/session updated; wholeproduct remainsactive and nofamily
+complete. RootauthorsCompingowner; separateagentProjectowner; Automationfullsource
+andlocalBrowser source lanes remain independent. No cleanimplementation allowed.
+
+## [2026-10-19] decision | Plan revision 3 amended to the vertical slice; T1.6 provisioned
+
+Before any packet was selected under the depth-first draft, the user adopted the
+coordinator's recommendation ("amend to the better strategy"). [Plan revision 3](research/full-live-specification-plan.md#revision-3--depth-before-breadth-2026-10-19)
+now: stops new breadth (in-flight packets finish), provisions T1.6 as the sparse
+worktree `~/Documents/sound-impl` (branch `impl`; [ADR 0004 note](decisions/adr-0004-target-scope-t1.md#workspace-mechanism--2026-10-19)),
+starts T1.7 in a fresh implementer session, and selects analyst work by
+candidate-raised items, the D-01/D-03 capability gates and D-02 released-case
+unknowns. D-00/D-04/D-06 parked, D-05 dropped. [Design revision 10](research/full-live-specification-design.md#revision-10-candidate-conformance-numerator--2026-10-19)
+adds candidate conformance to the reportable numerator. Gate ledger T1.6/T1.7,
+project status, implementation index/log, AGENTS.md and indexes updated. The
+seven releases uncommitted on main (device-analog/collision/corpus/electric
+v1+v2/tension, playback-core) are copied into the worktree provisionally until
+committed. Root coordinator must re-read the plan; nothing committed.
+
+
+## [2026-10-19] analyst | Freeze bounded Comping input histories
+
+
+[Recording ownerR4](../analysis/ableton-live-12.4.3/full-spec-v1/recording/README-r4.md)
+frozen pending independent review:34requirements/90records,32oldcompleteobjects/
+81oldcaseobjects26oldfiles exact; twoqualifiedD12targetU UIroles033LeftArrowmain/
+fold and034file-to-take/multisample→sequentialTRACKS, nineallnullhistories.
+Fourhistoricalartifact-only/86appungraded; all90actualnullU/unexecuted.13groups
+partial:9casegroups/G05G11positiveoverlaysonly/G12colorQ031G13APIunadopted.
+Rootfresh38source24fullresources12selectedclauses29oldfullfields/13proposals/
+38notes6Qs5excerpts andnewcase readback, other20clauses52cases unchangedscope
+carried. Rawline/spanmetadata forold32explicitlyR3asof; exactcurrentbodydelta.
+36payload37tree41pins,29consumerrows26files36literaloccurrences verifiedasofonly;
+14unsafe34BrowserIDs72links54watch/refusal--write/--seal pass, no authorcheckfailure.
+No oldtool/parser/inventory/decode/replay/adapter/original/runtime/candidate.
+Automation192source audit frozen5payload+seal398217a4…08fca pendingrootreview;
+localBrowser194source andProjectowner (23/53planned) authoring. Notcomplete.
+
+Allsharedrouting/coverage updatedin samecontinuation. FullLivegoalactive,design8/
+roadmap4/soleplanunchanged; blockedAmpCab andpendingT1.6 unchanged.
+
+
+## [2026-10-19] review | Finish Recording and Automation in-flight reviews
+
+[Recording owner R4 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/recording-comping-owner-r4-review.json)
+approves bounded partial34requirements/90records,32oldbodies81oldobjects26files
+preserved, twoUIroles/nineallnullhistories. Reviewer fresh38Compingtexts24resources,
+12oldselectedclauses29fulloldrecords, twofullnewclauses/ninefullhistories/13groups;
+other20clauses52cases carried, not a fresh full Recording audit. Independent
+38rawspans24tags/90actualnullrows/36payloads/77watch unchanged;14currentnegative
+plus6independent fixtures. Four artifact-only cases remain distinct;86application
+outcomes ungraded. Review SHA61cf31b6d08bd74e8d2ab82687651485b911f5a53ac577353f2c3d7b12266378.
+
+[Automation source audit independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-workflows-source-audit-review.json)
+approves bounded source-only192wholecontexts154literalroles/62clauses76fullcases,
+19proposals/fivequestions, no adoption. Root freshall192notes/texts62bodies76casefields,
+154URL/alt/label/caption roles; responsiveattributes mechanical only. Fourteen
+adjacent predicates/actions fresh; remaining metadata and13historical authorities/
+26releasedpayloads carried by exact identity/asof resolution. Independent361actual
+assessment-contract/case refs192rawspans154tags/62pins70watch unchanged;16current
+unsafe plus4independent pointer fixtures; write refused. No target/runtime/DSP/
+atomic completion credit. Review7479B SHAa4cefa4400dd4fa67e0de235e994f766cdb9bb25ebb073fb8f9edd2e24774bb8.
+
+Project ownerR2 frozen23IDs/53cases pending separate review; localBrowser194source
+already in flight finishes only its source audit. Root reread the concurrent
+plan revision3 vertical-slice decision: no new breadth owner/sourceaudit opens.
+D-01 Corpus read-only preflight/D-02 released-case census selected; D-03 Utility
+static feasibility next. No original execution/provider started, candidate built
+or scope reduced. Earlier log statements about T1.6pending/design8 retain their
+asof meaning; the later decision and current plan govern. Shared routing updated.
+
+
+## [2026-10-19] review | Approve bounded Project histories and select depth preflights
+
+[Project ownerR2 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/project-media-owner-r2-review.json)
+approves partial23requirements/53cases:22oldclauses34oldrows preserved, oneUI
+aggregate-manager role/nineteennewnullhistories. Reviewerfresh132sourcecontexts/
+83literalroles, alloldrows/newhistories/PMR01–03/fourmarkerfixture; source-audit
+judgments carried explicitly. Independent102source/20proposal/5newclause refs/
+23consumer pointers,40watch unchanged; current15negative/23BrowserIDs31links.
+All53actualnullU; G06unadopted/G08availability/G19sharedsampleonlyqueries. Review
+24114B SHAd5d1927d60f0119f079c7ed4ee29019ce54acd9b90d77e1083127bf18b6f1f84.
+
+D02 [released-case first action](../analysis/ableton-live-12.4.3/full-spec-v1/released-case-depth-census/README.md)
+frozen pending independent review,7payloads+seal1c0801d36777884937a07e0e377348da40c6dd927a76d3b79677c7ff8fecd938.
+Schema census19currentreleases/1070case rows, no missing/unknown whole-case
+expectations in three published forms, fiveALSclassomissions separate. SixPlugin
+and eightPlayback wholly/partlyungraded rows are draft-only, not identically
+numbered releasedcases; necessaryasof providers retained. NoIQrows atimplcommit
+f2f0a03; staleintro ignored. Eightnegativefixtures65watch/read-onlycheck/refusal
+pass, no semanticreapproval/newgrade/candidatepass/closedU. D02planpremise awaiting
+separate review before correction. D01Corpus read-only preflight and D03Utility
+retained-static path work parallel; no originalfunctions/provider started.
+LocalBrowser194audit frozen for separate reviewer; no new breadth opens.
+
+Design frontmatter reconciled to existing revision10; roadmap4/currenthandoff
+routes to plan3 verticalslice andlater T1.6provisioning decision. Earlier pending
+statements qualified, no new phase/target/executionauthorization or releasebytes.
+Sharedindexes/featuremap/coverage/Q050/session updated; fullLivegoal active.
+
+
+## [2026-10-19] review | Qualify released-case unknowns before further depth
+
+[D02 independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/released-case-depth-census-review.json)
+approves bounded schema/triage first action,15858B SHA734698cdded58f412b19c2f11fd1e17ddea9b8b7fcb7907f1fd9da960417818f.
+Independent845explicit+223evaluation-form+2reference-form=1070rows across19current
+releases; no missing/unknown whole-case expectations, fiveALSunspecifiedclasses
+with concrete refusaloutcomes.99MIDIbanknull/6emptyslots/32Analogvoiceend meanings
+read againstexactreleasedtext; all14draft-only rows reproduced/implIQcommit bytes
+match0entries.57pins/all256referencefiles hash-only,321watch unchanged,8negative
+currentcheck/write-refusalpass. Reviewer scratch lowercase-unresolved searchmiss
+corrected onlyin temporary script; exact14confirmed, no packet/evidence changes.
+No19-release semanticreapproval/newgrade/candidatepass/closedU or fraction.
+
+Plan D02premise nowqualified: sixPlugin/eightPlayback wholly/partlyungraded rows
+belong to broaderdrafts, not releasedcases withsimilarIDs. Candidate-hit trigger
+remains; no blanketU sweep/newexclusion. D01Corpuspreflight/A1emissiontrace and
+D03Utilitystatic route parallel; localBrowser audit frozen pending separate review.
+Current design10/plan3/roadmap4 routing retained; no newbreadth/candidate/nativecall.
+
+[Documentation lintv22](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v22.json)
+passed258pages/IDs,0newlinks/errors,421retainedbaseline links/30releases1788payload
+hashes/1306HEADunchanged, logappend-only. Browser regenerated3206navigation rows,
+4193714B SHAc0452462cee07f981bc0ddca890c593601c2181c3064ece41e61290f1a2d6bd3.
+[Whitespacev19](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v19.json)
+failedonefinalnewline in mutablemanualsource register after Root'sappend; fixed
+onlythatLF, report preserved. Later routing/reviews requirefreshfinalchecks.
+
+
+## [2026-10-19] review | Establish the Corpus depth baseline
+
+[Independent D-01 first-action review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-depth-preflight-review.json)
+approves the read-only baseline. The review is 7,479 bytes, SHA-256
+`b56c30177c4a05b5b120d27128686166db48bf3a20aa8b186e08d6e66d61b479`.
+All seven resonator models occur in the finite release. Its 174 omitted modal
+measurement occurrences span 14 evaluations: 172 frequency-eligibility omissions
+and two decaying before the estimator settles. These are neither absent models
+nor a required-outcome denominator. Existing 1,427 measured occurrences remain
+historical finite criteria; no new grade, profile completion or candidate result.
+
+Root freshly read the full R3 clauses/28 rows and finite release prose, all 14
+omission groups, five direct-U headings/six quotes, four unreleased U cases and
+six scoped as-of excerpts. Numeric vectors/centers and broader native research
+retain their previous bounded review. Independent pointer/group reconstruction,
+20 pins/all 83 released payloads, fixed original bundle/slice hashes as data,
+115 watched paths and current nine rejection fixtures pass. Three additional
+association/count/live-gate checks pass. Two reviewer scratch assertions treated
+blank section separators as quoted lines; exact quote origins were then checked,
+with no packet/checker/source change. One clipped display was fully reread.
+
+Ordinary Reset versus four-helper dispatch remains distinct from the immutable
+1,024-frame comparison history. The 37 engine-used controls and 38 sent values
+remain distinct. Root coordinates the separate A1 emission trace; Utility D-03
+is tracing kernel/setup/ABI evidence. No original functions, providers, candidate,
+old comparators or signal analysis ran. Required-outcome denominator remains
+unfrozen; no fraction or no-route verdict is invented. Shared routing/coverage
+and Q050 updated. Local Browser source review remains in flight.
+
+The Browser reviewer raised a navigation overlap for assessment. Root compared
+Browser Content041 and Project Media023: the former owns overview/folder-reveal
+navigation, the latter aggregate reference management/Collect and Save; shared
+entry mentions are prerequisite context. No conflicting result or new global
+missing-navigation claim was found. This qualification is filed in shared
+routing/questions, preserving the frozen owner snapshots and current checks.
+
+
+## [2026-10-19] review | Finish the in-flight local Browser audit
+
+[Independent Browser source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/browser-source-audit-review.json)
+approves only the selected local partition:194 primary contexts plus six
+Sound Similarity secondary contexts,95 literal roles,42 selected clauses and
+56 full selected cases. The reviewer freshly read23 proposals/eight questions/
+12 neighbors. The74 service contexts/65 resources, pixels, destinations and full
+native index appendices remain outside semantic scope. No owner adoption,
+new normative ID, target outcome, protocol closure or complete family follows.
+
+Current16 rejection fixtures/parser check pass. Independent194 raw spans/six
+secondary source associations/95 starttags,693 source-owner-case references and
+12 external providers pass;80 watched paths unchanged and write refused. The
+reviewer corrected a scratch KeyError caused by the compact secondary records'
+metadata shape, without changing a packet or source. Review10,678bytes, SHA-256
+`8e670f8aa230f12784d442ca7e29a7fb067718343b8603b09a473a4051d8ec6f`.
+Seal remains `a3bb24c7b87c19f92633452342a1db4536074759eae25cd5368603c25d2b0c18`.
+Browser Content041 navigation and Project Media023 aggregate-management delegation
+remain separate; original positive search/preview/indexing cases are preserved.
+
+No further Browser owner or whole-chapter breadth opens under plan revision3.
+Shared plan, indexes, coverage, Q050 and session routing updated. Corpus A1,
+Corpus retained-modal diagnostics and Utility static trace/review continue in
+parallel. No original application/functions/providers or candidate execute.
+
+
+## [2026-10-19] review | Establish Utility's concrete static frontier
+
+[Independent Utility D03 preflight review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-depth-preflight-review.json)
+approves bounded research,6,125bytes SHA-256
+`c4d941810edc6a927aaae13d6636d93ab1f4163b72f74a7783accdd372825c76`.
+Root freshly read56selected bodies/two incidental unassigned initializers,
+eight claims, current15Utilityclauses/41scenario prose and meaningful case
+fields, all route definitions/41route associations,84compact direct edges and
+eight full computed-call records. Nine Legacy bodies remain metadata-only.
+The prior owner/source/file grades are carried, not independently reapproved.
+
+Independent67raw function records/159raw index records,124actual claim/case
+pointers,22pins/nine bounded reads totaling888bytes and30watched paths pass.
+Current12negative fixtures plus three independent branch/width/oracle checks
+pass; write refused. Complete source image identity and file-backed address
+mapping are verified as data only. The checker itself watches28immutable/packet
+files; the expanded30also includes two unchanged canonicals. Verbose edge/route
+truncations were rescued in complete compact projections. No failed Root
+verification assertion, disassembler, provider, original function or candidate.
+
+The named wrapper/kernel and non-Legacy setter/conditional zero-register return
+are concrete retained evidence. Packed float/state/ramp interpretation, full
+initialization/callback outputs, UI/storage/active invocation and separate Legacy/
+lifecycle/downstream paths remain open. Literal file constants and initial zeros
+are not runtime state expectations. Current41scenarios are26D12/3historicalfile/
+12U; all38application scenarios remainU. New graded observable outcomes0, no-route
+findings0, completeprofiles0; no atomic denominator or candidate fraction.
+
+Plan D03 corrected its41documentary-case shorthand and prevented a Utility-only
+finding from automatically classifying every other in-binary device. It remains
+the same first capability gate and exit requirement, not a scope reduction or
+new execution authorization. Shared indexes/coverage/session updated. Corpus
+A1/modal observability and Utility conditional Mute trace continue in parallel.
+
+
+## [2026-10-19] lint | Check the depth-review integration
+
+[Documentation lint v23](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v23.json)
+passes258pages/IDs, no new errors/links, all30release/1788payload hashes and
+1306HEAD-published payloads unchanged; the421missing-source baseline remains.
+[Whitespace v20](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v20.json)
+passes502wiki/catalog/review text files and git diff --check after the preserved
+v19 final-newline failure was fixed. Browser regenerated3206navigation rows,
+4193714bytes SHA-256c0452462cee07f981bc0ddca890c593601c2181c3064ece41e61290f1a2d6bd3.
+This checkpoint predates the handoff-pointer/log edit and upcoming A1/other depth
+reviews; it is not semantic or compatibility approval. Handoff current state
+now routes to the depth tasks and later T1.6 provisioning without stale deferral
+or duplicate queue wording. No original/candidate or release payload changes.
+
+
+## [2026-10-19] review | Narrow Corpus and Utility depth frontiers
+
+[Corpus A1 R1 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-position-trace-review.json)
+required A1-TRACE-REVIEW-001: one sentence called an imported alias selected,
+although the selected evidence instead retained a literal registration label.
+The preserved wording-only R2 changes exactly one effective field; no alias,
+function body, grade or A1 premise is added. [Focused independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-position-trace-review-final.json),
+17,104bytes SHA-256d32e4e1a6410de45cffcac64a3a530bb2bcadacbfb77b292d85b836e3b8a0cfd,
+resolves that finding. Original45bodies/119records, all6R1files and R1review are
+unchanged; current6rejection fixtures and56watched paths pass. A1 staysU.
+
+[Modal diagnostic review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-modal-observability-review.json),
+19,997bytes SHA-2561e294f18a2d503c62a37a3b93355db842b016124ccbd988fa2657fac3bffd7e6,
+approves exploratory numerical research only. Independent58experiment replay,
+five-tone sanity/fourrejections,348source pointers/19pins/23watch pass. Selected
+Membrane estimates near279.2923Hz do not establish an accepted mode estimator:
+11304.2923Hz aliases there for all existing strides4/8/16, rank120eigenbasis
+conditioning is about2.44e4L/1.52e4R and singular gaps are weak. Full-rate spectral
+context supports investigation, without isolating a pole or supplying uncertainty.
+All174omissions remain ungraded; criterion/tolerance/eligibility unchanged.
+A new bounded006-01-only coprime/alias/conditioning calibration is selected.
+
+[Utility Mute review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-trace-review.json),
+12,642bytes SHA-256f31597d26d51d44b714039887f3d3f40314a3473949930c0df886f335b7ed050,
+approves one conditional function-local predicate only. It independently checks
+new2helpers,8reused full bodies plus Initcontext,30actual pointers,6new/3reused
+byte ranges totaling1416bytes,13author rejections/five independent strict-pointer
+fixtures and36watched paths. The savedP+161flag differs from kernelP+117byte;
+zero kernel return/output stores require valid memory, same object, no interfering
+writer and actual later callback invocation. Stable cached selection is not
+scheduler delivery; Legacy/unmute/downstream behavior remains distinct/open.
+No application scenario gains a grade; all38Utilityapplication cases stayU.
+
+Root integrated the three bounded review dispositions into the sole plan,
+indexes, feature/verification coverage, Q050 and continuation page. Reviewers'
+exact fresh/carry scopes remain in their immutable reports; Root checked their
+manifest/disposition/limits and did not claim a second full semantic review.
+Root's new Corpus scalar-lane trace is frozen pending independent review; Utility
+model/enrollment routing is being sealed separately. No original/provider/source
+function or candidate executed; no owner/release payload changed, no atomic
+outcome denominator or candidate fraction, no complete profile/family. Entire
+Live specification coverage remains active and incomplete.
+
+
+## [2026-10-19] review | Retain calibration limits and scalar return-lane proof
+
+[Independent006-01 calibration review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-modal-calibration-review.json),
+6,914bytes SHA-256616ee4705dbbb7b3d7bf44da04f0739864d7c7bf3f282486dd1771418ab497dc,
+approves bounded numerical investigation only. Root read all237new script lines,
+all28fit/10sensitivity/fiveknown-order-control records and full-rate/filter/alias
+summaries; initial verbose truncation rescued by complete compact projections.
+Current28fits/10sensitivities/fivefocused rejections reproduce. Independent direct
+DTFT/filter-delay and24cell-bound calculations pass; own sliding-window/pseudoinverse
+control recovers rank10error0.283449238Hz/K1.01257 versus rank12error~-9.363e-7Hz.
+12pins/16watched paths/readonly refusals/packet whitespace/links pass. Lowband
+interpretation is strengthened; physical mode identity/order/model error and
+calibrated capture-frequency uncertainty remain unresolved. All174omissionsU;
+no criterion/tolerance/eligibility or no-route finding for all estimators.
+
+[Independent scalar-lane review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-range-lanes-review.json),
+13,523bytes SHA-256404eb9f5275533824a38575954cbc1db97ff1dd82e24c6ead4b2e7f2f59f1ff9,
+approves Root's local two-lane proof under its stable valid-object predicate.
+Reviewer freshly checks fivefullnew/threefullreused bodies,41words/sevenranges,
+three new/twoprior slotwords/nineclaim pointers and reconstructed Mach-O mappings.
+Currentfiveauthor rejections/six independent instruction counterexamples pass;
+12watched paths/unsupported-mode refusal exact. Decompiler integer/void signatures
+do not identify the two scalar results: the pair returns fields inS0/S1 and the
+second wrapper movesS1toS0. Field meanings/actual values/caller FPstores and A1
+remainU; no application grade or coverage credit. Original/compiler/source
+functions never ran; exact image reads are data only.
+
+The sole plan/shared coverage/questions/continuation route now records these
+qualified partial reviews. Combined stored-position initialization/currentpull
+tracing continues; Utility model/enrollment routing is frozen pending independent
+review. No new breadth owner or released case is selected. impl IQ snapshot was
+reread at unchangedf2f0a03: zero IQrows, stale template sentence ignored.
+[Full lint v24](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v24.json)
+passes258pages/zero new errors/links/all30release1788payload identities and1306HEAD
+payloads unchanged. [Whitespace v21](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v21.json)
+passes508wiki/catalog/review files/gitdiffcheck. They predate the later scalar/
+calibration review integration and this log/pointer edit; browser navigation
+remains3206unchanged rows. No complete profile/family or candidate fraction.
+
+
+## [2026-10-19] review | Bound Utility model and processor associations
+
+[Independent model-routing review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-model-routing-review.json),
+22,492bytes SHA-256638dd022925fd16baad31e798b58011fce1df0f040bfd9d00d491f966ee21687,
+approves partial static research only. Fresh29fullbodies/92,649codebytes include
+the34,155byte descriptor-enumeration body; three reused bodies/fivealiasrows,
+12observations/38primary-related mappings,34source lines/threeprovider pointers,
+fivepointerwords40bytes and independent Mach-O mappings checked. Current11author
+negative fixtures/seven independent counterexamples pass;33watched paths unchanged,
+write/seal modes refuse. One reviewer-draft grouped-assessment count typo was
+corrected before report freeze/disclosed; no author/source assertion failed.
+
+Constructed modelD and processorP remain distinct. Typed Boolean factory selection
+requires the earlier comparisons to fail; equal metadata alone proves neither
+negative. Observer registration/enrollment/typed descriptor caching and conditional
+Out/RampOut graph role do not join the publicMute control to its processor
+callback. OutText storage pointer is not a proven text/runtime identity. All38
+application contexts remainU, no new requirement/case/grade/release/numerator or
+complete profile/family. Root/Delay contributed source readings and do not review
+their own interpretation; Synth independently read the full selected evidence.
+Root integrated the qualified review disposition into shared plan/index/coverage/
+questions/continuation. Corpus initialization/currentpull/emission tracing remains
+active; the goal of entire-Live coverage is not complete.
+
+
+## [2026-10-19] lint | Check the qualified depth-review routing
+
+[Full lint v25](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v25.json)
+passes258wiki/catalog pages/IDs, zero new errors or broken links,421retained
+missing-source links,30release manifests/1788payload identities and1306HEAD
+published payloads unchanged; log append-only. [Whitespace v22](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v22.json)
+passes512wiki/catalog/directreview text files/gitdiffcheck. These checks cover
+the latest approved Utility model-routing/Corpus scalar-lane/calibration shared
+integration; they predate this checkpoint pointer/log edit and future combined
+position-value review. No normative requirement/browser row changed, so the
+3206row navigation artifact is retained without a redundant regeneration.
+Combined position initialization/currentpull/converter source research is being
+consolidated for independent review. Further inspected currentcell/playerdescriptor
+source frontiers remain unsealed and ungraded; module+38 is only64-bitpayload,
+with no proven connection to the currentcell atmodule+48. Original/source/provider
+functions and candidate remain unexecuted. No complete profile/family or fraction.
+
+
+## [2026-10-19] decision | Select a bounded Corpus LFO extracted-code step
+
+The sole plan D01 selects a finite non-Sine Free Ramp Up investigation through
+the existing unchanged Corpus loader, under ADR0003's explicit user authorization
+for self-contained x86_64 shipped-code calls using installed tooling. This is not
+a whole-application run, macOS compatibility layer, arm64 emulator or Amp/Cabinet
+CF/ObjC/host-identity route. Prior source-only packets retain their as-of no-X
+status; any new original-code execution must be labelled X separately.
+
+Delay and Synth independently read all five harness source/header files as data;
+Synth also reads old runners/helper without importing/running them. Direct xdev
+avoids the helper's unconditional rebuild and old broad runner's overwrites.
+Loader/source/bundle/x86slice identities match retained pins; pure ELF metadata
+shows interpreter/dependency files present, not runtime readiness. The source
+opens output with wb and does not check fwrite/fclose errors, so the collector
+requires entirely new absent paths, recorded stdout/stderr/exit status and actual
+output byte/finite-sample checks. Loader mapping/initialization occurs before
+output open, and --imports is reporting, not a dry run.
+
+Selected two serial child calls only: new explicit MXCSR1f80/transport0,0,120 Sine
+initialization, then identical38host values except index18=3 for Ramp Up. Inputs
+are the retained stereo impulse at4096 of16384frames,44100Hz/blocks512/inflag1.
+Baseline output must equal retained131072bytes SHA-256
+fadb3e890a943e637f440b83048d80a9153cc428e9c2840775057a0cc383028c; failure/mismatch
+stops before Ramp. Both calls have30second timeout/core dumps disabled, recorded
+child environment/time0 and no additional imports/hooks/tool installation. The
+explicit header makes new script bytes; byte-exact old output is the baseline
+gate. Preserve every failure rather than overwriting/retrying old evidence.
+
+At this selection entry no new original call has yet been reported complete;
+actual status belongs to the new run record after execution. Short duration does
+not cover a whole free LFO cycle/wrap; stereo output is not a direct LFO buffer.
+No Sine tolerance, waveform/Sync/Spin/random/arm64/Live-host/174modal eligibility
+or compatibility oracle is adopted automatically. New captures need independent
+review and a separately justified criterion; all current grades remain unchanged.
+Combined position-source companion is frozen pending separate source-only review.
+
+
+## [2026-10-19] review | Join the conditional Corpus position source
+
+[Independent position value-source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-position-value-source-review.json),
+20,467bytes SHA-25678ed7643fa9f85a360d58bdb78ac39fc55d385511cc7235243104357f3ba89c5,
+approves conditional static research only. Tennew/fivereused full bodies,190dossier
+rows/sixobservations/17ranges1872bytes/threepointerwords/15source rows and actual
+references independently checked; current14negative fixtures/nine independent
+counterexamples/21watched identities/refusals pass. Guarded construction and no-
+custom converter selection, +0/1/default initialization, same+58setter/getter and
+finite equal-interval arithmetic bypass are supported under valid-object/global/
+no-interference/reachability assumptions. The reviewer explicitly spells ordinary
+preserved low64 D8–D15 and saved GPR premises; individual helpers/whole ABI were
+not re-proven. No actual emission/publicA1, NaN/out-of-range/general IEEE claim,
+application grade or new requirement/case. New X captures are outside this packet.
+
+## [2026-10-19] query | Capture one new finite Corpus Free Ramp Up output
+
+[New frozen capture packet](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-lfo-ramp-up/README.md)
+records exactly two actual unchanged-loader original x86 child executions under
+the selected ADR0003 route. Baseline returned0 and131072bytes with SHA-256
+fadb3e890a943e637f440b83048d80a9153cc428e9c2840775057a0cc383028c,
+byteequal the retained Sine vector; only then RampUp ran, returning0/131072bytes
+SHA-25640b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec.
+Both16384frame stereo outputs are finite/productive, no trap/fault hit, CXXfailbits0.
+Full scripts/stdout/empty stderr/env/limits/UTC/PIDs/call metadata are retained;
+no tool rebuild, old runner/model/fit/comparator import/replay or extra provider.
+The new capture is X, not a run of Live. This is the first current capability
+pass for the existing loader during this continuation, limited to these calls.
+
+Root independently decoded both complete binary32 outputs/metadata, verified
+baseline full byteequality and actual hashes/frame counts/finite samples; peaks
+are about0.054L/0.045R for Ramp, so nonzero observations are not merely the old
+numerical floor. Full-record L/R difference RMS versus Sine is0.0226034222/
+0.0199496264, an observation rather than tolerance or waveform validation. Root
+also freshly read all four selected complete arm64 LFO bodies as data; static
+Ramp evaluator context does not turn the x86 output into arm64-equivalent proof.
+The author reports400historical watched files unchanged and current data-only
+checks pass; independent capture review is pending. Its sealed manifest is3911B,
+SHA-256b30f110700d57892331dd9b218fc99b765afc97176e25c48de9e89e65733bd26,
+21payloads/22tree. Preseal counter-display correction is disclosed, not an extra
+capture. Required comparison criterion and all prior174modal grades stay open;
+no waveform/full-cycle/wrap/Sync/Spin/random/arm64/LiveA1/compatibility grade,
+complete profile/family or candidate fraction. No owner/release payload changes.
+Shared plan/index/coverage/Q025/Q050/continuation now distinguish actual later X
+from earlier source-only work. Existing fullv25/whitespacev22 predate this update.
+
+
+## [2026-10-19] review | Approve bounded Corpus captures and math sensitivity
+
+[Independent Sine/Ramp capture review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-up-review.json)
+24,406B SHA-256b0005dc91623c1f629664d84dfe0bb3dfa5932e7579555dee2dfa48039cbc70d
+approves only the two frozen original-x86 captures, no required findings. Exact
+baseline/output/input/script/environment/import checks,14current negative
+fixtures and423watched identities pass. The earlier [harness readiness report](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-harness-readiness-review.json)
+26,440B SHA-256b3ba401570052e61ccbbe72c2ada5fbba85a968fcbe0ea917ed36454da6c0402
+retains its explicit pre-execution source-only disposition; later actual X is a
+separate observation, not a retroactive readiness runtime grade.
+
+[New math-sensitivity packet](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-lfo-ramp-sensitivity/README.md)
+records exactly two additional original-x86 children, +1then−1 using the loader's
+existing XDEV_LIBM_ULP control and identical Ramp script, no retries. Both exit0,
+131072finite productive stereo bytes, empty stderr/no trap/CXXfailbits0. The
+existing nextafter wrappers advance even exact results in selected families;
+this is not an IEEE inexactness test or a bound on mixed per-call errors. New
+raw SHA-256d7cce1ebf94a1a23a38e79a707835467b96428141072ed250b00b4072473d180
+and6e4937f37118dc99160932e7388e06e858ef6c590320b6003d1f2e7ceffc1d29
+are pinned. Per-channel relative RMS versus nominal is +1:[0.007040816883673096,
+0.006448055415935595], −1:[0.0070807654465134115,0.006357018360077032].
+[Independent sensitivity review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-sensitivity-review.json)
+17,907B SHA-25667b9f8757b734ff014c81f47014076b1d3450abcea213b5799bc7419cb53dd6f
+reproduces all values, approves bounded observations only, no required findings;
+14current fixtures/444watched identities pass. No collector/original execution
+occurred during either review. All four original children are now explicitly
+separate from earlier no-X source packets. No Apple/arm64/Live/candidate proof.
+
+## [2026-10-19] design | Freeze a finite Ramp waveform criterion proposal
+
+Root authored [proposed finite engineering criterion](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-lfo-ramp-criterion/README.md):
+1%relative waveform RMS independently per channel, all4096..16383frames,
+full-file finite validation/positive channel energies, no fit/alignment or
+acceptance epsilon. The named budget is an explicit finite engineering choice,
+not a recovered original tolerance/inaudibility/portability envelope. It admits
+the nominal/two measured substitution vectors and rejects finite Sine, gain,
+polarity, channel-swap/delay/repacking contrasts. Prefix-only finite changes pass
+and concentrated/tail defects may fit the aggregate budget; both limits explicit.
+The standalone data-only evaluator passes19boundary/algebra/trust tests and
+actual-vector CLI checks; all13provider pins exact/unchanged. No candidate result
+was consulted. Proposal seal1429B SHA-25605cd832929991a8e34e0936249470950e857018fa218e4a9a1667e5a0593e564,
+6payload/7tree. Mod has a separate independent method/criterion review; adoption,
+DCO-029 allocation, canonical R4 and v2 handoff remain pending that review and
+ordinary successor/release checks. Zero new requirements/cases/grades, no global
+Q001 closure or complete-device/whole-Live claim. No original/native call here.
+
+
+## [2026-10-19] review | Adopt one finite Corpus Ramp case after separate reviews
+
+[Independent criterion review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-ramp-criterion-review.json),
+18,488B SHA-2563ecc33d54633695088dac87daf1236dfa0fc163f614d0139798b1455cc72eaf5,
+approves the explicit1%per-channel computed-binary64 engineering method only,
+no required findings. All11controls independently exact,19selftests/nineextra
+endpoint/validity/reference probes/fouractualCLI/fourmode refusals pass;20paths
+unchanged. Mathematical1e-4energy wording does not replace computed E<=0.01
+with a differently rounded test. Prefix and aggregate-error limits remain.
+
+[Independent owner R4 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r4-review.json),
+11,208B SHA-256cdf91298460537a1be2c244c66ef93b110533d585c17c5e156d461a1d3baf0fc,
+approves the bounded successor with no required findings. Exact10replacements
+plusappend/13IDs/28oldrows+029/14historicalconsumers/19literalpointers/fivepins/
+129supportpayloads/43destinations/sixdelta mutations pass;152paths unchanged.
+Prior advisory/metric critique and carried reviews are disclosed. Root [adopted](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r4-adoption.json)
+the exact41,194B R4 provider SHA-25662ccc40debde55baf7fed54bbbc6eaa803f0d6a12f2a3b4b2841baabae6775d8
+into the mutable Corpus draft. One finite host-input case DCO-029 added; no old
+row changed. Explicit exclusive metric/no untested invariance transfer keeps
+A1,174omissions, Sync/Spin/random and Live/arm64/applicability unknowns open.
+No aggregate required-outcome denominator/fraction or complete profile asserted.
+
+New self-contained v2 staging adds only020-02 within existinggroup020, retaining
+all68old evaluation objects/77physicalfixtures/old measurement branches. The
+NEWdraft comparator passes69isolated self-comparisons/4603measurements plus
+finite boundary/invalid-data/reference-hash checks; no old comparator/original/
+candidate DSP was executed. One author packaging assertion failed solely because
+its forward manifest link was checked before construction; failed report retained,
+check ordering corrected, final local links/pins/sanitization pass. Separate
+handoff review remains pending. Research summaries now distinguish the historical
+static-only and64-render scopes from later fouractualXcaptures and the finite
+method, without retroactively editing frozen evidence or rerunning old validators.
+
+
+## [2026-10-19] query | Retain the inconclusive Corpus current-cell frontier
+
+[Query retention](../analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-a1-cell-frontier-2026-10-19.json),
+44,158B SHA-256c473cd52f9a879a8d0bf9a0918ca7a7d27221eae9fefc7c3c6008f57d7179d12,
+archives three bounded exploratory selections without another behavioral packet.
+Six binding bodies (five existing reviewed-provider reuses), four immediate
+initializer bodies and six tiny accessors total16records. Root freshly checks
+all retained source-line identities/code hashes; no original function executes.
+The specific selected-parameter/player binding partly reconciles existing T04
+evidence, with optional substitution/same-object/reachability premises. Literal
+descriptor initialization and the selected getters do not connect descriptor
+payloads to the current-cell or its active processor consumer. The initializer
+can receive fixed64bit literals: do not infer a pointer/token from that payload.
+The byte setter's arbitrary input is not silently masked tobit0. These are
+unreviewed exploratory observations, not a new public emission law, negative
+absence proof, no-route/feasibility verdict, application grade or A1 closure.
+The remaining current-cell/allocation-index/consumer edge is named in the query;
+future work should reuse this boundary instead of repeating the selections.
+
+
+## [2026-10-19] release | Publish the finite Corpus v2 extension locally
+
+[Corpus v2](../handoff/device-corpus-v2/README.md) is an exact copy of independently
+reviewed final staging:17,447B manifest SHA-256
+7207cba976e25616e93efdb0e6685533570ed71b805d1920711c44c890047fab,
+84payloads/85tree. [Independent release review](../handoff/device-corpus-v2/REVIEW.md)
+approves24groups/69evaluations; all68old evaluation objects and77physical old
+fixtures preserved. Its21integration checks/19pure selftests/69portable self-
+comparisons4603measurements pass. [Final seal](../analysis/ableton-live-12.4.3/handoff-staging/device-corpus-v2-analysis/reviewer-final-seal.json)
+4882B SHA-2563b733015694fd9c9eab15b8518c902160db9111cd7c39f80779f1a37999e9d70
+checks exact permitted metadata changes,12links/all84payloads/240watched paths.
+The two reviewer-only assertions (historical pending-word scan and old link
+count) remain disclosed; no evidence failure or stage mutation resulted.
+
+v2 supersedes immutable v1 by only one finite Ramp comparison. Catalog now31
+releases,19current/12superseded; currentfive finite-device packages total257
+evaluations. Required-outcome denominator is still unfrozen; these counts are
+not the behavioral numerator or candidate conformance. Shared routing/current
+coverage and handoff plan updated. Approved v2 bytes, catalog and input routing
+were copied to the provisioned implementation worktree, preserving its candidate
+work and appending a release-availability note only. No application code or
+candidate test, original/native rerun, external publication, commit or push.
+Prepublication full documentation lintv26 passed258pages/IDs, all30olderrelease/
+1788payload hashes and1306HEADpayloads/logappendonly. Final publication lint
+and authored whitespace follow this integration; v1 and all older releases
+remain untouched. Browser regeneration afterR4 remained3206rows/13CorpusIDs
+and exact4,193,714bytes SHA-256c0452462cee07f981bc0ddca890c593601c2181c3064ece41e61290f1a2d6bd3;
+navigation equality is not full behavioral coverage. The whole-Live goal stays open.
+
+
+## [2026-10-19] query | Retain the inconclusive Utility Mute connection frontier
+
+[Query retention](../analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-connection-frontier-2026-10-19.json),
+105,444B SHA-256105b86956f6dd874d8270ae890d3264e47b4a78c2f339a5f2d14822699d4ea80,
+archives22complete retained source records/28,047code-text bytes from bounded
+selections, with exact line/code hashes freshly checked during retention. It is
+unreviewed exploratory evidence, not another owner/behavioral adoption. Generic
+metadata-to-unit generation, name connections, boolean emission/direct-or-Ramp
+links, and conditional model-member binding were narrowed. The actual queried
+name/cache admission/descriptor offsets to D+350wrapper/D+358child and selected
+processor Mute callback identity remain unproved. mpMute and exposed childMute
+are not equated by spelling; the optional metadata dereference is retained.
+The queried image storage is unbacked data, not evidence of empty/zero runtime
+contents. No original/native/source-function execution, new provider, image
+emulation, public delivery law, application grade or no-route claim. Reuse the
+recorded boundaries before another generic walk. Q050's current no-X wording
+now explicitly applies to those static packets; later fourCorpusXcaptures and
+reviewed finite Ramp release are separately routed underQ025. Full goal open.
+
+
+## [2026-10-19] verification | Check the local Corpus v2 publication and routing
+
+[Full lintv27](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v27.json),
+2026-10-20T06:21:18UTC, passes258pages/IDs, zero errors/new broken links,421
+retained missing-source links,31release/1872payload hashes,1306unchangedHEAD
+payloads and append-only log. [Whitespacev23](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v23.json),
+06:21:52UTC, passes523wiki/catalog/direct-review files and git diff --check. A
+single blank line separated the new catalog row from its table; it was removed
+afterv27 and all31rows are now contiguous. IDs/links/release hashes unchanged;
+corrected catalog synchronized to the provisioned worktree. The reports predate
+this pointer/log edit and later capture preparation; neither is behavior proof.
+
+[One-body Utility query continuation](../analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-metadata-leaf-2026-10-19.json),
+1874B SHA-25644fa147484ea43a421f531062414c4b813845f2d5d2d15ae7d05172c5840cce6,
+retains exact64B decompiler text for102f4f834 atchunk02280line21. It returns
+the same metadata address under the already-named constructed-vptr premise.
+This remains unreviewed exploration; actual member name/map/offsets and processor
+identity are unproved. Prior22-record query stays exact, no new grade or route
+absence. New selected D01work prepares exactly two note60/72Corpus captures
+through existing event forwarding, pending concrete collector/preflight review;
+no new MIDI/original call yet. No previous criterion transfers automatically.
+
+
+## [2026-10-19] query | Corpus MIDI capture pair independently reviewed
+
+Root invoked the selected/preflight-reviewed collector exactly once; two
+original-x86 Corpus children ran2026-10-20T06:31:45UTC, note60then72. Both
+returned131072B finite/productive stereo, zero exit/trap/failbits; six new
+Corpus original children total including earlier Ramp/sensitivity. Capture
+manifest5924B SHA-256c90ec022edd5c3be6b7bf6b0e64b5285199d1b35facd94895906071fa4408f26
+seals28payloads/29files. [Independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-pitch-review.json),
+15244B SHA-2564921415f9551a3375b60f0b788107b2fddacfd063c1ff54836ec3950288d48ab,
+approves bounded evidence/no required findings,557watched identities unchanged.
+Reviewer diagnostic authorship and later selection-record timestamp are
+disclosed; all12descriptive spectra independently reproduced. Multiple
+components shift approximately an octave consistently with the paired input.
+No exact fundamental, identity, absence/onset/Live law or criterion is adopted.
+
+Retained [two full modulator records](../analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-midi-modulator-frontier-2026-10-19.json),
+31177B SHA-256773b6d55512025ff6dda80e7cdfe5ff706411750ff0dbca83d79570f9816153e,
+with original-record/hash verification and strict source-local absence caveat.
+Unreviewed exploration qualifies earlier universal highest-held-note shorthand;
+no whole-device stale-note/priority bug claim. Research, indexes, planD01/F06,
+Q025/Q050, coverage and session routes updated. R4canonical/v2published bytes
+remain unchanged; finite released device total257, no new normative case,
+application grade, complete profile or candidate result. Next note60proposal
+has a concrete scored-byte reuse basis but cannot alone detect ignoredMIDI;
+note72needs justified centers/eligibility and separate criterion review.
+
+
+## [2026-10-19] lint | MIDI capture routing checkpoint
+
+[Full lintv28](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-19-v28.json)
+2026-10-20T06:51:53UTC passed258pages/IDs, zero errors/newbrokenlinks,421retained
+missing-source baseline,31releases/1872payload hashes,1306unchangedHEADpayloads
+and append-onlylog. [Whitespacev24](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-19-v24.json),
+06:52:13UTC, passed527wiki/catalog/direct-review files including untracked and
+git diff --check. Reports include MIDI capture review integration, predate
+this pointer/log edit and later source/calibration work, and establish no
+behavioral/application/candidate completion. Browser ID census is unchanged.
+
+
+## [2026-10-19] query | Corpus event-format bridge frontier retained
+
+[Ten complete source records](../analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-midi-event-bridge-frontier-2026-10-19.json)
+60958B/SHA-2565fb04f95beee607f99515bfc14b51e7f95f56bf63b46b5c988a859d8454c2689
+retain17553C-text bytes across CalcA/staging/queue/getter/state/receiver bodies.
+Root verified each originalJSONL/code/hash and read all complete bodies. Generic
+queue construction/getter and local count/rebasing operations are narrowed;
+leadingfields do not imply8-byte records. Separate receiver queue also16B with
+a different layout. Actual producer/receiver association to modulator queue
+remains unresolved; hypotheticalP=M+88algebra is no actual association proof.
+Unreviewed conditional arm64 source exploration, no original/native execution,
+x86 correspondence, Live timing law, acceptance or grade. Earlier task-asof
+findings andLF/no-LF hash distinction preserved. Canonical research/session
+route updated; next frontier is exact constructor/enrollment/caller association.
+
+
+## [2026-10-20] query | Corpus constructor frontier and calibration preflight
+
+[Constructor/callback source query](../analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-midi-enrollment-frontier-2026-10-20.json),
+83737B/SHA-2561eb3ed5fe38738bf8228f980dfbd878cfb329c3872c4a89337109642f5eadc33,
+retains10complete bodies/21618Cbytes plus exact5325B graph excerpt and three
+selected vtable DATA words. Root read all selected complete bodies/excerpt and
+verified source/raw/code identities and selected original image words. Local
+constructor queue and callback-to2764c path supported conditionally; actual
+manager-to-module event enrollment/copy remains unknown. State-text/no-op
+callback branch stopped, no global absence/infeasibility claim or new original
+call/acceptance grade. Research, plan and session route current findings.
+
+[Initial modal preparation review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-modal-preflight-review.json),
+10895B/SHA-2562113b5e2e2fd3a8f481f13243b7c4d58fb31d03fb7210044e02afa0e92e6f9d7,
+requires CMOD-PREFLIGHT-001 known complex/frame4096phase and mixture controls.
+Static import/pin/bytecode boundaries passed,121watched paths unchanged; no
+numerical execution. Author preserved earlier prep and supplied focused
+17245Bscript/9978Bprotocol successor for readiness review, still unexecuted.
+No actual coefficient/p1source binding, calibrated eligibility or criterion
+is approved. Existing canonicalR4/releasedv2 remain exact; six original
+Corpus children/257finite released device evaluations remain the actual totals.
+
+
+## [2026-10-20] query | Utility membership and return-register frontier
+
+[Seven-body query](../analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-membership-frontier-2026-10-20.json),
+44486B/SHA-2564621419fc9fd5c2dbc3403a354d63741a04f894f26d0be74da5fa244034ddfd3,
+retains2799Cbytes, exact prior declaration excerpt and40instruction bytes/10words.
+Root read complete selectedC and independently rechecked original hashes/raw
+spans and register bitfields. Descriptor field30=-1/38=350 yields a conditional
+same-entryD+350→D358accessor composition. Wrapper X0address and initializer X0
+preservation resolved locally; constructorcallsetup remains separate. Actual
+type word is unbacked storage, never fabricated zero; namebranch, same-entry
+map/cache/member admission/model and processor callback delivery remainU.
+Unreviewed source/data only, no original/emulation/runtime/grade/no-route
+finding. Research/index/planD03/Q050/coverage/session routes updated. All38
+Utility application scenarios remainU. Generic helper branch stopped.
+
+
+## [2026-10-20] query | Executed MIDI modal preparation, finite method frozen
+
+[Focused R2 preflight](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-modal-preflight-r2-review.json),
+13611B/SHA-256ea1cf9b3ee369fd086645c72ae070f0c137abca12bbe89e830e614c481d8d96b,
+resolved CMOD-PREFLIGHT-001 design gap before execution; initialfindingandold
+prep preserved. Root invoked the17245B selecteddata-only script once at
+07:15:34.755322–07:15:37.229500UTC, zeroexit/empty stderr;117outer/8internal
+identities unchanged. Eight analytic/negative controls passed, original32fit
+flags/significance passed, all98selfchecks passed, wrongnote60failed70. Mode16
+was materially window-sensitive in BOTHchannels; Root proposes first15/channel
+after observing reference, with2newungradedmode16occurrences and all32rows
+retained. Exactserializedsubset projects92selfpasses/64wrongfailures without
+rerunning fits. These are engineering-method observations, not candidate grades.
+
+[Frozen finite method](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-modal-method/README.md),
+manifest3603B/SHA-256cfae7c60b502b55b7143208c7ac5770a3143b1424f3cb6bad41084977d788f8c,
+21payloads/22files/28externalasofpins, retains rawstdout172055B/SHA-256
+6b6823455dc70c10accd004792026072a142c1c44e290537488ca99785d0b944 andknown
+complex/nuisance controls/proposals/history/receipt. Independentsemanticmethod
+review pending. Newcase72eligibility/budgets expresslyfiniteengineering, not
+actualp1/nativepoles/ULP/arm64/library/uncertaintyproof. Original174omissions
+remainU. A proposal-authorJSONonlyexactzero assertion was corrected after
+seeing<=1.11e-16complexdivisionresiduals; no numericretry/thresholdchange.
+R5owner/v3handoff drafts prepared in parallel as separate gates. CanonicalR4,
+currentv2/31releases/257finite device evaluations unchanged; no neworiginal
+call (sixCorpuschildren remain), candidate result or complete profile.
+Research/index/plan/Q025/coverage/session routes updated.
+
+
+## [2026-10-20] spec | Corpus R5 exact canonical adoption
+
+The [finite MIDI method review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-modal-method-review.json)
+approved two bounded engineering criteria, no native-pole/uncertainty proof.
+Separate [owner R5 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r5-review.json)
+14911B/SHA-25693ad381f5a4f5f4c8102c4d6f8699af34a4f42a15703dcd5f631e6baff0a5c26
+approved partial scope with no required findings. Root copied the exact51090B
+R5 snapshot into canonical SPEC-DEVICE-CORPUS, SHA-256
+aba64f5c420091617c16d28c9f0d2437c0eacf67ed1940bfe27250644038eecf.
+[Adoption receipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r5-adoption.json)
+retains prior R4 identity,13IDs/29oldrows exact,31cases27finite/fourU and
+unchanged frozen owner/published bytes. First coordinator row guard failed
+before mutation because it admitted other table references; separate attempt01
+retains this failure, exact case-ID cell delimiter corrected the guard.
+No numerical or original retry. DCO030/031 only are added; mode16twooccurrences
+remain ungraded separately from174old omissions. v3stage87files/71evaluations
+is a separate pending handoff gate, with190new public selfchecks/64wrongnote
+rejections and4603old measurements carried, not a fresh4793-check run.
+Currentv2/31releases/257deviceevaluations unchanged. Shared plan/index/questions/
+coverage/research/session routes updated. Full-product goal remains open.
+
+
+## [2026-10-20] release | Publish Corpus v3 locally
+
+[Corpus v3](../handoff/device-corpus-v3/README.md) is an exact approved staging
+copy: 87 files/86 payloads, manifest 18,590B/SHA-256
+7b8b13d1b29345a8b29d9709fb8b1a45b35fed88f37a3b50976b469d63649900.
+[Independent content review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v3-handoff-review.json)
+approved its finite inputs/measurements; [focused final seal](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v3-handoff-final-seal-review.json)
+resolved both metadata conditions, 318 watched identities unchanged. The
+[publication receipt](../analysis/ableton-live-12.4.3/handoff-staging/device-corpus-v3-analysis/local-publication.json)
+records exact equality and unchanged older files. All 69 earlier evaluations
+are preserved, with two held-note additions: 25 groups/71 evaluations. New 190
+self measurements and 64/92 wrong-note rejections are retained; old 4,603
+measurements carry v2 approval, not a fresh combined 4,793-check run.
+
+Catalog now 32 releases, 19 current/13 superseded; current five device packages
+total 259 finite evaluations. Approved v3 bytes/catalog/availability routing
+were copied to the restricted implementation worktree, preserving candidate
+work and appending availability only. No candidate code/test, original rerun,
+external publication, commit or push. Shared indexes, plan, questions, coverage,
+research, session and handoff plan updated; canonical R5 remains exact. Browser
+after R5 has 3,206 rows/13 Corpus IDs, 4,193,704B/SHA-256
+b012e9815ae861ed7db0a51da427f6696b810ea73f710fe0cbc6ef5b67590515.
+Full-product coverage remains open; denominator is unfrozen and no candidate
+or complete-profile fraction is inferred. Publication lint follows integration.
+
+
+## [2026-10-20] query | Three bounded Corpus gate/release captures
+
+The [first preflight](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-gate-release-preflight-review.json)
+required CMGR-PREFLIGHT-001: failed launch rows were counted as native children,
+and process creation was labelled original execution. Original11preparation
+files/seal preserved. The [focused R2 review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-gate-release-preflight-r2-review.json),
+11663B/SHA-2564481c53ad244afea93ea1a3c5e1d616c87e6985073d27ffb123cbfd343d8e6b3,
+approved exact seven-operation accounting correction and12old/fournew guards;
+no collector ran in either review. Root fully read the old collector/newdelta,
+checker delta/protocol/diagnostic, selected exact R2 seal before invocation,
+then ran the fixed A/B/C sequence once at08:14:19.818872–08:14:20.075509UTC.
+Three attempts/three returned PIDs/three valid original-x86 captures, clean
+logs/empty stderr/no traps/cxx-failbits0;601durable paired identities unchanged.
+Root's extra2017-path watch compared equal in memory only; its full paired map
+was not retained and is not represented as reconstructable independent proof.
+
+[Frozen capture packet](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-release/CAPTURE.md):
+manifest7059B/SHA-25689787f007f671bcedd57f0f2b08cc02a2cc65e8bb14b4d814ae7e06a37bc5885,
+41payloads/42tree. Gate1-held/off outputs are full-byte identical SHA-256
+4691a2a439cc40b40d0d4689e64b72ace793c018d909802b56a797ed1163dd96;
+gate0-off equals the older heldnote60 file SHA-256
+5866c6b9e4915336648da87bd92c38927cb3e532fe81ab38b5300664c7bb984f.
+All three post4096regions exactly equal the older output; gate1changes only
+a tiny prefix relative to it. All three have both-channel pre-off response.
+These are finite observations, not noteoff admission, a general no-effect/gate/
+release law, missing envelope or bug. Historical held control is not recaptured.
+
+Root separately selected the fully read fixed-window descriptive helper once
+at08:16:36.678709–08:16:36.784916UTC: exit0/empty stderr,33preexisting files
+unchanged. No FFT/fit/metric/comparator/native call;8192is command-block start,
+not proved release onset. Independent capture review pending; no new canonical
+case, criterion or release. Nine original Corpus children total, currentR5/v3
+and259deviceevaluations unchanged. Source workers continue exact Corpus
+manager/queue and index13 setter routing plus Utility type registration; those
+conditional/unreviewed source queries add no application grades. Full-product
+goal remains open. Publication documentation lintv31 passed258pages/32releases/
+1958payloads/no newlinks; whitespacev27passed544files. These checkpoints
+predate this actual-capture routing/log update; later lint will follow.
+
+
+## [2026-10-20] query | Independent gate/release evidence approval
+
+[Actual capture review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-gate-release-capture-review.json),
+18507B/SHA-256f1ffcd770c4df9b61d3e011addccb8e15ce85c4aa4d8c60bafcc5a2d764761dc,
+approved only the three exact X observations with no required findings. It
+independently checked41payloads/42files, complete38floatbits/events/logs/raw
+identities, all48descriptive arithmetic rows and601durable paired watches;
+735reviewer paths unchanged, with map-retention limits explicit. Nine original
+children in this continuation are supported. Used math-import counts differ
+despite file equality; no identical internal execution, ignored/admitted
+NoteOff, gate/release/silence law, criterion, case or coverage credit follows.
+
+The next selected preparation moves Off8193to3073 before the existing impulse
+4096, with a fresh held control and all other inputs fixed. Earlier data has
+no nonzero input after Off; input gating is a hypothesis, not an explanation
+already proved. No new execution selected. Delay authors the bounded proposal
+while Modulation reviews the conditional source manager/queue init edge;
+source's actual module membership/per-block delivery remain separate unknowns.
+Utility's selected type/name/buffer branch stopped at explicit alias/later
+value/order gaps without a route-absence finding. Canonical R5/currentv3,
+32releases/19current/259finite device evaluations unchanged. Shared current
+routes updated; full-product goal remains active.
+
+
+## [2026-10-20] query | Conditional Corpus initialization manager-to-queue join
+
+Independent review approved only the conditional initialization carrier and
+selected queue-operation argument chain; exact200bytes/50words, two table words
+and nine source bodies checked, nine counterexamples rejected. Filed in
+[Corpus research](research/corpus-dsp-static.md#conditional-initialization-queue-join--2026-10-20)
+and routed through the sole plan and coverage. Actual selected-module
+membership, render-time arguments and item policy remain unknown. Selected
+only the render9300 mode0 argument frontier next. The separate frozen
+before-impulse probe is under independent preflight, with no original calls;
+nine original children remain the total. No spec/release/behavioral grade change.
+
+
+## [2026-10-20] lint | Conditional initialization-join routing checkpoint
+
+[Documentation lint v32](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v32.json)
+passed258pages/IDs, zero errors/new broken links,421historical missing-source
+links,32release manifests/1958payload hashes and1306HEAD-published payloads
+unchanged; log append-only. [Whitespace v28](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v28.json)
+passed554authored wiki/catalog/direct-review files and git diff --check.
+Root separately ran the fully read before-impulse data/AST checker:14script/
+format/provider negatives, two parameter and nine validity negatives, four
+failure-accounting controls; finite zero admitted,99watched identities unchanged.
+No collector or original calls occurred. Mechanical/preparation checks confer
+no semantic, original-application or candidate compatibility grade.
+
+
+## [2026-10-20] query | Utility type/name branch filed with runtime unknowns
+
+Filed [stopped type/name construction branch](research/device-audio-utilities.md#stopped-typename-construction-branch--2026-10-20)
+from retained exploratory queries and the private20-citation synthesis. Root
+verified all20pointers/source hashes and read selected initializer/declaration,
+registration/core/base/name/buffer bodies. Local firstwordclear and header+16
+relations do not establish current runtime state, key/admission or public Mute
+routing. No generic allocator/string recursion; next selection is existing
+per-device routing reconciliation only. All38application scenarios remainU;
+no code execution, numerical law, normative case or coverage credit added.
+
+
+## [2026-10-20] query | Three actual Corpus Off-before-impulse extractions
+
+After readiness approval and an immutable author-role correction, Root selected
+and ran the sealed three-child collector once08:43:12.948222–08:43:13.103129UTC:
+three attempts/returned PIDs/valid outputs,665collector and2398durably retained
+Root paired identities unchanged. Twelve original children total. The
+[frozen capture record](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-gate-before-impulse/CAPTURE.md)
+retains all46payloads/47files, manifestSHA54b4a9a558c5b5dde513c61863438dc508ddea5c160446af91d0b55de8f81764.
+A/B difference is confined to a tiny prefix; all post4096bytes equal historical
+control. Initial commentary reporting full-file difference was promptly narrowed
+to this prefix-only observation. Separately selected data-only reader produced
+24fixed-window rows/two arithmetic controls,31durable paired paths unchanged.
+Independent capture review pending; no gate/admission law, criterion/case,
+release change or compatibility credit. Render argument query is under review;
+next source selection is only e4cc/e714 item representation, not new originals.
+
+
+## [2026-10-20] query | Corpus item pointer and fieldwise queue insertion
+
+Filed the [two-body item frontier](research/corpus-dsp-static.md#actual-before-impulse-note-off-captures--2026-10-20).
+Root read e4cc/e714 and the existing18258 caller, verified all three exact
+retained export rows, and reread existing e50c source. An item pointer with16B
+stride feeds fieldwise re-insertion; there is no blanket byte-copy/timestamp
+identity or public codec law. Queue state/index/ABI/module reachability remain
+qualified. Selected only MidiGate handler15f08 plus retained caller next, with
+no additional original execution, normative case or coverage change.
+
+
+## [2026-10-20] query | Before-impulse capture review approved bounded observations
+
+[Independent actual-capture review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-gate-before-impulse-capture-review.json)
+approved the three observations without required findings, verifying all24
+fixed-window rows and six channel-stat dictionaries,46payloads/47files and
+665/2398/31durable paired maps. Own807watched identities unchanged; later
+mutable wiki advances are explicitly as-of, never future-live hash gates.
+Twelve original children in this continuation, no criterion/case/grade added.
+Root updated current routing. Selected D03 continuation is one exact callback
+storage word106536580 from the retained existing-evidence proposal; no new
+function body or original execution selected there. D01 source tasks continue
+on render arguments and the named message-handler frontier only.
+
+
+## [2026-10-20] lint | Twelve-child capture approval and stopped Utility branch
+
+[Documentation lint v33](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v33.json)
+passed258pages/IDs, zero errors/new broken links,421historical baseline links,
+32release manifests/1958payload hashes and1306HEAD-published payloads unchanged;
+log append-only. [Whitespace v29](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v29.json)
+passed562wiki/catalog/direct-review files and git diff --check. Includes current
+capture approval/source-routing milestone, not later source queries/reviews or
+this pointer/log append. No numerical criterion, behavioral completion or
+candidate conformance follows from mechanical checks.
+
+
+## [2026-10-20] query | Corpus render argument review and control dispatch frontier
+
+[Independent render-argument review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-render-argument-review.json)
+approved only the conditional selected-site carrier:188new bytes/47words plus
+56reused callee bytes independently checked; ten corruptions rejected. Its
+initial reviewer metadata-schema error is retained, corrected and final checks
+passed; no source/provider changed. The unread9348-to93f0 intraprocedural
+branch is not covered by ordinary ABI alone. Actual membership/delivery remainU.
+Filed the [three-handler frontier](research/corpus-dsp-static.md#conditional-control-message-dispatch--2026-10-20)
+as exploratory research under independent review. Root read all bodies; no
+control target/float ABI/effect is proved. Selected new preparation only:
+host34 endpoint1-to0 in three fresh previous before-impulse histories. No new
+original call/criterion/case; twelve children total, canonicalR5/v3 unchanged.
+
+
+## [2026-10-20] query | Utility callback storage and specific metadata getter
+
+Filed [specific callback/getter evidence](research/device-audio-utilities.md#specific-enrollment-callback-and-metadata-getter--2026-10-20).
+Eight bytes at106536580 match retained adapter102f59370; Root independently
+verified actual image/hash/segment mapping/raw word. Exact getter102f4f834
+returns&DAT_106e6e618; Root matched its original source row/hash. Both remain
+exploratory, no runtime map contents/member admission/unit/processor/publicMute
+proof or application grade. Selected only bounded exact-literal source
+navigation next. Original images, prior queries and every release unchanged.
+
+
+## [2026-10-20] query | Corpus control dispatch independently approved as partial
+
+[Independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midigate-control-dispatch-review.json)
+approved only conditional keyed routing, direct receiver+18 callback association
+and type2/control-key/flag-admitted virtual+40 dispatch attempt; no required
+findings. Six exact source rows,20associations and ten negative associations
+checked,13inputs unchanged. Actual receiver/control/ABI/setter effect and public
+gate behavior remain unknown. New index34 endpoint probe is preparation only;
+no original execution or normative grade change.
+
+
+## [2026-10-20] query | Utility same-map declaration provenance and review
+
+Filed [bounded literal and two-body continuation](research/device-audio-utilities.md#specific-enrollment-callback-and-metadata-getter--2026-10-20).
+Eight source records/44literal occurrences are navigation only, not native xrefs.
+Root read both exact selected class/declaration bodies (11,919Cbytes): same
+DAT106e6e618 receives AStereoGain and mpMute/350 declaration operands. Runtime
+entries/type/key/admission, wrapper350 versus child358 and unit/processor/public
+Mute remain unknown. Independent association review pending. No further
+helper/body/word or original call selected; all38application scenarios remainU.
+
+
+## [2026-10-20] query | Three actual Corpus host34 zero endpoint captures
+
+Root read full independent readiness approval and selected the exact sealed
+collector once09:06:23.713366–09:06:23.869091UTC, three attempts/PIDs/valid
+captures; fifteen original children in this continuation. The
+[frozen actual record](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-noteoff-decay-zero/CAPTURE.md)
+contains45payloads/46files, manifestSHA-dd0166b6b5faeb5d3592894d43cdb57ca25991931dd4f6a09795186efb3cd934.
+Only host34changes1-to+0 in each fresh counterpart. B gate1-Off shows a clear
+post4096contrast; A post4096/C full-file control identities retained. Output
+flags are observations, not scheduling/admission rules.725collector/2457Root
+full paired maps unchanged. Separately selected data-only reader gives40rows/
+two arithmetic checks,31paired paths unchanged; no extra original/FFT/fit.
+Actual review and finite-criterion proposal pending; R5/v3/259evals unchanged.
+Narrowed research/spec index rows to current routes; complete evidence history
+remains on canonical pages and immutable records, without competing recaps.
+
+
+## [2026-10-20] query | Endpoint captures and Utility associations independently reviewed
+
+[Endpoint actual review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-noteoff-decay-zero-capture-review.json)
+approved bounded observations, no required findings:40rows/sixchannel stats,
+45payloads/46files,37pins and725/2457/31durable paired maps verified;878reviewer
+paths unchanged. Every later B sample is nonzero per channel, including the
+flag0 region; no silence/scheduling/admission/gate law follows. Fifteen original
+children total; no new criterion/case or grade. Private finite-criterion
+proposal remains in progress.
+
+[Utility association review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-model-map-association-review.json)
+approved only callback file identity, getter own constant-return and same-DAT
+class/mpMute declaration provenance, no required findings;16watched paths
+unchanged. Runtime type/key/map admission/unit/processor/public delivery remain
+unknown; no further source/helper/word or original call selected. All38Utility
+application scenarios remainU. Root reconciled current routing/status.
+
+
+## [2026-10-20] lint | Fifteen-child and specific Utility association approvals
+
+[Documentation lint v34](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v34.json)
+passed258pages/IDs, zero errors/new broken links,421retained baseline links,
+32release/1958payload hashes and1306HEAD-published payloads unchanged; log
+append-only. [Whitespace v30](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v30.json)
+passed572wiki/catalog/direct-review files and git diff --check. Current approvals
+and narrowed index routes included; later criterion/owner/comparator work and
+this pointer/log edit excluded. No behavioral or candidate completion implied.
+
+## [2026-10-20] spec | Finite endpoint criterion and successor preparation selected
+
+The new finite-criterion proposal is frozen, with independent review underway.
+Root selected private unsealed R6 owner preparation and a minimal comparator
+successor/regression preparation in parallel. These do not alter canonicalR5,
+any published release or accepted case/metric. No further original call is
+selected; method approval, owner adoption and handoff review remain separate.
+
+
+## [2026-10-20] spec | Exact endpoint finite method independently approved
+
+[Criterion review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-noteoff-decay-zero-criterion-review.json)
+approved the exact B engineering method, no required findings. Root read the
+method and review and selected private R6 freeze with approval pins, followed
+by independent owner review. Per-channel post4096 1%RMS is a finite choice,
+not calibrated uncertainty; finite-prefix edits and a fully zeroed late half
+can pass. One unique wrong scored waveform fails. Canonical R5/currentv3,
+case/release counts and complete-profile credit remain unchanged. Fifteen
+original children total; no further original call selected.
+
+Root also shortened D01/D03 current selector states to their canonical research
+authority and retained exit gates. Stale in-progress source assignments in those
+state cells were removed; historical evidence/reviews remain unchanged.
+
+
+## [2026-10-20] lint | Method routing and comparator preparation readback
+
+[Documentation lint v35](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v35.json)
+passed258pages/IDs, zero new broken links/errors and32release/1958payload hashes;
+logs append-only. [Whitespace v31](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v31.json)
+passed577wiki/catalog/direct-review files and git diff --check.
+[Comparator readback](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v4-comparator-preparation-coordinator-readback.json)
+verified8sealedpayloads, exactoldsource reconstruction and retained71old
+evaluations/4793oldmeasurements plus2Bselfchecks:4795actualpasses. Root inspected
+fullnewsource/checker but did not rerun numeric evidence or original/candidate
+DSP.311tinyoldself errors remain retained. R6owner and later handoff approval
+are separate; private unsealed v4 staging selected. The checks predate later
+owner/staging changes and this pointer/log edit.
+
+
+## [2026-10-20] maintenance | Empty IQ register points to available releases
+
+Corrected the current implementation clarification register in both workspaces:
+removed its obsolete no-release claim and linked the catalog. No IQ entries,
+analysis content, candidate code or compatibility result were added; each
+implementation log records this routing correction.
+
+
+## [2026-10-20] spec | Exact partial Corpus R6 adopted after independent review
+
+[Owner review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r6-review.json)
+approved exact58472B/SHA07a89f25de6b3c987d448e0e049bdd7dfaec52f479532b3aca3faddedcd511cd,
+no required findings. Root [adopted](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r6-adoption.json)
+those bytes only:13IDs/32cases/28finite/fourU, all31oldrows/full001–012 literal.
+DCO032 is the sole addition under separately approved exactB engineering method;
+all unknowns/omissions and prefix/tail limits retained. Root preserved15scoped
+owner/review/release-manifest paths, no numerical/original/candidate replay.
+Modulation finalizes v4 candidate for independent handoff review; publishedv3,
+32release/259device-evaluation totals and whole-profile gates remain unchanged.
+Synthesis continues a private required-outcome proposal.
+
+
+## [2026-10-20] query | Bounded Utility map-initialization frontier selected
+
+After freezing a draft Corpus outcome/closure-route proposal (not a frozen
+denominator), Synthesis is assigned only Utility declaration-callback invocation
+and metadata map population. Exact retained registry-literal query capped at
+12records/three context lines per occurrence; at most two clearly relevant
+full bodies/12000Cbytes. No generic name/string/buffer/allocator restart, image
+word, provider, original/native/candidate call or behavior grade. Current
+AStereoGain association and all38application unknowns remain unchanged.
+
+
+## [2026-10-20] query | Corpus gap navigation reviewed; next method decision selected
+
+Root [reviewed the private outcome proposal](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-required-outcomes-proposal-review.json)
+only as navigation/selection aid:96overlapping rows,38control crosswalk,14pins,
+20paths unchanged, fourintegritynegativecontrols. Fullcompact96outcome/route
+projection read after oversizedoutput truncation; no new broad source audit.
+Six unbounded obligations and null numerator/denominator remain. Invariance
+wording is a question, not a law. After its v4authorfreeze, Modulation prepares
+only existing006-01 low-component applicability decision/controls/stopcondition;
+no numerical/original run, oldeligibility relaxation or new normative case.
+
+
+## [2026-10-20] query | Utility construction reviewed; pickup preparation selected
+
+Root [reviewed registry construction](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-map-initialization-review.json)
+as partialsource: one10297Cbody/fiveexactspans/threeactualrows/43literalcontexts,
+sixpaths unchanged. Separately [reviewed12Bwrapper](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-registration-wrapper-register-review.json):
+pinnedimage/header/mapping/raw12B and ownfinitecontrols verifyX0/X5forwarding,
+X8change and stackbyte read/write; fivepaths unchanged. No native/publicgrade;
+all38Utilityapplication scenarios remainU. No furthercallee/word selected.
+
+006mode1decision is STOP/U without calibrated model/order-error applicability;
+no rank/SVD/DFT substitute selected. Existingdriver supports event-free process→
+param→process on sameinstance and continuous input/outputFILEs; no harnesschange.
+Root selected preparation only: two complete006-01vectors, controlrepeat versus
+leftpickup0.75 at8192; two16-blocksegments,74directexports/child,max2attempts/no
+retry. Separate independentpreflight precedes original-run selection. Actual
+productivity/transition/rightchannel invariance and4000frame law remainU.
+
+## [2026-10-20] release | Corpus v4 content and CLI approved; final seal pending
+
+[Independent content review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v4-handoff-review.json)
+approved finite scope with no semanticfindings. Separate [fullCLIaddendum](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v4-handoff-review-cli-addendum.json)
+records one actual29.36s isolated new-v4 CLI:exit0,72reference-self evaluations/
+4795measurements pass,311tiny nonzero errors retained. Copiedoldfit/FFT functions
+ran for explicitly selected wholepackage integration; no original/candidateDSP.
+Root finalized five status/review metadata paths only; allcaseobjects,81F32,
+comparator andnormativecontractbody literal. Exactbeforetext/inventory retained.
+First auditrecord shallowcopy advanced two nested beforeprojections; preserved
+with [correctedR2record](../analysis/ableton-live-12.4.3/handoff-staging/device-corpus-v4-analysis/final-metadata-change-r2.json)
+decoded from exactoldmanifest. Stage neverchanged during correction. Focused
+independent finalseal pending; no localpublication/catalogcountchange yet.
+
+
+## [2026-10-20] release | Corpus v4 published locally and approved inputs synced
+
+[Final seal](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v4-handoff-final-seal-review.json)
+approved exact20279B/SHA5375571b14812cfc901e0970ab0c627b2e6a6a1a51e0ab3e4c6c29f9a959a1ad,
+87payloads/88files, no required findings. Root [copied exact tree](../analysis/ableton-live-12.4.3/handoff-staging/device-corpus-v4-analysis/local-publication.json)
+into immutable localrelease and preserved32older manifests. Catalog now33releases/
+19current/14superseded,2045payloads; current five devicepackages260evaluations.
+All71oldCorpusobjects/80oldfixtures retained; only026-01B finite history added.
+[Input sync](../analysis/ableton-live-12.4.3/handoff-staging/device-corpus-v4-analysis/implementation-input-sync.json)
+verified88approved files and neutralcatalog/project/index equality in restricted
+worktree; onlyavailabilitylogs appended, tenprovisionaldirs, no code/analysis
+transfer. Implementation projectstatus had stale30-release/T1.6pending wording;
+approved neutralcurrentstatus copied. No candidate/original run or externalpush.
+
+Prepublication [lintv36](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v36.json)
+passed258pages/IDs,zero newbroken/errors,32release/1958payloadhashes and1306HEAD
+payloads; [whitespacev32](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v32.json)
+passed595files/gitdiffcheck. Those checkpoints predatecopy/catalog/sync. Root
+consolidated the mutable plan's stale appended assignments into one current
+checkpoint; detailed source/history remain canonical research/reports/logs.
+No policy/order/design/roadmap revision or complete-profile credit changed.
+
+
+## [2026-10-20] query | Pickup histories captured; A1 callback word resolved
+
+After independent readiness approval, Root selected the exact pickup collector
+once at10:12:55.287216UTC. Two attempts, returned PIDs and structurally valid
+outputs; no retry/extra baseline. Total original Corpus children now17.
+[Capture manifest](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-pickup-step-capture/manifest.json)
+binds25payloads/26files; collector820 and Root910-path durable maps unchanged.
+One separately selected new data-only reader produced38fixed-window rows;
+934watched paths unchanged, no fit/FFT/threshold/grade. Provisional ringing,
+left contrast and exact right sample-bit equality belong to canonical research;
+independent actual-capture review is pending. No4000frame/general law or case.
+
+Root independently verified the [A1 callback word](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-callback-word-review.json)
+against image identity/header/mapping and exact8bytes; address1024fd8a8 matches
+retained alias,11provider paths unchanged. Selected next wrapper only within
+2048C bytes, stopping before callees. Utility gets existing-evidence direct
+frontier navigation only; no new body/native call yet. No policy/roadmap change.
+
+[Postpublication lintv37](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v37.json)
+passes258pages/IDs,33releases/2045payload hashes and1306HEAD identities; no new
+broken links/errors. [Catalog/input check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v4-catalog-and-input-check.json)
+confirms33catalog pins,19current/14superseded, all2045restricted-input hashes
+and260currentdevice evaluations. These are mechanical/availability checks,
+not candidate conformance or whole-product completion.
+
+
+## [2026-10-20] lint | Postpublication authored whitespace checkpoint
+
+[Whitespacev33](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v33.json)
+passes602files and git diff --check. Scope is all wiki Markdown, catalog and
+direct review JSON/Python including untracked; nested evidence is not covered
+by this sweep. This predates the following index/question/coverage and source
+method-decision reconciliation; no semantic/compatibility proof follows.
+
+
+## [2026-10-20] query | Pickup observations independently approved
+
+Root fully read the [actual review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-pickup-step-actual-review.json),
+which approved exact protocol/accounting and all38fixed-window rows with no
+findings. Reviewer independently reproduced every row with new stdlib arithmetic,
+no Rootreader/collector/model/fit/FFT/native invocation;860own watched paths and
+all820/910/934paired maps stayed unchanged. Productive pre-step ringing and the
+finite left contrast/right-bit equality are retained observations, not8frame
+latency,4000frame smoothing or general channel invariance. Root selects only
+an exact dynamic-history acceptance proposal underREQ012 next; no numerical
+method run or new original child is selected.
+
+The A1 wrapper passed a separate [partial source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-callback-wrapper-review.json):
+1154C text versus4byte branch metadata requires a folded-view qualification;
+actual same-cell consumption stays unknown. Only target metadata reconciliation
+is selected. Utility's direct helper exists at9293C bytes; the6000C selection
+stopped before interpretation. Root explicitly expands only that same body to
+10000C, stopping at opaque delegated key/equality/ABI dependencies. Earlier
+metadata-only stop and frozen sources remain unchanged.
+
+
+## [2026-10-20] query | Utility entry storage reviewed; A1 callback lead stopped
+
+Root read complete9293C helper and seven source facts/caller span, verified raw
+row/code/spans and six unchanged paths. [Partial review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-map-entry-helper-body-review.json)
+approves conditional key-pointer/entry storage only. ActualmpMute node/lookup,
+runtime andprocessor joins remain open; four-vs-five recovered arguments and
+suspicious null/unaff paths retain explicit limits. Select only direct
+10147f568 preprocessing next, one complete non-thunk body<=12000C; no generic
+hash/allocator chase or original execution.
+
+A1 [target metadata review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-callback-target-metadata-review.json)
+verified exact raw row without interpreting target C. Different declaredC
+hashes/lengths do not establish semantic equality/difference. Callback lead
+stopped; direct consumer navigation uses existing providers only. No new case,
+coverage credit, required-outcome fraction or design/roadmap revision.
+
+
+## [2026-10-20] lint | Pickup and source routing checkpoint
+
+[Lintv38](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v38.json)
+passes258pages/IDs,33release manifests/2045payload sizes andhashes,1306HEAD
+payload identities andappend-only logs. Zero errors or new broken links;
+421historical missing-source links remain in the retained baseline. This
+checks routing/immutability mechanically, not source semantics, original
+compatibility or candidate behavior. No browser regeneration is needed because
+canonical spec IDs/clauses remain exact R6; no new case was adopted.
+
+
+## [2026-10-20] query | Direct preprocessing reviewed; module factory selected
+
+[Partial preprocessing review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-descriptor-preprocessing-review.json)
+approves only988C/fourspans/caller order with six unchanged paths. Actual
+recursive receiver, clone/list semantics and localmpMute preservation remain
+unknown. No furtherD03callee/word/native selected.
+
+[Existing-source A1 navigation](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-processing-consumer-next-frontier-2026-10-20.json)
+names exact1026f070c factorycall1024f415c and wrapperstore to model+268;
+player+90Update vptr is a different object. Root selects only that factory
+within6000C and its actual directly called1026e8e50 constructor if combined
+within10000C, stopping before base/callees/words. This seeks a same-object vptr,
+not a processing or publicvalue claim. Synthesis independently reviews the
+frozen pickup finite-method design; no metric implementation/run selected yet.
+
+
+## [2026-10-20] query | Current-module vptr source narrowed; tiny list helper read
+
+Root [reviewed two construction bodies](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-current-module-construction-review.json),
+1852C/ten source lines, exactrawLFrows and six unchanged paths. Finalfactory
+vptr sourceconstant1067c6b90 replaces intermediatectorvptr underexplicitABI/
+object/no-interference premises. No processing/currentcellconsumer established.
+Select only exact C2vtablemetadata and needed schema next; no imageword/slot
+expansion, sourcecallee or runtime call.
+
+Root authored a [535C list-helper query](../analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-descriptor-list-splice-frontier-2026-10-20.json)
+for direct10144a040 aftermetadata screening. Sourcechunk hash remains exact;
+conditional valid-list/fresh-node splice interpretation awaits independent
+review. No helper/sourcefunction/native execution or actualmpMute admission.
+The frozen pickup method design independently reviews four separate windows/
+channels at proposed1%budget; no new metriccode/run selected. Reviewer raised
+historical006provenance and missingpreL-only corruption-control points; author
+must preserve originalproposal and retain a supporting addendum.
+
+
+## [2026-10-20] query | Exact factory instruction-data selection
+
+The [C2metadata query](../analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-a1-current-module-vtable-metadata-frontier-2026-10-20.json)
+finds no exact1067c6b90 match in80pinned rows; this is an index availability
+limit, not absent-vtable/no-route proof. Root selects the alreadyidentified
+100-byte factory range1024f415c..1024f41bf only, after pinned image/header/
+file-backed mapping checks. Existingrizin static rawARM64 disassembly is
+permitted with noinit/noexecute flags, exact25instructions and one synthetic
+RET control; no emulation/debugging/original instruction execution, caller/
+callee/otherword/body expansion or install. This seeks allocation/constructor/
+outpointer argument flow, not a runtime/publicvalue result.
+
+[Whitespacev34](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v34.json)
+passed615wiki/catalog/directreview files and git diff --check at10:31:07UTC;
+this later selection/pointer/log edit is outside that checkpoint.
+
+
+## [2026-10-20] query | Method design approved; static decoder failure retained
+
+Root fully read [pickup method design review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-pickup-step-method-design-review.json):
+approved effectiveproposal+addendum, no required findings. Historical006
+provenance and four-axispositive-error controlplan corrected append-only;
+38original identities unchanged. Root selected evaluator/control source
+AUTHORING ONLY, no metric run, owner/case or comparator/handoff edit.
+
+[Root instruction-data review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-factory-instruction-review.json)
+approved exact100B/25rows, image/header/mapping and independentMOV/STR/BLfields,
+21watch unchanged. Actual resultcarrierX8/allocation→ctorinput narrowed. Next
+288B constructor decoder failed after64validrows; all8payloads/9files frozen,
+no normal-return identity or originalexecution. Root read source/argv/stderr/
+failedrows; Rizinhelp documents-f blocksize=file size. Separately selected one
+sibling staticdecode of same288B with-f, no otherbytes/callee/native; durable
+before/after/status required. Failed first initialmap was not saved, disclosed.
+
+Root read the [independent splice review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-descriptor-list-splice-review.json):
+conditional localpreservation approved, four providers unchanged, no runtime
+Mutejoin. Select only direct10144a008 declaration-list helper within3000C,
+reusing oldretainedsource; no generic type/hash/allocator or native expansion.
+
+
+## [2026-10-20] query | Pickup method controls executed once; source joins reviewed
+
+Root separately selected sealednewvalidator after fullcode/independentpreflight,
+10:48:59UTC, exit0/emptystderr. [Actualmanifest](../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-pickup-step-method-validation/manifest.json)
+binds87payload88tree;38comparisons/152axisrecords (108valid44invalid),89required
+checks pass. Inner128/Root2120durable paths unchanged, including all33release
+trees. No original/model/comparator/fit/FFT/candidate run; originalchildren17.
+Root read all38name/error/status projections; independent actualmethod review
+selected, privateR7authoring mayprepare pendingthatreview. Concentratedsingle-
+sample/prefix errors pass; fixedsplices/tailzero reject. Limits staycanonical,
+not newphysicaltiming/tail/channel laws. No owner/case/handoff adopted yet.
+
+[ConstructorR2review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-constructor-instruction-r2-review.json)
+approves72rows/288samebytes/normalX0return underexplicitpremises,25watchunchanged.
+Failed9treepreserved; formatter[sp,0lr] retained/independentlybitfieldqualified.
+Select only baseconstructor1024dd018 andthree known tinyfieldaccessor candidates
+668/69c/6c0 (combinedC<=8000), no othercallee/word/native. [Utility008review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-mute-declaration-list-binding-review.json)
+approvesconditional allocated-node→sameMlocal-list binding,8watchunchanged;
+actualkey/runtime/processor remainU. No furtherD03source selected.
+
+
+## [2026-10-20] query | Pickup method independently reproduced; current-cell constructor bounded
+
+The [Corpus research](research/corpus-dsp-static.md#reviewed-pickup-method-and-current-cell-construction--2026-10-20)
+records independent actual-method approval:38byte recipes/152axis records,
+89required checks/six scalar controls exact;2213watched files unchanged. This
+approves one finite method, with aggregate-error/prefix limits; private R7
+owner review remains separate, canonical R6/current v4 unchanged. Four selected
+source bodies passed conditional review: base constructs48/50, three neighbors
+set38; no processing-consumer or public A1 grade. Updated sole plan, research
+index and session selector. D03 separately selects only the preprocessing node
+constructor; all38application scenarios remainU. Full-Live coverage stays open.
+
+
+## [2026-10-20] query | Utility preprocessing constructor field copies
+
+[Utility research](research/device-audio-utilities.md#conditional-preprocessed-node-field-copies--2026-10-20)
+records conditional source review of one2118C constructor: direct30/38copies,
+shared40key-associated pointer with counter/release/reload caveats. Retained
+metadata-first display lapse/incidental thunk exposure; no inference uses it.
+Actual base/runtime/type/key/processor joins remain open;38outcomes U. Updated
+plan/session routing; next frontier proposal uses only retained evidence.
+Question/coverage and spec-index pointers also reconcile pickup method approval
+and current Corpusv4 scope. No canonical device spec or release changed.
+
+
+## [2026-10-20] lint | Actual pickup-method and conditional source batch
+
+[Documentation lintv39](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v39.json)
+passes258pages/IDs,33release manifests/2045payload hashes,1306HEAD payload
+identities, append-only log and zero new broken links;421historical baseline
+links remain. [Whitespacev35](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v35.json)
+passes629wiki/catalog/direct-review text files including untracked and gitdiff.
+Nested evidence is outside that whitespace scope. These are mechanical checks,
+not behavioral completeness or compatibility. This log/pointer edit follows.
+
+
+## [2026-10-20] query | Utility candidate-name delegation and frozen Corpus R7 proposal
+
+[Utility research](research/device-audio-utilities.md#candidate-name-delegation-boundary--2026-10-20)
+records one271C helper's reviewed delegation/ABI boundary; both recovery warnings
+retained. No name/key equality or public/processor grade follows. Exact C2caller
+metadata/static-data preparation only is next. Private CorpusR7 is frozen with
+13IDs/33cases,32oldrows literal; Root reconstructed all10text operations and
+verified its10payloads. Independent owner review remains pending; canonicalR6,
+currentv4 and260device evaluations unchanged. Updated plan/session selectors.
+
+
+## [2026-10-20] spec | Corpus R7 finite pickup owner adopted
+
+[CorpusR7](specs/device-corpus.md) independently approved and [adopted](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r7-adoption.json):
+13IDs/33cases/29finite/fourU; onlyDCO033 under001/012, all32oldrows/old013 literal.
+Canonical66141B/SHA26a95052328ca15005cea18bd2985ca9b1044cd7b21c02d320b512bbb308d366
+is frozen65685B source plus ONLY reviewed456B current-disposition banner;47scoped
+paths unchanged. No audio/native execution. Updated research, spec index,
+question, feature/verification coverage, handoff plan and current selectors.
+Accepted private v5 design for author staging/newcode/preflight only; actual
+numerical execution and independent release review remain pending. Currentv4/
+260device evaluations unchanged; A1/modal/general host/full-Live scope stays open.
+
+
+## [2026-10-20] maintenance | Regenerated requirements browser after R7 adoption
+
+[Browser regeneration receipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r7-spec-browser.json)
+records3206rows/13CorpusIDs, exact unchanged generatedHTML hash829e57d81d2d5d15fe36212365b634238f68d42fed76b6cd55ec5072db8d0210.
+The browser summarizes/truncates requirement bodies; DCO033 is specified in the
+linked canonical draft, not as a new requirement ID or full-contract browser row.
+No comparator/model/native execution or candidate compatibility check occurred.
+
+
+## [2026-10-20] query | Utility candidate-name helper16-byte static decode
+
+[Utility research](research/device-audio-utilities.md#actual-candidate-name-helper-static-data--2026-10-20)
+records Root-selected one-shot static-data extraction/decoding after full sealed
+code/preparation inspection. Oneattempt/PID297066,exit0/empty stderr/fourbyteexact
+rows,20inner+41outerpaths unchanged. Root independently decoded load/BR fields;
+separate actual-data review pending. Callerwindow disabled (nine ambiguous C2
+sites); data-reference query unavailable/notperformed, no absence claim. No
+original instructions/ESIL/targetword/callee ran. All38Utility outcomes remainU;
+Corpus originalchildren17. Updated plan/session; currentv4/260 unchanged.
+
+
+## [2026-10-20] query | Independent Utility helper register review and bounded caller preparation
+
+[Actual16Breview](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-candidate-name-static-actual-review.json)
+approves only conditional local register/BR findings,75scoped paths unchanged;
+prep authorship disclosed. Existing caller spans show1067e18f8 is shared across
+eight branches, not a bool discriminator. Root selects preparation only for
+nine fixed128Bcallsite windows/1152Btotal, seeking actual typed-vptr/virtual330
+context with no ordinal inference. No callerbytes/extraction/decoder/native run
+selected yet. Updated Utility research/current selectors; all38outcomesU.
+
+
+## [2026-10-20] query | First Corpus v5 stage has stale metadata; numerical run withheld
+
+Independent preflight found unqualified oldv3/R6/B scope/approval/numeric fields
+in the firstv5 manifest. [Handoff plan](specs/device-corpus-handoff-plan.md#first-v5-candidate-metadata-finding--2026-10-20)
+records required metadata correction; frozenR1 is preserved. Root fullread the
+newcomparison/numeric runner; no math defect found, no numerical execution
+selected. Pre-trywrite/CLI-timeout partial-output limits remain explicit and
+outer receipts will cover selection/exit. Updated current plan/session. Current
+v4/260device evaluations and all published bytes remain unchanged.
+
+
+## [2026-10-20] query | Nine fixed Utility caller windows decoded as data
+
+[Utility research](research/device-audio-utilities.md#actual-fixed-caller-windows--2026-10-20)
+records Root-selected1152Bstatic data after full newsource/preparation inspection:
+nineattempts/PIDs/exit0/empty stderr,288byteexactrows,14inner+139outerpaths unchanged
+including99frozenfirst-v5files. Root raw-bitfield findings locally identify2470
+by typed-vptr+330/store28 and argument setup; separate actual-data review pending.
+No ordinal/shared-vptr/global/allpath inference, original instructions, extra
+bytes/word/callee or behavioral grade. Updated plan/session; all38Utility outcomesU.
+
+
+## [2026-10-20] query | Frozen first v5 preflight reviewed; corrected sibling selected
+
+[Firstv5preflight](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-v5-code-preflight-review.json)
+requires exactly CORPUS-V5-PREFLIGHT-001 metadata correction; no math change.
+294paths unchanged, no numerical execution. Selected siblingv5-r2 and separate
+preflight with identical comparison/cases/spec/F32, corrected six manifest fields,
+focused structural guards/pathbindings and explicit accounting limits. R1 stays
+frozen; independentR2preflight precedes Root numerical selection. Current catalog
+and publishedpayloads unchanged. Updated handoff plan and current timestamps.
+
+
+## [2026-10-20] query | Utility caller-data correlation independently reviewed
+
+[Independent actual-data review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-candidate-name-callsite-static-actual-review.json)
+approves conditional selected-window argument/typed-context correlation only:
+288rows/1152bytes/17literalpairs, local rejoins and four negative predicates;
+220scoped paths unchanged. Prep authorship disclosed. No actualD358/namekey/unit/
+processor/public grade; no extra bytes/source/index/native replay. Updated
+Utility research/current selectors. Next navigation reuses retained evidence.
+
+
+## [2026-10-20] lint | R7 and reviewed Utility caller-data batch
+
+[Lintv41](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v41.json)
+passes258pages/IDs,33release/2045payload hashes,1306HEAD identities,append-only
+log/zero new links;421historical baseline links remain. [Whitespacev36](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v36.json)
+passes647wiki/catalog/direct-review files including untracked and gitdiff;
+nested evidence excluded. Later routing/pointer/log edits follow these checks.
+R2candidate/preflight now frozen with88identicalpublicpayloads/sixmanifest fixes,
+focusedreview pending. Utility selects only interfaceobject106ccb370firstDATA8B
+from exact retained enumeration getter/caller evidence, then stops before+20word.
+No numeric/original execution or completion claim.
+
+
+## [2026-10-20] query | Actual v5 integration passes; Utility node resolver reviewed conditionally
+
+[Corpus research](research/corpus-dsp-static.md#actual-v5-comparison-integration--2026-10-20)
+records one selectedR2 actualrun:73selfevals/4799measurements/38controls/3guards,
+allold72resultobjects exactto retainedv4;294inner/2382outerpaths unchanged. No
+candidate/originalDSP. Independent actualresult/content review/finalseal pending;
+updated handoff plan/currentselectors. [Utility resolver](research/device-audio-utilities.md#conditional-enumeration-node-resolver--2026-10-20)
+review checks selected interfacewords/235Cbody: conditionalwrapperD350 followed
+by C=load64(D358), explicitly not C=D358storageaddress. Actualadmission/namekey/
+unit/processor/public remainU,all38outcomesU. No more source/word/native selected.
+
+
+## [2026-10-20] query | Select direct Utility processor registration source
+
+After reviewed node-resolver evidence, existing retained registry/callback and
+entrytable consumer identify one concrete direct function101aa8400. Selected
+metadatafirst/onecompletebody<=4000C for builder-receiver/registry provenance;
+no generic name/ownership chain, otherbody/word/decoder/original run. Updated
+Utility research and soleplan/session selectors; all38outcomes remainU.
+
+
+## [2026-10-20] query | Utility processor registration store and Corpus v5 review
+
+Root reviewed the complete585C101aa8400 query and independently verified its
+raw source row, spans and retained caller/callback associations; six scoped
+paths unchanged. Callback10215eafc is conditionally stored at entry+28, not
+invoked. Registration and consumer globals are distinct; actual builder/kind/
+processor joins and all38application outcomes remainU. Canonical Utility
+research/index and current plan/session route to the reviewed result. Existing
+evidence navigation only is selected for the missing invocation edge.
+
+Root also fully read the independent Corpus v5 finite-content/actual-results
+review: approved, no required findings. Authorized a separate five-path final
+metadata candidate and focused independent seal, with all27group/73evaluation
+objects and82F32/comparator exact. Research/handoff plan/current routing updated.
+Publication remains pending; currentv4/33releases/260device evaluations unchanged.
+
+
+## [2026-10-20] query | Stop unanchored Utility expansion; select D01 metric design
+
+Existing retained Utility evidence provides no named later callback invoker
+or builder-to-consumer bridge. No new source body/word/decoder/run is selected,
+and no native-absence or infeasibility conclusion follows. Canonical research
+and plan/session routing record that stop. Synthesis moves to a design-only
+assessment of exact006-01 finite waveform acceptance: useful additional
+observable scope must be demonstrated; all174historical/two note72modal
+omissions and old budgets remain unchanged. No numerical/code/original
+execution or new criterion adoption is authorized by that design selection.
+
+
+## [2026-10-20] query | Select exact Utility registration-table references
+
+After the retained-provider stop, Root selected exactDAT106f563b8 literal
+navigation across export chunks. Four metadata records and their matching
+lines were displayed; only complete6945C101aa85a0 was newly read. It invokes
+source-node+28 callback with a local builder and constructs the separate
+consumer global table. Frozen query is under independent source review; no
+actual registration/runtime/entrykind or public signal conclusion follows.
+Six selected source/history paths unchanged. First in-memory draft assertion
+failed on a duplicated literal before any output; frozen query records exact
+spans. No new image words, decoder, original code or grades.
+
+The proposed alternate006 waveform design is STOP: it does not advance the
+selected physical-frequency prerequisite. All174+2modal omissions and old
+budgets remain unchanged. Modulation navigates existing Membrane coefficient
+evidence only for an independent identity/order premise, without new fits.
+
+
+## [2026-10-20] release | Corpus v5 exact finite package
+
+Root fully read independent content/actual-result and final-seal approvals,
+reproduced the complete five-file metadata delta, and locally published the
+exact89-file/88payload tree at11:52:02UTC. Manifest21460B/SHA
+60734632edbc8bae80f0a080e0af70cdc1217e61e8a5433f6ade67845f17f479;
+all2079oldhandoff files unchanged. Catalog34releases/19current/15superseded,
+2133payload identities verified. All72old evaluation objects/81oldF32 exact;
+one same-instance pickup step gives27groups/73evaluations/82F32total.
+Actual4799selfmeasurements/38controls/threeguards passed before finalization;
+no numerical rerun or original/candidateDSP during publication. Five current
+device packages total261finite evaluations, not a complete profile or family.
+
+Updated project/catalog/spec index/handoff plan/research/feature map/verification,
+Q025 and current plan/session routing; immutable R7 and earlier releases stay
+exact. Restricted approved-input copy follows. Prepublication lintv42 passed
+258pages/33priorrelease manifests/2045payloads; whitespacev37 passed659files.
+Publication and routing changes follow those checks and need a new milestone
+check. All174historical/two note72modal omissions, A1/general host behavior and
+whole-Live coverage remain open.
+
+
+## [2026-10-20] maintenance | Verify Corpus v5 restricted input copy and next depth
+
+Approved v5 package/catalog/availability copies verified in the restricted
+worktree at11:54:49UTC: all34manifests/2133payloads match approved releases;
+2079oldpackage files unchanged. No analyst directories copied; no candidate
+code/tests or fresh implementer session.
+
+Independent Utility callback-invocation review approved conditional source
+bridge with seven scoped identities unchanged, explicit capacity/count and
+pre/postcallback/header-entry distinctions. Canonical research and current
+selectors updated. Next selecteddata is only builder-vptr+58 word106755e68;
+no target body/native/original execution. Modulation's existing Membrane builder
+navigation supplies a conditional ratio/pair ordering lead. Selected bounded
+0001f3f8 coefficient/recurrence spans need independent review; no fit/metric
+change and all174+2modal omissions remainU. Whole-Live coverage remains open.
+
+
+## [2026-10-20] lint | Corpus v5 publication milestone and next Utility word
+
+Postpublication lintv43 passed at11:55:24UTC:258pages/IDs,34release manifests,
+2133payload hashes,1306HEAD payloads unchanged, append-onlylog,zero new broken
+links;421historical baseline links retained. Whitespacev38 passed665files and
+gitdiffcheck. Later status/pointer additions follow these checks.
+
+Utility builder+58 dataword106755e68 passed Root fresh independent identity/
+header/53loadcommand/mapping/same8B/source-context review. Raw8B
+1883aa0101000000 gives101aa8318. Six scoped paths unchanged; no instructions
+or original function ran. Selected only targetmetadata and complete nonthunk
+body<=4000C as nextsource; no automaticcallee/word/native expansion.
+
+
+## [2026-10-20] query | Utility builder forwarding and exact direct helper
+
+Root independently reviewed complete199C101aa8318 and its exact source row/
+span/pins; six scoped paths unchanged. It forwards literal7 then stores
+callback operand at returnedbase+110; no kind or append is inferred. Existing
+consumer reread confirms kind7→10232d250 distinct from kind1. Selected only
+101aa7f64metadata/fullcompletebody<=5000C to resolve actual kind/entry linkage;
+no other callee/word/opcode/native/runtime. Canonical Utility/currentrouting
+updated, all38application outcomes remainU.
+
+
+## [2026-10-20] query | Utility appended kind and bounded return-data preparation
+
+Root fully read and independently checked3468C101aa7f64/source row/span hashes,
+seven scoped paths unchanged. Valid normal vector branches append120Bentry;
+explicitentry+100 receives literal7, not a name-derived kind. Void/bare return
+projection does not prove caller returnedbase identity for callback store+110.
+The separately read6544Bdesign fixes last96B/24slots of that same456Bbody as
+staticDATA, with normal-call/ABI and predecessor/controlflow limits. Authoring
+only a minimal collector preparation reusing the prior inspected pattern; no
+actual extraction/decoder/original/native execution selected. Research/current
+routing updated; all38Utility application outcomes stayU.
+
+
+## [2026-10-20] query | Actual Utility tail data and reviewed Membrane slot banks
+
+Root preflighted the complete6744Bcollector and selected one96BstaticDATAdecode
+at12:03:51UTC:24exactrows/RizinPID339764/exit0/emptyerrors,12inner/2182outer
+paths unchanged. No original instructions ran. Frozen actual12file packet under
+independent Synthesis review. X0locally preserves lastBLreturn to RET; X21entry
+identity/import semantics remain premises. A count-only erratum separately
+corrects frozen Rootassessment six→eight postBLrows, preserving all bytes.
+Root also selected exact796Ckind7consumer-unit body, independently under Mod
+review; graph/entry local fields do not prove binding/attachment/public delivery.
+
+Independent Membrane source review passed only conditional source associations:
+full11041Cbuilder plus15899selectedmodalC, nine pins/fourwrong-association
+fixtures,2267scopedpaths unchanged. Actual roundedslot/lane/count/state/x86
+association remainsU. Canonical research/currentplans updated. Next bounded
+243e8builder callcontext/cap6000C tests B=M+148; no furthercontext/native/pole
+calculation or original run selected. All174+2modal omissions and all38Utility
+application outcomes remainU; no coverage numerator or completion.
+
+
+## [2026-10-20] query | Reviewed source-base/bind joins and actual Utility prefix
+
+Root independently approved projected Membrane builder-base B=M+148 from
+5204selectedC/24929Bquery and original JS row/spans/pins;12scoped paths exact.
+Caller omittedcount staysU. Exact Corpus artifact path found in pinned report
+manifest, stat248624B;12Bcallsite preparation only, noinstructionwindow run yet.
+
+Root approved Utility kind7bind286Csource/field copies only; no callback/type/
+framevalue inference. Independent96Bactual review approved X0last-call-result
+survival only. Root fullread6786B32Bprefixprep and exactnine-literal delta;
+preflight passed. Newone-shot actualstaticDATA12:12:38UTC passed8byteexactrows,
+RizinPID341290exit0,12inner/2193outerpaths unchanged. Independent actual review
+pending; no originalinstructions, no extra window/import/callee selected.
+
+Shortened mutable current plan/session checkpoints to route detailed evidence
+to canonical research; historical frozen evidence/log entries remain untouched.
+All174+2modal omissions/all38Utility application outcomes remainU; currentv5
+finite release counts unchanged and whole-Live coverage stays open.
+
+
+## [2026-10-20] query | Utility unit first-word and reviewed predecessor data
+
+Root approved251Cconstruction source/output/firstword stores only; seven scoped
+providers unchanged. Literal1067938a0 gives exact retained-table metadata
+navigation, assigned Modulation; no arbitrary slot/word/body or allocator/type
+semantics adopted. Independent32Bactual review passed8operand rows with37
+artifacts/old96Bpacket/image preserved; only conditional end-minus120 expression
+is supported. Synthesis selects exact retained call/alias metadata at80fc/
+1054d70a0 for importassociation, not a newcallee or runtime binding. Canonical
+Utility and current routing updated. All38application outcomes remainU.
+
+
+## [2026-10-20] query | Preserve first Membrane preparation and review exact metadata
+
+MEMCALL-PREFLIGHT-001 requires a focused new R2invalidrow guard; R1prep
+unexecuted/preserved. Synthetic metadata passed actual ASTrowpredicate despite
+invalidopcode/type; no actualdecoderfailure. Initial reviewer scratch NameError
+beforefile is disclosed. No originalinstructions/numerical work selected.
+
+Root independently reviewed Utility exacttablemetadata STOP and imported
+_strncpy/file-library association: respectively nine/seven scoped paths exact.
+No arbitrary unit slot or runtime import/return contract inferred. Known
+102322e58(G,U) attachment source<=6000C is separately selected; public Apple/
+POSIXreturn-contract documentation is the parallel bounded source task.
+Research/currentplans updated, all application/modal outcomes remainU.
+
+Lintv44 passed12:17:02UTC:258pages/IDs,34manifests/2133payloads/1306HEAD
+identities,append-onlylog,zero new broken links (421historical baseline).
+Whitespacev39 passed682files/gitdiffcheck. Subsequent pointer/log edits follow.
+
+
+## [2026-10-20] ingest | Public string contract and conditional Utility joins
+
+Registered [official string source captures](research/sources/c-library-string-contracts.md)
+after Root bounded-source approval: archivedAppleBSD2001/C90 versusPOSIXIssue8/
+2024, exact retained HTML/locators/hashes. Conditional destination return does
+not establish actual ABI/binding/buffer validity/runtime. Reviewed attachment
+source appends U to G-local list only. Two count-first locator searches stopped
+214/81matches over20cap without new metadata/body inspection; no no-route claim.
+
+Independent64B literal-data review passed uniqueDATA_CONST mapping/eightphysical
+values/provider preservation. No table extent/method roles assumed. Root next
+selects exact metadata for those eightvalues only. All38Utility application
+outcomesU. Source register/canonical Utility/current selectors updated.
+
+
+## [2026-10-20] query | Corrected Corpus static collector and prologue selection
+
+R2focused guard correction passed Rootpreflight and independent actual12Breview;
+MEMCALL-PREFLIGHT-001 closed, firstprep preserved/unexecuted. Threeactualrows show
+separately reachedMOVX0X20/BL25210, W1origin outsidewindow. Root fullread and
+preflighted fixed148B successor, seven reversible fixedscope changes/eightguard/
+tenrow fixtures,22parent files exact. One actualstatic-data run12:37:59UTC passed
+37valid4Brows/148Broundtrip, decoderexit0/noerrors,47preflight/2209outerpaths exact.
+No original instructions executed; independent actual review pending.
+
+Rootprovisional prologue X20=M148/W1quality0..3table-or30 requires actual path,
+quality and source-to-x86 premises. Exact16B[2ab90,2aba0) data only separately
+selected; no otherwords/callees/instructions/runtime/numerics. OriginalCorpus
+children remain17. All174+2modal omissions U; R7/currentv5/cases/counts unchanged.
+Canonical research/currentplan/session routing updated; whole-Live remainsopen.
+
+
+## [2026-10-20] query | Reviewed Corpus quality table and conditional count frontier
+
+Independent148Bactual review approved register expressions and conditional
+forwarding, not actualbranch/quality. Root separately freshverified16Btable
+4/16/30/70 with nativeimage/header/mapping, all12pins/sameADR-LDRsource and14
+scoped paths unchanged. Initial scratch KeyError in preservationfield selection
+occurred after data verification/before report; corrected towatch.unchanged and
+fullyrerun. Runtimequality/count70/pairedlane/source-to-x86 association remainU.
+Next selected1f3f8activecount/excitation context<=9000new uniqueCbytes only.
+
+Utility eight-target metadata led to3659Cbounded source under independentreview;
+knownconstructioncallee102328380 is separately selected for payloadinit only,
+metadatafirst/body<=6000C, no tableword/opcode/runtime/callee expansion. Source
+register/currentplan/session/canonicalCorpus updated, no newcases/grades.
+
+Lintv45 passed12:40:37UTC:259pages/IDs,34releases/2133payloads,1306HEADunchanged,
+append-onlylog,zero newbrokenlinks/421historicalbaseline. Whitespacev40 passed
+694files/gitdiffcheck. These checks precede the later source/pointer/log updates.
+
+
+## [2026-10-20] maintenance | Correct research index release pointer
+
+Research index's Corpus row still named canonicalR6/currentv4 after the later
+R7/v5publication. Corrected it to13IDs/33cases/29finite/fourU,27groups/73evals,
+72oldobjects exact and17original children; canonical/released payloads unchanged.
+Utility index now routes its latest conditional return/attachment/address-data
+frontiers without duplicating specifications or upgrading38U outcomes.
+
+
+## [2026-10-20] query | Reviewed Utility projections and bounded initialization
+
+Root read all3659C/eight bodies and complete independent function-local review.
+Rawrows/metadata/aliases/spans match,16authorpins/17reviewerpaths unchanged.
+Warnedindirection's twofirstword reads need independent actualvptr premises;
+no vptrpreservation/receiverABI/entry110callback join inferred. Root separately
+verified314Cinitializer/raw/fourspans/directcaller/eightpins/ninepaths exact;
+P=U unproved, laterstores/defaultsurvival separate. Next141Cbaseprojection frozen
+underreview showsvoid/result gap. Named102323d98source<=6000C only selected for
+concrete payload/index initialization, no further generic descent or words.
+
+Corpus303–530source9408C/8130new bytes froze under9000cap; independent review
+pending. Remaining7414C in SAME1f3f8 separately selected under8000newbyte cap to
+close governing-controlflow gaps; no otherbody/opcode/word/runtime/math selected.
+Canonical Utility/currentplans/session/log updated; all38application/all174+2
+modal outcomes U. Releasedv5/specR7 and whole-Live OPEN status unchanged.
+
+
+## [2026-10-20] query | Corpus active-count review and Utility payload limits
+
+Independent Corpusactivecount review passed partialconditional source claims:
+requestedN excitation !=loop-carried/cullprocessingcount;20reviewerpaths exact.
+2207authorwatch is digest-only evidence here, not independently replayed paired
+maps. Root read selected9408C/review. Remaining7414C SAMEfunction complement now
+frozen under review, cumulative31443C read scope only. Root freshly read new
+spans/claims; separatebVar16 localrecurrence may contribute tooutput, so per-k
+pole alone doesnot identify a measuredcomponent. Bounded existingharnessreadout
+feasibility/design only assigned, no newcode/originalrun/numerics/sourceexport.
+
+Root reviewed141Cbase+827Cpayload initialization originalrows/code/spans/parents/
+pins,12unique paths unchanged. Payload/indexzero stores nowdirectlyretained;
+R/Q/P/U identities andvoid/value-returnABI gaps remain, no genericdescent.
+RegisteredMute callback10216533c is separately selected from exact reviewedword
+provenance, metadatafirst/source<=6000C only; no word/opcode/runtime selection.
+Canonical owners/currentselectors/log updated; allmodal/applicationU unchanged.
+
+
+## [2026-10-20] query | Complete retained Corpus projection and named Mute endpoint
+
+Independent complement review passed exact7414disjointbytes/reconstruction and
+threewrong-association fixtures; reviewer cumulatively read all808lines/31443C,
+22paths unchanged. Root read new7414C/fullreview; completeprojection doesnot
+supply native lanes/alias/runtime/x86/physicalcomponent proof. Author2208path
+watch remains reportedaggregatedigests only. Readout design/feasibility pending,
+no originalrun/instrumentation/math/case expansion.
+
+Root approved446Cregisteredcallback after exactpriorword/source reconciliation:
+10216533c named OStereoGainProcessor::OnMute storesF!=0 atP161, then selectorP162
+chooses10215f3e0(omittedargs) or1047bd760(P48,bool). Sevenproviderpaths exact;
+no image/newwordread or actualunit/processor/publicroute/audio grade. Two known
+helpers metadata/source<=6000C selected. Separatebaseinitializer32Bdata prep only
+assigned for return-carrier gap; no extraction/decoder beforeRootpreflight and
+separate selection. Canonicalowners/currentplan/session/log updated, allU remain.
+
+
+## [2026-10-20] query | Readout capability proposal and corrected native carrier check
+
+Root read completeCorpusdesign/xdev.c/xdev.h, verified12commands/38orderedhost
+parameters/old006rawaudio identity/16pins,17paths exact. Unchangeddriver lacks
+internalstate reader; newfixedobserver remains proposal contingentonactualx86
+object/bounds/layout. Initialscriptcheck comparedstring3to3.0; correctednumeric
+comparison/reranbeforereport. Root nextselected exactx86exports/header/start
+metadata only, no observercode/build/nativewindow/originalrun/numerics.
+
+Utilitybranch1977Csource/8Boperand passed Rootreview,10/6paths unchanged;
+271Ctarget+748Chandle-storage source under independentreview, no silence/invoke
+inference. Return32BprepR1 preserves inheritedguardcounterexample. FocusedR2
+closedUTBASE-PREFLIGHT-001 with26ASTfixtures/twoliteralchanges/25paths exact.
+Rootselectedone32BstaticDATAdecode13:07:31UTC/8byteexactrows/PID354992exit0,
+25inner/2219outer unchanged; independentactualreviewpending. Opaquehelper X0
+carrier survives, actualobject/parentABI stillconditional. No originalUtility
+instructions/instance/audio/candidate run. All38application/all174+2modal U.
+
+Lintv46 passed12:58:38UTC:259pages/IDs/34manifests/2133payloads/1306HEADunchanged,
+append-onlylog/zero newlinks/421baseline. Whitespacev41 passed707files/gitdiff.
+Laterquery/review/source/currentpointer/log additions follow those checks.
+
+
+## [2026-10-20] query | Approved carrier and x86 metadata; continue typed dispatch depth
+
+Independent Utility32B review approved8bitfields/opaqueX0carrier;11payload/12tree,
+25inner/2219outer maps and2250unique reviewer paths exact. Incoming/returnedX0
+are not equated, parentABI/actualobjects remain conditional. Separate271Ctarget/
+748Chandle review passed sixspans/ninepaths: no silence/invocation inference;
+rowread followsHstore and arbitraryaliasingprestate laws are unproved. New7481C
+directforwarder source is under independentreview after preserved6000metadataSTOP
+and newRoot8000cap. Typed-unit18/4c/110 count-first locator separately selected,
+20records/2000field-line cap only; no auto narrowing/body/runtime.
+
+Independent Corpusx86 metadata review passed two nlist/trie exports and534declared
+starts, current2177authorcatalog reconstructed/2178reviewer paths unchanged.
+No historicalmaps invented, no bodyextent/gap/alignment/ABI inference. Rootfullread
+method/query/review; fixed240B_CalcA/pdj16 PREP ONLY assigned, perrow1..15bytes/
+size/prefix checks anduninterpretedremainder; no instructionwindow/decoder before
+Rootfullpreflight/separate actual selection. No observer/original/numerical run.
+
+Updated canonicalowners/researchindex/soleplan/session/log; R7/currentv5/261finite
+releaseevaluations/all38application/all174+2modalU/whole-LiveOPEN unchanged.
+
+
+## 2026-10-20 — First Corpus x86 prefix and Utility forwarder depth
+
+Analyst continuation under plan revision3. Corpus fixed240B entry preparation
+passed Root full-source/read-only checks and independent code review. Root then
+selected one static extraction/decode at13:33:14UTC:16rows46B,194suffix bytes
+uninterpreted;46inner/2931outer paths unchanged. Actual review pending; next
+fallthrough context preparation only. No original instructions executed;17Corpus
+original children unchanged. Utility full7481Cforwarder independently approved,
+Root completebody/review read: value copies/region literal stores only, no direct
+F invocation/receiver/audio proof. Global typed search89>20 STOP preserved;
+separate89metadata pass no bodies. Wrongchunk01643 zero explicitly qualified,
+correct01644 finds only known binder/88Cmatching lines. Exact optional helper
+1011a6778 selected metadatafirst/body<=6000C. Updated canonicals/sole plan/session
+queue; design10/roadmap4 unchanged. No clause/case/grade/release or denominator
+change. Whole Live OPEN, all38Utility outcomes and174+2Corpus modal omissions U.
+
+
+## 2026-10-20 — Corpus second context and Utility further physical words
+
+Plan3depth continues. FirstCorpus46Bactualprefix independently approved. Root/
+peer secondcontext code preflights passed; oneactualstaticdecode13:41:10UTC,
+16rows76B/164suffixuninterpreted,71inner/2957outer unchanged, actualpeerreview
+pending. New_CreateInstanceU fixed240B preparation only; nooriginalcalls/observer/
+numerics. Utility112Cterminalsource forwarding reviewed; externalname is no
+invocation/receiver/audio proof. All81graphmetadata successor preserved oldSTOPs,
+no body selected. Next64BphysicalUnitwords independently checked freshimage/header/
+map/raw/7metadata,19paths exact; sevenbodyprojections separately selected8500Ccap,
+fourwarnings preserved. Canonicals/indices/soleplan/session updated; no newcase/
+clause/grade/release; all38Utility and174+2Corpus omissions U, wholeLiveOPEN.
+Lintv47 passed259pages/34manifests2133payloads/1306HEAD unchanged/append-onlylog/
+zero newlinks (421baseline); whitespacev42 passed722files. These lateredits follow.
+
+
+## 2026-10-20 — Corpus Create carrier and public format metadata; Utility literal guard
+
+Plan3depth continues. Create54B entry actual independently reviewed; peerreport
+wrongauthor corrected in immutableaddendum before Rootactualselection. Root/
+peer fixedfallthrough codechecks passed; one actualstaticdecode13:56:23UTC,
+16rows56BthroughRET/184suffixuninterpreted,122inner3013outer exact. Independent
+actual review approved conditionalcarrier/operands only. Nooriginalinstructions;
+17original Corpus children unchanged. Nextdc20 fixed240B preparation only.
+Root separately captured Apple XNU loader/nlist format declarations at exact
+commit f6217f891ac0bb64f3d375211650a4c1ff8ca1ea, primary200receipts/sourcepage/
+index; initial unverifiedcctoolstagbrowsercachemiss adoptednocontent. Threefixed
+calltarget staticimport query/parser independently reviewed:__Znwm/newlocale/
+uselocale associations only, no currentbinding/ABI/allocationcontract/grade.
+Utility two16B dataqueries independently reviewed unclassifiedwords; Root full
+method/delta/reviews read. C-string guardSTOP on__const/type0 independently
+confirmed with0targetbytes. SeparateRoot64Bdata retains19BASCIIprefix/NUL plus
+44uninterpretedbytes, independentreviewpending, noRTTI/class/type/publicbehavior
+meaning. Canonicals/index/soleplan/session updated; design10/roadmap4 unchanged.
+No newclause/case/criterion/release/denominator;38Utilityoutcomes/174+2Corpus modal
+omissions U, wholeLiveOPEN. Lintv48/whitespacev43 passed before latestsourcepage/
+canonical/queue/log edits; nextfullcheckpending.
+
+
+## 2026-10-20 — DC20 tail branch and literal-only Utility navigation
+
+Root/peer DC20 code checks passed, one selectedactualstaticdecode14:02:32UTC:
+16linearrows47B/193suffixuninterpreted,147inner3038outer exact. Firstfourrows10B
+end JMPc150; laterNOP/newprolog/otherdecodedrows are notconstructorcontinuation.
+Rootassessmentfrozen/peeractualreviewpending; c150fixed240B preparation only.
+No originalexecution/observer/numerics,17originalCorpuschildren unchanged.
+Utilityfixed64Bdata independentlyapproved19BASCIIprefix/NUL/44opaquesuffix only,
+Root full7133Breview read. Exactname metadata query selected20cap/2indexes only,
+no class/type/publicfloatdelivery inference/body/fallback. Updated canonicalqueue/
+log, no behavioralclause/case/criterion/grade/release/denominator change. WholeLive
+OPEN; all38Utilityoutcomes and174+2Corpus modal omissions U.
+
+
+Subsequent full lintv49 passed14:05:01UTC:260pages/IDs,34manifests2133payloads,
+1306HEAD identities/append-onlylog/zero newlinks (421baseline). Whitespacev44
+passed760files/gitdiffcheck. Check-pointer/log refresh follows those checks.
+
+
+## 2026-10-20 — C150 entry context and selected Utility receiver preflight
+
+DC20actual47B independentlyapproved, Rootfullreview read. C150Root/peercode
+checks passed and oneactualstaticdecode14:09:11UTC retained60B/16rows/180suffix
+uninterpreted,172inner3068outer exact; actualpeerreviewpending. __Znwm OWNxexec
+source capability query onlyselected, no runtimebinding/observer/build/run proof.
+Utilityexactname metadata lookup reports0matches/no fallback, not absence.
+New64B unitconstructor preparation onlyselected toaddresshiddenreceivercarrier;
+UTCTOR-PREFLIGHT-001 narrowper-row4Bguardstrengthening/oldaccept-newreject fixture
+explicitlyselected, oldmethod/captures immutable and manuallyreviewedrows not
+retroactively failed. No Utility decoder/originalrun yet. Canonicals/queue/log
+updated; wholeLiveOPEN, no normativecase/clause/grade/release/denominator change.
+
+
+## 2026-10-20 — Reviewed allocator-source limit and two bounded static captures
+
+C150actual60B independently approved, Root full11457Bpeer read; conditional
+native carriers only. Own-harness __Znwm source query independently approved,
+Root full6836Breview read: earlier resolver may override fixed arm; selected
+helper has no success allocation registry, no binary/binding/bounds proof.
+C18Ccode preparation passed Root cumulative inverse/checker reconstruction and
+peer fullread:197watch158parents/3valid29bad10guards. First missing--check CLI
+refused, then one correct readonlycheck passed, retained in preflight.
+Utility name-index zero result now independently verified by Root,7paths same,
+no fallback/absence. Utility64prep passed Root/peer fullcode,29fixtures/7guards,
+52paths same; successor-only per-row4Bfix closes UTCTOR-PREFLIGHT-001, no old
+capture invalidation. Outer core0/env/stdin/receipts explicitly required.
+Root separately selected one C18C240B/staticpdj16 to Delay and one Utility64B/
+staticpdj16 to Modulation in parallel. Original Corpus count17unchanged, Utility
+original0; no observer/build/model/case/grade/release/denominator change.
+WholeLiveOPEN; canonical actualresult adoption awaits separate reviews.
+
+
+## 2026-10-20 — Two reviewed static captures; build provenance becomes next gate
+
+C18Cactual16rows70B independently approved,170suffixopaque;197/6008durablepaired
+maps equal,220reviewercurrentpins exact (notfreshall6008). Root full9626Breview
+read; threeopaque calls/loadedglobalvalues/stackcarrier only, no constructor/
+allocation proof. Retained buildrecipe/sourceidentity query independently
+approved, Root full15658Bquery/1558source/6644Breview read; exactrun.sh1–18 label
+qualification carried. Actualcompilerreceipt/currentbinding unresolved. Selected
+one NEWexclusive reproducible-own-harness build PREPARATIONONLY; no compiler,
+oldrunner/loader/output/original/observer run or installation selected.
+Utility64actual independently reviewed by Root: all16encodings/same64/image/
+53LC/10inner+11outerpayloads/52+3128pairedmaps+currentpins,3150ownwatch unchanged.
+X0carrier toinitializer narrows, no initializerreturn/actualclass/deliveryproof.
+Author order/alias addendum retained; then-currentcounter/noatomicity/noRET
+qualification explicit. Rootfirstscratch SyntaxErrorbeforeexecution corrected,
+no suppliedcode/decoder rerun. Next initializer preparation resized64→32B before
+work because retainedmetadata56B; no guardrelaxation/sourceendforgery. All38U.
+Updated two canonicals/index; design10/roadmap4/plan3 policy unchanged. No new
+normativecase/clause/grade/release/denominator; original Corpus17/Utility0.
+WholeLive remainsOPEN; nextfull lint follows currentqueue/log refresh.
+
+
+Full lintv50 passed14:34:15UTC:260pages/IDs,34manifests2133payloads,1306HEAD
+identities/append-onlylog/zero newbrokenlinks (421baseline). Whitespacev45 passed
+784wiki/catalog/directreviewJSON/Pythonfiles includinguntracked andgitdiffcheck;
+notallnestedevidence. Subsequentcheck-pointer/initializerpreflightlink/logrefresh
+is documentation-only. InitializerRootfull6917/7915codecheck passed29fixtures/
+7sourceguards/88watch, peerpending; operative32B notcopiedbefore64Blabel. No new
+behavior/case/release or originalrun, wholeLiveOPEN.
+
+
+## 2026-10-20 — Source-only resolver predicate and initializer capture selection
+
+Root selected exact complete691C earlierlibstdcxx helper, countfirst2/20;
+independent7243Bpeerread/approvedsourceonly: fourrecognizednames exclude__Znwm,
+ordinaryvalidstring/strcmp premises leadNULL withoutmatchedlibrarybranch.
+Currentbinary/import/allocation stillU; no original/library/helperexecution.
+Exclusive ownharnessreproductionprep frozen; Rootfull7101/6512code+aux/read-only
+check passed1positive7unsafe15pins22watch; Modcodepeerpending, nocompiler yet.
+Initializer32Bpeer approved, Rootfull8128Breviewread; source metadata56B/operative
+32B and inheritedwordingqualified,88paths same. Separateone-shot32B/pdj8static
+capture selectedSynthwithoutercore0/env/DEVNULL/receipts. No further target/
+suffix/nativefollow. All38Utilityoutcomes and174+2Corpusmodalomissions remainU;
+no clause/case/grade/release/denominator change, wholeLiveOPEN.
+
+
+Root full19976Bbuildcodepeer read/accepted explicit attempt-vs-execution and
+exit-vs-equality qualifications. Separate one-shot unchanged-source gcc build
+selectedSynth; NEWoutput/wholebytecomparison/no executable execution or retry.
+Initializer32Bactual frozen10payload/11tree, authorobservations/8rows Rootread;
+Delayactualpeerpending. NextselectedModPREPARATIONONLY200B/50rows atknown827C
+payloadinitializer metadata; checkerstrict>→>= equalitycorrection with boundary/
+overrun controls, main<=unchanged. No sourcehelper/actualwindow/nativefollow.
+Currentqueue14:43refreshed; full lintv50 predates these research/queue/log edits.
+
+
+Documentation consistency correction: the historical device-DSP feasibility
+page now labels its opening/modal/library summary as historical and links current
+Corpus canonical/released scope. Its original one-ulp transfer inference remains
+retained but explicitly unadopted as a generalerrorbound; finiteperturbations do
+not grade omitted/underfit modes or Apple/arm64 behavior. No raw study/vector/
+released expectation rewritten. Current source/build actual gates remain separate.
+
+
+Initializer32B actual independently approved partial; Root full8455Bassessment/
+8rows/7748Bpeerread. Freshsame32/header53LC/8fields and10actual+11outerpayloads/
+88inner3171outerpairedmaps/currentpins/3192reviewerwatch passed. Entrypointer
+not equated withpostcallpointer; overlapping64-bit zero stores are no field/
+defaultlaw. OriginalUtilityruns0/all38U. Oneownharnessgccbuild succeeded with
+wholefileequality149632B/4f3ff48…9d9b; independentactualbuildreviewpending.
+No old/newbuilt executable or originalcode wasexecuted; no behavioralgrade.
+
+
+## 2026-10-20 — Identical harness file adopted; loader-source diagnostics narrowed
+
+Root full8438Bbuildassessment/8776Bactualpeerread, repeatedall22payloadhashes and
+whole149632B newoldbyteequality. Finitecurrentrecipe-to-identicalfile adopted,
+not historicalbuildevent/runtimebinding/allocatorbounds. Independent305/6331maps/
+291oldcwd/6353watch reviewcarriedwithscope. Corpuscanonicaltarget nowexplicitly
+includes ARMstatic/x86evidence. Loader-source query independentlyRootreviewed:
+10839C/10spans/incidental501C/9pins/10watch exact. Slots/bindrequests/usedcounter
+and historicalused__Znwm177 separated; no targetaddress/runtimeproof. All17old
+Corpuschildren/no new originalrun, no normativeclause/case/grade/release.
+Nativephase current T1/device/fullcoverage rows routed to currentcatalog/soleplan
+rather than stale r3/256evaluation/30release copies; implementation needsfresh
+restrictedcontext. Historical gate evidence retained. Roadmap4/design10 unchanged.
+Utilitypayload200Rootfullcode/check+8118Bpeerpass,127watch/29fixtures/2boundary/
+7guards. Separateone-shotstaticcaptureselectedDelay, succeededauthoronly;50row
+actualpeerModpending. All38applicationU/174+2modalomissions remainU, wholeLiveOPEN.
+
+
+## [2026-10-20] query | Payload return carrier and selected x86 exporter preparation
+
+Adopted Utility payload200B independent actual review after full10525Bpeer and
+50row read; carried reviewer native/map/preservation checks with explicit Root
+scope. Return identity is post-first-BL, not entry. Complete144Cbase-entry source
+and fixed24Bpreparation retained; Root full-code/read-only guards pass, independent
+peer pending; no actual24B capture selected. All38application outcomes remain U.
+Corpus canonical design now records fixed2entry x86 exporter preparation,
+wholethin DATA read scope,4GiBheap/6GiBaggregateRSS and synthetic-before-original
+execution gates. No Java/Ghidra/import/compiler/original run in this checkpoint.
+Synthesis owns preparation; Modulation reviews Utility source/code; Root updates
+canonicals/index/soleplan/session. No design10/roadmap4 policy change or new
+clause/case/release/completion. Latest14:34checks precede these updates.
+
+
+## [2026-10-20] query | Utility leaf preservation and conditional initializer carrier
+
+Root independently checked selected24B/6rows, exact image/header, actual/outer
+inventories,168/3270historical paired maps and3285fresh watched identities. One
+unrelated concurrently unsealed Corpus driver changed after capture; current
+drift and author qualification preserved without changing old maps. LocalX0
+preservation approved under normal execution predicates. Full17174Bcomposition
+proposal read/12pins checked; conditional selected-store carrier adopted, with
+unselected initializer tail/source-only65/67/currentstate/publicMute still open.
+No original Utility call, normative grade/case/release or profile completion.
+Modulation now owns same-Mute fieldcf count-first metadata-only frontier at20cap;
+no new breadth or automatic source/native follow. Corpus successor remains
+preparation only. Added current-reading boundaries to both canonical pages so
+historical as-of findings cannot substitute for current contracts/selections.
+
+
+## [2026-10-20] query | Corpus exporter frozen; Utility exact-field metadata reviewed
+
+Root full-code/offline preflight passed frozen x86 two-entry preparation; Delay
+owns independent peer, no Ghidra/Java/import selected yet. Utility prefix179 and
+closing-parenthesis32 over-cap stops preserved; separately selected40cap retained
+all32metadata only. Root own singlepass4185chunk/418417row reconstruction verifies
+counts/rawrows/codehashes/metadata/sixpins without semantic body reads. Selected
+only complete4633C1047bd790 as an unreviewed candidate, with adjacency explicitly
+a heuristic. No source/runtime association or new grade follows from metadata.
+Canonical pages updated; soleplan/session retain as-of checkpoints pending next
+milestone refresh. Design10/roadmap4/depthpolicy unchanged; fullcoverage OPEN.
+
+
+## [2026-10-20] query | Synthetic Corpus export refused runtime identity; Utility zero branch narrowed
+
+One separately selected OWN synthetic Ghidra launch completed15:39:54–59UTC.
+Ghidra exit0, Java compound identity guard threw beforeidentity/exports; driver
+correctly exited1 with two INVALID outcomes. Frozen31payloadactual/10payloadouter
+retained,27inner3199outer pairs unchanged and no observed group survivors. This
+is a failed method gate, never original-target success. Independent failure
+review pending; static launcher/currentguard diagnosis only, no rerun/fix yet.
+No originalthin import/extraction/instruction or new grade. Corpus R7/v5 unchanged.
+Utility4633C candidate passed Root local-source review: flagbit0→Czero before
+shownreads/writes, nativeABI/silence/publicroute stillU. Exactfunctiontext metadata
+finds3including self; only397C+556Cnonself projections separatelyselected next.
+No normative ID/case/release/complete profile/family or denominator change.
+
+
+## [2026-10-20] query | Failed fixture accounting corrected; diagnostic R2 prepared
+
+Independent failed-fixture review confirms31actual/10outer payloads,28actualinner/
+3199outer pairs and3240fresh unchanged paths. Correct earlier entry's inner27 to28:
+27waspreparationwatch; selected receipt addsone. Only headless launcher exit0 is
+receipted, JavaPID sampled, no separate Java-exit receipt. Canonical corrected;
+frozen captures/preflights/log history preserved. Originalimage gate CLOSED.
+Root read full static diagnosis and chose exception-message-only six-value
+instrumentation with unchanged guard. R2 preparation and Root offlinechecks pass;
+independent peer/separate syntheticselection pending, no new actuallaunch yet.
+Utility953C result consumers passed partial Root review; unrecovered second-result
+ABI remainsopen. First own sourcecheck usedwrongmissing key, corrected owncheck
+passes/no targetchange. Only fixed72B CalcMain native-data PREPARATION selected.
+No originalcall/normativegrade/case/release/completecoverage claim.
+
+
+## [2026-10-20] query | Corpus launcher candidate and Utility native carriers
+
+Adopted the independently reviewed R2 synthetic failure and bounded installed-tool
+pool/launcher source diagnosis in [Corpus research](research/corpus-dsp-static.md#launcher-diagnostic-and-late-override--2026-10-20).
+Pool3/empty override were recorded after the compound guard, not an atomic first
+failure or retrospective R1 cause. Prepared R3 changes one existing environment
+value, Java/guards unchanged; Root offline preflight passes65paths, independent
+review and separate fixture launch pending. Original gate remains closed.
+
+Adopted [Utility CalcMain72 native carrier review](research/device-audio-utilities.md#native-mute-result-carriers--2026-10-20):
+adjacent stack inputs and returnedS0/S1 stores are conditional local facts, not
+public Mute or output-zero behavior. All38application outcomes remainU. The next
+32B helper prefix is preparation only, Root preflight passed183paths, independent
+peer and separate actual selection pending. No new original/candidate run,
+requirement, case, grade, release or denominator closure. Existing plan revision3
+and design10/roadmap4 remain governing.
+
+
+## [2026-10-20] query | Reviewed original Corpus entries and conditional Utility zero return
+
+The [Corpus R3 synthetic prerequisite and original static import](research/corpus-dsp-static.md#reviewed-x86-constructor-and-render-entry--2026-10-20)
+passed independent actual reviews. Two original functions recovered inside fixed
+windows; CalcA warnings/unvalidated ABI/global and model joins remain explicit.
+No original instruction ran. Next3820 linker metadata independently reviewed;
+R4 preparation only selected, using unchanged Java/two1024B windows and a known
+owned fixture. No original R4 import or callee/global/runtime follow selected.
+
+The [Utility prefix and separately selected return word](research/device-audio-utilities.md#conditional-mute-zero-return--2026-10-20)
+passed independent reviews. Conditional local zero-return/store composition is
+adopted with validity/control/receiver premises; public route and all38application
+outcomes stayU. Preserved peer report has an additive skipped-byte geometry
+correction; no frozen history rewritten. Exact x86 OnMute/CalcMain symbol metadata
+lookup selected next, not instruction or runtime execution. Coverage/index/plan
+routes updated; no normative/candidate/family-completion credit. Lintv53 and
+whitespacev48 passed16:10UTC before this latest batch; fresh checks follow.
+
+
+## [2026-10-20] query | Next processing and native-control nominations
+
+Root independently reproduced [Corpus3820 linker membership](research/corpus-dsp-static.md#reviewed-x86-constructor-and-render-entry--2026-10-20)
+and [two Utility x86 symbol predicates](research/device-audio-utilities.md#conditional-mute-zero-return--2026-10-20).
+Addresses nominate future finite work, not body extent/counterpart/ABI/public
+binding. R4 preparation initially requested unchanged Java; author identified two
+hard-coded entry guards before writing. Root authorized exactly those29c0→3820
+address substitutions, all other Java guards unchanged, and corrected maintained
+preparation wording. No R4 tool/import ran. Utility OnMute240B/pdj16 preparation
+only selected; actual extraction/decoder and all original calls remain unselected.
+
+
+## [2026-10-20] maintenance | Preserve contract gaps while routing new depth evidence
+
+Added analyst-only evidence pointers to the [Utility](specs/device-utility.md#analyst-evidence-follow-up--2026-10-20)
+and [Corpus](specs/device-corpus.md#analyst-evidence-follow-up--2026-10-20) draft
+appendices. Normative revisions, cases and grades remain unchanged; no released
+payload changed. Narrow independent consistency review identified one stale
+research-index description (build preparation); corrected it to reviewed entry
+evidence/current R4 preparation. Other inspected current routes, two-address Java
+exception, geometry and unknown outcomes agreed. Current R4 OWNfixture passed
+Root actual checks, independent actual review pending; Utility x86 preflight is
+code/preparation only. No new original instruction or candidate executed.
+
+
+## [2026-10-20] query | Review Corpus dispatch and Utility local Mute store
+
+[Corpus current research](research/corpus-dsp-static.md#reviewed-x86-receiver-dispatch-and-construction-frontier--2026-10-20)
+files independently reviewed R4 owned fixture/original static import, freshI+8
+conditional dispatch and separately reviewed d090 linker metadata. R5 preparation
+only is frozen for23b0/d090 with uniform4096B caps; no original runtime call.
+[Utility current research](research/device-audio-utilities.md#reviewed-x86-conditional-mute-store--2026-10-20)
+files reviewed OnMute55B/suffix6B/target8B UNKNOWN then separately selected5B
+completion. Conditional local byte store atP+117 remains separate from public
+binding, actual value and audio law. Root adoption preparation initially hit one
+missing peer filename before Utility report creation; corrected path, no evidence
+mutation or native attempt. CalcMain240B/pdj16 preparation only is frozen.
+Affected indexes, spec evidence routes, feature/verification routes, sole plan
+checkpoint and session selection updated; policy/design/roadmap revisions unchanged.
+No new original children (Corpus17/Utility0), application grade, case or release.
+Mechanical checks from16:26 precede this batch; new lint follows.
+
+
+## [2026-10-20] lint | Current depth evidence and routing checkpoint
+
+[Lintv55](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v55.json)
+at17:00:56UTC passes260pages/IDs,34manifests/2133payloads,1306HEAD-published bytes,
+append-only log, zero new broken links and421retained baseline links.
+[Whitespacev50](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v50.json)
+passes922wiki/catalog/direct-review files and git diff --check. This is mechanical
+validation of the prior depth batch only; current pointer/log refresh follows.
+At16:59UTC Root separately selected Utility CalcMain static decoding and Corpus
+R5 OWN fixture, one attempt each, exited0 with exact watched maps. Independent
+actual reviews remain pending; no original instruction or application test ran.
+
+
+## [2026-10-20] query | Preserve constructor failure and close conditional Utility return path
+
+[Corpus](research/corpus-dsp-static.md#constructor-body-guard-stop-and-retained-frontier--2026-10-20)
+R5 owned fixture passed independent actual review; separately selected original
+static import failed its strict body check atdb10 (driver1/headless0), no d090C.
+37actual/10outer payloads and110/3649paired identities exact; no original instruction
+ran. Independent failure audit pending. Retained listing query received a concrete
+pointer-expression finding before adoption; correction pending, first query retained.
+[Utility](research/device-audio-utilities.md#reviewed-x86-processing-wrapper-and-flag-frontier--2026-10-20)
+CalcMain56B prefix/helper32B/RET1B passed independent peers. Conditional nonzero
+flag path returns low64zero; wrapper conditionally stores two32-bit zeros. X86
+fullbyte and ARMbit0 differ; no public/audio/architecture/application grade.
+Existing loader source/recipe provenance retained; only owned reproduction-build
+preparation selected, no new API or original call. Current routes, plan/session
+checkpoint updated; revisions/counts remain unchanged. Prior17:00checks precede
+this batch; new lint follows. Corpus17original children, Utility0.
+
+
+## [2026-10-20] query | Correct receiver source route and reproduce existing loader bytes
+
+[Corpus](research/corpus-dsp-static.md#constructor-body-guard-stop-and-retained-frontier--2026-10-20)
+R5 failure integrity audit passed while the export stays failed. Retained-listing
+source review required CD090-REVIEW-001; immutable correction/addendum peer resolves
+the missing firstword/table dereference and explicit preservation premises. Root
+adopts conditional source only and selects39a0physical240B/pdj16 PREPARATION ONLY.
+[Utility](research/device-audio-utilities.md#reviewed-x86-processing-wrapper-and-flag-frontier--2026-10-20)
+existing loader own build succeeded once at17:13:50UTC after both code preflights.
+New74040B output is whole-byte exact to old5d236b76…5385;16inner/5102outer identities
+exact, no observed residuals; neither output ran. Two Root preselection setup
+failures are retained and corrected before sole compiler attempt. Independent
+actual build audit pending; fixed two-call owned-state X preparation only selected,
+not invocation. No original Utility function, new API or FPenvironment control.
+Coverage/counts/requirements/cases/releases unchanged; current source routes updated.
+
+
+## [2026-10-20] maintenance | Route current readiness and loader provenance
+
+[Owned loader actual peer](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-xexec-owned-build-actual-review.json)
+passed bounded compile/whole-identity review; Root adopted after full read.
+Neither binary executed. Corpus39a0prefix preparation frozen with53pins, fixed
+240B/pdj16; Root checker/inverses passed, independent code peer pending. Utility
+fixed two-call X preparation in progress; no original invocation. Current plan
+and session checkpoint refreshed, all behavioral/candidate/release counts unchanged.
+New documentation lint follows the current source/failure/correction batch.
+
+
+## [2026-10-20] lint | Constructor failure, correction and loader provenance
+
+[Lintv56](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v56.json)
+at17:18UTC passes260pages/IDs,34release manifests/2133payloads,1306HEAD-published
+identities and append-only log, zero new broken links/421retained baseline links.
+[Whitespacev51](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v51.json)
+passes956wiki/catalog/direct-review JSON/Python files and git diff --check.
+This covers the preceding failure/correction/loader provenance/routing batch.
+Later pointer/log refresh follows;39a0staticprefixcapture is retained with actual
+peer pending. No application or candidate test ran; whole coverage remains open.
+
+
+## [2026-10-20] query | Retain conditional receiver table nomination
+
+[Corpus39a0actual peer](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-receiver-construction-entry-actual-review.json)
+approved16rows/98B,142opaque; all scoped paired identities exact. Root read full
+peer, then selected8B nominal30648 table word; independent literal-data peer
+approved unsigned85e0. No actual current table/model or runtime binding proved.
+[Research](research/corpus-dsp-static.md#receiver-table-word-nomination--2026-10-20)
+files both exact scopes;85e0linker metadata only is selected next. Utility two-call
+owned-state X preparation remains under author seal; no original call/newgrade.
+All requirements/cases/releases unchanged, Corpus17children/Utility0.
+
+
+## [2026-10-20] query | Reviewed Utility extracted mute result and Corpus target readiness
+
+[Utility research](research/device-audio-utilities.md#reviewed-owned-buffer-x86-mute-capture--2026-10-20)
+files the independently reviewed17:29:52UTC capture: one original child/two
+returned original calls, selected owned-buffer flag1/zero helper result. All38
+application outcomes stay unknown; no public audio or whole-app run. One OWN4B
+pDj fixture passed Root review;904B static preparation only selected next.
+[Corpus research](research/corpus-dsp-static.md#selected-receiver-dispatch-target-readiness--2026-10-20)
+files reviewed85e0metadata and R6 code/current OWN fixture prerequisite approval.
+Original R6 static import remains separately gated; R5failure preserved.
+Current plan/session/index/spec evidence/coverage routes updated. Corpus original
+children17/Utility1two calls; all normative/release/grade counts unchanged.
+
+
+## [2026-10-20] query | Reviewed dispatcher exports and complete physical Utility span
+
+[Corpus dispatcher](research/corpus-dsp-static.md#reviewed-receiver-dispatcher-and-construction-follow-up--2026-10-20)
+R6 original static export passed independent actual review with all fourwarnings.
+Source query/Rootpeer distinguish direct record+8 callbacks from table calls;
+reviewed39a0metadata selects only144B retained-data decoder preparation.
+[Utility processing span](research/device-audio-utilities.md#reviewed-x86-processing-span-and-table-frontier--2026-10-20)
+904B/203rows passed independent actual review. Root then read exactly16B table;
+independent literal/native-expression review and conditional state query pending.
+No original instruction ran in either static study. Corpus17/Utility1child-two
+calls unchanged; all application/modal gaps and normative/release counts unchanged.
+
+## [2026-10-20] lint | Owned-buffer result and receiver readiness
+
+[Lintv57](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v57.json)
+at17:45UTC passed260pages/IDs,34manifests/2133payloads/1306HEADidentities,
+append-only log and zero new broken links (421baseline).
+[Whitespacev52](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v52.json)
+passed979wiki/catalog/direct-reviewfiles and git diff --check. These cover the
+prior17:44documentation batch, not the later dispatcher/span source update.
+
+
+## [2026-10-20] lint | Dispatcher and physical processing span
+
+[Lintv58](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v58.json)
+at17:53UTC passed260pages/IDs,34manifests/2133payloads/1306HEADidentities,
+append-only log and zero new broken links (421baseline).
+[Whitespacev53](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v53.json)
+passed996wiki/catalog/direct-reviewfiles and git diff --check. Later pointer
+refresh and execution-versus-reading wording correction add no coverage credit.
+
+
+## [2026-10-20] query | Conditional Utility state ordering and four-call preparation
+
+[Utility table/state source](research/device-audio-utilities.md#reviewed-x86-processing-span-and-table-frontier--2026-10-20)
+passed literal-data and independent Root source reviews. The numeric-index1
+example uses old gain pairs while storing updated pairs; proposed finite outputs
+[1,-2] then[1.5,-2.5] are conditional source algebra, not observed audio or a
+new criterion. Root selects fixed four-call owned-loader capture PREPARATION ONLY;
+no original invocation, new API, build or public mapping. All38app outcomes U.
+Corpus144 retained-span preparation passed Root code preflight; independent
+code peer pending. Current plan/session updated without scope-policy revision.
+
+
+## [2026-10-20] query | Reviewed Utility state history and Corpus setup nomination
+
+[Utility](research/device-audio-utilities.md#reviewed-owned-state-history-and-public-binding-gap--2026-10-20)
+four-call actual passed independent peer. Two original children/six returned calls
+in this continuation: finite pair outputs, state progression and muted freeze
+observed; all38application outcomes U. Next public-value/same-processor/host-delivery
+gap replaces further numeric examples; selected class-token metadata awaits peer.
+[Corpus](research/corpus-dsp-static.md#reviewed-constructor-span-and-setup-nomination--2026-10-20)
+retained144B decode passed actual/native peer; 1d1d0 linker metadata reviewed only.
+Root selected one8B nominalsetup slot from corrected d090 dispatch relation;
+literal3ab0 awaits data peer, no body or runtime call selected. Corpus17children
+unchanged. Updated current routes/spec evidence/coverage/plan/session; no normative
+or release counts/criteria/grades changed. Documentation checks follow this batch.
+
+
+## [2026-10-20] decision | Plan revision 4: analyst depth throughput
+
+User direction: finish the specification before T1 is implemented; make depth
+faster; start depth from call chains across components. [Plan revision 4](research/full-live-specification-plan.md#revision-4--analyst-depth-throughput-2026-10-20)
+replaces revision 3's vertical-slice ordering: one cross-component integration
+map of the T1 scenario precedes family call-chain maps, which update the atlas
+and classify routes and precede grading; extracted execution
+is batched per enumerated set under a standing authorization for self-contained
+harness calls; harness sessions run in parallel; D-01 exits as an answered
+capability gate; the D-00 route ledger is reinstated; checks replay
+incrementally; successors pin predecessors instead of copying snapshots; T1.7 is
+deferred. [Design revision 11](research/full-live-specification-design.md#revision-11--structure-packets-batch-evidence-and-harness-authorization--2026-10-20)
+adds the structure and batch packet forms and the authorization class.
+[Roadmap revision 5](research/native-decompilation-roadmap.md#revision-5--depth-throughput-alignment-2026-10-20)
+withdraws the candidate-IQ step. Motivating measurement: Corpus r4 to r7 took
+5 h 06 min for about three graded cases with 279 Corpus-named review files; the
+atlas is unchanged since 2026-10-17. Open user decision: disposition of no-route
+outcomes. Scope, denominator, ADR 0002/0003/0005 and closure gates unchanged.
+Routed pages: project status. The root coordinator session must re-read the plan
+before its next selection; nothing committed.
+
+
+## [2026-10-20] query | Review setup and public-binding metadata nominations
+
+[Corpus setup word](research/corpus-dsp-static.md#reviewed-constructor-span-and-setup-nomination--2026-10-20)
+passed independent literal-data peer;3ab0 linker index33 metadata passed Root
+review. Only96Bstatic-span preparation selected;1d1d0basebody stays unselected.
+[Utility class tokens](research/device-audio-utilities.md#reviewed-owned-state-history-and-public-binding-gap--2026-10-20)
+6/34matches/all40rows passed independent metadata peer. Only named1022313c0
+handler240B/pdj16 prefix preparation selected; no class-equivalence/public role
+from names. Current plan/session updated; no decoder/original call/grade added.
+
+## [2026-10-20] lint | Reviewed owned-state history and constructor
+
+[Lintv59](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v59.json)
+at18:13UTC passed260pages/IDs,34manifests/2133payloads/1306HEADidentities,
+append-only log and zero new broken links (421baseline).
+[Whitespacev54](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/authored-whitespace-2026-10-20-v54.json)
+passed1020wiki/catalog/direct-reviewfiles and git diff --check. Checks cover
+preceding reviewed-history/constructor batch; later metadata/readiness/pointer
+refresh is separate. No application or candidate comparison ran.
+
+
+## [2026-10-20] decision | Revision 4 amendment: indirect-call resolution precedes the integration map
+
+Measured on the retained c1-live-v1 index: 1.6 M direct call edges over 323,567
+functions; allocator/guard/abort hubs dominate in-degree; with the top 1,000 hubs
+pruned, forward reach after six hops is about 2 functions and backward about 8;
+268,015 indirect call sites in 98,328 functions, 25,071 with a resolved target;
+80 vtables. The direct-call index does not carry cross-component flow. The
+[plan amendment](research/full-live-specification-plan.md#amendment--indirect-call-resolution-precedes-the-map-2026-10-20)
+puts a symbol-based component layer (91,903 namespace-qualified names, 39,700
+under ableton) and class-level indirect-call resolution ahead of the map, runs
+the search bidirectionally and bounded with hubs pruned, collapses to component
+edges, and reports the resolved-site count as the structure packet's progress
+measure (inventory, not coverage). Design revision 11 and roadmap revision 5
+carry matching amendments; the research index row is updated. First selection
+becomes packet 1a. Scope, denominator, gates and ADR 0002/0003/0005 unchanged;
+nothing committed.
+
+
+## [2026-10-20] execution | Select amended revision4 packet1a; reconcile current routing
+
+Root read both user-directed revision4 amendments, design11 and roadmap5 before
+reselection. Stopped the integration-map assignments before file/index traversal;
+three parallel analysts now own symbol membership, RTTI/vtable recovery and
+indirect-site census/resolution as parts of one packet1a. No new provider,
+original-code call, installation or candidate selected. Current plan/project/
+session routing now defersT1.7 and exitsD01 as capability answered; its Corpus96
+preparation remains sealed and unexecuted. Historical revision3 scheduling is
+explicitly superseded. The route ledger is reinstated, with no behavior credit.
+
+The Utility decoder already selected before steering completed18:19:59–18:20:01UTC:
+[manifest](../analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-x86-processor-create-entry-instructions/manifest.json)
+SHA256dfd4534450a0570cb293395b8c7414775e7e0b62bc00fb922b1860fe4c3cce73,
+16rows/47occupied of240selected bytes,193opaque, no original instruction execution.
+Actual independent review remains pending; no callee follow-up selected. Canonical
+Utility research records this limited status. No clause/case/grade/release changed.
+
+
+## [2026-10-20] lint | Incremental revision4 amendment routing check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/revision4-amendment-routing-check.json)
+SHA25690358042ad17740076a7d10fad601cebb009f13607cb73fae7342ed01b0620bf
+passed six changed pages: frontmatter/ID/date, relative links against the retained
+missing-source baseline, whitespace, HEAD log-prefix preservation and git diff
+--check. Verified24changed Utility decoder/outer payload hashes in two manifests.
+The full released-payload replay was not repeated under revision4. No semantic,
+runtime, candidate or compatibility pass follows from this focused check.
+
+
+## [2026-10-20] research | Approve packet1a; select one bounded T1 integration map
+
+The amended revision4 prerequisite [packet](../analysis/ableton-live-12.4.3/full-spec-v1/component-resolution-v1/manifest.json)
+SHA256392a738005f7d776dca96d7c78220cb94091081ef7086ec45b9397afccbe438b
+freezes155payloads/166848166bytes. One [independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/component-resolution-v1-review.json)
+approved bounded structure only, with both prefreeze parser test/overflow
+findings corrected. The [atlas](research/program-structure.md#native-component-layer-and-indirect-resolution--2026-10-20)
+owns the qualified-label/class/dispatch inventory and its limits:25,071exported
+reference sites,24new conditional class-slot records,25,095combined of268,015,
+including computed jumps. No behavior grade or runtime dispatch follows.
+
+Root selected packet1b only after reading the full review. Three parallel
+analysts own document/delivery, transport/playback and mix/recording evidence
+for one integration structure packet; shared hub pruning and per-level bounds
+are coordinator-owned. Current plan/session/indexes route there. D01 answered,
+T1.7 deferred, Amp/Cabinet blocked and whole-product closure OPEN remain unchanged.
+
+
+## [2026-10-20] lint | Incremental packet1a adoption check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/component-resolution-v1-incremental-check.json)
+SHA256badce82dfb7094f716ee193314ce841af30459e11cfa1cabeaf8a28fd6182344
+passed15affected pages for frontmatter/ID/date, links against the retained
+missing-source baseline and whitespace; all155new frozen packet payloads and
+its independent review hash match. The log retains its HEAD prefix; git diff
+--check passes. Mutable atlas/plan review-routing updates are later as-of pages,
+not changes to the frozen packet. Full released-handoff replay was not repeated.
+Packet1b is in progress and outside this checkpoint; no runtime/coverage pass.
+
+
+## [2026-10-20] research | Approve integration packet1b; select first three family maps
+
+The [integration packet](../analysis/ableton-live-12.4.3/full-spec-v1/integration-structure-v1/manifest.json)
+SHA2567dddd59650ca3395d10e1b3c8aded3cda01d66b522dda4973a08f32e7bfb8f83
+freezes59payloads/7,087,159bytes. One [independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/integration-structure-v1-review.json)
+approved bounded structure only: all payloads/four as-of wiki pins and2,794unique
+source locators validate; synthetic search controls pass. Atlas revision10 owns
+the I-01–12 component/state/data map and unknown bridges. The selected eight-byte
+export operand agrees with the callback alias and conditional stored-function
+chain; actual command lookup/invocation/render/file delivery remain unproved.
+Document/mix frontier notes establish hash-linked author decisions, not independent
+wall-clock review ordering; that limit is retained rather than repaired by
+invented timestamps. No original instruction/function/decoder/provider or candidate
+ran in1b; no outcome/requirement/case/oracle or release changed.
+
+Root read the complete review, then selected three parallel family maps in
+scenario order: playback core, mix graph and transport-state fields. They must
+cut from the approved integration map, enumerate required observables and retain
+X/S/no-established-route evidence and existing U/grades. Counts are route
+inventory, never requirement/case proxies for coverage. Atlas/index/coverage and
+current plan/session routes updated. D01 answered, T1.7 deferred, Amp/Cabinet
+blocked and whole-product closure OPEN remain unchanged.
+
+
+## [2026-10-20] lint | Incremental integration-map adoption check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/integration-structure-v1-incremental-check.json)
+SHA2565a9325d370d9ce85cd9ab650f5a77e7f78e3805f0424280a4df13ebe0f394f34
+passed10changed pages for frontmatter/ID/date, links against the retained
+missing-source baseline and whitespace; all59new frozen payload hashes/sizes,
+complete directory membership and independent review pin match. Predecessor
+manifest pin verified; its unchanged155payloads and released handoffs were not
+replayed. HEAD log prefix and git diff --check pass. In-flight family route work
+is outside this checkpoint. No runtime/compatibility/outcome grade follows.
+
+
+## [2026-10-20] query | Utility pre-steering prefix readback
+
+Root checked the retained processor-create prefix without rerunning a decoder:
+12 packet payload hashes, recorded watch-map equality, header-map pin and exact
+240-byte source-image range; all 16 row encodings match the 47-byte prefix and
+both relative call targets. The [readback](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-x86-processor-create-entry-root-readback.json)
+is explicitly Root readback, not independent semantic approval. The
+[canonical research](research/device-audio-utilities.md#processor-create-prefix-root-readback--2026-10-20)
+retains 193 uninterpreted bytes, unknown public binding and pending separate
+actual-result review. No original call, decoder child, successor, grade or release.
+
+
+## [2026-10-20] query | First family maps frozen; mix structure approved
+
+Root froze the first scenario cuts and updated the [atlas](research/program-structure.md#family-route-cuts--2026-10-20)
+in the same change: mix 10 payloads/321,101 bytes (manifest c4ad95bef8e44db6c01c654f471347c6d666305894a104f3f5e3bff3d06fdab9),
+playback 10/1,455,366 (d69a45b394e6f1143a0efbaee61634aa5330ece0e1afe6c3d87a61d2304dc981),
+transport-state 9/309,336 (9be82bdc6aa3b9bde147a79db989ed5ef9c94dc1ab0af0f58af9d24c63087088).
+Their bounded predicate inventories are respectively 110 (17X/70S/23 without an
+established route), 243 (43X/69S/131) and 108 (30X/44S/34). These are separate
+current-owner units, not summed whole-product coverage or grades.
+
+[Mix independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-mix-routes-v1-review.json)
+approved the bounded structure with no blocker; editorial N01 clarifies float32
+products into binary64 accumulation, without mutating frozen v1. All 36 patched
+X2 setup rows retain their separate gate; public processor/timebase/delivery
+joins remain unknown. Playback and transport independent review continues.
+[Current plan](research/full-live-specification-plan.md#current-selection--revision-4-amended-2026-10-20),
+research/artifact indexes, feature map and coverage route to these cuts. Clip
+launch and Live Set/ALS authors started next; no batch, original call, new
+requirement/case/release or outcome grade was selected. Full-Live closure remains
+open; T1.7 deferred and Amp/Cabinet blocked.
+
+
+## [2026-10-20] lint | First family route cohort focused check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-routes-first-cohort-incremental-check.json)
+passed 11 changed pages and all 29 frozen family payloads, with no new broken
+links, preserved HEAD log prefix and clean diff/whitespace. Unchanged release
+and predecessor universes were not replayed. At check time mix was reviewed;
+playback/transport review was pending. Subsequently
+[playback independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-playback-routes-v1-review.json)
+approved its bounded map with no findings. Root adopted the review in canonical
+research and atlas. No runtime/compatibility result or behavior grade follows.
+
+
+## [2026-10-20] query | First family cohort reviews adopted; next scenario cuts
+
+[Transport map review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-transport-routes-v1-review.json)
+approved the bounded 108-row inventory with no finding. Root adopted all three
+family reviews in canonical research, atlas, indexes, feature/coverage routing,
+[plan checkpoint](research/full-live-specification-plan.md#current-execution-checkpoint)
+and session handoff. Clip-launch, Live Set/ALS and MIDI-note maps now run in
+parallel. Required predicates, historical rows/calls and current case identities
+remain separate units. No original call, new grade, family closure or released
+payload change. The focused-check result predates this adoption and is retained
+with its exact as-of scope; a new changed-page check follows.
+
+
+## [2026-10-20] query | Clip map approved; MIDI map and mix leaf batch frozen
+
+[Clip independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-clip-launch-routes-v1-review.json)
+approved the 229-predicate map with no finding. Root adopted it in canonical
+research and atlas; automation mapping started next. MIDI storage froze nine
+payloads/273,192 bytes (manifest 96547699ca57189013abd582f7c0657a87ce540459dfc7481716cd9caff49a95),
+88 required predicates (12 X / 52 S / 24 without an established route), with
+unsafe-key undefined behavior auxiliary and group shape blocked; review pending.
+
+Under standing harness authorization after mix map approval, Root executed one
+[mix leaf batch](../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/manifest.json):
+11 payloads/697,135 bytes, manifest 68bf972bccd18c0cbdd7e1bc1289196575336c085c71271b40efbca435fe3ce5.
+All 144 processes returned 517 direct calls (32 return-only allocation calls,
+485 other entry calls), with no timeout/trap/fault. All 77 retained dumps and
+99 declared return fields matched. Seven 43-position boundary sweeps contain
+301 evaluations/49 historical overlaps/252 new pairs; these remain ungraded.
+One tiny negative Fast Cut helper result is qualified to x86/substituted glibc.
+All 36 patched setup rows were withheld. No loader build/patch/retry, public
+waveform, new case/release or outcome grade. Independent batch review is pending;
+[post-run host context](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-runtime-context.json)
+records glibc 2.39/current library hashes, not a per-child library or FP-state
+trace. Whole-Live closure remains open.
+
+
+## [2026-10-20] query | Mix leaf batch review adopted
+
+[Independent batch review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json)
+(00cebf7dca67b0e3fa6b88c5619d7cf405265db487ea820c4c383dbe2a7c4ff3)
+approved bounded extracted evidence with no finding: all receipts, retained
+comparisons and exact new boundary bits checked without original reexecution.
+Root adopted it in mix/mixer research, atlas, artifact/research routing, plan,
+feature map and coverage. [Canonical mixer analysis](research/mixer-values.md#reviewed-scalar-curve-boundary-evidence--2026-10-20)
+keeps the helper at binary32 0.96 distinct from the 129-point interpolated runtime
+table: no public/ARM negative-factor or clamp claim. All 252 new pairs remain
+ungraded pending owner reconciliation; no clause/case/release/route grade changed.
+Structure/ALS froze 11 payloads/289,790 bytes (manifest e746d49177ba94e897c8eaedd1c92ccc5c6d431d427803a69c579933b9334d65),
+196 bounded rows, review queued. Automation and Warp maps continue in parallel.
+
+
+## [2026-10-20] query | Six scenario family cuts adopted
+
+[MIDI storage](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-midi-note-routes-v1-review.json)
+and [combined Live Set/ALS](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-structure-als-routes-v1-review.json)
+independently passed bounded structure review with no findings. Root adopted
+both in canonical research and atlas; indexes/current plan/session routing now
+record six approved cuts, with automation, Warp and mixer maps active. Existing
+MIDI group/endpoint and document Save/media/error/active-state gaps remain.
+Canonical research update dates advanced with adoption; earlier exact-prefix
+checks remain historical as-of records, not permanent mutable-page hash gates.
+The current checkpoint now has a stable heading link; two mutable inbound log
+links were repaired without changing their recorded findings. No normative
+clause, acceptance object, released byte, route grade or family closure changed.
+
+
+## [2026-10-20] lint | Six-map adoption and mix batch focused check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-routes-second-cohort-and-mix-batch-incremental-check.json)
+passed 16 changed pages and 39 newly frozen payloads, with no new broken links,
+preserved HEAD log prefix and clean whitespace/diff. Unchanged predecessor and
+release universes were not replayed. This is its as-of adoption scope, before
+subsequent automation/mixer/Warp work and the mapped MIDI group investigation.
+No runtime/compatibility grade follows.
+
+## [2026-10-20] query | MIDI probability groups mapped source-depth batch
+
+After MIDI-family map approval, Root selected one
+[static batch](../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-probability-groups-v1/selection.json)
+for all five REQ-015 questions and six shape-blocked cases. Initial source
+consultation preceded formal capture and is recorded honestly. Six selected
+C1 chunks match their reviewed component-input pins; 16 exact source rows
+(18,670 C bytes) are retained. Registry/constructor evidence provisionally
+distinguishes GroupId child/NoteId attribute forms and PlayAll/PlayOne label
+order. List notifications, actual class/generic writer linkage and resulting
+load/save semantics require further checking before any normative revision.
+No original/binary/decoder/provider execution, input grading or case/release
+change. Plan's single current selector records the investigation; old source
+and current partial contracts remain intact.
+
+
+## [2026-10-20] maintenance | Nine family maps reviewed; Warp correction retained
+
+Root adopted the independent [mixer](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-mixer-routes-v1-review.json),
+[automation](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-automation-routes-v1-review.json)
+and [Warp v2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-warp-routes-v2-review.json)
+structure approvals in canonical research and the atlas, selector, handoff,
+indexes and coverage. Warp v1 remains frozen/correction-required; v2 resolves
+WARP-ROUTE-REVIEW-001, denying unsupported selected-run debugger interception
+and distinguishing 295/3322 historical initializer failures from 294 in the
+selected receipt. Notification execution/absence remains untraced. Automation's
+nonblocking N01 historical address metadata is fenced by current A1; no frozen
+packet rewrite. All nine ledgers inventory routes, not grades or a whole-product
+denominator. No normative/case/release changes or original execution in reviews.
+Corpus, Electric and Tension maps continue in parallel; Analog/Collision follow.
+Root continues the already selected MIDI probability-group source batch. Whole
+Live remains open, Amp/Cabinet blocked and T1.7 deferred.
+
+
+## [2026-10-20] lint | Nine-map focused adoption check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-routes-third-cohort-incremental-check.json)
+passed 11 changed pages/36 newly frozen payloads, zero new links/errors, preserved
+HEAD log prefix and clean git diff check. Historical Warp v1 stays correction-required.
+Unchanged predecessor/release universes and in-flight device/group work excluded.
+No runtime or compatibility pass.
+
+## [2026-10-20] query | Probability-group source batch and six concrete proposals sealed
+
+The [mapped source batch](../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-probability-groups-v1/README.md)
+now retains 39 C1 records, five conditional class layouts and 70 native call-index
+rows. Its owned data-only check passes exact provenance, body boundaries and six
+concrete XML proposals plus three negative controls. Expanded C beyond the four-,
+176- and 244-byte native callback/registration bodies is explicitly excluded from
+local semantics; separate AMidiNotes post-load owns validation. Canonical research
+and selector record pending independent review. No current requirement/case/grade
+or release changes; all six r4 cases remain blocked. No original execution or
+new binary/decoder/provider work. Public Save, later group effect and whole-load
+counter mutation remain unknown. Corpus family map is separately frozen for review.
+
+
+## [2026-10-20] maintenance | Corpus and Electric family maps approved
+
+Root adopted the [Corpus independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-corpus-routes-v1-review.json)
+and [Electric independent root review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-electric-routes-v1-review.json)
+in canonical research, atlas, selector, handoff, indexes and coverage. Eleven
+bounded maps are approved. Corpus's 146 and Electric's 181 predicate/context
+rows are route inventories, distinct from finite 73/117 evaluations and a
+whole-product denominator. All generic-to-actual device, public A1/A2, host/output,
+ARM and metric qualifications remain. Corpus's 174+2 omissions stay ungraded;
+96-byte setup stays unexecuted. Electric v2 is editorial-only with unchanged
+numerical payload. No source/original/model/comparator execution or normative
+clause, case, release or grade change. Tension and Analog maps run in parallel;
+Collision follows. MIDI group source/proposals are under independent review.
+
+
+## [2026-10-20] lint | Eleven-map adoption and MIDI source focused check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-devices-first-cohort-and-midi-source-incremental-check.json)
+passed 11 changed pages/39 newly frozen payloads, zero new broken links,
+preserved HEAD log prefix and clean whitespace/git diff check. MIDI source
+semantics remain under independent review; Tension/Analog in-flight excluded.
+Unchanged release/predecessor universes were not replayed. No behavioral grade.
+
+
+## [2026-10-20] spec | MIDI groups r5 six-case refinement pending review
+
+[Source batch review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-probability-groups-v1-review.json)
+passed bounded conditional evidence/proposals. Root drafted one [r5 owner refinement](../analysis/ableton-live-12.4.3/full-spec-v1/midi-probability-groups-owner-r5/README.md)
+for all five questions/six existing cases: GroupId child, NoteId attribute,
+separate list Id, 0/1 label association and concrete G input forms. Four refusal
+and two admission-only expectations no longer depend on unknown shape in the
+pending draft. Sixteen other requirement bodies/69 other rows and all17/75 IDs
+are byte-preserved. Final group Save, later missing-note effects and complete-load
+counter repair remain U; no original/candidate execution or new release/grade.
+V2's72 cases and REQ015 exclusion remain unchanged. Route delta qualifies the
+frozen r4 map rather than treating its88 rows as a new r5 denominator. Canonical
+research, spec index, feature map, selector and handoff route to the pending
+independent owner review. Tension map separately frozen for review; Analog and
+Collision maps active.
+
+
+## [2026-10-20] maintenance | Tension family-map approval adopted
+
+Root adopted the [independent Tension review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-tension-routes-v1-review.json)
+in canonical research, atlas, selector, handoff, indexes and coverage. Twelve
+bounded family maps approved; route counts supply no grades/denominator. Exact
+27-script/3,483-component/242-center joins are metadata integrity, not audio
+execution. TNR-067 keeps an unjoined DamperVelocity receipt despite available
+callable route. Actual host/instance/event/output, A1/A2 and ARM bounds remain
+unknown; four chaotic/37 uncalibrated settings excluded. No normative, case or
+release changes. Analog is under review, Collision mapping active, and MIDI r5
+six-case refinement under separate owner review. Whole Live remains open.
+
+
+## [2026-10-20] spec | MIDI group r5 approved and adopted
+
+[Separate owner review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-probability-groups-owner-r5-review.json)
+passed exact reverse-delta reconstruction, all16/69preservation checks, FragmentG
+and all six conditional reader cases. Root adopted the63380-byte reviewed draft
+with an additive disposition and updated research, atlas, indexes, feature/coverage,
+selector and handoff. Four refusals/two local admissions remain scoped to the
+registered-class route/A1; final Save, later missing-note effects, whole-load repair
+and unsupported enum meaning stay U. All17/75IDs retained, current v2/72released
+cases unchanged, no original/candidate execution or application grade. Reviewed
+research metadata dates advanced to20; frozen author prefix checks remain as-of
+history and are not future gates on mutable research pages.
+
+
+## [2026-10-20] query | Analog repeated-note history finding and stale scope
+
+The [independent Analog map review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-analog-routes-v1-review.json)
+requires correction under ANRMAP-001. Persistent event queue/per-process coordinates
+re-deliver note4400 at cumulative17712 in callback17408/offset304. AttackTime17734
+is a repeated-note result, not held-sustain latency. Seven earlier first-change
+values retain narrow scope; no later-ramp/100ms bound follows. Frozenv1/review
+preserved; additivev2 being authored without rerun. Root marked REQ022 scope
+stale via metadata/addendum, preserving23bodies/47IDs in39case rows. An initial
+prewrite check wrongly expected47individual rows and failed without mutation;
+corrected check preserves all39including aggregates. Current finite release
+excludes parameter changes and is unchanged. Atlas/selector/handoff/spec index
+record correction-required; Collision under review; MIDI successor being staged.
+
+
+## [2026-10-20] maintenance | Collision approval and MIDI v3 stage review
+
+Root adopted the [bounded Collision review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-collision-routes-v1-review.json)
+in canonical research, atlas, selector, handoff, indexes and coverage. Thirteen
+maps approved; Analog v1 still correction-required, v2 being authored. Collision
+review checks selected originals/providers/scripts/vectors only, carrying broader
+103/recovery/audio audit results without replay. No extras, grade or fullprofile
+adopted. MIDI's [78-case v3 candidate](specs/midi-note-storage-v3-handoff-plan.md)
+is staged for independent handoff review:72caseobjects/fixturebytes exact, six new
+conditional project comparison projections. New plan linked from spec index;
+no final handoff/publication, original/candidate run or release-count change yet.
+
+
+## [2026-10-20] lint | Thirteen-map and MIDI owner focused check
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-devices-second-cohort-and-midi-owner-incremental-check.json)
+passed20changed pages/36new frozen payloads, zero new broken links, preserved
+reviewed63380-byte MIDI prefix and HEAD log prefix, clean authored whitespace/
+git diff. The preserved first attempt mistook a required blank unified-patch
+context marker for prose trailing whitespace; the corrected scan still verifies
+patch identity and canonical new text. No release/source-universe replay or
+runtime grade. Analogv2/MIDIv3/MIDI-user work remain outside this as-of scope.
+
+
+## [2026-10-20] maintenance | Analog v2 approved; whole eight-control preparation selected
+
+Root adopted [bounded Analog v2 correction review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-analog-routes-v2-review.json)
+in canonical research, atlas, selector, handoff/index/coverage routing. Fourteen
+family maps approved; Warp/Analogv1 failed histories remain preserved. ANRMAP001
+is addressed by explicit repeated-note qualifiers, not changed measured17734 or
+new smoothing law; currentownerREQ022 stays partial-stale. All241row/routes/37U
+and allpublicbindinggaps preserved, no grade/release/originalexecution. One whole
+eight-control supported-command no-replay batch PREPARATION selected, requiring
+exact legal203-vector/interval/callcap/measurement choices, loader/object readiness
+and independent peer approval before a run; calibration before grades/releases.
+MIDI-usermapping map active. MIDIv3 content review is otherwise approvable but
+publication waits on separately staged H01 supersession-metadata correction and
+final seal; the original staged candidate is frozen and preserved.
+
+
+## 2026-10-20 21:51 UTC — MIDI-user map seal and pre-release lint
+
+Root sealed the 94-context MIDI-user structure packet (19X/31S/44without an established route or oracle), manifest SHA256 `9e2b1a4916e58d05420aaea4d663d23da4f9d56aceef3b5c09f61252c9f79f59`,11payloads/372,783bytes. Atlas contribution and independent review are pending;14maps remain approved. All161releaseobjects/56MTrows are separate input/navigation units. No new execution, norm/case/release or grade.
+
+[Full pre-release lint v60](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v60-pre-midi3.json) passed at21:46UTC:261pages,34release manifests/2,133payloads and1,306HEADimmutable files;append-only log and diff check pass, no new broken links. The421existing missing-source link findings remain. This mechanical pass supplies no behavior/runtime/compatibility result. The MIDI-v3 r2 metadata correction independently passed, but those pending-status bytes remain unpublished; one coordinated final successor and exact-tree seal are selected.
+
+Timestamp correction for the preceding entry: it was written at21:49UTC, not21:51UTC. The retained full-lint capture remains21:46UTC; packet/review identities and dispositions are unchanged.
+
+
+## 2026-10-20 21:53 UTC — MIDI v3 local publication and fifteenth map approval
+
+Root read the [final exact-tree seal](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-note-storage-v3-final-exact-tree-review.json), SHA256 `af2536c413fe1359541ca1f6963c6f85723ed05d35b8a5f81aef50e50ea7d2a4`, then copied the frozen final tree to[handoff/midi-note-storage-v3](../handoff/midi-note-storage-v3/README.md). All84files including manifest are exact;83payloads/217,952bytes. Manifest `fa281c37472e13a6ba840499687e90928654c9862582fa5bd4d04f4436da7c2c`. One medium stale supersession metadata finding was corrected in preservedr2, then the separate final successor changed six permitted metadata paths only. All78case objects/fixtures,14partial bodies and72v2carried inputs remain exact. Catalog35releases/19current/16superseded; v2payloads untouched. Six added local group comparisons are static/conditional project comparisons, not a native API/required implementation pipeline or observed public Set-open/save result. No original/candidate execution, new grade or external push.
+
+MIDI-user family structure review approved separately (reviewSHA256 `53c34080242ef66b0b0c075e7cda70126d4ee93a98d7af2f8ce73e7e0688d97d`):15maps approved; no completion numerator. Analog eight-control preparation is frozen under independent readiness review with248direct exports/child; no run yet. Bundled-parameters map selected next. Plans/indexes/coverage/canonical research and draft release dispositions updated; original/r2/final stages preserved. Full pre-release lintv60passed; destination/catalog and changed-page checks follow, without replaying unchanged2,133released payloads again.
+
+
+## 2026-10-20 21:56 UTC — MIDI v3 publication checks passed
+
+[Publication delta report](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-note-storage-v3-publication-incremental-check.json) passed at21:55UTC:83new payloads/all84destination files exact,15changed pages, correct35release/19current/16superseded catalog, reviewed63,380-byte owner prefix andHEADlog prefix preserved, diff0/no new links/errors. Fullv60is the pre-release baseline; no unchanged2,133payload replay. The session handoff now links the canonical finite-device table rather than retaining a stale duplicate Corpus-v4 table/count. Browser-index map selected in parallel with bundled parameters. No original/candidate run, new compatibility grade or complete family.
+
+
+## 2026-10-20 22:03 UTC — Analog eight-control batch captured; bundled map frozen
+
+Root read the [independent readiness receipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-change-history-v1-readiness-review.json), SHA256 `2018055b0fcde87a47273f4d544a0ca06b83900eb77b576e75332f3aba27913c`, then invoked the exact frozen collector once. [Outer execution receipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-root-execution.json) records22:02:13–15UTC, wrapper/collector PIDs and exit0 (1.479s); original-child PID/timestamp data is unavailable. All16children completed,248direct exports/41CalcA each (3,968/656total). Nested initializer/construction/import calls are not counted by that direct budget. No retry/build/install/emulator/fake host.
+
+[Actual packet](../analysis/ableton-live-12.4.3/full-spec-v1/batch-analog-change-history-v1-actual/manifest.json) SHA256 `655b36ebb0f639e0d83522167159efe076fed2867aaa9e246530ba74f601d54a`,34payloads/2,943,123bytes; all captures finite/correctly sized with positive baseline-channel energy and exact prechange prefix identity. Seven controls differ, AttackTime does not within the capture; these are ungraded observations, not a general trajectory/timing law. Independent actual-result review selected. Current Analog REQ022 remains partial-stale; release unchanged.
+
+Bundled-parameter map frozen SHA256 `0c3a074ea5a2dbe28075003343e4b601c5b1995930eddf4834d412f5dea5d5bc`,8payloads/308,985bytes;135bounded contexts120S/one localX/14without route,37ownerU retained. Atlas contribution and independent review pending. Fifteen maps remain approved, Browser map active. No new norm/case/release/grade or completed family.
+
+
+## 2026-10-20 22:09 UTC — Analog actual results approved; routing consolidated
+
+Root read the sealed [independent actual-result report](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-actual-review.json), SHA256 `42883ae34c203ce530c203e9826520532aaffe4be81a58eb3d7b1c5aa9f73bbe`. All16captures/eight pairs independently recomputed; bounded ungraded approval only. Import declarations/use counters, input/log/status/seal/resource-source evidence agree, with explicit lack of original-child PID/UTC/peak-resource and nested-call census. No original rerun or new grade. Root selected the ANRMAP-001 blocking REQ022 correction; finite discovery does not justify a sustain/100ms/general host-timing or portable trajectory law.
+
+Research/artifact indexes and feature/coverage routing now defer family progress to the selector and per-family dispositions to the atlas, removing repeated counts/lists that were drifting. The stale Corpus index D01-open label is corrected: capability answered, profile/omissions still partial/open. Browser packet frozen pending review, manifest `b63323fea02863ba326e664b73bf99aaee58611e0c6908b5d494e747ab3ccd6b`,8payloads/200,526bytes; plug-in map active. No norm/case/release/grade or complete profile follows from these routing edits.
+
+
+## 2026-10-20 22:10 UTC — Sixteenth family route cut adopted
+
+Root read the [bundled-parameter review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-bundled-parameters-routes-v1-review.json), SHA256 `173b3f6967809122920248ab7a8d79cc1fbee9c245bfa43f20db4565aff981fc`, and adopted bounded structure in the atlas/current selector and canonical N6 research. Eight frozen payloads/308,985bytes remain exact;135contexts120S/one localX/14without route,37U preserved. All502metadata rows/20plain fields and82release inputs are separate navigation dimensions. A1–A3/public joins, Cabinet helper null provenance and nine position/released-switch-label exclusions stay qualified. No grade, native call or release change.
+
+Sixteen maps are approved; Browser independent review and plug-in map remain active. After reviewed Analog actual results, the blocking ANRMAP-001 owner correction is now assigned; other22requirement bodies/all39case rows47IDs remain protected. Source/old-text history must be retained via reversible patch, without full-spec snapshot copies. Requirements browser will refresh once that semantic successor is frozen.
+
+
+## 2026-10-20 22:13 UTC — Seventeenth family route cut adopted
+
+Root read the sealed [Browser review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-browser-index-routes-v1-review.json), SHA256 `23fcd358dcc1e059ef517d73652f625d12be4696ce4f49dcf82cff13ce7dad1a`, and adopted bounded structure in the atlas/selector/canonical research. Manifest `b63323fea02863ba326e664b73bf99aaee58611e0c6908b5d494e747ab3ccd6b`,8payloads/200,526bytes.83contexts35conditionalS/48without route/0X across13requirements; directfolder/pack/pruning/write-back/image-domain distinctions and missing full-body/native-PC inheritance remain explicit. No original/SQLite/model execution or grade.
+
+Latest [focused checkpoint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-actual-bundled-browser-freeze-incremental-check.json) passed18pages/73new packet payloads at22:11UTC, with no new links/errors; its as-of sixteen-map/Browser-pending state is preserved. Whole-product gate remains open. Utility whole-profile map selected next for retained owned-state Mute leads; all38application outcomes and public binding remainU. It may verify retained pre-steering data but cannot treat Root readback as independent actual approval or select a callee/new native read. Plug-in map and Analog blocking owner correction continue.
+
+
+## 2026-10-20 22:30 UTC — Nineteenth route cut, Analog r2 adoption and browser refresh
+
+Root read/adopted the independent Utility review SHA256 `9f5eae3321459d52a2845300e57e2bce50c554c14b228a363a3939a003951da5`: manifest `e2c0aa18109c53514368ba256634ad31d7ee4077f41d938d5723dd0463867652`,11payloads/143,821bytes;48predicates/twofileS/46missing-public/zeroX, all38application outcomesU. This is the nineteenth approved bounded map, not a complete profile or product denominator. Pending pre-steering240B capture review assigned separately, no new native read/callee selection. Arrangement family map and one whole remaining-MIDI-storage-U source batch are active in parallel, not single-case owner successors.
+
+Plug-in discovery bounded review SHA256 `bc142e21ffeaf91d026defcf1bcf0230064f354f53f1c2f8075124997ec71870` and Analog blocking r2 owner review SHA256 `d621ac57b643ff3a7f0bb853cbb3ccb1e6faca26646900df67babec035157c66` were read/adopted. [Root r2 metadata receipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-owner-r2-root-adoption.json) reverses only status/history metadata plus appended approval to reconstruct reviewed48,721bytes; all requirement/case text is unchanged by root adoption. Current owner49,927bytes SHA256 `6205f449026be6c12282eefd4a4a0fed1ea9b0272254d7cc3b27c5a7ce72517d`. Frozen Analog maps stay r1-source inventories, no newly derived r2 denominator; all eight captures remain ungraded and finite release unchanged.
+
+[Requirements browser refresh](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/requirements-browser-midi-r5-analog-r2-refresh.json) passed: current REQ022 U preview,23Analog draft/17MIDI draft requirement rows, two existing parser/render tests. An [initial verification attempt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/requirements-browser-refresh-check-attempt1.json) wrongly assumed the MIDI target total equals draft requirements;41target rows actually comprise17draft/24research-candidate rows. Corrected data-only checks passed without renderer/code change or repeated live regeneration. The mutable view's pre-regeneration digest was not retained in that failed attempt; no immutable evidence/release was overwritten. Current artifact3,206navigation rows/81targets is not a coverage/outcome count. No original/candidate execution or compatibility grade occurred in these checks.
+
+
+## 2026-10-20 22:38 UTC — Utility prefix provenance approved; whole frontier selected
+
+Root read/adopted the complete [separate static actual-result review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-x86-processor-create-entry-actual-review.json), SHA256 `da6d7ae634038e90b906edcdaabcd1be314317ce1a30b0d88da4ac3a1974919d`:12payloads/60,329bytes, sixteen rows/47decoded bytes of240,193opaque, both relative-call encodings agree. No original instructions ran or callee was followed; no ABI/class/creation/public behavior or grade follows. Recorded watch arrays were data comparisons, not fresh replay of underlying universes. Earlier pending statements/Root readback remain dated history.
+
+After rereading the amended revision4 selector, Root independently selected one whole retained-data Utility frontier batch across all six missing public-binding bridges, not a numeric/helper successor. Existing selected exports/indexes only; no new binary reads, provider/decoder/harness/original/model/comparator/build. Model admission/current delivery, same callback/processor identity and host output stay U until supported. Arrangement mapping and whole eight-row remaining MIDI-storage-U source work continue in parallel.
+
+The [22:32 incremental check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/nineteen-maps-analog-r2-browser-incremental-check.json) passed14pages/26new frozen payloads (plug-in8,Analog owner7,Utility11), browser digest/two tests and reversible Analog metadata adoption; no new broken links/diff errors and HEAD log prefix preserved. [Initial attempt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/nineteen-maps-check-attempt1.json) assumed a list where Analog manifest files is a dict, failing before mutations/report; corrected checks support both existing schemas without frozen adaptation. Its in-flight MIDI/Arrangement/prefix-review exclusions remain explicit. Current checkpoint/status changes receive a changed-page follow-up, without replaying those26payloads. Whole-Live gate remains open; no candidate/complete profile or compatibility grade.
+
+
+## 2026-10-20 22:37 UTC — Checkpoint clock correction
+
+The preceding entry was stamped22:38UTC before consulting the clock; the actual changed-page check completed22:36:57UTC and the clock read22:37:01UTC. Its claimed review/adoption/selection events stand, but that heading is not their measured timestamp. Current selector/handoff timestamps corrected to22:37; the original log entry is preserved. The [changed-page follow-up](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-prefix-review-routing-incremental-check.json) passed four pages/two external review artifacts, no new links/diff errors/HEAD-log mutation; this later correction was not in that as-of check. No original/candidate execution or grade.
+
+
+## 2026-10-20 22:39 UTC — Whole MIDI remaining-U source batch approved; r6 reconciliation selected
+
+Root read/adopted [bounded proposal review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-storage-remaining-u-v1-review.json), SHA256 `bd3052e837d596467e221313f46190caba54d55d30b7230406b40b6d57ac24c8`:manifest `6b5b0f4a9a7ba99af6d23ea546bdf496a4bd86bdda990cc9e6589eac441a83f0`,9payloads/93,941bytes. Eight U cases plus three group gaps assessed together. Two conditional local refusal proposals supported; four expression variants, public catch/state/Save, group later-effects/counter order stay U; unsafe037 adds zero required refusals and no new indirect sites are credited. Independent read-only assertions avoided the author's frozen-output write.
+
+Root separately selected one whole-batch r6 owner reconciliation, preserving original public U cases/actions/IDs and all unrelated bodies/objects; explicitly scoped local comparisons only if needed, no duplicate/padded examples. Independent owner review precedes adoption/release. Arrangement map is frozen for separate review:manifest `29e14199f6e2712952891a137c691a06ddf9428dfad854a270e3eb56b3e22103`,9payloads/664,680bytes,345predicates/six packageS/339none/zeroX, all84actual outcomesU. Utility whole public-binding frontier remains active. No original/candidate execution, norm/case/release adoption or compatibility grade in this checkpoint.
+
+
+## 2026-10-20 22:41 UTC — Twentieth bounded family map adopted; native MIDI routes selected
+
+Root read/adopted complete [Arrangement independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-arrangement-routes-v1-review.json), SHA256 `da13f3374e2043287fc84ed83abaf15c3ec556d533b70ddc6ae9360ddbb419f3`:manifest `29e14199f6e2712952891a137c691a06ddf9428dfad854a270e3eb56b3e22103`,nine payloads/664,680bytes.345predicate/context rows/six packageS/339none/zeroX; all84actual outcomesU. Forty-one pins/139manual locators/345TSV pairs/eight exact index rows and52unchanged watches checked; full prior semantic audits inherited. Reviewer’s initial nonexistent README and TSV-format assumptions failed before writes; direct existing-format checks passed without packet changes. Atlas/current selector/session now reflect twenty maps; lists consolidated into the atlas to avoid repeated competing dispositions.
+
+Under amended rev4 outside-scenario route-yield selection, Root selected all eight native MIDI effects as one family map extending current component/integration/playback cuts. Existing reset/control/event name anchors are navigation only, with possible self-contained outgoing-event routes to investigate; no runtime law follows from names. All27current clauses/176cases, source ambiguities, active-note/event/automation/lifecycle gaps remain qualified. Exact retained data queries only; no new native/provider/binary/decoder/original/model/comparator/fixtures/build. Utility whole public-binding frontier and MIDI whole remaining-U r6 reconciliation continue in parallel. No normative/case/release/grade change, candidate or full-Live closure.
+
+
+## 2026-10-20 22:49 UTC — MIDI r6 frozen; expression frontier and mixer-set reconciliation retained
+
+MIDI remaining-U whole-batch owner r6 frozen for independent review:manifest `f2ba567cbf93994a25035a36485f6074cba178af847e0c2955b70d6c4f79d8de`,eight payloads/65,769bytes. Canonical72,839bytes SHA256 `593e10be4054180173c09d8c7fd30bbf84535877dccb9c4de34133f27dec2d73`; only002/012/014 bodies change. All75oldrows/eightpublicU/14otherbodies/allX preserved;076/077 are separate conditional local comparisons reusing011/038inputs. Review pending; no stage/release selected.
+
+Root separately selected/froze [the whole four-variant expression source frontier](../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-expression-boundaries-v1/README.md),manifest `f39089841d19caf44d21552827e00f7d617915459e52645be7dba83daf6d83a4`,eight payloads/27,524bytes. Exactly two retainedC1records/4,966Cbytes were selected through bounded entry/chunk metadata lookup and approved chunk pins; no fresh image or original/toolchain execution. Conditional forward/backward range comparisons/index mutation requests/count-like traversal are now explicit, but callbacks/transaction effects/first interval globals/resulting arrays remain U. Five false-promotion controls pass; all four outcomes stay U and zero native sites credited. Inherited wrapper-format read initially assumed top-level entry, failed before writes; direct record access corrected it without frozen adaptation. Separate source review pending, no callee selected.
+
+Root's [whole seven-helper owner-scope reconciliation](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v1.json),SHA256 `2ea9ea086729766367130a89af14834220dd83e02984a2a3481cf87a168bdba3`,is frozen pending independent data review.301boundary samples contain49historicalT14overlaps but35released-position overlaps; all49released inputs include14positions absent from this batch, while266boundary pairs are outside those released positions. Thus252new-relative-T14 evaluations are a different unit from unreleased-position membership. No output recomparison/metric/model/original execution or new criterion; proposal retains all252as discovery and all existing normative/case/release bytes.
+
+The [22:41 focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/twenty-maps-midi-source-arrangement-incremental-check.json) passed7pages/18newpayloads and two independent reviews; excludes the later r6/expression/mixer/Utility/nativeMIDI work. Earlier check reports remain as-of evidence. Whole-Live closure remains open, no complete family/candidate/compatibility grade.
+
+
+## 2026-10-20 22:53 UTC — MIDI r6 adopted; v4 staging and Utility frontier disposition
+
+Root read complete [r6 owner review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-storage-remaining-u-owner-r6-review.json),SHA256 `492476f9376b1f2ff2e8f558b30d3fedae4bca828136e3d717a2aa15a7d8ab84`,and appended approval preserving exact72,839Breviewedprefix. Current74,118B SHA256 `62ef96d4cf57a60f93358a5a3be24a5a74ab4d751ffd101cc22220da0c70cd9a`. All75oldrows/14otherbodies/allX unchanged; two localrefusal projections separate from eight publicU/four expressionvariants/groupgaps/unsafeexclusion. Reviewer’s chat54-link count corrected to recorded40; no evidence rewrite. V4 staging selected with78oldcaseobjects/78gzipbytes exact,two local projections over existing authored MNS001fixture,15partial IDs; no new carrier needed. V3 stays current; no publication before independentcontent/exacttree/full lint gates.
+
+Root read/adopted [whole Utility frontier review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-utility-public-binding-frontier-v1-review.json),SHA256 `c824d7177469d50aa2e3e5bace537e60342a8256d17a41c6857976a4352b4c33`. Eight payloads/139,499bytes/49immutablepins; all six bridges remainU. Finitezeroqueries, builder-vs-OnMute, sameP/M/result-host and current-value/creation/lifecycle gaps remain qualified; full73-body semantic history inherited. No fresh native execution, grade or selected successor.
+
+[Requirements browser r6 refresh](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/requirements-browser-midi-r6-refresh.json) ran existing unchanged generator once; bytes remain identical because the existing snippet limit retains unchanged leading text, with full canonical links owning later r6 clauses. Pre-render digest retained. Initial postrender verifier substring search counted a ClipLaunch cross-reference as a MIDI definition; corrected first-ID-cell checks give17MIDIrows/3,206navigationrows/81targets without rerender. [Failed verification record](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/requirements-browser-midi-r6-refresh-attempt1.json) preserved. No codechange/testrepeat/originalexecution or outcome credit.
+
+
+## 2026-10-20 23:01 UTC — Twenty-first map adopted; mixer lineage correction and expression frontier
+
+Root read/adopted [native MIDI map review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-native-midi-effects-routes-v1-review.json),SHA256 `b7febe64dc55e09faff4e4022ad45426ebe5ca0582f2dd6f4ff7ec888d9ad95d`:13payloads/1,123,381bytes;309behavioral/context rows91D12/218U allnone withinselecteddata-onlyscope. All176actualU/27clauses unchanged.750selected raw metadata/call rows and13negatives checked; priorfull112-block semantic audit inherited. This is the21stboundedmap, notnative absence/completion. Root separately selected one whole-eight construction/activation/reset/registration source batch: fixed class/store/control seeds, metadata-first96record/262,144Cbyte/1,500line caps, no encounteredcallee expansion/originalexecution/newgrade. Utility exact-class construction source batch selected separately across all6G:fiveRTTItable prefixes/87slots/three storecandidates, fixedsixC1records/32,768Cbyte/300line caps. Four-byte thunk expandedC is not anotherimplementation.
+
+Root read/adopted [expression frontier review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-expression-boundaries-v1-review.json),SHA256 `60f16989eebef6be56fe17a0b153b3f04ae6fe9109598b605473cd1f0f779595`. Two retainedC1records/sevenspans/fivecontrols; allfour053variants remainU/no resultingarray/callback/transaction/native-site or grade claim. No ownerrevision follows.
+
+**Correction to earlier22:49lineage labels:** Root's historicalT14scalar-input labels were wrong. [V1review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v1-review.json) found MIX-RECON-001; the historicalsource is X2, while the batch harness derivesfromT14. [Minimalv2correction](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v2.json) independently [approved](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v2-review.json),SHA256 `3f75a39c4029a2aa476f4d5743d03c470015216c1b180d7bb2b33ffd0ebeca32`; all63inputpointers/7groups/counts301/49/252/35/266/14 preserved. OriginalX2ninepositions/curve include both±0.25and±0.95; boundaryoverlap7/releasedoverlap5 differ. All252new-relative-X2 pairs remainungraded afterwhole-set owner-scope assessment; no newnorm/case/criterion/release. Earlierreceipt/log labels retained as correctedhistory; no rawoutputs/comparator/originalrerun.
+
+MIDIv4stage frozen for content review:manifest `6f3996d592fadc71d8dca1f96ff436dfbb4751a2dad446bc27f9d65ed3f00c85`,83payloads/223,569bytes;80cases/78carriedgzipfixtures/15partial IDs, no generatedcarrier. Analyst sibling7payloads/37,183bytes separatelyretained. Newhandoffplan indexed as pending. V3remainscurrent; no publication/implementation/compatibilitygrade/fullLiveclosure.
+
+
+## 2026-10-20 23:06 UTC — MIDI note storage v4 published locally
+
+Root read complete [content review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-note-storage-v4-content-review.json),SHA256 `9103f41d06efb83c731d2e87a125d660ccd043e8d3a78b1ef278a1cbe3533c32`,and [external final-tree seal](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-note-storage-v4-final-exact-tree-review.json),SHA256 `825b27a854a50cb44dcc84b627e6b8342367778fe5f2756d3ef3104a07f7663d`. Separatefinalization changedonly sixmetadata paths; all behavioral spec remainder/all80caseobjects/all78gzip exact; originalcandidate/final/analyst histories preserved.
+
+[Full prerelease lintv61](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-2026-10-20-v61-pre-midi4.json) passed262pages/35preexistingreleases/2,216payloads/1,306HEADimmutables at23:03:26UTC,no newlinks/errors. [37newanalystpayload check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/twenty-one-maps-r6-source-payload-check.json) separatelypassedr6/Utilityfrontier/expressionfrontier/nativeMIDImap,excludingin-flight source. Rootcopiedthe approved84-file tree at23:04:49UTC into newhandoff/midi-note-storage-v4 and verifiedexactdestination/treeinventory; [copyreceipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-note-storage-v4-local-copy-receipt.json) precedescatalogadoption. Manifest24,458B SHA256 `1d0cc553a37d95e25b66dad0f5048af8fc79349d9663b184228fac1d0ab24800`,83payloads/223,995bytes. Catalogandaffectedproject/spec/coverage/research/planroutes nowadoptv4,36releases/19current/17superseded; v3immutable/superseded.
+
+V4 carriesall78oldobjects/78fixtures/14oldbodiesexact andaddsonlytwo local-reader projections overexistingauthoredMNS001,15partialIDs/80case records. No fixturegeneration/original/candidateexecution/publicU resolution/compatibilitygrade/implementation orrestrictedsync. Packagefinalization statuses remainsealedpreparationhistory; catalogrecordsactualpublication. Postpublicationdestination/catalog/changed-pagecheck remainsseparate. Whole-Liveclosureopen; nativeMIDI initialization/Utility class-construction source workcontinues.
+
+
+## 2026-10-20 23:10 UTC — V4 publication delta passed; local manual source frontier remains open
+
+[Postpublication check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-note-storage-v4-publication-incremental-check.json) passed at23:06:58UTC:16changedpages/83newreleasepayloads/all84destination files equal approvedseal/catalog36/19/17,r6prefixandHEADlogprefix exact,no newlinks/differrors. Priorv61fullbaseline/37newanalystpayloadcheck carried; no repeated2,299payload/fullwikiuniverse. Planpointerandresearch-index currentv4route now reflect publication; no runtime/compatibilityclaim.
+
+A bounded [local manual filename query](../analysis/ableton-live-12.4.3/full-spec-v1/queries/offline-manual-path-frontier-2026-10-20.json) found0manual/PDF/docs paths in thelocalResourcesview(case-insensitive,hidden/ignoredincluded,symlinksnotfollowed). Initialcase-sensitivequeryalso0; correctedcase/ignorecoverage beforeconclusion. No contentsread. This is an inconclusive source-access frontier, notabsence/versionparity orfullcopyidentity; currentmanual12.4.3applicabilityremainsU. Sourcecanonicalupdatedwiththatboundary; no newcapture/native/provider/original/model/fixtureexecution, ownerchangeorgrade.
+
+
+## 2026-10-20 23:22 UTC — Utility class-source review adopted; bounded base/creation frontier selected
+
+Root adopted [Utility class-source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-utility-class-construction-frontier-v1-review.json), SHA256 `567df4c6af2df0e9dddd693c39b18092b303b14d48db5007d0e3f99ecdcb4d6f`:11payloads/72,018bytes/six records/five prefixes87slots,14negative controls. Initialization-like/cleanup/deletion roles, returned base versus Q/P, thunk projections, zero-span interference, model admission/ABI/lifecycle remain qualified. All6G/38applicationU/48family rows unchanged; no new sites, grades or owner/release changes.
+
+Root separately selected fixed four retained C1 entries101bc3aa0/1023a1004/101aff380/10214b954 under4record/65,536Cbyte/500line caps across all six gaps. No encountered callee/global/native/old x86 prefix expansion or original/model/comparator/fixture/build selected. An earlier coordinator append command failed Python parsing before any write because braces in an f-string were interpreted as code; corrected as literal prose, no partial mutation. The [23:12 follow-up routing check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/v4-followup-routing-local-manual-incremental-check.json) passed five pages/no new links/diff errors; later class/source additions are outside that as-of check.
+
+
+## 2026-10-20 23:22 UTC — Native MIDI initialization source approved; next processing frontier selected
+
+Root read/adopted [independent native MIDI initialization-source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-native-midi-effects-initialization-v1-review.json), SHA256 `68cf5164d9f345b897980413fd1b88efe77027c7343c0c642914595622e2bc76`:15payloads/646,126bytes/74fixedrecords/28conditionalclaims/75spans/400syntacticfrontiers,16pins/15chunks/14negative controls. Fresh literal semantic read69projections/3,560lines, all59claim-evidence entries; five constructor duplicates checked by declaration-name-only equivalence. Three false-thunk4-byte delegated targets remain unread. Scheduler/helper success, actual parameters/receivers/event output/RNG/clock/lifecycle and all176actualU remain unknown; no new sites/grades/owner/case/release.
+
+Root separately selected metadata-only whole-eight event-processing/value-transformation census from existing class-qualified symbols, capped64records/196,608Cbytes/1,500lines each; no newbody before census review or encountered callee/global/native/provider/original execution. Utility fixed-four source and Filter/EQ map run in parallel. Plan/session current routing advanced; spec index's stale35-release summary corrected to actual36/19current. Whole-Live closure stays open; no completed profile/denominator/candidate or restricted-workspace sync.
+
+
+## 2026-10-20 23:24 UTC — Class/initialization incremental check passed; Utility successor frozen
+
+[Focused checkpoint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-class-native-midi-initialization-incremental-check.json) passed ten affected existing pages/26new frozen analyst payloads/two independent review pins at23:23:51UTC: exact packet trees/hash/size,frontmatter/links,HEADlogprefix and diffcheck. Existing421source-link baseline and earlier fullv61/publication83/analyst37 checks carried; no source/release-universe replay. Coordinator wall-clock labels were corrected against the clock before this checkpoint.
+
+The separately selected fixed-four Utility base/creation packet is now frozen pending independent review:manifest `d80c5b2da7613bb56194cbd5f5651bbfc9abc6b5df22b86a889ac6272caa6ecd`,ten payloads/67,116bytes/four records3,544Cbytes/max85lines. Author reports18negative controls; this later packet is outside the preceding checkpoint and not yet independently adopted. All6G/38applicationU unchanged. Filter/EQ mapping and native MIDI processing metadata census continue in parallel; no new original execution, grade or whole-product closure.
+
+
+## 2026-10-20 23:26 UTC — Utility base/creation review adopted; MIDI processing and Dynamics map selected
+
+Root read/adopted [Utility base/creation independent review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-utility-base-creation-frontier-v1-review.json),SHA256 `b65cafca9f13806d6ee93ca5780a268312f87e8541ddf591afeb29d3fd28612a`:ten payloads/67,116bytes/four records3,544Cbytes/ten spans/nine finite helper intervals/18negative controls. Three recovered-signature/return/argument gaps,B/V/Q/T/P/M identities,J1/J2possiblealias and native/public/lifecycle gaps remain explicit. No6G/38publicU/48inventory change, newsite/grade/owner/case/release or automatic successor.
+
+Root read all17metadata records in [MIDI processing census](../analysis/ableton-live-12.4.3/full-spec-v1/depth-native-midi-effects-processing-v1/candidate-census.json),SHA256 `100285823e15e18c210c5bfd05620b8194364c1cae4ca67b24cc58ff0e72c532`:14reused/3newrecords,50,962Cbytes/1,748lines/max327,7,956native-extentmetadata bytes/sixapprovedchunks. Fixedset fits64/196608/1500caps. Tenwarning-bearing projections remain qualified (unrecoveredjumps/indirect-as-call/no-return); two new4B expanded wrappers are not theirnative bodies. Three encounteredtargets101c17300/101f4827c/101c1e7fc stayunselected. Root approved bounded Cmaterialization,reusing14oldrawrows; no publicroute/grade or originalexecution.
+
+Dynamics whole-five family mapping separately selected after amendedselector,62requirements/153case navigation,existing123block audit inherited. Exact class metadata caps32tables/512slots/128stores/512combinedaliases-memberships/512call-indirectrows; no newbody/native/provider/original/model/comparator/fixture/build. Filter/EQmapping continues; root owns shared adoption. No contract/design revision needed: governing depth-first ordering and unknown/closure rules unchanged.
+
+
+## 2026-10-20 23:29 UTC — Filter/EQ map frozen; Utility native ABI preparation selected
+
+Root sealed Filter/EQ author packet for independent review:manifest `0e7a16a3f811137985942a492fad865c7e24492636941b048bff36e279b7fcce`,14payloads/1,110,843bytes,65wholeclausebundles/140casepointers/46Ucontexts separate;4historicalfileS/61none/0X. Exact7tables21slots10stores379aliases-memberships492call-indirect rows fitcaps;39indirectallU. Independentreviewactive; no mapcount/gradechange yet.
+
+Root explicitly selected [Utility native ABI preparation](../analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-native-abi-frontier-preparation/selection.json),SHA256 `6fb6333c80c3c8091c7f45149244eacfb23d37e4260a7930da5e123533f7a9ac`:sevenalreadyreviewed entryranges/996physicalbytes/249ARM64words,across all6Gsourceambiguities. Existing image/tool/header pins inherited; selection readmetadata only,zero instructionwindow extraction/decoder/original execution. Sourcepreflightandindependentreadiness required before futureboundedcapture. No encounteredcallee/global/slot/oldx86prefixcallee or installation selected. This is a new bounded plan selection, not inherited authority to rerun an old collector.
+
+
+## 2026-10-20 23:31 UTC — Twenty-second bounded family map adopted
+
+Root read/adopted [Filter/EQ independent map review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-filter-eq-routes-v1-review.json),SHA256 `6f42e1798baed4fb495a4cfb3e23c27bd7d49d2b421568b654b81653e6e64cab`. All14payloads/1,110,843bytes/25pins/1,024selected source rows/65clause joins/140case pointers/46Ucontexts/13negative controls verified. Fourfile-onlyS/61none/0X; allpublicruntimeU. Fresh65contract summaries/17edges/selectedR4histories read; full108manualblock semantics inherited. Device-kit dependencies/math names/three-slot prefixes establish no publicprocessing/coefficients/currentdefault; all39indirectsites unresolved. Productive/Audition/LED/detector-Type/source-version guards retained.
+
+Atlas/index/plan/session/feature/coverage routes now adopt22bounded maps, not22completefamilies or an atomic denominator. Dynamics mapping/nativeMIDIprocessing source/Utility nativeABI preparation continue in parallel. No decoder/original/provider/model/comparator/fixture execution, norm/case/release/grade or candidate result follows.
+
+
+## 2026-10-20 23:33 UTC — Twenty-two-map checkpoint passed; MIDI processing packet frozen
+
+The [focused incremental check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/twenty-two-maps-utility-base-incremental-check.json) passed nine affected pages,24new frozen payloads and two independent review pins at23:32:17UTC. It checked exact packet trees/hash/size,frontmatter/links,HEADlogprefix and diff whitespace. Prior fullv61,83releasepayload,37analystpayload and26class-initialization checks are carried;421pre-existing source links remain baseline. In-flight packets are explicitly excluded.
+
+Root sealed the later native MIDI processing packet:manifest `beebb64c3159b9ae276b4963a65a7b888dba6af4a7965dd83c7881e8bf9c077b`,17payloads/234,383bytes. Fixed17entry set spans all eight effects:three new raw records retained once,14approved records reused in place;nine new conditional claims/six auxiliary noncallable fragments. Author reports16negative controls. Independent review is active; no complete callableX leaf/publicroute/site/grade is yet established. Native-ABI preparation remains metadata/source-only with no decoder capture; Dynamics mapping continues.
+
+
+## 2026-10-20 23:34 UTC — Native MIDI processing review adopted; Recording/comping map selected
+
+Root read and adopted the complete [independent processing-source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-native-midi-effects-processing-v1-review.json), SHA256 `d76615503ff559a95a7a356de4b4fd348aff8ef7ebaced5c0e6f46818ba07649`. It verifies17payloads/234,383bytes,three new projections and14reused records,13pins/six chunks/nine claims/six fragments/16negative controls. Fresh semantics cover the three new complete projections and six selected fragment windows;14prior whole bodies remain inherited. Ten warning-bearing records and two4-byte delegated projections stay qualified; unselected targets/helpers remain unread. All309historical routes/27requirements/176cases remain unchanged, with no complete callableXleaf/publicroute, native-site credit, grade or normative/release change.
+
+After rereading the amended selector, Root separately selected a whole Recording/comping family map at integration boundaryI09:34requirements/90case pointers, four artifact-only cases distinct from86applicationU. The retained38-block Comping audit is not the whole Recording source. Metadata caps32tables/512slots/128stores/512aliases-memberships/512call-indirect rows apply; no newbody/native/provider/original/model/comparator/fixture execution. Dynamics mapping and Utility native-ABI preparation continue independently.
+
+
+## 2026-10-20 23:48 UTC — Twenty-third family map adopted; bounded Utility static capture completed
+
+Root read/adopted [Dynamics independent map review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-dynamics-routes-v1-review.json), SHA256 `34288d5250a46a28438fbc902e984cc8d3d10293723f425b914e48381d27c237`. Thirteen payloads/1,353,290bytes,all62clause/153case joins,271predicate wording,465selected source-row identities and12negative controls checked. Required inventory is251application unknown routes plus20file-onlyS;142mirrored D12 annotations add no outcome. Full123-block semantics inherited. Atlas/index/plan/session/coverage adopt23bounded maps, not completed families. Root separately selected the23-clause/34-scenario audio/video-export map along T1; Recording/comping continues. An index-row replacement assertion failed after four earlier page writes; remaining index/coverage/log updates were completed separately without duplicating those appends.
+
+Root read complete [native-ABI preparation readiness review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-native-abi-frontier-preparation-review.json), SHA256 `6890e9cdfc332be28c8d40592caff2f8910188e8a91d05fca60dc075124c5170`, after its own [source preflight](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-native-abi-frontier-root-source-preflight.json). A separate [actual selection](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-native-abi-frontier-root-actual-selection.json) pinned exact preparation/script/review and minimal environment,DEVNULL/core0/300souter deadline. One capture ran23:41:34.968–35.715UTC:seven Rizin children returned0,249rows/996selected bytes,zero timeouts/original calls,14watched files unchanged. Outer PID was not exposed; seven decoder PIDs retained. [Tool result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-native-abi-frontier-root-tool-result.json) preserved; no retry or target expansion.
+
+Root native readback packet is frozen pending independent actual-result review:manifest `d07b68ae0e057d5037b05acda3f91e7e23ed68b73935cf134ccf006970ab3fb5`,52payloads/109,950bytes/ten conditional facts. UDN001 records two malformed Rizin stack-offset strings(0lr); raw output unchanged, separate immediate fields reconstruct48bytes. Thirty-eight BL/oneB targets match raw immediate arithmetic. Native1047bd0cc remains distinct from projectedthunk1047bcd58,with targets unread. Conditional register-carrier/initializer-local facts do not close any6G/38publicU/site/grade/owner/case/release; interpretation review is active.
+
+
+## 2026-10-20 23:50 UTC — Utility native readback approved; x86 metadata frontier selected
+
+Root read/adopted the complete [independent actual-result/native review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-native-abi-frontier-actual-review.json),SHA256 `dde3fb2d95ef1e0b4342ffff734b6e9d89b6771cc8836e31b8f70b44a21075e6`. All52payloads/109,950bytes,249rows/996bytes/seven PID-exit records/14recorded watch identities and ten conditional facts passed. Independent raw fields cover38BL/oneB,two+48stack pairs and selected register/store/address words. No source image/tool reopened or decoder rerun. UDN001 raw malformed operands remain unchanged; physical1047bd0cc is not equated with projectedthunk1047bcd58.
+
+Native carrier continuity narrows processor baseV=B and outer modelB=T only at their stated frames/premises; processorB=Q and inner modelV=T remain unknown. Conditional initializer final four zero bytes establish no public Mute/default or P=M. Seven cleanup receipts are already-gone after normal completion; timeout/descendant-kill/failure paths unexercised. All6G/38publicU/48inventory unchanged,zero new sites/original executions/norm/case/release/grade. Canonical research/index/atlas/plan/session/feature/coverage updated.
+
+Root separately selected metadata-only x86 construction-frontier investigation:1022313c0 factory plus old direct targets101ad08a0/102231400. Existing header/function-start metadata only,three selected rows rather than a duplicate global index; no instruction-window/callee-body/opaque-suffix decoding or new tool/original/harness execution. Per-range8192/whole16384 futurebyte caps are proposals only; no future capture selected. Recording/comping and audio/video-export maps continue in parallel.
+
+
+## 2026-10-20 23:53 UTC — Twenty-three-map incremental checkpoint passed; open protocol routing refreshed
+
+The [focused checkpoint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/twenty-three-maps-midi-processing-utility-native-incremental-check.json) passed ten affected pages,86new frozen payloads/1,725,844bytes and four independent review pins at23:51:24UTC. Exact packet trees,hashes/sizes,text whitespace,frontmatter/links,HEADlogprefix and gitdiffcheck pass. Earlier fullv61/publication/37/26/24payload sets are carried;421pre-existing source-link findings remain baseline. In-flight Recording/comping,export and x86 metadata are excluded. Seven static decoder children and996selected native bytes are distinguished from zero original executions and zero new grades.
+
+Current session/plan route to that checkpoint. Q025 remains open and now links the narrowed conditional native evidence; the preparation guide links canonical UDN001 without duplicating its facts or claiming a broader decoder audit. No source/owner/release bytes or candidate state changed.
+
+
+## 2026-10-21 00:08 UTC — Twenty-fourth and twenty-fifth family maps adopted; x86 metadata approved
+
+Root read/adopted complete Recording/comping review `de4380735678192cce62110d04fe3fd66fe07454e0ee3e102ed85004dbdf8986` and export review `b444d49048bfd8a03ac21da357e5514d221b574f822d1e26707d18565c7572c3`. Their17+14payloads/1,576,753bytes preserve34+23clauses/90+34cases. Recording282contexts are8inventoryS/274unknown/0X; export91required apppredicates are allunknown/0S0X,46D12annotations separate. Fresh owner/action semantics are distinguished from inherited full source audits. Sixteen/twelve negative controls pass; no grade/norm/case/release/site or family/product closure. Canonical research/atlas/index/plan/session/feature/coverage updated.
+
+Root read/adopted x86 metadata review `d12531ba905db5c746831e30772dd5950a6b5c2a8e7b7248d1044f549fc04edd`:fivepayloads/31,235bytes and three adjacent-start caps total320bytes. Only metadata was read; full image SHA inherited. A separate installed Rizin command-help query used/dev/null only,one helpchild/zero targetdecoder/original calls. Root selected preparation `598ed96b52fea43a73270f0cd6137633a782c02b934dd56032d5a529146930fe` for112+64+144physicalbytes,not fullfunction/CFG/ABI proof. Prep/readiness/actual gates remain; historical47decoded/193opaque status is not changed by arithmetic.
+
+After rereading amended revision4, Root selected one whole Simpler/Sampler/Impulse map by expected sample/playback leaf yield under selection4:63requirements/102cases,metadata-only32tables/512slots/128stores/512aliases-memberships/512call-indirect caps. No source body/native/original execution authorized by this map. The design11/roadmap5 ordering and whole-product closure contract remain unchanged; T1.7 deferred,Amp/Cabinet blocked,D03open. The earlier five-page routing check passed23:57UTC; this adoption awaits its own new-payload incremental check.
+
+
+## 2026-10-21 00:10 UTC — lint | Twenty-five-map checkpoint and parallel depth selection
+
+The [incremental checkpoint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/twenty-five-maps-x86-metadata-incremental-check.json) passed ten affected pages/36new frozen payloads/1,607,988bytes and three independent review pins. Prior86payload/five-page routing checks carried; new in-flight packets excluded. First attempt incorrectly applied prose whitespace stripping to TSV trailing empty fields; the check was corrected, frozen data unchanged. No new links/diff errors;421pre-existing source links retained. Source/behavior semantics remain scoped to the independent reports, not mechanical lint.
+
+Root full x86 preparation source/README review and data-only31negative-control check passed; [source preflight](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-x86-construction-root-source-preflight.json) pins frozen collector/preparation. Independent readiness remains pending; no image/tool/oldprefix reads or targetdecoder/original calls. After rereading amended selector, Root selected distortion family mapping by expected self-contained waveshaping/math leaf yield under selection4, in parallel with sample instruments;67requirements/200case navigation and prior216block source semantics remain bounded/partial. Metadata caps and explicit exclusions apply before row retention. No native body or execution is selected by either map; no design11/roadmap5 contract change.
+
+
+## 2026-10-21 00:16 UTC — query | Utility x86 bounded static capture and pending readback
+
+Root read/adopted complete independent preparation readiness `f761b5e6d559dd329bae5ab4ab48d91d370d6d57414f1d2426bd1ff7ea27244e` after full sourcepreflight, then separately pinned actualselection. Capture00:13:17.693–18.109UTC ran three Rizinchildren (PIDs1092143/1092144/1092145),all exit0/empty stderr/no timeout,93rows/320bytes,17fresh before-after identities equal. No original instructions executed. OuterPID unavailable; all cleanup already-gone; failure/timeout/descendantkill paths not exercised. Toolresult retained externally; no retry/callee/global/slot expansion.
+
+Frozenactualmanifest `e73746f56e4da53c256f71c5483894d2f3528868ef89100fae17c502935f4a9c` binds27payloads/53,024bytes/seven conditionalfacts;16E8targets match rawrel32 arithmetic. After freeze,Root caught narrative23encoding count versus22listed/checked; external correction `a675d57dcbbb83b373b0fc2ac1de6e6e5ce62e5f6aa07354a09806a8de0160ef` preserves bytes and must be applied in independent review.208oldraw overlap exact;161oldopaque bytes now have rows,32remain outside/112newimagebytes. This is static byte association,not publicABI/constructor/allocator/equivalence/behavior proof. Physical102247e80 target unread and not equated with ARM10215f2b8. All6G/38publicU/48inventory unchanged,zero norm/case/release/site/grade. Independent actual-result review active; sample/distortion maps continue.
+
+
+## 2026-10-21 00:20 UTC — query | Utility x86 actual review adopted; bounded wrapper metadata selected
+
+Root read/adopted complete actualreview `b5f95b0d6e0f31d95062c3419838b00082ca1fc55145b0de34915acfe4876252`,all27payloads/53,024bytes/93rows/320bytes/16E8displacements/22carrier encodings/seven conditionalfacts verified. The explicit count correction is adopted; frozenbytes unchanged.17before-after records agree,15retained-data watches independently rehashed; full image/tool freshness remains recordedcollector scope. Reviewer reopened no image/tool/decoder; zero originalexecution/site/grade/norm/case/release. All6G/38U/48inventory unchanged. Two E8targets already belonged to selectedbatch; generic not-followed annotation means no additional expansion. Native target102247e80 is not equated with ARM10215f2b8.
+
+Current canonical research/atlas/index/plan/session/feature/coverage/question routing updated. After rereading full amendedrevision4, Root separately selected metadata-only whole-construction-call-frontier support across102247e80/101ac8330/101acf4c0/101acf650. Freshmetadata limit566,608bytes (32header+6,832commands+559,744functionstarts),four selected start/successor rows only. Newsource/synthetic preflight before acquisition,metadata read receipts and independentreview required; no instructionwindow/decoder/original execution selected. Perwindow8192/aggregate16384 futurebytes are proposals only. Sample/distortion maps continue; no design11/roadmap5 contract or closure change.
+
+
+## 2026-10-21 00:21 UTC — lint | Utility x86 static-approval incremental checkpoint
+
+[The focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-x86-static-approval-incremental-check.json) passed nine affected pages/32new frozen payloads/88,283bytes,two independent review pins and the explicit22-encoding correction. Exact packet trees/hash/size,frontmatter/links/whitespace/HEADlogprefix/gitdiffcheck pass; prior25map36payload/86payload/routing sets carried,421existing source-link findings baseline. Sample/distortion maps and wrapper metadata are in flight/excluded. Three static decoderchildren/320bytes and zero original calls/grades remain distinct. Source/behavior meaning belongs to the independently reviewed bounded reports; no source/release-universe replay.
+
+
+## [2026-10-21] query | Sample and distortion maps sealed; Utility four-target metadata approved
+
+At 00:27 UTC,Root sealed samplemap13payloads/1,989,524bytes,manifest `0058dda3aecd87e65aaabbf7d600b0f654fd395c36e742756d2ef9a94996cdcd`,and distortionmap19payloads/778,373bytes,manifest `4a49df0a066b62d9807cba85f66f72e1883a21aa3bd646c4f3b317fe5cdde5d8`. Both independent structure reviews are active; map count stays25 until adoption. Sample350applicationpredicatesU/221D12annotations/fiveauxiliaryfileS and distortion67wholeclauses(9fileS/58appnone)/47annotations are not grades or denominators. No norm/case/release/site changes. Root also moved its last two atlas family summaries under the existing family-route heading and refreshed the current checkpoint/old-prefix as-of qualifications.
+
+Root read/adopted metadatareview `7e4b36d2ae87cba8e1b6b8e6f70456a9a4fde00055363267c86fca319df7b618`:sevenpayloads/36,786bytes,eightpins/17negatives and author sourcepreflight→single566,608byte acquisition chronology. Independent source metadata reread same566,608bytes confirms exactfourordinals/successors/ULEB/fileoffsets; fullimageSHA inherited. Fourcaps16+112+16+16=160bytes are not function/thunk/constructor/ABI proof. Root reread amendedselector and separately selected preparation `73ebe6098f0797bede038992d39eb2dd62a6ee40b75c60296a0c40ac03d7576a`; completeRootsource,independentreadiness,separateRootactual gates remain. No instructioncode/decoder/original/oldraw capture selected; all6G/38U/48inventory unchanged. Current plan/session/index/atlas/canonicalresearch updated; no design11/roadmap5/closure change.
+
+
+## [2026-10-21] decision | Evidence-based coverage closure confirmed
+
+At 00:35 UTC, the user answered the pending policy question: “Keep coverage open until evidence supports it (current rule).” [ADR0005 confirmation](decisions/adr-0005-full-live-specification-coverage.md#completion-rule-confirmation--2026-10-20) now owns that durable rule. Required unsupported behavior staysU and keeps affected family/product closure open; listing unknowns or finding no route grants no completion credit or exemption. The formerly pending disposition question is resolved; no documentary-complete fallback or new host/emulator/whole-app/implementation authorization was adopted.
+
+Design11,amendedplan4,roadmap5,project/research/decision indexes and current session routing now agree. Existing phaseorder,denominator,review/harness rules,ADR0003 andAmp/Cabinetblock stand; historical log/frozen selections are preserved. Active workers were informed and continue permitted independent work. No completed profile/family,case/grade/release or compatibility change follows. This is a user policy decision,not original behavior evidence.
+
+
+## [2026-10-21] query | Twenty-sixth and twenty-seventh maps adopted; next bounded maps executing
+
+At 00:42 UTC,Root read/adopted complete Sample review222a1a7c... and Distortion review4c8702f9...:13+19payloads/2,767,897bytes,63+67clauses/102+200cases. Sample350applicationnone/221D12/fiveauxfileS andDistortion67non-atomicbundles(9fileS/58appnone)/47D12 stayseparate;allactualU,no grade/closure. Root filed reviewed minimal SI-MAP-REVIEW-002 reference erratum preserving017inactive-loopnegative and039ownproductive BOTHloops;frozenR3/map unchanged,no case/body/oracle/owner successor. CanonicalSampler addendum qualifies the false reference;prior canonicalidentity checks retain as-of scope. Atlas/index/plan/session/feature/coverage adopt27maps. An initial coordinator script failed to parse before any shell/file operation;the smaller replacement completed the work.
+
+Root selected current chains/Racks38/101 andDelay/Reverb93/176 maps by expected selector/zone/converter/time/tap/filter/helper yield after rereading selector. Metadata semantic scopes follow over-cap censuses and preserve excluded requiredjoinsU. No sourcebody/original execution;confirmed evidence-based closure governs.
+
+Root adopted160byte preparationreadiness3d25d967... after sourcepreflightf1abf970...,then separatelyselected actualcapture00:31:58.272–58.727UTC:fourchildrenPIDs1096288–91,51rows/160bytes,14recordedidentitiesequal,zerooriginal/priorrawread. Manifest4dcc2cf1... binds32payloads/41,040bytes/sevenconditionalfacts,raw5E8+2E9/RIP/FF20/24encodings checked. Localx86tail101acf65c unresolved,no ARMsitecredit. Independentactualreview pending;ancillaryESIL disagreement will be explicitly qualified,never used as model/execution proof. All6G/38U/48inventory unchanged,no case/release/grade.
+
+
+## [2026-10-21] query | Four-target actual review adopted; existing metadata reused for next preparation
+
+At 00:46 UTC,Root read/adopted complete review11615d3543958a42a0fa9cc8ea9ad3d34d6d15b86560a805a8ad06e78685f2dd:32payloads/41,040bytes,51rows/160rawbytes,fourPIDs/all exit0/empty stderr/no timeout,14recorded equal identities/12freshretained-doc hashes. FiveE8/twoE9,RIP/FF20/24carrier encodings independently checked. UWF-ACTUAL-NOTE-001 is canonicalUDN002:two auxiliaryESIL strings disagree with raw/opcode/jump targetfields;rawsignedarithmetic supports the readback. Frozenoutput preserved,ESILexcluded,no rerun. No image/tool/priorraw/decoder/original reopened by review. H/Aidentity and unknownx86indirecttail101acf65c stayunproved;all6G/38U/48inventory/zero grade/site/norm/case/release persist.
+
+After rereading selector and confirmedclosure,Root separately selected352byte preparation2d5061a1... for102247d20→102247e80 using already-reviewed metadata previous_address/address adjacency;no new metadata scan or codewindow. Fullsource/independentreadiness/separateactual gates required;no automatic targetexpansion. Racks17payload/1,219,419byte map is sealed(manifest3469da03...) in independentreview;Delay/Reverb map continues. Current canonical/guide/atlas/index/plan/session/questions/coverage updated. No closure/phase/runtimeauthorization change.
+
+
+## [2026-10-21] query | Twenty-eighth map adopted; bounded inner-entry capture awaits review
+
+At 00:57 UTC,Root read/adopted complete Racks independent review4503977c...;sealed17payloads/1,219,419bytes,38non-atomicbundles/1fileS37appnone/35D12annotations,101actualU. All36pins/640rawrows/38negative controls and separate277source geometries/189case joins passed. Full source semantics inherited at124Rack/153Devices scopes. Canonicalresearch/atlas/index/plan/session/feature/coverage adopt28maps,no grade/closure. Delay/Reverb remains sealed/in independent review.
+
+Root read complete inner-entry readinessb32e9fc9... after sourcepreflight3804f28b...,separatelyselected one352byte staticcapture,ran once00:55:26.858–27.181UTC:onechildPID1115552/64rows/14E8+oneEB/threeRIPaddresses,zerooriginal/no targetexpansion,14recorded identities equal. Manifest3baf25a5... binds14payloads/37,740bytes/sevenconditionalfacts;normalpath late load64(T+10),not proved Qorzero. AllESIL excluded,including new EB00 discrepancy;frozenoutput unchanged. Independentactualreview active,no semantic adoption/successor/norm/case/oracle/grade/site/release;all6G/38U/48inventory unchanged. UnsupportedrequiredU keeps whole-productOPEN.
+
+
+## [2026-10-21] lint | Twenty-eight-map and closure-policy incremental checkpoint
+
+At 00:58 UTC,the [focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family28-wrapper-governance-incremental-check.json) passed19affectedpages/93newfrozenpayloads/4,098,518bytes,exact manifest trees/hash pins,independentreview pins/Sampler reference erratum,frontmatter/dates/links/whitespace,HEADlogprefix andgitdiffcheck. Previous32/36/86payload checks carried without replay. The user-confirmedU/OPEN rule is reflected in decision/design/plan/roadmap/currentrouting;no pending policychoice or documentaryfallback. Delay/Reverb and inner-entry readiness/actual are excluded as in-flight. No runtime/semantic/compatibility grade follows.
+
+
+## [2026-10-21] query | Twenty-ninth map adopted; modulation metadata preparation selected
+
+At 01:01 UTC,Root read/adopted full25,545byte Delay/Reverb reviewf0fb530a... with no findings. Manifest3731962d... binds19payloads/2,514,901bytes. Fresh93fullbodies/562predicate wordings/176fullcase histories,49pins/690rawrows/207geometries/60sourcejoins/17links/20negativecontrols passed;full207corrected-source semantics inherited. Research13,642byte prefix wholly preserved+2,607append,no date restoration. All562requirednone/U;316D12+246U annotate SAMEunits,sevenfileS auxiliary;all176actualU. HybridAPI/list≠actualprocessor/IR;no body/mathleaf/publicroute/site/grade/release/closure. Canonicalresearch/atlas/index/plan/session/feature/coverage adopt29maps.
+
+After rereading amendedselector,Root selected Modulation/Pitch/LoopR4map preparation(106/208) by LFO/curve/frequency/pitch helperyield. Retainedmetadata census first,caps32primarytables/128selectedslots/128stores/512alias-membership/128seeds/512call-indirect;Rootscope before overcap retention. Current230pointer correction and332source semantics inherited,no oldchecker/source/native/original replay. Parallelproviderinventory/Utilityactualreview continue;allunsupportedrequiredU/coverageOPEN,no documentaryfallback.
+
+
+## [2026-10-21] query | Inner-entry actual review adopted; two bounded source and map selections
+
+At 01:06 UTC,Root read full34,029byte independentactualreview1514d491...(rereading truncated branch/RIPmiddle in boundedranges),approved14payloads/37,740bytes/all64rows/352bytes/sevenconditionalfacts. FourteenE8(12preRET/2postRET),oneEB/threeRIPaddresses/33further witnesses;12freshdocumentpins/14collectorrecordedidentitiesequal,onechild1115552/zerooriginal. Late load64(T+10) is localreturn,not Q/zero/publicpointer;opaque ninehelperwrites unknown,overlapQ+15f/Q+158 qualified. UDN002extends toEB00auxiliaryconflict;allESILexcluded/frozenoutputpreserved. No successor/native/original/site/norm/case/grade/release;6G/38U/48inventory unchanged. CanonicalUtility/guide/atlas/index/plan/session/questions/coverage updated.
+
+Root read fullModulation scopeproposalb29fadf8...,separatelyapprovedexact32tables/102slots/67stores/266alias-membership/122seeds/187outgoing-indirect. Complete11UI/display/timerseedgroup excludedoutgoingonly,all133aliases retained,requiredjoinsU. Metadataextraction/106clause208case mapactive,no body/native.
+
+Root separately selected fixed14Delaynominees fromapprovedmap,queried onlyaliasmetadata/relevantpinnedchunk metadata,census602160bb...14records/21,218Cbytes/634lines/max213/sixchunks/fivewarnings. No semanticCread duringcensus. Separate source-read selection39f48a14... authorizes complete14setmaterialization/analysis only,no encounteredcallee/global/slot/native/original. Sourceauthoractive/all562required176actualU unchanged. DeviceKit11payload113,131B inventorysealed6c4dc1ff... in independentreview,no providerbinding. The Delay29focusedcheck passed8pages/19newpayloads2,514,901B,no new links/differrors,prior93/32/36/86payload checks carried;thislateradoption/sourceedit awaits focusedcheck.
+
+
+## [2026-10-21] query | Shared DeviceKit metadata inventory adopted; capped consumer preparation selected
+
+At 01:09 UTC,Root read complete22,017B independentreviewf6eb0591... andadopted11payload113,131B inventorymanifest6c4dc1ff.... Thirty-seven exactoccurrences/27EXTERNALlabels/sevenfamilies establish no providerbinding/image/importordinal/instance/publicroute. Independent865parentrows/37selectedidentities,30immutablepins/threecanonicalpins,22packagepointers/nineshallowhelperdocs/fivemissingpaths/stat-onlytwo consumers and17negativecontrols passed. DKP-REVIEW-NOTE001 qualifies historicalindexpin drift;blanket34pin author main not rerun. Latercanonical edits retainasofstatus. Author3,721,476/review1,382,183documentbytes<4MiBseparatebudgets;no originalindex/image/body/symbol/bind/provider/native/original reads. Atlasowns canonicalcrossfamilyfrontier;domainresearch/index/plan/session/questions/features/coverage linkit.
+
+Root separatelyselected sourcepreparation7acddc0a... forfixedthinconsumerheader32bytes+loadcommand<=65,536bytes/512commands,totalcontent<=65,568bytes. Futurewholeimagehashbeforeafter iscustodyonly;newimage/header/table/providerbytes remainzero. Sourcepreflight/independentreadiness/separateactual required,no decoder/original/section/code/global/pointer/symbol/bind/export/fixup/provider payloads or automaticfollow. RequiredunsupportedU/coverageOPEN,no documentaryfallback/site/norm/case/grade/release/closure. Modulationmap andfixed14DelayCsource continueinparallel.
+
+
+## [2026-10-21] lint | Inner-entry and shared-provider incremental checkpoint
+
+At 01:11 UTC,the [focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-inner-devicekit-incremental-check.json) passed14affectedpages/30newfrozenpayloads/186,520bytes andindependent review/support/Rootgatepins,exactmanifesttrees,frontmatter/dates/links/whitespace/HEADlogprefix/gitdiffcheck. Previous19Delay/93wrapper-map/32/36/86payload checkpoints carried without replay;no new links or compatibility grade. Modulationmap/fixed14Delay source/consumerloadcommand preparation excluded as in-flight.
+
+Root subsequentlyread complete14sourcepacketstructure/checker andsealed exact14payloads117,853B(manifestcbbeea0e...),independentsource reviewactive. All14rawexports/30,164rawB/21,218CB/634lines/fivewarnings arecurrent retainedsource;no completecallablemath/Xleaf claimed,conditionalstore/auxiliaryexpression remainungraded. No original/native/grade/closure. Currentplan/session pointers updated;Delaycanonical leftunchanged during review.
+
+
+## [2026-10-21] query | Fixed fourteen-method source assessment adopted; synthesis map selected
+
+At 01:16 UTC,Root read all14complete retainedCrecords/claims andfull46,651B independentreview98b47a16...(lostDRS06/07 middle separatelyreread),approvedwithoutfindings. Manifestcbbeea0e... binds14payloads/117,853B,30,164rawB/21,218CB/634lines,26claimspans/fourRootpins/fivewarningrecords/four4Bnative-extent-metadata expansions/22negativecontrols checked. Prior93/176/207/562semantics/units andoriginalindex/chunk/nativeidentity inherited. No completecallablemath/Xleaf;Grainstore remainsreceiver/ABI/FP/currentcontrol/consumer-dependent;Reverbexpression auxiliary,helper receivesdivisoraddress atC60beforeC61. No nativeextent/totalCFG/publiclaw/grade/norm/case/site/release/successor;all562required176actualU/coverageOPEN. CanonicalDelay/atlas/index/plan/session/feature/coverage updated. As-ofcanonicalpins qualified forfutureaddenda,no oldcheckerreplay.
+
+Root selected synthesis/drumR3fiveprofiles110/190map preparationbyoscillator/envelope/filter/wavetable helperyield,retainedmetadata censusfirst/sameboundedclassscope caps;no newC/native/original. Modulationmap authoringandconsumerloadcommand preparation/readiness continue. Root completecollector19,013B source/READMEread andisolatedsynthetic/doccheck29negative10positivepassed,exact4payload28,349Bpreparationunchanged;Rootpreflight7cbba0ee... precedesindependentreadiness. No actualimage/header/table/captureselected yet.
+
+
+## [2026-10-21] query | Consumer metadata captured once; table join remains unselected
+
+At 01:23 UTC,Root read/adopted complete independentreadiness0c33e15d... (13,333B,no findings) afterfullsourcepreflight7cbba0ee...,then separatelyselectedactual6aa4da20.... One isolatedattempt01:18:00.850–01.045UTC captured32header+6944commandbytes=6976contentbytes/53commands;zerochildren/original/errornull/tenrecordedidentitiesequal. Beforeafterfull149,711,904B imagehashes arecustodyonly,notretainedcontent. Actualmanifest e1df2217... binds11payloads101,743B;Rootrawcommand/name/tableboundschecks passed.35dylibdeclarations/tworpaths supply noactualprovider/37callbinding;no symbol/nlist/indirect/bind/export/section/code/global/provider payloads or pathresolution. Independentactualreviewactive,outerPID unavailable/failuredeadlineuntested/no retry.
+
+Rootderivedunselectedprospective27stubindices from37retainedcalladdresses andcurrentloadcommands;maximumfuture27indirectwords108B+27nlist432B+27bounded4096Bnames=111132contentbytes. No tablebytes acquired,nofutureselection orautomaticfollow. Atlas/currentplan/session/log updatedpendingactualreview. Modulation23payload1,765,052Bmapsealed4f429652... inindependentstructure review,all106required/208actualU;Synthesisfive-profilemetadata censusactive. No norm/case/grade/site/release or whole-productclosure.
+
+
+## [2026-10-21] query | Synthesis coherent metadata scope approved and route status reconciled
+
+At 01:27 UTC,Root read all32class/addresspoint candidates,slot/store/seedpolicies,twelveexactnamedwrappers andaggregates incensus337dca12.... Approved scope ca906026...:32primarytables124of1427slots/50stores/all153aliases22memberships,exact115slot-target+namedseeds/246direct37indirect.38store-only frontiers remainmetadata,nocallfollowing;all8typedWavetablevariants whole6slotprefixes,notalgorithmproof. Overcap153seed542rowuniverse preservedasaggregateonly,no arbitraryfirstN. Materializationauthoringactive110clauses190actualU/full567source semantics inherited,Operator/Meldambiguities productiveguards retained.
+
+CurrentD00/session/index route Modulationmapassealed/independentreview,106required208actualU. Consumeractualreviewcontinuesusing6976retainedmetadata bytes,prospective27tablejoinunselected. Fixed14Delayfocusedcheck passed8pages14newpayload117,853B+reviewpin,zero new links/differrors;prior30/19/93/32/36/86payload scopes carried,no fullsource/release/native/originalreplay. UnsupportedrequiredU keeps wholeproductOPEN.
+
+
+## [2026-10-21] query | Thirtieth map and consumer metadata actual review adopted
+
+At 01:34 UTC,Root readcomplete32,459B Modulationreview36378e40...(truncatedmiddle separatelyfullyreread),approved23payload1,765,052Bmap4f429652... nofindings. All106fullclauses/208fullcasehistories/186oldexact/230pointers/39pins/704rawmetadata/43negativecontrols passed.106wholeclauseallnoneU,96D12+10U annotateSAME106,tenauxfileSoutside;full332source semantics inherited/geometry418casejoins148adoptionmechanical. Exact15,924Bcanonicalprefix+2,824Breviewedproposal appended unchanged thenRootapproval;pendingflags qualifiedashistory,no date restoration/frozenrewrite. CanonicalModulation/atlas/index/plan/session/feature/coverage adopt30maps,no grade/site/case/release/closure.
+
+Root readcomplete16,975B consumeractualreview55345259...,approved11payload101,743B e1df2217...;6976retainedbytes53commands38sections38names16tablelocations/13immutablegatepins/9negativecontrols/37metadata27stubgeometry passed. Wholeimagehashes recordedcustodyonly,no freshpeerimage/table/provider/collector/sourceindex/body reads. UTCspan0.194962 vs toolwall0.082654112 remain separatefields,no precise elapsed/deadline/performanceoracle.35librarydeclarations prove no providerabsence/binding. Next sourcepreparationec431423... selected27indirectwords/up to27nlist/boundednames,total111132B,zero newtablebytes. Fullsource/readiness/separateactualgates/no code/provider/bind/valuepointer/fulltablescan/automaticfollow.
+
+Root separatelyselected eightLegacyR2profilemap preparation77/194byfilter/LFO/pitch/decimationyield;D11applicabilityunknown/45source8file141targetcontextsseparate/full114semanticsinherited/no modernsubstitution. Synthesismetadataauthoring continuesunderapprovedcoherentscope,all110/190U. Amp/Cabinetblocked,T1.7deferred,requiredunsupportedU keepswholeproductOPEN.
+
+
+## [2026-10-21] lint | Thirty-map and consumer metadata incremental checkpoint
+
+At 01:35 UTC,the [focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family30-consumer-metadata-incremental-check.json) passed10affectedpages/38newfrozenpayloads/1,895,144bytes,independentreview/Rootgate pins,exactmanifesttrees/frontmatter/date/link/whitespace/HEADlogprefix/gitdiffcheck. Entire15,924BModulationpriorprefix+2,824Bproposal exact. Prior14/30/19/93/32/36/86payload checkpoints carried,no fullsource/release/native/runtime replay. Synthesis/Legacymaps/selectedsymbol preparation excluded as in-flight. No newbrokenlinks,site/grade/norm/case/release or wholeproductclosure;requiredunsupportedU/OPEN persists.
+
+
+## [2026-10-20] selection | Legacy complete alias scope and symbol-reader source preflight
+
+At2026-10-21T01:41UTC Root read the complete32class/208seed Legacy census and
+approved the packet-specific seed cap208 (268outgoing rows,416alias-membership
+rows); exact scope approval SHA5e17b4a1d5003acf06588a91636fce052303c3cb4639de4969f23ae24028fb69.
+Root read the selected-symbol collector/README/readiness and passed isolated
+22negative/10positive checks; source preflight SHAc4da1b6bb0c5ab1d259d0918ac7485d052655d9bde61f1feff15fd5505d6b46c.
+No image/table/name/header/provider acquisition in this preparation. Independent
+readiness and separate actual selection remain required. No new grade; coverage OPEN.
+
+
+## [2026-10-20] capture | Selected DeviceKit consumer symbol declarations
+
+One separately selected acquisition completed at2026-10-21T01:44:24.328562–25.402545UTC,
+after Root full source preflight/count erratum and independent readiness26023a81….
+Retained108indirect+432nlist+2608name bytes=3148contentbytes;27ordinary records,
+12recorded identities equal,zero child/original/provider runs. Actualmanifest
+376943162e3097cc6138a2b8e3439e6b7e6251f6ffd2a863575614b17294c643 seals
+170payloads/95004bytes. Independent actual review pending. Root read pinned
+Apple nlist.h88–165/235–295 and recorded an unselected27address navigation
+proposal; no value/sourceindex/body/provider follow. No grade; coverage OPEN.
+
+
+## [2026-10-20] review | DeviceKit declarations adopted and whole27 source batch selected
+
+Root read/adopted full26,479B independent actual review9b6386df…:zero findings,
+21false-join/promotion controls,170payloads/95,004B exact. Section-defined weak
+symbols remain declaration evidence,not runtime/provider/public binding.
+Separate exact27-address metadata lookup found all27 exports,121,309Cbytes/
+3,601lines,max241lines,8chunks,4warning records. Root then selected the complete
+27-record retained-source batch; authorship/review pending,no encounteredcallee/
+native/image/provider/original follow. Synthesis independent review and Legacy
+final author checks continue in parallel. No new grade; coverage OPEN.
+
+
+## [2026-10-20] review | Thirty-first bounded map adopted: synthesis instruments
+
+Root read full39,420B independent Synthesis review1a576e5d…; truncatedmiddle
+separately reread. No blocking findings; SYNTH-REVIEW-NOTE-001 preserves changed
+mutableplan as-of pin as nongating. Manifest e775f88a… seals22payloads/3,286,651B.
+All110wholeclauses/190wholeactions/585routeunits remain unsupportedU;390D12+
+195lifecycle are same585. Full567source semantics inherited,567geometry/354quote
+occurrences mechanical;26immutablepins/27negatives pass. All8typedWavetable
+prefixes/115seedunion/38unfollowedstore-only/OperatorMeld/productivevoicecontrols
+remain qualified. Exact10,709Bpriorresearchprefix+2,152Bproposal preserved then
+Rootapproval. Map count31, no grade/site/owner/case/release/closure. Legacyreview
+and bounded27DeviceKit source authorship continue; requiredunsupportedU/OPEN.
+
+
+## [2026-10-20] selection | Wavetable typed-prefix census and bounded Legacy checker
+
+Root selected exact48entries from all8typedWavetable prefixes for metadata
+census,54bf9b11…; a retained-store-hinted3chunk scope ea290a40… avoids reopening
+the original alias index. No Csemanticread/retention or otherchunk/callee/native/
+provider/original follow; missingentries remainlocatorgaps. Legacy review's
+owned checker needed retained-index reads excluded by the earlier assignment.
+Root inspected raw_row/main/all32pinpaths and separately selected exactlyone
+boundedmetadata check6fc428cc…; reviewer observed PASS29negatives/unchanged
+watchedpaths. Final Legacy review pending; no grade/closure or user gate added.
+
+
+## [2026-10-20] review | Thirty-second bounded map adopted: Legacy native devices
+
+Root read/adopted full20,121B independent review60075c82… without findings.
+Manifest27dc8404… seals23payloads/1,645,865B. Fresh77wholeclauses/194wholeactions,
+all178oldexact:8file-onlyS/69appnone,45D11+8Dpkg+24U same77,all194actualU.
+Full114D11/23resource semantics inherited;114geometry/211casejoins mechanical.
+Complete208seed capexception/1,011DATA/32tables96slots56stores/256direct12empty
+indirect preserved. Separatelyselected checker passed29controls; ownassertions
+ninecontrols, no C/native/provider/original/query expansion. Exact17,410Bprior
+researchprefix+2,088Bproposal preserved thenRootapproval. Mapcount32;no grade,
+site/owner/case/release/closure. DeviceKit27source/Wavetable48metadata continue.
+
+
+## [2026-10-20] lint | Thirty-two-map incremental checkpoint and active sources
+
+Family32 delta passed10pages/45newpayloads/4,932,516B,exactSynthesis10,709B+
+2,152Bproposal andLegacy17,410B+2,088Bproposal preservation,reviewpins,links/
+whitespace/HEADlogprefix/gitdiffcheck. Earlier symbol174payload125,323B and
+map30-38payload checkpoints carried without replay. DeviceKit27source packet
+sealed3350Bmanifest627ca880… (18payload441,908B),independentreview pending;
+Wavetableall48source set separatelyselected296,613Cbytes/8,116lines/18warnings.
+Automationwhole-batch eligibility assessment selected metadataonly,norun/grade.
+
+
+## [2026-10-20] review | DeviceKit fixed27 conditional source frontier adopted
+
+Root read/adopted full30,629B independent reviewe0448550… without findings.
+Manifest627ca880… seals18payloads/441,908B:27wholeCprojections/138,935rawB/
+121,309Cbytes/3,601lines/fourwarnings,86conditionalclaims,27joins/37oldIDs,
+173lexicalreferences. Reviewerfullread/33checkernegatives/15pins/30watch paths
+pass;originalchunks/indices/native/provider untouched,asofatlas/plan nongating.
+Allocation-shape/receiver/handle/payload differences,unknown codec/growth
+reachability/listownership/feedback/counter/rewind andRoarqueue limits adopted.
+Crossfamilyfactowneratlas;FilterEQ/Dynamics/Distortion linkit. No callablemathX
+leaf/runtimepublicbinding/site/grade/case/release/closure orautomaticfollow.
+
+
+## [2026-10-20] selection | Automation admitted-leaf execution and seven DeviceKit delegate metadata records
+
+Root read full32,796B Automation assessmentddd1bf2e… (truncatedsegmentsection
+separately reread),selectedactual2b354933…:34calls/11processes across3admitted
+supplied-data leaves +2declaredendpoints,50factoryrowswithheld. Freezeexactbits/
+qNaNpayload/image/loaders/stubpolicy/precallmanifestfirst;existingunmodified
+model/no newconstruction/patch/tooling/compile,20s/no retry/trapstop;reviewactual
+beforegrade/adoption. Newyield6,28oldcontrols/24alreadyMix. No public/ARM grade.
+Root adopted DeviceKit27source then selectedexact7activeCalcMaindelegate metadata
+51a5c941…;no Csemanticread/retention yet. Wavetable48source sealed2599Bmanifest
+b1d9fd55… (13payload718,687B),independentreview active,no sourcecallee follows.
+
+
+## [2026-10-20] review | Wavetable whole48 source adopted; active queue reconciled
+
+Root read full53,020B independent review2d82e657… in two untruncated halves,
+no findings; manifestb1d9fd55… seals13payloads/718,687B. All48sources/8,116lines
+reviewed via19wholebodies+29losslessvariants,116anchors/18warningrecords with20
+warningoccurrences.31author+14peernegativecontrols pass. Prior canonical prefix
+and exact proposal preserved, Root approval qualified unrepaired casts/NaN/tag,
+helper/table/global/receiver/voice/ABI/rate/phase/output unknowns. No callableX/
+mathleaf/grade/case/release/site/closure. Current plan selector corrected30→32
+adopted maps; current session now routes approved fixed27/W48source, selected
+seven-delegate source authorship, remaining67Synthesis metadata census and frozen
+11process/34call Automation actual review. Only Root retained-data assertion was
+corrected from emptylist to receipt emptydict used-import field; no original rerun
+or frozen correction. DeviceKit18payload delta linked, priorchecks carried.
+
+
+## [2026-10-20] review | Automation whole34 actual observations adopted
+
+Root read/adopted full22,892B independent review8cd9f6b7… with no findings;
+manifest5cc79e21… seals35payloads/2,000,973B. All11processes/34calls succeeded
+02:17:28–29UTC;6newMpredicatezeros+28historicalcontrols(24Mixoverlap),15interior
+Bezierpairs+2declaredauxendpoints/9exact40Bstates.91FPtokens/oneqNaNpayload and
+hosttemporaryfloatcast qualification retained; no childFP/XMMtrace.5pre-callpins/
+3custodyidentities/16sourcepins/11historicalrows exact;9author+19peernegatives pass.
+No original replay inreview, grade/owner/case/release/site/closure. All50construction
+rows withheld;source-only wholeclass feasibility assessment now selected, no run.
+Remaining67Synthesis metadata allfound29,288Cbytes/1,231lines/13warned/15thunks;
+Root readall67compactprojections thenseparatelyselectedall67source;no callee/native
+or original expansion. Prior Wavetable13payload check passed7pages/718,687B with
+exact researchprefix+proposal,selector32,zero newlinks/differrors; carriedchecks
+notreplayed. EntireproductOPEN/requiredunsupportedU retained.
+
+
+## [2026-10-20] query | Whole-source review queue and Wavetable helper frontier
+
+DeviceKit seven-delegate packet frozen:22payloads/148,710B, manifestf64d8f5a…;
+remaining67Synthesis packet frozen:21payloads/469,922B, manifest71fde453….
+Separate independent semantic reviews selected. Whole50Automation construction
+assessment1b909f9d… frozen108,750B, independent source/data review selected;
+no new model, constructor, patch or original run. Selected-receipt294initializer
+abandonments versus historicalmanifest295 remain distinct pending review.
+Root separately selected all17direct helper targets from all8reviewed Wavetable
+phase/update wrappers (36lexicalanchors), measuredmetadata in one aliaspass/four
+chunkcustody hashes, then selected all17sources. Exactly17rawranges/44,124B
+retained once; all36,647Cbytes/1,239lines directly read in three full outputs.
+17payloads/223,238B sealed e1678dba… pending independent review;52conditional
+anchors/41lexicalrefs,16negative controls pass. Two lookup math surfaces retain
+missing third caller argument,16B/8Breturn/cast/nativeABI gaps; no source repair,
+new native/provider/original/model/harness follow or callableX/public grade.
+Current plan/session updated; Automation35payload delta passed7pages, preceding
+Wavetable13/DeviceKit18/family45/symbol174 checks carried without replay.
+
+
+## [2026-10-20] review | DeviceKit seven-delegate and complete remaining67 source adopted
+
+Root read full DeviceKit21,587B review619bafbd… and both full halves of Synthesis
+52,527B reviewc0f5901d…, no findings. Exact canonical prior prefixes/proposals
+preserved before Root approval; adoption receipt owns identities. DeviceKit
+22payloads/148,710B:7wholeC/277lines/19claims/24refs/10operators/2warnings,
+36author+17peer controls. Void-versus-consumed-return/arity/packedFP/opaque-helper
+and Roar16B/32B/56B collection distinctions retained. Synthesis21payloads/469,922B:
+67wholeC/1,231lines/72anchors/189lexicalrefs162FUN+27indirect,26author+12peer controls;
+15thunks/13warned20occ/30four-byteextents/fiveexpandedfalse-thunk mismatches retained.
+Combined48+67 completes selected115source-projection frontier, no native/public
+class or outcome completion. No callablemathX/readybatch/site/grade/case/owner/
+release/closure or automatic follow. Current plan/session/index/coverage/questions
+and three family research links reconciled. Whole50Automation assessment review
+and Wavetable17helper source review continue independently; requiredunsupportedU.
+
+
+## [2026-10-20] review | Wavetable17 and whole50 construction findings adopted
+
+Root read both full halves of phase17 review52,594B/a34c7375… and whole50review
+57,161B/49c7fbc3…, no blocking findings. Phase17manifest e1678dba… seals17payloads/
+223,238B, all1,239C lines/52anchors/36parentjoins/41lexicalrefs reviewed.16author
+negatives plus independent conditional geometry all1024indices and4invalid guards
+pass. Native input/return/cast/FP and additionalModernPd+4000 remain open; two
+math surfaces are not callableX/public outcomes. Exact canonical prefix/proposal
+preserved in adoptionreceipt. Whole50assessment1b909f9d… records complete historical
+22Float/12Bool/10Enum/6Pan;139direct=50target+89setup/145buffers,294abandoned per
+8process vsmanifest295historical, partialeffects/9addressregistry72B/3overwrites
+remain legalstate premises.23peernegatives pass;22of23pins matchedatreview,plan
+asofdrift nongating, no frozenrewrite. Canonical Auto/analystevidence note in
+spec/method routing qualified; normative clauses/cases/releases remain exact.
+Root selected PREPARATION ONLY for two adjacent lookup extents164bytes/41rows,
+existingdecoder/no native acquisition; whole122Modulation census allfound and
+separatesourceapproved360,530Cbytes/9,041lines/20warned31occ/47fourBextentmetadata.
+No original/model/harness/constructor/patch/newtool/native/callee expansion in
+this adoption, no grade/site/closure. RequiredunsupportedU/productOPEN remain.
+
+
+## [2026-10-20] query | Lookup164 preparation source preflight passed
+
+Root directly read all414collectorlines and complete selection/readiness/README,
+then one data-only check passed40negativecontrols/sevenimmutable documentpins.
+No image/tool/target bytes read or decoder/original/model/harness launched.
+Fivepayloads/39,554B preparation sealed57db0f41…; Rootsourcepreflight4af054e5…
+records exact scope. Independent readiness active, separate actual selection
+still required. Current selector additionally records a data-only prospective
+closed finite M predicate branch/boundary proposal using existing supplied-data
+inputs/model; no original run, constructor model or public grade selected.
+Wavetable17/Automation50 delta passed11pages/17newpacketpayloads223,238B plus
+assessment/review pins; exact60,909B old Automation draft retained outside one
+analyst evidence note. Requirement bodies/cases/releases exact; previous43/35/
+13/18/45/174payload scopes carried without replay. Current routes reconciled.
+
+
+## [2026-10-20] query | Lookup164 static capture completed once
+
+Root read full21,397B readiness23f74f57… without findings, separately selected
+one actualff0476e3… and invoked only frozen collector under isolated -I/-B,
+minimalouterenv and60swatchdog. At03:05:27UTC outerPID1230637/decoderPID1230641
+exited0; one164Brawrange/41alignedrows/two40B10row+124B31row logicals, no retry/
+timeout/stderr.15retained before/after identities equal. Original/model/harness
+calls0; existingRizin decoded only retained164Brawfile, not original execution.
+Raw6889a897…/logical44739aeb… and5eb7d153… retained; actualmanifest571ffd02…
+seals12payloads/23,196B. Root retained-data readback exact; proposed x0/x1/s0/
+V0/vectorFP observations await independent raw native/result review. No current
+caller/table/control/voice/output or calibrated math/public grade adopted.
+Earlier prepmanifest57db0f41… seals5payloads/39,554B; sourcepreflight/readiness
+40negative controls plus13independent guards passed. No capture replay/newwindow/
+callee/provider/runtime/toolinstall selected. RequiredunsupportedU/productOPEN.
+
+
+## [2026-10-20] review | Wavetable164 native facts adopted; x86 typed8 metadata selected
+
+Root read full40,142B independent reviewd651f221… in three completeparts;
+no findings,25ownnativefield/custody controls. Actual12payload23,196B seals164bytes/
+41rows/one recordeddecoderchild/zerooriginalcalls;15recorded before/afteridentities
+equal. X0loadbase/fullX1currentindex/S0multiplier/full128bitV0return, fourbinary32
+lanes,0.5/1.5constants and ordered4fusedFMLAs adopted asconditional localfacts.
+CurrentindexUNMASKED,neighboroffsetsmasked;no integerconversion/nativeprototype
+repair,FPCR/FPSR/table/caller/x86/voice/output/readyX/publicgrade/site/closure.
+Oldcanonprefix exact. SeparateRootselection69a810c1… authorizes all8exacttypenames/
+8primary6slotprefixes max48x86metadata,strictMachO/RTTIpointerheaders only;
+no code/native/callee/constructor/provider/originalexecution. Modulation122source
+24payload1,574,875B sealedecb9198b… and Mboundary2138data-onlyproposal frozen,
+both under independent reviews;NULL259preserved,no Mactual selected. Shared
+routes/coverage/questions reconciled;unsupported requiredU/productOPEN.
+
+
+## [2026-10-20] review/execution | Modulation122 adopted; whole2138 M actual retains five discrepancies
+
+Root read full63,095B Modreview2e4ba119… (alltruncated displays recovered),
+no blockers/one M122-REVIEW-NOTE-001 unusedvoid* vsdeclaredscalar qualification.
+Exactpriorcanonprefix+2815Bproposal preserved beforeRootapproval;24payload1,574,875B,
+122wholeC9,041lines31warnings47fourbyteextents44expanded,12losslessVocoder,
+9claims8OPEN6NOTREADY,33author+17peercontrols. No callablemathX/publicroute/site.
+Rootreadfull37,737B Mproposalreview22853400… approved, then separatelyselected
+whole2138actual8d843529… underunchanged4doubleMmodel,50factoryclasswithheld.
+Rootordinary257linecollector selfcheck12neg passed;17children2138returnedcalls
+03:27:04–06UTC/all0/no stderr/timeout/use/TRAP/FAULT/retry/custodychange,8,552FP
+hoststrtodexactbits precallfrozen.47payload6,858,815Bactualmanifest64c8769a…,
+1,874knownagree/FIVEmismatchesexpectedfalse→observedtrue0315/0485/0950/1022/1679,
+259NULLungraded179false80true;all10priorcontrolsagree. NOoracle/input/criterion
+repair orrerun. Actualpeerreviewpending;REQ009boundarycompletenessmarkedstale,
+entirepriornormativebody preserved outsideone datedevidencenote. Stoponlylater
+UNLAUNCHEDchildren,not earlyqueuedcallpreemption. Legacy208metadata activated
+underRootselection4f115c02… beforeCread; x86typed8exactnamecensus7of8refusesall
+slotprefixes,pendingmetadatareview,no retry/fuzzy/nativefollow. Sharedplan/session/
+roadmap/index/atlas/coverage/questions reconciled;requiredU/productOPEN.
+
+
+## [2026-10-20] review | Wavetable x86 typed8 bounded refusal adopted; focused metadata successors selected
+
+Rootreadfull21,648B independentreviewaab60ace… in two completeparts,no findings.
+ExactpriorSynthesisprefix preserved;12payload109,979B manifestf6d4ab69…,
+419linecollector/115checker/54commands/5segments/36sections/21rawspans1341B.
+23synthetic+13retained+20peercontrols. SevenadmittedBOTH-NULexactnames/candidate
+headers,zeroall8prefixes/slots;LCstarts payloadnotread. OthertrailingNULsuffix
+occurrencesunknown,notclass/nativeabsence;0x10vptr unresolved. Rootseparately
+selectedv2same8exactliteraltrailing-NUL/nameptr search01a8c9ab… no fuzzynames/native/
+runtimefollow. RootalsoselectedexacttwoMx86/ARMheader+LCstartsmetadata eab887f6…
+toscopeactive5boundarydiscrepancies;no instructioncapture/rerun/modeldecision.
+Legacy208source retainsall208ranges/15,298Cline frontier inauthorship. Focused
+11page82payload11,507,160Bcheckpassed/exactpriorModprefix+proposal/entireprior
+AutomationSpecoutsideoneevidencenote;newnative/tool/olderpayloadreplaynone.
+RequiredunsupportedU/productOPEN,T1.7deferred,Amp/Cabinetblocked.
+
+## [2026-10-21] decision | Plan revision 4 second amendment: batch adoption, authorization scope, X-count ordering, ledger totals
+
+Measured at 03:35 UTC, nine hours after the first amendment: 34 packets frozen
+(1a, 1b, 32 family cuts, four batches, about 25 source/metadata packets); the
+batches returned about 2,700 harness calls (mix leaves 517 with 252 new
+evaluations; automation boundaries 2,138 with 1,874 oracle agreements, 5
+mismatches, 259 null; eligible leaves 34; Analog 16 captures) and no case,
+clause, release or grade was adopted. Up to nine gate files per packet (a
+164-byte static read), a second full review of batch observations at owner
+revision (sixteen review files for midi-note-storage-v4, +2 cases, 5 extracted
+expectations unchanged), and 25 of 34 packets in device families whose ledgers
+hold no X route. Ledger totals across the 27 cuts with a route column: 190 X,
+732 S, 2,528 none; playback and clip launch add 64 X, 167 S, 241 none in prose.
+The [second amendment](research/full-live-specification-plan.md#second-amendment--batch-adoption-authorization-scope-and-x-count-ordering-2026-10-21),
+[design revision 12](research/full-live-specification-design.md#revision-12--review-once-batch-adoption-and-authorization-scope--2026-10-21)
+and the [roadmap amendment](research/native-decompilation-roadmap.md#revision-5-amendment--yield-ordered-depth-and-one-review-per-standing-packet-2026-10-21)
+make a standing packet one manifest and one review, let batch review approval
+admit observations into the owner's next revision, order batches and
+outside-scenario maps by ledger X count with no-X families unselectable, and
+require ledger totals in every checkpoint. No denominator, closure gate, ADR or
+authorization changes; T1.7 stays deferred. Codex coordinator notified.
+
+
+## [2026-10-20] review | M whole2138 provenance approved with five confirmed discrepancies
+
+Rootreadentire106,194B review523323a4… in eightuntruncatedparts:47payload6,858,815B,
+17children2138returns8552hostargoccurrences153tokens,1874knownagree/FIVEfalse→true
+findingsAMB-ACT-F01–05,259NULL179false80true ungraded;12self+14peercontrols.
+All10controls/92separatetol-vs-cubic cases agree; qzero19discovery8false11true,
+Dnonfinite16false. Fiveexactrawline/word/PID/queuedhistory locators preserved;
+MB1679wholeRAXffffff01 selectedLSB1, no normalizedwholeword/argumenttraceclaim.
+1882declarations1783trap98linux1data perchild/31994total,0countedusedrows not
+provider/dataabsenceproof. PosthocregroupingsensitivityNOTcause/order/oraclefix.
+RootAMB-ROOT-NOTE-001qualifies reviewfsyncprose:JSONpayloads/receiptsfsynced,
+rawfilesclosed/retained/hashverified,norawFDfsync/powerlossclaim;frozenbytesexact.
+Entireprior61497BAutomationSpec recoveredexactoutsideupdatedcurrentdatedevidence
+note;v1pendingnoteretainedinimmutablerecord,v2noticeapprovedwithfindings.
+REQ009generalbinary64agreementstale;no norm/case/release/site/gradechange/rerun.
+Mtwo-pointmetadataandwhole8trailing-NULmetadata inprogress;Legacy208sourceauthored
+withinfull666796Cbytes/15298lines scope. Sharedroutes/method/roadmap/questions/
+coverage/log reconciled;all50factorywithheld,unsupportedrequiredU/productOPEN.
+
+
+## [2026-10-21] research | design12 adoption, finished frozen reviews and census correction
+
+Root reread plan revision4 second amendment/design12/roadmap5 amendment. Automation2138 direct owner adoption assigned; high-X eligibility/census run in parallel. Existing frozen V2Wavetablemetadata12payload175364B, Mmetadata15payload1218958B and Legacy208source23payload3054773B approved reviews adopted by citation into canonical research; three prior prefixes exact. Fifty new payloads total4449095B; bounded hash/tree/prefix check passed. Review scope/results are cited, not a new second review of every observation. Legacy Erosion512maskedpositions notphysicaltableextent; Wavetable outerexit/PIDunknown/fullLCpayloadabsent; M1080Bintervalsmetadatanotbody/FPcause. All no-X successors parked. Schema-aware preliminary691X/1076S/3857none across32heterogeneousinventories under independentreview preparation; earlier190/732/2528amendmentfigures disputed, Analog199Xpredecessorr1 notcurrentR2denominator. Indirect25071baseline+24conditional=25095of268015 unchanged. No original execution/newtool/model/implementation/release; unsupportedrequiredU/wholeproductOPEN.
+
+
+## [2026-10-21] review | schema-aware family census correction approved
+
+Root independently checked all 5,624 IDs/routes/source pointers across 32 explicit required-unit schemas, 68 immutable inputs, predicate/context joins excluding409 annotations, Analog v2 overlay limitations, priority and totals. Nine census payloads /2,268,127 bytes; manifest0cd252b1…; review15,073B SHA1c58ffb7…. Thirteen author controls and five independent invalid-route controls passed. Canonical atlas adopts691X/1,076S/3,857none as heterogeneous inventory, not a behavior denominator/fraction; Analog199X remains predecessor-r1 and currentR2 denominator unestablished, MIDI mapR4 stays historical. CENSUS001–003 supersede amendment literal totals/column-absence/priority omissions, with policy/history preserved. All16zero-X cuts parked; current eligibility gates count-based order. Indirect25,071+24=25,095of268,015 unchanged; no original/model/native run or public grade. Unsupported required behavior U/OPEN.
+
+
+## [2026-10-21] spec | Automation r6 adopts approved finite batches
+
+Automation r6 directly admits2,162 finite X cases from existing approved observations, without a second observation review:2,138M (663T/1475F),15Bezier,nine segment states;ten oldM aliases/two auxiliary endpoints. Five predictions correct REQ009;259 formerNULLs acquire new expectations with originalNULL history unchanged;92 tolerance cases distinct. Owner manifestfa1193a5… sealsfivepayload897,750B; added-wording reviewce9b1b37… approved with AEN-R6-ROOT-001 preservation qualification (33IDs/29HEADexact;four preexistingR5rows not a fresh wholebaseline comparison). Fulloutside-setalgorithm/nativecause/ARM/public delivery remainU;50constructionrows withheld. Releasedv2 boundedK unaffected/immutable. Index/research/coverage/currentqueue reconciled. Ledger691X/1076S/3857none mixedfrozencuts; indirect25071+24=25095of268015 unchanged. No original/model/implementation/release run; unsupportedrequiredU/productOPEN.
+
+
+## [2026-10-21] spec | Mixer r6 adopts252 reviewed helper expectations
+
+Mixer r6 addsMV049–300 underREQ014 from alreadyapproved observations; eightpayload373,378B manifest90b1e68e…. Root added-wording reviewf5732099… approved, data-only projection/preservation checkPASS252rows/12negativecontrols/14otherbodies/48oldrows exact. All301observations cited/49historicalX2controls retained;49releasedinputs/80caseobjects/comparators unchanged,35boundaryoverlap266outside14absent lineage explicit. Exactx86/glibcbits establish no portableARM bound or129table/publicsign/audio grade;36patchedrows withheld. Directadoption reuses priorbatchreview/no observation rereview. Currentindices/research/coverage/selection updated. Ledger691X1076S3857none mixedcuts,indirect25071+24=25095of268015 unchanged;unsupportedrequiredU/OPEN.
+
+
+## [2026-10-21] review | Electric eight-child seam batch approved
+
+Electric42payload2,554,447B manifest30792ae8… approved by Root independent reviewf34a698f… (12,377B), all855directexports/eightchildren/2,308,496rawbytes verified with eight peer false-record controls. P1 allfourstoredaliases→threehostvectors; P2foursettings+separatebaseline. Bothpickup pairs equal finite captures, no universalnoeffect/waveform/smoothing criterion. All264hostwords/packed events/status/raw/import use verified; nineauthorinput/sixdatacontrols passed. Zero-native author assertion failure retained; corrected historical-prefix assertion and bookkeeping precede soleeightchildattempt, no native retry. Before/afterloader/imageidentities equal; no reviewerbinary/runtime acquisition. Existing117finiteevals/threeunstablecriteria unchanged, public/ARM/calibration gapsU. Nextowneradoption queued; no source/tool/model/implementation/release change. Ledger691X1076S3857none heterogeneouscuts, indirect25071+24=25095of268015 unchanged;wholeproductOPEN.
+
+
+## [2026-10-21] review | Analog whole21 mode batch approved
+
+Independent review46402c9f… (59,541B) approves91payload8,059,486B manifestaff78907… with0blockers. All21one-attemptchildren/6,153directexports/1,827CalcA/7,408,800rawbytes checked, all exit0/stderr0/notimeout/fault/retry. Fourchangedmodevectors index101Loop1/2/3+102FreeRun1;16equal finitebaseline, allproductivebothchannels. No inactivity/general-mode/latency/tail/settling/ARM/calibration/publiclaw inferred. Reviewerdisclosespriorinputtriageauthorship, notactualcollectoranalyzer/results; full188/133line source, sixinput/sevendatagroups/16peercontrols/allrawvalues fresh. Ordinaryretentionnoexplicitfsync/durability;30recordedcustodybefore/afterequal, noreviewerbinaryreacquisition. Rootadoptsdisposition/qualificationbycitation, no secondobservationreview; combinedAnalogr3owneradoption underway withpreviousapprovedeightpairedhistories. Currentledger691X1076S3857none heterogeneous,Analog199Xasofr1;indirect25071+24=25095of268015 unchanged;requiredU/productOPEN.
+
+
+## [2026-10-21] review | Tension whole11 retained report joins approved
+
+Ninepayload533,244B manifest3892fb5f… approved as retainedreport/sourcejoins ONLY by Root review5983e18c… (6,819B). All239navigation entries/11sets reconstruct exactreport;27retainedpins/11sourceanchors/258baselinewords/threeCorpusscripts checked, nine ownednegativecontrolsPASS. HistoricalX attribution inherited, no new nativeaudit/exactchangedindexedfixture or processcustody fabricated; oldmanifest excludesrawchecks. Scratch4709pairs metadataonly not read/hashed/decoded or custody rescue. Actual quant thirdvalue lowerbinary32neighbor0x3e7fffff retained;NULL/measurement references notpass/native/calibration. TNR067ungatedU,pickup37/velocity1 broadpointer gaps qualified;27release/fourchaotic/37uncalibrated unchanged. Canonicalresearch/index updated, no owner/release/model/original/candidate change. Ledger691X1076S3857none mixedcuts;indirect25071+24=25095of268015 unchanged;requiredU/wholeproductOPEN.
+
+
+## [2026-10-21] spec | Analog Electric and Tension R3 owners adopted
+
+Root added-wording/preservation reviews12a4f6f4…Analog/802d7df3…Electric/2cd990a9…Tension approve direct adoption/reconciliation without repeating observation reviews. Analog8payload166011B manifest3f6e6f32… adds28cases (eight histories/twenty modes), exactreversibleR2/20otherbodies/39rows47IDs/withdrawalprefix. Electric5payload66296B manifest3f76b241… adds8cases/twopairs,14otherbodies/32rows exact (Root's first row hash comparison omittedLF; corrected check preserves exact bytes, no spec change). Tension4payload24101B manifest0afcbea6… adds0cases,14otherbodies/42rows exact, ungatedDamperVelocityU/239reportentriesnavigation only. Existing releasecriteria/NULL/history/U/calibration preserved. As-of retainedsource checkpins are not future gates againstchangedmutable owners. Index/research/coverage/currentqueue reconciled; no original/model/candidate/release rerun. Ledger691X1076S3857none heterogeneouscuts,Analog199Xpredecessorr1; indirect25071+24=25095of268015 unchanged;requiredU/OPEN.
+
+
+## [2026-10-21] lint | device actual and R3 owner focused delta passed
+
+Focused15page links/metadata/diff andHEADlogprefix checksPASS, no new brokenlinks. Deviceactual/R3 delta aggregates159newpayload11,403,585B identity/mapping proofs fromsix independentreviews (no raw/original/model/oldpayload replay), with newmanifest/reviewpins exact. Prior29/50payload scopes carried; Playback117/Transport excludedinflight. Analog20otherbodies39rows47IDs/entireR2reversal/withdrawalprefix exact, Electric14bodies32rows inclLF, Tension14bodies42rows/0newcasesUqualification. Ledger691X1076S3857none mixedfrozencuts/Analog199predecessorr1only;indirect25071+24=25095of268015 unchanged. RequiredunsupportedU/coverageOPEN.
+
+
+## [2026-10-21] review | Playback whole117 scalar actual approved
+
+Independent review275e720f… (55,956B) approves243payload10,028,789B manifeste0086f72…; all117onecallchildren/234rawfiles/220,194declarations/22recordedcustodyjoins checked. Eight old exactcontrols agree,109frozenNULLdiscovery retained;107finite/10nonfinite (eightInf inclsixfiniteinputs→Inf,two canonical±qNaN),12signedzero returns. Complete192/87/93source read beforechecks,11peernegatives/sevenfreshsafehoststrtodcontrols PASS. No original/model/nativereplay or nativeorder/cause fit. RawJSONfsync versusrawclosed/hash-no-fsync distinction explicit. Eachdeclares1796trap85linux1data,0counteduse notabsenceproof. Rootadoptsboundedreviewbycitation; localREQ017ownerR3preparation withpublic/ARM/FP/fileadmission gapsU. Sourcepinwindowclear/oldR2pinsasofnotfuturegates. Ledger691X1076S3857none heterogeneouscuts, indirect25071+24=25095of268015 unchanged;requiredU/productOPEN.
+
+
+## [2026-10-21] spec | Playback R3 adopts109 finite scalar cases
+
+Tenpayload242,938B manifest03701f9d… adopted with added-wording reviewc3bf0a3e… (2,675B), reusing prior actualreview275e720f….109newPBC097–205 plus8supportingoldagreements/all117represented; originalNULLhistory unchanged.122lineownedchecker10controlsPASS/22otherbodies68oldrows/entire61890BR2inverse exact. REQ017 unqualifiedarbitrarybinary64finite-grid reading narrowed, nonfinite/signedzero bits preserved with nativecause/public/ARM/FP unknown. ScalarHcases use separate setup/comparators;92releasedobjects unchanged. Sourcepinwindow clearbeforeowneredit; oldR2pinsasofnotfuturegates. Index/research/project/coverage/currentqueue updated. Ledger691X1076S3857none mixedcuts,indirect25071+24=25095of268015 unchanged;requiredU/productOPEN.
+
+
+## [2026-10-21] review | Transport whole316 typed-bit batch approved
+
+Independent review2cdd28a0… (30,554B) approves30payload2,267,445B manifestfcf5328b… with no findings:316interceptedargument observations/324entries/eightGDBgroups,313newtypedstrings+threehistoricalcontrols. All rawinteger oracles agree; originalSetValue bodies skipped, no publicstorage/FP/ARM law. Eight80Bdebuggerwarnings, after-onlylibthread_dbidentity, retrospectivegroup checks and non-whitelistbindingguard/noexplicitfsync/POSIX0664 qualifications retained. Twelvepeercontrols and data-onlyownedchecker passed;31recordedcustodyjoins equal. Rootadoptsbycitation, ownerR6queued/windowclear, no secondobservationreview. Nextselectedhighest-Xsourcefrontier is onlyretainedAnalogARM1774c wholebody (32768B/1000lines) for receiveridentityREQ002/022, no callee/table/native/provider/original expansion. Ledger691X1076S3857none heterogeneouscuts/Analog199predecessor;indirect25071+24=25095of268015 unchanged;requiredU/productOPEN.
+
+
+## [2026-10-21] spec | Transport R6 finite adoption approved
+
+Sevenpayload825548B manifest82782168… adopted through Root added-wording review9bdcc53b… (3168B), inheriting actualreview2cdd28a0… without another observation review. TS038–350=313newcases+threehistoricalcontrols;350IDs includingwithdrawnTS023/349nonwithdrawn, notoutcomedenominator. Full194linechecker readbeforeownedcheck15negativesPASS;12oldbodyprefixes/tenotherbodies/37rows exact, independent inverse reconstructsentire34329BR5. No publicstorage/range/formatter/FP/AppleARM/candidate/neutralfixture or release claim; current33releaseobjects unchanged bythischange. Owner/research/index/project/coverage/roadmap/currentqueue reconciled; total2872newfiniteownerIDs. Ledger691X1076S3857none heterogeneouscuts/Analog199predecessoronly;indirect25071+24=25095of268015 unchanged;requiredU/productOPEN.
+
+
+## [2026-10-21] lint | Playback and Transport owner adoption focused delta passed
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-transport-owner-adoption-incremental-check.json) covers12affectedpages/290newpayload13,364,720B usingfourfreshindependentreviewidentity/mappingproofs; no aggregate raw/original/model/payloadreplay. Prior159/29/50scopescarried. Transport12oldbodyprefixes/tenotherwholebodies/37rows/entireR5inverse and Playback22otherbodies/68rows/entireR2inverse exact. Current2872newfinitecaseIDsnotoutcomedenominator, releasesunchanged. LaterAnalog1774c/Collisionworkexcludedpendingreview. Ledger691X1076S3857none heterogeneouscuts/Analog199predecessor;indirect25071+24=25095of268015 unchanged;requiredU/productOPEN.
+
+
+## [2026-10-21] review | Analog constructor-helper retained source approved
+
+Independent reviewcf6b9443… (13,436 bytes) approves the exact eight-payload22,869-byte packet c91de2f5… and all seven conditional source claims. Complete630-byte/27-line helper and21-line caller context read; ten independent controls passed. Literal own-Q return narrows the source relationship, but missing recovered caller argument/signature disagreement leaves P=Q/P=B/actual ABI unknown. Four helper calls/data remain unread. Author whole-chunk hash lacks a predecessor pin; external alias/chunk/image provenance inherited, exact caller row freshly checked. Reviewer did not rerun broader author checker; author eight-pin/13-control result retained as such. Root adopts by citation; selected two-body native read468 bytes/117 words remains separate, no new model/original execution. No case/grade/site credit. Inventory691 X/1,076 S/3,857 none (mixed cuts, Analog199 predecessor) and indirect25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] execution | Collision twelve histories and Analog two windows captured
+
+Collision's complete twelve-history class froze inputs before calls (pre-call manifest5bae8100…, retained exact11,658-byte file), then ran twelve once-only children. Final actual manifest06896e58… binds59 payloads/2,704,695 bytes and is under independent review; no owner adoption yet. Existing event filtering excludes both queued event coordinates from segment2 without a new clear/model. Analog two-window static capture also completed its two once-only decoder calls after pre-call manifestfacfc624…; final seal/interpretation review pending. Both current queues explicitly prohibit rerunning those captures. No outcome/ABI/public/candidate grade adopted from pending packets. Inventory691 X/1,076 S/3,857 none and indirect25,071 baseline+24 conditional=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] docs | Current adoption dates and roadmap revision aligned
+
+Updated dates on the nine affected mutable routing/research/coverage pages now reflect the2026-10-21 adoptions. Roadmap frontmatter now says revision5, matching its already adopted revision5/amendment; no policy or historical release bytes changed. Current Collision owner remains pinnedR1 pending actual review, and native capture pins contain no mutable wiki pages. Historical page pins/checks remain as-of evidence. Whole-product U/OPEN and ledger691 X/1,076 S/3,857 none;indirect25,071+24=25,095 of268,015 unchanged.
+
+
+## [2026-10-21] selection | Whole Analog receiver frontier scoped together
+
+All six missing native range lists are explicit, aligned and nonoverlapping in retained C1 metadata. They combine with four known bodies to ten named functions/2,036 bytes/509 words; five selected raw table words add40 bytes. Root selected this one coherent standing static-read packet for allocation/factory association and all nine declared wrapper/setter sites, with the earlier468-byte packet as unreplayed context. Table encoding/runtime identity and unread helpers/effects remain unknown. No broad traversal or fixup/provider/original execution selected. Analog bundle sites are outside the main Live268,015-site universe: any local supported association remains separately counted. Main25,071+24=25,095 unchanged, as are691 X/1,076 S/3,857 none heterogeneous frozen inventories; requiredU/product OPEN.
+
+
+## [2026-10-21] review | Analog two-body native carrier relation approved
+
+Independent reviewbf1ce616… (32,082 bytes) approves25 payloads/116,456 bytes manifest5884a9cb… with no findings. All117 rows/468 bytes/two decoder receipts/23 recorded custody joins verified; ten independent raw-field controls passed. Conditional normal-path P=Q=B and0x580c0 store now supported under saved-register/stack/validity premises, not formal ABI/factory/class/Live/public identity. Four malformed0lr strings preserved/raw pair fields checked; seven BL/eight ADR/16 pairs and critical fields substantiated, ESIL ignored. Broader author checker not rerun; inherited author14/eight controls distinct from fresh peer checks. Owned files freshly hashed, external image/tool/corpus identities recorded rather than reviewer reopened. JSON/raw fsync without directory durability; no failure-path validation or original execution. Root adopts by citation; whole ten-body/five-word successor selected, prior468 bytes not replayed. Main25,071+24=25,095 of268,015 unchanged; Analog bundle sites separate. Inventory691 X/1,076 S/3,857 none;required U/product OPEN.
+
+
+## [2026-10-21] review | Collision twelve enable histories approved
+
+Independent reviewe899873b… (56,450 bytes) approves59 payloads/2,704,695 bytes manifest06896e58… with no blockers;0664 modes qualify byte sealing rather than OS write protection. All12 once-only children/2,264 direct exports/552 CalcA/565,248 sample words/34 recorded custody joins verified. Eight prefixes exact, four repeated-setter suffixes equal/four changed suffixes differ; tiny OFF→ON≈6.6e-20 supplies no audibility/productive-note or general law. Warm-up-before-queue and strict4097/7168 exclusion from second4096 segment verified from inert source, no new model. Original predictions NULL, raw/JSON no explicit fsync, nested/provider and child-end detection limits retained. Nine owned/eight peer controls passed; all1668 initial/eight sent values and129 declaration logs checked. Root adopts by citation; ownerR2 edit allowed after source-pin clear, preserving current50 rows/18 prior bodies and released two criteria. Inventory691 X/1,076 S/3,857 none, main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] spec | Collision R2 finite histories adopted
+
+Seven payloads172,694 bytes manifest6465a85a… adopted through Root wording reviewbc0e7f51… (3,439 bytes), inheriting actuale899873b… without raw/observation replay. DCL051–062 adds12 exact histories (four controls/eight transitions), with eight pair relations separate. Complete142-line checker read before invocation;11 controls passed.18 old prefixes/17 other bodies/50 rows/proposed metric/open questions exact; independent inverse reconstructs full31,187-byte R1. DCL048 general U, tiny OFF→ON, NULL predictions/new candidate comparators and released two criteria preserved. No new calibration/public/ARM/waveform/no-effect law, neutral fixture or release. Current owner adoptions add2,884 finite draft IDs, never an outcome denominator. Routing/project/spec/research/coverage/roadmap updated. Whole Analog native packet has sole peer arrangement_map_review, not Root; frozen intended-reviewer note preserved as history. Main25,071+24=25,095 of268,015 and691 X/1,076 S/3,857 none remain unchanged;required U/product OPEN.
+
+
+## [2026-10-21] selection | Electric whole receiver and Tension three-export frontiers
+
+Root selected Electric's exact eighteen named factory/enclosing/core/control-registration/setter/rate/reset/render bodies (6,252 declared bytes/1,563 words), conditional on ten missing explicit C1 range/status records matching before any decoder call. Existing raw-window method only; no new table words before correct receiver evidence, no inferred continuity or original execution. Root also selected Tension's complete retained Create12fc8/Calc13248/Set13590 source cut (three records/3,999 C bytes), for receiver/index/slot expressions toward REQ008, not a promise of ungated DamperVelocity behavior. Existing exact metadata/whole-owner gaps remain; no scalar-workaround or fabricated historical custody. Mix authors Electric, auto authors Tension, arrangement alone reviews Analog's509-row packet, Root maintains owners/routing/reviews Tension source. No duplicated native review; one packet/one peer each. Main25,071+24=25,095 of268,015 and691 X/1,076 S/3,857 none unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Analog whole receiver and Tension export source adopted
+
+Root adopts sole Analog peer5c46a69e… (46,826 bytes),80 payloads/302,427 bytes manifest887dcebd…, by citation. All509 rows/40 raw data bytes/80 branch-RET/16 address fields/21 recorded custody pairs checked; twelve owned/twelve peer controls passed. A/O/priorP-Q-B/R/C remain separate; unread1760/post-probe argument preservation/runtime table binding U. Frozen intended-reviewer entry preserved; prior117 proof inherited after capture, not retroactive input. No original or main-site/grade credit. Root separately approves/adopts Tension sourceb3281412… (4,525 bytes),eight payloads/35,420 bytes manifestcb8d0e3c…:all166 C lines/ten claims/four unresolved slots read; twelve owned/eight semantic controls passed. Set argument omission/Calc stack-probe projection/warning remain; transport-like is resemblance only, ungated DamperVelocity U. Three exact native intervals900 bytes/225 words selected conditionally on H4 mapping/custody, no table/callee/provider/original execution. Indirect25,071+24=25,095 of268,015 and691 X/1,076 S/3,857 none unchanged;required U/product OPEN.
+
+
+## [2026-10-21] lint | Receiver source and Collision owner focused delta passed
+
+Fourteen affected pages/187 new payloads/3,354,561 bytes passed current links/metadata/diff/HEAD-log-prefix checks. Aggregate rechecks six manifest/review identities and counts while carrying their fresh independent payload/mapping proofs; no old payload/raw/original/model replay. Analog source/two-body/whole-native, Collision actual/R2 owner and Tension source included; later Electric18/Tension225 native excluded pending review. Earlier290/159/29/50 scopes remain as-of passed without replay. Collision18 prefixes/17 bodies/50 rows/proposed metric/open questions/fullR1 inverse exact; current owner adoptions add2,884 finite IDs, not grades. Current handoff queue condensed around clear owner/status links; immutable evidence history unchanged. Main25,071+24=25,095 of268,015 (bundle sites separate) and691 X/1,076 S/3,857 none unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Tension native carriers adopted and Analog52 selected
+
+Root sole reviewd681deb1… (4,983B) approves Tension31payload116,728B manifest62004828… after all225 rows/900 raw bytes/eight claims/fullcollector-checker,12 owned/eight peer controls. Three static children exited0/empty stderr/no timeout;11 recorded custody identities equal, no original instructions. Setter incomingX0/X1/S0 preservation is local; Calc saved arguments are post-probe and entry equality requires unread-probe preservation. Distinct0x15/0x14 queries/four unresolved targets/FP loop/frame retained; string type-null annotation is not JSON null/fault. Named63/FP/public/transport/Damper stays U. No oldsource/whole11/native replay. Analog read-only metadata establishes explicit4Bthunk1760 extent/15e0 target label; Root selects exact4B+six outer595f8 slotwords48B,52 total. Mix authors/Auto solely reviews. No speculative R+90 or C callback words: addresspoints/bindings/encoding stay open. Existing methods/one frozenactual-review only. Routing/index/coverage/roadmap updated; no case/grade/release/main-site credit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Electric whole receiver operands adopted
+
+Root adopts sole independent review80d99a80… (58,005B) by citation, no second actual review. Electric124payload768,155B manifestf376086a… unchanged/0444; peer read all18 C projections/1,180lines/all1,563 raw rows/6,252B/nineclaims/33registrations/fullcollector-checker. Eighteen once-only children exited0/empty stderr/no timeout,22 recorded custody pairs equal;14 owned/16 peer controls and156flow/28address fields passed. A/O,S/T/K,R/child/D/probe/target/encoding/public gaps remain explicit; rawconstantstores/registration counts are not outcomes or runtime pointers. No original instructions/site/case/grade/release credit. NextElectric scope selection read-only; Analog52 selected Mixauthor/Autopeer, Tension225 adopted. Index/project/currentqueue/coverage/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] check | Electric Tension native adoption delta
+
+Focused nine-page links/metadata/diff/HEAD-log-prefix check and two sole-review identity associations cover155 new payloads/884,883B. Native payload/mapping proofs come from their fresh independent reviews, without aggregate raw/image/tool/original/model replay. Prior187/290/159/29/50 scopes carried as-of; Analog52 in progress excluded. Current owner caseIDs2,884 unchanged, no behavior grade/release/site credit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] selection | Construction gaps and outer dispatch nominations
+
+After sole reviews adopted, Root selects combined Tension whole1b7c/1c18 C/native:1,730raw record bytes/857Cbytes plus228native bytes/57words, preserving1c18 jumptable/indirect-jump warnings. Auto authors after Analog52 solepeer, Root solely reviews. Electric next selection is whole4db0/1b124 C/native plus six outerO nominations48B, conditional on exact explicitmetadata extent/status; arrangement authors/Root solely reviews. No inferred thunks/continuity, speculativeR/D words, original/model/provider/header/fixup or automaticcallee/target follow. Existing methods/one frozenactual-review; prior evidence inheritedbycitation withoutpayload replay. Currentqueue/plan/research/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] selection | Whole Analog nominated wrappers
+
+Read-only explicitmetadata defines allsix next candidate bodies19a14/19a60/19ae0/19b60/1a128/1a18c,1,860native bytes/465words, noerrors/partial/timeouts and15literal warnings preserved. Root selects combined wholeC/native afterAuto52approval, no furtherRoot gate. Mix authors/arrangement solely reviews afterElectric148seal, Root solelyreviewsElectric/Tension. No prioractual replay/newtables/callee/header/fixup/provider/model/original follow. Candidateintegeraddresses are notruntimepointer/functions; wholecut targets O+8→A/P/R/C composition with allunknowns retained. Queue/plan/roadmap updated. Current691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Analog52 forwarding and outer words adopted
+
+Root adopts solepeer ddeb8886… (13,839B) by citation,28payload61,550B manifest5cdcb702… unchanged/0444. Complete4Bthunk/48Bdata/allnewcollector-checker/eightclaims checked;14owned/10peer controls passed, onechild1338708 exit0/empty stderr/no timeout/retry,17 recorded custody pairs equal. B1760→15e0 preservesX0/SP/returnlink, conditionally composing A=priorP/Q/B with inherited normalpath/state/callee premises. A/O equality or inequality,R/C/currentO/probe/encoding/runtime/public remainU; six stored integers are nominations, no pointers/targetadmission. No originalinstructions/site/case/grade/release credit. Prerequisite for selected whole6wrappers is satisfied: Mix executesonce/arrangement solepeer; Auto authorsTension2, Root reviewsElectric148/Tension2. Canon/index/project/currentqueue/coverage/roadmap updated. Current691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Electric148 construction and outer words adopted
+
+Root solepeer66b782de… (4,320B) approves37payload73,330B manifest456fb38d… unchanged/0444. All250collector/75checker lines/700Cbytes29lines/25rawrows100B/sixwords48B/sixclaims/receipts read; tenowned/sixpeer controls pass. Twostaticchildren1339557/58 exit0/empty stderr/no timeout/retry,14recorded custody pairs equal, no originalinstructions. B4db0→4500 and wholeleaf1b124 noX0write conditionally composeS=T=K with inherited4500; A/O/R/child/D/encoding/runtime/public gapsU. Sixstoredintegernominationsnotruntimefunctions/targets; no callee/global/table expansion. Canon/index/project/queue/coverage/roadmap updated; nextsixcandidate metadataread-only. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] selection | Whole Electric nominated wrappers
+
+Exactmetadata selection passed for allsix e5b4/e600/e680/e700/ecc8/ed2c,1,860native bytes/465rows,12,149Cbytes/15warnings,exported-with-warnings/nonthunk/noerror/partial/timeout. Root selects onecombinedwholeC/nativepacket, Mix authorafterAnalog6seal/Rootsolepeer. Nocallee/table/header/fixup/provider/model/original or priorrawreplay, nocandidateaddress→runtimefunction promotion. Entire O/A/R/child/D forwarding testedwithunknowns explicit, notassumed. Queue/plan/roadmap updated; sameonefreeze-review method. Current691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Tension construction and cleanup adopted
+
+Root solecombinedpeer d3410d97… (4,654B) approves28payload75,974B manifesta4bb9f0b… unchanged/0444. Both whole1730rawrecordB/857Cbytes38lines/57nativerows228B/all6claims/collector-checker/receipts read,13owned/eightpeer controls pass. Twochildren1341134/35 exit0/empty stderr/no timeout/retry,14recorded custody pairs equal/no originalinstructions. Native forwardsP→1e04/O→15860, stores[O+8]=P, returnsO conditionally; cleanupcastD/reloadIafter161cc/currenttargets/tailBR remain distinct, bothwarnings retained. No allocator/class/ABI/public/63/Damper/site/case/grade/release credit. Nextselected whole1c84/15860 C/native+one1e04thunkword336nativeB84w, expandedthunkCexcluded;Autoauthor/Rootsolepeer. Canon/index/project/queue/coverage/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Whole Analog outer wrappers adopted
+
+Root adopts solepeer e12f032d… (55,405B) by citation,54payload240,836B manifest64d1af72… unchanged/0444. Peer read all6C/11,987B412lines/all15warnings/all465native rows/eightclaims/fullcollector-checker/sixreceipts/20custodypairs; sixstaticchildren exit0/empty stderr/no timeout/retry/no originalinstructions. Fourteenowned/16peer controls passed;16GPRpairs includes finalpost-indexrestore while author15 uses narrowerpattern, no repairrequired. Sevenlocal member-to-innerslot paths support conditionalforwarding only; R/C/currentvptr/encoding/public/FPnumeric law remainU. No site/case/grade/release/owner changes. NextAnalog binding/constructor/encoding scope read-only; Electric6 sealedRootpeer, Mixmetadata only; AutoauthorsTension336. Canon/index/project/queue/coverage/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] check | Construction and Analog-wrapper adoption delta
+
+Ten affected pages/147 new payloads/451,690B checked via four fresh independentreview identity/mapping proofs (Analog52/Electric148/Tension228/Analog6), without aggregate raw/source/image/tool/original replay. Links/metadata/diff/HEAD-log-prefix checked; older155/187/290/159/29/50 scopes carried as-of. Electric6/Tension336 excluded pending sole reviews. Root solelyreviewsElectric6; Mix solelyreviewsTension336 afterAuto authorseal, intendedRoot labels retained as historical/assignment disclosed, no duplicatereview. Analog6pair metric qualification preserved. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] selection | Analog constructor helpers and conditional override word
+
+Root selects allfour explicitwhole1ac0c/1b058/1b0fc/1b138 helpers,380nativeB95words/3007Cbytes, plus8B58150 nomination:388native/dataB. Arrangement authors/Root solepeer. ConditionalO→A/member/vptr/encoding/old580f8integer18640→R=A chain justifies only a conditional580c0+90position, not runtime target or callbackCaddresspoint. Interiorhelperroles/currentR+8 stayseparate. Allmetadata validnowarnings; no oldpayload replay or callee/table/header/fixup/provider/model/original expansion. H4LC_DYLD_INFO_ONLY names lack exactstreamgeometry, encodingU. Electric48proposal remainsunselected; MixsoleTension336peer afterAuto seal. Queue/plan/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Whole Electric outer wrappers adopted
+
+Root solepeer224cc3b9… (5,338B) approves54payload237,272B manifest9e3bb512… unchanged/0444. Full6C12,149B414lines/all15warnings/all465native rows/eightclaims/collector-checker/receipts read,16owned/tenpeer controls passed,26load/90flow/16GPRpairfields inclfinalpost-index verified. Sixstaticchildren all0/empty stderr/no timeout/retry,18recordedcustodypairs equal/no originalinstructions. Sevenlocal member-to-inner paths conditionallyforward, R/child/D/encoding/public joinsU; sourcecasts/nativeFCVTZU/FMADD/FPcontext notportablelaw. No site/case/grade/release credit. NextAutoauthors boundedElectric48innerwords+header/declaredLC/rebase-bind witness/Rootsolepeer; frozenadaptivebounds/exclusions, no extraheadergate or guessedstreamgeometry. MixsoleTension336peer, arrangementauthorsAnalog388. Canon/index/project/queue/coverage/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Tension constructor addresspoint stores adopted
+
+Root adopts solepeer c730c155… (27,500B) by citation,35payload86,717B manifestc589e100… unchanged/0444. Peer read whole2C1021B37lines/all84rows336B/sevenclaims/collector-checker/3receipts/16custodypairs; threechildren all0/empty stderr/no timeout/no originalinstructions.14synthetic/13owned/16peer controls pass. ThunkPforwarding local;5c0c0 storedthrough136d0 returnB withB=P unknown,5d5c0/O+8zero point-local.12frame+3datapairs checked; two malformedFP/LRprints rawSP+48 retained. Currenttable/P/O/Q/D/I/ABI/named63/public/Damper stayU; no site/case/grade/release credit. ActualpeerMix reassignment disclosed/frozenintendedRoot labels historical, no Rootraw/source replay. NextMixmetadata only;RootAnalog388peer/AutoElectricencodingauthor. Canon/index/project/queue/coverage/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Analog four-helper and override-word packet adopted
+
+Root solepeer a93710f9… (4,830B) approves44payload108,517B manifest180a8292… unchanged/0444. All4C3007B108lines/all95nativerows380B/8Bword/eightclaims/fullcollector-checker/receipts read;12owned/sixpeer controls pass,15flowfields checked. Fourchildren1345873–76 exit0/empty stderr/no timeout/retry,16custodypairs equal/no originalinstructions. Inline reviewauthoringand4syntax typo corrected before execution; no capturedbytes/checker changes. Whole V/J/Z/interior paths preserveposthelper/currentfield distinctions and localguardonly, no callbackC/ownership/domainlaw.58150raw2c34conditionalnomination, no target/runtime/public/site/case/grade/release credit. No nextAnalogcontentselected. Root alsoselects wholeTension6helper/export+3word916B (892nativeB223w/C3486B145lines),Mixauthor/arrangementsolepeer; extra10/50/58words unselectedwithoutoperandproof. Canon/index/project/queue/coverage/roadmap updated. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] check | Three-device construction adoption delta
+
+Ten affected pages/133 new payloads/432,506B checked through three fresh sole independentreview identity/mapping proofs: Electric6/Tension336/Analog388. Links/metadata/diff/HEAD-log-prefix checked, both existing filelist/filemap manifests supported. No aggregate raw/source/image/tool/original replay; prior147/155/187/290/159/29/50 scopes carried as-of. Electricencodingwitness/Tension916 excluded pending sole reviews, Root andarrangement respectively. No ownercase/grade/release/site change;2,884finite IDs remainseparatefromcoverage denominator. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Electric encoding witness and Tension916 adopted
+
+Root witnessreviewda614ccb… (5,194B) approves23payload65,171B manifest51db2816…,7,816selectedrawB/header15LCs/fourrawstreams/sixwords; no opcodesites/runtimeproof.18synthetic/sevenwritable-tempcopy/eightpeer controlsPASS. DirectsealedtamperrunnerPermissionError tracedtocopytree preserving0444; unmodifiedrunnerpasseswritabletemporarycopy only, frozenbytes/modesunchanged. Q01endpointPythonhashnotactualexecutedinterpreterproof/Q02testrecipe preserved. Root adoptsTensionsolepeer0c2b7ffb…47,373B bycitation,57payload164,698B manifest91421c46…,all145Clines/223rows/threewords/eightclaims/19custodypairs/sixnormalchildren checked,18owned/16peer controlsPASS. B=Pconditional, receiverstatewritesexcludeSPstores/latermutation;FRINTZ/STRS0 recoverydifference staysunknownmath. Workercapacityfailureaftercapture/seal recoveredbyownedstatus/receipts, no capture rerun. NextAnalog1796 arrangementauthor/Mixpeer; Tension1596Mixauthorafterpeer/arrangementpeer; ElectricownedsiteassociationAutoauthor/Rootpeer. Canon/index/project/queue/coverage/roadmap updated; no site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] review | Electric encoded sites adopted and primary authority selected
+
+Root solepeer025a8ebb… (2,486B) approves25payload299,902B manifest44dc1caa… unchanged/0444. Complete270/113line extractor/checker, all184runs/621consumedopcode records/137LEB operands and six-word claims reviewed;36synthetic/fiveTEMPtamper/sealedreproduction controlsPASS, independent755finitewrite associations/87lazygrammar/36,864interval casesPASS. Reviewerfixture missingfileoff corrected before successful rerun, no frozenchange. Sixexactrebase sites positive; bind174/185 andweak39/50 overflowboundaries remainU underpredeclarednonwrappingmethod, notmalformed-original/native-failureproof. Globalabsence/runtime/public/REQ002/014/calibrationU; inheritedQ01/Q02 preserved. Auto selected primary Apple dyld source/method research only, Rootsolepeer; no newextractor/wrap/suffixreplay/image/native/runtime acquisition. Canon/index/project/queue/coverage/roadmap updated. Focusednine-page105payload529,771B delta includesprecedingElectricwitness/Tension916, carries133/147/155/187/290/159/29/50withoutreplay. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged;required U/product OPEN.
+
+
+## [2026-10-21] maintenance | Restore historical checkpoint routing
+
+The latest-check replacement also matched two historical plan paragraphs. Their links now again route to their original Modulation122/Automation-M and family32 Synthesis/Legacy reports; the current105-payload check stays only at the current checkpoint. No retained report or evidence was edited. Links and diff checked for this routing correction, with prior report scopes kept as-of.
+
+
+## [2026-10-21] maintenance | Route device depth and expanded declaration reading
+
+The program atlas now routes to the canonical Analog/Electric/Tension local dispatch frontiers, keeping separate-image sites outside the main count. The Apple Mach-O source register records the additional retained dyld declaration lines used by the approved Electric study, without claiming loader implementation authority. Research index and focused links checked; no new source acquisition or behavioral credit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Analog initialization adopted; guarded data cut selected
+
+Root adopts Mix solepeer15235457…39,095B by citation,32payload274,958B manifest0d9bf1b5…, without second source/native review. Both wholeC9258B396lines/onewarning/all449rows1796B/tenclaims/18custodypairs/tworeceipts checked;14synthetic+16owned+16peer controlsPASS. CurrentJ+70returnE→[J+8] local, laterC0/C1/C2/castD/helperF/R0/currenttable/public remain separate or U. Arr next authors exactly134dataB:8B58130 and126guard-backed table entries52ec0..52f3e; Rootsolepeer, no destination/newbody/header/fixup/provider/runtime/original follow. Allindex-to-byte-to-address nominations retained, not maximal-linker-table proof. Mix proceedsTension1596/Arrsolepeer; AutoAppleauthority/Rootsolepeer. Canon/index/project/atlas/queue/coverage/roadmap updated; no site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Primary Apple dyld authority adopted; guarded method revision selected
+
+Root solepeerbdd01ef1…2,999B approves20payload685,216B manifestc4453388…, exact21readonlyfiles. All17selectedranges/1283lines/59,396sourceB, elevenclaims/checker/collector source read; sourcechecker/fivenegatives/independenttagchain/exactURLs/rangeidentitiesPASS. Sevenwholefiles retained custody only; no whole-file semantic claim, C++execution or oldstream interpretation. Unsigned state arithmetic and per-emission validity/source-order/default/mode differences distinguished; actualLive dyld/build applicabilityU. Auto selected separateElectricowneddata v2: two ordinary/weak advances modulo2^64 only, currentemission separate, otherarithmetic strict, allsites/state/geometry/protections checked, zeroadvance bounded, unknowns retained. Freeze method/code/input/authority before wholedataanalysis; Rootsolepeer, no original/image/native/provider/runtime acquisition or v1repair. Canon/sourceindex/project/queue/coverage/roadmap updated. Focusedelevenpage52payload960,174B delta coversAnalog1796+Appleauthority, older105/133/147/155/187/290/159/29/50carried. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Analog producer word and all guarded entries adopted
+
+Root solepeer03d7b2d7…2,269B approves17payload77,396B manifest1b0e0ac0…, exact18readonlyfiles. Fullcollector/checker/sevenfacts/16inertguardinputs/all134rawB/all126rows read; eight synthetic/tenowned/sealedreproduction andindependent126row/tenboundary/sevenguard/sevenmutation-length controlsPASS. Twelverecordedendpointpairs equal, one staticread/no decoder/originalinstructions.58130raw1888 and nine computedaddresses remain nominations; no targetbody/runtime/class/publicgrade. Arrnext1888metadata only, no content/callee following. Canon/index/project/atlas/queue/coverage/roadmap updated; prior52payloadcheck as-of excludes thislateradoption. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] selection | Whole Analog1888 producer nominee
+
+Retained metadata only identified nonthunk/exported/errorNULL/whole[1888,18b4)44nativeB11words and126Cbytes11lines/no warnings/partial/timeout, mapped by inherited H4 __text. Root selects exactly this coherent source/native cut, arrangementauthor/Rootsolepeer using existing static method/one frozenmanifest, no intermediategate. Raw58130integer1888/currentJ-table/encoding/runtime/returnedE premises stay unknown. No callee/destination/global/table/header/fixup/provider/runtime/original expansion. Arrangement authorfreeze then Tension1596 solepeer. Currentqueue/roadmap updated; no case/grade/release/site change. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] selection | Tension whole rate/reset nominees after current peer approval
+
+Read-only retained metadata bounds159e4[159e4,15a64)128B32words/C1075B41lines and15a64[15a64,15ae4)128B32words/C1040B40lines:256nativeB64words/C2115B81lines/allfourwarnings. Root selects exactly this pair only after sealed1596solepeer approval; Mixauthor/arrangementsolepeer/Rootcitation, existing fixed method/one frozencombinedpacket. Both metadata records nonthunk/exported-with-warnings/errorNULL/notpartial/nottimedout; warnings and undefined signatures preserved. Current inner+38/+60/+68 nominations conditional, no completePwordset or furtherwords/callee/table/header/fixup/provider/model/original/runtime following. Queue/roadmap updated. No site/case/grade/releasecredit; frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Whole producer, complete site method and Tension dispatch adopted
+
+Root approves Analog44 via454839e7…2,310B (22payload40,755B/manifest13af8496…) and Electricv2 via653ce9bd…3,280B (23payload486,255B/manifest5c87d178…). Fullnewsource/checkers/results reviewed; Analog12synthetic/tenowned/eightpeer controls/11rows; Electric48synthetic/sevenTEMPtampers/12peercontrols/independent809opcodes867emissions/allbindingtuples/all73modularupdates/sixintervaljoinsPASS. V2EES2-RV-Q01 malformedLEB cursor is lastcommitted, notfurthestread; allactualstreamscomplete/failureNULL, frozenbytesunchanged. Root adopts Tension1596solepeer53a6956a…72,452B bycitation (38payload199,675B/manifest2fa9f116…), whole3C318lines/all9warnings/395rows/twowords/20custody/3normalchildren;19totalpairs vs16GPR-only checker qualification preserved,16peercontrolsPASS. Source/runtime/class/publicjoinsU; no secondrawreview. PriorAnalog13417payload77,396B joins these in focused100payload804,081B/elevenpage delta, older52/105/133/147/155/187/290/159/29/50 scopes carried. NextAuto wholeElectric6/Rootsolepeer; MixTension256/arrangementsolepeer; arrangementAnalog3b18metadata only. Canon/index/project/atlas/queue/coverage/roadmap updated. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Tension outer50/58 adopted; parallel review reassigned
+
+Root adopts arrangementsolepeer225acf7b…37,881B bycitation,30payload89,281B manifest0baaad39…, without secondsource/native review. Whole2C2115B81lines/allfourwarnings/64rows256B/eightclaims/16custody/twonormalchildren;14retainedsynthetic/19owned/16peercontrolsPASS,10flow/26memory/4FPfieldschecked. Conditionalmember-to-inner50/58 and source/nativeFPdifferences retained, no oracle/runtime/publiclaw. Auto selected40dataB at fivePnomineepositions38/50/58/60/68/Rootsolepeer,no gap/+10/otherwords. Arrangement selectedcombinedAnalog4448physical4B+whole3b18C/native2292B=2296nativeB574words/C20807B616lines, expandedthunkCexcluded/Rootsolepeer. Electricinner6sealed57payload352,034B/manifestd3720dc3… is reassignedtoMixactualsolepeer forparallelthroughput; frozenintendedRootlabels remainhistorical/reassignmentdisclosedbeforepeerread, Roothasnotopenednewpayloads andwilladoptbycitation. Canon/index/project/atlas/queue/coverage/roadmapupdated; latest100payloadcheck passedas-ofbeforeTension256, no rawreplay. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Electric inner-six and Tension five words adopted
+
+Root adoptsMixsolepeer1ab4b61e…85,456B bycitation,57payload352,034B manifestd3720dc3…, all6C500lines/9warnings/705rows/19custody/6normalchildren;14retainedsynthetic/17owned/17peercontrolsPASS,122flows94pairs23literals37criticalforms. EIN6-RV-Q01 currentreloadedC0atcd08≠priorP unlessproved; frozenlabels/reassignment disclosed/noRootpayloadreview. Rootsolepeer982ec730…1,876B approvesTension40,16payload42,502B manifestd6bd1ddb…, exact17readonlyfiles/fullrecord.py/five8Bwords/14equalcustody;9synthetic+fourTEMP+sevenpeercontrols/sealedchecksPASS. Five rawnominees145c4/14a6c/14d9c/14dac/14fc8/runtimeNULL, notcompletePtable/publicproof. These andprecedingTension256 form103payload483,817B tenpage delta, prior100/52/105/133/147/155/187/290/159/29/50carried. MixsoleAnalog2296peer reassignedbeforepayloadread, intendedRootlabels historical/Rootcitationonly. AutonextallfiveTensionmetadata+exactElectricguarded-data scope only. Canon/index/project/atlas/queue/coverage/roadmap updated; no site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] selection | Guarded Electric data and whole Tension inner-five
+
+Root selects exactlyElectric4B2ac4b..2ac4f/allguard0..3entries plusconditional8B30120..30128,total12dataB/arrangementauthor/Rootsolepeer. Approved guard/member operands andretainedH4 map exactscope; no surroundingbytes/destinationfollow. Root selects allfiveTensionnominee wholebodies2020nativeB505words/C10767B365lines/all8warnings, Autoauthor/arrangementsolepeer/Rootcitation, exactmetadata/H4/C1pins. Both existingmethod/one frozenmanifest/one actualpeer/nointermediategate, no furtherwords/header/fixup/callee/provider/model/original/runtime follow orretry. MixsoleAnalog2296peer remainsindependent; Rootno newpayloadreview. Latest103payload483,817B/tenpagecheck passed/older scopes carriedas-of, currentnewcuts excluded. Queue/roadmap updated; no case/grade/release/site credit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Analog producer constructor adopted
+
+Root adoptsMixsolepeer6ea5a9b8…31,304B bycitation,31payload365,979B manifestaf608f1f…, without newpayload/source/native review; actualMixassignment/frozenRootlabelhistory disclosed. Fullactual3b18C20807B616lines/574rows2296B/tenclaims/collectorchecker/13custody/twonormalchildren;14owned/18peercontrolsPASS,7flows45pairs491unsignedfields64recordpairs/malformed48Bframe checked. Local4448B3b18; savedQ returned, helperB literalstores do notproveB=Q/currentQtable. NominalL1/L2storeinventory1056/1280offsets/224uncovered not allocation/everybyteinitialization law. Mixnext2b990metadata only; nootherhelper/body/global/data/provider/runtime follow. Canon/index/project/atlas/queue/coverage/roadmapupdated; prior103payloadcheck as-of excludes lateradoption. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] selection | Whole Analog base-carrier helper
+
+Root selects complete2b990[2b990,2b9f0),96nativeB24words/C700B29lines, Mixauthor/Rootsolepeer, nonexternal/nonthunk/exported/errorNULL/notpartial/nottimedout/nowarnings. ExactC1record/H4mapscope inheritedmetadata verified, no source/body acquired in proposal. Existingfixedmethod/onefrozenmanifest/nointermediategate; freeze inputs/sourcebeforeonce1childcapture andwholecarrier/field/return analysis. No1006c/509e8/othercallee/global/newword/header/fixup/provider/model/original/runtime follow/retry/oldbodyreplay. Q=B/class/allocator/public stayunknown until evidence; no cases/grades/releases/sites added. Queue/roadmap updated; frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Electric producer word and complete guarded table adopted
+
+Rootsolepeer34dbe0d0…1,967B approves17payload34,033B manifest46a25995…, exact18readonlyfiles. Fullcollector/checker/sixclaims/nineneededguardrows/all12rawbytes/allfourprojections/9custody/onezerodecoderprocess reviewed;8synthetic/10owned/fourTEMP/sevenpeercontrols andsealedreproductionPASS. Fourbranchaddressnominations d47c/d4bc/d4f8/d534/raw30120integer3d8c are conditional, no destination/runtime/class proof. EIN6-RV-Q01currentC0vspriorP preserved; no secondwholebodyreview. Arrangement next exact3d8c metadata only; no content/callee/global/data/header/provider following. Canon/index/project/atlas/queue/coverage/roadmapupdated; latest103payloadcheckas-ofexcludes thislateradoption. No site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+
+## [2026-10-21] review | Base-carrier and whole inner-five adopted; prior producer reused
+
+Rootsolepeerc308d6b9…2,586B approvesAnalog96/24payload58,072B/manifestb5423698…, full700Cbytes29lines/24rows96B/fiveclaims/collectorchecker/17custody/one normalchild;14synthetic/14owned/eightpeercontrols/sealedchecksPASS. NormalhelperretainsX0→conditionalB=Q; +b unwritten meanswhole+8NULL notproved, currenttable/class/publicU. Root adoptsTension2020solepeerb768f274…112,414B bycitation,51payload269,970B/manifest9e7f44f6…, all5C365lines/8warnings/505rows/15custody/5normalchildren;14retainedsynthetic/19owned/18peercontrolsPASS,83flows76pairs104unsigned16addressfields. I/C/N/D/currentP-O/earlydereference/packed8B/FP/public/named63Damper gaps retained; no Rootpayloadreplay. Electricraw3d8c alreadywholeElectric18-reviewed; inheritedpeer/readmap+148S=T=K andinner6producerstore support onlyconditionalbridge, no duplicatecapture/bodycontrolreplay. NextMixAnalog600/Rootpeer, AutoexactTension12dataB/Rootpeer, arrangementfiniteinitializer callmetadata only. Fourfreshapprovals includingprecedingAnalog2296/Electric12 form123payload728,054B/elevenpage delta, older103/100/52/105/133/147/155/187/290/159/29/50carriedas-of. Canon/index/project/atlas/queue/coverage/roadmapupdated; no site/case/grade/releasecredit. Frozen691 X/1,076 S/3,857 none; main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+## [2026-10-21] review | Tension guarded getter data adopted; parallel helper scopes selected
+
+Root's sole review26bdbd13…/2019B approves Tension12: manifest231e4410…/14payload42767B/all15files0444. Fullcollector/checker/fourclaims/20neededoperandprojections/all12rawbytes read;10synthetic/sixTEMP/ninepeercontrols/sealedchecks pass,12custodypairs equal/oneprocess/twoexactreads/no decoder or original execution. Four guarded arithmetic nominations/raw3ddc only; getter classification not asserted does not prove absent allocation/mutation. SavedN/currentchild/packedreturn/D distinctions persist. Canon/spec/index/atlas/project/coverage/queue/roadmap updated. Auto is reassigned sole Analog600 peer before Root read newpayloads; frozen intendedRoot labels historical, Root citation-only. Mix selected whole Electric a600/cee4/e1e8/1132newnativeB/C6011B208lines/two warnings plus exactly72owned cb0c contextB, arrangement sole peer. Arrangement selected whole Tension3ddc/8nativeB2words/C52B7lines, Root sole peer. Fixedmethod/one frozenmanifest/one review/no intermediate gate; no recursive callee/global/word/provider/runtime or oldbody replay. Latest123payload aggregate remains as-of before these packets. No cases/grades/releases/sites added; frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged, bundle sites separate; required U/product OPEN.
+
+## [2026-10-21] review | Analog whole interior-state helper adopted
+
+Root adopts Auto sole review59651203…/43607B by citation, without current source/native/result/collector reread: manifestff111afe…/24payload110490B/all25files0444. Entire1467Cbytes55lines/150nativewords600B/sixclaims/collectorchecker reviewed;17owned/25peercontrols pass,14synthetic checks inspected/no rerun,18custodypairs equal/one normal child. Conditional Ireturn,31directstores292writtenB/404gapB within696B bound,14SPstores/160Bframe,18GPRpairs/54memoryforms/37Cjoins checked. Eight opaque calls remain unbounded; inherited two receiver bounds exclude Qfirstword only for direct stores under nonwrap/nonalias. Frozen intendedRoot labels disclosed as history, no duplicate review. Auto selected only three-target metadata/overlap for1cf3c/1ed6c/20cc0; no newbody/recursive/data/provider/runtime or oldbody replay. Canon/spec/index/atlas/project/coverage/queue/roadmap updated; latest123payload aggregate remains as-of beforeTension12/Analog600. No cases/grades/releases/sites; frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+The interior/getter-data aggregate checks twelve affected pages and the two new sole-review/manifest pins,38payloads/153,257bytes, without a second raw/source review. Prior123/103/100/52/105/133/147/155/187/290/159/29/50 scopes are carried as-of; ongoing Electric3/Tension3ddc/Analogmetadata excluded. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 remain unchanged; required U/product OPEN.
+
+## [2026-10-21] review | Electric internal helpers and Tension constant getter adopted
+
+Root adopts arrangement sole Electric3 reviewd62155f7…/65416B by citation,43payload187411B/manifest6c537ac9…/44files0444; full208C lines/two warnings/283newrows+18fixedcontext rows/22custody/three normal children reviewed,20owned/16peercontrols PASS. Full64-bit resize/saveddescriptorbase/nativeFP/partialcell/tail/nonreturn/current-child/provider gaps preserved. Root sole Tension3ddc review09af39f0…/2629B approves22payload30752B/manifeste1a37a30…/23files0444, fullcollector/checker/52Cbytes7lines/two words;12owned/sevenindependentcontrols PASS,12synthetic inspected/11custody/one normal child. MOVZ W0,#32;RET X30 localconstant/no memory or call, actualdispatch/publicmeaning stillU. Canon/spec/index/atlas/project/coverage/queue/roadmap updated. Next Mixauthors wholeAnalogopaque3/652nativeB163words/C3597B137lines/Auto sole peer/Root citation-only. Arrangement assesses existing Tension sensitivity/harness metadata for37uncalibrated settings×five perturbations; no newexecution/measurement/calibration/model/tool/artifact yet. Latest38payload aggregate remains as-of beforethese65payload218163B; fresh aggregate pending, no oldpayload replay. No cases/grades/releases/sites; frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+The internal-initializers/getter focused delta checks twelve affected pages and two new sole-review/manifest pins,65payloads/218,163bytes. Older38/123/103/100/52/105/133/147/155/187/290/159/29/50 scopes carry without replay; Analogopaque3 and Tension sensitivity assessment excluded. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+## [2026-10-21] selection | Tension whole37 sensitivity batch and ClipLaunch assessment
+
+Arrangement's read-only source/availability assessment found all37 uncalibrated retained settings/scripts/baselines/held windows and hash-matched existingxdev155680B/e4e18489…fb8be, no newconstruction/tool blocker. Root selects one unchangedmodel batch:37×(freshpairedunperturbedcontrol+fiveexistingperturbations)=222sequentialchildren/48618directexports/19314CalcA/78321600rawB, fixedinputs/environment/code/source/measurement windows frozen before execution/20s each/fullstereo/stdout/stderr/receipts/imports/failbits/custody, first execution/protocol/custody/shape/nonfinite fault stopsfuturechildren/no retry. Historical baseline discrepancy remains observation; metrics/errors/None not silently dropped, no newf0/tolerance/ARM/public/physicalcalibration claim. Old sensitivity.main build/eightparallel path excluded. Arrangement author/Root solepeer/one frozenmanifest/one review/no intermediate gate. Mix next assesses complete ClipLaunch21X batch read-only after canonical/map; already-adopted playback43/Collision38/transport30 and parkedCorpus49 accounted for, higherX device work active/no new Electricpurecallable route. Auto solely reviews sealed Analogopaque3. Latest65payload218163B/twelvepage aggregate passed before these selections; no oldpayload replay. Selection adds no case/grade/release/site. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+## [2026-10-21] selection | ClipLaunch whole-batch route remains unadmitted
+
+The bounded canonical assessment records six already-represented classes across21X predicates/11,756retained rows, not calls/new outcomes. Four expressly unrun FollowTime sentinel×flag inputs remainU: originaldriver2d295c89…/42608B lines588–604 uses suppliedRemoteableDouble/vtable and forced generic-post-load return viaGDB. Scalar lattice calls would not establish member sentinel bypass; skippedEnabled/notification path cannot establish finaldisable state. No new whole unpatched standing batch selected, no runtime/model/artifactgate/old computations replay. Mix next MIDI-user19X assessment. Tension222 originals reportedcomplete/all protocol/custody/finiteoutput checks, offlineanalysis/seal/Rootsole review pending; no admission or gradeclaim yet. Canon/index/plan/handoff/roadmap/log updated. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+## [2026-10-21] review | Analog opaque-three adopted; MIDI relative-byte batch selected
+
+Root adopts Auto sole reviewdc96b36d…/61679B by citation,39payload130991B/manifest5c639d1c…/40files0444. Full137C lines/no warnings/163nativewords/eightclaims/eligibility/collectorchecker reviewed;20owned/29peercontrols pass,14synthetic inspected/18custody/three normal children.23directstores/32Cjoins/35pairs/49memoryforms/12flows/nativeFPmixedprecision/FRINTZ+STRS andfourmalformedpairstrings checked. Allthree stateful/stringdependent/notcurrentlypureX, notinfeasibility or oracle-preassertionban; unread5085c/50b14/currenttable/ABI/public remainU, no automaticfollow. Mix selected whole MIDI-user8modes×128bytes at fixedUNITcur.5/range[0,1]/nonstepped/sensitivity1:18exactoldresults inherited only/1006newtargets+eightinit=1014calls/eightchildren, fixedinputs/code/source/stubs/harness/exe/image/env before once execution/20s/fullreceipts/rawlanes/custody/firstfaultstop/no retry/Rootsolepeer. NoGDB/receiver/newmodel/tool/stub changes or silentoraclefit. Tension222 originalscompleted; Auto soleactualpeer reassigned before Root newpayload reads/frozenintendedRootlabels historical/Rootcitation-only, offlineanalysis/seal pending. Canon/spec/index/atlas/plan/handoff/roadmap/log updated; mutable domainupdateddates refreshed while append-onlyHEADlogheader/prefix preserved. Latest65payload aggregate excludeslaterAnalog3/newbatches, freshdelta pending. No case/grade/release/site credit yet; frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+The opaque-three/selection incremental delta checks thirteen affected pages/new39payload130,991B manifest and sole-review pins; prior65/38/123/103/100/52/105/133/147/155/187/290/159/29/50 carried without replay. Pending Tension222/MIDI actual excluded, no duplicate raw/source/native review. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+## [2026-10-21] selection | Tension owner annex scoped while actual review runs
+
+Arrangement prepares a concrete R4 owner proposal mapping37settings to16existingcases, with proposed-margin arithmetic and narrow clarification of baseline-deviation versus pairwise-spread/automatic-chaotic wording. Newtolerances/classes/IDs/releases are excluded;15reqbodies/42rows/tolerance table/released27/fourchaotic exclusions stay exact. Finalpacket pins Autoactualapproval once available; Rootreviews onlynewwording/mapping/preservation using peer's37setting result summary, no duplicate source/raw/numericactualreview. Native222batch remains under soleAuto review and MIDI1006 newtargets inauthoring. Latest13page/39payload130991B focusedcheck passedasof beforethese pendingpackets. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 unchanged; required U/product OPEN.
+
+## [2026-10-21] adoption | Tension whole37/R4 and MIDI finite relative-byte actual
+
+Auto sole actual/source review001b2b69…/193628B approves Tension222children/2110payload102726608B; Root citation-only/no newactualpayload read. All37historical baselines exact,222unique/444channel metric comparisons approved,219exports perchild/48618total, no originalretry/build/newmodel. Root sole composedowner review39ba1af7…/2975B approves base99f6fd72… plus small3text amendment5821f2eb…; adoptedR4owner60710B/45a43c9c… maps37settings to16oldcases,31proposed-margin matches/sixunresolved. Clarifies129parametercomponents/fullscript, adaptive estimator[3903,7999) before4096/FIRlimits and oldparentStablelabels, no calibration/class/chaotic substitution.15REQ42rows/tolerances/27released/fourchaotic exact, no newIDs.
+
+Root sole MIDI actual review0521b217…/606283B approves34payload4695705B/manifest2e37f161…:1006fresh targets+8initializers/eightchildren and18inherited joins, full1024relativebyte class at fixedUNIT only. Alllowbinary32oracle matches/allbuffers unchanged,129uniqueoutputs;64bit saved lanes not full128bit, queuedcall/fenv/custody/fsync/public/ARMlimits explicit. 14input/18record/16independentcontrols pass. Mix freezesR7; Auto reviews onlynewowner wording/mapping/IDs/preservation from Rootapprovedcatalog, no duplicateactualsource review. R6remainscurrent;1006newIDs pending. Canonicalresearch/spec/index/project/atlas/coverage/plan/handoff/roadmap/log updated; latest39payloadaggregate excludesnewactuals/R4, freshdelta pending. Arrangement nextwhole-family eligibilityassessment only/no native/model/tool. Owners2,884newfiniteIDs unchanged, not grades/denominator; releases36/19current/17superseded unchanged. Frozen691X/1,076S/3,857none and main25,071+24=25,095of268,015, bundles separate; requiredU/productOPEN.
+
+The [whole37/MIDI-actual/R4 incremental check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/whole37-midi-actual-r4-adoption-incremental-check.json) passed14affected pages/2158newpayload107803016B exactmanifest/sole-review pins, without payload/source/tool/image/release replay. HEADlogprefix exact/no newlinks/differrors; R7owner excluded,2,884adoptednewIDs unchanged. Frozen691X/1,076S/3,857none and main25,071+24=25,095of268,015 unchanged; requiredU/productOPEN.
+
+## [2026-10-21] selection | Complete Mix Boolean send-gate class
+
+Retained17-X-family MXB01inputmetadata identifies2recordedGcontexts×16Boolean SendsOn/sendActive/prePost/GroupOntuples,25missing+7exact inherited. Root selects only25newcalls/25sequentialchildren, sevenoldoriginals not replayed/no fabricatedfreshreceipts. Arrangementauthor/Rootsoleactualpeer; unchangedT14xexec79728B/188b1197… and13word/8+52+16Bownedbuffer shape, no constructor/setter/poke/patch/newmodel/tool/build/provider/FPperturb. Freezeexactcode/inputbits/sourceauthority/env/image/exe beforeonceexecution,20s/core0/DEVNULL/processgroup/fullrawlanes16Boutput/receipts/importuse/custody/firstfaultstop/no retry. Complete32catalogpreservesgatedzero/no MainOn/currentgroup/public/ARM/calibration law. Mixagent assessesMixer14thenMIDIstorage12/Warp5/ALS1 fromretainedconclusions only. Canonicalmixselection/index/plan/handoff/roadmap/log updated; latest14page2158payloadcheck predatesnewselection, R7ownerunderAutopeer. No newIDs/grades/releases/sites; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] selection | Whole seven-helper regular-node class
+
+Root selects Mixer14-X wholeclass7helpers×129regularp=k/64,k−64…64, naturally namedbyretainedtablebuilderT(i/64−1):903logicalpairs/77inherited(k−64,−60,−48,−32,−16,0,16,32,48,60,64)/826newcallsin7children118each. No77oldoriginalreplay/fabricatedfreshreceipts. Mixauthor/Autosoleactualpeer/Rootcitation-only for ALLnewactualsource/raw/results/code; unchangedT14singlefloathexcallshape/exe/image/harness/Linuxcos/cosf only/no receiver/buffer/init/patch/GDB/newmodel/tool/build/provider. Inputs/newcode/sourceauthority/env/pins frozenbeforeonceexecution, neworaclesNULL/nofit,20s/core0/DEVNULL/newgroup/fullraw64bitcarriers/receipts/importuse/custody/firstanomalystop/no retry;queuedwithinchildlimits explicit. Classdoesnotcaptureactual129table/interpolation/currenttrackfactor/public/ARM,36patchedrows withheld. Canonicalmixer/index/plan/handoff/roadmap/log updated; lowerMIDIstorage12/Warp5/ALS1assessment afterbatch, Mix25Booleanbatch parallelunderRootpeer. No newcase/grade/release/site yet; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] adoption | MIDI-user R7 composed owner
+
+Root adopts Auto soleownerreviewbd48ca3d…/52085B bycitation/no newowneroractualreview. Base281c8916…/13payload2959712B plusRootsmallwordingoverlaya2732ecf…/1payload1677B composeexact74585B/e2321ad1…. Overlayclarifiesfivepre-existingacceptancesets plusnewannex andsuppliedcurrent withoutsuggesting1006freshprocesses; canonicalR6remainedc877…5aea throughpeerseal. Autojoinedall1024approvedRootsummaries/1006newIDs/18historicalonly/nativebits/portableNULL,20author+22independentcontrols/full8stepR6reversal pass. All12otherREQ/56oldMT/161releaseobjects/generalS/precision/state/error/openquestions/U exact. NoUIenum/actualparameter/public/ARM law, applicationgrade/release/site. Currentowneradoptions3,890newfiniteIDs, not requiredoutcome counts/passes. Canonicalspec/research/index/featuremap/project/coverage/atlas/plan/handoff/releaseplan/roadmap/log updated. Mix25Booleanclass andMixer826regularnodes selectedinparallel underseparatepeers; Rootcitation-onlyforallnewMixeractual. Latest14page2158payloadcheck excludesR7/selections, freshdelta pending. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+The [R7 owner/standing-selection delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-r7-owner-and-standing-selections-incremental-check.json) passed19pages/14newpayload2,961,389B metadata pins, no newlinks/differrors/HEADlogprefix exact. Prior2158scope and earlier39/65/38/123/103/100/52/105/133/147/155/187/290/159/29/50 carried without replay; newMix25/Mixer826actuals excluded. Owners3,890newfiniteIDs/notgradesordenominator; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] review | Whole Mix Boolean send-gate actual approved
+
+Rootsoleactual/source review7d6a67be…/57280B APPROVED32catalog/25fresh/7inherited;manifest996d1768…/15151B/88payload5549531B/89files0444. Fullnew275linecollector/125linechecker/all25stdoutstderr16Braw/64bitlanes/imports/receipts/custody,seven selectedproviderprojections joined; oldraw/sourcebehaviorinherited/no oldoriginalreplay. All25newfourpositivezero words/400B,28gateoffincl3old and4enabledproductiveoldonly.33owned+16independentcontrolsPASS;125runtime+16authoritypairs agree,1,882bindings perchild/zero countedimports,highXMM1bitsnotsemantic/entryABI/public/custody/fsync/cleanup limits explicit. ArrangementnextR3stagingonly25newfiniteIDs/7refs/portableNULL; Autosolenewwording/mapping/IDs/preservation peer usesRootapprovedsummary/no actualre-review. R2canonical untilapproval. Mixer826finalsealedunderAutoactualpeer/Rootcitation-only; no admissionyet. Canonicalmix/index/plan/handoff/roadmap/log updated; latest19page14payloadcheck predatesMix25approval, freshdelta pending. Owners3,890newIDs/releases36/19current/17superseded unchanged; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] selection | Lower standing-route assessments
+
+Retained approved MIDIstorage12Xmap96547699…/2866B identifies only existing128limitcopygrid/nineoffset/22textnumber/twotypednegativezero inputs; no mappedwholeunrun class, remaining053/publicprovider/save/transaction/sorted-ID requirelegalstate. Warp5Xmapabf55fc7…/3158B retains12conversion/fourneighbor/18qsetter inputs; factoryregistry/partialinitoutside standingmodel, lonecomputedWMK019M0/48000notwholeclass/noonecaseprobe. No oldraw/sourcebehavior/original replay; canon/index/roadmap/log filed. Mixnextboundedread ofexistingCRCprotocol/sourcepinforpotentialStructureALS1Xseed0×all256onebyte class, exactoldseed/threebytes/typedargs/return/executable mustbeconfirmedbeforeexecutionselection. No extracapture/readinessgate/newtool/model. CurrentMix25approved/ownerR3staging andMixer826soleactualreview continue; owners3890newIDs/releasesunchanged. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] selection | Complete initial-zero one-byte CRC class
+
+After boundedread ofretainedx_crc.py/T11harnessprotocol asdata (no Runner import/autobuild/originalbody/native/raw replay), Rootselects StructureALS1Xall256onebyteCRCinputsatseed0. Threeexactoldsummaryjoins00→0000/FF→0202/B7→03B2 inherited/no fabricatedPIDs;253freshascendingexcludingthose in2sequentialchildren127+126calls/254+252ownedbuffers below256. Exactcall101191310 hex:HH i:1 buf:4 dumpb(2j+1)4, eachseedfreshzero; low16littleendianmemorysemantic/notRAX/upper16notpromoted. ExistingT11exe74096B/48dd0ba0… andimage1bae9a97… pinned/verifyfreshcustodybeforeanycall, no build/Runnerimport/patch/newtool/model/provider. Freezeinputbits/seed/dumpindices/code/sourceauthority/env/integerCRC8005MSBinit0nofinalxor oracle beforeoncecapture;20s/core0/DEVNULL/newgroup/fullrawbuffers4Boutput64bitcarriers/receipts/importuse/custody/firstanomalystop/no retry/withinchildlimits. Mixauthor/Rootsoleactualpeer, onefrozenmanifest/onereview/noextragate. CanonicalLiveSetCRC/index/plan/handoff/roadmap/log updated. No portablecomparator/publicmatching/OpenSave/ARM law orcase/grade/release/site yet; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] adoption | Mix R3; Mixer regular nodes and CRC actuals
+
+RootappliedAuto-approvedexactMixR3owner52173B/aa4b2884… bysole newownerreview4fa279a6…/61195B;25MG042–066nativeobservationIDs/7oldrefs, all16REQ34oldrows/published28scope exact/15author13peercontrols/fullreversal, portableNULL/no actualredo. Currentowners3,915newIDs/notpassesordenominator. Updatedspec/researchindices/currentproject/coverage/atlas/queue/releaseplan/roadmap/log; mixhandoffplan'sstaleCurrentdisposition relabelledhistorical andcurrentreviewedrelease/R3scopeexplicit, withoutimmutablechanges.
+
+Mixer826actual adoptedviaAuto51d8f66a…/631459B citationonly/Rootnonewactualpayloadreads:31payload4721407B/903points77inherited/826newsevenchildren/32owned22peercontrols,18COMMONbaseline→childafter identities notperchildbefore,cosf759uses/declarationdistinction/nativebits/fenv/rawFDfsync/runtime129table/publicARMlimits explicit. CRC253actual Rootsolec9e1d427…/437123B APPROVED:21payload1724586B/all253low16oraclematches/full256class3inherited/no oldraw/PIDs,18COMMONbefore→twochildafter/36owned18peernegative3positivecontrols; full4Bupper16nonzeroandRAXnotportableCRCcriterion, rawFDfsync/cleanup/publicfileOpenSave/ARMlimits explicit. LiveSetR3/MixerR7ownerpacketsfrozenunderAuto newwording/mapping/IDs/preservation peer fromapprovedsummariesonly. Bundled1XBP119legal31indicesalreadycomplete/no publicload/502emission/display/savevectors, canonicalassessment/indexfiled; no newstandingclass. Mixassesses remaininghigher-X eligibility read-only. Freshaggregatepending; latest19page14payloadcheckpredatesnewactuals/R3. Releases36/19current/17superseded/sitecountsunchanged; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+The [MixR3/Mixer/CRC actual-adoption delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-r3-mixer-crc-actual-adoptions-incremental-check.json) passed17pages/149newpayload12,077,936B metadata pins/no newlinks/differrors/HEADlogprefixexact. PriorR7owner14payload2,961,389B/2158payload107,803,016B and earlier39/65/38/123/103/100/52/105/133/147/155/187/290/159/29/50 carried without replay. PendingMixerR7/LiveSetR3ownerproposals excluded; higher-X eligibility reassessment read-only underMix(Corpus/playback/Collision/transport/automation) andArrangement(Analog/Electric/Tension), no newexecution/source/model/tool/provider selection. Owners3,915newfiniteIDs/notgradesordenominator; frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## [2026-10-21] adoption | Live Set R3 and Mixer R7 finite annexes
+
+RootappliedexactLiveSetR363820B/fa157546… byAuto72771a20…/142934Bsoleownerreviewcitation:12payload799501B/253LSSCRCIDs/3refs/full256, all18REQ40rows34releasehashmetadata exact/22author14peercontrols/fullreverse. ThenexactMixerR774008B/ce0c1eba… viaAuto053a92cd…/49583B:10payload473301B/826MV301–1126/77refs/28exactR6aliases/no duplicates/14otherREQold014prefix48rows252R6+80releaseexact/21author14peercontrols/fullreverse. No actual/source/raw redo. CurrentnewfiniteIDs4,994/notoutcomespasses;portableNULL/releases36/19current/17superseded/sitecounts unchanged. Updatedresearch/specindices/project/coverage/atlas/currentqueue/releaseplans/roadmap/log; staleLiveSetreleaseplanCurrentdisposition relabelledhistoricalwith reviewedcurrentrelease/R3scope, no immutablebytes changed.
+
+## [2026-10-21] selection | Analog velocity-byte class and partial Corpus LFO capture
+
+HighesteligibleAnalogcurrentREQ004/017existingDAN028model selectedwhole128legalvelocitybytes/127fresh+100inherited/no replay, exact203words/events/key60/rate44100/44100frames512blocks/zeroaudio/no warmup;Arrangementauthor/Autosoleactualpeer/Rootcitation-onlyforallnewactualsource/raw/results/code. Existingpinnedxdev/bundle/slice/initmodelonly/no build/provider/newconstruction/tool/patch; full44,805,600Bstereo/37211directexports11049CalcAplusseparateinitializeraccounting,20sCPUwall/core0/FSIZE4MiB/DEVNULL/newgroup/fullreceipts/imports/flags/cxxfail/custody/firstfaultstop/no retry/freshNULL. Eightvelocitymods0/no productivecurve/generalvelocity0/publicARMcalibrationlaw/199predecessornotcurrentcoverage.
+
+Corpuswhole named deterministicFreeLFOclass0..4 selectedatrecordedDCO020/02938params/I1impulse/rate44100/16384frames512blocks/stopped0/0/120/XDEV_TIME0/LIBM0/MXCSR1f80:0+3inherited,3plannednew1+2+4/no oldreplay/no newmodel/tool/setup3ab0/physicalmodalwork. Precall1eb96fd1…/4599B frozen. AuthorstoppedafterSquare1394232: wrongrecorderRate0guardvsactualret1; priorreview0describes32CalcAret0/flag1, notRate. Child0exit/emptystderr/audio131072Breported; twoothermembersUNLAUNCHED/no Square retry/no silentguardedit/complete3claim/rateclockinterpretation. Partialpacket91a49deb…/4643B/25payload391579Bsealedwith additive data-onlyreadback underRootsoleactual/sourcepeer; frozenerror/failedphases/NULLs preserved. No result/ownercasegrade admittedbeforeRootreview, continuationonlylaterselectionoftwo neverlaunchedmembers.5/6clockU/176modalomissions/parked96setup separate. Canonicalresearch/index/coverage/atlas/queue/roadmap/log updated; latest17page149payloadcheck predatesnewowners/selections/partial, freshdelta pending. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## 2026-10-21 — research: Analog velocity and Corpus deterministic actual approvals
+
+Root adopts Auto's sole [Analog128 approval](research/device-analog-dsp.md#whole-velocity-byte-actual-adoption--2026-10-21) by citation, without new actual source/raw/result/collector reads. Root's sole [Corpus Square partial](research/corpus-dsp-static.md#square-partial-review-adoption--2026-10-21) review approves one finite observation while preserving the unsupported Rate-zero guard, stopped phases and unused preparation-branch qualification. Only the two never-launched shapes were then selected; their [continuation review](research/corpus-dsp-static.md#deterministic-free-lfo-continuation-adoption--2026-10-21) approves Triangle/Ramp Down and the assembled five-member finite catalog. No old audio or original was replayed and no new waveform oracle was fitted. The next Analog/Corpus owner annexes are selected from approved summaries with wording/ID/mapping/preservation review only.
+
+Arrangement's retained-input eligibility assessment nominated Electric's complete Keyboard Transpose host integers 0..24; Root selects 22 missing values in the exact unchanged P1 context, with three inherited controls, Auto sole actual/source peer and Root citation-only. No new object/provider/runtime model is authorized. Current owner IDs remain 4,994; no grade, release, site or product closure. Current plan/handoff routing was rewritten readably while dated history remains. A focused metadata/link/prefix delta follows; earlier checks are carried as-of without payload replay.
+
+## 2026-10-21 — lint: finite owners and Analog/Corpus actual adoption delta
+
+Focused check of 27 affected pages and 598 new payloads / 52,650,827 bytes through exact manifest/sole-review metadata pins only; actual/owner proof remains with its one independent review. Links/frontmatter/dates, applied-owner identities, diff whitespace and the exact HEAD log prefix are checked in the [report](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/finite-owners-analog-corpus-actual-adoptions-incremental-check.json). Prior 149/14/2,158-payload and earlier scopes are carried as-of without replay; unchanged raw/source/tool/image/provider/release payloads are not reopened. Mix's four canonical standing-eligibility assessments are included; their author also checked ten new links, dates/index routing and whitespace. New Analog/Corpus owner drafts and Electric actuals are excluded. No original or candidate execution, physical calibration, clean implementation isolation or complete product coverage is claimed.
+
+## 2026-10-21 — lint correction: Analog pre-call locator
+
+The first focused delta failed on one newly written Analog pre-call link: the sealed packet names it `pre-call-manifest.json`, not `manifest-before.json`. Root corrected the documentation locator only; no evidence changed or was reopened. The failed report remains sealed. The corrected [v2 check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/finite-owners-analog-corpus-actual-adoptions-incremental-check-v2.json) repeats only the affected documentation/manifest/review-metadata checks, carrying prior scopes without actual payload replay.
+
+## 2026-10-21 — spec: Analog R4 and Corpus R8 finite owner adoptions
+
+Root independently reviewed only new wording, mapping, IDs and preservation of the [Analog R4 velocity proposal](research/device-analog-dsp.md#analog-owner-r4-velocity-annex-adoption--2026-10-21) and [Corpus R8 deterministic proposal](research/corpus-dsp-static.md#corpus-owner-r8-deterministic-annex-adoption--2026-10-21), inheriting each sole actual approval without audio/source/result replay. Both exact deltas are applied. Analog adds 127 IDs and explicitly qualifies the old zero-versus-positive velocity claim; Corpus adds three X-observation/U-criterion rows and corrects only the obsolete unrendered scope. Old clauses/rows, objects, tolerances and released scope remain preserved through full reversal. Author controls (21/20) and fifteen independent controls for each owner pass; cumulative added draft IDs are 5,124, not grades or a denominator.
+
+Electric's 22 once-only transpose captures are sealed for Auto's sole review. Arrangement's next retained-input assessment found the complete Analog MIDI note-key class at fixed velocity 100: Root selects 127 fresh keys plus inherited 60, varying only matching on/off key tokens in the same 203-word context. Historical 335-row pitch metadata lacks complete context and supplies no invented extra inherited member or universal absence claim. Auto remains sole actual/source peer and Root citation-only; no new model/provider/FP override, metric, tolerance or public pitch law is selected. Mix assesses Tension's next complete typed class read-only.
+
+Current routing links the four filed eligibility assessments. Collision's wording was clarified with its author: NULL priors/comparators are allowed for finite captures; none of its missing classes was rejected solely for lacking an oracle, and existing ungraded captures remain existing inputs. Current plan/handoff link checks pass. A focused 22-owner-payload delta follows; raw/source/tool/image/release proof is inherited without replay. Required unsupported behavior stays U / coverage OPEN; no new release, site, implementation or commit.
+
+## 2026-10-21 — lint: Analog R4 / Corpus R8 owner delta
+
+Focused 17-page check of 22 new owner payloads / 568,280 bytes via exact manifest/sole-review metadata pins and applied-owner identities. The [report](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-r4-corpus-r8-owner-adoptions-incremental-check.json) checks new links/anchors, required frontmatter/dates, whitespace and the exact HEAD log prefix. The prior 598-payload / 52,650,827-byte v2 check and earlier 149/14/2,158-payload scopes are carried as-of without actual/source/raw/tool/image/provider/release replay. Electric actuals and new Analog key/Tension velocity captures remain excluded. Tension's complete velocity class was selected from retained input metadata only: 125 fresh / three inherited, unchanged Tension-specific host model, Root sole peer for this packet and citation-only for prior Auto222. No additional metric, tolerance, grade, release or site. Required U / product OPEN persists.
+
+## 2026-10-21 — lint correction: in-flight Analog selection locator
+
+The first owner-adoption delta caught a concurrent new Analog key-selection link to its not-yet-sealed final manifest. Root routed the selection to its existing frozen pre-call manifest instead; no payload or capture changed. The failed check remains sealed. The [v2 owner delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-r4-corpus-r8-owner-adoptions-incremental-check-v2.json) repeats the affected metadata/routing checks without actual payload replay.
+
+## 2026-10-21 — research: Electric25 actual approval
+
+Root adopts [Auto's sole Electric25 actual/source approval](research/device-electric-dsp.md#whole-transpose-integer-actual-adoption--2026-10-21) by citation only: 102 payloads / 10,743,111 bytes, 22 new captures / three inherited references, with all controls and custody pairs approved. No new actual code/source/raw/result was opened by Root. Auto authors the next R4 finite annex from the approved 25-point summary; Root's review will concern new wording/IDs/mapping/preservation only. Native observations retain NULL fresh waveform priors/portable criteria and establish no general pitch/public/ARM/calibration law.
+
+Tension's whole velocity class is selected at the exact 129-word defaults_44 context: 125 fresh / inherited 1/100/127, unchanged Tension-specific loader, Root sole peer for the new packet, no replay of prior Auto222 actuals. Analog's selected note-key class remains under Auto's sole peer assignment after seal. Owner IDs remain 5,124 and required U / product OPEN persists. No new release, main-image site or candidate comparison.
+
+## 2026-10-21 — lint: Electric25 actual-adoption delta
+
+The focused [Electric delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric25-actual-adoption-incremental-check.json) checks eight affected pages, exact manifest/sole-review metadata identities covering 102 new payloads / 10,743,111 bytes, relative links/anchors/frontmatter/dates, diff whitespace and the exact HEAD log prefix. Root does not reopen actual source/code/raw/results or unchanged releases/images/providers; proof remains with Auto's sole review. Prior owner22/598/149/14/2,158-payload scopes are carried as-of. Electric R4 authoring and Analog key/channel/Tension velocity actuals remain outside this scope. The selected 16-channel Analog class inherits only channel0 from its approved full-context result; the bare historical channel2 Boolean is not an extra inherited member. No grade, release, site or whole-product completion follows.
+
+## 2026-10-21 — research: Analog complete note-key actual approval
+
+Root adopts [Auto's sole note-key approval](research/device-analog-dsp.md#whole-note-key-actual-adoption--2026-10-21) by citation: 523 payloads / 50,370,302 bytes, 127 fresh captures / inherited key60, complete 128-key supplied context. All source/input/output/receipt/custody joins and controls pass in that sole review. Root does not reopen new actual source/code/raw/results. Keys125/126/127's identical fresh output is a finite observation without mechanism or pitch-law inference; the sparse335 historical input records remain unbridged. Arrangement authors the next R5 annex from the approved summary after sealing the separate channel packet; Root reviews new wording/IDs/mapping/preservation only. Original prior and portable criterion NULLs persist. Owner IDs remain 5,124; no grade, release, site or whole-product closure.
+
+## 2026-10-21 — research: Analog channel and Tension velocity actual approvals
+
+Root adopts [Auto's sole Analog channel16 approval](research/device-analog-dsp.md#whole-channel-nibble-actual-adoption--2026-10-21) by citation, without new actual source/code/raw/result reads. Root independently approves [Tension125 fresh / full128 catalog](research/device-tension-dsp.md#whole-velocity-byte-actual-adoption--2026-10-21) after checking all frozen pins, scripts, logs, parameter/event bits, receipts and 44,100,000 stereo bytes; safe owned16+16 controls and eighteen independent negatives / three opaque-rate positives / signed-zero boundary pass. Prior Auto222 evidence and inherited1/100/127 are summary/input-metadata joins only, with no old actual replay.
+
+Tension's parent-launch transcription was retained after execution, not pre-call file-pinned; pre-execution inline placement is author-reported/session history, not independent source or OS-exec attestation. The child recorder/scripts/context/methods were frozen, and child/output/endpoint joins pass, but the parent custody gap remains explicit. Recorder JSON is fsynced; outer/raw files lack explicit FD fsync. No retroactive pin, frozen rewrite or retry. Future selected work must file-pin its launcher or invoke its pinned recorder directly.
+
+Analog R5 note-key and Electric R4 owner proposals are frozen for Root's new-wording reviews. Auto authors Tension R5 only from Root's approved summary; a channel annex follows R5 note-key adoption. All waveform priors/portable criteria/grades remain NULL; current owner additions remain 5,124, with no new release/site/product closure. A focused metadata delta follows; originals/source/raw/tool/image/release proof is not replayed.
+
+## 2026-10-21 — spec: Analog R5 note-key annex adoption and owner-review reassignment
+
+Root's sole [R5 owner review](research/device-analog-dsp.md#analog-owner-r5-note-key-annex-adoption--2026-10-21) approves/applies the exact 71,033-byte target after full reversal, preservation and approved-summary joins. It adds 127 DAN-203–329 IDs; all 22 other whole bodies, old004 prefix, 67 rows / 202 prior IDs, R3 objects/control, complete R4 catalog, tolerances/U/state/history and release metadata remain exact. Twenty-two author and fifteen independent negative controls pass. No new actual source/code/raw/result or metric replay; Auto's sole actual approval is inherited. Added draft IDs now total 5,251, with portable comparators/grades NULL and no release/site/product closure.
+
+Electric R4 sole new-wording/mapping/ID/preservation review is reassigned to Arrangement BEFORE any Root proposal-payload read; frozen intended-Root labels stay historical. Root is citation-only for those owner payloads, with no second peer. Auto authors Tension R5 from Root's qualified approved summary, then Analog channel R6 on the new R5 base; all observations inherit their single prior actual review. Electric's proposed key-class eligibility now resolves old128-tuning and edge0/127 histories as different using exact retained input declarations only; its complete P1 key class is selected without replay of known matching key60, with scoped absence qualification and no f0/fit/calibration law.
+
+## 2026-10-21 — lint: Analog key/channel, Tension velocity and R5 owner delta
+
+The focused [14-page delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-key-channel-tension-actuals-r5-owner-incremental-check.json) checks manifest/sole-review metadata covering 1,128 new payloads / 112,362,373 bytes, the applied Analog R5 identity, relative links/anchors/frontmatter/dates, whitespace and exact HEAD log prefix. The parent-launch custody gap remains open in Tension's sole actual review and canonical adoption; it is not converted into an all-code execution-provenance pass. Prior Electric102/owner22/598/149/14/2,158-payload scopes are carried as-of; raw/source/tool/provider/image/release evidence is not replayed. Root stays citation-only for new Analog/Electric actuals and reassigned Electric R4 owner payloads. New owner drafts and Electric key captures are excluded. Added draft IDs are 5,251, no grade/release/site/product closure.
+
+## 2026-10-21 — spec: Electric R4 and Tension R5 owner adoption
+
+Root adopts [Arrangement's sole Electric R4 review](research/device-electric-dsp.md#electric-owner-r4-transpose-annex-adoption--2026-10-21) by citation and applies its exact approved delta from the sealed review, without opening new proposal payloads or duplicating actual/numeric review. It adds 22 DEL-CS-009–030 IDs; all 25 joins and prior rows/bodies/R3 objects/pair relations/tolerances/release metadata remain exact. Twenty-two author/eighteen independent controls pass; reviewer prior-role and signed-zero provenance qualifications are explicit.
+
+Root's sole [Tension R5 wording review](research/device-tension-dsp.md#tension-owner-r5-velocity-annex-adoption--2026-10-21) approves/applies the exact 66,729-byte target, adding 125 DTN-043–167 IDs from the qualified full128 summary. Thirteen other bodies/botholdprefixes/42oldrows/R3R4 objects/37-setting sensitivity annex/tolerances/U/released metadata and full reversal pass. Twenty-five author/nineteen independent controls pass. Every new case retains the parent-launch source not pre-call file-bound and results-only fsync qualifications; no gap becomes a pass and no actual/source/raw proof is repeated.
+
+Current added draft IDs are 5,398. Auto authors Analog R6 on the adopted R5 base; Mix captures Electric's complete P1 key class with its launcher file-pinned before freeze. Arrangement's next selected Analog release-velocity class varies only note-off data2, with inherited64 and the historical127 bare Boolean unbridged. All new priors/portable criteria/grades remain NULL; no new model, fitting/calibration/timing law, release, main-image site or whole-product closure.
+
+## 2026-10-21 — lint: Electric R4 / Tension R5 owner delta
+
+The [16-page owner delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-r4-tension-r5-owner-adoptions-incremental-check.json) checks exact manifest/sole-review metadata for 16 new owner payloads / 1,622,433 bytes and the two applied canonical target identities, links/anchors/frontmatter/dates, whitespace and exact HEAD log prefix. Prior 1,128-payload / 112,362,373-byte and earlier scopes are carried as-of without source/raw/actual/tool/provider/image/release replay. Root inherits Arrangement's sole Electric R4 approval without proposal-payload review; Tension's parent-launch custody gap stays explicitly open. Analog R6 sole owner review is reassigned to Mix before any Root proposal-payload read; frozen intended-Root labels stay historical. New R6 and Electric key / Analog release-velocity actuals are excluded pending their reviews. Added draft IDs5398, portable criteria/grades NULL, no release/site/product closure.
+
+## 2026-10-21 — research selection: Tension whole typed note-key class
+
+Root's retained-run input metadata check confirms exactly five constructor-default matching key histories at 44,100Hz/frames:36/48/60/72/84, velocity100, on4096/off26146. The 266,297-byte runs metadata SHA-256 is `130e46681cc80c24a7f0d4587e42d193dae9a877e16171715c94baad204b7f9f`; the unchanged129-word baseline is516bytes/SHA-256 `e00185698bafd4531b3562012e001afa759556d27405928685f07bf2f5c97eb8`. Root selects the complete key0..127 class:123 fresh / five inherited, matching on/off keys only, under the existing Tension-specific loader/model. Arrangement authors one frozen packet including its launcher before once-only calls; Root is sole new actual/source peer while prior Auto222 actuals remain inherited summaries only. Planned bounds26,937directexports/10,701CalcA/43,394,400stereo bytes; first-anomaly stop/no retry or extension, NULL waveform priors/portable criteria, no f0/pitch-fit/calibration/publicARM law. The current plan/handoff route this selection in family priority order; no ID, grade, release or site from selection.
+
+## 2026-10-21 — spec/research: Analog R6 adoption and Electric key approval
+
+Root adopts [Mix's sole Analog R6 owner review](research/device-analog-dsp.md#analog-owner-r6-channel-annex-adoption--2026-10-21) by citation and applies its embedded exact75,515-byte delta, with no Root proposal-payload or actual re-review. Fifteen DAN-330–344 IDs bring added draft IDs to5,413. All22otherbodies/004oldprefix/67rows329oldIDs/R3objectscontrol/R4R5wholecatalogs/literalAcceptanceprefix/tolerancesUstatehistory/release metadata and reversal remain exact;23author/28independent controls pass.
+
+Root adopts [Auto's sole Electric key128 approval](research/device-electric-dsp.md#whole-p1-note-key-actual-adoption--2026-10-21) by citation, without new actual source/code/raw/results reads. The127fresh/oneinherited catalog retains56,249,824stereo bytes and full input/provenance joins; common154baseline-to-after custody is not per-childbefore proof, Rate remains opaque and numeric-zero warmup is not positive-zero byte proof. Mix authors R5 only from the approved summary. Analog release review and Tension key capture remain under their assigned sole peers; no new waveform prior, portable criterion, metric/fitting/calibration, release/site/product closure. Earlier three-page selected-routing link/whitespace/HEAD-prefix checks passed; the next metadata delta follows without raw/source/tool/image/release replay.
+
+## 2026-10-21 — spec/research: release/key owners adopted and Tension key actual approved
+
+Root applies [AnalogR7](research/device-analog-dsp.md#analog-owner-r7-release-velocity-annex-adoption--2026-10-21) and [ElectricR5](research/device-electric-dsp.md#electric-owner-r5-note-key-annex-adoption--2026-10-21) exact deltas from Arrangement's sole owner reviews, reassigned before any Rootproposal-payloadread. Root remains citation-only for both newowners and allnewAnalog/Electricactuals. Eachadds127IDs; cumulativeadded draftIDs5,667. No repeated actual/source/raw/numericproof; oldbodies/catalogs/criteria/releases/reversal exact. Analogrelease actualapproval adopted by Auto's citation with historicalbareBoolean unbridged.
+
+Root independently approves [Tensionkeyactual](research/device-tension-dsp.md#whole-note-key-actual-adoption--2026-10-21):123fresh+fiveinherited/full128; allnewsource/scripts/logs/receipts/43,394,400unsignedstereobytes/inputmethodcustodyjoins checked. Parentlaunchfile pre-callbound;1,968perchildbeforeafterpairs/15sourcepairs equal; allfinite/channelbitequal,keys2/3positivezero,122freshhashes. Ownedchecker byteexact;13independentnegativecontrols/threeopaqueRate/signedzero boundary pass. Root's firstinitializernegative exposed an independent-parser assertion omission; assertion tightened before seal with frozenbytes/calls unchanged. OldAuto222actual/source/raw not reread. Arrangement nowauthorsR6fromapprovedsummaryonly; oldvelocityparentgap retained.
+
+Root files the bounded [Analog old335 input-recipe history distinction](research/device-analog-dsp.md#transpose-input-history-eligibility-join--2026-10-21), retaining original-sourceversion-binding gap/noabsenceproof. Selects wholehostTranspose25 (24fresh+12inherited), Mixauthor/Autosoleactualpeer/Rootcitation-only; no newmodel/tool/provider or f0law. Allnewcodeincludingparentlauncher pre-callbound, onceonly/firstfaultstop/noretry. Plan/handoff/research/specindexes/coverage/roadmap/atlas/project/handoffplans routed; focusedmetadata-only delta pending, no raw/source/tool/image/release replay. Priors/portablecriteria/gradesNULL, releasedscope and691X/1,076S/3,857none/25,095indirectsites unchanged; requiredU/productOPEN.
+
+## 2026-10-21 — lint: six-scope release/key adoption delta
+
+The [17-page adoption delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-r6-r7-electric-r5-tension-key-adoptions-incremental-check.json) checks six new frozen manifests/sole-review pins covering1,598payloads/169,724,074bytes: AnalogR6/R7 and ElectricR5owners, Electrickey/Analogrelease/Tensionkeyactuals. Payload proofs are inherited from their sole reviewers, with no second source/raw/numeric/custody execution or tool/model/provider/image/release replay. Applied canonical owner identities, links/anchors/frontmatter/dates/whitespace/HEADlogprefix checked; prior16/1128/102/22/598/149/14/2158payload scopes remain as-of. Count5,667added draftIDs, not productdenominator/passes;691X/1,076S/3,857none and25,095of268,015mainindirectsites unchanged. TensionR6owner/Analogtransposeactual remain excluded; requiredU/coverageOPEN.
+
+## 2026-10-21 — spec/research: Tension R6 note-key annex adopted
+
+Root applies [Tension R6](research/device-tension-dsp.md#tension-owner-r6-note-key-annex-adoption--2026-10-21), exact73,123-byte reviewed delta, after one new-owner wording/mapping/IDs/preservation review. The123 new DTN-168–290 IDs plus five inherited references retain full128 keys and all old bodies/rows/objects/criteria/releases; cumulative added draft IDs5,790. All31 author/21 independent controls pass. No actual/source/raw/numeric re-review; the older velocity parent-launch custody/fsync gap stays open and the staged README count ambiguity is a nonblocking historical note. Analog transpose and Electric velocity captures continue with sole independent actual peers; metadata-only complete host-domain eligibility assessments do not select new execution. The preceding17-page/six-scope metadata delta passed, report6,531bytes/SHA-256`03430cfe010d4102a05308372eba64e3ddd0e21b427cdc3f68f60ca239eba11c`; this new R6 delta is pending. Portable criteria/grades NULL, no new release/site/product closure; required U/coverage OPEN.
+
+## 2026-10-21 — lint/selection: Tension R6 owner and whole finite host domains
+
+The [14-page owner/selection delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-r6-owner-and-domain-selection-incremental-check.json) checks Tension R6's frozen manifest/sole-review metadata (eight payloads/642,559bytes), applied73,123-byte owner identity, the separate30,157-byte unreviewed Electric eligibility note, links/frontmatter/dates/whitespace and exact HEAD log prefix. Prior1,598-payload/169,724,074-byte and earlier scopes remain as-of, without actual/source/raw/model/tool/provider/image/release replay. Added draft IDs5,790; requiredU/productOPEN;691X/1,076S/3,857none mixed-unit inventory and25,095of268,015mainindirectsites unchanged.
+
+Root selects the complete finite native-host classes identified by bounded input metadata: Analog85 domains/338aliases/254uniquevectors,208fresh conditional only on queued transposeapproval (Mixauthor/Autosoleactualpeer/Rootcitation-only); Tension48domains/164aliases/117vectors,106fresh+11historicalreferences, allthree recipe-only members fresh while oldbridgegaps remain (Arrangementauthor after priorityElectricreview/Rootsoleactualpeer). All new launch/collector/input code pre-callbound; same admitted models and one-index variation only, once-only/firstfaultstop/noretry. Analogindex99=0 and Tensionhost91=5/sign/inactivegate boundaries remain explicitly native measurements, not publicLive admission. No statecrossproduct, calibration, newmetric, portablecriterion or newruntime/provider model. Electric31-vector finite-host candidate is filed but not selected; active actuals/newwholecaptures excluded from this check.
+
+## 2026-10-21 — research/execution: transpose and velocity approvals; whole Corpus class selected
+
+Root adopts [Auto's Analog transpose approval](research/device-analog-dsp.md#whole-transpose-actual-adoption--2026-10-21) and [Arrangement's Electric velocity approval](research/device-electric-dsp.md#whole-p1-velocity-actual-adoption--2026-10-21) by citation only, without new actual code/source/raw/results reads or repeated numeric proof. Full25/128 summaries enter next owners; no IDs added yet, current count5,790. Analog's stale scalar6/R6label versus exactR7pin is nonblocking retained history. Auto will author one combined AnalogR8 after208actualapproval; Mix authors ElectricR6velocity, Arrangement sole new-ownerpeer for both before any Rootproposal read.
+
+Root's bounded Corpus input/H4 metadata assessment found69 alias points/63 vectors across seven native integer domains. Old Sample&Hold already has matching38-word/I1/rate/render/block declarations, so it is not replayed; omitted explicit default commands and missing source/execution bridges remain qualified. Five other LFO vectors use their approved summary;57 missing vectors form the selected whole batch. Auto authors/Rootsoleactualpeer, reassigned before newpacketcreation. All new code including launcher pre-callbound, once-only/firstfaultstop/noretry through existing model; no new host/provider/tool/physicalcalibration/metric/budget. PriorSquarefailures/stalephases/modalomissions/parked96byte setup unchanged. Root read the prior recorder as inert reuse context, not a second actual proof; oldraw/audio never opened and incidental retained oldimportcounts not used as numeric evidence.
+
+The14-page TensionR6/selection delta passed:2,799bytes/SHA-256`f06188e127283da033da1cf9c4e85ed3f93a765520741c08dbf1112340a7ff6d`; this actual/Corpus-metadata adoption delta is pending. Analog208 is executing after its transpose dependency; Tension106 follows completed priorityElectricreview; Corpus57 authors in parallel. All portable criteria/grades NULL; inventories/sites/releases unchanged, requiredU/productOPEN.
+
+## 2026-10-21 — lint: transpose/velocity actual adoption and Corpus selection
+
+The [12-page actual/selection delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-transpose-electric-velocity-corpus-selection-incremental-check.json) checks manifest/sole-review metadata pins for652 new actual payloads/77,803,551bytes (Analog transpose120 /10,691,457bytes; Electric velocity532 /67,112,094bytes), the separate34,772-byte Corpus input eligibility note and affected documentation links/frontmatter/dates/whitespace/HEAD log prefix. Prior8/1,598/16/1,128 and earlier payload scopes remain as-of without actual/source/raw/numeric/tool/model/provider/image/release replay. Current added draft IDs5,790;691X/1,076S/3,857none/25,095of268,015main indirect sites unchanged. Whole Analog208/Tension106/Corpus57 captures/new owners excluded; requiredU/productOPEN.
+
+## 2026-10-21 — research: Tension106 whole-host actual approved
+
+Root's [sole Tension48-domain review](research/device-tension-dsp.md#whole-native-host-domain-actual-adoption--2026-10-21) approves106 fresh observations/full164-alias117-vector catalog/11 historical input references. All new source/scripts/logs/37,396,800 unsigned stereo bytes/receipts/domain/method/source custody joins independently checked; all finite/channel-equal, onlyU045(index36=0)quiet,36 fresh hashes descriptive only. All1,696 per-child endpoint pairs/16 source pairs match. Ownedchecker byte-exact;13 independent negatives/three opaqueRate/signedzero boundaries pass. Root's pre-seal timestamp field-key mistake corrected in its review script only; no evidence/call change. Initial assembler/source-inspection correction is retained as pre-freeze authoring history, not a final regenerator/retry.
+
+No Auto222 actual/source/raw/estimator replay. Host91=5 stays auxiliarynative boundary, dormant/sign/current/public/ARM gaps qualified; three fresh recipe-related members do not repair old bridges,11 inherited refs gain no fake receipt/PID/metrics. Arrangement authors R7 from approved summary only; current added IDs5,790 unchanged until owner approval. Analog208 sealed under sole Auto review; Corpus57 authors; ElectricR6 owner queue continues. Latest12-page/652-payload actual/selection check passed,3,343bytes/SHA-256`8f5b3398912185d91dfd1b8c2805937431e2d6f0cf7df71f5039f18811e88a84`; this450-payload actual metadata delta is pending. Portable criteria/grades NULL; no release/site/product closure, requiredU/OPEN.
+
+## 2026-10-21 — execution selection: Electric whole finite host domains
+
+Root selects the [complete fixed-P1 finite host class](research/device-electric-dsp.md#whole-fixed-p1-finite-host-domain-selection--2026-10-21):31 fresh vectors (Polyphony0..29/PickupModel1), all58 aliases/56 vectors and25 approved transpose references retained without replay. Existing higher eligible Analog/Tension/Corpus batches are active. Mix authors, Auto solely reviews, Root citation-only for new actuals. Same admitted33-word P1 model/history/providers, one word only, all new code/parent pre-call bound, once-only/firstfaultstop/no retry. Bounds4,495 selected exports/3,379CalcA/13,730,272stereo bytes; native nesting unknown. Single-note output does not prove voice counts/stealing/labels; continuous/Dummy32 controls excluded. No new prior/criterion/metric/calibration/publicARM law, ID, release/site or product closure. Current added IDs5,790/requiredU/OPEN; selection routing delta pending.
+
+## 2026-10-21 — spec: Electric R6 velocity annex adopted by citation
+
+Root applies [Electric R6](research/device-electric-dsp.md#electric-owner-r6-velocity-annex-adoption--2026-10-21), exact59,238-byte target, from Arrangement's sole new-owner review and complete embedded delta. Reassignment preceded any Rootnewproposal-payload read; no actual/source/raw/numeric review repeated. All128 summary joins/127 DEL-CS-158–284 IDs,33 author/27 independent controls,15 other bodies/004prefix/40 rows189priorIDs/R3R4R5 objects/Ucriteria/release117eval129inventory/reversal exact. Current cumulative added draft IDs5,917. Velocity0 positivezero does not validate zero-note dispatch equivalence or general curves; all portable criteria/grades NULL.
+
+Mix's Electric31 capture owner identity remains as-of/nongating across this update, with no input/model change or frozen repair. TensionR7 authors from approved106summary; Analog208 waits Auto actualreview; Corpus57 completed originals and is preserving a failed no-op checker control with an additive data-only correction before finalseal/Rootreview. No original retry, release/site/product closure. Metadata delta for ElectricR6/Tension106 and selection updates pending; requiredU/OPEN.
+
+## 2026-10-21 — lint: Electric R6 / Tension host-domain adoption delta
+
+The [13-page actual/owner delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-r6-tension-kind3-adoptions-incremental-check.json) checks manifest/sole-review metadata for458 new payloads/44,259,521bytes: Tension106 actual450/42,877,617bytes plus ElectricR6 owner8/1,381,904bytes. Applied ElectricR6 identity, affected links/frontmatter/dates/whitespace and HEAD log prefix checked. Prior652/8/1,598/16/1,128 and earlier scopes carry as-of without actual/source/raw/numeric/tool/model/provider/image/release replay. Added draft IDs5,917; inventories691X/1,076S/3,857none and25,095of268,015main indirect sites unchanged. Analog208/Corpus57/Electric31 and next owners excluded. RequiredU/productOPEN.
+
+## 2026-10-21 — research: Corpus57 qualified actual approval
+
+Root independently approves [Corpus57](research/corpus-dsp-static.md#whole-native-integer-domain-actual-adoption--2026-10-21), full69 aliases63 vectors/six inherited references. All seven new source files,57 scripts/logs/7,471,104raw stereo bytes/receipts/input/custody joins checked;13 independent negatives/three opaqueRate boundaries pass. Original frozen checker --check still FAILS no-op data_as_code; Root reproduced exact892-byte stderr/c60cc23c…b83a4 and exit1. Additive post-capture DATA-only source changes the one control expression in memory, demonstrably changes/rejects actual input and passes the otherwise unchanged checks. It is not pre-call-bound analysis; capture/parent/input/model/raw bytes and original failure remain immutable, no retry. All57 finite/nonzero,13 fresh hashes descriptive;4,731 common-baseline→after pairs match, not per-child before/continuous/provider/FP/OSexec proof.
+
+Five inherited LFO summaries plus unnumbered qualified oldshape5 metadata retain old missing/source/default-binding gaps and no audio replay. OriginalSquare/phases/prepare/modelhistory,176modal omissions/parked96bytes remain. Initial assembler's absent owner-asof path recordsNone nongating, no input effect/currentownerbinding claim. Arrangement authors R9 only from the approvedsummary, no IDs yet.
+
+Root reassigns sole TensionR7 owner peer to Mix before ANY Root R7 payload read, remaining citation-only for R7 and its minimal external erratum. Peer found zero-word exclusivity wording too broad; author freezes exactone-sentence correction separately, v1 unchanged, no actual/numericredo or secondpeer. Latest13-page/458-payload delta passed,3,218bytes/SHA-256`b637f3d0718e3db511da461b12cdfb852b75004f93ac2613011286e279477d8f`; this Corpus258-payload actual metadata delta pending. Added draft IDs5,917; portable criteria/grades NULL, inventories/sites/releases unchanged; requiredU/productOPEN.
+
+## 2026-10-21 — spec/research: corrected Tension R7 and Analog208 approval
+
+Root applies [Tension R7's corrected composition](research/device-tension-dsp.md#tension-owner-r7-native-host-annex-adoption--2026-10-21) by Mix's sole owner-review citation, after reassignment before any RootnewR7/erratumproposal read. Exact80,530-byte target/a070055c…12772 incorporates one authored external wording change, 'contains'→'consists entirely of' positive-zero words; originalv1/80,518-byte target/finding remain immutable and unapproved. All106 IDs/117 vectors/164 aliases/11 refs,34 author/24 independent/seven overlay controls,14 other whole bodies/002prefix/42 rows290oldIDs/R3-R6objects/releases/reversal exact. Auxiliary DTN384/newapplicationproofFalse and old recipe/parent/public gaps retained. Added draft IDs6,023; no numeric/source/raw redo or portable criterion.
+
+Root adopts [Auto's sole Analog208 actual approval](research/device-analog-dsp.md#whole-kind3-native-host-actual-adoption--2026-10-21) by citation only: all85 domains/338 aliases/254 vectors/208 fresh/46 inherited references. Sealed858payload/105,682,245bytes, finite/channel-equal output73,382,400rawbytes/60,944exports/18,096CalcA, no retry; silent/dormant/measurement-only contexts and237commonbaseline→208after custody qualifications remain. Frozen cache313 inventory is not code execution evidence; no Rootactualpayload/source/raw/result reads or numeric re-review. Auto authors combined24+208 AnalogR8; Arrsoleownerpeer, Rootcitation-only. CorpusR9 authors with retained checker failure qualification; Electric31 queues actualreview. Metadata delta for these adoptions pending; required U/whole-Live OPEN, releases/sites/inventories unchanged.
+
+## 2026-10-21 — lint: Corpus57 / Analog208 / corrected Tension R7 adoption delta
+
+The [14-page actual/owner delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus57-analog208-tension-r7-adoptions-incremental-check.json) checks four new manifests/three sole-review pins covering1,126payloads/120,633,679bytes: Corpus57actual258/13,644,587bytes, Analog208actual858/105,682,245bytes, TensionR7owner8/1,302,874bytes and separatewordingerratum2/3,973bytes. Only corrected Tension80530-byte target is approved; originalv1/finding remain history. Corpus originalcheckerFAIL/additivepostcaptureDATAqualification retained. Appliedowneridentity/links/frontmatter/dates/whitespace/HEADlogprefix checked, prior458/652/8/1598 and earlier scopes carried as-of without source/raw/actual/numeric/tool/model/provider/image/release replay. Added draft IDs6,023;691X/1,076S/3,857none and25,095of268,015main sites unchanged. Newowners/Electric31 actual excluded; requiredU/productOPEN.
+
+## [2026-10-21] spec | Corpus R9 corrected composition, Analog R8 and Electric31 approval
+
+Root’s [sole Corpus R9 owner review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r9-native-integers-finite-v1-review.json) approves the composition with a separate count-wording erratum only; original v1 remains unchanged/unapproved. Applied77,775B/baadffac…13047,57 DCO037–093 IDs, full69aliases63vectors, old36rows/13requirements/eightobjects/27releasedgroups73eval exact;21author+15independent negatives. Everynewcase retains original checker FAIL/additivepostcaptureDATA notprebound/allcaptureparentprebound qualification; shape5 unnumbered notDCO021. No actual/source/raw/numericredo.
+
+Root applies [Arrangement’s sole Analog R8 owner approval](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-owner-r8-kind3-transpose-finite-v1-review.json) by embedded delta/target citation, no proposal or actualpayload read. Applied87,423B/06785207…1be1e93,232 DAN472–703 IDs/fullcatalogs/dedup24Transpose;22otherwholebodies/003prefix/67rows471oldIDs/R3–R7objects/releases exact. Auxiliary99=0/public/history/NULLcriteria remain;36author+13peernegatives. Cumulative6,312added draftIDs, never passes/denominator.
+
+[Electric31 sole actual/source approval](research/device-electric-dsp.md#whole-finite-host-domain-actual-adoption--2026-10-21) is adopted by Auto’s summary citation, no Rootactual/source/raw/result reads;31fresh25inherited/full58aliases56vectors. Root selects whole144alias/143history/142fresh channel+Offvelocity classes for both Electric and Tension, independently varied/no crossproduct/sharedbaseline inherited; Mix/Arrangement authors, Auto/Root soleactualpeers, Rootcitation-onlyElectricactual. Fullhistoryidentity required, not parameter-only dedup. Unchanged admittedharness/model/providers, no new construction/patch/tool/calibration or extra readiness chain. CombinedElectricR7 queues after142approval. Amp/Cabinet blocked/noXfamilies parked/T1.7deferred; U/wholeproductOPEN.
+
+The [focused adoption check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r9-analog-r8-electric31-adoptions-incremental-check.json) pins four frozen manifests/three sole reviews and appliedtargets through metadata only:172payload/24,385,870B. Priorchecks carry asof; no payload/source/raw/tool/model/provider/image/release replay.691X/1,076S/3,857none,25,071baseline+24conditional=25,095of268,015main sites unchanged. NewMIDIactuals/ElectricR7 excluded untilreview/adoption.
+
+## [2026-10-21] query | Tension MIDI-axis approval and Corpus complete finite-host selection
+
+[Root’s sole Tension142 actual/source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-midi-axes-v1-review.json) seals9,557,056B/148ffd51…fdb4d. Allfive new433source lines read before safe packet-only check; all142scripts/logs/receipts/50,097,600stereoB/144aliases143histories and9source+2,272per-childpairs independently checked.17independent negatives/three opaque signedRate/signedzero controls plus16input12protocol12retained4parent author controls pass, byteexactsafecheck. All142onceexit0/no retry,31,098exports12,354CalcA+142init separate; fullhistorydedup prevents parameter-only collapse. Newlyrequestedstdout/stderr/audioFDfsync is no directory/crashproof/oldgap repair. R8authorArr/Mixsoleownerpeer/Rootcitation-only newR8proposal beforeanyread;142IDs not creditedyet.
+
+Auto’s Corpus inputdomain assessment is materialized by Root after fullscriptread and prefrozen shape5lookup correction plus cardinality/legalbaseline/oneword selfchecks. [Eligibility](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-complete-finite-host-domain-eligibility.json)1,031,173B/4f8ad338…194f0:14completeN5/N6integerstep/binaryaxes277aliases264vectors63approvedrefs201missing, exact64oldinputs43differentvector19history2priorrefs/noadditional. This is finite converted-input scope, no arbitrarycontinuous endpoints, current/public binding or numeric/sourcebehavior review. Rootselectswhole201batch at unchanged38wordI1fixture/noevents; Arr afterTensionR8freeze/Rootsoleactualpeer/no extra readinesschain/newmodel/provider/patch/tool/calibration. Inheritedshape5/default/source and originalcheckerFAIL/additivepostcaptureDATA qualifiers retained; allpriors/portablecriteria/gradesNULL, no newID/release/site. RequiredU/OPEN.
+
+[Focused metadata check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-midi-corpus-finite-selection-incremental-check.json) checks596payloadmanifest/solereview+eligibilitypin/docs only; earlier172/1126/458/652/8/1598 scopes carry asof without payload/source/raw/tool/model/provider/image/release replay. Current6,312added draftIDs;691X/1,076S/3,857none and25,095of268,015main sites unchanged. Electric142actual/combinedElectricR7/TensionR8/Corpus201 excluded pending sole review/adoption.
+
+## [2026-10-21] spec | Combined Electric R7 and Tension R8 adopted
+
+[Electric142 actual approval](research/device-electric-dsp.md#whole-midi-axis-actual-adoption--2026-10-21) is adopted by Auto’s sole review citation, with no Rootnewactual/code/source/raw/results reads. Full144aliases143histories/142fresh1inherited/592payload76,377,547B;36peernegatives plus26input21synthetic21actual9Rate4audio ownedcontrols, common169initial→142after23,998pairs, numericzero-only warmup and close/hash/fsync/defaults/publicARM qualifications retained.
+
+Root’s [sole combined Electric R7 owner review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-owner-r7-host-midi-finite-v1-review.json),5,693,544B/7f1352a1…12bab, approves173DEL-CS285–457 IDs from approved31+142 summaries. Applied68,325B/0fa42c42…022d1. Full58aliases56vectors+144aliases143histories/198historyreferences,14otherwholebodies/002004prefix/40rows316oldIDs/R3-R6objects/117releaseeval129inventory exact/reverse;42author14peernegatives. Scope exception explicitly retained: ownedchecker invocation opened prior R4/R5/R6 catalog JSON DATA despite earlier Rootcitation-onlyproposalscope; no oldcode or actual/source/raw/numericproof reviewed. Root didnotrerunthatroute; independentnewreview usespriorsolepeerembeddedcatalogs/baselines. Initial reviewer assertions confused R4 summary serialization/digest formats, resolved via exactpriorR5/R6preservationbaselines beforeseal; no frozen/canonical repair. FutureRootchecksneedapprovedmetadata-onlyprior route.
+
+Root applies [Mix’s sole Tension R8 owner approval](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-owner-r8-midi-axes-finite-v1-review.json),1,279,674B/18a7f2a2…c10e5, by embedded full delta/target citation without anynewR8proposalread. Applied86,163B/4e61763c…ca7e5,142DTN397–538 IDs/full144aliases143histories,14otherwhole/003prefix/002whole/42rows396oldIDs/R3-R7objects/criteriaU/history/releases27eval35inventory exact/reverse;21author25peercontrols. Oldvelocityparentgap/auxiliary91=5/publicARM unknowns remain. Cumulative6,627added draftIDs, not passes/denominator; no grade/release/site.
+
+[Collision eligibility](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-kind3-host-domain-eligibility.json)120,032B/706b599b…5c5d9 identifies20nonvirtualkind3domains105aliases86vectors85missing at oneexactpreset_c4history. Rootselects85once underexisting139word/warm11264beforequeue/render44100 model; Mixauthor/Autosoleactualpeer/Rootcitation-onlynewCollisionactual beforeanyread. Baseline isretainedinput/historicalmetadataONLY, no assumedsoleactualapproval/oracle/PID/receipt/metric or replay. NativeRes2Type59max5 distinctfromN6stored6;11virtualexcluded/dormantnoiseLFOres2/physicalpublicARM U retained. Source/domainmetadata/41oldinput+2releaseinput+12approvedhistory intersections only, no actual/numericredo. Corpus201 alsoselected; no newmodel/provider/patch/tool/calibration or extra gate.
+
+The feasibility page now scopes its old build-provenance gate to the parkedobserver/setup route, under plan4secondamendment/design12: D01answered, one frozen standingpacket/oneactualreview. [Focused metadata delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-r7-tension-r8-midi-adoptions-incremental-check.json) covers612newpayload82,617,658B plusCollisioneligibility/docs/appliedtargets; previous596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release replay.691X/1,076S/3,857none and25,095of268,015main sites unchanged; unsupportedrequiredU/wholeproductOPEN.
+
+## [2026-10-21] query | Corpus complete finite-host actual approved; Collision partial stop
+
+[Root’s sole Corpus201 actual/source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-complete-finite-host-domains-v1-review.json),11,629,281B/976edbd7…cc89be, approvesall201fresh/277aliases264vectors63inheritedhashrefs. All5new412source lines FULLread before packet-only safecheck; all201scripts/logs/receipts/26,345,472stereoB andeveryjoin independently checked. All201onceexit0/emptyerr/no retry,14,673exports6,432CalcA0loggedinit/nestedunknown; bothchannelsfinite/nonzero,0stereowordequal/fivehashes finitefacts only. Fivewhole-source+3,216perchildpairs/219precallpayload4,892,892B/allcodeparent bound.16input9protocol12retained4parent authorcontrols +15peernegatives/INTMIN0INTMAXRate/signedzeroPASS, ownedcheckbyteexact.
+
+Exactmxcsr/transport-before-create scriptorder preserved; eligibilityrole-orderprosequalified. Rootpresealbytecopyassert onreserializedownedeligibilityJSON corrected tooriginalauthoritypin+exactJSONobjectequivalence, no evidence/canonical/frozenchange. OldCNI036shape5→CFH234 hashjoin andall63ownchecker/default/sourcequalifications retained/no oldaudio/PID/metric/receipt or originalreplay. NewpreboundcheckerPASS doesnotrepairoldoriginalFAIL/additivepostcaptureDATAhistory. ArrR10author/Rootsoleownerpeer,201DCO094–294 pending/noIDscredit. Allpriors/portablecriteria/gradesNULL/no metric/calibration/publicARMlaw.
+
+Collision author reports STOPPED-NO-RETRY after16attempts:15recorded/16thnative58=1exit0/fullrawbutprocessing return/flag guardfailure;69neverlaunched. This is author-reported pending Auto’s soleactual/source review of one frozenpartial, not a pass or newnativefailure interpretation. Rootcitation-only newCollisionpayloads, no retry/continuation/owner selected. Partial/error/phases/code/inputs retainedunchanged; requiredU/OPEN.
+
+[Focusedmetadata check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus201-actual-adoption-incremental-check.json) covers830payload43,363,185B manifest/solereview/docpins only; prior612/596/172/1126/458/652/8/1598scopes carryasof without actual/source/raw/tool/model/provider/image/release proof replay. Current6,627added draftIDs; frozen691X/1,076S/3,857none and25,095of268,015main sites unchanged. No release/grade/productclosure.
+
+## [2026-10-21] spec | Corpus R10 adopted and Collision partial reviewed
+
+Root’s [sole Corpus R10 owner review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r10-complete-finite-hosts-v1-review.json),3,285,315B/457156ff…d4629, approves201DCO094–294/full277aliases264vectors63inherited hashrefs. Applied84,119B/4850aea9…7d1b8;22author15peernegativecontrols/fullreverse/12otherwholeREQ002prefix/93oldIDs36rows/14oldR3-R9providers/R9counterratum/criteriaU/modal176parked96Squarehistory/releases27groups73eval exact. Onlynewwording/mapping/preservation, no actual/source/raw/numericredo. Fresh201preboundcheckerPASS distinct from old63 ownFAIL/additiveDATA/default/source/fsynclimits; newapplicationproofFalse/NULLpriorsportablecriteria/grades. Cumulative6,828added draftIDs, notpasses/denominator.
+
+Rootadopts [Auto’s sole Collision partial actual review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-kind3-host-domains-v1-partial-review.json),3,087,748B/011fa84e…16adc, bycitationONLY/no newactual/code/source/raw/result reads. Fifteenfiniteobservations approved/onefailedguarddiscovery/69unlaunched/onehistoricalinput-onlybaseline. Guard24renderreturns1flag1 (blocks13–36) remainsFAIL/Ustatussemantics; nativeexit0/fullraw/destroy/CXX0 isnotapproved16thsuccess. FailedstaleRUNNING/outerexit1/partialphases/unboundpostcaptureJSONreadback retained. Full6sources/85scripts/16logs7,086,592stereoB checkedbypeer;23peernegatives/opaqueRate/guardFAIL/audioboundaries/112commoninitial×16endpoints1792pairs, first15nonzero/12unequalchannels/nonzerowarmups/13hashes descriptiveonly. No retry/guardrepair.
+
+Afterthatsoleapproval Rootselects exact69unlaunchedIDsonce innewCollisioncontinuation, SAME ret0flag01guard/139wordpreset/warm-before-queue model, no earlier15/failed16/baseline replay or newconstruction/provider/patch/tool/calibration. Mixauthor/Autopeer/Rootcitation-only. Max17319exports7521CalcA30560928B/firstnewfaultstop/noautomaticextension; failureU notsilentlycompleted. Separately Rootread[held-noteCorpuseligibility](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-held-note-midi-axis-eligibility.json)684,876B/f258c88f…2a898:272aliases270histories268missing126keys127onvel15Onchannels, old030/031twoapprovedrefs, exactdifferent38wordvector/tokens613d0f49…875b8a1 and parsedbinary64projection/originalOn1537/I1/noOff. Rootselects268once/Arrauthor/Rootsoleactualpeer, wholehistorydedup notparam-only, originaldecimal tokens/LIBM_ULPunset treatment preserved; no 201vector substitution, modalbudget/newmetric/calibration/velocity0dispatch/publicARMlaw. NoIDsforunapprovedactuals.
+
+[Focusedmetadata delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r10-collision-partial-adoptions-incremental-check.json) covers168payload13,675,456B plusheldeligibility/appliedtarget/docs; prior830/612/596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release replay.691X/1,076S/3,857none and25,095of268,015main sites unchanged; requiredU/wholeproductOPEN/releasesunchanged.
+
+## [2026-10-21] query | Corpus held-note268 and Collision continuation69 approvals
+
+[Root’s sole Corpus268actual/source review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-held-note-midi-axes-v1-review.json),15,115,041B/8d35db17…d954d, approves268fresh/full272aliases270histories/two old030031 refs. Full5new407lines readbeforepacket-onlycheck,268scripts/logs/stderr/receipts35,127,296stereoB/everyjoin/token/f64/scriptidentity/5inertmethodversions independently checked. Allonceexit0/emptyerr/no retry,19,564exports8,576CalcA0loggedinit/nestedunknown; finite/nonzeroBOTHchannels/0wordequal/127hashes descriptiveonly.17input10protocol12retained4parent authornegatives+16peernegative/RateINTMIN0INTMAX/signedzeroPASS/ownedcheckbyteexact.288precallpayload2,579,589B/allcodeparent bound,7source+4288perchildpairs equal. Old14axisdocstringlabel is nonblockingpatternhistory; actualtyped3axeswholehistories, no frozenrepair. Originaldecimalbinary64/On1537/LIBM_UNSET/differentheldvector/sourceI1path retained, no oldmodalbudget/PIDreceiptmetrics or source/raw/numeric/provider/native/original replay. ArrR11author/Rootsoleownerpeer/268IDsnotcreditedyet.
+
+Rootadopts [Auto’s sole Collision69 actual review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-kind3-unlaunched-continuation-v1-review.json),10,775,075B/a8a1556b…a4a87a, bycitationONLY/no newactual/code/source/raw/results read. All69selectedneverlaunchedinputsonceexit0/no retry,17,319exports7521CalcA30,560,928B; allfinite/nonzero/unequalchannels/nonzerowarmup/twohashes descriptiveonly.29input23synthetic23actual9Rate6audio owned+29peernegative/ret1FLAGFAIL/Rate/audioboundary controlsPASS,97commoninitial×69after6693pairs,87precallpayloads unchanged. Old15/failed16/baseline neverreplayed; guardremainsret0flag01/no nativeRet1meaning. Full105aliases86histories=84approved+failedU+historicalinput-onlybaseline, not85success. MixauthorscombinedR3with84DCL063–146/ArrsoleownerpeerafterCorpusR11freeze/Rootcitation-onlyR3proposalbeforeanyread. PartialstaleRUNNING/outerexit1/failedguard/unknownstatus/unboundpostcaptureJSONreadback retainedexact. No IDscrediteduntilownerapplication.
+
+[Focusedmetadata delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus268-collision69-actual-adoptions-incremental-check.json) covers1400payload91,424,200B manifest/sole-review/docpins only; prior168/830/612/596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release proof replay. Current6828added draftIDs/notpasses/denominator;691X/1,076S/3,857none and25,095of268,015main sites unchanged. Newgate-axis eligibility notadoptedyet; no newmetric/calibration/portablecriterion/grade/release/productclosure, requiredU/OPEN.
+
+## [2026-10-21] spec | Corpus R11 and Collision R3 applied; DCO032 axes selected
+
+[RootsoleCorpusR11ownerreview](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r11-held-note-midi-finite-v1-review.json),4,349,650B/7bc8cc68…de2d, approves268DCO295–562/full272aliases270histories/twoinheritedDCO030031. Applied90,376B/d0f91d69…9352c. Fullnewchecker/delta readbeforeowner-onlysafecheckbyteexact25authorcontrols/17independentmappingpreservationmutationsPASS. Completeexpectedmapping independently reconstructed from approvedRoot268summary. Fourfragmentdelta only013append/annex/revision,12otherwhole inclENTIRER10REQ002/old013prefix/294priorIDs36rows/18oldobjects/releases27g73e/oldcriteriaU/modal176parked96/Squarehistory exact/fullreverse. Originaldecimal/f64/heldcontext/LIBMUNSET/noOff separatefromnoeventR10, no oldmodalbudget/PIDreceiptmetric transfer or actual/source/raw/numericredo.
+
+[ArrsoleCollisionR3ownerreview](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-owner-r3-kind3-finite-v1-review.json),6,954,572B/8a3b3df0…7c47, approves84DCL063–146/full105aliases86histories from15+69actualsummaries. Rootappliesembeddedapproveddelta/targetbycitationonly, NONEWproposal/actual/code/source/raw/resultread. Applied45,211B/d616266d…9ae8.29author/16peercontrolsPASS.17otherwhole/002prefix/ALL62oldrowsIDs(50R1+12R2)/R2objects8relations/criteriaU/history/releases2cases2eval8inventory exact/fullreverse. Failedi058-v01 remains unnumberedguardFAIL/U/no approvedsuccess/nativeRet1law; input-onlybaselineunnumbered/noX/criterion/PIDmetrics/oracle. Earlierouterexit1/staleRUNNING/partialphases/unboundpostJSONreadback/historicalasof69unlaunched unchanged; not85success. Cumulative7,180added draftIDs, no passes/denominator.
+
+[AutoDCO032eligibility](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-dco032-midi-axis-eligibility.json),745,014B/3e2b78c9…e6702, identifies400aliases397wholehistories396missing; fourbaselinealiasesONEinheritedDCO032. RootselectsArroncecompletebatch/RootSOLEactualpeer: independentOnkeyONLY (Offkeyfixed60), Onvelocity, matchingBOTHstatusnibbles, Offvelocity, no crossproduct/newconstruction. Exact735BBscript2366…82fc3/original38tokensf64351e…/1855…/On1537Off3073/I1/LIBMUNSET/MXCSRtransportBEFOREcreate/16384at512/noWarm unchangedadmittedmodel. Fullartifactbudget beforelaunch given427MBworkspace, raw51,904,512Bplusoverhead/concurrentwriters. Allnewcodeparentanalysischeckerprebound/meaningfulcontrols/oncefirstfaultstop/noretry/no oldcase replay; NULLportablecriteria/grades, no velocity0/publicARM/calibration/generallaw. Eligibility incidentalnumericdisplay excluded and mutablemetadataKeyError correction retained; no frozenrepair.
+
+[Focusedownermetadatadelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r11-collision-r3-owner-adoptions-incremental-check.json) covers18payload9,748,943B+eligibility/appliedtargets/docs only; prior1400/168/830/612/596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release proof replay. Current691X1076S3857none/main25095of268015 unchanged; requiredU/wholeproductOPEN.
+
+## [2026-10-21] research | Corpus396 approved; residual157 and Analog284 selected
+
+[RootsoleCorpusDCO032396review](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-dco032-midi-axes-v1-review.json),22,624,179B/c073663a…40f2, approves396fresh/full400aliases397WHOLEhistories/oneinheritedDCO032INPUTref. Finalmanifest261,733B/fc3bbaec…7ecf/1613payload78,965,952B/all0444. Full5new432lines readbeforepacket-onlycheckbyteexact; completeoriginaldecimalf64/script/397historyhashes400aliases/all396logsraw51,904,512B/protocol/receipts/parent/sourcepins independentlychecked. Allonce14:35:30.751371–14:36:14.353481UTC/outer1440776/exit0emptyerr/no retry,28,908exports12,672CalcA/0loggedinit/nestedunknown; finite/nonzeroBothchannels/0wordequal/129hashes descriptiveonly.417precallpayload3,611,694B/allnewcodeparentbound/7source6336perchildpairs equal.21input12protocol5PRECALLparent12retained4postparent/3Rate4edges6unsigned authorcontrols+19peerneg/RateINTMIN0INTMAX/signedzeroPASS. Reviewerinitialtimestampkeyfrozen_utc→utc correctedpreseal/no evidencecallschange. Oldoriginal/sourcebehavior/raw/numeric/modalbudget/provider/native/runtimeimage proof neverreplayed. OriginalBscript/gate1host34+0/LIBMUNSET/OnkeyONLYfixedOff60/noOffnewconstruction/no oldcriteriontransfer retained. ArrR12authors396DCO563–958/Rootsolenewownerpeer; noIDscreditedyet/current7180.
+
+Rootresidualeligibility386,278B/99b1a3ed…13e4 full160aliases158histories157missing/11metadata controls, retainedgenerator6,820B/7f9cdf37…00e7e; OffkeyONLY, OnchannelONLY, OffchannelONLY exactsameDCO032context/threebaselinealiasesONEoldref. RootselectsAutoauthoronce157/RootSOLEactualpeer,89,784,320Bnormalfull-lifecycleallowance/prechildpacket/freeguards/firstfaultstop/no retry; noownerselected/newcriteria. AutoElectricCollisioneligibility2,976,649B/6e6e6b49…40f42 yieldsElectric284fouraxes/Collision157threeaxes atDCL054approvedno-setterhistory;21metadatacontrols; exactold120Electric/all12Collision+41inputs intersections/no extraapproval or PIDmetrics. MixAnalogTensioneligibility959,492B/76c29302…a6025e yields284perfam/47+68pinnedoldINPUTdeclarations/onlybaseline; priorfouraxescomplete/no repeatedoldcase. RootselectsAnalogfirstMixauthor/AutoSOLEactualpeer/RootcitationonlyallnewAnalogactual/code/source/raw/results BEFOREanyread. Tension/Electric/Collisionclassesnotselectedyet.
+
+[Existingstoreplacementrecord](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/existing-analyst-artifact-placement-2026-10-21-v1.json) reuses G0.1 /var/tmp/sound-analysis viaexistingr2-large link: newfull-spec-v1child0700 forNEWlargepackets, startingAnalog284. Currentroot~9GB/home~303MB; no oldevidencemove/delete/newsymlink/install/runtime model. Freshconfigpin confirms /var/tmp agecleanrule commented/noetctmpconf override; singlelocaldisk/notbackup. Exactlexical/resolvedroots/precallpins/rootboundchecker/final0444/soleactualreviews unchanged, fullnormalartifactbudgets+concurrentheadroom/resource-stopconditions beforechildren; estimatesnotreservations/hardworstcase. Design12placementamendment/plan+handoff+roadmap/index/project/coverage aligned. Earlierdocadoption continuation corrected an exactindex-rowlabel lookup and table placement, no frozenowner/evidencechange.
+
+[Focusedmetadataactualselectiondelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus396-actual-and-midi-axis-selections-incremental-check.json) covers1613payload78,965,952B pluseligibility/placement/docs bymanifest/sole-reviewmetadata only; prior18/1400/168/830/612/596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release proof replay. Current7180addedIDs/notpasses/denominator/691X1076S3857none/main25095of268015 unchanged. No publicARM/calibration/newcriterion/grade/release/site/productclosure, requiredU/OPEN.
+
+## [2026-10-21] spec | Corpus R12 applied; Tension independent bytes selected
+
+[RootsoleR12new-ownerreview](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r12-dco032-midi-finite-v1-review.json),6,913,791B/2446ac0d…f1cbb, approves396DCO563–958/full400aliases397histories/oneDCO032INPUTref4baselinealiases. Applied97,341B/21087e2e…903d3. Fullnewchecker/delta readbeforesafeowner-onlycheckbyteexact27authorcontrols/19independentmappingpreservationnegativesPASS; completeexpectedmapping reconstructedONLYapprovedRoot396summary.12otherwholeinclENTIRER10REQ002/old013R11prefix/562oldIDs36rows/22oldobjects/criteriaU/history/releases27g73e/modal176parked96/Squarehistory exact/fullreverse. Initialreviewerassertusedpredecessorcheck-resultsfilename correctedtoauthor-checks beforeseal, no evidence/canonical/calls changed. No actual/source/raw/numeric/tool/model/provider/image/releasefixture proof redo. Originaldecimalf64/gate1host34+0/LIBMUNSET/OnkeyONLYfixedOff60/no oldcriterionmodaltransfer retained; newportablecriteria/gradesNULL/newappFalse. Cumulative7,576newdraftIDs/notpasses/denominator.
+
+RootselectsTension284independentbytes fromalreadyadopted959492B76c29302…a6025e metadata:288aliases285histories/oneDTN001baseline4aliases, OnkeyONLY/OffkeyONLY/OnchannelONLY/OffchannelONLY, no oldcase replay/newPIDmetrics/criterion.129orderedsetters/index2omitted/e001…97eb8/on4096off26146v0/noWarm/zero input/rate44100render44100at512/existingmodel unchanged. Arr author/MixSOLEactualpeer/RootcitationonlyALLnewactual/code/source/raw/resultsbeforeanyread. Newpacketexistingr2-large/full-spec-v1 rootstore,224MiBnormal+128MiBheadroom/resourceprechildguards/firstfaultstop/noretry; no oldevidencemove/delete/newsymlink/install/model. Analog284andCorpus157continueinparallel; Electric284/Collision157remainmetadataonly. No newowner/IDsfornewbatches/portablecriteria/grade/publicARM/calibration/generallaw selected.
+
+[Focusedownerselectiondelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r12-owner-tension-selection-incremental-check.json) covers9payload5,990,351B/sole-ownerpins/appliedtarget/docs only; prior1613/18/1400/168/830/612/596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release proof replay. Ledger691X1076S3857none/main25095of268015 unchanged, requiredU/wholeproductOPEN.
+
+## [2026-10-21] research | Corpus residual157 sole actual approval adopted
+
+[Rootsoleactual/sourceapproval](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-dco032-residual-midi-axes-v1-review.json),9,108,938B/a728173f…d363f, approves157fresh/full160aliases158WHOLEhistories/oneDCO032INPUTref3baselinealiases. Finalmanifest106,683B/2c66c632…ecbc3 seals659payload31,723,297B/all660files0444. Full6new456source lines readbeforepacketonlyownedcheckbyteexactauthor-check; all157scripts/logs/receipts20,578,304stereoB/completehistoryhash/originaldecimalf64/aliases/sourceparentcustody independent. RootpriorINPUTeligibilityauthorrole disclosed, notnewcapture/control/recording/checkersource/bookkeeping.21input13protocol5preparent12retained4postparent/3Rate3edges6unsigned authorcontrols+19peernegative/RateINTMIN0INTMAX/signedzeroPASS.179precallpayload1,814,694B/ALLnewcodebound; initialassembler historicalnotfinalregenerator. OneRootadaptedassertexpectedeligibilityhistory_sha256 correctedtofixed/eventsrecomputationbeforeseal/noevidencechange/callsrepeat.
+
+All157once14:45:34.352307–52.074781UTC/outer1442876/exit0emptyerr/no timeoutfaultretry;11,461exports5024CalcA0loggedinit/nestedunknown; allfinite/nonzeroBothchannels/0wordequal/twohashes descriptiveonly.7source+2512perchild16pairs equal. Recorded64MiBpacket/freefloorguards untriggered/maxpacket27,861,012B/minfree258,478,080B,89,784,320Bplanallowance notreservation/worstcaseproof. Originaldecimalf64/gate1host34+0/LIBMUNSET/MXCSRtransportBEFOREcreate/On1537Off3073/I1sourcepath fixed; singleOffkey/Onchannel/Offchannel axes no pairedchange/crossproduct/newconstruction. No oldbaseline replay/PIDreceiptmetrics/criterionmodaltransfer/actualsourcebehavior/raw/numeric/provider/native/runtimeimage proofredo. NULLpriorsportablecriteria/grades/newappFalse/no velocity0/unmatchedrelease/physical/calibration/generalMIDI/publicARMlaw; source/default/FP/OSexec/provider/fsync/postchild/groupcleanup qualifications retained.
+
+AutoauthorsR13onlyfromapprovedsummary157DCO959–1115/RootSOLEnewwordingmappingpreservationpeer. CurrentR12/958navIDs36rows/criteriaU/releasesuntilapplication; cumulative7,576addedIDs/notpasses/denominator. Analog284/Tension284parallelselected/existingstore/MixandAutoconverseactualpeers/Rootcitationonlynewactuals beforeanyread; Electric284/Collision157stillmetadataonly. [Focusedactualmetadatadelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus157-residual-actual-adoption-incremental-check.json) covers659payload31,723,297Bmanifest/solereview/docpins only; prior9/1613/18/1400/168/830/612/596/172/1126/458/652/8/1598carryasof/no proofreplay.691X1076S3857none/main25095of268015 unchanged/requiredU/wholeproductOPEN.
+
+## [2026-10-21] spec | Corpus R13 applied; remaining device and matching-key classes selected
+
+[RootsoleR13ownerreview](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-owner-r13-dco032-residual-midi-finite-v1-review.json),11,087,715B/6ae83a56…79276, approves157DCO959–1115/full160aliases158histories/oneDCO032INPUTref3baselinealiases. Applied104,069B/597b85e1…32043. Fullnewchecker/delta readbeforeowner-onlysafecheckbyteexact28authorcontrols/17independentmappingpreservationnegativesPASS. Completeexpectedmapping reconstructedONLYRoot157approvedsummary.12otherwholeinclENTIRER10REQ002/old013R12prefix/958IDs36rows/oldAcceptanceprefix/criteriaU/timingstatehistory/releases27g73e/modal176parked96/Squarehistory exact/fullreverse. OldR3–R12nav+R12embeddedmapping/preservation inherited fromapprovedRootownerreport; no oldproposalcatalog/provider/actual/source/raw/numeric proof re-review. Authoringhistory retainsmutablepre-freezerange-text-IDassertionfailure correctedtoapprovedR12count, no data/native/frozenrepair. Allnewpriors/portablecriteria/gradesNULL/newappFalse; cumulative7,733addedIDs/notpasses/denominator.
+
+Rootmatching-keyINPUTeligibility160,982B/581f4249…b8998 andretainedgenerator7,178B/1ce9cb32…cddf4 define128aliases128histories127missing/oneDCO032ref, BOTHkeysvariedtogether. Alloriginaldecimalf64/Bscript/time/gate1host34+0/LIBM_UNSET/twoevents/noWarm fixed; prior397+158INPUTcatalogs eachintersectONLYbaseline, no actualproofreads/newconstruction.12meaningfulmetadata controlsPASS. RootselectsMixauthorAFTERAnalogseal→Tensionpeer→Collisionpeer/RootSOLEactualpeer/existingrootstore; exactraw16,646,144B+96MiBlifecycleestimate+128MiBheadroom/resourceguards/once127firstfaultstop/noretry/no oldbaseline/criteriontransfer.
+
+RootselectsElectric284fromalreadyadopted6e6e6b49…40f42metadata, AutoauthorAFTERR13proposal+Analogsolepeer/ArrSOLEactualpeerafterCollisioncapture; RootcitationonlyALLnewElectricactualbeforeanyread. Full288aliases285histories/oneP1ref4aliases/singleOnkeyOffkeyOnchannelOffchannel, exact33tokens/f64/On11264Off33314/warm11264render44100/queueorder/perentryMXCSR/time0/existingmodel.197,090,176Bnormal+128MiBheadroom/rootstore/prechildresourceguards, no newevent/timing/hostcrossproduct/modeltoolpatchprovider/criteria/calibration. RootselectsCollision157sameeligibilityDCL054approvednoSettercontrolNOTkind3input-onlybaseline/failedinput, Arr author/MixSOLEactualpeerafterTension; Rootcitationonlynewactualbeforeanyread. Full160aliases158histories/oneDCL054ref3aliases,139tokens/warm11264BEFOREqueue4097/7168→8192+4096/noSetter/noSecondsegmenteventreplay/existingmodel exact.94,593,024Bnormal+128MiBheadroom/rootstore/concurrencyallowance/resourceguards/once157/noretry. Allnewcodeparentanalysischeckerinitialassemblercontextscripts pre-callbound/fullcontrols, no baseline replay/newPIDmetricscriteria/generalunmatchedrelease/publicARMlaw. OldBoolean/0664/source/default/FP/OSexec/provider/fsync/cleanupqualifications remain ownscope. No newowner/IDsfornewactuals selected.
+
+[Focusedowner/selectiondelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r13-owner-device-selections-incremental-check.json) covers10payload9,706,922B+matchingeligibility/generator/appliedtarget/docs only; prior659/9/1613/18/1400/168/830/612/596/172/1126/458/652/8/1598 scopes carryasof without actual/source/raw/tool/model/provider/image/release proof replay. Ledger691X1076S3857none/main25095of268015/releases unchanged/requiredU/wholeproductOPEN.
+
+[2026-10-21] storage clarification within the R13 selection checkpoint: measured210,866,176B free under/home and8,644,755,456B at the already selected analyst store. Large NEW peer summaries and staged owner evidence will be created directly there underfull-spec-v1/reviews orowner-* directories; canonical spec Markdown/smallrouting metadata stay incheckout. Root createdreviews0700; exactlexical/resolvedpins/citations viaexistingr2-large required. No sealedfilemove/delete/rewrite/newlink/install/model/tool/gate. Recovery/design/plan/handoff updated; recordv1 retains its earlier placement scope unchanged.
+
+## [2026-10-21] research | Analog284 and Tension284 sole actual approvals adopted
+
+Root adopts [AutoAnalogsoleactual/sourceapproval](../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-independent-midi-bytes-v1-review.json),2,959,121B/5831d673…a37e7, and [MixTensionsoleactual/sourceapproval](../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/tension-independent-midi-bytes-v1-review.json),18,184,027B/a49bf2e4…1feb9, bycitationONLY/NONEWactual/code/source/raw/resultread/numericproofredo. NewlargepeerJSONs directlyexistingrootstore; no sealedhomeevidence moved. Bothfull288aliases285WHOLEhistories284fresh1INPUTref4baselinealiases/no replayPIDmetricscriteriontransfer. Analogmanifest196,482B/9ae6e880…1e985/1160payload137,912,708B;Tension199,419B/94f78bdb…4228f/1166payload130,293,902B/all0444.2,326payload268,206,610B evidenceinventory, not productdenominator.
+
+Analogpeerfullyread5new276lines/READMEassessment BEFOREsafecheck; all284scripts/logs/receipts100,195,200rawB/25,048,800unsignedwords/original203decimalf64/aliases/history independentlychecked.26peerneg+Rate/signedzero/resourceboundsPASS;25ownedinput19protocolaudioresourceparentgroups6Ratepositive. Allonce284exit0nofaultretry/83,212exports24,708CalcA+284314d0initseparate/nestedunknown/allfinite/nonzero/stereoequal126hashes descriptiveonly/64countedLinuxusevs132declarations.311commoninitial→284after88,324pairs NOTperchildbefore/continuousproviderFPOSexec. JSONfsync/rawlogNOFDfsync, soft224MiBfloor176MiBconditional48MiBovershoot/notquota, transientlivecheckpointJSONreadraceretained/finalclosedcomplete/no recordrepairrerun. No omittedsilent/unproductivecase. AutoauthorsR9AFTERelectricseal+Tensionownerpeer/ArrSOLEnewwordingmappingpreservationpeerafterElectricactualpeer/RootcitationonlyALLnewR9proposalbeforeanyread.284DAN704–987pending, no IDscredited.
+
+Tensionpeerfull5newsource/all284scripts/logs/receipts100,195,200rawB/285histories288aliases/precallparentscustody checked; independentstrictalllineparser/18peerneg6unsigned+allowned23input13protocol5preparent2resource3Rate4edge6unsigned14retained4postparentPASS.284once14:49:40.730062–14:50:04.557935/outer1443666/exit0emptyerr/noretrytimeoutfault;62,196exports24,708CalcA+284260c0initseparate/nestedunknown.284finite/stereoequal/282nonzero/quiet002003retained/127hashes descriptiveonly/76countedLinuxusevs142declarations.9source+4544perchild16pairs equal; newrawlogJSONFDfsyncrequests notdirectorycrashdurability/oldgaprepair. Resourcefree≥remainingraw+64MiBmetadata128MiBheadroom/planning224MiBnotquota; oldvelocityparentgap/source/default/FP/providerOSexec/cleanup remain. Initialassemblerhistorical/harmlesspre-outputTypeErrorcompletedBEFOREfreeze retained. ArrauthorsR9284DTN539–822/AutoSOLEnewwordingmappingpreservationpeerAFTERelectricseal/RootcitationonlyALLnewR9proposalbeforeanyread. No IDscredited/current7733.
+
+Bothnewpriorsportablecriteria/gradesNULL/newappFalse/no unmatchedkey/channel/release/velocity0/physical/calibration/publicARM/generalDSP law. [Focusedactualmetadatadelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-tension284-actual-adoptions-incremental-check.json) covers2,326payload268,206,610Bmanifest/solereview/docpins only; prior10/659/9/1613/18/1400/168/830/612/596/172/1126/458/652/8/1598carryasof/no actualsource/raw/tool/model/provider/image/releaseproofreplay. Electric284/Collision157/Corpus127selected/queued/ownersexcluded.691X1076S3857none/main25095of268015/releases unchanged/requiredU/wholeproductOPEN.
+
+[2026-10-21] metadata-check correction: the original Analog/Tension284 focused delta froze FAIL on KeyError `payloads`; Analog’s manifest uses `files`. No evidence or native calls changed. The [v2 metadata-only delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-tension284-actual-adoptions-incremental-check-v2.json) accepts the exact two manifest list schemas and retains v1 failure history; no payload/source/raw proof replay. Current mutable checkpoint routes v2.
+
+## [2026-10-21] research | Collision independent157 sole actual approval adopted
+
+Root adopts [Mixsoleactual/sourceapproval](../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/collision-independent-midi-bytes-v1-review.json),4,225,681B/7ba3cc82…c799c, bycitationONLY/NONEWactual/code/source/raw/resultread/numericproofredo. Finalmanifest108,220B/7cadb9f1…73f1c seals658payload46,285,330B/all659files0444/existingrootstore. Full160aliases158WHOLEhistories157fresh/oneDCL054INPUTref3baselinealiases/no replayPIDmetricscriterion. Peerfullyread5newsource/READMEassessmenthistory BEFOREsafecheck; all157139worddecimalf64scripts/logs/receipts29,581,312rawB/custody/parents/precalltree independent.22peerneg6unsigned+owned23input14protocol5preparent2resource3Rate3edge6unsigned14retained4postparentPASS. InitialnonmutatingwarmRLEtestliteral correctedonlyunsealedtest toremoveexactretainedwarmline; no frozenpacket/guard/criterion/originalcall/retry change.
+
+157once15:00:15.091498–23.854698UTC/outer1445891/exit0emptyerr/no timeoutfaultretry;29,516exports7222CalcA0loggedinit/nestedunknown. Allfinite/nonzeroBOTH/unequalchannels/ONEfreshhash descriptiveonly/notoldbaselineaudio comparison/no inactivityorignored-eventlaw.129newimportnamesslots96linux26trap7data/sevenexports/initlist exactacrossallfresh; oldcountsNOTinventedhistoricaltargetaddresses/59countedLinuxcodeuse/no providerabsenceclaim.10source+2355perchild15pairs equal. SuccesslogaudioJSONFDfsyncnotdirectorycrashdurability/oldgaprepair; available≥remainingraw+48MiBmetadata128MiBheadroom/94,593,024Bnormalnotreservation/quota. Initialassemblerhistorical/pre-outputmetadataKeyError/flattenedsliceFROMexistingmodel/no newheader/oldsource/default/FP/OSexec/provider/postchildcleanupqualifications retained. Exact139tokens/warm11264BEFOREqueue4097/7168→8192+4096/noSetter/no second-segmenteventreplay/ret0flag01guard unchanged. DIFFERENTfromoldkind3failedi058-v01, whichretainsFAIL/U/unknownRet1/outerexit1staleRUNNING/unboundpostJSONreadback/input-onlybaseline/no85success; no retry or repair.
+
+ArrR4authorONLYfromapprovedsummary157DCL147–303/RootSOLEnewwordingmappingpreservationpeer. RootremainscitationonlyALLactualandoldR3proposalpayloads; NEWchecker externalreadsONLYcanonical+Mixapprovedsummary+priorR3Arrpeerembeddedmapping/preservation, no oldcatalog/code/raw/provider/releasefixture reads. Preserve17otherwhole inclENTIREREQ002R3/old004prefix/146oldIDs62rows/R2R3objects8relations/criteriaU/history/releases2cases2eval8inventory/fullreverse. No IDscreditedyet/current7733; NULLnewportablecriteria/grades/newappFalse/no matchedrelease/publicARM/calibrationlaw.
+
+[Focusedactualmetadatadelta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision157-independent-actual-adoption-incremental-check.json) covers658payload46,285,330Bmanifest/sole-review/docpins only; prior2326/10/659/9/1613/18/1400/168/830/612/596/172/1126/458/652/8/1598carryasof/no proofreplay. AnalogTensiondelta v1FAILmanifestpayloads-vs-files schema retained/v2PASS authority. PendingR4/R9owners/Electric284/Corpus127excluded;691X1076S3857none/main25095of268015/releases unchanged/requiredU/wholeproductOPEN.
+
+## [2026-10-21] research | Tension R9, Collision R4 and Corpus/Electric actual adoptions
+
+Root applies Tension R9 by Auto’s sole approved embedded delta/target only: 284 DTN-539–822 IDs, target92936B/6493c617…8855f, report17442278B/bde4eb72…82a9. No proposal or actual/source/raw/numeric read. Collision R4 sole new-wording/mapping/preservation review approved/applied157DCL147–303, target53159B/bd9b95cd…7a5, report7748367B/90e42ccd…59fe. Its checker uses exactly canonical/newMixactualsummary/priorArrR3peerembeddedmapping, with NO old R3proposal/catalog/actual/source/raw/provider/release manifest/fixture read. Old pins remain inherited facts. Thirty author/21Root negatives pass; unsealed metadata filename assertion corrected before sealing. Tension25author/20Auto negatives pass; pre-freeze container-protection error corrected without delta/target/catalog/evidence changes. Old clauses/rows/objects/criteria/releases and qualified histories stay exact. Cumulative7733+157+284=8174draftIDs, not passes.
+
+Root solely approves Corpus matching-key127 actual, report4151657B/974b8d4d…0d62, manifest86877B/8732ca3a…2a96,533payload27134518B. Full five new source files269lines read before safe--check; all127scripts/logs/receipts16646144rawB/histories/aliases/f64/parent/custody/resources independently checked. Eighteen peer negatives+sixRate/signedzero pass. All127finite/nonzeroBoth/unequalwords/127freshhashes descriptiveonly;9271exports4064CalcA0loggedinit/nestedU. Common154initial×127after19558pairs NOTperchildbefore. Raw/logNOexplicitFDfsync/JSONfsync; softguards notquota/reservation/durability/escapedwriterproof. Existing systemPython3.12 bookkeeping differs historical3.13summary/native unchanged. Root INPUT eligibility authorship only disclosed. An adapted parser field corrected pre-seal/no evidence/calls changed. MixR14author/Rootsolewordingmappingpreservationpeer; no IDs yet.
+
+Root adopts Arr’s Electric284 sole actual/source review BYCITATIONONLY:5152696B/338e2dd8…e528, manifest189061B/69239681…b494,1165payload162366119B. Reviewer read six new source files356lines before safecheck, independently all284scripts/logs/receipts/raw/custody/full285histories288aliases;20negatives6unsigned6RatePASS. Allfinite/nonzero/stereobitequal/128freshhashes descriptiveonly; THIS warmup positive-zero check does not repair old scope. Common314initial×284after89176pairs NOTperchildbefore. AutoR8author afterAnalogR9seal/RootsoleNEWownerpeer; Rootcitationonlyallactual+oldR4R5R6proposals. Use priorR7embeddedpreservation, no repeatDATAreadscopeexception. No IDs yet.
+
+[Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-r9-collision-r4-corpus127-electric284-adoption-incremental-check.json) covers1716payload210299302B by manifests/sole-reviewpins/appliedtargets/docs ONLY. Prior658/2326v2/10/659/9/1613/18/1400scopes carryasof without payload/source/tool/model/provider/image/release proof replay. Current schema-FAIL history retained. Existing store only/no evidence move/install/patch/model change; releases/mainindirect/ledger unchanged, portablecriteria/gradesNULL/applicationFalse/unsupportedU/productOPEN.
+
+## [2026-10-21] research | Select Collision DCL054 five remaining MIDI axes
+
+Root reads canonical INPUT eligibility and frozen metadata report4424964B/c33b6beb…8263c7,14inputnegativesPASS,528aliases524wholehistories523missing/oneDCL054INPUTref5aliases. Select523 through existing unchanged model: OnkeyONLY, matchingBOTHkeys, Onvelocity, matchingBOTHchannels, Offvelocity; distinct from prior157axes/no crossproduct/baseline replay/PIDreceiptmetricscriteriontransfer. Mix author afterCorpusR14seal/AutoSOLEactual-sourcepeer afterElectricR8seal; Rootcitation-onlyALLnewactual/code/source/raw/results BEFOREanyread. One frozen packet/one actual review/no prep-root gate chain.
+
+Same139originaldecimalf64/warm11264BEFOREqueue4097/7168→8192+4096/block512/noSetter/no2ndsegmentreplay. Existing store only/320MiBlifecycle+128MiBheadroom unreserved estimate; fresh parent+prechild guards/remainingfulloutput+metadata/firstfaultstop/no retry/partialretention mandatory. No newmodel/tool/patch/provider/construction/calibration/metric/window/tolerance/portablecriterion/grade/IDs/release. If unchanged route cannot fit, stop/file blocker. [Focused selection metadata/doc check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-dcl054-five-axis-selection-incremental-check.json) reads INPUT summary/currentdocs only; prioractual/owner adoption metadataPASS carriesasof without payload/proof replay. Current8174draftIDs/notpasses; ledger691X1076S3857none/main25095of268015/releases/requiredU/productOPEN unchanged.
+
+## [2026-10-21] maintenance | Requirements browser regenerated after owner adoptions
+
+Ran existing Markdown-only `python3 -B tools/spec_browser.py` after Tension R9 / Collision R4 applications. [Fresh navigation check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/requirements-browser-8174-draft-ids-check.json) confirms3,206 requirement/candidate rows and15Tension/18Collision requirement entries. These are navigation rows, separate from8,174 cumulative added draft cases; neither is a product denominator or pass count. Generator code unchanged; no test rerun beyond focused collect/render assertions, no actual/native/provider/release proof replay. Required unsupported behavior U/productOPEN unchanged.
+
+## [2026-10-21] research | Analog R9 sole owner approval applied by citation
+
+Arr sole new-wording/ID/mapping/preservation review27734325B/ccf769d6…3023 approves284DAN704–987/full288aliases285histories/oneDAN028INPUTref4aliases;29author+24peernegativesPASS/windowCLEAR/0findingscorrections. Root applies embedded delta/targetONLY,94673B/d005ed4c…391c, with NOnewR9proposalpayload/actual/source/raw/numeric proof read. Manifest3789B/6401e9ca…0255 records10payload24196813B, frozenunchanged. Checker external scope ONLYcanonical/newsoleactualsummary/priorR8peerembeddedpreservation, no oldproposal/provider/releasefixture proof replay. Twenty-two otherwhole inclENTIREREQ003R8/old004prefix/703oldIDs67rows/R3–R8objects/oldAcceptance/reversal/criteria/releases38groups42evaluations exact.
+
+Common311initial→284after88324pairs NOTperchildbefore/rawNOexplicitFDfsync/JSONfsync/transientlivecheckpointreadrace finalclosedcomplete/no recorderrepair/retry. Auxiliary99=0/silentgates/oldscalar/history/source/default/FP/provider/OSexec/resource/cleanup limits unchanged. Cumulative8174+284=8458draftIDs/notpasses/denominator; CorpusR14/ElectricR8pending/Collision523selected. [Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-r9-owner-adoption-incremental-check.json) reads manifest/sole-reviewpins/exactappliedtarget/docs only; prior1716combinedpayload+earlierscopes carryasof without proof replay. Newportablecriteria/gradesNULL/applicationFalse/no generalpublicARMcalibrationlaw/release/site; ledger/maincounts/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Corpus R14 and Electric R8 sole owner approvals applied
+
+Root solely approves/applies CorpusR14 wording/IDs/mapping/preservation:127DCO1116–1242/full128aliases128histories/oneDCO032INPUTref. Report5334887B/341abbf2…caef; manifest2751B/f7fbddd2…5659/10payload4603163B; exacttarget110424B/8b5facf1…6baa2. FullnewcheckerREADMEassessment/changedwording read before safe--check; initial combineddelta output truncated repeatedoldtail, allNEWadditions thenreadseparately.26owned+20independentnegativesPASS. Externalonlycanonical/newRootmatchingactualREVIEW/priorRootR13ownerREVIEWembeddedmetadata; no actual/source/raw/numeric/provider/oldproposal/fixture redo. TwelveotherwholeinclentireR10REQ002/old013R13prefix/1115oldIDs36rows/oldAcceptanceannexnav/embeddedobjects/releases27g73e/fullreverse exact. Pre-freezeauthor numericIDguard and combinedwordingcontrolcoverage corrected, correctwording/cases/data unchanged. Python3.12vsold3.13/common154custody/rawNOFDfsync/originaldecimalf64/context/history/NULLcriteria retained.
+
+Root solely approves/applies ElectricR8 wording/IDs/mapping/preservation:284DEL-CS458–741/full288aliases285histories/oneP1INPUTref4aliases. Report13735531B/0d7c5e59…2913; manifest3975B/4d4a0124…a551/10payload12033125B; exacttarget74953B/e288ef3f…cddb. Fullnewcheck.pyREADMEdeltaauthorhistory+historicalstage_owner.py READONLY before safe--check; stage NEVERexecuted/imported.30owned+21independentnegativesPASS. InitialRootmetadatanameguessassessment.json absent, stoppedbeforesafecheck; correctedmanifest-listedauthoring-history/owner-delta, no evidence/canonical/calls changed. Exactlycanonical/ArrapprovedactualREVIEW/priorRootR7ownerREVIEWembeddedmappingpreservation. No all-newactual/code/source/raw/numeric review or oldR4R5R6proposal/catalog/code/provider/releasefixture read; no repeatR7DATAreadscopeexception. R7completecurrentmapping+preservationsummary inherited, absentolderindividualbytesNOTreconstructed/re-audited. FifteenotherwholeinclENTIRER7REQ002/old004prefix/489priorIDs40rows/oldAcceptance/objects/history/criteria/releases117eval129inventory/fullreverse exact. BothqueuedBEFOREwarm/newpositivezerowarmupdoesnotretrorepairoldscope/common314initial×284after89176NOTperchildbefore/rawNOFDfsync/sourceFPproviderOSexeccleanupU retained.
+
+Cumulative8458+127+284=8869draftIDs, NOTpasses/denominator; no newportablecriterion/grade/applicationproof/publicARMcalibrationlaw/site/release/wholeproductclosure. [Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r14-electric-r8-owner-adoptions-incremental-check.json) covers20payload16636288B via manifest/sole-reviewpins/exacttargets/docs only. Prior10Analog+1716combined/earlierscopes carryasof without proof replay; Collision523actual/laterowners excluded. Ledger691X1076S3857none/main25095of268015/releases/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Select Corpus Decay-controller representatives and file playback limits
+
+Root reads Arr INPUT-only Corpus/playback report528975B/9f202e2e…04e5/16inputnegativesPASS and both canonicalsections. Whole128proposedDecaycontroller representatives host1=repr(n/127),127fresh+ONE cell127Decay1.0CFH-V002/CNI-V002/DCO020 INPUTref. Full264finite-host+64oldinputprojection cut joinsbaselineonly; no globalabsence/oldoutputcriterion transfer. InputrationalU-floor check is enumerationonly, NOTnativequantizer/within-cell/allfloat32/physicalDecaylaw. ExistingnoeventI1/38originaldecimalf64except1/MXCSRtransportBEFOREcreate/rate44100/38setters/inflag1/impulse4096/render16384block512/noWarmresetupdate/TIME0explicitLIBM0 (differentDCO032UNSET) fixed. Arr author/RootSOLEactual-sourcepeer, Rootselectiononly/no INPUT orcapturecodeauthorship. One frozenpacket/one actual review/no extraprep/readinessgate. Allnewcodeparentcheckerinitialassemblerinputs finalprebound beforeoncecalls; authorbookkeepingmetadataonly. Existingstoreonly/128MiBlifecycle+128headroomunreserved/fresh parent+prechild guards/remainingfulloutputmetadata/firstfaultstop/partialretain/noretry; no nativeconstruction/model/tool/patch/provider/calibration/metric/window/fit/tolerance. Prospective127children9271exports4064CalcA16646144rawB/initnestedseparate; no IDs yet.
+
+Playback117class alreadyaccounted;413clockstate+86incrementquantization rowsnavigationonly. Existingthreebinary64increment/suppliedclockloopstop ABI notgloballyblocked, but completeexactnextbranch/boundarybitmatrix/admittedstate-stubsetup remainsunfrozen. PBC007−2 rate/setup unspecified. Buildergainkernel constraints route-specific; publicdelivery/A1–A5/predelay/silentend U. No oldraw/audio/numeric/source/provider replay/globalexhaustion or no-X successor. Initialscratch INPUT-capitalization assertion correctedcaseonly/no evidencechange. Canonicalsections/index/project/roadmap/selector/log updated. [Focused INPUT/doc/browser check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-decay-controller-cell-selection-incremental-check.json) retains scope; prior20owner+10Analog+1716combined/earlierchecks carryasof. Existingrequirementsbrowser regenerated afterCorpusR14/ElectricR8,3206navigationrows/unchangedcode/focusedrendercountassertiononly. Current8869draftIDs/notpasses/denominator; ledger691X1076S3857none/main25095of268015/releases/NULLcriteria/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Select complete integer-semitone/retained-rate helper matrix
+
+Root INPUT-only report715435B/31342332…f2f5fc enumerates97 exactintegersemitones−48..48×sixhistoricalratepairs=582tuples,528newargtuples/54oldARGUMENTprojectionmatches,13inputnegativesPASS/zero originalcalls/output-formula evaluation. ReadcurrentREQ017, retainedINPUTprojections/oldapprovedquantmanifestmetadata/ownhistoricalrun_inc/sourceparserbridge declarations only; historicaldrivers notimported/executed, no raw/audio/result/metric/powfmodel/nativebody/provider/image re-review. Old78sharedprocess; new582freshsinglecallhistories differ, so NOargument-onlydedup/outputcriterionPIDmetricsinheritance. All582priorsNULL/nofit/ratiooracle. Root selectsone batch-playback-integer-semitone-rates-v1/Mix authorAFTERCollision523seal/AutoSOLEactual-sourcepeerAFTERCollision523review/Rootcitation-onlyALLnewPlaybackactual/code/source/raw/results BEFOREanyread. RootINPUTauthoronly/notcapturecontrolchecker/sourceauthor; no extraprep-rootgate.
+
+Existing74792Bxexec-t13-audio/f7fdae69…13aa+oldapprovedslice inheritedmetadata/bindactualcontextprecall. Function0x10236f1f0 threebinary64d:hex XMM0/1/2/onecallperchild/fullsavedXMM0/no receiver/ints/init/setup. NoimportRunner/build/run_x.py/patch/gdballocator/construction/gain/kernel/model/provider/FPchange/tool/install. strtodtemporaryfloatcastflag/nativeFPABIqualification remains; selectedinteger/ratevaluesexactbinary32 only. Allnewcodeparentcheckerinitialassemblerargvcontext finalprebound; fullraw/importdecl-countuse/parents/hoststrtod/custody/resourcechecks.192MiBlifecycle+128headroomplanningunreserved/notquota/fresh preparent+prechildremainingoutput/strictshape/firstfaultstop/noretry/partialretain; unchangedroutecannotfit=>exactblocker/no construction. No newIDscriteria/grade/publicARMlaw/release/site/closure. [Focused INPUT/doc check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-integer-semitone-selection-incremental-check.json) records selectiononly; prior20owner/10Analog/1716combined/earlierchecks carryasof without proof replay. Current8869draftIDs/notpasses/denominator; ledger691X1076S3857none/main25095of268015/releases/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Corpus Decay127 and Collision523 sole actual approvals admitted
+
+Root sole CorpusDecay127actual/source approved9452808B/1fe8a02e…4553; manifest93283B/a49bd95c…1079 seals530payload28162166B/531files0444. Read6newsource295lines/READMEassessmenthistory before safe packet-only--check; all127scripts/original38decimalf64/logs/receipts16646144rawB/bothunsignedlanes/128catalog/parent/custody/resource/precalltree independentlychecked.22Rootneg+Rate/unsignededgesPASS; owned20input13protocolresource5parent3Rate6unsigned13receiptnegPASS. InitialRootscript syntax missing-space conditional refused beforeexecution, correctedunsealedsourceonly/no evidence/originalcall changes. Authorinitialdispositioncheckcorrection retained/no oldcheckerFAIL/default/source repair.127once15:57:18.082906–24.366199/recorder1456814/all0/no errorretry;9271exports4064CalcA0loggedinit/nestedU. All127finite/nonzeroBOTH/0equal/127hashes/56countedLinuxnames descriptiveonly.2source+2286actualperchild18beforeafterpairs/notcontinuousproviderFPABI/OSexec. SamePIDparentexec recorded/outerOSPIDabsent/toolprogresstruncated/fullownedrecordsretained. NewrawlogJSONFDfsyncrequests/notdirectorycrash/oldrepair;128MiBlifecycle+128headroom+remaining-output guards unreserved/notquota/cleanup guarantee. ExactnoeventDCO020I1/TIME0EXPLICITLIBM0/originaldecimalf64exceptDecay/Python3.12vsold3.13/nativeunchanged. MixR15author afterPlaybackseal/Rootsolenewownerpeer/REQ007only,003INPUTcontextNOTquantizerlaw. OnequalifiedINPUTbaseline noPIDmetricscriteriontransfer/IDs yet.
+
+Root adopts Auto Collision523soleactual/source review BYCITATIONONLY35092417B/0dd108e1…42d9f; manifest368826B/71d6fd90…230b6 seals2123payload137110925B/2124files0444. Reviewerfull6newsource before safecheck/all523scripts139decimalf64/logs/receipts98541568rawB/twolanes/528aliases524histories/custodyresources independent.14peerprotocolneg7unsigned3RatePASS+owned25input15protocol5parent2resource14retained4parent.523once15:54:33.693666–15:55:18.680400/all0/no retryfault;98324exports24058CalcA0loggedinit/nestedU. Allfinite/nonzeroBOTH/522unequal1equal/181hashes descriptiveonly/Rate1opaque.11whole+7845perchild15beforeafterpairs NOTcommononly/newlogaudioJSONFDfsyncrequests/no directorydurability/old0664defaultFPOSexecsourcekind3guardFAILrepair. ONE DCL054INPUTref5aliases/no replayPIDmetricscriterion. ArrR5author afterremainingcontrolassessment/RootsoleNEWownerpeer; RootcitationonlyALLnewactual+oldR3proposal. NewcheckerexternalONLYcurrentR4canonical/newAutoapprovedREVIEW/priorRootR4ownerREVIEWembeddedmappingpreservation/no oldR3catalogcode/provider/release manifest/fixture reads. Oldclausesrowsobjectscriteriareleases/history exact/no generalkeyreleasevelocity0publicARMcalibrationlaw.
+
+[Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-decay127-collision523-actual-adoptions-incremental-check.json) covers2653payload165273091Bmanifest/sole-reviewpins/docsONLY; prior20owner10Analog1716combined/earlierscopes carryasof without proof replay. CorpusR15/CollisionR5/Playback582actual/laterowners excluded. Current8869draftIDs/notpasses/denominator; main25095of268015/ledger691X1076S3857none/releases/NULLcriteria/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Select combined seven-control Corpus resonator class
+
+Root reads canonicalremaining-control assessment and fullsharedcontext/mapping/domain/intersection/budget/countsummary4576327B/1cf6a380…7e91. ONEcombined890fresh/896aliases891wholehistories/ONEqualifiedCFH-V002/CNI-V002/DCO020INPUTref6aliases. B2FreqDamping/3Inharmonics/11AmpFreq;U4Ratio/35TubeOpening/36Bleed;I5Radius, each128declaredrepresentatives/notnativequantizer/within-cell/physicaleffectlaw. Ratio.5NOTreprn/127 andall128fresh; Radius.5cell63; Bnegative63vs+zero64. Position14–16 EXCLUDEDcapture/A1unknown/conditional32or64cells not128ordinaryLivepositions. Otherunroundedcontinuouscontrols notpadded/crossproductsnotselected. FixedStringTubeOpeningmayinactive; keepquiet/equality/nonfinite/fault/no state substitution. Sixinputcorruption+sevenmappingdomain/dedupassertionsPASS; initialno-opwrongcelltestrefusedbeforeoutput/correctedrealcellchange/no evidence/calls changed.
+
+Autocaptureauthor AFTERPlayback582solepeer/RootSOLEactual-sourcepeerafterseal, Rootselectoronly/no INPUTor capture/controlcodeauthorship. Packetbatch-corpus-remaining-resonator-controller-cells-v1/existingr2-large store; one frozenpacket/one actualreview/no prep-rootgate. ExistinginertsourcepatternsASDATAauthoringonly/newpinnedversions; no oldassemblers/captures/raw/audio/results/provider/sourcebehavior proof replay. Authorpostcapturemetadataonly. Exact38originaldecimalf64exceptonehost/noeventI1/TIME0EXPLICITLIBM0/MXCSRtransportBEFOREcreate/rate44100/38setters/inflag1/impulse4096/render16384block512/noWarmresetupdate/native149632model/provider/FP unchanged; pinnedexistingPython3.12≠historical3.13bookkeeping. No newnativeconstruction/patch/tool/provider/install/emulation/physicalcalibration/f0/fit/metric/window/tolerance. Allnewcodeparentcheckerinitialassemblercatalogscriptscontext finalprebound beforeonce890;64970exports28480CalcA116654080rawB/initnestedseparate.512MiBlifecycle+128headroomunreserved/notquota/fresh parentprechildremainingoutputmetadata guard/firstfaultstop/partialretain/no retry; unchangedroutecannotfit=>fileblocker. No baseline replay/newPIDmetricscriteriontransfer/IDscriteria/gradesrelease/closure.
+
+[Focused INPUT/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-seven-resonator-control-selection-incremental-check.json) only; prior2653actual/20owner/10Analog/1716combined/earlier scopes carryasof without proof replay. Current8869draftIDs/notpasses/denominator; oldsource/default/checkerFPOSexecdurability/modal176parked96/releases/ledger691X1076S3857none/main25095of268015/NULLcriteria/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Collision R5 owner applied and Playback582 actual admitted
+
+Root sole NEWwording/ID/mapping/preservation approves/appliesCollisionR5,523DCL304–826/full528aliases524histories/oneDCL054INPUTref5aliases. Report8717117B/b96f42d5…48c90; manifest3841B/54d33c64…96b61/10payload7532771B; exacttarget61492B/87c2c05a…6cb0. Fullnew71linecheckerREADMEdeltaauthorhistory+historicalstage-owner.pyREADONLY before safe--check; stageNEVERexecuted/imported.31owned+23RootindependentnegPASS. Initialmetadataassessment.jsonname absent, stoppedbeforecheck/correctedmanifest-listedauthoring-history/no evidence/canonical/originalcall change. ExactlycanonicalR4/newAuto523actualREVIEW/priorRootR4ownerREVIEWembeddedmappingpreservation; NO allnewactual/code/source/raw/numeric redo/oldR3proposal/catalog/provider/releaseMANIFEST/fixture read. Slimper-IDcasespointfullcatalog.17otherwholeinclENTIREREQ002R3/old004R4prefix/303priorIDs62rows/R2–R4objects8relations/oldAcceptance/criteriaU/release2cases2eval8inventory/history/fullreverse exact. Kind3guardFAILunknownRet1/84not85/unnumberedbaseline/staleRUNNINGouterexit1unboundreadback unchanged. New523FDfsyncrequests/perchild7845pairs/522unequal1equal181hashes descriptiveonly/no generalpublicARMlaw/NULLcriteria. Current8869+523=9392draftIDs/notpasses.
+
+Root adoptsAutoSOLEPlayback582actual/source approval BYCITATIONONLY4549979B/c1e4fae9…5f1de; manifest193818B/bbbdb872…ee5f0/1187payload127393172B/1188files0444. Full6newsourceREADMEassessmenthistory before safecheck; all582stdoutstderrreceipts4carriers/1746strtodfulltokenbits/f32exactness/inputmatrix/precallparentresources/common6984endpointpairs+6sourceendpoints independentlychecked.15independentprotocolneg7unsignedwordpositives(rawsNaNno floatdecode)+owned17input15protocol5parent2resource6word11retainedPASS.582once16:04:07.493290–16:06:18.791216UTC/all0/noerrorretry/582direct0selectedinit/nestedU;47995008stdoutB. AllsavedXMM0positivefinite-normal/485uniquewords descriptive/_powf1each;1882decl85Linux1data1796trap≠counteduse/providerabsence.12COMMONinitial→eachafter6984pairsNOTperchildbefore; allsourceFPABIproviderOSexeccleanupfsyncresourcequalificationsretain. ALL582frozenoutputpriorsNULL/no formula/model/powforratiofit/oldincraw/sourcebehavior/image/provider replay.54oldARG-onlymatches+528noveltriples/ZEROoldwholehistory/PIDmetricsoutputcriteriontransfer; full582newfreshhistories mayenterowner, not54historicalreplaycredit. OnlyselectedsavedXMM0hasobservationmeaning/othercarriersraw. ArrR4authorafterINPUTassessment/RootsoleNEWownerpeer/citationonlyALLnewactual;582newPBC206–787fromapprovedsummaryonly,preservealloldcriteria/history/releases/22whole/017prefix/177priorIDs68rows/oldR3objects withoutreconstructingabsentcatalogs. No IDs untilapplication/no portablecriteria/grade/publicclipclockARMlaw/A1–A5F6F7closure.
+
+[Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-r5-playback582-adoptions-incremental-check.json) covers1197payload134925943Bmanifest/sole-reviewpins/exactCollisiontarget/docsONLY. Prior2653actual20owner10Analog1716combined/earlierscopes carryasof without proof replay. Requirementsbrowser regenerated/3206navigationrows/codeunchanged/no extra tests beyond countassert. CorpusR15/PlaybackR4owners/Corpus890actual/laterowners excluded; current9392draftIDsnotpasses/denominator/main25095of268015/ledger691X1076S3857none/releases/NULLcriteria/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Corpus R15 Decay owner approval applied
+
+RootsoleNEWwording/ID/mapping/preservation approves/applies127DCO1243–1369/full128cells/onequalifiedcell127CFH-V002/CNI-V002/DCO020INPUTref/nobaselinePIDmetricscriteriontransfer. Report1791927B/9298463d…2ba3a; manifest2294B/cd125f90…337a3/10payload1491494B; exacttarget115855B/a462fbb6…8634d. FullnewcheckerassemblerbranchREADONLY/READMEdeltaassessment before ONLYsafe--check/NEVER--assemble-initial.26owned+21RootindependentnegPASS. ExactexternalcanonicalR14/newRootDecayactualREVIEW/priorRootR14ownerREVIEWembeddedmappingpreservation, NOactual/source/raw/numeric/provider/oldproposal/catalog/code/releasefixture proofredo. OnlyREQ007append/annex/revision;12otherwholeinclENTIRER10REQ002+ENTIRER14REQ013/old007prefix/1242priorIDs36oldcases/all40literalcanonicalrows/oldAcceptanceannexnav/objects/criteria/releases27g73e/fullreverse exact. Literalcompressedranges42labels/40rows are NOTexpanded1242IDscaseparser; authorinitialguardrefusedbeforepayloadwrite, narrowedapprovedmetadata+separateallliteral/fullprefixpins/no correcttextcaseevidencechange/noseparatedurableinitialfailurereceiptbeyondtooloutputclaimed. Rootunsealedwordingliteralexpecteddo-not-vs-proposeddoes-not-repair assertionstoppedbeforeseal/write, correctedreviewerliteral+mutation only/no proposal/evidence/originalcall change.
+
+REQ003cellformulaINPUTcontextONLY/no newquantizer/within-cell/physical/generalDecaylaw. Exact38decimalf64excepthost1/noeventI1/TIME0EXPLICITLIBM0/Python3.12vsold3.13/2source2286perchild18pairs/samePIDouterPIDabsence/rawlogJSONFDfsyncrequests/resource/FPproviderOSexecqualifications intact. Oldmodal176parked96Squarehistory/checkerFAIL/default/source/criteriaU/releasesexact. Newportablecriteria/grades/nativewaveformexpectationsNULL/applicationFalse/no fittedpublicARMcalibrationlaw/release/site/closure. Current9392+127=9519draftIDs/notpasses/denominator.
+
+[Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r15-owner-adoption-incremental-check.json) covers10payload1491494Bmanifest/sole-reviewpins/exacttarget/docsONLY; prior1197CollisionR5Playbackactual/2653actual20owner10Analog1716combined/earlierscopes carryasof without proof replay. Requirementsbrowser regenerated/3206navigationrows/codeunchanged/countassertonly. PlaybackR4owner/Corpus890actual/laterowners excluded; ledger691X1076S3857none/main25095of268015/releases/NULLcriteria/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Select corrected Analog converted virtual-enum class
+
+Root reads canonicalINPUTassessment, immutablev13893445B/03e294b9…1f327 +MANDATORYerratum2652B/cf6bb7db…8076c; replacesONLY/analog_selected_candidate/MPE_and_voice_limits, indent2ensure_asciiFalseallow_nanFalseLF yields3893689B/99b9fa8b…71408. V1+embeddedhistoricalmaterializer wrongzeroPROSE retained/superseded, NEVERrerun. ALL194INPUThistories/scriptshashes alreadyamount196198200202=0.5/exactf32f64 verified; dataunchanged/no dormant/inactive/productiveMPEinference. SelectONEAnalog193fresh/198aliases194wholehistories/ONEDAN028P1INPUTref5aliases:storedPolyphony0..9coupled0=max(v−1,0),7=(v>.5), fourvirtualtargets1951971992010..46. All6virtualkind3hostrows represented, no independent0/7crossproduct. Old47INPUTscripts+254approvedINPUTvectors baselineonly/no oldaudio/results/sourcebehavior/native/provider/numericproofreplay or335sourcegaprepair. Fourinputnegatives/domain-contextdedupassertionsPASS; lowerElectricTensionfulljoinsPENDING/secondary5rate-blockpointsNOTselected.
+
+Mix captureauthor/AutoSOLEactual-sourcepeerafterfinalseal/Rootcitation-onlyALLnewAnalogactual/code/source/raw/results BEFOREanyread. Packetbatch-analog-converted-virtual-enums-v1/existingr2-large store. Onefrozenpacket/oneactualreview/no prep/readiness/rootgate. Allnewcodeparentcheckerinitialassemblerauthoritycontextcatalogscripts finalpreboundbefore193once; authorpostcapturemetadataonly. Exact203originaldecimalf64exceptconvertedhosts/P1noWarmOn4400Off35270/render44100block512/zeroInflag0/TIME0/per-entryFP/model/provider unchanged. No pressure/slide/CC74/reset/timing/rate-block/nativeconstruction/tool/patch/build/install/provider/FPchange/calibration/f0/fit/metric/window/tolerance. Preservequiet/equal/nonfinite/failure/NULLstates/no productive-state substitution.56549exports16791CalcA68090400rawB/initnestedseparate;256MiBlifecycle+128headroomunreserved/fresh parent+prechildremainingoutputmetadata guards/notquota/firstfaultstop/partialretain/noretry. Unchangedroutecannotfit=>fileblocker, no newroute. No baseline replay/newPIDmetricscriteriontransfer/IDscriteria/grade/release/site/closure.
+
+[Focused INPUT/composition/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-converted-virtual193-selection-incremental-check.json) only; prior10CorpusR15/1197CollisionR5Playbackactual/2653actual20owner10Analog1716combined/earlier scopes carryasof without proof replay. Current9519draftIDs/notpasses/denominator; oldsource/default/checkerFPproviderOSexecdurability/releases/ledger691X1076S3857none/main25095of268015/NULLcriteria/requiredU/productOPEN unchanged.
+
+
+## [2026-10-21] research | Playback R4 finite semitone/rate owner applied
+
+Mix applied ONLY Auto's sealed sole NEWwording/mapping/IDs/preservation review embedded four-fragment approveddelta+exacttarget:75,822B/348a58b89415e912e0f6cf09508bae7c8f7b3950da6f0d27a1dd2765e503c30e, after exact68,222B/1cbdf628…08a88 R3 composition/fullreverse. Review3,876,369B/f9257844d94896382ffb7427a83605fd1adfc3a9197242f0c9d8254327658da3/32owned+25AutoindependentnegPASS; manifest4,261B/d6f7dda8…73e0e/11payload3,445,510B listing/countmetadata only. Root reassigned SOLEnewownerpeer toAuto BEFORE ANYRootproposalread; frozenintendedRootlabels historical/superseded, RootandMixcitation-only newproposalpayloads. No proposalpayload/checker/stager/case/delta proof replay, actual/source/raw/numeric/formula/provider/image/model/oldcatalog/releasefixture rerun/read. No new actual/owner peer gate.
+
+582new PBC206–787/full582freshsinglecallhistories/54ARG-onlysupports+528noveltriples/ZEROoldwholehistory-PIDreceiptmetricsoraclecriteriontransfer. ExactnativeSAVEDXMM0LE expectations copiedfromapprovedsummary only; frozenNULLpriorsimmutable/portableexpectedcomparatorgradeNULL/newappFalse. Otherthreecarriersrawcontextonly/no formula/powf/ratio/metric/tolerance/fit/calibration/publicclip-file-audio-clock/ARMlaw. All22otherwhole/old017R3prefix/177oldIDs68rows/109R3links8knownagreements/oldAcceptance/protectedsections/R3inheritedscope/92releasedobjects/historynonfiniteNULLA1–A5F6F7publicU exact/fullreverse; no inventedoldcatalogproof. Current1,882declarations85Linux1data1796trap versuscounted_powf1each/485positivefinitewords descriptiveonly/common12initial→582after6984NOTperchildbefore/sixsourcepairs/temporaryfloatcast-hoststrtod≠inputregisterFP/FDfsync-resource-cleanup-OSexec-provider limits retained.
+
+PriorCorpusR15metadata/adoption carriesasof9519; +582=10101draftadditions/notpasses/denominator. [Focused metadata/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-r4-owner-adoption-incremental-check.json) covers11payload3445510Blisting/sole-reviewpin/appliedtarget/affectedroutingdocs/browserONLY; no payloadproof replay. Requirementsbrowser regenerated3206navigationrows/codeunchanged. Analog193/Corpus890actual adoptions/laterowners excluded forRootnextdelta; ledger691X1076S3857none/main25071+24=25095of268015/releases/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Corpus890 and Analog193 sole actual approvals admitted
+
+Corpus890RootSOLEactualsource approves after full6new337source lines/READMEassessmenthistoryauthority beforeONLYsafe--check/neverassemblelaunchcapturefinalize. Rootindependentall890scripts/original38f64onehost/logs/receipts116654080rawB/full896aliases891histories/parentsresourcescustody/27neg+Rateunsigned; owned24input11protocol5parent3resource3Rate6unsigned15receiptPASS. Report75205145B/23ce8da8…91181, manifest625558B/91b82b96…fa53/3585payload162716660B/all3586files0444. 890once16:17:19.946984–16:19:21.636440UTC/1462017/tool87995/all0/noretryfault;890finiteBOTHnonzero0stereoequal509hashes56usedLinux DESCRIPTIVE/64970exports28480CalcA0loggedinit/nestedU.2source+16020actualperchild18pairs/no continuousFPproviderOSexec. RootINPUTassessmentauthor notcapture/controls; reusedonlyownparserfunctionsASDATA/no oldreview/proof replay. Wrongmetadatafilenameguessouter-tool-result absent→manifestcorrectouter-tool-receipt/noevidencechange. Seven128cellINPUTformulasNOTnativequantizer/within-celllaw; Ratioall128fresh/B63negative64zero/I63half/position14–16excludedA1U/oneINPUTref6aliases/olddefaultcheckersourcegapsintact.
+
+Analog193AutoSOLEactualsource approvedCLEAR0findings. Report19314827B/acbc34ff…e407d, manifest139772B/c4c2f72b…dbdbc/800payload89985832B/all801files0444. Full6newsourcebeforecheck/all193scriptslogsreceipts68090400rawB/full194original203decimalf64/198aliases/history/parentsresources/8source+3088actualperchild16pairs;13peerlog7unsigned3Rate+owned20input12protocol5parent2resource6unsigned14receipt4parentPASS.193once16:31:21.994535–16:31:39.664134UTC/1465951/all0/noretry;193finiteBOTHnonzero/stereoequal3hashesDESCRIPTIVE/56549exports16791CalcA+193logged314d0/nestedU. Mandatoryv1+erratumexact3893689B99b9fa8b…71408/allamounts0.5; wrongZEROprose/materializer preservedsupersedednotexecuted. CoupledPoly0/7+fourtargets/noMPEdormancycapacitylaw/oneINPUTref5aliases/no replayorcriteriontransfer. RootCITATIONONLYallnewactual/source/code/raw/results; newR10proposalCITATIONONLYdeclaredbeforeanyread/AutoauthorMixSOLEwordingmappingpreservationpeer. Noactualredo/oldproposalproviderfixtures/source335gaprepair.
+
+BothnewbatchFDfsyncrequests/normalunreservedresourceestimates/remainingoutputguards/withinchildpostsoftovershoot/escapedprocess/directorycrashproviderFPABIpublicARMlimitations retained. Allnewpriors/portablecriteria/gradesNULL/appFalse/norelease/site/closure. CorpusR16Arrauthor/RootSOLEnewownerpeer; existingownersunchanged/current10101draftIDs/notpasses. [Focused delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus890-analog193-actual-adoptions-incremental-check-v2.json) covers4385payload252702492Bmanifest/sole-reviewmetadata/docsONLY, priorPlaybackR4/CorpusR15/earlierscopescarryasof/noproofreplay. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+The first combined actual-adoption metadata check stopped at the checkpoint status assertion: its writer matched the pre-Playback wording of Analog’s selection row, while Mix had updated that row to author-sealed. The stale row is corrected without evidence or owner changes; the sealed FAIL remains retained, and the v2 metadata/doc check is the authority. No actual/source/raw proof was replayed.
+
+## [2026-10-21] research | Electric complete pickup256 class selected
+
+Sealed INPUTauthority11656560B/9787b47f…deeef gives2×128PickupSymmetry21/PickupDistance22=256aliases256wholehistories256fresh/no baseline(0.5notn/127)/no crossproduct. Rootselectionchecks reconstructall256UTF8scripts/all33originaldecimalf64f32 exceptonehost/fullscriptvectorhistoryhashes/exactrationalINPUTcellarithmetic; NOTnativequantizer/within-cell proof/extra sourcepreflightgate. An initial metadata inspection used lower-caseElectrickey and got KeyError before any evidence edit; actual case-sensitive key read. Rootselectionscriptfirstrefusedtoparseamissingelse-spacebeforeanyexecution;unsealedsourcecorrectedonly/nooriginalorevidencechange. Originaldefaults_c4INPUT565B8477c5fb…0881/queuedOn11264Off33314BEFOREwarm11264then44100block512/zeroInflag0/TIME0/existingunperturbedFP/model exact. Full120oldSCRIPTcut noexactmatch/notglobalabsence/noPIDmetricscriteriontransfer.
+
+MixauthorL/batch-electric-pickup-controller-cells-v1/AutoSOLEactualsourcepeer afterAnalogR10freeze/Rootcitation-onlyALLnewactualcode/source/raw/results declaredbeforeanyread. Once256firstfaultstop/noretry/fullprecallnewsourceparentanalysisassemblerchecker/contextpins/receiptslograwcustody/meaningfulcontrols/freshparentprechildremainingraw+metadata+headroomguards.512MiBnormalfull-lifecycle+128MiBheadroom estimate unreserved/notquota;37120exports27904CalcA113385472rawB+separateinitializer/nestedU. No newnativeconstruction/tool/provider/model/FP/event/rate/block/reset/fit/metricwindowtolerance/calibration/oldactualsourceproofreplay.
+
+Tension5349candidate pendingseparateresource-awareselection; secondaryAnalog5protocolpointsWITHHELDunknown690CalcAadmittedbound/no invented256orunlimited/norarbitrary4subset. Alloldsource/defaultFPtime/providerOSexec/durability/physicalpublicARMgaps/allnewpriorsportablecriteriaGradeNULL/appFalse/IDsnone. Current10101draftIDs/notpasses/691X1076S3857none/main25095of268015/releases/requiredU/productOPEN unchanged. [Selection metadata/doc check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-pickup256-selection-incremental-check.json).
+
+## [2026-10-21] research | Tension complete stepped5349 class selected
+
+SealedINPUTauthority11656560B/9787b47f…deeef:18primary×128+12signed×255=5364aliases5350wholehistories5349fresh/one qualifieddefaults_44INPUTref15aliases/noreplayPIDmetricscriteriontransfer. Rootfull5350scripts/5364alias reconstructions/original129decimalf64f32/130rangeindex2omitted/hash/abs-sign/rationalINPUTcells checks only/notnativequantizerorwithin-cellproof. Signed storedv→abs(v)/nextsign(v<0), zeroonesign/no arbitrarycrossproduct. Damper63/64/Geo24/30/Pickup55/continuousoutofclass; oldsource-onlyrecipe/defaulttimeFP/environment/version/velocityparentlaunch/sensitivity/calibrationunknownsremain. Oldkind3localeC.UTF8vsnewfixedCqualifiedINPUT/notwholeexecutionequivalence.
+
+AfterhigherXAnalog193approved/Electric256selected, Arr authorsL/batch-tension-stepped-controller-cells-v1 AFTERCorpusR16seal/RootSOLEactualsourcepeer (separatefromcitation-only oldTension284). Once5349fullprecallallnewassemblerparentcaptureanalysischeckercontextscriptsfreeze/controls/firstfaultstoppartialretain/noretry. Existing129setters/On4096Off26146/noWarm/zeroInflag0/TIME0/44100block512/existingFPmodel exact.1171431direct465363CalcA1887127200rawB+separate260c0init/nestedU.4GiBlifecycle+128MiBheadroomplanningunreserved/RootsnapshotcoversconcurrentElectric512+128/freshparentprechildremainingoutputmetadatafullfloorsmandatory/no oldevidencemove-delete. Notquota/reservation/worstcase/concurrentwriterescapedchildwithinchildbound. No newtool/provider/model/nativeconstruction/patch/FP/reset/rate/block/event/fit/metriccalibration. AllnewpriorsportablecriteriaGradeNULL/appFalse/nobroadphysicalpublicARMlaw/noIDsgrade/release/siteclosure. Current10101draftIDs/notpasses/691X1076S3857none/main25095of268015/releases/requiredU/productOPEN. [Focused INPUT/doc check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-stepped5349-selection-incremental-check.json).
+
+## [2026-10-21] research | Corpus R16 and Analog R10 owner approvals applied
+
+CorpusR16RootSOLEnewwordingIDmappingpreservationREPORT11832715B/f6ba2c54…11b8b/manifest3317B72d2e312…28bc5/11payload10306913B/all12files0444/exacttarget123499Bbf7d9499…210b.890DCO1370–2259/full896aliases891histories/oneINPUTref6aliases; onlyREQ007009append/annex/rev/11otherwholeinclENTIRE003formulaR10REQ002R14REQ013/old007R15+009prefixes/1369oldIDs36rows40literalrows/AcceptanceannexobjectscriteriaU/releases27g73e/fullreverse exact. FullNEW101linechecker/READMEdelta/history/stagerREADONLY beforeONLYsafe--check/NEVERstage;29owned26RootindependentnegPASS. EXACTcanonicalR15+Root890approvedREPORT+RootR15peerREPORTembeddedmetadata/NOactual/source/raw/numeric/provider/oldproposal/catalog/code/releasefixture proofredo.003INPUTformulaNOquantizerlaw/positions14–16A1excluded/009suppliedcontextNOwaveguideadmission. AuthorfirstmaterializerassumedmissingR15tablerow refusedthenusedexistingR13anchorbeforefreeze/no oldrow/correctinput/observationchange.
+
+AnalogR10MixSOLEnewwordingIDmappingpreservationREPORT22224835B6f910031…1f5a71/manifest4112Be52f71b2…df4e41/10payload19387113B/all11files0444/exacttarget101103B3b8271f2…b717094.193DAN988–1180/full198aliases194histories/oneINPUTref5aliases;all23wholeREQinclENTIRER8REQ003R9REQ004/987oldIDs67rows/R3–R9embeddedobjects/Acceptancecriteria/releases38g42e/fullreverse exact/ONLYannexrevision3frags.31owned34MixindependentnegPASS/fullnewcheckREADMEdelta/history/stagerASDATA beforeONLYsafe--check. RootappliesONLYMixapprovedembeddedtargetdelta/ALLnewR10proposalactualsourcecoderawCITEONLYfrombeforeanyread. Exactmandatoryerratumamounts0.5/coupledPoly0/7fourtargets/noMPEdormancynoeffectproductivitycapacitylaw/oldZEROprosesupersededunexecuted/old335gapsunchanged. Mixprioractualauthorrole disclosed/newownerwordingonly/noselfapprovalactual; externalcanonicalR9+Auto193approvedREPORT+ArrR9peerREPORTembeddedmetadata/noactualproofredo/oldproposalproviderfixtures.
+
+Current10101+890+193=11184draftIDs/notpasses/denominator/newportablecriteriaGradeNULL/appFalse/alloldmodalparkedSquare/sourceFPproviderOSexecdirectorydurabilityresource/publicARMgapsU. [Focused21payload29694026Bmetadata/sole-review/appliedtarget/doc delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r16-analog-r10-owner-adoptions-incremental-check-v2.json); prior4385actual/PlaybackR4/CorpusR15/1197combined/2653actual/20owner/10Analog/1716combined/earlierscopescarryasof/noproofreplay. Browser regenerated3206requirementnavigationrows/codeunchanged/countassert. Electric256/Tension5349selectedactuals/laterowners excluded. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+The first combined owner-adoption documentation check caught an incorrect new index link to non-existent Analog v3. The released catalog routes Analog v1; only that navigation link was corrected. The sealed FAIL remains retained and the v2 metadata/doc check is authoritative. No owner target, release bytes or actual/source/raw proof changed.
+
+## [2026-10-21] research | Corpus bounded native-HOST position189 selected
+
+RootINPUTreport1026925B6ae8ab7f…336ef: independentlynativeHOST−1..1 at14ExcitationX15ListeningXL16ListeningXR percanonicalREQ008/REQ003P64+31.5v gives64floorlabels32..95 peraxis—not128/notfullphysical/nativefloatdomain. Endpoints−1/+1/interior(2cell−127)/63/originalliteralbaselinecell tokens preserved.192aliases190wholehistories189fresh/one qualifiedbaselineINPUTref3aliases/noreplayPIDreceiptmetricscriterion. All38originaldecimalf64f32exceptonehost/fullscripts/contextwordhashes/exactrationalINPUTcells/7negativecontrols; current890+old264approvedINPUTmetadatajoins only/noactualsource/raw/numeric/globalabsence proof. Stored0..1→hostA1stillU/noUIpublicemissionclaim, seven-axis890/R16positionexclusions remainhistoricalandscoped/notglobalbanontheadmittednativeHOSTroute. No newlyprovenquantizer/within-cell/physicalpositionlaw.
+
+AutoauthorsL/batch-corpus-native-host-position-cells-v1/RootSOLEactualsourcepeer/fullnewsourceAFTERsealBEFOREsafe--check/RootINPUTauthornotcapturecontrols/source. Once189noWarm/event/reset/update/I1impulse4096/explicitMXCSRtransportbeforecreate/TIME0LIBM0/44100render16384block512/existing38settermodel unchanged. Fullnewassemblerparentcaptureanalysischecker/contextscriptsbindBEFOREcalls/firstdetectedfaultstopretainedpartials/noretry/13797direct6048CalcA24772608rawB+separateinitializers/nestedU.128MiBnormallifecycle+128MiBheadroomunreserved/RootfreshfreecoversconcurrentTension4GiB+128andElectric512+128; freshparentprechildremainingrawmetadatafullfloorsmandatory/noquota/reservation/writerescapedchildwithinchildguarantee. No newtool/model/provider/patch/nativeconstruction/FP/calibration/fit/metricwindowtolerance. OldmodalparkedSquare/checker/default/source/fsync/providerFPABIpublicARMgapsU/allnewpriorscriteriaGradeNULL/appFalse/noIDsgrade/release/siteclosure. Current11184draftIDs/notpasses/691X1076S3857none/main25095of268015/releases/requiredU/productOPEN unchanged. [Focused INPUT/doc check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-native-host-position189-selection-incremental-check.json).
+
+## [2026-10-21] maintenance | Current owner navigation reconciled
+
+Research index top rows still routed CorpusR13/ElectricR7/TensionR8/AnalogR8 despite later approved canonical owners. They now route currentR16/R8/R9/R10 and the selected whole INPUT classes, preserving unknowns and the distinction between navigation IDs and coverage. Coverage automation row now routes adoptedR6 without retaining the staleR5-only count. This is navigation only/no spec, evidence, release, proof, grade or selection change; current11184draftIDs/691X1076S3857none/main25095of268015/requiredU/productOPEN unchanged. [Focused docs check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/current-analyst-routing-11184-incremental-check.json).
+
+## [2026-10-21] research | Tension partial1388, Corpus position189 and Electric256 actual approvals admitted
+
+RootTensionsolepartialactualsourceREPORT183968010B/b456eb66…a9086 approvesONLY1388 finiteobservations/onefailedU3960unlaunchedU/completefalse/guardnotrelaxed/noretryextension. Manifest1492804Bda7fcfd1…925c/9549payload701879839B/all9550files0444/full5350hist5364aliases/onequalifiedbaseline15aliases. FullNEW6source453lines/READMEassessmenthistory BEFOREONLYsafecheck_data--check/truncatedrun_batchdisplayFULLrecovered;22Rootneg+owned11input9protocol4parent2resource3Rate6unsigned/full5350scriptsf64/5364aliases/1388validlogsrawreceipts+failedrawlog/parentsresourcescustody.1388finitewordequal/1381BOTHnonzero7quiet/800hashes76LinuxDESCRIPTIVE/303972validexports120756CalcA1388loggedinit/nestedU/490039200attemptedrawB.8source+22224actualperchild16pairs/no continuousFPproviderABIinterpreterOSexec. FailedU1389host48ExcitatorVelocity116/127literal.9133858267716536/ninthblock(start4096)RET1/allother86ret0flag1/child0emptyerr/paramsf32exact; guardFAILnoprotometric/notpass. SeparateRootunsigneddiagnosticfinite/equal39945nonzeroeach NOTacceptedmetric/criterion/ABI/nativecausemeaninglaw. Successful1388rawFDfsyncrequested/failedrawFSYNCSKIPPEDbeforebranchclosehashonly/logJSONrequestsretained. Parentresourceguardcodeprebound/calledbutseparatevaluesNOTretained;childfloorsrecorded. OldlocalePythonrecipe/defaultsourceFPtime/parent/sensitivity/calibration/durability/U intact; ArrR10author/RootsoleNEWownerpeer/noIDsyet.
+
+RootCorpusHOSTposition189soleactualREPORT16598737B466601c8…d5fed/manifest139586Bf381949a…7a3ae/783payload35153496B/all784files0444. Full6new319source/READMEassessmenthistorybeforeONLYsafe--check/all190original38f64hist192aliases189scriptslogsreceipts24772608rawB/parentsresourcescustody/27Rootneg+owned24input11protocol5parent3resource3Rate6unsigned15receiptPASS.189once17:00:20.912893–17:00:34.959890UTC/1481406/tool82258/all0/noretry/189finiteBOTHnonzero0wordequal189hashes56LinuxDESCRIPTIVE/13797exports6048CalcA0init/nestedU/oneauthority+3402actualperchild18pairs. HOST−1..1/P64labels32..95/64peraxis14to16/not128/fullphysical/newquantizer/within-cell/publicUIlaw; A1U/prior890R16exclusions unchanged/onebaseline3aliasesINPUTonly. RootINPUTauthornotcapturecontrolsource; rawlogJSONFDfsync/resource128+128/providerFPOSexec/oldgaps retained. MixR17author/ArrsoleNEWownerpeer/RootCITEONLYALLnewR17proposalbeforeANYread; noIDsyet.
+
+AutoElectric256soleactualREPORT12925378B52a51498…1e0d6/manifest183167B86f3c665…aa076/1052payload175989994B/all1053files0444. Full6newsource/historicalfragment/READMEhistoryassessment beforecheck/all256scripts33originalf64/logs113385472rawBbothlanes/PIDUTCparentsprecall/resource/COMMON286×256=73216pairsNOTperchildbefore;32peerneg4opaqueRate7unsigned+owned24input14protocol7parentsource3resourcePASS.256once16:57:49.067175–17:03:12.757591UTC/allfinitewordequalnonzero255hashesDESCRIPTIVE/THISwarmupspositivezeroTHISfirstnonzero44NOgeneralwarmup/onsetlaw/37120exports27904CalcAret0flag1/0init/nestedU. EPC-RV-Q01lineitems537030912B exceeddeclared536870912B by160000B/frozendiscrepancyretained/literalguardsunchanged/freepasses/no repair; reviewerinitialmanifestkey/f64fieldassumptionscorrectedunsealedmethodonly. RootALLactualsourcecoderawCITEONLY; AutoR9authorRootsoleNEWownerpeer/noactualproofredo/noIDsyet.
+
+[Focused11384payload913023329Bmanifest/sole-reviewmetadata/docs-only delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension1388-corpus189-electric256-actual-adoptions-incremental-check.json); prior21owner/4385actual/PlaybackR4/CorpusR15/1197combined/2653actual/20owner/10Analog/1716combined/earlierscopescarryasof/nopayloadsource/raw/numeric/tool/model/provider/image/releaseproofreplay. Current11184draftIDs/notpasses/allnewpriorsnativewaveformcriteriaGradeNULL/appFalse/frozenfailedunrunU/noextraoriginal/release/siteclosure. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Tension R10 partial owner applied; return-recording option proposed only
+
+RootSOLEnewownerREPORT87957137B81969034…bf769/manifest3789Bbbb637e0…723c1/11payload75243824B/all12files0444/exacttarget99375B9455bcdd…4032f8.1388DTN823–2210/full5350hist5364aliases/oneINPUTref15aliases; failedU1389+3960unrunU NOIDs/nativeexpectation/criteriaGrade/completefalse. All15wholeREQ/822oldIDs42rows/allR3–R9objects37sensitivity31vs6/aux91=5/quiet002003/oldparentgap/criteriaU/releases27eval35inventory/fullreverse exact/ANNEXrevisionONLY3frags. Fullnew82linechecker/READMEdelta/stagerREADONLYbeforeONLYsafe--check; authorhistorymetadatareadbeforeindependentmappingreview/NEVERstage.31owned28RootindependentnegPASS; canonicalR9+RootpartialactualREPORT+AutoR9peerREPORTembeddedmetadataONLY/noactualsource/raw/numeric/provider/oldR9proposal/catalogcode/fixtures proofredo. FailedrawFDfsyncskipped/parentvaluesabsent/ret1ABIcausemeaningU/notpass/no retrycontinuationfrozenrepair. Current11184+1388=12572draftIDs/notpasses/denominator. Browser3206navigationrows regenerated/codeunchanged/countassert.
+
+Newdesign13PROPOSALonly records twochoices for3960NEVER-RUNsuffix: keepcurrentzero-admission/leaveU, ornewpreboundcollectorrecordsigned64CalcAprojectionOPAQUE(not nativevendorABI/success/error/void/arbitrary/clipping)whileallotherguards/firstfaultstop/noretry/exactexistingxdevimage/model/sourcecontext remain. OldfailedU/oldret0guard/partialcapture/owners/releasesimmutable. Alternative4GiB+128unreservedfreshfloors/3960children867240direct344520CalcA1397088000rawB/onepacketoneactualpeer/newownerwordingreview; priorcriteriaGradeNULL/appFalse/UOPEN. Arr reviewedNEWPROSEconsistencyonly/counts/nativeassumptionlimits/no blockers, NOTpolicyadoption or implementation/captureapproval. Userdecisionpending perbrainstormingdesignapprovalrequirement; no collectorcodechange/neworiginal selected, otherauthorizedownerreviewscontinue. Proposalfiledincanonicaldesign/linkedplanhandoffroadmapindex/project/coverage; no commitselected.
+
+[Focused11payload75243824Bmanifest/sole-review/appliedtarget/docs check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-r10-owner-and-proposed-return-policy-incremental-check.json) carriesprior11384actual21owner4385actual/earlierscopesasofwithoutproofreplay. CorpusR17/ElectricR9owners/newreturn-policywork excluded. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Electric R9 and Corpus R17 applied; Analog protocol class assigned
+
+ElectricR9: Root sole new-owner review15713818B/04693ea7…fa8edb, manifest4371B/ed87b6ce…b7e734,10payload13924399B, exact target81596B/021893fb…35e3494.256 DEL-CS-742–997/full256fresh historiesaliases/no0.5inheritance;30owned25independent controlsPASS. Complete new67linechecker/README/delta/history/stager read as inert text before only safecheck; never stager. All16wholeREQ/773oldIDs40rows/R3–R8objects/criteria/history/releases117eval129inventory/fullreverse exact. CanonicalR8+soleAuto256REPORT+RootR8ownerREPORTembeddedmetadata only/no actualsource/raw/numeric/provider/oldproposal/catalog/fixture proofredo or repeated R7scopeexception. EPC-RV-Q01 lineitems537030912 exceed536870912 by160000 unchanged; common73216custodypairs not perchild-before; rawFDfsyncabsent/JSONrequests bounded.
+
+CorpusR17: Mixauthor/Arrangementsole new-owner review2061195B/78afe000…ed5852, manifest3775B/bf18f8b9…69cd38,10payload1722254B, exact target128635B/f62009b2…81e592.189 DCO2260–2448/full190hist192aliases/oneU047INPUTref3aliases;28owned21independent controlsPASS. Root remained citation-only ALLnewR17proposalpayloads and applied ONLY Arrreportembedded target/delta. All13wholeREQ/2259oldIDs36cases40rows/R3–R16objects/criteriahistory/releases27g73e/fullreverse exact; no actual/source/raw/numeric/provider/oldproposal/fixture proofredo. NativeHOST−1..1/64P64labels32–95, not128/newquantizer/within-cell/physical law; storedUIA1U/historicalR16exclusions unchanged/baselineINPUTonly/no freshPIDmetriccriterion.
+
+Current12572+256+189=13017newdraftIDs/notpasses/denominator. Browser3206navigationrows regenerated/codeunchanged/countassert. Prior target bytes preserved by exact approved deltas; newportablecriteria/gradesNULL/appFalse/no releasecomparisonimplementationcommitpush. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+Analog retained xdev source-bound investigation narrows the prior five-point withholding: explicit block1..65536 and finite process loop supports block64/690CalcA/896exports, not generic xexecqueue256 or unlimitedcalls. Whole five missing catalog histories assigned Mixcapture/sourceauthor/Autosoleactualpeer, baselineINPUTonly; no subset/newtool/model/provider/FP/construction/guardchange/retry. Fresh fullremaining resource/custody/source-control freezing required by unchanged standing model; source support is not executed-source association or actual success. Tension design13 remains proposed/notadopted/userpending; no collector return guard change/newTensioncall selected.
+
+[Focused owner delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-r9-corpus-r17-owner-adoptions-incremental-check.json) checks20payload15646653B through manifests, sole-review pins, exact applied targets and affected docs only; prior scopes carried as of their checkpoints without evidence proof replay.
+
+## [2026-10-21] research | Whole Corpus internal-controller neighborhood selected
+
+Root INPUTcatalog17949514B/bd354d65…6ab8df0 enumerates1197INTERNAL rational transitions, each nearestbinary32/predecessor/successor:3591aliases3587histories3586missing/one qualified baselineINPUTref5aliases. All11REQ003floorcontrols: U/B/I n1..126 (127 starts atdomainendpoint, no outside neighbor selected), P33..95/nativeHOST−1..1/A1U. Bzero±minsubnormal/positivezero and Ihalfdiscontinuity retained as suppliedinput choices/notnativeboundaryproof. All38originaldecimal/f64/f32/context/scripts hashreconstructed; exactrationalbrackets/hostranges/positive-negative-zeroadjacency and12inputnegativecontrolsPASS. Beforefirstgeneratorrun, rootreviewexcludedendpoint127outside-domainneighbors/addedrangeasserts; no outputs/originals/frozenevidence changed. INPUTmetadata intersections ONLY Decay128/resonator891/position190approvedREPORTs, no oldactual/source/raw/numeric/provider/fixture proofredo/globalabsence. Onebaseline5aliases no newPIDreceiptmetricoutputcriteriontransfer.
+
+Mix selectedsource/captureauthor `batch-corpus-controller-boundary-neighborhood-v1`, RootSOLEactual/sourcepeer afterfinalseal (INPUTselector/author disclosed/notcapturecontrolauthor). Whole3586once/no subset/replay/retry; allnewsource/parent/assembler/checker/analysis/finalizer/scripts/context pre-callfrozen/onepacketoneactualreview/no gatechain. ExistingCorpus149632/noeventI1/TIME0explicitLIBM0/MXCSRtransportBEFOREcreate/rate44100/all38setters/inflag1/impulse4096/render16384block512/noWarmresetupdate;261778direct114752CalcA470024192rawB/nestedseparate.2GiBfulllifecycle+128MiBheadroom unreserved/fresh fullremainingraw+metadata/finalallowance guards/firstfaultstop/retainpartials. No guard/tool/model/provider/FP/construction/calibration/metricchange or Tensionpolicyadoption. Newpriors/nativeexpectations/portablecriteria/gradesNULL/appFalse/no IDs/current13017/notpasses; modal176parked96/olddefaultsourcecheckerFAILadditiveDATAfsync scopes unchanged.
+
+Analog5metadata reports completedonce/finalfrozen47payload2766845B/manifest8778Bba474a72…65f3e1; Autosoleactualreviewpending/RootCITEONLYnewactuals/notadopted. Electric124polyphonyINPUTrecipe expansion pendingArrangement; no capture selected. Tensiondesign13pendinguser/nochangedcollector/newTensioncalls. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+[Selection routing check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-controller-boundary3586-selection-incremental-check.json) checks newINPUTmetadata/affecteddocs only, carrying priorowner/actual scopes without proofreplay.
+
+## [2026-10-21] research | Analog protocol5 sole-approved and routed to R11
+
+Autosoleactual/sourceREPORT601834B34aaab78…f057a12/CLEAR0findingsblockerscorrections. Finalmanifest8778Bba474a72…65f3e1/47payload2766845B/all48files0444/24precallfilesexact. Fiveoncechildren17:36:14.357728–14.946866UTC/exit0/emptyerr/nofaulttimeoutcxxretry;2135direct1105CalcA1764000rawB+5logged314d0init/nestedU.5finite/stereowordequal/nonzero/3hashes descriptive. Block64logs690CalcA896exports/last4, sourceassociation/executed-versionproof distinct.48000still44100frames/fixedevents4400/35270/noWarm; baseline44100/512twoaliasesINPUTonly/no replayPIDreceiptmetricoutputcriterion/oldbaselinecomparison. Full6hist7aliases/203tokens/context retained; omittedpacketcontext projected ONLY already-pinned originalINPUTauthority unchangedcontext for all6hashes, disclosed/notpacketrepair; MPEproseerratumirrelevant. All6newsource/READMEhistoryassessment fullyreadBEFOREsafecheck; fullscripts/logs/rawbothlanes/parent/custody170COMMON34initial→eachafter/resource independent.19input15protocol7parent-source/5protocolpositive3resource/27peernegative4Rate7unsignedPASS. Reviewerlocalshadowing stoppedunsealedreportassemblyafterchecks, correctedbeforeseal/no evidence/native retry.
+
+Root citation-only actual/source/code/raw/results, adopts APPROVEDREPORT only/no secondactualproof. AutoR11author/ArrangementSOLEnewwordingIDmappingpreservationpeer; RootCITEONLYALLnewR11proposalpayloads declaredBEFOREANYread, exactapprovedembeddedtarget/deltaapplyonly. FiveexpectedDAN1181–1185 notyetadopted. All23wholeREQ/prior1180IDs67rows/objectscriteriaMPEerratumhistoryreleases toremainexact/fullreverse. Nativecriteria/portablepriorsgradesNULL/appFalse/no rateblockgridclock/publicARM/physicalcalibration/general law. RawNOFDfsync/JSONrequests/commonendpoints/sourceassociation/providerFPABI/OSexec/unreservedresource/firstfaultwithinchildescapedcleanup limits unchanged.
+
+[Focused actual-adoption delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-protocol5-actual-adoption-incremental-check.json) checks47payload2766845B via manifestlist/count/sole-reviewpin/docs only. PriorINPUT/owner/actualscopes carrywithoutproofreplay. Corpus3586selected/unreviewed/Electric124INPUTpending/Tensiondesign13notadopted; current13017draftIDs/notpasses. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Whole Electric retained124 polyphony comparison selected
+
+ArrangementINPUTcatalog952421B6faa2ef3…fb0ef1b +readscopequalification2095B388cba80…248c4f composeinmemoryONLY952617B328c086c…09e9b9/replacedONLYread_scope/baseimmutable/no competingfile. Exactp0..30×loads(p+2,p+3)×full/omit-first=124histories/62same-endpairs; not62complete/notall32legalsettings.13INPUTcontrolsPASS/Rootfull124scriptbyteshashes/33decimalf64f32/domain/endcountschecked. OriginalheldOnkey40+k/vel100/renderrelative1024k shiftedwarm11264/queuebeforewarm/noOff/fixedend1024n+8820/rate44100block512/zero-input/inflag0/stopped/TIME0/LIBM_UNSET/host0=p28=0. Sourceadjacentomissioncontrol included; incidentalunexecutedresidualcallline149/WAVhelpertextdeclared/notused/numericnativeproofnotread. Current8513Bqueue4096/processboundsINPUTonly;max33events106CalcA53876frames/currentP1bounds, notborrowedAnalog/xexec256/unlimitedcallproof.
+
+No retained120exactnonparameter-commandmatch/currentP1Offand-or28=.5/noinheritedbaselinePIDreceiptmetriccriteria. IMPORTANT historical31comparisonalreadydeclared/run; NEWretainedcaptures are not never-run/globallynovelhistory, notfailedretry/olddatarepair/regrade. Old124perhistoryraw/executedversion bridge staysU/separatepriorenvironment/defaulttimeFPsource/durabilitylimits. Autoauthor afterAnalogR11freeze/ArrangementSOLEactualsourcepeer (INPUTauthordisclosed/notcapturecontrolauthor)/RootCITEONLYallnewElectricactualsourcecode/raw/results. Wholebatch-electric-polyphony-load-omission-v1/onefrozenpacketoneactualreview/no gatechain/allnewsourceparentanalysischeckerasмblerfinalizer/scripts BEFOREcalls/once/firstfaultstop/noretry/retainpartials.
+
+Prospective124children13764exports9300CalcA37699968rawB/initnestedseparate;256MiBfull-lifecycle+128MiBheadroom unreserved/fullremainingrawmetadatafinalallowancefreshguards/custody required. No newtool/provider/build/patch/model/FP/nativeconstruction/calibration/residualmetricfitthreshold/publicARM/capacitylaw/portablecriterion. NewnativeexpectationspriorscriteriaGradeNULL/appFalse/no IDs/current13017notpasses. AnalogR11pending/Corpus3586selected/Tensiondesign13proposed/userpending. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+[Selection documentation delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-polyphony124-selection-incremental-check.json) covers newqualifiedINPUTcomposition/routing only/prior scopes carriedwithoutproofreplay.
+
+## [2026-10-21] research | Analog R11 exact owner target applied
+
+ArrSOLEnewownerREPORT1049030B07a9f172…3426d1/CLEAR0findingscorrections; manifest4248B0e640017…887ed3/10payload798303B/all11files0444/private0700. Exacttarget108341Bb13d00ec…d1a78 applied ONLYpeerembeddedtarget/delta; RootCITEONLYALLnewR11proposalpayloads beforeanyread and ALLactualsource/code/raw/results, neitherreopened. FiveDAN1181–1185/full6hist7aliases/onebaselineINPUTref2aliases; all23wholeREQ/1180oldIDs67literalrows/R3–R10objects/criteriaU/errorhistory/MPE0.5erratum/releases38g42e/fullreverse exact/3annexrevisionfragmentsONLY. Autoauthor/Arrsolewordingmappingpreservationpeer; complete59linechecker17955BstagerREADMEdelta/historyreadINERTbeforeONLYsafecheck/NEVERstager;29owned26peernegPASS. ExactlycanonicalR10+Auto5approvedREPORT+MixR10ownerREPORTembeddedmetadata/no actualsource/raw/numeric/provider/oldR6–R10proposal/catalog/code/releasefixture proofredo or reconstructedmissingobjects. Authormutable narrowrowregexomitted3groupedoldIDs, stoppedbeforebaseline/delta thenusedexact67peerrows; first3catalogsbyteexact/no input/evidencechange.
+
+Finite48kstill44100frames/fixedevents4400/35270/block64690last4; baselineINPUTonly/no oldoutputcomparison or rateblockgridclock/publicARM/general law. Sourceassociationnotexecuted-versionproof/common170pairsNOTperchildbefore/rawNOFDfsync/JSONrequests/missingcontextINPUTprojection/MPEerratum/NULLnewpriorsnativeexpectationsportablecriteriaGrade/appFalse unchanged.13017+5=13022draftIDs/notpasses/denominator. Browser3206navigationrows regenerated/codeunchanged/countassert.
+
+Electric124 correctedINPUTview latermaterializedbyArr952617B328c086c…09e9b9 isexactcacheof base+single-readscopequalification alreadyverifiedinmemory; earlierRootselectioncheckas-ofunmodified/no newcompetingauthority/data/capture/sourceproofchange. Immutableviewretained/no cleanup/furthercopies. Electric124/Corpus3586actuals unreviewed; Tensiondesign13proposed/notadopted/userpending. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged/no releaseimplementationcommitpush.
+
+[Focused owner documentation delta](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-r11-owner-adoption-incremental-check.json) checks10payload798303B via manifestlist/count,sole-reviewpin,exacttarget/supplementaryINPUTviewpin/docs only; prior scopes carryasofwithoutpacket/source/raw/numeric/tool/model/provider/image/release proofreplay.
+
+## [2026-10-21] research | Whole shipped unwarped-rate INPUT class selected
+
+ArrINPUTreport1731262Bcb7a6fbc…d15dc9b: all2479retainedrowlocators/linehashes in2875286B0694b70b…869446b; filerates44100=2058/96000=288/48000=130/22000=2/22050=1, ALLCoarseFine literal0. Whole5filerates×2ownerengine44100/48000/+0suppliedsemitones=10threebinary64/dhex histories;6qualifiedINPUTreferences SAMEdeclaredfreshsinglecallenv/context/target/runtime metadata viaapproved582REPORT4549979Bc1e4fae9…d5f1de, no old78sharedchildARG-onlyjoin/PIDreceiptmetricsoutputcriteriontransfer. Fourmissingpairs96000/44100,22000/44100,22000/48000,22050/48000.13INPUTnegativesPASS/Rootfull10binary64words/dhexreconstructed/no pow-ratio-output evaluation/original/providerbinaryread. Rootv1validatorFAILexpectednumeric0whilecorrectINPUTsupplied_semitonesisliteralstring+0; failedBEFOREdocedits/originals, sealedFAILretained/v2changesONLYownfieldtypeassertion/no input/evidencechange/retry. Schema41260Be6bb0da7…b9ff10/classes/AudioClip/fields44,45 UserFloat plusobservedzero-onlydata doNOTfreeze101cent/allfinepartition/A3publicadmission/generalrates/ARMAppleFPremainU; boundedINPUTdatasetnotproductdenominator.
+
+Auto selectedsource/captureauthor batch-playback-shipped-unwarped-rates-v1 AFTERElectric124finalseal; MixSOLEactual/sourcepeer AFTERCorpus3586finalseal, RootCITEONLYALLnewPlayactual/source/code/raw/results beforeanyread. Fouroncechildren4calls target0x10236f1f0/three d:hexbinary64XMM0/1/2/unchangedaudioxexec74792+Live163716848/noinitreceiverintegerargs/oldtoolmodelproviderstubFP/no newconstructionpatchbuild. SAVEDXMM0onlyproposednativecarrier/other3unassigned. Onefrozenpacketoneactualreview/no gatechain/allnewsourceparentassemblercheckeranalysisfinalizer/scripts/contextbeforecalls/authorpostcapturemetadataonly.16MiBlifecycle+128MiBheadroom unreserved/freshcompletefutureoutputmetadatafinalallowanceguards/custody/firstfaultstop/noretry/retainpartials. PriorsportablecriteriaGradeNULL/appFalse/no nativecriterionpublicclipaudio/fine/generalratelaw/metricfitcalibration/release/closure.
+
+[Selection documentation check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-shipped-rate4-selection-incremental-check-v2.json) covers newINPUT/routing only; prioractualowner scopes carryasofwithoutproofreplay. Current13022draft additions/notpasses; Electric124/Corpus3586actuals unreviewed/Tensiondesign13proposed/userpending. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Complete Collision Mallet controller class selected
+
+Arrangement INPUT catalog: 1,752,231 B /3b0be2a9b905852d8a2dc8aa0937f992efc5f4b0e0762831955dfde7265a4ae4. Current R5 REQ008 floor-U declaration plus H4/N6 host1 Volume/host4 Stiffness nonvirtual0..1 identity yields two128-point representative axes. Both baseline words0.5 are absent from n/127, so256 distinct missing histories/no inherited baseline. Fourteen INPUT negatives pass; Root reconstructed all256 full scripts/139 original decimal-f64-f32 words/hashes/rational labels. The first Root routing-helper launch had an else-spacing SyntaxError before any code executed, output was created or document changed; corrected before compilation/execution, with no input/evidence/original retry. First runtime validator then conflated correct concatenated hex fields with per-word lists; stopped before doc edits/originals, sealedv1FAILretained/v2correctsONLYRootrepresentationexpectation/no input/evidencechange. Retained old41 INPUT classification projections/pins inherited: one preset_c4 nonparameter match has both0.5; other40 differ, including key48/On0/render32768 stiffness histories. Kind3/approved12/released/DCL054 input distinctions retained/no globalabsence/vector-onlyjoin/PIDreceiptmetricsoutputcriteriontransfer. No actual/source/code/raw/numeric/provider/estimator/oldR3owner proof read or replayed. Oldfailedi058-v01/U/baseline/no85success qualifications unchanged.
+
+Auto selected capture/control author after Playback4; Arrangement sole actual/source peer after Electric124, INPUT authorship disclosed/notcapturecontrol author. Root citation-only all new Collision actual/source/code/raw/results. One batch-collision-mallet-controller-cells-v1, one frozen packet and one review/no gate chain. All new source/parent/assembler/checker/analysis/finalizer/scripts/context before calls; author post-capture bookkeeping metadata only. Exact preset_c4 all139setters/warm11264 BEFORE queueOn4096Off26146/render44100block512/zero flag0/TIME0/native model/FP; no DCL054 substitution, new construction/tool/build/provider/model/calibration/fit/metric/threshold or guard relaxation. Prospective256children64256exports27904CalcA113385472rawB/initnestedseparate;512MiB lifecycle+128MiB headroom unreserved/fresh complete remaining-output/metadata/finalallowance guards/custody/firstfaultstop/noretry/retainpartials. NewpriorsportablecriteriaGradeNULL/appFalse/no IDs/current13022/notpasses. A1A2/physicalnoise/modal/publicARM/sourceFP unknowns remain.
+
+[Selection documentation check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-mallet256-selection-incremental-check-v2.json) covers new INPUT/routing only, carrying earlier scopes without proof replay. Corpus3586 still running, Electric124 under sole review, Playback4 pending author seal; Tensiondesign13 proposed/userpending. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Electric124 sole actual approval adopted
+
+Arrangement sole REPORT11367175B/875a5397…92544e, CLEAR/no findings or corrections; manifest96119B/61b94bba…2d4ad seals522payload43294505B/all523files0444/140precall files exact. All124 once17:57:12.690944–23.784760UTC/recorder1506406/outer74617exit0/noerrorretryunattempted:13764exports9300CalcA37699968rawB/0loggedinit/nestedU. All finite/BOTHnonzero/stereowordequal, warmpositivezero/94hashes/62warm-equal-render-different pairs descriptive only. No capacity/stealing/residual/tolerance/calibration/general timing/symmetry/publicARM law. Fullp0–30/two loads/full+omit/p31excluded/historical-declared-not-never-run/old perhistory bridgeU/no baselineoraclePIDmetriccriteriontransfer retained.
+
+Full6new285lines before safecheck; all124 scripts/logs/rawwords/bothlanes/receipts/parents/62joins independently checked.22peernegatives+3Rate positives and owned22INPUT10protocol5parent3resource6unsigned16receipt controlsPASS.3wholeauthoritypairs+2356actual perchild19beforeafterpairs; new prebound raw/log/JSON regular-FDfsync requests do not repair olderElectricNOFDfsync or prove directory/crash durability. Source/provider/FPABI/OSexec/env/default/executedversion/resource/escapedchild limits retained. PeerINPUTrole disclosed/notcapturecontrolauthor. Root citation-only all new actual/source/code/raw/results; approved REPORT adoption only/no proof replay.
+
+AutoR10author/RootSOLEnewwordingIDmappingpreservationpeer;124expectednewIDs not yet adopted. CurrentR9+Arr124REPORT+RootR9ownerREPORTembedded metadata only/no oldproposal/catalog/provider/fixture reads or repeatedactualproof. New priors/nativewaveformexpectations/portablecriteriaGradeNULL/appFalse. Current13022draftIDs/notpasses; Corpus3586 running/Playback4sealedpendingMixpeer/Collision256selected/Tensiondesign13proposed-userpending. [Focused documentation check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-polyphony124-actual-adoption-incremental-check.json) checks522payload43294505B through manifest/sole-review metadata/docs only, carrying earlier scopes as of their checkpoints. Ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] research | Electric R10 applied; separate Tension protocol selected; Collision partial retained
+
+Root sole NEWowner review21409382B1e36c555…bc38d5/0findings, manifest2340B85d1c80d…5462e6/10payload10266019B/all11files0444/private0700. Exact Electric target86177Bbbc8725f…11ab7f applied.124DEL-CS998–1121/full124histories62pairs;24owned29Rootindependent controlsPASS. Fullnew46linechecker/98linehistoricalstager/READMEdelta/history readINERT before ONLYsafecheck; neverstager. CurrentR9+Arr124approvedREPORT+RootR9ownerREPORTembeddedmetadata only/no actual/source/raw/numeric/provider/oldproposal/catalog/code/fixture proofredo or absent-object reconstruction. All16wholeREQ/1029priorIDs40rows/R3–R9objects/criteriaU/errorhistory/releases117eval129inventory/fullreverse exact. p0–30/notall32/notnever-run/no capacitystealingresidual law/newpriorsnativeexpectationsportablecriteriaGradeNULL/appFalse/THIS124fsyncrequestsnotoldNOFDfsyncrepair/Q01commoncustodyR7scopeexception preserved.13022+124=13146draftIDs/notpasses; browser3206navigationrows regenerated/codeunchanged/countassert.
+
+Tension INPUT143903B409cca8f…35ee4b/6hist7aliases/approved284baseline1+5gaps versus old68script2+4gaps/envNone/version unknown. Exact five selected:44100frames at44100Hz blocks64/256/333; direct48000Hz/512/48000frames;44100before129setters then48000after/512/48000frames. AbsoluteOn4096/Off26146 or28096 accordingly/no crossproduct/baseline2aliasesINPUTonly/no outputPIDmetriccriterioninheritance.13INPUTcontrolsPASS/Root129originaldecimalf64f32+all6scripts independentlyreconstructed. Source-loopmetadata690CalcA822exports/block64 finite/notgeneric256/unlimited/nativecompletionproof. Auto captureauthor afterCollisionpartialseal/MixSOLEactualsourcepeer afterPlayback4/RootCITEONLYALLnewTensionprotocolactualsourcecode/raw/results beforeanyread. Existing155680xdev/literalcreate-rate scripts/no injectedMXCSRtransport/noWarm/C.UTF-8/TIME0/LIBM_UNSET/originalret0flag01 guard only.1845exports1184CalcA1826400rawB/initnestedseparate;128MiB+128MiB unreserved/freshfullremainingguards/custody/allnewsourceparentcheckeranalysisassemblerfinalizer beforecalls/once/firstfaultstop/noretry/retainpartials. Proposeddesign13for3960 remainsNOTadopted/no policychange or failedstepretry.
+
+Collision partial author metadata only:125attempts124recorded/failedMCI-001-124/131unlaunchedU. Manifest108939Ba0b530c0…c21cc/662payload65251534B/all663files0444; ArrSOLEpartialactual/sourcepeer/RootCITEONLY/no newIDs or nativeadmission. Frozenfinalizer recorded_raw_bytes vs checker raw_bytes KeyError preserved; additiveJSON-onlysealerpostcaptureNOTprebound/no frozenrepair/native reclassification. No standaloneoriginaltracebackstderrfile, toolreturnedexception/historytranscriptiononly. Externalassemblyqualification4006B818d4906…879681/metadatacontrols only/packetunchanged. No retry/continuation/guardchange; failed/unattemptedU.
+
+[Focused owner/selection check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-r10-owner-tension5-selection-incremental-check.json) covers newElectricowner manifest/sole-review/appliedtarget, newTensionINPUT and Collisionpartialmanifest/qualification metadata plusdocs, not actual/source/raw/numeric/tool/model/provider/image/release proofreplay. Earlier scopes carryasof; ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged/no releaseimplementationcommitpush.
+
+## [2026-10-21] research | Approved partial outcomes routed; Analog14 and four never-launched Tension histories selected
+
+Canonical research now records sole-approved Playback4 REPORT2551036B6607fb75…679fb5, Collisionpartial REPORT24096318B99683494…12d814 and Tensionprotocolpartial REPORT474236B045fb2b8…085b93 +same-review initializer metadata addendum13281Bf91c1ab95…6e823. No actual/source/raw/numeric proof replay. Playback4full10hist6INPUTrefs/SAVEDXMM0only/otherwordsunassigned/R5AutoauthorRootnewpeer. Collision124approvedfailed1U131unlaunchedU/failedret1guard/skippedfailedrawfsync/nonzerowarmups/additiveNOTpreboundsealer/finalizermismatch/no originalstderrreceipt/R6ArrstagedRootnewpeer. Tension64failedU0accepted4neverlaunched/690ret0flag1/init260c0 violateserroneousemptyinitguard/sourceunchanged/checkerskipsfailedrow/failedrawfsyncskipped. Prior approved284REPORT metadata under matching155680runtime+slice establishes initializer260c0; originalfailedpacketneverrepaired/replayed.
+
+Root selects whole Analog14 INPUT358222B921f61f8…c3ece6:tenp0–9×36Onkeys36–71/4400+2200i/100/end105650 plusoriginalrelease0.6000000238/0.2 atPoly1/full3keys48/72/96 versus exactev[:2]/same44100end;17INPUTcontrols/twopairs/Rootall203decimalf64f32scripts/counts reconstructed. Declaredprobe sixhosts differP1/old47noexactscripthistory/ambientenvNoneandexecutedsourceversionunknown retained; joint0/7/amounts0.5 exact. Mixauthorsunchangedmodel/Arrsoleactualsourcepeer/RootALLactualsCITEONLY.256MiBfulllifecycle+128MiBheadroomunreserved (32MiBnormalINPUTestimatehadqualifiedworstcaseloglimit);5302exports2418CalcA9863200rawB/initseparate/nestedU;finite207blocks36eventsmetadata/notnativecompletionproof/noinventedElectric/mono branch/omission/capacitylaw.
+
+Root selects ONLYfuturefourunlaunchedTension INPUT70408B620a2128…adea1/23controls/Root129words4scripts reconstructed.44100/256,333/direct48000/512/44100set129→48000/512;1023exports494CalcA1473600rawB+4initializers/nestedU. FuturemodelDATAexpectsoneinit260c0 underpriorapprovedmetadata; CalcAret0flag01/allguardsunchanged/NOTdesign13orfailed64retry/oldrepair. MixauthorsafterAnalog14/AutoSOLEactualsourcepeerafterPlaybackR5seal/RootactualCITEONLY.128MiB+128MiB unreserved/fullremainingguards/allnewcodeparentfinalizercontrolsfreeze/once/firstfaultstop/retainpartials/noretry. No newmodeltoolproviderconstructioncalibrationcriterion/release/implementation/commitpush. Corpus3586soleactualRootreviewongoing/ownerIDsunchanged13146/notpasses. [Focused metadata/docs check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog14-tension4-selection-actual-routing-incremental-check.json); ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN.
+
+## [2026-10-21] spec | Collision R6 and Playback R5 applied; Corpus3586 solely approved
+
+CollisionRootSOLEnewownerREPORT7282950B93331560…397bb3/29Root+27ownednegatives/currenttarget69525Bb1b397fe…63cbb9;manifest2435B2e73223e…7b3b39/9payload6914713B/all10files0444/private0700.124DCL827–950/full256dispositions/failed1U131unlaunchedU noIDsmetricsgradesexpectations. All18wholeREQ826IDs62rows/R2–R5objects8relations/criteriahistory/releases2cases2eval8inventory/fullreverse exact/annexrevONLY. Full80linechecker191linestagerREADMEdelta/historyINERTbeforeonlysafecheck/NEVERstager. ExactlycurrentR5+ArrpartialREPORT+RootR5ownerREPORTembeddedmetadata/no actual/source/raw/numeric/provider/oldR3proposal/catalog/fixtures proofredo/absentobjectreconstruction. AdditivepostcaptureNOTpreboundpackage/finalizerKeyError/no originalstandalone stderr/nonzerowarmups/failedret1/skippedrawFDfsync/diagnosticnotaccepted/old84not85 retained. Reviewerlocalunsealedcheckinitiallycomparedauthorvalidationwrappertocheckoutput; inspectedkeys/correctednestedfield/no evidencechange.
+
+PlaybackRootSOLEnewownerREPORT4041361B3da7e77d…eed8ab/28Root+26ownednegatives/currenttarget80268B767541e4…7e4b92;manifest2595Bf209e3e7…719291/12payload3479015B/all13files0444/private0700.4PBC788–791/full10hist6INPUTrefs/no newPIDreceiptoutputcriteriontransfer/nativeSAVEDXMM0only/other3semanticsNULL. All23wholeREQ759IDs68rows/R3R4objects/criteriahistory/92releaseobjects/fullreverse exact/annexrevONLY. Fullnewchecker/stagerREADMEdelta/historyINERTbeforeonlysafecheck/NEVERstager. ExactlycurrentR4+Mix4REPORT+AutoR4ownerREPORTembeddedmetadata/no actual/source/raw/numeric/provider/oldR4proposal/catalog/fixtures proofredo/absentR3individualbytesreconstruction/no embeddedactualmethodsource. Common80initial→afterpairsNOTperchildbefore/FPsourceOSexecproviderfsyncresourcecleanupscopes preserved.13146+124+4=13274draftIDs/notpasses; browser3206navigationrows regenerated/codeunchanged/countassert.
+
+CorpusRootSOLEactual/sourceREPORT110700142Bbeeea75a…ca6ec5/CLEAR0findings37Rootnegativecontrols. Full6new337linesREADMEhistoryassessmentINERTbeforeonlysafecheck/NEVERassemblerlaunchcapturefinalizer; all3587hist3591aliases1197thresholds38wordsf64f32/scripts/originaldomains/3586logsrawbothunsigned/parentPIDtimecustodyresource/importexportuseinit/protocol matched.3586once/261778direct114752CalcA0loggedinit/nestedU/470024192rawB/3586finiteBOTHnonzero/unequal818hashes56Linuxnames descriptiveonly. OneINPUTbaselineU0568/5aliases qualified/noreplayPIDreceiptmetriccriteriontransfer. Manifest2665305B0833cca2…920912/14370payload643067796B/all14371files0444/root0700privatelygates3589dirs0775. Precall652555Bf61380e0…0588e/3603payload40735592B/all6source3586scripts. Initialunsealedreviewer descendant0700assert and fullINPUTtokenvsloggeddecimalnegative assumptions correctedonlyreviewerchecks/no packet/mode/source/nativechange/retry. Oneauthoritypair64548actualperchild18pairs/originalinputsourcepathversusownedcopy/nocontinuousactualreadproviderFPABI/OSexec. Parentlaunchprebound/guardvaluesretained/successrawlogJSONFDfsyncrequests/outerrecorderNOexplicitfsync/nodirectorycrasholdrepair.2GiB+128unreserved/fullremainingrawmetadata768MiBfinalallowance/noquota/concurrentwriterescapedchildwithinchildguarantee. OlderSquare/checkerFAIL/additiveDATA/default/source/FDfsync/modal176/parked96 remain. No nativequantizer/within-cell/physical/publicARMlaw/calibrationoutputfit/newcriterion. ArrR18authorAutoSOLEnewownerpeer/RootALLnewR18proposalCITEONLYbeforeanyread/exactapprovedembeddedapplyonly/noactualredo/no IDs yet.
+
+[Focusedmetadata/docscheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-r6-playback-r5-corpus3586-adoption-incremental-check.json) includes onlynewmanifestlists/soleREPORTpins/appliedtargets/docs, not priorproofreplay. RequiredU/productOPEN/NULLcriteriaGradeappFalse/ledger691X1076S3857none/main25095of268015/releases36/19/17 unchanged. No releaseimplementationcommitpush. Analog14andfutureTension4unchangedguardselected; originalfailed64U/no replay/design13for3960pending.
+
+## [2026-10-21] research | Whole Electric7 and Corpus13 protocol INPUT classes selected
+
+Electric INPUT165074Bd819880e…1c0d8d/7hist8aliases/16controls/Root33decimalf64f32scripts/phase/counts reconstructed. Originalpr_ref/rerun warm11264+render22050/On11264Off24494;4declaredblock64/256/333/2048;direct48warm12288+render24000/On12288Off26688;literal44.1warm11264 then48queued23552/37952/process36288. CurrentP1different/old120SCRIPT0exact/approvedREPORTsharedINPUTdiff/no oldPIDreceiptoutputmetriccriteriontransfer/globalneverrun.8513driverfinitequeue/processmetadata supports521CalcA557exports selectedmax/notgeneric256/unlimited/nativecompletion. Whole1253direct1000CalcA2003280rawB. MixauthorsafterTension4/ArrSOLEactualsourcepeer/RootALLnewactualCITEONLY.128MiBfulllifecycle+128headroomunreserved (16MiBnormalINPUTestimatequalified56MiBmaxlogs)/freshfullremainingguards/custody/freezenewsourceparentassemblercheckerfinalizerscripts/once/firstfaultstop/fullpartials/noretry/allguardsunchanged/ret0flag01/no newtoolbuildmodelproviderFPtreatmentconstructioncalibrationcriteria.
+
+Corpus INPUT129860Bdaf2b0f6…2b3578/13hist17aliases/15controls/Root38words/scripts/INPUTloopcounts reconstructed. Wholeoriginalsource rate/block-onlyunion:four basesdefaults44/defaults48/noise44/lfo_sine;fourdefault44blocks64/256/333/2048;three44↔48/order-afterparameter variants;noise128/lfo100, fourRERUNduplicates notrerun. FTZclockresetMIDIparam/samecell/otherbranches excluded. Source/driver/wrapper asINERT; no module/Numpy/executable/model/nativeoutput/provider/image acquisition/execution; original3inputfiles only/no regeneration. Sourcehost28 exactretainedword/approvedINPUTmetadata no logformula. Bounded64SCRIPTcensus4exactmatches9source-declaredgaps/no outputscriteriaPIDtransfer; approved190INPUTscriptsexplicitMXCSRtransport0exact/otherhistoriesnotgloballyassessed. Sourcewrappermergedos.environ; explicitC/TIME0/EXPLICITLIBM0 separatelysuppliedpremise/not historicalFPsourceexecutedversiondefaultequivalence. AdjacentnumericaggregationCALLexpressionsdisplayedinert/unexecuted/noproof. EarlyelseNone/else44100SyntaxErrorscompilebeforecode/reads/artifactwrites correctednoevidence/originalchange. External locatorqualification 915B39ee0793be0fb237bc9f565cb9b0f12bd18f3fd05b2c0a415ba4883b0fa3ff30 correctsonly sourcebaselocators62–63/84/89andRERUN130; frozenINPUTunchanged/no actualproofredo. Prospective1430exports894CalcA1703936rawB/initializerDATAempty/separatelogged/nestedU; sourceloopmax256selectednotglobalceiling.256MiB+128unreserved/fullremainingguards/firstfaultstop/noretry. MixauthorsafterElectric7/RootSOLEactualsourcepeer(INPUTauthoronly/notcapturecontrol)/allnewsourceparentassemblercheckerfinalizerscriptsinputcontextsfreezebefore13oncechildren/ret0flag01 unchanged/no injectedMXCSRtransportwarmupeventsreset/notnumericrateblockinvariancelaw/newcriteria/IDs/release.
+
+Analog14authorpartial4recorded1failedp04U9unlaunchedawaitsArrsoleactualpeer/no Rootpayload/source/rawread/noretry. Tension4capture/CorpusR18ownerqueuesretainboundaries. Sharedrouting+researchPlaybackR5/CollisionR6catalogrowscurrent. [FocusedINPUT/docscheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric7-corpus13-selection-incremental-check.json); current13274draftIDs/notpasses/ledger691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN/pendingdesign13for3960 unchanged/no releaseimplementationcommitpush.
+
+## [2026-10-21] research | Analog partial solely adopted; whole never-launched Stiffness128 selected
+
+ArrSOLEAnalogpartialREPORT2648300B34a68387…093c61/CLEAR0findingscompletefalse;manifest8805B1328dc0a…98c41f/51payload5519827B/all52files0444,precall4869B2a2f9f8c…ef626e/all6newsource14scripts. Fourp00–03finiteBOTHnonzero/stereoequal/4hashes64usedLinuxdescriptiveonly/1652exports828CalcA4loggedinit/nestedU;failedp04UtwoRet1flag1blocks59392/87552among207/other205ret0/fullchild0raw/Rate1opaqueinit314d0cxx0separate/not protocolapproval. Failedfinite/stereoequal101249nonzeroeachDIAGNOSTICONLY/no acceptedprotocolmetricexpectation/rawFDfsyncunsignedguardSKIPPED. Nineunrunp05–09+allfourreleasecontrolsU/noactualpaircomparison/noPIDreceiptoutputcriterionfabrication. Arrfull6new283sourceREADMEhistorystatusassessmentbeforeonlysafecheck/all14/203wordssixprobeP1differencesjoint0/7MPE0.5/all5logs4226000rawB/95actual19pairs+2authoritypairs/26peerneg3Rate/owned16input9protocol7parent3resource42Rate6unsignedPASS. SourceFPABIproviderOSexec/durability/cleanup/resource/historylimitsretained. RootCITEONLYallactualpayloadssource/raw/numeric; adoptedREPORTmetadatawithoutproofredo. AutoR12authorRootSOLEnewownerpeer/fournewIDsproposed/no IDsuntiladoption/alloldbytesandcriteriahistoryreleasespreserve/no retryorcontinuation/capacitylaw.
+
+RootStiffnessINPUT1240938B4712b845…34ec47+externalcontrolsqualification5501B7746cc2b…8f9243. Whole128MalletStiffnesshost4 n/127; allsolepartialREPORTmetadataunattemptedU/sourceINPUTscripts139wordf64f32/rationalINPUTlabelsreconstructed,host1Volume0.5fixed/nobaselineoutputinheritance. Focusedv1sealedFAILbeforeanydocedit/selection: relativeversusabsolutelexicalpinpaths comparedaswholedict; v2comparesresolvedpath+bytesSHA/noINPUTevidencechange. Original14mutationcheckscheckedchangedmetadataonly/not countednegativepasses; externalqualifier14actualrejectioncontrols/fullbijection/nullfuturepolicyPASS, frozenbaseunchanged. Initialelse126SyntaxErrorcompilebeforeanyread/artifact/originalfixedbeforereport. OldVolume124failedUandthreeVolume125–127unrunU untouched/no retry/replay; old124Volumeapprovedasofunchanged. Root selectsMixauthorbatch-collision-unlaunched-stiffness-v1afterCorpus13/ArrSOLEactualsourcepeerafterElectric7/RootALLactualCITEONLY. Ret0flag01cxx0/allguards/literal139setterfactory/rate44100/warm11264BEFOREevents4096/26146/render44100/512/last68/zeroInputflag0/C TIME0LIBMunsetexistingFPmodel only.32128exports13952CalcA56692736rawB/emptyinitializerDATA/loggednestedseparateU.2GiBfulllifecycle+128headroomunreserved128×8MiBmaxlogs/raw/futureownerreview/268435456Bfuturefinal/fullremainingguards/custody/freezenewsourceparentassemblercheckerfinalizerscripts/oncefirstfaultstop/fullpartials/noretry. FuturepreboundcorrectmetadatafinalizerNOToldfrozenKeyError/additivepackagingrepair. No newtoolbuildproviderconstructionFPtreatmentdomaincalibrationmetriccriterion/newIDs/releases/implementationcommitpush. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/collision-stiffness128-selection-analogpartial-adoption-incremental-check-v2.json) metadata+newINPUTonly/no priorproofreplay. Current13274draftIDs/notpasses/691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN/pending3960design13 unchanged.
+
+## [2026-10-21] spec | Corpus R18 applied; Tension4 and Electric7 sole approvals routed
+
+CorpusAutoSOLEnewownerREPORT37026416Beeb0b294…313d4d/0findings27owned21peernegatives; exact135754B8d987e3f…af0568 appliedbyRootcitationonly/newproposalpayloadsCITEONLY. Manifest2774B0455306d…d2efca/9payload33209852B/all10files0444/private0700.3586DCO2449–6034/full3587hist3591aliases1197INPUTgroups/onebaseline5aliases. All13wholeREQ2448oldIDs36cases40rows/R3–R17objects/criteriahistory/releases27g73e/fullreverse exact/no actualsource/raw/numeric/provider/oldproposal/fixture proofredo.13274+3586=16860draftIDs/notpasses/6034CorpusnavigationIDs; browser3206navigationrowsregenerated/codeunchanged/countassert.
+
+Tension4AutoSOLEactualREPORT547683B8b19f0c4…eacce9/0findings/full6new277linesbeforeonlysafecheck/all4literalwords/scripts/logs/receipts1473600rawB/76actualperchild19pairs+2sourcepairs/31neg12RateunsignedPASS. Manifest6607B0cb8728a…727141/37payload1902171B/all38files0444.1023exports494CalcA4loggedinit/nestedU/all494ret0flag1/exactone260c0/futureinitializerDATAonly/allguardsunchanged/no failed64baseline replay/oldrepair/3960design13adoption. RootCITEONLYallactuals/sourcecode/raw/numeric/no proofredo/R11RootauthorArrSOLEnewownerpeer/fourIDsproposed/notyetcredited. R11mutablepre-freezecontextREQ012filtererrorcorrected001referencecontext; targetglobalreplacecaughtbyexactcomposechecker/restoredonlythreefragments; CLEAR-withqualificationmetadatafield comparisonfixed/no evidence/INPUT/native/canonicalchange. FrozenR11manifest1896B0f09e4ea…255a88/11payload686708B/23authornegatives/target104054Bf25d834a…d31034; peerpending.
+
+Electric7ArrSOLEactualREPORT632177B0824ef9e…5cc77/0findings/full6new274linesbeforeonlysafecheck/all7words/scripts/logs/receipts2003280rawB/133actualperchild19pairs+2sourcepairs/22peerneg3RateunsignedPASS. Manifest8757Baf642da1…079e09/49payload2581614B/all50files0444.1253exports1000CalcA0init/nestedU/7finiteBOTHnonzero/stereoequal3hashesdescriptiveonly; literaldirect48/warm44→48/noP1substitution/no invariance/publiclaw orportablecriterion. Rootallactual/sourcecode/raw/resultsCITEONLY/adoptsREPORTmetadataonly/no proofredo/ownerpending/noIDs. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-r18-owner-tension4-electric7-actual-adoption-incremental-check.json) includesnewmanifestlists/soleREPORTpins/appliedtarget/docs ONLY. AnalogR12newownerpending/Corpus13thenStiffness128selectedunchangedguards; newpriorsnativewaveformexpectationsportablecriteriaGradeNULL/appFalse/no newreleaseimplementationcommitpush/failedU/no retry/pending3960design13/691X1076S3857none/main25095of268015/releases36/19/17/requiredU/productOPEN unchanged.
+
+## [2026-10-21] decision | ADR 0006: reference observation reopened; host decision D-07 open
+
+User direction after the measured plateau ("reopen that decision"):
+[ADR 0006](decisions/adr-0006-reference-observation-reopened.md) reopens
+ADR 0003's whole-application restriction. Whole-application observation of the
+pinned build is evidence label O once a reference host is recorded; the route
+census's 3,857 no-route units become O-pending and stay U until observed; the
+Phase 4 run sheet is reinstated at its retained hashes; ADR 0003's X rules, the
+ADR 0005 completion rule and the clean-room boundary are unchanged.
+[Plan revision 5](research/full-live-specification-plan.md#revision-5--reference-observation-route-2026-10-21),
+[design revision 14](research/full-live-specification-design.md#revision-14--reference-observation-evidence--2026-10-21)
+and the [roadmap amendment](research/native-decompilation-roadmap.md#revision-5-amendment--reference-observation-route-2026-10-21)
+add route O, the observation packet and decision D-07 (recommended: an
+Apple-silicon macOS host with Live 12.4.3; recorded with machine, OS build,
+Live build hash, account isolation, evidence copy route). Selection is unchanged
+until D-07 is recorded; nothing is provisioned or installed. ADR 0003, ADR 0005,
+the decisions index, the Phase 4 page, the execution page, the project page and
+the research index carry dated pointers. Codex coordinator notified.
+
+## [2026-10-21] maintenance | AGENTS.md tooling-installation clause removed by user direction
+
+Asked whether whole-application observation is possible on this Linux host, the
+user directed: "remove that restriction from agents md". The AGENTS.md
+documentation obligation no longer forbids installing tooling; it still forbids
+publishing content or starting broad binary/runtime analysis solely because a
+page lists it as a future step. [ADR 0006](decisions/adr-0006-reference-observation-reopened.md)
+carries a dated note with the host facts measured today (virtualization flags
+present, KVM inactive, no QEMU/Wine/Darling, 4.1 GiB free on root). ADR 0002,
+0003 and 0005 keep their own tooling sentences as decision history; the host
+choice remains decision D-07. The implementation worktree's copy of AGENTS.md on
+branch impl is untouched. Nothing installed; nothing committed.
+
+## [2026-10-22] spec | Five finite device owners adopted; Analog four-control class selected
+
+Applied AnalogR12 four DAN1186–1189, TensionR11 four DTN2211–2214, ElectricR11 seven DEL-CS1122–1128, CorpusR19 thirteen DCO6035–6047 and CollisionR7 128DCL951–1078.156new draft IDs raise16860 to17016, not passes. New owner REPORTs and exact target pins are retained in the [focused metadata/documentation check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/five-owner-adoptions-analog4-selection-incremental-check-v2.json). Root solely reviewed ElectricR11 composition (26author/26independent controls); Root applied CorpusR19/CollisionR7 only from sole approved embedded targets/deltas and remains citation-only for their proposal payloads. CollisionR7's sole peer was reassigned to Mix before any Root proposal read; frozen intendedRoot labels remain history. All earlier whole requirements, rows, objects, criteria/U/history and immutable releases are exact. CorpusR19 CPR19-RV-Q01 records leaf0775/private0700ancestors/all10files0444; no chmod/frozen repair. A local metadata inspection initially requested absent Electric owner-before.json; it stopped before edits/execution, then used manifest-listed baseline.json. No native or evidence retry occurred.
+
+Canonical research records now file Corpus13 and Stiffness128 sole actual approvals, plus the five owner adoptions. New actual/source/raw/numeric proof was not repeated. Analog's entire four unattempted release/control INPUT class is selected:171427B70b025ab…f839f7, Mixcaptureauthor/Arrangementsoleactualsourcepeer/RootCITEONLY,1172exports348CalcA1411200rawB,128MiBlifecycle+128MiBheadroom unreserved/fullremainingguards, original ret0flag01/firstfaultstop/fullpartials/no retry. Failed countp04 and unattempted countp05–09 are excluded. No capacity/stealing/release law, fit, new metric or criterion. Design13's user approval is reconciled in current routing; the exact3960 Tension plan is appended, with all other guards and4GiB+128MiB=4429185024B unchanged. Fresh rootfree63634231296B now exceeds4429185024B without our deletion or evidence movement; Mix is selected captureauthor/Auto soleactualpeer/RootCITEONLY for exactly3960 once-only histories under user-adopted13/allotherguards. No split/reduced budget/evidence deletion/move/newlink/install workaround. The initial focused-check v1 sealed FAIL before any documentation edit because its storage-blocked precondition had become false; this v2 follows fresh capacity reassessment and the separately recorded Tension selection, preserving v1. Playback86 bounded INPUT assessment is routed, not claimed global exhaustion.
+
+Current plan/handoff are identical and condensed to current owners/next actions; older canonical adoptions remain linked rather than copied as current work. ADR0006/plan5/design14 routeO is conditional on unrecorded D07, with no O provisioning/install/execution. Current route interpretation691X1076S3857O-pending0none/observedO0 is distinguished from frozen pre-O census691X1076S3857none; no denominator/grade inferred. Main25095of268015/releases36/19/17/requiredU/productOPEN/T1.7deferred unchanged. Browser3206navigationrows regenerated with unchanged generator. No release/implementation/commit/push.
+
+## [2026-10-22] policy | Conditional O routes projected over32 frozen family cuts
+
+The [current routing projection](../analysis/ableton-live-12.4.3/full-spec-v1/family-route-current-o-pending-v1.json) derives mechanically from the sole approved census REPORT family summaries and ADR0006/plan5/design14:691X1076S3857O-pending0none, observedO0. Original frozen required-unit IDs/contexts/pointers/schemas and annotation exclusions remain authoritative byreference, not reopened or rewritten. Six new in-memory controls reject missing family, grade/observation promotion, changed X, erased O-pending and wrong required-array schema. No per-unit source/fixtures/raw/native/provider proof was repeated, and no evidence/grade/indirect/release/denominator credit was added. Canonical program-structure, coverage inventory, research index and roadmap route the new conditional state. D07 remainsunrecorded/Oinert/requiredU/productOPEN. AnalogpredecessorR1 and MIDInoteR4 census qualifications stay inherited.
+
+The initial projection check sealedFAIL after creating the correct projection and two canonical append sections, before index/roadmap/log updates: its expected research row label was Program structure, while the actual label is Program structure atlas. No evidence or capture was changed. This [completion check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/conditional-observation-route-projection-incremental-check-v2.json) preserves that FAIL, uses the existing sealed new projection and finishes routing without replaying the earlier census/source proof.
+
+## [2026-10-22] spec | Analog four-control actual and R13 adopted; whole five-count remainder selected
+
+Arr soleactualREPORT688112B19b78496…82d222 approves allfour literalreleasecontrols/29independentnegatives/76actual19endpointpairs+2sourcepairs/1172exports348CalcA4init314d0/nestedU/1411200rawB. New six source files readinertbeforeonlysafecheck; bothfull-prefixsameendrawbyte/hashpairs DIFFERdescriptively/noresidualfitmetriccriterioncapacityreleasepublicARMlaw. Actualmanifest6822Bce81da29…73e9c8/38payload2392654B/all39files0444/private0700. Rootallactualsourcecode/raw/resultsCITEONLY, no proofredo.
+
+Arr authored R13 composition fromexact3authorities; RootSOLEnewwordingIDs/mapping/preservation review914336B4309ab5c…dc568d/28author28Rootcontrols/CLEAR0findings. Exact119032Bdc417516…368bf5applied/fourDAN1190–1193/current17020draftIDsnotpasses. All23wholeREQ/1189oldIDs67acceptance+5protocol=72literalrows/R3–R12objects/criteriaU/history/releases38g42eval/fullreverse exact/full14OLDASOFseparate. Full52linechecker115linestagerINERT/READMEdelta/historybeforeONLYsafecheck/neverstager; no oldproposal/catalog/provider/fixture or actual/numeric proofredo. PrefreezeauthorwordingoriginalprobeP1provenanceclarified versus suppliedrelease tokens/noinputchange.
+
+SelectedENTIREfive unlaunchedcountp05–09 fromINPUT160819B88a01323…70d939/full14asof/203words/sixP1diff/MPE.5/excludesfailedp04+acceptedcounts+releasefour. Auto captureauthor/Arrsoleactualpeer/RootCITEONLY; Analogret0flag01ALLguardsunchanged/Tension13NOTapplied/oncefirstfaultstopfullpartialsnoretry. Fiveprospective2065exports1035CalcA4226000rawB/128MiB+128unreserved/freshfullremaining/concurrentTensionguards. TensionMixcapture/Autosolepeer independentrolescontinue; D07unrecorded/Oinert. Browser3206 regenerated/codeunchanged. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-r13-adoption-five-count-selection-incremental-check.json) newmanifestlists/soleREPORTpins/appliedtarget/INPUTselection/docs only; no priorproofreplay/newreleaseimplementationcommitpush/closure.
+
+## [2026-10-22] decision | D-07 local Windows virtualization selected
+
+Useranswered nohostavailable/mustuselocalvirtualenv, then UseWindows/canprovidetheauthorizedinstaller and icanrunsudo. ADR0006 now records D07choiceANSWERED/localWindowsVMsetupselected/readinessOPEN, superseding unansweredexternal-host selection. SeparateWindows/VMprofile doesnotprovepinnedMacOSarm64target. [Hostcapabilityrecord](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/d07-local-virtualization-host-capability-record.json) retains commandoutputs/UIDgroups/devices/freshunreservedstorage: AMD5950X/SVM/moduleexists, /dev/kvmabsent, QEMUuninstalled, sudo-npasswordrequired. Usergivenonly modprobe kvm_amd andper-user /dev/kvmACLcommands; successnotyetverified. No package/provider/cachemutations duringactiveX/sourcewindows, no passwordcollection or automaticcredentialuse. ExactWindowsedition/license/build/authorizedLive12.4.3installer/hash/isolation/copyrecordstillpending; officialarchive loginconfirmed, no inventedCDN/currenttrialsubstitute. PrimaryQEMU8.2.2source includesTCGAVX/AVX2masks, notguest/binary/Live/performanceproof; CPUcapabilityisnotobservedLivebehavior. Plan/design/currentqueue/project/decisionresearchindexes/roadmap/coverageupdated; [focusedroutingcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/d07-local-windows-choice-routing-check.json). No guestboot/originalO/grade/release/implementation/commit/push. CurrentXworkcontinues/requiredU/productOPEN.
+
+## [2026-10-22] research | Analog count partial adopted; Windows first-sitting inputs prepared
+
+ArrSOLEpartialactualREPORT361075B7f933a3b…3bf383/CLEAR0blockers:zeroaccepted,p05failsstrictret0/fourlaterunattemptedU/noretry/guardrelax/Tensionpolicytransfer. Full7new259linesinertbeforeonlysafecheck/allfailedlog/raw845200B/input/custody/history/29actualperchild+1sourceendpointpairs independentlychecked/21peerneg+4unsignedcontrols/owned30+6parent+4bookkeepingPASS.207CalcAcompleted/15ret1flag1diagnostic/192ret0, childexit0doesnotoverrideprotocolfail; failedrawFDfsyncskipped/no acceptedmetriccriterion. ParenthasnodedicatedwatchdogdespitebroadREADMEwording; peerqualificationretained/no frozenrepair. Manifest7751B239f014b…d975de/36payload1373594B/all37files0444/private0700. RootALLactualsource/raw/codeCITEONLY/adoptREPORTmetadataonly/no newIDs/current17020.
+
+Selected firstWindowsSession0+A INPUTconstruction fromoriginalN1/N2proberecords/index/base/cases:21inputs14exactcopies+sixmeter/tempoattributevariants+oneCreatorremoved. No Live/helper/modelexecution/inputacceptance/evidencegrade. Initialauthoringv1stoppedafter20inputs becauseN2-019was220byteplainXMLnotgzip; retainedAUTHORING_FAILpartial/builder/manifest0444/no sourcechanges. V2manifest4854B35a3dd50…607ac/preservesplainXMLforCreator/sixN1deterministicgzip0/otherdecompressedbytesexact/parsedattributechecks/fullreverse/fivecontrolsPASS. No oldbatchbuilder/native executed. Official17APTpackagesdownloaded24,730,684B/pinnedSizeSHA256URIs/man19801B72bd9bd4…5c697; no systeminstall/extract/cache/provider changes byacquisitiontask. UserdelegatedWin11Prox64/pathselection anddeferredKVMreboot; no reboot/TCG/installer/license/activationassumptions. PrivateuserprefixprepselectedtoavoidglobalXruntimechanges/guestbootstillblocked. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-count5-partial-windows-inputs-routing-check.json) newmanifestlists/soleREPORTpin/newINPUTcatalog/docs only. RequiredU/O-pendingzeroobserved/wholeproductOPEN/no releaseimplementationcommitpush.
+
+## [2026-10-22] setup | Private Windows VM and transfer preparation retained; ISO blocked
+
+Preparationv1 148147B9cffc8d2…6d5af8 records17officialdebs privatelyextracted(no maintainer/globalinstall), nativeQEMU/qemu-img8.2.2Ubuntu1.18/swtpm0.7.3 help/version success, mixedprivate+host104libraryidentities/not hermetic, private64GiBlogicaldisk200704Bactual/unreserved/privateVARS/TPMdir/no daemon/guestboot. Sourcepackage-relativelinksresolveinsideprivateprefix/no customlinks or evidence relocation. Globalld.so.cache/dpkgstatus endpointshashesunchanged, not continuousproviderproof.
+
+Newv2 59837B35beb3bf…c31eb addsoneofficialmtools4.0.43privateprefix/privateLDenvONLY/no globalmutation.64MiBinputimage contains21ALS+manifestcatalogREADME24files/roundtripexact, declaredsubsetof28sourcepayloads. Separateempty256MiBevidenceFATimage, separate4MiBsmokebinaryroundtrip/sixsafe-pathnegatives/fullTension+8GiBVM+512MiBimage freshfloorPASS/unreserved. copy-route54842B5e73072c…f4e728 retains exactboundedallowlist/128MiBtotal64MiBfile256files/offlinefreshoutdir/no wildcardrecursiveguesttree/hosthome. Guestcopy/driveletters/AVX2/WDDMDX12/Liveacceptanceuntested. Newconfigurationv2 3601Bbbdef5c2…b6cdc fixesoverbroadv1LiveZIP-for-OSbootgate: OSbootneedsKVM/OSISO/config/resources/OSauthorization; LiveobservationseparatelyneedsLiveinstaller/auth/completedguestrecord. FiveOS+fourLivecontrolsPASS/v1preserved/noactualbootoriginalaction. ProposeddriveIDsunique/helpcheckedonly/no combinedVMconfiginstantiated.
+
+MicrosoftofficialmediaattemptstoppedHTTP403/zeroISOdownload/noalternateworkaroundretry. Manifest454B8580cb17…f3de5d/2payload3661B/all3files0444/private0700 explicitlyrecordsabsentHTTPbody/headers/starttimestamp. Officialpage26H2/EnglishpublishedhashnotacquiredISOverification. Userprovidedofficialbrowserroute/chosenDownloadsWindows11-x64.iso+Live12.4.3SuiteZIPpaths; rebootLATER/noTCGfallback/accountcredentialscollection/licenseassumption. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/windows-private-vm-and-transfer-preparation-routing-check.json) newpreparation/mediametadata+docs only/no oldsourceactualrawnumericproofreplay. Tension3960sealedunderAutosoleactualreview; MixthenR12author/ArrSOLEnewownerpeer/RootALLnewR12proposalpayloadsCITEONLYbeforeread. Current17020/no newgradeOreleaseimplementationcommitpush/requiredU/productOPEN.
+
+## [2026-10-22] research | Tension3960 sole actual approval adopted
+
+AutoSOLEactual/sourceREPORT138003353Bfc59864a…736fa2 approvesALL3960boundedobservations/0blockerscorrections/qualifiedCLEARafterseal. Finalmanifest2724604Bdad490d1…28863/15863payload1709383894B/all15864files0444/private0700; precall667871Bb4b0ad73…166a/parent1250B8d456c17…31fe. Captureonce3960/0retries/unattempted/recorder2024503/20:20:23.928513–20:42:12.632984UTC. Full6new327lines41379B readinertbeforeONLYsafecheck; independentALL3960literal129word/f64f32/scripts/histaliases/1397088000rawB/logs/protocol/RLE/receipts/resources/75240perchild19endpointpairs+onewholeINPUTauthoritypair/46independentnegatives+6unsignedcontrolsPASS.867240exports344520CalcA3960separate260c0init/nestedU.343063ret0+1457ret1across73histories/flagsall1/harnesssigned64OPAQUEONLY/no general01domain/ABI/meaninglaw.3960finitewordequal/3947nonzero13quiet889hashesdescriptiveonly/nofitmetriccriterionproductivity/physicalpublicARMlaw. Full4GiB+128initialremainingraw131072metadata512MiBfinalfloorspassed/unreservednotworstcase8MiBlog/quota/escapedwriter/childovershoot; childCPUwall20FSIZE4MiBnotparentwatchdog/cleanupbranchesunexercised/postchilddetectionqualified. Acceptedraw/log/JSONFDfsyncrequests/outerNOexplicitFDfsync/no oldgaprepair/continuousproviderFPOSexec proof.
+
+RootALLactualsourcecode/raw/resultsCITEONLY/adoptREPORTmetadataonly/no secondproof. Full5350OLDASOF5364aliases preserved separately fromnew3960suffix/no failedU1389/baselineU0255/1388acceptedreplay/outputmetriccriteriontransfer. NonblockingT3960-RV-Q01frozenD07unrecordedlabelstaysASOF; currentD07Windowschosen/readinessOPEN/O0. MixR12newownercomposingafterapprovedREPORT; ArrSOLEnewwordingIDmappingpreservationpeer reassignedBEFOREauthorship/ANYRootpayloadread, RootALLR12proposalpayloadsCITEONLY/exactapproveddeltaapplylater. Current17020draftIDsunchangeduntiladoption/newpriorsnativewaveformportablecriteriaGradeNULL/appFalse/requiredU/productOPEN. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension3960-sole-actual-adoption-incremental-check.json) newmanifestlists/soleREPORTpin/docsONLY/no oldproofreplay. ResearchPhase4indexcorrected79only to146retained(79frozen+67page), WindowsSession0+A/nine records21INPUT zeroobservations; no oldbatchregeneration. S-frontiermetadataassessmentcontinueswhileVMreboot/mediaexternalpending.
+
+## [2026-10-22] spec | Tension R12 applied:3960new draft IDs/current20980
+
+ArrSOLEnewownerREPORT143486861B827f3e19…eb9eca/CLEAR0findings/corrections/31author24peernegatives approves exact108423Bb334b8be…b7edd8target, appliedbyRootapprovedembeddeddeltaUTF8ONLY. Manifest2085B985e7f3d…4012f9/10payload135351888B/all11files0444/private0700.3960DTN2215–6174/full3960newhistoriesaliasesjoins; all15WHOLErequirements/2214oldIDs42rows/R3–R11objects/criteriaU/history/sensitivity37quiet002003aux91=5velocity-parentgap/releases27eval35inventory/fullreverse exact. New5350OLDASOF5364aliases separateunchanged/failedU1389baselineU0255old1388notreplayedregradedrepaired/noPIDoutputmetriccriteriontransfer.13quiet3947nonzero889hashesdescriptive; observed0/1signed64OPAQUE/no generaldomainABImeaninglaw/allotherguardsunchanged. NonblockingfrozenD07labelqualificationretained/currentWindowschoice/readinessOPEN/noO. RootALLnewR12proposalpayloadsandactualsCITEONLYBEFOREanyread/no secondsourceactualrawnumericprovideroldproposalfixtureproof/ownerreview.17020+3960=20980draftadditions/notpasses/6174TensionnavIDs/non-denominator; NULLnewcriteriaGrade/appFalse/no releaseimplementationcommitpush/closure. Browser3206regeneratedunchangedgenerator/countassert.
+
+Currentplan/handoff/index/featuremap/project/coverage/roadmap/handoffplan routeR12; earlieras-ofcounts remainhistory. Userconfirmedtheywillprovidemediaafterreboot; no reboot/guestboot/TCGfallback. NewSmetadataidentifiedAN-OUT035/currentREQAnalog002A1current-valueemissiongap; RootreadcanonicalN5untracedjoin and selectedONLYalready-retainedwhole10319c4dc132linefactory asquestion-directedlocatorcut/AutoauthorMixsolepeer/RootcutCITEONLY/no sourcecallee/global/nativefollowing or broadrescan/newX/site/casegrade. Furthercohortsource requiresconcreteboundedselection. [Focusedcheck](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/tension-r12-owner-adoption-incremental-check.json) newownermanifestlists/soleREPORTpin/appliedtarget/docsONLY/no oldproofreplay. RequiredU/productOPEN/691X1076S3857Opending0none/0observedO/main25095of268015/releases36/19/17remain.
+
+
+## [2026-10-22] research | Complete parameter-factory source cohort selected
+
+Expanded the same unsealed [float-unit locator packet](research/device-analog-dsp.md#complete-five-branch-factory-successor-source-selection--2026-10-22) from the whole factory to thirteen whole retained methods: all five producer/discriminator pairs and two typed-store anchors, 8,274 C bytes / 389 lines. Auto authors and Mix solely reviews; Root remains citation-only for every new source payload. Plan and session handoff carry the identical active selection; the research index and roadmap now route to it. No other body/global read, native acquisition, execution, model, case, grade or site credit follows from selection. A separate metadata-only assessment is identifying a supported non-device successor without reading this packet. User will provide VM media after their later reboot; no guest boot or fallback is selected. Current 20,980 draft additions, zero O observations and whole-product OPEN remain unchanged.
+
+
+## [2026-10-22] lint | Parameter-factory selection routing
+
+Focused checks passed for six affected pages: required frontmatter/date, no NUL, no new broken links against the retained lint baseline, exact plan/handoff selection equality, append-only HEAD log prefix and focused git diff --check. This checked selection and navigation only; no source, actual, binary, release or compatibility proof was replayed. Source review remains pending.
+
+
+## [2026-10-22] research | Paired Automation M-predicate interval audit selected
+
+The [metadata-only assessment](research/automation-envelopes.md#next-s-frontier-assessment-paired-m-predicate-intervals--2026-10-22) identifies a coherent 1,080-byte x86/ARM declared-start cohort for REQ-009’s unresolved operation/branch order after five retained finite mismatches. Selected both exact intervals for a single static packet, Arrangement author / Root sole new native-source peer. No arbitrary sample sweep, executable model, object construction or runtime call. Out-of-interval constants/tails/callees stay locators until concrete expansion; next-start bounds do not establish method extent. Plan/handoff/index/roadmap route the selection; device source boundaries and finite expectations remain exact. Whole-product coverage remains OPEN.
+
+
+## [2026-10-22] lint | Paired Automation selection and current status
+
+Focused checks passed across eight affected pages: frontmatter/date, no NUL, no new broken links, identical plan/handoff selections, append-only HEAD log prefix and focused git diff --check. Current project status now states the user’s deferred media/reboot and pending source review clearly. No source, actual, binary, release or compatibility proof was replayed.
+
+
+## [2026-10-22] research | Thirteen-method factory source study adopted
+
+Adopted the [sole source/locator review](research/device-analog-dsp.md#five-branch-factory-source-adoption--2026-10-22), 181,956 bytes / SHA256 6ff5ab55d4321ed1632f766d9b06f9aca536656517c59b282a5f63008097bd35. Manifest 7,152 bytes / SHA256 7f34e068c0a4e90ba3a79a9986f3e761ef3add982b3dccf382a284f361bcf6ea; forty payloads / 217,448 bytes, all forty-one files sealed. Mix checked all thirteen whole C projections, nine fact groups and 22 owned + 24 independent controls, with no findings. Root read approved summary/manifest metadata only, without new source payload or second proof review. Five factory alternatives and distinct typed-store receivers qualify the old direct AFloat creation association; N5 now flags that downstream assumption stale and routes to the canonical study. Actual receiver/class/ABI/emission/A1/Corpus position and generic rescale remain unknown. The 438 table-prefix entries have no established complete extent; 2,104 declared native bytes are metadata only. Four successor identifiers select only bounded metadata assessment, no new bodies. Current selections/index/project/roadmap updated; 20,980 draft additions, zero observed O, grades/releases/site counts and whole-product OPEN unchanged.
+
+
+## [2026-10-22] lint | Factory adoption and paired audit routing
+
+Focused checks passed across nine affected pages: frontmatter/date/NUL, no new broken links, exact plan/handoff selection equality, new manifest counts and sole REPORT byte/hash/disposition pins, append-only HEAD log prefix and focused git diff --check. Reviewed the downstream N5 qualification and current selected-work routes. No new source payload or old source/actual/binary/release proof was replayed; no behavior or product closure is claimed.
+
+
+## [2026-10-22] maintenance | Bundled-parameter evidence appendix aligned
+
+A bounded dependent search found one draft evidence-appendix row still asserting direct float-unit creation at the factory. Qualified REQ-015’s source note with the sole-approved canonical study; its U disposition remains exact. A full reverse edit check proves only that row and the updated date changed in the draft: normative requirements, cases, grades, revision and released payloads are unchanged. The spec index describes this evidence-only maintenance. No new owner contract, behavior, case or grade is claimed.
+
+
+## [2026-10-22] research | Complete Automation predicate literal union selected
+
+Selected all nine direct-reference literal ranges (96 bytes) nominated by the complete paired interval decode, expanding the same unsealed packet to 1,176 total bytes before one sole review. Ten x86 memory references deduplicate one repeated eight-byte literal; ARM has no external literal loads within the selected interval. Root read the entire union’s exact range/section metadata before selection; no literal value was read or assumed at selection. Exact addresses, widths and file offsets are canonical in the Automation selection. No neighboring data, pointer following, callee/tail/provider/relocation resolution, model or execution selected. Current plan and handoff carry identical expanded scope; required gaps remain open.
+
+
+## [2026-10-22] research | Whole four-method selector and binding source cohort selected
+
+The [exact metadata assessment](research/device-analog-dsp.md#four-method-float-unit-frontier-metadata--2026-10-22) locates all four suggested records: 2,627 raw JSON bytes / 1,118 C bytes / 57 lines, with five retained call references to four distinct unselected targets. Selected the whole coherent four-method cohort for one Auto-authored, Mix-sole-reviewed packet; Root remains citation-only for every new source payload. No new body was read at metadata selection, and the 240 declared native bytes remain metadata only. No complete-class/current receiver/ABI/emission/A1/rescale/public, case, grade, site or release claim; further callees/globals/providers/model/runtime work remains unselected. Plan/handoff/index/roadmap route this active source work. Required coverage remains OPEN.
+
+
+## [2026-10-22] lint | Complete source and literal selections
+
+Focused eleven-page checks passed: frontmatter/date/NUL, no new broken links, identical plan/handoff selections with both expanded scopes, append-only HEAD log prefix and focused git diff --check. The bundled-parameter evidence-only correction remains U with no normative change. No source/actual/binary/release proof was replayed; static authoring/review is active and product coverage remains open.
+
+
+## [2026-10-22] research | Whole selector and binding source study adopted
+
+Adopted [Mix’s sole four-method review](research/device-analog-dsp.md#whole-selector-and-binding-source-adoption--2026-10-22), 41,140 bytes / SHA256 e424134211ecf2e5fc328f43c5fe1ade14c73578e50ad594ef2a07d51143faed, with no findings. Manifest 3,699 bytes / SHA256 348a68a0d9e2d244b46876b2fa28645cf82f4d0d2044292c5be026281b50edc3; eighteen payloads / 52,795 bytes, all nineteen files sealed. Six conditional fact groups, 23 owned + 22 independent controls, all five stored call references reconciled. Root read approved summary/metadata only; no new source payload or prior thirteen-method proof rereview. Ambient W9, null/self-link/termination, D/A vs old B/P, missing argument and final opaque-helper effects, unused-parameter and field-type gaps remain explicit. No current emission/A1/rescale/public/ABI/X/case/grade/site/release credit. Plan/handoff/index/roadmap updated; next work is metadata only.
+
+
+## [2026-10-22] research | Paired Automation native contract approved and adopted
+
+Root solely reviewed the [paired native/literal study](research/automation-envelopes.md#paired-m-predicate-native-contract-adopted--2026-10-22): all five new scripts / 158 lines read inertly before the only safe packet check, all 266 rows / 1,176 selected bytes / 31 branches / nine literal ranges checked. Sixteen owned and eleven independent negative controls passed, with independent GNU objdump agreement on all 144 x86 byte boundaries; no second ARM decoder claim. Review 11,454 bytes / SHA256 6a13ddb9e9bdc2a9733091b0c9c3e0089bf9dfff315cf284ebab883adfa2fbb5; manifest 7,223 bytes / SHA256 a2fd08a1c34c651e96bcb114c358f6abc2364f93106423c5237766be6087a3b8; thirty payloads / 213,824 bytes, all thirty-one files sealed. Ordinary local CFG closes in RET, with eight x86 padding bytes retained. Full ordered compensation/root flow qualifies local source knowledge; five ARM FMADDs, final-add operand order and x86 high-lane exception dependence prevent an inferred scalar/cross-slice exception contract. The five old discrepancies are not numerically explained or repaired. Whole-image identities inherited, PATH-stat/selected-range custody scoped, current FP/caller/loaded-memory/public joins unknown. Publisher ISA versions consulted, not full PDF custody or application-state proof. No original/model/emulation/old proof replay/new case/grade/site/release. Plan/handoff/index/project/roadmap updated; 20,980 draft additions and whole-product OPEN unchanged.
+
+
+## [2026-10-22] research | Transitive source cohort selected; coverage qualifications aligned
+
+Selected the [whole transitive four-method source cohort](research/device-analog-dsp.md#whole-transitive-four-method-source-cohort-selected--2026-10-22), 84 C lines / 2,049 C bytes, from exact metadata and bounded overlap checks. Auto author / Mix sole peer / Root citation-only; nine outside targets/provider/global/native content and runtime/model work remain unselected. The Automation draft’s analyst appendix now points to the sole-reviewed conditional native study: a full reverse insertion check proves its earlier draft bytes unchanged. Existing REQ-009 obligations concern runtime behavior/full validation; no new behavior contract or expectation. Coverage routes both studies while keeping 20,980 draft additions, zero O, all behavioral grades/releases/site counts and whole-product OPEN unchanged.
+
+
+## [2026-10-22] lint | Source/native adoptions and current source selection
+
+Focused thirteen-page checks passed: frontmatter/date/NUL, no new broken links, identical plan/handoff selections, two newly adopted sole REPORT byte/hash/disposition pins, append-only HEAD log prefix and focused git diff --check. Automation research/spec dates now reflect today’s evidence-only maintenance; normative requirements and expectations are unchanged. Requirements browser regenerated with unchanged generator and 3,206 navigation rows; no repeated generator tests needed. Source/native proof was reviewed once in the sole reports; this routing check replayed no old actual/source/binary/release proof. Product coverage remains OPEN.
+
+
+## [2026-10-22] maintenance | Browser invocation corrected after import failure
+
+The first browser regeneration attempt used runpy from the checkout root and failed before generation with ModuleNotFoundError for its sibling build_artifact_browser module. The preceding lint entry recorded the browser result prematurely; its separate thirteen-page routing check did pass. Inspected the existing import/CLI contract and reran the documented python tools/spec_browser.py entry point, which correctly puts tools on the module path: exit zero, 3,206 rows. No generator code, tests, source evidence or expectations changed. This entry corrects the invocation/result record without rewriting the earlier log.
+
+
+## [2026-10-22] research | Complete immediate-M-caller native cohort selected
+
+The [metadata-only direct-caller assessment](research/automation-envelopes.md#immediate-m-caller-and-fp-profile-frontier--metadata-only-assessment-2026-10-22) identifies four callers/six transfer sites per slice, eight whole C1 body unions / 2,314 declared native bytes. Selected the entire native union, including discontiguous fragments, for one Arrangement-authored / Root-sole-reviewed paired packet. No C bodies, holes, other targets, globals/providers, model or original execution selected. The 12,155 C bytes and unresolved computed calls are metadata; one previously approved normalization source is inherited by citation. Caller argument/FP/upper-lane/return delivery is the concrete question; current runtime/public invocation and FP defaults are not inferred. Direct-reference content needs an exact whole-union selection before acquisition. Current queue/index/roadmap updated; no case/grade/site/release/product closure.
+
+
+## [2026-10-22] research | Transitive base/value source cohort adopted
+
+Adopted the [sole-approved four-method source study](research/device-analog-dsp.md#transitive-base-and-value-source-cohort-adopted--2026-10-22), REPORT 47,041 bytes / SHA256 01e2294b8ca290cadce81dd4d9d0f6d8ae9ba9214cc71c126be7b4c1f42a6323; manifest 3,622 bytes / SHA256 8f51ed5990feebec722d94df5e231d92b9f3ae82ec2f84317f7be8ada052cc8c. Nineteen payloads / 53,181 bytes, all twenty files sealed; 29 owned + 24 independent controls, no findings. Root read sole-approved summary/metadata only. Receiver R/P and E/B remain distinct; signed/unsigned offsets, overlapping store width, later helper effects, byte-copy order, unassigned recovered stack carrier and current-field forwarding remain qualified. Two source indirect expressions versus zero index rows is a limitation, not native-site credit; source/native-address order is not equated. No emission/A1/rescale/public/ABI/X/case/grade/release proof or old source/actual replay. Current routes updated; CalcA guard-policy assessment remains metadata-only/no retry/change.
+
+
+## [2026-10-22] research | Entire caller x86 literal union selected
+
+Selected all eleven logical x86 ranges / 112 bytes from the complete direct-reference metadata, expanding the same unsealed eight-caller native packet to 2,426 bytes before one sole review. Root read exact width/address/file-mapping metadata before values were acquired. Two adjacent scalars may merge into ten physical reads; the indexed two-element nomination needs later guard verification. Five ARM pointer-slot values / forty bytes and four unbounded address-only targets remain unread metadata. No pointer following, provider/global-content expansion, body holes, M/finite proof replay, numerical model or original execution. Current plan/handoff selections remain identical; no case/grade/site/release change.
+
+
+## [2026-10-22] research | Executed-x86 CalcA metadata packet selected
+
+The [physical-input refinement](research/device-analog-dsp.md#calca-physical-x86-input-and-retained-metadata-refinement--2026-10-22) establishes a universal file plus exact pinned x86 region, not a standalone thin path. H4 names LC_FUNCTION_STARTS but checked retained metadata lacks its fields/decoded boundaries. Selected a bounded complete header/load-command/function-start-stream packet, Auto author / Mix sole peer / Root citation-only. Maximum raw metadata 13,248 + 65,536 bytes, strict valid in-slice/nonexecuting LINKEDIT mapping, complete stream or unknown/no truncation; whole identities hash-only. No method/native-body, unwind/symbol/provider content, bundle initialization, model, original call, guard change or failed-history replay. A concrete whole-method nomination can expand the same unsealed packet before one sole review. Exact input pins/controls/resources and current routing recorded; no source/behavior/site/coverage credit.
+
+
+## [2026-10-22] lint | Transitive-source adoption and paired metadata/native selections
+
+Focused eight-page checks passed: required metadata/date/NUL, no new broken links, identical current plan/handoff selections, new transitive-source manifest counts and sole REPORT byte/hash/disposition pins, append-only HEAD log prefix and focused git diff --check. Selected caller native/literals total 2,426 bytes; selected CalcA header/function-start metadata remains separate, without method-byte or runtime authorization. No old source/actual/numerical/release proof was replayed. Required coverage remains open.
+
+
+## [2026-10-22] research | Complete caller continuation union selected before freeze
+
+The [seven exact continuation ranges](research/automation-envelopes.md#complete-seven-continuation-gap-union-selected--2026-10-22) add 583 instruction bytes to the same unsealed caller packet: total 3,009 instruction/literal bytes. These address every observed call-at-fragment-end continuation, including five internal holes and two bounded tails ending at the next Ghidra entry. Root read the entire exact geometry/metadata before selection. Extents do not establish nonreturn, linker bounds or unique functions. Preserve the original capture inputs/receipts; a new once-only collector may acquire only this new union, with all re-entry/unknown exits accounted for. No original/model execution, other callee or next-function body, provider/ARM-slot content, old M/finite proof replay or grade. Current plan and handoff remain synchronized.
+
+
+## [2026-10-22] research | Whole executed-x86 CalcA interval selected before sole review
+
+The initial metadata stage nominates the complete adjacent-start interval [0x1ff80,0x20290), 784 bytes, physical universal offsets [147328,148112). Selected exactly that whole interval for a new once-only static acquisition/decoder phase in the same unsealed packet. Source/input history remains exact; Mix’s sole final review covers both metadata and native stages, Root citation-only. This selects content, not a metadata/ABI/return-meaning approval. Every return carrier/path/dependency/unknown extent must be accounted for, without other callees/globals/provider or symbol/unwind content. No original numerical execution, guard change, failed retry, unattempted histories, model or policy transfer. Current plan/handoff scopes updated; required U/product OPEN unchanged.
+
+## [2026-10-22] query | Immediate M caller native sole review and adoption
+
+Root solely reviewed Arrangement's frozen3009B caller packet, manifest17536B7719b9c3a1774109bbf7d1093e37a31fa8679f00c668cabdf72c48c47f2ddc02;106payload608390B/107files0444/private0700. Full nine final sources483L/721native rows2897B/112literalB read; final owned safe check PASS35analysis controls,8earlier gap-input controls retained. Root independent packet-only checker PASS8controls, all356x86 boundaries/rawbytes match installedGNUobjdump1437B; no secondARMdecoder or original/numeric/oldM/source/finite proof replay. SoleREPORT7385Bee953dfcf6fd6844238d803a4d0b472735b807e6f6f51344cdabd99128230a3d APPROVED/CLEAR/0findings adopts conditional fourtail/eightlinkingM, sixXMM1upper-zero paths, reset versuserror/forward,16Btablebound,157edges/36computed/4RET/BRK1+UD2/625ordinary+96other/remainingARM3e4+x866c0if-returnU. PrimaryIntelMOVSD/ROUNDSD checked; directARMpublisherPDF timedout but targeted primaryD4.41 search returned FRINTM operation/FPexception qualification. No currentFP/public/ABI/wholebinary64/crossslice proof. CanonicalAutomation/analystappendix/atlas/currentplan-handoff/index/roadmap/project/coverage updated; normative Automation R6clauses/cases preserved by reverse-insertion check.
+
+## [2026-10-22] decision | Entire CalcA direct scalar union selected before sole review
+
+Root selected complete nominated7positions/33B in4exactfile-backed windows of sameUNSEALEDCalcAmetadata+784Bpacket: thinhex65034–65038/65440–65458/6e960–6e964/6e970–6e971; physicaldecimal430132–430136/431168–431192/469344–469348/469360–469361. Nomination15577B6f2d47d8d1cfaa9095626480fc2e881bf974f667b36662d1ce6bbd3003ca72dc. Autoauthor/Mixsolepeer/Rootcitationonly; preserveallpriorcapturehistories, separatelypinnedonce-only33Bread+custody/check, integerbitsnotruntimevalues. ExcludeGOT16B/pointees/fourzerofillanchorswithNOFILEinterval/threecstringLEAextentunknown/otherbodies/providers. Strictret0/flag01/failedp04-p05/unattemptedU/noTensionpolicytransfer/no replay remain. Current20980draftIDs/releases36/19/17/main25095of268015/requiredU/productOPEN/O0 unchanged. Usermediaafterreboot acknowledged; no VMboot/TCG/reboot selected.
+
+## [2026-10-22] lint | Immediate-caller adoption and CalcA scalar selection routing
+
+Focused lint using the read-only v2 metadata/link helper prefix passed12affected pages: frontmatter/date/NUL/newrelative links0/currentplan-handoff identical/HEADlogprefix preserved/newsoleREPORT7385Bpin+APPROVED-CLEAR0findings/affectedgitdiff--check. Documented `python tools/spec_browser.py` completed exit0/3206rows after analystappendix update; generator unchanged. Reverse insertion checked Automation normativebytes unchanged before saving. Old release/source/raw/numeric/provider/image proofs were not replayed. Mechanical consistency only; no new grade/release/publicbehavior or whole-product completion.
+
+## [2026-10-22] maintenance | Current D07 and native-study discovery routes
+
+Corrected project milestone/phase prose to distinguish answered localWindows host choice from open guest readiness; older dated unrecorded-host history remains. Research index Automation row now routes to adopted3009Bcaller contract, Analog row to selectedmetadata+784B+33Bpacket. Focused newlinks0/affectedgitdiff--check/HEADlogprefixPASS; no old proof/release replay or evidence grade.
+
+## [2026-10-22] query | Next bounded X and host-processing S frontier
+
+Arrangement's canonical Electricmetadata assessment identifies no newcompletecapture-readyXcatalog in currentaccountedclasses; retained165074BINPUTauthority excludesreset/transport/FTZ/input/activity, exactremainingrecipes/counts/intersections notestablished. This is boundedmissingmetadata, notglobalexhaustion. No source/raw/provider/oldfailed replay selected. ExactthreeLiveARMhostC1metadata nominate1128nativeB/282words, priorhostREPORT6129B2fb19ccd37c91722b562a467d6c0ff43aa7224c31181c6e62e46f73f33e5f9e5 and approvedARMsection authority inherited. IncidentalownedhistoricalINPUTassembler-string preview disclosed/unused/notexecuted; notoriginalbehaviorproof.
+
+## [2026-10-22] decision | Entire three-method host native union selected
+
+Root selectedwhole[102fbe73c,102fbe830)244B/[102fbe830,102fbe934)260B/[102fbe964,102fbebd4)624B, no48Bgap/C/header/otherbody/global/provider/model/originalexecution. Arrangementauthor/AutoSOLEnewsource-nativepeerafterCalcAseal/RootCITEONLYallnewpayloads. Onepacket+onefinalreview, rawregister/returnwidth/direct-split/activitypointer/fullpaths/stackprobe/errorcontinuation question; no defaultsignature/nonreturn/publicscheduler/audiblestop/x86bundlereturn/guardlaw. Wholedependencymetadata beforeanysame-packetexpansion. Hostcanonical/Electricpointer/currentplan-handoff/researchindex/roadmap updated. Existing20980draftadditions/releases36-19-17/main25095of268015/ledger691X1076S3857O-pending0none/Oobserved0/requiredU/productOPENunchanged.
+
+## [2026-10-22] lint | Three-method host native selection
+
+Focused v2 metadata/link helper checks PASS7affectedpages/frontmatter/date/NUL/newlinks0/whole3range arithmetic1128B/282words/currentplan-handoff identical/HEADlogprefix/affectedgitdiffwhitespace. Metadata and navigation only; newnative content unread/unreviewed byRoot and no oldproof/release replay. Current20980draftadditions/requiredU/productOPEN/O0 unchanged.
+
+## [2026-10-22] maintenance | Combined CalcA packet frozen for sole review
+
+Newmanifest8666Be342d5cc784d5e1905326f5a96299bc5348d30c33f108153aa1c7250e02d940a lists50payload445309B/4041selectedcontentB. Root checkedmanifestidentity/list/countsonly; ALLnewcode/native/scalar/rawpayloadsCITEONLY and authorfactsunadopted. Auto dispatchedMixSOLEfinalpeer; nointermediatereviewornewacquisition. Analogcanonical/currentplan-handoff updatedtopendingreview; strictguards/failedU/20980draftIDs/releaseandcoverage unchanged.
+
+## [2026-10-22] query | Electric omitted-protocol INPUT locator discovery selected
+
+Auto assesses only existing canonical/INPUTauthority/REPORTsummary metadata for exactownedsource identities/line spans/declaredbranch universe behind excludedreset/transport/FTZ/input/activity; Polyphony alreadyadopted. No newproducercode/source/raw/provider/native acquisition/import/execution/capture selected; no inventedalphabet/crossproduct/guardchange. Root selects any concreteINPUTsourceexpansion later. Autohostsolepeer remainspriorityafterArrangementfinalseal; no readinessgate. Currentplan-handoff mirrored.
+
+## [2026-10-22] lint | CalcA frozen status and omitted-protocol metadata queue
+
+Focused4page v2link-helper/metadata/newlinks0/currentqueuesbyteidentical/HEADlogprefix/gitdiffwhitespacePASS. NewCalcAmanifestidentity/counts only, authorfactsnotadopted; oldproofsnotreplayed. Coverage/owner/release unchanged.
+
+## [2026-10-22] query | Executed-x86 CalcA combined sole approval adopted
+
+MixSOLEpeerREPORT471121B5a71e6cb5fb3dbfc11a64433104d59c068fdbf80944a7bab95b21487a4c6b820 APPROVED/CLEAR0blockers/corrections/findings covers50payload445309B/51files0444/private0700;10newsource58957B573L/4safechecks/80owned+30independentcontrols/14commands987starts/194native784B/7scalar33B/4041contentB. Root adoptsapprovedsummary/pins only: conditional32bitEAX←EBXzeroextension/mainmasked0or1/nullandalternateclear, separatepointerSETZ-derived32bitwrite, branchbypassesbyte-setwhileenteringmultiplication, soleRETnotall-exits/terminalcallifreturnsoutofcut; no formalABI/meaning/benignness/oldfailurecause/currentdata/FP/publicARM law. StaticDATA/zerofillNOFILE/GOT+stringsunread/custody/resource/fsync/OSexecqualifications preserved. Strictret0/flag01/p04-p05FAIL/fourunattemptedU/currentR13/20980draftadditions/releases/sites unchanged; no source/raw/numeric/failed/originalreplay or auto dependency follow-up. Root's approvedsummary display incidentally included nine embedded critical-instruction byte strings; they were not used for independent source/byte proof or executed; no underlying payload was opened. This remains an exposed analyst context. Peer unsealed expectedLCFSoffset460456→466152 support correction disclosed; capture unchanged/no reacquisition. Analogcanonical/analystevidenceappendix/currentqueues/discovery/roadmap/project/coverage updated; reverse-insertion preservesR13normativebytes. A routine index-edit selector initially expected labelAnalog rather thanAnalogdevice, raisingStopIteration after earlier doc edits; resumedonlymissingindex/status/log edits with actuallabel, no evidence/research rerun.
+
+## [2026-10-22] decision | Whole host gap and slot union added before sole review
+
+Root selectedcomplete68Bdependency union from5208Bb2a47f4ae140bfaeac755f7b91ba4eb25c3aec04288d7358cdf6ce895aa09111 metadata: [102fbe934,102fbe964)48BpostRETgap/[102fbebd4,102fbebd8)4Bif-returncontinuation/[1064f8810,1064f8820)16BGOTslots mappedfile64f8810–64f8820. Sameunsealedpacket1196selectedB=1180native+16static; preserveinitial1128phase/source/precall/receipts/no rerun, separateselectedonce68collector. No nextfn/pointerfollow/runtimefixup/provider/FP/nonreturn interpretation/model/originalcall/guardchange. Arrangementauthor/AutoSOLEfinalpeer/RootCITEONLY. Hostcanonical/currentqueues updated; newstatusnoroutedenominator or behaviorgrade.
+
+## [2026-10-22] decision | Whole Electric protocol INPUT-source function selected
+
+Root selectedcompleteunique top-levelprotocol beginning117 in exactprobes_params.py14771B606ada6fd01cce38d8bfbda24bd98df82fc3752bd6b6eafb15d0e996948af414. Wholefilehash/ASTforboundaryonly/nootherbodysemantics; fullfunctionretained/input-onlyallbranches16historicalresultlabels/startup/recipes/counts/intersections-or-gaps. Autoauthor/MixSOLEnewsource-datareviewer/RootCITEONLY; Auto's separatehost1196peer priorityafterfinalseal. ExistingelINPUTbridgesbycitation; exactmissinghelpersnominatedbeforecontent. Inertmeasurementexpressionsretainedbutnoestimatorbody/output/oracle/fitting/import/module/original/numericexecution/capture/model/provider/guardchange. Ratepriorapproval/Polyphonycontextwithout124equivalence retained. CanonicalElectric/currentplan-handoff/index/roadmap updated; no newXclass/case/grade/release or whole-product closure.
+
+## [2026-10-22] maintenance | Protocol source boundary clarified before retention
+
+Exact14771B606ada6f…8af414producer identitymatches; uniqueprotocolASTboundary114–164, old117isinteriorINPUTanchor. Strictstart117assertionstoppedbeforedisplay/retention/noimport/otherbodysemantics. Rootconfirmedfullnamedfunction114–164withinexistingintent, authorretainsunsealedstop/correction; historicalnominationleftintact+canonicalclarification. No capture/model/guard or peer scopechange; hostresearchindex nowroutescurrent1196Bunion.
+
+## [2026-10-22] lint | CalcA adoption, host expansion and protocol INPUT selection
+
+Focusedv2metadata/linkhelpersPASS12affectedpages/frontmatter/date/NUL/newlinks0/queuesidentical/HEADlogprefix/affectedgitdiffwhitespace/new471121BsoleREPORTpin+APPROVED-CLEAR0findings/1196Bscopearithmetic. R13appendixreverse-insertion preservedoldnormativebytes. Protocolboundaryclarification114–164/interioranchor117 retained; no unresolvednavigation. No oldsource/raw/numeric/release/image/tool proof replay, compatibilitypassorwholecoverageclaim.
+
+## [2026-10-22] decision | Whole protocol note/script input joins selected
+
+Root expanded sameunsealedElectricINPUTsourcepacket withwholeel.note156–157/91B304e66fc78433a18bbe9f34e07734e523ae18b7b49be4f3b6e8bbefa4c034778 andel.script107–125 fromexactel.py7218B8b27fdfe5acea97b50116d70ac792bf6f22b8e9ceb1eb274ee35d9924e5d71a5. ASTboundarycheckbeforecontent; newnonzero-startup→event/extra-commandorder joins only, oldsource/zero-startobservations notrerunorregraded. Preserveinitialprotocolscope/assertionhistory; rendersignaturemetadataonly/nootherbody. Sine-fileidentityunknown/no wavegeneration/read/native/provider/model/producerexecution/capture/guardchange. Autoauthor/Mixsolefinalpeer/Rootcitationonly. BrowserCLIafterAnaloganalystappendix completedexit0/3206rows/generatorunchanged.
+
+## [2026-10-22] maintenance | Host final packet pending sole review and Tension locator discovery
+
+Hostmanifest9686Bf50a032e3970a204d7a0ea0bab0db9b273ed66613666e605ad00774e0e3f0d77 lists42payload226686B/43files0444/private0700/1196selectedB=1180native295rows+16slots; Rootmanifestonly/no underlyingpayloadread. ArrangementactivatedAutoSOLEnewsource/nativepeer; no authorfactadoption. Auto pausesmutableElectricINPUTchecker/helperjoins beforefinalsealtohonorhostpeerpriority; no captureselected. ArrangementnowassessesonlyexistingTensionINPUT/canonical/REPORT/manifestmetadata afteraccountedR12suffix/old5350-5364dispositions/fourprotocols, for exactremainingrecipeuniverse/sourceidentitylocators-or-boundedgap; no source/code/raw/native/provider/model/failedreplay/capture or newpolicy. Hostcanonical/currentqueuesupdated; all owner/grade/release/site/requiredU/productOPEN countsunchanged.
+
+## [2026-10-22] query | Host1196 sole-native contract adopted and model association qualified
+
+AutoSOLEREPORT76632Bed37727b9c31ab57b0c64167dcc8d4b09b5a191d3382f8e68ca03f46b27b9547 APPROVED/CLEAR0blockers/corrections/findings covers5newsources236L/all295rows1180B+16slots/43unchangedfiles/9claims. Safeownedcheckbyteexact/19independentcontrols/35direct/48unsignedmemory/46pair/3slotfields; Rootapprovedsummary/pinsonly/no originaloroldsourceproofreplay. Distinctslotreturns/directtailversussplit/low32returnseparateactivitypointer/localbit24currentANDsavedmask/integer32P+30widening-then-FPorder/eventcopycap+cursor/currentoriginalflagreload/283ordinaryifcallsreturn+12gaprows/unknownbd8/rawzeroGOTnotruntimepointer adoptedconditionally. AllopaqueABI/FP/public/scheduler/audiblestop/x86bundleguardlaw remainU. PriorBDH013symbolicnumericsnotdeclaredfalse; nativefield/byteinput/rateidentityassociationnowexplicitlyunjoined, oldmodelartifactsretained/nooracle. Hostcanonicalinlinequalification+analystappendixonly(oldR2normativebytespreservedbyreverseinsertionbeforedate22)/currentqueues/index/roadmap/coverage updated; no newcase/grade/site/release.
+
+## [2026-10-22] decision | Whole Tension quantization INPUT-source function selected
+
+Arrangementmetadatareconciles5348currentapproved+oldfailedU1389+baselineU0255 within5350oldASOF/5364aliases; protocol6h/7aliases=4approved/oldfailed64U/baselineINPUTonly, no unlaunchedremainder. Newexactwholechecks_tension.quantization selection21223Beb9f95694e88c26e0775404a4a193af861263d9a1ceaa7574fcb355cfd6dc0be; ASTconfirms137–168/byte7755–10063/2308Bdbc8bdb779c21dac7faf6514c334b864a46d6ee152c7fba259b1f46d15ce033b.985logicalrecipeinvocations201+10+774 beforededup/intersections, historicallyreportedNOTnever-run. Arrangementauthor/MixSOLEnewINPUTsource-datareviewer/RootCITEONLY; exactmissinghelpersbeforecontent, no producer/import/estimator/oldactualraw/native/provider/model/capture/guardpolicy/Tension13transfer. Initialmetadata display's incidentaloldINPUTutf8/loop declaration text disclosed/unused/notexecuted; notbehaviorproof. CanonicalTension/currentqueues/roadmap/coverage updated. Electric12payloadsourcepacketfrozenpendingMix, no originalcapture. Current20980draftIDs/36releases19current17superseded/25095of268015/691X1076S3857O-pending0none/Oobserved0/requiredU/productOPEN unchanged.
+
+## [2026-10-22] decision | Entire Tension INPUT helper union selected before sole review
+
+Root selectedcomplete2452Bunion in3167Bbbfc028793fbb5e035858122bc00c7472a810ed3b239b813c40c5b00997604bb metadata: H0assignment49/21B+NOTE50/36B inchecks_tension21223B; host_values51–92/1843B+script110–115/418B+note122–123/134B inexacttension.py5647B6c05ef6683787923716e0b24fade19b67e4957accc0f31a5acf41ec872281de6. Sameunsealedpacket4760sourceBwithinitial2308function; literalINPUTjoins-only/missingfurtherhelpersmetadatafirst/many-R-same-numpy-estimator-raw-native-provider bodiesexcluded. No import/model/original/capture/guardpolicy/13transfer or985uniquenessclaim. Arrangementauthor/Mixsolefinalpeer/Rootcitationonly/currentqueuesmirrored. Electricmanifest3027B9b9d4fbebc90849e1471f889ea710068504683c0fca85160a5c42682b4830760 lists12payload153368B/13files/source5133B72L; Rootmanifest-only/finalMixpending/no authorfactadoption. Q025nextactionnowroutescurrentcheckpoint, no automaticcalibration/arbitraryrenders; spechostindexmarksunjoinedBDH013nativeassociation. No owner/grade/site/release/closurechange.
+
+## [2026-10-22] query | Electric whole INPUT source sole approval and bound qualification
+
+MixSOLEREPORT170000B9ebf5dff48b11f79843e438267d34b458be466198a79dded97eed6d611a0a87d APPROVED/CLEAR0blockers/corrections/findings+nonblockingEPR-RV-Q01;5133B72L/2newchecksources/25owned18independentcontrols/all13filesunchanged. Rootapprovedsummaryonly.30invocations16labels/rate8→7hist/Poly3context/19othernotcertifiedhistories/28commandlists27distinct/twoSINEartifactU. SourcehelperdurstartupOff=end/queuedbeforewarm/fulltuplesparambeforeRESET adoptedINPUTonly. EPR-RV-Q01 old521CalcA557exports ratecutONLY; activity441000warm0block512→862blocks/898exportsIF36overhead, notnative/model/completionproof. No oldraw/output/PID/oracle/source/numericreplay or grade; currentR11 unchanged.
+
+## [2026-10-22] decision | Entire seventeen-known Electric protocol remainder selected once
+
+Rootselectedexact17nonsine/nonrate/nonPolyrecipeclass in originalsourceorder: reset2/transport/ftz/activity2/startup11; retains2sineU/rate7ref/Poly3context, no19eligibilitypromotion. Newbatch-electric-declared-protocol-remainder-v1 Autoauthor/ArrangementSOLEactual-source-code-rawpeer/RootCITEONLY. Exact17scripts/H33words/events/commands/budgets+unchanged admittedmodel existingcommandsbeforeANYlaunch; ifunsupportedambiguousNONE/no memberdrop/modelpatch. Native/driver/model/provider/constructor/FPtreatmentcodeunchanged; mxcsr9fc0literalINPUTnotactualmodecertification. Strictret0flag01/allotherguards/firstfaultstop/no retry/oldfailedreplay; allnewsourceparentcollectorchecksassemblerfinalizerbeforecalls/inertread+syntheticcontrols. Full1GiB+128MiB=1207959552Bfreshunreservedfloor+completeperchildremaining/finalguards; childresourcesretained/no evidenceorbudgetworkaround. HistoricalrecipesNEWretainedcapture/notnever-run/no oldoutputcriterionbridge. Onefrozenstandingpacket+oneSOLEfinalreview/no readinessgate. CanonicalElectric/currentqueues/index/roadmap/coverage updated; no currentcase/grade/release/site/wholecoveragecredit.
+
+## [2026-10-22] decision | Complete Tension INPUT setup and StringStudio data union selected
+
+Sameunsealedsourcepacketadds1062Bsetup/helpers metadata5188Be002ae35c45a6471145904ede492b09cdf04e464d809cd4ff94a2a9a72d7890c, source5822B; thencompleteconversions.tsvINPUT header205B+ALL131StringStudiorows22433B=22638B from83847B3fd82068ee78c017beb340583c41b5f99deca1fab7903fce76fb1ccc4bf2626c, nomination35192B0e4d676b25b26c332caeeba5c28741ac80ae2a9c123f9766acf362f1c5135b91. Total28460source/dataB; allvirtualrowsretained/PARAMSfilterexplicit/nootherdevicevalues. H4kind0set67byapprovedINPUTcitation/no newH4proof. No producer/import/estimator/native/provider/model/original/capture/guard/13transfer/985uniqueness. Arrangementauthor/Mixsolefinalpeer/Rootcitationonly/currentqueuesmirrored. Existingdispositions/20980draftIDs/releases/sites/requiredU/productOPEN/O0 preserved.
+
+## [2026-10-22] decision | Unchanged8513Bdriver input grammar source admitted for whole17class
+
+ApprovedpriorINPUT/model metadata has no explicitreset/transport/mxcsr acceptedverbgrammar. Rootselectedunchangedownedharness/xdev.c8513B0587422babf539fbef22cb65c0408cee19c8d3a29c8aa52f5dc8e0e2de0d4214 wholeinertsourceforNEW11verbINPUTadmission/argument/default/order/binding/source-vs-executedmodel questiononlywithinunsealed17batch. No sourceedit/build/model/native/provider/callee/discoverytrial/originalexecution or oldnumeric/actualproofreplay; sourceandexistingbinarymetadataqualificationsretained. All17complete/admittedbeforeANYlaunch elseNONE/fullclassgap/no dropormodelpatch; onefinalArrangementactual-sourcepeer/no readinessgate. Materializedsourcegeometry2362CalcA/9637968rawstereoB notresults; full1GiB+128MiBresource/strictguards unchanged. Canonical/currentqueuesmirrored.
+
+## [2026-10-22] lint | Host/Electric source adoptions and next complete batches
+
+Focusedv2metadata/linkhelpersPASS12pages/frontmatter/date/NUL/newlinks0/currentqueuesidentical/HEADlogprefix/affectedgitdiffwhitespace/new76632Bhost+170000BElectricsoleREPORTpins/adoptionstates/EPR-RV-Q01scope/28460BTensionunion/1GiB128MiBfloor arithmetic. HostR2normativebytespreservedbyappendixreverseinsertionbeforedatestamp22; oldmodelassociationunjoinednotdeclarednumericallyfalse. No oldsource/raw/numeric/release/image/provider proofreplay. Current20980draftadditions/requiredU/productOPEN/O0 unchanged untilnewactual/ownerapproval.
+
+## [2026-10-22] maintenance | Tension quantization source-data seal pending sole peer
+
+Manifest11573B0f0323886798aae8d2ade757030cb52f4ca5fb0e45353c1411e581d24a998b60 lists52payload4119732B/53files0444/private0700/5822sourceB102L+22638dataB=28460B/sevennewownedscripts246L. ArrangementactivatedMixSOLEnewsource-datareviewer; Rootmanifest-only/source-code-dataCITEONLY/authorfactsunadopted.985recipes/author981literalscriptinventory notexecutablehistories/observations/grade; no capture/guard/13transfer. Currentqueuesmirrored; current20980draftIDs/requiredU/productOPEN/O0unchanged. HostinganalystappendixbrowserCLIexit0/3206rows/generatorunchanged.
+
+## [2026-10-22] maintenance | Electric seventeen-recipe partial frozen for sole actual review
+
+Manifest10064Bae23be45e7e4d7c6ae948a54ccc0736c350721ceeb2ac9b47a7ef5be617f9894 lists59payload5270930B/60files0444/private0700. Authorbookkeeping4recorder-valid/fifthactivity_noteprotocolFAIL-U/12unattemptedU; childexit0/expectedrawbutassertionreject literalguardawaitsSOLEArrangementreview. Accepted-sourcecounters411exports264CalcA exclude862-blockdiagnosticfailedhistory; notowneradmission/resultsapproved. All33precapturepins/sixnewsource285L+unchangeddriver159L/full17scripts/historyretained; freshfloorpassed. No retry/continuation/guard/modelchange/automaticowner orsuccessor. Rootmanifest-only/allnewactualCITEONLY; canonical/currentqueuesmirrored. CurrentR11/20980draftIDs/releases/sites/requiredU/productOPEN/O0 unchanged.
+
+## [2026-10-22] query | Whole quantization INPUT source-data sole approval adopted
+
+MixSOLEREPORT4191231B390fd4fe8dc42eb01c1351ae92ac30ed4c28524c0133cdcba5f338ec9a4357ae APPROVED/CLEAR0blockers/corrections/findings+TQI-RV-Q01nonblocking;102sourceL5822B+22638dataB131rows/all985recipes/3x129bases/981literaljoins/7ownedsources246L/owned15+9/peer24negative8positive/all53filesunchanged. Rootapprovedfacts/pinsonly/no oldsource/actualraw/numericproof. Literal0.253≠f32promotion/docstring−1e−6≠actualf32predecessor; active67x3/host48fivepairs/position3x2x129/defaultcouplings/sourceconstants/index2omit/currentH0wordmatch/8192-12000frames/lateOff retainedINPUTonly.985aliases981scriptsfourduplicatealiases; nativecontextuniquecount/missingcountNULL. Old68framegeometriesnecessarymismatch0boundedintersection; TENSION-BYTE-060olderMIDIclassmatchnotTQI, inheritedfieldpreserved. Originalquantizationhistoricallyreportednotnever-run; oldR3/output/version/environmentbridgeU. Peerunsealedinteger0versus0.0exactscriptcorrectiondisclosed/no packetrewrite. Sourceapprovalnonewobservation/case/grade/site/release.
+
+## [2026-10-22] decision | Complete981literal-script Tension class selected once
+
+Rootselected981distinctscripts/all985aliases fromapprovedINPUTsummary; Autoauthor/ArrangementSOLEnewactual-source-code-rawpeer(disclosedpriorINPUTauthor)/RootCITEONLY. Exactsourcewordvectors/eventorder/timestampsincludingbeyondrenderOff/index2omit/8192-12000frames/block512/no warm/reset/mxcsr andunchangedadmittedTensionnative/xdev/model/provider/TIME0/FP/stoppedtransport/zeroaudioflag0 maintained. All981complete/context/model/admission/budgets beforeANYlaunch elseNONE/no membersubstitution/modelpatch. Strictret0flag01/ALLotherguards/no13opaque-transfer/firstfaultstop/no retry/oldfailedbaseline5350-5364rewrite. Allnewsource/parent/collector/checker/assembler/finalizer/context/scripts prebound/inertread+syntheticcontrols. Full4GiB+128MiB4429185024Bfreshunreservedfloor/perfuture131072Bmetadata/final536870912B/complete remainingraw70414080B+headroom/childresources; no budgetreduction/deletion/move/split/providercachemutation. HistoricalrecipesNEWretainedcapture/nofittedoracle/nativeABI/publicARM/calibration/criteria/grade. Onefrozenstandingpacket+oneSOLEfinalreview/no readinessgate; canonical/currentqueues/index/roadmap/coverageupdated. CurrentR12/6174navigation/20980draftIDs/releases/sites/requiredU/productOPEN/O0 unchangedbeforeactual/ownerapproval.
+
+## [2026-10-22] lint | Quantization INPUT adoption and two current actual packets
+
+Focusedv2metadata/linkhelpersPASS8pages/frontmatter/date/NUL/newlinks0/currentqueuesidentical/HEADlogprefix/gitdiffwhitespace/new4191231BsoleREPORTpin+APPROVED-CLEAR0blockers-corrections-findings/TQI-RV-Q01qualified/985aliases981literalscriptsnotnativecontextcount/4GiB128MiBfloor arithmetic. Electric17partialfrozenpendingsolepeer/no continuation; Tension981oncepacketselectedstrictret0flag01/no13transfer. No oldsource/actualraw/numeric/release/provider/image proofreplay or grade/site/ownercredit;20980draftIDs/requiredU/productOPEN/O0 remain.
+
+
+## [2026-10-22] query | Electric17 sole partial actual adoption and Tension prelaunch stop
+
+Adopted Arrangement's sole approved Electric17 REPORT889098B/SHA256f3edc51acf0db886e38a1657cecf43d3e96848f4aebcba53e47017a97498b305 by summary/pin only: four finite observations, failed activity_note ret1/flag1 at eighthblock and twelveunattemptedU. All862failed-child calls completed before parent guard rejection; finite/stereo-equal failedraw is diagnostic only, failedrawFDfsync skipped. No retry/guard relaxation/design13transfer. Mix selected R12owner author/RootsoleNEWwording-mapping-preservationpeer, no underlying proof replay or case credit yet. Canonical Electric, current plan/handoff, index, roadmap and coverage updated. Tension981 author reports prelaunch custody assertion/all981nativehistories unlaunched; retained diagnosis remains pending sole review, no repair/rerun. Current20980draft additions/criteriaU/releases/productOPEN/O0 unchanged.
+
+
+## [2026-10-22] lint | Electric partial adoption and twelve-unlaunched selection
+
+Focused documentation lintv2 passed seven affected pages: metadata/date/NUL/newlinks, exact current plan/handoff bodies, HEAD log prefix, new889098B soleREPORT pin/dispositions and gitdiff whitespace. No underlying actual/source/raw/numeric/tool/model/provider/release proof replay. Subsequently selected complete12unlaunched Electric remainder in a separate standing packet, unchanged strictguards/1GiB+128MiBfloor, Autoauthor/Arrangementsolepeer/Rootcitation-only; failedactivity_note/fouraccepted not replayed. Canonical Electric/currentqueues updated. All requiredU/productOPEN and current20980draft additions unchanged.
+
+
+## [2026-10-22] maintenance | Current handoff observation boundary
+
+Reconciled the session-handoff current user-direction bullet with ADR0006 and D07: whole-application routeO is authorized but awaits user-deferred media/reboot and guest/build readiness, rather than categorically impossible. No guest boot, emulator or unrelated tooling installation selected. Historical dated checkpoints remain unchanged.
+
+
+## [2026-10-22] lint | Twelve-unlaunched selection and observation-boundary consistency
+
+Focused lintv2 passed seven affected pages after the new Electric12selection/currenthandoff O-boundary correction: valid frontmatter/dates/noNUL, zero newly broken links, identical current plan/handoff bodies, append-only HEAD log prefix, exact1GiB+128MiBfloor arithmetic and gitdiff whitespace. No original/source/raw/numeric/model/provider/release proof replay. ElectricR12owner and Tension prelaunch sole review continue separately; case/grade/release/coverage counts unchanged.
+
+
+## [2026-10-22] query | Tension zero-native failure adopted; corrected collector and Corpus locators selected
+
+Adopted Arrangement sole Tension981prelaunch REPORT16470895B/3ee823657d98ecae1b3f3f7d60e5719a25d0c8b564218d222233215c39639d92 by approved summary/pin: one preparation failed/980notreached, all981nativehistories985aliases unlaunchedU/zero native observations. Expected resolved_path versus ident(path,bytes,hash) whole-dict mismatch before Popen, no actualidentity retained; empty-success safecheck did not establish model-schema compatibility. Original1007files frozen unchanged. Selected separate corrected-recorder packet complete981/strictret0flag01/allfullidentitychecks/newpositivecompatibility+wrongidentitycontrols/full4GiB+128MiBfloor, Autoauthor/Arrangementsolepeer/Rootcitation-only; no failednative replay/opaque13transfer. Selected complete Corpus producer AST locator inventory only, Mixauthor/RootsoleNEWlocatorpeer, no body/output/native execution/parked96scope. Canonical pages/currentqueues updated; current20980draft additions/criteriaU/releases/productOPEN/O0 unchanged.
+
+
+## [2026-10-22] spec | Electric R12 four-protocol owner adoption
+
+Rootsole NEW wording/IDs/mapping/preservation REPORT1690455B/fd2f0efb3fab21634ae03ecaad04ab44fd3a90f28205c5489536cf355ca56adb approves Mix's four DEL-CS1129–1132/current1164navigationIDs. Both new sources inert-read, safeowned30+independent16negativesPASS, full16REQ/40rows/1160oldIDs/objects/criteriaU/history/releases117eval129inventory/reverse exact. Applied exact96794B target3d9230771699396b805ee56aa19e1f0ba434fcba756ff76871ee16d6519b4271 from three approved replacements. Nonblocking E12-RV-Q01 scopes17snapshot/no-continuation to frozenpartial; separate12batch now authorreportedonevalid/onefailed/tenunlaunched pendingsolepeer. Cumulative20984draft additions, notpasses/productdenominator. Updated canonicalElectric/specindex/project/currentplanhandoff/researchindex/roadmap/coverage and new incrementalmetadata receipt. No actual/source/raw/numeric/model/provider/oldproposal/fixture proof replay, release, grade or productclosure; requiredU/productOPEN/O0 remain.
+
+
+## [2026-10-22] lint | Electric R12 adoption and current corrected-recorder routing
+
+Focused documentation lintv2 passed12affected pages: metadata/date/NUL/newlinks, exact current plan/handoff bodies and20984draft count, HEADlogprefix, new Tensionprelaunch/ElectricR12soleREPORTpins, exact96794Bappliedtarget/newincrementalreceipt/full4GiB+128MiBfloor arithmetic and gitdiff whitespace. Regenerated existing spec browser via python tools/spec_browser.py, exit0/3206requirement rows/generatorunchanged; four new annex IDs do not add requirement rows. No actual/source/raw/numeric/model/provider/release proof replay or newgrade/closure.
+
+
+## [2026-10-22] query | Electric12 sole partial adoption
+
+Adopted Arrangement Electric12soleREPORT318644B/add1375a0575e5a4585f2538ace052d4a3685df581baeac3c7d2c4fc960ae446 by summary/pin only: oneactivity_empty finitepositivezero observation/898exports862CalcA, startup_0failedU(ret1blocks8and9/all26callsbeforeparentrejection) and tenstartupunlaunchedU. No failedraw metric/criterion, returnmeaning/ABI/flag/silence/publiclaw, failedrawFDfsync or retry/guardrelaxation/continuation/13transfer. All43files25precallpinsunchanged; source/identity/resource/durability limits retained. Mix selected R13authoroneobservation/RootsoleNEWownerwordingmappingpreservationpeer, all16REQ40rowsoldobjects/releasesmustremainexact. CanonicalElectric/currentqueuesupdated; current20984draft additions unchanged beforeowneradoption/requiredU/productOPEN/O0.
+
+
+## [2026-10-22] decision | Draft D08 opaque-return proposal for two remaining declared classes
+
+Appended PROPOSED design15 with two alternatives: retainstrictret0 or record opaque signed64CalcA returns only for Electrictenunlaunchedstartup members and sole-reviewed still-native-unlaunched Tension981quantization members. D08pending; no opaque collector/neworiginal/policytransfer selected. All previousnativechildren excluded, failedhistoriesU/unreplayed, allotherguards/model/providers/FP/inputs/budgets remain. Exact Tensionremainder awaits corrected-recorder solepartial approval before reviewable selection. Currentqueues point toproposal; currentstrictcaptures and Corpusmetadata/Electricowner work continue. No source/numeric/rawproof replay or newcoveragecredit.
+
+
+## [2026-10-22] query | Corpus declaration-locator adoption and whole INPUT source selection
+
+RootsoleNEWlocator/dataREPORT25276B/dc743e41adaf493b3888c9e36c7c6fab7d9b3ae45eac24a62bba267a9a01d5b8 approves Mixmetadata/CLEAR:22topstatements/7functions7assignments8names/186callsites32loops/30caseanchors16literal14dynamic/19VARIANTS6RERUN/20literal-backedloops. TenotherVARIANTSlabels are nominees, notmissing/nativehistories. Fourownedcode219L22402Bfullyinertreadbeforepacket-onlysafecheck; sixresolutionguards20metadatanegatives12positivegroups+14peernegatives7syntheticgroupsPASS. CPDL-RV-Q01 comprehensionlocatorsspaniteratoronly; twopreboundASTreadsretained/no bodytext. Peerlocal strings-vs-dicts assumption stoppedunsealed/corrected, packetunchanged. Selected whole19variant INPUT cohort/exacthelper/setup/main scopes, Mixauthor/RootsoleNEWINPUTpeer; mainoutputexpressionsinert/notnumericproof, render/make_inputsbody/helperacquisitionnotselected. CanonicalCorpus/currentqueues/index/roadmap updated. Recorder2Tensionpartial authorcounts209/1/771awaitsolepeer; Design15pendinguser/newpolicyreviewonly, no opaquecollector/calls. Current20984draft additions/criteriaU/releases/productOPEN/O0 remain.
+
+
+## [2026-10-22] spec | Electric R13 activity-empty finite owner adoption
+
+RootsoleNEWownerREPORT2126550B/c66fe8052ccd3c52d6c9e53c0d9286fc7cf8674346bf9da66ecc31b917200d12 approves MixoneDEL-CS1133/current1165navigationIDs. Bothnewsourcesfullyinertreadbeforeonlysafecheck30owned+14peernegativesPASS, all16REQ40rows1164oldIDs/objects/criteriaU/history/releases117eval129inventory/fullreverse exact. Applied exact102353B/d422b7ad66b35036e81ce2c5f95c3a7e078ece70aea66181cfc23f33bacd5116 viaapprovedthreefragmentdelta. Earlier17/later12snapshotqualifications explicit, startup_0failedU/tenunrunU/no failedmetric or newcriterion. Cumulative20985draft additions; canonicalElectric/specindex/project/currentplanhandoff/researchindex/roadmap/coverage/newincrementalreceipt updated. No actual/source/raw/numeric/provider/oldproposal/fixture proof replay, release, grade or coverageclosure; requiredU/productOPEN/O0 unchanged.
+
+
+## [2026-10-22] query | Design15 proposal-only independent review
+
+Auto's soleNEWpolicyreview REPORT9346B/611905c0ed16c055842b742364ea57d9328ccca590b1bf5bea04837e38cae9cc approves proposalonly/CLEAR0blockerscorrections/18contractchecks; reviewed5325Bsection7dd7bbf101a2ed2b5781b912b3c820d6dc8b1e94806a1a3af147b47039bd8431 remains byteexact. Earlierrecorder2authorrole disclosed, no secondactual/source/raw/numeric proof. ElectrictenexactIDs independentlyjoinpriorsolepartial; Tensionremaining-set/count/script/alias binding stillawaitsArrsolepartial. D08pendingUSER/no collector or nativecall authorization, strictcurrentguards and13exact3960 unchanged. Currentqueues linkreview.
+
+
+## [2026-10-22] query | Tension209 sole partial adoption and D08 exact remaining-set binding
+
+Adopted Arrsole correctedrecorderREPORT47988342B/618b1a5fdaa0d510179abc765eed5428f1c252c97b21b149747da3fc8e9f0fc8 bysummarypin:209finite/BOTHnonzerochannelwordequal/32540exports4952CalcA209loggedinitializers, failedTQI-B4-pointret1blocks9–16/all16callscompleted/diagnosticrawnotaccepted and771scripts775aliasesunlaunchedU. All1640files/998precallpins unchanged, full7source311L peerread/schemaguards/identity/resource/protocol controlsPASS, originalzero-nativefailurefrozen/notrepaired. AutoauthorR13from209/RootsoleNEWownerpeer, no IDs beforeadoption. Bound D08proposedexactremainingINPUT IDs/history/script/aliashashes in365520B7d5f92b3bf23ecbb63b8b581b92d67c3c909699ca335068e072d620e965a1c57:771Tension+10Electric=781scripts785aliases, allpreviousnativechildrenexcluded. Proposalonlyreviewapproved/USERpending/no opaquecollector/calls/13transfer/failedreplay. Canonicalpages/currentqueues/index/roadmap/coverageupdated; current20985draft additions/criteriaU/releases/productOPEN/O0 unchanged.
+
+
+## [2026-10-22] lint | Electric R13 and D08 exact pending proposal
+
+Focused lintv2 passed13affected pages: valid metadata/dates/noNUL/zero newlybrokenlinks, exact currentplan/handoff20985draft count, append-onlyHEADlogprefix, exactElectricR13appliedtarget/newreceipt, unchanged5325Bsole-reviewedDesign15section, exact781script785aliasproposedremainingbinding andgitdiff whitespace. Existing spec browser regenerated afterR13, exit0/3206requirementrows/generatorunchanged. Asked user to adopt opaque-return recording or retainzero admission for exactly771Tension+10Electricunlaunched scripts; D08remainsPENDING untilreply, no changedcollector/newcalls/13transfer. CorpusINPUTsource/TensionR13owner work continue. No actual/source/raw/numeric/model/provider/release proof replay or productclosure.
+
+
+## [2026-10-22] maintenance | Parallel Corpus INPUT peer reassignment before exposure
+
+Assigned Arrangementsole final Corpus19INPUT-source/data/ownedcode peer replacingplannedRoot BEFORE Rootreadany newsource/code/data. Mixauthorunchanged, RootnowCITEONLYALLnewpacketpayloads/onlyfutureapprovedREPORTsummarypinsadoption. InitialRootassignmentretainedasdatedhistory; canonicalCorpus/currentplanhandoffrecordnewassignment. Scope/freeze/controls/onefinalreview/unknowns/noexecutionlimitsunchanged/no extra gate or duplicateproof. Mixactivatedafterfinalseal; RootcontinuesseparateTensionR13NEWownerreview.
+
+
+## [2026-10-22] query | Corpus19 INPUT source final seal; sole review pending
+
+Newmanifest5891B/b85581abe6d59d3395dd73173c17cf8c94383e0a6380900c7d1209d2292031e5 lists26payloads285654B/27files; MixactivatedArrangementsoleINPUT-source-data-codepeer afterseal. Rootcheckedidentity/list/count metadataONLY, ALLnewsource/code/dataCITEONLY; authorfacts/controls remainunadopted. No newsourcefact/original/capture/case/grade/criterion/parked96/model/provider acquisition. CanonicalCorpusrecordsseal; current20985draft additions/D08pendingUSER/requiredU/productOPEN/O0 unchanged.
+
+
+## [2026-10-22] lint | Parallel Corpus INPUT peer routing
+
+Focused incrementalv2 link/queue/log/whitespace checks passed four affected pages after the pre-exposure Corpuspeer reassignment and frozen-source manifest routing. Currentplan/handoffidentical20985draft IDs/D08pendingUSER, HEADlogprefix exact/zero newbrokenlinks. No newsource/actualpayload readbyRoot or proof replay. Fullmetadata/date/NUL checks remain covered by the immediately preceding13pagepass; no unrelated oldchecks rerun.
+
+
+## [2026-10-22] query | Corpus19 INPUT adoption and whole wrapper source selection
+
+Adopted ArrsoleINPUTREPORT287886B/bf22f8a1093b0a297677fd7ec760ba364be294cb605391c77600c3ff6d960112 byapprovedsummarypin only, allnewsource/code/dataRootCITEONLY. Complete19declarations/seven38wordbases/988wordtriples/ninerateINPUTjoins, tenotherliteralrecipesNOTmissing/nativehistories. Originalhost28formulaunevaluated/threeartifactpinsinherited/noartifactreadgeneration, mainnumeric/outputexpressionsinert; fullenv/wrapper/currentmodel/runtimejoinsU. All27frozenfiles/prebindings/receipt exact/owned+12peerINPUTnegatives7unsafecontrolsPASS. Selected whole2893Bxdevpy.py59207d173a72366ac1b963cc7e360eeefee3e58cab9f2addfeb84e9d17640a41 plusHERE16 fornewrender/env/pathINPUTassociation, Mixauthor/Arrsolepeer/RootCITEONLY; no build/render/helper/module/original/subprocess/inputgeneration/newmodel/provider/parked96/capture. CanonicalCorpus/currentqueues/index/roadmapupdated; current20985draft additions/D08USERpending/requiredU/productOPEN/O0 unchanged.
+
+
+## [2026-10-22] spec | Tension R13 declared-quantization owner adoption
+
+RootsoleNEWownerREPORT31746510B/d16079f0e0d6aeb948e53ca5ae30e659510039cc5e2e06391944e5f1e9184ed5 approves Auto209DTN6175–6383/current6383nav. Bothnewsource400L28590B/README/actualannex/delta/newmapping/baseline/history fullyinertread before safecheck29owned+16independent negativesPASS; currentcanonical/priorsoleownerREPORTembeddedmetadata/newsoleactualsummaryonly, no underlying actual/source/raw/numeric/provider/oldproposal/fixtureproof replay. Applied exact114822B/6b741df08c283e29b5c58e7fd4e8bc06744a69998db00a343de9632e8c730c85 threefragments/all15REQ42rows6174oldIDs/objectscriteriaUhistoryreleases27eval35inventory/5350OLD-ASOF5364/originalzero-native/fullreverse exact. RTN13-RV-Q01 baselineJSONemittedpostcomposition butinputtext/priorREPORTcapturedprederivation/no prewrittenfileclaim. Full981985asofsnapshot209accepted1failed771unlaunched775aliasesU/noIDsmetricsforfailedunrun. Cumulative21194draft additions, notpasses/productdenominator; canonicalTension/specindex/project/currentplanhandoff/researchindex/roadmap/coverage/newincrementalreceiptupdated. D08pendingUSER/no opaque collector/calls/13transfer/failedreplay; requiredU/productOPEN/O0/releases/sites unchanged.
+
+
+## [2026-10-22] lint | Tension R13 adoption and Corpus wrapper routing
+
+Focused lintv2 passed13affectedpages: metadata/date/NUL/zero newlybrokenlinks, exact currentplanhandoff21194draft additions, append-onlyHEADlogprefix, newTensionR13owner/Corpus19INPUTsoleREPORTpins, exact114822BappliedTensiontarget/newincrementalreceipt andgitdiff whitespace. Regeneratedexisting specbrowser afterTensionR13 via python tools/spec_browser.py, exit0/3206requirementrows/generatorunchanged. Allnative/source/raw/numeric/model/provider/release proofs remain inherited/notreplayed; no compatibilitygrade or productclosure. D08stillpendingUSER/no opaque collector/neworiginals; Corpuswrapper source work continues.
+
+
+## [2026-10-22] query | Whole Tension checks declaration-locator metadata selected
+
+Selected completechecks_tension.py21223B/eb9f95694e88c26e0775404a4a193af861263d9a1ceaa7574fcb355cfd6dc0be ASTdeclaration/callsite/loop/literal-label inventory asnewremainingINPUTeligibilityquestion beyondenumeratedquantization, Autoauthor/RootsoleNEWlocator-data-ownedcodepeer beforeanypayloadread. PriorTensionactual/source/code/rawstaysCITEONLY; no quantization/numeric/sourceproofredo. Ownedcodefullinertread/prebound meaningfulDATAcontrols; sourcebody/outputexpressions/producer/helper/module/NumPy/estimator/original/native/providerexecution/inputgeneration/dependencyfollowunselected.71Xnot71missingrecipes/wholehistorycount. AllR13/6383IDs/frozenasofsnapshots/D08pendingUSER/requiredU/productOPEN/O0 unchanged; current21194draft additions, no newcase/grade/capture/policy/model/tool. CanonicalTension/currentplanhandoffupdated.
+
+
+## [2026-10-22] maintenance | Correct Tension locator source directory before retention
+
+RootinitialASTselectiondirectory t12-device-dsp-v1 was a nonexistentpath. ApprovedquantizationINPUTREPORT /approved_summary/source_authority/source names exact r2/t12-tension-v1/checks_tension.py, same21223B/eb9f95694e88c26e0775404a4a193af861263d9a1ceaa7574fcb355cfd6dc0be. Corrected mutablecanonicalselectionandnotifiedauthor before newretention; source/scope unchanged, approvedmetadataonlyread/no sourcebody or original/newdependency/evidence repair. Initiallocatorcorrectionretainedasunsealedhistory.
+
+
+## [2026-10-23] query | Corpus wrapper adoption and integrated ten-variant capture selection
+
+Adopted ArrsolewrapperREPORT64270B/0c1741559a607df30fa4c343451e331e38b5571cc0ade6fb00032bf6d39ab0b9 byapprovedsummarypin only, allunderlyingsourcecodedataCITEONLY. Fullsource/ownedcontrols/peer13negatives/envpath/unsafePASS/all19filesunchanged. Import-timeBIN differsrender-timeambientexplicitmerge; explicitwrapperchecks timeout/nonzero only/no CalcAflagfiniteimportscan, CWIS-RV-Q01/Q02 preserved; build/helper/compiler/numericexpressionsinert/currentruntimeU. Selected onecomplete ten-remaining-variant nativepacket plusNEWunchanged8128Bdriver grammar question withinSAMEstandingpacket, Mixauthor/Arrsoleactual-source-code-rawpeer/RootCITEONLY. Existingmethodsource metadata nominatedbyMix only, no sourcebodyreadthen; exact9verbs inclresetmustadmitalltenbeforeANYcall elseNONE/nodrop/patch. Strictret0flag01/allotherguards/full256MiB+128MiB402653184Bfloor/preboundnewsource+scripts/runtime-schema controls/firstfaultstop/noretry/no oldrateactualreplay. Minimalnewclock/importloggingcontext explicitlynotunknownhistoricalwrapperenv; no FP/seed/reset/publiclaw. CanonicalCorpus/currentplanhandoff/index/roadmap/projectupdated UTCdate23; current21194draft additions/D08pendingUSER/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Tension checks locator adoption and whole timing INPUT selection
+
+RootsoleNEWmetadataREPORT23402B/506dc4f2b3e10dd4f041ae6850e51327dfd85184f3d54df45aed1f8aef9b9303 approves38topstatements18definitions6assignments/403calls66loops37iterator-onlycomprehensions/249suppressedstringlocators; Corpusliteralargumentnotrecipe/67dynamicargumentsnot67labels, native/missingcountsNULL. Threeownedsource257L17959Bfullyinertreadbeforesafecheck7ownedpositive16negative+14peernegative7syntheticgroupsPASS; all14files/ROFDreceipt/prebindingsexact/no originalproducerbody/oldsourceproof/nativeexecution. TCDL-RV-Q01/Q02 qualifyargumenttaxonomy/readcount. Selectedcomplete timing102–134/R29–33/many36–38/grid_rule95–99/H0NOTE49–50 INPUT-sourcecohort, Autoauthor/ArrsoleNEWINPUT-source-data-codepeer/RootCITEONLY beforeanypayloadread. Allgrid/onset/outputmetricsinert/notoracles/estimatorsexcluded, furtherhelpersnominationsonly/no automaticfollow/capture. CanonicalTension/currentqueues/index/roadmapupdated; current21194draft additions/D08USERpending/requiredU/productOPEN/O0 unchanged.
+
+
+## [2026-10-23] decision | User adopted design15 and exact781 unlaunched captures selected
+
+Userexplicitlyapproved opaque-return recording for771unlaunchedTensionquantizationscripts and10Electricstartup histories, everyotherguardretained/previouslylaunchedandfailedhistories unchanged/notreplayed. Appended useradopteddecision/revision15 after byteexact5325Bhistoricalproposal, exact365520B7d5f92b3bf23ecbb63b8b581b92d67c3c909699ca335068e072d620e965a1c57 remaining-setbinding781scripts785aliases. Selected twoseparatepreboundstandingpackets: AutoTension771aftertiming-source seal/MixElectric10afterCorpus10seal/Arrangementsoleactual-source-code-rawpeer/RootCITEONLYALLnewpayloads. Signed64opaqueRLEONLYpolicy delta/no meaning/ABI/oracle/calibration/native/provider/model change; allotherguards/full4GiB+128MiB4429185024Band1GiB+128MiB1207959552Bbudgets/freshremainingheadroom/firstremainingfaultstop/noretry preserved. Original210Tensionchildren/allElectricfailedacceptednativechildren excluded/allfrozenasofsnapshots preserved. Canonicaldesign/owners/currentplanhandoff/index/roadmapupdated; current21194draft additions/no newcasegrade/release/observedO/closure before soleactualreview+owneradoption.
+
+
+## [2026-10-23] lint | User-adopted15 scope and parallel source/native routing
+
+Focused lintv2 passedtenaffectedpages: metadata/date/NUL/zero newbrokenlinks/exactcurrentplanhandoff21194draft additions+USERADOPTED15/append-onlyHEADlogprefix, byteexact5325Bhistoricalproposal, newTensionlocatorsoleREPORTpin/fullthreebudget arithmetic/diffwhitespace. Added currentcoveragepointerthat policyadoptionisnotresults/grades; allpreviousnativechildren/failures/asofsnapshots unchanged/no guardtransfertoCorpus10/timing. No underlyingnative/source/raw/numeric/model/provider/release proof replay.
+
+
+## [2026-10-23] maintenance | Three new packets sealed for sole review
+
+Root verified only new manifest identities: Corpus ten variants12377B/8d32331c08bfaccd1185e8565446d739d770496322d055b6a8dd70b6d119e611; Tension timing INPUT4132B/f4043793405d629af4458002ba1ef0988f4c6fb71a73d4e2dba18158118faa97; Electric ten opaque startups11089B/aad4af8be54b594c69fd7965b91f39da40524069427ba406f35c07235e91ab35. Arrangement is sole final reviewer; Root remains citation-only for every new source/code/raw payload. Current queues mark frozen-packet review pending, not accepted observations or newcasecredit. Exact771Tension opaque authoring continues separately. Current21194draft additions/requiredU/productOPEN/O0/releases remain unchanged.
+
+
+## [2026-10-23] query | Corpus ten-variant actual review adopted
+
+Adopted sole Arrangement REPORT1452887B/87c1145856a7a2beb79f689d605261938bd8b49383dd168c4dd441f65c23cab3 by approved summary/pins only; all new underlying source/code/raw citation-only. Ten once-only strict accepted observations/745exports324CalcA1327104rawB/0loggedinit/nestedU. Frozen safecheckerFAIL bytes>0 on valid empty stderr preserved as CDRV10-RV-Q01; separate full independent DATA audit retains strict nativeguards, full identities/all69files, 400 actual endpointpairs+3REPORTpairs/12protocol+4identitynegatives/3Rate6unsigned controls; no repair/native retry. Warmup prefixes nonzero, descriptive hashes/channel equality/importnames not laws; context/resource/ABI/public/criteriaU unchanged. Selected new R20 ten-only owner, Mixauthor/RootsoleNEWwordingmap-preservationpeer beforepayloadread; no underlyingproofredo, current21194draft additions/R19current untiladoption. Currentqueues/index/canonical updated, productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Timing INPUT source adopted and five complete static groups selected
+
+Adopted sole Arrangement timingREPORT74849B/076493725d0a104be604ff66bfb138a7ee0421dbb4cb57fabc948ab33e8b0b24 byapprovedsummary/pins only, underlyingnewsource/code/dataCITEONLY. Whole6AST3433B48lines/3owned133lines/89claims/sevenfullgroups; all23filesunchanged/ownedbyteexact+10peernegativesPASS. Prediction/inputgrid/output/estimator formulas remain inert; T.render/env/model/counterTMP/fullhistory/intersections/nativecountsU. Selected nextINPUT-only completefive staticgroups after771finalseal, Autoauthor/ArrsoleNEWINPUTdatacodepeer/RootCITEONLY: exactsource ranges/defaults/namedconversions/events/scripts/fullcontextjoins whereapprovedmetadata permits, wholeclassgapsotherwise. No originalhelper/sourcebody replay/numericoracle/capture/newguard/case/grade; current21194draft additions/R13/6383IDs/oldhistories/releases/requiredU/productOPEN/O0 unchanged. Canonical/index/currentqueuesupdated.
+
+
+## [2026-10-23] query | Corpus R20 adopted; current coverage route corrected
+
+Rootsole NEWownerREPORT1718751B/7ce985ce210fa42a733bc78b2ea9d98c4481e34d3b45bf6532ac71c518d5504d approvesMixR20wordingIDsmap-preservation/CLEAR0blockerscorrections; all3newsource21437Bfullinertread before safeowner-onlycheck24owned+16peernegativesPASS/all13proposal files unchanged. Appliedexact145831B96ca5e6924fc205fc54e7837eed8118c20258d568b6fd2765bda8b3bcf1923c5 adds10DCO6048–6057/current6057nav/**21204cumulative draft additions**; all13REQ/6047oldIDs36objects40rows/R3–R19objects/criteriaU/releases27g73e/fullreverse/0775qualification and frozenactualcheckerFAIL unchanged. Newincrementalreceiptmetadata/targetonly, no oldactual/source/raw/numeric/provider/fixtureproofreplay. Updatedspecindex/project/currentqueues/researchindex/roadmap/coverage/canonical. Corrected coverageintro’s obsolete permanent-no-reference claim to ADR0006/D07 Windows readinesspending/O0; datedoldrecords preserved. No release/grade/closure/implementation/commit.
+
+
+## [2026-10-23] query | Electric ten-startup actual and R14 owner adopted
+
+Adopted ArrsoleactualREPORT2610753B/c203996b433b180198b3f69ecfa6793dc4f8a7d4815db33705ba780a9c39fc95 byapprovedsummary/pins only, underlying actual/source/code/rawCITEONLY; tenonce accepted348CalcA708exports1410080rawB0loggedinit/nestedU. User15signed64opaqueONLY/allotherguards unchanged, recordedreturns0flag1descriptive/no meaning; botholdfailednativehistories excluded/17+12ASOF exact. RootsoleNEWownerREPORT2911796B/0dc9f4d08cd285b2955ca5781b568986ead0f59e9974bcda021bbe8df8d654dc approvesnewR14wording/map/preservation; all3newsource22829Bfullinertread/26owned18independentnegativesPASS/all13proposal files unchanged. Appliedexact107958B/b124b2607ccf2b64eee62318874a3a7fad6c65ce3b3437838c384f82442e6f30 adds10DEL-CS1134–1143/current1175nav/**21214cumulative draft additions**. All16REQ40rows/1165oldIDs/R3–R13objects/criteriaU/releases117eval129inventory/oldfailures/fullreverse preserved. InitialmutableLFassemblyerror/frozenCorpuscheckerFAIL explicit/no repair/retry/proofredo. Updatedcanonical/specindex/project/currentqueues/researchindex/roadmap/coverage; newincrementalreceiptmetadataonly/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] lint | Corpus R20 and Electric R14 current adoption checks
+
+Focused lintv2 passed13affectedpages: frontmatter/date/NUL/zero newbrokenlinks/exactcurrentplanhandoff21214draft additions/append-onlyHEADlogprefix, bothNEWsoleownerREPORTpins/exactappliedtargets, byteexact5325Bhistorical15proposal/diffwhitespace. Regenerated existing specbrowser aftereachnewownerchange, exit0/3206requirementrows/generatorunchanged. Old actual/source/raw/numeric/model/provider/fixture/release proofs not replayed. Root verified onlynewTension771finalmanifest531137B3c37a569ee00ba220f4e5d69b0402a63dff0b988b4391884afd6d564dd283530; Arrangementsoleactualreview nowactive/no newcasecredit. Mixbaseline-onlyR14preparation/RootsoleNEWownerpeer whileAuto materializes approved five static INPUT groups, no original/sourcebodyfollow/oracle. Currentqueuesupdated; productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Complete Electric dynamic-Polyphony standing class selected
+
+Selected samepacket fullthree declared Polyphony invocations fromsoleapproved30INPUTcatalog, notadopted124load/omissionequivalence/labelcount. Mixauthor/Arrsolefinalactualsourcecoderawpeer/RootCITEONLY beforeanynewpayloadread; exactfullscripts/words/events/order/context/driveradmission/dedup/oldhistory intersections beforeANYonce-onlyoriginal elseNONE/fullclassgap, no oldaccepted/failednative replay or outputtransfer. Two symbolic sineartifacts remain explicitseparateincompleteclass/dependency nominationsonly/no sourceorartifactacquisitiongeneration. Reuse unchanged8513Bgrammar metadata/149688Bmodel; strictret0flag01/allotherguards/full1GiB+128MiB1207959552Bfloor/fullremainingfuturelogmetadataheadroom/currentchildbounds/firstfaultstop/no retry retained. User15nottransferred. MixprioritizesTensionR14owneronceitssoleactualREPORTapproves, thencontinues this standingpacket. No separate readinessgate/newcasecredit/portablecriterion/grade/closure; current21214draft additions/requiredU/productOPEN/O0/releases unchanged. Canonical/currentqueues updated.
+
+
+## [2026-10-23] query | Tension exact771 opaque actual review adopted
+
+Adopted ArrsoleactualREPORT47574803B/20f0f9a66a43af36d4b09f2e9c94fa3ce44aa656cb6b35531ca6b4f5ba765b09 byapprovedsummary/pins only, allnewactual/source/code/rawCITEONLY.771accepted775aliases/0failed0unattempted/114108exports12336CalcA771loggedinit50528256rawB/nestedU; all3115pins/full7new347lines/99459wordechojoins/13878actual18pairs+2REPORTpairs/parentresources PASS. Newliteralreturns12328zero8one/allflags1 remainopaque; newfirstlowerpoint distinctfromoldfailedpoint/no cause/domain/ABI/successlaw. All210oldnativechildren/failedpoint excluded; full981985ASOF/originalzero-native/5350OLD-ASOF5364 andoldfailurehistory exact. MixauthorsselectedNEWR14wordingIDsmap-preservation/RootsoleNEWownerpeer beforepayloadread, no newIDcredituntiladoption/current21214. Auto separate five-static-group INPUT materialization records conversiongapsratherthanguesses, no newsourcebodyfollow/nativeoracle. Canonical/index/currentqueuesupdated, requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Tension R14 adopted; exact revision15 execution complete
+
+RootsoleNEWownerREPORT60750340B/4be0007986d84e0cf4aa7da42faacfd4b22010e2c49485c01306352551397e15 approvesMixR14wordingIDsmap-preservation/CLEAR0blockerscorrections; all3newsource23967Bfullinertread before safeowner-onlycheck30owned+20peernegativesPASS/all13proposal files unchanged. Appliedexact120807B0b7f4a12fd872d3096b2600174aa0e57559e6d93f6e0b94d28f252ae27df1246 adds771DTN6384–7154/full775aliases/current7154nav/**21985cumulative draft additions**. All15REQ42rows/6383oldIDs/R3–R13objects/criteriaU/releases27eval35inventory/old981985ASOF/originalzero-native/failedTQI-B4-pointU/5350OLD-ASOF5364/fullreverse preserved. NewRLEeightones fromdistinctlowerhistoryopaque/no domain/ABI/cause/failedreplay. BaselineAwaitedlabel explicitlyhistorical. User15exact781scripts785aliases nowsoleactualapproved/reviewedowners acrossTension+Electric; everyotherguard/oldfailureunchanged/no transfer to selectedstrictElectricPoly. Newincrementalreceiptmetadata/targetonly/no oldactual/source/raw/numeric/provider/fixtureproofredo. Updatedcanonical/specindex/project/currentqueues/researchindex/roadmap/coverage/designoutcome; requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Static timing INPUT adopted; whole named-change source cohort selected
+
+Adopted ArrsoleINPUTREPORT4789552B9f329ce29ba0b107d1c5ff54caee1a5dfe63249499dbc3bba1dac1ccdb7c04e7 byapprovedsummary/pins only, newsourcecodedataCITEONLY.1087SOURCEslots/570H0literalstrings/517wholegroup gaps(no emptydict equivalence)/0boundedold985alias981script hashmatches; nativeuniquemissingU/no calls/cases/oracle. All3new242lines/13pins/570strings/defaultomission/order/wordbits/wholegaps checked; owned17boundary9tamper+10peer6unsafePASS. Approveddependencyidentityhelper5647B6c05ef66…81de6 lacksoriginalpath inselectedsummary. Rootread-onlypyfilename listing+stat nominates r2/t12-tension-v1/tension.py5647B SIZEONLY/no sourcebyteopened. Newlyselected SAMEpacket exacthash-beforeparse completehelper+whole131StringStudio/header22638Bcohortfrom83847B3fd82068…626c conversions.tsv, Autoauthor/ArrsoleNEWINPUTsource-data-codepeer/RootCITEONLYbeforepayloadread. Newquestionnamed/empty-change conversion, sourceINPUTmathonly/no nativequantizer/outcomeoracle; fullfilehash/parsecustodyvsselectedrowsemantics explicit/no originalhelper/module/NumPy/provider/nativeexecution/newsourcefollows/capture/guardchange. Onefinalpeer/no extra readinessgate; current21985draft additions/requiredU/productOPEN/O0/releases unchanged. Canonical/index/currentqueuesupdated.
+
+
+## [2026-10-23] query | Electric dynamic-Polyphony three actual observations adopted
+
+Adopted ArrsoleREPORT866215B4e5514fe01865acce985ea3229cf96754ef36017ea0ee1f57e4d47d5894cb553 byapprovedsummary/pins only, allnewunderlyingactual/source/code/rawCITEONLY.3once/3strictret0flag01accepted/no15transfer/296exports186CalcA761856rawB0loggedinit/nestedU, all38pins/7new323lines/full3words/events/90actual30pairs+3REPORTpairs/controls/resources verifiedbysolepeer. Changed0/29outputs byteequal/differbaseline butsegmentationconfounded/no causalvoice/noeffectlaw. Boundedold124/other27/new10INPUTcomparisons notglobalabsence/oldproof/outputtransfer; sine2separateincomplete/U. Initialmutable syntaxerrorbeforeguards/native correctedprecall/inheritdocstringten qualified/executablescope3/no retry/frozenrepair. MixauthorsNEW R15threeobservations/RootsoleNEW WIDsmap-preservationpeer beforepayloadread, no newIDcredit/current21985 untiladoption. Canonical/index/currentqueuesupdated/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Complete Corpus base-case INPUT source class selected
+
+AfterElectricR15owner finalseal, selected NEW completecases()recipeuniverse question fromalreadyfrozen19variantcohort wholecase56–58/cases61–108/script133–139/prerequisite22,25–28,29,30 records, exactretainedpaths/pins nominationbeforecopyread/no originalsourceacquisition. Mixauthor/ArrsoleNEWINPUTsource-data-codepeer/RootCITEONLY beforepayloadread. Everyconstructor/loop/branch/literaldynamiclabel/default/change/order/full38word association or fullgroupgap accounted; no label/callcount→nativeuniquemissing inference, log/defaultword regeneration/normalization, oldoutputmetrictransfer or automaticdependencyfollow. Fullnewsourcecodeinertread/prebound meaningfulDATAcontrols/onefinalsolepeer/no extragate; no originalhelper/producer/NumPy/estimator/native/provider execution/capture/newcasecriteriongrade/policy/model/closure. CurrentR20/6057IDs/current21985draft additions/requiredU/productOPEN/O0/releases unchanged. Canonical/currentqueuesupdated.
+
+
+## [2026-10-23] query | Electric R15 dynamic-Polyphony owner adopted
+
+RootsoleNEWownerREPORT1040794B38edc109337ba69fd838ccd4fedb63b2fe8bf23b0c38ea273d4392c4dbfa9d89 approvesMixR15newwordingIDsmap-preservation/CLEAR0blockerscorrections; all3newsource22855Bfullinertread before safeowner-onlycheck27owned+12peernegativesPASS/freshstdoutstderr/exitretained/all13proposal files unchanged. Appliedexact113263B01a9a19b1c4ce2c2bfb21dbee49436d0385a91072a06a8b917d609d731ed44bd adds3DEL-CS1144–1146/current1178nav/**21988cumulative draft additions**. All16REQ40rows/1175oldIDs/R3–R14objects/criteriaU/releases117eval129inventory/both17+12ASOF/failedU/opaque10policyRLE/fullreverse preserved. Strictret0flag01/no user15transfer, pairbytesdescriptive/segmentationconfound/no causalityvoicelaw/portablecriterion. Newincrementalreceiptmetadataonly/no actual/source/raw/numeric/provider/fixtureproofredo. Updatedcanonical/specindex/project/currentqueues/researchindex/roadmap/coverage; coherentTensionnamedchange+Corpuswholecases INPUT-source workcontinues/no neworiginalselected, requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] lint | Exact revision15 completion and Electric R15 routing
+
+Focused lintv2 passed12affectedpages afterlatestadoptions/source selections: metadata/date/NUL/zero newbrokenlinks/exactcurrentplanhandoff21988draft additions/D08boundedexecutioncomplete/append-onlyHEADlogprefix, newElectricR15soleREPORTpin/exact113263Bappliedtarget, byteexact5325Bhistorical15proposal/diffwhitespace. Regeneratedexisting specbrowser afterTensionR14 andElectricR15sourcechanges, exit0/3206requirementrows/generatorunchanged. Earlieractual/source/raw/numeric/model/provider/fixture/release proofs not replayed. Currentauthoring: Auto whole5647Bnamed-changehelper+131StringStudio row INPUTcohort finalsealed/Arrsolepeeractive; Mix completeCorpusbase-caseINPUTsource fromalreadyfrozenwholeASTrecords, no originalsourceacquisition/execution/capture. RequiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Named-change INPUT source adopted; complete timing catalog selected
+
+Adopted ArrsoleSOURCE195718B/a4f30426ad0ef90b5999db47ab0cc9d230b64cb4e518d26fb47ff6dddcecd6bb byapprovedsummary/pins only/allnewsourcecodedataCITEONLY. Whole5647Bmodulehashmatchedbeforeparse+131StringStudio/header22638Browpins/all18filesexact; full3new237lines/130Lmoduleandselectedcohort/source12facts/15owned8peernegativesPASS. Sourceempty{}None/baseNone path/namedET37Damper56/67/defaulttexttogglebasechange/boolthreshold-beforeelseclamp/intquant-enum-mode/blankindexskip/index2/PBRdistinct/source1/12 only; no helperexecution/nativeABIquantizeroutcomelaw/currentbindingproof. TNC-RV-Q01seven supportedmappingfamilies+unknownmodeValueErroras8thbranch/no8thnumericmode/frozenrepair. Selectednewcompletefive1087slot INPUTmaterialization usingsoleapprovedfacts/dataonly/ownedtranscriptioncontrols/onefinalsolepeer, Autoauthor/ArrsoleNEWINPUTpeer/RootCITEONLYbeforepayloadread. Preserveold570517asof, explicitmismatch/gaps/no forcedidentity/oldrecordrepair/nativecounts/capture/oracle/sourcefollow/15transfer. Canonical/index/currentqueuesupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Corpus whole base-case INPUT source adopted and artifact method selected
+
+Adopted soleREPORT63812B/b8a3b43056aab5db957b9322141a0d4e986fd7b0d7bcf67aab405ba8aeb9963a viaapprovedsummary/pins only/allnewpayloadsRootCITEONLY. SevenalreadyfrozenASTrecords4233B65L/all30constructor sites16loops16literal14dynamic labels/conditional64SOURCE-only; no concretevectors/scripts/nativeuniquemissingcounts, filter200differentformula wholewordgap/artifact/currentcontextU. Fiveowned120linesinertread/4scope8unsafe5literal+8independentgroupcontrolsPASS/all28filesunchanged; prebindingmutablefixturefailure preserved/no frozenrepair. Selectedwholemake_inputs33–53/[1631,2439)808B/acd50e50eb01645aa58e4d0e12566fa465c753e4d4473d8dc98b709924fd154e only, exactsourceauthority/prebindingcustody/allbranches/symbolicartifactrecipe/dependencies/no automaticfollow/originalhelpermoduleNumPyexecution/artifactgeneration/capture/policychange. Mixauthor/ArrsoleNEWINPUTpeer/RootCITEONLY; canonical/index/roadmap/currentqueues updated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] design | Four unlaunched Analog histories proposed for opaque-return recording
+
+Prepared design16/D09proposal and immutable119635B exactsole-summaryINPUTbinding2e70c511e86864ec96b255751389388acac20a69bf1e229bdc82324b17a64800 for onlyANALOG-COUNT-p06–09, reportedunattempted bysolefivecountpartial. Root authored fromapprovedREPORTmetadataonly/no underlyingactual/source/raw/model/providerproofredo. Fourfull203word scripts/1652projectedexports828CalcA3380800rawB/oldhistoricalguardlabels retained; proposednewopaque signed64policy separate/allotherguards unchanged/failedp04p05 excluded/no retry. Design15 exactscope complete anddoesnottransfer. Proposal awaitssoleDATA-policyreview thenexplicituserdecision; no collector/nativecall selected, currentR13/U/cumulative21988/productOPEN/O0/releases unchanged. ParallelTensionadmission andCorpusartifactSOURCE workcontinues.
+
+
+## [2026-10-23] lint | Corpus source adoption and next dependency routing
+
+Focusedlintv2 passed7affectedpages: metadata/date/NUL/zero newbrokenlinks/exactcurrentplanhandoff21988/D08complete/append-onlyHEADlogprefix/newCorpussoleREPORTpin/diffwhitespace. Scope covered newCorpusSOURCEadoption and exactmake_inputsselection; no oldsource/native/provider/rawproof replay and no capture/casecredit/browserregeneration needed for SOURCE-only change. Subsequentdesign16proposal is queued for separate newDATA-policyreview/userdecision, no native authorization.
+
+
+## [2026-10-23] query | Complete Tension timing INPUT adopted and command admission source selected
+
+Adopted soleREPORT31008579B/4685e8467154239663baacf9d4b77510e0708c2df333869ba05a24b3043398c5 byapprovedsummary/pins only/allnewpayloadsRootCITEONLY. All1087×129=140223decimal-f64-f32words/orderedstrings/hashes/570oldliteraljoins independentlychecked/22controls10tamper12peernegativesPASS/all14filesunchanged. No localINPUTconstructiongap/allfivecurrentnativecontextclassbridgesU/no nativeexecutableuniquemissingcounts/calls/IDs. TCM-AUTH-ASOF-Q01retains oldSOURCEseed/cataloglimits verbatim; reviewer mutableassertionmistake retained/no packetfaultrepair. Selected exact11127B wholeT.render100B+xdevpy2899B+xdev.c8128B NEWINPUTadmissionSOURCE in same standingpacket, Autoauthor/Arrsolepeer/RootCITEONLY/allfive serialization/default/frameclock/eventgrammar/no clipping/subset/trial/helperexecution/build/capture/policytransfer. Conditionalgeometrynotnativeadmission, strictret0flag01/currentexecutionFPproviderpublicU retained. Canonical/currentqueues/index/roadmap updated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] lint | Complete timing INPUT and Corpus source routing
+
+Focusedlintv2 passed9affectedpages afternewINPUT/SOURCEadoptions and selections: metadata/date/NUL/zero newbrokenlinks/exactplanhandoff21988/pendingD09/noAnalogcall/historicaldesign15proposalbyteexact/append-onlyHEADlogprefix/diffwhitespace. Sole timingREPORTpin checked onadoption only; no underlyingcode/source/raw/native/provider/releasedproofredo. SOURCE/INPUT-only work leaves nativecontextU/currentowners/casecount/releases/O0/productOPEN unchanged; browser regeneration unnecessary.
+
+
+## [2026-10-23] query | Corpus artifact SOURCE adopted and complete catalog selected
+
+Adopted soleREPORT83634B/6765cfee822ac81c8652ff0c0ff47b4da1f091a07d68b1fc203908980e712fec viaapprovedsummary/pins. All808B21L/eightgroups/3For1DictComp16syntacticcalls/13conditionalrecipes/14ownednegative3positive+9peerrecipecontrolsPASS/all19filesunchanged. Artifactbytes/NumPyRNGreproducibility/currentconsumption/filter200word/currentcontextU; no native/executableuniquemissingcounts/calls/IDs. Root’s summary-field projection inadvertently included quoted source fragments inside approvedfacts; this exceeded intended citation-only content selection. No underlying file was opened, source executed, or second source-proof review performed; solepeer remains adoption authority. Future projections exclude nested source-bearing facts. Selectednewcomplete30group INPUTDATA catalog afterD09policyseal, Mixauthor/ArrsoleNEWpeer/RootCITEONLY; owned arithmetic/format/order/word materialization or fullgroupgaps/no originalhelperformula/artifactgeneration/capture/policytransfer. Canonical/index/roadmap/currentqueuesupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] design | Analog D09 sole DATA-policy review adopted; user decision requested
+
+MixsoleNEWpolicy+INPUTbindingREPORT153198B/34197e872b61b2e1e25f00dd1940ab423052472cb7fbe268b57ded82c8d838f4 APPROVEDpendingexplicituseradoption/CLEAR0blockerscorrections. Exactfourp06–09/203words/scripts/events/modelmetadata/1652projectedexports828CalcA3380800rawB joins/p00–05exclusions/full268435456floor/noparentwatchdog/otherguards/no meaningorABI/22negatives+signed64mixedextremesPASS, bindingunchanged. Rootnewpolicy/bindingauthor/Mixsolepeer; no original/source/raw/provideractualproofredo/runtime reservation. Concreteproposalreviewcomplete, askeduserasyncapproval because design15explicit781scope doesnotextendtoAnalog. D09pending/no collector/nativecallselected; TensionSOURCEadmission/CorpuscompleteDATA workcontinues/current21988draft additions/requiredU/productOPEN/O0/releases unchanged. Historicalreviewedproposalsection ce691335…41a7a remains byteexact before appendedreviewdisposition.
+
+
+## [2026-10-23] query | Corpus same-packet lambda INPUT-key AST data selected
+
+For complete30group materialization, approvedREPORT onlynominates Lambda62/imp(fs); it doesnot embedneededexpression. Selected exactownedfrozenprojection531559B/ae7f2a1d75b64eb8a0780334bf5ebd0b7a9a82ab07c10002a3ff1fe71453730e Lambda62+necessarydescendant/bindingmetadata only, preboundpath/hash/selector/onceROJSONDATA/newassociationpeer in sameunsealedpacket. No originalbody/helper/lambdainvocation/codecompile/eval/sourcefollow/otherbodyreinterpretation; unsupportedbindingretainswholegroupgap. RootCITEONLYnewpayload, allword/artifact/currentcontext qualifications intact/no captureorIDcredit.
+
+
+## [2026-10-23] lint | Analog pending decision and Corpus catalog routing
+
+Focusedlintv2 passed9affectedpages aftersoleD09policyreviewadoption/asyncuserdecisionrequest/Corpus808BSOURCEadoption+samepacketLambda62ASTDATAselection: metadata/date/NUL/zero newbrokenlinks/exactplanhandoff21988/explicituserdecisionpending/historical15and16proposalsbyteexact/append-onlyHEADlogprefix/diffwhitespace. No underlyingsource/native/provider/releaseproofreplay; scopesourceprojectiondeviationretainedinpriorlog. Currentcasecounts/owners/releases/O0/productOPEN unchanged, no newcaptureauthorized.
+
+
+## [2026-10-23] decision | User adopted design16 and exact Analog four-count capture selected
+
+Userexplicitlyapproved opaque-returnrecording onlyfor Analogp06–09; recorded user16decision afterimmutableproposal+soleDATA-policyreview. Selectednewbatch-analog-count-unlaunched4-opaque-v1 aftertimingSOURCEseal, Autoauthor/ArrsoleNEWactualsourcecoderawpeer/RootCITEONLY beforepayloads. Exactbinding119635B2e70c511…64800/full203wordseventscriptscontext/model; projected1652exports828CalcA3380800rawB notobserved. Onlysigned64opaque orderedRLEreturnpolicy changes, oldstricthistoricalINPUTlabels separate/allotherguardsflags01 unchanged/full268435456Bfloor+remainingfuturefinalconcurrentbudgets/20schild/core0/filesize/no imaginaryparentwatchdog. Allpriorp00–05/failedp04p05 unchangedexcluded/no replay/firstnewfaultstop/no retry/allfouradmitelseNONE/onefinalsoleactualpeer/no extragate. NewexpectationscriteriaNULL/applicationfalse/currentexecutionFPproviderABIpublicU. Updatedcanonical/design/planhandoff/index/roadmap; currentR13/1193nav/current21988draft additions/requiredU/productOPEN/O0/releases unchanged before actual/owneradoption.
+
+
+## [2026-10-23] lint | User16 adoption and exact Analog four-count routing
+
+Focusedlintv2 passed10affectedpages afteruser16decision/canonicalexactAnalog4selection/coverageupdate: metadata/date/NUL/zero newbrokenlinks/exactplanhandoff21988/user16adopted/historical15and16proposalsbyteexact/append-onlyHEADlogprefix/diffwhitespace. No underlying source/native/provider/releaseproofrepeat. Analognewactual/owneradoptionpending; currentowners/casecount/releases/O0/productOPEN unchanged. ParallelTensionSOURCEpackaging failure retained/unmodifiedpreboundsources/no acquisition/native retry; CorpuscompleteINPUTDATAcontinues.
+
+
+## [2026-10-23] query | Shared Electric sine path INPUT source selected
+
+Arrangementidleboundednomination usedonlyapprovedElectricprotocolREPORT170000B9ebf5dff…a87d/recipes11–12labels9–10/original139–145/sharedsymbolicpath/bothflags0and1; no actualSOURCEartifact acquisitionorevaluation. Selecteddepth-electric-sine-input-path-source-v1 afterCorpusDATAseal, Mixauthor/ArrsoleNEWINPUTpeer/RootCITEONLY; exactknownel.py7218B8b27fdfe…71a5/oncehashbeforeAST/top-levelSCRATCHpathimportassignmentcohort only/otherbodiesinert/prior33wordscriptnoteorderinheritedmetadata. Fullnewownedcodeinertread/preboundcontrols/onefinalsolepeer/no extragate; no helpermoduleNumPyexecution/artifactreadgeneration/native/providermodeltoolFPchange/automaticfollow/policytransfer/casecredit. CurrentR15/1178nav/21988draft additions/requiredU/productOPEN/O0/releases unchanged. Analognewownerpriorityonceitssoleactualapproved; AutoAnalog4authoringaftertimingSOURCEseal, CorpuscompleteINPUT solepeerpending.
+
+
+## [2026-10-23] query | Corpus complete symbolic INPUT adopted and all caller paths selected
+
+Adopted soleDATAREPORT1333625B/aa73aa4ac81bbc3082ae75e0556423eebbfb24c7c8505d3eeda44d3d0cb537fc viaapprovedscalarcounts/limits/pins only/allnewpayloadsRootCITEONLY. Full64slots/all30groups16loops/63symbolic38word projections2394words/onewholefilter200gap/13logicalkeys/22negative6positive+12peercontrolsPASS/all26filesunchanged. SelectedLambda62ASTDATA association resolvesgroup15underqualifiedsourcebinding/no invocation; initialselector0/fourendpoints/history preserved/no copyretry. Allconcreteartifactpaths/bytes/currentconsumption/nativehistories/executableuniquemissingcountsU, threeoldINPUTpins qualifiedmetadatanominationsonly; no formula/helpermoduleNumPy/native/originalcall/artifactgeneration/IDs/grades. Selectedexactretainedmain2557B625f7326…5cf42 newall13callerpathSOURCEquestion/inheritedHEREwrapperfacts/allbuildmeasurementcallsinert/onceROcustody/onefinalsolepeer/no automaticfollow/artifactstatreadgeneration. Mixauthor/Arrsolepeer/RootCITEONLY; canonical/index/roadmap/coverage/currentqueues updated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Tension command-admission SOURCE adopted and complete timing finite capture selected
+
+Adopted soleSOURCE10007077B/7930d8aea6fdf173b5906f4722817155fdc30777f54bbb18c55da6d590a15eea viaapprovedscalargrammar/limits/pins only/no newSOURCE/code/rawproofrereview. Full11127B220L/14facts/all1087requeststokens/12controls9peernegatives/grammar0gaps/source-compatibleall/currentfivecontextU, all28filesunchanged. Flatsealer/cache+readonlyREADMEfailure preserved/post-retention1562B31line metadata checker explicitlyunprebound/fullyreadbeforeuse/recursivechecks citepriorPASSwithoutTEMP/rerun/repair/exclusions; no acquisition/native retry. Selectedcompletefive timing finitecapture afterAnalog4seal, sameauthorAuto/Arrsoleactualpeer/RootCITEONLY; full1087SOURCEslots→concretecurrentprovidedcontexts/dedup/failedpriornative exclusions/reference-onlyacceptedmatches/allaliases/sourcefieldsunchanged, existingadmittedmodel/environmentpremises qualifiednot historicalorpublicequivalence. Strictret0flag01/no D08D09transfer, full4429185024floor+allremainingfuturefinalconcurrentbudgets/priorchildbounds/preboundallnewcode/firstfaultstop/no retry/onefinalsoleactualpeer/no extragate. Canonical/planhandoff/index/roadmapupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged before actualowneradoption.
+
+
+## [2026-10-23] query | Electric sine path SOURCE adopted and exact supplied-artifact DATA selected
+
+Adopted soleSOURCE52443B51f80921f3f7e7924750fb2d9a9be28217d74a20b4d1b0fcd7ca7a5e51a7bd9c byapprovedscalarcounts/limits/conditionalcandidate/pins only/no underlyingbodyproofredo. Two selectedbindings78semanticB/whole7218Bcustodyonly/fourfacts/bothflagrecipes/5negative6positive+8peercontrolsPASS/all20filesunchanged; currentbytes/hash/consumption/envproviderFPpublicU/no original/nativeartifactcall. Selecteddepth-electric-shared-sine-input-artifact-v1 exact /var/tmp/sound-analysis/t12-electric/pr_sine.f32 expected266512B only, Mixauthor/ArrsoleNEWINPUT-DATAcodepeer/RootCITEONLY/preboundallnewsource+meaningfulcontrols beforeonceROacquisition/FDpathendpoints/cap/type/size/hash/shapeunsignedfinite. Missingwrongunreadableunstable→wholeboth-membergap/no retry/fallback/generator/repair; no sinNumPyformula/metric/provideracquisition/nativecalls/currentconsumptioninference. Futurefinitecapturewouldrecordprovidedbytes/modelqualifiedpremises aftersoleDATAapproval/separateselection; none selectedhere/no opaque transfer. Canonical/currentqueues/index/roadmapupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] lint | Complete Corpus DATA and Tension grammar adoption plus supplied-input selections
+
+Focusedlintv2 passed11affectedpages afterCorpus64slotDATAadoption/all13callerpathSOURCEselection/Tension11127BgrammarSOURCEadoption/strictcompletefivegroupcaptureselection/ElectricpathSOURCEadoption+exactcandidateINPUTDATAselection: metadata/date/NUL/zero newbrokenlinks/exactplanhandoff21988/user16adopted/strictTensionnoopaquetransfer/non-nativeElectricDATA/historical15and16proposalsbyteexact/append-onlyHEADlogprefix/diffwhitespace. No underlying source/native/provider/releaseproofredo. Analog4actual+owner pending/othercurrentowners/casecounts/releases/O0/productOPEN unchanged; no browserregenerationneededforSOURCE-DATA-onlychanges.
+
+
+## [2026-10-23] query | Corpus caller-path SOURCE adopted and all13 supplied-input DATA selected
+
+Adopted soleSOURCE68549Bce85baa8789e6044477d542223e188c0ee50e87f2397855e3c698760b944a92b viaapprovedscalarcounts/limits/fullpathnominations/pins only/newunderlyingsourcecodedataRootCITEONLY. Full2557B40Lpathcohort/sixfacts/all13conditionalpaths/threeoldqualifiedINPUTpathmatches/tenoldpinsU/allcurrent13identitiesconsumptionU/7negative3positive+9peercontrolsPASS/all21filesunchanged. OriginalproducerHEREpremise preserved/no ownedfragmentpathsubstitution/allmapkeysnotnecessarilyconsumed/buildmeasurementcallsinert/no otheroriginalacquisitionexecution. Selectednewall13providedINPUTartifactDATA afterElectricDATAseal, exact13paths131072Beach/total1703936B IFpresent/fullnewcodecontrols preboundbeforeanyaccess/onceROeach/allindependentkeysaccounted/missingwrongunstable→wholedependentgap/no retryfallbackgeneratorrepair. Threeoldpinidentitycomparisons retainmismatches/conflicts/tennewhashesIFreadcurrentprovidedINPUTonly/no sourceformula/currentconsumption/publicproof/nativecall/casegradepolicytransfer. Canonical/currentqueues/index/roadmapupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged. Analog4finalsealedauthorcompletecountersonlypendingsoleactualpeer; no newIDcredit untilapprovedowner.
+
+
+## [2026-10-23] query | Exact four Analog D09 actual observations adopted
+
+Adopted soleactualSOURCE983811B/b0178cac813c0480d65383a0af92f545957e4c5f68c4a7f3ac0dfd3832a39687 viaapprovedscalarobservedcounts/limits/pins only/allnewunderlyingactualsourcecoderawRootCITEONLY. Exactp06–09 fouronce/1652exports828CalcA3380800rawB/four314d0init separate/nestedU/638ret0+190ret1 opaque/flags24zero804one/no meaning/domain/ABI law/failedp04p05+p00–05 excludedunchanged/no retries. Full7new298lines/fourlogsraw812echoes120actual30pairs+3authoritypairs/41owned+9peerprotocol+unsignedopaqueparentidentitycontrolsPASS/all49filesunchanged. Bothfinite/nonzero/wordequal/fourhashes64usedLinuxnames descriptive—notnewcriterion. Reviewerinitialresolved-aliasassumption correctedonlymutableDATAcode/historyretained/sixaliasespreboundmetadata/no providerread/frozenrepair. FullAnalog268435456+conservative4429185024concurrentfloor/freshparentchild/allfuturebudgets; child20s/core0/4MiB/no parentwatchdog/providerFPOS/sourceexec/fsynccustodyqualifications retained. MixNEW R14author/RootsoleNEW WIDsmap-preservationpeer selected/no secondactualproof; currentR13/1193nav/21988draft additions untilapprovedowneradoption. Canonical/index/roadmap/currentqueuesupdated/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Electric shared sine INPUT gap adopted
+
+Adopted soleDATA48209B3f426ea6fecf798b435a3ab39e459949fb9932f5098ea4add690fbfe235ab81a viaapprovedscalarcounts/limits/pins only/allnewpayloadsRootCITEONLY. ExactlyoneboundedlstatENOENT/0FD0reads0copies/conditional266512Bnotobserved/no actualhashshapeunsignedfiniteassessment/wholebothflagsINPUT-ineligible/no globalpermanentabsenceclaim. Owned18negative4positive+8peeranti-promotioncontrolsPASSfixturesonly/all18filesunchanged/no retryfallbackgeneration/formulaoriginalnativecalls/capture/IDs/grade/policytransfer. Canonical/currentqueues/index/roadmap/coverageupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged. Analogsoleactual4approved/NEW R14owneractive; Tension1087strictoncecapture runs underfrozen268435456concurrentallowance; Corpusnativebindingprepallowedbutno Corpusnativewhilethatfixedallowance applies. No inputgenerator selectedforElectricmissingpair; supportedotherfamilyworkcontinues.
+
+
+## [2026-10-23] query | Corpus all13 supplied INPUT DATA adopted and complete context binding selected
+
+Adopted soleDATA250525B1015c3c8c4e6f5a3b5633cd8e048b1c54737af4cacba7471d6a9c8b26f97664c viaapprovedscalarcounts/limits/pins only/newunderlyingrawsourcecodedataRootCITEONLY. All13once/current1703936providedbytes/0gaps/allbytesindependentlyunsignedchecked/12laneequal1asymdescriptive/3qualifiedoldhashmatches10currentonly/no conflicts/distinctimpulsekeys+paths+copies/23negative4positive+11peernegativesPASS/all44filesunchanged. Originalregular0664vsprivate0444/fourendpoints notcontinuoussimultaneousimmutability/sourceconstructionenvFPproviderpublic/currentconsumptionU/oldASOF preserved/no generationoriginalnativecalls/IDs/grades. Selectedcomplete63slot suppliedcurrentcontextSCRIPTbinding metadata afterAnalogR14seal, all64source-dispositions/filter200gap/priorINPUTmetadata/reference-exclusiondedup/countprojections/full402653184Corpusfloor+remainingfuturefinalconcurrentbudgets/strictret0flag01/no policytransfer/nocalls. LaternativecapturemustwaitTensionfinalseal dueitsfrozen268435456concurrentallowance; no rebaseliningfrozenguards/extra readinessreview/oldproofredo. Canonical/currentqueues/index/roadmap/coverageupdated/current21988draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] spec | Analog R14 exact four-count owner adopted and D09 complete
+
+RootsoleNEWownerREPORT848647B57ae06053c6f8a75f9bdfa8680fcbcb22fdeeaab3ff4a07fd2cf33086e5eb68d approvesMixnewWIDsmap-preservation/CLEAR0findings; full3owned17492B+allnewwording/mappinginertreadbeforeonlysafeownercheck/26owned12independentnegativesPASS/all15filesunchanged. InitialRootmutablewhole-summaryvsselectedprojectionassertion failedBEFOREownedsafecheck; source/failurepreserved/separatelycorrectedexactkeyprojection/no packetrepair/nativeretry/stagersealer/sourceactualrawproofreplay. Appliedexact124809B1d1e8c49953ac7c9499d211dba0361981d1754ccb64e4ece2b03c928fd656488 adds4DAN1194–1197/current1197nav/**21992cumulative draft additions**. All23REQ72rows/1193oldIDs/R3–R13objects/criteriaU/releases38g42e/old14+5ASOF/failedp04p05/current119503Bbaselineincl471Bqualification/fullreverse exact; historical119032R13target notrestored. User16boundedexactfour complete/onlyopaqueCalcAreturnadmissionchanged/no ABIvoicepubliclaw/portablecriterion/grade/closure. Newincrementalreceiptmetadataonly; updatedcanonical/specindex/project/designoutcome/planhandoff/researchindex/roadmap/coverage, O0/releases/productOPEN unchanged. Tension1087soleactualapproved/R15ownerMixauthor-Rootnewpeer selected; Corpus59completeprovidedcapture nowAutoauthor/Arrsoleactualpeer/rootCITEONLYunderfullenlargedbudget/existingadmittedcontext/no policytransfer.
+
+## [2026-10-23] spec | Tension R15 timing owner adopted; Corpus59 approved and source depth continued
+
+Applied [sole-approved new TensionR15 owner](research/device-tension-dsp.md#tension-owner-r15-timing-annex-adoption--2026-10-23),1087DTN7155–8241/current8241nav/cumulative23079draft additions; exact127151Btarget and complete reversal/prior requirements/IDs/objects/U/criteria/releases preserved.24owned+13independent negativesPASS/onlysafeownerchecker/no underlyingactualproofreplay. Root metadata exploration inadvertently displayed a prefix of approved observation/protocol metadata; no original/source/raw file opened or second protocol proof performed; deviation retained and scalarwhitelist strengthened.
+
+[Corpus59soleactual](research/corpus-dsp-static.md#complete-supplied-base-case-capture-selected-and-sole-approved--2026-10-23) APPROVED/CLEAR; selection/full1118175232Bbudget/currentTIME0LIBM0context/fourunreplayedrefs/filter200gap recorded. MixauthorsNEW R21/RootsoleNEWownerpeer/no59casecredityet. Selected [remaining ten Tension INPUT functions](research/device-tension-dsp.md#remaining-checks-input-source-selected--2026-10-23), Autoauthor/Arrangementsolepeer, and [Analog wholeproducer declaration metadata](research/device-analog-dsp.md#whole-producer-declaration-inventory-selected--2026-10-23), Arrangementauthor/Autosolepeer, RootCITEONLY. Analog nominee metadata author’s incidental embedded INPUT display also retained; no original/newnative/source semantics follow. Updated affected canonical pages/indexes/specindex/coverage/project/plan/handoff/roadmap; immutable proposals/evidence/releases unchanged. RequiredU/productOPEN/O0/VMdeferredmedia-reboot unchanged.
+
+## [2026-10-23] maintenance | Tension R15 terminal whitespace correction
+
+The approved newowner target introduced one blank line at EOF. Removed exactly one terminal LF after exact application, retaining the frozen target and recording both historical/current pins in the incremental receipt. Current canonical127150B/SHA256 `c96e99ab416c90f9e2cd4bd2e590e2a804dce99363e91e665b3d2cb16fde749e`; no wording/ID/map/requirement/evidence/release change.
+
+## [2026-10-23] lint | Tension R15 adoption and parallel SOURCE selections
+
+Focused read-only lint passed13affected pages: required metadata/dates/NUL/newlink baseline, synchronized current plan/handoff, append-only log, immutable design15/design16 proposal hashes and gitdiff whitespace. Existing spec browser generator completed successfully with3206requirement rows after AnalogR14/TensionR15 owner changes; generator unchanged. This verifies documentation and routing, not original behavior, compatibility or coverage closure.
+
+## [2026-10-23] spec | Corpus R21 adopted and complete Collision unattempted suffix selected
+
+Applied [CorpusR21](research/corpus-dsp-static.md#corpus-owner-r21-base-case-annex-adoption--2026-10-23),59DCO6058–6116/current6116nav/cumulative23138draft additions. SoleNEWowner27owned+15independent negativesPASS, all13wholeREQ/old36case40rows/objects/U/criteria/releases27g73e/fullreverse145831B exact. Exact153261Btarget/SHA9f9d3937…989da/singleterminalLF.4reference-only histories unreplayed/no newIDs/filter200wholegapU/no underlyingactualproof replay or criteria/grade/policy transfer.
+
+[Complete CollisionVolume125–127unattemptedtail](research/device-collision-dsp.md#complete-unattempted-volume-suffix-selected--2026-10-23) selected Mixauthor/ArrangementsoleNEWactualpeer/RootCITEONLY, exactoldapprovedINPUTmetadata/139words/originalwarmordering/strictret0flag01/fullold512MiB+128MiBfloor+concurrent+largerremainingbudget/firstfaultstop/no retry. AlllaunchedVolume0–124/allStiffness excluded, failedVolume124U/oldASOF/packaging-fsync qualifications retained. Tension10SOURCEsealed/Arrangementsolepeer and Analogdeclarationssealed/Autosolepeer continue. Affectedcanonical/index/specindex/project/plan/handoff/coverage/roadmap updated; requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] query | Remaining ten Tension INPUT functions approved and complete catalog selected
+
+Adopted [sole ten-function SOURCE report](research/device-tension-dsp.md#remaining-ten-checks-input-source-adopted--2026-10-23),519218B/a4feb761…ab196/CLEAR/no findings;14036B/212lines/20conditionalfacts/285calls36loops10branches68INPUTassociations are syntax facts, not histories. Retained source-custody common-final-stat-only/noNOFOLLOW/mode/ctime/execution limits and wholeBRIGHT/defaults48/note/crossdevicegaps. Selected complete tenfunction INPUTcatalog Autoauthor/Arrangementsolepeer and whole133BnoteSOURCE Arrangementauthor/Mixsolepeer afterCollisionseal, RootCITEONLY. No original/helper/NumPy/estimator/native execution/newsourceguess/capture/policy/grade. Current23138draft additions/requiredU/productOPEN/O0/releases unchanged; synchronizedplan/handoff/index.
+
+## [2026-10-23] lint | Corpus R21 adoption
+
+Focused read-only lint passed15affected pages after CorpusR21application and Collisiontailselection: metadata/dates/NUL/newlinkbaseline, exactcurrentplan-handoff equality, append-onlylog, immutable design15/design16 proposal hashes and gitdiff whitespace. Existing specbrowser generator passed3206requirement rows with CorpusR21included/generatorunchanged. This checks documentation, not application compatibility.
+
+## [2026-10-23] query | Analog declaration methodology adopted and complete producer INPUT-source cohort selected
+
+Adopted [sole locator-methodology report](research/device-analog-dsp.md#whole-producer-declaration-inventory-adopted--2026-10-23),1607306B/51fcdfd2…149fd/CLEAR/nofindings; syntax counts only/originalbody unretained/originalAST not independently regenerated/endpoint-custody limits explicit. Selected [all23wholearea_* functions](research/device-analog-dsp.md#complete-producer-input-source-cohort-selected--2026-10-23),37706B/602lines, Arrangementauthor/AutosoleNEWsourcepeer afterTensionDATAseal/RootCITEONLY. Exactperfunctionpins derivedbeforeprebinding/onceaccess; completeINPUTuniverse/branches/gaps/outputmathhelperestimatorinert/no guesses/oldproofreplay/nativecalls/modelproviderFPconstruction/policy/grade. Earliernominationpending remainsASOF/mono-threefreshnesseligibleU/failedp04p05D09unchanged. Current23138draft additions/requiredU/productOPEN/O0/releases unchanged; synchronizedindex/plan/handoff.
+
+## [2026-10-23] query | Collision complete Volume suffix frozen before capture
+
+Recorded [pre-call binding](research/device-collision-dsp.md#complete-volume-suffix-pre-call-binding--2026-10-23),3844B/83686ebf…a2dd5, for exactthree original unattemptedVolume125–127/753exports327CalcA1328736rawBplanning. Actualnewpacketbasename batch-collision-unlaunched-volume-tail-v1 supersedes Root’s descriptive selectionbasename within sameauthorizedscope/store; no refreeze/move/gate. STRICTret0flag01/allguards/oldfailedexcluded/full671088640floor+268435456concurrent+largerremainingrequirements unchanged, onceonlyfirstfaultstop. Oldauthorrecording code usedinertpatternonly/no oldcapture/proof/source rerun. RootCITEONLY/Arrangementsoleactualpeer afterfinalseal; no observed/casecredit beforeapproval/adoption.
+
+## [2026-10-23] query | Collision Volume suffix author partial retained
+
+[New strict three-history packet](research/device-collision-dsp.md#volume-suffix-author-partial-sole-actual-review-pending--2026-10-23) sealed32payloads811665B/all33files0444/private0700; manifest5487B/0f0d3dbc…fbbe4. AuthorreportsfirstchildMCI-001-125protocolAssertionError/0accepted/126127unlaunched/442912diagnosticrawB, not actualapproval. Arrangementsoleactualpeer activated; RootCITEONLY, no raw/log/protocol numeric rereview. No retry/guardrepair/policytransfer/automaticcontinuation/casecredit; old124Stiffness/ASOF unchanged. Current23138draft additions/requiredU/productOPEN/O0/releases unchanged. Mixnowreviewsexact133BTensionnoteSOURCEafterfinalseal; ArrangementprioritizesCollisionactualbeforeAnalogSOURCEauthoring.
+
+## [2026-10-23] query | Whole Tension note source adopted and whole script assembly source selected
+
+[Sole noteSOURCE review](research/device-tension-dsp.md#whole-note-input-source-adopted--2026-10-23),27893B/2f85865f…37352e/CLEAR/no blockerscorrections, approves7qualified INPUTfacts/no legal-domain/native/ABI meaning.133Btwo-linehelper+4new66Lmethods/16independentnegativecontrols/oneapprovedownedcopyread/zerooriginalaccess. Already-selected completeINPUTcatalog may nowexpand supportednoteclasses; priorASOF/gaps preserved. Selected [whole417Bscript SOURCE](research/device-tension-dsp.md#whole-script-input-assembly-source-selected--2026-10-23), Mixauthor/Arrangementsolepeer afterCollisionactual/RootCITEONLY, exactdeclared4special mxcsr/postorderquestion/wholehelpercopy/no otherbodyfollow/guess/nativeFPpolicy or capture. Current23138draft additions/requiredU/productOPEN/O0/releases unchanged; canonical/index/plan/handoff synchronized.
+
+## [2026-10-23] query | Collision Volume suffix sole partial classification adopted
+
+Adopted [sole actual/source partial REPORT](research/device-collision-dsp.md#complete-volume-suffix-sole-partial-review-adopted--2026-10-23),610749B/27d62300…051d7/CLEAR/no blockerscorrections, retainedfailure/custody/dispositionsONLY/0approvedobservations/newIDs.125guardFAIL/U/126127unlaunchedU; strictliteralret1flag1 at renderblock9start4096/108otherCalcAret0/nativeABIerrorcauseU.442912Bdiagnosticrawnotaccepted/failedFDfsyncskipped/CVT-RV-Q01leaf0775privateroot0700/reviewerownmutablemistakesretained. RootCITEONLY/no secondactualsourceprotocolrawproof. All3INPUTjoins/fullresources/all33frozenfiles/11peercontrolsPASS; oldfailed124StiffnessR6ASOF unchanged. No retry/automaticcontinuation/policytransfer/ownerIDs; current23138draft additions/requiredU/productOPEN/O0/releases unchanged. Updatedcanonical/coverage/index/plan/handoff; SOURCEpipelinecontinues.
+
+## [2026-10-23] query | Tension whole script assembly approved; cases setup SOURCE selected
+
+Adopted [sole417BscriptSOURCE review](research/device-tension-dsp.md#whole-script-input-assembly-source-adopted--2026-10-23),35064B/67129c57…11580/CLEAR/nofindings;9facts/4specialorderingbranches/SOURCEonly/zerooriginalaccess/nativecalls/scriptgeneration.12peerASTmutationsPASS/all20frozenfilesunchanged. CompleteINPUTcatalog may incorporate supportedorder beforeonesinglefinalseal; defaults48events separateU/no nativeFP-reset/deliverylaw.
+
+Metadata nomination foundexactchecksimport/setup/cases physicalidentityextentsUinpermittedREPORTs. Selected one [complete module-setup SOURCE question](research/device-tension-dsp.md#producer-module-setup-and-cases-binding-source-selected--2026-10-23), Mixauthor/Arrangementsolepeer/RootCITEONLY, exact21223Bknownmoduleunit/ASTcomplete nondefinition setup records/no guessedprefix or file/no separateexportgate. Allfunction/H0NOTE/measurement/oldproof semanticsunselected; no expression/module/helper/native/provider execution/candidatefileacquisition/scan. BRIGHT/defaults48remainwholegaps/current23138draft additions/requiredU/productOPEN/O0/releases unchanged. Canonical/index/plan/handoff synchronized.
+
+## [2026-10-23] decision | New provided Electric sine input selected within standing harness
+
+Selected [complete current-provided sine FLAG pair](research/device-electric-dsp.md#current-supplied-sine-input-flag-pair-selected--2026-10-23), Mix author/Arrangement sole new actual-source-code-INPUT peer/Root citation-only. One explicitly owned standard-library stimulus, exactdeclared coefficients/currentgeneration recipe, new paths and complete two INPUT recipes; old missing pr_sine.f32/both historical gaps remain unchanged/unknown. No original NumPy/helper/module/source-expression execution or claim of producer/file equivalence. Strictret0flag01/allguards/unchanged admittedmodel/provider/perentryFP/originalobjectconstruction/fullold1GiB+128MiBfloor+concurrent+remainingbudget/onceonlyfirstfaultstop. Revision12 applies without a new tooling/construction/guard exception; [design qualification](research/full-live-specification-design.md#standing-harness-supplied-input-qualification--2026-10-23) records this scope judgment. No user policy supersession or automatic case/grade/O/productclosure; current23138draft additions/releases unchanged. Canonical/index/plan/handoff synchronized.
+
+## [2026-10-23] query | Complete Tension INPUT catalog sealed with checker failure retained
+
+[Author’s single DATA seal](research/device-tension-dsp.md#complete-remaining-input-catalog-sealed-sole-data-review-pending--2026-10-23),3554B/de58a61a…cfb51,22payloads21446195B/all23files0444/private0700, retains842SOURCEslots/793arrays792scripts50dependencyrows as bookkeeping only. Original preboundchecker tuple-vsJSON-list equalityFAIL/emptyreceipt/source/authority/catalog unchanged; separatelynamed post-materialization checker fullyread/explicitlypostbound/narrowcontainer-equivalence/completefieldprotections/11newcontrols/13oldcontrolreceiptscitednotrerun. No assembler/original/helper/source/native retry or nativecount/grade/newIDs. ArrangementsoleDATApeer activated; Auto now solely reviews Analog23SOURCE. RootCITEONLY/current23138draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] query | Complete Analog producer and Tension setup SOURCE packets sealed for sole review
+
+Recorded [Analog23 authorseal](research/device-analog-dsp.md#complete-producer-source-author-seal-sole-review-pending--2026-10-23),6174B/e51572ba…10dc5/all42files0444, Auto soleSOURCEpeer pending; actual area-producers basename supersedes earlier descriptive selection name withoutscopechange/move/refreeze. Recorded [Tension setup authorseal](research/device-tension-dsp.md#producer-setup-source-author-seal-sole-review-pending--2026-10-23),3039B/b7591791…87c60/all21files0444, ArrangementsoleSOURCEpeer pending; actualmodule-bindingbasenamealignedlikewise. RootCITEONLY/no source/proofreplay or author-to-approvedpromotion. CompleteINPUTgroups/helper-dependencies/importphysicalidentity/old47/runtime-native gaps retained. Current23138draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] maintenance | Electric supplied-pair packet basename aligned
+
+Author created `batch-electric-owned-sine-input-flags-v1` in the existing analyst store before naming follow-up; aligned the canonical selection without moving/refreezing evidence. Still before generation/native calls, prospective geometry is one266512BsharedINPUT/two533024Btotalraw/132CalcA204exports. Same currentprovided pair/unchangedmodel-strictguards/fullbudgets/oldoriginalgapU/no casecredit. No authorization or policy change.
+
+## [2026-10-23] query | Tension complete INPUT and Analog producer SOURCE adopted; next batches selected
+
+Adopted [Tension DATA](research/device-tension-dsp.md#complete-remaining-input-catalog-adopted--2026-10-23),24621605B/e2440a74…458d5/CLEAR/no blockerscorrections,842slots793arrays792scripts50gaps/344pairs/nativecountsNULL. OriginalpreboundcheckerFAIL immutable/additivepost-materializationcheckerPASSqualified/12peercontrolsPASS/all23filesunchanged/no oldchecksretry. Adopted [setupSOURCE](research/device-tension-dsp.md#producer-setup-and-import-binding-source-adopted--2026-10-23),68793B/e1e18f96…f824d/20units941B/8facts/12peercontrols/sourceimportphysicalidentityU. Adopted [Analog23SOURCE](research/device-analog-dsp.md#complete-producer-input-source-adopted--2026-10-23),1330367B/ded4c6c0…45a6f/37706B602lines/AAP-RV-Q01label-not-inactivitylaw/16peerneg7positive/source-runtimegaps/all42filesunchanged. Rootadoptsscalarqualifiedsummaries/pinsONLY/no sourcebody-code-raw-proof replay.
+
+Selected [Tension current-supplied standingcapture](research/device-tension-dsp.md#remaining-checks-current-supplied-capture-selected--2026-10-23), Autoauthor/Arrangementsoleactualpeer/RootCITEONLY, full842universe/naturaladmittedclasses/old5350quant985timing1087otherknownINPUTjoins/failedexclusions/strictret0flag01/nopaquepolicytransfer/wholeFTZ0x9fc0unlaunchedU/no FP-provider-modelchange/full4GiB+128MiBfloor+largerfuture-concurrentbudget/oncefirstfaultstop/noretry. Electricfinalsealalreadyoccurred; ownprecall/resourcesstillrequired beforeTensionoriginals, no newgate. Selected [Analog INPUTsupportSOURCE](research/device-analog-dsp.md#complete-producer-input-support-source-cohort-selected--2026-10-23), Mixauthor/Arrangementsolepeer, exactprobe-held-xr/an.pyonlyifapprovedfullpin/coherentINPUTquestion/no expressions-helper-module-native execution/vector-scriptgen/automaticdepsfollow/modeltoolFPconstructionpolicy/capture/grade.
+
+[Electricpair authorseal](research/device-electric-dsp.md#provided-sine-flag-pair-author-seal-sole-actual-review-pending--2026-10-23),7112B/da0a2ef3…b038/all43files0444, metadatareports2once/204exports132CalcA533024rawB/0init/nestedU/no retry. Soleactual-INPUTgenerationreviewpending/oldoriginalsinegapU/no casecredit. Current23138draft additions/owners/releases/requiredU/productOPEN/O0 unchanged; canonical/index/plan/handoff synchronized.
+
+## [2026-10-23] query | Electric supplied flag-pair actual approved and new owner assigned
+
+Adopted [sole Electric INPUTgeneration/source/actual report](research/device-electric-dsp.md#current-supplied-sine-flag-pair-actual-adopted--2026-10-23),452066B/bc97e9bb…de7f6/CLEAR/no blockerscorrections.2once/204exports132CalcA533024rawB/ret0flag1/0loggedinit/nestedU, finiteBOTHnonzero/laneequal/pairbyteequal DESCRIPTIVEonly. CompletegenerationAST/order checkedinertlywithout regeneration/74actualendpointpairs+3REPORTpairs/15independentnegatives/all43frozenfiles unchanged. Rootscalaradoptiononly/no underlyingSOURCEcodeINPUTrawproofreplay/originalNumPy-file-equivalence/nativeflaglaw/portablecriterion.
+
+Assigned ArrangementNEW R16ownercomposition/RootsoleNEWwording-IDs-map-preservationpeer; allprior16REQ40rows/objects/U/criteria/releases/failedactivity_note+startup0/oldopaque10/Poly3/17+12ASOF/missingartifactgap/fullreverse required. No2IDcredit yet/current23138draft additions/requiredU/productOPEN/O0/releases unchanged. Separately clarified Auto’s own prior timingparser code may be readinertly as implementationpattern forNEWcapture only, never oldcollector/check execution or source-provider/log/raw/outcome proof rereview; newstrictcode/fullbindings/soleactualreview unchanged.
+
+## [2026-10-23] query | Analog INPUT-support SOURCE sealed; complete producer DATA catalog selected
+
+[SupportSOURCEauthorseal](research/device-analog-dsp.md#input-support-source-author-seal-sole-review-pending--2026-10-23),3547B/5c98a403…0ba8f/all25files0444/private0700, exactmetadata-bound692Bthreehelpers+8399Ban.py=9091B234L/twoonceROFDs/fournewmethods72L/preboundcontrols7negative5positive. Twelvefactsprovisional/Arrangementsolepeerpending/no generatedvectorsscripts/nativecalls/oldproofredo; externaltable-global-modelduration-wrapper-import/currentnativegaps retained.
+
+Selected [complete23producer INPUT DATAcatalog](research/device-analog-dsp.md#complete-producer-input-data-catalog-selected--2026-10-23), Mixauthor/AutosoleDATApeer afterTensioncapturefinalseal/RootCITEONLY. Wholegroups/branches/labels/params/events/context/defaultomissions/gaps/no inventedcounts-endpoints/crossproducts/substitutions; materializeonlyfromapprovedmetadata/supportSOURCEAFTERsoleapproval/onecatalog-oneseal. Fullypreboundnewcode/completefield-floatbit-hash-NULLcontrols/oneoncegeneration/no frozenrepair/sourcehelpermoduleNumPynativeexecution/newsourcepresetfollow/capture/policy/grade. Oldp04p05D09/allASOF preserved; current23138draft additions/requiredU/productOPEN/O0/releases unchanged. Canonical/index/plan/handoff synchronized.
+
+## [2026-10-23] spec | Electric R16 supplied sine annex adopted
+
+Applied [sole-approved NEW ElectricR16](research/device-electric-dsp.md#electric-owner-r16-supplied-sine-annex-adopted--2026-10-23), exact119364B/a3535940…3493c/twoDEL-CS1147–1148/current1180nav/cumulative23140draft additions. All16wholeREQ40rows/oldobjects/U/criteria/history/releases117eval129inventory/both17+12ASOF/failedactivity_note+startup0/opaque10/Poly3/originalsinegaps/fullreverse113263B exact; newexpectations-comparators-gradesNULL/appfalse.26owned+15independent NEWowner controlsPASS/onlysafecheckerentrypoint once/no actual-source-INPUT-raw-provider-fixture proof replay.
+
+Preserved authorinitialwronggenericpriorstatus failure beforeobjects and Rootreviewer whole-target-object-vs-three-field-pin assertion beforeownedcheck; corrected only mutable metadata assertions with history/source retained. Root separately matched embedded UTF8baseline, then safecheckeroncePASS; no packet/input/native/frozen/canonical repair during failures. Currentprovidedobservations do not establish originalNumPy/file equivalence or nativeflag/equality/public law. Canonical/project/specindex/coverage/index/plan/handoff/roadmap updated; releases/requiredU/productOPEN/O0/VMdeferred unchanged.
+
+## [2026-10-23] query | Analog support SOURCE adopted; table cohort selected; Tension capture frozen
+
+Adopted [sole9091BAnalogsupportSOURCE](research/device-analog-dsp.md#producer-input-support-source-adopted--2026-10-23),160392B/3934d5f3…7f132/CLEAR/no blockerscorrections/12facts/nineINPUThelperASTrecords/13peernegativecontrols/all25filesunchanged. ExactOffNone-vs-zero/absoluteOff/frame-onlysort retained, no tables-global-wrapper-modelduration/nativehistory/publiclaw inference or expression/helper/module/nativeexecution. Rootscalarqualifiedsummaries/pinsONLY.
+
+Selected [complete6global+2tableSOURCE-DATAcohort](research/device-analog-dsp.md#complete-input-globals-and-table-support-selected--2026-10-23), Arrangementauthor/Mixsolepeer, exact375Bglobalunits+29071Bspec_defaults/83847Bconversions=113293B/wholeTSVbecause rowextentsU/oneROretention/newsourceprebound/plainDATAprojection/no formula-native-expressionexecution/automaticfollow. OnecompleteAnalogDATAmaterialization/finalseal holdsforselecteddependencyresult, no duplicateprematurecatalog/defaultsubstitution/FPmodelpolicychange.
+
+[Tensioncurrentprecallfreeze](research/device-tension-dsp.md#remaining-supplied-capture-pre-call-binding-and-launch--2026-10-23),126299B/692eaf1f…89370/9newmethods384L/all10runtimeidentities/158controls+positives/762prospective779aliases12refs51gaps. Increasedfuturemetadata4MiBperchild/fullremaining8MiBlogs/raw/512MiBfinal/headroom/concurrent initial10672298536B, freshfree~43.6GB/no reducedfloor. Prefreezeserializationfailure correctedmutable/historyretained; latermonitorread checkpointrewrite race/no collectorchangereplay. Capturerunningonceunder3853577/strictret0flag01/firstfaultstop/fullpartials; authorcountsnotactualapproval/RootCITEONLY/Arrangementsolepeerafterfinalseal. Current23140draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] query | Analog global/table selector failure retained; separate corrected SOURCE read selected
+
+Authorreports [strictretentionstop](research/device-analog-dsp.md#globaltable-source-retention-failure-and-corrected-acquisition-selected--2026-10-23) afteronce45175Bparentread/hashPASS, beforeanyselectedglobal/tablecopy/tableFD. Ownselector used1-basedapprovedordinalas0-basedASTindex/byte-line guardcaughtwrongnode. All8unitsU/failurecodebytesunchanged/no nativecalls/originalhelperexecution/oldretainerretry/frozenrepair. MixsoleFAILEDretentionpeer afterseal; RootCITEONLY.
+
+Authorized separately NEWcorrected samewhole8SOURCE-DATAcohort/Arrangementsourceauthor-Mixsolepeer/distinctpacket/oldfailureunchanged, directpreboundbyte-line-hash selectors preferred/ordinalsmetadataonly/realordinal10→body9syntheticcontrolsbeforeonceNEWread. No nativehistory replay/guardmodelFPproviderpolicyexception/generation/capture/IDsgrade; ordinaryownedretainerfix withinexistinganalysis authorization. OneAnalogDATAmaterializationstillunattempted/heldforrealdependencyoutcome, no duplicatecatalog/defaultguess. Current23140draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Analog failed-retention sole review adopted
+
+Adopted [sole failed-retention review](research/device-analog-dsp.md#globaltable-failed-retention-review-adopted--2026-10-23),38144B/cb1de2c9…61ab/CLEAR/0blockers-corrections/failurecustody-and-metadatadiagnosisONLY. Failedmanifest3950B/831fe8a2…08eac/24payload66741B/all25files0444/private0700. All8U/0selectedbytes-tableFDs-nativecalls/newSOURCEfacts. OriginalretentionFAIL/checkerFAIL retained; additivePOST/notpreboundcheckerPASS packagingonly/12peernegatives+ordinalfixture/all8metadatajoinsPASS.
+
+AGTF-RV-Q01 qualifies earlier parentread/hashPASS as control-order/failure-location inference only, absent completed-source/independenthash/endpoint/resource/standalonestderr receipts; peer didnotreacquire. AGTF-RV-Q02 additivechecker28LF-lines versus reported35. Separatecorrectedwhole8SOURCEacquisition continues/no frozenrepair/oldretainerretry/native replay; oneAnalogDATA materializationheld/unattempted. Plan/handoff/index synchronized/current23140draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Corrected complete Analog global/table support adopted
+
+[Corrected soleSOURCE-DATA approval](research/device-analog-dsp.md#corrected-globaltable-input-support-adopted--2026-10-23),1171483B/0c51c4d2…a034/CLEAR/0blockers-corrections; distinctmanifest4637B/ea7da8d7…3825/30payload1183913B/all31files0444/private0700. Six375Bassignments+two112918BwholeTSVs/113293B/977rows,171default204conversion Analog rows/203indexed+1blank/31secondoutput.13qualifiedINPUTfacts/19owned+8post+15peernegativesPASS/threeequalfour-endpointgroups. Originalfailedpacket/all8U unchanged; newexactselectors/explicitordinalconversion/prebinding/realconventioncontrols precededonceNEWread.
+
+Rootsummary/pinsONLY; noSOURCE/table/code/rawproof replay, formula/helper/module/NumPy/native/providerexecution/generatedvectorsscripts/capture/IDs/criterion/grade. Nativeunits/currentresolution-consumption/history/modelduration/outputdependent/preset/wrapper/physicalcalibration unknowns retained. Mix’s singlecomplete23INPUTcatalog maynowinheritapprovedsupport; downstreamcurrent-contextbinding waitssoleDATAapproval. Canonical/index/plan/handoff synchronized/current23140draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Tension BRIGHT/defaults48 metadata limit and one candidate SOURCE ingestion selected
+
+[Metadata-only nomination and candidate selection](research/device-tension-dsp.md#brightdefaults48-candidate-source-ingestion-selected--2026-10-23),10062B/10b7a8d2…6190/fourapprovedREPORTprojections/0source-candidateaccess. Conditional directory/name doesnotestablishphysicalidentity/declarationbounds;41SOURCEgaps remain. Selected oneexplicitconventional siblingcases.py candidate/NEWpacket/Arrangementauthor-RootsoleNEWcandidatecodeSOURCEpeer/1MiBcap/pre-readhashbytesUNKNOWN/no historicalversionclaim. This is reversible boundedSOURCEingestion underexistinganalystauthorization, not a missing-permission/readiness gate.
+
+Allnewcode/control/exactpath-candidatecontract preboundbeforeonceROaccess/regularsize-endpoint-custody protections/failurewholegaps/noretryfallbackscan-import-formula-module-native-providerexecution/generatedvectorsscripts. Wholemodulecustodybecause boundsU; ASTliteralINPUT-only/allotherbodysemanticsinert. ExistingactualSOURCEpayloads remainRootCITEONLY; ArrangementTension762actualreview priority. No native/source-executed/import/public bridge or oldgaprepair; current23140draft additions/U/productOPEN/O0/releases unchanged. Canonical/index/checkpoints synchronized.
+
+
+## [2026-10-23] query | Complete Analog23 DATA sealed; independent review queued
+
+[One final DATAcatalog](research/device-analog-dsp.md#complete23-input-data-author-seal-sole-review-queued--2026-10-23),4028B/da1fa5d2…5b09/26payload17656649B/all27files0444/private0700, actualbasenamearea-input-materialization-v1/no move-refreeze. Author all23dispositions/556conditionalSCRIPTslots/14inheritedINPUTrefs/eightwhole gaps/183arraykeys468distinctstrings are INPUTunits/nativecountsNULL.6methods291L/prebound3104B1d41335f…ed4ef/33catalog+5arithmeticnegatives/byteexactcheck authorPASS/two mutablepre-usecontrolfailuresretained. AutosoleNEWDATApeerafterTensioncapturefinalseal/RootCITEONLY, no oldproofredo/sourceformula-helper-nativeexecution/nativebindinglaunch/IDgradecredit. Current23140draft additions/U/productOPEN/O0/releases unchanged; routes synchronized.
+
+
+## [2026-10-23] query | Current Tension candidate SOURCE approved; complete41provided INPUT selected
+
+[Root’s soleNEWcandidateSOURCE approval](research/device-tension-dsp.md#current-candidate-input-source-adopted--2026-10-23),37809B/a7eb1a5f…5e42c/CLEAR/0blockers-corrections/manifest3553B00d9081d…f34e/22payload47078B/all23files0444/private0700. Once4982Bcandidate/f3393aeb…7ed3a/pre-readidentityU/fourequalendpoints; sixcompleteINPUTunits4254B/eightqualifiedfacts/ninestructuralunits. All3newownedcode141L fullyread, onlysafecheckonce/byteexactPASS/15owned+16indepsemanticnegatives/all23filesunchanged. InitialsemanticselectionPRESETSomission retained and completekeybinding addedfromownedbytes preseal/no originalretry. Reviewer source frozenafterreport; report’s source-mode pin is as-of before that chmod, bytes/hash unchanged.
+
+[Complete41current-provided DATA selected](research/device-tension-dsp.md#complete-candidate-provided-brightdefaults48-input-data-selected--2026-10-23), Mixauthor/RootsoleNEWpeer/40BRIGHTbothwholegroups+1defaults48/approvedcandidate literals+prior129word-conversion-script-noteINPUTfacts. Approvednote usedasexplicitprovidedconstruction, never candidateT.note/originalimport identity. Allnewcode-control-contextprebound/one materialization/oneDATAreview/failuresretained/nativecountsNULL/no original-helper-formula-module-NumPy-native-providerexecution/guardmodelFPpolicychange/capture/IDgrade. Nativecontextbinding waitsnewDATAapproval+762actualreview/alllaunchedexclusions. Current23140draft additions/old41SOURCE51capture gaps/842ASOF/U/productOPEN/O0/releases unchanged; canonical/index/plan/handoff/roadmap synchronized.
+
+
+## [2026-10-23] query | Tension remaining capture first-fault stop reported
+
+[Authorstop](research/device-tension-dsp.md#remaining762-capture-author-first-fault-stop-sole-review-pending--2026-10-23),738attempted737RECORDED/TRCS0738failed24unlaunchedU/outerexit1/UTC04:27:53.471546–05:02:26.455796. Child3879160reportedlyexit0/no timeout/staleRUNNINGwithendfields retained; combinedcount-ret0-flag01assert failure hasnotbeenreclassified/lograwnotreopenedbyRootorAuthor. No cause/returnvalue/ABI/acceptedmetrics inferred.
+
+Preboundfinalizer→onepartialfinalseal→ArrangementsoleNEWactualreview/RootCITEONLY; no retry/continuation/opaque-policytransfer/casecredit. Laterbindingmustexcludeall738nowattempted plusalloldcuts;24unlaunchedU remainunselected. Then Auto reviewsqueuedAnalog23DATA; Mix’s Tensionowner templateawaitssoleactualapproval. Canonical/checkpoints updated/current23140draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Tension partial finalseal; independent reviews run in parallel
+
+[Tensionpartialauthorseal](research/device-tension-dsp.md#remaining762-partial-author-finalseal--2026-10-23),871665B/63b554f8…5faa7/5229payload1287666513B/all5230files0444/private0700. Author exacttreehash+preboundmetadata-onlyfinalizercheck(False)PASS, notactualacceptance;738attempted737RECORDED/failed738U/24unlaunchedU remainssolepeerpending.9methods384L/803plannedidentitypairs/842bindings762prospective779aliases12refs51gaps/5350OLD5364ASOF preserved; additivemonitornotenotprebound/readraceonly.
+
+ArrangementsoleNEWactualSOURCE-code-rawpeeractive/RootCITEONLY, Auto queuedAnalog23DATAreviewnowactivepostseal. Mixprepares41candidate-providedINPUT and holdsTensionownerpendingactualapproval. No originalretry/collectorchange/failedreclassification/remaining24launch/opaquetransfer/IDcredit. Canonical/index/checkpoints synchronized/current23140draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+
+## [2026-10-23] query | Complete Analog23 DATA approved; full context binding selected
+
+[SoleDATAapproval](research/device-analog-dsp.md#complete23-input-data-adopted--2026-10-23),20123218B/6ebd28ff…c077/CLEAR/0findings-corrections/27filesunchanged.6methods291L/fullREAD/33owned+5arithmetic+19peernegativesPASS/37149dictionary+67802convertedrowwordchecks/all556scripts/order/timing/16tails. All23groups/556conditionalslots334recipe222timing/183sharedarrays/468strings/14INPUTrefs/eightwholegaps retained; nativecontext/historycounts/criteriaNULL/appfalse. Oneold47SCRIPThashmatchnotnativeequivalence; oldp04p05D09/ASOF/failed8SOURCEunits/ASTlimits preserved.
+
+[Fullprovidedcontextbindingselected](research/device-analog-dsp.md#complete-producer-current-provided-context-binding-selected--2026-10-23), Autoauthor/RootCITEONLY/no nativecalls. Exactcompletecontexts/all23dispositions/knownR3–R14cuts-exclusions/completehistorydedup/fullmono6events66150frames/16zero-omittingtails/strictret0flag01/no D09transfer; unadmittedFTZprovider treatmentwholegaps/no substitution. Full268435456floor+remainingfuture/final/headroom/concurrent budgets before concretecaptureselection/no modelFPproviderconstructionpolicychange/sourcefollow/originalexecution. Current23140draft additions/U/productOPEN/O0/releases unchanged; routes synchronized.
+
+
+## [2026-10-23] query | Tension737 sole partial actual approved; Analog initial-input source selected
+
+[SoleTensionpartialapproval](research/device-tension-dsp.md#remaining-checks737-sole-partial-actual-adopted--2026-10-23),87377774B/57deae2d…0cc5/CLEAR/0findings-corrections/737finite754aliases/failed1U24unlaunchedU/notcomplete.33359CalcA130646exports135053096rawB/737separateinit/allfinite-laneequal733nonzero4quiet/305hashes76CODE names descriptiveonly. Failed738ret1×49blocks[8,57)/first4096/flags1/child0-emptyerr;352800BdiagnosticNOTacceptedmetric/ABImeaningcauseU/fsyncskipped/staleRUNNING+endfields preserved. All738excluded/noretry-continuation-policytransfer.158owned+24peernegatives/3Rate6unsigned/344polyphonypairs/592614identitypairs1477resources/all5230filesunchanged. Reviewer-onlymetadatapairassertions retained/pre-auditcorrected/nofrozenchange. Mixnextowner/RootNEWownerpeer/no737IDs yet.
+
+[Analoginitial-inputSOURCEselected](research/device-analog-dsp.md#setter-tail-initial-input-source-dependency-selected--2026-10-23), exactowned8128Bxdev.c2e550951…430a9/Arrangementauthor-RootsoleNEWpeer/wholeunitbecauseboundsU/initialbuffer-command-write-processquestiononly/no original-code-image-providerread/compile/nativecall/modelguardchange.16exacttailsstaycontextU/no injectedinputzero; onebindingtargetheldforoutcome/no duplicatecatalog. Sourcepremisealone notcompiled/currentdefault/publicproof. Current23140draft additions/requiredU/productOPEN/O0/releases unchanged; routes synchronized.
+
+
+## [2026-10-23] query | Initial-input SOURCE approved; Tension owner peer routed in parallel
+
+[RootsoleNEWinitial-inputSOURCEapproval](research/device-analog-dsp.md#driver-initial-input-source-adopted--2026-10-23),32149B/701bf64e…c2b1/CLEAR/0blockers-corrections/MF2871Bf1dc9c56…2d77/18payload37703B/19files0444/private0700.8128Bpreferredownedcopyonce/fourequalendpoints/82Lnewownedcode/fiveunits5491B/99lineoccurrences/eightqualifiedfacts/18owned+15peersemanticnegatives/safecheckoncebyteexactPASS. Nullinitialinput/flag0/per-blockzero-fill SOURCEonly/no Ccompiler-native-provider/originalaccess/generatedinputs/modelpolicychange. All16tails unchanged; Autoassociates only SAME admittedmodel fromapprovedmetadata or keepswholegaps. Sourcecompiled/currentdefault-public-runtimeFPproviderbridges remainU.
+
+[Mix’s737nextowner solepeer changed toArrangement](research/device-tension-dsp.md#next-owner-sole-peer-routing-before-composition--2026-10-23) BEFOREcomposition/finalseal/Rootpayloadread, preservingunstagedRoot-templateASOF; RootnowCITEONLYnewR16 and willapplysoleapprovedtarget. One NEWowner review/no actual-source-rawproofredo/extragate. Rootreviews41INPUTDATA/source whileArrreviewowner/Autocontextbinding inparallel. Current23140draft additions/requiredU/productOPEN/O0/releases unchanged; routes synchronized.
+
+
+## [2026-10-23] spec | Tension R16 sole-approved target applied; supplied INPUT and Analog capture advance
+
+[Rootcitationapplication of soleArrangement R16](research/device-tension-dsp.md#tension-owner-r16-remaining-checks-annex-adopted--2026-10-23), REPORT2684568B4e69583c…c361d/MF4230B89435ff3…745fa/23files0444/private0700; target132327B7e42d5a7…49fea exact/currentbaseline127150Bc96e99ab…749e matched.737DTN8242–8978/current8978nav/**23877draft additions**.33owned22peernegatives/all15REQ42rows/8241oldIDs-R3–R15/Ucriteria-history-ASOF-releases27eval35inventory/fullreverse/1LFdelta preserved. No Rootsecondowner/actual-SOURCE-rawproof/checker/stager/release replay; incrementalreceipt recordsmetadata-onlyapplication. Failed738/24unlaunched/51gaps remainU.
+
+[Complete41providedDATAsoleapproval](research/device-tension-dsp.md#complete41-current-provided-input-data-adopted--2026-10-23),3377353B91325981…d457/MF4066B021f6fea…0ea3/28filesunchanged.5newcode190L19737B/5289words41scripts30DATAstrings/19indepDATA+3projectioncontrolsPASS. Original22precontrolsCITEDnotrerun/originalcheckerFAILretained; additivePOSTnotprebound17controls+304tuplepairpaths only/oneunchangedcatalogwrite. Rootinitialwholefactlist-assumptionfailedBEFOREsafecheck/source-historyretained; correctedexactID-keyedF03–F06projection/no packetrepair, thenonlyadditivecheckoncebyteexactPASS. [Newfullcontextbinding](research/device-tension-dsp.md#complete41-current-provided-context-binding-selected--2026-10-23) Mixauthor/RootCITEONLY excludesALL738latest+oldcuts, nativewaitsAnalogseal; oldR3incidentalchecker-stringdisplayretained/no execution-analysis-use, subsequentmetadatawhitelists/no globalhistoryclaim.
+
+[Analog469concretecaptureselected](research/device-analog-dsp.md#complete-producer469-current-provided-capture-selected--2026-10-23), scalar8964Be70ca2de…1b1b/bindingMF3939B6be47749…91d4/24files0444/private0700. All23groups556slots/469contexts548aliases/oldref1+7FP-providerU/14INPUTrefs/eightoriginalwholegaps/16unchangedtailsconditionalSOURCEmodelassociation.138105exports41483CalcA151066032rawB+469separateinit projectionsnotobservations. Full6991975856freshbudget/old268435456floor+future8MiBlogs4MiBmetadata/finalheadroomconcurrent/unreservedraisedsoftplanningthreshold. Autoauthor/Arrangementsoleactualpeer/RootCITEONLY/allcodecontrols-precallboundBEFOREONCE/strictret0flag01/no D09transfer/firstfaultstop/noretry-automaticcontinuation. Own13509Bsecondarycollectorcode3b39e61e…60546 inerttemplateonly/no oldexecution-proofredo; exactall-verbgrammarbefore originals/no native trial. RequiredU/productOPEN/O0/releases unchanged. Canonical/project/specindex/coverage/index/plan/handoff/roadmap synchronized.
+
+
+## [2026-10-23] query | Complete Analog command audit withdraws chat-only Reset hold
+
+[Exact469command audit](research/device-analog-dsp.md#exact-selected-command-audit-corrects-reset-inference--2026-10-23) finds0Reset; eightactualverbs create469/rate469/param95215/event788/inflag469/input460/process478/destroy469, no other/mxcsr/transport/fileinput. EarlierResetconcern inferredbroaderSOURCEcontextwrongly; no binding/capture/source/guard change. All8existingapprovedprotocol/modelgrammar associations suffice, per-processmax1024notoldglobal690; synthetic1024positive+full469shapecontrols precedeONCElaunch. HoldcausedonlybyfalseResetconcern withdrawn/no extrareadinessgate.
+
+Separately selectedNEWstaticSOURCEgrammar studywholeownedmain3741B+process1372B/5113B exactknownunits/Arrangementauthor-RootsoleNEWpeer/no originalCcompiler-native-providerexecution/oldprotocol-proofredo; Input-defaultfacts inheritednotremeasured, Resetcontextonly/notadmitted. It doesnotdelay469launchunderexisting8verbadmission. Current23877draft additions/requiredU/productOPEN/O0/releases unchanged; browserregenerated3206REQrows/generatorunchanged andfocusedlint17passed afterR16adoption.
+
+
+## [2026-10-23] query | Shared analyst DATA boundary guidance filed
+
+[Canonical recovery guidance](research/native-analysis-recovery.md#analyst-data-serialization-and-report-projections--2026-10-23) records recurring observed tuple/JSON and whole-object/projection causes: new JSON-native outputs with roundtrip/type-order controls; exactID/field projections insteadofwholeREPORT assumptions; scopedmetadataqueries avoidembeddedcode/rawdisplays. Frozenfailures/one targets/actualtracecustody retained; additiveauditsPOSTnotprebound/no oldFAIL→PASS/newnativeguardmodelpolicychange. Indexupdated/current23877draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] experiment | Analog469 partial seal; Tension29 strict selection; grammar SOURCE adopted
+
+[Analog469once-run](research/device-analog-dsp.md#complete-producer469-first-fault-partial-sealed--2026-10-23) finalsealed after162attempts/author161recorded/failedAPCS0162U/307unlaunchedU;162receipts/1169payloads226873916B/soleArrangementactualpending. No returnliteral/cause/acceptedmetric/ID inferred by Root; no retry/continuation/policytransfer. AutoR15baseline-onlyprep waitssoleactual. [Tensionbinding](research/device-tension-dsp.md#complete41-binding-sealed29-strict-histories-selected--2026-10-23) sealed41aliases30contexts/29prospective40BRIGHTaliases/oneprior defaults48ref. Readerfailedbeforetarget; original681Btrace/zero stdout/prebinding/code retained; additiveV2prebound beforeone target with exactteninherited missingSCRIPTU whitelist/10allow13reject23INPUTcontrols. Concrete29strict once-runselected afterAnalogseal/sameadmittedmodel/full4697620480minimumfreshfloor/firstfaultstop, Mixauthor/Arrangementsoleactualpeer/RootCITEONLY.
+
+[RootsoleNEWgrammarSOURCEreview](research/device-analog-dsp.md#selected-commandoutput-grammar-source-adopted--2026-10-23) APPROVES tenconditionalfacts/whole2units5113B95L/3newmethods85L/20owned29independentnegativecontrols/onlysafecheckoncebyteexact/all21files unchanged. Rootinitialsyntheticmutation exposed sharedscanpattern/globalpresence flaw beforeownedcheck; frozeninitial/history andadditiveV2occurrencechecks retained. Receiptwholeparenthashgap qualified, no parentreacquisition; oldADI/default/nativeproof inheritednotremeasured. No new tool/model/FP/provider/guard/opaque policy/nativeadmission/ID/criterion/grade/release; current23877draft additions/requiredU/productOPEN/O0 unchanged.
+
+## [2026-10-23] experiment | Analog161 sole partial actual approved
+
+[Arrangementsoleactual](research/device-analog-dsp.md#complete-producer161-sole-partial-actual-adopted--2026-10-23) CLEAR0blockers/corrections/84865091B REPORT/f3f46e96…89fa3;161approved231aliases/failed1alias/307unattempted316aliases/whole46954855623retained.59432exports26266CalcA107414640rawB/161separateinit/nestedU/allfinitewordequalnonzero144hashesdescriptiveonly. FailedAPCS0162firstnonzeroreturnblock8frame4096/legalflags-correctgeometry/388000Bdiagnosticnotaccepted/ABImeaningcauseU; no returnliteral inferred. All9omitted-input contexts16aliasesunattempted.84888endpointpairs326resourcepoints/full6991975856B/44owned23peernegativesPASS; Rateparserint64guardgap boundedbyretainedint64values, rawfsyncinference/custody/child-onlybounds/unreservedlimits qualified. RevieweraccessorandfinalJSONpackaging failures retained/no audit-or-native rerun/packetchange. Rootsafeapprovedscalarcitationonly/AutoNEW R15onecompositionselected/RootsoleNEWownerpeer/no161IDcredit yet/current23877requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] design | Proposed exact333 opaque-return policy, review pending
+
+[Design17](research/full-live-specification-design.md#revision-17-proposal--opaque-returns-for333-retained-unattempted-members-2026-10-23) Rootauthored6206B/SHA62fe0354…0bf9b frozenproposalfromexact586528B/24133545…0ce4metadata-onlynomination.333retained records=Analog307/316aliases+Tension24/24aliases+Collision2originalexplicit aliases; nativeeligibleuniquemissingNULL. Signed64opaqueCalcAonlyproposed/allotherguards/historyINPUThashes/exclusions/fullpriorbudgets/firstfaultstop/criteriaU exact; priorfailedneverreplayed/no transfertostrict29/newmodelproviderFP/source-native-helperexecution. MixsoleNEWpolicywordingreview afterits29capturefinalseal, userD10pending afterward/no collectorchange/nativecall/continuationselected. Designfrontmattercurrentrevision corrected15→16 to reflect alreadyadopted16; frozen15/16proposalfragments untouched. Current23877draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] decision | User steer selects137 O-preparation; parks further opaque packets
+
+User-directed Claude steer: OblockedonlybyuserKVMreboot/ISO/authorizedLiveinstaller. [ONE newprep](research/phase4-probe-batch.md#remaining137-windows-triage-preparation-selected--2026-10-23) coversall137sessionsB–Q outside0+A and Session0Windows tool/version-record checklist(hash/screen>=60fps/audio/MIDI/process/file/Log.txt), applicable/needsmacOS/needshardware-plugin with exactrecordreasons/U. AutoauthorafterR15seal/RootsoleNEWpeer/no guestboot/install/download/old0+Aproofredo. [Design17unadoptedproposalparked](research/full-live-specification-design.md#revision17-disposition--parked-by-user-steering2026-10-23), queuedMixpolicyreviewcancelled/no question/collectorchange/nativepacket beyondadoptedD08/D09withoutnewuserdecision. Exact333nomination/proposalhistoryretained/U/no policytransfer. FinishselectedstrictXthenSledgerorder; analystcontext/implidle boundaries remain. Current23877draft additions/requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] spec | Analog R15 adds161 strict observations
+
+[RootsoleNEWownerreview](research/device-analog-dsp.md#analog-owner-r15-producer-partial-annex-adopted--2026-10-23) APPROVED/CLEAR0corrections/27909518B/bc75f4d4…9d00b;7newmethods271L/25owned18independentnegatives/onlysafeownercheckoncebyteexact/all30filesunchanged. Applied exact131302B/8780fc8f…ce44f target from frozen124809BR14;161DAN1198–1358/current1358nav/**24038cumulative draft additions**. All23wholeREQ72rows1197oldIDs/R3–R14objects/Ucriteria/old14+5ASOF/D09exactfour/p04p05/releases38g42e/fullreverse exact. Whole46954855623mapping retainsfailed1/307unattemptedU/14refs7FPprovider8SOURCEgaps/all9omitted-input contexts16aliasesU. No underlyingactualSOURCEcollectorlograwnumericproofredo/oldproposalreopen/opaque transfer/publiclaw/portablegrade/release. Canonical-dependent frozenownerchecker mustnotrerunafteradoption. RequiredU/productOPEN/O0 unchanged; selectedstrict29and137Oprep continue.
+
+## [2026-10-23] query | Phase4 preparation provenance clarified
+
+The complete146minusnine currentSessionA count gives137remaining records, including deferredSessionX/unassigned proposals; preserve original session labels and separately qualify intendedG/L associations rather than inventing B–Q assignments. The original first79batch has sevenA records; laterPRB-S9-07/PRB-S7-09 bringcurrentA to9. Root’s new selection incorrectly implied a separate earlierSessionAsole-review REPORT; no locator was established by narrow inventory search, so corrected the new selection to frozen21INPUT preparation metadata with independentreviewUNKNOWN. No old source/fixture/proof was reopened to fill that gap; earlier artifact bytes remain unchanged. The single new137packet still receives one sole review and adds no O observation.
+
+## [2026-10-23] query | Next S frontier nominated in ledger order
+
+[Analog metadata nomination](research/device-analog-dsp.md#next-s-frontier-nomination-acquisition-not-selected--2026-10-23),15899B/50b2c35c…fa5ae, identifiesall8whole selector/base/binding/slot+transitive methods/676declared nativeB for AN-OUT-035/REQ002 argument-receiver-stack-transfer gaps. PriorSOURCE3167B141L inherited fromsoleREPORT locator metadata/native0; no oldC/native/actual/raw proofreopened. Physicalimage/offsetmap/runtimeextent/coldfragments/dependencyunionU/no VAminusbase assumption/callee-global-providerfollow. Candidateonly inexistingselector/no acquisition untilselectedstrict29Xdrains; usersteerSledgerorder preserved/current24038requiredU/productOPEN/O0 unchanged.
+
+## [2026-10-23] experiment | Strict29 partial frozen; ledger-order S study selected
+
+[Tensionfirstfault](research/device-tension-dsp.md#provided29-first-fault-partial-sealed-sole-review-pending--2026-10-23),14attempted13authorrecordedfailedTCPB015U+15unlaunched016–030U/outer1/recorder3981692/06:37:27.950209–06:37:29.508267UTC. EmptyAssertionErrorcauseU/no returninference/retry/opaque transfer. MF20366B/1240877f…1b481/125payload8140997B/all126files0444/dirs0700; fullprecall13INPUT12protocol4runtime5parentcontrols/unchanged4697620480minimumfloor. Agentcapacityinterruption aftercapture isPOSTcoordinationhistory; preboundmetadatafinalizercompletedonce/no native-or-checkerreplay/sealedbyteamendment. ArrangementsoleNEWactualpeer/RootCITEONLY/MixR17baselineprep-only/no13IDcredit yet. Xruntimedrained, so [whole8methodAnalogSstudy](research/device-analog-dsp.md#whole-eight-method-s-native-study-selected--2026-10-23) selected676declarednativeB+necessarycompleteMachOmappingmetadata/ArrangementauthorafterTensionreview-Mixsolepeerafterownerfreeze-RootCITEONLY/preferredpinned149711904BARM64slice. Newcodecontrols-prebinding-beforeonceacquisition/onefinalpeer/no oldCproofredo/newtoolinstall/runtime-model-provider-FP/automaticcallee-global-literalbranchfollow. O137Phase4sourcewindowstable/Autoauthor-Rootsolepeer; current24038requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] research | Full137 Windows preparation adopted after sole review
+
+[RootsoleNEWprep review](research/phase4-probe-batch.md#remaining137-windows-preparation-adopted--2026-10-23)1399851B/453220c2…b28a approves full137records/15pinnedparents/15deferredX rows/22versionregister(7same3changed12unselected). Fourmethods155L+failedfixture historicaldiff read;17owned12Rootnegatives/onlysafecheckoncebyteexact/all25sealedfiles unchanged. P5-08CoreMIDIandN4-08originalIPC needmacOS+Pushhardware; author9175B/0c8be6ae…1e6c additiveexact2row4fielddelta validated/fullreverse, qualified107Windowsconditional15HW15Mac versusoriginal1071713ASOF. No targetregeneration/oldSessionAfixture-proof/originalbuilder/helper/native/guest/tool execution. Officialprimary toolrefschecked forhash/FPS>=60/audio/MIDI/process/file/Log.txt; actualversions/capabilitiesNULL and no O observations. Newmissingworkerhandles resumedfromretainedoutputs: Oonewritten target andexistingPASSchecks onlymetadatafinalsealed, Tensionactualexistingauditonlyfinalreportpackaged/no originalrerun. [07:04hostmetadata](decisions/adr-0006-reference-observation-reopened.md#read-only-host-access-update--2026-10-23) KVMnodeexists R/W; noopen/API/reboot/VMclaim, ISOandLiveinstallerpathsabsent. Canon/index/plan-handoff/roadmap/coverageupdated/current24038requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] spec | Tension R17 adds13 strict BRIGHT observations
+
+[Sole actual approval](research/device-tension-dsp.md#provided29-sole-partial-actual-adopted--2026-10-23)5134462B/280a7943…af4a admits13/23aliases; failedTCPB015return1for58blocksafter11zero(block11/frame5632)/flags1/legalgeometry/352800Bdiagnosticnotaccepted/ABImeaningcauseU;15unattempted/16aliases stayU. Existingaudit/ownedchecks werefinalpackagedwithoutreplay. [RootsoleNEW R17ownerreview](research/device-tension-dsp.md#tension-owner-r17-provided-bright-annex-adopted--2026-10-23)3891023B/f0e30dea…bba7/5methods241L/19owned18Rootnegatives/onlysafecheckoncebyteexact/all24unchanged. Appliedexact137980B6eb325a1…9a689targetfrom132327BR16;13DTN8979–8991/current8991/**24051cumulative draft additions**. Whole41aliases30contexts/29selected40aliases/defaults48ref/failed1+15unrun/tenNULL-U bridges and allold15REQ42rows8978IDs/R3–R16objects-Ucriteria-ASOF-releases27eval35inventory/fullreverse/singleLF preserved. No underlyingactualSOURCEcollectorrawnumericproofredo/oldproposalreopen/retry/opaque transfer/portablegrade/release; requiredU/productOPEN/O0 remain. Browser regeneration and focusedlint follow; frozen canonical-dependentownerchecker mustnotrerunafterapplication.
+
+## [2026-10-23] query | Current feature-inventory routing reconciled
+
+[Feature map](specs/feature-map.md#current-observation-preparation--2026-10-23) replaces staleTensionR12navigation with currentAnalogR15/TensionR17/ElectricR16/CorpusR21/CollisionR7partial-owner pointers, and updates transport/mixer/automation draft revision labels to actualfrontmatter6/7/6. [Fullinventory companion](research/full-live-coverage-inventory.md#windows-preparation-and-current-owner-routing--2026-10-23) links reviewed137Windows preparation without newdiscovery/platformequivalence/completedprofile credit. Originalfeature/surface IDs, frozeninventory manifests/sourcebytes/releases/requiredU remain unchanged; no original/releasefixtureproof rerun. Amp/Cabinet extractedrouteblocked/T1.6idle/T1.7deferred/current24051draft additions/productOPEN/O0 preserved.
+
+## [2026-10-23] research | Eight-method Analog native cut adopted
+
+[SoleS8native review](research/device-analog-dsp.md#eight-method-current-value-native-study-adopted--2026-10-23)154182B/e1c8cf86…b310 CLEAR0findings/corrections; native676B169rows+completeheadercommands6976B/all8methods276L/21ownedmetadata8decoder12independent rawfield controls/onlysafecheckoncebyteexact/all77files unchanged. Rootapprovedsummary/qualifications/dependencyMETADATAcitation only/no second source/native/header/toolproof. LocalincomingX1/distinctincoming-returnedX0/fiveargregisters/SP+8delivery factsconditional; outsideeffects/currentobject/formalABI/runtime-public/numericemissionU. Two malformedpairstringsretained; limitedwordfields independentlycheckednotsecondfulldecoder. One preferred149711904Bimagehash3a99…cfad/fourequalendpoints; derivedMFENOENTno freshparent-equalityproof. ExistingprivateRizin0.9.1resolvedvia canonicalnativephase dependencyroute/noinstall; tinyfixturefreshfloorsnapshot/childreceiptfsync/crashcontinuitylimitsretained. Nineoutsidecalls/twoindirects/threeaddressliterals/twopointercells/twootherpayloadsUNREAD/no automaticfollow/casegrade-site credit. Complete13factorycohort2104Bmetanomination29260B/04eb30af…5a48 nowavailable; nominal8cohortoverlapzero only/physicalmap-and-runtimejoinsU. Current24051requiredU/productOPEN/O0/releases unchanged.
+
+## [2026-10-23] plan | Select complete13-method factory native successor
+
+[NextAnalogSselection](research/device-analog-dsp.md#whole-thirteen-method-factory-native-study-selected--2026-10-23) followsadoptedS8 inledgerorder:13wholemethods2104declared nativeB/all5getters5producersfactory+2typedstore/link helpers, newnativeargument-receiver-localoutput-initdispatch question. Frozen29260B04eb30af…5a48nomination/prior8274C389L13415rawrecordB inheritedonly; current8acceptedrange metadata suppliedbysolereviewer, no old8C/native/header/toolproof reread/globalnoveltyclaim. Inherit5segment38section physicalmap+standaloneimagepin3a99…cfad, newfreshwholeimagehash/all13bounds admission, no old6976headerreacquisition or VAminusbaseguess. O137_finishauthor/tension_review_finishsoleNEWpeer/RootCITEONLY/newownedcodeprebind-controls-beforeonce-exact13retention/staticowneddecode/full4563419136minresources includingtinyfixtures/no install/originalexecution/modelproviderFP/objectconstruction/automaticglobal-literal-pointercallee-coldfollow. Onepacket-onepeer/no extra readinessgate; current24051requiredU/productOPEN/O0/releases/D10parked unchanged.
+
+## [2026-10-23] query | Current23-page documentation verification retained
+
+[Focused lint result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-current-24051-2026-10-23.json) and [exact helper](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-current-24051-2026-10-23.py) are retained after the24051checkpoint/feature-inventory/S8adoption/S13selection updates. All23affected pages pass metadata/date/new-link/whitespace checks; plan and handoff selection match, log is append-only and frozen design15/16proposal fragments are unchanged. Only oldlintdefinitions are reused; oldreleased fixture/catalog/native/source proofs are not rerun. This is documentation verification, not behavioral or whole-product completion proof.
+
+
+## [2026-10-23] query | D-07 KVM API and paused acceleration smoke retained
+
+Executed the user-selected host-only checks once: /dev/kvm RW/API12, QEMU KVM enabled/present and prelaunch/runningfalse before/after;1vCPU512MiB q35/SMM/OVMF/newVARS-TPM/no OS disk/ISO/network/resume. Own children exited0/empty stderr/no signal escalation. New code/config/finalizer/QMP read and all21sealed artifact hashes checked; initial metadata-adoption socket-unlink expectation rejected actual empty cleanup, then corrected without repeating smoke or creating a failed target. [D-07](decisions/adr-0006-reference-observation-reopened.md#kvm-readiness-verified-media-present-but-unverified--2026-10-23) now records host readiness and exact evidence pins/resources/limits. Both Downloads paths are newly present nonempty regular files/stable at two metadata points, contents/build/license/authorization unverified; earlier absent snapshots preserved. Updated plan/handoff/project/index/roadmap/Phase4/coverage. Both user media must precede future OS boot; historic configuration-v2 technical distinction preserved. No production QMP/storage-content access/signals/mutation, no OS boot/Live/O observation by this task; independent guest state unknown. Current24051draft additions/productOPEN/O0 unchanged; S13 sole review continues, no new opaque authorization.
+
+
+## [2026-10-23] lint | D-07 host setup adoption
+
+Focused documentation lint passed23affected current pages: required metadata/dates, relative links and headings against the retained pre-existing baseline, plan/handoff checkpoint equality, append-only log, historical design15/16 proposal hashes and git diff whitespace. [The dated adoption check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/d07-kvm-documentation-adoption-check-2026-10-23-v1.json) pins the9newly affected pages at that pass. All21host-smoke files were checked against the sealed manifest; media metadata is separately cited, with no media content verification or guest/Live/O/conformance claim. Existing source/release payload checks are inherited, not replayed; whole-Live coverage remains OPEN.
+
+
+## [2026-10-23] query | Complete thirteen-method factory native study adopted
+
+Adopted [the sole S13 review](research/device-analog-dsp.md#thirteen-method-factory-native-study-adopted--2026-10-23) by approved scalar summary/dependency metadata only; Root did not reopen native/source/tool proof.13methods2104B526rows/13conditional groups,8newmethods225L/fullguardedfixtures+selected children/24metadata10decoder12independent controls/onlysafecheckonce/all103files unchanged. Preserve original --metadata toy-dispatch history/additivePOSTtoyBEFOREimage wrapper, raw formatter/custody/resource/fsync qualifications. Local argument/receiver/initialization delivery narrows while formalABI/current instance/numerical emission/runtimepublic remainU. Updated canonical research/index/plan/handoff/roadmap/coverage; complete S13+S8 dependency-union nomination is metadata-only, no follow acquisition selected. No new case/grade/site/release/current24051/O0/productOPEN change, no new opaque authorization or original replay.
+
+
+## [2026-10-23] query | Whole factory dependency locator metadata selected
+
+Selected [one coherent34target/10indirect/32addresspoint locator study](research/device-analog-dsp.md#complete-factory-dependency-locator-metadata-selected--2026-10-23) from sole-approved S8/S13 metadata; Root checked union arithmetic only, not underlying proof. Preserve23unknownobjectextents,6GOTcells48filebytes and3BSSlogicalguard fields without zero/current-value claims. O137_finishauthor/tension_review_finishsoleNEWpeer/RootCITEONLY; whole exact retained function/symbol/alias metadata only/newcode controls-prebinding/once acquisition/fullscope+concurrent resources. No C/native/image/scalar/global acquisition/provider/tool/guessedextent/subset/nativefollow. Missing entriesU; current24051/productOPEN/O0/main25095 unchanged.
+
+
+## [2026-10-23] query | Media resource stop retained; corrected read-only budget selected
+
+[D-07 records](decisions/adr-0006-reference-observation-reopened.md#media-custody-stopped-before-opening-corrected-read-only-scope-selected--2026-10-23) v1’s inherited fullVM guard rejection before any media open: accountavailable11773054976<13690224640, exit1/no timeout/0FD0bytes0hashes0format operations. Old packet frozen/no retry or guard rewrite/causeunknown. Root inert-read complete inspector/launcher; separately selected v2 under proper read-only resource contract5637160960Broot-store=full4563419136Sconcurrent+1GiBmediaheadroom,8GiBRAM/output64MiBaggregate/4MiBperfile/1GiBAS70sCPU100swall. Full VMboot/native budgets unchanged, newguardcontrols/prebinding before one pass/exacttwofileclass/no guest or production action. Media provenance/build/license/authorization/guest readiness OPEN/O0; no original execution or spec credit.
+
+
+## [2026-10-23] lint | Factory study adoption, complete locator scope and media stop
+
+Focused lint passed23current pages after S13 adoption, whole34target/32addresspoint/10indirect metadata selection, D-07 pre-custody stop and corrected read-only v2 selection: metadata/dates/relative file-heading links against retained pre-existing baseline, checkpoint equality, append-only log, immutable design15/16 proposal hashes and whitespace. Corrected current29history routing to completed/R17adopted and qualified opaque whole-parent custody versus selected metadata; no old source/native proof or release payload replays. S13sole report is inherited by citation, media content/build/license/authorization stillunverified, newlocator/v2work in progress. Current24051draft additions/productOPEN/O0 remain.
+
+
+## [2026-10-23] query | Both local media custody passes recorded; exact builds unknown
+
+[D-07 v2](decisions/adr-0006-reference-observation-reopened.md#local-media-custody-recorded-exact-builds-still-unknown--2026-10-23) records the first actual2ROFD wholehash pass/13,499,944,623bytes/four endpoints each/exit0/emptyerr. Newcode delta/finalizer and all18retainedfile hashes/endpoints/resourcepoints checked without reopening media/checker execution. Sixresource negatives passed/16legacy fixtures inherited/no v1repair or rerun. ISO descriptors+volume label and ZIP64fiveSuite-labelled members do not prove exactWindows/Live12.4.3/publisher/provenance/license/auth/payloadCRC. No decompression/extraction/executable/mount/boot/install/production interaction. Latest accountavailable11459870720B below unchanged13690224640VMfloor; read-only5637160960contract passed/full native budgets preserved. Updated ADR/currentplan-handoff/project/index/roadmap. KVMhost ready/full guestOPEN/O0/current24051/productOPEN; selected wholedependency locator metadata continues.
+
+
+## [2026-10-23] lint | Current KVM and media custody readiness
+
+Focused lint passed23current pages after local media custody adoption: metadata/dates/relative links and headings against retained baseline, plan/handoff equality, append-only log, preserved design15/16 proposals and whitespace. One actual media-cohort pass covered both files; v1stopped before any media opened. Local hashes/formats are setup evidence only, exactbuilds/publisher/license/auth/fullguest unknown and O0. Newlocator work remains in progress; no original/guest/media/checker rerun or release payload replay by this documentation check.
+
+
+## [2026-10-23] ingest | User supplies ISO provenance and remaining licence/installer status
+
+[D-07](decisions/adr-0006-reference-observation-reopened.md#windows-iso-provenance-update--2026-10-23) records the user-reported26H2EnglishUSx64/build26300.9457/servedfilename/CDN/connector/edition3813/SKU27160/downloadtime, explicitly not re-observed transport or installedguest identity. Reported SHA equals retained localv2hash by metadata comparison; four small supplied provenance files are undergoing inert capture/documentary association.25H2torrentpartial declared abandoned/excluded/untouched. User still needs to provide authorized exactWindowsLive12.4.3 andWindowslicence; unidentified localZIP presence is separate. Corrected handoff’s stale later-reboot/media wording. No guest/installer/provider/native action or O/coverage credit; selected wholefactory locator-metadata work continues.
+
+
+## [2026-10-23] ingest | Supplied26H2 ISO source association adopted
+
+[D-07](decisions/adr-0006-reference-observation-reopened.md#windows-iso-provenance-update--2026-10-23) now pins four retained small supplied sources165521B/onecapture and Root’s soleNEWsource-code documentaryadoption. Savedpage85126H2/1337edition3813/1704English64digest, README3SKU27160-EnglishUS/5servedfilename-CDN-size/6–7hashnotes join inheritedlocalISOhash withoutmediaread. Originalcollectorstringcomparisonfalse dueuppercasepage preserved; additivehex-value equalityqualified, no code/result repair or rerun. Userdownloadtime/sourceclaims and07:28UTCfilemtimes retaineddistinct/not transport or installedbuild proof. Authorcapacityerror followed completedresult; Rootmetadata-only sealed13payloads/all14files0444, source/code/bindings/copies unchanged/no oldfixtures/helper/native/media reexecution. Both exactpaths stillregular; unidentifiedlocal ZIPnotauthorized exact12.4.3proof, userWindowslicence/installerneeded.25H2torrentpartial excluded/untouched, KVMhostPASS/fullguestOPEN/latestfreebelowVMfloor/O0/current24051 unchanged. Updated ADR/currentplan-handoff/project/index/roadmap/Phase4; selectedSmetadata solepeer active.
+
+
+## [2026-10-23] lint | ISO provenance documentary adoption
+
+Focused lint passed23current pages: metadata/dates/file-heading links against retained pre-existing baseline, plan/handoff checkpoint equality, append-only log, preserved design15/16 proposal hashes and git diff whitespace. All14newprovenance packet files/currenttree hashes checked, parent0700/files0444; sourcecopies/prebinding/oneactualresult preserved. Root reviewed only NEWsupplied source/code and documentaryjoins, with original uppercasehashfalse qualification, not oldmedia/native proof. Installedguest/exactLive/licence/auth readiness staysOPEN/O0/current24051; wholeLiveOPEN.
+
+
+## [2026-10-23] decision | Unactivated Windows profile removes key/activation blockers
+
+[D-07](decisions/adr-0006-reference-observation-reopened.md#unactivated-windows-profile-adopted--2026-10-23) adopts user-selected “Windows 11 Pro, installed without a product key, not activated.” Declaredprofile only/actualguestunobserved; do not wait/requestWindowslicencekey. Only remaining user-supplied prerequisite is authorized exactLive12.4.3 installer; existingZIPunidentified. Record expected watermark in rawcaptures/lockedpersonalization as OSconditions, actualstate atSession0. OfficialMicrosoftsetupguide documentsnormal keyskip/editionselection; not a26H2guestmeasurement. Added readinessv4, supersedingoldWindowslicenceinput/proposedOSlicensegate without rewriting oldrecords/tests; read existinglauncherinertly/noactivationguard and no execution. Updated ADR/design14profile/currentplan-handoff/project/index/roadmap/Phase4/coverage. No boot/install/production/O/case/grade; other analyst environmentchecks remainOPEN.
+
+## [2026-10-23] query | Complete dependency locator approval and whole native successor
+
+Adopted [sole locator review](research/device-analog-dsp.md#complete-factory-dependency-locator-metadata-adopted--2026-10-23) by safe scalar/dependency metadata only:34C1-aliasdeclared ranges3696B/32text2stubs/29exported5warnings,32addresspoints/23unknownobjectextentquestions/10actualtargetsU,6GOTfields48fileB/3BSSguards0fileB. Five methods207L/19owned12peer negatives/onecheck/all23files unchanged;23opaqueparents179604489physicalB/0selectedcontent/47fullfloor snapshots. Truncated toolreturn recovered, peerJSONkeyerror preoutputcorrected without replay. Rootchecked onlyrange/nonoverlap/sectionoffset arithmetic, not underlyingproof. Separately selected all34nativecallees+allsixGOTcells3744B/924nativerows, O137_finishauthor-tension_review_finishsoleNEWpeer-RootCITEONLY/newcodecontrols-prebinding/onefreshimageROFD/staticowneddecoder/full4563419136min-or-largerresources/everychild. All23object/3virtualguard/10actualtargetgaps remainU/no guessedobjectprefixes/BSSdiskzero/automaticfollow. No opaqueXcontinuation/runtime/provider/install/FP/guest/newIDs/grade/site/closure; current24051/productOPEN/O0/main25095 unchanged.
+
+
+## [2026-10-23] lint | Unactivated profile and full native-cohort selection
+
+Focused lint passed23current pages: metadata/dates/relative file-heading links against retained baseline, plan/handoff equality, append-only log, historical design15/16 proposal hashes and git diff whitespace. Readinessv4 parses/Windowskey-required=false/activation-required=false/noWindowskeywait/onlyuserinputexactauthorizedLiveinstaller; frozenv3hash unchanged. Existing historical proposedconfig/launchhelper inspected inertly; neither modified nor executed. Adopted locator facts remain solepeer citation only; new3744Bnative study is selected, no claim of capture/approval/grade. No installation/activation observation or guest/O run. Current24051/productOPEN/O0 unchanged.
+
+
+## [2026-10-23] ingest | Live CDN provenance and existing guest software verified
+
+[D-07](decisions/adr-0006-reference-observation-reopened.md#live-media-supplied-windows-and-installed-live-identities-observed--2026-10-23) now recordsalluserbootmediaMET: two smallsuppliedLive sources583B join retainedZIPhash; freshHEAD200/4452613807declaredbytes noZIPredownload/publisherhashclaim. Selected offlineguesthardwarecode→userfetchedAUZ/noaccountcredentials. ExistingQEMU198381/KVM4vCPU16GiB queried/screenobserved, no duplicate/newboot. Windows11Pro26H2/26300.9457 outputretained before licensingCIMtimeout0x40004; failedactivationqueryunknown/notblocker, no replay. Separateunattemptedvolume/exactinstaller/installedLivequeries completed; installerValid/AbletonAG butgenericVersion12, mainEXE12.4.3/47383768B/SHA92e794…e0539/Valid-AbletonAG/publiccertretained. Rootreadnewcode/scripts/rawframes andsetuprecords; no independentchain/loadedmodule/ARM-equality/DSP/authorization/Ogradeclaim. Privateinput/exportcopies/offlineNIC/copytest finalizeprofilebeforehardwarecode. Originaltemplates untouched; wholeVMbootstrapfloor unchanged, currentexisting-guest phasefullSallowance+ownbudget/unreservedpoints. Updated ADR/currentplan-handoff/project/design/index/roadmap/Phase4/coverage, current24051/productOPEN/reviewedO0.
+
+## [2026-10-23] query | S34 native and expanded locator adoptions; nextwhole native selected
+
+Adopted [S34soleapproval and safe semantic packaging](research/device-analog-dsp.md#complete34-callee-and-six-cell-native-study-adopted--2026-10-23) by allowedsummary/dependency projections only, no rawproofreplay.34methods3696B924rows+48cellsB/34conditionalgroups/11safe semantic groups/currentreceiver-ABI-runtime-numericalpublicU. Eightmethods262L/27metadata10fixture12peer negatives/onecheck/all195unchanged/76fullresourcepoints; rawformatter/CLI/retainedSyntaxWarning/fsynccustodylimits preserved. [Expanded49/89/17locator approval](research/device-analog-dsp.md#expanded498917-locator-metadata-adopted--2026-10-23) supplies49exactalias-C1declarations/50ranges8516B/4Bholeexcluded/46text3namedstubs/40exported9warnings, all89objectextent17actualtargetquestionsU. Five methods249L/31owned12peer negatives/onecheck/all26unchanged/29opaqueparents180672003physicalB/0selectedcontent/59fullfloorpoints. Selectedall50separatefragments+11loadfields88B=8604newcontentB/O137author-tension_reviewsolepeer-RootCITEONLY/fullnewsourcecontrols-prebinding/onefreshimageROFD/staticowneddecodes/full4563419136min-or-largerparent-everychild-concurrentbudget. No gapbridging/padding/objectprefix/oldproof/runtime/provider/FP/guest/opaqueX/newcase-grade-site-closure. Current24051/productOPEN/reviewedO0/main25095 unchanged.
+
+
+## [2026-10-23] query | Expanded49entry locator approval and50fragment native selection
+
+Adopted [expandedlocator soleapproval](research/device-analog-dsp.md#expanded498917-locator-metadata-adopted--2026-10-23) by approvedsafe/understanding/geometry/dependency projections only; Root did no source/native/tool proofreplay.49exactnonexternalC1-alias entries/50mappedranges8516B/46text3stubs/40exported9warnings, excluded4Bhole101290bd0–bd4/no concat or globalownershipclaim. All89objectextents/currentbindings17actualtargetsU;15empty/twoselfstubindexhints give no sitecredit. Five methods249L/31owned12peer negatives/onlysafecheck/all26unchanged/29opaqueparents180672003physicalB/59fullfloor points. Selectedall50separatefragments+11file-backedloadfields88B=8604newcontentB/2129nativerows; O137author/tension_reviewsoleNEWpeer/RootCITEONLY, onefreshimageROFD/exactcontent/newcode-gap-field-controls/prebinding/full4563419136min-or-larger EVERYchild/concurrentbudgets/onefinalreview. No guessedobjectprefix/virtualdiskzero, oldproof/FP/provider/runtime/opaqueX/automaticfollow/grade/case/site/closure. Current24051/productOPEN/reviewedO0 unchanged.
+
+
+## [2026-10-23] query | D-07 offline media, scoped copy route and hardware code
+
+Adopted [D-07](decisions/adr-0006-reference-observation-reopened.md#offline-profile-copy-route-and-hardware-code-observed--2026-10-23) and additive readinessv8 after Root read the new provisioning/copy/input/UI code and command declarations, viewed raw discovery/probe/eject/offline screens and checked64payload pins/three manifests without rerunning helpers. Private copies preserve original templates; readonly input/writable mutable export attached, existing guest EthernetDown observed. Exact32-byte probe guest/host bytes+hash agree. Normal guest eject/export backend closure/no knownQEMUFD preceded exact-path readonly extraction and same-image reattachment; this scoped method supersedes the frozen proposed wholeVM shutdown for this route without editing it. Manifest schema-key assumption failed before payload checks, corrected metadata enumeration only. Unadoptedv7 rounded-memory integer retained; v8 additively uses exact captured point, no guest query replay. Actual Live hardwarecode2104-9FFA-E810-BEA1-6446-6CDA sent to user; pending AUZ path/file, no import/authorization/credentials. Keep virtualhardware unchanged pending AUZ. Updated plan/checkpoint/handoff/project/design/roadmap/Phase4/researchindex/coverage. Capture>=60fps/audio/MIDI/CPU/toolversion and prior21INPUT independent review remainU; no boot/install/newLiveprocess/DSPscenario/case/grade/release. ReviewedO0/current24051draft additions/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] lint | Offline profile and hardware-code checkpoint
+
+Focused documentation lint passed23affected pages: metadata/date/link baseline, plan/handoff equality, append-only log, historical design15/16 proposal hashes and whitespace. Selected bounded readonly Session0 builtin/proposed-tool exact-path and log-metadata inventory while user AUZ remains pending; no installation, authorization import, hardware change, filecontents scan or O compatibility case. Expanded49native author has frozen the complete packet; its sole NEW peer review is active, Root remains CITEONLY and unapproved findings are not adopted.
+
+
+## [2026-10-23] maintenance | User-directed Claude guest ownership hold
+
+Latest user coordination assigns Claude firstboot/OSLiveinstall using guest-v1/transfer-v1 with reported ISOlink/QMP/unattend/installer-image deltas. Root stopped its worker and holds all guest/QMP/UI/media/profile/AUZ interaction and guest-v1 changes; no duplicate QEMU launch. [D-07](decisions/adr-0006-reference-observation-reopened.md#guest-operations-assigned-to-claude-concurrent-interaction-held--2026-10-23) and readinessv10 retain earlier actual guest/copy/hardwarecode findings ASOF, unknown relation to the reported final profile, and pending Claude boot/build/install report. Inventory builtin/tool commands unlaunched; only initialframe+oneexistingTerminalfocus completed before hold, both ownclients exited0/QMPclosed. Root read newexecutedfocuscode, inspected rawconsole/transcripts and checked15payloadpins, no guest action or helper replay. All newinventory fieldsNULL/U; no false capability/absence claim. Updated synchronized checkpoint/handoff, project/design/roadmap/Phase4/index/coverage. This turn continues concrete state from the previous progress turn; static S49 sole review remains active, not a goal pause/block. No new case/grade/release/authorization result;24051draft additions/O0/productOPEN unchanged.
+
+
+## [2026-10-23] lint | Claude guest-ownership handoff checkpoint
+
+Focused documentation lint passes23affected pages after D-07/readinessv10 ownership-hold adoption: current plan/handoff equal, frontmatter/date/local-link baseline valid, historical design15/16 proposal hashes unchanged, log append-only and whitespace clean. No guest query/helper/native execution performed for this lint. Static S49 sole review remains active; guest results await external owner.
+
+
+## [2026-10-23] query | Expanded Analog49 native adoption and complete64 locator selection
+
+Adopted [sole S49native review](research/device-analog-dsp.md#expanded49-native-study-adopted-local-chains-and-complete-frontier--2026-10-23),397248B/b79b664021d1b555c724e633259111292661f573a585bf77de27762e00648d0c, via only approved SAFE scalar/21semanticgroup/qualifiedlimits/dependency-metadata projections. All49declarations50separatefragments8516B2129rows+11fields88B=8604selectedB; excluded4Bgap neverretained/decoded, endBLreturn/fallthroughU. Fullyselectedlocalx0chain clarification remains separate from unreadoutsidebase; rawliteralFILEBITSONLY/no oldtransferrecertification. Eightmethods262L/34metadata10decoder12peernegatives/onechecker/all264unchanged/108fullfloorpoints; raw0lr/ptr0/type-null/custody-fsync-resource qualifications retained, no proof/check replay byRoot. [Selected complete64/155/24metadata cohort](research/device-analog-dsp.md#complete6415524-locator-cohort-selected--2026-10-23):all64destinations155points24sites(inherit17hints/queryonly7new)/six8Bfields48B, approvedknown104method105range14992B+17fieldmetadata only. O137author/solemetadata peertension_review/RootCITEONLY, fullfloor, no C/native/header/image/fieldcontents/oldproof/tool/guest/provider/runtime or automaticfollow. Updated canonicalresearch/atlas/currentplan-handoff/project/index/design/roadmap/inventory/featuremap/coverage. Earlier guest ownership-hold turn was progress through authoritative coordination/state adoption; no new guest action. Current24051draft additions/reviewedO0/main25095of268015/36releases19current/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] lint | Expanded Analog49 adoption and whole locator selection
+
+[Focused check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-expanded-analog49-adoption-2026-10-23-v1.json),606B/SHA2561c28def6b6bd0def50b9dcf5da7f2ffc8d10bc93fc3106b062c2f64669c5728e, passes24affected pages including the atlas. Reused inspected current24051helper with only program-structure.md added to its page list: metadata/date/link baseline, synchronized current checkpoint/handoff, append-only log, immutable historical design15/16 proposals and whitespace all pass. No native/source/old fixture/guest/helper proof replay or behavior-grade change.
+
+
+## [2026-10-23] query | Parallel source-only Session0 capability methods selected
+
+After revalidating active complete64metadata author and absent finalmanifest/report, selected one independent official-documentation-only followup to the already approved Session0 tool checklist. Concrete CPU/OSsupport, audio/capture, >=60fps timestamps/drop checks, MIDI/toolversions/log and finalprofile coordination methods are planned; no guest/QMP/UI/QEMU/guest-v1/media/profile change, executable download/install/launch or nativehelper. Tension_owner_finish authors one frozen SOURCE/method packet; Root sole documentary review, no new readinesschecker chain or duplicate137triage. Updated D-07/currentplan/handoff; Claude guesthold remains. Earlier S49adoption turn was progress, not a blocker; unsupported outcomes stayU.
+
+
+## [2026-10-23] lint | Parallel capability-source selection coordination
+
+Focused incremental lint passed the four changed pages (D-07, currentplan, handoff, log): metadata/date/local-link baseline, equal checkpoints, append-only log, historical design15/16 proposal hashes and whitespace. Live agent-state tools verified both complete64metadata author and Session0primary-source author running; no finalmanifest/report yet. Complete64author reports five new methods authored/pinned, pure controls read, remaining inert reads pending, census not yet attempted/no blocker/no retry. This is a verified wait on active analyst work, not adopted evidence or coverage. Claude owns guest operations; no guest action.
+
+
+## [2026-10-23] query | Capability-source methods and complete64locator metadata adopted
+
+Adopted [Session0source methods](research/phase4-probe-batch.md#session0-capability-methods-primary-source-followup-adopted--2026-10-23) under one Root documentary review:17officialsources/sixqualifiedfuturemethods/42pins, direct403history/renderedroute retained, actualCPU/XSTATE/audio/cadence/Win11MIDI/toolidentitiesU. No guest/tool/executable action or extraapproval/universalinventory gate. Root also checked existingAnalog A1/A2 assumptions for downstream impact; both already qualify public value/protocol delivery, so no specwording/case change was needed. Adopted [complete64locator solemetadata report](research/device-analog-dsp.md#complete64-locator-metadata-adopted-66-declarations-and-qualified-hint--2026-10-23),903395B/9ecf5cd3ff2eacc4056654892dcb41fc2038fd8ec498d634607cf8a10790c3de, viaapprovedSAFEonly:66declarations67ranges9392B+sixfields48B=9440B nomination; all155objects24actualtargetsU, newhole/priorhole excluded. Fiveprebound312L+postacq49L/45owned18peernegatives/onecheck/all31unchanged/fullresource/lineage limits retained. [Selected whole66native cohort](research/device-analog-dsp.md#complete6667fragment-native-cohort-selected--2026-10-23) plus ONLYnew101ab79bc hintedlocator metadata in SAMEpacket/solepeer; targetbody/siteindex untouched, noautomaticfollow. O137author/tension_reviewsolepeer/RootCITEONLY, fullunchangedbudgets/newcodereadcontrols/onepreferredimageROFD/staticRizin67fragments. Updated canonicalowners/ADR/atlas/currentplan-handoff/project/index/design/roadmap/inventory/coverage; sourcefacts do not change hostreadinessv10. Previous goal turn was verifiedwait on live agents; this turn adopts both frozen results. Claude guesthold unchanged, no new case/grade/site/O/release;24051draft additions/main25095of268015/productOPEN.
+
+
+## [2026-10-23] lint | Complete64 and Session0source dual-adoption checkpoint
+
+[Focused documentation result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-complete64-and-session0-source-adoption-2026-10-23-v1.json),617B/SHA256858c7b8f0cace2bdcd9dd62624bda892a845b59d18ccc87ba5375fa0afe2360f, passes24affected pages including atlas: metadata/date/local-link baseline, exactcurrentplan-handoff equality, append-onlylog, immutablehistoricaldesign15/16proposals and whitespace. Reused inspected helper, onlyatlas scopeaddition. No native/source/oldfixture/helper/guest proof replay; no browser regeneration needed because specification requirements/cases did not change. New complete66native cohort is selected under one sole peer, Sourcecapability measurements remainU and Claude retains guestownership.
+
+
+## [2026-10-23] query | Finite owned audio-MIDI calibration inputs selected
+
+Previous turn was progress through dual sole-reviewadoption andnextnative selection. Revalidated liveS66author and currentplan; agentreportsdecoderloopactive after one image retention and exact168B hinttarget locator metadata (no targetbody/binding proof), no restart. Independently selected [ownedaudio/MIDI INPUTpacket](research/phase4-probe-batch.md#owned-audio-and-midi-calibration-inputs-selected--2026-10-23) from adoptedSource methods:two3secondstereoPCM16files44100/48000 withliteralintegerwaves/channel/silence segments and sevenliteralMIDIrecords/15bytes/desired100msoffsets. Stdlib-onlynewgenerator/independentvalidator/readcontrols/bounds beforeonceconstruction, tension_ownerauthor/RootsoleINPUTpeer; not originalasset/deviceoracle/modelpolicy transfer. No tool/player/sender/playback/capture/executable/guest/QMP/QEMU/media/profile/auth action; changingmarker remains unselected. ReadonlyhostPATH lookup found no ffmpeg/ffprobe executable; this is not globalabsence and selects no install. UpdatedPhase4/currentplan/handoff; guesthold/sourcecapabilityU/O0/24051draft additions/productOPEN unchanged.
+
+
+## [2026-10-23] query | Owned audio-MIDI calibration INPUT adoption
+
+Adopted [self-authored Session0inputs](research/phase4-probe-batch.md#owned-audio-and-midi-calibration-inputs-adopted--2026-10-23) under soleRoot NEWINPUT/code review2605B/f9fc1956d8d9184b4d0cd485776041a00464d133d5e9e27a7f8ef11c73757455:generator7016B/separatevalidator6835B fullyread, oneconstruction12:05:36exit0/emptyerr,2memorypositives15malformednegatives. TwoWAVs529244/576044B and836BdesiredMIDIJSON have independently auditedeveryPCMword/header/channel/silence/run/frame andexact7record15byteschedule; Root4additionalmemorycorruptions rejected/all17sealedfilesunchanged/no generator-validator/oldproof replay. Full6039814144phasefloor+18MiBownallowance6058688512/unreservedruntime-resource qualifications preserved. No guestacceptance, originaldevice equivalence/model/oracle, capture/playback/port/sender/tool/guest-v1/media/AUZ action or Ograde. UpdatedPhase4/currentplan-handoff/ADR/project/index/coverage. In parallelS66peer recorded exit139 during cross-versioncache inspection before anychecker; retainedfailure/no marshalretry/frozenedit, sourceversion/tag metadata only. Root activated idlepeer withfollowup_task afterauthor handoff; send_message alone had not startedtheturn, no acquisitionrestart. NativeS66 remainsunadopted pendingsolequalifiedreport; allsource/guesthold/U/currentcasecounts unchanged.
+
+
+## [2026-10-23] query | Complete66 native adoption and combined frontier-dispatch selection
+
+Adopted [sole S66report](research/device-analog-dsp.md#complete66-native-study-adopted-27-qualified-groups-and-cache-history--2026-10-23),829929B/3346b5ae3b00aa91d767209bad16a5d42dbacf56a766fdd074ceba8cbd7790e2, viaonlyapprovedSAFEscalar/all27groups/limits/dependency/selectedlineage projections. All66declarations67fragments9392B2348rows+sixfields48B=9440B; both4Bgaps/returnU. TwoSAFEprose refinements separateopaquesender/savedctor/unchangedshortx0 andinitialnonzero/globalreload paths. Diskword/hint/declarationagreementFILEBITSONLY; hint168Bbodyunread. Tenprebound404L/35metadata10decoder15peer negatives/onechecker/all334unchanged/148fullfloorpoints; raw0lr/type-null/MOVptr0/discretecustody-runtime-resource limits retained. Peer cacheinspectionexit139 recorded/no retry/cause+bytecodeequivU; specific313cacheheader vs312sourceeligible/-I-Bqualified, no universalcache claim or failureerasure. [Selected combinedwhole63frontier/dispatch](research/device-analog-dsp.md#complete63-frontier-and-known-dispatch-leg-selected--2026-10-23):metadata63dest272candidates41sites18hints plusONLYknown168Bbody/14fields112B=280newcontent inonepacket/solepeer/fullfloor; carry24hints/query17new, no futuretarget/pointee bodyfollow. O137author/tension_reviewsolepeer/RootCITEONLY; no source/decoder/oldproof/cachefailure/guest replay. Updated canonicalresearch/atlas/currentplan-handoff/project/index/design/roadmap/inventory/coverage. AllactualcapabilitiesU/O0/current24051draft additions/main25095of268015/36releases19current/productOPEN unchanged.
+
+
+## [2026-10-23] lint | S66 and owned calibration INPUT adoption checkpoint
+
+[Focused documentation result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-s66-and-owned-session0-adoption-2026-10-23-v1.json),621B/SHA256290167be10541a8913e434fd73b91e8e0a8f9bd433dc9a0031930295712e0adb, passes24affected pages includingatlas: metadata/date/local-link baseline, exactcurrentplan-handoff equality, append-onlylog, immutablehistoricaldesign15/16proposals and whitespace. Reused inspectedhelper/atlas scopeaddition, no proof/oldfixture/helper/guest replay. Ownedinputs were independently audited once byRoot, not generated/replayed forlint. S66cacheinspectionfailure/cause andbytecodeequivU remainexplicit; onlyqualifiedSAFEevidence adopted. Source-ownedtargetbody/14field280B andnextmetadatafrontier selected inonefuturepacket, notyetnewadoptednativecontent. No new behaviorcase/grade/site/O/release; guestownershiphold unchanged.
+
+
+## [2026-10-23] query | Host-only official tool archive cohort selected
+
+Revalidated currentplan and livecombined63author; previousS66/ownedINPUTadoption turn was progress. Independently selected [exactfourcandidatearchive intake](research/phase4-probe-batch.md#host-only-official-tool-archives-selected--2026-10-23) while Claude ownsguest:Coreinfo,OBSWindowsx64,AudacityWindowsx64standalone/noMuseHub,loopMIDIvendor. Officialprimarysource/versionlink discovery, oncebounded512MiBtotal256MiBperfile package intake/16MiBsource128MiBheadroom aboveunchanged6039814144phasefloor; no retry/mirror/productfallback/extraction/executable/install/driver/EULA/provider/library/guest-v1/media/AUZ action. Tension_ownerauthor/RootsoleNEWSourcepackagepeer, no prep-gate chain. Page/origin/hash/digest notbinaryversion/signature/capability proof; no newuserbootprerequisite/Ograde. Combined63author reports once-onlymetadata+280Bnative/dataacquisitionscomplete/windowsclosed, fullremainingaccounting/seal pending, no restart. UpdatedPhase4/ADR/currentplan/handoff; allguestcapabilityfieldsU/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Combined frontier adoption and full67 native selection
+
+Adopted [combined63 frontier/dispatch](research/device-analog-dsp.md#complete63-frontier-and-dispatch-adopted--2026-10-23) from sole report2595087B/cffa8cbe42a9cc2999425c70b154bbb64a02a157e729873c8fd1397d02539f01. Root read only approved SAFE scalar/all11semantic groups/full limits/complete locator-unread geometry/dependency/lineage/review-history projections; underlying C/native/header/tool/parent proof and checker not replayed. Selected168Bbody+14fields112B give280newcontentB, conditional receiver/tag/call/tail/output relations only. Complete67unread declarations8004B/2001rows, known171methods173ranges24552B/37fields296B, both gaps excluded. All41actualtargetsU; raw0x14offset notaddress/object. Three peer audit failures retained, fourth continues only unfinished tail/no completed-prefix replay. Next [whole67native selection](research/device-analog-dsp.md#complete67-native-frontier-selected--2026-10-23) carries all8004B plusonlytwo new directtargetlocators asmetadata, fullfloor/onefreeze/solepeer/RootCITEONLY, already active without restart. Idle solepeer needs followup_task at finalfreeze; send_message alone does not trigger its turn. Canonicalresearch/atlas/currentplan-handoff/design/roadmap/inventory/project/index/coverage updated. Current24051draft additions/main25095of268015/O0/releases36current19/productOPEN unchanged.
+
+## [2026-10-23] query | Official tool archives and unattached calibration image adopted
+
+Adopted [four official archives](research/phase4-probe-batch.md#host-only-official-tool-archives-adopted--2026-10-23) after soleRoot SOURCE/package review5778B/9a98771f43173d9c555e9c6f8bc9c197443865e8076cb959c756f2da99c6a27b:26payloadpins/eight source-fourreceipt joins/fourpackages220671154B/8officialsources699060B/allHTTP200once. OBS/Audacity publishedSHA match; Coreinfo/loopMIDI officialorigin+localhash only. Initial Root metadata reader used wrong payload_files key and stopped before payload checks; actual files-list audit continued, preserved rather than acquisition retry. Adopted [new host-only LIVETOOLS image](research/phase4-probe-batch.md#host-only-tools-and-calibration-transfer-selected-and-adopted--2026-10-23),sole NEWmedia/code review2869B/f3444ad2738258335528931334579f869c21350d8dd05193e6eb2ae99afdfaef:256MiB/image6637f899fb30491b7a5184c6cbaed6cb0c42157d8e6f661c4a6f953889b74771/exact7data+3metadata/all78frozenfilesunchanged/10readbacks/26mtools0-emptyerr. Fullyread builder11420B/prebound/4positive6negative controls/fullunshrunk6727680000guard. Earlier sourceapprovals inherited, no proof/builder/child rerun. Ownsector metadata/mtoolsroundtrip notindependentFAT/guestrecognition; imageunattached. No install/extraction/Windowsversion-signature/usability measurement, guest-v1/QMP/UI/profile/AUZ action/Ograde; Claudeexclusiveguesthold unchanged. Parallelagent updated onlyPhase4/ADR; Root synchronized otheraffectedpages.
+
+## [2026-10-23] query | Complete SessionA INPUT sole review selected
+
+Selected [independent review of existing21prepared inputs](research/phase4-probe-batch.md#sessiona-prepared-input-sole-review-selected--2026-10-23), whose independentreview status remainsU. Tension_owner checks independence/no priorsolepeer before all14sourcecopies+sevenattributevariants/recipes/pins/fullreverse/v1authoringfailhistory. No builder/oldfixture/regeneration/corruptXMLparse/guest/original execution; fullphase+ownoutput/headroom budgets. Root remains citation-only underlyinginputs. Allguestinteraction staysheld pending Claudehandoff; pending userownership clarification has no reply and time elapsed grants no authority. This adds no new readiness/approval gate, expectedbehavior, Ograde or productclosure.
+
+
+## [2026-10-23] lint | Combined frontier and host preparation checkpoint
+
+[Documentation lint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-combined63-session0-preparation-2026-10-23-v1.json),354bytes/SHA256 `f57a163a82d9908a1d89386b1120b3f165213fc2106b687b5e156f65f67b4c6b`, passes24affected pages including program atlas: metadata/date/local-link baseline, exact plan-handoff checkpoint equality, append-onlylog, preserved design15/16proposal hashes and whitespace. Reused the inspected helper definitions/current-page checks with atlas scope, no old fixture/helper/proof/guest replay. The new sole SessionA reviewer found only an earlier routing/count check, explicitly not INPUT/code review; disclosed absence of named-author metadata and no SessionA authorship in its retained role/history before proceeding. Native67 and SessionA input results remain unadopted pending their sole final reports. Guest hold/all capabilityU/currentcase-site-releasecounts/productOPEN unchanged.
+
+
+## [2026-10-23] query | Complete SessionA INPUT sole approval adopted
+
+Previous turn made authoritative progress through combined63/archive/mediaadoption and24pagelint. Revalidated activeauthor/reviewer handles without restart; native67stillrunning, peerawaitsfreeze. Adopted [sole independent SessionA INPUT/code review](research/phase4-probe-batch.md#sessiona-prepared-input-sole-review-adopted--2026-10-23):report94114B/34b8bc6eec72bf6bb718e3d8943dc5590a541abda3db2ed9737abd6741771504, SAFE6916B/12c382b554692d84d46cd4c72ba5a6efa6dd9cd70952dba1958f90cb4c0f6300, reviewMF1608B/3ae5645c68a1bd4da3dc0f8642271ae35c81a99cf9323ed166179e20fecfb92a. Root hash/read only entireapprovedSAFEobject, no underlying inputs/code/reportproof/checker replay. Twentyoneinputs=14rawsourcecopies+sixliteralN1variants+plainXMLCreatorremoval, independentExpat/byte-span/fullreverse/mtime0checks; originalcorruptbytes notparsed, all29frozenv2filesunchanged. Builder10602B106L readinertly; oneNEWaudit17130B0-emptyerr/2positive6negative controls;48sourcecustody records/legacy0664modes qualified. Reviewer ownhistorynonauthorship/no packetnamedauthor/scopedprior-reviewsearch disclosed. Failedv1gzipassumption20prefixretained/metadatajoinonly, no v1payload re-open. Full6207586304floor=6039814144phase+32MiBoutput/final/log+128MiBheadroom/no shrink/unreservedpoints; nochildren. CanonicalPhase4/ADR/currentplan-handoff/project/index/coverage updated. INPUTreviewgap resolved for exactpacket only; no actualguestadmission, behavior, criterion, newcase/O/release/closure. Claudeguesthold/current24051draft additions/main25095of268015/productOPEN unchanged.
+
+
+## [2026-10-23] query | Concrete Windows raw-MIDI source method selected
+
+Selected [host-only Microsoft primary-source followup](research/phase4-probe-batch.md#windows-raw-midi-method-source-followup-selected--2026-10-23) for the existing rawMIDI sender/monitor/clock nomination and owned7record15bytevector. One minimal documented route/qualifiedclockpacking-precisionlimits, priorvendorproof inherited, no new senderimplementation/tool/driver/package/install/MIDIIO/model/guest action or fabricatedtimingtolerance/grade. Tension_ownerauthor/RootsoleNEWSourcepeer/full6039814144phase+16MiBcompleteownoutputs+128MiBheadroom-orlarger/onceboundedofficialfetches/no retry/helperproof replay. CanonicalPhase4/currentplan-handoff selection updated, Claudeguesthold and wholeproductOPEN unchanged.
+
+
+## [2026-10-23] lint | SessionA independent INPUT adoption checkpoint
+
+[Focused documentation lint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-session-a-input-adoption-2026-10-23-v1.json),364bytes/SHA256 `53baa8baa6bc44cae84cca43fc898c676129d3f9b9a945948e37440a6007e922`, passes24currentpages includingatlas, metadata/date/local-link baseline, exactplan-handoff equality, append-onlylog, historicaldesign15/16proposal hashes and whitespace. The sole INPUT peer's approved SAFE projection was read, not its underlying code/inputs/custody proof; no guest/proof replay or falsecapability credit. Native67 remainsawaiting finalfreeze/solepeer; documentary rawMIDI followup active. Guestownershiphold/criteriaU/O0/current24051draft additions/main25095of268015/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Windows raw-MIDI primary-source method adopted with gap
+
+Previous turn was a verifiedwait on liveAnalogauthor/MIDIsourceworker, revalidated without restart. Adopted [soleRoot NEW SOURCE/code review](research/phase4-probe-batch.md#windows-raw-midi-method-source-followup-adopted--2026-10-23),4725B/fb97ec690935894a8f3f5106fd140ac5cc2048a1cf9c9a95c17cb7d7e06f4454:10officialMicrosoftpages577198raw+67828derived B, selectedcallbackURL404/no body/retry/alternate. Fullyread collector6909B/method7090B/all10documents, all30payloadpins/all31frozenfiles unchanged, selection-HTTP-catalog/rawtext/versionjoins and sevenDWORDmappings checked. Twoauthorpositives/fiveURLnegatives/13full6190809088resourcepoints, no collector/oldproof/control/API/guest replay; sourceandownedvector inherited bycitation. Proposed WinMM sequence remainsnotrunnable:callbacksafe operations/lifetime/queue/entrytiming/driver-msQPCcorrelationU. Supportedpacking/inputrunningstatus/Sleep/QPCprecisiondistinctions notphysicalwire/clocktempo/jittercriteria/actualWin11proof. CanonicalPhase4/ADR/currentplan-handoff/index/coverage updated. Claudeguesthold/current24051draft additions/O0/main25095of268015/productOPEN unchanged; native67finalfreeze/solepeer remainsrunning, no reset or prematureadoption.
+
+
+## [2026-10-23] query | Exact legacy callback reference explicitly selected
+
+Metadata-only href/text extraction from already approved IN_OPENraw identified MidiInProc→/en-us/previous-versions/dd798460(v=vs.85). Explicitly [selected that one legacy Microsoft source](research/phase4-probe-batch.md#explicit-legacy-callback-document-source-selected--2026-10-23), once/newSOURCEpacket/Rootsolepeer/fullphase+ownbudget, rather than an unrecorded retry or automaticfallback. Prior404/frozenmethod remainexact. Sourceversion/signature/callbacksupportedfacts/unknowncurrentapplicability must remainqualified; no implementation/WinMM/MIDIIO/guest action or runnable/capability/Ocredit. Tension_ownerauthor/newmethodsfullyreadprebound/no oldcollector-fixture-proof replay. UpdatedPhase4/currentplan-handoff; native67author remainslive, no restart. Claudeguesthold/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] lint | WinMM documentary source checkpoint
+
+[Documentation lint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-winmm-source-adoption-2026-10-23-v1.json),348bytes/SHA256 `afb601a293049a16c3a74ee0f20106d4afcd00a1475e57fc2239ae4daf11eed8`, passes24currentpages includingatlas, metadata/date/local-link baseline, exactplan-handoff equality, append-onlylog, historicaldesign15/16proposal hashes and whitespace. RootsoleSource/code approval retainedcallback404/currentusabilityU, and selected onlytheexactlegacyreference inaseparatenewpacket; no collector/control/oldproof/guest replay. Native67author nowreportsfinalfreeze; live solepeer revalidated running, underlying findingsremainunadopted pendingitsSAFEreport. No restart or furthernativeacquisition selected. Claudeguesthold/current24051draft additions/O0/main25095of268015/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Legacy callback-source addendum adopted with retained corrections
+
+Adopted [soleRoot NEWlegacySOURCE/code review](research/phase4-probe-batch.md#legacy-callback-document-source-adopted-with-locator-erratum--2026-10-23),5124B/3b26604a43c7c51d5bc8f51f4fee50a0ffd90e49e4778d7454dbc2384509c7ab, finalMF2510B/95a6b79dc6956104621b089fde53c4c0b9123e4839fddeb2d425ea975041cabc. One exactMicrosoftlegacyreferenceHTTP200/no redirect/retry,38583raw+2191derived B/all14filesunchanged; newcollector6066B/addendum4073B/sourcefullyread/all13pins/sourceHTTP-metadata-text/prebinding/resource/initialseal joinschecked. Application-suppliedplaceholder/voidCALLBACK/3DWORD_PTR/messagespecificparameters/source53multimedia-deadlockwarning+other-system-functionallowance arelegacyfacts/currentapplicabilityU. CallbackQPConlyconditionalnomination; lifetime/queue/threading/latency/actualWin11ABIunproved. Initialproseoff-by-two locators preservedwith1543Berratum/adcc0550cf4d77245d99745cfb83c7021bcb58597fd5a257ce745db8c97464b6, corrected52/53onlyadopted. Root reader KeyError correct_locator at third erratumrow(correct) occurredafterallcompletedpin/sourcechecks; continuedonlyunfinishederratum/finalMF/reporttail, no completedprefix/fetch/code/control/oldproof replay. Twoauthorpositives/fourURLnegatives/threefull6190809088unreservedpoints/no shrink. CanonicalPhase4/ADR/currentplan-handoff/index/coverage updated. Earlier404/frozenmethod/vendor/vector untouched; no implementation/guest/API/MIDIIO/O/readiness/criterion/closure. Native67solepeer nowfinishing28groupswithtwoSAFErefinements, no prematureadoption/follow. Claudeguesthold/current24051draft additions/main25095of268015/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Complete67 native approval adopted and combined59 selected
+
+Adopted [solefrontier67 report](research/device-analog-dsp.md#complete67-native-study-adopted-with-two-semantic-refinements--2026-10-23),1348782B/3b8ff40532b18c054a83f483716208a3aa7a0fd7686402219358e7bfd80f8855, frozenMF50586B/227a9d1e0ad7d32886a303f0c71491a972de2f928adf6f8321315bf859ddb362/all332unchanged. Root hashverified/read onlyapprovedSAFEscalar/all28groups/fullqualifiedlimits/finite2/currentgeometry/dependency/lineage/history/refinements, no underlyingcode/native/C/header/tool/parent proof/checker replay. All67bodies8004B2001rows/no fields; two SAFErefinements distinguish firstunnormalizedx0 vssecond0/1 anddirectLDAPR vsaddress+outsideguardcalls. Getterx8outputslot/allocationreceiver/typedwrapperlocalpaths qualified/currentpublicemissionU. Nineprebound454L/55author10toy20peernegatives/oneaudit399branch95ADRPlimitedconfirmations/onecheckerbyteexact-emptyerr. Threeauthorhistories preserve wrongmetadatareaderkey/inerttemplatebeforeuse/post-nativecountassertion, no originalretry/prefixreplay/methodedit.150fullfloorpoints; ONLYpostcoordinationfinalpoint usesfull6039814144concurrentterm/7660226715need8050184192free, nonretroactive/unreserved. Qualifiedunion59/391/57/41accessclasses:15file144unreadB;26virtual161ACCESSsum137union/3overlaps, no objects/currentvalues. Rootmetadata-onlynew15vsold37fieldoverlapzero; known238methods240ranges32556B/37fields296B. [Selected combined59cohort](research/device-analog-dsp.md#complete59-frontier-and-admitted-dispatch-legs-selected--2026-10-23):wholemetadata/carry41hintsquery16new/carry2locatorsquery57headers, ONLY2native96B+15file144B=240B17preads, no newtargetbodyfollow; fullcurrentconcurrencyFROMSTART/fullremaininglifecycle/no budgetshrink/deletion. Authorrevalidated/activatedwithoutrestartofoldwork; solepeeronlyafterfreeze/RootCITEONLY. UpdatedcanonicalAnalog/atlas/currentplan-handoff/design/roadmap/inventory/project/index/coverage. No behavioralcase/grade/site/O/release/opaque/guest action; Claudeguesthold/current24051draft additions/main25095of268015/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Complete59 capacity stop and next-ledger Electric scope assessment
+
+[Complete59resourceadmission](research/device-analog-dsp.md#complete59-resource-admission-gap-no-original-acquisition--2026-10-23) authorreports450conservativefull12MiBunits+6039814144concurrent/final/headroom/owned require12374348105B vs8043249664free, short4331098441. Bound actualdistinctparentsundiscovered/notminimumneed; unsealedpartials retained, no finalMF/solepeer/neworiginalindex-C1-image-tool-child attempts or acquisitionmethodauthoring. RootCITEONLYunderlying49Lguard/eightnegatives; no newSource/nativeproofadoption or preflightchain. Independentreadonlyfindmnt/df/statvfs identifiesroot/storeext4same/dev/nvme1n1p2; newesthostpoint8043163648account/33008865280raw B,1447B/cb737815da0a7a056593cafe48163e2036caf634b078bb669ed9600fb4a2dacd. sudo-nneedsuserpassword; no reservedblock/mount/quota/deletion/move/guestchanges. Askeduserfor5GBadditionalfreecapacity orauthorizedpersistentdestination, no arbitrarybudget/scopecuts. IndependentREADONLYnextElectricledger-familyassessment selected:all11frozenS/currentR16/approvedmetadata, preserveoldunits/nav1180/whole16REQ40oldrows/unknowns/user15tenopaque/failedstartup0+activity_note/history/releases; no newsource/rawproof/helper/model/guestaction or additionalprep-reviewpacket. Tension_ownerauthorassessment/Rootscopechoicepending; scopepriorityandwholegoalunchanged. CanonicalAnalog/currentplan-handoff/design/roadmap/log updated; Claudeguesthold/O0/current24051draft additions/main25095of268015/productOPEN unchanged.
+
+
+## [2026-10-23] query | Whole frozen Electric S11 scope disposition and next Tension assessment
+
+Filed [completeElectric11S assessment](research/device-electric-dsp.md#complete-frozen-s11-scope-assessment--2026-10-23) from currentR16/canonicalresearch/approvedfamilyreview6641B/7b2f52ed1154d57d15682868d93f06310ce2aecd2ff5a3348022db3deb20d128 and exactledger214823B/e66ccc2714d656e50d70eb1956c0c0800701fd3e4c9f90f87ed6fa9786270db6 rows11/18–26/40. ElevenS areexistingnarrowclaims, notunreadmethods:012structure/019–026mappings alreadycovered;027A1 and041A2publicjoinsU. Existinghostnativegeometryalreadyadopted; no newcompleteElectric-onlyclass admitted bythepermittedmetadata, notglobalexhaustion. SharedemissionfrontierremainsAnalogresourcependingwhole59, no conveniencesubset. Root readonlyapprovedreviewchecks0/1/4+limits and11ledgerrows forscopefiling, no rawSource/X/native/numericproofrecertification or newprep-reviewpacket. Current1180nav/16REQ40oldrows/opaque10/history/failedstartup0+activity_note/releases unchanged. Next READONLYall12TensionS assessmentselected inledgerorder, sameboundaries, R17/8991nav/15REQ42oldrows/parkedD10/failedTCPB015+15unattempted+NULLbridges preserved; no guest/Sourceacquisition. CanonicalElectric/currentplan-handoff/index/coverage/log updated. UsercapacityandClaudehandoffstillpending; wholeLiveOPEN.
+
+
+## [2026-10-23] lint | S67, legacy source and capacity-disposition checkpoint
+
+[Focused documentation result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-s67-legacy-callback-capacity-2026-10-23-v1.json),388bytes/SHA256 `9c6863e82b7fd8d0159a34cd91b77109a014b740d6aeaf62ca71a8867abf3c55`, passes24currentpages includingatlas, metadata/date/local-link baseline, exactplan-handoff equality, append-onlylog, preservedhistoricaldesign15/16proposal hashes and whitespace. S67qualifiedSAFEadoption/legacy-sourcecorrectedlocators/currentS59conservativecapacitystop/Electric11Sscopefiling/Tension12Sassessment are synchronized. Rootsolelegacyreview's metadatakeyfailure continuedonlyunfinishedtail; no completedproof/collector/control/oldfixture/original/guest replay. FullwholeAnalogscope/budget retained; usercapacityandClaudehandoffpending, independentassessmentactive. Current24051draft additions/main25095of268015/reviewedO0/releases36current19/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Whole Tension S12 and Corpus S83 dispositions; remaining scope assessment parallelized
+
+Previous turn madeauthoritativeprogress throughS67/legacySOURCEadoption, capacitydisposition/Electricassessment and24pagelint. Revalidated agentstatuses; Tension12andCorpus83assessmentscomplete. Filed [all12TensionS](research/device-tension-dsp.md#complete-frozen-s12-scope-assessment--2026-10-23) from approved58003B/e91d30efcec353b102b868a809192757677ec4c7e442f2437e5d72e2c316ba61 reviewconclusions0/1/6–9+limits and151377B/1e2345c6518a2bfe35703bb60d0d1d1f4d17dfd28ab93fae9ba0eefd3635e9c2 ledger/outcomes6,11–21. Existingloader/mappings/defaultrelation retainpublicreceiver/outputU; TNR022ownerX vsledgerS distinctionpreserved, 900Bpriorstudy/tableanchor notnewgeometry. Filed [all83CorpusS](research/corpus-dsp-static.md#complete-frozen-s83-scope-assessment--2026-10-23) from39625B/50f38b5e6224dfded17d0d483a93a162a1d6a7ccb518b60f0459be1885ba000a reviewconclusions0–5/7/9/10+limits and175492B/2359909d041907b9122dc253842433edcce1ef6ba283fbdca717c3de27f7790a ledgergroupmembership.1+38+5+20+1+2+2+7+6+1=83 existingclaims, currentA1/emission/nativepoles/cadence/publictimingU; parked96B3ab0notextent/authorization. No newcompletefamily-onlycontentclass admitted, notglobalexhaustion orpermissionto trimAnalog59. Rootusedapprovedmetadata/canonicalfacts only, no rawSource/native/X/numerical/helperproofreview/replay; no newprep packet/code/behaviorcredit. CurrentTensionR17/CorpusR21preservationallIDs/U/criteria/history/releases unchanged. Parallel READONLYrest940S assessmentsselected inledgerorder across192/602/146units, allowingwholeunresolvedMETADATA-onlyfrontier nominations despitegeometryU butno autoacq. Thirdworker's initialbroad censusREPORTdisplay unexpectedlyexposedbeginningofembeddedoldchecker-sourceJSONstring; displaystopped, explicitmetadata-keyprojections adopted, no checker/helper or originalSource/native/image execution/open. Exceptionretained; no blanketzero-helper-textseenclaim. Currentplan-handoff/research/index/coverage/log updated; bothcapacityandClaudeguestholdpending, wholeLiveOPEN.
+
+
+## [2026-10-23] query | Independent whole Automation caller-frontier metadata selected
+
+Parallelremaining-S assessments identify acoherentwholeMETADATAquestion beforeanynewcontent: [completeAutomationcallerfrontier](research/automation-envelopes.md#whole-immediate-m-caller-frontier-metadata-selected--2026-10-23). Rootreadonlyapproved7385B/ee953dfcf6fd6844238d803a4d0b472735b807e6f6f51344cdabd99128230a3d summaryandcanonicalcallerqualification, notCONTRACT/nativeproof. Explicitnewselectionpermits metadata-onlyadapterover19735B/5e2536d835de7687b534b3d28e6f44127aed5be9afa36a998607038fc54033fc CONTRACT:all10pointerfields80B/eightaddress-only/wholeoutsidecallee-computedsite-ifreturnmembership, notconvenientslot/exitsubset.157direct=51conditional+86DIRECTcalls+20B-JMP PLUS36computed, not36subsetof86. Preservecorrectarchattribution/x86missingauthorityU/noARMnumericfalsejoin. Newadapterread/control/prebind beforeselectedfieldexposure, fullcompletecandidate/concurrent/resourceboundbeforeoriginalalias-C1-indexcensus; no budget/scopecut/native/C/FP/provider/runtime/guest action or oldproofreplay. OnepacketTension_ownerauthor/o137solepeerafterfreeze/RootCITEONLY/directSAFEreport, no additionalprep-reviewgate. IndependentclassnotAnalog59trim; usercapacityandClaudehandoffpending. CanonicalAutomation/currentplan-handoff/design/roadmap/log updated; allcoveragecounts/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Whole frozen S inventory scope projection filed
+
+Compiled [1076S membership planning projection](research/full-live-coverage-inventory.md#frozen-s-route-scope-assessment-and-new-metadata-questions--2026-10-23),205008B/445700062754564ed773693658441f0ac5a9cf7b50b5f98e1fd1c98f297a17c3, fromapprovedrequired-unitcensus1816361B/6ca3275d5933198bd757b5020f3c9659e1ddbe31dee64ab9ae1338f281c993c9. Rootmachinecheckedimmutablecensusidentity/32familyset/unchanged1076S/1046nonAnalog exact line-id-required-routepointermembership, no censusgenerator/checker rerun or sourceproofrecertification. Threeparallel940Sbatchassessments completed(192Playback–Automation,602ClipLaunch–Structure,146Arrangement–Utility), after106Electric-Tension-Corpusfiling; Analog30remainsactivefactorydepth/capacitypending. Existinglocal/fileclaims andallpublic/runtime/provider/FP/lifecycle/criteriongaps preserved; notunreadmethodcounts/passes/atomicdenominator/percentage/globalexhaustion. Wholemetadata nominations recorded inledgerorder:Automationcallerfrontier(selected),20AClipcontexts+separate2Songquestions/targetarchU, all4MNS053variants, complete48Indexdeclarations+8bridges/physicalmapU, complete44Pluginretained+14historical+6table+failedSourceU/9bridges; otherwholeboundedmetadatafrontiers remaincandidates/no autoacq. Source-version/geometry/architecture unknowns stayexplicit. ThirdworkerinitialcensusREPORTdisplay exposedbeginningofembeddedoldownedcheckerstring/independent_checker_source; no execution/reopen, subsequentexplicitmetadataprojections; exceptionretained. CurrentAutomationmetadataadapter explorations incomplete/nooriginalindex-image-toolreads; allpasses/historyretainedbeforeeventualsolepeer. Updatedcanonicalinventory/currentplan-handoff/atlas/project/index/coverage/log. Capacityquestion/Claudehandoffpending, Analog59scope-budgetunchanged, current24051draft additions/main25095of268015/reviewedO0/releases36current19/wholeLiveOPEN.
+
+
+## [2026-10-23] query | Architecture-bound AClip hook locator metadata selected
+
+RootandworkerreadcanonicalClipEvidence/Reading-and-writing metadata confirming102441a30asARM64inLive.arm64/3a99…cfad/AClipvtable1067b6cc0context; numericaddressalonewasnotusedasarchitectureproof andno oldvtable/source/native proofreopened. [SelectedfiniteACliplocatorstudy](research/clip-launch.md#aclip-post-load-locator-metadata-selected--2026-10-23) followsAutomationinledgerorder, parallelmetadataauthorship:all20CLR062–077/087–088/107–108questionsretained, CLR057/058SongconstructorunnamedU,separate. Oneexplicitpostloadhooknotcreation/preferenceortransitivegraphproof. Exactalias/export/C1declarationmetadata/boundedpredecessorifneeded/inheritedidentitymaponly/no Cnativeimageheader-vtable-slot-field-pointee-callerindexcontent. Tension_reviewauthor/o137solepeerafterAutomation/RootCITEONLY/newmethodsread-controls-bind/fullcurrent6039814144concurrent+wholelifecycleFROMSTART/onecensusfreeze/noproof-oroldhelperreplay/noAnalog59trim. OldfrozenprojectionarchUstatus remainsasof; currentcanonicalclarificationrecorded. Automationmetadataauthornowrecoversentire157direct+36computed+10fields+8address-only+2exits fromseparateretainedmetadatawhitelistsafterthreeincompleteCONTRACTqueries, no oldchecker/originalaliasC1indeximageopens sofar; allpasshistorypreserved. CanonicalClip/currentplan-handoff/inventory/roadmap/log updated; no newcase/grade/site/O/release/guestaction orwholeclosure.
+
+
+## [2026-10-23] query | Clip analysis-reader failure and narrow corrected-reader recovery selection
+
+Clipauthorfroze [failedmetadataattempt](research/clip-launch.md#locator-reader-failure-retained-one-bounded-metadata-recovery-selected--2026-10-23),4053B/7f695d84d3be7e2306244d6ef43f245f10dfcb59efc05595fd65b0d93d0b730a/25payloads192875B/all26files0444. ValueError EXTERNAL:0x1 fromhexparse-before-externalfilter; no C1/image/native/guest or completedparenthash-endpoints-targetreceipt, geometry/all20+Song2U. Originalmethods186L/27controls/attempt/emptyout/911Berr retained, newfailurechecker27L/6promotionnegatives; solepeeronlyfailure-check.py--check, originalsuccesscheckerINELIGIBLE. RootCITEONLYpendingreport. Rootexplicitlyamendedownreader-noretry instruction forONEcorrectedanalysis-onlymetadataattemptinseparatecompaniondepth-clip-aclip-postload-locator-recovery-v1, preservingoldfrozenbytes/total2attemptsexplicit/no automaticthird. Reversibleanalysttoolbugfixalreadywithinusergoal; NOTfailedX/audio/originalprocess/provider/model/opaque-policyretry ornewstandingpolicy. Newexternal-sentinel/malformednonexternal/ordinal-custodycontrols/readbind/fullsamecurrentconcurrencybudget/freshreceiptsrequired; no oldcollector/checker/fixturesrerun/unreceiptedpartialtargetuse/bodyfollow. Tension_reviewauthor/o137solepeerafterAutomation+failure/RootCITEONLY/no extraRootpreflight. Currentplan-handoff/Clip/design/roadmap/log updated; no newcase/grade/site/O/release/guestaction/closure. Automationwhole92questionmetadata:census18newARMdeclarationscompleted,x86all46gaps,18indexsitespresenceonly/omittedhintsU; packagingpendingsolepeer, no prematureadoption. Newhostfreepointreported~9.6GB/causeU stillbelowAnalogfull12.37GB, no budgetshrink/resourceassumption. WholeLiveOPEN.
+
+
+## [2026-10-23] lint | Whole S scope and metadata-reader recovery checkpoint
+
+[WholeSselectionlint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-whole-s-scope-selection-2026-10-23-v1.json),381bytes/SHA256 `2209b9aa251feef09eaf6dced338e34a2b3e3f7ea123fdcebef274136edf7a3d`, passed24pages beforetheClipreaderexception. [Currentupdatedlint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-whole-s-and-clip-recovery-2026-10-23-v1.json),394bytes/SHA256 `689ccef46139485423b0722c5de65be5d710f147250c81aca3df2f632d51bf58`, passes24pagesafterthat explicitboundedanalysis-readerrecoveryselection: metadata/date/local-link baseline, exactplan-handoff equality, append-onlylog, historicaldesign15/16proposal hashes and whitespace. No oldhelper/fixture/native/runtime/guest replayforlint. NewlyfrozenAutomationwhole92questionmetadata andClipfailed/recoverypacketsawaitsolepeerreports, no prematureRootsourceproofadoption. Peeractivationrevalidated: o137hadremainedCOMPLETEDdespiteauthor'ssentmessage, soRootexplicitfollowup_taskstartedfrozenAutomationreview, no author/collectorreset. Rootprovidedexactderivedordinal/chunkfilename-schema authoritymetadata andpreservedallfield-selectionfailures; no SourceparentsopenedbyRoot. CorrectedClipactualcensusretainedfreshreceipts/declaration452B, but originalclassifierUNKNOWN(exported-with-warningsvocabulary) preserved; no body/mappedadmission/coveragecreditpendingpeer. Sourcehistoryscopeexceptions andtwoanalysismetadataattemptsremainexplicit; failedX/audiohistoriesunreplayed. CapacityandClaudehandoffpending, current24051draft additions/main25095of268015/reviewedO0/releases36current19/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Automation frontier, failed Clip and recovery metadata adoptions; native questions selected
+
+Adopted [Automationwhole92metadata](research/automation-envelopes.md#whole-caller-frontier-metadata-adopted--2026-10-23) fromsole138360B/67125e48a804e5b82b93c1aad601d6fc6d88460c2d63992fe90594d5603e6363 report; RootreadapprovedSAFEscalar/understanding/limits/all18declaredgeometry/whole92union/lineage/historyonly.16methods543L/18peernegatives+4perrecordarithmetic controls/onlypeercheckeroncebyteexactemptyerr/all75unchanged; no authorchecktranscript.92questions/18ARMdecl932B233rows/46x86gaps,18site-kindonly/omittedhintsU; physical179191798B/Csemantic0. ThreeCONTRACT59205Bqueries/unretainedpreusedraft/stalefinalizer/S67KeyError-noauthorreread/threebasenameobservationwithoutseparatebinding/controls4vs5count/POSTinterpreter/onecommontupleperC1/retained-only6723485696vsoriginal7893696512guards allqualified, no retroactiveidentity/endpoint/resourceclaims. Peernewmapmetadataintake andperrecordinclusive arithmeticqualify12text6stubs, noglobalnovelty. Rootapproved-metadata-overlapfinds4alreadyread144B, wholeclass14unread788Bplus5ARMfields40B/old37overlap0. [Selectedwholeunreadnative+18uninspectedhintfields](research/automation-envelopes.md#whole-dependency-class-native-and-unread-hint-study-selected--2026-10-23),828B19preads/fullmin7893696512currentconcurrentFROMSTART/PREeligibility/no oldbodyreplay/onefreeze/o137solepeer/RootCITEONLY.
+
+Separatelyadopted [Clipfailure-only](research/clip-launch.md#failed-locator-and-qualified-recovery-metadata-adopted--2026-10-23)29583B/1f562300f69a6748a6b343defa2a3aa60bd0d4cfbdffa24b003cfdb4ab59eb5d andqualifiedrecovery53739B/48409588a9691c2277a036e610985a3ac5a515c727571191160c17e68ed12e2b soleprojections. Oldfirstattemptremainsfailednohash/receipt/target/geometry; failurecheckeronly/10peernegatives/all26unchanged. Recoveryonefresh2-parentcensus122466106physicalB, exactordinal171763/chunk01717line64/one452Bheader/globaloverlapwarning. Five215Lmethods/18owned14peernegatives/onlynewcheckeroncebyteexactwithauthorUNKNOWN/all27unchanged. OriginalclassifierU(exported-with-warningsnotinwhitelist) preserved, independentpeerqualifies[102441a30,102441bf4),452B113rows,fileoff38017584/inheritedmap/known240+37overlap0/globalnoveltyU. Rootmetadata-onlyvsAutomation18declsoverlapalso0. Totalmetadataattempts2/nothird, no failedX/audio/runtime/opaque-policyretry. [Newfirstwholehooknativequestion](research/clip-launch.md#whole-aclip-post-load-native-declaration-selected--2026-10-23) selects452B/onepread/newPREeligibility/controls/fullmin7893696512/onefreeze/o137solepeerafterAutomationnative/RootCITEONLY, oldfailed/recoverybytesuntouched. All20AClip+2SongpublicjoinsU, nodefault/constructor/heldvalue/Save/runtimeclaim. CanonicalAutomation/Clip/currentplan-handoff/atlas/project/index/design/roadmap/inventory/coverage/log synchronized. No newcase/grade/site/O/release, Analog59budget/scopeandClaudeguesthold unchanged; current24051draft additions/wholeLiveOPEN.
+
+
+## [2026-10-23] lint | Three metadata adoptions and native selections; corrected full26-page scope
+
+The initial [24page result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-automation-clip-metadata-adoption-2026-10-23-v1.json),386B/0b57b6178252a403cb8dccc9ac1cad30a93352d9df4e6fe1c00936e9966bb99a, omitted newlyaffectedAutomation/Clipcanonicalresearch fromthereusedhelperlist. Rootcaughtthatverificationgap, advancedtheirfrontmatterdates to2026-10-23 andran [full26page result](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-automation-clip-metadata-adoption-2026-10-23-v2.json),563bytes/SHA256 `22d4c938a8a4ca47d25c4e698ba38b1457688b466041df2e4dcffe530913946c`, PASS/noerrors. Scopeincludesatlas+Automation+Clip andall23priorcurrentpages: metadata/date/local-link baseline, exactplan-handoff equality, append-onlylog, preserveddesign15/16proposal hashes and whitespace. Earlier24checksremainvalidonlyfortheiractualscope, notclaimedallaffectedpages. FuturecurrentlintmustincludeallthreeextraSourcepages, notonlyatlas. Solemetadataadoptions/firstfailedClip+qualifiedrecovery/whole1076Sassessment andtwoNEWnativequestions synchronized; no Source/harness/helper/native/runtime/guest proofreplayforlint orcompatibilityclaim. CurrenttwoauthorspreparingSourceboundnativecohortswithPREeligibility/fullcurrentguard, solepeerqueueknown; wholeAnalog59/capacityquestionandClaudeguesthold remainunchanged. Current24051draft additions/main25095of268015/reviewedO0/releases36current19/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | Pre-original owned decoder limit failure retained; bounded native-v2 correction selected
+
+Previous turnprogress:fullSscope andthreequalifiedmetadataadoptions/twonativequestions,corrected26pagelint. Currentauthorreports [Automationnative-v1pre-originalfailure](research/automation-envelopes.md#pre-original-owned-toy-limit-failure-native-v2-selected--2026-10-23),frozenMF3824B/6d3dc2f29b8647d25869790ef8d617d7fad511d2a1636a6c457b62529b613dea/23payload141513B/all24staticfiles. Report2912B/74c067dcb499ae415b26c2213e893b4c0fc5b3911bcacf0c93a59162af62023b:oneapprovedmetadataintake/14pure neg3pos/one8Bownedtoy, firstPopenpreexecSubprocessError/no returnedchildresultPID/decoderexecution;0originalimage-index-preads-native-hintfields. StaticparenthardCPU10vschild20conflict/no diagnosticrerun; smallsealhelperinertreadbutno separateprebinding/control retained. RootCITEONLYunreviewedfailure/currentoriginalscopeunchanged. Explicitseparatenative-v2correctedOWNEDtoolattemptselected, newread-controls-bind/allCPU-AS-FSIZE-NOFILE-stackinheritanceguard/child20boundedparent>=20; completedmetadata-authoritymayinheritbyidentity, no repeatedprefix. Onefailedownedstage+onecorrectedownedstageexplicit/noautomaticthird; firstoriginalacquisitiononlyafternewtoypass/fullunchanged7893696512guard+6039814144concurrentfromstart. NotuserfailedX/audio/reference/runtime/provider/model/opaque retry ornewstandingpolicy. InertlimitcheckrelayedtoClipauthor:its2newtoys+452Bchildhadalreadycompletedonce/exit0emptyerr, no retries; parentlimitsnapshotnotretained, newpostsnapshotwillnotretroclaimprechildstate. LatestRootreadonlyFSpoint16:00:13UTCaccount9623367680/raw34589069312B/causeU, stillbelowAnalogwhole12.37GB; no filesystem/guestchange/budgettrim. CanonicalAutomation/currentplan-handoff/design/roadmap/log updated, twoauthorslive/solepeeravailable; wholeLiveOPEN/current24051draft additions/O0/main25095of268015 unchanged.
+
+
+## [2026-10-23] query | Single-variable owned raw-loader test green; all-four MNS-053 metadata selected
+
+Applied systematic-debugging andtest-driven-development skills toOWNEDanalysis-tools only. AfterCPUinheritancefix passed7newnegatives/2boundaries, v2Toy1exit0emptyerr andToy2exit0/3visuallyexpectedrows/149Bhdr-binapplystderr stoppedbeforepreboundrowassertions; SHA94819a9ed31b37a37153dc59d0f84dee602a6cc7a644fae76165392ea42546ad retained. PriorworkingRizinargvmetadatafromo137includes-n, no proof/toolreopen. Rootexplicitlyselected ONEsingle-variable SAMEOWNEDToy2diagnostic/ONLYadd-n/newprospectivebinding/oldoutputsunchanged/no unmodifiedREDorToy1rerun, strictstderrguard preserved. [DiagnosticGREEN](research/automation-envelopes.md#owned-raw-loader-diagnostic-first-original-scope-unchanged--2026-10-23) authorreports12651B/b50e5ab06ca77ecf142bdf3918a150bba7830424455de513cfb4da9fdec3d33c exit0emptyerr/exact3rows/2destinations; lifetime4Popen3completedownedchildren/0originalbeforegreen. Supports12Btestonly, nouniversalprobe-suppressionclaim. Oldtoyargshadno asm.esil/emu settings,pdj/qonly/passiveESILnotexecution; no retroactiveflagclaim. Minimalprospectiverawdecoderfix+missing-ncontrols/readbind beforeFIRSToriginalscopeunchanged, noreference/audio/X/runtime/opaque-historyretry. Allfailurebytes/methods retainedv1/v2, no furtherautomatictweak.
+
+Selected [wholefourMNS053metadataquestion](research/midi-note-storage.md#all-four-mns-053-frontier-metadata-selected--2026-10-23) inledgerorder afterClip:ARMcanonicalEvidence/source5293B60f16989eebef6be56fe17a0b153b3f04ae6fe9109598b605473cd1f0f779595, twoalreadyreviewedSourceHEADER/rangetopology836/320B(notfreshnative), two newdirectcallee10156da64/10156d4c8, twointervalglobal105847020/105847028 MAPextentcontentsU, three providerSLOT-OFFSET predicates+3c8/+3d8/+250notaddresses/unnamedtransactions-receiversU. All4variants/r6-v4/IDs/criteria/releases retained. Newwhitelists/actualexternal-ordinal-overlapcontrols/PREPython/readbind/fullmin7893696512+6039814144concurrentFROMSTART/onefreeze/tension_reviewauthor-tension_ownersolepeerafterAutomationv2/RootCITEONLY, no sourceC-native-image-header-vtable-pointee/provider/model/guest/oldproof/fixture replay orautoacqfollow. CanonicalAutomation/MIDI/currentplan-handoff/design/roadmap/index/log updated; nextfullaffectedlintmustincludeMIDIresearch inadditionto26priorpages. Clip452nativefrozen8138B/1f2923a49b944ba71d43e888bca7249a79570c57e0623fd5f80e3f9dcf4e17a1/51payload211216B/all52files, one452B113rowbody/2newtoys allonceexit0emptyerr and10qualifiedgroupsawaitsoleo137review; no prematureadoption. BothcapacityandClaudehandoffpending/current24051draft additions/O0/main25095of268015/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] query | AClip hook adoption, Automation partial and shared capacity stop
+
+Root verified the sole AClipnative review96212B/6a46d68b…484e22 and read only approved SAFEunderstanding/wholefrontier/geometry/scope/lineage/limits/history. Filed all ten qualified groups in [clip-launch](research/clip-launch.md#whole-aclip-hook-native-findings-adopted--2026-10-23), including distinct entry/helper-return and twox20carriers/Nflag-onlyFP/unnormalizedreturns, complete9destinations/5sites/2windows/14runtimeclasses/17candidates, missing historical parentlimits and preserved reader/packaging histories. No underlying code/source/tool/checker replay or new public behavior credit.
+
+Filed [Automationv2author-reported partial](research/automation-envelopes.md#native-v2-partial-capture-and-protocol-breach-retained--2026-10-23):828Bcapture/sixdecoders55rows/seventhguardfailure/sevenunlaunched; hintread afterdecoderstop was a protocol violation and remains quarantined, not retroauthorized. Partialcheckerlaunch stopped at its unchanged space guard before audit/report/negatives; tool-returned traceback has no retained file. V2 remains0664/unsealed/unreviewed, not an approved197rowstudy. Explicit separate owned344Bdiagnostic/conditionalretainedsuffixstatic-tool recovery is selected only after truthfulv2handoff and currentfullcapacity eligibility; no firstsix/image/index/field replay or reference/X/audio retry.
+
+Filed [MNSpre-acquisition stop](research/midi-note-storage.md#mns-053-preparation-stopped-before-acquisition--2026-10-23),770B/ca4cd02b…51931:spaceguard beforebinding, then unconditionalcontrolscommandfailed openingmissingbinding beforefixtures/import/source. No controls/census/peer result. Root independently observedroot/store100%used/62410752Bfree; retained531Bhostroutingrecord/00691da1…a7000. [All capture/diagnostic/checker-seal launches held](research/native-analysis-recovery.md#shared-filesystem-capacity-stop--2026-10-23), budgets/scope/evidence unchanged, usercapacityrequestpending. No VM interaction/guest-v1change/deletion. Updated canonical owners, exact plan/handoff checkpoint, design/roadmap, atlas/inventory/project/index/feature/coverage routes. Counts remain24,051draftadditions/main25,095of268,015/reviewedO0/releases36current19/wholeLiveOPEN. Documentation lint follows separately.
+
+
+## [2026-10-23] lint | Clip native adoption and capacity-stop routing, 27-page scope
+
+The [focused documentation check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-clip-native-capacity-stops-2026-10-23-v1.json),365bytes/SHA256 `9bc15778bafae0e238b28708337ea9670b9cde1ea2c71e906e918bc5d62f0520`, passed27affected pages including Automation/Clip/MIDIresearch and programatlas:requiredmetadata/dates/local-link baseline/exactplan-handoff equality/append-onlylog/unchangedhistoricaldesign15–16proposalhashes/scopedgitdiffwhitespace. Existing baseline broken links remainoutside this change; no source/releasedbinary/tool/guest execution or clean-workspace validation was performed.
+
+O137 performed a report-free narrow NEWwording/routing review, using its already completed Clipsole-review knowledge and only canonical text. Clipgroups/counts/unknowns matched; Automation/MNSpartialattempt/stop wording had no material finding. It found one stale front-door instruction, “Static S work continues”; Root qualified it in the mirrored current checkpoint and project summary to permit only small documentary reconciliation under the sharedcapacityhold. No proof packet/helper/checker/source/tool/decoder was reopened, no new peer files or second actual/source review. Final routing recheck follows this correction under the same27-page scope.
+
+
+## [2026-10-23] maintenance | User-directed space cleanup in Downloads and PtychoPINN
+
+User requested freeing space and steered to PtychoPINN/clones/.artifacts. Parallel readonly inventory distinguished home from root and retained source changes/environments/models/datasets/results/active workers. Root removed the explicitly abandoned25H2partial+controls(1525997568allocatedB), purgedpipcache(47161344allocatedB), cleared only three documented-regenerable mainmemoizationNPZs(3508944896B), and pruned three exactSHA-identical C4timing inputcopies(3339620352B), keeping the fourth complete copy and every unique scientificpayload/checkpoint/metric/figure/log. Total8421724160allocatedB acrossfilesystems, not net freechange. [Canonical cleanup/revalidation](research/native-analysis-recovery.md#user-directed-disposable-cleanup-and-capacity-revalidation--2026-10-23) owns exactimmutable receipts/sourcecopy/restorepaths/limits. The three oldduplicateinputpaths must be restored before an oldcommandthatrequires them.
+
+Root-space increase to10.6GBbeforecleanup wasexternal/causeU, not credited. Afterduplicatepruning root exceeded the unchanged12.374GBAnalog59contract at an unreservedpoint; fresh complete guards stillrequired. No Conda/env pruning, Tracker reset, Trash operation, journalvacuum, source/evidence/handoff deletion, guest-v1/QEMU/QMP/UI/media/AUZ action or newanalysis execution. Currentmedia metadata unchanged/no newcontenthashclaim. Updated latest canonical capacity status, exactplan/handoffcheckpoint, project/index/design/roadmap pointers; no requirements/case/grade/site/O/release change. Claude retains guestownership. Documentation lint follows.
+
+
+## [2026-10-23] lint | Disposable cleanup and capacity routing
+
+Focused scope remains27affected wiki pages, including the capacity owner/project/index/design/roadmap/currentplan-handoff checkpoint and append-onlylog. The check validates requiredmetadata/dates/local-link baseline/checkpoint equality/unchangedhistoricaldesign15–16proposalhashes/scopedgitdiffwhitespace. Cleanup separately verified exacttarget absence, retainedcopySHA/read-endpoint equality and protectedcurrentmedia metadata. No scientific/numerical/model/reference/guest execution or original-vs-candidate compatibility check was performed; space snapshots remainunreserved and the three oldduplicateinputpaths require restoration before reuse. The final focused result is retained in [cleanup documentation lint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-disposable-cleanup-2026-10-23-v1.json).
+
+
+## [2026-10-23] lint | Cleanup lint receipt correction
+
+The immediately preceding entry's “final” receipt wording was premature:its forward Markdown link named the not-yet-created result file, causing the sole lint finding. Both initial failed check and the diagnostic rerun returned the same missing-link condition; no source/tool/native/cleanup operation was replayed. The v1receipt now truthfully retains that FAIL, with the diagnostic separately preserved as `documentation-lint-disposable-cleanup-2026-10-23-failed-v1.json`. This corrects the earlier entry by addition, without rewriting log history. The corrected27-page final-state check is recorded separately as `analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-disposable-cleanup-2026-10-23-v2.json`; it supersedes v1only for documentation routing, not cleanup/source or compatibility proof.
+
+
+## [2026-10-23] maintenance | Selected analyst execution resumed after cleanup
+
+User says “proceed”. Root reread currentplan/handoff equality and amendedrevision4selection/one-review rules, checked root/store13.936GBavailable, and recorded [resumption routing](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analyst-execution-resumption-2026-10-23-v1.json). Originalroles resume completeAnalog59(o137author/tension_reviewsolepeer), retainedAutomationv2partial audit(tension_ownerauthor/o137solepeer afterauthorboundary), and wholefourMNS053metadata(tension_reviewauthor/tension_ownersolepeer afterauthorboundary). No root Sourcepreflight/secondproof gate; workers must admit their own fresh unchanged complete budgets/PREeligibility/fullcurrent6GBconcurrencyfromSTART beforeuse. Original capacity stops/failedpreparation/unsealedpartials/poststophintquarantine and allfailed-unattempted histories remain.
+
+Updated affected canonicalresearch/currentcheckpoint and mirroredhandoff. No actualcapture/audit/native/source result is asserted by scheduling; no case/grade/site/O/release/wholeclosure change. AllClaudeownedguest/VM/QMP/UI/media/profile/AUZ actions remainheld; Amp/Cab/opaque/Xfailedhistory/T1.7 boundaries unchanged. Subsequent author/sole-peer receipts govern actualoutcomes.
+
+
+## [2026-10-23] query | Complete AClip frontier metadata and raw constant-window cohort selected
+
+After soleapproved wholehook evidence, selected [the complete9callee/5site/17candidate/14runtimeclass frontier](research/clip-launch.md#complete-aclip-dependency-metadata-and-two-constant-windows-selected--2026-10-23), plus exactly two mapped16byte rawfile windows32B/twopreads, no newcallee body/neighbor/pointee/native decoder/FP interpretation. Sourceauthority remains96212B/6a46d68b…484e22approvedMETADATA/SAFE projections; oldhook/proof/failedlocator/classifierhistory carriedbycite. Tension_reviewauthor/tension_ownersolepeer afterindependentboundaries/RootCITEONLY. Fullcurrent6039814144concurrent+lifecycle/min7893696512-or-larger/fullyread-prebound-PREeligible methods/firstfault/newstage-resultchecks; onefreeze/soleactualreview, no additionalgate/retry. Updated canonicalowner/currentcheckpoint/mirroredhandoff/design/roadmap/index. Old20AClip+2Songpublicjoins/IDs/criteria/releases remainU/exact; no case/grade/site/O/release/closure claim. Claude guesthold unchanged.
+
+
+## [2026-10-23] query | Automation v2 sole partial adoption and conditional v3 release
+
+Root verified509899B/7d6b4e4e…1babfa solepartialreport and read only approvedSAFE/all18+92/geometry/lineage/limits/history/resource/protocol projections. [Canonicaladoption](research/automation-envelopes.md#native-v2-sole-partial-record-adopted--2026-10-23) preserves six55-rowguardedbodies/onediagnostic344BwhollyU/seven224Bunattempted/fourold144Bbycite, fivezero8BGOTfilewords, full828B/19preadcustody and all18poststophintsquarantined. Parent/PID/limit/fsync/resource/capacity-trace limitations explicit; oldscope/publicFP/provider joinsstayU/no prefixadmission or retrocleanfirstfault. Onlypartialcheckeronce/18peerneg/tenlimitedbranchwordchecks, noRootunderlyingproofreplay.
+
+[V3posthandoffscope](research/automation-envelopes.md#native-v3-after-sole-handoff-exact-diagnostic-command-and-retained-semantic-scope--2026-10-23) maystartafter tension_owner completes activeMNSsole-reviewprefix and freshfullguard. Record exactcommandexpression `pdj86;q`→`pDj344;q`/instruction-vs-byteunits ononeNEWowned344Btoy, no otherfactor. OnlyqualifyingRED/GREEN permits correctedretainedbody7+firstwhole7suffixstaticdecodes/noimage-index-fields-first6decoderreplay. ExplicitNEWwhole-class semanticannotationsmayconsultretained55rowprojections, with oldguardproof inherited and no secondoldproofreview. No reference/Xaudiofunction retry, opaque/provider/model/FP or Claudeheldguest expansion. Updated canonicalowner/currentcheckpoint/mirroredhandoff/atlas/inventory/index/design/roadmap/coverage. Counts/criteria/releases remainexact; wholeLiveOPEN.
+
+
+## [2026-10-23] query | MNS four-variant frontier metadata adopted
+
+Root verified70392B/c624a64a…fdcdc solemetadatareport and consumed only whitelisted approvedSAFE/sixgroups/fullunion/allfourgeometry/global-slot/lineage/limits/history/checker/treeprojections. [Canonicaladoption](research/midi-note-storage.md#all-four-frontier-metadata-adopted--2026-10-23) preserves fourMNS053(a)–(d)U/nullvariants/r6v4expectations/criteria/releases, four836/320/16/8Bdeclarations1180B295prospectiverows/zerobounded240overlap, twoMAPglobalpointswithwidth-value-extentU and threeslot-offsetpredicatesnotaddresses. C/code/optext/native/globalpointeebytes selectedzero, originalSourcecomparisonsemantics inheritedbycite.
+
+Onefirstcensus/3physicalparents122426303B/5methods199L/20owned10peernegatives/onepeerchecker217Bexact-emptyerr/all34unchanged. Qualify warninglocators/nonreturn, PREparentlimits/transitivePythonU, store-onlyresourcepoints/fullcurrentconcurrency/unreservedcapacity. Earlier770Bresourcehalt/768Bmissing-bindingstderr remainbyteexact, unconditionalfailedlaunch notcleanfirstfault; no completedSource/helper/fixtureproofreplay. Updated canonicalowner/currentcheckpoint/mirroredhandoff/atlas/inventory/index/project/coverage. Wholefour-nativequestion nominatedonly/no successorselected; no newcases/behavioralgrade/sites/O/releases/wholeclosure. RootCITEONLY and Claudeexclusiveguesthold unchanged.
+
+
+## [2026-10-23] query | Whole four-declaration MNS053 native question selected
+
+AfterRootconsumed70392B/c624a64a…fdcdc solemetadataSAFE/wholeunion/geometry/lineage/limits/history, selected [allfouradmittednative declarations](research/midi-note-storage.md#whole-four-declaration-native-question-selected--2026-10-23):836/320/16/8B=1180B/fourpreads/295prospectiverows, onefreshpreferredARMROFD/hash, noC1/alias/oldSource/global-vtable-slot-pointee contentfollow. Globalpointsretainunknownwidth/values/objects, providerpredicatesremainoffsets. O137authorafterclosedAnalog59boundary, tension_reviewsolepeerafterclosedClip/Analogpeerboundary; O137separateAutoV3peerroleonlyataclosedMNSauthorboundary. Fullcurrentconcurrent/lifecycle/min7893696512-or-larger/PREsource-tool-inheritancelimits, new836Bbytecoverageownedfixture andbyte-countRizin/firstfault/no retry/onefreeze-directSAFEsole report. No extraRootpreflight gate, oldproof/decoder replay, actualLive/Xaudio/reference/provider/model/FP/opaque/Claudeheldguest action. Updated canonicalowner/currentcheckpoint/mirroredhandoff/design/roadmap/index; no case/criterion/grade/site/O/release/closure change.
+
+
+## [2026-10-23] lint | Resumed standing Source cohorts and partial/metadata adoptions
+
+[Focused27-page check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-resumed-source-adoptions-2026-10-23-v1.json) passed after executionresumption, Automationv2truthfulpartial/MNSmetadataadoption and wholeClip/MNSnextstaticselections. Requiredmetadata/dates/local-linkbaseline/exactplan-handoff equality/append-onlylog/immutablehistoricaldesign15–16proposalhashes/scopedgitdiffwhitespace passed. Newreceipt exists beforethislink; its addedloglink/whitespace werecheckedseparately. No originalimage/code/capture/checker/decoder/helper/fixture or releasedbinaryproof wasrerunbyRoot, and no guest/compatibility/isolationtest occurred. Countsremain24051draftadditions/691X1076S3857O-pending/main25095of268015/reviewedO0/releases36current19/wholeLiveOPEN.
+
+
+## [2026-10-23] maintenance | Parallel sole-review queue ownership adjusted before review starts
+
+To use closedauthoringboundaries without serialpeerqueues, tension_owner explicitly confirmed zeroClip payload/method/checkerreads and helditsunbegunqueue; Root reassigned ONEClipfrontier/32Bsolepeer to o137atclosedMNSnativeauthorboundary. Tension_review then confirmed zeroMNS4nativepayload/method/checkerreads whileitsAnalog59soleprefix remainedactive; Root withdrewthatunbegunqueue and assigned ONE MNS4nativepeer totension_ownerafteritsAutoV3freeze/closedauthorboundary. No activeSource/tool/checkerprefix interrupted or twoactualpeers created. [Clipamendment](research/clip-launch.md#sole-reviewer-scheduling-amendment--2026-10-23) and [MNSnativeamendment](research/midi-note-storage.md#native-sole-reviewer-scheduling-amendment--2026-10-23) retain frozenoriginalreviewerlabels asasof schedulingdata. Currentplan/handoff/indexroles updated; no Sourcecontract/input/code/guard, userpermission, behaviorcase/grade/site/O/release or Claudeheldguest change.
+
+
+## [2026-10-23] query | Four sole-approved static cohorts adopted and shared references reconciled
+
+Canonicalowneradoptions were applieddirectly from soleapprovedSAFE by the respectiveactualpeers, each editingonlyone researchpage: [Analog59](research/device-analog-dsp.md#complete59-study-adopted-qualified-local-paths-and-reconciled-frontier--2026-10-23), [AutoV3](research/automation-envelopes.md#native-v3-retained-recovery-and-conditional-semantics-adopted--2026-10-23), [Clipfrontier32B](research/clip-launch.md#complete-aclip-frontier-metadata-and-raw-file-windows-adopted--2026-10-23), [MNS4native](research/midi-note-storage.md#all-four-declaration-native-review-adopted--2026-10-23). All5/10/6/12qualifiedgroups and full frontier/lineage/limits/history arefiled. Rootverifiedreportpins/consumedapprovedSAFEonly; no secondSource/actualreview or original/tool/checker proofreplay. Analog394vsfrozen494typo/raw410vsreconciled420/threepeererrors, AutoASOF18+92/currentroute/18permanentquarantine/peerTypeError, Clipstoreonly/afterdefs, MNSbootstrapNOTRETAINED/peerreadererrors remainexplicit. NoSourcefrozenedits, publicABI/FP/provider/currentbehavior/case/grade/site/O/release credit.
+
+[Newrouting-onlymetadatareconciliation](research/program-structure.md#cross-cohort-static-reference-reconciliation--2026-10-23) comparesapprovedranges:Analog57includesexact12B1054d30f8stubnowguardedAutoV3, so nextwhole57classmustcarry1/read56remaining7372B1843rows; MNSnativeQ0access1055d9680matchesexistingClip16BFILEBITS/SHA497821f6…0eb32f, tobecarriedbycite. TheotherMNS8B1064f8818cellalsoappearsinAutofive-cellnominationandremainsunread. NoRawbytes/source/oldproof reopened,norFP/runtime/objectidentity inference. Rootupdatedcurrentplan/mirroredhandoff/atlas/inventory/index/project/coverage. Existingcounts/criteria/releases/wholeLiveOPEN and Claudeguesthold unchanged; nextcohortsneedexplicitselection/freshfullguards.
+
+
+## [2026-10-23] query | Next whole static cohorts selected with shared-proof exclusions
+
+Selected [Analogwhole57](research/device-analog-dsp.md#whole57-class-after-shared-stub-reconciliation-selected--2026-10-23):all57class accounted,12B1054d30f8alreadyguardedAutoV3bycite,56newranges7372B1843rows/56preads; onlynewtail101a9d3d0andentire29candidate-delta metadata,carryold391/57hints/no29virtualclassfilebytes. [Clipwhole9](research/clip-launch.md#whole-nine-callee-native-class-selected--2026-10-23):1032B9preads258rows,nooldhook/32Bfieldreread. [Autowhole12-16-5-4-2-12frontier](research/automation-envelopes.md#complete-recovered-method-frontier-metadata-and-five-cells-selected--2026-10-23):metadataandonlyfive8Bcells40B/5preads,carryknown1015692c0Clipdecl8Bbycite; new16sitesdistinctfromquarantinedold18, twoifreturntopologiesnogapbytes,points/slotsoffsets/pointeeU. Shared1064f8818willserveMNSbycitationafterapproval; alreadycapturedMNS/Clip16Bwindowunselected.
+
+Tension_reviewAnalogauthor/o137solepeer; tension_ownerClipauthor/tension_reviewsolepeer; o137Autoauthor/tension_ownersolepeer, allafterindependentclosedauthorboundaries/finalfreeze. Freshdetailedinterpreterhash/statretainedbeforefirstnewmoduleevaluation, laterper-stagechecksqualifyexactchronology; no earlierbootstrapgapretrorepair. Newwholelargeownedbytecoveragefixtures2056B/Clip268B,bytecountRizinonly; staticcellsnoToolchildren. Conservativefullcurrent6039814144concurrent+lifecycle/min7893696512orlarger/freshguards/firstfault/no budgetcuts/retries/newproviders. No extraRootpreflight or secondSourceproofreview, no originalLive/Xaudio/FP/model/opaque/Claudeheldguest action. Currentcase/criteria/grades/sites/O/releases/wholeLiveOPEN unchanged; updated canonicalowners/currentplan/mirroredhandoff/design/roadmap/index.
+
+
+## [2026-10-23] lint | Four static adoptions and next complete cohorts
+
+[Focused27-page lint](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-four-static-adoptions-next-cohorts-2026-10-23-v1.json) passed metadata/dates/local-linkbaseline/exactcheckpoint equality/append-onlylog/unchangedhistoricalproposals/scopedwhitespace after foursoleapprovedadoptions and nextthreewholeselections. Subsequent routing-onlyAutoamendment carries threealreadyapproved geometries (Clip1015692c0/8B;Analog101458fc8/80B and1054d56b4/12B), leavingninenewcalleequeries withinunchangedtwelve-memberclass; no oldC1proofreopen. Newlintlinkandthisamendmentreceivefocusedlink/checkpoint/whitespacechecks separately. RawC1nestingisnotretainedinRootcontext: newauthorsmustpreservethatunknown and establishactualFORMATwithinselectedcensus withoutguessing, oldhelperread or retroactivepre-sourcevalidation. No original/tool/fixture/checker/decoder/guest proofreplay, behaviorgrade or coverageclosure.
+
+
+## [2026-10-23] query | Complete MNS053 dependency metadata class selected
+
+Selected [all four-body dependencies](research/midi-note-storage.md#complete-four-body-dependency-metadata-class-selected--2026-10-23) from sole approved SAFE metadata:four destinations/twenty native-site keys/73typed candidates/sixaccess classes. Analog59 already supplies1054d56b4geometry, leaving three new callee declarations; existing point maps/native/FILEBITS carried by citation, no filecontent selected. Existing Clip16B and pending Auto8B are shared-reference questions only, not current objects or FP laws. O137author/tension_ownersolepeer start only after their current authoring/review boundaries; no active prefix interrupted or second source review. Updated canonical owner, exact mirrored checkpoint, design/roadmap/index. Full unchanged concurrency/budgets/PRE chronology/firstfault/onefreeze rules apply. No behavioralcase/criterion/grade/site/O/release/wholeclosure or Claude-held guest change.
+
+
+## [2026-10-23] lint | MNS dependency selection and inherited-geometry routing
+
+[Focused27-page check](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-mns-complete-dependency-selection-2026-10-23-v1.json) passed after the complete MNS dependency selection and three-carry Automation amendment. Metadata, dates, local links, exact checkpoint equality, append-only log, historical proposal hashes and scoped whitespace passed. Receipt existed before this link; the added link and log whitespace were checked separately. No source, native, tool, fixture, old proof or guest operation was replayed.
+
+
+## [2026-10-23] query | Bounded byte-count decoder lesson filed
+
+[Canonical method note](research/native-analysis-recovery.md#byte-count-decoding-lesson-from-the-automation-recovery--2026-10-23) routes future selected native work to the sole-approved Automation v3 owned344-byte comparison and its limits. Command-expression/count-unit change is explicit; no universal tool-cause/correctness claim, original failure repair, old proof replay or additional gate. Current selected fixtures and whole-byte checks remain governed by their packets; behavior grades and guest hold are unchanged.
+
+
+## [2026-10-23] maintenance | Clip author freeze and unbegun MNS queue reassignment
+
+[Clip author freeze](research/clip-launch.md#nine-callee-author-freeze-sole-review-pending--2026-10-23) is routed as pending sole review, with Root manifest-size/hash verification only, no payload/source/proof read or adoption. Twelve author groups and its explicit old-FILEBITS report-display overshoot remain subject to the sole peer. To retain parallel throughput, o137 confirmed zero new MNS dependency source/method/control/acquisition/directory; its unbegun author queue was withdrawn. Tension_owner now authors that [whole metadata class](research/midi-note-storage.md#complete-four-body-dependency-metadata-class-selected--2026-10-23) after closed Clip authoring; o137 alone reviews after current Auto authoring and Analog sole review close. Tension_owner’s unstarted Auto sole review waits for its MNS author boundary. Original queue/history retained here, no active prefix interruption, scope change, second actual reviewer or extra approval gate. Current plan/handoff and canonical owners updated; all counts, unknowns and Claude guest hold unchanged.
+
+
+## [2026-10-23] query | User reports Live authorized
+
+Recorded the user's authorization update in [D-07](decisions/adr-0006-reference-observation-reopened.md#user-reports-live-authorized-guest-handoff-status-pending--2026-10-23) as user-reported authorized, without independently observed final-profile/authorization or Save/Export result. No AUZ, key or credentials requested. Asked whether Claude has finished and handed guest control back, because the earlier explicit exclusive-control instruction remains; independent analyst packets continue. Updated current plan/exact mirrored handoff/project/research index/run sheet. No guest/QMP/media/profile action, observed O, behavioral grade or whole-Live closure follows.
+
+
+## [2026-10-23] maintenance | User confirms Claude handoff; selected guest work resumes
+
+The user confirms Claude has finished and directs continuation in the guest. [D-07](decisions/adr-0006-reference-observation-reopened.md#claude-handoff-confirmed-guest-observations-resume--2026-10-23) ends the ownership hold for Root's selected Session0 work; workers stay source-only. Current host process metadata shows an existing QEMU1588360, changed from earlier198381, with `-nic none`; profile/build/authorization must be freshly reconciled instead of treating earlier observations as current. No duplicate VM launch or guest input yet. Full current concurrency/own budget and preservation rules remain. Updated exact current checkpoint/handoff; reviewedO0/wholeLiveOPEN unchanged.
+
+
+## [2026-10-23] maintenance | Confirmed handoff prioritizes Windows Session0 then SessionA
+
+Reconciled current ADR0006/project/research-index/plan routing and exact session-handoff checkpoint, with explicit supersession in design, roadmap, coverage inventory, Phase4 and the Analog/Clip/Automation/MNS owners. User/Claude handoff ends Root's guest hold: Root alone controls the offline/no-NIC guest for Session0 reconciliation then all nine SessionA records; workers provide host-only support/docs. Static Analog57 partial, Clip9, Automation frontier and MNS once-census terminal records remain frozen UNREVIEWED with peers parked/unbegun and no new static continuation. MNS mapping/73-membership/synthesis/ordinary checker/sole peer and Automation peer remain unattempted.
+
+Recorded the full reported Live12.4.3 build/hash, WindowsPro26300/unactivated observer and44.1kHz ich9HDA context as handoff claims, not independently reviewed current identities/capabilities/results. The203924 authorization-session crash remains separate setup history. Closed handoff/relaunch routing metadata records oldPID1588360 disappearing before first key, preserved8,857,576-byte setup WAV and one supplied-script offline existing-disk relaunch without reinstall/revert/duplicate process; newPID1590872/desktop is Root-reported. No screenshot, controller source, QMP, guest/tool/native/source proof or approved INPUT proof was re-reviewed. Historical bodies/frozen bytes/proposals/failed histories/counters24,051/O0/main25,095of268,015/releases36current19/wholeOPEN remain unchanged.
+
+## [2026-10-23] lint | Windows-priority routing,27 focused pages
+
+The [retained final lint receipt](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-windows-priority-routing-2026-10-23-v2.json) was written before this log link and passed at21:05:09UTC:27page metadata/date/access/unique-ID and relative-link checks against the retained missing-source baseline; exact plan/handoff checkpoint equality; historical design15/16 proposal hashes; append-only log against HEAD and this edit's prior prefix; scoped git-diff whitespace. An earlier v1pass preceded two final project/index footer clarifications and remains retained; v2covers those changes. This was documentation-only, not a source/native/guest/runtime/compatibility/released-payload audit. Final log-link existence and append-only/whitespace checks follow this append.
+
+## [2026-10-23] decision | Plan revision 6 and design revision 18: paired observation and static analysis
+
+User direction: "modify design / plan so that codex will use complementary live observation + static analysis of the same compnent in parallel subagents instead of just one or the other". [Plan revision 6](research/full-live-specification-plan.md#revision-6--paired-observation-and-static-analysis-2026-10-23) makes every observation selection a paired cut with an O half and an S half launched in parallel on the same units, keeps one O worker on the single guest, and lets paired S halves run alongside sittings. [Design revision 18](research/full-live-specification-design.md#revision-18--paired-observation-and-static-analysis--2026-10-23) defines the paired packet, independent freezes and the per-unit join. The roadmap carries an amendment. No denominator, closure gate, adoption rule or release changes.
+
+## [2026-10-23] decision | Paired observation and static analysis simplified to additive sources
+
+User direction: "dont turn this into useless bureacracy. it should be 2 addditive sources of information not a synchronization dance". The same-day [plan revision 6](research/full-live-specification-plan.md#revision-6--paired-observation-and-static-analysis-2026-10-23) and [design revision 18](research/full-live-specification-design.md#revision-18--paired-observation-and-static-analysis--2026-10-23) text was replaced before any work ran under it: the paired packet, independent freezes, per-unit join and joint review are removed. Observation and static work on the same component now run in parallel and each adopts through its existing route; disagreements stay open questions under design revision 14.
+
+## [2026-10-23] decision | Extracted execution added as a third concurrent source
+
+User direction: "do it", after asking whether observation, static analysis and the extraction harness would all run as concurrent subagents. [Plan revision 6](research/full-live-specification-plan.md#revision-6--paired-observation-and-static-analysis-2026-10-23) rule 1 now starts an X worker alongside the static worker for every sitting, on the same units; design revision 18 notes that a unit may carry O, S and X values, each with its own label.
+
+
+## [2026-10-23] maintenance | Revision6 three concurrent O/S/X workers activated
+
+Reread user-amended revision6rule1 and design18; activated three existing subagents on the same Session0/SessionA units: tension_owner=O/soleguestcontroller, tension_review=S, o137=X/host-only. Root handed over its closed QMP input boundary and active first-case recording/context; no Root input follows. Static and X work focus document container/save path, transport state, mixer values and MIDI note storage; X begins at already located functions and accepts new S/O nominations without a synchronization gate. Each route keeps its own packet/one review/adoption; RootreviewsNEW S/X, o137solelyreviewsO after a naturalclosedXboundary. Earlier unrelated static freezes stay unreviewed/parked.
+
+Actual O prefix: four prepared input/export hotplug commands completed0/emptyerr; new guest labels resolve readonlyD:input and writableE:export. N2-001 loaded and Root edited tempo/meter; O worker subsequently observed121.20/7/8 and continuesloop/save. Initial60requestedfps capture ended abruptly at~104.8s/exit137, no normaltrailer/causeU; next segment capturesfutureUI only, no replay. Setup203924 crash staysseparate. Updated currentcheckpoint/exacthandoff/project/design/roadmap/index/run sheet; no knownidentity/authorization rechecks or new behavioral grade/case/site/release/wholeclosure.
+
+
+## [2026-10-23] lint | Three-source SessionA routing
+
+[Focused27-page v2](../analysis/ableton-live-12.4.3/full-spec-v1/reviews/documentation-lint-three-source-session-a-execution-2026-10-23-v2.json) passed metadata/dates/local-linkbaseline/exactcheckpoint equality/append-onlylog/historicaldesign15–16hashes/scopedwhitespace. The initial header rename broke three existing links to the established revision4selection anchor; v1 retains that FAIL and the explicit documentation-only diagnostic rerun after the first wrapper discarded its captured diagnostics. Restoring the established heading fixed routing without changing the new revision6three-worker rules or rewriting historical log links. Receipt existed before this link; addedloglink/whitespace checked separately. No original source/harness/fixture/decoder/helper/guest proof was replayed by lint.
+
+## [2026-10-23] decision | gdb introspection made routine in extracted execution
+
+User direction: "not just for failures, gdb is useful for introspection". Measured before the change: 2 of about 108 X packets used gdb, both only to stub a callee and print one register; the loader's fault handler prints signal, address and instruction pointer only. [Plan revision 6](research/full-live-specification-plan.md#revision-6--paired-observation-and-static-analysis-2026-10-23) rule 6 has the X worker run under gdb whenever seeing inside the code helps (intermediate values, exit paths, callee arguments and returns, indirect call targets, object field access) and allows a diagnostic gdb rerun of a failed or unattempted history while keeping the original result. Design revision 18 labels gdb-read values as X evidence with breakpoint addresses.
+
+## [2026-10-23] decision | gdb introspection method and reference guest operation documented
+
+User direction: "think about how gdb could be used most effectively. then make the requisite roadmap and or design and or plan and or instruction changes", then "dont just tell the coordinator; update projo guidelines / docs". The canonical how-to is the new [gdb introspection method](research/extracted-execution.md#gdb-introspection--2026-10-23): a reusable gdb Python tracer and symbol file, coverage and exit paths for every X target by default, plus stage values, call traces, dynamic indirect-call targets, watchpoints, reverse execution, gdb calls for signatures the loader cannot make, checkpoints for setup reuse and failure diagnosis, with cost rules. [Plan revision 6](research/full-live-specification-plan.md#revision-6--paired-observation-and-static-analysis-2026-10-23) rule 6, [design revision 18](research/full-live-specification-design.md#revision-18--paired-observation-and-static-analysis--2026-10-23) and the roadmap point to it. The guest's launch, control, snapshot restore and audio-capture facts, previously only in a coordinator message, are now in [reference guest operation](research/phase4-probe-batch.md#reference-guest-operation--2026-10-23).

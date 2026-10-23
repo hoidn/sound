@@ -1,0 +1,1277 @@
+[
+  {
+    "id": "MPE-001",
+    "requirement": "REQ-MPE-001",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Controller selected as MIDI input; individually selectable input channel.",
+    "action": "Enable controller MPE mode.",
+    "expected": "Track input is All Channels; individual channel selection unavailable.",
+    "comparator": "Compare selected channel and allowed channel choices; incoming MIDI handling outside this case.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M1"
+  },
+  {
+    "id": "MPE-002",
+    "requirement": "REQ-MPE-002",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "MIDI clip with notes made without MPE hardware; Note Expression closed.",
+    "action": "Open Note Expression with tab or Alt/Option+3.",
+    "expected": "Pitch overlay and Slide/Pressure/Velocity/Release Velocity controls accessible; Slide/Pressure default-visible.",
+    "comparator": "Compare dimension names and visibility in an uncustomized view; optional Pitch lane U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M1,M2"
+  },
+  {
+    "id": "MPE-003",
+    "requirement": "REQ-MPE-003",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "No expression lanes enabled.",
+    "action": "Click triangle, then hide; Alt/Option-click triangle; resize one lane then total split.",
+    "expected": "All lanes shown from empty state; visibility toggles hide with lanes; resizing affects selected lane or total group.",
+    "comparator": "Compare visible selectors and relative lane sizes; no pixel/minimum-size assertion.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M2"
+  },
+  {
+    "id": "MPE-004",
+    "requirement": "REQ-MPE-004",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Two notes with distinct Pressure envelopes.",
+    "action": "Select first note then its Pressure envelope.",
+    "expected": "First note/curve editable and highlighted; second dimmed; background drag defines selection.",
+    "comparator": "Compare selected-note identity and editable breakpoint set.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-005",
+    "requirement": "REQ-MPE-005",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Pressure envelope has interior points at local beats 0.25 and 0.75 with values a and b. Precondition: a,b,c are three distinct admissible interior Pressure UI values; no particular numeric domain is asserted and exact-build instantiation remains U.",
+    "action": "Click middle segment, delete added point by click; choose Edit Value on first and enter admissible c.",
+    "expected": "One point added then removed; edited point displays entered c.",
+    "comparator": "Compare point count changes +1/-1 and final displayed value c under the admissible-value precondition; numeric instantiation, rounding, invalid-input and codec behavior U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-006",
+    "requirement": "REQ-MPE-006",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "One note, interior Pressure points at 0.25/0.5/0.75; middle time region selected.",
+    "action": "Drag middle segment vertically; Shift-drag a selected point horizontally.",
+    "expected": "Segment region gets edge breakpoints and moves together; Shift restricts axis.",
+    "comparator": "Compare edge-point presence and unchanged perpendicular coordinates; drag thresholds/clipping U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-007",
+    "requirement": "REQ-MPE-007",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "Note Expression grid off, Notes-tab grid on.",
+    "action": "Toggle Expression grid on; switch tabs; save/reopen clip.",
+    "expected": "Expression grid independent of other tab and saved with clip.",
+    "comparator": "Compare per-tab enabled state and reopened Expression-grid state; full clip save errors U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-008",
+    "requirement": "REQ-MPE-008",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Straight interior Pressure segment.",
+    "action": "Alt/Option-drag segment then Alt/Option-double-click.",
+    "expected": "Curve becomes curved, then straight.",
+    "comparator": "Compare curve/straight visual state only; numerical sample interpolation U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-009",
+    "requirement": "REQ-MPE-009",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Nonzero non-Pitch envelope with several selected points, values away from limits.",
+    "action": "Scale via outside-note hover gesture; separately select all points and move vertically.",
+    "expected": "First adjusts proportionally; second moves all chosen values equally; Pitch lacks proportional gesture.",
+    "comparator": "Compare relative versus equal movement of nonzero values; scale amount/origin and clipping U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-010",
+    "requirement": "REQ-MPE-010",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Note starts at beat 1, duration 2; expression local points 0.5 and 1.5.",
+    "action": "Move note start to beat 3; separately stretch duration by x2.",
+    "expected": "Move carries expression +2 beats in clip time; stretch carries expression timing with doubled note.",
+    "comparator": "Compare +2 absolute time translation; stretch corresponding interior times 1 and 3 relative to new note start; exact endpoints U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-011",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Unfolded Note Expression with grid off and bend above note.",
+    "action": "Modifier-edit bend near an unambiguous semitone; invoke Zoom to Clip Selection.",
+    "expected": "Pitch snaps to nearest semitone; zoom includes selected bends.",
+    "comparator": "Compare displayed semitone and visible selected bend extent; half-semitone tie and folded lane state U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-012",
+    "requirement": "REQ-MPE-012",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Two selected notes with Pressure and Slide, third unselected.",
+    "action": "Choose Clear All Envelopes in Note Expression.",
+    "expected": "Selected notes expression envelopes clear.",
+    "comparator": "Compare absence of selected curves; velocity/default reset and unselected-state guarantee U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-013",
+    "requirement": "REQ-MPE-013",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Note Expression Pitch/Pressure/Slide target and visible one-quarter-beat grid.",
+    "action": "Turn Draw Mode on, draw over interior region; repeat holding B temporarily.",
+    "expected": "Grid drawing creates steps at visible grid width; holding B temporarily toggles Draw Mode.",
+    "comparator": "Compare step horizontal widths 0.25 beat and restored mode on release; point samples/endpoints U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M4"
+  },
+  {
+    "id": "MPE-014",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "MPE-enabled plugin with MIDI out and saved default configuration.",
+    "action": "Save its enabled MPE default; create instance from default.",
+    "expected": "MPE enable state recalled; MPE output supported when enabled.",
+    "comparator": "Compare default-enabled flag; exact emitted messages and blue-meter timing U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M2,M5"
+  },
+  {
+    "id": "MPE-015",
+    "requirement": "REQ-MPE-015",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "External Instrument or MIDI track with valid MIDI To target; MPE-enabled plugin instance.",
+    "action": "Choose MPE then MPE Settings in each output route; open plugin context entry.",
+    "expected": "Settings dialog accessible through three documented entry points.",
+    "comparator": "Compare dialog presence/associated target in each location; commit/cancel U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M6"
+  },
+  {
+    "id": "MPE-016",
+    "requirement": "REQ-MPE-016",
+    "kinds": [
+      "positive",
+      "negative",
+      "boundary"
+    ],
+    "setup": "Two tracks share an external output; no sounding notes.",
+    "action": "Configure one lower zone, one upper; inspect single-track zone choices.",
+    "expected": "Lower global channel 1; upper global channel 16; each track one zone.",
+    "comparator": "Compare configured labels/global channels and inability to select both zones as one track configuration; message allocation U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7"
+  },
+  {
+    "id": "MPE-017",
+    "requirement": "REQ-MPE-017",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "MPE output settings with no sounding notes.",
+    "action": "Select multi-channel mode and choose note-channel range 3..8.",
+    "expected": "Configuration exposes chosen arbitrary note-channel range.",
+    "comparator": "Compare displayed endpoints 3 and 8; emitted ordering, upper/lower limits and global-channel exclusion U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7"
+  },
+  {
+    "id": "MPE-018",
+    "requirement": "REQ-MPE-018",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Controller and compatible MPE instrument, both with known bend-range setting.",
+    "action": "Set matching ranges; separately mismatch them.",
+    "expected": "Matching range is required configuration for correct tracking; mismatch cannot be graded to a precise sound.",
+    "comparator": "Compare matched setup values only; output pitch curve, failure size, default and codec remain U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "H1"
+  },
+  {
+    "id": "MPE-019",
+    "requirement": "REQ-MPE-005",
+    "kinds": [
+      "malformed",
+      "negative"
+    ],
+    "setup": "Numeric expression field open.",
+    "action": "Enter NaN, infinity, letters, empty text and out-of-domain finite value separately.",
+    "expected": "U: acceptance/rejection, clipping, dialog and prior-data preservation.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-020",
+    "requirement": "REQ-MPE-017",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "MPE/multichannel output settings.",
+    "action": "Choose 0,17,reversed and empty note-channel ranges; mismatch bend ranges.",
+    "expected": "U: accepted UI ranges, clamps/defaults, channel-bend codec and negotiation.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7,H1"
+  },
+  {
+    "id": "MPE-021",
+    "requirement": "REQ-MPE-010",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Zero-duration note or points exactly at/beyond note ends.",
+    "action": "Resize/stretch/move/trim across endpoints.",
+    "expected": "U: reconstruction, removal/resampling, value and same-time order.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3; storage-013/014"
+  },
+  {
+    "id": "MPE-022",
+    "requirement": "REQ-MPE-015",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Output settings dialog open with prior configuration.",
+    "action": "Change zone/range then cancel or dismiss with Escape.",
+    "expected": "U: immediate versus deferred application, previous-state restoration.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M6,M7"
+  },
+  {
+    "id": "MPE-023",
+    "requirement": "REQ-MPE-006",
+    "kinds": [
+      "undo"
+    ],
+    "setup": "Two notes with known curves.",
+    "action": "Perform multi-point drag/clear, undo, redo and new edit.",
+    "expected": "U: transaction count, exact restored curves and redo invalidation.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3"
+  },
+  {
+    "id": "MPE-024",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "persistence"
+    ],
+    "setup": "Edited curves, grid, lanes and output settings plus saved plugin default.",
+    "action": "Save/reopen Set/clip/default in each supported route.",
+    "expected": "U: fields beyond documented grid/default state, normalization, errors and history.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3,M5"
+  },
+  {
+    "id": "MPE-025",
+    "requirement": "REQ-MPE-016",
+    "kinds": [
+      "boundary",
+      "teardown"
+    ],
+    "setup": "Held notes routed through lower zone.",
+    "action": "Change zone/range/MPE enable or disconnect/reconnect target.",
+    "expected": "U: note-off/reset, channel reuse, stuck-note prevention and live transition timing.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M7"
+  },
+  {
+    "id": "MPE-026",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "teardown"
+    ],
+    "setup": "MPE notes/changes in flight.",
+    "action": "Delete clip/plugin/track then close Set.",
+    "expected": "U: release/reset ordering, cleanup/resource failure and last modulation state.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M2,M5"
+  },
+  {
+    "id": "MPE-027",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Folded Note Expression, Glissando/LFO-generated Pitch Bend and optional lane states.",
+    "action": "Compare under exact tab/fold/lane preconditions from both chapters.",
+    "expected": "U: same-control/context correspondence; consult MIDI editing/tools C3 before claiming contradiction.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "M3; midi-editing-tools C3"
+  },
+  {
+    "id": "MPE-028",
+    "requirement": "REQ-MPE-001",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "Use an independently supported recognized MPE-capable controller and a genuinely functioning ordinary MIDI input/control baseline. In Link, Tempo & MIDI Settings explicitly enable MPE Mode for that controller FIRST, then actually select it as this track input; inspect All Channels and offered individual-channel choices. Retain exact controller/port/track/settings identities. This is not the old already-selected-then-enable history or a hot-enable claim. Missing capability/input/baseline stays U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Selecting the controller after explicitly enabling its MPE Mode fixes input routing to All Channels with no individual selection.",
+    "documentary_expected": "Selecting the controller after explicitly enabling its MPE Mode fixes input routing to All Channels with no individual selection.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G01",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/2",
+        "id": "MPE-B003"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/3",
+        "id": "MPE-B004"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-029",
+    "requirement": "REQ-MPE-001",
+    "kinds": [
+      "unresolved-integration"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "Use an independently recognized controller producing known genuinely nonzero independent per-note expression, accepted input route, eligible armed MIDI recording track with explicit monitor setting and explicit transport/Record context. First establish a genuinely productive ordinary MIDI recording through Recording001/003 and RC002, with nonmuted active receiver and nonzero relevant modulation depth/output when auditioned. Then separately attempt expression-bearing recording, retaining source and resulting clip observations without a captured-value, byte, timing or sound oracle. Generic activity or a Mode flag is not the source baseline; failed prerequisites remain U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "MPE-enabled controller input can be used to record new MIDI clips containing per-note data; detailed captured values/protocol remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G01",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/2",
+        "id": "MPE-B003"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/4",
+        "id": "MPE-B005"
+      }
+    ],
+    "related_owner_context": [
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/22",
+        "id": "RC-002",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      },
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/23",
+        "id": "REQ-RECORDING-COMPING-001",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      },
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/24",
+        "id": "REQ-RECORDING-COMPING-003",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      }
+    ]
+  },
+  {
+    "id": "MPE-030",
+    "requirement": "REQ-MPE-003",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: actually toggle one lane selector with another off. Reset separately to independently known partial-enabled and none-enabled/all-hidden histories before triangle clicks; separately Alt Windows/Option Mac-click the triangle. After genuine visible-lane and working show/hide/resize baselines actually hide via the Expression Editor split and retain selector visibility; restore before the next trial. Preserve old MPE003 one/total split resize and none-enabled actions. Initial/custom/default provenance is recorded separately, not a constructor.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Individual lane selectors and the triangle act on the admitted partial or none-enabled set; split hiding also hides selectors.",
+    "documentary_expected": "Individual lane selectors and the triangle act on the admitted partial or none-enabled set; split hiding also hides selectors.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G02",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/9",
+        "id": "MPE-B010"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/10",
+        "id": "MPE-B011"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/11",
+        "id": "MPE-B012"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-031",
+    "requirement": "REQ-MPE-004",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: two distinguishable notes made without MPE hardware, nonflat Pitch/Slide/Pressure and independently accepted Velocity/Release Velocity markers. Reuse CV008 actual Note Expression mode entry. On separate resets select a note then each named dimension; inspect chosen envelope/marker and dimmed other note. Actually drag an admitted nonempty envelope-background time region after a productive selection baseline; do not substitute note selection for this gesture. Retain exact background versus line hit context; no numeric data/alias-to-codec result.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "All five dimensions are accessible for ordinary MIDI clips; selecting note/dimension exposes the appropriate envelopes or markers and background drag defines selection.",
+    "documentary_expected": "All five dimensions are accessible for ordinary MIDI clips; selecting note/dimension exposes the appropriate envelopes or markers and background drag defines selection.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G03",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/5",
+        "id": "MPE-B006"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/6",
+        "id": "MPE-B007"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/8",
+        "id": "MPE-B009"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/14",
+        "id": "MPE-B015"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/15",
+        "id": "MPE-B016"
+      }
+    ],
+    "related_owner_context": [
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/11",
+        "id": "CV-008",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      }
+    ]
+  },
+  {
+    "id": "MPE-032",
+    "requirement": "REQ-MPE-005",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: preserve old MPE005 admitted a,b,c create/delete/single Edit Value trial. With genuine editable nonflat envelope and accepted interior values, actually hover, create and drag a point, then hover/drag a selected segment at distinguishable cursor positions. On a separate reset right-click an actually admitted preview breakpoint, choose Add Value and enter accepted c. Observe only named cursor-value display and Add Value role; interpolation/value conversion, precision and invalid input remain U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Create/hover/drag exposes a cursor value; preview breakpoint context offers Add Value separately from existing-point Edit Value.",
+    "documentary_expected": "Create/hover/drag exposes a cursor value; preview breakpoint context offers Add Value separately from existing-point Edit Value.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G04",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/16",
+        "id": "MPE-B017"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/17",
+        "id": "MPE-B018"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/18",
+        "id": "MPE-B019"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/20",
+        "id": "MPE-B021"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-033",
+    "requirement": "REQ-MPE-005",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: independently admit distinct interior values a,b,c without assigning 20/40/30 or a universal domain. Establish productive single-point Edit Value, reset to separated points and actually select multiple points, right-click one and use Edit Value with accepted c. Retain selection and value observations; no relative arithmetic, clamp, rounding, clipping or interpolation comparator. Invalid text remains old MPE019/U after a successful accepted-value baseline.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Edit Value on multiple selected breakpoints moves their values relatively; the source supplies no new numeric domain or formula.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G04",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/20",
+        "id": "MPE-B021"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-034",
+    "requirement": "REQ-MPE-006",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: three ordered interior points plus an independently identified unselected control. Actually select two points and drag one after productive ordinary point movement. Reset for near-but-not-on segment selection versus direct Shift-click; hold left mouse button and drag with and without independently admitted nonempty time selection. Preserve old MPE006 selected-time/Shift-horizontal action. Retain edge/group observations only; no sample, displacement, untouched-data or reconstruction law.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Selected points follow a dragged member; near-segment or Shift-click selection enables a segment drag, with selected-time edge creation context.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G05",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/19",
+        "id": "MPE-B020"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/21",
+        "id": "MPE-B022"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-035",
+    "requirement": "REQ-MPE-006",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: genuinely successful nonzero ordinary vertical edit and known separated neighbor before reset Shift vertical fine contrast; separately test horizontal and vertical axis histories. After a productive ordinary drag, actually continue a breakpoint horizontally over a known neighbor, then on a separate reset a segment over a neighbor. Retain exact source/selection/path. No threshold, finer-resolution ratio, equal-time ordering or clipping grade; absent editing capability is U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Shift provides axis restriction and fine vertical adjustment; horizontal overdrag can remove a neighboring breakpoint.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G05",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/24",
+        "id": "MPE-B025"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/25",
+        "id": "MPE-B026"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/26",
+        "id": "MPE-B027"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-036",
+    "requirement": "REQ-MPE-007",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: explicitly separate Notes-tab and Note Expression grid states and genuinely working breakpoint edits. On reset enable Snap to Grid through Options, then separate Ctrl4 Windows/Cmd4 Mac entry. Actually move a breakpoint and segment toward independently known neighbor times and create near an admitted grid line, retaining explicit OFF controls. Preserve old MPE007 tab switching/save-reopen. Visible lines alone do not establish grid ON; no snapping distance, ties, time arithmetic or new persistence outcome.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Note Expression grid has its own Options/chord entry, neighboring-time snapping and near-grid creation contexts.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G06",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/22",
+        "id": "MPE-B023"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/23",
+        "id": "MPE-B024"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-037",
+    "requirement": "REQ-MPE-009",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: independently nonzero nonflat admitted Slide, Pressure, Velocity and Release Velocity, values away from known limits, with successful ordinary edit. Reset each dimension: actually click outside note, hover until the admitted highlight, then drag vertically; repeat with multiple notes actually selected. Establish genuinely productive allowed non-Pitch scaling before a separately admitted Pitch-exclusion observation. Missing allowed gesture or positive data stays U; no origin, ratio, domain, clamp or Pitch data outcome.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Outside-note hover/vertical drag scales the four named non-Pitch expressions, including multiple selected notes; Pitch is excluded from that scaling role.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G07",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/28",
+        "id": "MPE-B029"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-038",
+    "requirement": "REQ-MPE-009",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: known separated selected envelope points and productive ordinary group edit. Actually click the envelope, press CtrlA Windows/CmdA Mac, then reset separately for vertical and horizontal group drags. Retain distinct selection/value/time contexts; source-role observations do not establish numeric equality tolerance, interpolation, scale origin or same-time behavior.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Envelope selection then CtrlA/CmdA enables equal vertical value or horizontal time movement as a group, distinct from proportional scaling.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G07",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/29",
+        "id": "MPE-B030"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-039",
+    "requirement": "REQ-MPE-010",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: owned positive-duration note with genuine nonzero editable expression at separated strict interior locations. Preserve and first admit old MPE010 move/x2 baseline; separately invoke divide-by-two, then actual Note Stretch marker with admitted note/time selection. Reuse MED008 marker and MED012 factor actions as underlying note-owner contexts, adding attached-expression observation only. No new +2/double/half formula, endpoint, sample/resampling, stored codec or boundary result.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Attached per-note expression follows admitted note move/stretch, including divide-by-two and actual Note Stretch markers.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G08",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/30",
+        "id": "MPE-B031"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/31",
+        "id": "MPE-B032"
+      }
+    ],
+    "related_owner_context": [
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/0",
+        "id": "MED-008",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      },
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/1",
+        "id": "MED-012",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      }
+    ]
+  },
+  {
+    "id": "MPE-040",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: genuinely editable visible nonflat over-note Pitch and productive ordinary Pitch edit/draw, distinct from Pressure curvature. Explicitly grid OFF, then actual Alt Windows/Cmd Mac during breakpoint edit and Draw; reset grid ON and request the stated bypass. Retain exact tab/focus/modifier. No semitone tie, numeric editor domain, stored conversion, global keyboard dispatch or resolution outcome.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Literal Alt Windows/Cmd Mac qualifies Pitch editing/drawing with grid OFF and the stated bypass with grid ON.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G09",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/32",
+        "id": "MPE-B033"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-041",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: genuinely visible nonflat over-note Pitch with a valid selected time containing bends and productive zoom baseline. On separate resets actually invoke Zoom to Clip Selection command versus Z, retaining tab/time/bend and prior viewport. No pixel/numeric extent, restored history or focus exception grade.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Zoom to Clip Selection and Z use the selected-time Pitch bend context while Note Expression is open.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G09",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/34",
+        "id": "MPE-B035"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-042",
+    "requirement": "REQ-MPE-011",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: independently establish genuine visible over-note Pitch before an admitted Fold toggle in Note Expression; retain exact tab/lane selectors and offered control. Observe that overlay context only. Keep old MPE027 and C3 optional folded Pitch Bend lane after separately admitted Glissando/LFO operations U, rather than treating hidden overlay as proof of lane absence or tool failure. Missing visible baseline/control is U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Chapter12 describes hidden over-note Pitch when Fold is enabled in Note Expression; this does not settle a separate optional Pitch Bend lane.",
+    "documentary_expected": "Chapter12 describes hidden over-note Pitch when Fold is enabled in Note Expression; this does not settle a separate optional Pitch Bend lane.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G09",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/33",
+        "id": "MPE-B034"
+      }
+    ],
+    "related_owner_context": [
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/2",
+        "id": "MED-030",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      },
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/3",
+        "id": "MED-031",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      },
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/4",
+        "id": "MED-052",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      },
+      {
+        "catalog": "../mpe-source-audit/selected-owner-contexts.json",
+        "json_pointer": "/9",
+        "id": "C3",
+        "role": "Exact actual underlying owner/context subset only; no transferred algorithm, numeric oracle or whole-owner approval"
+      }
+    ]
+  },
+  {
+    "id": "MPE-043",
+    "requirement": "REQ-MPE-012",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: genuinely nonflat editable expression on one selected note, then reset multiple selected notes with an identified unselected control. Establish a successful ordinary expression edit/clear baseline on a matched copy. Actually invoke Clear All Envelopes from MIDI Note Editor context menu versus a per-note expression lane menu in separate resets for single/multiple note histories. Preserve old MPE012 two-note Pressure/Slide action. Compare only named selected-envelope clearing relation, not marker reset/default, unselected guarantee or exact Undo restoration.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Both MIDI Note Editor and per-note lane context menus offer Clear All Envelopes for one or multiple selected notes.",
+    "documentary_expected": "Both MIDI Note Editor and per-note lane context menus offer Clear All Envelopes for one or multiple selected notes.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G10",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/35",
+        "id": "MPE-B036"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-044",
+    "requirement": "REQ-MPE-013",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: known selected editable Pitch, Slide and Pressure, productive genuine nonzero expression draw/edit. Reset actual mode states for Options Draw Mode, actual Control Bar Draw switch and B press; actually click the intended envelope and draw after each entry. Separately hold/release B while mouse editing, retaining actual prior mode. Preserve old MPE013 drawing/temporary-B action; no500ms or global latch policy.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Options Draw Mode, Control Bar switch, B and held-B are documented Draw entry contexts for selected Pitch/Slide/Pressure.",
+    "documentary_expected": "Options Draw Mode, Control Bar switch, B and held-B are documented Draw entry contexts for selected Pitch/Slide/Pressure.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G11",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/37",
+        "id": "MPE-B038"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/38",
+        "id": "MPE-B039"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-045",
+    "requirement": "REQ-MPE-013",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 offline: after productive ordinary expression drawing, explicitly set Grid ON through Options/chord and actually draw; reset explicit OFF freehand, then OFF plus literal Alt Windows/Cmd Mac drawing. After a genuine nonzero ordinary vertical edit actually Shift-drag vertically. Retain actual enabled state, not quarter lines alone; no new quarter-beat width, point/sample/endpoint, fine ratio or sparse-gesture oracle.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Explicit grid ON drawing, OFF freehand, OFF plus Alt Windows/Cmd Mac temporary grid and Shift fine vertical are distinct source contexts.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G11",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/39",
+        "id": "MPE-B040"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/40",
+        "id": "MPE-B041"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-046",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 input: independently recognized actual per-note changes from a supported controller, actual accepted track input and independently working productive per-note source/route baseline. Observe the selected track meter lowest dot while those changes pass. A generic Control Bar activity flash, note traffic, MPE flag or old MPE014 default save is NOT the baseline. Where the probe auditions expression also require an active compatible receiver, nonzero relevant depth/gain and nonmuted positive output. No blue-dot equals per-note delivery, isolated audio or timing grade.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Known per-note controller changes passing a MIDI track meter light its lowest dot blue, distinct from generic Control Bar activity.",
+    "documentary_expected": "Known per-note controller changes passing a MIDI track meter light its lowest dot blue, distinct from generic Control Bar activity.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G12",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/12",
+        "id": "MPE-B013"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-047",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 plugin: independently admitted supported plug-in/default route; preserve old MPE014 genuine enabled-default save/new-instance baseline. On a separate reset actually disable that plug-in MPE Mode, save its default and create a new instance through the same admitted route; retain requested state and resulting default observations. Failed save/unsupported route stays U, never false disabled success. No arbitrary plug-in acceptance, default-constructor, file/serialization, cancel or commit-timing law.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Both enabled and disabled plug-in MPE Mode states are included in device-default saving; no general transaction/file outcome is supplied.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G12",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/45",
+        "id": "MPE-B046"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-048",
+    "requirement": "REQ-MPE-014",
+    "kinds": [
+      "unresolved-integration"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 plugin/output: independently known supported MIDI-out-capable MPE plug-in with genuine nonzero independent per-note input, accepted active output route/compatible receiver, nonzero relevant modulation depth/gain and nonmuted positive output baseline. Actually use the admitted MPE-enabled path and retain independently identified input/output observations; any separate enable/bypass contrast is ungraded and requires the same genuine productive baseline. A meter/flag/default file cannot prove output or suppression. No bytes, voice allocation, range, pitch isolation, latency or audio oracle.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "MPE-enabled MIDI-out-capable plug-ins have a documented MPE output capability; actual protocol, signal and sound remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "audit_group": "MPA-G12",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/44",
+        "id": "MPE-B045"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/46",
+        "id": "MPE-B047"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-049",
+    "requirement": "REQ-MPE-015",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 output configuration only: independently admitted External Instrument, valid known track MIDI To destination and MPE-enabled supported plug-in. Preserve old MPE015 all three routes. On separate Session and Arrangement mixer resets actually select the known MIDI To target, choose MPE, reopen menu and choose MPE Settings; invoke External Instrument route separately and plug-in device-title-bar context entry. Retain actual target/dialog association after a productive ordinary settings-open baseline. No actual controller, wire or sound is needed just to inspect offered configuration; cancel/commit remains old MPE022/U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "The three dialog routes include actual MIDI To target/MPE/menu reopening, both mixer views and plug-in device-title context.",
+    "documentary_expected": "The three dialog routes include actual MIDI To target/MPE/menu reopening, both mixer views and plug-in device-title context.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G13",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/49",
+        "id": "MPE-B050"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/50",
+        "id": "MPE-B051"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/51",
+        "id": "MPE-B052"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/54",
+        "id": "MPE-B055"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/55",
+        "id": "MPE-B056"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/56",
+        "id": "MPE-B057"
+      }
+    ],
+    "related_owner_context": []
+  },
+  {
+    "id": "MPE-050",
+    "requirement": "REQ-MPE-016",
+    "kinds": [
+      "bounded-source-context"
+    ],
+    "setup": "F-MPE-R3; independently owned reset data and case-specific admitted contexts, not supplied host/hardware fixtures.",
+    "action": "F-MPE-R3 output configuration only: known valid offered settings and productive ordinary configuration baseline, no sounding notes. Preserve old MPE016 two tracks/lower-upper/global1-16 and MPE017 admitted3..8 multi-channel action verbatim. On separate lower and upper zone resets actually select an independently allowed note-channel count/range through its offered controls, then inspect multi-channel choice separately. Retain exact offered values without enumerating bounds or channel arithmetic. Two-track/MIDI-thru examples do not prove fanout, input filtering, voice capacity or actual delivery.",
+    "expected": null,
+    "comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Output configuration offers lower/upper zone and number of note channels separately from multi-channel range; one zone per track.",
+    "documentary_expected": "Output configuration offers lower/upper zone and number of note channels separately from multi-channel range; one zone per track.",
+    "documentary_comparator": "Named admitted UI/control/selection/visibility relationship only; no numeric/signal/file/timing/protocol or hidden-state comparator.",
+    "audit_group": "MPA-G13",
+    "source_context": [
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/59",
+        "id": "MPE-B060"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/60",
+        "id": "MPE-B061"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/61",
+        "id": "MPE-B062"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/62",
+        "id": "MPE-B063"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/63",
+        "id": "MPE-B064"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/64",
+        "id": "MPE-B065"
+      },
+      {
+        "catalog": "../mpe-source-audit/source-blocks.json",
+        "json_pointer": "/65",
+        "id": "MPE-B066"
+      }
+    ],
+    "related_owner_context": []
+  }
+]

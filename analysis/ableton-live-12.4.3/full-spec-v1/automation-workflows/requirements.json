@@ -1,0 +1,759 @@
+[
+  {
+    "id": "REQ-AUTO-WF-001",
+    "title": "Automation and modulation indicators",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "An automated control has a theme-dependent colored indicator, typically red; blue denotes modulation. Session automation is available as a clip envelope, while Arrangement automation is displayed in track lanes.",
+    "source_blocks": [
+      "automation:B003",
+      "automation:B004"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-002",
+    "title": "Session automation recording eligibility",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Session clip automation recording uses Automation Arm, eligible armed tracks and Session Record. Record Session automation in: All Tracks permits recording into all playing Session clips regardless of track arm, including automation overdub without recording MIDI notes.",
+    "source_blocks": [
+      "automation:B008",
+      "automation:B009",
+      "automation:B010"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-003",
+    "title": "Session recording stop controls",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Session Record can stop automation recording while playback continues; Stop ends transport and recording. Recorded clip automation is viewed/edited in the Envelope Editor.",
+    "source_blocks": [
+      "automation:B011",
+      "automation:B012"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-004",
+    "title": "Session transfer and performance recording",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Session-to-Arrangement recording stores parameter changes as track automation, not Session clip automation, and can record tempo changes. Copying automated Session clips to Arrangement also copies automation as track automation; Session performance recording includes existing clip automation alongside live parameter changes.",
+    "source_blocks": [
+      "automation:B007",
+      "automation:B013"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-005",
+    "title": "Arrangement automation recording",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "With Automation Arm enabled, Arrangement automation recording applies to all tracks. Arrangement Record is described as starting transport/recording by default and records tempo, mixer and device adjustments into track lanes; this is no unconditional transport-start guarantee.",
+    "source_blocks": [
+      "automation:B015",
+      "automation:B016",
+      "automation:B018"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-006",
+    "title": "Arrangement recording stop controls",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Arrangement Record can stop recording while playback continues; the adjacent Stop button ends both transport and recording.",
+    "source_blocks": [
+      "automation:B017"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-007",
+    "title": "Overwrite and Session touch/latch contexts",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Adjusting an already automated parameter during recording replaces its recorded adjustments. For Session overwrite, mouse release returns to prior automation, whereas MIDI knobs/faders hold the new setting until clip/loop end. A first Session automation pass uses the hold behavior regardless of input method. No overwrite interval or controller protocol law is supplied.",
+    "source_blocks": [
+      "automation:B020",
+      "automation:B021"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-008",
+    "title": "Manual override presentation",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "With recording off, manually changing an automated parameter overrides its automation, turns its automation indicator gray and activates Re-Enable Automation. This is distinct from overwriting recorded data.",
+    "source_blocks": [
+      "automation:B023",
+      "automation:B024",
+      "automation:B025"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-009",
+    "title": "Global and per-parameter re-enable",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "The Control Bar Re-Enable Automation button restores all overridden automation; a parameter context-menu command restores only that parameter. The active button indicates at least one overridden automated parameter.",
+    "source_blocks": [
+      "automation:B026",
+      "automation:B027"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-010",
+    "title": "Session relaunch re-enable role",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Relaunching a Session clip that contains automation is another documented way to re-enable overridden automation. This does not identify every affected target, launch boundary or Arrangement-return transition.",
+    "source_blocks": [
+      "automation:B027"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-011",
+    "title": "Session envelope selection",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "The Session Envelope Editor Automation toggle and Device/Control choosers select a target envelope; device/mixer and MIDI Ctrl entries are described. Automated controls/devices have indicators; an unautomated selected control appears as a dashed line at its current value. Actual entries depend on clip type.",
+    "source_blocks": [
+      "automation:B031",
+      "automation:B032",
+      "automation:B033"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-012",
+    "title": "Session adjusted-envelope filter",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Show Adjusted Envelopes Only combines Session Device/Control choices into an Automated Control chooser; Show All Envelopes restores the full choices. An unautomated envelope already displayed remains displayed when filtering is enabled.",
+    "source_blocks": [
+      "automation:B034",
+      "automation:B035",
+      "automation:B036"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-013",
+    "title": "Stacked Session control focus",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "With Envelope Editor open and Clip/Device Views stacked, clicking a track device or mixer control displays its envelope, including unautomated controls. Adjusted-only filtering prevents newly opening an unautomated envelope this way.",
+    "source_blocks": [
+      "automation:B036"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-014",
+    "title": "Arrangement Automation Mode and choosers",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Automation Mode button or A opens main track automation lanes. Device/Automation Control select envelopes; None hides the envelope and empties the control chooser. Automated entries have indicators and an untouched selected parameter is dashed.",
+    "source_blocks": [
+      "automation:B038",
+      "automation:B039",
+      "automation:B040",
+      "automation:B041"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-015",
+    "title": "Arrangement filters and focus commands",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Show Automated Parameters Only combines the Arrangement choosers; Show All Parameters restores them. In Automation Mode, clicking a control or its Show Automation/Show Automation in New Lane commands selects its envelope. With automated-only filtering, untouched controls cannot newly open and those menu options are disabled/unavailable; an already displayed untouched envelope remains.",
+    "source_blocks": [
+      "automation:B042",
+      "automation:B043",
+      "automation:B044"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-016",
+    "title": "Add lane and main-lane None",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Add Automation Lane moves the main envelope into an additional lane and sets main Device to None. Selecting a new main target permits another lane; Add is absent while None is selected.",
+    "source_blocks": [
+      "automation:B045"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-017",
+    "title": "Additional lane visibility and order",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "A main-lane toggle hides/shows additional lanes; when main Device is None, hiding promotes the top additional lane to main. Additional lanes can be reordered by drag; arrows navigate lanes or show/hide from main context.",
+    "source_blocks": [
+      "automation:B046",
+      "automation:B047",
+      "automation:B048"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-018",
+    "title": "Existing lane focus and duplicate limit",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Choosing a parameter already in an additional lane focuses that lane. Ctrl-click Windows/Option-click macOS on Add creates a duplicate of the main envelope, with up to two such duplicates documented.",
+    "source_blocks": [
+      "automation:B049"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-019",
+    "title": "All lanes and lane removal",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Alt Windows/Cmd macOS Add or Add Lane for Each Automated Envelope adds lanes for automated parameters. Remove applies to selected additional lanes; modified Remove also removes lanes below. Main-lane Add and additional-lane Remove are available in the corresponding header menus.",
+    "source_blocks": [
+      "automation:B050",
+      "automation:B051",
+      "automation:B054",
+      "automation:B055",
+      "automation:B056"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-020",
+    "title": "Breakpoint insertion",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clicking a selected control\u2019s dashed envelope line inserts a breakpoint and makes it solid. Click-drag sets the new point value, Shift refines the adjustment, and double-click away from the line inserts there. Hover values and Add Value context entry support a chosen displayed value.",
+    "source_blocks": [
+      "automation:B059",
+      "automation:B061",
+      "automation:B063"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-021",
+    "title": "Breakpoint grid and display",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Inserted/moved breakpoints snap to grid, with Alt Windows/Cmd macOS bypass. Hover/drag exposes point values; segment hover/drag shows the closest breakpoint\u2019s value. Shift horizontal drag constrains the horizontal axis and Shift vertical drag refines value adjustment.",
+    "source_blocks": [
+      "automation:B062",
+      "automation:B063",
+      "automation:B080",
+      "automation:B087"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-022",
+    "title": "Discrete envelope presentation",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Discrete controls such as toggles/radio choices display stepped rather than diagonal automation and permit only the square inserted shape.",
+    "source_blocks": [
+      "automation:B064",
+      "automation:B074"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-023",
+    "title": "Draw Mode and snapping",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Draw Mode is toggled through Options, Control Bar or B; holding B temporarily enables it when off. Drawing creates grid-width steps by default; grid size and Snap to Grid or Alt Windows/Cmd macOS bypass alter drawing alignment.",
+    "source_blocks": [
+      "automation:B067",
+      "automation:B068",
+      "automation:B069"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-024",
+    "title": "Shape insertion extent",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Context-menu automation shapes can be inserted at a marker or time selection; selection width determines horizontal extent and parameter range the vertical extent, while no selection uses current grid width. Source text names sine, triangle, sawtooth, inverse sawtooth, square, ramps and ADSR.",
+    "source_blocks": [
+      "automation:B071",
+      "automation:B072"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-025",
+    "title": "Waveform and ramp surroundings",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Inserted waveforms retain their shape irrespective of surrounding values, whereas ramps depend on values on either side of the insertion selection. Exact ramp coefficients, clipping and boundary events are unknown.",
+    "source_blocks": [
+      "automation:B073"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-026",
+    "title": "Breakpoint deletion and selection",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Points can be dragged; clicking a breakpoint deletes it and joins its neighbors by a new segment. Background drag selects multiple points, whose point drag moves the selection and whose context Delete removes selected points.",
+    "source_blocks": [
+      "automation:B079",
+      "automation:B081",
+      "automation:B082"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-027",
+    "title": "Segment movement and selection edges",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Dragging near a segment moves it; Shift-click/hold then releasing Shift is an alternative selection gesture. Moving a segment inside a time selection inserts points at the edges, and moving it outside inserts further edge points. Fine vertical and constrained horizontal drags are documented.",
+    "source_blocks": [
+      "automation:B083",
+      "automation:B084"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-028",
+    "title": "Drop overwrites and drag preview",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Dropping a dragged point/segment onto existing breakpoints overwrites them; while dragging before drop, existing parts are not permanently overwritten. This says nothing about Escape rollback or transaction atomicity.",
+    "source_blocks": [
+      "automation:B085"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-029",
+    "title": "Diagonal curve gesture",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Alt Windows/Option macOS segment drag adds a curve only to diagonal segments; modified double-click changes curved to straight. Numeric curve controls and runtime interpolation remain with the finite envelope/mix owners.",
+    "source_blocks": [
+      "automation:B086"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-030",
+    "title": "Exact value editing",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Edit Value on a point/segment accepts a typed value. With multiple selected points, the edited point takes that value and the others move relatively. Admission, saturation and error grammar are unknown.",
+    "source_blocks": [
+      "automation:B088"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-031",
+    "title": "Stretch and skew handles",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Time-selection handles transform the selected envelope: top/bottom centers stretch vertically, side centers horizontally and corners skew. Outline snaps with horizontal bypass; Shift refines vertical stretch and Alt Windows/Option macOS mirrors opposite handles. Dragging over outside points removes them.",
+    "source_blocks": [
+      "automation:B091",
+      "automation:B092",
+      "automation:B093",
+      "automation:B094",
+      "automation:B095"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-032",
+    "title": "Simplify Envelope command",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Simplify Envelope on a selected segment reduces unnecessary breakpoints using straight/curved segments. The source supplies no error tolerance, optimum algorithm or guaranteed reduction for every input.",
+    "source_blocks": [
+      "automation:B097"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-033",
+    "title": "Delete Automation parameter action",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Parameter Delete Automation context action or Ctrl-Backspace Windows/Cmd-Delete macOS deletes that parameter\u2019s automation, removes its indicator and returns the value to its default. This does not identify a numeric default or general clip-editor shortcut dispatch.",
+    "source_blocks": [
+      "automation:B099"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-034",
+    "title": "Clear command scopes",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clear Envelope removes selected-parameter envelope; lane-header Clear All Envelopes of\u2026 removes automated envelopes for the selected device; Clear All Envelopes removes automation throughout the Set. Partial removal uses point/segment editing instead.",
+    "source_blocks": [
+      "automation:B100",
+      "automation:B101",
+      "automation:B102",
+      "automation:B103",
+      "automation:B104"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-035",
+    "title": "Tempo envelope and mapped range",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Tempo can be recorded during Arrangement recording or edited in Main\u2019s Mixer/Song Tempo lane. Tempo Minimum/Maximum Range controls set its displayed BPM range and also the value range of a MIDI controller assigned to tempo. Numeric mapping, global tempo precedence and clock response remain separate.",
+    "source_blocks": [
+      "automation:B107",
+      "automation:B108",
+      "automation:B109"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-036",
+    "title": "Lock Envelopes entry point",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Lock Envelopes is available through its toggle or Options menu. Arrangement REQ-ARRANGEMENT-032 retains the lock-on clip-move contract; the source\u2019s broader lock-off move statement does not close that owner\u2019s partial-selection and transformation unknowns.",
+    "source_blocks": [
+      "automation:B111"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-037",
+    "title": "Envelope Edit commands and target transfer",
+    "section": "Automation",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Cut, Copy, Duplicate and Delete on an automation-lane time selection affect only selected envelope portions rather than clip content or other portions; multi-lane selections apply to the included envelopes. Segments can be copied across time and parameter targets, without a conversion rule for unrelated controls.",
+    "source_blocks": [
+      "automation:B113",
+      "automation:B114"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-038",
+    "title": "Clip-type chooser vocabulary",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clip Envelopes tab has Device and Control choosers; audio clips expose Clip sample controls, track effects and mixer, while MIDI clips expose MIDI Ctrl, track devices and mixer. Altered envelopes have adjacent indicators and an adjusted-only filter.",
+    "source_blocks": [
+      "clip-envelopes:B004",
+      "clip-envelopes:B005",
+      "clip-envelopes:B006",
+      "clip-envelopes:B007",
+      "clip-envelopes:B008"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-039",
+    "title": "Session versus Arrangement envelope kinds",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Session clips offer Automation/Modulation toggles; Arrangement Clip View exposes modulation only and track automation uses lanes. Automation specifies a control\u2019s absolute value while modulation influences its current/automated value. Both kinds can coexist, with separate indicators and knob position/ring presentation; no universal combiner formula follows.",
+    "source_blocks": [
+      "clip-envelopes:B009",
+      "clip-envelopes:B010",
+      "clip-envelopes:B038",
+      "clip-envelopes:B040",
+      "clip-envelopes:B041"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-040",
+    "title": "Clear clip envelope entry",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clear Envelope in the Clip View envelope context menu resets the selected clip envelope to its default. Exact default values and the source\u2019s shortcut-to-menu wording remain unresolved; parameter Delete Automation is a distinct context.",
+    "source_blocks": [
+      "clip-envelopes:B011"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-041",
+    "title": "MIDI Envelope Auto-Reset option",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "MIDI Envelope Auto-Reset is offered through Options or the Sample Editor context menu and is described as resetting certain MIDI control messages at new clip start. Which messages/values, delivery time and persistence are unknown.",
+    "source_blocks": [
+      "clip-envelopes:B012"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-042",
+    "title": "Non-destructive sample modulation",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clip-envelope modulation is non-destructive to the referenced sample on disk; clips can reuse one sample with different envelopes. Render/resample/consolidate are separate ways to commit audio, owned by their workflow pages.",
+    "source_blocks": [
+      "clip-envelopes:B017",
+      "clip-envelopes:B018"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-043",
+    "title": "Audio transposition envelope context",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "The audio Clip/Transposition workflow uses Warp on and supports Draw Mode or fine breakpoint edits. The source describes additive influence bounded by the Transpose range and Warp-mode/granularity-dependent response; no frequency law, warp kernel, smoothing or numeric event conversion is added.",
+    "source_blocks": [
+      "clip-envelopes:B020",
+      "clip-envelopes:B021",
+      "clip-envelopes:B022",
+      "clip-envelopes:B023",
+      "clip-envelopes:B025"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-044",
+    "title": "Audio Clip Gain modulation role",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clip/Gain envelope can shape sample level. Its influence is relative to Clip Gain, can attenuate to silence and cannot exceed that absolute setting; this documentary role supplies no calibrated gain-domain formula.",
+    "source_blocks": [
+      "clip-envelopes:B027",
+      "clip-envelopes:B028"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-045",
+    "title": "Sample Offset eligibility",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clip/Sample Offset modulation is available only in Beats Warp Mode and is edited as a clip envelope. The chapter\u2019s beat-scrambling examples do not establish random, resampling or analytic cut-and-splice behavior.",
+    "source_blocks": [
+      "clip-envelopes:B030",
+      "clip-envelopes:B031"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-046",
+    "title": "Track volume stage and indicator",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clip Gain and Track Volume are distinct envelope targets; Track Volume modulation affects the mixer\u2019s post-effect gain stage and a dot below its slider indicates the modulated setting. No stored-unit or signal multiplier law is restated.",
+    "source_blocks": [
+      "clip-envelopes:B043",
+      "clip-envelopes:B044"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-047",
+    "title": "Send modulation ceiling role",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Send modulation is relative to the Send control: it cannot open the send beyond the knob and can reduce it to minus infinity. This does not extend finite send coefficients or define event conversion.",
+    "source_blocks": [
+      "clip-envelopes:B045"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-048",
+    "title": "Pan modulation contextual range",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Pan modulation range depends on the base knob: center permits the full stereo span, movement toward an edge reduces available influence, and full left is described as no-effect. This is not a pan law or formula for every mode.",
+    "source_blocks": [
+      "clip-envelopes:B047"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-049",
+    "title": "Device modulation relative role",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Clip modulation acts on devices in that clip\u2019s track and changes controls relative to their current setting rather than defining preset values. Per-device eligible targets and combination arithmetic require their owners/evidence.",
+    "source_blocks": [
+      "clip-envelopes:B049"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-050",
+    "title": "MIDI controller envelope editing",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "MIDI Ctrl/Control selects listed controller envelopes for creation/editing with steps or points, including imported/recorded data indicated by adjacent LEDs. Most controller numbers through 119 are described as supported; this is not every number or a MIDI codec. Receiver conventions may differ from names such as Pitch Bend or Pan.",
+    "source_blocks": [
+      "clip-envelopes:B051",
+      "clip-envelopes:B052",
+      "clip-envelopes:B053"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-051",
+    "title": "Envelope-local region controls",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Unlinking gives the selected envelope its own local region/loop controls and colored loop braces. Its Loop switch is independent of the sample\u2019s Loop switch, allowing a one-shot envelope while the sample continues looping.",
+    "source_blocks": [
+      "clip-envelopes:B056",
+      "clip-envelopes:B059",
+      "clip-envelopes:B060"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-052",
+    "title": "Independent envelope lengths and start markers",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Each unlinked envelope can have its own loop length, extended by braces or numeric controls, including non-bar-aligned lengths. Its start marker identifies where envelope playback begins on clip start; start/end and braces obey the zoom-adaptive grid. No clip-time equation or sample-rounded extent follows.",
+    "source_blocks": [
+      "clip-envelopes:B067",
+      "clip-envelopes:B068",
+      "clip-envelopes:B069",
+      "clip-envelopes:B070",
+      "clip-envelopes:B071"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-053",
+    "title": "Local-loop rhythmic role",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "Local envelope loops may be shorter or longer than source playback and can be shaped with handles/shapes. The source describes tempo-relative repetition and grid-hidden independent endpoints; it does not specify clock arithmetic, rate limits or a free-running oscillator implementation.",
+    "source_blocks": [
+      "clip-envelopes:B073",
+      "clip-envelopes:B075",
+      "clip-envelopes:B076"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-054",
+    "title": "Linked envelope Warp interaction",
+    "section": "Clip envelopes",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "contract": "In Linked mode, moving a clip Warp Marker lengthens/shortens its envelope accordingly, and Warp Markers can be adjusted within the envelope editor. Exact marker/envelope transformation and interpolation stay unknown or with the finite Warp owner.",
+    "source_blocks": [
+      "clip-envelopes:B078"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-U-RUNTIME",
+    "title": "Runtime, timebase and finite-law boundary",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Editing/recording/override/re-enable/runtime outcomes of REQ-AUTOMATION-ENVELOPES-013 remain U. Point generation/Ids, stored transforms/LockEnvelope meaning, modulation normalization, clip timebase/start/loop/Warp, scheduler/ramp alignment and untraced mix-graph owners are not settled by this packet.",
+    "source_blocks": [
+      "automation:B020",
+      "automation:B021",
+      "automation:B027",
+      "clip-envelopes:B038",
+      "clip-envelopes:B078"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-U-SOURCE",
+    "title": "Unresolved source contexts",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Clip Clear Envelope shortcut wording, parameter Delete Automation shortcut dispatch, and sample-replacement all-settings wording versus the existing equal-length Warp-marker predicate need context/build evidence. MIDI auto-reset message set/values and exact copy-across-domain conversions are unknown.",
+    "source_blocks": [
+      "automation:B099",
+      "automation:B114",
+      "clip-envelopes:B011",
+      "clip-envelopes:B012",
+      "clip-envelopes:B036"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-U-MAPPING",
+    "title": "Mapping and automation ownership",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Controller delivery/takeover, key or MIDI mapping versus automation/override/recording, MPE/controller identity, tempo mapping ranges versus normalization and simultaneous input precedence have no new runtime law.",
+    "source_blocks": [
+      "automation:B021",
+      "automation:B109",
+      "clip-envelopes:B053"
+    ]
+  },
+  {
+    "id": "REQ-AUTO-WF-U-BOUNDARY",
+    "title": "Unspecified edit and record boundaries",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Empty selections/lanes/clip slots, ineligible targets, equal-time points, endpoints, negative or extreme text/ranges, multi-clip/group/return/Main combinations and crossing/collapsed transforms have no general refusal/repair law.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-AUTO-WF-U-STATE",
+    "title": "History, persistence and cancellation",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Undo/redo grouping, gesture cancellation, override/arming/filter/selection persistence, save/reopen/duplicate/transfer and automation edit ownership are unknown beyond visible documentary roles. No rollback or event serialization is inferred.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-AUTO-WF-U-CLOCK",
+    "title": "Transport, rates and engine transitions",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Stop/start/seek/loop/tempo/meter/sync changes during record/edit/re-enable, rate/block changes, engine restart and concurrent processing retain unknown event ordering, phase and audio results.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-AUTO-WF-U-LOSS",
+    "title": "Source and target loss",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Device/parameter/track/clip/media/controller disappearance during active envelopes or pending edits, unavailable ports and malformed admitted documents have no new diagnostics, recovery or silence oracle.",
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-AUTO-WF-U-TEARDOWN",
+    "title": "Teardown and concurrent workflows",
+    "section": "Unknown obligations",
+    "provenance": "U",
+    "target_applicability": "U",
+    "contract": "Closing/replacing Set, quitting, losing engine/controller connection or concurrently editing/removing targets while recording or transforming has no established completion, cleanup or transaction outcome.",
+    "source_blocks": []
+  }
+]

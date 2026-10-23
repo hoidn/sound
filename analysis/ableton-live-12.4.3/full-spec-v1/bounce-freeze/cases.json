@@ -1,0 +1,1689 @@
+[
+  {
+    "id": "BF-001",
+    "requirements": [
+      "REQ-BF-001"
+    ],
+    "title": "Individual in-place replacement",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: on separate copies of nonempty A invoke from track title bar and clip context menu. Record new audio track and source replacement; preserve pre-operation inventory for comparison without assuming Undo.",
+    "documentary_expected": "Bounce Track in Place, from a track title-bar or clip context menu, creates a new audio track replacing the source track.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B006"
+    ]
+  },
+  {
+    "id": "BF-002",
+    "requirements": [
+      "REQ-BF-002"
+    ],
+    "title": "New-track selection and source mute",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: select the first clip, then a proper subrange of a second clip in separate trials; invoke clip/selection menu and platform shortcut. Record new audio clips/track and source selection mute; do not infer a permanent source-file edit or range-end rounding.",
+    "documentary_expected": "Bounce to New Track, from a clip/selection context menu or Ctrl+B (Windows)/Cmd+B (macOS), creates new audio clips on a separate track and mutes the source clips or selection.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B007"
+    ]
+  },
+  {
+    "id": "BF-003",
+    "requirements": [
+      "REQ-BF-003"
+    ],
+    "title": "Individual source stage",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: independently establish nonzero clip A, enabled audible device D and nonzero wet output. In reset copies vary D, then mixer pan/volume, then a nonzero send to separately nonmuted return R. Bounce each; isolate the generated clip before audition. Observe processed source versus mixer/send roles with no audio equality oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B008"
+    ]
+  },
+  {
+    "id": "BF-004",
+    "requirements": [
+      "REQ-BF-004"
+    ],
+    "title": "Mixer copying and device disposition",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: set distinguishable admitted pan/volume/send settings with active D. Bounce each individual command on separate copies. Inspect new track mixer settings/device list, while retaining source before-state; do not infer automation or returned audio from knob equality.",
+    "documentary_expected": "Individual-track bouncing preserves the source mixer adjustments in the new track settings and does not retain the source processing devices on the bounced track.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B008"
+    ]
+  },
+  {
+    "id": "BF-005",
+    "requirements": [
+      "REQ-BF-005"
+    ],
+    "title": "Multi-track Arrangement selection",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: A and B contain independently active selected clips; C has no selected clip. Select time across A/B/C and Bounce to New Track. Record per-selected-clip source tracks and resulting new audio tracks. Unselected/empty-track refusal and silent file policies stay U.",
+    "documentary_expected": "For a time selection spanning multiple Arrangement tracks, Bounce to New Track creates a separate audio track for every track on which a clip is selected. Empty-track handling beyond that predicate is unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B009"
+    ]
+  },
+  {
+    "id": "BF-006",
+    "requirements": [
+      "REQ-BF-006"
+    ],
+    "title": "In-place both views",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-VIEWS: put differently named independently nonempty clips on A in Session and Arrangement. Invoke in place from each view on separate copies. Inspect shared replacement and both sets of bounced clips; scheduling and active-view override are not inferred.",
+    "documentary_expected": "Bounce Track in Place replaces the shared track in both views and bounces both its Arrangement and Session clips, even when invoked in one view.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B003",
+      "bounce:B010"
+    ]
+  },
+  {
+    "id": "BF-007",
+    "requirements": [
+      "REQ-BF-007"
+    ],
+    "title": "New-track invoking view",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-VIEWS: copy the documented Session scenario with selected Session clips and distinct Arrangement clips on the same source. Bounce to New Track; inspect new shared track, selected Session outputs and empty new Arrangement track. Repeat Arrangement as a separate coverage branch, not a promise about unspecified contents.",
+    "documentary_expected": "Bounce to New Track creates the shared new track in both views but bounces only selected clips in the invoking view; the documented Session example leaves the new Arrangement track empty.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B003",
+      "bounce:B010"
+    ]
+  },
+  {
+    "id": "BF-008",
+    "requirements": [
+      "REQ-BF-008"
+    ],
+    "title": "Named bounce suffix",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: track named Source A and clip named Phrase A; use each individual bounce command in fresh copies. Record track/clip suffix with the source name retained. Do not infer suffix collision behavior.",
+    "documentary_expected": "Created tracks/clips inherit the source name with (Bounce) appended; an unnamed source clip produces a clip named (Bounce). The new track inherits source track color. Collision, repeated-suffix and Unicode rules are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B011"
+    ]
+  },
+  {
+    "id": "BF-009",
+    "requirements": [
+      "REQ-BF-008"
+    ],
+    "title": "Unnamed source clip",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: clear source clip name through an offered control without emptying its audio. Bounce on a fresh copy and inspect the documented (Bounce) clip name; distinguish absent display text from the underlying source identity.",
+    "documentary_expected": "Created tracks/clips inherit the source name with (Bounce) appended; an unnamed source clip produces a clip named (Bounce). The new track inherits source track color. Collision, repeated-suffix and Unicode rules are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B011"
+    ]
+  },
+  {
+    "id": "BF-010",
+    "requirements": [
+      "REQ-BF-008"
+    ],
+    "title": "Track color inheritance",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: set a distinguishable source track color; bounce to new track and in place on separate copies. Compare track color only, not exact screen pixels or arbitrary clip-color inheritance.",
+    "documentary_expected": "Created tracks/clips inherit the source name with (Bounce) appended; an unnamed source clip produces a clip named (Bounce). The new track inherits source track color. Collision, repeated-suffix and Unicode rules are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B011"
+    ]
+  },
+  {
+    "id": "BF-011",
+    "requirements": [
+      "REQ-BF-009"
+    ],
+    "title": "Saved Bounce location",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FILES: save disposable Set inside known writable Project P, inventory current references, bounce known source. Inspect new file references under P/Samples/Processed/Bounce; no filename, count, container or byte oracle.",
+    "documentary_expected": "Bounced audio files are stored in the Current Project under Samples/Processed/Bounce. Unsaved-project location, filenames, file count, format and subsequent collection are not established by this statement.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B012"
+    ]
+  },
+  {
+    "id": "BF-012",
+    "requirements": [
+      "REQ-BF-010"
+    ],
+    "title": "Whole-group replacement",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: nonempty group G with A/B children and a recorded before-inventory. On separate copies invoke title-bar, Session group slot and Arrangement main-lane entry points. Inspect whole-group replacement by audio track; do not infer ID restoration or custom route remapping.",
+    "documentary_expected": "Bounce Group in Place creates a new audio track replacing the whole Group Track. Entry points are the group title-bar context menu, Session group-slot context menu and Arrangement group main-lane context menu.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B014",
+      "bounce:B015"
+    ]
+  },
+  {
+    "id": "BF-013",
+    "requirements": [
+      "REQ-BF-011"
+    ],
+    "title": "Group new-track and mute",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: on reset copies select a nonempty group Session slot or Arrangement group-main-lane range. Invoke the documented menus and platform shortcut. Record separate audio track/clip and selected source mute; do not equate this with per-child individual bouncing.",
+    "documentary_expected": "Bounce Group to New Track commits selected clips or a time selection within the group to a separate track and mutes the source clips/selection. Entry points are Session group-slot or Arrangement group main-lane context menu and Ctrl+B (Windows)/Cmd+B (macOS).",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B016"
+    ]
+  },
+  {
+    "id": "BF-014",
+    "requirements": [
+      "REQ-BF-012"
+    ],
+    "title": "Group post-mixer and Main exclusion",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: independently establish A/B, group device D, nonzero source sends to active R and nonzero R-to-Main baseline. Vary child/group mixer, D and Main-only audible device separately. Bounce group and isolate resulting audio in a clean known path. Observe inclusion/exclusion roles, with no numeric sum or equality criterion.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B017"
+    ]
+  },
+  {
+    "id": "BF-015",
+    "requirements": [
+      "REQ-BF-013"
+    ],
+    "title": "Child routed outside group",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: establish A and B contributions independently, then route B outside G to known C. Confirm B remains positive on C and A remains positive in G. Bounce G; compare with B routed to G in a matched baseline. Do not use muted B or assert all-group silence while A remains.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B017"
+    ]
+  },
+  {
+    "id": "BF-016",
+    "requirements": [
+      "REQ-BF-014"
+    ],
+    "title": "Return final output condition",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: known A-to-R send and nonzero wet R output; independently establish R-to-Main versus R-to-other-receiver routes on separate copies, both receivers monitored correctly. Bounce G with identical nonzero A/return input. Other/direct paths isolated only after baselines; no arbitrary feedback or missing-return silence inference.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B017"
+    ]
+  },
+  {
+    "id": "BF-017",
+    "requirements": [
+      "REQ-BF-015"
+    ],
+    "title": "Paste after source processing change",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: copy active source selection once, paste, change an enabled source effect between two independently nonzero distinguishable settings, and Paste Bounced Audio again without recopy. Compare source-state role with isolated new audio; no waveform or device-state-transfer comparator.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B019"
+    ]
+  },
+  {
+    "id": "BF-018",
+    "requirements": [
+      "REQ-BF-016"
+    ],
+    "title": "Single Session-track copy source",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: select two nonempty clips on one Session track, Copy using menu and platform shortcut on separate copies, then paste bounced audio into eligible audio destination. Inspect accepted copied source and destination; multiple Session-track copy is a U boundary.",
+    "documentary_expected": "The documented copy sources are clips within a single Session track, Arrangement clips or a time selection, and a time selection in a group main lane in Arrangement. Copy or Ctrl+C (Windows)/Cmd+C (macOS) supplies the copied source.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B020"
+    ]
+  },
+  {
+    "id": "BF-019",
+    "requirements": [
+      "REQ-BF-016"
+    ],
+    "title": "Arrangement clips and time copy",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: Copy nonempty Arrangement clips, then a proper selected time range in another reset trial; Paste Bounced Audio into eligible destination. Retain source range and visible destination membership; no time-to-sample rounding.",
+    "documentary_expected": "The documented copy sources are clips within a single Session track, Arrangement clips or a time selection, and a time selection in a group main lane in Arrangement. Copy or Ctrl+C (Windows)/Cmd+C (macOS) supplies the copied source.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B020"
+    ]
+  },
+  {
+    "id": "BF-020",
+    "requirements": [
+      "REQ-BF-016"
+    ],
+    "title": "Group main-lane copy",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP/F-PASTE: establish nonempty group contribution, copy time from its Arrangement main lane and Paste Bounced Audio to eligible audio target. Preserve the group route baseline; child aggregation audio remains U.",
+    "documentary_expected": "The documented copy sources are clips within a single Session track, Arrangement clips or a time selection, and a time selection in a group main lane in Arrangement. Copy or Ctrl+C (Windows)/Cmd+C (macOS) supplies the copied source.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B020"
+    ]
+  },
+  {
+    "id": "BF-021",
+    "requirements": [
+      "REQ-BF-017"
+    ],
+    "title": "Audio paste destination",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: after valid Copy, invoke Paste Bounced Audio from audio-track main-lane menu and shortcut in reset trials. Inspect new bounced audio clip placement without imposing unstated collision/replacement policy.",
+    "documentary_expected": "Paste Bounced Audio is available through a track main-lane context menu or Ctrl+Alt+V (Windows)/Cmd+Opt+V (macOS) for an audio track, an empty MIDI track or a take lane. The copied material is bounced/pasted; a MIDI destination is converted to audio. Other destination eligibility is unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B020"
+    ]
+  },
+  {
+    "id": "BF-022",
+    "requirements": [
+      "REQ-BF-017"
+    ],
+    "title": "Empty MIDI conversion",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: valid copied source and independently empty MIDI destination. Paste by documented route; inspect conversion to audio and inserted clip. Nonempty MIDI destinations are separately U.",
+    "documentary_expected": "Paste Bounced Audio is available through a track main-lane context menu or Ctrl+Alt+V (Windows)/Cmd+Opt+V (macOS) for an audio track, an empty MIDI track or a take lane. The copied material is bounced/pasted; a MIDI destination is converted to audio. Other destination eligibility is unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B020"
+    ]
+  },
+  {
+    "id": "BF-023",
+    "requirements": [
+      "REQ-BF-017"
+    ],
+    "title": "Take-lane destination",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: create a valid audio take lane using recording owner, copy active source and paste bounced audio into the offered take-lane route. Inspect resulting clip and membership; comp selection and crossfades retain existing owners.",
+    "documentary_expected": "Paste Bounced Audio is available through a track main-lane context menu or Ctrl+Alt+V (Windows)/Cmd+Opt+V (macOS) for an audio track, an empty MIDI track or a take lane. The copied material is bounced/pasted; a MIDI destination is converted to audio. Other destination eligibility is unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B020"
+    ]
+  },
+  {
+    "id": "BF-024",
+    "requirements": [
+      "REQ-BF-018"
+    ],
+    "title": "Deleted copied source disables paste",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: establish valid Copy and paste availability, delete exactly the copied source material in a disposable copy and inspect Paste Bounced Audio availability. Copy fresh active material and inspect availability again. Partial deletion and Undo restoration are not assumed.",
+    "documentary_expected": "Deleting the copied source material makes Paste Bounced Audio unavailable until new material is copied. Partial source deletion, undo and foreign clipboard behavior are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B021"
+    ]
+  },
+  {
+    "id": "BF-025",
+    "requirements": [
+      "REQ-BF-019"
+    ],
+    "title": "Freeze entry points",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: nonempty eligible track with positive pre-freeze clip/device output. Use Edit, track context, clip context and documented platform shortcut in separate reset trials; retain visible frozen status and command availability.",
+    "documentary_expected": "Freeze Track is available through Edit and track/clip context menus; the documented shortcut for a selected track is Ctrl+Alt+Shift+F (Windows)/Cmd+Option+Shift+F (macOS).",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B003"
+    ]
+  },
+  {
+    "id": "BF-026",
+    "requirements": [
+      "REQ-BF-020"
+    ],
+    "title": "Group is not Freeze eligible",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: establish audible nonempty children, then select group itself and inspect offered Freeze actions. Compare with a positive eligible child-track trial; group Bounce is a different command.",
+    "documentary_expected": "Freeze applies to tracks holding clips. Group, return and Main tracks cannot be frozen. Bounce Group is a separate operation, not an exception to Freeze eligibility. Other empty/frozen/recording-track cases remain unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B004",
+      "freeze12:B007"
+    ]
+  },
+  {
+    "id": "BF-027",
+    "requirements": [
+      "REQ-BF-020"
+    ],
+    "title": "Return is not Freeze eligible",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: establish a nonmuted R receiving a nonzero send, inspect Freeze eligibility on R and compare eligible A. Lack of input is not the reason used to infer return exclusion.",
+    "documentary_expected": "Freeze applies to tracks holding clips. Group, return and Main tracks cannot be frozen. Bounce Group is a separate operation, not an exception to Freeze eligibility. Other empty/frozen/recording-track cases remain unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B004",
+      "freeze12:B007"
+    ]
+  },
+  {
+    "id": "BF-028",
+    "requirements": [
+      "REQ-BF-020"
+    ],
+    "title": "Main is not Freeze eligible",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: independently nonzero Main output, inspect Main Freeze eligibility and compare eligible A. Do not infer what an empty ordinary track would do.",
+    "documentary_expected": "Freeze applies to tracks holding clips. Group, return and Main tracks cannot be frozen. Bounce Group is a separate operation, not an exception to Freeze eligibility. Other empty/frozen/recording-track cases remain unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B004",
+      "freeze12:B007"
+    ]
+  },
+  {
+    "id": "BF-029",
+    "requirements": [
+      "REQ-BF-021"
+    ],
+    "title": "Frozen sample playback role",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: nonzero A/B clips in both views with an enabled independently audible device. Freeze and audition generated clips through independently nonmuted output. Retain generated file references; no sample identity, CPU savings or live-device execution claim is graded.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B002"
+    ]
+  },
+  {
+    "id": "BF-030",
+    "requirements": [
+      "REQ-BF-021"
+    ],
+    "title": "Per-clip Freeze file roles",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: use separately named nonempty Session and Arrangement clips with retained source identity. Freeze and inspect corresponding generated sample references as far as an understood file view allows. Never infer undocumented file internals from filenames or import the Live 11 one-Arrangement-file description.",
+    "documentary_expected": "Freeze creates a sample file for each Session and Arrangement clip on the selected track, and those clips play frozen samples in place of recalculating device and clip processing. File layout is documentary context, not a prescribed implementation architecture or sample oracle.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B002"
+    ]
+  },
+  {
+    "id": "BF-031",
+    "requirements": [
+      "REQ-BF-022"
+    ],
+    "title": "Frozen settings exclusion",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: retain accepted device and clip setting values before Freeze. After Freeze inspect corresponding Device/Clip View edit availability separately from allowed mixer/clip-edit exceptions. Do not force unavailable edits through invented state encodings.",
+    "documentary_expected": "While frozen, device and clip settings cannot be adjusted in the frozen Device/Clip View areas. Unfreeze Track is available from Edit or the track context menu to permit settings changes again. The expressly listed editing exceptions below remain available.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B006",
+      "freeze12:B008"
+    ]
+  },
+  {
+    "id": "BF-032",
+    "requirements": [
+      "REQ-BF-022"
+    ],
+    "title": "Unfreeze allows settings",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: freeze a positively calibrated track, then Unfreeze through Edit and track context in separate copies. Attempt the previously admitted device and clip edits; compare visible editability, not sample equality or removed-media cleanup.",
+    "documentary_expected": "While frozen, device and clip settings cannot be adjusted in the frozen Device/Clip View areas. Unfreeze Track is available from Edit or the track context menu to permit settings changes again. The expressly listed editing exceptions below remain available.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B006",
+      "freeze12:B008"
+    ]
+  },
+  {
+    "id": "BF-033",
+    "requirements": [
+      "REQ-BF-023"
+    ],
+    "title": "Frozen launch available",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: freeze known nonempty Session clips and invoke their ordinary launch controls with recorded launch context. Observe control availability; actual scheduling/quantization and delivered audio remain U here.",
+    "documentary_expected": "Frozen clips remain launchable and volume, pan and sends remain available. This documents control availability, not unchanged sound or playback scheduling.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B008"
+    ]
+  },
+  {
+    "id": "BF-034",
+    "requirements": [
+      "REQ-BF-023"
+    ],
+    "title": "Frozen mixer available",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: with positive clip and active R, separately adjust admitted volume, pan and nonzero send values while frozen. Observe controls accepting edits; the audio and envelope laws remain with existing owners.",
+    "documentary_expected": "Frozen clips remain launchable and volume, pan and sends remain available. This documents control availability, not unchanged sound or playback scheduling.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B008"
+    ]
+  },
+  {
+    "id": "BF-035",
+    "requirements": [
+      "REQ-BF-024"
+    ],
+    "title": "Frozen clip edit variants",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: on separate source copies perform cut, copy/paste, duplicate and trim on a selected nonempty frozen clip. Inventory accepted membership/range edits; each named branch is independent coverage and no Undo/clipboard/endpoint law is copied.",
+    "documentary_expected": "Cut, copy, paste, duplicate and trim remain available on frozen clips. Their general edits and transaction semantics retain their existing owners.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B009"
+    ]
+  },
+  {
+    "id": "BF-036",
+    "requirements": [
+      "REQ-BF-025"
+    ],
+    "title": "Mixer automation and clip envelope availability",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: separately draw/edit admitted mixer automation and a mixer clip envelope while frozen. Retain offered control and visible envelope changes; do not infer device automation editing, point interpolation or commit-to-audio inclusion.",
+    "documentary_expected": "Drawing/editing mixer automation and mixer clip envelopes remains available on frozen tracks. Envelope values, event scheduling and audio outcomes are separate contracts.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B010"
+    ]
+  },
+  {
+    "id": "BF-037",
+    "requirements": [
+      "REQ-BF-026"
+    ],
+    "title": "Frozen Consolidate availability",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: select adjacent nonempty frozen Arrangement material and invoke Consolidate through its owner. Inspect eligibility only; sample stage, result format and transaction semantics stay Arrangement-owned.",
+    "documentary_expected": "Frozen tracks permit consolidation, recording Session launches into Arrangement, and creating/moving/duplicating Session scenes. Only this frozen-state eligibility is owned here; each operation retains its existing semantics.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B011",
+      "freeze12:B012",
+      "freeze12:B013"
+    ]
+  },
+  {
+    "id": "BF-038",
+    "requirements": [
+      "REQ-BF-026"
+    ],
+    "title": "Record frozen Session launches availability",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: eligible frozen Session clips and recording-owner setup; invoke recording of launches into Arrangement. Inspect offered operation only. Record gating, media, start timing and note outcomes are not graded here.",
+    "documentary_expected": "Frozen tracks permit consolidation, recording Session launches into Arrangement, and creating/moving/duplicating Session scenes. Only this frozen-state eligibility is owned here; each operation retains its existing semantics.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B011",
+      "freeze12:B012",
+      "freeze12:B013"
+    ]
+  },
+  {
+    "id": "BF-039",
+    "requirements": [
+      "REQ-BF-026"
+    ],
+    "title": "Frozen scene edits available",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: frozen nonempty Session track; independently create, move and duplicate scenes in disposable copies using Session owner. Inspect offered operations and visible scene membership; do not import general scene semantics.",
+    "documentary_expected": "Frozen tracks permit consolidation, recording Session launches into Arrangement, and creating/moving/duplicating Session scenes. Only this frozen-state eligibility is owned here; each operation retains its existing semantics.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B011",
+      "freeze12:B012",
+      "freeze12:B013"
+    ]
+  },
+  {
+    "id": "BF-040",
+    "requirements": [
+      "REQ-BF-027"
+    ],
+    "title": "Frozen MIDI drag to audio",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: independently nonzero MIDI clip through a known active instrument, Freeze, then drag frozen MIDI clip to an eligible audio track. Inspect audio destination accepting the dragged clip; waveform, stored envelopes and placement rounding stay U.",
+    "documentary_expected": "Frozen MIDI clips can be dragged into audio tracks. Exact audio content, transferred envelopes, target placement and resulting source identity are unknown here.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B014"
+    ]
+  },
+  {
+    "id": "BF-041",
+    "requirements": [
+      "REQ-BF-028"
+    ],
+    "title": "Time-effect edit after unfreeze",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: establish nonzero tail from active time-based effect with input ending before tail. Freeze, edit source timing in one copy, compare frozen then unfrozen playback. The documented may-differ caveat supplies no required numerical or universal audible difference.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B015"
+    ]
+  },
+  {
+    "id": "BF-042",
+    "requirements": [
+      "REQ-BF-029"
+    ],
+    "title": "Frozen tail presentation",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: independently retain nonzero effect tail beyond source end, Freeze and inspect adjacent crosshatched temporary tail region. Move source with tail deliberately selected as a pair; do not assume automatic linkage for source-only moves.",
+    "documentary_expected": "Relevant material beyond clip lengths, such as effect tails, plays while frozen and is represented by adjacent crosshatched temporary clips; these temporary tail clips disappear on unfreeze. Selecting both pieces when moving is advice, not automatic move-linkage. Tail length, cutoff, samples and clip-boundary ownership are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B016"
+    ]
+  },
+  {
+    "id": "BF-043",
+    "requirements": [
+      "REQ-BF-029"
+    ],
+    "title": "Frozen tail audio",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: same independently known nonzero input and wet tail baseline, Freeze and isolate playback after visible source end with output nonmuted. Record tail content and cutoff without a length, floor or tolerance oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B016"
+    ]
+  },
+  {
+    "id": "BF-044",
+    "requirements": [
+      "REQ-BF-029"
+    ],
+    "title": "Unfreeze removes temporary tail clips",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: establish visible frozen tail region, then Unfreeze. Inspect disappearance of temporary tail clip and retained editable source; no original file deletion or live tail sample equality is inferred.",
+    "documentary_expected": "Relevant material beyond clip lengths, such as effect tails, plays while frozen and is represented by adjacent crosshatched temporary clips; these temporary tail clips disappear on unfreeze. Selecting both pieces when moving is advice, not automatic move-linkage. Tail length, cutoff, samples and clip-boundary ownership are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B016"
+    ]
+  },
+  {
+    "id": "BF-045",
+    "requirements": [
+      "REQ-BF-030"
+    ],
+    "title": "Two Session cycles and longer envelopes",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: independently known loop duration and longer unlinked audible envelope with positive output across at least three cycles. Freeze, retain sample extent and subsequent playback. Two documented cycles do not establish sample rounding or a mandatory mismatch after cycle two.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B017"
+    ]
+  },
+  {
+    "id": "BF-046",
+    "requirements": [
+      "REQ-BF-031"
+    ],
+    "title": "Frozen drop area in each view",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: drag complete nonempty frozen clip to Session drop area, then Arrangement drop area in separate copies. Inspect new frozen track containing it; source move/copy modifiers and ID rules remain U.",
+    "documentary_expected": "Dragging a frozen clip to a Session or Arrangement drop area creates a new frozen track containing it. A partially selected Arrangement clip produces only that selected portion in the new frozen track.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B018"
+    ]
+  },
+  {
+    "id": "BF-047",
+    "requirements": [
+      "REQ-BF-031"
+    ],
+    "title": "Partial Arrangement frozen drop",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: proper nonempty interior selection of frozen Arrangement clip, drag to drop area. Inspect new frozen track containing selected portion only; compare visible bounds without a sample endpoint oracle.",
+    "documentary_expected": "Dragging a frozen clip to a Session or Arrangement drop area creates a new frozen track containing it. A partially selected Arrangement clip produces only that selected portion in the new frozen track.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B018"
+    ]
+  },
+  {
+    "id": "BF-048",
+    "requirements": [
+      "REQ-BF-032"
+    ],
+    "title": "Saved Freeze path",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FILES/F-FREEZE: saved writable Project P, Freeze active source and inspect new references under Samples/Processed/Freeze. No file encoding/count or unrelated write guarantee.",
+    "documentary_expected": "Freeze samples are stored in Current Project under Samples/Processed/Freeze. Names, codec, byte identity and reuse/collection rules are unknown.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B019"
+    ]
+  },
+  {
+    "id": "BF-049",
+    "requirements": [
+      "REQ-BF-033"
+    ],
+    "title": "Unsaved Freeze path",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FILES/F-FREEZE: unsaved valid Set with known writable Temporary Folder T, Freeze nonempty source and inspect Freeze sample location. Save afterward only as a separate U relocation trial.",
+    "documentary_expected": "For a Set not yet saved, the Freeze sample folder is specified by Temporary Folder. Later relocation on save is not established here.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B019"
+    ]
+  },
+  {
+    "id": "BF-050",
+    "requirements": [
+      "REQ-BF-034"
+    ],
+    "title": "Hardware Freeze real-time mode",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-HARDWARE: only with independently established functioning external instrument/effect port pair, nonzero return and audible output, invoke Freeze and record real-time process mode/controls. Do not classify by device name alone or execute this on an unavailable host. Process controls remain export-owned.",
+    "documentary_expected": "A track containing External Audio Effect or External Instrument routed to hardware is frozen in real time when detected as requiring it. Real-time process controls are referenced to the export owner; no hardware acceptance, deadline, calibration or numeric latency law follows.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B005"
+    ]
+  },
+  {
+    "id": "BF-051",
+    "requirements": [
+      "REQ-BF-034"
+    ],
+    "title": "Hardware Freeze delivered result",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-HARDWARE: qualifying working return path and independently measured input/output baseline. Freeze and inspect generated audio without assuming driver timing, device latency subtraction, alignment or audio equality.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B005"
+    ]
+  },
+  {
+    "id": "BF-052",
+    "requirements": [
+      "REQ-BF-035"
+    ],
+    "title": "External-device unfreeze sample discard",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-HARDWARE: on a disposable eligible track containing each external device separately, establish successful positive Freeze and retain owned freeze-file references. Unfreeze and inspect those Freeze files only for the documented discard role; unrelated source/destination files have no cleanup oracle.",
+    "documentary_expected": "Freeze files for a track containing External Instrument or External Audio Effect are discarded on unfreeze. This is not a broad cleanup, rollback or unrelated-file deletion guarantee.",
+    "documentary_comparator": "Compare only named visible controls, eligibility, track/clip/device membership, settings and file/reference roles; exclude signal values, timing, codec, latency, unspecified cleanup and uncovered branches.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B019"
+    ]
+  },
+  {
+    "id": "BF-053",
+    "requirements": [
+      "REQ-BF-036"
+    ],
+    "title": "Missing device with retained frozen samples",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: first establish frozen nonzero playback with all samples present. In an independently available second accepted environment lacking the contained device, open a copy with all generated samples retained and audition frozen track. No environment is supplied; unfreeze and sample-loss outcomes are separate unknowns.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "freeze12:B020"
+    ]
+  },
+  {
+    "id": "BF-054",
+    "requirements": [
+      "REQ-BF-U-FLATTEN"
+    ],
+    "title": "Actual Flatten command/version boundary",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F0: inventory actually offered Flatten and Freeze and Flatten Track commands in pinned target context, only if available; do not equate Bounce Track in Place or Max device freezing. Retained Live 11 Edit-menu Flatten description gives no target expected state. Record any accepted operation and before/after source inventory.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B006",
+      "freeze11:B017"
+    ]
+  },
+  {
+    "id": "BF-055",
+    "requirements": [
+      "REQ-BF-U-SIGNAL"
+    ],
+    "title": "Automation inclusion versus transfer",
+    "kind": "automation",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK/F-GROUP: independently positive device parameter automation, mixer automation, clip envelope and manual override on separate copies. Bounce each supported individual/group/paste route and Freeze. Record rendered behavior and resulting envelope/state inventory without presuming automation copied, flattened or discarded.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B008",
+      "bounce:B017",
+      "freeze12:B015",
+      "freeze12:B016",
+      "freeze12:B017"
+    ]
+  },
+  {
+    "id": "BF-056",
+    "requirements": [
+      "REQ-BF-U-SIGNAL"
+    ],
+    "title": "Bounce range and tail boundaries",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: known nonempty [4,8) beat range with nonzero tail crossing beat 8 and separate adjacent clips/gaps. Compare partial clip, full clip and range bounce on reset copies; capture source and result bounds/tails without assuming export Render as Loop behavior or fixed tail duration.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B008",
+      "bounce:B017",
+      "freeze12:B015",
+      "freeze12:B016",
+      "freeze12:B017"
+    ]
+  },
+  {
+    "id": "BF-057",
+    "requirements": [
+      "REQ-BF-U-SIGNAL"
+    ],
+    "title": "Rate and render output metadata",
+    "kind": "sample-rate",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: accepted 44.1/48/96 kHz contexts in independent reset trials only if actually offered. Bounce/Freeze positive known source and inspect generated metadata/samples; rate retention, conversion filters, bit depth, codec, dither and format policy have no oracle.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B008",
+      "bounce:B017",
+      "freeze12:B015",
+      "freeze12:B016",
+      "freeze12:B017"
+    ]
+  },
+  {
+    "id": "BF-058",
+    "requirements": [
+      "REQ-BF-U-SIGNAL"
+    ],
+    "title": "Compensation and source taps",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: known positive delayed device path and separately nonzero dry/return baselines. Compare supported compensation and monitor contexts through existing owners before Bounce/Freeze. Record audio/event timing without borrowed export/playback sample equality or latency arithmetic.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": [
+      "bounce:B008",
+      "bounce:B017",
+      "freeze12:B015",
+      "freeze12:B016",
+      "freeze12:B017"
+    ]
+  },
+  {
+    "id": "BF-059",
+    "requirements": [
+      "REQ-BF-U-BOUNDARY"
+    ],
+    "title": "Empty and unselected source",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Compare actually empty ordinary track, selected nonempty clip, empty Session slot and an unselected nonempty track on disposable Sets. Inspect offered bounce/freeze/paste commands and refusal/results; only the eligible positive trial supplies a baseline, not an expected negative outcome.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-060",
+    "requirements": [
+      "REQ-BF-U-BOUNDARY"
+    ],
+    "title": "Zero selection and range endpoints",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK: compare insert marker only, proper nonempty range, exact clip-start/end boundary and gap-only range. Attempt only offered commands; retain control/range/result inventory with no half-open sample, silence or repair assumption.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-061",
+    "requirements": [
+      "REQ-BF-U-BOUNDARY"
+    ],
+    "title": "Mixed paste and track selection",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-PASTE: compare valid single-track Session copy with multiple Session-track sources, nonempty MIDI destination, occupied take lane and mixed audio/MIDI selection. Record accepted routes, collision and destination behavior; do not infer refusal from documented positive list.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-062",
+    "requirements": [
+      "REQ-BF-U-BOUNDARY"
+    ],
+    "title": "Nested group routing",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-GROUP: establish nonzero child, nested group, external custom route, multiple returns and known Main contribution separately. Bounce inner/outer group in isolated copies; arbitrary graph inclusion, double counting and cycles remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-063",
+    "requirements": [
+      "REQ-BF-U-BOUNDARY"
+    ],
+    "title": "Playing armed and recording states",
+    "kind": "transport",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-TRACK/F-FREEZE: compare stopped, playing, armed and actually recording states with independently positive source/output. Invoke only offered Bounce/Freeze/Unfreeze operations. Record state transitions and eligibility without assigning universal refusal or scheduler ordering.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-064",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Undo and redo transactions",
+    "kind": "undo",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "For each supported individual/group bounce, paste, Freeze and Unfreeze, retain clip/track/device/mixer/reference inventory, perform one operation on a separate disposable copy, Undo then Redo. Include actual legacy Flatten only if offered. Record grouping, file retention and restored state without atomicity assumptions.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-065",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Cancellation phases",
+    "kind": "cancel",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Begin each actually offered bounce/freeze process on a long independently active source; cancel only through offered controls at recorded phases. Separately dismiss a paste/context menu without committing. Record previous/new state and owned files without borrowing export cancellation cleanup.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-066",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Save reopen and relocation",
+    "kind": "persistence",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FILES: save/reopen a disposable Set after each supported commit/freeze operation; separately save previously unsaved Freeze/Bounce result, Save As to a different project and reopen with copied/missing generated media. Record reference/device/clip state without encoding or relocation policy assumptions.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-067",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Transport while processing",
+    "kind": "transport",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "With positive source/output, compare stop/start, seek, loop and tempo change during an actually offered operation on separate copies. Retain output/clip and progress state; no commit boundary, tail continuity or transport-lock guarantee.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-068",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Automation during processing",
+    "kind": "automation",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: with independent active source and effect output, try an actually offered parameter/mixer/clip-envelope edit during a long bounce/freeze job. Observe lock, deferred change or state without presuming snapshot time; freeze-state availability does not settle in-progress scheduling.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-069",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Rate change and engine restart",
+    "kind": "sample-rate",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: only through accepted controls, request a supported sample-rate/block-size change or engine restart during each supported operation in separate copies. Preserve positive pre-change baseline; observe refusal/interruption/recovery without numeric alignment or conversion assumptions.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-070",
+    "requirements": [
+      "REQ-BF-U-STATE"
+    ],
+    "title": "Close replace Set and teardown",
+    "kind": "teardown",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "While each offered operation is active, separately close/replace disposable Set or quit through offered controls. Retain prompts, owned partial output and reopened state if accessible. No completion, rollback or temporary-file cleanup guarantee.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-071",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "Source removal during commit",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-SIGNAL: establish readable source and nonzero output, then make only owned source media unavailable during an offered long operation; separately delete copied material after valid Copy but before Paste. The fully deleted copied-source eligibility law is separate; in-progress effects/transactions remain unknown.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-072",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "Missing frozen samples",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: positively verify frozen playback and all file identities, then remove one owned generated sample in a copy before reopen/playback/unfreeze. Record missing reference, diagnostics and other live/tail output without treating whole-track silence or successful reconstruction as guaranteed.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-073",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "Unavailable devices during processing",
+    "kind": "recovery",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FREEZE: independently available contained device and nonzero path first; in accepted isolated configuration make device unavailable before a commit or while reopening an unfrozen copy. Distinguish retained frozen-file playback from reconstruction and missing-media outcomes.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-074",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "Destination failure and disk space",
+    "kind": "error",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-FILES: known working writable destination first; on disposable storage separately make destination read-only, unavailable or full at recorded process phase. No real exhaustion is performed here. Observe diagnostic/partial references/cleanup without save or export rollback assumptions.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-075",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "Malformed admitted inputs",
+    "kind": "malformed",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "On test copies use invalid range text or unsupported reference only if an offered control or independently understood saved-state format exists. No ALS/codec schema or hidden command is invented; unestablished admission remains an unmet prerequisite.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-076",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "External return loss",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-HARDWARE: only after independent positive hardware return baseline, interrupt that owned route during an accepted real-time Freeze. Observe process state and output; no fabricated host, timeout, silence or retry policy.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  },
+  {
+    "id": "BF-077",
+    "requirements": [
+      "REQ-BF-U-ERROR"
+    ],
+    "title": "Interrupted operation recovery",
+    "kind": "recovery",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "Following an independently retained cancellation/failure on a disposable Set, restore source and destination, reopen or retry only through offered controls. Record recovery and owned file references; a later successful positive trial cannot prove earlier cleanup or atomicity.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false,
+    "source_blocks": []
+  }
+]

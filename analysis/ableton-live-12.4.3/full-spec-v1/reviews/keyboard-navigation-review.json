@@ -1,0 +1,165 @@
+{
+  "id": "REVIEW-KEYBOARD-NAVIGATION-R3",
+  "reviewer": "independent analyst /root/recording_comping_spec",
+  "date_utc": "2026-10-19T20:50:04.550480+00:00",
+  "disposition": "changes-required-before-approval-as-partial-analyst-draft",
+  "scope": "Independent semantic and provenance review of the keyboard/navigation canonical spec, research, original retained accessibility and shortcut HTML, fixtures, requirements/cases/binding inventories, all current payloads and preserved r1/r2 history. No handoff release or exact-target compatibility approval.",
+  "reviewed_inputs": {
+    "wiki/specs/keyboard-navigation.md": "8759e96f84d42935e820008bf07e5798a4cde1fceec0eae785d4af791cf25c28",
+    "wiki/research/keyboard-navigation.md": "2e2a171f1008b1d448ee31f4545d85eef67a0c064700925fe2c042bcf2a530ed",
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/manifest.json": "81ac8dc0a358f5e313e095714441c719ef3638c40be306471a5e8417ddc1c2eb",
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/cases.json": "1d4644fcc11780c3cd89ac3a1a29d237c0540e73a85bb3a0772e2d167ebe7bad",
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/requirements.json": "2af1aa2bae5c7525da4106d2b2cd470d0dbb93e4ae20b1a6dd968d5fe5b1fdd0",
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/shortcut-bindings.json": "eaa2f7e0c1ef643b569464e8eaefd994e05a3f39954096e35aed110e5c3283fb"
+  },
+  "findings": [
+    {
+      "id": "NAV-REVIEW-001",
+      "severity": "medium",
+      "status": "open",
+      "locations": [
+        "wiki/specs/keyboard-navigation.md#requirements",
+        "wiki/specs/keyboard-navigation.md#cases-and-fixtures",
+        "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/fixtures.json:F1/F3",
+        "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/cases.json:NAV-004/NAV-005/NAV-016/NAV-023/NAV-024/NAV-026/NAV-032"
+      ],
+      "problem": "Tab-based main-view navigation lacks its mandatory active global Tab mode precondition. F1 records navigation settings without requiring Use Tab Key to Move Focus enabled; F3 does not establish it. Several finite cases therefore permit a setup in which the documented Tab gesture switches views rather than following the stated traversal oracle. Wrap enabled alone does not establish Tab focus mode.",
+      "source_evidence": {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/accessibility-and-keyboard-navigation-2026-10-19.html",
+        "sha256": "39757eb6da631c78fa61dd39be02aec3f07af2e623dce159ee9e468fd3cea2a8",
+        "html_line": 280,
+        "anchors": [
+          "navigating-in-live",
+          "using-tab-for-navigation",
+          "settings-menu"
+        ],
+        "support": "The introduction to section41.4 explicitly requires Use Tab Key to Move Focus enabled for its Tab shortcuts. Section41.1.1 describes Session/Arrangement switching with it off; section41.1.2 expressly exempts Settings traversal."
+      },
+      "impact": "These documentary case predicates can fail because of an admitted setup rather than an incompatible navigation implementation. The requirement and case count is an inventory, not fully conditioned coverage.",
+      "requested_change": "Add a shared explicit enabled-Tab precondition for applicable main-view Tab/Shift-Tab/modified-Tab traversal requirements and finite cases (including F3 breakpoint traversal), or repeat it in each affected setup. Keep the global-off switch scenario and Settings exception explicit. Preserve unknown/unsupported contexts and all target-U/unexecuted statuses."
+    },
+    {
+      "id": "NAV-REVIEW-002",
+      "severity": "medium",
+      "status": "open",
+      "locations": [
+        "wiki/specs/keyboard-navigation.md#req-keyboard-nav-008--screen-reader-announcements",
+        "wiki/specs/keyboard-navigation.md#req-keyboard-nav-016--breakpoint-createselectmove",
+        "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/requirements.json:008/016",
+        "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/cases.json:NAV-013"
+      ],
+      "problem": "Two compound claims cite only one sibling section. REQ008 and its help-text scenario cite options-menu, but the help-text/VoiceOver verbosity and VO-Shift-H support is in speak-help-text. REQ016 cites navigating-between-breakpoints for creating/moving points but also claims selecting an existing point, which is documented under selecting-and-editing-breakpoints.",
+      "source_evidence": {
+        "path": "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/accessibility-and-keyboard-navigation-2026-10-19.html",
+        "sha256": "39757eb6da631c78fa61dd39be02aec3f07af2e623dce159ee9e468fd3cea2a8",
+        "locators": [
+          {
+            "anchor": "options-menu",
+            "html_line": 280
+          },
+          {
+            "anchor": "speak-help-text",
+            "html_line": 280
+          },
+          {
+            "anchor": "navigating-between-breakpoints",
+            "html_line": 280
+          },
+          {
+            "anchor": "selecting-and-editing-breakpoints",
+            "html_line": 312
+          }
+        ],
+        "support": "Direct reading confirms the behavioral claims in these additional sibling paragraphs. This is a locator completeness issue, not evidence that the documented actions are false."
+      },
+      "impact": "The advertised exact section locator does not support each subclaim in its stated scope. The missing sections are retained and already identified in headings.json, so no new source capture is required.",
+      "requested_change": "Add the Speak Help Text appendix/link to REQ008 and both breakpoint subsection links to REQ016, retaining existing locators. Ensure machine-readable requirement/case evidence routing can represent both supporting sections, or split the subclaims without changing their documentary/target status. Parent navigate-menu is a valid umbrella for its child view-focus sections; those do not need mechanical duplication."
+    }
+  ],
+  "checks": {
+    "current_manifest_sha256": "81ac8dc0a358f5e313e095714441c719ef3638c40be306471a5e8417ddc1c2eb",
+    "current_payload_hashes": {
+      "checked": 53,
+      "failures": 0
+    },
+    "protected_history": [
+      {
+        "revision": 1,
+        "manifest_sha256": "c955e3511c873d3c1054b278817ba907c06d05243626e5504b5d38f5f8a440da",
+        "archived_payloads": 11,
+        "all_payloads_match": true,
+        "root_and_archived_seal_identical": true
+      },
+      {
+        "revision": 2,
+        "manifest_sha256": "af03498d9b0783a546037a7978c51de4cfa2d0d3e4167a8f794aa425e5fe321d",
+        "archived_payloads": 25,
+        "all_payloads_match": true,
+        "root_and_archived_seal_identical": true
+      }
+    ],
+    "revision_deltas": "r1-to-r2 changes only spec revision metadata and the additional Learn sibling citation/appendix; current r3 canonical pages equal r2 pages with EOF blank lines trimmed only. Sources, fixtures, requirement text and cases remain unchanged.",
+    "original_HTML_sources": {
+      "checked": 2,
+      "URL_UTC_size_SHA256_match": true,
+      "version": "current Version12 documentation, exact12.4.3 unknown"
+    },
+    "accessibility_heading_locators": {
+      "checked": 22,
+      "all_lines_and_anchors_match": true
+    },
+    "shortcut_inventory": {
+      "original_tables": 27,
+      "original_data_rows": 292,
+      "all_command_Windows_Mac_cell_texts_match": true,
+      "all_section_line_ID_locators_match": true,
+      "all_raw_row_hashes_match": true,
+      "hash_convention": "SHA256 of complete original UTF-8 <tr>...</tr> substring, not concatenated cell text",
+      "complete_bindings": 0,
+      "command_dispatch_not_proved": true
+    },
+    "requirements": 21,
+    "requirement_provenance": {
+      "D12": 19,
+      "U": 2
+    },
+    "cases": 42,
+    "case_provenance": {
+      "D12": 34,
+      "U": 8
+    },
+    "all_case_exact_target_U_and_not_run": true,
+    "all_requirements_have_cases": true,
+    "case_table_matches_JSON_all_fields": true,
+    "all_requirement_bodies_match_JSON": true,
+    "unknown_case_expected_null": true,
+    "relative_links_resolve": true,
+    "untracked_aware_whitespace": "clean for both canonical pages",
+    "direct_manual_semantics_checked": [
+      "Settings traversal exception and page chooser/close/language behavior",
+      "Wrap within an applicable area and mixer neighbor controls",
+      "Control Bar-only last-focus restoration",
+      "Session/Arrangement/clip/device/browser/Groove/Learn navigation contexts",
+      "Clip-edge Enter confirmation versus Escape cancellation",
+      "Breakpoint creation/selection/value confirmation/cancellation/deletion and device-envelope chooser scope",
+      "Current partial screen-reader support, browser filter/tagging and MPE limitations remain version-uncertain rather than permanent product exclusions"
+    ],
+    "no_invented_exact_protocol_announcement_timing_pixel_or_DSP_threshold": true
+  },
+  "remaining_limitations": [
+    "All42 cases remain exact-targetU and unexecuted, including documentary discovery/scope scenarios. Documentary predicates and source extraction checks are not application compatibility passes.",
+    "The292 shortcut rows are discovery records only, not292 unique commands, covered actions, tested dispatch paths or release-ready bindings. Per-command canonical ownership, context/layout/IME/key mapping/Computer MIDI conflicts and target applicability remain unclosed.",
+    "Focus on hidden/disabled/empty areas, full traversal orders, unsupported reader/device surfaces, exact announcement/protocol behavior, error recovery, undo/redo, save/reopen, pending-edit teardown and resource outcomes remain U. No figure inspection or reader/UI experiment was performed.",
+    "Even after these two bounded fixes, approval can only concern a partial analyst draft; no full keyboard-navigation coverage or handoff release follows."
+  ],
+  "execution_limits": {
+    "ran_author_capture_or_mutating_validator": false,
+    "ran_Live_or_original_code": false,
+    "ran_candidate": false,
+    "figures_inspected": false,
+    "installed_tools": false,
+    "modified_author_shared_source_or_previous_review": false,
+    "wrote_only_requested_review": true,
+    "compatibility_pass": false
+  }
+}

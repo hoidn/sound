@@ -1,7 +1,6 @@
 # Package role and access instructions
 
-This is an unreviewed handoff candidate for its explicit partial scope. It is
-not an implementation input until a separate review approves it. Application
+This is a reviewed handoff for its explicit partial scope. Application
 implementation requires a fresh, restricted implementation workspace that
 contains only permitted materials. Do not begin clean implementation in an
 analyst checkout.

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "REQ-MPE-001",
+    "preconditions": "Enable a controller's MPE mode in MIDI settings; choose that controller as track input. Enable that controller in Link, Tempo & MIDI Settings before selecting it as track input.",
+    "contract": "Input channel selection is fixed to All Channels. Receiving/recording per-note expression requires the controller's MPE mode. Disabled-mode interpretation and hot-unplug outcome U. This source order does not establish hot-enabling an already selected controller. Ordinary recording eligibility remains with the recording owner.",
+    "evidence": "M1; MPE-B003, MPE-B004, MPE-B005"
+  },
+  {
+    "id": "REQ-MPE-002",
+    "preconditions": "Open any MIDI clip, including one made without MPE hardware; choose Note Expression or Alt+3 (Win)/Option+3 (Mac).",
+    "contract": "Provide Pitch, Slide, Pressure, Velocity and Release Velocity editing. Pitch overlays notes; chapter 12 describes the other four as lanes, with Slide/Pressure initially visible. Optional Pitch Bend lane contexts remain U (below).",
+    "evidence": "M1\u2013M2"
+  },
+  {
+    "id": "REQ-MPE-003",
+    "preconditions": "Toggle lane selectors or the triangle; drag lane split lines.",
+    "contract": "Selectors show/hide lanes; triangle toggles enabled lanes together, shows all when none enabled; Alt/Option-click shows all. Splits resize an individual lane or all lanes. Hiding lanes through triangle/split also hides selectors. Minimum sizes U.",
+    "evidence": "M2"
+  },
+  {
+    "id": "REQ-MPE-004",
+    "preconditions": "Note Expression open; select a note or expression dimension. Actually drag the envelope background for a time selection.",
+    "contract": "Selected note has an overlay and editable Pitch/Slide/Pressure breakpoints; Velocity/Release Velocity use markers. Other notes/envelopes are dimmed. Selecting a line exposes its draggable breakpoints/segments; background drag defines selection. Note selection and background selection are separate inputs; Pitch/Slide/Pressure use envelopes while Velocity/Release Velocity use markers.",
+    "evidence": "M3; MPE-B015, MPE-B016"
+  },
+  {
+    "id": "REQ-MPE-005",
+    "preconditions": "Active envelope; click a segment, click a breakpoint, or choose Edit Value/Add Value with an admissible expression UI value.",
+    "contract": "Segment click adds a breakpoint; breakpoint click deletes it. Edit Value sets the typed admissible value; Add Value adds a preview breakpoint at that value. Multiple selected breakpoint values move relatively. Hover/create/drag exposes the value at the cursor position. Specific admissible numeric domains, invalid input and rounding U.",
+    "evidence": "M3"
+  },
+  {
+    "id": "REQ-MPE-006",
+    "preconditions": "Drag a selected breakpoint or a selected line segment. Select a segment by clicking near it, or Shift-clicking directly on it, then drag with the left mouse button held.",
+    "contract": "Selected breakpoints move together. Segment in a time selection inserts breakpoints at selection edges and moves that section together. Shift-drag restricts an axis and supports finer vertical adjustment. Dragging horizontally over a neighbor can remove it. Thresholds/equal-time ordering/clipping U. Selected-point group movement, selected-time segment movement, axis restriction, fine vertical adjustment and horizontal neighbor crossing are distinct admitted gestures; no resolution ratio is specified.",
+    "evidence": "M3; MPE-B020, MPE-B022, MPE-B025, MPE-B026, MPE-B027"
+  },
+  {
+    "id": "REQ-MPE-007",
+    "preconditions": "Use Note Expression grid, Ctrl+4 (Win)/Cmd+4 (Mac), then save clip. The Options Snap to Grid entry is another documented input.",
+    "contract": "Grid starts disabled, is separate from other tabs and is saved with clip. Enabled edits snap to neighboring breakpoint times; creation near grid lines snaps. Pixel thresholds, grid storage and load failures U. Actual neighboring-time movement and near-grid creation are distinct from merely toggling or saving the grid.",
+    "evidence": "M3; MPE-B023, MPE-B024"
+  },
+  {
+    "id": "REQ-MPE-008",
+    "preconditions": "Alt/Option-drag a segment, then Alt/Option-double-click it.",
+    "contract": "First gesture curves segment; second restores a straight segment. Exact interpolation/sample values U; ordinary automation's evaluator is not imported.",
+    "evidence": "M3"
+  },
+  {
+    "id": "REQ-MPE-009",
+    "preconditions": "Click outside a note then drag a highlighted non-Pitch expression vertically; alternatively select all breakpoints in one envelope then drag. For equal group movement select the envelope, then Ctrl+A Windows/Cmd+A Mac before vertical or horizontal dragging.",
+    "contract": "First gesture proportionally scales Slide/Pressure/Velocity/Release Velocity over note duration, also across selected notes. Second adds equal value/time movement to selected breakpoints. Pitch is excluded from proportional scaling. Scale origin, zero crossing and clipping U. The outside-note hover gesture applies to each named non-Pitch dimension and multiple selected notes; the equal group gesture also moves time horizontally.",
+    "evidence": "M3; MPE-B029, MPE-B030"
+  },
+  {
+    "id": "REQ-MPE-010",
+    "preconditions": "Move a note or stretch it with note stretch markers or \u00f72/x2.",
+    "contract": "Attached expression follows note movement and stretches with note duration. Absolute-time copy/trim, transpose/bend interaction, interpolation and boundary reconstruction U. Note-command targeting remains with MIDI editing.",
+    "evidence": "M3"
+  },
+  {
+    "id": "REQ-MPE-011",
+    "preconditions": "Pitch edit/draw with grid off; hold Alt (Win)/Cmd (Mac). Open Note Expression and invoke Zoom to Clip Selection. Z is the other documented Zoom to Clip Selection entry.",
+    "contract": "Modifier snaps Pitch to nearest semitone; with grid on it bypasses this behavior. Zoom includes pitch bends in selected time. Chapter 12 says Fold hides over-note Pitch envelopes; availability of a separate folded Pitch Bend lane is unresolved. Tie direction U. Literal Pitch modifiers are Alt on Windows and Cmd on macOS, including Draw Mode; this is distinct from the Alt/Option curve gesture. Folded over-note Pitch and an optional Pitch Bend lane are not equated.",
+    "evidence": "M3; MPE-B033, MPE-B034, MPE-B035"
+  },
+  {
+    "id": "REQ-MPE-012",
+    "preconditions": "Select one or multiple notes in Note Expression and invoke Clear All Envelopes. Invoke the MIDI Note Editor context menu or a per-note expression lane context menu.",
+    "contract": "Clear all selected notes' expression envelopes. Whether note velocities/release velocities reset, resulting defaults, undo scope and note data beyond envelopes U. Each menu provides the selected-note envelope-clearing role; marker reset/defaults and unselected-data policy remain U.",
+    "evidence": "M3; MPE-B036"
+  },
+  {
+    "id": "REQ-MPE-013",
+    "preconditions": "Enable Draw Mode with B/menu/switch, or hold B temporarily; draw Pitch/Slide/Pressure.",
+    "contract": "Draw edits selected expression; grid-on drawing creates steps at visible grid width. Alt (Win)/Cmd (Mac) temporarily enables grid drawing while grid off; Shift gives finer vertical adjustment. Sampling, endpoint and sparse gesture laws U.",
+    "evidence": "M4"
+  },
+  {
+    "id": "REQ-MPE-014",
+    "preconditions": "MPE controller values pass a MIDI track meter; use an MPE-enabled plug-in. Independently distinguish per-note changes passing the selected track meter from generic Control Bar activity.",
+    "contract": "Meter's lowest dot indicates per-note changes in blue. Plug-in MPE mode is saved with device default configuration; MPE-enabled plug-ins with MIDI outs can output MPE. Plug-in failures, expression destinations and emitted encoding U. The enabled and disabled plug-in MPE Mode states are both included in the documented device-default saving role. A blue lowest track-meter dot is not proof of note delivery, isolated audio or plug-in MIDI output; those need independently admitted input/route/receiver context.",
+    "evidence": "M2, M5; MPE-B013, MPE-B045, MPE-B046, MPE-B047"
+  },
+  {
+    "id": "REQ-MPE-015",
+    "preconditions": "Select external output target in External Instrument or track MIDI To; choose MPE then MPE Settings. For plug-in use MPE-enabled device context menu. After choosing MPE, reopen the menu to choose MPE Settings; the plug-in entry is in its device-title-bar context menu.",
+    "contract": "Open MPE/Multi-channel Settings for that routing target. Track mixer access applies in Session/Arrangement. Missing target and modal cancel behavior U. Session and Arrangement mixer routes must each use their actual selected MIDI To target; merely seeing a menu does not open its associated dialog.",
+    "evidence": "M6; MPE-B055, MPE-B056, MPE-B057"
+  },
+  {
+    "id": "REQ-MPE-016",
+    "preconditions": "Choose lower/upper MPE output zone and note-channel count.",
+    "contract": "One zone per track; lower global channel is 1 and upper global channel 16, with note channels drawn from other channels. Two tracks are needed for both zones. Zones are documented for output only. Input zone filtering, allocation and overlapping-track conflicts U.",
+    "evidence": "M7"
+  },
+  {
+    "id": "REQ-MPE-017",
+    "preconditions": "Select multi-channel mode instead of zone mode.",
+    "contract": "Allow an arbitrary range of note channels. Accepted limits, reversed/empty ranges, inclusion of global channels, defaults and persistence U. A MIDI channel label does not establish a wire codec.",
+    "evidence": "M7"
+  },
+  {
+    "id": "REQ-MPE-018",
+    "preconditions": "MPE controller and receiving MPE instrument use pitch bend.",
+    "contract": "Correct tracking requires matching pitch-bend ranges. No default range, numeric editor domain, asymmetric endpoint scale, RPN behavior or live range-change policy is inferred. Tuning-specific \u00b148 prerequisite belongs to tuning owner.",
+    "evidence": "H1"
+  }
+]

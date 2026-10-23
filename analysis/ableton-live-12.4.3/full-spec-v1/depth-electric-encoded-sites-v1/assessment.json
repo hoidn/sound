@@ -1,0 +1,260 @@
+{
+  "id": "ELECTRIC-ENCODED-SITES-V1-ASSESSMENT",
+  "created_utc": "2026-10-21T06:55:38.843251+00:00",
+  "author": "automation_actual_review",
+  "independent_peer": "Root sole reviewer; pending",
+  "result": "PARTIAL_SUPPORTED_CLASSIC_POINTER_ASSOCIATION;6positiveexactrebase sites;bindandweak arithmeticfrontiers remainUNKNOWN",
+  "claims": [
+    {
+      "id": "EES-01",
+      "type": "encoded site association",
+      "claim": "All6 selected8B intervals have one exact match in the complete rebase decode: stream opcode7/run2/segment1(__DATA_CONST),offset168,count21,stride8; iterations3/8/11/12/13/14 map to0x300c0/0x300e8/0x30100/0x30108/0x30110/0x30118 and matching file offsets. No partial overlap or duplicate among this complete rebase decode.",
+      "anchors": [
+        "result.json#/streams/rebase/runs/2",
+        "result.json#/six_words"
+      ]
+    },
+    {
+      "id": "EES-02",
+      "type": "complete supported stream",
+      "claim": "Rebase all208B processed:163 opcode records,92 finite arithmetic runs,663 encoded8B writes. Explicit POINTER type set; DONE at206 with1zero padding byte. All emitted actual runs are file-backed. No pointer is patched or slid and no final relocated value follows.",
+      "anchors": [
+        "inputs/rebase.bin",
+        "result.json#/streams/rebase"
+      ]
+    },
+    {
+      "id": "EES-03",
+      "type": "complete supported stream with method qualification",
+      "claim": "Lazy all3240B processed:438 opcode records,87 one-write runs across87 nonempty record IDs0..86;3 further zero DONE bytes are padding-like empty boundaries, not3extra binds. Each real record explicitly sets segment2/symbol/ordinal, default addend0 and implicit POINTER type from the pinned local model. Sites lie at __DATA offsets0..312 then352..720; no selectedword interval overlaps those sites under this complete supported decode. No lazy runtime resolution/init/provider claim.",
+      "anchors": [
+        "inputs/lazy_bind.bin",
+        "result.json#/streams/lazy_bind"
+      ]
+    },
+    {
+      "id": "EES-04",
+      "type": "unsupported arithmetic frontier",
+      "claim": "Ordinary bind is INCOMPLETE:13 attempted opcode records,4 valid runs/writes; at opcodeoffset174 ADD_ADDR_ULEB0x80 reads f0efffffffffffffff01 (18446744073709549552=2^64-2064) afteroffset3144. Checked uint64 addition overflows; failure cursor185. No further bind opcode/site is decoded. This is a limitation of the predeclared nonwrapping method, not proof of malformed original data or runtime failure.",
+      "anchors": [
+        "inputs/bind.bin",
+        "result.json#/streams/bind/failure",
+        "result.json#/streams/bind/trace/12"
+      ]
+    },
+    {
+      "id": "EES-05",
+      "type": "unsupported arithmetic frontier",
+      "claim": "Weak bind is INCOMPLETE:7 attempted opcode records,1 valid run/write. At opcodeoffset39 DO_BIND_ADD_ADDR_ULEB0xa0, operand f8ffffffffffffffff01 (18446744073709551608=2^64-8) causes checked8+skip overflow, failurecursor50. The failed operation emits no accepted run, even though an actual loader operation may have effects; those effects remain unknown here. No later weak opcode/site decoded. Weak absence and cross-stream overwrite/coalescing remain unknown.",
+      "anchors": [
+        "inputs/weak_bind.bin",
+        "result.json#/streams/weak_bind/failure",
+        "result.json#/streams/weak_bind/trace/6"
+      ]
+    },
+    {
+      "id": "EES-06",
+      "type": "whole-universe qualification",
+      "claim": "All4 whole owned stream files and all6 whole words are retained and attempted without sampling. All six all_streams_complete flags arefalse. Empty bind/weak match lists and false duplicate_or_cross_stream/partial_overlap booleans describe only accepted prefixes, NEVER absence/disjointness over the undecoded suffixes. Complete rebase presence remains positive evidence; global only-rebase status isUNKNOWN. Encoded symbol/ordinal/addend metadata is not provider resolution; special ordinals remain raw.",
+      "anchors": [
+        "result.json#/six_words",
+        "README.md"
+      ]
+    },
+    {
+      "id": "EES-07",
+      "type": "authority/verification/custody",
+      "claim": "Pinned Apple format declarations and inert existing local decoder transitions are distinct from Apple runtime authority. All18 owned code/authority/input pins match before/after one data-only analysis;36 synthetic controls before and5 writable-TEMP owned-copy tamper rejections after PASS. No original/image/tool/provider/native/C execution or old body replay. Recorded sys.executable is context, not independently verified running interpreter/dependency identity. PriorQ01/Q02 remain historical and unrepaired.",
+      "anchors": [
+        "source-authority.json",
+        "inputs-manifest.json",
+        "analysis-receipt.json",
+        "synthetic-check.json",
+        "retained-controls.json"
+      ]
+    },
+    {
+      "id": "EES-08",
+      "type": "required coverage limits",
+      "claim": "No callable candidate/runtime target/class/ABI/constructor success/currentA/O/R/C/vptr/public binding/REQ002 orREQ014/control-state/audio/calibration/portable law is established. No behavioral cases, grades, release, required-unit closure or main-Live indirect-site credit. Root sole independent review pending.",
+      "anchors": [
+        "README.md"
+      ]
+    }
+  ],
+  "streams": {
+    "rebase": {
+      "input_bytes": 208,
+      "complete": true,
+      "failure": null,
+      "opcode_records": 163,
+      "runs": 92,
+      "encoded_writes": 663,
+      "absence_claim_allowed_in_this_stream": true
+    },
+    "bind": {
+      "input_bytes": 2464,
+      "complete": false,
+      "failure": {
+        "opcode_offset": 174,
+        "operand_cursor": 185,
+        "reason": "uint64 arithmetic overflow"
+      },
+      "opcode_records": 13,
+      "runs": 4,
+      "encoded_writes": 4,
+      "absence_claim_allowed_in_this_stream": false
+    },
+    "weak_bind": {
+      "input_bytes": 120,
+      "complete": false,
+      "failure": {
+        "opcode_offset": 39,
+        "operand_cursor": 50,
+        "reason": "uint64 arithmetic overflow"
+      },
+      "opcode_records": 7,
+      "runs": 1,
+      "encoded_writes": 1,
+      "absence_claim_allowed_in_this_stream": false
+    },
+    "lazy_bind": {
+      "input_bytes": 3240,
+      "complete": true,
+      "failure": null,
+      "opcode_records": 438,
+      "runs": 87,
+      "encoded_writes": 87,
+      "absence_claim_allowed_in_this_stream": true
+    }
+  },
+  "positive_six_word_associations": [
+    {
+      "target": "0x300c0",
+      "stored_u64": 51980,
+      "rebase_match": [
+        {
+          "run": 2,
+          "iteration": 3,
+          "site_vmaddr": 196800,
+          "site_file_offset": 196800,
+          "overlap": "exact",
+          "stream_opcode_offset": 7
+        }
+      ],
+      "all_streams_complete": false,
+      "runtime_value": null
+    },
+    {
+      "target": "0x300e8",
+      "stored_u64": 53984,
+      "rebase_match": [
+        {
+          "run": 2,
+          "iteration": 8,
+          "site_vmaddr": 196840,
+          "site_file_offset": 196840,
+          "overlap": "exact",
+          "stream_opcode_offset": 7
+        }
+      ],
+      "all_streams_complete": false,
+      "runtime_value": null
+    },
+    {
+      "target": "0x30100",
+      "stored_u64": 54920,
+      "rebase_match": [
+        {
+          "run": 2,
+          "iteration": 11,
+          "site_vmaddr": 196864,
+          "site_file_offset": 196864,
+          "overlap": "exact",
+          "stream_opcode_offset": 7
+        }
+      ],
+      "all_streams_complete": false,
+      "runtime_value": null
+    },
+    {
+      "target": "0x30108",
+      "stored_u64": 55736,
+      "rebase_match": [
+        {
+          "run": 2,
+          "iteration": 12,
+          "site_vmaddr": 196872,
+          "site_file_offset": 196872,
+          "overlap": "exact",
+          "stream_opcode_offset": 7
+        }
+      ],
+      "all_streams_complete": false,
+      "runtime_value": null
+    },
+    {
+      "target": "0x30110",
+      "stored_u64": 55752,
+      "rebase_match": [
+        {
+          "run": 2,
+          "iteration": 13,
+          "site_vmaddr": 196880,
+          "site_file_offset": 196880,
+          "overlap": "exact",
+          "stream_opcode_offset": 7
+        }
+      ],
+      "all_streams_complete": false,
+      "runtime_value": null
+    },
+    {
+      "target": "0x30118",
+      "stored_u64": 56292,
+      "rebase_match": [
+        {
+          "run": 2,
+          "iteration": 14,
+          "site_vmaddr": 196888,
+          "site_file_offset": 196888,
+          "overlap": "exact",
+          "stream_opcode_offset": 7
+        }
+      ],
+      "all_streams_complete": false,
+      "runtime_value": null
+    }
+  ],
+  "source_scope": "Fullnewextractor/checker read beforesynthetic andfrozenanalysis. SelectedAppleloader.h1295-1374,1405-1457/localxexec159-223 retained losslessly. NoexistingC execution/import. All92rebase/4bind/1weak/87lazyacceptedruns andconsumedprefixes inspected, all6matches/fullfailureoperands; unconsumedbind2279B/weak70B retained butnot decoded. CompleteLCusedonlyforsegmentgeometry.",
+  "actual": {
+    "pid": 1351557,
+    "UTC": "2026-10-21T06:52:38.262636+00:00",
+    "mode": "data-only",
+    "owned_endpoint_pin_pairs": 18,
+    "all_equal": true,
+    "original_or_decoder_calls": 0,
+    "pointer_patching": false,
+    "provider_resolution": false,
+    "retry": false
+  },
+  "controls": {
+    "synthetic": 36,
+    "owned_writable_TEMP_tampers": 5,
+    "check_status": "PASS",
+    "loop_bounds": "At most one advancing opcode iteration perinputbyte; repeats retained asarithmeticruns; matching<=2candidateiterations/run/target,6targets; no repeatcount expansion inactual. Test-only tinypositivecases expandbounded2/3countstoassert expectedsites.",
+    "limitations": "Syntheticcontrolsnotindependentreview or fullformatvalidation; successfuldataonlyrunnotfilesystem/powerloss/hostclosureproof."
+  },
+  "inherited_review": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-inner-words-dyld-witness-v1-review.json",
+    "bytes": 5194,
+    "sha256": "da614ccba42739d1d2aa325c1f708f42ba87a6615e74033da4a8fec886b53fdc",
+    "qualifications": [
+      "Q01 actualwitnessinterpreteridentityunknown",
+      "Q02 frozenwitnesscopycontrolneedswritableTEMP; no repair"
+    ]
+  },
+  "no_frozen_repairs": true,
+  "shared_docs_changed": false,
+  "successor_selected": false
+}

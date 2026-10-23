@@ -1,0 +1,7 @@
+# Tension R8 finite two-axis owner proposal
+
+Unreleased staged analyst proposal; Mix is SOLE new wording/mapping/IDs/preservation peer BEFORE any Root payload read. Root citation-only applies exact approved delta/target from Mix report. Canonical R7 remains authoritative until application. All actual proof is inherited ONLY approved Root summary; no actual/source/raw/numeric rerun.
+
+142new DTN397–538 =15channel +127Offvelocity histories. Full143histories144aliases/sharedDTN001 baseline no replay/newID/PID/metrics. Deduplicate by WHOLE history, never parameter vector alone; no crossproduct. SourceonlyREQ003 append plus annex/revision metadata.14otherwholeclauses/002/003oldprefix/42rows396IDs/R3–R7 wholeobjects/37sensitivity/oldAcceptanceprefix/metrics/tolerancesUstatehistory/release27eval35inventory/fullreverse exact. Priorvelocityparentgap not repaired; thisnewcaptureparentprebound only. Allportablecriteria/grade/priorNULL, no generalchannel/release/publicARM/calibration/newapplicationproof.
+
+Read complete check.py before ONLY `/usr/bin/python3 -I -B check.py --check`. It reads staged data, current canonical, pinned approved summary, old OWNER JSON metadata and released MANIFEST only; no actual/raw/provider/original. Every case/pin/history/alias/NULL/qualification checked; meaningful in-memory negatives and full reversal. Reviewer must embed complete approveddelta+targetUTF8/fullcatalog/aliases/joins/baseline/pins so Root can apply by citation without second owner review. No canonical/shared/release edits by author.

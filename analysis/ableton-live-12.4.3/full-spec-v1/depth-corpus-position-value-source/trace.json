@@ -1,0 +1,215 @@
+{
+  "id": "A1-POSITION-VALUE-SOURCE",
+  "revision": 1,
+  "status": "frozen research-only candidate; independent review pending",
+  "claims": [
+    {
+      "id": "PVS01",
+      "claim": "Three retained Position construction call windows load model pointers from device+0x448/+0x460/+0x478 and supply raw binary32 defaults3f000000/3dcccccd/3f666666 to103192720.",
+      "source": {
+        "source_record_index": 3,
+        "entry": "0x103192720",
+        "code_start": 250,
+        "code_end": 463,
+        "text": "8,param_4);\n  FUN_101427680(&local_60,param_6);\n  FUN_103197830(param_1,param_2,param_3,&local_58,param_5,&local_60,param_7,0);\n  if (local_60 != (int *)0x0) {\n    iVar1 = *local_60;\n    *local_60 = iVar1 + -1;\n  "
+      },
+      "instruction_addresses": [
+        "0x1030e2e6c",
+        "0x1030e2e78",
+        "0x1030e2e8c",
+        "0x1030e2e90",
+        "0x1030e2e9c",
+        "0x1030e2ea0",
+        "0x1030e2ea4",
+        "0x1030e2eb8",
+        "0x1030e2ebc",
+        "0x1030e2ec8",
+        "0x1030e2ecc",
+        "0x1030e2ed0",
+        "0x1030e2ee4"
+      ],
+      "limit": "Constructor-local bits only; no public factory/load/save/default or acceptance behavior.",
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false
+    },
+    {
+      "id": "PVS02",
+      "claim": "The named scalar initialization path preserves the incoming default and supplies raw +0 and1 in S0/S1, default in S2.1026f0bcc loads subordinate X0=[model+0x230];10157432c stores S0/S1/S2 at subordinate+0x80/+0x84/+0x88.",
+      "source": {
+        "source_record_index": 1,
+        "entry": "0x10157432c",
+        "code_start": 177,
+        "code_end": 388,
+        "text": "*(undefined4 *)(param_4 + 0x80) = param_1;\n  *(undefined4 *)(param_4 + 0x84) = param_2;\n  *(undefined4 *)(param_4 + 0x88) = param_3;\n  if (param_5 != 0) {\n    *(int *)(param_5 + 8) = *(int *)(param_5 + 8) + 1;\n "
+      },
+      "instruction_addresses": [
+        "0x103192748",
+        "0x10319277c",
+        "0x103197864",
+        "0x1031978cc",
+        "0x1031978d0",
+        "0x1031978e0",
+        "0x1031978e8",
+        "0x1026f0b84",
+        "0x1026f0c14",
+        "0x1026f0c2c",
+        "0x101574348",
+        "0x10157434c"
+      ],
+      "limit": "Direct register/store evidence, not numeric bound roles inferred merely from offsets. Valid/stable objects and callee-save predicates apply.",
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false
+    },
+    {
+      "id": "PVS03",
+      "claim": "The initializer restores its saved default into S0 and tail-branches to101568960, whose exact store writes S0 at subordinate+0x58.10156887c later loads S0 from that same field.",
+      "source": {
+        "source_record_index": 5,
+        "entry": "0x101568960",
+        "code_start": 23,
+        "code_end": 186,
+        "text": "efined4 param_1,long param_2,undefined8 param_3)\n\n{\n  *(undefined4 *)(param_2 + 0x58) = param_1;\n  FUN_101482dac();\n  FUN_10155e028(param_2,param_3);\n  return;\n}\n\n"
+      },
+      "instruction_addresses": [
+        "0x101574344",
+        "0x101574394",
+        "0x1015743ac",
+        "0x101568974",
+        "0x10156887c"
+      ],
+      "limit": "No interference or later callback mutation may be assumed absent without the explicit predicate; setter calls101482dac/10155e028 remain unexpanded.",
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false
+    },
+    {
+      "id": "PVS04",
+      "claim": "The selected subordinate construction installs vptr1067fb6f8. Its+0x210 word targets101574608, whose branch reaches10156887c; its+0x208 word targets10157459c.",
+      "source": {
+        "source_record_index": 0,
+        "entry": "0x1026f1b3c",
+        "code_start": 83,
+        "code_end": 346,
+        "text": "1 = FUN_1012d9734(0x98);\n  puVar2 = (undefined8 *)FUN_101574220();\n  *puVar2 = &PTR_thunk_FUN_1026f2be4_1067fb6f8;\n  puVar2[0xe] = &PTR_FUN_1067fb990;\n  puVar2[0x12] = 0;\n  FUN_101486414();\n  *(undefined1 *)(lVar1 + 0x8c) = 0;\n  *param_1 = lVar1;\n  *(int *)(lVar1"
+      },
+      "instruction_addresses": [
+        "0x1026f1b60",
+        "0x1026f1b64",
+        "0x1026f1b68",
+        "0x1067fb900",
+        "0x1067fb908",
+        "0x101574608"
+      ],
+      "limit": "A stable constructed-object predicate, not proof that a particular runtime instance reaches this getter.",
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false
+    },
+    {
+      "id": "PVS05",
+      "claim": "10157459c obtains the current scalar through virtual+0x210, loads converter X0 from subordinate+0x78 and caller interval S1/S2 from+0x80/+0x84, then tail-calls converter virtual+0x28. The selected converter vptr1066807e0 word resolves that slot to1015758bc.",
+      "source": {
+        "source_record_index": 7,
+        "entry": "0x10157459c",
+        "code_start": 69,
+        "code_end": 417,
+        "text": "auVar1 = (**(code **)(*param_1 + 0x210))();\n                    /* WARNING: Could not recover jumptable at 0x0001015745d0. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*(long *)param_1[0xf] + 0x28))\n            (auVar1,(int)param_1[0x10],*(undefined4 *)((long)param_1 + 0x84));\n  return;\n}\n\n"
+      },
+      "instruction_addresses": [
+        "0x1015745b0",
+        "0x1015745b4",
+        "0x1015745b8",
+        "0x1015745bc",
+        "0x1015745c4",
+        "0x1015745d0",
+        "0x106680808"
+      ],
+      "limit": "Recovered C vector/int appearances are not argument proof; raw scalar/GPR instructions resolve only this local call. Tail/jumptable warnings retained.",
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false
+    },
+    {
+      "id": "PVS06",
+      "claim": "For matching finite ordered converter/caller intervals[0,1] and a finite current S0 within[0,1], the converter EQ branch skips all interpolation/conversion arithmetic; remaining comparisons/conditional register selections preserve that in-range scalar.",
+      "source": {
+        "source_record_index": 6,
+        "entry": "0x1015758bc",
+        "code_start": 129,
+        "code_end": 592,
+        "text": "fVar2 = *(float *)(param_4 + 0x28);\n  fVar3 = *(float *)(param_4 + 0x2c);\n  bVar1 = false;\n  if ((fVar2 == param_2) && (bVar1 = false, !NAN(fVar3) && !NAN(param_3))) {\n    bVar1 = fVar3 == param_3;\n  }\n  if (!bVar1) {\n    fVar2 = (param_1 - fVar2) / (fVar3 - fVar2);\n    param_1 = (param_2 - param_2 * fVar2) + param_3 * fVar2;\n  }\n  if (param_1 <= param_3) {\n    param_3 = param_1;\n  }\n  if (param_2 <= param_1) {\n    param_2 = param_3;\n  }\n  return param_2;\n}\n\n"
+      },
+      "instruction_addresses": [
+        "0x1015758bc",
+        "0x1015758c0",
+        "0x1015758c4",
+        "0x1015758c8",
+        "0x1015758f8",
+        "0x1015758fc",
+        "0x101575900",
+        "0x101575904"
+      ],
+      "limit": "Conditional source-local selection only; no universal identity, NaN/nonfinite/out-of-range/reversed/mismatched interval, numeric codec/tolerance or application law.",
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false
+    }
+  ],
+  "construction_qualification": {
+    "documented_by_instructions": [
+      "103192720 explicitly sets X6=0 before calling103197830, selecting its no-custom-converter branch",
+      "103197830 passes +0/1 in S0/S1 at the guarded101575868 call",
+      "101575868 preserves those scalar lanes across its base constructor and stores them at returned-object+0x28/+0x2c",
+      "103197830 picks its guarded default converter pointer when incomingX6==0 and propagates it to setterX1;10157432c storesX1 at subordinate+0x78"
+    ],
+    "not_proven": [
+      "Base-constructor/allocation identity or global guard lifetime for an actual runtime instance",
+      "Actual execution/reachability, object admission or no later changes"
+    ],
+    "equal_interval_premise": "Converter fields+0x28/+0x2c must actually be the same finite ordered[+0,1] interval as caller S1/S2. Constructor instruction arguments/stores support a conditional path, not an unconditional all-Position identity claim."
+  },
+  "predicates": {
+    "actual_selected_path_reached": true,
+    "valid_model_subordinate_converter_objects": true,
+    "constructed_vptrs_and_associated_pointer_identity_stable": true,
+    "lower_D8_callee_save_contract_holds": true,
+    "initial_guard_allocation_base_constructor_identity_or_independent_matching_converter_fields": true,
+    "no_intervening_relevant_writes_including_callbacks": true,
+    "finite_ordered_matching_interval_0_1": true,
+    "finite_current_value_in_0_1": true
+  },
+  "predicate_role": "Required assumptions for conditional static source reasoning, not observed runtime facts.",
+  "open_frontiers": [
+    "Actual current application instance/path and callbacks/concurrency/history",
+    "Current source value to emitted Out/Indexer/SetParameterA",
+    "Neutral modulation/processing graph and output/input endpoint joins",
+    "Any public A1 acceptance or parameter-unit law"
+  ],
+  "limits": {
+    "application_expected": null,
+    "application_comparison": null,
+    "application_grade": "U",
+    "application_executed": false,
+    "requirements_added": 0,
+    "cases_added": 0,
+    "coverage_credit": 0,
+    "emission_join_closed": false,
+    "all_IEEE_identity_claimed": false
+  },
+  "source_export_utc": null,
+  "packaging_utc": "2026-10-20T05:22:09.862318+00:00",
+  "read_scope": {
+    "Mod": "Fresh full ten selected new C1 bodies and exact source lines. Five existing A1 provider bodies were read in preceding initialization/routing work and selected proof contexts reread; no fresh whole A1 review. Full retained instruction lists for103192720/1026f0bcc and only the three Position caller windows (190 rows total), plus selected exact raw-word fields. Not every instruction in all retained raw ranges receives a new semantic interpretation.",
+    "Root": "Selected range/constructor/value-graph source and getter dispatch words; contributes source interpretation, not independent approval. Only records9/10/11 and words208/210 from value-graph scratch included.",
+    "Delay": "Full3selected exported bodies+full56Bcaller raw and full417Bcaller decompilation fromRootselected context. Exactconverter slot8B/getter8B/setter48B/converter80B/caller56B retained; entireimage149711904B hash/header/5segments freshlyverified asDATA. No freshfullRootvaluegraph/other constructors orinitialization traces claimed."
+  },
+  "excluded_scratch": "Current output/module+0x48, player bind and descriptor+0x38 scratch are excluded. No new claim uses them."
+}

@@ -1,0 +1,405 @@
+{
+  "batches": [
+    {
+      "id": "MXB-01",
+      "title": "Matrix arithmetic",
+      "kind": "candidate-enumerable-retained-harness-call-set",
+      "functions": [
+        {
+          "name": "OTrackOutVolumeProcessor::TSendVolumes::Calc",
+          "live_x86": "0x101b40d30",
+          "engine": "0x171a20",
+          "arm64": "0x101b10efc",
+          "matched": "constant offset 0x1019cf310 from the named __invoke thunks of this class; 300/304 bytes equal; same size"
+        },
+        {
+          "name": "OTrackOutVolumeProcessor::TVolumeSwitch::Calc",
+          "live_x86": "0x101b40cf0",
+          "engine": "0x1719e0",
+          "arm64": null,
+          "matched": "constant offset; 64/64 bytes"
+        }
+      ],
+      "input_set_locators": [
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/sends"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/main_switch"
+        }
+      ],
+      "raw_call_log": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/raw/runs.jsonl",
+      "harness_provenance": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json#/harness",
+      "stubs": "Use exact recorded T14 inputs/setup/stubs, including glibc cos when called; no implicit new original object constructors.",
+      "finite_set": "All retained T14 send input13-tuples and three MainOn matrices; defaults,pre/post,midfade,zero/disabled and asymmetric P. Inputs stay finite enumerated values.",
+      "related_outcomes": [
+        "MXR-020",
+        "MXR-023",
+        "MXR-024",
+        "MXR-025",
+        "MXR-026",
+        "MXR-030",
+        "MXR-038"
+      ],
+      "execution": "NOT_RUN_IN_THIS_PACKET",
+      "gate": "After independent map review; reproduce retained call shape through current existing harness with recorded slice/harness hashes,inputs,stubs,timeout,result. No automatic approval of new setup.",
+      "raw_callset": "retained-callsets.json#/sets/0",
+      "callset_rows": 15,
+      "patched_rows": 0
+    },
+    {
+      "id": "MXB-02",
+      "title": "Control ramps and panner recompute",
+      "kind": "candidate-enumerable-retained-harness-call-set",
+      "functions": [
+        {
+          "name": "ORampInterpolator::SetRamp(float,int)",
+          "live_x86": "0x101b2b970",
+          "engine": "0x15c620",
+          "arm64": "0x101aff3a0",
+          "matched": "match_engine.py 88/96; arm64 via the panner recompute call graph"
+        },
+        {
+          "name": "ORampInterpolator::GetRamp",
+          "live_x86": "0x101b2ba30",
+          "engine": "0x15c6e0",
+          "arm64": null,
+          "matched": "match_engine.py 72/80"
+        },
+        {
+          "name": "ORampInterpolator::Extrapolate",
+          "live_x86": "0x101b2ba80",
+          "engine": "0x15c730",
+          "arm64": "0x101aff494",
+          "matched": "match_engine.py 56/64"
+        },
+        {
+          "name": "ORampInterpolator::Inc",
+          "live_x86": "0x101b2bae0",
+          "engine": "0x15c790",
+          "arm64": null,
+          "matched": "match_engine.py 48/48"
+        },
+        {
+          "name": "volume-panner input 1 (Pan) setter",
+          "live_x86": "0x101b243f0",
+          "engine": "0x1550a0",
+          "arm64": null,
+          "matched": "match_engine.py 160/160"
+        },
+        {
+          "name": "volume-panner input 4 (Volume) setter",
+          "live_x86": "0x101b244a0",
+          "engine": "0x155150",
+          "arm64": null,
+          "matched": "match_engine.py 160/160"
+        },
+        {
+          "name": "TVolumePanner::Calc (pan law; x2-mixer-v1 PAN_MATRIX)",
+          "live_x86": "0x101b719e0",
+          "engine": "0x1a26d0",
+          "arm64": "0x101b3b95c",
+          "matched": "same size 384; x2-mixer-v1"
+        }
+      ],
+      "input_set_locators": [
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/ramp_interpolator"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/volume_panner"
+        }
+      ],
+      "raw_call_log": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/raw/runs.jsonl",
+      "harness_provenance": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json#/harness",
+      "stubs": "Use exact recorded T14 inputs/setup/stubs, including glibc cos when called; no implicit new original object constructors.",
+      "finite_set": "All four retained ramp sequences and three retained panner state histories; keep binary64 interpolator separate from static float32 processor updates. Plus the nine retained unpatched X2 direct pan-matrix calls; recompute is an internal dependency, not an independently called leaf.",
+      "related_outcomes": [
+        "MXR-020",
+        "MXR-022",
+        "MXR-028",
+        "MXR-042",
+        "MXR-057",
+        "MXR-059",
+        "MXR-060",
+        "MXR-061",
+        "MXR-062",
+        "MXR-066",
+        "MXR-067",
+        "MXR-068",
+        "MXR-073"
+      ],
+      "execution": "NOT_RUN_IN_THIS_PACKET",
+      "gate": "After independent map review; reproduce retained call shape through current existing harness with recorded slice/harness hashes,inputs,stubs,timeout,result. No automatic approval of new setup.",
+      "internal_dependency_functions": [
+        {
+          "name": "volume-panner recompute (min nonzero ramp, TVolumePanner::Calc at its end)",
+          "live_x86": "0x101b27860",
+          "engine": "0x158510",
+          "arm64": "0x101afb494",
+          "matched": "match_engine.py 254/256; calls 0x101b719e0"
+        }
+      ],
+      "raw_callset": "retained-callsets.json#/sets/1",
+      "callset_rows": 14,
+      "patched_rows": 0
+    },
+    {
+      "id": "MXB-03",
+      "title": "Switch words,splitter and default fade",
+      "kind": "candidate-enumerable-retained-harness-call-set",
+      "functions": [
+        {
+          "name": "OTrackOutSwitchesProcessor::OnSpeaker",
+          "live_x86": "0x101b3fdc0",
+          "engine": "0x170ab0",
+          "arm64": null,
+          "matched": "engine bytes verbatim; arm64 __invoke 0x101b18210"
+        },
+        {
+          "name": "OTrackOutSwitchesProcessor::OnSoloPrehear",
+          "live_x86": "0x101b3ff50",
+          "engine": "0x170c40",
+          "arm64": null,
+          "matched": "engine bytes verbatim; arm64 __invoke 0x101b18358"
+        },
+        {
+          "name": "OTrackOutSplitSwitchesProcessor::OnIn",
+          "live_x86": "0x101b401c0",
+          "engine": "0x170eb0",
+          "arm64": null,
+          "matched": "engine bytes verbatim"
+        },
+        {
+          "name": "NAudioTraits::SInitDebugOptionValues",
+          "live_x86": "0x101b0ecb0",
+          "engine": "0x13f960",
+          "arm64": "0x101ae385c",
+          "matched": "notes-solo.txt"
+        },
+        {
+          "name": "NAudioTraits::STrackFadeTime",
+          "live_x86": "0x101b0ee70",
+          "engine": "0x13fb20",
+          "arm64": "0x101ae3a04",
+          "matched": "unique byte pattern found in the engine (clamp 10..4096)"
+        }
+      ],
+      "input_set_locators": [
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/solo/switch_word"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/solo/split"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/solo/track_fade_time"
+        }
+      ],
+      "raw_call_log": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/raw/runs.jsonl",
+      "harness_provenance": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json#/harness",
+      "stubs": "Use exact recorded T14 inputs/setup/stubs, including glibc cos when called; no implicit new original object constructors.",
+      "finite_set": "All retained type0..7 x Speaker0/1 and16 split words, plus default initialization/fade helper; internal solo predicates excluded.",
+      "related_outcomes": [
+        "MXR-031",
+        "MXR-040",
+        "MXR-041",
+        "MXR-042",
+        "MXR-043",
+        "MXR-044",
+        "MXR-045",
+        "MXR-046",
+        "MXR-047",
+        "MXR-048",
+        "MXR-049",
+        "MXR-050",
+        "MXR-051",
+        "MXR-052",
+        "MXR-053",
+        "MXR-054",
+        "MXR-055",
+        "MXR-056",
+        "MXR-057",
+        "MXR-058",
+        "MXR-069",
+        "MXR-070",
+        "MXR-071"
+      ],
+      "execution": "NOT_RUN_IN_THIS_PACKET",
+      "gate": "After independent map review; reproduce retained call shape through current existing harness with recorded slice/harness hashes,inputs,stubs,timeout,result. No automatic approval of new setup.",
+      "raw_callset": "retained-callsets.json#/sets/2",
+      "callset_rows": 33,
+      "patched_rows": 0
+    },
+    {
+      "id": "MXB-04",
+      "title": "Bezier and automation segment arithmetic",
+      "kind": "candidate-enumerable-retained-harness-call-set",
+      "functions": [
+        {
+          "name": "cubic Bezier point of a curved envelope segment",
+          "live_x86": "0x1011f1610",
+          "engine": null,
+          "arm64": "0x101212cc4",
+          "matched": "notes-automation.txt (logic side, Live only)"
+        },
+        {
+          "name": "OFloatAutomationSegment::Init",
+          "live_x86": "0x101b1f400",
+          "engine": "0x1500b0",
+          "arm64": null,
+          "matched": "notes-automation.txt; byte-identical body"
+        }
+      ],
+      "input_set_locators": [
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/results/mix.json",
+          "json_pointer": "/automation"
+        }
+      ],
+      "raw_call_log": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/raw/runs.jsonl",
+      "harness_provenance": "analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json#/harness",
+      "stubs": "Use exact recorded T14 inputs/setup/stubs, including glibc cos when called; no implicit new original object constructors.",
+      "finite_set": "All retained E9 polyline,E13_t0,E1_linear,E12_t1,segment_offset_edges; no song-time offset/provider/automation-drive claim.",
+      "related_outcomes": [
+        "MXR-088",
+        "MXR-091",
+        "MXR-092",
+        "MXR-093",
+        "MXR-094",
+        "MXR-095"
+      ],
+      "execution": "NOT_RUN_IN_THIS_PACKET",
+      "gate": "After independent map review; reproduce retained call shape through current existing harness with recorded slice/harness hashes,inputs,stubs,timeout,result. No automatic approval of new setup.",
+      "raw_callset": "retained-callsets.json#/sets/3",
+      "callset_rows": 12,
+      "patched_rows": 0
+    },
+    {
+      "id": "MXB-05",
+      "title": "Existing fader/crossfade dependency sweep",
+      "kind": "candidate-enumerable-predecessor-call-set",
+      "functions": [
+        {
+          "role": "position -> gain (one curve object, slot +0x30 table)",
+          "x86": "0x101aecbd0",
+          "arm64": "0x101ac3498",
+          "how": "pos<=0 -> g[0]; pos>=1 -> g[100]; else k=floor(100*pos), frac snapped to 0/1 within 2^-17, linear interp in gain (double); same 100.0 and 2^-17 constants"
+        },
+        {
+          "role": "gain -> position (one curve object)",
+          "x86": "0x101aecc90",
+          "arm64": "0x101ac353c",
+          "how": "0x65-step binary search over the 101-point table, inverse linear interp, 0 below g[0], 1 above g[100]; identical shape"
+        },
+        {
+          "role": "crossfade curve NormalDip (Dipped)",
+          "x86": "0x101b1a470",
+          "arm64": "0x101aee8b8",
+          "how": "demangled OCrossFadeHelper::CrossfadeToLevelNormalDip in both corpora; constants +-0.95, -0.20710677, 0.55, 0.45"
+        },
+        {
+          "role": "crossfade curve SlightDip (Intermediate)",
+          "x86": "0x101b1a550",
+          "arm64": "0x101aee9c0",
+          "how": "demangled name; as NormalDip with -0.125"
+        },
+        {
+          "role": "crossfade curve ConstantPower",
+          "x86": "0x101b1a630",
+          "arm64": "0x101aeeac0",
+          "how": "demangled name; cos((1+t)pi/4)"
+        },
+        {
+          "role": "crossfade curve Dipless (Slow Fade)",
+          "x86": "0x101b1a6f0",
+          "arm64": "0x101aeeb98",
+          "how": "demangled name; cos(t pi/2)"
+        },
+        {
+          "role": "crossfade curve SlowCut",
+          "x86": "0x101b1a7b0",
+          "arm64": "0x101aeec78",
+          "how": "demangled name; edges +-0.94, 0.5/0.75 knees"
+        },
+        {
+          "role": "crossfade curve FastCut",
+          "x86": "0x101b1a880",
+          "arm64": "0x101aeed4c",
+          "how": "demangled name; edges +-0.96, 0.9375 knee"
+        },
+        {
+          "role": "crossfade curve Transition",
+          "x86": "0x101b1a8e0",
+          "arm64": "0x101aeedb8",
+          "how": "demangled name; linear 1-t for t>0"
+        }
+      ],
+      "input_set_locators": [
+        {
+          "path": "analysis/ableton-live-12.4.3/r2/x2-mixer-v1/results/mixer.json"
+        }
+      ],
+      "harness_provenance": "analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json#/harness",
+      "finite_set": "Exactly36 retained curve conversion rows and63 scalar crossfade rows. Each raw row includes its complete setup/arguments/stubs. Do not treat constructor patch replay as a standing self-contained call.",
+      "related_outcomes": [
+        "MXR-011",
+        "MXR-012",
+        "MXR-112",
+        "MXR-013",
+        "MXR-014",
+        "MXR-015",
+        "MXR-016",
+        "MXR-029",
+        "MXR-030",
+        "MXR-104",
+        "MXR-106",
+        "MXR-107"
+      ],
+      "execution": "NOT_RUN_IN_THIS_PACKET",
+      "gate": "Mixed readiness:36 recorded curve-object setup rows patch original allocator sites and therefore require per-run preparation/peer review before replay. The63 direct crossfade scalar rows have no patches and may use standing existing-harness authorization with exact recorded inputs/stubs. By-mode global variants are static dependencies, not direct retained leaf calls.",
+      "raw_callset": "retained-callsets.json#/sets/4",
+      "callset_rows": 99,
+      "patched_rows": 36,
+      "readiness_partition": {
+        "patched_setup_rows": 36,
+        "unpatched_scalar_crossfade_rows": 63
+      }
+    }
+  ],
+  "not_yet_enumerable": [
+    {
+      "id": "MXG-RATE",
+      "functions": [
+        "0x101b39550"
+      ],
+      "reason": "Player helper needs scheduler status object. Enumerating numeric ratios alone does not establish object/clock binding. Scope,setup and any beyond-harness construction need preparation/review before new calls."
+    },
+    {
+      "id": "MXG-WRAPPERS",
+      "functions": [
+        "0x101b1c114",
+        "0x101b1afbc",
+        "0x1702e0"
+      ],
+      "reason": "Actual processor receiver,destination ownership/callback ordering remain missing; ARM sources are not x86 callable leaves. A later owned-fixture wrapper proposal must retain static and ABI/object premises; no public waveform batch established."
+    },
+    {
+      "id": "MXG-DRIVE",
+      "functions": [
+        "0x13d800",
+        "0x13de60"
+      ],
+      "reason": "Engine state graph,initial index,loaded owner/provider and timebase joins are not enumerable by scalar helper calls."
+    }
+  ],
+  "new_original_calls": 0,
+  "new_behavior_grades": 0
+}

@@ -1,0 +1,526 @@
+[
+  {
+    "id": "REQ-SESSION-VIEW-001",
+    "title": "Clip launch gestures",
+    "contract": "The triangular clip button requests playback; selecting a clip by name then Enter also launches it, and arrows move to neighboring clips. Grid position does not prescribe playback order. Launch mode/quantization arithmetic remains owned by SPEC-CLIP-LAUNCH and SPEC-PLAYBACK-CORE.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B008",
+        "anchor": "session-view-clips",
+        "html_line": 292
+      },
+      {
+        "block": "SV-B012",
+        "anchor": "session-view-clips",
+        "html_line": 292
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-002",
+    "title": "Clip stop and deactivate contexts",
+    "contract": "Square Clip Stop controls exist in slots and Track Status. Pressing 0 on selected Session clips deactivates those clips. Stopping a Session clip leaves global Play highlighted and song position advancing. Reactivation/toggle policy is not stated here.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B009",
+        "anchor": "session-view-clips",
+        "html_line": 292
+      },
+      {
+        "block": "SV-B010",
+        "anchor": "session-view-clips",
+        "html_line": 292
+      },
+      {
+        "block": "SV-B013",
+        "anchor": "session-view-clips",
+        "html_line": 292
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-003",
+    "title": "Global double Stop",
+    "contract": "Pressing the Control Bar Stop button twice stops playback of the whole Set and returns Arrangement Position to 1.1.1. Single-stop/continue arithmetic remains in transport/playback contracts.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B014",
+        "anchor": "session-view-clips",
+        "html_line": 292
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-004",
+    "title": "Session clip metadata entrypoints",
+    "contract": "Session Edit/context Rename and Edit Info Text dispatch to the selected clips; the clip context also exposes its color palette. Shared rename/annotation/color behavior, multi-selection title presentation and the audio-source-name invariant are owned by SPEC-CLIP-VIEW-WORKFLOWS REQ-CLIP-VIEW-004/005. This requirement owns only the Session entrypoints and selection context; text grammar, maximum lengths and multi-selection naming conflicts remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B015",
+        "anchor": "session-view-clips",
+        "html_line": 304
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-005",
+    "title": "Grid selection and moving",
+    "contract": "Drag/drop moves clips in the grid. Shift or platform Ctrl/Cmd supports multi-clip selection before dragging; dragging from an empty slot can rubber-band select. The introductory paragraph names Ctrl without a platform qualifier; platform-specific modifier interpretation remains uncertain outside the explicitly qualified grid paragraph.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B016",
+        "anchor": "session-view-clips",
+        "html_line": 304
+      },
+      {
+        "block": "SV-B054",
+        "anchor": "setting-up-the-session-view-grid",
+        "html_line": 454
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-006",
+    "title": "Group slots",
+    "contract": "A group slot is shaded when contained tracks have at least one clip in that scene, using the left-most clip color. Its launch control launches the corresponding clips; a group slot with no corresponding clips has a stop control. Clicking a group slot selects the referred clips.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B017",
+        "anchor": "session-view-clips",
+        "html_line": 304
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-007",
+    "title": "Track clip exclusivity",
+    "contract": "A Session track plays only one clip at a time; alternative material belongs in that track's column. Voice tails, instruments and routed audio are not an extra clip playback instance.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B019",
+        "anchor": "tracks-and-scenes",
+        "html_line": 316
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-008",
+    "title": "Track width gestures",
+    "contract": "Drag title-bar edges to resize Session tracks; Alt on Windows or Option on Mac while resizing one track resizes all Session tracks. Narrow presentation retains clip launch and essential track controls; minimum size and exact pixel layout are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B020",
+        "anchor": "tracks-and-scenes",
+        "html_line": 328
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-009",
+    "title": "Track-header deactivation",
+    "contract": "With a Session track header selected, 0 deactivates that track. This context differs from selected-clip deactivation; the manual does not specify an activation toggle or selection precedence with a text editor focused.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B021",
+        "anchor": "tracks-and-scenes",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-010",
+    "title": "Scene launch and cancellation",
+    "contract": "A Scene Launch control in the Main-track column launches the clips in its row together. Cancel Scene Launch in the Main-track context menu cancels a previously triggered scene launch. Exact cancellation deadline and already-committed launch behavior are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B022",
+        "anchor": "tracks-and-scenes",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-011",
+    "title": "Next-scene selection preference",
+    "contract": "After a scene launch the scene below is selected as the next to launch unless Select Next Scene on Launch in Launch Settings is Off. Last-scene wrap/creation, empty scenes and concurrent selection edits are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B023",
+        "anchor": "tracks-and-scenes",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-012",
+    "title": "Scene metadata commands",
+    "contract": "Scene Rename is available in Edit/context menus and Tab can advance through successive scene renames. Edit Info Text supplies annotation; a context palette supplies color. Scene View title context also offers Rename/color for one or multiple selected scenes. Multi-scene naming transformation and platform/focus preferences remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B024",
+        "anchor": "tracks-and-scenes",
+        "html_line": 350
+      },
+      {
+        "block": "SV-B044",
+        "anchor": "scene-view",
+        "html_line": 402
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-013",
+    "title": "Scene ordering and position numbers",
+    "contract": "Scene drag/drop reorders rows. Shift-click selects adjacent scenes; Ctrl-click selects nonadjacent scenes in the retained text. Dragging nonadjacent scenes collapses them together; Ctrl+Up/Down moves them without collapsing. Scene numbers reflect current row position rather than stable identity. OS modifier substitution and boundary behavior are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B025",
+        "anchor": "tracks-and-scenes",
+        "html_line": 350
+      },
+      {
+        "block": "SV-B026",
+        "anchor": "tracks-and-scenes",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-014",
+    "title": "Scene tempo/meter editing",
+    "contract": "Dragging the Main-title left edge reveals scene tempo/meter controls, documented hidden by default. Values can be dragged or typed then Enter, and edited in Scene View. Launching a scene with assigned values adjusts project tempo/meter. This is a Version12 documentary claim; target storage and scheduler behavior remain separate.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B028",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      },
+      {
+        "block": "SV-B029",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      },
+      {
+        "block": "SV-B030",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      },
+      {
+        "block": "SV-B031",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-015",
+    "title": "Scene documented numeric domain",
+    "contract": "The captured manual permits scene tempo20-999 BPM and meter numerator1-99 with denominator1,2,4,8,16. These are documentary UI domains, not a replacement for SPEC-TRANSPORT-STATE's narrower evidence on numeric storage, parsing or scheduling.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B032",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-016",
+    "title": "Disable/reset scene assignments",
+    "contract": "An enabled scene tempo/meter control can be disabled and reset with Return to Default or Delete; double-click disables it. The reset stored numeric value and retention on double-click are not supplied.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B033",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-017",
+    "title": "Scene keyboard traversal",
+    "contract": "Left/right arrows navigate from selected slots/scenes to tempo/meter controls. Within scene name/tempo/meter editing, Tab/Shift-Tab advances/reverses controls and crosses to the next/previous scene at row ends. Enter on a selected tempo/meter control first selects the scene; a second Enter launches it. Keyboard accessibility preference/context interactions remain unproven.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B034",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      },
+      {
+        "block": "SV-B035",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 350
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-018",
+    "title": "Scene assignment indicator",
+    "contract": "A scene with assigned tempo and/or meter change has a colored Scene Launch button. The captured text supplies no exact color, contrast, accessibility label or mapping from scene custom color.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B036",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 366
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-019",
+    "title": "Pre-Live11 scene-name migration",
+    "contract": "For Sets made before Live11 with tempo/meter in scene names, the manual describes carrying those values into scene controls on opening newer Live and widening Main to expose them. Exact legacy grammar, build boundary, malformed-name handling and migration round trips remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B037",
+        "anchor": "editing-scene-tempo-and-time-signature-values",
+        "html_line": 366
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-020",
+    "title": "Scene View selection context",
+    "contract": "Selecting one/multiple scenes, clicking a scene tempo/meter control, or clicking Main title opens Scene View. Its top edits tempo/meter; lower controls expose scene Follow Actions, whose execution belongs to the launch owner. For one selected scene its title shows name/number/color if assigned; multiple scenes show selection count.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B039",
+        "anchor": "scene-view",
+        "html_line": 366
+      },
+      {
+        "block": "SV-B040",
+        "anchor": "scene-view",
+        "html_line": 378
+      },
+      {
+        "block": "SV-B041",
+        "anchor": "scene-view",
+        "html_line": 378
+      },
+      {
+        "block": "SV-B042",
+        "anchor": "scene-view",
+        "html_line": 390
+      },
+      {
+        "block": "SV-B043",
+        "anchor": "scene-view",
+        "html_line": 402
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-021",
+    "title": "Track Status presentation",
+    "contract": "Looping clips show a pie chart with right-side loop length in beats and left-side number of played loops. A playing group shows a pie without numbers. One-shots show progress and remaining minutes:seconds. Monitored audio/MIDI show microphone/keyboard icons; Arrangement playback shows a miniature Arrangement. Overlapping status precedence and update rounding are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B046",
+        "anchor": "the-track-status-fields",
+        "html_line": 402
+      },
+      {
+        "block": "SV-B047",
+        "anchor": "the-track-status-fields",
+        "html_line": 412
+      },
+      {
+        "block": "SV-B048",
+        "anchor": "the-track-status-fields",
+        "html_line": 422
+      },
+      {
+        "block": "SV-B049",
+        "anchor": "the-track-status-fields",
+        "html_line": 432
+      },
+      {
+        "block": "SV-B050",
+        "anchor": "the-track-status-fields",
+        "html_line": 442
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-022",
+    "title": "Multi-file import layout",
+    "contract": "Browser import or recording can populate Session. Multiple raw audio/MIDI files default to one Session column; Ctrl on Windows or Cmd on Mac before drop spreads them over tracks. This multi-track drop shortcut does not apply to Live Clips with embedded devices. Media decoding and recording remain in their owners.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B052",
+        "anchor": "setting-up-the-session-view-grid",
+        "html_line": 442
+      },
+      {
+        "block": "SV-B053",
+        "anchor": "setting-up-the-session-view-grid",
+        "html_line": 454
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-023",
+    "title": "Select on Launch preference",
+    "contract": "Clip launch normally selects the clip for Clip View. Turning off Select on Launch in Launch Settings lets the current view/focus remain when clips or scenes launch. This preference is separate from Select Next Scene on Launch.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B056",
+        "anchor": "select-on-launch",
+        "html_line": 454
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-024",
+    "title": "Stop-button editing",
+    "contract": "Edit Add/Remove Stop Button adds/removes grid Clip Stop controls. Removing an empty row/track stop control permits scene launch without affecting that track. Launch scheduling and empty armed-slot recording policy remain owned by launch/recording contracts.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B058",
+        "anchor": "removing-clip-stop-buttons",
+        "html_line": 466
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-025",
+    "title": "Insert Scene",
+    "contract": "Create Insert Scene inserts an empty scene below the current selection. Multi-selection anchor, selection after insert and scene count limits are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B060",
+        "anchor": "editing-scenes",
+        "html_line": 466
+      },
+      {
+        "block": "SV-B061",
+        "anchor": "editing-scenes",
+        "html_line": 466
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-026",
+    "title": "Capture and Insert Scene",
+    "contract": "Create Capture and Insert Scene inserts below current selection, copies currently running clips into it and launches it. The manual claims no audible interruption; this packet supplies no signal comparator or timing tolerance for that claim. Scene capture is distinct from Capture MIDI and Arrangement Record.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B060",
+        "anchor": "editing-scenes",
+        "html_line": 466
+      },
+      {
+        "block": "SV-B062",
+        "anchor": "editing-scenes",
+        "html_line": 466
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-027",
+    "title": "Cross-view clip transfer",
+    "contract": "Copy/paste and drag permit Session/Arrangement clip transfer, including across separate windows. Arrangement-to-Session paste attempts matching top-to-bottom temporal ordering. Exact tiling, overlaps, metadata transfer and operation atomicity are unknown. Keyboard Second Window controls retain their OS-specific documented modifiers.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B075",
+        "anchor": "recording-sessions-into-the-arrangement",
+        "html_line": 524
+      },
+      {
+        "block": "SV-B076",
+        "anchor": "recording-sessions-into-the-arrangement",
+        "html_line": 548
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-028",
+    "title": "Consolidate Time to New Scene",
+    "contract": "Arrangement Create/context Consolidate Time to New Scene makes one new clip per selected track from the selected time and places them in a new Session scene below prior selected scene. Audio tracks containing at least one selected clip generate new samples. The signal/destination contract for audio consolidation stays in REQ-ARRANGEMENT-010; exact silence-only, MIDI merge and file-failure behavior remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SV-B077",
+        "anchor": "recording-sessions-into-the-arrangement",
+        "html_line": 548
+      }
+    ]
+  },
+  {
+    "id": "REQ-SESSION-VIEW-029",
+    "title": "Lifecycle and boundary outcomes",
+    "contract": "Required operational outcomes below remain unknown; documentary gestures and XML structure do not establish them.",
+    "strength": "U",
+    "target_applicability": "U",
+    "evidence": []
+  },
+  {
+    "id": "REQ-SESSION-VIEW-030",
+    "title": "Standard scene Edit command entrypoints",
+    "strength": "D12",
+    "target_applicability": "U",
+    "contract": "The retained Session chapter names Cut, Copy, Paste and Duplicate as standard Edit menu commands for scenes. This clause specifies their scene entrypoint roles only; clipboard representation, exact insertion, naming, content copying, device/media ownership and undo/transaction outcomes remain unknown.",
+    "evidence": [
+      {
+        "block": "SV-B060",
+        "anchor": "editing-scenes",
+        "html_line": 466
+      }
+    ]
+  }
+]

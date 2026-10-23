@@ -2,7 +2,7 @@
 id: PLAN-MIXER-VALUES-V2-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -13,16 +13,16 @@ target: Ableton Live 12 Suite 12.4.3 / macOS
 
 Released 2026-10-18 as [mixer-values-v2](../../handoff/mixer-values-v2/README.md), approved with listed narrowing RVM2-01 to 05 by a separate review agent ([review record](../../handoff/mixer-values-v2/REVIEW.md)). All 80 cases are kept, and no record, fixture or expectation changed. The narrowings are wording.
 
-- **Round trip:** gain to fader position and back is not exact. In 1,601 random gains run through the original code, 765 (about 48%) did not return exactly, by up to 2 steps. The claim is now limited to −6 to 0 dB, with no bound.
+- **Round trip:** gain to fader position and back is not exact. In 1,601 random gains run through the original code, 765 (about 48%) did not return exactly, by up to 2 steps. Exactness is limited to the seven tested curve points. The counting argument that most gains cannot return unchanged applies only from −6 to 0 dB on the volume curve; it is not an error bound.
 - **Forward snap:** matches the original at all 101 points.
 - **REQ-014:** limited to the seven positions.
 - **REQ-013:** the text on how gains are applied to audio is removed.
 - **Change list:** the missing cue track is added.
 
 For the spec author:
-- remove the "bit-exact" claim from REQ-005, 011 and 015, from REQ-MIX-GRAPH-003 and from Q-019;
+- Applied 2026-10-19: mixer r5, mix-graph r2 and Q-019 withdraw general round-trip identity (including mixer REQ-012’s send claim) and clarify the forward-fed snap. REQ-015’s out-of-range load assumption remains unresolved;
 - F2 should say 1 to 3 steps;
-- MV-047 and MV-048 need absolute bounds.
+- Applied 2026-10-19: MV-047/048 now refer to full-precision X results and the released adjacent-binary32 / absolute 10⁻¹² comparison. Pan-mode labels align with the static wiring trace.
 
 ## Decision and boundary
 
@@ -309,8 +309,11 @@ the X2 slice scan; the macOS libm accuracy assumed by I8 and I9.
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate. It has 80 cases. 37 carry v1's
-partial REQ-MIXER-VALUES-001 to 004 and 006 to 009 on rebuilt fixtures; 43
-release partial REQ-005, 013 and 014 as computed values. REQ-010, 011, 012 and
-015 are unreleased. It is not published. mixer-values-v1 remains the current
-release.
+Released locally on 2026-10-18 as mixer-values-v2, superseding mixer-values-v1;
+see the Review outcome above. All 80 cases are retained. REQ-010, 011, 012
+and 015 remain unreleased. The staging instructions above record the original
+review plan; they are not pending publication steps.
+
+## Later finite draft R7 — 2026-10-21
+
+[Draft R7](../research/mixer-values.md#mixer-owner-r7-regular-node-annex-adoption--2026-10-21) adds826finite native scalar observations/77inherited references at naturally named regular nodes, preserving252R6objects/48oldrows/80releasedobjects. Portableexpected/comparator/grade remainNULL; no actualruntime129table/interpolation/currenttrack/publicARM/calibration law. Mixer-values-v2 stays current/unchanged and no new release is selected. Current implementation-workspace status belongs to [project status](../project.md#current-phase); the older unprovisioned line above is historical staging text.

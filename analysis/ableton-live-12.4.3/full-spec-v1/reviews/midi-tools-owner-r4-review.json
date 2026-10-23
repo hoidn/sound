@@ -1,0 +1,606 @@
+{
+  "id": "MIDI-TOOLS-OWNER-R4-INDEPENDENT-REVIEW",
+  "reviewed_utc": "2026-10-20T01:58:31.400508+00:00",
+  "disposition": "required-corrections",
+  "approval_scope": "No approval of R4 normative adoption until the three source-control-role findings are corrected and independently re-reviewed. Passing preservation/reproduction checks do not establish source semantics or target compatibility.",
+  "reviewer_relationship": "Reviewer authored the separate 146-block MIDI Tools source audit, plus adjacent Keyboard/Clip View owners and Editing MIDI source audit; reviewer did not author this R4 normative owner successor. This review independently compares that separate author adoption to the retained raw source roles. It does not self-approve or reopen the source audit; compressed G14/G21 proposal wording is not used as proof beyond its exact source.",
+  "reviewed_manifest": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manifest-author-r4.json",
+    "bytes": 7757,
+    "sha256": "046c33658b5ca1949eda7d71e94f458a142ab3bfe3d4f0970772fd2a3a6785f6"
+  },
+  "read_scope": {
+    "primary_chapter_blocks": 146,
+    "primary_paragraphs": 120,
+    "primary_list_items": 4,
+    "primary_headings": 22,
+    "audit_facets": 302,
+    "audit_proposals": 21,
+    "current_contract_rows": 43,
+    "old_cases_read": 72,
+    "new_cases_read": 21,
+    "case_total": 93,
+    "source_resource_projections_checked": 101,
+    "source_image_pixels_read": 0,
+    "link_destinations_read": 0,
+    "selected_audit_external_contexts": 30,
+    "scope_note": "Full primary Tools text re-read in this review and raw source independently reproduced by the inspected pure parser. All43 current rows and all93 actions/expectations read; old17 tool action subsets checked against their literal preserved records. External contexts limited to selected existing audit/provider rows and current MPE mode/lane/fold roles, not full adjacent chapters. Source Version12 publication revision unspecified/date-only2026-10-19 capture/UTCnull; exact12.4.3 U."
+  },
+  "required_findings": [
+    {
+      "id": "MIDI-TOOLS-R4-REVIEW-001",
+      "severity": "required",
+      "title": "Recombine uses a Dimension chooser; Rotate on Grid is Position-qualified",
+      "locations": [
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/tools-increment-r4.json",
+          "json_pointer": "/groups/11/clause_append"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/tools-increment-r4.json",
+          "json_pointer": "/groups/11/action"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r4.json",
+          "json_pointer": "/cases/83/setup_action",
+          "id": "MED-084"
+        },
+        {
+          "path": "wiki/specs/midi-editing-tools.md",
+          "id": "REQ-MIDI-EDIT-034"
+        }
+      ],
+      "unsupported_text": "each Position/Pitch/Duration/Velocity column has its own controls; operate Position, Pitch, Duration and Velocity columns separately",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/74",
+          "block": "TOOLS:B075",
+          "html_line": 612,
+          "html_column": 64,
+          "raw_start": 70460,
+          "raw_end": 70604,
+          "text": "You can use the Dimension chooser to select one of four note parameters for Recombine to permute: Position, Pitch, Duration, or Velocity."
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/77",
+          "block": "TOOLS:B078",
+          "html_line": 624,
+          "html_column": 547,
+          "raw_start": 71634,
+          "raw_end": 72013,
+          "text": "Rotation Steps can be set by clicking and dragging your mouse across the columns in Recombine’s display or by using the Rotate Step Down/Up buttons below the display. The number of available steps is always one step fewer than the number of selected notes. Positive numbers rotate parameter values clockwise, and negative numbers rotate parameter values counter-clockwise."
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/78",
+          "block": "TOOLS:B079",
+          "html_line": 624,
+          "html_column": 926,
+          "raw_start": 72013,
+          "raw_end": 72352,
+          "text": "When Position is selected in the Dimension chooser, you can switch on the Rotate on Grid toggle. When on, Recombine uses the number of grid cells in the selection as a basis for the number of available Rotation Steps rather than the number of notes. The exact number of available Rotation Steps depends on the current grid settings."
+        }
+      ],
+      "reason": "The source names Position/Pitch/Duration/Velocity as Dimension chooser values, not four separately controlled dimension columns. Its display-column drag is a Rotation Steps gesture. It explicitly makes Rotate on Grid available when Position is selected; the new compound action does not establish that selection before the toggle. Uninspected figures cannot supply another layout or broaden that prerequisite.",
+      "minimal_correction": "Use the actual Dimension chooser for each offered dimension. Keep display-column dragging/step buttons as the rotation gesture, and explicitly select Position before Rotate on Grid. Preserve all old rows/actions and every oracle, source pin, count and unresolved context. Add a focused source-role/prerequisite rejection fixture in a preserved successor."
+    },
+    {
+      "id": "MIDI-TOOLS-R4-REVIEW-002",
+      "severity": "required",
+      "title": "Strum display-breakpoint and typed-value evidence identifies Low/High, not Tension",
+      "locations": [
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/tools-increment-r4.json",
+          "json_pointer": "/groups/13/clause_append"
+        },
+        {
+          "path": "wiki/specs/midi-editing-tools.md",
+          "id": "REQ-MIDI-EDIT-036"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r4.json",
+          "json_pointer": "/cases/85/setup_action",
+          "id": "MED-086",
+          "role": "Clarify the already-bounded gesture targets if needed; productive baseline itself is supported"
+        }
+      ],
+      "unsupported_text": "Direct values and display breakpoints can edit Low/High/Tension.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/92",
+          "block": "TOOLS:B093",
+          "html_line": 686,
+          "html_column": 1041,
+          "raw_start": 78253,
+          "raw_end": 78565,
+          "text": "In order for the Transformation to have effect, the Strum Low and/or Strum High parameters must be set to a value other than 0.0%. You can make changes to both parameters by adjusting their respective breakpoints in the Strum Position display, or by entering a value for each using your computer keyboard."
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/93",
+          "block": "TOOLS:B094",
+          "html_line": 686,
+          "html_column": 1353,
+          "raw_start": 78565,
+          "raw_end": 79076,
+          "text": "The Tension parameter changes the offset of note start times so that they are no longer placed at an equal distance between each other, but instead alongside a curve, with distances between notes being larger or smaller, depending on the settings. At positive Tension values, the distance between the notes will be greater at the start of the note sequence and decrease exponentially. At negative values, the distance between notes at the start of the sequence will be shorter and increase exponentially."
+        }
+      ],
+      "reason": "B093 explicitly refers to both Low and High when naming the respective display breakpoints and keyboard input. B094 documents a Tension parameter/effect but does not establish that Tension has this same breakpoint/typed-entry gesture. The appended normative sentence extends those specific gestures to Tension. The audit G14 shorthand lists separate signed Low/High and Tension contexts; it is not evidence for a shared gesture.",
+      "minimal_correction": "Restrict the source-specific breakpoint/keyboard-entry roles to Low and High. Retain separately admitted Tension parameter changes, productive nonzero offsets before zero reset, and null numerical/actual outcomes. Do not infer a Tension display gesture from figures."
+    },
+    {
+      "id": "MIDI-TOOLS-R4-REVIEW-003",
+      "severity": "required",
+      "title": "Euclidean randomization button addresses the voices together",
+      "locations": [
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/tools-increment-r4.json",
+          "json_pointer": "/groups/20/clause_append"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/tools-increment-r4.json",
+          "json_pointer": "/groups/20/action"
+        },
+        {
+          "path": "wiki/specs/midi-editing-tools.md",
+          "id": "REQ-MIDI-EDIT-043"
+        },
+        {
+          "path": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r4.json",
+          "json_pointer": "/cases/92/setup_action",
+          "id": "MED-093"
+        }
+      ],
+      "unsupported_text": "Pattern and Voices tabs expose per-voice enable/rotation/randomize",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/142",
+          "block": "TOOLS:B143",
+          "html_line": 912,
+          "html_column": 257,
+          "raw_start": 101088,
+          "raw_end": 101602,
+          "text": "The Pattern tab contains a visual representation of how generated notes will be added to the clip. To the right of the visualization, there are individual toggles that can be used for activating and deactivating voices, as well as individual Rotation sliders for setting the offset of generated notes for each voice, relative to the beginning of the time selection. In the middle of the pattern visualization, there is a randomization button, which sets the Rotation sliders’ value for each voice at random."
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/143",
+          "block": "TOOLS:B144",
+          "html_line": 912,
+          "html_column": 771,
+          "raw_start": 101602,
+          "raw_end": 102148,
+          "text": "You can click on Voices to select the Voices tab. Like in the Pattern tab, there are toggles to activate or deactivate individual voices, as well as the option to set each voice to a specific pitch (when using instrument devices) or drum pad (when using Drum Racks). Use the up and down arrows to the left of the voice activation toggles to simultaneously change all the pitches or drum pads used to generate notes. You can also set individual velocity values for the notes generated for each voice using the Velocity sliders on the right."
+        }
+      ],
+      "reason": "The source distinguishes individual enable toggles/Rotation sliders from one middle randomization button which sets the Rotation sliders value for each voice. The new per-voice enable/rotation/randomize grouping implies individually targeted randomize controls, which the prose does not supply. The action should make this scope explicit rather than rely on the slash grouping or figure.",
+      "minimal_correction": "Name individual voice enable/rotation controls separately from the Pattern middle Randomize button applying to the voices rotation sliders. Preserve randomness, output differences, pattern algorithms and all numeric/actual outcomes as null/U; no fixture may infer per-voice randomize from a label."
+    }
+  ],
+  "semantic_checks": [
+    {
+      "subject": "Old17 actual tool subsets",
+      "result": "Preserved verbatim MED027–043: Gate comparison, Chop2/64/manualgap, Connect100/zeroSpread, Glissando2-versus1, LFO accepted bend domains/positiveDecay→Attack100, Flam endpoints, Quantize start/end subsets, productive Mirror, all3 Span modes, zero-only old Strum, admitted TimeWarp PreserveRange, VelocityShaper bounds/Rotate, Rhythm repetitions/allaccent, Seed degenerate domain, Shape bounds, selected Stacks chord and Euclidean enabled/disabled voice. Neither old domain flags nor zero-only Strum are reclassified as productive runtime proof."
+    },
+    {
+      "subject": "Productive future baselines",
+      "result": "MED086 explicitly requires actual productive nonzero Low/High offsets before the both-zero reset; failed baseline U. Generator MED089–093 allow initial empty targets but require actual NONEMPTY output before origin/bounds/capacity/absence and not Density/enable flags alone. Common guards require independently admitted owned editable targets, exact resets and genuinely productive matched effects before negative comparisons; audible observations require separate active nonzero eligible output. No hardware requirement for editor-data cases."
+    },
+    {
+      "subject": "Version/uncertainty boundaries",
+      "result": "C1 occupied/layering, C2 settings shortcut, C3 Notes/MPE/optional-lane visibility, MTA-Q04 implicit-loop/input and selection precedence remain U. Bundled Standard/Suite use is separated from Suite or Standard+Max add-on edit/build/third-party context. No new algorithm, RNG, curve, numeric note, file codec, audio, timing or protocol oracle; new numeric/message-sensitive comparisons null. Current MPE pointers are generic lane/mode context, not Glissando tool-display proof."
+    },
+    {
+      "subject": "Historical routing",
+      "result": "All38 prior packet files, exact R3 before snapshots and all72 records remain identical. Four qualified old-hash occurrences in one frozen R3 review are inventoried as historical/as-of; no consumer mutation, automatic adapter or historical checker replay. Inputs use immutable selected providers rather than new evolving wiki canonical gates."
+    }
+  ],
+  "integrity_checks": {
+    "author_check": "PASS: python3 -B author-r4.py --check after full script inspection",
+    "validator_check": "PASS: python3 -B validate-r4.py --check after full script/parser inspection and only four explicitly inspected Browser AST functions; no old whole-file author/checker import or execution",
+    "independent": "PASS:54payload seals,38prior identities,72 exact old case records,21 exact column3 appended row deltas,43 row IDs,93case count,new20D12/1U,3nonnull/18null documentary comparators and allnew legacy/actual nulls independently checked.",
+    "mutation_fixtures": "All10 author negative mutations rejected: old-gesture-erased,actual-oracle,generator-flag-only,zero-without-positive,offline-hardware,wrong-source,C1-resolved,numeric-new-oracle,Strum-baseline-erased,lost-generator-output. These do not reject the three unsupported source-control-role additions above; human source review remains required.",
+    "postseal_guard": "PASS expected refusal: author-r4.py --write exits before build with sealed: refuse overwrite; no output mutation.",
+    "links": 75,
+    "browser_IDs": 43,
+    "immutable_input_pins": 59,
+    "watched_paths": 91,
+    "all_watched_unchanged": true,
+    "whitespace": "Current validator checked allnew/untracked packet payloads and both canonicals for NUL/trailing whitespace; allpass."
+  },
+  "counts": {
+    "requirements": 43,
+    "unchanged_rows": 22,
+    "refined_existing_rows": 21,
+    "cases": 93,
+    "old_records_exact": 72,
+    "new_cases": 21,
+    "documentary_D12": 77,
+    "documentary_U": 16,
+    "new_D12": 20,
+    "new_U": 1,
+    "new_named_documentary_comparators": 3,
+    "new_null_documentary_comparators": 18,
+    "new_actual_nonnull": 0,
+    "executed": 0,
+    "complete_topics": 0
+  },
+  "nonblocking_gaps": [
+    "Partial bounded control/action subsets of21 audit groups; not full17tool algorithm or lifecycle closure.",
+    "No full third-party discovery/authorization/editability/build/AMXD ABI or .stacks parser compatibility.",
+    "Original target unavailable/unexecuted; source default histories, source-unsupported failure/cancel/save/undo/transport/rate/teardown remainU.",
+    "All42 image pixels/17linked destinations remain uninspected; no extra labels/layout from those resources."
+  ],
+  "before_after_identities": {
+    "analysis/ableton-live-12.4.3/full-spec-v1/browser-content/cases.json": {
+      "bytes": 114122,
+      "sha256": "cc6df4f628dab1587b0b4a6d1b86b22f6851de6ddc3574e6e7cd35925995241d"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/browser-content/manifest-author-r1.json": {
+      "bytes": 6122,
+      "sha256": "6b3eac33bc076a7b4df37d977116db16efb1bc9a234ded9c0f01d8904a99d434"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/browser-content/requirements.json": {
+      "bytes": 54853,
+      "sha256": "ab743884be36ea0e9bd1915c83b5ecf624b67a88c84add672c0fcb1e33b31f2b"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json": {
+      "bytes": 153621,
+      "sha256": "2571fe235587ff5ad566085473b0a9ff52f60f213c94e656c9467dd22e34a090"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/manifest-author-r2.json": {
+      "bytes": 28115,
+      "sha256": "00faccc58723528d2de23d024851aff6fb4bbe308b5b501e7689ecf2512c4921"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/requirements-r2.json": {
+      "bytes": 56449,
+      "sha256": "9a2bdfee22098d193e2f53070f856145c0f89ad29f2b298697dccc7e2f0dab8d"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source_parser.py": {
+      "bytes": 3428,
+      "sha256": "648bb1ebce827d136ab6074d6b80fe32475534d87d57a367e9de9aa9fc8fdad8"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/cases-r5.json": {
+      "bytes": 192118,
+      "sha256": "63c59f206be2dc0d7b662af306fc48d89c381643107bd632f79bc756f07144a5"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/manifest-author-r5.json": {
+      "bytes": 53801,
+      "sha256": "91a9e42ecd2b823648d614a65b958c122dfb705fc8ab0aa5cd64f3c95f8ed528"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/keyboard-navigation/requirements-r5.json": {
+      "bytes": 91764,
+      "sha256": "8f528dfa8e5d7eee0aa1866cd48ed0a45a82236c9f90dda828a87b18e9e3b090"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/max-host/cases.json": {
+      "bytes": 57024,
+      "sha256": "d280064ddf5c5ae509b7f38b7b2221069dac165ad3cf653d6236ed30c6d525cd"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/max-host/fixtures.json": {
+      "bytes": 2736,
+      "sha256": "cad52b998735deabb1c3aedb525f962be8d1e2ef3cc5aad58d459400f5752ae7"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/max-host/manifest-author-r2.json": {
+      "bytes": 5240,
+      "sha256": "4a523ff35a1245ec70d560937e838bc228fe61e68b5ceac21786d47e198ff3da"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/max-host/requirements.json": {
+      "bytes": 18514,
+      "sha256": "149b1757ebd2b03c05e325bf65c6c12b2c0d74780f20fff7251c3c143ee55ad1"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/max-host/spec-r2.md": {
+      "bytes": 19373,
+      "sha256": "907815556b8c62bcc715cddbe0801e06e5035ef8c084361d3fa285e9cd4ec551"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/README-r2.md": {
+      "bytes": 2852,
+      "sha256": "afe7be9e0e56c059c5ea1b1fe8815851c1bbc8cca6865f3372db979912c831ec"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/README-r3.md": {
+      "bytes": 4701,
+      "sha256": "e858fb8097a448f1d2d9d44a51c84f27ea4663876eb4adf7e42b209819964681"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/README-r4.md": {
+      "bytes": 3429,
+      "sha256": "4c9385019b8d89e2edb7c15fbd94efb1bd8978945737744cb48a1e89c47c4613"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r2.json": {
+      "bytes": 34633,
+      "sha256": "79a06c2aae5d6d3a3b53dce54b754e04d63286eb7107a472088a93df0d337e73"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r3.json": {
+      "bytes": 68072,
+      "sha256": "02e9a3657f6464f26eb7fc9c9e070f51af2c7bdd18875fdc23c57115bf3e62a2"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r4.json": {
+      "bytes": 178668,
+      "sha256": "839f01b0d8b2e5e2c4237a1935c5698e74d7a962dced5bbf0e50bedcf283d6dd"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases.json": {
+      "bytes": 28947,
+      "sha256": "f08104c0f7d893d81f0aec920ca7b44d7fc5a686c8dfbd1ebb760dfc231eaf8f"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/author-freeze-r4.json": {
+      "bytes": 2758,
+      "sha256": "a2e7ab221bf4b84a1d3246445eb4607b022bf966808e07e813d88a6754cfc48b"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/author-r4.py": {
+      "bytes": 13782,
+      "sha256": "604e9f35209d6710cdced2d1e3a67df4089a446e96fec6a306a01ba366e1be5b"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/capture.py": {
+      "bytes": 1404,
+      "sha256": "41e83b7d94313197dae9d01c83683b928ee1c73f0515c39c1730217fd2a62b71"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/check-r3.py": {
+      "bytes": 9931,
+      "sha256": "17267376e5dd1d488ef1bfd4373d25d789692c52888372ad9fa8ce229f167518"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/consumer-impact-r2.json": {
+      "bytes": 8227,
+      "sha256": "2f97f75f968d48e12d4c0805ac9aead477c4f981ae4191bd37534b8f1bb63cdb"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/consumer-impact-r3.json": {
+      "bytes": 7427,
+      "sha256": "9a5661d4145bd835b661873b3de63869c58088bb8bc7e1a5ebd6e01d633fb5e0"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/consumer-impact-r4.json": {
+      "bytes": 2658,
+      "sha256": "386cf541d8155225800f6024def462936a983fe7a93ef0f42a42b6aa40836ff2"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/delta-r2.json": {
+      "bytes": 1093,
+      "sha256": "0615f596fb3b218ba6729527dd5ab1f89b888acff1201af2de5f6799369da81a"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/delta-r3.json": {
+      "bytes": 6093,
+      "sha256": "274a33283eb836a70132b91dbc1782cd135844460eae712060bdbd5f2d2c0cda"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/delta-r4.json": {
+      "bytes": 18947,
+      "sha256": "9191870a5b7e7791f7475c3a237e429a427fa2a4acdbeb39acfd218194771904"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/fixtures-r2.json": {
+      "bytes": 1000,
+      "sha256": "d77024928bc48d451941bd425e26630c5734a567e9989b2a1c6e993df875d6b0"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/fixtures-r3.json": {
+      "bytes": 1142,
+      "sha256": "e1e1d1b2e3daa6f2e6cee71e4e2d962c1e214c9ec92fabdab12df31dcdba845d"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/fixtures-r4.json": {
+      "bytes": 1480,
+      "sha256": "889df615712e6cac12c467bdb6c9747a5e53b39be98cd4140ed34262da16fc9e"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/gesture-increment-r3.json": {
+      "bytes": 41207,
+      "sha256": "471fcd786d1375ce2213aaef3808b6ec8433eb2a4d46cf39c0b6252f2b21e351"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/inputs-r2.json": {
+      "bytes": 5924,
+      "sha256": "082c07d5f928d9004a82023fc84ca5c6286f25a0f5bee7dd084dd63c7dabddf4"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/inputs-r3.json": {
+      "bytes": 1638,
+      "sha256": "493b9baba207cea7710dc799038b1724d96f61edbc048695823ea9bdad7126a5"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/inputs-r4.json": {
+      "bytes": 17964,
+      "sha256": "5e5de772fbb092b7d1b8818a94d5fccd06f861b838bf9d8ec4040cf3fca4b3b6"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manifest-author-r2.json": {
+      "bytes": 4492,
+      "sha256": "c6d50d13268b6e00efc3e59a3c1bead0d18e8c23a3505b1b0a7d595dc4a198b2"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manifest-author-r3.json": {
+      "bytes": 5843,
+      "sha256": "cd58218699444b9cc61562a94329137d1f2eb197b0f1fdeaf7768e15f0e04def"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manifest-author-r4.json": {
+      "bytes": 7757,
+      "sha256": "046c33658b5ca1949eda7d71e94f458a142ab3bfe3d4f0970772fd2a3a6785f6"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manifest.json": {
+      "bytes": 3188,
+      "sha256": "f4ba2c5197501b3d685bc05ba2642eb41bde4fc38c5752d44aa6bda45aaf9488"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-editing-midi-2026-10-19.html": {
+      "bytes": 341034,
+      "sha256": "7675902a8115a7a329c693bbfca3efb360493ece560ed83c754ee8d2a99a5ca2"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-editing-midi.txt": {
+      "bytes": 95746,
+      "sha256": "49680f05471b98253e09f19e85ad1943163d4c169bdeeda563209e230c245137"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-midi-tools-2026-10-19.html": {
+      "bytes": 305130,
+      "sha256": "ebe83b52ba7b11ada85691f524f8e817534c604eac1c0edd4aa9c7b9327fd6ab"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/manual-12-midi-tools.txt": {
+      "bytes": 68450,
+      "sha256": "1ca9dd57e0da22b7aff0b89662ca90df1cceb60f8101c856c88a90f558b61f59"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/prior-files-r2.json": {
+      "bytes": 1482,
+      "sha256": "c8cbbc0aa3e6d81d43ba3da33566b4dc6884faa4c585b72fd0a9ff970f80e26d"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/prior-files-r3.json": {
+      "bytes": 3312,
+      "sha256": "f4a4a67c0b974ff03e6bbc9d30708d49a5a1806cf7c8a626c827afc75e26fe79"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/prior-files-r4.json": {
+      "bytes": 5014,
+      "sha256": "0ac980cac2fb8d6e2692299e0abb3709402de3244fbb58f1cfe6f7732830a641"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/research-before-r2.md": {
+      "bytes": 10725,
+      "sha256": "d9c237fd6916870e781f06fd1ad97f31d72ce8f08d909a3c3580d6e2bae70d19"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/research-before-r4.md": {
+      "bytes": 16820,
+      "sha256": "e3fafa8fa81e7a5d852f1439035cb823baad73b3b6047f99ab172c9251355ae7"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/research-r2.md": {
+      "bytes": 13685,
+      "sha256": "6eff29e4accf060f2da0b42aa67c952282890566f58134f4b5e1029f562824b1"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/research-r3.md": {
+      "bytes": 16820,
+      "sha256": "e3fafa8fa81e7a5d852f1439035cb823baad73b3b6047f99ab172c9251355ae7"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/research-r4.md": {
+      "bytes": 19684,
+      "sha256": "5a3c757a1eea94ba61b3a895ac64a51a3e3039d5e21b22a63c222536d01ce635"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/schema-correlation.json": {
+      "bytes": 22361,
+      "sha256": "598704046b86e4385aad2ff94d5d88f9cda889194ee95c9547293cd5900a6474"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/source-context-r2.json": {
+      "bytes": 2351,
+      "sha256": "26654b8b333c606d0c10c9b9cd92a74405dc46b51ec449d52af2804127c56875"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/sources.json": {
+      "bytes": 8847,
+      "sha256": "17750cae2154f931471fdea1d5e4626130d664c8cbe060cdff6d832c630aa99a"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/spec-before-r2.md": {
+      "bytes": 30274,
+      "sha256": "2c9e58f56b7d5c0850e1df1124b0f0d2b6ad11116bd4c850816f58c757053bc3"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/spec-before-r4.md": {
+      "bytes": 36741,
+      "sha256": "540601cfb6be7d46fe05906b89e2e9cb1bc74cd143d0d8709625aa70a6eef7de"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/spec-r2.md": {
+      "bytes": 32382,
+      "sha256": "6c64965eef4568af8686c5d6193ae8a919ba932c7d999296698a26f6a2d102c7"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/spec-r3.md": {
+      "bytes": 36741,
+      "sha256": "540601cfb6be7d46fe05906b89e2e9cb1bc74cd143d0d8709625aa70a6eef7de"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/spec-r4.md": {
+      "bytes": 42838,
+      "sha256": "d917d74a15e9a70a8e3436f0f9e8074a80abf8099902938a73b9b7d81e4bdb4f"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/tools-increment-r4.json": {
+      "bytes": 19294,
+      "sha256": "4a1943f26e58fafbd3286083fc9f15739b6ea2c38cca22f8ec23666b8f187998"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validate-r2.py": {
+      "bytes": 11317,
+      "sha256": "223a3aae71cb68de4f92abf35d7c2b403ff09f5dd9c86cd923ea87a31dcb91c5"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validate-r4.py": {
+      "bytes": 10919,
+      "sha256": "2c0b2b3cf2614629ad317ba2c20fbad637d2ccaf02f3e452491e49233c3a7ffd"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validate.py": {
+      "bytes": 3859,
+      "sha256": "ff22d40ce5fbd43b600be78cfe7172104f650eb2b35bce2fac3b7738c30a06ea"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validation-author-r3.json": {
+      "bytes": 1646,
+      "sha256": "9a63af8f63402c8aad8eeb651adf4634d502ecffb2eaaa434b7f9e93853df96c"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validation-author-r4.json": {
+      "bytes": 37301,
+      "sha256": "80d2f45b19f298de5752f285ab5ec34262667b48afe23ceede10b4da250f5d30"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/validation.json": {
+      "bytes": 343,
+      "sha256": "ff13a41a64d85370778d3cf3889ae67e7b052b3d9a089184476e18c3d730c177"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/README.md": {
+      "bytes": 6632,
+      "sha256": "85890ac9f34d01160a85b6c2257bce05394e0fc8fe176cec4ae9cf4ea7ab006b"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json": {
+      "bytes": 919234,
+      "sha256": "b5e1aee024af1f2ff27c59dd32e3514b4a31f24cbef10b397306f2086d0b26d8"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/check.py": {
+      "bytes": 17608,
+      "sha256": "e1720121fe6bae6cd757a44c764cb3bc4faf26385202d20d8c01987319a259ed"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/inputs.json": {
+      "bytes": 13500,
+      "sha256": "432b8024df85e7a70faec048cbf01b6e47fbe57ff891e549cb8253e7bb00c85a"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/manifest.json": {
+      "bytes": 3012,
+      "sha256": "1ff435b3a0bd4470e4576886cb63dcf98b902998fea40ba2bdc1830a39b64128"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/plan.json": {
+      "bytes": 220833,
+      "sha256": "13e70450f94b888c158d4bd4e0c9a268cef8e82f6dc97f1f0d4ba8f0e11f2336"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json": {
+      "bytes": 48984,
+      "sha256": "50c19ef938088302caf071e700a63ab1b7c029e2d510c907f51bad793db7b59d"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/manifest-author-r2.json": {
+      "bytes": 11756,
+      "sha256": "a93a5dca90cf0aa83dd712beaea955549dda093a89668d4294335a45c0e8748a"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json": {
+      "bytes": 58448,
+      "sha256": "dca75063ec0830c0509cf49c1ec9c0da276f15ec5fdf02f719540b0707f6d56b"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-manifest-author-r3.json": {
+      "bytes": 15820,
+      "sha256": "09298309084134bdaee9d9edc99e5ea2e6b4e0758c93b7ca2b26895e026999d3"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-requirements-r3.json": {
+      "bytes": 10018,
+      "sha256": "36e36a113daf6c0ed45d73019e1e0562b07975844462552e5f7c698daab51814"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-workflows-author-r2.md": {
+      "bytes": 12334,
+      "sha256": "1c8c6c7fbda5f85ed4608ab6e6b64f3999853b4a7c4783f8a28ca1ab1e789de2"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-workflows-author-r3.md": {
+      "bytes": 19638,
+      "sha256": "1f006d4724367db5dde4376eb32f70e7e98ce128616f185d997382240cf22d5a"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-editing-gesture-owner-r3-review.json": {
+      "bytes": 26782,
+      "sha256": "e96c656e2b2d4d9fa07f60e6491ad2b98ff995624e3512b1884f0c182e050885"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-editing-interval-owner-r2-review.json": {
+      "bytes": 8733,
+      "sha256": "3dc6d1a64bc612ddad7e92dccd7275dd85860df37398dbda3e965ff4f80e6fc9"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-editing-review.json": {
+      "bytes": 11880,
+      "sha256": "3d3afe3dc4fdad2d7b9dafcd6c48683e1327dd9bed66547798259c5272dbde0b"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-tools-source-audit-review.json": {
+      "bytes": 19704,
+      "sha256": "ee6867bf567dc66fc39d73145c3333c9e3b2159c1b346ce84405a2be2bd1f352"
+    },
+    "analysis/ableton-live-12.4.3/full-spec-v1/reviews/mpe-owner-r3-review.json": {
+      "bytes": 45859,
+      "sha256": "42f0894e9a2dc88d43ff0db704c70d37481b2698ba27246e6ad3e83474ad87b1"
+    },
+    "tools/spec_browser.py": {
+      "bytes": 8981,
+      "sha256": "0a67ec03d7e4687af67b0de087dafedfb7a8ab066601b60590c07cde04e68f14"
+    },
+    "wiki/research/midi-editing-tools.md": {
+      "bytes": 19684,
+      "sha256": "5a3c757a1eea94ba61b3a895ac64a51a3e3039d5e21b22a63c222536d01ce635"
+    },
+    "wiki/specs/midi-editing-tools.md": {
+      "bytes": 42838,
+      "sha256": "d917d74a15e9a70a8e3436f0f9e8074a80abf8099902938a73b9b7d81e4bdb4f"
+    }
+  },
+  "limits": "Only this review JSON is written. No canonical/source/packet/shared/consumer edits, original/vendor/native/runtime/UI/hardware/network/install/candidate/source-example execution. AlltargetU and zero completion remain mandatory after any narrow correction."
+}

@@ -2,7 +2,7 @@
 id: RESEARCH-WARP-MARKERS
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -159,8 +159,11 @@ list raises `Empty warp marker array.` through `0x101488e64` ✓ and the
 document-corrupt error `0x10148229c`. A non-empty list links each marker to its owner
 and to a coinciding onset. ASampleWarpProperties' hook `0x10288538c` ✓ has no such
 check, which matches the 4,244 shipped empty lists. A one-marker AudioClip passes
-this check; what it then does is unknown (PRB-S8-02). Whether the post-load hook runs
-on every set load is the same open question as in transport-state native.
+this check; what it then does is unknown (PRB-S8-02). Reconciled 2026-10-19:
+[SPEC-LIVE-SET-STRUCTURE A1](../specs/live-set-structure.md#assumptions)
+establishes that every set-open route sets context flag +0x2c and runs these
+post-load steps. The empty AudioClip list is therefore statically refused. Its
+error presentation remains unknown.
 
 ## The shadow marker
 
@@ -394,16 +397,28 @@ comparison stay static (S).
   `fmsub`/`fmadd` at `0x101b39ea8`/`0x101b39eac`, x86_64 glibc `fma`); q() and the bounds use the
   same operation order and no inexact fused step. The only substituted library is glibc `fma`,
   which is correctly rounded like the arm64 instructions. Inferred: the arm64 results are the same.
-- Playback (PRB-S8-08, Q-021): no static caller connects these cores or the table to the audio
-  engine's playback position. It stays unknown.
+- At the X2 investigation, no static caller connecting these cores to playback had
+  been identified. The later [playback study](playback-core.md#corrections-to-existing-pages)
+  and [SPEC-WARP-MARKERS REQ-009](../specs/warp-markers.md#req-warp-markers-009--playback-position-of-a-warped-clip)
+  identify the Engine's warper callers (S). This settles the conversion step, not
+  per-mode sample reads or audio acceptance. REQ-009 still needs playback output
+  and remains outside warp-markers-v2 (review RVW2-02).
 
 ## Unknowns
 
-- The user-visible outcome of the empty-list error, and whether the post-load hook
-  runs for every set load.
+- The user-visible outcome of the empty-list error. The set-open post-load flag
+  is settled by the structure trace; it is no longer an open assumption.
 - Load behaviour for unordered, duplicate-time or single-marker lists, and for
   `Invalid` positions.
-- The playback mapping; the scripting conversion is X since 2026-10-18 (results above).
+- Per-mode playback sample reads and audio; the conversion step is S in the later
+  playback study, and the scripting conversion arithmetic is X since 2026-10-18.
+  X2 used M1/M2 only: draft WMK-019 (M0) is computed from confirmed rules, not
+  an executed input. The shadow-append routine is X but has no observable case
+  until its caller arguments and triggering operation are traced.
+- Marker `Id` preservation and missing `Id`. Duplicate or negative marker list
+  Ids inherit the conditional generic-list refusal in
+  [REQ-LIVE-SET-STRUCTURE-016](../specs/live-set-structure.md#req-live-set-structure-016--list-item-ids),
+  under that spec's still-open A5.
 - Effects of out-of-range `WarpMode` and setting values; whether any later setter
   clamps them; the TransientEnvelope range (0–1 in the remoteable, 0–100 in its curve
   and in shipped values).
@@ -420,3 +435,97 @@ Static evidence, plus the extracted execution of 2026-10-18. A traced throw or s
 prove the path runs for a given file. The AudioClip sample is dominated by `Sample Reference.als`, and no shipped
 file is a 12.4.3 save. `FUN_` names are generated. Branches without ✓ come from C1
 pseudocode. The schema order is by file name, not proven migration order.
+
+## Family route map — pending independent review, 2026-10-20 20:50 UTC
+
+The analyst [Warp family packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-warp-routes-v1/structure.md)
+cuts SPEC-WARP-MARKERS revision 5 from approved integration I-04/I-06 and the
+approved playback family map, with document/save boundaries inherited from
+I-01/I-02/I-10. Its
+[ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-warp-routes-v1/route-ledger.json)
+enumerates 80 required predicates: 5 X routes, 50 S routes and 25 with no
+established route. These are bounded route inventory counts, not outcome grades,
+coverage percentages or a frozen whole-product denominator. All 39 case IDs
+remain unchanged; 21 auxiliary records and 12 scope records remain separate.
+
+Stored marker fields and local conversion arithmetic do not establish actual
+clip/helper/voice identity, post-edit table rebuild/reindex, sample reference,
+sample rate/length or mode-specific audio output. A1 is settled static loading;
+A2 opening/completion, A3 cached-table binding and A4 saved comparisons remain
+qualified. Conditional shared list-Id A5, malformed/sentinel list outcomes,
+setting/default/UI consumer gaps and public failure/save state remain explicit.
+REQ-009 still requires playback acceptance and is unreleased with no case.
+
+WMK-019's M0 result is computed from the confirmed rule, not historically
+executed. The shadow-append seconds formula is auxiliary research with no
+observable trigger/caller-argument acceptance case; it contributes no required
+X outcome or behavior batch. Three unexecuted finite candidates reference 34
+historical result rows through four raw command rows, separate from outcomes
+and call counts. The q() setter's original registry/object setup retains the
+preparation/review gate before replay beyond the standing harness model.
+
+The [author check](../../analysis/ableton-live-12.4.3/full-spec-v1/family-warp-routes-v1/author-check.json)
+records documentary/source/case integrity and negative controls while preserving
+the original research body byte-for-byte. Root owns the seal, independent
+structure review and shared atlas, index, plan, coverage and log changes.
+No original/provider/decoder/harness execution, normative edit or grade occurred.
+
+## Correction to selected q-run provenance — 2026-10-20 20:58 UTC
+
+The earlier X2 setup prose claiming that the beat setter's notification was
+skipped under gdb is not established by the selected retained run. The
+[Warp v1 independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-warp-routes-v1-review.json)
+requires correction under WARP-ROUTE-REVIEW-001; report SHA256
+`0847d91e8997e524c0484c641cdc799611e2c2fac7aaa848e9bd28cea1993909`.
+The earlier prose and v1 pending-review section above remain historical. Frozen
+family-map v1, manifest SHA256
+`24c3706394b0024ac5c1d8d9b680e8d6f5c72f392ffc0b47c79dd9206813ee8b`,
+is preserved wholly; it is not an approved structure packet.
+
+Observed in retained source: `run_x2.py` lines 187–199 call
+`run('beat-grid-q', s)`; lines 96–99 call `s.run()`. `seq.py` lines 69–70
+delegate to `R.run(self.tokens)`. The separate `run_skip` function at lines
+73–93 can construct debugger interception but is unused by this selected
+driver. The selected raw `beat-grid-q` record, line 17 of X2
+`raw/runs.jsonl` (byte 698817, 26802 bytes, SHA256
+`6452b22e1bff377828942a72a4306609813200dc2e139eb39c23a7d5757c2a7b`),
+has no `gdb_script` field or HIT rows. No debugger notification interception
+is established. Whether notifications executed or were absent was not
+independently traced; neither conclusion follows from the returned values.
+
+Initialization is partial: the historical X2 manifest reports 295 of 3,322
+initializers trapping/faulting and being abandoned; this selected receipt
+contains 294 `initfail` rows. Those retained counts do not establish complete
+successful initialization and are not silently conflated. The registry subset,
+original marker construction and 18 returned setter calls remain the bounded
+setup/result evidence. Replaying that construction retains the preparation and
+peer-review gate outside standing self-contained calls.
+
+The corrected [family-map v2 successor](../../analysis/ableton-live-12.4.3/full-spec-v1/family-warp-routes-v2/structure.md)
+pins v1 and its final review, corrects method qualifications and adds checks
+against the actual driver/receipt, including negative controls. It inherits
+the same 80 predicates, 39 case identities, finite inputs and scope records;
+no normative clause, release, result label, grade or route count changes.
+No original/provider/decoder/harness execution occurred. Root's v2 seal and
+independent bounded correction review remain pending.
+
+
+## Warp family-map v2 approval — 2026-10-20
+
+The [independent correction review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-warp-routes-v2-review.json)
+approves only the corrected v2 successor, manifest SHA256
+`abf55fc7fa1699766c1e5afcecdc00147a11185771b6a35f4f147c08debc21ed`;
+review SHA256 `e3416180b2157bd615442af91f11e64862cdea3bef46db10d09f778c0d86ee7d`.
+It resolves WARP-ROUTE-REVIEW-001 for v2. Frozen v1 and its correction-required
+review remain unchanged. The pending-review statements above are author history.
+No selected-run debugger interception is established; notification execution or
+absence remains untraced. Partial initialization counts remain distinct.
+The unchanged 80-row ledger is route inventory, not a behavioral grade or
+whole-family denominator. No normative clause, case, release or expectation
+changes. No original or candidate execution occurred for the correction/review.
+
+## Standing whole-class selection assessment — 2026-10-21
+
+The corrected approved [5-X map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-warp-routes-v2/manifest.json),3,158bytes/SHA-256 `abf55fc7fa1699766c1e5afcecdc00147a11185771b6a35f4f147c08debc21ed`, retains12conversion values, four neighbor bounds and18q-setter inputs. The bounded selection assessment used retained map/input metadata and current canonical limitations; no oldraw/source behavior or original computation was replayed. The setter factory/registry and partial initialization remain outside the admitted standing model. WMK-019's computed-but-unrun M0/48,000 input is a lone value, not a complete legal finite class, so no one-case probe is selected.
+
+Actual rate/cache/rebuild/public joins stay unresolved. No new mapped whole unrun standing class was found; this does not establish global infeasibility or authorize construction/initialization replay, a source frontier or newmodel/tooling. All requirements/cases/releases/grades/sites remain unchanged. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.

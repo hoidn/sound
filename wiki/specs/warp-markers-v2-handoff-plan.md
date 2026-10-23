@@ -2,7 +2,7 @@
 id: PLAN-WARP-MARKERS-V2-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -20,7 +20,12 @@ The narrowings:
 
 All 15 extracted-execution labels match the raw runs, and a fresh re-run reproduced them bit for bit.
 
-For the spec author: revision 4 still claims that WMK-019 ran by extracted execution, and REQ-009's not-warped clause cannot be tested outside playback.
+Draft reconciliation, 2026-10-19: [revision 5](warp-markers.md#revision-and-handoff)
+applies F1 to F6 and RVW2-02: WMK-019 is computed by confirmed rules; WMK-039
+adds the below-half discriminator; the shadow formula is evidence without an
+observable acceptance case; A1 is settled by the structure trace; duplicate marker
+Ids inherit the conditional shared rule; REQ-009 needs playback acceptance.
+No released byte or expectation changed.
 
 ## Decision and boundary
 
@@ -41,8 +46,8 @@ no longer isolate their rule. Released payloads are immutable. v2 carries every
 v1 case record unchanged on fixtures rebuilt on the minimal set T11-MIN. It also
 adds the clauses that revisions 2 to 4 settled: the scripting conversion values
 (X), the beat bounds and grid rounding as binary64 sequences (X), the REQ-015
-edges of revision 2, and the statement that a session clip that is not warped
-ignores its markers (revision 4). Per-mode warped playback stays out.
+edges of revision 2, while the proposed statement that a session clip that is not warped ignores its
+markers (revision 4) was excluded by review RVW2-02. Per-mode warped playback stays out.
 
 Under [ADR 0002](../decisions/adr-0002-static-first-analysis.md#specification-and-verification-boundary)
 and [ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code)
@@ -54,8 +59,8 @@ when they come from the X-confirmed sequences on inputs X2 did not run. No
 reference application or candidate has run, and no compatibility is claimed.
 
 This page is the analyst-side plan and traceability record, not an
-implementation input. The candidate is **unreviewed and unpublished**. Nothing
-has been written into `handoff/`.
+implementation input. The staging and review-gate sections below record the pre-review candidate; the
+released outcome above governs current status.
 
 ## Scope
 
@@ -280,7 +285,7 @@ planning, harness, instruction, engine-name and library-call patterns to v1's.
 Not checked: any reference or candidate execution, the arm64 build at run time,
 and any proof of I1 to I10 or of the T1.1 structure assumptions.
 
-## Review gates still required
+## Pre-review gates (historical)
 
 1. **Scope review** in a separate context. Read each of the 26 new cases
    against its locator, and rule on:
@@ -310,8 +315,9 @@ and any proof of I1 to I10 or of the T1.1 structure assumptions.
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate: 64 cases (38 carried, 26 new).
-It covers partial REQ-WARP-MARKERS-001 to 004, 007, 008, 010 to 013, 015 and
-016, and REQ-009 as one ungraded statement. 005, 006 and 014 are unreleased. It is
-not published, and warp-markers-v1 remains the current, defective release for
-SPEC-WARP-MARKERS. This page has no index entry yet; the coordinator adds it.
+Released 2026-10-18 as warp-markers-v2 with 63 cases after withdrawal of device
+case 018. It is current and supersedes v1. Partial REQ-001, 002, 003, 007, 008,
+010 to 013, 015 and 016 are released; 004 to 006, 009 and 014 remain unreleased.
+Device/sample-part placement, playback and unobservable shadow creation remain
+excluded. Draft revision 5 reconciles the review and later settled A1; it does not
+retroactively widen the release.

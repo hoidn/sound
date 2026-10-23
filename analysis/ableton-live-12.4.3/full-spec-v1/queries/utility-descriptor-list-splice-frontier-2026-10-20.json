@@ -1,0 +1,80 @@
+{
+  "id": "UTILITY-DESCRIPTOR-LIST-SPLICE-FRONTIER-2026-10-20",
+  "retained_utc": "2026-10-20T10:29:17.753221+00:00",
+  "author": "Root",
+  "status": "Unreviewed source-local list-splice interpretation; no public behavior or runtime admission",
+  "selection": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/utility-descriptor-list-helper-root-selection.json",
+    "bytes": 1064,
+    "sha256": "289cf546fb0f746e2e4703351a668692e84c6e49fb2069ad2d848cf3ae6ecfb5"
+  },
+  "source_record": {
+    "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-00784.jsonl",
+    "line": 6,
+    "raw_row_sha256": "066e492def2379ff63ef2ec48a42bd6655c7e9700fd7a4ee8b7e460c90856c77",
+    "record": {
+      "entry": "0x10144a040",
+      "name": "FUN_10144a040",
+      "thunk": false,
+      "body_bytes": 60,
+      "body_ranges": [
+        [
+          "0x10144a040",
+          "0x10144a07b"
+        ]
+      ],
+      "signature": "undefined FUN_10144a040()",
+      "state": "exported",
+      "error": null,
+      "timed_out": false,
+      "partial_code": false,
+      "warnings": [],
+      "ms": 1,
+      "code_bytes": 535,
+      "code_sha256": "fb5baff5b28b3b3a60d0fd49535d78a4458fcc92c775e366fbeea788424ddd8c",
+      "code": "\nvoid FUN_10144a040(long *param_1,long param_2)\n\n{\n  long lVar1;\n  long lVar2;\n  undefined8 uVar3;\n  \n  lVar1 = *param_1;\n  lVar2 = *(long *)(param_1[1] + 0x18);\n  uVar3 = *(undefined8 *)(lVar2 + 0x20);\n  *(long *)(param_2 + 0x18) = lVar2;\n  *(undefined8 *)(param_2 + 0x20) = uVar3;\n  *(long *)(lVar2 + 0x20) = param_2;\n  *(long *)(*(long *)(param_2 + 0x20) + 0x18) = param_2;\n  *(int *)(param_2 + 8) = *(int *)(param_2 + 8) + 1;\n  *(long *)(param_2 + 0x28) = lVar1;\n  *(int *)(lVar1 + 0x30) = *(int *)(lVar1 + 0x30) + 1;\n  return;\n}\n\n"
+    }
+  },
+  "caller": {
+    "identity": {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-descriptor-preprocessing-frontier-2026-10-20.json",
+      "bytes": 13811,
+      "sha256": "c55fb3b7c9d534ebe2c4bc403feb9cf915dcc2287b5d4cb2733469d7effa48c4"
+    },
+    "pointer": "/full_selected_record/record/code",
+    "entry": "0x10147f568",
+    "actual_operands": "two consecutive recoveredlocals=M+50,M+50; param2=freshallocation processedbyunread101480d60"
+  },
+  "literal_operations": {
+    "list_owner": "A=*param1",
+    "existing_node": "H=*(param1[1]+18)",
+    "previous_node": "P=*(H+20)",
+    "stores": [
+      "new+18=H",
+      "new+20=P",
+      "H+20=new",
+      "P+18=new",
+      "int(new+8) increment",
+      "new+28=A",
+      "int(A+30) increment"
+    ],
+    "callee_calls": 0
+  },
+  "conditional_inference": "With correctly recovered consecutive pair(A,A), A=M+50, valid well-formed doubly linkedlist and fresh nonaliasing newnode, these writes splice newnode immediately before oldhead H. Existing nodes remain traversable in forward/backward list order; no field+38/+40 descriptor offset/key or existingnodepayload is written. Emptylist sentinel is included under the same invariants. This is source reasoning, not a runtime or executed symbolic proof.",
+  "premises": [
+    "Actualcallerparameter correspondence and layout of two recoveredlocals hold.",
+    "Allocation/constructor returned a valid fresh node distinct from sentinel/existingnodes; sourceconstructor101480d60 remains unread.",
+    "No concurrent/intervening mutations; valid8byte pointers and4byte int storage; counters do not overflow.",
+    "The self-recursive preprocessingcall and its reachable receiver remain unresolved."
+  ],
+  "not_closed": [
+    "Which actualnode was created bympMute/350 declaration andwhether itskeymatcheslookup.",
+    "What101480d60copies/mutates beforeinsert; actualconstructor/base/recursiveeffects.",
+    "Actualregistry/list/runtimeinvocation, wrapperD350/childD358/unit/processor/publicdelivery."
+  ],
+  "limits": "No inferred universal emptykey/error/ownership policy. No furthercallee/imageword/native/sourcefunction or mathematicalaudio execution; newcompleteCbody535B only.",
+  "source_chunk_unchanged_from_pre_read_selection": true,
+  "new_grade_or_case": 0,
+  "A1_or_Utility_application_grade": null,
+  "independent_review_pending": true
+}

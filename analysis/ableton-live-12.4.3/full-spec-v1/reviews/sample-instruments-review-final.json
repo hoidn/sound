@@ -1,0 +1,71 @@
+{
+  "id": "REVIEW-SAMPLE-INSTRUMENTS-R2-FINAL",
+  "reviewer": "independent analyst /root/recording_comping_spec",
+  "date_utc": "2026-10-19T20:45:23.704638+00:00",
+  "disposition": "approved-as-three-partial-analyst-drafts-with-reviewed-corrections",
+  "scope": "Focused re-review of all three r1 findings, corrected canonical text and case setups/locators, 35 r2 payloads, original root seal and 28 archived r1 payloads/four snapshots, unchanged source/fixture bytes and 61-requirement/88-case inventory. Original r1 source/fixture analysis remains applicable to byte-identical material. Not a handoff release or compatibility review.",
+  "reviewed_inputs": {
+    "wiki/specs/device-simpler.md": "aed66c7ff543cf419249c9f7cf3b3e6fc6842d41af5a214f782e3ac778e1723d",
+    "wiki/specs/device-sampler.md": "3d2b568837671eba4777bbe0346a6ee91b70359030ad294ae255990e33ae063d",
+    "wiki/specs/device-impulse.md": "62d7f78a03f3e8fb956baaef4a3a5355f255fee07247d389eb3cf3a9479081c9",
+    "wiki/research/sample-instruments.md": "2ae8e28df112a9f42fe6ac973924f0d47f38a7fc10aacf3785b246bd35a47324",
+    "analysis/ableton-live-12.4.3/full-spec-v1/sample-instruments/manifest-author-r2.json": "391bc843dc9abb2b1ad120db7fe38d0c7060dcc4a396c3e1133a389de0e836f9",
+    "analysis/ableton-live-12.4.3/full-spec-v1/reviews/sample-instruments-review.json": "1a50edad99e54119271ea7d7c93d81ea86b80ede97a4961a6f08d65d5926858c"
+  },
+  "findings_resolution": [
+    {
+      "id": "SI-REVIEW-001",
+      "disposition": "resolved",
+      "evidence": "REQ-SAMPLER-009 now limits Sample End termination to no enabled loop and explicitly retains sustain/release loops as controlling exceptions. Canonical text and requirements.json agree. The unlooped-end subclause is explicitly outside this finite case selection with a future bounded case required; existing loop cases and counts are preserved."
+    },
+    {
+      "id": "SI-REVIEW-002",
+      "disposition": "resolved",
+      "evidence": "SIMPLER-022 explicitly enables per-voice Sine 1-Hz LFO with nonzero Volume destination, held source and sustain, then requires discernible note-relative tremolo phase under Retrigger-on before testing Offset with Retrigger-off during continuing tremolo. SAMPLER-025 enables the main Clean low-pass filter at 440 Hz on root-pitch 880-Hz layer-c input, enables its envelope, requires a discernible positive-Amount attack comparison, then repeats at Amount=0. These are explicit exceptions to neutral fixture disabling. Both cases contain mandatory positive_control metadata and record unknown when the active path or observation cannot be resolved; no numerical DSP or phase threshold is invented."
+    },
+    {
+      "id": "SI-REVIEW-003",
+      "disposition": "resolved",
+      "evidence": "Requirements and cases now have exact evidence_anchors and source/section/HTML-line locators. The five named case groups link their actual sibling support: Simpler007 context-menu Warp/Fade restriction, Simpler023 Classic sample-Gain paragraph, Sampler030 title-menu commands, Impulse009 filter+saturation and Impulse012 per-slot+global controls. Corresponding requirements retain both sections. Relative sample-Gain/filter order is explicitly unknown. All locator lines/sections match the unchanged retained heading map; UI/evidence naming imposes no implementation architecture."
+    }
+  ],
+  "checks": {
+    "current_manifest_sha256": "391bc843dc9abb2b1ad120db7fe38d0c7060dcc4a396c3e1133a389de0e836f9",
+    "current_payloads": 35,
+    "protected_root_r1_and_archived_manifest_sha256": "277da7d53e395b45bf9d58ea803636d79002e20101163ec244f20a9ce100cf4b",
+    "protected_r1_payloads": 28,
+    "unchanged_source_fixture_and_r1_snapshot_files": 22,
+    "current_canonical_snapshots": 4,
+    "requirements": 61,
+    "requirement_provenance": {
+      "D": 46,
+      "U": 15
+    },
+    "cases": 88,
+    "case_provenance": {
+      "D": 72,
+      "U": 16
+    },
+    "all_case_exact_target_U_and_unexecuted": true,
+    "mandatory_active_path_and_positive_control_unknown_fallback": "verified",
+    "exact_named_case_and_requirement_sibling_locators": "verified",
+    "all_JSON_locator_sections_lines_and_anchors": "match original retained heading map",
+    "case_table_JSON_snapshot_links_whitespace": "pass"
+  },
+  "remaining_limitations": [
+    "All 88 application cases remain unexecuted with exact 12.4.3 applicability U; 46 documentary requirements and 72 documentary case predicates are not target behavior passes.",
+    "Round Robin may postdate the target; no target availability, reset/unequal-zone/single-layer behavior is established. Impulse middle six trigger notes remain U.",
+    "Positive controls establish eligibility of a future observation; they are not measured target results. Source identity, phase or envelope effects that cannot be distinguished remain unknown.",
+    "DSP, timing, MPE/tuning, full routing, random law, persistence, undo, malformed/error/cancel/teardown and unselected subclauses remain required gaps. No device profile or handoff is complete."
+  ],
+  "execution_limits": {
+    "ran_author_capture_or_validator": false,
+    "ran_Live_or_original_code": false,
+    "ran_candidate": false,
+    "figures_inspected": false,
+    "installed_tools": false,
+    "modified_author_shared_source_or_previous_review": false,
+    "wrote_only_requested_final_review": true,
+    "compatibility_pass": false
+  }
+}

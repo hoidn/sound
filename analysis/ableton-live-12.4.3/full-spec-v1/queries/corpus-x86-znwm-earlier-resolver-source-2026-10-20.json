@@ -1,0 +1,95 @@
+{
+  "utc": "2026-10-20T14:35:59.565426+00:00",
+  "author": "Root",
+  "status": "PARTIAL_OWN_SOURCE_ONLY_PENDING_INDEPENDENT_REVIEW",
+  "selection": "Root selected exact complete named earlier-resolver libstdcxx only, ownsource; countfirst20 and2000Ccap; not selected original/library/runtime expansion.",
+  "source": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_bind.c",
+    "bytes": 9881,
+    "sha256": "0884c8f03174db209afa4dd3853b42de2d90035e0c1655effa7c5d04367617f2"
+  },
+  "retained_context": [
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-x86-znwm-own-harness-source-2026-10-20.json",
+      "bytes": 20506,
+      "sha256": "196b03e1b3d900f1c4052c55411bc4d4e87aab740c0fe5d1bbccd900fd6e970c"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-znwm-own-harness-source-review.json",
+      "bytes": 6836,
+      "sha256": "0d0dbd8095c7812defa9d4a433c8d51a31661476894463e4c9318fa050897b26"
+    }
+  ],
+  "count_first": {
+    "identifier": "libstdcxx",
+    "matched_physical_lines": [
+      139,
+      159
+    ],
+    "count": 2,
+    "cap": 20
+  },
+  "selected_source": {
+    "lines_1based": [
+      139,
+      153
+    ],
+    "utf8_bytes": 691,
+    "text": "static void *libstdcxx(const char *sym, int *is_data)\n{\n    static const char *code[] = { \"___dynamic_cast\", NULL };\n    static const char *data[] = { \"__ZTVN10__cxxabiv117__class_type_infoE\", \"__ZTVN10__cxxabiv120__si_class_type_infoE\",\n                                  \"__ZTVN10__cxxabiv121__vmi_class_type_infoE\", NULL };\n    static void *h;\n    for (int d = 0; d < 2; d++)\n        for (const char **n = d ? data : code; *n; n++)\n            if (!strcmp(sym, *n)) {\n                if (!h && !(h = dlopen(\"libstdc++.so.6\", RTLD_NOW))) { say(\"xdev: dlopen libstdc++\\n\"); _exit(2); }\n                *is_data = d;\n                return dlsym(h, sym + 1);\n            }\n    return NULL;\n}\n"
+  },
+  "selected_name": "__Znwm",
+  "function_literal_names": [
+    "___dynamic_cast",
+    "__ZTVN10__cxxabiv117__class_type_infoE",
+    "__ZTVN10__cxxabiv120__si_class_type_infoE",
+    "__ZTVN10__cxxabiv121__vmi_class_type_infoE"
+  ],
+  "conditional_fact": "Under this source compilation, valid symbol string exactly __Znwm and ordinary strcmp equality semantics, no one of the four literal names matches. The nested loops fall through to returnNULL. dlopen/dlsym and *is_data=d are only in the matched branch, not reached for this name under those premises.",
+  "effect_on_prior_frontier": "Earlier libstdcxx override was an open source premise in the preceding query; this completehelper removes it for exactly __Znwm under the explicit source/C assumptions. It does not prove source-to-currentbinary correspondence or actual loader dispatch.",
+  "limits": [
+    "No __Znam/othername conclusion adopted here. No init_rune/say/strcmp/dlopen/dlsym/library implementation follow/run.",
+    "No compiler/build/ELF/native/decoder/loader/original/observer/numerical execution.",
+    "Actual current executable/source provenance, importdispatch, nativeABI, allocation success/usableextent/lifetime/fieldbounds/runtimeinstance still U.",
+    "All174+2modal omissions and R7/v5 behavior coverage unchanged; no newcase/grade."
+  ],
+  "preservation": {
+    "paths": 3,
+    "before": [
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_bind.c",
+        "bytes": 9881,
+        "sha256": "0884c8f03174db209afa4dd3853b42de2d90035e0c1655effa7c5d04367617f2"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-x86-znwm-own-harness-source-2026-10-20.json",
+        "bytes": 20506,
+        "sha256": "196b03e1b3d900f1c4052c55411bc4d4e87aab740c0fe5d1bbccd900fd6e970c"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-znwm-own-harness-source-review.json",
+        "bytes": 6836,
+        "sha256": "0d0dbd8095c7812defa9d4a433c8d51a31661476894463e4c9318fa050897b26"
+      }
+    ],
+    "after": [
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_bind.c",
+        "bytes": 9881,
+        "sha256": "0884c8f03174db209afa4dd3853b42de2d90035e0c1655effa7c5d04367617f2"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-x86-znwm-own-harness-source-2026-10-20.json",
+        "bytes": 20506,
+        "sha256": "196b03e1b3d900f1c4052c55411bc4d4e87aab740c0fe5d1bbccd900fd6e970c"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-znwm-own-harness-source-review.json",
+        "bytes": 6836,
+        "sha256": "0d0dbd8095c7812defa9d4a433c8d51a31661476894463e4c9318fa050897b26"
+      }
+    ],
+    "scope": "Watch begins at formalization after initial selectedsource display, not retroactive whole-session."
+  },
+  "new_cases_or_grades": 0,
+  "complete": false
+}

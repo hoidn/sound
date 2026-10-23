@@ -1,0 +1,79 @@
+{
+  "status": "analyst probe recipes only; not rendered reference evidence",
+  "signals": {
+    "SIG-MULTI": {
+      "sample_rate_hz": 48000,
+      "duration_s": 4,
+      "definition": "Both channels identical sum of sine tones 100, 1000 and 6000 Hz, each peak amplitude 0.1; initial phase 0."
+    },
+    "SIG-STEREO": {
+      "sample_rate_hz": 48000,
+      "duration_s": 4,
+      "definition": "Left sine 440 Hz peak 0.25, right sine 3000 Hz peak 0.125; initial phase 0."
+    },
+    "SIG-440": {
+      "sample_rate_hz": 48000,
+      "duration_s": 4,
+      "definition": "Both channels sine 440 Hz peak 0.25; phase 0."
+    },
+    "SIG-PULSE": {
+      "sample_rate_hz": 48000,
+      "duration_s": 4,
+      "definition": "Both channels sine 1000 Hz peak 0.25 gated on for first 100 ms of each second, otherwise zero; no edge ramp."
+    }
+  },
+  "modulation_fixture_status": "Proposed setups and required future observations only; none executed. Requested values are not proved control domains/defaults. An unavailable setting or missing baseline yields U, never pass.",
+  "probe_fixtures": {
+    "AF-AUDIO": {
+      "input": "SIG-MULTI unless the case replaces it with a named nonzero stimulus; source routed to the tested device and source/device/track enabled and unmuted.",
+      "requested_controls": {
+        "filter": "Low-pass, 12 dB choice",
+        "Freq": "1000 Hz",
+        "Res": "displayed zero/minimum",
+        "Circuit": "SVF",
+        "Drive": "0.0%",
+        "Clip": "off",
+        "Dry/Wet": "fully wet accepted endpoint",
+        "Output": "accepted nonmuting setting; request displayed 0 dB only if that unit is offered",
+        "LFO Amt": "0",
+        "Envelope": "0",
+        "External": "off",
+        "SC Filter": "off",
+        "Sidechain Listen": "off"
+      },
+      "preflight": "Confirm every requested control value is accepted; record exact accepted labels/values, source routing, source amplitude and output meter/spectrum baseline. Confirm nonzero filtered output and a manual Freq move changes output timbre/spectrum; restore 1000 Hz. If unavailable, clamped or indeterminate, mark probe U and stop its signal comparison.",
+      "override_rule": "Case-specific filter/stimulus/control changes replace only named settings. Keep all other controls fixed and re-establish nonzero output/response after an override. Never infer neutral whole-device transfer."
+    },
+    "AF-LFO": {
+      "inherits": "AF-AUDIO",
+      "input": "SIG-MULTI, continuous stereo stream; Set tempo 120 BPM; transport running; record transport position/clock origin without asserting a reset law.",
+      "requested_controls": {
+        "LFO Wave": "Sine",
+        "LFO time mode": "Hz",
+        "LFO Rate": "1 Hz",
+        "LFO Amt": "request +50% and require accepted nonzero setting; record exact displayed units/value",
+        "Envelope": "0",
+        "Stereo Mode": "Phase",
+        "Phase": "0 degrees",
+        "Phase Offset": "0 degrees",
+        "LFO quantization": "inactive accepted chooser state, record label"
+      },
+      "active_baseline": "With Envelope=0, compare LFO Amt=0 with the accepted nonzero tested Amt, holding all other controls fixed. Independently observe repeating movement of the displayed filter curves AND changing output-spectrum shape/audible timbre, not just an LFO indicator. Keep accepted Amt nonzero thereafter; record response and unclamped cutoff excursion. Absent/inaudible/indeterminate response is U and cannot pass a no-effect case.",
+      "mode_preflight": "After each Wave/time/quantization/stereo-mode change, record the accepted setting and reconfirm observable modulation with the tested LFO still active and Envelope=0. Numeric waveform, phase alignment, seed and audio thresholds remain U."
+    },
+    "AF-ENV": {
+      "inherits": "AF-AUDIO",
+      "input": "SIG-PULSE (1000 Hz, peak 0.25, 100 ms on each second); continuous loop/stream at Set tempo 120 BPM; internal detector unless case names external source.",
+      "requested_controls": {
+        "LFO Amt": "0",
+        "Envelope": "request +50% and require accepted nonzero setting; record displayed units/value",
+        "Attack": "request 250 ms if unit offered; otherwise record accepted attack value and demonstrate attack outlasts 100 ms pulse for Hold case",
+        "Release": "request 500 ms if unit offered, record accepted displayed units/value",
+        "Hold": "off",
+        "Envelope S&H": "off"
+      },
+      "active_baseline": "With LFO Amt=0, compare Envelope=0 with accepted nonzero Envelope under repeated pulses. Independently observe envelope-driven filter-curve movement AND corresponding changing output-spectrum shape/audible timbre, not merely an envelope indicator. Restore tested Envelope nonzero and keep nonmuted fully wet output. If unavailable, clamped or response absent/indeterminate, mark U and do not grade any no-effect comparison.",
+      "mode_preflight": "Record accepted numeric Attack/Release values and same stimulus/routing for comparison pairs. Reconfirm detectable envelope response after source/SC-filter/quantization changes. Exact detector threshold, units conversion, curves and timing tolerances remain U."
+    }
+  }
+}

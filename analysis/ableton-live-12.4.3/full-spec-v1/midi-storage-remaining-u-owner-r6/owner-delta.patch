@@ -1,0 +1,161 @@
+--- a/wiki/specs/midi-note-storage.md
++++ b/wiki/specs/midi-note-storage.md
+@@ -2,7 +2,7 @@
+ id: SPEC-MIDI-NOTE-STORAGE
+ type: spec
+ status: draft
+-revision: 5
++revision: 6
+ updated: 2026-10-20
+ access: analysis
+ target: Ableton Live 12 Suite 12.4.3 / macOS
+@@ -145,6 +145,12 @@
+   - a `-` sign (see Exclusions);
+   - any other spelling of `MidiKey`, `CC`, a list's `NoteId` or an `Id`, such as spaces, a
+     `+`, leading zeros, or a `-` outside `CC`.
++- **S (conditional local reader).** For the existing n3 `NoteId=" 7 "` input of
++  MNS-011, the selected Int64 reader refuses the value when invoked on that field's
++  stored text. This is the bounded local comparison MNS-076, under the current
++  field/parser and ordinary-reader premises (A3 where applicable). It does not settle
++  MNS-011's public-load outcome, catch, remaining state or saved result. The U spelling
++  list above retains that broader scope; no additional spelling case is adopted.
+ 
+ ### REQ-MIDI-NOTE-STORAGE-003 — optional note attributes
+ 
+@@ -306,6 +312,13 @@
+   - whether an empty KeyTrack is kept or removed on load. The reference removes empty
+     KeyTracks under a condition that was not traced. 12.4d1 saves contain 267 empty
+     KeyTracks.
++- **S (conditional local reader).** In the current registered KeyTrack-list class and
++  ordinary generic-list reader context, two KeyTracks whose parsed `Id` is 5 cause a
++  duplicate-id read refusal before the duplicate item is constructed or read. This
++  reuses MNS-038's input in the separate local comparison MNS-077; A3 remains the
++  integer-field premise. It establishes neither a public whole-Set/clip rejection nor
++  Id meaning, saved Id preservation, rollback or the empty-KeyTrack condition. Those
++  broader questions and the original MNS-038 expectation remain U.
+ 
+ ### REQ-MIDI-NOTE-STORAGE-013 — per-note expression structure
+ 
+@@ -351,8 +364,11 @@
+   reference adjusts such lists in a way that was not traced, and may remove or re-sample
+   events outside the note. Whether such a list ends up empty, and so removed, follows from
+   that adjustment. Shipped lists often start at offset 0, so this gap matters. No reference
+-  observation is available (ADR 0003). A static trace of the adjustment call (appendix) is
+-  the remaining route.
++  observation is available (ADR 0003). The reviewed retained-source route now narrows
++  the conditional adapter receiver, its boundary-call thunk and the following body
++  (appendix). The downstream event-array operations and transaction effects remain
++  untraced. All four MNS-053 variants remain U; this frontier refinement supplies no
++  resulting event list or new resolved indirect-site credit.
+ 
+ ### REQ-MIDI-NOTE-STORAGE-015 — probability groups
+ 
+@@ -471,6 +487,22 @@
+ `Id` values (REQ-012), the content of `NoteProbabilityGroups` and the group generator's
+ `NextId` (REQ-015), and the order of per-note lists and of an event's attributes (REQ-013).
+ Assumption A2 applies to every saved comparison.
++
++**Separate local comparisons (MNS-076/077).** Supply the decoded F0 `Notes` domain
++input with the exact edits already authored in MNS-011/038. Compare only a
++`local_reader_outcome` of `refused` for the conditional clause named in the row.
++This field is a project comparison projection of the decoded Notes contract; it
++requires no separate public validation API, native call or implementation pipeline.
++An independent implementation may validate at any suitable point. No fixture is
++created by this revision, and no public Open/Save procedure is run. These two rows
++assess neither user-visible errors, whole-Set/clip rejection, loaded state, rollback
++nor saved text. They do not change the original public U cases.
++
++The current registered-class and ordinary-reader associations remain conditional;
++A3 remains explicit. A1 concerns the post-read checks and supplies no public catch
++or lifecycle proof for these read-phase refusals. A2 remains the separate same-state
++Save assumption and supplies no saved result here. The old rows and released v3
++retain their existing scopes.
+ 
+ **Fragment F0.** Its notes are called n1, n2 (key 36) and n3 (key 38):
+ 
+@@ -624,6 +656,8 @@
+ | MNS-073 | 002, 004, 005, 016 | B | n1 `OffVelocity="-0"`, n2 `Probability="-0"` | Saved n1 `OffVelocity="-0"`; saved n2 `Probability="-0"` | B0+F0 |
+ | MNS-074 | 002, 005, 006, 016 | B | n1 `Velocity="-0"`, n2 `Duration="-0"`, n3 `Time="-0"` | Saved n1 `Velocity="1"`, n2 `Duration="0"`, n3 `Time="0"` | B0+F0 |
+ | MNS-075 | 002, 005, 016 | B | n1 `Velocity="127.00001"`, n2 `Velocity="0.99999994"` | Saved Velocity `127`, `1` | B0+F0 |
++| MNS-076 | 002 | N | n3 `NoteId=" 7 "` (same edit as MNS-011; local comparison only) | Local reader refused (S, conditional field/ordinary-reader premises); public load and saved state U | F0 domain input; no new fixture |
++| MNS-077 | 012 | N | Both KeyTracks `Id="5"` (same edit as MNS-038; local comparison only) | Local reader refused (S, conditional class/ordinary-reader premises, A3); public load and saved Ids U | F0 domain input; no new fixture |
+ 
+ Cases marked unresolved or blocked must not be graded as passes. The omitted case kinds:
+ 
+@@ -768,6 +802,50 @@
+ - **MN-21:** the cases are blocked by the group shape.
+ - **MN-22** (version history) is not a requirement, because older documents are excluded.
+ 
++### Revision 6 retained-source reconciliation
++
++The [approved remaining-U source/proposal packet](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-storage-remaining-u-v1/README.md),
++manifest SHA256 `6b5b0f4a9a7ba99af6d23ea546bdf496a4bd86bdda990cc9e6589eac441a83f0`,
++and its [independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-storage-remaining-u-v1-review.json),
++SHA256 `bd3052e837d596467e221313f46190caba54d55d30b7230406b40b6d57ac24c8`,
++supply the exact target/version/record/body/chunk/span identities in
++[source-locators.json](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-storage-remaining-u-v1/source-locators.json).
++The earlier evidence table records its as-of r5 frontier; this subsection qualifies
++002/012/014 without rewriting retained analysis or the immutable family map.
++
++- **002 / MNS-076.** Retained Int64 wrapper `0x101533e14` and converter
++  `0x101524d8c` require consumption of the selected span. For the exact stored
++  space-7-space input, that span retains trailing space, supporting local refusal.
++  No translated parser or reference function was executed; field/reader binding and
++  public catch/state remain qualified.
++- **012 / MNS-077.** `0x1028f4048` constructs the wrapper/list at owner +0x428/+0x430
++  through `0x10156b17c`; descriptor `0x1028ab68c` and AKeyTrack registry `0x1028ab80c`
++  reference `DAT_106e58710`. Inherited conditional ARemoteableList vptr
++  `0x10667ec98`, slot +0x140, reaches `0x10156d7d8` then generic loader
++  `0x1014674b4`. Its parsed-Id set check raises `Non-unique list ids` before
++  constructing/reading the duplicate item. This is distinct from REQ-014's
++  duplicate `(NoteId, CC)` rule. The writer's held Id and empty-list flag
++  `DAT_106f54e20`+0x350 do not settle final saved identity or flag ownership.
++- **014 / MNS-053.** Retained caller `0x10292b9ec` creates/initializes the adapter
++  through `0x1025c442c` → `0x1025c4484` and `0x1025c4708`. Conditional
++  APerNoteAutomationAdapter vptr `0x1067decd8`, slot +0x308, reaches the four-byte
++  thunk `0x1025c6068` → 312-byte body `0x1025c606c`. Expanded thunk C is not a
++  second implementation. The body dispatches +0x2e8/+0x398; conditional targets
++  `0x10256314c`/`0x1025654e8`, event-array callbacks and transaction commit effects
++  remain untraced. Native sites `0x1025c6110`/`0x1025c6148` remain unresolved;
++  C-order association supplies zero new indirect-resolution credit.
++
++The [r6 owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/midi-storage-remaining-u-owner-r6/README.md)
++records all eight public U rows and three group gaps as one reconciliation,
++with exact predecessor hashes and a reversible minimal delta. MNS-024 retention/text,
++034 negative-counter exclusion, 035 eventual order and 060 public catch/state remain
++unchanged. MNS-037 has zero required safe-refusal outcomes. All four 053 variants,
++final group Save, later missing-note effects and whole-load group-counter ordering
++remain U. A local note-counter raise is not group-counter repair. No result is
++inferred for unsupported group enum values or playback meanings. All X clauses
++and the broader exclusions remain unchanged. Source approval is separate from
++pending independent owner review; no new original/candidate run or release.
++
+ ## Revision and handoff
+ 
+ | Revision | Date | Change |
+@@ -777,6 +855,7 @@
+ | 3 | 2026-10-18 | Extracted execution (packet X2, evidence label X added). REQ-005, 006 and 016 examples become X with an S path; the REQ-006 formula is confirmed bit for bit, including values next to halfway points, where it differs from exact rounding. Negative zero settled: REQ-006's and REQ-016's U clauses become X (`-0`), and REQ-005 states −0 for each value. REQ-011 stays excluded; its static route was traced in both slices and no range guard exists. Errors found: none in the clauses; the x86 pseudocode's NaN reading is wrong, as revision 1 found for arm64. MNS-023 becomes gradable (`-0`); MNS-072 to 075 added. 17 requirements: 5 without unknown parts (003, 004, 005, 008, 016), 11 with D, S or X clauses and unknown parts, 1 unknown and excluded (011). 75 unexecuted cases: 61 gradable (17 backed by X, 44 static or documented; MNS-036 and MNS-070 for the outcome only), 6 blocked by the group shape, 8 unresolved |
+ | 4 | 2026-10-19 | applies midi-note-storage-v2 F1 to F3 and RVN2-01 to 03, 07. REQ-002 states the negative-zero reading for the five covered note attributes; REQ-006 excepts negative zero from on-grid identity; REQ-007 names positive-zero duration and retains normalization. MNS-072 to 075 list REQ-002, and MNS-073 also REQ-004. Counts and expectations unchanged. |
+ | 5 | 2026-10-20 | One six-case probability-group refinement from the independently reviewed conditional source batch. REQ-015 and Fragment G now state GroupId child/NoteId attribute form, distinct list Id and 0/1 label association; all six existing group setups become concrete. Four refusals and two admission-only outcomes no longer depend on unknown shape. All 16 other requirement bodies and 69 other case rows are unchanged; 17 IDs/75 cases retained. Final group save, later missing-note effects, whole-load counter repair and unsupported enum/playback meanings remain U. No original/candidate execution or new release. Owner refinement pending independent review. |
++| 6 | 2026-10-20 | One whole remaining-U reconciliation after approved source review: conditional local clauses for 002/012 and reader-only MNS-076/077 reuse 011/038 inputs; 014 narrows its source frontier only. All 75 prior rows, eight public U rows and 14 other requirement bodies are byte-identical. All 17 requirement IDs retained; 77 draft case IDs. Four expression variants/three group gaps/unsafe-key exclusion remain. No fixtures, original/candidate execution, public result, new release or whole-family denominator. Independent owner review pending. |
+ 
+ Before the 2026-10-18 review, a first release candidate could
+ contain the gradable cases of REQ-002 to 009, REQ-014 and REQ-016, under assumptions A1
+@@ -826,3 +905,17 @@
+ this dated release disposition governs. No original/candidate execution,
+ compatibility grade or new public load/save/later-effect/counter-repair result.
+ All 75 draft IDs and the historical r4 family-map inventory remain unchanged.
++
++
++## Current r6 proposal — 2026-10-20
++
++The [owner reconciliation packet](../../analysis/ableton-live-12.4.3/full-spec-v1/midi-storage-remaining-u-owner-r6/README.md)
++is pending independent owner review. It adds only the two separately scoped local
++reader refusals MNS-076/077 and the qualified expression source frontier. All 75 old
++case rows, including all 8 public U rows, and 14 other requirement bodies are preserved
++exactly. There are 77 draft case IDs; this is not a whole-family outcome denominator
++or compatibility fraction. Earlier r5/current-v3 count statements are as-of history.
++MIDI note storage v3 remains the current immutable 78-object partial release; no
++r6 release or fixture staging is selected. Local refusal is not proof of the
++public catch, displayed error, whole-Set/clip rejection, rollback or saved state.
++The source review and this owner proposal grant no application or candidate pass.

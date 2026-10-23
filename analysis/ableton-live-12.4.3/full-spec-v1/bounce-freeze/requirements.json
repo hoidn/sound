@@ -1,0 +1,488 @@
+[
+  {
+    "id": "REQ-BF-001",
+    "title": "Bounce Track in Place",
+    "contract": "Bounce Track in Place, from a track title-bar or clip context menu, creates a new audio track replacing the source track.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B006"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-002",
+    "title": "Bounce to New Track",
+    "contract": "Bounce to New Track, from a clip/selection context menu or Ctrl+B (Windows)/Cmd+B (macOS), creates new audio clips on a separate track and mutes the source clips or selection.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B007"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-003",
+    "title": "Individual-track signal stage",
+    "contract": "Individual-track bouncing is post-FX and pre-mixer: device processing is included in bounced audio, while volume, pan and sends are excluded from the audio commit. No numerical or automation-transfer law follows.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B008"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-004",
+    "title": "Copied mixer state and removed devices",
+    "contract": "Individual-track bouncing preserves the source mixer adjustments in the new track settings and does not retain the source processing devices on the bounced track.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B008"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-005",
+    "title": "Multiple Arrangement tracks",
+    "contract": "For a time selection spanning multiple Arrangement tracks, Bounce to New Track creates a separate audio track for every track on which a clip is selected. Empty-track handling beyond that predicate is unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B009"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-006",
+    "title": "In-place cross-view scope",
+    "contract": "Bounce Track in Place replaces the shared track in both views and bounces both its Arrangement and Session clips, even when invoked in one view.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B003",
+      "bounce:B010"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-007",
+    "title": "New-track cross-view scope",
+    "contract": "Bounce to New Track creates the shared new track in both views but bounces only selected clips in the invoking view; the documented Session example leaves the new Arrangement track empty.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B003",
+      "bounce:B010"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-008",
+    "title": "Bounce names and color",
+    "contract": "Created tracks/clips inherit the source name with (Bounce) appended; an unnamed source clip produces a clip named (Bounce). The new track inherits source track color. Collision, repeated-suffix and Unicode rules are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B011"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-009",
+    "title": "Bounce project location",
+    "contract": "Bounced audio files are stored in the Current Project under Samples/Processed/Bounce. Unsaved-project location, filenames, file count, format and subsequent collection are not established by this statement.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B012"
+    ],
+    "dependencies": [
+      "project-media-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-010",
+    "title": "Bounce Group in Place",
+    "contract": "Bounce Group in Place creates a new audio track replacing the whole Group Track. Entry points are the group title-bar context menu, Session group-slot context menu and Arrangement group main-lane context menu.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B014",
+      "bounce:B015"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-011",
+    "title": "Bounce Group to New Track",
+    "contract": "Bounce Group to New Track commits selected clips or a time selection within the group to a separate track and mutes the source clips/selection. Entry points are Session group-slot or Arrangement group main-lane context menu and Ctrl+B (Windows)/Cmd+B (macOS).",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B016"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-012",
+    "title": "Group signal stage",
+    "contract": "Group bouncing is post-mixer, unlike individual-track bouncing. The documented signal is processed from Main output, including effects and sends used inside the group while excluding processing on Main. This does not define arbitrary graph summing or a calibrated waveform.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B017"
+    ],
+    "dependencies": [
+      "routing-monitoring-latency.md",
+      "mix-graph.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-013",
+    "title": "Group external destinations",
+    "contract": "Tracks routed outside the Group Track are excluded from its bounce; this may produce silence. Their exclusion does not prove an all-silent group result when other active contributions remain.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B017"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-014",
+    "title": "Group return prerequisite",
+    "contract": "A return in the group signal path is included in the group bounce only if its final output reaches Main. Other routing combinations and feedback are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B017"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-015",
+    "title": "Paste uses current source state",
+    "contract": "Paste Bounced Audio bounces copied source material in its current state at paste time, allowing source changes and repeated paste without selecting/copying that source again.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B019"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-016",
+    "title": "Copy selection for bounced paste",
+    "contract": "The documented copy sources are clips within a single Session track, Arrangement clips or a time selection, and a time selection in a group main lane in Arrangement. Copy or Ctrl+C (Windows)/Cmd+C (macOS) supplies the copied source.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B020"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-017",
+    "title": "Bounced-paste destinations",
+    "contract": "Paste Bounced Audio is available through a track main-lane context menu or Ctrl+Alt+V (Windows)/Cmd+Opt+V (macOS) for an audio track, an empty MIDI track or a take lane. The copied material is bounced/pasted; a MIDI destination is converted to audio. Other destination eligibility is unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B020"
+    ],
+    "dependencies": [
+      "recording-comping.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-018",
+    "title": "Deleted copied source",
+    "contract": "Deleting the copied source material makes Paste Bounced Audio unavailable until new material is copied. Partial source deletion, undo and foreign clipboard behavior are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B021"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-019",
+    "title": "Freeze command entry points",
+    "contract": "Freeze Track is available through Edit and track/clip context menus; the documented shortcut for a selected track is Ctrl+Alt+Shift+F (Windows)/Cmd+Option+Shift+F (macOS).",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B003"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-020",
+    "title": "Freeze track eligibility",
+    "contract": "Freeze applies to tracks holding clips. Group, return and Main tracks cannot be frozen. Bounce Group is a separate operation, not an exception to Freeze eligibility. Other empty/frozen/recording-track cases remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B004",
+      "freeze12:B007"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-021",
+    "title": "Frozen clip playback",
+    "contract": "Freeze creates a sample file for each Session and Arrangement clip on the selected track, and those clips play frozen samples in place of recalculating device and clip processing. File layout is documentary context, not a prescribed implementation architecture or sample oracle.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B002"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-022",
+    "title": "Frozen settings and unfreeze",
+    "contract": "While frozen, device and clip settings cannot be adjusted in the frozen Device/Clip View areas. Unfreeze Track is available from Edit or the track context menu to permit settings changes again. The expressly listed editing exceptions below remain available.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B006",
+      "freeze12:B008"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-023",
+    "title": "Frozen launch and mixer controls",
+    "contract": "Frozen clips remain launchable and volume, pan and sends remain available. This documents control availability, not unchanged sound or playback scheduling.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B008"
+    ],
+    "dependencies": [
+      "clip-launch.md",
+      "mixer-values.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-024",
+    "title": "Frozen clip editing availability",
+    "contract": "Cut, copy, paste, duplicate and trim remain available on frozen clips. Their general edits and transaction semantics retain their existing owners.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B009"
+    ],
+    "dependencies": [
+      "arrangement-editing.md",
+      "clip-view-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-025",
+    "title": "Frozen mixer automation availability",
+    "contract": "Drawing/editing mixer automation and mixer clip envelopes remains available on frozen tracks. Envelope values, event scheduling and audio outcomes are separate contracts.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B010"
+    ],
+    "dependencies": [
+      "automation-envelopes.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-026",
+    "title": "Other frozen workflow availability",
+    "contract": "Frozen tracks permit consolidation, recording Session launches into Arrangement, and creating/moving/duplicating Session scenes. Only this frozen-state eligibility is owned here; each operation retains its existing semantics.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B011",
+      "freeze12:B012",
+      "freeze12:B013"
+    ],
+    "dependencies": [
+      "arrangement-editing.md",
+      "recording-comping.md",
+      "session-view-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-027",
+    "title": "Frozen MIDI to audio drag",
+    "contract": "Frozen MIDI clips can be dragged into audio tracks. Exact audio content, transferred envelopes, target placement and resulting source identity are unknown here.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B014"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-028",
+    "title": "Edits across freeze and unfreeze",
+    "contract": "With time-based effects, edits while frozen can sound different after unfreezing because live processing responds to the edited source again. This is a documented caveat, not a promise that every edit must change sound or a numeric difference threshold.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B015"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-029",
+    "title": "Arrangement frozen tails",
+    "contract": "Relevant material beyond clip lengths, such as effect tails, plays while frozen and is represented by adjacent crosshatched temporary clips; these temporary tail clips disappear on unfreeze. Selecting both pieces when moving is advice, not automatic move-linkage. Tail length, cutoff, samples and clip-boundary ownership are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B016"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-030",
+    "title": "Session frozen loop extent",
+    "contract": "A frozen Session sample contains two loop cycles. Longer unlinked clip envelopes may differ after the second cycle; no universal audible difference or sample-rounded boundary is promised.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B017"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-031",
+    "title": "Frozen clip drop-area track",
+    "contract": "Dragging a frozen clip to a Session or Arrangement drop area creates a new frozen track containing it. A partially selected Arrangement clip produces only that selected portion in the new frozen track.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B018"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-032",
+    "title": "Freeze project location",
+    "contract": "Freeze samples are stored in Current Project under Samples/Processed/Freeze. Names, codec, byte identity and reuse/collection rules are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B019"
+    ],
+    "dependencies": [
+      "project-media-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-033",
+    "title": "Unsaved Freeze location",
+    "contract": "For a Set not yet saved, the Freeze sample folder is specified by Temporary Folder. Later relocation on save is not established here.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B019"
+    ],
+    "dependencies": [
+      "project-media-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-034",
+    "title": "Hardware Freeze mode",
+    "contract": "A track containing External Audio Effect or External Instrument routed to hardware is frozen in real time when detected as requiring it. Real-time process controls are referenced to the export owner; no hardware acceptance, deadline, calibration or numeric latency law follows.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B005"
+    ],
+    "dependencies": [
+      "audio-video-export.md",
+      "external-hardware-devices.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-035",
+    "title": "External-device unfreeze files",
+    "contract": "Freeze files for a track containing External Instrument or External Audio Effect are discarded on unfreeze. This is not a broad cleanup, rollback or unrelated-file deletion guarantee.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B019"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-036",
+    "title": "Frozen playback with unavailable devices",
+    "contract": "The documented sharing use case permits a Set to play frozen tracks on a computer lacking the devices used by those tracks. Required frozen samples must be present; this does not prove unfreeze works without devices or missing-sample recovery.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "freeze12:B020"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-U-FLATTEN",
+    "title": "Flatten version boundary",
+    "contract": "Exact-12.4.3 availability and outcomes of Flatten and Freeze and Flatten Track are unknown. The current Live 12 Bounce text describes their supersession; the retained Live 11 Flatten description is predecessor context only and cannot supply a target law.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B006",
+      "freeze11:B017"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-U-SIGNAL",
+    "title": "Audio and automation commit details",
+    "contract": "Rendered samples, inclusion/transfer of specific automation/envelopes, clip processing, tails/ranges, source-tap scheduling, mixer coefficients, codec/rate/resampling/dither/normalization, numerical latency and comparison tolerances remain unknown beyond the documentary roles above.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "bounce:B008",
+      "bounce:B017",
+      "freeze12:B015",
+      "freeze12:B016",
+      "freeze12:B017"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-U-BOUNDARY",
+    "title": "Unspecified eligibility and ranges",
+    "contract": "Empty or zero-length selections, gaps/endpoints, stopped/playing/recording/armed/frozen input, mixed selections, nested groups, multiple return paths and unsupported paste destinations require evidence. Do not infer refusal, silence or repair from absent documentation.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-BF-U-STATE",
+    "title": "State and transaction lifecycle",
+    "contract": "Save/reopen, reference migration, undo/redo grouping, cancellation, automation ownership, transport/rate changes, engine restart and teardown outcomes are unknown for each bounce/freeze/unfreeze/legacy-flatten operation.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": [
+      "project-media-workflows.md",
+      "transport-state.md"
+    ]
+  },
+  {
+    "id": "REQ-BF-U-ERROR",
+    "title": "Failure and source loss",
+    "contract": "Missing inputs/devices/freeze files, source removal during processing, invalid controls, read-only/full/unavailable destinations, interrupted hardware, concurrent writes and recovery have no established diagnostics, cleanup or transaction oracle here.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": []
+  }
+]

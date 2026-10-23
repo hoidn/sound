@@ -1,0 +1,142 @@
+[
+  {
+    "id": "REQ-DEVICE-RACKS-001",
+    "title": "installed vocabulary and examples",
+    "contract": "\n**D-installed / E3–E5.** The installed schema declares Audio Effect, MIDI Effect,\nInstrument and Drum rack classes. Each declares sixteen macro control fields,\nvisibility count, randomization and snapshot exclusions, a chain list and macro\nvariations. ZoneRange declares minimum, maximum and two crossfade bounds;\nMacroSnapshot declares sixteen values and sixteen presence flags. The retained\nSuite demo contains respectively 23, 1, 8 and 1 rack occurrences. The retained\nslicing preset contains five snapshots. These are documentary assertions, not\nload/save or semantic rules for the private field names. In particular the Drum\nbranch's stored selector range does **not** establish a Drum Rack zone editor.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-002",
+    "title": "rack type and legal signal placement",
+    "contract": "\n**D12 / E1 §25.2.** MIDI Effect Racks hold MIDI effects on MIDI tracks. Audio Effect\nRacks hold audio effects on audio paths, including after an instrument on a MIDI\ntrack. Instrument and Drum chains order MIDI effects before an instrument and\naudio effects after it. Invalid placement is outside the documented valid\nconfiguration; exact drag rejection, relocation, replacement and malformed-file\nresponses are U. This does not resolve the file-reader question in\nREQ-LIVE-SET-STRUCTURE-012.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-003",
+    "title": "serial, parallel and nested flow",
+    "contract": "\n**D12 / E1 §25.1.1.** Devices within a chain process left to right. Instrument and\neffect rack chains receive the same input in parallel subject to their zones;\ntheir outputs combine at the rack output, then feed downstream devices. Drum\nchains receive assigned notes instead (REQ-016). A rack may contain racks and\nacts as a device in the enclosing chain. Exact summation, ordering of coincident\nMIDI events, latency and maximum practical nesting depth are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-004",
+    "title": "creation, grouping and dismantling",
+    "contract": "\n**D12 / E1 §25.2.** Loading a generic rack creates an empty rack. Group selected\ndevices, Group to Drum Rack and grouping existing chains create enclosing racks;\nrepeated grouping can nest them. Selecting a rack title and Ungroup dismantles\nthat rack. The manual does not define flattening/routing resolution for every\nmulti-chain or return-containing rack; those outcomes are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-005",
+    "title": "chain list and selection",
+    "contract": "\n**D12 / E1 §§25.3–25.4.1.** Dropping devices, presets or chains in the chain-list\ndrop area adds chains. Selecting a chain shows its devices; multiple selections\nshow their count. Chains expose activator, solo and hot-swap; audio-output rack\nchains also expose volume/pan. Rack-title selection addresses the whole rack for\nmove/copy/delete. Auto Select selects chains currently processing signals;\nDrum Rack selection follows receipt of the assigned note. Exact solo/activator\naudio interaction, selection expiry and contention with manual selection are U.\n\nRack view selectors show or hide eligible Macro Controls, Chain List and Devices views, with Pad View unique to Drum Racks; hiding all views, context Fold or title double-click folds the Rack. Right-clicking the Device View selector offers a hierarchical device list whose selected entry is selected and revealed. With Chain List focused, up/down changes selection; dragging and hovering a selected chain over a Session or Arrangement track gives it focus and opens Device View. Rack and chain Rename use Edit; Info Text uses Edit or context, and chain color uses its context palette. Entire chains can be saved/recalled as browser presets without a specified save/recall gesture; file/geometry/timing outcomes remain U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-006",
+    "title": "available zone filters",
+    "contract": "\n**D12 / E1 §§25.5–25.5.1.** Instrument and MIDI Effect Racks have key, velocity and\nselector zones; a note enters a chain only if it passes all three. Audio Effect\nRacks have selector zones, without MIDI key/velocity zones. Drum Racks have no\nzone editor; their Receive choosers filter notes. All matching parallel chains\ncan receive the same qualifying input.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-007",
+    "title": "zone editing and ranges",
+    "contract": "\n**D12 / E1 §§25.5–25.5.4.1.** Zones can be moved and resized, with separately\neditable fades. Key zones cover selected MIDI keys; velocity zones use Note On\nvelocities 1–127. The selector scale is 0–127; the documented initial selector\nzone is the single value 0. Multiple chains may share ranges. Exact rounding,\nedge inclusion for resized ranges, out-of-range edits and MIDI velocity-zero\ninterpretation are U here; note encoding belongs to [MIDI note storage](midi-note-storage.md).\n\nKey, Velocity and Chain buttons select their editors; Hide hides them. Main and fade sections resize from left/right edges and move by interior drags; the Chain selector indicator is draggable. Exact gesture geometry and boundary arithmetic remain U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-008",
+    "title": "fade destination",
+    "contract": "\n**D12 / E1 §§25.5.2–25.5.4.** Key/velocity fades attenuate incoming note velocity.\nSelector fades in a MIDI Effect Rack attenuate note velocity. Selector fades in\nInstrument and Audio Effect Racks attenuate chain output audio. Exact fade law,\nrounding to MIDI velocity, overlap normalization and treatment of a zero-length\nfade are U; no linear or equal-power equation is specified.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-009",
+    "title": "selector filtering of controllers",
+    "contract": "\n**D12 / E1 §25.5.4.** Instrument and MIDI Effect Rack selector zones filter notes\nby default, allowing other MIDI events such as controllers through. Enabling\nChain Selector Filters MIDI Ctrl makes the selector filter all MIDI events.\nHeld-note release routing and sustain/channel-mode edge cases remain U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-010",
+    "title": "selector movement and existing tails",
+    "contract": "\n**D12 / E1 §25.5.4.** For an audio-output chain with a fade ending its selector\nzone, moving outside attenuates the output to zero. With no fade, leaving the\nselector zone does not attenuate existing output; an existing effect tail may\nfinish according to that effect. This distinction does not specify audio effect\ninput admission, voice lifetime, clicks, smoothing or compensation changes.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-011",
+    "title": "macro count and visibility",
+    "contract": "\n**D12 / E1 §25.7; E2 §§23.2.3,23.2.6.1.** A rack supports up to sixteen macros;\na newly created factory rack, with no custom default or loaded preset, shows\neight. Visibility controls change the number shown; shown/hidden state is\nsaved with the Set. Hidden-control mapping activity and lower visibility bound\nare U. E3 corroborates sixteen storage slots, without proving runtime limits.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-012",
+    "title": "mapping and ranges",
+    "contract": "\n**D12 / E1 §25.7.1.** Entering Macro Map Mode highlights mappable controls, shows\nmacro Map buttons and opens the Mapping Browser. Select a contained parameter,\nthen a macro's Map button to create an assignment; one macro can address several\nparameters. Min/Max refine each assignment; Min greater than Max inverts it,\nand Invert Range reverses the current range. Assignments can be edited/deleted\nin that browser; leaving Map Mode ends this editing mode. Exact interpolation,\nquantized parameters and out-of-domain mappings are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-013",
+    "title": "delegated control and macro display",
+    "contract": "\n**D12 / E1 §25.7.1.** A mapped device parameter is disabled for direct control;\nclip-envelope modulation remains possible. A single mapping supplies its name\nand units to the macro by default. Multiple mappings restore the generic macro\nname regardless of whether their units match, absent a separately applied\ncustom name. Multiple mappings use 0–127 units unless every target has the same\nunit type and range; in that case, the common units and range are retained.\nCustom names/colors/info text are editable. Restored values after unmapping and\ninteractions with automation override are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-014",
+    "title": "randomization and exclusions",
+    "contract": "\n**D12 / E1 §25.7.2.** Rand randomizes mapped macros. Exclude Macro from\nRandomization preserves an excluded mapped control. Macros assigned to Volume\nparameters in unmodified factory Instrument Rack presets, without a user\nexclusion override, are excluded by default. This last clause\ndoes not assert an automatic exclusion after every new volume mapping.\nDistribution, seed, correlation, repeatability, unchanged-value probability,\nhidden/unmapped controls and randomization undo granularity are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-015",
+    "title": "variations",
+    "contract": "\n**D12 / E1 §25.7.3.** New stores current macro state as a variation, initially\nnamed sequentially Variation 1, Variation 2, and so on. Variations can be\nrenamed, duplicated and deleted. Launch recalls a stored state; Overwrite\nreplaces it with the current state. Exclude Macro From Variations prevents that\ncontrol changing on launch; disabling the exclusion restores participation.\nSnapshot behavior during mapping changes, which unmapped values are present,\nparameter automation ownership, launch scheduling and interpolation are U.\n\nThe Show/Hide Macro Variations selector exposes the variations view. Launch Macro Variation and Overwrite Macro Variation are separate buttons; Edit/context commands manage selected entries.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-016",
+    "title": "drum receive, play and choke",
+    "contract": "\n**D12 / E1 §25.6.** Receive selects the note triggering a drum chain; Play selects\nthe outgoing note delivered to its devices. Chains assigned the same one of\nsixteen choke groups silence one another when triggered. Receive All Notes\ndisables Play/Choke and passes through the received note. Preview fires a note\ninto a chain. Choke release envelopes, exact stop time, same-sample arbitration,\nself-choke and preview velocity are U.\n\nThe Receive list presents note names, MIDI note numbers and standard GM drum equivalents; no complete translation table is inferred.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-017",
+    "title": "drum sends and returns",
+    "contract": "\n**D12 / E1 §§25.2,25.6.** Drum Racks have up to six audio-effect return chains.\nDrum-chain sends feed them after the drum chain's fader; send controls require\nat least one return chain. Each return's Audio To can target the rack output or\na Set return track. A seventh return's UI/error behavior, return feedback,\nmissing destinations, send scaling and compensation are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-018",
+    "title": "dropping onto pads",
+    "contract": "\n**D12 / E1 §25.6.1.** Each pad denotes a MIDI note. With factory dropping defaults,\na sample on an empty pad creates a chain with Simpler. Dropping an audio effect\non that pad adds it after the instrument. A replacement sample replaces the\nSimpler/sample and preserves upstream MIDI and downstream audio effects.\nCustom dropping defaults are outside this clause; failed-load atomicity is U.\n\nIndependently compatible browser instruments and presets can also be dropped onto pads; this does not establish arbitrary browser-object admission or new sample-dropping defaults.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-019",
+    "title": "pad distribution, swapping and layering",
+    "contract": "\n**D12 / E1 §25.6.1.** Multiple samples dropped normally populate chromatically\nupward from the destination, replacing samples while preserving effects.\nAlt-drag on Windows / Cmd-drag on macOS layers them in a nested Instrument Rack.\nDragging a pad to another swaps note assignments; existing clips keep their\nnotes and therefore address the new sounds. The same platform modifier layers\nboth pads' chains in a nested Instrument Rack. Overflow above note 127, sample\nordering within a multiselection and effects during failed loads are U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-020",
+    "title": "pads represent notes, including multiple chains",
+    "contract": "\n**D12 / E1 §25.6.1.** The 128-note pad map shows groups of sixteen. Changing Receive\nupdates pad presentation; matching chains, including nested ones, respond to\nthe note. A one-chain pad shows that chain's name and permits rename/hot-swap.\nA multiple-chain pad displays Multi; mute/solo/preview address all its chains,\nrename/hot-swap are disabled, and delete removes all those chains. Exact mixed\nmute/solo icon semantics and controller scrolling protocols are U.\n\nThe pad overview can be dragged or navigated with focused up/down keys; Alt Windows/Cmd macOS shifts by single rows. Empty-pad hover shows note and suggested GM instrument in Status Bar. One-chain pads also expose mute, solo, preview and delete. In active Hot-Swap, focused D switches the target between the Drum Rack and last selected pad; no global key exception or rollback is implied.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-021",
+    "title": "rack mixing in Session",
+    "contract": "\n**D12 / E1 §25.8.** Instrument/Drum racks with multiple chains can unfold into the\nSession mixer. Chains have no clip slots. Their controls mirror the rack list;\nselecting a chain's mixer title shows its devices. Multiselected Session chains\nshare a mixer parameter adjustment; the same adjustment from the rack chain\nlist does not invoke this multi-chain behavior. Relative scaling/clamping of\nunequal starting values is U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-022",
+    "title": "extracting chains",
+    "contract": "\n**D12 / E1 §25.8.1.** Chains can be moved to other racks/tracks. Dragging a drum\nchain from the Session mixer to a new track transfers its devices and MIDI\nnotes. Dragging from the chain list transfers devices only. Dragging a drum\nreturn to the mixer creates a return track. The exact treatment of shared-note\nchains, nested mappings, clip ownership, automation, sends and source empty\nclips is U; no broad preservation/undo promise is implied.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-023",
+    "title": "inserting common devices",
+    "contract": "\n**D12 / E2 §§23,23.2.** Double-clicking a browser device targets the selected track\nor creates a track if none is selected. Enter loads a selected device/preset on\na selected destination track. Devices can be dragged into track/device views;\nsample drop on an empty MIDI Device View creates Simpler. Chains follow MIDI\neffects → instrument → audio effects and process left to right. Exact\ninsertion position with existing selection and incompatible-device handling\nare U beyond the explicit paste rule below.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-024",
+    "title": "move, remove and paste",
+    "contract": "\n**D12 / E2 §23.2.** Device title selection and Delete/Backspace removes the device;\ndragging its title reorders or moves it between tracks. Cut/copy/paste/duplicate\napply to devices. Paste inserts before the selected device; selecting the empty\nspace after the last device permits paste at the end. Rack title selection\naddresses its whole contents (REQ-005). No audio continuity or retained-tail\nguarantee follows from the manual's qualified continuity statement.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-025",
+    "title": "activator bypass",
+    "contract": "\n**D12 / E2 §23.2.1.** The activator turns a device on/off; the manual describes an\noff device as leaving the signal unprocessed. For an audio effect this provides\na qualitative bypass requirement. It does not establish sample equality,\nlatency changes, tail retention, CPU counters, retained processor state or the\nmeaning of unprocessed MIDI at a disabled instrument's audio output; those\noutcomes remain U.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-026",
+    "title": "presets and hot-swap",
+    "contract": "\n**D12 / E2 §§23.2.3–23.2.5.** Devices/racks can save settings as presets. Save Preset\nopens the browser with a prospective name; Enter confirms and Esc cancels the\nsave process. Dragging a device title into a Places folder is another save\nroute. Hot-Swap connects a target with the browser, and only compatible device\ntypes can be swapped. Q, Esc or the close controls exit Hot-Swap; exit alone is\nnot documented as restoring an earlier loaded preset. Overwrite/cancel disk\natomicity, media collection, failed loads and custom-default precedence require\nseparate evidence. Current-manual A/B device states and newer defaults are not\nsilently included in this bounded contract.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-027",
+    "title": "malformed state, cancellation and teardown",
+    "contract": "\n**U / E1–E5 limits.** For malformed zone bounds, illegal note/choke/return values,\nmissing/duplicate snapshot members, cancelled pad/extract/mapping operations,\nheld notes while deleting/unmapping/choking, lost media or closing during load,\nno rack-specific refusal, repair, rollback, cleanup or timing outcome has been\nestablished. Generic file parsing remains owned by the container/structure\nspecifications; their checks do not prove rack-specific semantic validation.\n\n"
+  },
+  {
+    "id": "REQ-DEVICE-RACKS-028",
+    "title": "persistence, automation, undo and timing",
+    "contract": "\n**U except REQ-011's D12 visibility persistence.** Exact 12.4.3 reopen preservation\nof mappings, zones, variants, exclusions, routing and nested references; migration;\nundo/redo grouping; automation/clip modulation precedence across maps and recalls;\nnote-off/sustain routing across selector changes; transport/scheduler order;\nlatency/CPU behavior and sample-exact output remain unresolved. Schemas and\nexamples establish representations, not accepted-input or runtime laws.\n\n"
+  }
+]

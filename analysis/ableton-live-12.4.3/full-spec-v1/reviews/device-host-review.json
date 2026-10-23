@@ -1,0 +1,178 @@
+{
+  "id": "REVIEW-DEVICE-HOST-R1",
+  "reviewer": "independent analyst /root/recording_comping_spec",
+  "date_utc": "2026-10-19T20:14:33.787603+00:00",
+  "disposition": "changes-requested-for-compatibility-classification; static-research-findings-supported",
+  "scope": "Read-only review of all 12 requirements and 26 cases, canonical research/spec pages, all 51 exact retained native records, original chunk lines and code hashes, 10 manifest payloads, H4/N5 copies and finite arithmetic. Not a handoff release review.",
+  "reviewed_inputs": {
+    "wiki/specs/bundled-device-hosting.md": "77e6ec0c2edeba99f050d82a042cfb5146d956f6db608633104301309fa58eef",
+    "wiki/research/device-host-protocol.md": "34b86dc6d3912611ac8c3991938fd489a452382366e234fef5bcfb270620919b",
+    "analysis/ableton-live-12.4.3/full-spec-v1/device-host/manifest.json": "a9ac8c400f931820e92fb48442fc63c34cc25f05baba9f2a28fa14cae0dafb19"
+  },
+  "findings": [
+    {
+      "id": "BDH-REVIEW-001",
+      "severity": "high",
+      "required_for_review_completion": true,
+      "location": "wiki/specs/bundled-device-hosting.md: scope; REQ-BUNDLED-DEVICE-HOSTING-001/002/004/005/006/007; BDH-001 to 006 and 010 to 014",
+      "problem": "The S labels are justified as static observations of a recovered internal host-to-bundle path, but these cases assert Prepared channels/flags, pending-control order and delivery count, partition-local event coordinates, subrange transport context and clearing of one internal queue. The draft makes their application-observable effect U and supplies no established external observation point for those intermediate values. Renaming them logical inputs/outputs and allowing alternative partitions does not make their intermediate delivery observable: passing these cases would still require reproducing or instrumenting an analyst-selected component decomposition. In particular A4 gives the internal flush boundary as an input, not an independently observable UI/automation interval. A candidate producing the same app audio/files/UI through different control coalescing, event partitioning or event re-creation must not fail solely for a different internal trace.",
+      "evidence": [
+        "REQ-004 and BDH-010/011 require final updates in first-arrival order, once each, then empty delivery; the source records 45/32 prove that implementation queue, not that the order/count is externally distinguishable.",
+        "REQ-005/006 and BDH-012/013 observe subblock events/context; real timestamp origin and scheduler context units remain U under A2/A3 and REQ-012. Source record 15 proves the internal transform for the constrained vector, not a candidate-visible event timeline.",
+        "REQ-007 and BDH-014 isolate clearing one event queue; the requirement expressly leaves upstream note re-creation, voice continuity and audio output U. Source records 31/44 support queue clearing, but the app-level result cannot be graded from absence in that specific original queue.",
+        "REQ-001/002 and BDH-001 to 006 observe buffers/presence supplied to a private wet operation. Their signal-preparation finding is useful; presence/activity observability and a composed device-output comparator are not established by the copy/zero code alone."
+      ],
+      "requested_change": "Preserve these S facts and finite derivations in canonical research, and explicitly classify the intermediate cases as non-normative analysis/component model checks excluded from application compatibility/covered-requirement counts. Retain corresponding application audio/behavior requirements as U unless a public or otherwise independently established external input/output boundary and observable comparator can be supplied. Do not require the candidate to expose this ABI, partition, queue or processing interface. This is a classification correction, not a request to discard source findings or run prohibited original/emulated execution. Update spec/packet/case-index/coverage counts and snapshots consistently."
+    },
+    {
+      "id": "BDH-REVIEW-002",
+      "severity": "low",
+      "required_for_review_completion": false,
+      "location": "REQ-BUNDLED-DEVICE-HOSTING-003; BDH-007 to 009",
+      "problem": "The settled DryWet algebra is directly supported and its finite arithmetic is correct. It is a useful conditional composition law with wet output supplied as an explicit dependency, but the three synthetic wet values are analyst vectors, not captured Amp/Cabinet output. They must not be counted as full-device or application-audio closure.",
+      "requested_change": "When resolving finding 001, retain the steady output law as conditional static composition if desired, and distinguish its analyst arithmetic vectors from any eventual app/device audio acceptance case. Preserve unsupported transitions, wet DSP, path-selection/scheduling and whole-app output as U."
+    }
+  ],
+  "static_findings_supported": [
+    {
+      "subject": "Stereo and mono preparation",
+      "records": [
+        35,
+        36,
+        37,
+        39,
+        48
+      ],
+      "result": "Selected effect path copies both channels when present or zeroes both; dual-mono paths preserve independent wet inputs; mono wet input is (L+R)/2, while original dry stereo reaches the mixing operation. Source observation only; external composition classification finding above."
+    },
+    {
+      "subject": "Steady host mixing",
+      "records": [
+        7,
+        35,
+        36,
+        49
+      ],
+      "result": "Steady sin(d*pi/2) wet and sqrt(1-wet^2) dry laws match the code and BDH-007 to 009 finite calculations. Sample rounding and transition law remain outside these comparators."
+    },
+    {
+      "subject": "Parameter coalescing",
+      "records": [
+        30,
+        32,
+        38,
+        45
+      ],
+      "result": "Last value replaces a repeated pending index; first-seen order retained; delivery clears queue. Count guard precedes lookup at full capacity. A4 excludes grouped path and capacity edge, matching the source. This remains an internal transform, not an application observation."
+    },
+    {
+      "subject": "Event filtering/rebasing",
+      "records": [
+        1,
+        2,
+        4,
+        5,
+        13,
+        14,
+        15,
+        28,
+        29,
+        40
+      ],
+      "result": "Filter permits types 1/2/6 and type 3 codes -2,-1,1,64,74,120. Queue cap 4,096; local split cap 2,048. Ordered vector coordinates 0/511/512/1023 map to [0,511] in each half-open 512-frame region. Residual frames and origin remain U; record 15 stack recovery warning preserved."
+    },
+    {
+      "subject": "Transport advancement",
+      "records": [
+        15,
+        16,
+        50
+      ],
+      "result": "Nonlooping split arithmetic adds tempo*start/(rate*60) while playing and zero while stopped. BDH-013 increment 8/375 at 120 BPM, 512 frames, 48,000 Hz is correct. Numeric producer semantics and loop-boundary law remain U."
+    },
+    {
+      "subject": "Rate notification and reset",
+      "records": [
+        11,
+        12,
+        20,
+        26,
+        31,
+        33,
+        42,
+        44
+      ],
+      "result": "Ordinary Reset and NewRate have no calls to host warm-up helper 0x102fbff98. NewRate updates stored rates, invokes rate/reset, restores cached index 0 for reset-capable primary, clears the queued-event count and restores prior readiness. ResetAndDispatch calls helper exactly four times, first with one event then three without; helper requests 1,024 frames each. With the 512-frame capability this is 4,096 total warm-up frames on that path. No claim about when insertion selects it or audible reset/tails is established."
+    },
+    {
+      "subject": "Activity and resource release",
+      "records": [
+        8,
+        14,
+        15,
+        18,
+        19,
+        21,
+        24,
+        25,
+        27,
+        38,
+        39,
+        41,
+        43,
+        46,
+        47,
+        51
+      ],
+      "result": "Activity/success are separate; activity/input, queued/control change, prior state, fades, readiness and smoothing affect processing. Record 39 return type conflicts with caller consumption; record 43 warnings remain. Exact stop/restart is correctly U. Exit unregisters callbacks; destructor releases extant instances, decrements loader count, and on zero releases bundle through cleanup. This is resource-mechanism evidence, not a user deletion/cancel/tail guarantee."
+    }
+  ],
+  "checks": {
+    "payload_sizes_and_hashes": 10,
+    "exact_unchanged_records_and_code_hashes": 51,
+    "original_chunk_files_read": 11,
+    "record_hash_convention": {
+      "newline-included": 51
+    },
+    "source_warnings": {
+      "15": [
+        "/* WARNING: Subroutine does not return */"
+      ],
+      "33": [
+        "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */"
+      ],
+      "43": [
+        "/* WARNING: Removing unreachable block (ram,0x000102fc12a4) */",
+        "/* WARNING: Removing unreachable block (ram,0x000102fc131c) */"
+      ]
+    },
+    "corpus_identity_and_bundle_n5_copies": "pass",
+    "canonical_page_snapshots": "pass",
+    "requirements": 12,
+    "cases": 26,
+    "conditional_S_labels": 14,
+    "U_labels": 12,
+    "case_json_exact_table_match": "pass",
+    "metadata_local_files_and_heading_anchors": "pass",
+    "transport_vector_8_over_375": "pass",
+    "manifest_sha256": "a9ac8c400f931820e92fb48442fc63c34cc25f05baba9f2a28fa14cae0dafb19"
+  },
+  "source_pin_convention_note": "All 51 record_sha256 values match original raw JSONL lines including their trailing newline, exactly as capture.py uses splitlines(keepends=True). This differs from the Arrangement packet convention; no normalization or source-pin change is needed. All retained bytes also equal the original chunk-line bytes.",
+  "schema_scope": "No schema capture is needed for this processing-only packet: it makes no new persisted field/parser claim and explicitly delegates stored parameters and device/rack state. Original bundle identities and existing parameter mappings remain pinned dependencies, not new storage proof.",
+  "accepted_claim_boundary": {
+    "source_supported_static_research": true,
+    "accepted_application_case_passes": 0,
+    "internal_analysis_cases_do_not_close_coverage": true,
+    "Amp_Cabinet_emulation": "still blocked by user decision",
+    "T1_6": "still pending"
+  },
+  "execution_limits": {
+    "ran_Live": false,
+    "ran_extracted_original_code": false,
+    "ran_candidate": false,
+    "installed_tools": false,
+    "modified_author_or_shared_pages": false,
+    "wrote_only_requested_review_report": true,
+    "compatibility_pass": false
+  }
+}

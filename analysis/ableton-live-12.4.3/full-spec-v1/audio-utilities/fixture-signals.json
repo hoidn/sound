@@ -1,0 +1,210 @@
+{
+  "status": "proposed finite probe inputs; no generated audio or reference outputs",
+  "formula": "For sine definitions x[n]=amplitude*sin(2*pi*frequency_Hz*n/sample_rate_Hz + phase_rad), with phase 0 if absent. Independent channel examples explicitly assign L/R. Single-frequency examples use identical L/R unless a case states otherwise. These are analyst probe inputs, not target algorithms.",
+  "signals": {
+    "SIG-440": {
+      "type": "sine",
+      "sample_rate_Hz": 48000,
+      "duration_s": 2,
+      "channels": [
+        {
+          "frequency_Hz": 440,
+          "amplitude": 0.1,
+          "phase_rad": 0
+        },
+        {
+          "frequency_Hz": 440,
+          "amplitude": 0.1,
+          "phase_rad": 0
+        }
+      ]
+    },
+    "SIG-880": {
+      "type": "sine",
+      "sample_rate_Hz": 48000,
+      "duration_s": 2,
+      "frequency_Hz": 880,
+      "amplitude": 0.1
+    },
+    "SIG-STEREO": {
+      "type": "distinct-channel-sines",
+      "sample_rate_Hz": 48000,
+      "duration_s": 2,
+      "L": {
+        "frequency_Hz": 440,
+        "amplitude": 0.1
+      },
+      "R": {
+        "frequency_Hz": 997,
+        "amplitude": 0.07
+      }
+    },
+    "SIG-BASS-SIDE": {
+      "type": "sum-sines",
+      "sample_rate_Hz": 48000,
+      "duration_s": 4,
+      "L": [
+        {
+          "frequency_Hz": 40,
+          "amplitude": 0.1,
+          "phase_rad": 0
+        },
+        {
+          "frequency_Hz": 1000,
+          "amplitude": 0.05,
+          "phase_rad": 0
+        }
+      ],
+      "R": [
+        {
+          "frequency_Hz": 40,
+          "amplitude": 0.1,
+          "phase_rad": 3.141592653589793
+        },
+        {
+          "frequency_Hz": 1000,
+          "amplitude": 0.05,
+          "phase_rad": 0
+        }
+      ]
+    },
+    "SIG-SHARP": {
+      "type": "sine",
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "frequency_Hz": 445,
+      "amplitude": 0.1,
+      "note_target": "A with standard reference 440; no cents precision asserted"
+    },
+    "SIG-SHARP-WIDE": {
+      "type": "sine",
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "frequency_Hz": 450,
+      "amplitude": 0.1
+    },
+    "SIG-FLAT": {
+      "type": "sine",
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "frequency_Hz": 435,
+      "amplitude": 0.1
+    },
+    "SIG-POLY": {
+      "type": "sum-sines",
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "frequencies_Hz": [
+        440,
+        523.251
+      ],
+      "amplitudes": [
+        0.1,
+        0.1
+      ]
+    },
+    "SIG-SILENCE": {
+      "type": "constant",
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "value": 0
+    },
+    "SIG-DC": {
+      "type": "constant",
+      "sample_rate_Hz": 48000,
+      "duration_s": 4,
+      "value": 0.1
+    },
+    "SIG-NOISE": {
+      "type": "deterministic-probe-definition-only",
+      "generator": "Python random.Random(12).uniform(-0.1,0.1) per sample",
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "retained_audio": false
+    },
+    "SIG-TIE": {
+      "type": "finite-sines",
+      "frequencies_Hz": [
+        452.89,
+        452.892984,
+        452.9
+      ],
+      "sample_rate_Hz": 48000,
+      "each_duration_s": 2,
+      "amplitude": 0.1,
+      "expected_tie_rule": null
+    },
+    "SIG-LEVEL-SWEEP": {
+      "type": "finite-sines",
+      "frequency_Hz": 440,
+      "amplitudes": [
+        0,
+        1e-06,
+        0.001,
+        0.1,
+        1
+      ],
+      "each_duration_s": 3,
+      "sample_rate_Hz": 48000
+    },
+    "SIG-FREQ-SWEEP": {
+      "type": "finite-sines",
+      "frequencies_Hz": [
+        10,
+        20,
+        40,
+        440,
+        1000,
+        10000,
+        20000
+      ],
+      "amplitude": 0.1,
+      "each_duration_s": 3,
+      "sample_rate_Hz": 48000
+    },
+    "SIG-BURST": {
+      "type": "gated-sine",
+      "frequency_Hz": 997,
+      "amplitude": 0.1,
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "active_frames": [
+        4800,
+        9600
+      ]
+    },
+    "SIG-LEVEL-STEP": {
+      "type": "sine",
+      "frequency_Hz": 997,
+      "sample_rate_Hz": 48000,
+      "duration_s": 4,
+      "amplitude_by_interval_s": [
+        [
+          0,
+          2,
+          0.01
+        ],
+        [
+          2,
+          4,
+          0.1
+        ]
+      ]
+    },
+    "SIG-IMPULSE": {
+      "type": "impulse",
+      "sample_rate_Hz": 48000,
+      "duration_s": 2,
+      "nonzero_frame": 4800,
+      "value": 0.1
+    },
+    "SIG-ANTIPHASE": {
+      "type": "sine",
+      "frequency_Hz": 440,
+      "sample_rate_Hz": 48000,
+      "duration_s": 3,
+      "L_amplitude": 0.1,
+      "R_amplitude": -0.1
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Four expression-boundary outcomes: retained source frontier
+
+Pending independent source review. Root selected both conditional range-operation targets from the approved MIDI remaining-U packet in one batch across all four MNS053 variants. Exact two retained C1 records contain4,966UTF8C bytes/166lines; native body metadata836/320bytes is not fresh instruction coverage. [Locators](source-locators.json) pin original chunks/offsets/raw/C hashes. [Findings](findings.json) separate observed source expressions, inferred roles and missing joins. No whole-spec snapshot or translated model is retained.
+
+The bodies expose conditional forward/backward comparison strictness, indexed mutation requests and count-like traversal. They do not identify final event arrays. Underlying provider/iterator/callback operations, transaction effects and first-call interval globals remain unresolved. All four variants retain null expected/actual and zero grades. No native indirect-site count is increased. This packet selects no encountered callee, slot or global expansion.
+
+Concurrent MIDI owner r6 is a separate reviewed-source reconciliation; no owner, case, fixture, release or requirement is changed here. No original instructions, native/provider/decoder/harness/model/comparator/build or old module ran. One failed wrapper-format assumption was corrected against the existing retained JSON record shape before writes; disclosure is retained in findings. A source frontier is not a public-load, save or compatibility result.

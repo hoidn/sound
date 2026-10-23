@@ -1,0 +1,351 @@
+{
+  "schema": 1,
+  "utc": "2026-10-20T15:42:48.818332+00:00",
+  "status": "DIAGNOSIS INCONCLUSIVE; MINIMAL DIAGNOSTIC SUCCESSOR PROPOSED ONLY",
+  "author": "synthesis_finish; author of preparation R1; this is not independent approval of own code or fixture.",
+  "scope": "Retained synthetic failure and selected launcher sources only. No new Ghidra/Java/compiler/decoder/version process, original slice extraction/import, project opening, original code, or automatic retry.",
+  "read_scope": {
+    "full_sources": [
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+        "bytes": 2388
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/launch.sh",
+        "bytes": 7812
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryLaunchGate.java",
+        "bytes": 5418
+      }
+    ],
+    "selected_existing_source": "Current Java run guard/identity block lines24\u201374 and driver environment/launch block were freshly read; whole new Java/driver reads carried from pinned preparation.",
+    "retained_logs": "Full headless stdout/stderr, ghidra.log, run-status, resources.jsonl, invocation-before and Root receipt freshly read.",
+    "not_inspected": [
+      "LaunchSupport implementation or computed -vmargs output",
+      "launch.properties contents",
+      "SystemUtilities implementation",
+      "JDK implementation or heap layout",
+      "Any original Corpus source/body/window"
+    ]
+  },
+  "observed": [
+    {
+      "id": "FXD01",
+      "claim": "The synthetic import log names x86:LE:64:default:gcc, then the Java script throws at compound guard line43 before actual-identity.json and before functions export.",
+      "sources": [
+        "headless.stdout Import/UsingLanguage and exception lines",
+        "CorpusX86SelectedExport.java:39\u201343,70\u201372"
+      ]
+    },
+    {
+      "id": "FXD02",
+      "claim": "Retained stderr prints OpenJDK21.0.12.1 and four JDK_JAVA_OPTIONS pickup notes containing ActiveProcessorCount2, both cpu properties2 and private home/tmp. This supports version/option propagation at launcher boundaries, not the six actual getter values at failing guard.",
+      "sources": [
+        "headless.stderr complete"
+      ]
+    },
+    {
+      "id": "FXD03",
+      "claim": "Retained invocation environment sets GHIDRA_HEADLESS_MAXMEM=4G. analyzeHeadless lines16\u201317,43 carries that nonempty value into launch.sh argument4; launch.sh lines72,192\u2013193 appends -Xmx4G. launch.sh also obtains JDK and configurable VM arguments via LaunchSupport lines148\u2013184, then executes the final JVM line238. Those delegated results are not captured in the available identity record.",
+      "sources": [
+        "invocation-before.json#/environment",
+        "analyzeHeadless:16\u201317,43",
+        "launch.sh:148\u2013184,192\u2013193,238"
+      ]
+    },
+    {
+      "id": "FXD04",
+      "claim": "The old RecoveryLaunchGate separately checks the same version/heap/CPU/property predicates before writing its own gate. Its source demonstrates intended attestation policy, not measured values or successful applicability to this synthetic run.",
+      "sources": [
+        "RecoveryLaunchGate.java:16\u201324,30\u201338"
+      ]
+    },
+    {
+      "id": "FXD05",
+      "claim": "Driver exits1 despite headless process exit0; both entries invalid from missing actual-identity.json, cleanup clean and no survivors. This is failure, not a successful two-entry export.",
+      "sources": [
+        "run-status.json",
+        "Root receipt.json"
+      ]
+    }
+  ],
+  "exact_guard": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/CorpusX86SelectedExport.java",
+    "line_first": 39,
+    "line_last": 43,
+    "text": "        if(!\"21.0.12.1\".equals(System.getProperty(\"java.version\")) ||\n           Runtime.getRuntime().maxMemory()!=4294967296L || Runtime.getRuntime().availableProcessors()!=2 ||\n           SystemUtilities.getDefaultThreadPoolSize()!=2 ||\n           !\"2\".equals(System.getProperty(\"cpu.core.override\")) || !\"2\".equals(System.getProperty(\"cpu.core.limit\")))\n            throw new IllegalArgumentException(\"Effective JDK/4GiB heap/CPU2 identity mismatch\");"
+  },
+  "unresolved_predicates": [
+    {
+      "field": "java.version",
+      "expected": "21.0.12.1",
+      "actual_guard_value": null,
+      "qualification": "Matching showversion is strong context, not an actual System.getProperty snapshot at the guard."
+    },
+    {
+      "field": "Runtime.maxMemory()",
+      "expected": 4294967296,
+      "actual_guard_value": null,
+      "qualification": "Requested -Xmx4G is supported by source/env; exact reported heap is unrecorded."
+    },
+    {
+      "field": "Runtime.availableProcessors()",
+      "expected": 2,
+      "actual_guard_value": null,
+      "qualification": "Requested ActiveProcessorCount2 appears in pickup notes; actual getter unrecorded."
+    },
+    {
+      "field": "SystemUtilities.getDefaultThreadPoolSize()",
+      "expected": 2,
+      "actual_guard_value": null,
+      "qualification": "No retained pool getter value or selected implementation; this is a direct uncertainty, not a proved culprit."
+    },
+    {
+      "field": "cpu.core.override",
+      "expected": "2",
+      "actual_guard_value": null
+    },
+    {
+      "field": "cpu.core.limit",
+      "expected": "2",
+      "actual_guard_value": null
+    }
+  ],
+  "hypothesis": "At least one of the six predicate values differed. Default pool and maxMemory are salient unmeasured candidates; no evidence justifies choosing one or changing expected values. Delegated launch options/JDK selection remain an additional untraced source boundary.",
+  "proposed_minimum_successor": {
+    "kind": "Diagnostic-only preparation successor, not implemented here",
+    "change": "Before the unchanged compound line39\u201343 guard, create one exclusive effective-machine-before-guard.json using the existing Gson/write utility.",
+    "fields": [
+      "java.version",
+      "Runtime.maxMemory()",
+      "Runtime.availableProcessors()",
+      "SystemUtilities.getDefaultThreadPoolSize()",
+      "cpu.core.override",
+      "cpu.core.limit",
+      "java.home",
+      "user.home",
+      "java.io.tmpdir",
+      "ManagementFactory JVM input arguments",
+      "current process PID/start instant/executable"
+    ],
+    "ordering": "Analysis stays disabled/ABORT; retain current profile/analysis checks; diagnostic write occurs immediately before unchanged machine compound guard. Diagnostic is expressly nonpassing metadata; actual-identity.json stays after all existing identity checks.",
+    "retained_constraints": [
+      "No expected identity, environment, resource, entry, window, body guard or per-entry success rule change.",
+      "Separate immutable preparation/destination; preserve failed R1 prep/fixture/outer.",
+      "Root plus independent code review and separate one-shot synthetic selection required.",
+      "Any mismatch remains failure; no original slice import until a successful independently reviewed fixture."
+    ],
+    "stop": "Use the next retained snapshot to identify exact differing values; no automatic retry, hidden fallback or weakened guard."
+  },
+  "preservation": {
+    "selected_sources_before": [
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/manifest-preparation.json",
+        "bytes": 2073,
+        "sha256": "194d30df5c0a753fc51f3e066c2707867028df1917f8012904aa030d23f5b6e0"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/CorpusX86SelectedExport.java",
+        "bytes": 13008,
+        "sha256": "20f1e239b9842fbe4cf0add000232d977652ca547e88ee58b0cfb4be48ed8d31"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/run-selected.py",
+        "bytes": 17422,
+        "sha256": "16abca7d24593741052e3aebb0cb4533d6523e9b845e8ab9639596a06d84f6f0"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/manifest.json",
+        "bytes": 5797,
+        "sha256": "19ebaf94f813cdf1b1809ea6526f8dadcbe56f3c0bc0bd3f8d8339b20a522928"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/run-status.json",
+        "bytes": 1055,
+        "sha256": "9f2f062ca71f5ff8063d396b6327aabb8bc78b84044063e6026c0e6c09b1b9e3"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/headless.stdout",
+        "bytes": 7324,
+        "sha256": "e3d22a7bc9b4be76e4eca5ae96337856d6e188763c317765a04ecc67164f42c8"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/headless.stderr",
+        "bytes": 1676,
+        "sha256": "0261651ee2586daa8a3862c596f9f1ff9a32e4b04192f543d2e4bec362efd3d8"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/ghidra.log",
+        "bytes": 8272,
+        "sha256": "43c2eb55976d7361da98e3759d7065d9c5df34f9ab28660650b6bdad1bf827da"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/resources.jsonl",
+        "bytes": 1597,
+        "sha256": "1e1807302e1ff952bf8a982cee8a04b7e2199e322780e1e3d4516450228e7119"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/invocation-before.json",
+        "bytes": 2788,
+        "sha256": "5618ce506451673d63ffee07ed0a321e65839e76207c5c3f703ed2c0d1492a40"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/before-map.json",
+        "bytes": 6517,
+        "sha256": "85267c7c23b50a5cb71e1f6a76b6a39bfad8fdee87c2f5d9fc82e1c54411645d"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/after-map.json",
+        "bytes": 6835,
+        "sha256": "8dcf4b4ef0e6e516b376dbc9e512b28bc5e2472e64d9eedc99be971698043c81"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/manifest.json",
+        "bytes": 1552,
+        "sha256": "179d917e08cb0ef598139f29803e0aa22ea7e56a2ad42ec357b0e4bb665a8e3d"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/receipt.json",
+        "bytes": 1564,
+        "sha256": "b1d9cc0eadd394e28e4b46ff1ecbf7e9b5277d01ec736a6fcafc56d52cd2383a"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/before-map.json",
+        "bytes": 720446,
+        "sha256": "a012d9f552cdb5f14655cae5f64cb4af46dac49c7b8686ef8aa5810c9e5f39ce"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/after-map.json",
+        "bytes": 720446,
+        "sha256": "a012d9f552cdb5f14655cae5f64cb4af46dac49c7b8686ef8aa5810c9e5f39ce"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+        "bytes": 2388,
+        "sha256": "302880328a0024ee24cfe0326d4d9a61c2237116d95f2e0e0df090f747f95e30"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/launch.sh",
+        "bytes": 7812,
+        "sha256": "32be94ba54ee447c2a71d0191398de4fa7998817f078c315f996350d06df31b5"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryLaunchGate.java",
+        "bytes": 5418,
+        "sha256": "bac687f0f5244ce0de3bb9e89472948d9287e333a230064c75e0a78c14ad078c"
+      }
+    ],
+    "selected_sources_after": [
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/manifest-preparation.json",
+        "bytes": 2073,
+        "sha256": "194d30df5c0a753fc51f3e066c2707867028df1917f8012904aa030d23f5b6e0"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/CorpusX86SelectedExport.java",
+        "bytes": 13008,
+        "sha256": "20f1e239b9842fbe4cf0add000232d977652ca547e88ee58b0cfb4be48ed8d31"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-preparation/run-selected.py",
+        "bytes": 17422,
+        "sha256": "16abca7d24593741052e3aebb0cb4533d6523e9b845e8ab9639596a06d84f6f0"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/manifest.json",
+        "bytes": 5797,
+        "sha256": "19ebaf94f813cdf1b1809ea6526f8dadcbe56f3c0bc0bd3f8d8339b20a522928"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/run-status.json",
+        "bytes": 1055,
+        "sha256": "9f2f062ca71f5ff8063d396b6327aabb8bc78b84044063e6026c0e6c09b1b9e3"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/headless.stdout",
+        "bytes": 7324,
+        "sha256": "e3d22a7bc9b4be76e4eca5ae96337856d6e188763c317765a04ecc67164f42c8"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/headless.stderr",
+        "bytes": 1676,
+        "sha256": "0261651ee2586daa8a3862c596f9f1ff9a32e4b04192f543d2e4bec362efd3d8"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/ghidra.log",
+        "bytes": 8272,
+        "sha256": "43c2eb55976d7361da98e3759d7065d9c5df34f9ab28660650b6bdad1bf827da"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/resources.jsonl",
+        "bytes": 1597,
+        "sha256": "1e1807302e1ff952bf8a982cee8a04b7e2199e322780e1e3d4516450228e7119"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/invocation-before.json",
+        "bytes": 2788,
+        "sha256": "5618ce506451673d63ffee07ed0a321e65839e76207c5c3f703ed2c0d1492a40"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/before-map.json",
+        "bytes": 6517,
+        "sha256": "85267c7c23b50a5cb71e1f6a76b6a39bfad8fdee87c2f5d9fc82e1c54411645d"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-fixture/after-map.json",
+        "bytes": 6835,
+        "sha256": "8dcf4b4ef0e6e516b376dbc9e512b28bc5e2472e64d9eedc99be971698043c81"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/manifest.json",
+        "bytes": 1552,
+        "sha256": "179d917e08cb0ef598139f29803e0aa22ea7e56a2ad42ec357b0e4bb665a8e3d"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/receipt.json",
+        "bytes": 1564,
+        "sha256": "b1d9cc0eadd394e28e4b46ff1ecbf7e9b5277d01ec736a6fcafc56d52cd2383a"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/before-map.json",
+        "bytes": 720446,
+        "sha256": "a012d9f552cdb5f14655cae5f64cb4af46dac49c7b8686ef8aa5810c9e5f39ce"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-selected-entry-fixture-selected-execution/after-map.json",
+        "bytes": 720446,
+        "sha256": "a012d9f552cdb5f14655cae5f64cb4af46dac49c7b8686ef8aa5810c9e5f39ce"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+        "bytes": 2388,
+        "sha256": "302880328a0024ee24cfe0326d4d9a61c2237116d95f2e0e0df090f747f95e30"
+      },
+      {
+        "path": "/home/ollie/.local/opt/ghidra_12.1.4_PUBLIC/support/launch.sh",
+        "bytes": 7812,
+        "sha256": "32be94ba54ee447c2a71d0191398de4fa7998817f078c315f996350d06df31b5"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryLaunchGate.java",
+        "bytes": 5418,
+        "sha256": "bac687f0f5244ce0de3bb9e89472948d9287e333a230064c75e0a78c14ad078c"
+      }
+    ],
+    "selected_source_count": 19,
+    "unchanged": true,
+    "all_three_existing_manifest_payloads_verified": true,
+    "inner_retained_map_rows": 28,
+    "inner_maps_exact": true,
+    "outer_retained_map_rows": 3199,
+    "outer_maps_exact": true,
+    "qualification": "These checks cover identities at diagnosis calculation time. They are not a retroactive pre-read watch or an independent repetition of original execution. Inner map actually has28 rows (27 prep/input identities plus selected Root receipt), not an asserted27."
+  },
+  "outcomes": {
+    "new_normative_ids": 0,
+    "new_cases": 0,
+    "application_grades": 0,
+    "all_historical_unknowns_unchanged": true
+  }
+}

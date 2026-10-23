@@ -1,0 +1,253 @@
+{
+  "id": "REVIEW-LIVE-API-CONTROL-TUNING-AUTHOR-R1",
+  "date_utc": "2026-10-19T22:40:15.358294+00:00",
+  "reviewer": "independent analyst /root/delay_reverb_correction; not the author",
+  "disposition": "required-corrections-before-partial-approval",
+  "reviewed_manifest": "../live-api-control-tuning/manifest-author-r1.json",
+  "reviewed_manifest_sha256": "bcecc8138bc214602c9628aa39b05c6f7b1b8d2e4cc2b8a77bc4e4d2d1948bcd",
+  "scope": "Independent source-semantic review of all107 retained text blocks across six exact public API references, all28 direct-member declarations and this_device root context, all33 requirements, all41 proposed actions, both canonicals, fixture and member ledger. This is a partial documentary review only; no actual API/Max/hardware/numeric/message/event/timing/signal or exact12.4.3 compatibility result.",
+  "source_semantic_read_scope": {
+    "ControlSurface": 30,
+    "DeviceIO": 18,
+    "Groove": 24,
+    "GroovePool": 8,
+    "TuningSystem": 23,
+    "this_device": 4,
+    "total": 107,
+    "qualification": "Read every selected retained body block and all member clauses/actions; independently reproduced each selected body from unchanged retained HTML using inspected guarded inventory parser. Did not read all53 source pages semantically. Figures, external help, patches/JavaScript/examples and actual API/runtime were not inspected or executed."
+  },
+  "checks": {
+    "manifest_payload_hashes_sizes": 13,
+    "packet_file_inventory": 15,
+    "freeze_manifest_seal": true,
+    "inventory_R1_payload_hashes_sizes": 65,
+    "retained_source_family_pages_hash_checked": 53,
+    "selected_HTML_sources_and_body_reproductions": 6,
+    "inventory_pins": 5,
+    "owner_pins": 10,
+    "canonical_snapshot_pairs": 2,
+    "requirements": 33,
+    "requirement_provenance": {
+      "D-current-public": 29,
+      "U": 4
+    },
+    "direct_members": 28,
+    "direct_member_requirement_case_mapping_exact": true,
+    "semantic_complete_members": 0,
+    "this_device_direct_members": 0,
+    "root_context_clauses": 1,
+    "inherited_members_flattened": 0,
+    "cases": 41,
+    "exact_browser_requirement_ID_set": 33,
+    "all_documentary_target_expected_comparator_null": true,
+    "all_target_U_unexecuted": true,
+    "local_file_links": 26,
+    "untracked_aware_whitespace": "pass for all packet text files and both canonical pages",
+    "validator_inspected_before_execution": true,
+    "validator_command": "python3 -B analysis/ableton-live-12.4.3/full-spec-v1/live-api-control-tuning/validate.py",
+    "validator_exit": 0,
+    "validator_writes": false,
+    "durable_tool_errors_found": false,
+    "independent_checker_note": "A one-off reviewer supplementary checker first had a syntax typo before execution; corrected invocation passed. This was not a sealed validator failure or packet mutation.",
+    "packet_or_canonical_mutation": false
+  },
+  "required_findings": [
+    {
+      "id": "LAC-REVIEW-001",
+      "severity": "medium",
+      "requirements": [
+        "REQ-LAPI-CONTROL-005"
+      ],
+      "cases": [
+        "LAC-005"
+      ],
+      "locations": [
+        "wiki/specs/live-api-control-tuning.md:58",
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-control-tuning/requirements.json:79",
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-control-tuning/cases.json:94"
+      ],
+      "source": {
+        "source": "C74-LOM-CONTROLSURFACE",
+        "block": "B0020",
+        "html_line": 77,
+        "url": "https://docs.cycling74.com/apiref/lom/controlsurface/#grab_midi"
+      },
+      "finding": "The contract makes explicit request from Live a condition of forwarded messages generally. The source first describes forwarding MIDI messages received by the surface script, then limits its explicit-request caveat to channel messages received from the engine. Dropping channel broadens that caveat to other received MIDI message classes without evidence.",
+      "required_change": "Distinguish the general script-received forwarding role from the explicit-request restriction on engine channel messages. Preserve the real-time track/Push Note-versus-Session caveat. Update only the affected canonical/catalog/source_claim and necessary revised snapshots/seal; keep API/message/timing oracles null and do not invent behavior for other message classes."
+    },
+    {
+      "id": "LAC-REVIEW-002",
+      "severity": "low",
+      "requirements": [
+        "REQ-LAPI-CONTROL-U-CONTROL"
+      ],
+      "cases": [
+        "LAC-U-CONTROL-3"
+      ],
+      "locations": [
+        "wiki/specs/live-api-control-tuning.md:208",
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-control-tuning/requirements.json:522"
+      ],
+      "source": {
+        "source": "C74-LOM-CONTROLSURFACE",
+        "block": "B0002",
+        "html_line": 29,
+        "url": "https://docs.cycling74.com/apiref/lom/controlsurface/"
+      },
+      "finding": "The U contract asserts that surface ordering differs between the Application list and root path. The source states that the Application list follows Link/MIDI Preferences order and that the same order is not guaranteed for root-path enumeration. Lack of guarantee does not establish actual inequality.",
+      "required_change": "Replace the asserted difference with the precise lack-of-same-order guarantee, retaining the Application-list Preferences-order context and unknown cross-enumeration identity relationship. The existing no-same-index-inference action can remain; no order, identity, target or error oracle should be added."
+    }
+  ],
+  "semantic_assessment": [
+    {
+      "scope": "ControlSurface members other than the two required wording corrections",
+      "assessment": "Get/observe-only pad_layout, Push2/3/loaded-instrument context, named-control/list roles, exclusive per-control grab/release, special MaxForLive registration signature/status context, missing send_value member semantics and list-of-int send role agree with the source. No Push1 protocol, arbitrary raw MIDI, output codec, signature coercion, hardware-wide mute or inferred success oracle is supplied."
+    },
+    {
+      "scope": "ControlSurface timeout",
+      "assessment": "The annotation timeout[symbol,int] and timeout-followed-by-float prose disagreement is explicit. Default0.2 remains source context without an invented unit; grabbed versus ungrabbed response-forwarding/timeout roles match the paragraph. Timely/late/boundary proposals require an independently admitted non-destructive request/response profile and positive reception; no correlation, report grammar, order or timing tolerance is invented."
+    },
+    {
+      "scope": "DeviceIO",
+      "assessment": "All five property types and get/set/observe declarations agree. Availability wrapper keys and list-of-dictionary roles, display_name/identifier symbol fields and setting from availability values are preserved. The get/set-only default-none boolean is not treated as observable or as immediate current-routing mutation. Positive bus/channel/type/actual-path prerequisites keep unavailable routes from passing; no dictionary codec, stable-label identity, fallback or latency law is added."
+    },
+    {
+      "scope": "Groove and GroovePool",
+      "assessment": "Six primitive declarations retain their published Children category without assuming navigable object children; base get/set-only indexes remain documentary context. Float amounts supply no percentage/range/RNG/quantization/velocity law. The GroovePool child list preserves get/observe, top-to-bottom order and indexed access, with no mutation or lifetime guarantees. Distinct loaded groove identities and valid independent values are required before future proposals."
+    },
+    {
+      "scope": "TuningSystem",
+      "assessment": "All six property types/access declarations agree. Pseudo-octave cents is get-only; lowest/highest/reference dictionaries have no invented keys, types or defaults. note_tunings single-element dictionary/array/cents role is retained without key, order, dimension, transform or assumed1200-cent period. Actions require independently admitted complete payloads and compatible active-system boundaries; UI tuning/finite note storage owners are preserved."
+    },
+    {
+      "scope": "Root and ownership/denominator",
+      "assessment": "this_device is correctly a Device-containing-live.path root context with zero direct members, not a new object member or top-level-track placement rule. Generic Device inheritance and bridge path/ID/get-set-call-observe lifecycle remain external. Six source profiles/28 direct mappings remain explicitly partial with zero semantically complete members; current-public12.4.5 does not prove target12.4.3 or replace existing finite laws."
+    }
+  ],
+  "nonblocking_gaps": [
+    "Exact12.4.3 API/member availability, access enforcement, errors, payload grammar/units, lifecycle, malformed/invalid IDs, persistence, controller profiles, real signal/timing and dictionary schemas remain unknown and are not closed by this review.",
+    "Member mappings and finite case proposals are partial documentary navigation. One role/case does not establish complete positive/negative/boundary behavior, inherited closure or full45-entry/588-declaration API coverage.",
+    "The sealed read-only validator passed. Supplementary review verified the supplied manifest/freeze and actual six raw HTML reproductions, which the validator itself compares through retained inventory blocks. No durable validator error was found."
+  ],
+  "source_identities": [
+    {
+      "id": "C74-LOM-CONTROLSURFACE",
+      "name": "ControlSurface",
+      "url": "https://docs.cycling74.com/apiref/lom/controlsurface/",
+      "final_url": "https://docs.cycling74.com/apiref/lom/controlsurface/",
+      "capture_utc": "2026-10-19T22:11:37.836865+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "file": "classes/controlsurface-2026-10-19.html",
+      "bytes": 62116,
+      "sha256": "f3fcaa681e513f8cfd0e7b307abf8f71a841aa7806157c2ee267ea215942ce99",
+      "version": "Index declares Live12.4.5; target12.4.3 applicability U",
+      "index_locator": {
+        "href": "/apiref/lom/controlsurface/",
+        "html_line": 1377,
+        "html_column": 1717,
+        "text": "ControlSurface"
+      }
+    },
+    {
+      "id": "C74-LOM-DEVICEIO",
+      "name": "DeviceIO",
+      "url": "https://docs.cycling74.com/apiref/lom/deviceio/",
+      "final_url": "https://docs.cycling74.com/apiref/lom/deviceio/",
+      "capture_utc": "2026-10-19T22:11:38.481650+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "file": "classes/deviceio-2026-10-19.html",
+      "bytes": 48143,
+      "sha256": "2ab451c558b843e237f234dc9366d88590c113c0c10cbf8b05abc44f8f3fd789",
+      "version": "Index declares Live12.4.5; target12.4.3 applicability U",
+      "index_locator": {
+        "href": "/apiref/lom/deviceio/",
+        "html_line": 1377,
+        "html_column": 2459,
+        "text": "DeviceIO"
+      }
+    },
+    {
+      "id": "C74-LOM-GROOVE",
+      "name": "Groove",
+      "url": "https://docs.cycling74.com/apiref/lom/groove/",
+      "final_url": "https://docs.cycling74.com/apiref/lom/groove/",
+      "capture_utc": "2026-10-19T22:11:44.376564+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "file": "classes/groove-2026-10-19.html",
+      "bytes": 50072,
+      "sha256": "54d078fcdbcb864c877d6f8c6ff3b613a10e1773dfa3e5750acaa8717409d8b3",
+      "version": "Index declares Live12.4.5; target12.4.3 applicability U",
+      "index_locator": {
+        "href": "/apiref/lom/groove/",
+        "html_line": 1377,
+        "html_column": 4137,
+        "text": "Groove"
+      }
+    },
+    {
+      "id": "C74-LOM-GROOVEPOOL",
+      "name": "GroovePool",
+      "url": "https://docs.cycling74.com/apiref/lom/groovepool/",
+      "final_url": "https://docs.cycling74.com/apiref/lom/groovepool/",
+      "capture_utc": "2026-10-19T22:11:44.368127+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "file": "classes/groovepool-2026-10-19.html",
+      "bytes": 43029,
+      "sha256": "c8aad9f90dad8f2f1d88f96b099792adf19d1792f46b7deb83e60a39628efcaa",
+      "version": "Index declares Live12.4.5; target12.4.3 applicability U",
+      "index_locator": {
+        "href": "/apiref/lom/groovepool/",
+        "html_line": 1377,
+        "html_column": 4329,
+        "text": "GroovePool"
+      }
+    },
+    {
+      "id": "C74-LOM-THIS_DEVICE",
+      "name": "this_device",
+      "url": "https://docs.cycling74.com/apiref/lom/this_device/",
+      "final_url": "https://docs.cycling74.com/apiref/lom/this_device/",
+      "capture_utc": "2026-10-19T22:11:47.111371+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "file": "classes/this_device-2026-10-19.html",
+      "bytes": 40114,
+      "sha256": "a3c478ac122444e56878529b12dfc72cd228e31e6114de1ea2d3c9c2483219cb",
+      "version": "Index declares Live12.4.5; target12.4.3 applicability U",
+      "index_locator": {
+        "href": "/apiref/lom/this_device/",
+        "html_line": 1377,
+        "html_column": 8509,
+        "text": "this_device"
+      }
+    },
+    {
+      "id": "C74-LOM-TUNINGSYSTEM",
+      "name": "TuningSystem",
+      "url": "https://docs.cycling74.com/apiref/lom/tuningsystem/",
+      "final_url": "https://docs.cycling74.com/apiref/lom/tuningsystem/",
+      "capture_utc": "2026-10-19T22:11:47.490687+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "file": "classes/tuningsystem-2026-10-19.html",
+      "bytes": 48568,
+      "sha256": "6f1f7fa28eee02f79de2980231f42445a8329240823c0ecea2097956b6681da2",
+      "version": "Index declares Live12.4.5; target12.4.3 applicability U",
+      "index_locator": {
+        "href": "/apiref/lom/tuningsystem/",
+        "html_line": 1377,
+        "html_column": 9105,
+        "text": "TuningSystem"
+      }
+    }
+  ],
+  "reviewed_canonical_pins": {
+    "wiki/specs/live-api-control-tuning.md": {
+      "bytes": 18373,
+      "sha256": "37234b94be17d54f0756e53c90f4d8a14eba03f06cad24f47d72bd4544192db2"
+    },
+    "wiki/research/live-api-control-tuning.md": {
+      "bytes": 3933,
+      "sha256": "11bbc67b638fb7e49a7ae1d396921954fc473fc56b46acd9264ebd6a1d253a1b"
+    }
+  },
+  "conclusion": "Require only the two bounded source-scope/guarantee corrections before partial documentary approval. Preserve exact R1 history before revisions. Actual APIs/numeric/messages/events/signals/timing and target12.4.3 compatibility remain U; no runtime, Max/API call, patch/JS/example, recapture, install, hardware or candidate execution occurred."
+}

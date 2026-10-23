@@ -1,0 +1,347 @@
+[
+  {
+    "id": "REQ-UPDATE-HELPER-001",
+    "title": "Required current and prepared paths",
+    "provenance": "S",
+    "contract": "The retained invocation path requires both --live and --copy, representing the current installation and prepared replacement. Missing required inputs lead to an invalid-invocation path; complete diagnostic grammar and parser recovery are unknown.",
+    "evidence": [
+      "UH-E01",
+      "UH-E02",
+      "UH-E03"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-002",
+    "title": "Named optional input roles",
+    "provenance": "S",
+    "contract": "The retained option declarations include --sentinel for a marker path, --usagedata for a reporting path, --parentpid for parent metadata, and the --nowait and --wait-forever controls. The current/copy declarations also name short aliases. These declarations do not establish complete quoting, repetition, encoding or flag-value syntax.",
+    "evidence": [
+      "UH-E01",
+      "UH-E02"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-003",
+    "title": "Handoff argument form",
+    "provenance": "S",
+    "contract": "The traced update handoff supplies --live and --copy and conditionally includes nonempty sentinel/reporting/parent metadata. Its retained argument construction emits option=value text. This is one supplied form, without a complete CLI codec or shell-quoting rule.",
+    "evidence": [
+      "UH-E09",
+      "UH-E10"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-004",
+    "title": "Parent metadata scope",
+    "provenance": "S",
+    "contract": "The supplied --parentpid value has an integer-parsing diagnostic path and an optional reporting role. The retained reporting path can include the supplied parent value. This does not establish that this option selects the process whose completion is awaited, nor an invalid-value refusal or coercion policy.",
+    "evidence": [
+      "UH-E02",
+      "UH-E03"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-005",
+    "title": "Reporting file role",
+    "provenance": "S",
+    "contract": "A --usagedata path is associated with retained reporting calls for process/start/end and replacement/cleanup stages. The role does not specify record bytes, timestamp units, durable flush, upload, consent or successful file creation.",
+    "evidence": [
+      "UH-E03",
+      "UH-E04",
+      "UH-E05"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-006",
+    "title": "Conditional orphan wait",
+    "provenance": "I",
+    "contract": "The retained control flow has a conditional wait for the launching process to complete and describes --nowait as bypassing that wait. Connecting option state through the unretained state-construction call is an inference. No timeout, polling unit, infinite-wait guarantee or supplied-PID selection is established.",
+    "evidence": [
+      "UH-E01",
+      "UH-E02",
+      "UH-E03"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-007",
+    "title": "Path checks before replacement",
+    "provenance": "S",
+    "contract": "Both supplied locations are checked before the traced replacement stages; an unsuccessful path check takes a failure path. Exact existence/type/access predicate, symbolic-link handling and path repair remain unknown.",
+    "evidence": [
+      "UH-E04"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-008",
+    "title": "Sibling-path condition",
+    "provenance": "S",
+    "contract": "The retained path comparison rejects current and prepared locations whose parent-directory comparison differs. Path canonicalization, case folding, aliases, mount and same-object policy are not established by that comparison.",
+    "evidence": [
+      "UH-E04"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-009",
+    "title": "Running-application refusal role",
+    "provenance": "S",
+    "contract": "When the helper running-application check reports Live present, the retained callback takes an abort role instead of invoking replacement. The exact detection predicate and race window remain unknown; an absent or unavailable process fixture cannot prove this exclusion.",
+    "evidence": [
+      "UH-E07",
+      "UH-E03"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-010",
+    "title": "Replacement path names",
+    "provenance": "S",
+    "contract": "The traced normal replacement path uses the current path with an .Old suffix for the old installation and places the prepared replacement at the original current path, followed by attempted cleanup of the old path. This supplies observable location roles, without atomicity, durability or complete metadata preservation.",
+    "evidence": [
+      "UH-E04",
+      "UH-E05"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-011",
+    "title": "First replacement-stage failure",
+    "provenance": "S",
+    "contract": "Failure reported for moving the current installation to its old-path location returns a failure role before the prepared-promotion stage in the retained path. Filesystem partial effects and exact error/status representation remain unknown.",
+    "evidence": [
+      "UH-E04",
+      "UH-E05"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-012",
+    "title": "Second-stage restoration attempt",
+    "provenance": "S",
+    "contract": "If promotion of the prepared copy fails after the first stage, the retained path attempts to restore the old installation to the current path. This is a restoration attempt, not a guarantee of successful rollback, atomicity or recovered content.",
+    "evidence": [
+      "UH-E04",
+      "UH-E05"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-013",
+    "title": "Restoration failure role",
+    "provenance": "S",
+    "contract": "The retained second-stage failure path distinguishes a failed restoration attempt diagnostically and still reports failure. Subsequent recovery, retry, cleanup, surviving paths and application usability remain unknown.",
+    "evidence": [
+      "UH-E04"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-014",
+    "title": "Cleanup failure is distinct",
+    "provenance": "S",
+    "contract": "Old-installation cleanup is attempted after prepared promotion. Its reported failure causes the replacement operation to report failure; the traced cleanup-failure branch does not itself take the second-stage restoration path. This does not imply the old directory remains intact or the promoted application is usable.",
+    "evidence": [
+      "UH-E04",
+      "UH-E07"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-015",
+    "title": "Optional marker gate",
+    "provenance": "S",
+    "contract": "A nonempty sentinel path is reached for a marker operation only when the replacement operation reports success in the retained callback. Marker presence alone is not evidence of full update compatibility or successful application launch, and a marker attempt is not a successful write oracle.",
+    "evidence": [
+      "UH-E07",
+      "UH-E06"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-016",
+    "title": "Marker-operation error role",
+    "provenance": "S",
+    "contract": "The retained ordinary marker-operation error path records a warning and returns without assigning a new operation status in that routine. This does not establish all exception behavior, exact exit-code mapping or a guarantee that marker failure makes the helper fail.",
+    "evidence": [
+      "UH-E06",
+      "UH-E07"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-017",
+    "title": "Result propagation roles",
+    "provenance": "S",
+    "contract": "The retained helper entry relays the operation result, with distinct invalid-invocation, running-application refusal and replacement-failure branches. Retained numeric constants are source context only; full process-exit mapping, exception/signals and platform representation remain unknown.",
+    "evidence": [
+      "UH-E08",
+      "UH-E03",
+      "UH-E07"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-018",
+    "title": "Prepared handoff admission",
+    "provenance": "S",
+    "contract": "The selected update-handoff path first requires a pending prepared update, then waits for the originating application to terminate. A configured crash-marker file or a positive other-application-running check prevents that selected path from launching the swap helper. Other startup, eligibility and concurrency paths remain unclosed.",
+    "evidence": [
+      "UH-E13",
+      "UH-E14",
+      "UH-E10"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-019",
+    "title": "Configured helper availability",
+    "provenance": "S",
+    "contract": "The retained handoff checks that a helper executable is configured; absent configuration follows an error role. Relocation also has an error role. Exact exceptions, diagnostics, fallback/retry and user-visible presentation remain unknown.",
+    "evidence": [
+      "UH-E10",
+      "UH-E11",
+      "UH-E12"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-020",
+    "title": "Temporary helper process location",
+    "provenance": "S",
+    "contract": "The selected handoff prepares a temporary helper location and requests a separate process there, with that copied executable directory as working directory. Supporting-file selection, loader behavior, collision handling and cleanup lifetime remain unknown; this is an observable process/path role, not an implementation design.",
+    "evidence": [
+      "UH-E11",
+      "UH-E12"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-021",
+    "title": "Live startup admission guard",
+    "provenance": "S",
+    "contract": "The retained Live startup path queries for a running Ableton Swapper. Its positive-result branch prevents startup continuation and has an update-in-progress warning branch; a no-dialog branch also exits. Exact process matching, configuration of the no-dialog branch, rendering and race handling remain unknown.",
+    "evidence": [
+      "UH-E15",
+      "UH-E16",
+      "UH-E17",
+      "UH-E18",
+      "UH-E19",
+      "UH-E22"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-022",
+    "title": "Selected Live-to-updater handoff",
+    "provenance": "S",
+    "contract": "The retained Live configuration supplies the updater with a helper location and optional marker location; the selected connector path performs the helper launch. This bounded routing evidence does not prove that no other launch or sentinel-reader path exists in the whole product.",
+    "evidence": [
+      "UH-E20",
+      "UH-E21",
+      "UH-E10",
+      "UH-E11"
+    ],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-023",
+    "title": "CLI grammar and malformed inputs",
+    "provenance": "U",
+    "contract": "Full CLI grammar, short-alias spelling, separators, quoting/Unicode, repeated/unknown options, empty arguments, malformed parent metadata and parse-recovery/refusal remain U.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-024",
+    "title": "Path identity and repair",
+    "provenance": "U",
+    "contract": "Exact path validation, canonicalization, case/symlink/mount identities, same-path inputs, existing .Old collisions, permission/space denial and file repair policy remain U.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-025",
+    "title": "Process identity and wait policy",
+    "provenance": "U",
+    "contract": "Parent metadata versus actual launcher identity, PID reuse, process matching/races, wait default/timing/cancel and --wait-forever behavior remain U; its label is not an infinite-wait guarantee.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-026",
+    "title": "Interrupted replacement and recovery",
+    "provenance": "U",
+    "contract": "File-operation partial effects, metadata preservation, interruption/power loss, atomicity/durability, failed restoration and cleanup, retry/restart and repair remain U.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-027",
+    "title": "Marker/report/status representation",
+    "provenance": "U",
+    "contract": "Sentinel touch/create/truncate/content/metadata, reporting/log bytes and event order/flush, full exit/signals/exception mapping and any marker reader remain U.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-028",
+    "title": "Editing and lifecycle",
+    "provenance": "U",
+    "contract": "Persistence across restart, undo/redo, cancellation, source loss, configuration changes, simultaneous updates, teardown and orphan cleanup remain U unless separately supported by existing owners.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-029",
+    "title": "Platform and version closure",
+    "provenance": "U",
+    "contract": "These selected exact12.4.3 arm64 retained branches are not full macOS/Windows/platform, installation, authorization, updater-service, package/delta or current/future-version compatibility.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  },
+  {
+    "id": "REQ-UPDATE-HELPER-030",
+    "title": "Whole-product and service boundary",
+    "provenance": "U",
+    "contract": "Account/consent/upload/protocol, update selection/preparation algorithms, application sound/data compatibility, general recovery and any untraced helper/Live path stay with existing owners or U; source strings alone establish none of them.",
+    "evidence": [],
+    "target_grade": "U",
+    "semantic_complete": false
+  }
+]

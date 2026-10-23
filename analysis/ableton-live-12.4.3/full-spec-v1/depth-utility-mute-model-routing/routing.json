@@ -1,0 +1,302 @@
+{
+  "id": "D03-UTILITY-MUTE-MODEL-ROUTING",
+  "revision": 1,
+  "status": "research-only; independent review pending",
+  "claims": [
+    {
+      "id": "MR01",
+      "claim": "The AStereoGain constructor initializes the wrapper at D+0x350 through1026ebbc4/10150b1cc and separately uses its D+0x358 pointer with the literal Mute label in1026ec1cc. D denotes this model/device object, not processor P from the earlier mute-kernel trace.",
+      "limit": "Constructor-local private association only. Neither allocation nor View factory is a public UI gesture; no live object or dispatch proven.",
+      "source": {
+        "function_index": 1,
+        "entry": "0x102f50558",
+        "code_start": 4541,
+        "code_end": 4920,
+        "text": "undefined ***)(param_1 + 0x338) = &PTR_thunk_FUN_10150b2b4_1067ace00;\n  FUN_1026ebbc4(&local_90);\n  FUN_10150b1cc(param_1 + 0x350,local_90);\n  if (local_90 != (int *)0x0) {\n    iVar2 = local_90[2];\n    local_90[2] = iVar2 + -1;\n    if (iVar2 + -1 == 0) {\n      FUN_10128eea0();\n    }\n  }\n  *(undefined ***)(param_1 + 0x350) = &PTR_thunk_FUN_10150b2b4_1067b50c8;\n  FUN_1026ebbc4(&"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        8
+      ],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR02",
+      "claim": "The same constructor passes its D+0x358 pointer and the literal Mute label to1026ec1cc. The reused managed-wrapper constructor stores its supplied pointer at wrapper+8.",
+      "limit": "No claim that an arbitrary runtime instance has these contents, or that initialization values prove factory/reset/public state.",
+      "source": {
+        "function_index": 1,
+        "entry": "0x102f50558",
+        "code_start": 14725,
+        "code_end": 15026,
+        "text": "uVar6 = *(undefined8 *)(param_1 + 0x358);\n  FUN_101427680(&local_e0,\"Mute\");\n  uVar5 = FUN_10143b884();\n  FUN_1026ec1cc(uVar6,0,&local_e0,uVar5);\n  if (local_e0 != (int *)0x0) {\n    iVar2 = *local_e0;\n    *local_e0 = iVar2 + -1;\n    if (iVar2 + -1 == 0) {\n      FUN_101449efc();\n    }\n  }\n  uVar6 = *("
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        11
+      ],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR03",
+      "claim": "The static member metadata declaration labels wrapper offset0x350 mpMute.",
+      "limit": "Declaration provenance, not an executed reflection result or public parameter routing.",
+      "source": {
+        "function_index": 7,
+        "entry": "0x102f4fb10",
+        "code_start": 6450,
+        "code_end": 6685,
+        "text": "  uVar2 = FUN_1026eb7c0();\n  FUN_10147e954(&DAT_106e6e618,0xffffffff,0xffffffff,0x350,L\"mpMute\",6,&DAT_1062a3ca0,0,local_30,\n                uVar2);\n  if (local_28 != (int *)0x0) {\n    iVar1 = *local_28;\n    *local_28 = iVar1 + -1;\n   "
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR04",
+      "claim": "The bool model constructor installs vtable literal1067f9dd0; the retained +0x170 word resolves to1026eb7b4, which returns DAT106e51ba8, also returned by1026eb7a8.",
+      "limit": "Same metadata-address evidence only. No parent metadata was read. Generic factory bool selection remains conditional on prior comparisons failing and the bool comparison succeeding.",
+      "source": {
+        "function_index": 12,
+        "entry": "0x1026ebc1c",
+        "code_start": 86,
+        "code_end": 375,
+        "text": "8;\n  \n  puVar2 = (undefined8 *)FUN_1026f86ac();\n  *puVar2 = &PTR_FUN_1067f9dd0;\n  puVar2[0x14] = &PTR_FUN_1067fa240;\n  puVar2[0x15] = &PTR_FUN_1067fa260;\n  puVar2[0x16] = &PTR_FUN_1067fa2d8;\n  FUN_102585500(&local_28);\n  FUN_10150b1cc(param_1 + 0x210,local_28);\n  if (local_28 != 0) {\n    "
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        9,
+        14
+      ],
+      "related_word_indices": [
+        2
+      ]
+    },
+    {
+      "id": "MR05",
+      "claim": "In the generic factory reused at its exact A1 provider pointer, the bool comparison branch calls102422efc; that constructor calls10242c75c, which installs bool-unit vtable1067b4860. Its retained +0xb8 word resolves to10242cb20.",
+      "limit": "A conditional static factory branch, not a demonstrated actual instantiation/enrollment/call on this Mute model. No current runtime unit identity.",
+      "source": {
+        "function_index": 10,
+        "entry": "0x102422efc",
+        "code_start": 18,
+        "code_end": 232,
+        "text": "c(long *param_1)\n\n{\n  long lVar1;\n  \n  FUN_1012d9734(0xa8);\n  lVar1 = FUN_10242c75c();\n  *param_1 = lVar1;\n  if (lVar1 != 0) {\n    *(int *)(lVar1 + 8) = *(int *)(lVar1 + 8) + 1;\n  }\n  FUN_101482718();\n  return;\n}\n\n"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        13
+      ],
+      "related_word_indices": [
+        3
+      ]
+    },
+    {
+      "id": "MR06",
+      "claim": "10242cb20 calls10242cee8 with its supplied model, then forwards other virtual calls.",
+      "limit": "The exporter jumptable/indirect-call warnings are retained; full ABI, control flow and runtime binding are not proved.",
+      "source": {
+        "function_index": 15,
+        "entry": "0x10242cb20",
+        "code_start": 56,
+        "code_end": 577,
+        "text": "  long *plVar1;\n  \n  FUN_102322ba0();\n  FUN_10242cee8(param_1,param_2);\n  plVar1 = *(long **)(param_1 + 0x98);\n  if (plVar1 != (long *)0x0) {\n    (**(code **)(*plVar1 + 0x28))(plVar1,param_2);\n  }\n  (**(code **)(**(long **)(param_1 + 0x90) + 0xb8))(*(long **)(param_1 + 0x90),param_2);\n                    /* WARNING: Could not recover jumptable at 0x00010242cb88. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(long **)(param_1 + 0x88) + 0xb8))(*(long **)(param_"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        16
+      ],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR07",
+      "claim": "10242cee8 takes the supplied model virtual+0x328 return as a conditional role flag: zero selects literal Out and nonzero leaves RampOut for102321d9c.",
+      "limit": "This is not a read of a demonstrated current Mute float/value. The runtime flag, exact graph port objects and endpoint association remain unknown.",
+      "source": {
+        "function_index": 16,
+        "entry": "0x10242cee8",
+        "code_start": 1162,
+        "code_end": 1613,
+        "text": "d0(param_1,uVar4);\n  FUN_102413348(*(undefined8 *)(param_1 + 0x90),local_68);\n  local_48 = \"RampOut\";\n  if ((int)uVar2 == 0) {\n    local_48 = \"Out\";\n  }\n  local_40 = 0;\n  FUN_102321d9c(*(undefined8 *)(param_1 + 0x90),&local_48,*(undefined8 *)(param_1 + 0x88),0);\n  local_48 = \"InClearBang\";\n  local_40 = 0;\n  FUN_102321f5c(*(undefined8 *)(param_1 + 0x80),local_68,&local_48,0);\n  local_48 = \"Out\";\n  local_40 = 0;\n  local_60 = \"In\";\n  local_58 = 0;\n  "
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        19,
+        13
+      ],
+      "related_word_indices": [
+        4
+      ]
+    },
+    {
+      "id": "MR08",
+      "claim": "The named-link helper102321d9c compares stored name-like fields and passes the matched entry or zero to102312ed0;102322110 also forwards a stored entry to102312ed0.",
+      "limit": "Function-local graph-object linking only. No identification of that output with the processor Mute descriptor, nor delivery/value proof.",
+      "source": {
+        "function_index": 19,
+        "entry": "0x102321d9c",
+        "code_start": 693,
+        "code_end": 1045,
+        "text": " }\n        local_50 = lVar2;\n        if (cVar1 == '\\0') {\n          FUN_101290f58(param_2);\n        }\n        if (lVar2 == *param_2) {\n          lVar4 = *plVar3;\n          goto LAB_102321e40;\n        }\n      }\n      plVar3 = plVar3 + 1;\n      lVar4 = lVar4 + -8;\n    } while (lVar4 != 0);\n  }\n  lVar4 = 0;\nLAB_102321e40:\n  FUN_102312ed0(**(undefined8 *"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        20,
+        22,
+        18,
+        21
+      ],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR09",
+      "claim": "The independently retained StereoGain processor registration10215eafc packs literal Mute (0x6574754d little endian) and supplies callback storage1065411a0; its exact word resolves to10216533c.1021407cc separately binds StereoGain.Create storage106508df8 to the processor factory.",
+      "limit": "These registration facts are separate from the device/model path. No public-model-to-this-descriptor join is closed.",
+      "source": {
+        "function_index": 4,
+        "entry": "0x10215eafc",
+        "code_start": 10355,
+        "code_end": 10617,
+        "text": "tack_5c,local_60)))));\n  }\n  local_49 = '\\x04';\n  local_60 = 0x6574754d;\n  cStack_5c = 0;\n  (**(code **)(*param_1 + 0x58))(param_1,&local_60,PTR___invoke_1065411a0);\n  if (local_49 < '\\0') {\n    operator_delete((void *)CONCAT17(cStack_59,\n                       "
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        6
+      ],
+      "related_word_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "MR10",
+      "claim": "Constructor observer enrollment calls1024874ac for the Mute-associated virtual+0x278 result; that helper registers DefaultUpdateStatesHandler through10155c8c0, whose body appends the callback and contains an immediate call with trailing literal4.",
+      "limit": "Observer enrollment and literal call shape only, not processor parameter-name mapping, scheduling or audio dispatch.",
+      "source": {
+        "function_index": 23,
+        "entry": "0x1024874ac",
+        "code_start": 63,
+        "code_end": 302,
+        "text": "ined *local_20;\n  long lStack_18;\n  \n  lStack_18 = *(long *)(param_1 + 0x98);\n  local_20 = PTR_CallMemberFunc<&LDevice::DefaultUpdateStatesHandler>_106535148;\n  FUN_10155c8c0(param_2,*(undefined8 *)(lStack_18 + 8),&local_20);\n  return;\n}\n\n"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        1,
+        25
+      ],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR11",
+      "claim": "The constructor calls1025c1e98 with its SAddToParameterUnit callback. That wrapper calls1025c1ea8; its member enumeration invokes supplied eligibility checks before metadata-based descriptor construction.",
+      "limit": "Actual traversal of this particular Mute object and identity/aliasing are unproved. Exclusion predicates are not an executed admission result.",
+      "source": {
+        "function_index": 1,
+        "entry": "0x102f50558",
+        "code_start": 17191,
+        "code_end": 17402,
+        "text": "a948;\n  lStack_88 = param_1;\n  FUN_10155c8c0(*(undefined8 *)(param_1 + 0x3a0),param_1,&local_90);\n  FUN_1025c1e98(param_1,PTR_CallStaticFunc<&LStereoGain::SAddToParameterUnit>_106536580,0);\n  return param_1;\n}\n\n"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        24,
+        26,
+        3,
+        27,
+        28
+      ],
+      "related_word_indices": []
+    },
+    {
+      "id": "MR12",
+      "claim": "In1025c1ea8 the bool-comparison branch constructs a0x30-byte descriptor with literal1067e1d18, model-associated handle and byte obtained through member virtual+0x330.",
+      "limit": "Typed descriptor/cache association only. Private handle lifetime/ABI and descriptor-to-processing endpoint routing are not established.",
+      "source": {
+        "function_index": 26,
+        "entry": "0x1025c1ea8",
+        "code_start": 19902,
+        "code_end": 20747,
+        "text": " LAB_1025c2ad8;\n              }\n              puVar8 = (undefined8 *)FUN_1012d9850(0x30);\n              FUN_101482918(&local_90,plVar21);\n              FUN_10128ed98(puVar8);\n              *puVar8 = &PTR_FUN_1067e18f8;\n              uVar7 = FUN_1012908d8(&local_90);\n              puVar8[3] = uVar7;\n              *(undefined1 *)(puVar8 + 4) = extraout_w1_02;\n              if ((local_90 != (int *)0x0) &&\n                 (iVar3 = *local_90, *local_90 = iVar3 + -1, iVar3 + -1 == 0)) {\n                FUN_101449efc();\n              }\n              *puVar8 = &PTR_thunk_FUN_10128edf8_1067e1d18;\n              uVar2 = (**(code **)(*plVar21 + 0x330))(plVar21);\n              *(undefined1 *)(puVar8 + 5) = uVar2;\n            }\n            else {\n              puVar8 = (undefined8 *)FUN_1012d9850(0x30);\n              FUN_101482918(&local_90,plVar"
+      },
+      "application_expected": null,
+      "application_comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "related_function_indices": [
+        9
+      ],
+      "related_word_indices": []
+    }
+  ],
+  "object_domains": {
+    "model_device": "D",
+    "processor": "P",
+    "same_object_proven": false,
+    "wrapper_offset": 848,
+    "wrapped_pointer_offset": 856,
+    "wrapper_pointer_delta": 8,
+    "model_metadata_vslot": 368,
+    "unit_bind_vslot": 184
+  },
+  "factory_predicate": "Prior float and enum comparisons fail; bool metadata comparison succeeds. Equal bool metadata addresses alone do not prove the preceding failures.",
+  "open_joins": [
+    "Actual public Mute gesture to an identified D model",
+    "Actual runtime member traversal/eligibility/typed descriptor for D+0x358",
+    "Actual generic unit construction and invocation for that descriptor",
+    "Bool graph output to the independently registered processor Mute descriptor and10216533c",
+    "Runtime Out-text guard initialization and pointed object/string identity",
+    "Any actual processor invocation/output or public audio behavior"
+  ],
+  "limits": {
+    "out_text_storage_pointer_is_name_proof": false,
+    "guard_contents_proven": false,
+    "public_model_descriptor_join_closed": false,
+    "application_case_grade": "U",
+    "application_cases_executed": false,
+    "requirements_added": 0,
+    "cases_added": 0,
+    "coverage_credit": 0,
+    "public_expected": null,
+    "public_comparison": null
+  },
+  "read_scope": {
+    "Root": "Fresh full23 selected bodies, including five named graph-link object helpers; no actual processor join. No extra full string record credit; LegacyMode string output was truncated.",
+    "Delay": "Fresh full eight selected function bodies, including full34155-byte1025c1ea8 (untruncated9162-token combined output). Selected constructor+350/+358/Mute andregistration-tail windows only; no fresh full constructor/whole image/vtables/graph traversal claim. Helper inspected; equivalent new stdlib JSONL lookup used under own/tmp, never helper main or rootrecord writes.",
+    "packager": "Fresh full23 Root bodies and five additional short Delay bodies; selected context windows of the34155-byte enumeration body plus complete contributor notes. Parent JSONL integrity/code/line checks apply to all29 unique full retained bodies, not a claim of independent full semantic reread of the large enumeration. Initial five complete alias rows read as data. All five40-byte pointer reads freshly verified. Generic factory, comparison equality fast path and wrapper provider bodies freshly read from frozen A1 data."
+  },
+  "source_export_utc": null,
+  "analyst_packaged_utc": "2026-10-20T05:04:04.482035+00:00"
+}

@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "utc": "2026-10-20T17:10:22.766192+00:00",
+  "disposition": "REQUIRED PRECISION CORRECTION; OTHER RETAINED-LISTING CLAIMS CONDITIONAL ONLY",
+  "author": "Root",
+  "reviewer": "delay_reverb_correction",
+  "required_findings": [
+    {
+      "id": "CD090-REVIEW-001",
+      "severity": "required precision correction",
+      "pointer": "/claims/2/conclusion",
+      "quoted": "R10=[[I+8]+10]",
+      "source": [
+        "assembly.txt@0xd86a: RDI=mem64[I+8]",
+        "assembly.txt@0xd875: RCX=mem64[RDI]",
+        "assembly.txt@0xd878: R10=mem64[RCX+0x10]"
+      ],
+      "issue": "Written expression omits the explicit firstword/table load. A nominal I+8 receiver field offset is not the same address as its firstword table plus0x10.",
+      "minimal_correction": "Retain originalquery; add immutable correction: V=mem64[I+8],T=mem64[V],R10=mem64[T+0x10]. Qualify R12=I+0x10/RBX=I by ordinarycallee preservation, and reloaded RBP-58/RBP-50 content by unchangedvalid savedstackslots/nointerference; otherwise state actualreload expressions only."
+    }
+  ],
+  "inputs": {
+    "query": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-x86-d090-retained-construction-frontier-2026-10-20.json",
+      "bytes": 2825,
+      "sha256": "82e2802aed0492ff32abf5b7dacd7d093a28acb6de2b5e79a0b2409909db7066"
+    },
+    "source": [
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-actual-r5/functions/0xd090/assembly.txt",
+        "bytes": 13600,
+        "sha256": "eea80f9f6d6810fddbc46174a8a2ceed6ec0429b2800b7049edfcf2381fadcd4"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-actual-r5/functions/0xd090/metadata.json",
+        "bytes": 1416,
+        "sha256": "86c7704e1ca9be0ce3f7e6b2b95daee133031a5044285410d41721c5eb859378"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-actual-r5/manifest.json",
+        "bytes": 6776,
+        "sha256": "2aaa2aa2e648b52af65881693ab0cdf802bb2e8f4b371305509a579d20bef0d3"
+      }
+    ],
+    "sourceguard": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-selected-entry-actual-r5/method/CorpusX86SelectedExport.java",
+      "bytes": 13354,
+      "sha256": "fea5edbf894a815c3bce171ee9d376b8882c0bd92b4c454d47f981b406334b72"
+    },
+    "evidence": {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-d090-retained-construction-frontier-review-evidence.json",
+      "bytes": 4626,
+      "sha256": "b6e3b5c725a55456bb8b9ba04f790d73f4588740ca8826524662d8f40b872307"
+    }
+  },
+  "roles": "Reviewer independently reviews Rootcurrentquery, not current sourceauthor. Reviewer independently reviewed R5codepreparation and earlierCorpus/Utility research/capture preparations. FailedR5actualexecution peer is separate Synthesis work; no selfapproval or current actualsuccess approval here.",
+  "fresh_scope": "Full currentquery/fourclaims/complete388row13600Blisting/1416Bmetadata and exactsourceguard106..160 read. Query sourcepins/manifestidentity/actualguard hash checked as data; no independent rawinstructiondecode or newbody. Provider C is absent and state remainsfailed.",
+  "conditional_assessment": [
+    {
+      "claim": 0,
+      "status": "supported sourceprojection; locator endsd0c2 before laterliteralstores, which are directly visible d0c6..d0e0",
+      "qualification": "InitialI+8zero/RBXentry/R12entry+10 only under valid reachedstores/ordinaryregister preservation; literaltableaddresses do notprovetype."
+    },
+    {
+      "claim": 1,
+      "status": "supported conditional sourceprojection",
+      "qualification": "d7cd requests1b0 throughEDI thenopaque2cc0c returnRAX savedR14, forwardedRDI to39a0 thenR14 storedI+8 under normalABI/preservedRBX/R14/validmemory. No mallocbinding/allocationbounds/ctorsemantics proved."
+    },
+    {
+      "claim": 2,
+      "status": "requires explicitdereference correction and statedsavedregister/stackslotpremises",
+      "qualification": "Actual RDI/RCX/R10 sequence and register/stackargumentstores supported; 0xac44/0x20/1 are literalcarriers, not publicprotocol/type/value roles."
+    },
+    {
+      "claim": 3,
+      "status": "supported providerclassification only",
+      "qualification": "Normalrecoveredtail RETdb06 and separate listederrorpathdb07/db0b/db10UD2 visible; unresolvedcomputedtransfer caused pre-decompilerfailure. No fullbody/nativeextent/exceptionsemantics/reachability proof."
+    }
+  ],
+  "verification": {
+    "watch": 5,
+    "unchanged": true,
+    "source_rows": 388,
+    "source_bytes": 13600,
+    "metadata_bytes": 1416,
+    "body_bytes_provider_only": 2685,
+    "raw_decoder_or_original_runs": 0
+  },
+  "limits": [
+    "No seconddecoder/raw/nativeinstruction/callee/global/window/Ghidra/Java/original/tool execution or sourcefollow.39a0entryprefix remainsproposal only.",
+    "Full listing is recoveredproviderprojection fromFAILEDexport, not completeC/bodyproof/ABI/type/actualinstance/model/coefficient/readout or physicalmodal grade.",
+    "All174+2modalomissions/A1/application outcomes unchangedU; no newcase/criterion/completion."
+  ],
+  "activity_note": "Read-only sourceguard diagnostic requested lines106..173 although source ends160; printed selectedguard106..160 then IndexError. No provider mutations or tool/native execution; all needed guard text already printed/read."
+}

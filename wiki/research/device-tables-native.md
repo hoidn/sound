@@ -252,3 +252,27 @@ P4-N5-01 to 04 on the macOS reference host. Inputs are copies of shipped files.
   disassembly as described. Two parts are hand models.
 - Analog and Tension display names are only partly resolved in `constructors.tsv`; they are not used.
 - No organization is attributed to any binary.
+
+## Bounded bundled-parameter route inventory — 2026-10-20
+
+Pending independent structure review: [family-bundled-parameters-routes-v1](../../analysis/ableton-live-12.4.3/full-spec-v1/family-bundled-parameters-routes-v1/structure.md) cuts current SPEC-BUNDLED-DEVICE-PARAMETERS r3 from approved integration I01/I07/I08 and component context. Its ledger has135 stated predicate/context rows (120static, one local extracted Electric voice route,14with no established route), separately from502parameter/20plain-field metadata,37owner cases and82immutable released preset cases. Counts are inventory only, not grades or a whole-product denominator; every public application binding remains unestablished, including investigative S routes for U clauses.
+
+The packet pins current owner, release/narrowing review and existing H4/N1/N5/N6 sources without copied specification snapshots or case bodies. It preserves A1 construction/load, A2 base-type and A3 presentation assumptions, AAmp loader-table qualification, stored/current/engine distinctions, the nine Corpus/Collision position-value exclusions, Cabinet switch label correction versus v1 exclusion, and Polyphony index/label/local voices/display separation. Browser Defaults choice, absent/out-of-range post-load/display/save, plain-field meanings/defaults, target-ID assignment, macro identity and actual plug-in/UI/output delivery remain open. Cabinet helper interpretation is carried from retained review notes with a null original-record locator. No original/provider/decoder/harness/model/comparator execution occurred; the owned stdlib author check verifies only selected data, locators and meaningful negative fixtures. Root owns seal and separate review; no normative or released scope changes here.
+
+
+## Bundled parameter family review approval — 2026-10-20
+
+The [independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-bundled-parameters-routes-v1-review.json),
+SHA256 `173b3f6967809122920248ab7a8d79cc1fbee9c245bfa43f20db4565aff981fc`,
+approves bounded structure for manifest
+`0c3a074ea5a2dbe28075003343e4b601c5b1995930eddf4834d412f5dea5d5bc`.
+All 135 contexts/15 requirements are represented; all 37 owner unknowns remain
+unknown and all public bindings unestablished. The 502 parameter metadata rows,
+20 plain fields, 82 released inputs and 31 historical voice inputs are separate
+units. The review checked selected source/locator identities and short source
+semantics; large constructor/traversal/library conclusions and the three Cabinet
+helper interpretations remain inherited qualifications with null original
+helper locators. A1–A3 and position/label exclusions are unchanged.
+
+No new original execution, norm/case/release/grade, completed profile or product
+denominator follows. The earlier pending-review append is author history.

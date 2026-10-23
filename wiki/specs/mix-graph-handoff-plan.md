@@ -2,7 +2,7 @@
 id: PLAN-MIX-GRAPH-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -18,6 +18,10 @@ Released 2026-10-18 as [mix-graph-v1](../../handoff/mix-graph-v1/README.md), app
 - **RMG-03:** REQ-013's sample-timing sentence is moved out of the released clause.
 
 For the spec author: F1, F2, F3 and F6 hold; objdump confirms that L is 200 for r ≥ 2³¹. REQ-013's interpolation needs a value step in the settings; without one, the value is held. REQ-012's one-event rule conflicts with the T11-MIN envelopes.
+
+## Draft reconciliation (2026-10-19)
+
+Draft r2 applies F1–F6 and review RMG-01 to 03: internal predicate case withdrawn, out-of-range load outcomes ungraded, ramp overflow documented, default/data-step conditions explicit, song-time offset untraced, one-event tempo/meter exemption and narrower send dependencies. The preparation instructions below are the historical staging plan.
 
 ## Decision and boundary
 
@@ -322,9 +326,13 @@ per-sample track-output functions (`fma-scan.txt` names them as not compared).
    Then update the catalog, spec status, coverage, indexes and log.
 9. An isolated implementation workspace remains unprovisioned.
 
-## Current disposition
+## Historical staging disposition — 2026-10-18
 
 Staged on 2026-10-18 as an unreviewed candidate: 28 cases (17 computation,
 11 render) for partial REQ-MIX-GRAPH-001 to 011, 013 and 014. REQ-012, 015
 and 016 are unreleased. It is not published, and no handoff exists for
 SPEC-MIX-GRAPH.
+
+## Current disposition — 2026-10-21
+
+The reviewed local [mix-graph-v1](../../handoff/mix-graph-v1/README.md) was released2026-10-18 as the review outcome above records. Its28cases remain current/immutable; the preceding unpublished-candidate statements are historical staging text. [Draft R3](../research/mix-graph.md#mix-owner-r3-finite-annex-adoption--2026-10-21) separately adds25finite native-output observations/seven inheritedreferences, preserving all16bodies/34old rows/released28scope. Portable expectations/comparators remainNULL, with no publicgroup/MainOn/currentreceiver/ARM/calibration law. No new release is selected. Current implementation-workspace status belongs to [project status](../project.md#current-phase); the old unprovisioned statement above records its staging date.

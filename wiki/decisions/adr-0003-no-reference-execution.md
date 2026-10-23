@@ -2,11 +2,15 @@
 id: ADR-0003
 type: decision
 status: adopted
-updated: 2026-10-18
+updated: 2026-10-21
 access: neutral
 ---
 
 # ADR 0003: No reference execution; the project finishes on the Linux workstation
+
+> Reopened 2026-10-21 by [ADR 0006](adr-0006-reference-observation-reopened.md):
+> whole-application observation (label O) is authorized again once a reference
+> host is recorded. The extracted-execution rules below stay in force.
 
 ## Decision and authority
 

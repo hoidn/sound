@@ -2,7 +2,7 @@
 id: PLAN-TRANSPORT-STATE-V3-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -18,7 +18,11 @@ Released 2026-10-18 as [transport-state-v3](../../handoff/transport-state-v3/REA
 - **RV3-01:** the rule reads "no audio, MIDI or group track".
 - **RV3-02:** v2's fixtures judge no case.
 
-For the spec owner: the cases still describe their fixtures as edits of B0, and the handoff section must name v3. New REQ-012 evidence: on open, a tempo Manual value that disagrees with its automation envelope is replaced by the envelope's value.
+Draft reconciliation, 2026-10-19: [revision 5](transport-state.md#revision-and-handoff)
+uses the authored v3 carrier, records the v1/v2 fixture defect and names v3 as current.
+REQ-012 incorporates the conditional tempo reconciliation from the retained review
+checks; the untraced owner flag and envelope-value selection stay unknown. No
+expectation or released byte changed.
 
 ## Decision and boundary
 
@@ -51,8 +55,8 @@ for the added track. No reference application or candidate has run, and no
 compatibility is claimed.
 
 This page is the analyst-side plan and traceability record, not an implementation
-input. The candidate is **unreviewed and unpublished**. Nothing has been written into
-`handoff/`.
+input. The staging and review-gate sections below record the pre-review candidate; the
+released outcome above governs current status.
 
 ## Scope
 
@@ -64,7 +68,7 @@ The selection is the same as v2's, from revision 4.
 | 009, 012 | None | All |
 
 The exclusions are v2's, plus one new input without expectation: a `Tracks` element
-that is absent or holds no `AudioTrack` or `MidiTrack`, and track content other than
+that is absent or holds no `AudioTrack`, `MidiTrack` or `GroupTrack`, and track content other than
 the fixtures' one MIDI track. The track rules belong to SPEC-LIVE-SET-STRUCTURE,
 which has no release.
 
@@ -227,7 +231,7 @@ validation. A second build and seal reproduced the same draft manifest digest.
 Not checked: reference or candidate execution, and the open path beyond the traced
 rules.
 
-## Review gates still required
+## Pre-review gates (historical)
 
 1. **Defect and scope review** in a separate context.
    - Confirm that each v3 fixture is its v2 file plus the audit addition, and
@@ -255,8 +259,7 @@ rules.
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate with 33 cases, every record carried
-from transport-state-v2 and every fixture corrected. It covers partial
-REQ-TRANSPORT-STATE-001 to 008, 010 and 011; 009 and 012 remain unreleased. It is not
-published. transport-state-v2 remains the current transport release, with its
-"opens" expectations flagged by the catalog's defect note.
+Released 2026-10-18 as transport-state-v3 with 33 unchanged case records and repaired
+fixtures. It is the current partial transport release, superseding v2. Partial
+REQ-001 to 008, 010 and 011 are released; 009 and 012 remain unreleased, including
+revision 5's conditional tempo evidence. v1 and v2 fixtures must judge no case.

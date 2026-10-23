@@ -1,0 +1,105 @@
+{
+ "id": "T11-SCHEMA-CHECKER-V2",
+ "date": "2026-10-19",
+ "purpose": "Analyst-only versioned fix for 11.0_405 scene and main-track structural measurements; no application implementation",
+ "predecessor": "../t11-structure-v1/schema_check.py",
+ "predecessor_sha256": "a3892c41d834ad6129df79a55438e747c201091e88190bbbb675629782fd2463",
+ "predecessor_manifest_sha256": "6981daa7706850fc2ab7c607ac01b39c990b65cd0037a1d073cf01630a49db2e",
+ "schemas": {
+  "11.0_405": {
+   "path": "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Schema/11.0_405.txt",
+   "sha256": "24eb3588d792d1b2393e27a60885a0aff91f9810549a0df3cdbe9516af02b951"
+  },
+  "12.0_12402": {
+   "path": "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Schema/12.0_12402.txt",
+   "sha256": "b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299"
+  }
+ },
+ "fixture_inputs": [
+  {
+   "fixture": "handoff/clip-launch-v2/fixtures/CLIP-LAUNCH-041.xml",
+   "sha256": "0849f68c1394c957a6ccec00ecdcd06d9e52903b44c76709d9f20513c318d46e"
+  },
+  {
+   "fixture": "handoff/clip-launch-v2/fixtures/CLIP-LAUNCH-042.xml",
+   "sha256": "49b40270aca0400e9ad89849649709c027f5018940ac1c22880aa10880a11e28"
+  },
+  {
+   "fixture": "handoff/clip-launch-v2/fixtures/CLIP-LAUNCH-043.xml",
+   "sha256": "7a31de9377adf5413fa28ab19dae5790c6e4f4dfd8870ad3d87418b3b99a8c40"
+  },
+  {
+   "fixture": "handoff/clip-launch-v2/fixtures/CLIP-LAUNCH-044.xml",
+   "sha256": "13800afe5417ab9df3fdc8012caeccc1244976595e95cf915f5738dbbc03c8bd"
+  },
+  {
+   "fixture": "handoff/clip-launch-v2/fixtures/CLIP-LAUNCH-045.xml",
+   "sha256": "a9553783dd71e536200b340e1b66a7ec5b53483ec2d3628647714196ccb2058d"
+  }
+ ],
+ "commands": [
+  {
+   "kind": "baseline",
+   "argv": [
+    "/home/ollie/miniconda3/bin/python3",
+    "-I",
+    "-B",
+    "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/test_schema_check.py",
+    "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t11-structure-v1/schema_check.py"
+   ],
+   "exit_code": 1,
+   "result_file": "baseline-tests.txt"
+  },
+  {
+   "kind": "corrected",
+   "argv": [
+    "/home/ollie/miniconda3/bin/python3",
+    "-I",
+    "-B",
+    "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/test_schema_check.py",
+    "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t11-schema-checker-v2/schema_check.py"
+   ],
+   "exit_code": 0,
+   "result_file": "corrected-tests.txt"
+  }
+ ],
+ "executed_live_application": false,
+ "executed_original_code": false,
+ "inventory_excludes": [
+  "manifest.json (self-hash recorded outside this packet)"
+ ],
+ "files": {
+  "baseline-old-schema.jsonl": {
+   "sha256": "29a20d62a20c560ab792cfac50dda3d6383b05ad0a8996a7a74752597503c5db",
+   "bytes": 3570
+  },
+  "baseline-tests.txt": {
+   "sha256": "d33b51c75706d437f7c0304e84e849ce68ac3d19a63d4aae93286fd50d991227",
+   "bytes": 6070
+  },
+  "caller-inventory.json": {
+   "sha256": "a23010f073c22a298b33fdf432be147bf084442bfbee312574eaa5c92bdb2024",
+   "bytes": 5287
+  },
+  "corrected-old-schema.jsonl": {
+   "sha256": "ece5c04b5007e52a7523dd29f2d6698c3fdaf690bd53c73148a35f3819510b6e",
+   "bytes": 3560
+  },
+  "corrected-tests.txt": {
+   "sha256": "da3d6a57071c4ece2d473b2da6f61449b440c1cd82ed88bb35e4613f099b21fb",
+   "bytes": 1208
+  },
+  "schema_check.py": {
+   "sha256": "b8c00e0ee722ad9a2bfbcc877157cc03e393b3dda086ff62160064bfcbb84759",
+   "bytes": 2393
+  },
+  "test_schema_check.py": {
+   "sha256": "dc1f902924e9d969057b96a7638c366c8dec95d1c84d66f88928b22dc1d74d50",
+   "bytes": 5760
+  },
+  "validation.json": {
+   "sha256": "21abe84732a1e9f777d8799de9403cd1c97abf9fa45298646d736d2c14241da6",
+   "bytes": 7629
+  }
+ }
+}

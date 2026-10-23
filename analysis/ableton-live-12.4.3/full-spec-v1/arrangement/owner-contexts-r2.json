@@ -1,0 +1,553 @@
+[
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/session-workflows/requirements-r3.json",
+    "json_pointer": "/0",
+    "id": "REQ-SESSION-VIEW-001",
+    "record": {
+      "id": "REQ-SESSION-VIEW-001",
+      "title": "Clip launch gestures",
+      "contract": "The triangular clip button requests playback; selecting a clip by name then Enter also launches it, and arrows move to neighboring clips. Grid position does not prescribe playback order. Launch mode/quantization arithmetic remains owned by SPEC-CLIP-LAUNCH and SPEC-PLAYBACK-CORE.",
+      "strength": "D12",
+      "target_applicability": "U",
+      "evidence": [
+        {
+          "block": "SV-B008",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        },
+        {
+          "block": "SV-B012",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        }
+      ]
+    },
+    "selected_scope": "CurrentR3 launch/doubleStop source role, no engine timing"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/session-workflows/requirements-r3.json",
+    "json_pointer": "/2",
+    "id": "REQ-SESSION-VIEW-003",
+    "record": {
+      "id": "REQ-SESSION-VIEW-003",
+      "title": "Global double Stop",
+      "contract": "Pressing the Control Bar Stop button twice stops playback of the whole Set and returns Arrangement Position to 1.1.1. Single-stop/continue arithmetic remains in transport/playback contracts.",
+      "strength": "D12",
+      "target_applicability": "U",
+      "evidence": [
+        {
+          "block": "SV-B014",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        }
+      ]
+    },
+    "selected_scope": "CurrentR3 launch/doubleStop source role, no engine timing"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/session-workflows/cases-r3.json",
+    "json_pointer": "/0",
+    "id": "SV-001",
+    "record": {
+      "id": "SV-001",
+      "requirements": [
+        "REQ-SESSION-VIEW-001"
+      ],
+      "kind": "documented-control",
+      "preconditions": [
+        "F-SV-GRID",
+        "per-case-context-overrides-fixture-defaults"
+      ],
+      "setup_and_action": "Select owned clip A by name, press Enter, navigate to B with arrows and separately click B's triangular launch control.",
+      "documentary_expected": "Named gestures request the selected clips; exact event/sample boundary and mode-specific scheduling remain unknown.",
+      "documentary_comparator": "Named visible controls/choices/relationships only; no timing, waveform or hidden-state grade.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "evidence": [
+        {
+          "block": "SV-B008",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        },
+        {
+          "block": "SV-B012",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        }
+      ]
+    },
+    "selected_scope": "Actual bounded launch gestures versus genuine deliberate nonsequential currentR3 history"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/session-workflows/cases-r3.json",
+    "json_pointer": "/2",
+    "id": "SV-003",
+    "record": {
+      "id": "SV-003",
+      "requirements": [
+        "REQ-SESSION-VIEW-003"
+      ],
+      "kind": "documented-state",
+      "preconditions": [
+        "F-SV-GRID",
+        "per-case-context-overrides-fixture-defaults"
+      ],
+      "setup_and_action": "Start a disposable Set away from 1.1.1, then press Control Bar Stop twice.",
+      "documentary_expected": "Set playback stops and displayed position returns to1.1.1; double-press timing threshold and sample boundary remain unknown.",
+      "documentary_comparator": "Named visible controls/choices/relationships only; no timing, waveform or hidden-state grade.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "evidence": [
+        {
+          "block": "SV-B014",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        }
+      ]
+    },
+    "selected_scope": "Actual bounded launch gestures versus genuine deliberate nonsequential currentR3 history"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/session-workflows/cases-r3.json",
+    "json_pointer": "/40",
+    "id": "SV-041",
+    "record": {
+      "id": "SV-041",
+      "requirements": [
+        "REQ-SESSION-VIEW-001"
+      ],
+      "kind": "documented-context",
+      "provenance": "D12",
+      "preconditions": [
+        "F-SV-GRID",
+        "F-SV-R3",
+        "per-case-context-overrides-fixture-defaults"
+      ],
+      "setup_and_action": "Use independently valid nonempty clips in nonadjacent slots A/C/E on an admitted track. Declare launch mode/global and clip quantization, actual focus/selection and arm/record states. After an independently productive launch with active transport and unmuted nonzero output, request C then A then E in reset histories using the named launch controls. Keep requested, selected and actually playing clip identities separate; missing or failed positive context stays U.",
+      "source_claim": "Grid order does not prescribe clip request order. This finite nonsequential request history does not establish all permutations, transition sound or launch timestamps.",
+      "documentary_expected": "Grid order does not prescribe clip request order. This finite nonsequential request history does not establish all permutations, transition sound or launch timestamps.",
+      "documentary_comparator": "Only named offered controls, actual entrypoint/selection/request identities and explicit visible state roles; no numeric/time/signal/file/hidden-state law.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "evidence": [
+        {
+          "block": "SV-B012",
+          "anchor": "session-view-clips",
+          "html_line": 292
+        }
+      ],
+      "source_context": [
+        {
+          "catalog": "../session-grid-source-audit/source-blocks.json",
+          "json_pointer": "/11",
+          "block": "SV-B012"
+        }
+      ],
+      "audit_groups": [
+        "SGA-G01"
+      ]
+    },
+    "selected_scope": "Actual bounded launch gestures versus genuine deliberate nonsequential currentR3 history"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/requirements-r2.json",
+    "json_pointer": "/28",
+    "id": "REQ-CLIP-VIEW-029",
+    "record": {
+      "id": "REQ-CLIP-VIEW-029",
+      "provenance": "D12",
+      "target_applicability": "U",
+      "contract": "Editor time-ruler vertical drag zooms and horizontal drag scrolls; wheel/trackpad scrolls. Behavior is shared by Sample and MIDI editors.",
+      "source_id": "D12-CLIP-VIEW",
+      "source_blocks": [
+        "CV:B138",
+        "CV:B139"
+      ],
+      "html_lines": [
+        734
+      ],
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/137",
+          "block": "CV:B138",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/138",
+          "block": "CV:B139",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "complete": false
+    },
+    "selected_scope": "CurrentR2 within-clip editor roles, no Arrangement-display substitution"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/requirements-r2.json",
+    "json_pointer": "/29",
+    "id": "REQ-CLIP-VIEW-030",
+    "record": {
+      "id": "REQ-CLIP-VIEW-030",
+      "provenance": "D12",
+      "target_applicability": "U",
+      "contract": "Z/Zoom to Clip Selection zooms current time selection; X returns one zoom state per press, including repeated Z history.",
+      "source_id": "D12-CLIP-VIEW",
+      "source_blocks": [
+        "CV:B140"
+      ],
+      "html_lines": [
+        734
+      ],
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/139",
+          "block": "CV:B140",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "complete": false
+    },
+    "selected_scope": "CurrentR2 within-clip editor roles, no Arrangement-display substitution"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/requirements-r2.json",
+    "json_pointer": "/30",
+    "id": "REQ-CLIP-VIEW-031",
+    "record": {
+      "id": "REQ-CLIP-VIEW-031",
+      "provenance": "D12",
+      "target_applicability": "U",
+      "contract": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "source_id": "D12-CLIP-VIEW",
+      "source_blocks": [
+        "CV:B141",
+        "CV:B142"
+      ],
+      "html_lines": [
+        734,
+        750
+      ],
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/140",
+          "block": "CV:B141",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/141",
+          "block": "CV:B142",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "complete": false
+    },
+    "selected_scope": "CurrentR2 within-clip editor roles, no Arrangement-display substitution"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/28",
+    "id": "CV-029",
+    "record": {
+      "id": "CV-029",
+      "requirements": [
+        "REQ-CLIP-VIEW-029"
+      ],
+      "kind": "positive",
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "setup_and_action": "A then M, drag ruler vertically/horizontally and scroll wheel with distinct time selection; compare visible time extent only, no pixel or gesture sensitivity law.",
+      "documentary_expected": "Editor time-ruler vertical drag zooms and horizontal drag scrolls; wheel/trackpad scrolls. Behavior is shared by Sample and MIDI editors.",
+      "documentary_comparator": "Compare only named visible controls, choices/eligibility, identities, file locations or explicit state relations; no pixels, hidden state, audio or timing tolerance.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "source_blocks": [
+        "CV:B138",
+        "CV:B139"
+      ],
+      "complete": false,
+      "source_claim": "Editor time-ruler vertical drag zooms and horizontal drag scrolls; wheel/trackpad scrolls. Behavior is shared by Sample and MIDI editors.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/137",
+          "block": "CV:B138",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/138",
+          "block": "CV:B139",
+          "role": "retained public source role, not target observation"
+        }
+      ]
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/29",
+    "id": "CV-030",
+    "record": {
+      "id": "CV-030",
+      "requirements": [
+        "REQ-CLIP-VIEW-030"
+      ],
+      "kind": "positive",
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "setup_and_action": "Select beats 2-3, press Z; narrower selection Z again, press X twice and inspect prior extents. History beyond these operations remains U.",
+      "documentary_expected": "Z/Zoom to Clip Selection zooms current time selection; X returns one zoom state per press, including repeated Z history.",
+      "documentary_comparator": "Compare only named visible controls, choices/eligibility, identities, file locations or explicit state relations; no pixels, hidden state, audio or timing tolerance.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "source_blocks": [
+        "CV:B140"
+      ],
+      "complete": false,
+      "source_claim": "Z/Zoom to Clip Selection zooms current time selection; X returns one zoom state per press, including repeated Z history.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/139",
+          "block": "CV:B140",
+          "role": "retained public source role, not target observation"
+        }
+      ]
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/30",
+    "id": "CV-031",
+    "record": {
+      "id": "CV-031",
+      "requirements": [
+        "REQ-CLIP-VIEW-031"
+      ],
+      "kind": "selection",
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "setup_and_action": "CV-BASE-R2: A time selection zoomed with productive direct overview scroll/zoom baseline; drag overview. Establish genuine automatic Follow scrolling while a moving playhead crosses the visible boundary before a real editor edit, and independently establish pause after edit. Reset separately for stop/restart and admitted Arrangement versus clip scrub; never grade moving scrolling while stopped or a resume deadline.",
+      "documentary_expected": "Selector overview spans clip Start-End and its outline represents visible editor extent. Only these display roles are compared; Follow source resumption context has no timing/output comparator.",
+      "documentary_comparator": "Compare only named visible controls, choices/eligibility, identities, file locations or explicit state relations; no pixels, hidden state, audio or timing tolerance.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "source_blocks": [
+        "CV:B141",
+        "CV:B142"
+      ],
+      "complete": false,
+      "source_claim": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/140",
+          "block": "CV:B141",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/141",
+          "block": "CV:B142",
+          "role": "retained public source role, not target observation"
+        }
+      ]
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/78",
+    "id": "CV-063",
+    "record": {
+      "id": "CV-063",
+      "requirements": [
+        "REQ-CLIP-VIEW-031"
+      ],
+      "title": "Overview within-outline axes",
+      "kind": "control",
+      "setup_and_action": "CV-BASE-R2: Known complete Start-End overview and visible editor extent with productive direct scroll/zoom baseline. On separate resets drag within the actually admitted overview outline horizontally then vertically. No black pixel/hitbox/sensitivity or all-axis conversion grade.",
+      "source_blocks": [
+        "CV:B141"
+      ],
+      "documentary_expected": "Overview complete-clip/visible-outline and named within-outline drag roles only; axis-to-effect and numeric mapping remain U.",
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "complete": false,
+      "source_claim": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/140",
+          "block": "CV:B141",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "documentary_comparator": "Named visible input/control role only; no numeric, timing, signal, file, process or hidden-state comparison",
+      "unknown": "All target outcomes U; missing input/capability/positive baseline is U, never a pass. Numeric/signal/timing/file/protocol and complete context outcomes are not inferred."
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/79",
+    "id": "CV-064",
+    "record": {
+      "id": "CV-064",
+      "requirements": [
+        "REQ-CLIP-VIEW-031"
+      ],
+      "title": "Options versus Follow toggle entry",
+      "kind": "timing-obligation",
+      "setup_and_action": "CV-BASE-R2: Known nonempty audio/MIDI clip genuinely playing across a zoomed visible boundary; establish actual automatic scrolling with working Follow first. From separately reset recorded Follow-OFF contexts activate through Options command versus toggle and retain actual state/scroll observations. Enabled flag alone is insufficient; scheduling/latency and unavailable capability U.",
+      "source_blocks": [
+        "CV:B142"
+      ],
+      "documentary_expected": null,
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "complete": false,
+      "source_claim": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/141",
+          "block": "CV:B142",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "documentary_comparator": null,
+      "unknown": "All target outcomes U; missing input/capability/positive baseline is U, never a pass. Numeric/signal/timing/file/protocol and complete context outcomes are not inferred."
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/80",
+    "id": "CV-065",
+    "record": {
+      "id": "CV-065",
+      "requirements": [
+        "REQ-CLIP-VIEW-031"
+      ],
+      "title": "Paused Follow Options and toggle",
+      "kind": "timing-obligation",
+      "setup_and_action": "CV-BASE-R2: Nonempty owned audio/MIDI with actual moving playhead crossing the zoomed visible boundary; independently confirm Follow automatically scrolls before a real editor edit, then independently establish the paused-Follow relation after that edit. From separate reset paused histories invoke Options Follow versus toggle and retain resumption role only. Missing productive scrolling/pause is U, not a negative pass; no resume deadline. Record actual pre-action Follow state; no one-click paused-ON transition or focus/interception exception is assumed.",
+      "source_blocks": [
+        "CV:B142"
+      ],
+      "documentary_expected": null,
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "complete": false,
+      "source_claim": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/141",
+          "block": "CV:B142",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "documentary_comparator": null,
+      "unknown": "All target outcomes U; missing input/capability/positive baseline is U, never a pass. Numeric/signal/timing/file/protocol and complete context outcomes are not inferred."
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/81",
+    "id": "CV-066",
+    "record": {
+      "id": "CV-066",
+      "requirements": [
+        "REQ-CLIP-VIEW-031"
+      ],
+      "title": "Paused Follow stop alone and restart",
+      "kind": "timing-obligation",
+      "setup_and_action": "CV-BASE-R2: Nonempty owned audio/MIDI with actual moving playhead crossing the zoomed visible boundary; independently confirm Follow automatically scrolls before a real editor edit, then independently establish the paused-Follow relation after that edit. On separate resets stop alone versus restart playback; record transport states and Follow resumption/eligibility separately. Stop alone does not assert moving scrolling while stopped. No restored position or deadline.",
+      "source_blocks": [
+        "CV:B142"
+      ],
+      "documentary_expected": null,
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "complete": false,
+      "source_claim": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/141",
+          "block": "CV:B142",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "documentary_comparator": null,
+      "unknown": "All target outcomes U; missing input/capability/positive baseline is U, never a pass. Numeric/signal/timing/file/protocol and complete context outcomes are not inferred."
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  },
+  {
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/82",
+    "id": "CV-067",
+    "record": {
+      "id": "CV-067",
+      "requirements": [
+        "REQ-CLIP-VIEW-031"
+      ],
+      "title": "Paused Follow two scrub areas",
+      "kind": "timing-obligation",
+      "setup_and_action": "CV-BASE-R2: Nonempty owned audio/MIDI with actual moving playhead crossing the zoomed visible boundary; independently confirm Follow automatically scrolls before a real editor edit, then independently establish the paused-Follow relation after that edit. From separate reset paused histories click an independently admitted Arrangement scrub area versus clip scrub area, retaining focus/Permanent Scrub Areas/transport. No global dispatch, deadline or stopped-scroll grade.",
+      "source_blocks": [
+        "CV:B142"
+      ],
+      "documentary_expected": null,
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "complete": false,
+      "source_claim": "Selector overview spans clip Start-End; its outline represents the visible editor portion. Within-outline horizontal/vertical drags provide scrolling/zooming roles. Follow is offered by its toggle and Options command. With a genuinely established automatically scrolling playhead baseline, an actual Sample/MIDI editor edit pauses Follow. The source names stop, restart, Arrangement scrub and clip scrub as resumption contexts; this does not promise moving scrolling while stopped, a deadline or universal focus/interception behavior. MIDI-specific editing remains with its owner.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/141",
+          "block": "CV:B142",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "documentary_comparator": null,
+      "unknown": "All target outcomes U; missing input/capability/positive baseline is U, never a pass. Numeric/signal/timing/file/protocol and complete context outcomes are not inferred."
+    },
+    "selected_scope": "Actual editor axis/productiveFollow histories; Arrangement own direct axes/pause contexts remain separate"
+  }
+]

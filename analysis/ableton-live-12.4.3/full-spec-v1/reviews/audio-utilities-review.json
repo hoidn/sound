@@ -1,0 +1,166 @@
+{
+  "id": "REVIEW-AUDIO-UTILITIES-R1",
+  "reviewer": "independent analyst /root/recording_comping_spec",
+  "date_utc": "2026-10-19T20:25:20.167815+00:00",
+  "disposition": "approved-as-three-partial-analyst-drafts; no blocking findings",
+  "scope": "Independent read-only review of all 41 requirements and 103 cases across Utility, Tuner and Spectrum; shared research, retained original HTML and 46 paragraph/list/heading blocks, 24 source identities, original 22 compressed package XML files and derived values, three schema classes, 44 frozen payloads and author seal. Not a handoff release review.",
+  "reviewed_inputs": {
+    "wiki/specs/device-utility.md": "71af09fbf7f6c972e2e9d19103db88f6acff7977f4ef072902cf640fe6bb62c6",
+    "wiki/specs/device-tuner.md": "b2b3b087307d7f4ba59c85a7e825c2a6ed54687171ef638e908b331809ced576",
+    "wiki/specs/device-spectrum.md": "86dca8523b2349aced5f1b2bb18a69a036ea1c904b18cabcbcbeb2009a3a56e5",
+    "wiki/research/device-audio-utilities.md": "7636434445c1c0fcde04f64cd081a6a06f4949b9339e69973c843012d5fa3029",
+    "analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/manifest-author-r1.json": "5f00a299ae0a7daefd61cc43b29f089fe8b80bc59e773ffcc244836b592548bb"
+  },
+  "findings": [],
+  "device_assessments": {
+    "Utility": {
+      "counts": {
+        "requirements": 15,
+        "cases": 37,
+        "D12": 22,
+        "Dpkg": 3,
+        "U": 12
+      },
+      "support": "The 14 retained Utility blocks support independent input-channel phase controls, documented Left routing, Left/Right disablement of Width/MidSide, Width and Mid/Side endpoint relations, Mono, Bass Mono 50\u2013500 Hz and audition, Gain \u2212infinity to +35 dB and 1 dB arrow steps over \u221218 to +35, Balance, position-specific Mute and DC filtering. Right routing, full domains, numeric matrices/gains, mono normalization and processing order are not inferred.",
+      "interactions": "Phase/channel/Mono/Width/Bass Mono/Audition/Balance/DC composition and lower Gain acceleration details remain U; DUT-036 retains an explicit combined-control probe. Bass Mono Audition is tested with Bass Mono already enabled, and dependency outside that setup is U. No track fader curve, silence floor, pan or ramping law was imported. Mute can cut downstream input without disabling its existing output; tail waveform is not assigned.",
+      "file_only": "Three cases are limited to exact Bass Mono, phase flags and Left/Right stored ChannelMode values; names do not establish constructor defaults, engine enum mapping or live save/load."
+    },
+    "Tuner": {
+      "counts": {
+        "requirements": 12,
+        "cases": 32,
+        "D12": 15,
+        "Dpkg": 1,
+        "U": 16
+      },
+      "support": "All 21 Tuner blocks support intended monophonic measurement and documentary transparent audio, Classic/Histogram switching, green/red meanings, Target/Strobe direction, greater-detuning speed relation, Hz/cents unit choice, histogram orientation/navigation/Auto, spelling menu and Reference default 440 Hz with documented 410\u2013480 Hz domain.",
+      "predicate_boundary": "Sharp/flat predicates refer to detected pitch relative to the target; no exact pitch estimator, zero-cent acceptance band, green threshold, Hz/cents conversion/rounding, octave spelling, acquisition time or polyphonic/noisy-input result is invented. Proposed 435/445/450 Hz inputs are probe parameters, not calibrated detector-output fixtures. Standard-reference expectations do not establish nonstandard Set-tuning behavior.",
+      "file_only": "The Guitar Recording Tuner state has saved reference/view/strobe/units/Auto/IgnoreTuningSystem values as stated. Historical Creator 12.4d1 is preserved and does not prove target constructor defaults or IgnoreTuningSystem semantics."
+    },
+    "Spectrum": {
+      "counts": {
+        "requirements": 14,
+        "cases": 34,
+        "D12": 19,
+        "Dpkg": 2,
+        "U": 13
+      },
+      "support": "All 11 Spectrum blocks support documentary transparent audio and graph axes, Block sample-count role, channel choices, Refresh frequency role, Avg block-count smoothing description, line/bin display, maximum retention/reset description, horizontal scale/legend relations, pointer readout, Range/Auto controls and display-location toggles.",
+      "predicate_boundary": "The prose does not convert Block into an unobserved FFT-size list, Refresh into an unproved time unit/domain, Avg into a linear/power/dB averaging law, or saved Window=3 into a named/available UI window function. Both-channel combination, numerical dB/bin normalization, tolerances and effective latency remain U. Song-restart/reset semantics and Max single/double-click interaction retain explicit unknown detail.",
+      "file_only": "Two cases inspect saved Accurate Fast and Spectrum field values only. Eleven shipped presets and schema vocabulary do not establish defaults, legal ranges, live controls or analysis kernels."
+    }
+  },
+  "cross_cutting_assessment": {
+    "canonical_ownership": "Three distinct device specs own behavior; the research page owns source synthesis. Generic rack/device actions, existing container/Set/mixer/automation scopes are linked without importing untraced device DSP or persistence behavior.",
+    "provenance": "All 56 D12 documentary cases retain exact-target grade U. All six Dpkg cases are artifact-only assertions. The 41 U cases have null expected outcomes. Package originals identify Creator Ableton Live 12.4d1, MinorVersion 12.0_12402 and the preserved historical revision; their presence in 12.4.3 is the observed fact.",
+    "oracles_and_units": "Documented control values/units and directional/UI predicates are distinguished from numerical DSP/display tolerances. No finite sample, pixel, Hz, cents, dB attenuation, CPU, time or jitter acceptance tolerance is invented. Qualitative widening/smoothing/accuracy-cost statements remain documentary descriptions, not calibrated executable target oracles.",
+    "lifecycle": "Each device retains positive/negative/boundary and explicit cancellation, undo, persistence, malformed/error, automation/timing and teardown scenarios. Unknown behaviors remain whole-device gaps, not silently passing or excluded required features.",
+    "fixtures": "Signal definitions are finite analyst input descriptions only. No audio was generated or compared, no UI figure was inspected and no exact-target response was recorded. All 97 application cases remain unexecuted and ungraded for target compatibility; the six decoded-file checks do not constitute application tests."
+  },
+  "checks": {
+    "author_manifest_sha256": "5f00a299ae0a7daefd61cc43b29f089fe8b80bc59e773ffcc244836b592548bb",
+    "payload_files_verified": 44,
+    "source_hashes": 24,
+    "original_compressed_XML_files_and_all_derived_field_values": 22,
+    "schema_class_declarations": 3,
+    "manual_extracted_blocks_against_original_HTML": 46,
+    "six_file_only_case_assertions": "pass against decoded original XML",
+    "counts": {
+      "utility": {
+        "D12": 22,
+        "Dpkg": 3,
+        "U": 12
+      },
+      "tuner": {
+        "D12": 15,
+        "Dpkg": 1,
+        "U": 16
+      },
+      "spectrum": {
+        "D12": 19,
+        "Dpkg": 2,
+        "U": 13
+      }
+    },
+    "unique_requirements": 41,
+    "unique_cases": 103,
+    "application_cases_unexecuted": 97,
+    "D12_exact_target_grade": "U for all 56",
+    "U_oracles": "null for all 41",
+    "kind_coverage": {
+      "utility": [
+        "automation",
+        "boundary",
+        "cancel",
+        "coupling",
+        "error",
+        "file observation",
+        "legacy",
+        "malformed",
+        "negative",
+        "persistence",
+        "positive",
+        "teardown",
+        "timing",
+        "undo"
+      ],
+      "tuner": [
+        "automation",
+        "boundary",
+        "cancel",
+        "channel",
+        "error",
+        "file observation",
+        "malformed",
+        "negative",
+        "numeric",
+        "persistence",
+        "positive",
+        "teardown",
+        "timing",
+        "tuning system",
+        "undo"
+      ],
+      "spectrum": [
+        "automation",
+        "boundary",
+        "cancel",
+        "channel",
+        "error",
+        "file observation",
+        "interaction",
+        "malformed",
+        "negative",
+        "numerical",
+        "persistence",
+        "positive",
+        "teardown",
+        "timing",
+        "undo"
+      ]
+    },
+    "case_JSON_contracts_and_table_expectations": "match",
+    "signal_references": "resolve; proposed only, no generated audio",
+    "metadata_relative_links_heading_anchors_whitespace": "pass",
+    "figures_inspected": false,
+    "runtime_or_candidate_execution": false
+  },
+  "remaining_limitations": [
+    "These are partial analyst drafts with zero complete device profiles, zero target application executions and zero audio/display compatibility passes. They are not released implementation inputs.",
+    "D12 exact-build applicability, complete DSP/analysis algorithms, numerical domains/rounding/tolerances, timing, all combined-control laws and listed lifecycle outcomes remain unknown.",
+    "Before any executable comparison or handoff, select finite supported clauses, pin full setup including reference/tuning/control state, establish measurable predicates/tolerances where absent and retain an appropriate target-derived or reviewed static comparator. Existing qualitative D12 descriptions cannot be promoted to a numerical pass.",
+    "No runtime execution, figure inspection, native analysis, new tooling or candidate implementation is authorized or implied by this review."
+  ],
+  "execution_limits": {
+    "ran_Live": false,
+    "ran_extracted_original_code": false,
+    "ran_candidate": false,
+    "generated_audio": false,
+    "figures_inspected": false,
+    "installed_tools": false,
+    "modified_author_or_shared_pages": false,
+    "modified_source_or_author_seal": false,
+    "wrote_only_requested_review_report": true,
+    "compatibility_pass": false
+  }
+}

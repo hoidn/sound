@@ -1,0 +1,619 @@
+{
+  "device": "Tuner",
+  "revision": 1,
+  "target": "Ableton Live 12 Suite 12.4.3",
+  "status": "partial draft; all runtime cases unexecuted",
+  "requirements": [
+    {
+      "title": "measurement input and transparent output",
+      "contract": "Analyze incoming monophonic pitch and its distance from the nearest semitone. Tuner is a measurement device and does not alter the incoming audio. Clean monophonic signals are the intended input; polyphonic, noisy or harmonically rich inputs may give inaccurate results. No error or polyphonic-detection fallback is promised.",
+      "locator": "tuner:B02–B03",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-001"
+    },
+    {
+      "title": "view switching and tuning color",
+      "contract": "The lower-left view buttons switch between Classic and Histogram views. Both use green for in tune and red for out of tune. Detection/green thresholds, hysteresis, intermediate colors and hold time are U.",
+      "locator": "tuner:B05",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-002"
+    },
+    {
+      "title": "Classic display",
+      "contract": "Classic View shows a colored ball along a curve, the nearest detected note name in the center, and side arrows indicating whether tuning must move up or down. Exact note/octave spelling, pixels, ball displacement law and arrow thresholds are U.",
+      "locator": "tuner:B07",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-003"
+    },
+    {
+      "title": "Target Mode direction",
+      "contract": "Target Mode has a central outline for desired pitch. The signal is in tune when the ball lies exactly within the outline; a sharp signal appears to its right, a flat signal to its left. This describes display semantics, not a quantified accepted cents band.",
+      "locator": "tuner:B08",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-004"
+    },
+    {
+      "title": "Strobe Mode",
+      "contract": "Strobe Mode replaces the curve with a rotating light band. Rightward rotation means sharp; leftward means flat; a greater detuning makes the band move faster. Rotation speed, reference tolerance and freeze behavior are U.",
+      "locator": "tuner:B09",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-005"
+    },
+    {
+      "title": "Hertz and cents readout",
+      "contract": "A switch selects incoming absolute frequency in Hz or distance from target in cents, and is visible in both Classic and Histogram views. Exact rounding, displayed precision, cents conversion, note-boundary tie handling and octave labeling are U.",
+      "locator": "tuner:B10, B14",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-006"
+    },
+    {
+      "title": "Histogram",
+      "contract": "Histogram shows pitch over time and note names on its right scale. Horizontal gray lines indicate in-tune note centers; sharp notes lie above their lines and flat notes below. History length, vertical units, update cadence and handling of missing detections are U.",
+      "locator": "tuner:B12",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-007"
+    },
+    {
+      "title": "Histogram navigation and Auto",
+      "contract": "Dragging vertically scrolls pitches; dragging horizontally zooms. Auto centers the display on incoming pitch. Auto/manual precedence, zoom limits and view-state retention are U.",
+      "locator": "tuner:B13",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-008"
+    },
+    {
+      "title": "note spelling menu",
+      "contract": "Right-clicking anywhere within the view exposes three spelling choices: sharps, flats, or sharps and flats. Spelling changes labels; no pitch-processing change is documented. Exact key- or tuning-system-dependent enharmonic selection is U.",
+      "locator": "tuner:B16–B19",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-009"
+    },
+    {
+      "title": "reference pitch",
+      "contract": "Reference changes the tuning reference used to analyze input; documented default is 440 Hz with an adjustable domain 410–480 Hz. Exact increment, text parsing, runtime default corroboration, reference convention under nonstandard tuning systems and output indication tolerances are U.",
+      "locator": "tuner:B21",
+      "grade": "D12",
+      "id": "REQ-DEVICE-TUNER-010"
+    },
+    {
+      "title": "target persisted fields",
+      "contract": "The retained Tuner schema and Guitar Recording template show tuning frequency, view/readout/strobe state, histogram state, accidental spelling and IgnoreTuningSystem. The historical template stores TuningFreq/Manual=440. This is a saved example, not a 12.4.3 constructor/default or tuning-system behavioral contract.",
+      "locator": "PKG-SCHEMA:Tuner; package-values.json device=Tuner",
+      "grade": "Dpkg",
+      "id": "REQ-DEVICE-TUNER-011"
+    },
+    {
+      "title": "unresolved detection and lifecycle",
+      "contract": "Exact 12.4.3 applicability of every D12 clause remains U. Pitch algorithm, supported frequency/level/sample-rate range, confidence, silence/noise/polypitch fallback, latency, channel combination, transients, tuning-system interaction, persistence, automation, undo, cancellation, invalid files and teardown are unknown. No zero-cent or note-accuracy tolerance is invented.",
+      "locator": "No outcome evidence",
+      "grade": "U",
+      "id": "REQ-DEVICE-TUNER-012"
+    }
+  ],
+  "cases": [
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-001"
+      ],
+      "kind": "positive",
+      "setup": "SIG-440; Tuner enabled",
+      "actions": "Capture audio before/after Tuner",
+      "parameters": {},
+      "expected": "Incoming audio is unaltered according to manual; bit identity, delay compensation and numerical tolerance require target evidence.",
+      "evidence": "tuner:B03",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-001"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-001",
+        "REQ-DEVICE-TUNER-003",
+        "REQ-DEVICE-TUNER-010"
+      ],
+      "kind": "positive",
+      "setup": "SIG-440; reference 440 Hz, standard tuning",
+      "actions": "Select Classic View",
+      "parameters": {},
+      "expected": "Display represents detected monophonic pitch and nearest semitone; A note class is the intended documentary case. Octave label, measured Hz and green threshold U.",
+      "evidence": "tuner:B02, B07, B21",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-002"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-002"
+      ],
+      "kind": "positive",
+      "setup": "Classic View visible",
+      "actions": "Click Histogram then Classic view buttons",
+      "parameters": {},
+      "expected": "Views switch; each supports the documented tuning color semantics.",
+      "evidence": "tuner:B05",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-003"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-004"
+      ],
+      "kind": "positive",
+      "setup": "SIG-SHARP; reference 440 Hz, standard tuning",
+      "actions": "Use Classic Target Mode",
+      "parameters": {},
+      "expected": "Detected sharp signal appears to right of target; precise position and cent tolerance U.",
+      "evidence": "tuner:B08",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-004"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-004"
+      ],
+      "kind": "positive",
+      "setup": "SIG-FLAT; reference 440 Hz, standard tuning",
+      "actions": "Use Classic Target Mode",
+      "parameters": {},
+      "expected": "Detected flat signal appears to left of target; precise position U.",
+      "evidence": "tuner:B08",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-005"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-005"
+      ],
+      "kind": "positive",
+      "setup": "SIG-SHARP",
+      "actions": "Select Strobe Mode",
+      "parameters": {},
+      "expected": "Curve becomes a band moving right for a detected sharp pitch.",
+      "evidence": "tuner:B09",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-006"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-005"
+      ],
+      "kind": "positive",
+      "setup": "SIG-FLAT",
+      "actions": "Select Strobe Mode",
+      "parameters": {},
+      "expected": "Band moves left for a detected flat pitch.",
+      "evidence": "tuner:B09",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-007"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-005"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-SHARP then SIG-SHARP-WIDE",
+      "actions": "Observe same note target in Strobe Mode",
+      "parameters": {},
+      "expected": "Greater detuning makes motion faster; no numerical rate/latency threshold.",
+      "evidence": "tuner:B09",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-008"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-006"
+      ],
+      "kind": "positive",
+      "setup": "Classic View; SIG-440",
+      "actions": "Toggle Hertz/Cents",
+      "parameters": {},
+      "expected": "Readout changes between frequency Hz and distance from target cents. Numerical rounding U.",
+      "evidence": "tuner:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-009"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-006"
+      ],
+      "kind": "positive",
+      "setup": "Histogram View; SIG-440",
+      "actions": "Toggle Hertz/Cents",
+      "parameters": {},
+      "expected": "Same unit choice is available in Histogram View.",
+      "evidence": "tuner:B14",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-010"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-007"
+      ],
+      "kind": "positive",
+      "setup": "Histogram View; SIG-SHARP then SIG-FLAT",
+      "actions": "Observe detected traces",
+      "parameters": {},
+      "expected": "Sharp trace is above its note-center line; flat trace below. Time/history precision U.",
+      "evidence": "tuner:B12",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-011"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-008"
+      ],
+      "kind": "positive",
+      "setup": "Histogram Auto off",
+      "actions": "Drag up/down, then horizontally",
+      "parameters": {},
+      "expected": "Vertical drag scrolls pitches; horizontal drag zooms. Extents U.",
+      "evidence": "tuner:B13",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-012"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-008"
+      ],
+      "kind": "positive",
+      "setup": "Histogram View; SIG-440 then SIG-880",
+      "actions": "Enable Auto",
+      "parameters": {},
+      "expected": "Display adjusts to center the incoming pitch. Center tolerance and speed U.",
+      "evidence": "tuner:B13",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-013"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-009"
+      ],
+      "kind": "positive",
+      "setup": "View display with detected accidental note",
+      "actions": "Right-click view; select each spelling option",
+      "parameters": {},
+      "expected": "Menu offers sharps, flats, combined sharps/flats; labels reflect chosen notation. Exact glyph sequence U.",
+      "evidence": "tuner:B16–B19",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-014"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-010"
+      ],
+      "kind": "boundary",
+      "setup": "Reference control available",
+      "actions": "Set 410, 440 and 480 Hz",
+      "parameters": {
+        "reference_Hz": [
+          410,
+          440,
+          480
+        ]
+      },
+      "expected": "All three reference values are within documented domain. Detection calibration at each setting U.",
+      "evidence": "tuner:B21",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DTU-015"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-011"
+      ],
+      "kind": "file observation",
+      "setup": "Retained Guitar Recording.als",
+      "actions": "Decode Tuner XML",
+      "parameters": {},
+      "expected": "TuningFreq/Manual=440, ViewMode=0, StrobeMode=false, DisplayPitchInHz=false, HistogramFollowsPitch=true, IgnoreTuningSystem=false. No enum semantics asserted.",
+      "evidence": "package/Tuner/Guitar Recording.als:.//Tuner",
+      "provenance": "Dpkg",
+      "target_grade": "Dpkg",
+      "execution": "unexecuted",
+      "comparison": "Exact retained-file values only; does not grade application load, UI or signal behavior.",
+      "id": "DTU-016"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "negative",
+      "setup": "SIG-POLY",
+      "actions": "Analyze two simultaneous independent tones",
+      "parameters": {},
+      "expected": null,
+      "evidence": "tuner:B03 (only accuracy warning)",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-017"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "negative",
+      "setup": "SIG-SILENCE then SIG-NOISE",
+      "actions": "Observe no-pitch state and history",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-018"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-TIE",
+      "actions": "Sweep across a half-semitone boundary",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-019"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "boundary",
+      "setup": "Reference 410 Hz then 480 Hz",
+      "actions": "Attempt 409.9 and 480.1 Hz through keyboard/text",
+      "parameters": {
+        "reference_Hz": [
+          409.9,
+          480.1
+        ]
+      },
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-020"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "malformed",
+      "setup": "Reference text editor",
+      "actions": "Enter NaN, inf and abc; submit",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-021"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "error",
+      "setup": "Copy of saved Tuner template",
+      "actions": "Remove TuningFreq; use invalid ViewMode and reference −1",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-022"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "cancel",
+      "setup": "Reference edit active",
+      "actions": "Type 442 then Escape; dismiss spelling context menu with Escape",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-023"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "undo",
+      "setup": "Reference 440; Classic view",
+      "actions": "Change reference and view; Undo/Redo",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-024"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "persistence",
+      "setup": "Nondefault reference, strobe, units, histogram and spelling",
+      "actions": "Save/reopen Set; inspect each setting and history retention",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-025"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "teardown",
+      "setup": "Tuner analyzes audio",
+      "actions": "Delete/reinsert; suspend audio engine; remove input source",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-026"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "timing",
+      "setup": "SIG-440 begins at frame 4800",
+      "actions": "Measure first detection at rates 44100, 48000, 96000 and blocks 64,512",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-027"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "tuning system",
+      "setup": "SIG-440; nondefault Set tuning system",
+      "actions": "Toggle IgnoreTuningSystem in an evidence-supported UI route if found; compare reference/notes",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-028"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "automation",
+      "setup": "Reference pitch automation where exposed",
+      "actions": "Automate 440→442, override then re-enable",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-029"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "channel",
+      "setup": "Left-only and right-only monophonic inputs, then opposite-polarity stereo",
+      "actions": "Observe pitch detection and through audio",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-030"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-LEVEL-SWEEP and SIG-FREQ-SWEEP",
+      "actions": "Measure detection limits, confidence and in-tune color threshold",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-031"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-TUNER-012"
+      ],
+      "kind": "numeric",
+      "setup": "SIG-440 and SIG-SHARP",
+      "actions": "Record measured frequency/cents at every displayed precision",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DTU-032"
+    }
+  ]
+}

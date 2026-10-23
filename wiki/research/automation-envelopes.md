@@ -2,7 +2,7 @@
 id: RESEARCH-AUTOMATION-ENVELOPES
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-23
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -321,6 +321,11 @@ Evidence: [x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelop
 what the x86_64 functions compute for these inputs with this setup, not what Live does for a
 document. Slice `Live_x86_64.x86_64`, SHA-256 `1bae9a97…be999b0`.
 
+**Later setup qualification (2026-10-20).** The following paragraph is X2
+as-of history. The [whole50 construction review](#automation-withheld50-construction-review-approval--2026-10-20)
+qualifies its initializer count and class-graph confidence; historical returns
+remain observations of that retained recipe, not complete legal-state proof.
+
 **Setup.** A copy of the X1 loader, [xexec2.c](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/xexec2.c), adds: running the slice's 3,322
 static initialisers (295 stop at an unbound import or a fault and are abandoned; none builds an
 automation or warp class); stack arguments; buffers and stores without a call. Added bindings:
@@ -451,3 +456,830 @@ code does not prove that a given file reaches it. Branches without ✓ come from
 leaves 5,270 target elements unmatched, none of them an envelope target. Shipped
 documents are 12.4d1/12.1d1 and older writes, not 12.4.3 saves. Text inside
 documents and strings is treated as data.
+
+## Bounded automation-envelope route inventory — 2026-10-20
+
+**Authored; pending independent structure review.** The
+[automation family packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-automation-routes-v1/structure.md)
+cuts approved integration I-05/I-06 and the approved mix-family route map against
+current SPEC-AUTOMATION-ENVELOPES revision 5, requirements 001–013. It is separate
+from the broader automation-workflows owner. The
+[bounded ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-automation-routes-v1/route-ledger.json)
+enumerates 129 semantic predicates: 22 X-route, 69 S-route, 38 no-established-route.
+Seven repeated/general-rule specializations are cross-references, not additional
+outcomes. These are route inventory counts, not grades, a completed family or a
+frozen whole-product denominator. All existing requirements/cases/releases/U parts
+and qualified assumptions remain unchanged.
+
+**Current owner correction: removal before validation.** Earlier native-check
+summaries above must be read through revision 5 and the v2 review RA2-01–03.
+Exactly-one-event clip envelopes are discarded; empty clip envelopes survive the
+count test and reach refusal. Scoped Speaker/Pan/CrossFadeState track envelopes
+with fewer than two events are removed, with tempo/meter exceptions and target
+opt-outs preserved. Discard precedes survivor validation. Own-device target
+relation and unchanged application-start discard setting remain premises. T11
+also settles Live Set post-load context enablement statically, superseding the
+old unknown about normalization enablement. None of this is a run of Live.
+
+**Value/time boundaries.** Stored units, logic evaluator E(t), ideal playback
+segment P(t) at explicit envelope time, actual clip/song time and ramped samples
+are separate. The old general stored-unit/null-provider claim is superseded:
+Pan’s converter is identity; Volume/Send use fader-position conversion only under
+the actual parameter-owner premise, still unjoined for a loaded envelope. No
+actual consumer mode/reading, clip start/loop/warp timebase, song offset, initial
+Arrangement/Session state, active event/player/provider or ramped sample is
+established by a helper return. Float first-time replacement and 16-piece curves
+do not imply a Bool/Enum first-time rewrite. Owner U and mix A3/A6/A8 remain.
+
+Exact retained C, row/byte/hash, dossier PC, conditional virtual-slot and approved
+mix-base locators are retained without copied function/spec/case bodies. The
+packet pins integration manifest
+`7dddd59650ca3395d10e1b3c8aded3cda01d66b522dda4973a08f32e7bfb8f83`
+and approved mix manifest
+`c4ad95bef8e44db6c01c654f471347c6d666305894a104f3f5e3bff3d06fdab9`.
+Its 80 compact historical value/control/point/segment rows and six prospective M
+vectors are auxiliary input enumeration, not calls or required outcomes. Actual
+state/provider/consumer input sets remain explicitly unresolved. X2 extended
+factory/library/initializer setup and arm64 FMA limits remain qualified. No new
+original execution, provider, decoder, harness, installation or candidate work
+occurred. Root owns seal/review, shared atlas/index/coverage/log updates and
+subsequent selection.
+
+
+## Automation family-map approval — 2026-10-20
+
+The [independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-automation-routes-v1-review.json)
+approves the bounded structure packet, manifest SHA256
+`4f0165d50238ac8dfcc9add96689f8e80d2aa22fa6ef0c21a9a209640476e12a`;
+review SHA256 `d1f975a1011801c5b19469ed8a19037fee5363be4bd70490a0e6233f9331a123`.
+The pending-review section is author history. The 129 predicates (22 X / 69 S /
+38 without an established route) inventory the 13 current mechanics requirements,
+not the broader automation workflow owner or a complete family denominator.
+No normative clause, case, release or grade changes.
+
+Nonblocking AUTOMATION-ROUTE-REVIEW-N01 concerns verbatim historical address
+metadata in sources.json `/X2_matches/14–16`. Its old display-only/null-provider
+interpretation is not current evidence: current owner A1, structure lines 49/98
+and the ledger conversion limits govern. A parameter-own converter is conditional
+on actual loaded ownership; Pan identity, Volume/Send position conversion and
+separate null-provider consumer remain distinct. The frozen metadata is retained
+as history. RA2 discard-before-survivor-validation, E(t)/ideal P(t)/ramped-sample
+separation, provider/timebase gaps and partial factory initialization remain.
+The review independently matches 80 selected retained rows without rerunning
+originals; no per-sample or application delivery claim follows.
+
+
+## Automation whole34 actual-result approval — 2026-10-20
+
+**Observed, bounded extracted execution.** Root read and adopts the complete
+[independent actual-result review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-eligible-leaves-actual-v1-review.json),
+22,892 bytes, SHA256
+`8cd9f6b78ad486dc21ffbbd3d94b19e978b0a151a67032023aba301808e5e873`,
+with no findings. The [manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-automation-eligible-leaves-v1/manifest.json),
+SHA256 `5cc79e216067ed9d9d2c5f2fc8d13acf6219b5be3d4bf0d51c53c6f2924d32ed`,
+seals35payloads/2,000,973bytes. Exact [inputs](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-automation-eligible-leaves-v1/inputs.json),
+[raw receipts](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-automation-eligible-leaves-v1/receipts.jsonl)
+and before/after custody retain one existing-model batch:11sequential processes,
+34direct calls at2026-10-21 02:17:28–29UTC, all exits0, no retry/timeout/stderr/
+used-import/trap/fault record. Five pre-call payload pins preceded every child;
+three image/loader identities remained equal. Raw import-binding inventories
+are declarations, not observed provider or Apple runtime behavior.
+
+The receiver-free x86 monotonicity predicate `0x1011f2080` returned low-bit
+Booleans1,1,0,1 for the four retained finite controls and0 for all six predeclared
+prospective vectors below (raw process01, calls4–9). Endpoints remain0 and1.
+This is six new local observations, not a public malformed-envelope policy.
+
+| Control c1 | Control c2 | Observed RAX & 1 |
+| --- | --- | ---: |
+| positive quiet NaN | 0.5 | 0 |
+| +infinity | 0.5 | 0 |
+| −infinity | 0.5 | 0 |
+| 0.5 | positive quiet NaN | 0 |
+| +1e308 | −1e308 | 0 |
+| −1e308 | +1e308 | 0 |
+
+The two NaN placements use the one declared binary64 payload
+`0x7ff8000000000000`; exact binary64 tokens/LE bytes and host libc strtod joins
+are retained for all91FP argument occurrences. Existing loaders form a temporary
+float even for double arguments. Host parser/computed bits are not an actual
+child XMM/FP-environment/rounding/exception trace or every-NaN guarantee.
+No root/threshold/zero-denominator or full finite-domain sweep occurred.
+
+The other28calls are historical controls,24already in the Mix batch. Fifteen
+Bezier interior points `i/16`,i1..15, reproduce exact binary64coordinate pairs;
+Y's binary32 forms are derived. The two declared endpoints are auxiliary, not
+native calls. Nine independent owned40-byte segment buffers reproduce exact
+historical dumps (45finite binary64fields). The22050samples/beat conversion is
+a fixture input, not a measured scheduler/audio clock. No unrelated volatile
+register value becomes an output law.
+
+The reviewer freshly checked all35payloads/3external gates/16sourcepins/
+5pre-call pins/11exact historical rows/11receipts/91FP encodings/34call records/
+15pairs/9states. The author data-only checker passed9negative controls after
+full336line collector reading;19independent mutations were rejected. No original
+code, executable identities or recovered original source was reread/reexecuted
+for review. Existing source semantics, stub policy and ABI calibration are
+inherited as scoped in the review, not rederived from return agreement.
+
+All50factory/registry/converter rows remain withheld as a complete separate
+setup class (22Float/22discrete/6Pan). Exact object/registry/legal-state proof
+and partial initializer limits need their own construction decision. Current
+loaded event/provider/control admission, normalization/open/Save receiver,
+E(t)/idealP(t)/ramped-sample consumer, clip/song timebase and ARM/host/audio
+behavior remain qualified or U. No owner/requirement/case/release/site/grade or
+whole-family/product closure changes. Required unsupported stays U / OPEN.
+
+
+## Automation withheld50 construction review approval — 2026-10-20
+
+Root read and adopts the complete [independent assessment review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-withheld50-construction-assessment-review.json),
+57,161 bytes, SHA256
+`49c7fbc3aa50441a3e86cf253673c44c5a9722e7e713f465279430057a865f6b`,
+in two untruncated halves. It approves the bounded [assessment](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-withheld50-construction-assessment.json),
+108,750 bytes, SHA256
+`1b909f9d45127d2e603b81deb3e90f53c1f5cebd417aa5f3d77775340242fd9a`,
+with no blocking findings. All 50 historical rows remain **NOT READY for
+automatic admission** to the supplied-data standing model: 22 Float, 12 Bool,
+10 Enum and six Pan. Existing syntax can express their recipes; legal original
+state is the missing proof. This is neither construction impossibility nor a
+new execution, new model, Pan-only selection or public failure finding.
+
+Fresh review parsed nine exact target histories and two separate registry
+diagnostics, all 50 argv/binary32 result joins, 72 decoded-stdout locators and
+22 tooling spans / 24,633 bytes. Ten author and 23 independent negative controls
+passed. The histories contain 139 direct calls: 50 target evaluations plus
+89 setup calls, with 145 owned buffers. These are historical calls, not new runs.
+Eight evaluator processes each attempted 3,322 initializers: 3,028 returned,
+294 were abandoned (257 faults / 37 traps), with identical failed tuples.
+The historical manifest says 295; preserve that as an unreconciled historical
+statement. The old assertion that no abandoned initializer affects the needed
+class graph is not an independently established dependency/isolation proof.
+The tool retains partial heap/global/guard/registry effects after abandonment;
+process exit0 and returned values do not prove complete successful setup.
+
+The two retained diagnostics support a 2,648-entry registry and the exact
+nine-address / 72-byte subset, followed by three global head/current/end
+overrides. This is pointer/data history, not complete class identity or reset
+of earlier partial effects. The 44 evaluator rows depend on factory/list/event
+invariants and initializer relevance. Float additionally uses six supplied
+24-byte null/min/max/flag records and six 72-byte transform records; this bypass
+is distinct from actual loaded A1/mixA3 provider ownership. Pan uses one zeroed
+56-byte receiver and a direct initializer; legal extent/dependencies/ABI remain
+unproved despite six finite returns. No handmade identity or graph replaces them.
+
+AW50-REVIEW-OBS-001 records 22 of 23 document pins matching at review, with the
+mutable plan's earlier as-of identity changed by Root status/queue updates.
+That documentary pin is nongating; the review neither re-audits the full plan
+nor claims all23current pins match. Frozen assessment, historical receipts and
+prior actual packet stay unchanged. The current source/model authorization
+comes from the governing plan, not this stale hash. Later mutable canonical
+updates do not rewrite either historical artifact.
+
+Bounded source proof of shared registry/factory/list/global isolation, Float
+provider/transform ABI and Pan initialization remains needed before any new
+model decision. No wholesale initializer audit, per-run preparation chain,
+original replay or successor is selected here. Historical X2 numeric observations
+and existing owner/case/release expectations remain; no new public provider,
+load/save/timebase/audio/ARM binding, site, grade or closure follows. Required
+unsupported behavior remains U and whole-product coverage OPEN.
+
+
+## Automation M boundary proposal approval and actual pending review — 2026-10-20
+
+Root read the full [independent proposal review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-monotone-boundary-proposal-v1-review.json),
+37,737 bytes, SHA256
+`22853400f6fddddf3a0097fa5c8b4c7aa8aca54af4f78e19aee2c9e6c1049da2`,
+with no findings. Its exact 2,138-pair universe combines the whole42x42 anchor
+grid and all64whole3x3 neighborhoods, deduplicated by ordered binary64 words.
+All ten prior M controls remain. Known local R5 comparisons were predeclared
+for 1,879 rows; 259 NULL rows retain arithmetic/branch/root ambiguity, including
+19 rounded-q-zero and 16 aggregate-D-nonfinite cases. NULL is neither failure
+nor exclusion. The 92 R5-tolerance acceptances that fail exact cubic monotonicity
+are a mathematical distinction, not measured native failures or replacement oracles.
+
+Root [separately selected the whole actual batch](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-monotone-boundaries-root-actual-selection.json)
+under the unchanged receiver-free four-double X2 model. The [frozen actual packet](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-automation-monotone-boundaries-v1/manifest.json)
+contains 47 payloads / 6,858,815 bytes. All 17 processes / 2,138 calls returned
+at03:27:04–06UTC, with exit0/no timeout/stderr/counted use/TRAP/FAULT/retry;
+image and loader before/after identities match. All 8,552 FP argument occurrences
+passed host libc strtod full-consumption/exact-bit checks before the first call.
+Host parser/temporary-float records do not trace child argument registers or FP mode.
+
+Root retained-data checks find 1,874 agreements, **five expected-false / observed-true
+mismatches** (MB-0315/0485/0950/1022/1679), and all259ungraded discovery rows
+(179 false / 80 true). Every old M control agrees. Exact inputs, expectations,
+criteria and NaN payload remain frozen. The packet is under independent actual
+result/tooling/oracle review; this paragraph does not approve those results or
+assign a native cause. No original replay or expectation repair was selected.
+
+**Downstream assumption stale:** treating the unqualified arithmetic expression
+in REQ-AUTOMATION-ENVELOPES-009 as a complete binary64 boundary oracle is no
+longer supported pending review of these five retained discrepancies. The four
+historical finite checks do not prove every operation order/FP boundary, exact
+mathematical monotonicity or public normalization/load/save delivery. Existing
+requirement bodies/cases and immutable releases remain history; a reviewed owner
+successor is needed for any normative correction. The recorder can stop later
+unlaunched children after failure; it cannot promise preemption of calls already
+queued in the current child. All50factory/registry/converter rows remain withheld.
+No new public grade, original setup model, owner/case/release/site or closure
+follows. Required unsupported stays U and whole-product coverage OPEN.
+
+
+## Automation M boundary actual review approval — 2026-10-20
+
+Root read and adopts the entire [independent actual review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-monotone-boundaries-actual-v1-review.json),
+106,194 bytes, SHA256
+`523323a4880a3f4957fd7e8e6bc76123b34a2f6e17be855f70e66fce03a4b954`,
+in eight complete parts. Bounded recording provenance is approved **with five
+confirmed local-oracle discrepancy findings**, AMB-ACT-F01–F05, and no recording
+blocker. The pending-review paragraph above is retained as-of history, superseded
+by this approval. [Manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-automation-monotone-boundaries-v1/manifest.json)
+seals47payloads/6,858,815bytes. Every17rawstdout/empty-stderr/receipt join,
+2,138returns,8,552hostargument occurrences/153token conversions, pre-call
+snapshots and recorded before/after binary identities was checked. Twelve
+recorder and fourteen independent negative controls passed, with strengthened
+TRAP/stderr/return corruptions preserving their synthetic receipt hashes.
+
+All1,879known expectations retain1,874agreements and five false-to-true
+RAX&1 discrepancies. Their complete input words, queued histories and raw-line
+locators are retained in the review; no expectation was changed or replayed.
+
+| Finding | Vector | Raw stdout / one-based line | Observed RAX&1 |
+| --- | --- | --- | ---: |
+| AMB-ACT-F01 | MB-0315 | MB-P03 /1942 | 1 |
+| AMB-ACT-F02 | MB-0485 | MB-P04 /1984 | 1 |
+| AMB-ACT-F03 | MB-0950 | MB-P08 /1937 | 1 |
+| AMB-ACT-F04 | MB-1022 | MB-P08 /2009 | 1 |
+| AMB-ACT-F05 | MB-1679 | MB-P14 /1898 | 1 |
+
+MB-1679 returns fullRAX0xffffff01; the selected low bit is1. WholeRAX is not
+assumed to be a normalized Boolean, and volatile return-time XMM/RDX values
+are not argument traces. Alltenhistorical controls agree. All92predeclared
+R5-tolerance/exact-cubic distinctions observedtrue as expected and are separate
+from the five discrepancies. The259NULLrows remain ungraded discovery:
+179false/80true, including roundedqzero19rows(8false/11true) and aggregate
+Dnonfinite16rows(allfalse). Those observations establish no universal invalid
+input, zero-division or nonfinite-root policy.
+
+The1882declarations perchild comprise1783trap/98Linuxfunction/1Linuxdata,
+31,994declarations across17children. No counted used row appeared; declarations
+are not calls or proof of absent provider/data access. The ___stack_chk_guard
+data binding is distinct from counted function use. Minimal harness identity
+is not public Live host identity. Existing50factory rows remain withheld.
+
+Posthoc binary64 regrouping moves D across the tolerance in four examples and
+moves D by oneULP/root cancellation in the fifth. Different examples use
+different groupings; these are sensitivity examples, **not native-order or
+cause proof**, a fitted target model or repaired oracle. The general claim that
+REQ009's unqualified algebra/nonfused interpreter exactly matches every supplied
+x86boundary is stale. Historical finite controls remain supported; public
+loaded normalization/Save/current provider/timebase/audio and ARM remain unknown.
+Any normative owner correction still requires separately reviewed evidence.
+
+[AMB-ROOT-NOTE-001](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-M-actual-root-review-qualification.json)
+qualifies one review prose phrase: JSONpayloads and receiptJSON are explicitly
+fsynced; rawstdout/stderr are closed, retained and hash-verified without an
+explicit rawFDfsync. No crash/power-loss durability claim is adopted. Frozen
+packet/review bytes and the five confirmed observations remain unchanged.
+Root separately selected [two-point header/start metadata](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-M-native-root-metadata-selection.json)
+to scope later static investigation; no instruction capture or numerical rerun
+is selected by this approval. No owner/case/grade/release/site or closure follows.
+Required unsupported staysU and whole-product coverage OPEN.
+
+
+## Automation M two-point metadata adoption — 2026-10-21
+
+Root adopts the [two-point retained metadata packet](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-automation-M-native-metadata-v1/manifest.json) by its [independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-M-two-point-native-metadata-v1-review.json): 15 payloads, 1,218,958 bytes, no findings. Both full header/load-command regions and both full LC_FUNCTION_STARTS payloads were independently reparsed, including all 826,111 declared starts. The known x86 entry `0x1011f2080` is 592 bytes before the next declared start; ARM64 `0x1012132d8` is 488 bytes before its next declared start. Those 1,080 bytes are interval geometry only: no native body, instruction order, contraction, FP cause or cross-architecture numerical equivalence is proved.
+
+The review records 24 author controls, a fresh retained-data check and 26 independent negative controls. It also acknowledges AMB-ROOT-NOTE-001: the earlier M recorder explicitly fsyncs JSON payloads/receipts; raw stdout/stderr descriptors are closed and hashed without explicit raw-file fsync. No crash/power-loss durability claim follows. The frozen earlier review and all 2,138 retained results remain unchanged.
+
+This completes the already-frozen metadata review under [design revision 12](full-live-specification-design.md). No metadata-driven native/source successor is selected; the numerical batch's separate owner adoption uses its existing approved observations. All 50 withheld construction rows stay withheld. Public normalization, persistence and unsupported required behavior remain U, coverage OPEN; metadata adds no executable route or indirect-site credit.
+
+
+## Automation owner r6 finite adoption — 2026-10-21
+
+The [owner revision 6 packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-automation-envelopes-r6-finite-v1/manifest.json), SHA256 `fa1193a581de862aace6483e86a5fe31aa711938052828dc4eba7463aeabe3e5`, directly admits the existing independently approved batch observations under design12. Its five new payloads total 897,750 bytes: 2,138 M cases (663 true / 1,475 false), 15 Bezier pairs and nine segment states. Ten earlier M observations are exact-input provenance aliases; two declared endpoints are auxiliary, with no X credit. The 259 frozen NULL-oracle rows now have new finite X expectations; their original NULL history is unchanged. Five false predictions correct REQ-009; the distinct 92 tolerance-versus-exact-math acceptances remain separate. Native cause, full outside-set algorithm and ARM boundary equivalence remain unknown.
+
+Root's [review of added wording/mapping](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-owner-r6-added-wording-review.json), SHA256 `ce9b1b376c61388f49c955eeb84922790cc7ff0a8b183ad5130a1e06902ee51c`, reuses the prior batch reviews rather than reviewing their observations again. Nonblocking AEN-R6-ROOT-001 qualifies preservation evidence: all 33 prior IDs remain and 29 rows match HEAD, but HEAD predates four existing R5 corrections; the entire pre-edit 62,135-byte owner was hash-pinned, not retained for a fresh full-table comparison. The author's edit scope did not touch those rows. No all-33 exact independent comparison is claimed.
+
+The draft remains analyst-only. Segment byte-state fixtures are local supplied-state arithmetic, not an independent product memory layout. No loaded event, normalization, save, provider, clock, ramped sample, audio or public application behavior follows. All 50 construction rows remain withheld. Released v2's sufficient K condition keeps both controls within [0,1]; all five corrected pairs fall outside that release's condition, so no released body/expectation is contradicted. Ordinary neutral-fixture/release review remains required. Unsupported required behavior stays U and whole-product coverage OPEN.
+
+## Standing-class eligibility after finite adoption — 2026-10-21
+
+The [R6 finite adoption](#automation-owner-r6-finite-adoption--2026-10-21)
+already admits the selected 2,138 M observations, 15 Bezier interior pairs and
+nine ideal segment states. The two declared endpoints remain auxiliary. The
+[map input inventory](../../analysis/ableton-live-12.4.3/full-spec-v1/family-automation-routes-v1/batch-inputs.json),
+`sets` and `prospective_vectors`, predates those batches; its six prospective
+nonfinite/overflow experiments are now observed with the selected frozen
+quiet-NaN bit patterns, not six fresh opportunities for replay. More control
+pairs or NaN payloads would need a concrete whole input class, rather than treating the 22 X-route contexts as an execution denominator.
+
+The remaining whole 50-row setup class stays withheld: 22 Float, 12 Bool,
+10 Enum and six Pan evaluations. The
+[approved construction assessment](#automation-withheld50-construction-review-approval--2026-10-20)
+records 3,028 returned and 294 abandoned initializers per retained evaluator
+process, while preserving the manifest's unreconciled 295 statement. Partial
+heap/global/guard effects, registry overrides and legal factory/list/provider
+state are not repaired by the returned values. Pan's supplied receiver is not
+an automatically admitted substitute, and no Pan-only or new construction
+batch follows from the X label.
+
+No additional complete missing class under the currently admitted supplied-data
+model was identified in this bounded selection assessment. This does not prove
+that all classes are exhausted. Loaded normalization, current provider and
+parameter binding, persistence, clip/song timebase and ramped audio delivery
+remain open. No old raw/source behavior, runtime, model, provider or original
+call was replayed; no native successor, new model, oracle repair or grade was
+selected. Unsupported required behavior remains U and coverage OPEN.
+
+
+## Next S-frontier assessment: paired M-predicate intervals — 2026-10-22
+
+**Proposed static cohort, not capture selection.** The most concrete next frontier in
+this bounded Transport/Automation/Mixer/Playback assessment is the paired native
+interval for the curve predicate M in
+[REQ-AUTOMATION-ENVELOPES-009](../specs/automation-envelopes.md#req-automation-envelopes-009--curve-normalization-on-load).
+The current R6 owner retains five finite corrections but explicitly leaves the
+complete binary64 decision algorithm, native operation order, rounded-q-zero and
+root/threshold equality behavior, and ARM boundary-Boolean equivalence U. A
+whole local arithmetic/branch audit could narrow these specific gaps; another
+arbitrary control-pair sweep would not establish the missing operation order.
+The existing 2,138 finite expectations and their frozen NULL history are not
+being recomputed, fitted or repaired.
+
+The [approved two-point metadata review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/automation-M-two-point-native-metadata-v1-review.json),
+87,881 bytes/SHA256 `fc646870f4e8d478725e695138873b5580a79d62f036f23a0adcc61b70f42cdf`,
+provides the exact bounds below at
+`/checks/owned_retained_check/result/points/0` and `/1`, and
+`/bounded_metadata_results/x86_64/prospective_window` and
+`/bounded_metadata_results/arm64/prospective_window`.
+
+| Slice | Complete declared-start interval, end exclusive | File interval, end exclusive | Bytes |
+| --- | --- | --- | --- |
+| x86_64 | `0x1011f2080`–`0x1011f22d0` | 18,817,152–18,817,744 | 592 |
+| arm64 | `0x1012132d8`–`0x1012134c0` | 18,952,920–18,953,408 | 488 |
+
+This is one coherent **1,080-byte paired declared-start interval cohort**, with
+no arbitrary first-N truncation. Both starts are exact LC_FUNCTION_STARTS
+members in file-backed executable `__TEXT.__text`. The documented role/address
+join is `/fresh_scope/known_point_join`, inherited from
+`r2/x2-envelope-warp-v1/addresses.json#/automation_envelopes/6`
+(6,190 bytes/SHA256 `b1d7b3884687389b8921734d195e7057ed48ce3ad5af8b01037e8ead21f9eff0`).
+The metadata packet manifest is 3,218 bytes/SHA256
+`7bf191edcd2fc94d3273e3851e6abe626e0580add9c5f4783ae8b8e459e132d6`.
+The review records the x86 image as 163,716,848 bytes/SHA256
+`1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0`
+and ARM image as 149,711,904 bytes/SHA256
+`3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad`;
+these are retained custody identities, not fresh image reads in this assessment.
+
+**Missing completeness and behavior joins.** Adjacent linker starts do not prove
+that either interval is a complete implementation: padding, multiple entries,
+out-of-interval tails, callees, constant loads and unusual control flow remain
+unknown. Any later selected audit must account for every retained byte/path in
+both intervals and report unresolved exits or dependencies without automatically
+following them. Raw instruction/register/branch evidence, not ESIL or a fitted
+expression, would be needed to qualify the local conditional arithmetic contract.
+Even that would not by itself establish the live FP state, caller arguments,
+current parameter/provider, event normalization ownership, public Open/Save,
+audio delivery or cross-platform numerical equivalence. The fifty withheld
+construction rows remain withheld; no original objects or new executable model
+are supplied by this proposal. A curve-value tolerance cannot replace an exact
+predicate-decision argument. No new C, native, binary, original, provider or
+actual-result bytes were acquired or executed here.
+
+The current [Transport standing-class assessment](transport-state-native.md#standing-class-eligibility-after-finite-adoption--2026-10-21)
+leaves public field/storage/range and owner-state joins, not another justified
+whole typed-string class. Mixer's [regular-node adoption](mixer-values.md#mixer-owner-r7-regular-node-annex-adoption--2026-10-21)
+already covers all 903 scalar helper/node pairs; actual 129-table construction,
+interpolation and track-factor delivery are distinct from those observations,
+with receiver/allocator and runtime-table bridges still needed. Playback's
+[remaining scalar assessment](playback-core.md#remaining-scalar-input-class-assessment--2026-10-21)
+finds no further declared complete scalar matrix in its bounded 86-input
+inventory; public format/player/fade/clock paths remain separate. These are
+route-specific reasons for preferring M's exact bounded arithmetic frontier,
+not global exhaustion or a blanket ban on existing standing models. Current
+float-unit work and all device actual/source packets are excluded from this
+assessment. No capture, successor permission, preparation chain, owner change,
+case, criterion, grade, release, site or closure follows; Root owns selection.
+
+
+## Paired M-predicate native intervals selected — 2026-10-22
+
+Select the two complete declared-start intervals and exact file ranges in the [metadata assessment](#next-s-frontier-assessment-paired-m-predicate-intervals--2026-10-22): 592 x86 bytes plus 488 ARM bytes, 1,080 total. Arrangement authors a single paired static packet; Root is its sole independent native/source reviewer. Root has no citation-only restriction for this new Automation packet. The current float-unit packet and all device actual/source payloads remain excluded.
+
+Retain and account for every selected byte, instruction boundary, branch target, return, padding projection and referenced dependency, with unresolved decoding or out-of-interval paths explicit. A declared start and its next start remain interval bounds, not a proof of complete implementation extent. Existing pinned image custody metadata may be reused; no broad image scan, new decompilation, helper call, object construction, runtime/provider mutation, executable numerical model or original/candidate execution is selected. Any referenced out-of-interval constant, pointer, callee or tail is initially a locator only. If the paired arithmetic needs a concrete constant cohort, report its entire exact direct-reference union before reading it; expansion can join this same unsealed packet before the one sole review. Do not replace native branch order with a fitted expression.
+
+This work can qualify only the retained local instruction/arithmetic projection. Live FP state, current callers and parameter/provider bindings, public normalization/persistence/audio, ARM/x86 numerical equivalence and behavior outside supported evidence remain unknown. Earlier 2,138 finite expectations, five corrections, withheld fifty construction rows, criteria and releases stay exact. No case, behavioral grade, main-image indirect-site credit or product closure follows from selection.
+
+
+### Complete direct-literal union added to the same packet — 2026-10-22
+
+The whole paired decode nominates ten x86 RIP-relative memory references, collapsing to **nine exact ranges / 96 bytes**; ARM nominates no external literal loads in the selected interval. Select that entire union from the pinned x86 image, using the existing approved file-backed `__TEXT.__const` mapping. Literal values were unknown at selection. This expands the same unsealed paired packet before its one sole review, rather than creating a separate prerequisite review.
+
+| Virtual address | Bytes | File offset |
+| --- | --- | --- |
+| `0x105a577f0` | 8 | 94,730,224 |
+| `0x105a57810` | 16 | 94,730,256 |
+| `0x105b35620` | 16 | 95,639,072 |
+| `0x105b35848` | 8 | 95,639,624 |
+| `0x105bd9b10` | 8 | 96,312,080 |
+| `0x105bfdd58` | 8 | 96,460,120 |
+| `0x105d5fe68` | 8 | 97,910,376 |
+| `0x105d65f10` | 16 | 97,935,120 |
+| `0x105d65f28` | 8 | 97,935,144 |
+
+Retain every loaded bit at its instruction width, including vector-mask bits; repeated references share one range. The [entire direct-reference union metadata](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-paired-native-intervals-v1/direct-reference-union-metadata.json) owns instruction associations and section mappings. No neighboring byte, pointer following, relocation/fixup/provider resolution, out-of-interval code, new object/model or execution is selected. Static file literals are not proof of current runtime memory or FP state. Together the selected instruction and literal ranges total **1,176 bytes**. Earlier scope and unknowns remain controlling.
+
+
+## Paired M-predicate native contract adopted — 2026-10-22
+
+**Approved conditional native evidence.** Root’s [sole independent review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-paired-native-intervals-v1-review.json), 11,454 bytes / SHA256 `6a13ddb9e9bdc2a9733091b0c9c3e0089bf9dfff315cf284ebab883adfa2fbb5`, approves the [paired static packet](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-paired-native-intervals-v1/manifest.json), 7,223-byte manifest / SHA256 `a2fd08a1c34c651e96bcb114c358f6abc2364f93106423c5237766be6087a3b8`. Its thirty payloads total 213,824 bytes; all thirty-one files are 0444 under a private 0700 root. Arrangement authored; Root reviewed all five new scripts (158 lines) inertly before the packet-only checker, all 266 decoded instruction rows and all 1,176 selected bytes. Sixteen owned and eleven independent controls passed; an independent GNU objdump 2.42 decode agrees with all 144 x86 instruction boundaries and byte sequences. No second ARM decoder is claimed.
+
+The complete selected-entry ordinary control-flow graph stays within each interval and exits through four x86 RETs / three ARM RETs under the retained decode. All 31 raw conditional-branch displacements resolve to retained instruction starts. All 143 reachable x86 rows and 122 ARM words are accounted for; eight trailing x86 NOP bytes remain retained outside entry-reachable flow. This narrows ordinary local body closure; it does not prove unique function extent, alternate-entry absence, exception paths, valid stack/link state or loaded-code identity. Ten x86 memory references deduplicate to the entire nine-range 96-byte literal union; ARM uses encoded immediates within this interval.
+
+The [full ordered local contract](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-paired-native-intervals-v1/CONTRACT.md), 12,788 bytes / SHA256 `1b1a0fb48a71f7bda134e0aca1980c7f5eb27bb5e457c65264ce4fd0bea93618`, records the input bit filters, ordered-chain early returns, product guards, every stage of the compensated add/subtract sequence, ordered `D <= 2^-52` early acceptance, and both root comparison paths. It is an instruction-order projection conditional on actual input carriers, ISA semantics, code/literal equality and normal completion. It is neither a fitted polynomial nor an executable replacement oracle. There is no denominator-nonzero guard in either retained root path.
+
+| Retained distinction | x86 | ARM |
+| --- | --- | --- |
+| Negative products | Sign-bit XOR before scalar multiply | FNMUL instruction |
+| Last compensated addition | Residual then running sum | Running sum then residual |
+| Root arithmetic | Separate scalar operations | Five FMADD instructions |
+| Final comparison | Packed CMPPD reads both lanes; only low mask consumed | Scalar comparisons |
+| Local return projection | AL bit 0 normalized; upper EAX mask bits may remain | W0 is zero or one |
+
+The x86 packed-compare high lane retains incoming XMM1 upper bits through sign XOR and legacy scalar operations. Discarding its result mask does not discard possible FP invalid/status/trap effects. Therefore four scalar low-lane values alone do not establish a complete exception contract or ARM exception equivalence. FNMUL, fused operations, product/check order and the reversed final addition remain distinct; no NaN-payload or arbitrary-FP-state commutativity is assumed. The review consulted publisher ISA references identified in the contract (Intel September 2016 SDM volumes 2A/2B and Arm’s 2018 reference guide); these interpret instructions, not this application’s current FP environment.
+
+**Remaining behavioral gap.** The five old finite discrepancies have not been evaluated against a new model, explained numerically or repaired. Full binary64 decision validation, exact boundary equivalence across slices, MXCSR/FPCR rounding/denormal/exception state, current caller delivery, loaded code/literals and public normalization/persistence/audio remain unknown. The earlier “native operation order unknown” wording is narrowed only to the retained local projection; actual runtime order/state and its behavioral applicability remain open. All 2,138 finite expectations, five corrections, fifty withheld construction rows, criteria and releases remain unchanged. No new case, behavior grade, main-image site, release, runtime/model authorization or coverage closure follows.
+
+Custody is scoped: whole-image hashes are inherited from the approved metadata; fresh PATH-stat endpoints and selected-range hashes are not atomic FD snapshots or runtime-memory proof. Static Rizin child receipts are source-level command/PID/status records, not independent OS execution or decoder-correctness proof. Literal/code fixups or modification, alternate entries and FP/memory/return faults were not ruled out. No original numerical instruction, emulator, ESIL or executable arithmetic model was run; no old actual/source/finite proof was replayed.
+
+
+## Immediate M caller and FP-profile frontier — metadata-only assessment (2026-10-22)
+
+**Proposed next static cohort, not selected content.** The complete retained
+**direct-call** frontier for M is four callers / six sites in each main-image
+slice: **eight whole C1 methods, 2,314 declared native body bytes and 12,155 C
+projection bytes**. This is a bounded next argument-delivery study for
+REQ-AUTOMATION-ENVELOPES-009, rather than another numerical input class. It does
+not enumerate unresolved indirect callers or establish runtime invocation.
+Only retained metadata was projected here: no C text, disassembly, native or
+literal content, original call, model or earlier finite proof was inspected or
+executed. The adopted 1,176-byte packet was not reopened.
+
+### Direct-call census and index authority
+
+The retained C2 indexes identify their Ghidra version as 12.1.4 and their images
+as ARM64 SHA256 `3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad`
+and x86 SHA256 `1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0`.
+Authority is the repo-retained [ARM index manifest](../../analysis/ableton-live-12.4.3/r2/c1-live-v1/indexes-manifest.json)
+and [x86 index manifest](../../analysis/ableton-live-12.4.3/r2/c1-live-x86-v1/indexes-manifest.json).
+Their physical metadata files are respectively
+`/var/tmp/sound-analysis/corpus/indexes/calls.jsonl` (431,102,757 bytes,
+1,599,830 rows, SHA256 `df29ef1deb9af95c966917728ee4919d54e85e76d69a3410a76869039924f64c`)
+and `/var/tmp/sound-analysis/corpus-x86/indexes/calls.jsonl` (423,195,624 bytes,
+1,572,950 rows, SHA256 `c8220d3f46e07a2755e4cc7a4bf09e1446347196f2e26f0f80e09d31ba3e41cb`).
+Fresh metadata-only scans matched those entire-file hashes and selected exact
+callee identity, not name similarity. All twelve rows below say `kind=call`,
+`ref_type=UNCONDITIONAL_CALL`, with no resolved thunk target.
+
+| Slice / M entry | Immediate caller | Site(s) | calls.jsonl row(s); zero-based byte offset(s), each row 245 bytes |
+| --- | --- | --- | --- |
+| ARM / `1012132d8` | `1012132c4` | `1012132d4` | 361665; 98658380 |
+| ARM / `1012132d8` | `1012134c0` | `1012134d0` | 361666; 98658625 |
+| ARM / `1012132d8` | `102778870` | `102778894`, `1027788ac` | 772765–772766; 209357800, 209358045 |
+| ARM / `1012132d8` | `1033ceeb4` | `1033cf14c`, `1033cf164` | 1057764–1057765; 283789159, 283789404 |
+| x86 / `1011f2080` | `1011f2060` | `1011f2078` | 352763; 95913972 |
+| x86 / `1011f2080` | `1011f22d0` | `1011f22e9` | 352764; 95914217 |
+| x86 / `1011f2080` | `1028b19d0` | `1028b1a05`, `1028b1a23` | 759242–759243; 205277272, 205277517 |
+| x86 / `1011f2080` | `1035421d0` | `103542473`, `103542496` | 1041608–1041609; 278915290, 278915535 |
+
+The approved family map's AE-E02/03 normalization edge is therefore one of four
+ARM caller records, not the entire direct-call census. The retained S6 dossier
+`results/s6-0001/functions/0x1012132d8.json#/callers` and
+`/incoming_references_to_entry` agrees with those four ARM callers/six sites;
+its additional data reference `108525b81` is not a caller. The dossier is
+15,017 bytes / SHA256 `763f731033668993052f13ea6f6f5a519d3ede91e27589f38f60c5d5aa40fa43`,
+pinned in the approved family review. No data-reference following occurred.
+
+### Whole-method metadata and exact source locators
+
+C1 paths below are relative to `/var/tmp/sound-analysis/corpus/decomp/chunks/`
+for ARM and `/var/tmp/sound-analysis/corpus-x86/decomp/chunks/` for x86. Row and
+byte-offset locators address the original JSONL record; code hashes are the
+**declared metadata hashes**, not a fresh semantic source audit. Native ranges
+are half-open conversions of C1's inclusive `body_ranges`; retain the entire
+listed union, not the containing envelope or an arbitrary callsite window.
+They remain Ghidra-defined body extents, not proof of unique entry, ordinary
+closure, padding, omitted tails or exact linker extent.
+
+| Slice / entry | Exact declared body union; total bytes | C bytes / state | Source JSONL locator: chunk, row, byte offset, row bytes |
+| --- | --- | --- | --- |
+| ARM `1012132c4` | `[1012132c4,1012132d8)`; 20 | 117 / exported | `chunk-00698.jsonl`, 21, 30406, 488 |
+| ARM `1012134c0` | `[1012134c0,1012134d4)`; 20 | 210 / exported | `chunk-00698.jsonl`, 23, 33613, 582 |
+| ARM `102778870` | `[102778870,1027788cc)`; 92 | 726 / exported | `chunk-01928.jsonl`, 92, 55736, 1114 |
+| ARM `1033ceeb4` | `[1033ceeb4,1033cf290)`, `[1033cf294,1033cf2c4)`, `[1033cf2c8,1033cf308)`; 1100 | 5174 / exported-with-warnings | `chunk-02522.jsonl`, 66, 73044, 5947 |
+| x86 `1011f2060` | `[1011f2060,1011f207d)`; 29 | 117 / exported | `chunk-00693.jsonl`, 27, 43544, 488 |
+| x86 `1011f22d0` | `[1011f22d0,1011f22ee)`; 30 | 210 / exported | `chunk-00693.jsonl`, 29, 47002, 583 |
+| x86 `1028b19d0` | `[1028b19d0,1028b1a42)`; 114 | 755 / exported-with-warnings | `chunk-01923.jsonl`, 64, 39801, 1248 |
+| x86 `1035421d0` | `[1035421d0,10354253f)`, `[103542567,103542571)`, `[1035425a9,1035425b3)`, `[1035425dd,1035425e7)`; 909 | 4846 / exported-with-warnings | `chunk-02513.jsonl`, 32, 32799, 5720 |
+
+All eight metadata records have `thunk=false`, `error=null`,
+`partial_code=false`, `timed_out=false`, and default `undefined FUN_…()`
+signatures. Matching alias rows are nonexternal/nonthunk, not formal ABI proof:
+ARM `aliases.jsonl` rows 69821, 69823, 192892, 252266; x86 rows 69327, 69329,
+192364, 251332. The manifests above pin both full alias indexes. The S6 dossier
+for `102778870` additionally reports `calling_convention=unknown` and
+`signature_source=DEFAULT`.
+
+| Entry | Declared C SHA256 | Exact JSONL record SHA256 (including newline) |
+| --- | --- | --- |
+| ARM `1012132c4` | `8b82b8bb4e0dacd3b106df326b9c55f13f7830f2b452139a6d892ad3d08075a4` | `6d50be54ebd74f96a38738b867482a64636e97d74d9eda2e69b13d776775b62f` |
+| ARM `1012134c0` | `709bc8c466450e856c7b5e564e42b51f48014a8b7c7f7f3a8a013626abc89e80` | `61f1d4de06a1e2dc1ade9f7491534afc863ec63d8ed3e2577e0125fd22aa2b6c` |
+| ARM `102778870` | `d28383c7af7227344e0f963c2eb758d9c8476a839e853c11c0e5977293fd9784` | `74032820efd16eda834c20964f6f9ab2d773c7d2102799e08c75f80e7068b0bc` |
+| ARM `1033ceeb4` | `c43741ba9abf960cbd27bc005c3127d242ef5b9c6e590668de3ff734e49bdc6b` | `a58121b67f33ea4f07a8edfd41ea708b1186c2fdbeb7b2e5cd856e8645f5c3a0` |
+| x86 `1011f2060` | `6fb7a103f6173ca5331b5b481ab998a3bc343d710e2e868be38f33f4fcff47b8` | `8d65f0849594380661bf54e5ab5feff6d073623611d9efd683be76087c651b9c` |
+| x86 `1011f22d0` | `5098b5560a71812a4fba7b02b274aa5dca2f60c555b6e0aab7561b5a2ef50c9f` | `cc161943bf50a7ddac1162965a1a7c095e181c01ffd04437ad95af233657344b` |
+| x86 `1028b19d0` | `b711e6446f955b663e15c5c17835dc660abc328b342fe7051adc23dce0f9b1b9` | `6d91e2f123e70491ff6dc94709ebe5250a058202f24d59732aaf508b76b0d583` |
+| x86 `1035421d0` | `0b05e52a89f9ffe0020e1fa1e49d0d07223b2f6e653e41944ae65ad0b2fa40ef` | `473b7d6bb5324a45bf1b0b848e8e93b3ca98ce04c95bae3baf41ac63f275861f` |
+
+Warnings are retained verbatim as metadata: ARM `1033ceeb4` has four
+`/* WARNING: Subroutine does not return */` entries; x86 `1028b19d0` has
+`/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */`;
+x86 `1035421d0` has that overlapping-globals warning plus four nonreturn
+warnings. The other five records have empty warning lists. No warning was
+resolved by this assessment.
+
+### Approved overlap and remaining joins
+
+The [approved family-route review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-automation-routes-v1-review.json)
+(42,877 bytes / SHA256 `d1f975a1011801c5b19469ed8a19037fee5363be4bd70490a0e6233f9331a123`)
+`exact_bounded_inputs` includes whole `102778870.c`, 726 bytes / the C hash above,
+and its 3,926-byte dossier SHA256
+`8aa06b60d6c1adeaa9d20e8bfbabd115e4e713381867c835f24342a61d7bf696`.
+Its `semantic_checks` for discard/normalization/survivor ordering approves the
+conditional both-M-pass/reset context. Reuse that prior source approval by
+citation; new work would concern native carrier delivery and local FP effects.
+No claim is made that the other seven bodies have never been reviewed anywhere;
+no broader overlap catalog or old source proof was replayed. Similar call
+patterns do not themselves establish paired semantic identities across slices.
+
+The retained call indexes delimit additional uncertainty within the proposed
+whole callers. ARM `1033ceeb4` has 23 direct-call rows 1057758–1057780 and
+18 unresolved computed-call rows in `indirect.jsonl` 170753–170770. x86
+`1035421d0` has 15 direct-call rows 1041602–1041616 and 18 unresolved computed-call
+rows 172885–172902. Each has two direct M calls. The other six methods have only
+the listed direct M calls and no retained computed-call rows. These are index
+observations, not absence of unindexed control transfer or FP effects. The
+manifest-pinned indirect indexes are ARM 54,983,860 bytes / SHA256
+`288fcc1e715dcbe30f39623b4e2e74f50add3941bcd5d6da8aab028585bc1a64`
+and x86 62,363,723 bytes / SHA256
+`5fbc26f8e95191f21dd21343262edd65dbcb6d37f2dbf6c8a66ff074a70c8e92`.
+No helper or computed destination content was followed.
+
+**Concrete proposed question for all eight whole methods:** trace each retained
+M call's four low scalar carriers, all relevant x86 upper-lane definitions or
+preservation, any local FP control/status access and explicit save/restore, the
+call/return projection and post-call accept/reset branch. No such accesses or
+argument values are inferred present or absent from names, signatures, sizes or
+call indexes. Local code could supply evidence about these operations; metadata
+cannot decide them. Complete body unions also retain alternative paths and
+nonreturn-warning fragments instead of selecting favorable call setup only.
+
+The [sole paired-native review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-paired-native-intervals-v1-review.json)
+`approved_summary/x86_upper_lane_exception_qualification` specifically preserves
+incoming XMM1 upper-lane invalid/status/trap sensitivity, despite consumption of
+only the low result mask; its `qualifications` leaves incoming MXCSR/FPCR,
+rounding/denormals/traps and caller/public applicability open. Even a future
+complete local caller study would leave incoming FP state, opaque direct and
+computed helper effects, actual runtime receivers/member values, invocation of
+the enabled post-load path, loaded code/literal/fixup identity, public
+normalization/persistence/audio and cross-slice exception/numerical equivalence
+unproved unless separately joined. A caller's missing local FP write would not
+establish a default profile. No changed finite expectation, new case, grade,
+main-image site credit, public law or capture authorization follows.
+
+**Focused documentation check (2026-10-22).** Append only; prior page bytes and
+its `updated: 2026-10-22` date preserved. Checked the eight extent sums, exact
+callee census, selected row identities, new relative links and Markdown
+whitespace. Checks concern metadata/navigation only, not the proposed native or
+source contracts. Shared routing, log, owners, criteria and immutable evidence
+remain untouched; Root owns any subsequent selection.
+
+
+## Whole immediate-caller native cohort selected — 2026-10-22
+
+Select **only the entire eight-method declared native body union** in the [caller metadata assessment](#immediate-m-caller-and-fp-profile-frontier--metadata-only-assessment-2026-10-22), 2,314 bytes total. Its exact half-open ranges govern: retain every discontiguous fragment, without filling holes or replacing them with a containing envelope. The 12,155 C-projection bytes remain metadata and are not selected. Existing approved file-backed section mappings may supply exact file offsets; no fresh header scan is needed. Arrangement authors one paired native packet; Root is its sole independent native/source reviewer. Existing M’s 1,176-byte study and approved normalization source are reused by citation, without another body/raw proof review.
+
+The question is native delivery at all twelve retained M-transfer sites: four scalar low-lane carriers, x86 upper-lane definitions/preservation, local FP control/status access, actual transfer form (call/tail branch), return consumption and accept/reset branches. These are questions, not conclusions inferred from metadata. Account for every selected byte, ordinary path and unsupported decode/exit, including the nonreturn-warning fragments, and retain the two large callers’ eighteen computed-call rows each as unresolved context. Selected body ranges do not establish unique extent or complete ordinary flow; any branch into a gap stays an unresolved locator until concretely selected.
+
+No other callee/computed destination, hole/padding outside the union, global/provider content, C record, model, object construction, original numerical execution, guard or finite criterion change is selected. Direct memory/literal references initially remain exact width/address/file-map metadata; report the whole question-relevant union before content acquisition so a justified literal cohort can join this same unsealed packet before its one review. Do not follow pointer contents. Missing local FP writes could not establish incoming defaults, and local caller evidence alone could not prove runtime invocation, member values, helper effects, loaded code/literal identity, public normalization/persistence/audio or ARM equivalence. No case, grade, native site or release credit follows.
+
+
+### Complete caller x86 literal union added before review — 2026-10-22
+
+Select the entire **eleven logical x86 literal ranges / 112 bytes** nominated in the [caller direct-reference metadata](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-immediate-callers-native-v1/direct-reference-union-metadata.json), 17,596 bytes / SHA256 `9b9e43259b4f3234a16a83702a5d1f8a1fec4cf91fb0ef43dfd92ca73c1e2c04`. Two adjacent scalar ranges may be merged for ten physical reads, without adding a byte. The logical union is `0x105a577f0`/8, `0x105a57808`/8, `0x105b35690`/16, `0x105b38fd0`/16, `0x105b3ce00`/8, `0x105b3eac0`/8, `0x105b3eac8`/8, `0x105b3eb20`/16, `0x105b42d18`/8, `0x105b9e6f0`/8 and `0x105e4dbf8`/8. All map through the retained x86 `__TEXT.__const` metadata with file offset VA minus `0x100000000`; exact instruction associations are in that union record. The sixteen-byte indexed-table nomination requires later raw guard/index verification, not an assumed bounded runtime array.
+
+This expands the same unsealed eight-caller packet to **2,426 instruction/literal bytes** before its one sole review. Values were unread at selection. A repeated literal shared with prior M evidence supplies a new caller-reference association, without reopening M’s instructions, finite observations or numerical proof. Five ARM pointer-slot nominations (forty bytes) and four address-only nominations remain metadata/unknown; their contents and every pointed-to byte are unselected. No neighboring data, body hole, provider binding, relocation/runtime-memory interpretation, numerical model or original execution is authorized. All earlier caller/runtime/FP/public qualifications remain.
+
+
+### Complete seven-continuation gap union selected — 2026-10-22
+
+Before the caller packet freezes, select the entire **seven-range / 583-byte continuation union** in [the exact gap metadata](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-immediate-callers-native-v1/continuation-gap-metadata.json), 3,961 bytes / SHA256 `1cb9eecc3de86a96441a7f03ac13895660bf72002f6a66713e8b9e0b58074066`. All seven begin immediately after selected call instructions that end a declared fragment. Five ranges end at the next selected fragment; the final range in each slice ends at the next Ghidra-defined entry. These are concrete geometry bounds, not linker-start, unique-method or semantic nonreturn proof.
+
+| Slice | Exact selected interval, end exclusive | Bytes |
+| --- | --- | --- |
+| ARM | `0x1033cf290`–`0x1033cf294` | 4 |
+| ARM | `0x1033cf2c4`–`0x1033cf2c8` | 4 |
+| ARM | `0x1033cf308`–`0x1033cf3e4` | 220 |
+| x86 | `0x10354253f`–`0x103542567` | 40 |
+| x86 | `0x103542571`–`0x1035425a9` | 56 |
+| x86 | `0x1035425b3`–`0x1035425dd` | 42 |
+| x86 | `0x1035425e7`–`0x1035426c0` | 217 |
+
+This expands the **same unsealed packet** to 2,897 instruction bytes plus 112 literal bytes, **3,009 total**. Preserve initial acquisition inputs/receipts as historical bytes; a new separately pinned once-only collector may read just this new union. Do not rerun the initial capture or silently repair its scope. Account for every new byte, return continuation, re-entry edge, padding projection and unresolved out-of-union exit before any ordinary-predecessor/upper-lane claim. Provider names, warnings and missing index rows do not prove that a callee cannot return. New data references remain metadata until concretely selected. No next-function body, other target, ARM slot/pointee, model or original execution is selected. Current FP/stack/code/caller/public assumptions remain explicit; no behavioral grade or closure follows from this selection.
+
+## Immediate-M-caller native contract adopted — 2026-10-22
+
+**Observed, static and conditional.** Root's [sole independent review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-immediate-callers-native-v1-review.json), 7,385 bytes / SHA256 `ee953dfcf6fd6844238d803a4d0b472735b807e6f6f51344cdabd99128230a3d`, approves the complete selected caller packet with no findings. Arrangement authored; Root selected scope and reviewed, without authoring acquisition code. The [manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-immediate-callers-native-v1/manifest.json) is 17,536 bytes / SHA256 `7719b9c3a1774109bbf7d1093e37a31fa8679f00c668cabdf72c48c47f2ddc02`, with 106 payloads / 608,390 bytes, all files0444 under private0700. Its [complete contract](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-immediate-callers-native-v1/CONTRACT.md), 19,735 bytes / SHA256 `5e2536d835de7687b534b3d28e6f44127aed5be9afa36a998607038fc54033fc`, owns the detailed per-address projection and its premises.
+
+The retained scope is 2,897 native bytes / 721 rows plus eleven x86 literal ranges / 112 bytes, **3,009 bytes total**. Initial eight body unions2314B/13ranges, subsequent seven continuation ranges583B and literal capture remain separate as-of acquisitions. Initial source/precall/attempt/receipts stayed exact; no capture or old M/source/finite proof was replayed. No C was selected. Root read all nine final sources inertly, then executed only the safe final packet checker (PASS,35analysis negatives;8earlier gap-input negatives retained). An independent new packet-only checker and eight controls passed; installed GNU objdump agreed with every x86 instruction boundary/raw byte,356rows/1437B. No second ARM decoder or numerical/original execution was used.
+
+The twelve index rows labelled `call` contain **four tail B/JMP transfers and eight BL/CALL transfers**. Four strided wrappers load four64-bit words at hexadecimal offsets0/10/20/30 or8/18/28/38 and tail-transfer with the pre-existing return context. Six specific x86 legacy memory MOVSD definitions supply XMM1 with zero upper64 bits before their corresponding M transfers. All selected ordinary predecessors and intervening instructions were checked; this narrows the prior M upper-lane premise only for these paths, assuming successful loads, actual entry/code, valid memory/stack and ordinary callee control. Exception/unwind/alternate entry or abnormal callee re-entry remains unclosed; no generic ABI or default floating-point profile follows.
+
+The normalization bodies ARM`102778870`/x86`1028b19d0` deliver zero, two object-derived pairs and one. First-test failure or second-test failure writes32bytes of exact binary64.5; ARM consumes wholeW0 thenbit0, x86 consumesAL. The larger ARM`1033ceeb4`/x86`1035421d0` callers instead send failed M validation to an opaque error-call path. On their gate-true/both-M-pass path they copy32inputbytes and forward a stack address through unresolved slot+210; the target's application/persistence and current object identity remain unknown. Full prelude, helper, traversal, local rounding, setter/type gate, cleanup and error paths are retained in the contract.
+
+The x86 indexed literal has a checked XOR-EAX / SETNB-AL chain and all selected predecessors, bounding the local index to0or1 and its successful8byte-load union to exactly16bytes at`105b3eb20`. This is a local bound, not a maximal table extent or public input domain. The selected graph has157rawdirect edges (51conditional/86calls/20B-or-JMP),36computed calls,4RET andBRK1/UD2. With sequential callee returns and RET/trap/tail boundaries,625rows are entry-reachable;96other retained rows are **not proved dead**. Final if-return exits at ARM`1033cf3e4` and x86`1035426c0` remain unknown. Missing warning/index rows do not prove nonreturn.
+
+No explicit local MXCSR/x87-environment or ARMFPCR/FPSR access was decoded. Arithmetic implicitly consumes/updates FP state and unread callees may change it. FRINTM and ROUNDSD09 choose local rounding operations; they do not install a global profile for M. Five ARM pointer slots40B/four address-only locators and five new x86 exception slots40B/four address-only locators stay unread. Inherited whole-image hashes plus fresh PATH-stat endpoints/selected-byte hashes are not FD-atomic or current-loaded-code proof. Current receiver/member values, actual invocation, helper effects, floating-point state, public normalization/persistence/audio, arbitrary binary64 validation and ARM/x86 equivalence remain U. The prior finite2138/five corrections/withheld50, criteria, cases, grades, releases and main-image site count are unchanged.
+
+
+## Whole immediate-M-caller frontier metadata selected — 2026-10-23
+
+The ledger-order scope assessment accounts for all69frozen AutomationS units as existing qualified local/storage/validation/normalization claims, not69unread methods. E(t), idealP(t) and ramped samples remain distinct; currentR6/M studies do not establish actual provider ownership, song/clip timebase, persistence or sample delivery. Earlier paired1176-byte and immediate-caller3009-byte studies are already adopted, with no new content credit.
+
+Select ONE **depth-automation-M-caller-frontier-metadata-v1**, covering the complete remaining two-architecture caller frontier nominated by the [approved caller report](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-immediate-callers-native-v1-review.json),7385bytes/SHA256 `ee953dfcf6fd6844238d803a4d0b472735b807e6f6f51344cdabd99128230a3d`, `/approved_summary/graph`,`/unread_data`,`/FP`,`/large_callers`. Its retained [CONTRACT.md](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-immediate-callers-native-v1/CONTRACT.md),19735bytes/SHA256 `5e2536d835de7687b534b3d28e6f44127aed5be9afa36a998607038fc54033fc`, may now be parsed **only for finite metadata membership/locators**, with other sections/native/C/instruction text/FP semantics unselected. This does not recertify the old proof.
+
+Account all ten unread pointer fields80bytes, eight address-only references, all outside destination and computed-site keys, and two if-return exits ARM0x1033cf3e4/x860x1035426c0. The full admitted graph has157rawdirect edges=51conditional+86DIRECTcalls+20B/JMP, **plus36computedcalls**;36is not a subset of86. Occurrences are not unique unknown destinations. Extract complete exact membership from the retained metadata, preserving internal/duplicate/unnamed questions and missing enumeration asU; no convenient80-byte-only or single-exit subset. No slot, target body or pointer/pointee content is selected.
+
+A minimal new adapter is fully read/control/prebound before exposing selected headings/table columns/metadata fields. Derive complete candidate counts and the full current6039814144concurrent term plus complete12MiBremaining-parent allowances/512MiBfinal/128MiBheadroom or larger, maximum with4563419136floor, **before any new original alias/C1/index reads**. Do not shrink allowances, trim scope, delete evidence or make retroactive claims. If eligible, the same packet may census exact alias/export/C1declarations, bounded predecessor metadata only if required, and site-index hints using only already admitted authority for the correct architecture. Never query x86addresses in an ARMindex on numeric agreement; absent architecture-specific authority staysU. No fresh image/header/table/native/C content or old source/helper/decoder/fixture proof replay.
+
+Tension_owner_finish authors; o137_finish solely reviews the frozen NEW metadata/code packet; RootCITEONLY. ExactPython312-I-B/source eligibility, meaningful new controls, one census/finalfreeze/sole report with SAFEfacts/completequestionunion/lineage/limits/history, no separate preparation/review chain. No original/runtime/FP/model/provider/install/guest/QMP/UI/media/profile/AUZ/MIDI or opaque-scope action. Analog's whole59capacity-pending cohort remainsintact. This independent whole class changes no case/grade/site/O/release or whole-product closure.
+
+
+## Whole caller-frontier metadata adopted — 2026-10-23
+
+The [sole NEW metadata/code review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-caller-frontier-metadata-v1-review.json),138360bytes/SHA256 `67125e48a804e5b82b93c1aad601d6fc6d88460c2d63992fe90594d5603e6363`, approves the complete92-category-question census with zero unresolved findings or frozen corrections. [Manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-frontier-metadata-v1/manifest.json),11722bytes/SHA256 `dbb0818afa9a8eb545b63b0acaaeca6b9812fe98fd0898c479fed08336363e92`, seals74payloads768635bytes/all75files0444. Root verified the sole report pin and read only approved SAFEscalar/understanding/full limits/all18declared geometry/whole92question union/lineage/history. No underlying source/code/native/header/tool/parent proof or checker was reopened by Root.
+
+The final retained navigation enumerates157direct records(51conditional/86directcalls/20tail-or-branch),36additional computed calls,67internal direct occurrences and90outside occurrences at36architecture-qualified destinations(18perarch). Two destinations are inherited M. Ten unread pointer windows80bytes,eight address-only references and two if-return exits yield92category-qualified questions/46perarch. All46x86locator questions remainU; no numeric-address lookup into ARMauthority. All contents/current object extents/computed destinations/public receiver/provider/FP/timebase/persistence/sample-delivery joins stayU.
+
+The ARM census read two indexes and14C1parents once,179191798physical bytes, selecting zero native/C-body semantics. Nineteen exact entry aliases include the inherited M;27other ARMsite/data keys have no exact function-entry alias, not a no-object/no-code proof. Excluding inherited M,18new **declaration records** total932declared native bytes/6090declared Cbytes,12text+sixstub fragments, with tenexported/eightexported-with-warnings and sixthunk labels. The peer separately used already approved map metadata and each record's count/alignment to qualify18half-open declared fragments/233prospective rows. No global endpoint convention, provider law, native contents or runtime extent follows. All18ARMcomputed-site matches retain onlysite/kind; function/flow/resolved-target fields were not inspected, so no empty-target/resolution claim is made.
+
+**Cross-study selection accounting:**Root compared approved metadata against the bounded prior240native ranges/37fields. Four declarations were already read:0x10128eea0(52B),0x10147fd68(68B),0x1054d5558(12B),0x1054d55f4(12B),144bytes total. Carry them by citation, without recapture. The other14declared fragments total788bytes/197rows; all five ARMpointer windows40bytes are disjoint from the37known fields. This is bounded unread accounting, not global novelty or complete program coverage. The whole18entry class remains accounted, rather than trimmed into convenient examples.
+
+Sixteen new methods543lines,18independent mutation controls and four per-record arithmetic controls were reviewed; only the peer's safe checker ran once, byteexact/empty stderr/all75files unchanged. No executed author safe-check transcript was retained. The author runtime binary pin is **POST**, not pre-acquisition proof; only the peer's current interpreter identity was freshly checked. Earlier retained-only metadata queries used6723485696bytes with full6039814144concurrent term; the full94-parent7893696512guard applies before each new original metadata parent, not retroactively. Thirty-fouroriginal guardpoints retainminimumfree8038981632; unreserved snapshots are no quota/watchdog/durability/continuous loaded-provider proof. C1code asserted four endpoint equalities but retained one common tuple per chunk, not four stored snapshots; projected JSON sizes are not exact selected/opaque byte-span measures.
+
+History remains explicit:three incomplete CONTRACTmetadata projections/59205physical bytes/32tokens, one pre-use unbound draft not retained, a stale unexecuted finalizer, new finite-whitelist navigation from separately retained metadata, a failed top-level S67field selection/no result or author reread, supplied ARMauthority by citation, and one later separately selected peer MAPmetadata intake. The literal alias-control count4understates five assertion groups after a derived-ordinal guard was added; no second controls run. BeforeC1a three-basename directory metadata observation had no separately retained prebinding. Peer manifest-schema KeyError preceded any pin iteration; corrected schema-only continuation did not retry acquisition/checker. No original runtime, decoder, native/C-body semantic proof, model/provider/guest action, case/grade/site/O/release or closure. WholeLiveOPEN.
+
+## Whole dependency class native and unread-hint study selected — 2026-10-23
+
+Select ONE **depth-automation-M-caller-dependencies-native-v1** for the complete18declaration class:four144-byte already-read bodies remain citation-only; capture all14remaining separate fragments788bytes/197rows plus allfive ARM8-byte pointer windows40bytes—**828newcontent bytes/19exact preads**. The14entries are0x10017b398,0x1003ae8f8,0x1004119f4,0x10045701c,0x101574bdc,0x101574d54,0x10241662c,0x1024deaa8,0x1027781c4,0x1033cf3e4,0x1054d30f8,0x1054d4ab4,0x1054d4acc,0x1054d55ac. Five fields are0x1064f8540/0x1064f8570/0x1064f86a8/0x1064f87d0/0x106537588. File words are not fixed-up/current pointers or provider bindings.
+
+Use one149711904byte imageROFD/fresh3a99…cfadwholehash and inherited approved map; pinnedRizin0.9.1decodes only14owned bodies and necessary new owned toys. Also select **previously uninspected static-hint metadata fields for all18ARMcomputed sites**:function/function_name/in_thunk/flow/resolved_targets, retaining prior site/kind by citation. One new parent read for these new field values is explicitly selected, without relabeling the old incomplete field selection or revalidating old instruction semantics; instruction/optext staysopaque. All46x86questions and eight address-only extents stayU, with no x86content, pointee/string/object/callee follow. Both old four-byte holes remainexcluded.
+
+Tension_owner_finish authors; o137_finish solely reviews frozen NEWnative/code/DATA/finite-hint metadata after queuedClipdispositions; RootCITEONLY. **PRE**tool/interpreter/source eligibility before any new use corrects no past POSTgap retroactively. Fully read/control/prebind new methods, preserve first-fault partials/no automatic retries and complete future union/SAFEgroups/limits/history. From the first point retain minimum7893696512bytes or larger complete native/metadata/output/log/final/headroom allowance with full6039814144currentconcurrent term, at parent/everychild including toys. No budget reduction/deletion/Analog59subset. No original application, ESIL/FP/numeric/model/provider/install/guest/QMP/UI/media/profile/AUZ or opaque-scope action; no new behavior/case/grade/site/O/release or product closure follows from selection.
+
+
+## Pre-original owned-toy limit failure; native-v2 selected — 2026-10-23
+
+**Author-reported frozen pre-original partial, not a native result:**[native-v1 manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v1/manifest.json),3824bytes/SHA256 `6d3dc2f29b8647d25869790ef8d617d7fad511d2a1636a6c457b62529b613dea`, seals23payloads141513bytes/all24files0444/private0700. The [2912-byte report](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v1/report.json),SHA256 `74c067dcb499ae415b26c2213e893b4c0fc5b3911bcacf0c93a59162af62023b`, records one completed approved-metadata intake,14new pure negatives/three positives and one8-byte owned toy. Its first Popen raised SubprocessError in preexec_fn before decoder execution; no returned child result/PID was retained. Original image/index/preads/native rows/hint-field reads areallzero. A fork/preexec attempt is not falsely called zero child attempts.
+
+**Static diagnosis, no diagnostic replay:**the owned parent imposed hardCPU10seconds while its child requested20, which cannot raise the inherited hard limit. This is an analysis-tool limit conflict, not a Live/function/audio observation. Failed bytes/code/bindings/empty output/stderr/workdir/receipt remainunchanged. The small JSON-only seal helper was read inertly but had no separate prebinding/control fixture; this is a retained packaging qualification, not an acquisition guard claim. No original-body result or public incompatibility is inferred.
+
+Root explicitly selects a separate **depth-automation-M-caller-dependencies-native-v2** for one corrected **owned-tool** attempt and, only after its new toy/limit checks pass, the first original acquisition under the unchanged whole18disposition/14unread788B+five40Bfields+18uninspected-hint scope. The completed v1metadata-authority file may be inherited by identity, avoiding a repeated approved-metadata prefix. Keep childCPU20 and a bounded prospective parent hard ceiling at leastthatlarge; inspect CPU/AS/FSIZE/NOFILE/stack inheritance so no child attempts to raise its inherited hardlimit. Fully read/control/prebind new methods and meaningful incompatible/compatible-limit boundary cases before the corrected owned toy stage.
+
+Preserve old v1frozen bytes and explicit counts:one failed owned-preexec stage plus one authorized corrected owned-tool stage; original image/index acquisition remainsfirst/unattempted before that recovery. This instance amends Root's no-automatic-tool-retry choice only for reversible analysis tooling, never user failed/unattempted X/audio/runtime histories, models/providers or opaque returns. No automatic third. Full7893696512minimum/current6039814144concurrent and complete lifecycle/output/log/final/headroom applyfromstart; no scope/budget reduction, deletion, Analog59subset or extra preparation/review gate. Tension_owner_finish authors; o137_finish solely reviews new frozen results plus preserved failure history; RootCITEONLY. All original/public/runtime unknowns and coverage totals remainunchanged, wholeLiveOPEN.
+
+
+## Owned raw-loader diagnostic; first-original scope unchanged — 2026-10-23
+
+**Author-reported unsealed v2continuation, pending sole review:**the corrected inheritance guard treats RLIM_INFINITY asunbounded and passed seven new mismatch negatives/two boundaries. Both owned decoder children launched and exited0. Toy1had empty stderr. Toy2produced three visually expected rows but149stderrbytes from raw-format probing (`failed to init hdr`/bin-apply warning), so the prebound empty-stderr guard stopped before row assertions. Preserve those outputs/bindings and their diagnostic SHA256 `94819a9ed31b37a37153dc59d0f84dee602a6cc7a644fae76165392ea42546ad`; this was no original image/index acquisition or native result. Across v1/v2then:threePopen attempts,two completed owned children,zero original opens/preads/hints.
+
+Using systematic-debugging/test-first reasoning, Root explicitly selected one **single-variable owned diagnostic**, not an automatic replay or a user-reference-history retry:the exact retained Toy2bytes/binary/environment/limits/otherargv, with **only `-n` added** under a new read/prebound prospective method and new output paths. No rerun of Toy1or the unmodified REDcase; no stderr waiver. The original REDartifact existed before the code change. The [author diagnostic](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v2/diagnostic-n.json),12651bytes/SHA256 `b50e5ab06ca77ecf142bdf3918a150bba7830424455de513cfb4da9fdec3d33c`, reports exit0/empty stderr/exactthree rows and both branch destinations, with lifetimefourPopen attempts/three completed owned children and originalopensstillzero. This supports only that tested12-byte comparison, not universal suppression of probing or syscall behavior.
+
+The working prior raw-unit argv contains-n; complete probe suppression had not been traced. Old toy invocations had **no explicit asm.esil/asm.emu configuration** and issued onlypdj/q; passive ESIL strings are not execution. Do not retroactively claim disabled config flags. The prospective real-body method records its exactargv/config, adds the minimal raw-only fix and new missing-n guard/negatives before the **first** original acquisition. No emulator/ESIL evaluation, numerical/reference execution, unrelated flags/refactors or further automatic tweak. Full selectedclass/budget/currentconcurrency/PREeligibility and all oldfailure records remainunchanged. The corrected owned diagnostic is not behavior/coverage evidence; wholeLiveOPEN.
+
+
+## Native v2 partial capture and protocol breach retained — 2026-10-23
+
+**Author-reported/unreviewed, unsealed partial; no native adoption.** After the owned raw-loader diagnostic and prospective fix, the author reports one fresh149711904byte ARMimageROFD/hash3a99…cfad,19preads828bytes:14new native bodies788bytes plus five8-byte file fields. The four already-read overlaps were not reacquired. The five file words were reported zero as file bits only; fixups/runtime meanings remainU. Existing unsealed [capture.json](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v2/capture.json),31494bytes/SHA256 `327ec412137e57aee71136df91461987b68cbf08ed5d071175eebf1919848cf5`, is a locator/pin reported by the author, not Root's source review or a sealed result.
+
+The [unsealed decoder receipt](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v2/decode.json),48761bytes/SHA256 `6d716b8a2d0a681c3b001320b4d4de3e87be511100364649fdd6debd04c41e7c`, is reported to contain six successful bodies/55rows followed by a guard failure on344byte0x10241662c. The seventh child exited0 but emitted95stderrbytes and86JSONrecords,22invalid/non-four-byte rows. At record64/byte256, its reported bytes/PC/size first differ from the retained owned buffer. Cause isunknown; a decoder-buffer-boundary hypothesis is not evidence of embedded original data. The seven remaining decoders (`1024deaa8`,`1027781c4`,`1033cf3e4`,`1054d30f8`,`1054d4ab4`,`1054d4acc`,`1054d55ac`) were never launched; their captured bytes are not decoded evidence. Do not claim197validated new rows or a whole successful native class.
+
+The same orchestration call incorrectly launched the independent18-site hint-field read **after** the decoder exit1. This violated the required first-fault stop. [hint-fields.json](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v2/hint-fields.json),18432bytes/SHA256 `4fe9d84b9a66e64171f668a4eb43c8ceb8dace9697214de59f9a2b2ea6e03595`, remains raw/unsealed metadata and is **quarantined**, ineligible for clean source/target promotion; later Root directions do not retroauthorize that read. No original source/tool/decoder operation occurred after Root's explicit subsequent STOP. Underlying files remain0664, not frozen or reviewed; Root remains citation-only and does not claim independent receipt verification.
+
+A newly written partial/failure-only checker was selected instead of the ineligible whole-success checker. Its one `--build` launch then stopped at the unchanged7893696512byte resource guard before audit inputs, report construction or ten new negatives ran. **No partial-report.json or manifest.json exists; no sole peer has reviewed v2.** The guard traceback was returned by tool chunk887cf2/exit1, with no retained traceback file. [partial-check-prebinding.json](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v2/partial-check-prebinding.json),336bytes/SHA256 `91f87e6810cb88127295f37a451752f41755c2bf9ab0baa95a8dbbe9491a3df6`, pins the16223byte checker/SHA256 `1ff09e8cbcaafaedc0f45bcedcf686f9dede51ebea8a8cf1b062a765a48c78fa`; existence/binding is not a passing audit. The author then observed62951424available root/store bytes. Preserve all v1/v2 owned failures, successful/failed/unattempted dispositions, post-stop violation and missing terminal receipt without inventing a smaller seal contract.
+
+## Native v3 conditional diagnostic selected but capacity-held — 2026-10-23
+
+Root separately selects one prospective **depth-automation-M-caller-dependencies-native-v3**, only after v2's truthful partial freeze/sole-review handoff becomes eligible. Current shared capacity holds **all** diagnostics, checker/seal launches and acquisition; full7893696512minimum/current6039814144concurrent plus complete lifecycle allowances remain unchanged. No smaller replacement budget, deletion, scope cut or guest action.
+
+First read/control/prebind a new owned344-byte fixed-four-byte ARM toy and a bounded diagnostic; record the actual failed invocation's command mode and count exactly. On that NEW owned toy only, compare the exact failed command with a second invocation changing **only** command mode to the known working `pDj LEN(raw)`, preserving binary/environment/limits/other argv. Require empty stderr/full344byte coverage/86aligned exact rows. Stop if the hypothesis fails; no automatic extra tweak, old toy rerun, original-buffer diagnostic or assumption that this explains the prior failure.
+
+Only a qualifying owned diagnostic plus prospective method/source/tool/limit eligibility permits one corrected **static-tool** decode of retained failed body7 and the first decodes of all seven retained unattempted suffix bodies. Do not replay the first six, reread the image/index/fields or follow any target. Preserve all18declaration dispositions by citation, both earlier owned-tool failures/diagnostic history, first bad original decoder output and the quarantined post-stop hints. This explicit analysis-tool recovery is no original function/application/audio/X-history retry, no retroactive first-fault compliance and no new opaque/provider/model/FP policy. Tension_owner authors; o137 is sole independent peer after each eligible frozen handoff; RootCITEONLY. No new case, grade, resolved site, O, release or closure credit before supported reviewed evidence.
+
+
+## Native v2 retained partial audit resumed — 2026-10-23
+
+User-directed “proceed” after the realcapacitychange explicitly resumes one terminal partial/failure audit+freeze of existing ownedv2artifacts under the original full7893696512minimum or larger complete contract/full6039814144concurrent from START. The previous `--build` launch stopped at its space guard before auditinputs/report/tennegatives, so those audit/negative operations remainunused. Preserve that returned/unretained guardtrace and all preparation/decoder histories; do not rerun any completed source/tool/decoder/fixture/proof prefix or the ineligible whole-successchecker.
+
+Tension_owner authors the truthful partial; o137solepeer afterfreeze and a separateauthoringboundary, RootCITEONLY. Six55-row successes/body7failure/sevenunlaunched, all18+92accounting, fivezeroFILEBITS-only and the quarantined post-stop18hintread/protocolbreach remainexact. No nativeadoption,197-rowcompleteness or retrofirstfault claim follows. The separatev3owned344Bdiagnostic/static-tool recovery staysconditional on v2handoff and neweligibility; it has not started. Claudeguesthold and allX/audio/runtime/opaque limits persist.
+
+
+## Native v2 sole partial record adopted — 2026-10-23
+
+The [sole partial review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-caller-dependencies-native-v2-review.json),509899bytes/SHA256 `7d6b4e4e5079ebbfd1e38b91270e8fe43bdc6cdb040bba35e7b5edecd21babfa`, approves **the truthful partial record only**. [V2manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v2/manifest.json),13666bytes/SHA256 `f5cfe8f2276ac14ae17fd788e75721f455abd689729f7f44e03ac196728a33e1`, seals86payloads377378bytes. Root verified the sole-report pin and read only approvedSAFEunderstanding/full18+92dispositions/geometry/lineage/limits/history/resource/protocol projections. Underlying original parents/code/checkers/decoder/native proof were not reopened by Root.
+
+The eight approved understanding statements, at `/approved_safe_understanding_delta`, are:
+
+- Whole18 class is accounted:4 already read by citation,6 guarded new body projections,1 diagnostic unknown,7 captured decoder-unattempted.
+- The completed first image capture retains19 exact fragments828B and all4 equal endpoints; it is not a complete decoder study.
+- Only6 bodies/55 rows met the prebound decoder guard. The failed344B unit earns no promoted native-prefix credit.
+- First tool/input mismatch at byte256 prevents inferring embedded data or source invalid instructions. Cause remains unknown.
+- Five8B file windows are zero on disk; current runtime pointers/fixups/receivers remain unknown.
+- The all18 new hint-field capture violated the required stop. It is retained with complete custody but quarantined from clean Source/actual-target claims.
+- Whole92 earlier questions remain present with separate new dispositions, preserving original ASOF unknowns.
+- No current receiver/provider/public behavior/FP/numeric law, new case/site/O grade or global source exhaustion follows.
+
+All18body dispositions are retained explicitly at `/approved_whole18_dispositions_METADATA`:four oldoverlaps144bytes inherited without reacquisition; six newguarded declarations220bytes/55rows (`10017b398`12,`1003ae8f8`36,`1004119f4`60,`10045701c`60,`101574bdc`44,`101574d54`8); one344byte `10241662c` diagnostic whollyunknown; seven captured-but-decoder-unattempted declarations224bytes (`1024deaa8`68,`1027781c4`12,`1033cf3e4`96,`1054d30f8`12,`1054d4ab4`12,`1054d4acc`12,`1054d55ac`12). The failedbody's apparently matching64-row prefix earns no native credit. The first12-byte declaration ends with a call; its declared extent proves no epilogue/fallthrough/all-exit/runtimeCFG/ABI completeness. Four inherited ranges and six guarded projections are not a complete eighteen-method semantic/native study.
+
+One149711904byte sourceROFD/fresh3a99…cfadwholehash/four equal endpoints supports19exactfragments828bytes:788captured bodybytes+five8-byte GOTwindows40bytes. All five filewords arezero at `1064f8540`,`1064f8570`,`1064f86a8`,`1064f87d0`,`106537588`, **FILEBITS ONLY**, with runtimefixups/pointers/receivers/objectextentsU. NoC1/Csemantic content was newlyread. The entire92-question union remainsat `/approved_whole92_question_union_METADATA`:46ARM+46x86,including two inheritedM supports. X86locatorquestions and fourARMaddress-onlyextents remainU, not numericalARMcrossjoins.
+
+The eighteen newpoststopindex records retain complete54983860byte custody but **remain quarantined**. The decode driver returned1 and the same orchestration call then invoked hint-fields-once.py, violatingfirstfault. Later documentation/selection cannot retroauthorize that read. Only inherited site/kind metadata isclean; no new function/flow/target nomination or resolvedsite credit isadmitted. Causeofbody7's firstmismatchat byte256 (`083140f9`captured versus`08000000`reported/sentinelPC/size0) remainsunknown;22invalid/nonfourbyte records and95stderrbytes do not establish embeddeddata/invalidsourceinstructions or a generaldecoder law.
+
+Only the new partial-terminal checker ranonce for the peer, exit0/byteexact/emptyerr, with55rowbyte/geometry confirmations, tenlimitedbranch-word checks and18independent promotion/quarantine negatives. The whole-original-successchecker remainsineligible. PREparent snapshots support planned CPU20/AS512MiB/FSIZE4MiB/NOFILE256 and unchangedstack, not an independentinchild syscall/rlimittrace; no process-tree/watchdog guarantee. Fiftysevenretainedfullguard points have minimumfree9720659968/unchangedguard7893696512/full6039814144concurrentFROMSTART; complete terminalbudget6916423680fits below that unchangedguard. Snapshots areunreserved/noncontinuous. Capture/report writersdo notfsync; endpoint equality isnot crashdurability/continuousstability/wholeparentderivation proof.
+
+Historicalv1preexecfailure remainsfrozen3824byteMF/`6d3dc2f29b8647d25869790ef8d617d7fad511d2a1636a6c457b62529b613dea`; its childPID/internalwait wasnotretained. Preoriginalhistory totalsfourPopenattempts/threecompletedownedchildren, including the149byte stderrRED and explicit only-`-n`GREEN. Includingseven realbodydecoderchildren gives11Popenattempts/tenretainedcompletedPIDs; allsevenbodytools exited0 but onlysix passedrowguards. PassiveESILstringswere notexecuted; oldtoys' missingexplicitESIL/emu flags are not rewritten. The earlier terminalspaceguardfailure has no retainedtracebackfile and remains supportedbytoolcitation/historyonly; freshterminalaudit did not reopenimage/index/tool/decoder. All oldscopes/ASOFU/public/provider/receiver/FP/numeric/opaque/Xaudiohistorical limits remain. No newcases, requirements, criteria, grades, resolvedsites, O, releases, globalexhaustion or whole-productclosure.
+
+## Native v3 after sole handoff; exact diagnostic command and retained semantic scope — 2026-10-23
+
+The v2solehandoff now exists. After finishing its independently activeMNSsole-review prefix, tension_owner may start the previously selectedv3companion under freshunchanged fullresource/source/tool/PREinheritance guards. The actualfailed command expression is **`pdj 86;q`**, lowercase/instruction-countunits for344bytes; the prescribed alternative is **`pDj 344;q`**, capitalD/byte-countunits. Record this one **command-expression factor**, including its requiredcountunitconversion, explicitly beforethe selected NEWowned344-bytefixedword toy RED/GREEN comparison; binary/environment/limits/otherargv/input unchanged acrosspair. No oldtoys/decoder/proofprefix rerun. Require the predictedRED and strictGREEN/full344bytes86alignedexactrows/emptyerr; an unsupportedhypothesis stops thepacket withoutautotweak.
+
+Only qualifyingowneddiagnosis plus prospectiveeligibility permits the onecorrected static-tooldecode of retainedbody7 and FIRSTdecodesofallsevenretainedsuffixinputs568bytes/142prospectiverows total. Nooriginalimage/index/field reacquisition, no firstsixdecoders and nooriginalfunction/application/audio/Xruntime retry. Carry priorfirstsixguarded byte/row/custody proof and oldfourranges bycitation. For **new whole-class semantic understanding only**, the author may consult the alreadyretained55guardedrow projections without redecoding/reacquiring/revalidating their oldproof; newclaims must be identified distinctly from inherited guards. The solev3peer reviews onlynewclaims/diagnostic/recovery proof, not a second originalcapture/oldchecker/guard replay. All18+92dispositions and quarantinedhintquestions remainexplicit; v2neverbecomes retrospectivelyclean orcomplete. No automatictargetbody/provider/model/FP/guest/opaque expansion or behavioralcredit follows.
+
+## Native v3 retained recovery and conditional semantics adopted — 2026-10-23
+
+**Observed, static and conditional.** The [sole NEW v3 review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/automation-M-caller-dependencies-native-v3-review.json), 369,590 bytes / SHA256 `2fd79a9a2bd1d4a04079f1086d29f10e8d3d4e5361ff2f938cc21036d47642e4`, approves the selected retained-buffer recovery and new local semantic claims, with zero unresolved findings or frozen corrections. The [v3 manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-caller-dependencies-native-v3/manifest.json), 9,956 bytes / SHA256 `7fdfc11b0fdcc6072b32312d4d558862ce68c2a4fa0214be433cfa295460a7af`, seals 63 payloads / 479,392 bytes, all 64 files 0444 under private 0700 directories. This adoption uses only the report's approved SAFE scalar, understanding, question-union, geometry, lineage, limits, history and resource projections; it does not reopen original source, image, index, tool, old helper or byte-proof material.
+
+The new guarded proof covers **eight retained buffers / 568 bytes / 142 rows**: `0x10241662c` (344 B), `0x1024deaa8` (68 B), `0x1027781c4` (12 B), `0x1033cf3e4` (96 B), and the four 12-byte stubs `0x1054d30f8`, `0x1054d4ab4`, `0x1054d4acc`, `0x1054d55ac`. Body7 received its one explicitly selected corrected **static decoder** attempt; the seven suffix bodies received their first static decoder attempts. This was no retry of an original Live function, application, audio or X history. V3 made zero original image/index/field reacquisitions. Its eight retained-input hashes and endpoint receipts establish input transport custody, without recertifying v2's original capture.
+
+The first six bodies' **220 bytes / 55 guarded rows** remain inherited from the v2 sole review by citation. Their retained PC/opcode projections support distinct new semantic annotations without replaying their decoders or byte/custody guards. Together with the new eight, the annotation scope is **fourteen methods / 788 bytes / 197 semantic rows**; 197 is not a fresh byte-proof count. The other four declarations / 144 bytes remain inherited by citation with their prior dependencies. All eighteen declarations / 932 bytes remain accounted.
+
+The exact NEW owned diagnostic used a 344-byte fixture consisting of 85 fixed NOP words followed by RET. Its RED invocation used **`pdj 86;q`**, instruction-count units, and produced the predicted first mismatch at record64 / byte256 with 95 stderr bytes. Its GREEN invocation used **`pDj 344;q`**, byte-count units, and passed all 344 bytes / 86 aligned exact rows with empty stderr. The single changed command-expression factor includes the required count-unit conversion; binary, input, environment, limits and other argv were unchanged. Each diagnostic child ran once, followed by eight successful retained-buffer children, all exit0 and empty stderr. This is an empirical result for that owned comparison, not a universal decoder/probe guarantee or proof of the old mismatch's internal cause. No old toy, original buffer diagnostic or passive ESIL evaluation was run.
+
+All ten approved conditional understanding groups at `/approved_SAFE_understanding/groups` are retained:
+
+1. **AUTODEP01 — `0x10017b398`:** the 12-byte fragment saves frame/link registers and calls `0x1054d5588`, then `0x1054d54f8`. It contains no selected epilogue or return. Ordinary return from the last call reaches unread `0x10017b3a4`; names, nonreturn, unwinding and complete entry/exit ownership remain unknown.
+2. **AUTODEP02 — `0x1003ae8f8`:** after calling `0x1054d4acc`, it loads through preferred-image GOT location `0x1064f87d0`, adds16 and stores through current X0. X0 is the callee-return carrier, with equality to incoming X0 unproved. The inherited zero file word establishes neither a zero runtime load nor a stored value16.
+3. **AUTODEP03 — `0x1004119f4` / `0x10045701c`:** each saves incoming X0 in X19, loads a pointer through it, skips the decrement when that pointer is zero, otherwise subtracts1 from the word at pointer+8 and stores it. The resulting-zero branch calls `0x10128eea0`. Final X0 uses saved X19, conditional on ordinary callee preservation. This local pattern establishes no ownership, atomicity, lifetime or public mutation policy.
+4. **AUTODEP04 — `0x101574bdc` / `0x101574d54`:** the 44-byte fragment loads X0 through incoming X0; null bypasses the indirect call. The nonnull path loads S1/S2 at incoming-object offsets8/12 and calls through a two-load chain at slot+0x30. The 8-byte leaf loads S0/S1 at offsets8/12 and returns. These are local transfers; float-domain meaning, actual receiver/target, public ABI and callee FP effects remain unknown.
+5. **AUTODEP05 — `0x10241662c`:** incoming X0/X1/X2 are saved in X21/X20/X19, with local records at SP+0x20 and SP+8. It makes ten computed calls and five direct calls. Computed-load offsets in code order are `0x200, 0x200, 0x1f8, 0x248, 0x60, 0, 0x60, 0x28, 0x60, 0x10`. W0==1 controls the +0x1f8 leg. The +0x248 return replaces X21, changing its carrier role. Later +0x10 setup uses X1 from SP+0x18, X2=SP+8 and X3=saved incoming X2; helper-reachable stack memory is not assumed immutable.
+6. **AUTODEP06 — the same fragment:** loads through `0x1064f8818` and its pointee are compared before the normal epilogue. Unequal words branch to final call `0x1054d56b4`; ordinary return would reach unread `0x102416784`. Guard shape does not identify the object or prove stack-canary/nonreturn semantics. The cell and pointee are unread. Preferred addresses `0x1067b2428` / `0x1067b2450` are stored to a local stack field; their contents and extents remain unknown.
+7. **AUTODEP07 — `0x1024deaa8`:** incoming X8 is preserved as a destination, SP+8 is passed in X8 to `0x1014825d0`, then X0 loaded from SP+8 is stored through that destination. A nonzero loaded pointer whose word at+8 is zero leads to `0x10128eea0`. There is no local subtract/store decrement on this path, and no hidden-result ABI, ownership or helper-effect law is established.
+8. **AUTODEP08 — `0x1027781c4` / `0x1033cf3e4`:** the 12-byte leaf returns preferred address `0x106e543c8` without a selected dereference. The 96-byte fragment saves incoming X0/X8 in X19/X20, makes four direct calls and one computed call at slot+0x1e8, then stores preferred-address expression `0x1067bd5e8+16` through X20. Its final X0 is the last direct helper's return carrier, without a proved saved-input identity. Current bindings, extents, alternate entries, caller joins and public behavior remain unknown.
+9. **AUTODEP09 — the four 12-byte stubs:** each constructs a preferred cell address, loads X16 and branches through X16. Their respective 8-byte cells are `0x106bab938`, `0x106bab9b0`, `0x106bab9c0`, `0x106bac0d0`. None is one of the old five zero-file windows. All four cells and pointees remain unread; aliases/import labels establish no current target or callee behavior.
+10. **AUTODEP10 — whole18 / whole92:** the eighteen prior declaration dispositions and ninety-two earlier question records remain unchanged **historical v2 ASOF records**. V3 adds a separate recovery/semantic layer and the report's `/approved_whole18_current_route_METADATA`; it does not rewrite past diagnostic/unattempted outcomes as past successes. Current routing distinguishes four citation-only bodies, six prior guarded byte proofs with new PC/opcode-only semantics, and eight newly guarded retained buffers with new semantics. The body7 mismatch, post-stop violation and quarantine remain permanent. All 46 x86 questions retain their architecture-correct locator gaps; no numeric ARM cross-join is inferred.
+
+These groups assume ordinary entry/return, valid accessed memory and callee preservation where stated. Faults, unwinding, races, asynchronous mutation and alternate entries remain unknown. Preferred-image constants are not fixed current-process addresses; ASLR, loader fixups, current pointers, actual providers and public ABI remain unobserved. S-register loads establish no numerical/FP law, and external calls may affect FP state.
+
+**Complete future question union, nomination only:** `/approved_complete_question_union_METADATA` records 25 direct transfers (16 calls / nine conditional), sixteen computed transfers (twelve calls / four tails), nine RET records, twelve runtime slot predicates and two unread ordinary-return continuations `0x10017b3a4` / `0x102416784`. Its twelve unread direct destination keys are `0x10144a090`, `0x101458fc8`, `0x1014825d0`, `0x101482880`, `0x1015692c0`, `0x1015694f4`, `0x10241d818`, `0x10244fe38`, `0x10244fe9c`, `0x1054d54f8`, `0x1054d5588`, `0x1054d56b4`; geometry and callee semantics remain unknown. Five unread 8-byte cell access windows total40bytes: `0x1064f8818` and the four stub cells above. Access width is no object extent, file value, runtime pointer or pointee permission. Four address-only points `0x1067b2428`, `0x1067b2450`, `0x1067bd5f8`, `0x106e543c8` retain unknown contents/extents; intermediate base `0x1067bd5e8` is not a separately selected object. The second 8-byte load through `0x1064f8818` has unknown runtime address. The old five file-zero windows and four inherited bodies' dependencies stay by citation. This complete fourteen-projection frontier is no global exhaustion or automatic target, field, object, gap, hint or pointee follow.
+
+Six new owned methods / 248 lines were fully read. Fourteen author negatives and eighteen new independent peer mutation negatives passed. The peer ran only `check.py --check` once, exit0 / 367-byte exact expected output / empty stderr; all64 frozen files remained unchanged. The expected `--check` output has `author_audit_resource_before=null`, unlike the author's `--audit` output with its resource snapshot. Limited peer raw-field checks cover eleven BL immediates, ten ADRP page fields and nineteen RET/BR/BLR classes, not a second full decoder or CFG proof. Raw tool fields remain unchanged; 22 `ptr==0` rows establish no null object law.
+
+The unchanged full guard is **7,893,696,512 bytes**, exceeding the complete7,000,309,760-byte contract, with **6,039,814,144 concurrent bytes from START** and an 8GiB MemAvailable floor. Thirty-seven distinct retained root/store/RAM guardpoints have minimum account-free14,172,073,984bytes. Snapshots are unreserved/noncontinuous, not reservations or causal explanations of capacity changes. Parent plans CPU10soft/30hard, AS512MiB, FSIZE4MiB, NOFILE1024 and core0 permit child CPU20, AS512MiB, FSIZE4MiB, NOFILE256, core0 and inherited unchanged stack. Child wall20seconds plus bounded process-group kill/reap is recorded; independently traced child limits, parent wall watchdog, global process-tree proof, transitive runtime/library identity and crash durability remain unestablished. The retained PRE Python/Rizin stat/hash/stat assertion predates v3 use; detailed per-stage checks occur after pure module definitions and before controls/children, without independently traced pre-spawn or all-runtime custody. Source identity and original-image mapping/capture remain inherited, with zero v3 original reacquisition.
+
+All earlier failures remain explicit: v1 preexec failure; v2's 149-byte owned RED, selected only-`-n` GREEN, body7 bad output, seven then-unattempted decoders, capacity guard stop/unretained traceback, and post-stop hint read. Across the explicitly scoped wrappers there are21 Popen attempts / twenty completed children; before the original capture there were four / three, unchanged. The eighteen post-stop hints retain custody but remain **quarantined, unadmitted as clean Source or actual targets**; v3 supplies no retroactive first-fault compliance. During sole review, a peer destination comparator treated JSON objects as hashable strings and raised TypeError after its completed new142-row/eight-buffer/limited-field prefix. That failed audit is preserved; only unfinished unknown-preservation/resource accounting and fresh synthetic mutants continued, without replaying its completed proof prefix, source or tool. The separate read-only display that selected absent top-level whole92 keys was corrected by reading the nested records, not treated as a pass.
+
+This adoption changes no behavioral cases, requirements, criteria, grades, resolved-site count, O, release or whole-Live completion. It authorizes no successor, original function/audio/X runtime, FP/numerical model, provider, opaque-return or guest action. **WholeLive remains OPEN.**
+
+
+## Complete recovered-method frontier metadata and five cells selected — 2026-10-23
+
+After soleV3approval, explicitly select ONE **depth-automation-M-recovered-frontier-and-cells-v1**, using report369590B/SHA256 `2fd79a9a2bd1d4a04079f1086d29f10e8d3d4e5361ff2f938cc21036d47642e4` approvedSAFE/wholeunion/lineage/limits/history only. Wholeclass:all12outsidecallee declarationquestions,all16NEWcomputed-sites (twelvecalls/fourtails),five8Bpointercells/40B,file-map/object-membership forfouraddress-onlypoints,twoif-returncontinuationtopology gaps and12runtimeSLOT-OFFSETpredicates. Historical18+92/v2badbody/quarantined18oldhintrecords remainbycite and neverrequeried/promoted; the16newsites aredistinctSourcequestions, not aretry ofthose oldrecords.
+
+Census exactARM alias/C1HEADER_STATUS/ranges for10144a090,101458fc8,1014825d0,101482880,1015692c0,1015694f4,10241d818,10244fe38,10244fe9c,1054d54f8,1054d5588,1054d56b4. Carryanyalreadyapprovedexact geometry bycitation, including Clipfrontier's8B1015692c0declaration and Analog59's80B101458fc8/12B1054d56b4declarations (`/approved_dependency_nomination_METADATA/all_known242_ranges_METADATA`), insteadof rereadingoldC1proof. All12questions remainaccounted:threeadmittedgeometrycarries plusninenewcallee-locatorqueries; calleecontentremainsunselected. Queryretainedindexfunction/name/in-thunk/flow/resolved-target fields for all16newsites in `/approved_complete_question_union_METADATA/new14_computed_records`, not oldquarantinePCs. Forif-return10017b3a4/102416784, exactentry/boundedpredecessor topologyonly, **no continuationnativebytes**. Fourpointsof1067b2428,1067b2450,1067bd5f8,106e543c8 areaddress-onlymetadata; intermediate1067bd5e8+16 is anexpression, notanother prefixpermission. Runtime12offsets andunknownpointee through1064f8818 remainunread/unbound, never absoluteaddresses.
+
+Selectexactly **five8Bfilecells/40B/fivepreads** at1064f8818,106bab938,106bab9b0,106bab9c0,106bac0d0, mappedwith approvedinheritedsegment/sectionarithmetic. One149711904BpreferredARMROFD/fresh3a99…cfadwholehash; rawFILEBITS only/no FP/currentpointer/fixup/target/wholeobject interpretation. Shared8B1064f8818 also serves MNS'snewnativeaccessnomination aftersoleapproval, withoutanothercapture. OldfivezeroGOTwindows and Clip/MNSalreadycaptured16Bconstant arebycite, unselected. No C/nativebody/header/vtable/slot/pointee/neighbor/source-follow/oldproofreplay.
+
+O137authors; tension_ownersolepeer afteritsclosedClip-native and subsequently assigned MNS-dependency authoring boundaries/finalfreeze, RootCITEONLY. Fullyread/control/prebindNEWmethods and detailedinterpreterhash/stat receipt beforefirstnewmoduleevaluation, lateractualSource/toolchecks keptdistinct; externalfilterbeforehex/nonexternalordinal/actualshapes/typedgap/headerwarning/opaque/firstfaultstage-controls. Requireacceptedzero-metadataexit/result-hashgate beforeimagecells; checkeveryresultbeforelaterSource. Onecensus/imagecapture/no automaticretry, preserveallpartials and historicalviolations.
+
+Complete conservativeparent/output/log/final/headroom allowances plusfull6039814144currentconcurrent FROMSTART/min7893696512or largercompletecontract ateveryrequiredpoint, no actual-size/scope/budgetcut/evidence deletion. Onefreeze/solepeer/directSAFEallgroups/whole12-16-5-4-2-12union/allgeometry/FILEBITS/lineage/qualifiedlimits/history; Sourcecase/currentprovider/bindings/publicjoinsU, no newcase/criterion/grade/site/O/release/closure. No originalexecution/ESIL/FP/model/provider/opaque or Claudeheldguest/VM/QMP/UI/media/profile/AUZ action.
+
+
+## Windows priority parks the recovered-frontier author freeze — 2026-10-23
+
+[The confirmed handoff and Session0→SessionA priority](../decisions/adr-0006-reference-observation-reopened.md#confirmed-handoff-and-windows-sitting-priority-supersede-static-queues--2026-10-23) supersede the preceding active static/Claude-hold scheduling wording. The [recovered-frontier manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-automation-M-recovered-frontier-and-cells-v1/manifest.json) is author-frozen5977bytes/SHA256 `9020643f66902cbb509ea2ab11271df2ad478339043e5b9b0bfcb4770bf30918`,39payloads739730bytes/all40files0444. Whole12callee/16newsite/5cell/4point/2topology/12slot questions, new40FILEBITS bytes and seven proposed groups remain **UNREVIEWED author claims**, not an adopted successor to v3. Tension_owner's sole-peer queue is UNBEGUN/PARKED; no static review, new source or semantic follow proceeds ahead of the Windows sitting.
+
+The frozen pre-use AST failure/draft, actual-schema discovery chronology, repeated predecessor HEADER-only association, all earlier eighteen/ninety-two ASOF dispositions and permanent eighteen-hint quarantine remain unchanged. No method/source/tool/checker/old proof replay or silent repair occurs for scheduling. Root alone controls the guest; workers remain host-only. Case/grade/site/O/release counters and wholeOPEN are unchanged.

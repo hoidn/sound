@@ -2,9 +2,9 @@
 id: SPEC-TRANSPORT-STATE
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
-revision: 4
+revision: 6
 target: Ableton Live 12 Suite 12.4.3 / macOS arm64
 ---
 
@@ -112,6 +112,14 @@ Applies to `LoopStart`, `LoopLength` and `CurrentTime`.
 - **S.** Text with no numeric prefix (`abc`, an empty string) makes the set not open.
 - **U.** Whether a locale decimal comma or another white-space class is honored.
 
+- **X, finite converter expectations.** For the exact 64-bit hash strings in the
+  [revision 6 case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/case-catalog.json)
+  under REQ-004, the converter result preserves the supplied word bits exactly.
+  Compare integer words, including sign and every nonzero fraction bit; do not
+  replace a NaN payload with a canonical value. This finite expectation concerns
+  text conversion only. It does not establish acceptance into a Transport field,
+  setter storage, public opening/saving, or floating-point exception state.
+
 ### REQ-TRANSPORT-STATE-005 — tempo text on load
 
 - **S, X.** `Tempo/Manual/@Value` follows REQ-004, except that `#` takes exactly 8 hex
@@ -121,6 +129,14 @@ Applies to `LoopStart`, `LoopLength` and `CurrentTime`.
 - **X.** The rounding is to nearest, ties to even, in the original code. A double
   above the largest float by half a float spacing or more becomes +∞: `3.4028236e38`
   and `1e39` give +∞, and `3.4028235e38` gives the largest finite float.
+
+- **X, finite converter expectations.** For the exact 32-bit hash strings in the
+  [revision 6 case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/case-catalog.json)
+  under REQ-005, the converter result preserves the supplied word bits exactly.
+  Compare integer words, including sign and every nonzero fraction bit; do not
+  replace a NaN payload with a canonical value. This finite expectation concerns
+  text conversion only. It does not establish acceptance into a Transport field,
+  setter storage, public opening/saving, or floating-point exception state.
 
 ### REQ-TRANSPORT-STATE-006 — time-signature code text on load
 
@@ -266,10 +282,16 @@ Applies to `LoopStart`, `LoopLength` and `CurrentTime`.
 
 ### REQ-TRANSPORT-STATE-012 — precedence between stored tempo and meter sources
 
-- **U.** Which value applies on load when `Manual` disagrees with its one-event
-  envelope (`FloatEvent`/`EnumEvent` at `Time="-63072000"`), or when a scene has an
-  enabled tempo or time signature: PRB-N1-04, PRB-N1-05. Until settled, fixtures
-  keep the envelope event equal to `Manual` and all scene overrides disabled.
+- **S, conditional.** The set-open validation step reconciles song tempo `Manual`
+  with a value obtained from its automation envelope. If the target has an envelope,
+  the owner flag tested by that step is clear, and the two values differ by at least
+  1e-12, it replaces `Manual` with the envelope-derived value. Without an envelope,
+  this step leaves `Manual` alone. The [retained v3 review checks](../../analysis/ableton-live-12.4.3/handoff-staging/transport-state-v3-analysis/review/review-checks.txt)
+  identify the flag test and stores; its flag meaning and the exact envelope-value
+  selection are untraced. This is not a complete tempo precedence contract.
+- **U.** The outcome for arbitrary disagreeing values, time-signature `Manual` versus
+  its one-event envelope, and enabled scene tempo or meter: PRB-N1-04, PRB-N1-05.
+  Fixtures keep any envelope equal to `Manual` and scene overrides disabled.
 
 ## Timing and state
 
@@ -286,14 +308,19 @@ Applies to `LoopStart`, `LoopLength` and `CurrentTime`.
 
 ## Acceptance cases
 
-Base document B0: the shipped `Core Library/Lessons/Sets/Recording Audio.als`
+Source example B0 (not a released fixture): the shipped `Core Library/Lessons/Sets/Recording Audio.als`
 (SHA-256 `af57ff8f9eb1c2c51220ef6633a58838532350d53640df5f48dc01659023c043`,
-`MinorVersion="12.0_12402"`, `SchemaChangeCount="1"`). It is decoded, changed only
-as stated, and re-encoded as gzip. Its transport is
+`MinorVersion="12.0_12402"`, `SchemaChangeCount="1"`). Its transport is
 `<LoopOn Value="false" />`, `<LoopStart Value="8" />`, `<LoopLength Value="16" />`,
 `<CurrentTime Value="0" />`, tempo `<Manual Value="120" />` with
 `<FloatEvent Id="0" Time="-63072000" Value="120" />`, and time signature
-`<Manual Value="201" />`. No case has been run against Live. Case kinds: P positive,
+`<Manual Value="201" />`. Current fixture carrier F0 is the independently authored
+[TS-022.xml](../../handoff/transport-state-v3/fixtures/TS-022.xml), with the
+v3 minimal MIDI track and no automation envelopes or scenes. The table defines
+variants of that carrier, not edits of shipped B0. When an event is stated, add
+it with the same value as `Manual`; in the released 33 records only `Manual`
+is judged, and the released fixtures contain no envelopes. B0 remains a
+provenance example for initial field values. No case has been run against Live. Case kinds: P positive,
 N negative/malformed, B boundary, M missing, S save. Evidence: X means the case's
 text conversion (reading or writing the value) ran as extracted execution and gave
 the expected result. Locating the field, opening and saving remain S. S means a
@@ -301,43 +328,43 @@ static derivation only; U means unresolved.
 
 | Case ID | Requirement | Kind | Evidence | Setup/action | Expected result/comparator | Fixture |
 | --- | --- | --- | --- | --- | --- | --- |
-| TS-001 | 003 | P | X | `<LoopOn Value="true" />`; open, save | Opens; loop switch on; saved `<LoopOn Value="true" />` | B0 edit |
-| TS-002 | 003 | P | X | `<LoopOn Value="1" />`; open | Opens; loop on | B0 edit |
-| TS-003 | 003 | P | X | `<LoopOn Value="0" />`; open | Opens; loop off | B0 edit |
-| TS-004 | 003 | N | X | `<LoopOn Value="TRUE" />`; open | Set does not open | B0 edit |
-| TS-005 | 003 | N | X | `<LoopOn Value="" />`; open | Set does not open | B0 edit |
-| TS-006 | 004, 011 | B | X | `<LoopStart Value="4.5abc" />`; open, save | Opens; loop start 4.5; saved `<LoopStart Value="4.5" />` | B0 edit |
-| TS-007 | 004 | N | X | `<LoopLength Value="abc" />`; open | Set does not open | B0 edit |
-| TS-008 | 005, 011 | P | X | Tempo `<Manual Value="93.3333333" />` and `FloatEvent` `Value="93.3333333"`; open, save | Opens; saved Manual `93.3333359`, and the event `93.3333359` if written (REQ-002) | B0 edit |
-| TS-009 | 006 | N | X | Time signature `<Manual Value="201.0" />`; open | Set does not open | B0 edit |
-| TS-010 | 006 | N | X | Time signature `<Manual Value=" +201 " />`; open | Set does not open (graded in revision 3; was unresolved) | B0 edit |
-| TS-011 | 007 | M | S | Delete the `LoopStart` element; open | Opens; loop start 8 | B0 edit |
-| TS-012 | 007 | M | S | Replace with `<LoopLength />`; open | Opens; loop length 16 | B0 edit |
-| TS-013 | 007 | M | S | Delete the `CurrentTime` and `LoopOn` elements; open | Opens; position 0; loop off | B0 edit |
-| TS-014 | 007 | M | S | Tempo `<Manual />` (no Value); event stays 120; open | Opens; tempo 120 | B0 edit |
-| TS-015 | 008 | N | S | Two `LoopOn` elements (`false` then `true`) in `Transport`; open | Set does not open | B0 edit |
-| TS-016 | 008 | B | S | Add `<Foo Value="1" />` inside `Transport`; open, save | Opens; saved `Transport` has no `Foo` | B0 edit |
-| TS-017 | 009 | B | U | `<LoopLength Value="-4" />`; open | Opens; effective and saved values unresolved | B0 edit |
-| TS-018 | 009 | B | U | Tempo Manual and event `2000`; open | Opens; effective tempo unresolved | B0 edit |
-| TS-019 | 009, 010 | B | U | Time signature Manual and `EnumEvent` `495`; open | Opens; effective meter unresolved | B0 edit |
-| TS-020 | 011 | S | X | Tempo Manual and event `121.2`; open, save | Saved Manual `121.199997`, and the event `121.199997` if written (REQ-002) | B0 edit |
-| TS-021 | 011 | S | X | `<LoopStart Value="0.3" />`; open, save | Saved `<LoopStart Value="0.299999999999999989" />` | B0 edit |
-| TS-022 | 002 | S | S | Open B0 unchanged, save | Saved `Transport` children in the REQ-002 order; values unchanged | B0 |
+| TS-001 | 003 | P | X | `<LoopOn Value="true" />`; open, save | Opens; loop switch on; saved `<LoopOn Value="true" />` | F0 edit |
+| TS-002 | 003 | P | X | `<LoopOn Value="1" />`; open | Opens; loop on | F0 edit |
+| TS-003 | 003 | P | X | `<LoopOn Value="0" />`; open | Opens; loop off | F0 edit |
+| TS-004 | 003 | N | X | `<LoopOn Value="TRUE" />`; open | Set does not open | F0 edit |
+| TS-005 | 003 | N | X | `<LoopOn Value="" />`; open | Set does not open | F0 edit |
+| TS-006 | 004, 011 | B | X | `<LoopStart Value="4.5abc" />`; open, save | Opens; loop start 4.5; saved `<LoopStart Value="4.5" />` | F0 edit |
+| TS-007 | 004 | N | X | `<LoopLength Value="abc" />`; open | Set does not open | F0 edit |
+| TS-008 | 005, 011 | P | X | Tempo `<Manual Value="93.3333333" />` and `FloatEvent` `Value="93.3333333"`; open, save | Opens; saved Manual `93.3333359`, and the event `93.3333359` if written (REQ-002) | F0 edit |
+| TS-009 | 006 | N | X | Time signature `<Manual Value="201.0" />`; open | Set does not open | F0 edit |
+| TS-010 | 006 | N | X | Time signature `<Manual Value=" +201 " />`; open | Set does not open (graded in revision 3; was unresolved) | F0 edit |
+| TS-011 | 007 | M | S | Delete the `LoopStart` element; open | Opens; loop start 8 | F0 edit |
+| TS-012 | 007 | M | S | Replace with `<LoopLength />`; open | Opens; loop length 16 | F0 edit |
+| TS-013 | 007 | M | S | Delete the `CurrentTime` and `LoopOn` elements; open | Opens; position 0; loop off | F0 edit |
+| TS-014 | 007 | M | S | Tempo `<Manual />` (no Value); event stays 120; open | Opens; tempo 120 | F0 edit |
+| TS-015 | 008 | N | S | Two `LoopOn` elements (`false` then `true`) in `Transport`; open | Set does not open | F0 edit |
+| TS-016 | 008 | B | S | Add `<Foo Value="1" />` inside `Transport`; open, save | Opens; saved `Transport` has no `Foo` | F0 edit |
+| TS-017 | 009 | B | U | `<LoopLength Value="-4" />`; open | Opens; effective and saved values unresolved | F0 edit |
+| TS-018 | 009 | B | U | Tempo Manual and event `2000`; open | Opens; effective tempo unresolved | F0 edit |
+| TS-019 | 009, 010 | B | U | Time signature Manual and `EnumEvent` `495`; open | Opens; effective meter unresolved | F0 edit |
+| TS-020 | 011 | S | X | Tempo Manual and event `121.2`; open, save | Saved Manual `121.199997`, and the event `121.199997` if written (REQ-002) | F0 edit |
+| TS-021 | 011 | S | X | `<LoopStart Value="0.3" />`; open, save | Saved `<LoopStart Value="0.299999999999999989" />` | F0 edit |
+| TS-022 | 002 | S | S | Open F0 unchanged, save | Saved `Transport` children in the REQ-002 order; values unchanged | F0 |
 | TS-023 | — | — | — | Withdrawn in revision 2: it edited the time signature in the UI, which is out of scope | Not graded | — |
-| TS-024 | 011 | S | X | `<LoopStart Value="100.00000000000001" />`; open, save | Saved `<LoopStart Value="100.000000000000014" />` | B0 edit |
-| TS-025 | 011 | S | X | `<LoopLength Value="1000.0000000000001" />`; open, save | Saved `<LoopLength Value="1000.00000000000011" />` | B0 edit |
-| TS-026 | 011 | S | X | `<CurrentTime Value="0.09999999999999999" />`; open, save | Saved `<CurrentTime Value="0.099999999999999992" />` | B0 edit |
-| TS-027 | 011 | S | X | `<LoopStart Value="0.000001" />`; open, save | Saved `<LoopStart Value="0.00000099999999999999995" />` | B0 edit |
-| TS-028 | 004, 011 | B | X | `<LoopStart Value="-0" />`; open, save | Opens; saved `<LoopStart Value="-0" />` | B0 edit |
-| TS-029 | 006 | N | X | Time signature `<Manual Value="+201 " />`; open | Set does not open | B0 edit |
-| TS-030 | 006 | P | X | Time signature Manual and `EnumEvent` `-0`; open | Opens (code 0) | B0 edit |
-| TS-031 | 006 | N | X | Time signature `<Manual Value="2147483648" />`; open | Set does not open | B0 edit |
-| TS-032 | 006 | B | X | Time signature Manual `0…0201` (63 characters) followed by one space; open | Opens | B0 edit |
-| TS-033 | 006 | N | X | Time signature Manual `-` followed by 63 `0`s; open | Set does not open | B0 edit |
-| TS-034 | 004 | P | X | `<LoopLength Value=" +4.5 " />`; open | Opens; loop length 4.5 | B0 edit |
-| TS-035 | 004 | N | X | `<LoopStart Value="- 4.5" />`; open | Set does not open | B0 edit |
-| TS-036 | 004 | P | X | `<LoopStart Value="#4012000000000000" />`; open | Opens; loop start 4.5 | B0 edit |
-| TS-037 | 005 | P | X | Tempo Manual and event `#42f00000`; open | Opens; tempo 120 | B0 edit |
+| TS-024 | 011 | S | X | `<LoopStart Value="100.00000000000001" />`; open, save | Saved `<LoopStart Value="100.000000000000014" />` | F0 edit |
+| TS-025 | 011 | S | X | `<LoopLength Value="1000.0000000000001" />`; open, save | Saved `<LoopLength Value="1000.00000000000011" />` | F0 edit |
+| TS-026 | 011 | S | X | `<CurrentTime Value="0.09999999999999999" />`; open, save | Saved `<CurrentTime Value="0.099999999999999992" />` | F0 edit |
+| TS-027 | 011 | S | X | `<LoopStart Value="0.000001" />`; open, save | Saved `<LoopStart Value="0.00000099999999999999995" />` | F0 edit |
+| TS-028 | 004, 011 | B | X | `<LoopStart Value="-0" />`; open, save | Opens; saved `<LoopStart Value="-0" />` | F0 edit |
+| TS-029 | 006 | N | X | Time signature `<Manual Value="+201 " />`; open | Set does not open | F0 edit |
+| TS-030 | 006 | P | X | Time signature Manual and `EnumEvent` `-0`; open | Opens (code 0) | F0 edit |
+| TS-031 | 006 | N | X | Time signature `<Manual Value="2147483648" />`; open | Set does not open | F0 edit |
+| TS-032 | 006 | B | X | Time signature Manual `0…0201` (63 characters) followed by one space; open | Opens | F0 edit |
+| TS-033 | 006 | N | X | Time signature Manual `-` followed by 63 `0`s; open | Set does not open | F0 edit |
+| TS-034 | 004 | P | X | `<LoopLength Value=" +4.5 " />`; open | Opens; loop length 4.5 | F0 edit |
+| TS-035 | 004 | N | X | `<LoopStart Value="- 4.5" />`; open | Set does not open | F0 edit |
+| TS-036 | 004 | P | X | `<LoopStart Value="#4012000000000000" />`; open | Opens; loop start 4.5 | F0 edit |
+| TS-037 | 005 | P | X | Tempo Manual and event `#42f00000`; open | Opens; tempo 120 | F0 edit |
 
 TS-034 and TS-035 depend on glibc's `strtod` in place of Apple's. TS-024 to TS-027
 depend on glibc's `log10` being correctly rounded at those values, which it is.
@@ -353,6 +380,66 @@ REQ-012 (PRB-N1-04), and edits are out of scope. TS-030 and TS-032 judge only
 that the set opens. Cancellation and teardown kinds
 are omitted: reading and writing these fields has no cancellable step or resource
 defined in this scope.
+
+### Revision 6 finite hash-word converter cases
+
+The [structured case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/case-catalog.json) defines **TS-038–TS-350**, 313 new finite
+converter cases under REQ-004/005, and three supporting historical controls
+`TRANSPORT-HEX-CONTROL-001–003`. All 316 exact ASCII inputs and their approved
+argument-word observations are represented. The 37 legacy table rows above remain
+unchanged, including withdrawn TS-023: this revision has 350 case IDs including
+that withdrawal, 349 nonwithdrawn IDs, and three additional control records.
+Case counts describe this catalog, not an atomic behavior denominator or new passes.
+
+| Group | New case IDs | New cases | Supporting controls | Total inputs |
+| --- | --- | --- | --- | --- |
+| float-positive-upper | TS-038–TS-061 | 24 | TRANSPORT-HEX-CONTROL-001 | 25 |
+| float-positive-lower | TS-062–TS-086 | 25 | — | 25 |
+| float-negative-upper | TS-087–TS-111 | 25 | — | 25 |
+| float-negative-lower | TS-112–TS-136 | 25 | — | 25 |
+| double-positive-upper | TS-137–TS-189 | 53 | TRANSPORT-HEX-CONTROL-002 | 54 |
+| double-positive-lower | TS-190–TS-243 | 54 | — | 54 |
+| double-negative-upper | TS-244–TS-296 | 53 | TRANSPORT-HEX-CONTROL-003 | 54 |
+| double-negative-lower | TS-297–TS-350 | 54 | — | 54 |
+
+Each catalog record supplies its exact ASCII bytes and length, declared width and
+type ID, expected typed word, little-endian argument bytes, full captured unsigned
+integer, and immutable input/result pointers. The 158 distinct width/word pairs
+cover both signs with an all-ones exponent and fraction zero, each single fraction
+bit, or all fraction bits, each as upper- and lowercase hex. This is a finite class,
+not all NaN spellings or all IEEE-754 behavior. “Quiet-bit-set” and “quiet-bit-clear”
+name input layouts only; no host float decoding, arithmetic, FP flag, quieting or
+trap-state expectation is attached.
+
+For each new case, submit the exact decoded ASCII text to an equivalent pure text
+conversion and compare the produced typed word as an integer, with every bit exact.
+The recorded type IDs (18 for 32-bit and 23 for 64-bit) and intercepted setter names
+are evidence locators, not a required implementation API. The existing extracted
+model uses an empty-string initializer, fresh owned metadata and four recorded GDB
+void-return setter stubs. The stubs observe argument registers and skip the original
+setter bodies. These observations therefore establish neither actual node storage
+nor Transport range admission, public file Open/Save, or current Apple/arm64 results.
+The F0 fixtures and public load/save/display comparators preceding this subsection
+apply to legacy TS-001–TS-037; they are not the acceptance procedure for these new
+pure-converter cases. No new neutral fixture or released handoff is supplied.
+
+Evidence is the already approved
+[316-input batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-transport-standing-leaves-v1/manifest.json)
+(SHA-256 `fcf5328bcfb2c2c160cf33bccb7627a29703c2cea539188bbe826bacab8c4236`)
+and its [independent actual review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/transport-standing-leaves-v1-review.json)
+(SHA-256 `2cdd28a03e473553e3cc8a0807dfaf5e4541ad623ec5d7368caa25e985507fb7`).
+All observations agree with the existing REQ-004/005 hash-bit oracle; no conversion
+rule or model was repaired. The catalog inherits that approved observation review;
+this adoption checks wording, provenance and case mapping only.
+
+All eight 80-byte GDB index-cache warnings remain retained; the minimal environment
+omitted HOME. `libthread_db` has only an after-capture identity, not a before/after
+provider pin or full dependency trace. Group-end checks can detect errors after later
+calls within that child; they do not establish a per-call first-error stop. Raw files
+and JSON were closed and hashed with no explicit fsync or crash-durability proof.
+No additional original execution occurs in this adoption. Other requirements,
+unknowns (including REQ-009/012 and Apple's substituted-library behavior), old cases
+and current release bytes are unchanged; unsupported behavior keeps coverage open.
 
 ## Open questions
 
@@ -402,7 +489,7 @@ summarized on [transport-state native](../research/transport-state-native.md#ext
 | 009 | Direct store in `0x101487310`; ATransport post-load `0x10276c6f4` (n1-0008); enum setter not on the load path `0x10156675c` (n1-0002); controllers `0x102770bac`/`0x102770c0c` | S / U |
 | 010 | Encoder `0x101abea70`, list builder `0x1026e10a8` (n1-0008); shipped scene code 302 = 6/8. X2: x86 encoder `0x101ae7a40` (655 pairs), decoder `0x101ae7a00` (arm64 `0x101abea38`; 3,405 codes), list builder `0x102812bf0` (495 texts) (`meter.json`) | S, X; display surface and out-of-range meaning U |
 | 011 | Formatters `0x101520c70`, `0x101520dbc`, `0x101431584`, `0x101431788` (n1-0007); zero test `fcmp d0,#0.0` at `0x1014315b4`/`0x1014317b8` is also true for −0.0; `number-format-check.txt`: 376/376 per field, 149,716/149,716 FloatEvent. X2: x86 writers `0x10150f6a0`/`0x10150f7a0` (specials and case values) and formatters `0x10142b6c0`/`0x10142b980` (6,539-value sweep around every power of ten) with glibc `log10` and `vsnprintf` (`writer.json`) | S, X; L's last bit near half a spacing and exact ties rest on the substituted libraries |
-| 012 | Translator `0x101492afc` (single unautomated event at −63,072,000); time range `0x1055dba00` | U |
+| 012 | Translator `0x101492afc` (single unautomated event at −63,072,000); time range `0x1055dba00`. Revision 5: v3 `review/review-checks.txt`, validation `0x1026fc558`, comparison `0x102777640`, setter `0x10156e6ec`; song-tempo slots +0x200 `0x1026f90d4`, +0x290 `0x1026f9240` | S conditional; flag and envelope-value meaning U |
 
 Contradictions: revision 2's REQ-011 step 1 (k from the exact logarithm) is
 contradicted by X for 825 of the 6,539 swept 64-bit values (all next to powers of
@@ -432,6 +519,8 @@ The [Phase 4 batch](../research/phase4-probe-batch.md) follows the spec.
 | 2 | 2026-10-17 | Handoff-author corrections. REQ-006: trailing spaces accepted only without a leading space or `+`; both-sides and `-` spellings U. TS-010 relabelled B, unresolved. TS-023 withdrawn (UI edit, out of scope); edits after load added to the exclusions. REQ-011: "positive zero"; negative zero U. TS-008, TS-020: event text only if written. Probe references checked; appendix notes the probe file's older IDs. 12 requirements (3 S only, 8 S with U parts, 1 U only); 22 cases, 4 of them unresolved (TS-010, TS-017–019) |
 | 3 | 2026-10-18 | Extracted execution (X2, ADR 0003); label X added. REQ-011 corrected: k comes from the binary64 logarithm, which differs from revision 2 next to powers of ten; negative zero is written `-0`; positive largest, most negative and non-finite texts X; ties to even X on glibc; the library-dependent last bit of L U. REQ-006 restated exactly (X): sign, spaces, 63-character body, int32 range. REQ-003, 004 and 005 checks X, with REQ-004's sign and space spellings on glibc `strtod`. REQ-009 notes the accepted out-of-range codes. REQ-010 encoder, decoder and the 495 meter texts X. TS-010 graded (refused). TS-024–037 added. 12 requirements (2 without U parts, 9 with U parts, 1 U only); 36 graded cases (26 X, 7 S, 3 U) |
 | 4 | 2026-10-18 | transport-state-v2 review findings (RV2-02, RV2-03): REQ-011's undecided band is stated as 1/4 to 3/4 of a spacing; the logarithm-accuracy assumption A-LOG is added; the reading of `-0` and the exact save text are marked as glibc-dependent. No expectation changed |
+| 5 | 2026-10-19 | v3 review reconciled: authored carrier F0 replaces shipped-set fixture wording; v1/v2 fixture defect and current v3 recorded. REQ-012 gains the conditional S tempo reconciliation step; owner flag meaning and envelope value selection stay U, with no new graded case. 12 requirements (2 without U parts, 10 with U parts); 36 cases unchanged (26 X, 7 S, 3 U) |
+| 6 | 2026-10-21 | Direct finite adoption of the approved 316 typed hash-word argument observations: TS-038–350 (313 new cases) plus three historical controls. REQ-004/005 gain finite bit-preservation expectations; all prior bodies remain exact prefixes, the other ten bodies and all 37 legacy case rows remain exact. No public load/save, field-admission, setter-storage, FP-state, Apple/arm64 or release claim is added; all U clauses remain. |
 
 Revision 3 is the source of [transport-state-v2](../../handoff/transport-state-v2/README.md),
 released 2026-10-18 and approved with listed clarifications
@@ -440,6 +529,17 @@ released 2026-10-18 and approved with listed clarifications
 byte-identical, plus TS-010 and TS-024 to 037. It supersedes
 [transport-state-v1](../../handoff/transport-state-v1/README.md), whose REQ-011
 rule was wrong next to powers of ten. Revision 4 applies the v2 review's
-clarifications. TS-017 to 019, REQ-009 and REQ-012 stay out of both releases.
+clarifications. Both v1 and v2 fixtures lack a player track and are structurally
+refused; they must judge no case (v3 review RV3-02).
+
+The current partial release is [transport-state-v3](../../handoff/transport-state-v3/README.md),
+33 unchanged case records, with every fixture repaired by the minimal MIDI-track
+addition. Its [review](../../handoff/transport-state-v3/REVIEW.md) confirms that the
+23 opening cases and 10 refusal cases now isolate their intended rules. It supersedes
+v2; released payloads remain immutable. TS-017 to 019, REQ-009 and REQ-012 stay
+unreleased, including revision 5's new conditional tempo evidence.
+
+Revision 6's 313 finite converter cases and three supporting controls are not in
+transport-state-v3. Their later neutral-fixture and handoff release work is separate.
 
 Status note, 2026-10-18 (editorial; requirements unchanged): under [ADR 0003](../decisions/adr-0003-no-reference-execution.md) the probes cited here (PRB-N1-01 to 08) will not run on a macOS host. Clauses waiting on them stay unknown until extracted execution of the original x86_64 code or further static work settles them.

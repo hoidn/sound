@@ -1,0 +1,45 @@
+{
+  "schema": "minimal-reversible-owner-delta-v1",
+  "old_owner": {
+    "path": "wiki/specs/device-analog.md",
+    "bytes": 45184,
+    "sha256": "a63ceb8be20b5c24a7b3270ead540f45f79ee2eb01032d7f17516913c4ccd993"
+  },
+  "new_owner": {
+    "path": "wiki/specs/device-analog.md",
+    "bytes": 48721,
+    "sha256": "2803758a39b0c60200008487c2dd01bb4b026289708d0e5c63d3576e3b039226"
+  },
+  "application": "Apply ordered unique replacements then final append. Reverse in opposite order; remove appended suffix first. No whole spec snapshot retained.",
+  "edits": [
+    {
+      "old": "evidence_status: partial-stale (REQ-022 history; ANRMAP-001)\n",
+      "new": "evidence_status: partial (REQ-022 timing/trajectories U; r2 pending independent review)\n"
+    },
+    {
+      "old": "revision: 1\n",
+      "new": "revision: 2\n"
+    },
+    {
+      "old": "### REQ-DEVICE-ANALOG-022 — parameter changes over time\n\n- **X.** A host value set between blocks while a note sounds first changes the output at these\n  frames, for a change at block start 13,312 (g′ = 13,332):\n\n  | Parameter | First changed frame |\n  | --- | --- |\n  | Volume | g′ |\n  | OscillatorSemi, OscillatorDetune | g′ + 8 |\n  | FilterCutoffFrequency | g′ + P |\n  | OscillatorLevel, AmplifierLevel, AmplifierPan | g′ + 58 |\n  | Amplifier AttackTime, during sustain | g′ + 4,402 |\n- **U.** The ramps that follow, and the timing for other parameters. **Effect on T1:** automation of\n  Analog parameters is graded only after the change has settled, from 100 ms after it on. Within\n  those 100 ms, and for parameters taken at note-on, nothing is graded.\n- **U.** In Live, on which block boundary an automated value arrives (Q-025). **Effect on T1:** as\n  for Electric, automation can be early or late by up to one Live block plus one period.\n\n",
+      "new": "### REQ-DEVICE-ANALOG-022 — parameter changes over time\n\n- **U.** The first output change, smoothing and subsequent trajectory when a host value changes\n  between blocks, including note-on latching, dependence on the prior note/control history,\n  settling time and timing for other controls. **Effect on T1:** parameter-change and automation\n  trajectories are not graded. No general first-change rule, 100 ms settling bound or portable\n  trajectory tolerance is established. The finite release excludes parameter changes; its\n  accepted stationary/onset/envelope criteria do not supply a post-change oracle.\n- **U.** In Live, on which block boundary an automated value arrives (Q-025), and how the stored\n  value, parameter unit and actual Analog instance receive and process it. **Effect on T1:** no\n  host-arrival or automation-delay bound is adopted, and these Live timing outcomes are not\n  graded. A1/A2 remain assumptions; extracted device differences do not bind the Live scheduler,\n  receiver or output path.\n\n  **Historical evidence qualification (ANRMAP-001).** The revision 1 table came from a retained\n  two-process history whose persistent event queue delivered its note again in the second\n  process request. AttackTime first-change 17,734 is a historical repeated-note result, not\n  uninterrupted-sustain delay. The seven earlier first-change scalars retain only their exact\n  finite supplied-history scope; neither that table nor its former 100 ms convention defines an\n  acceptance rule here. The reversible revision delta retains the exact superseded wording.\n\n  **Ungraded discovery only.** The separately reviewed\n  [whole eight-control no-replay batch](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-actual-review.json)\n  uses eight baseline/change pairs (sixteen captures) with the same 203-value setup, a note-on\n  at 8,192,\n  a change boundary 13,312 and process intervals 13,312 then 7,680 frames in 512-frame blocks at\n  44,100 Hz. All prechange prefixes match exactly. Seven pairs have finite numeric differences;\n  the AttackTime pair is byte-identical through the capture. These are discoveries of that\n  fixed extracted history, with no expected-output or grade adoption. A held key does not\n  establish an accepted envelope stage. AttackTime's unchanged result establishes neither\n  general latching nor absence of an effect in other histories. Bit or numeric differences do\n  not establish a portable latency, smoothing law or settled trajectory. No ARM execution,\n  Apple-library equivalence or actual Live behavior follows.\n\n"
+    },
+    {
+      "old": "that release. This mutable parent stays revision 1: review clarified the finite\n",
+      "new": "that release. At that release the mutable parent was revision 1: review clarified the finite\n"
+    },
+    {
+      "old": "## Current evidence qualification — ANRMAP-001, 2026-10-20\n",
+      "new": "## Historical revision 1 evidence qualification — ANRMAP-001, 2026-10-20\n"
+    },
+    {
+      "old": "| 1 | 2026-10-18 | First draft (T1.2, packet t12-analog-v1). 23 requirements: 17 with X closed forms or X tables (004 to 019 in part, 022); 002 S with S-cond and U parts; 001 X with U parts; 020, 021 and 023 largely U. 47 cases: 42 graded against retained reference renders, 1 graded statistically (DAN-012), 4 not graded (DAN-043, 044, 046, 047) |\n",
+      "new": "| 1 | 2026-10-18 | First draft (T1.2, packet t12-analog-v1). 23 requirements: 17 with X closed forms or X tables (004 to 019 in part, 022); 002 S with S-cond and U parts; 001 X with U parts; 020, 021 and 023 largely U. 47 cases: 42 graded against retained reference renders, 1 graded statistically (DAN-012), 4 not graded (DAN-043, 044, 046, 047) |\n| 2 | 2026-10-20 | ANRMAP-001 correction, pending independent review: REQ-022 removes unsupported sustain/first-change/settling/host-arrival grading claims. Whole eight-control no-replay results remain ungraded discovery. All 22 other requirement bodies and 39 case rows/47 IDs unchanged; device-analog-v1 unchanged. |\n"
+    },
+    {
+      "old": "",
+      "new": "\n## Revision 2 disposition — ANRMAP-001, 2026-10-20\n\nCurrent owner revision 2 is **pending independent review**. Its REQ-022 supersedes revision 1's\nparameter-change table and grading promises; it does not adopt new expected values, cases,\nmetrics or release scope. The historical revision 1 notice above is retained as written at its\nstale-qualification stage: its “being authored” and unchanged-body statements describe that\nstage, not current work. The bounded family-map v2 correction has since been approved, followed\nby a frozen preparation/readiness gate, one whole eight-control execution and\n[bounded actual-result review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-actual-review.json).\nAll discoveries remain UNGRADED; the accepted finite device-analog-v1 release is unchanged.\n\nThe [revision 2 correction packet](../../analysis/ableton-live-12.4.3/full-spec-v1/analog-owner-r2-anrmap001/README.md)\npins that chain and the old owner 45184-byte identity, and preserves the exact superseded text\nthrough a reversible minimal delta rather than a copied specification snapshot. All 23 REQ IDs,\nthe other 22 requirement bodies and all 39 acceptance rows covering 47 case IDs remain intact.\nGeneral smoothing/timing/other-control behavior, envelope-stage interpretation, ARM/Apple\nbehavior and Live control/receiver/output binding remain unknown. This correction supplies no\nnew original run, trajectory tolerance, portable latency metric or numerical acceptance case.\n",
+      "append": true
+    }
+  ]
+}

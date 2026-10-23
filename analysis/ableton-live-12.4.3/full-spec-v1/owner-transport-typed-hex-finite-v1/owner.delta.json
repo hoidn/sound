@@ -1,0 +1,53 @@
+{
+  "schema": "reversible-exact-text-owner-delta-v1",
+  "predecessor": {
+    "path": "wiki/specs/transport-state.md",
+    "revision": 5,
+    "bytes": 34329,
+    "sha256": "64816e16b61c46c8c448b13cc29ba544759c41741335c0f4c379ce7813fe469b"
+  },
+  "current": {
+    "path": "wiki/specs/transport-state.md",
+    "revision": 6,
+    "bytes": 40401,
+    "sha256": "b6f4fd3b1da5bce3461b1ab3cf5e7f2557806e65d5fb038eb76fdd9c9e8c977f"
+  },
+  "operations_in_forward_order": [
+    {
+      "label": "updated metadata",
+      "before": "updated: 2026-10-19\n",
+      "after": "updated: 2026-10-21\n"
+    },
+    {
+      "label": "revision metadata",
+      "before": "revision: 5\n",
+      "after": "revision: 6\n"
+    },
+    {
+      "label": "append finite 004",
+      "before": "### REQ-TRANSPORT-STATE-005 — tempo text on load\n",
+      "after": "- **X, finite converter expectations.** For the exact 64-bit hash strings in the\n  [revision 6 case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/case-catalog.json)\n  under REQ-004, the converter result preserves the supplied word bits exactly.\n  Compare integer words, including sign and every nonzero fraction bit; do not\n  replace a NaN payload with a canonical value. This finite expectation concerns\n  text conversion only. It does not establish acceptance into a Transport field,\n  setter storage, public opening/saving, or floating-point exception state.\n\n### REQ-TRANSPORT-STATE-005 — tempo text on load\n"
+    },
+    {
+      "label": "append finite 005",
+      "before": "### REQ-TRANSPORT-STATE-006 — time-signature code text on load\n",
+      "after": "- **X, finite converter expectations.** For the exact 32-bit hash strings in the\n  [revision 6 case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/case-catalog.json)\n  under REQ-005, the converter result preserves the supplied word bits exactly.\n  Compare integer words, including sign and every nonzero fraction bit; do not\n  replace a NaN payload with a canonical value. This finite expectation concerns\n  text conversion only. It does not establish acceptance into a Transport field,\n  setter storage, public opening/saving, or floating-point exception state.\n\n### REQ-TRANSPORT-STATE-006 — time-signature code text on load\n"
+    },
+    {
+      "label": "finite case subsection",
+      "before": "## Open questions\n",
+      "after": "### Revision 6 finite hash-word converter cases\n\nThe [structured case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-transport-typed-hex-finite-v1/case-catalog.json) defines **TS-038–TS-350**, 313 new finite\nconverter cases under REQ-004/005, and three supporting historical controls\n`TRANSPORT-HEX-CONTROL-001–003`. All 316 exact ASCII inputs and their approved\nargument-word observations are represented. The 37 legacy table rows above remain\nunchanged, including withdrawn TS-023: this revision has 350 case IDs including\nthat withdrawal, 349 nonwithdrawn IDs, and three additional control records.\nCase counts describe this catalog, not an atomic behavior denominator or new passes.\n\n| Group | New case IDs | New cases | Supporting controls | Total inputs |\n| --- | --- | --- | --- | --- |\n| float-positive-upper | TS-038–TS-061 | 24 | TRANSPORT-HEX-CONTROL-001 | 25 |\n| float-positive-lower | TS-062–TS-086 | 25 | — | 25 |\n| float-negative-upper | TS-087–TS-111 | 25 | — | 25 |\n| float-negative-lower | TS-112–TS-136 | 25 | — | 25 |\n| double-positive-upper | TS-137–TS-189 | 53 | TRANSPORT-HEX-CONTROL-002 | 54 |\n| double-positive-lower | TS-190–TS-243 | 54 | — | 54 |\n| double-negative-upper | TS-244–TS-296 | 53 | TRANSPORT-HEX-CONTROL-003 | 54 |\n| double-negative-lower | TS-297–TS-350 | 54 | — | 54 |\n\nEach catalog record supplies its exact ASCII bytes and length, declared width and\ntype ID, expected typed word, little-endian argument bytes, full captured unsigned\ninteger, and immutable input/result pointers. The 158 distinct width/word pairs\ncover both signs with an all-ones exponent and fraction zero, each single fraction\nbit, or all fraction bits, each as upper- and lowercase hex. This is a finite class,\nnot all NaN spellings or all IEEE-754 behavior. “Quiet-bit-set” and “quiet-bit-clear”\nname input layouts only; no host float decoding, arithmetic, FP flag, quieting or\ntrap-state expectation is attached.\n\nFor each new case, submit the exact decoded ASCII text to an equivalent pure text\nconversion and compare the produced typed word as an integer, with every bit exact.\nThe recorded type IDs (18 for 32-bit and 23 for 64-bit) and intercepted setter names\nare evidence locators, not a required implementation API. The existing extracted\nmodel uses an empty-string initializer, fresh owned metadata and four recorded GDB\nvoid-return setter stubs. The stubs observe argument registers and skip the original\nsetter bodies. These observations therefore establish neither actual node storage\nnor Transport range admission, public file Open/Save, or current Apple/arm64 results.\nThe F0 fixtures and public load/save/display comparators preceding this subsection\napply to legacy TS-001–TS-037; they are not the acceptance procedure for these new\npure-converter cases. No new neutral fixture or released handoff is supplied.\n\nEvidence is the already approved\n[316-input batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-transport-standing-leaves-v1/manifest.json)\n(SHA-256 `fcf5328bcfb2c2c160cf33bccb7627a29703c2cea539188bbe826bacab8c4236`)\nand its [independent actual review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/transport-standing-leaves-v1-review.json)\n(SHA-256 `2cdd28a03e473553e3cc8a0807dfaf5e4541ad623ec5d7368caa25e985507fb7`).\nAll observations agree with the existing REQ-004/005 hash-bit oracle; no conversion\nrule or model was repaired. The catalog inherits that approved observation review;\nthis adoption checks wording, provenance and case mapping only.\n\nAll eight 80-byte GDB index-cache warnings remain retained; the minimal environment\nomitted HOME. `libthread_db` has only an after-capture identity, not a before/after\nprovider pin or full dependency trace. Group-end checks can detect errors after later\ncalls within that child; they do not establish a per-call first-error stop. Raw files\nand JSON were closed and hashed with no explicit fsync or crash-durability proof.\nNo additional original execution occurs in this adoption. Other requirements,\nunknowns (including REQ-009/012 and Apple's substituted-library behavior), old cases\nand current release bytes are unchanged; unsupported behavior keeps coverage open.\n\n## Open questions\n"
+    },
+    {
+      "label": "revision history",
+      "before": "| 5 | 2026-10-19 | v3 review reconciled: authored carrier F0 replaces shipped-set fixture wording; v1/v2 fixture defect and current v3 recorded. REQ-012 gains the conditional S tempo reconciliation step; owner flag meaning and envelope value selection stay U, with no new graded case. 12 requirements (2 without U parts, 10 with U parts); 36 cases unchanged (26 X, 7 S, 3 U) |\n",
+      "after": "| 5 | 2026-10-19 | v3 review reconciled: authored carrier F0 replaces shipped-set fixture wording; v1/v2 fixture defect and current v3 recorded. REQ-012 gains the conditional S tempo reconciliation step; owner flag meaning and envelope value selection stay U, with no new graded case. 12 requirements (2 without U parts, 10 with U parts); 36 cases unchanged (26 X, 7 S, 3 U) |\n| 6 | 2026-10-21 | Direct finite adoption of the approved 316 typed hash-word argument observations: TS-038–350 (313 new cases) plus three historical controls. REQ-004/005 gain finite bit-preservation expectations; all prior bodies remain exact prefixes, the other ten bodies and all 37 legacy case rows remain exact. No public load/save, field-admission, setter-storage, FP-state, Apple/arm64 or release claim is added; all U clauses remain. |\n"
+    },
+    {
+      "label": "release qualification",
+      "before": "Status note, 2026-10-18 (editorial; requirements unchanged):",
+      "after": "Revision 6's 313 finite converter cases and three supporting controls are not in\ntransport-state-v3. Their later neutral-fixture and handoff release work is separate.\n\nStatus note, 2026-10-18 (editorial; requirements unchanged):"
+    }
+  ],
+  "reverse": "Replace each after by before once, in reverse operation order; then require exact predecessor bytes/SHA. No complete predecessor copy."
+}

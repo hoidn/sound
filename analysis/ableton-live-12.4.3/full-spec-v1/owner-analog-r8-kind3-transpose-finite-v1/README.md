@@ -1,0 +1,9 @@
+# Analog R8 combined finite host-integer owner proposal
+
+One Root-selected author task combines both approved actual summaries: 24 Transpose observations plus 208 further native-kind3 vectors. This is only new owner wording/mapping/ID/preservation, never another actual/source/raw/numeric review. No actual packet or old criterion/audio/provider/helper was read during owner authoring.
+
+cases232.json assigns DAN-472–495 and DAN-496–703. transpose-catalog25.json and kind3-catalog338.json retain all 25 / 338 aliases / 254 vectors with shared baseline, R3, Transpose and DAN-029 references, no duplicate IDs/calls or invented inherited receipts. Every relevant join carries historical Transpose scalar-6 versus exact-R7 label qualification; index99=0 stays auxiliary measurement-only. All native identities are observed finite context facts; original priors and portable expected/comparator/grade remain NULL, no new public/ARM/calibration/clamp/pitch/effect law.
+
+The five-fragment reversible delta appends one REQ003 finite qualification, a readable annex and revision metadata. All 22 other whole clauses, old003 prefix, 67 rows/471 old IDs, R3 objects and full R4–R7 catalogs/old acceptance annexes/criteria/state/U/history/releases remain exact. No full old-owner snapshot, canonical/shared/owner application, actual/source/raw reopen or new execution.
+
+Arr is sole new owner wording/mapping/IDs/preservation peer; Root has opened no new owner payload and applies by Arr citation only. Author Auto was independent peer of the two actual Mix batches; inherited actual proof does not receive another review. After reading complete check.py use only python3 -I -B check.py --check. External reads are a closed list of canonical owner, two approved review summaries, prior owner JSON catalogs and released MANIFEST metadata; actual payload paths are explicitly refused. Full reverse-to-R7, all joins/preservation and meaningful in-memory negatives are checked.

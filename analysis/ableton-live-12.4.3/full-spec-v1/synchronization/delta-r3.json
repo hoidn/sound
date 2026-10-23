@@ -1,0 +1,286 @@
+{
+  "prior_manifest": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/synchronization/manifest-author-r2.json",
+    "bytes": 8274,
+    "sha256": "7ebf0944815b79373d660c74ba9a3dfbae60668d079cfa3fdeec9d00c1cb5e77"
+  },
+  "source_reconciliation": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/resync-source-reconciliation/manifest.json",
+    "bytes": 1949,
+    "sha256": "73c27ff10d9ce3999ac93f01e618e770bbe532f86f8fb2c065c14699a6fe97e5"
+  },
+  "source_review": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/resync-source-reconciliation-review.json",
+    "bytes": 2341,
+    "sha256": "84b1b4187b9159118e68239689ded2a0748efc56fdbb22dcfe96e21748c804ff"
+  },
+  "old_requirements_verbatim": 27,
+  "old_cases_verbatim": 37,
+  "new_requirements": [
+    "REQ-SYNC-WORKFLOW-026",
+    "REQ-SYNC-WORKFLOW-027"
+  ],
+  "new_cases": [
+    "SYNC-026",
+    "SYNC-027-STOP-START",
+    "SYNC-027-START-ONLY",
+    "SYNC-027-DONT-RESYNC",
+    "SYNC-U-RESYNC-LIFECYCLE"
+  ],
+  "field_deltas": [
+    {
+      "old_file": "requirements-r2.json",
+      "new_file": "requirements-r3.json",
+      "pointer": "/27",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "REQ-SYNC-WORKFLOW-026",
+        "title": "Hardware Resync configuration and command",
+        "contract": "For a MIDI output with Sync enabled, the triangle next to the port name opens additional options. Hardware Resync selects a resync behavior when Resync External Hardware is enabled; when enabled, the Resync External Hardware button appears in the Control Bar and can be used to send resync messages to external gear. Drift during playback is a documented useful context, not an exclusive eligibility condition or a correction guarantee. The shared button versus per-port fanout and exact option-enable location beyond the named context remain unknown.",
+        "strength": "D12",
+        "target_applicability": "U",
+        "evidence": [
+          {
+            "block": "routing:B038",
+            "anchor": "sync",
+            "html_line": 326
+          },
+          {
+            "block": "routing:B041",
+            "anchor": "sync",
+            "html_line": 338
+          },
+          {
+            "block": "routing:B042",
+            "anchor": "sync",
+            "html_line": 354
+          }
+        ]
+      }
+    },
+    {
+      "old_file": "requirements-r2.json",
+      "new_file": "requirements-r3.json",
+      "pointer": "/28",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "REQ-SYNC-WORKFLOW-027",
+        "title": "Hardware Resync symbolic mode roles",
+        "contract": "The manual describes Stop and Start as the default resync behavior: a MIDI Clock Stop event followed by a MIDI Clock Start event. Start Only sends just the MIDI Clock Start resync event; Don’t Resync sends no resync messages. These symbolic source roles supply no byte encoding, total event count, spacing, timestamp, drift/phase correction, convergence or successful-device guarantee. Documentary default is not an exact-build constructor/reset/migration observation. Don’t Resync does not establish suppression of ordinary MIDI Clock traffic; per-output/all-output fanout and interactions with tempo, preroll, transport, Clock Type or Sync Delay remain unknown.",
+        "strength": "D12",
+        "target_applicability": "U",
+        "evidence": [
+          {
+            "block": "routing:B043",
+            "anchor": "sync",
+            "html_line": 366
+          }
+        ]
+      }
+    },
+    {
+      "old_file": "cases-r2.json",
+      "new_file": "cases-r3.json",
+      "pointer": "/37",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "SYNC-026",
+        "requirements": [
+          "REQ-SYNC-WORKFLOW-026"
+        ],
+        "kind": "control",
+        "fixture": "fixtures-r3.json#SYNC-RESYNC-OWNED",
+        "setup_and_action": "In an independently admitted future build/platform and productive output-Clock/receiver context, explicitly enable Sync for the chosen output, expand its port-name triangle and inspect offered Hardware Resync choices. In a separate declared history explicitly enable Resync External Hardware, inspect its Control Bar button and invoke the offered command while retaining visible control state. No exact enable-option picker path, layout, shortcut, disabled/hidden-off presentation, port fanout or successful timing result is inferred. Mode traffic observations belong to separate null-oracle proposals.",
+        "source_claim": "For a MIDI output with Sync enabled, the triangle next to the port name opens additional options. Hardware Resync selects a resync behavior when Resync External Hardware is enabled; when enabled, the Resync External Hardware button appears in the Control Bar and can be used to send resync messages to external gear. Drift during playback is a documented useful context, not an exclusive eligibility condition or a correction guarantee. The shared button versus per-port fanout and exact option-enable location beyond the named context remain unknown.",
+        "documentary_expected": "Named offered output-option, selector and enabled Control Bar command roles only.",
+        "documentary_comparator": "Visible offered controls/selections only; no traffic, message, timing, drift, device or fanout outcome.",
+        "expected": null,
+        "comparison": null,
+        "target_grade": "U",
+        "executed": false,
+        "evidence": [
+          {
+            "block": "routing:B038",
+            "anchor": "sync",
+            "html_line": 326
+          },
+          {
+            "block": "routing:B041",
+            "anchor": "sync",
+            "html_line": 338
+          },
+          {
+            "block": "routing:B042",
+            "anchor": "sync",
+            "html_line": 354
+          }
+        ],
+        "finite_contexts": [
+          "Sync-enabled output and port-name triangle",
+          "offered Hardware Resync selector",
+          "explicit Resync External Hardware enable then Control Bar command"
+        ],
+        "positive_guard": "Independently admitted exact-build feature and compatible owned receiver; genuine usable outgoing MIDI Clock, receiver synchronization and identifiable nonzero active outputs before any negative/no-effect trial. Port activity, a lit button, absent gear or silence alone is insufficient. Missing feature, eligible port or successful positive baseline remains U, never a passing negative."
+      }
+    },
+    {
+      "old_file": "cases-r2.json",
+      "new_file": "cases-r3.json",
+      "pointer": "/38",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "SYNC-027-STOP-START",
+        "requirements": [
+          "REQ-SYNC-WORKFLOW-027"
+        ],
+        "kind": "protocol/timing",
+        "fixture": "fixtures-r3.json#SYNC-RESYNC-OWNED",
+        "setup_and_action": "Future owned evidence only: establish genuine usable outgoing Clock from Live and receiver synchronization with separately identifiable nonzero outputs. For the documented use context admit an independently established drifting receiver during playback, without inventing a drift amount or inducing unsafe hardware changes. In its own reset history explicitly select Stop and Start for the admitted output context, enable the actually offered Resync External Hardware option and invoke the Control Bar command. Retain control, usable traffic and receiver/output observations separately. No symbolic source event role is a concrete byte/event-count/scheduling, phase/drift correction, success or fanout oracle. Hardware capability absence and failed positive baseline remain U. Drift is a useful context, not an exclusive command gate.",
+        "source_claim": "The manual describes Stop and Start as the default resync behavior: a MIDI Clock Stop event followed by a MIDI Clock Start event. Start Only sends just the MIDI Clock Start resync event; Don’t Resync sends no resync messages. These symbolic source roles supply no byte encoding, total event count, spacing, timestamp, drift/phase correction, convergence or successful-device guarantee. Documentary default is not an exact-build constructor/reset/migration observation. Don’t Resync does not establish suppression of ordinary MIDI Clock traffic; per-output/all-output fanout and interactions with tempo, preroll, transport, Clock Type or Sync Delay remain unknown.",
+        "documentary_expected": null,
+        "documentary_comparator": null,
+        "expected": null,
+        "comparison": null,
+        "target_grade": "U",
+        "executed": false,
+        "evidence": [
+          {
+            "block": "routing:B043",
+            "anchor": "sync",
+            "html_line": 366
+          }
+        ],
+        "finite_contexts": [
+          "Stop and Start",
+          "symbolic Stop followed by Start source role",
+          "known usable Clock/receiver and nonzero output baseline",
+          "source-described drift during playback context; actual result U"
+        ],
+        "positive_guard": "Independently admitted exact-build feature and compatible owned receiver; genuine usable outgoing MIDI Clock, receiver synchronization and identifiable nonzero active outputs before any negative/no-effect trial. Port activity, a lit button, absent gear or silence alone is insufficient. Missing feature, eligible port or successful positive baseline remains U, never a passing negative."
+      }
+    },
+    {
+      "old_file": "cases-r2.json",
+      "new_file": "cases-r3.json",
+      "pointer": "/39",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "SYNC-027-START-ONLY",
+        "requirements": [
+          "REQ-SYNC-WORKFLOW-027"
+        ],
+        "kind": "protocol/timing",
+        "fixture": "fixtures-r3.json#SYNC-RESYNC-OWNED",
+        "setup_and_action": "Future owned evidence only: establish genuine usable outgoing Clock from Live and receiver synchronization with separately identifiable nonzero outputs. For the documented use context admit an independently established drifting receiver during playback, without inventing a drift amount or inducing unsafe hardware changes. In its own reset history explicitly select Start Only for the admitted output context, enable the actually offered Resync External Hardware option and invoke the Control Bar command. Retain control, usable traffic and receiver/output observations separately. No symbolic source event role is a concrete byte/event-count/scheduling, phase/drift correction, success or fanout oracle. Hardware capability absence and failed positive baseline remain U. Drift is a useful context, not an exclusive command gate.",
+        "source_claim": "The manual describes Stop and Start as the default resync behavior: a MIDI Clock Stop event followed by a MIDI Clock Start event. Start Only sends just the MIDI Clock Start resync event; Don’t Resync sends no resync messages. These symbolic source roles supply no byte encoding, total event count, spacing, timestamp, drift/phase correction, convergence or successful-device guarantee. Documentary default is not an exact-build constructor/reset/migration observation. Don’t Resync does not establish suppression of ordinary MIDI Clock traffic; per-output/all-output fanout and interactions with tempo, preroll, transport, Clock Type or Sync Delay remain unknown.",
+        "documentary_expected": null,
+        "documentary_comparator": null,
+        "expected": null,
+        "comparison": null,
+        "target_grade": "U",
+        "executed": false,
+        "evidence": [
+          {
+            "block": "routing:B043",
+            "anchor": "sync",
+            "html_line": 366
+          }
+        ],
+        "finite_contexts": [
+          "Start Only",
+          "symbolic Start-only resync source role",
+          "known usable Clock/receiver and nonzero output baseline",
+          "source-described drift during playback context; actual result U"
+        ],
+        "positive_guard": "Independently admitted exact-build feature and compatible owned receiver; genuine usable outgoing MIDI Clock, receiver synchronization and identifiable nonzero active outputs before any negative/no-effect trial. Port activity, a lit button, absent gear or silence alone is insufficient. Missing feature, eligible port or successful positive baseline remains U, never a passing negative."
+      }
+    },
+    {
+      "old_file": "cases-r2.json",
+      "new_file": "cases-r3.json",
+      "pointer": "/40",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "SYNC-027-DONT-RESYNC",
+        "requirements": [
+          "REQ-SYNC-WORKFLOW-027"
+        ],
+        "kind": "protocol/timing",
+        "fixture": "fixtures-r3.json#SYNC-RESYNC-OWNED",
+        "setup_and_action": "Future owned evidence only: establish genuine usable outgoing Clock from Live and receiver synchronization with separately identifiable nonzero outputs. For the documented use context admit an independently established drifting receiver during playback, without inventing a drift amount or inducing unsafe hardware changes. In its own reset history explicitly select Don’t Resync for the admitted output context, enable the actually offered Resync External Hardware option and invoke the Control Bar command. Retain control, usable traffic and receiver/output observations separately. For this no-resync history, first retain a genuine known-positive resync-capable history with compatible receiver; absent gear, muted output, failed Clock or failed resync baseline cannot prove suppression. Ordinary Clock remains a separate observation, with no inferred suppression. No symbolic source event role is a concrete byte/event-count/scheduling, phase/drift correction, success or fanout oracle. Hardware capability absence and failed positive baseline remain U. Drift is a useful context, not an exclusive command gate.",
+        "source_claim": "The manual describes Stop and Start as the default resync behavior: a MIDI Clock Stop event followed by a MIDI Clock Start event. Start Only sends just the MIDI Clock Start resync event; Don’t Resync sends no resync messages. These symbolic source roles supply no byte encoding, total event count, spacing, timestamp, drift/phase correction, convergence or successful-device guarantee. Documentary default is not an exact-build constructor/reset/migration observation. Don’t Resync does not establish suppression of ordinary MIDI Clock traffic; per-output/all-output fanout and interactions with tempo, preroll, transport, Clock Type or Sync Delay remain unknown.",
+        "documentary_expected": null,
+        "documentary_comparator": null,
+        "expected": null,
+        "comparison": null,
+        "target_grade": "U",
+        "executed": false,
+        "evidence": [
+          {
+            "block": "routing:B043",
+            "anchor": "sync",
+            "html_line": 366
+          }
+        ],
+        "finite_contexts": [
+          "Don’t Resync",
+          "no resync-message source role; ordinary clock suppression not inferred",
+          "known usable Clock/receiver and nonzero output baseline",
+          "source-described drift during playback context; actual result U"
+        ],
+        "positive_guard": "Independently admitted exact-build feature and compatible owned receiver; genuine usable outgoing MIDI Clock, receiver synchronization and identifiable nonzero active outputs before any negative/no-effect trial. Port activity, a lit button, absent gear or silence alone is insufficient. Missing feature, eligible port or successful positive baseline remains U, never a passing negative."
+      }
+    },
+    {
+      "old_file": "cases-r2.json",
+      "new_file": "cases-r3.json",
+      "pointer": "/41",
+      "operation": "add",
+      "old": null,
+      "new": {
+        "id": "SYNC-U-RESYNC-LIFECYCLE",
+        "requirements": [
+          "REQ-SYNC-WORKFLOW-U-LIFECYCLE",
+          "REQ-SYNC-WORKFLOW-U-PROTOCOL"
+        ],
+        "kind": "boundary/lifecycle",
+        "fixture": "fixtures-r3.json#SYNC-RESYNC-OWNED",
+        "setup_and_action": "Future separate owned histories declare an independently valid productive Resync/Clock/receiver baseline before changing one context: output Sync off, feature enable off, port loss/reconnect, incompatible/unavailable receiver, multiple outputs, stopped/running transport, preroll/count-in, tempo change, Song/Pattern mode, Sync Delay, repeated command, cancel/undo, save/reopen, sample-rate change or teardown. Retain actual controls, traffic and receiver observations as available without constructing bytes or inducing resource/hardware failures. No listed outcome, restoration, fanout, ordinary-Clock suppression or numeric correction law is supplied.",
+        "source_claim": null,
+        "documentary_expected": null,
+        "documentary_comparator": null,
+        "expected": null,
+        "comparison": null,
+        "target_grade": "U",
+        "executed": false,
+        "evidence": [],
+        "finite_contexts": [
+          "output Sync off",
+          "feature enable off",
+          "port loss/reconnect",
+          "unavailable/incompatible receiver",
+          "multiple outputs/shared button fanout",
+          "stopped/running transport",
+          "preroll/count-in",
+          "tempo changes",
+          "Song/Pattern",
+          "Sync Delay",
+          "repeat",
+          "cancel/undo",
+          "save/reopen",
+          "rate change",
+          "teardown"
+        ],
+        "positive_guard": "Independently admitted exact-build feature and compatible owned receiver; genuine usable outgoing MIDI Clock, receiver synchronization and identifiable nonzero active outputs before any negative/no-effect trial. Port activity, a lit button, absent gear or silence alone is insufficient. Missing feature, eligible port or successful positive baseline remains U, never a passing negative."
+      }
+    }
+  ],
+  "adopted_scope": "Only two reviewed source roles; three explicitly chosen mode proposals and a source-silent lifecycle case. No other source/category closure.",
+  "no_old_record_or_oracle_changes": true
+}

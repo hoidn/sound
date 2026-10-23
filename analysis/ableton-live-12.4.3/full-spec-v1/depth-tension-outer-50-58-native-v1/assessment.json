@@ -1,0 +1,200 @@
+{
+  "scope": {
+    "whole_C_records": 2,
+    "C_bytes": 2115,
+    "C_lines": 81,
+    "warning_occurrences": 4,
+    "raw_C1_bytes": 3178,
+    "native_bodies": 2,
+    "native_bytes": 256,
+    "native_rows": 64,
+    "data_words": 0,
+    "data_bytes": 0,
+    "old_actual_raw_or_source_replayed": 0
+  },
+  "claims": [
+    {
+      "id": "T256-01",
+      "basis": {
+        "C": "159e4 lines9\u201317,18\u201332",
+        "native": [
+          "159e4",
+          "159e8",
+          "159ec",
+          "159f0",
+          "15a18\u201315a2c",
+          "15a44\u201315a58"
+        ]
+      },
+      "fact": "At entry159e4, native STR S0 writes through incoming X0+10; state comparison reads +20. Both captured paths perform the shown receiver-relative state writes before loading receiver+8. Source parameter_2 is not treated as a formal ABI parameter-number proof.",
+      "premises": [
+        "actual entry at159e4 with valid correctly aligned/writable receiver state",
+        "nonwrapping and nonalias memory for distinct stated state locations",
+        "architectural instruction and flag behavior; FP state/exceptions unobserved"
+      ],
+      "public_meaning": "unknown"
+    },
+    {
+      "id": "T256-02",
+      "basis": {
+        "C": "159e4 lines33\u201339",
+        "native": [
+          "15a30",
+          "15a34",
+          "15a38",
+          "15a3c",
+          "15a40",
+          "15a58",
+          "15a5c",
+          "15a60"
+        ]
+      },
+      "fact": "Both paths load current incoming-receiver+8 into X0. Nonnull paths load its current first word and offset50 into X1, then BR X1. Null paths RET. This changes X0 from the outer entry carrier to the loaded inner carrier; no link is established by BR.",
+      "slot_offset": "0x50",
+      "tail_pc": "0x15a40",
+      "runtime_target_proved": false
+    },
+    {
+      "id": "T256-03",
+      "basis": {
+        "C": "15a64 lines9\u201330",
+        "native": [
+          "15a64\u201315aac",
+          "15ac4\u201315ad8"
+        ]
+      },
+      "fact": "The second body reads receiver+20, and on one path additionally +10, before its shown receiver-relative stores and current receiver+8 load. It has no direct BL/BLR or stack-frame operations in this selected range; decoded control reaches its null RET or indirect tail.",
+      "formal_role_or_numeric_law": "unknown"
+    },
+    {
+      "id": "T256-04",
+      "basis": {
+        "C": "15a64 lines31\u201338",
+        "native": [
+          "15ab0",
+          "15ab4",
+          "15ab8",
+          "15abc",
+          "15ac0",
+          "15ad8",
+          "15adc",
+          "15ae0"
+        ]
+      },
+      "fact": "Both paths load current incoming-receiver+8 into X0. Nonnull paths load its current first word and offset58 into X1, then BR X1; null paths RET.",
+      "slot_offset": "0x58",
+      "tail_pc": "0x15ac0",
+      "runtime_target_proved": false
+    },
+    {
+      "id": "T256-05",
+      "basis": {
+        "C": "159e4 lines19\u201326;15a64 lines18\u201325",
+        "native": [
+          "159f4\u201315a18",
+          "15a70\u201315a98"
+        ]
+      },
+      "fact": "Native raw forms contain the literal construction0x3a83126f, FCSEL, FMADD, FCVTZU X8 from a scalar FP source, then CMP/CSINC before storing X8 at receiver+18. Recovered C uses signed long/product-plus notation. This recovery difference is retained rather than repaired into an oracle. FCMP/B.LE/FCSEL condition use is recorded; no universal finite/nonfinite rounding or input-admission law is adopted.",
+      "native_operation_order_numeric_behavior_or_FP_state_executed": false,
+      "unread_memory_literal_or_helper_followed": false
+    },
+    {
+      "id": "T256-06",
+      "basis": {
+        "native": [
+          "15a20",
+          "15a28",
+          "15a2c",
+          "15a4c",
+          "15a54",
+          "15aa0",
+          "15aa8",
+          "15aac",
+          "15acc",
+          "15ad4"
+        ]
+      },
+      "fact": "Scalar and Q-width stores include receiver+2028 and16-byte receiver+4030 spans; both paths set the former from W8 literal401 and zero the Q-store span. No captured store targets receiver+8 or its first word. Under valid nonalias/nonwrapping memory, those stores do not themselves replace the member/table, but they prove neither entry O nor current member=P nor table literal identity.",
+      "write_locations": [
+        "0x10 (firstbody only)",
+        "0x18 (scalarbranch)",
+        "0x20",
+        "0x2028",
+        "0x4030\u20130x403f"
+      ],
+      "no_external_direct_call_before_member_load": true
+    },
+    {
+      "id": "T256-07",
+      "basis": {
+        "prior": "Tension1596approved peer53a6956a\u2026;Tension916approved peer0c2b7ffb\u2026",
+        "current": "two raw-byte-supported member/tail paths"
+      },
+      "fact": "If an actual public call enters this candidate with O, current[O+8]=P and current[P] is valid, these two bodies conditionally forward that P carrier into current-table+50/+58 tails. Prior conditional B=P/literal5c0c0 store does not prove the current first word.",
+      "premises": [
+        "actual entry and caller argument placement are established",
+        "incoming carrier is the intended outer O",
+        "current[O+8] equals the intended P at the load",
+        "valid nonalias/nonwrapping receiver and inner-table memory",
+        "current table retains intended value and no concurrent/unread intervening mutation",
+        "stored pointer encoding/runtime address interpretation is independently established",
+        "tail target obeys any proposed ABI/lifecycle contract"
+      ],
+      "automatic_composition_proved": false
+    },
+    {
+      "id": "T256-08",
+      "basis": {
+        "scope": "whole selected pair/no data words",
+        "prior_operand_context": "1596+38/+60/+68, current+50/+58"
+      },
+      "fact": "The newly justified inner operand offsets are50 and58. Alongside inherited38/60/68 these nominate five conditional literal positions only if current[P]=5c0c0. They do not establish a complete P table, any +10 operand, target function, runtime binding or public behavior. No P word content is acquired and no destination is followed.",
+      "no_successor_selected": true
+    }
+  ],
+  "carrier_status": {
+    "incoming_candidate_receiver_equals_public_O": "unknown",
+    "current_O_plus8_equals_P": "conditional-premise-only",
+    "P_equals_or_distinct_from_O": "unknown",
+    "Q_D_I_binding": "unknown",
+    "current_P_table_continuity": "unknown",
+    "runtime_encoding_class_ABI_target_public": "unknown",
+    "index63_internal_Damper": "unknown"
+  },
+  "conditional_inner_operand_frontier": {
+    "new_offsets": [
+      "0x50",
+      "0x58"
+    ],
+    "inherited_offsets": [
+      "0x38",
+      "0x60",
+      "0x68"
+    ],
+    "IF_current_P_table_equals_5c0c0_only": {
+      "0x38": "0x5c0f8",
+      "0x50": "0x5c110",
+      "0x58": "0x5c118",
+      "0x60": "0x5c120",
+      "0x68": "0x5c128"
+    },
+    "complete_P_table_set_proved": false,
+    "offset10_operand_proved": false,
+    "P_word_content_acquired": false
+  },
+  "current_local_indirect_scope": [
+    "0x15a40 BR X1",
+    "0x15ac0 BR X1"
+  ],
+  "counts": {
+    "new_resolved_runtime_sites": 0,
+    "main_Live_inventory": "25095 of268015 unchanged",
+    "new_public_or_ARM_numeric_outcome_grades": 0,
+    "new_cases_or_release_changes": 0
+  },
+  "required_status": "U/OPEN unchanged",
+  "no_successor_selected": true,
+  "inherited_context": "Approved1596/916/336/pair/export reports by citation only; no old source/native content replay; prior1596 GPR-only enumeration qualification is explicit in source-read receipt.",
+  "warning_policy": "All4 unrecovered-jumptable/indirect-as-call warnings preserved; undefined metadata signatures are not formalABI proof."
+}

@@ -1,0 +1,444 @@
+[
+  {
+    "id": "REQ-SYNC-WORKFLOW-001",
+    "title": "Network session entry",
+    "contract": "With peers on the same wired or wireless network, enabling Link automatically starts or joins a Link session. The toggle shows the peer count. Discovery, membership ordering, network interface selection and count refresh deadlines are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B019",
+        "anchor": "using-link",
+        "html_line": 352
+      },
+      {
+        "block": "SYNC-B020",
+        "anchor": "using-link",
+        "html_line": 352
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-002",
+    "title": "Peer tempo ownership",
+    "contract": "The first participant supplies initial tempo; any peer may change tempo, and the source describes the last participant making a simultaneous change as setting tempo. Peer tempo changes override Set tempo automation. No distributed causal order, convergence deadline or tempo-ramp law is specified.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B022",
+        "anchor": "using-link",
+        "html_line": 378
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-003",
+    "title": "Independent transport and launch phase",
+    "contract": "Peers may start/stop independently. With another connected peer and Live stopped, Arrangement Position shows global-launch-quantization progress; playback waits for progress completion. Beat/phase synchronization is a documented role, without clock, scheduler, rounding or jitter tolerance.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B004",
+        "anchor": "synchronizing-via-link",
+        "html_line": 280
+      },
+      {
+        "block": "SYNC-B005",
+        "anchor": "synchronizing-via-link",
+        "html_line": 280
+      },
+      {
+        "block": "SYNC-B021",
+        "anchor": "using-link",
+        "html_line": 366
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-004",
+    "title": "Optional shared start and stop",
+    "contract": "Start Stop Sync shares transport commands only with peers that also enable that option. The independent-transport role otherwise remains. Quantization of shared commands, mixed peer races and command delivery guarantees are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B005",
+        "anchor": "synchronizing-via-link",
+        "html_line": 280
+      },
+      {
+        "block": "SYNC-B011",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 324
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-005",
+    "title": "Link settings entry points",
+    "contract": "The dedicated Link Settings tab configures Link/Link Audio. Show Link Toggle can hide the Control Bar toggle; its adjacent menu switches Link/Audio features, lists audio-enabled peers and offers Configure Link. The manual default visibility is not an exact-build constructor observation.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B008",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 280
+      },
+      {
+        "block": "SYNC-B009",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 296
+      },
+      {
+        "block": "SYNC-B010",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 324
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-006",
+    "title": "Audio enable and advertised name",
+    "contract": "Link Audio requires Link enabled; streaming peers must enable both Link and Audio. Name supplies the name shown to other peers. Name encoding, validation, collisions, persistence and legacy-peer capability are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B013",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 352
+      },
+      {
+        "block": "SYNC-B014",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 352
+      },
+      {
+        "block": "SYNC-B026",
+        "anchor": "using-link-audio",
+        "html_line": 378
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-007",
+    "title": "Incoming latency and peer display",
+    "contract": "Latency adjusts incoming audio input latency; each Link Audio peer entry displays status and buffered amount, updated when latency is adjusted. Units, range, precision and exact buffer/sample relation are unknown. This display does not prescribe private buffering architecture.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B015",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 352
+      },
+      {
+        "block": "SYNC-B017",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 352
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-008",
+    "title": "Sync to incoming audio",
+    "contract": "Sync to Incoming Audio aligns monitored Link Audio with Live audio/clips by delaying Live playback by the specified latency amount. The manual says only one participant should enable this option for Link Audio to work. It does not give a measured delay law, topology failure policy or enforcement UI.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B016",
+        "anchor": "setting-up-link-and-link-audio",
+        "html_line": 352
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-009",
+    "title": "Peer and source-track input routing",
+    "contract": "An audio track selects a Link Audio peer through Input Type and a source track through Input Channel. Monitoring/record arming gates remain with SPEC-RECORDING-COMPING and general routing with SPEC-ROUTING-MONITORING-LATENCY; this adds the Link source prerequisite only.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B026",
+        "anchor": "using-link-audio",
+        "html_line": 378
+      },
+      {
+        "block": "SYNC-B027",
+        "anchor": "using-link-audio",
+        "html_line": 378
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-010",
+    "title": "Audio output and peer capabilities",
+    "contract": "Tracks with audio output may stream to peers. The manual describes Live and Push as send/receive capable, while other applications/devices may send only. This is not an interoperability matrix, arbitrary-peer capability promise or proof of any particular Push firmware.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B028",
+        "anchor": "using-link-audio",
+        "html_line": 388
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-011",
+    "title": "Tempo Follower source",
+    "contract": "Tempo Follower analyzes incoming audio and interprets tempo. Its Ext. In channel is selected in Tempo & MIDI Settings. Clear rhythm is an optimization statement, not a rejection rule for other audio. No detector algorithm, acquisition time, supported tempo range or tracking error is established.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B031",
+        "anchor": "synchronizing-via-tempo-follower",
+        "html_line": 388
+      },
+      {
+        "block": "SYNC-B033",
+        "anchor": "setting-up-tempo-follower",
+        "html_line": 388
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-012",
+    "title": "Follower visibility and missing channel",
+    "contract": "Show Tempo Follower Toggle exposes Follow. Activating Follow enables listening; Tempo Follower does not run while Follow is hidden. If its configured input device channel cannot be connected, the feature is disabled and Follow appears grayed out.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B034",
+        "anchor": "setting-up-tempo-follower",
+        "html_line": 404
+      },
+      {
+        "block": "SYNC-B035",
+        "anchor": "setting-up-tempo-follower",
+        "html_line": 418
+      },
+      {
+        "block": "SYNC-B036",
+        "anchor": "setting-up-tempo-follower",
+        "html_line": 418
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-013",
+    "title": "Follower and external sync exclusion",
+    "contract": "Tempo Follower and External Sync are mutually exclusive; EXT is disabled while Follower is active. Live may still send MIDI clock while Follower is enabled, but cannot receive it. Other mixed-mode transitions, precedence and state restoration are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B037",
+        "anchor": "setting-up-tempo-follower",
+        "html_line": 418
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-014",
+    "title": "Link with external tempo input",
+    "contract": "Link can operate alongside Tempo Follower or MIDI synchronization and uses the external-input tempo for the Link session in either case. This does not define arbitration among simultaneous incoming sources or conflicts with peer tempo commands.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B006",
+        "anchor": "synchronizing-via-link",
+        "html_line": 280
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-015",
+    "title": "MIDI Clock roles",
+    "contract": "MIDI Clock provides tempo-dependent ticks and song-position messages; Live can act as sender/sync host or receiver/device. This chapter does not establish byte encoding, tick counts, message filtering, transport command sequences or timestamp law.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B039",
+        "anchor": "synchronizing-via-midi",
+        "html_line": 418
+      },
+      {
+        "block": "SYNC-B040",
+        "anchor": "synchronizing-via-midi",
+        "html_line": 418
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-016",
+    "title": "MIDI Timecode receiver role",
+    "contract": "MTC conveys seconds/frames, interpreted as Arrangement position; it supplies no meter information or tempo-change tracking, so tempo must be set manually. Live is an MTC receiver, not an MTC sync host. No wire decoder or frame-to-position arithmetic is supplied.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B041",
+        "anchor": "synchronizing-via-midi",
+        "html_line": 418
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-017",
+    "title": "Clock send setup and lower indicator",
+    "contract": "Enable the connected sequencer as a sync destination in Tempo & MIDI Settings and configure it to receive MIDI sync. The lower LED beside EXT flashes while Live sends sync messages. Indicator activity alone proves neither receiving-device synchronization nor usable signal timing.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B043",
+        "anchor": "synchronizing-external-midi-devices-to-live",
+        "html_line": 418
+      },
+      {
+        "block": "SYNC-B044",
+        "anchor": "synchronizing-external-midi-devices-to-live",
+        "html_line": 432
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-018",
+    "title": "External source setup and upper indicator",
+    "contract": "After enabling an external sync source, EXT appears; its button or Options External Sync command activates sync. The upper LED flashes for usable incoming sync. General port role selection stays in the routing owner; no detector acceptance grammar or indicator refresh deadline is specified.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B046",
+        "anchor": "synchronizing-live-to-external-midi-devices",
+        "html_line": 432
+      },
+      {
+        "block": "SYNC-B047",
+        "anchor": "synchronizing-live-to-external-midi-devices",
+        "html_line": 446
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-019",
+    "title": "Song position and looping",
+    "contract": "With external MIDI sync, accepted song position pointers may move Live to the host song position. With Control Bar Loop enabled, pointers are described as wrapped into loop length. Exact modulus, origin, negative values, bounds and message scheduling remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B048",
+        "anchor": "synchronizing-live-to-external-midi-devices",
+        "html_line": 458
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-020",
+    "title": "Per-device Timecode controls",
+    "contract": "Selecting a MIDI device in Tempo & MIDI Settings MIDI Ports exposes its Timecode settings. Rate and Offset are relevant only when MIDI Sync Type is MIDI Timecode. Availability wording does not establish disabled-vs-hidden presentation or cross-device persistence.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B050",
+        "anchor": "midi-timecode-options",
+        "html_line": 458
+      },
+      {
+        "block": "SYNC-B051",
+        "anchor": "midi-timecode-options",
+        "html_line": 458
+      },
+      {
+        "block": "SYNC-B052",
+        "anchor": "midi-timecode-options",
+        "html_line": 458
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-021",
+    "title": "Timecode rate and display format",
+    "contract": "Timecode Rate selects incoming Timecode type; SMPTE All auto-detects incoming format. The source says usual SMPTE rates without enumerating them. Arrangement display format is separately selected in Options Time Ruler Format. No exact supported rate set, drop-frame law or detection tolerance follows.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B051",
+        "anchor": "midi-timecode-options",
+        "html_line": 458
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-022",
+    "title": "Timecode offset",
+    "contract": "MTC Offset supplies a SMPTE offset interpreted as Arrangement start time when MTC is the selected sync type. Accepted text grammar, sign, range, subframes, conversion and persistence remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B052",
+        "anchor": "midi-timecode-options",
+        "html_line": 458
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-023",
+    "title": "Per-device Sync Delay",
+    "contract": "Selecting a MIDI device exposes its Sync Delay control, which delays Live's internal time base relative to the sync signal. The chapter suggests aligning separately audible percussive patterns by listening. No range, sign law, sample precision, jitter tolerance or calibration result is supplied.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B054",
+        "anchor": "sync-delay",
+        "html_line": 458
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-024",
+    "title": "Link recording count-in boundary",
+    "contract": "The metronome recording count-in cannot be used while Link is enabled. This is an additional synchronization precondition on the recording owner, not a replacement for its other record/count-in behavior or an assertion about ordinary metronome playback.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "SYNC-B023",
+        "anchor": "using-link",
+        "html_line": 378
+      }
+    ]
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-U-PROTOCOL",
+    "title": "Protocol, signal and numerical outcomes",
+    "contract": "Link discovery/clock/audio transport, membership/conflict protocol, MIDI Clock/MTC byte codecs, tempo/position/offset/wrap arithmetic, detector behavior and audio/numerical calibration remain unknown.",
+    "strength": "U",
+    "target_applicability": "U",
+    "evidence": []
+  },
+  {
+    "id": "REQ-SYNC-WORKFLOW-U-LIFECYCLE",
+    "title": "State, persistence and failure lifecycle",
+    "contract": "Undo/cancel/configuration persistence, invalid or unavailable peers/ports, transport/source arbitration, reconnection, resource limits and teardown remain required unknowns.",
+    "strength": "U",
+    "target_applicability": "U",
+    "evidence": []
+  }
+]

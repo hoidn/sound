@@ -2,7 +2,7 @@
 id: ADR-0004
 type: decision
 status: adopted
-updated: 2026-10-18
+updated: 2026-10-20
 access: neutral
 ---
 
@@ -75,3 +75,37 @@ conventions define the vehicle. They describe no Live behavior.
   slices, plus documented behavior. Handoffs carry behavioral descriptions and reference
   renders, never recovered code.
 - Implementation still needs a separately restricted workspace (ADR 0001, AGENTS.md).
+
+## Specification scope extension — 2026-10-19
+
+[ADR 0005](adr-0005-full-live-specification-coverage.md) supersedes the consequence
+above that families outside T1 stay at their current drafts: the user now directs
+full-product specification coverage. T1's implementation scope and acceptance
+criteria remain unchanged. Amp/Cabinet's blocked execution route and T1.6's
+pending state remain in force; neither is a whole-product specification exclusion.
+
+## Workspace mechanism — 2026-10-19
+
+T1.6 is provisioned by user decision ("amend to the better strategy",
+[plan revision 3](../research/full-live-specification-plan.md#revision-3--depth-before-breadth-2026-10-19))
+as a sparse git worktree rather than the proposed bwrap sandbox:
+`~/Documents/sound-impl`, branch `impl`, non-cone sparse checkout of `handoff/`,
+`templates/`, `wiki/implementation/`, the neutral governance pages
+(`wiki/project.md`, `wiki/schema.md`, `wiki/workflows.md`,
+`wiki/editor-navigation.md`, `wiki/decisions/`) and the root `AGENTS.md` and
+`README.md`. It is a process boundary, not a technical one: the worktree shares
+the repository's objects, so the implementer's rule not to read analyst material
+covers `git show` and `git log -p` of other branches too. Implementation starts
+only in a fresh session in that worktree. T1.7 is unblocked; candidate state is
+tracked in the implementation pages.
+
+
+## Execution sequencing — 2026-10-20
+
+The user directed that the whole-product specification is completed before T1
+is implemented. This supersedes the preceding workspace note's scheduling of
+T1.7: T1.6 remains provisioned and idle; T1.7 is deferred until whole-product
+specification closure or explicit user resequencing. T1's implementation scope,
+acceptance criteria and analyst/implementer boundary are unchanged. See
+[current project status](../project.md#current-phase); provisioning alone is
+not permission to start the deferred candidate.

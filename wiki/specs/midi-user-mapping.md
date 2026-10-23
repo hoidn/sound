@@ -2,9 +2,9 @@
 id: SPEC-MIDI-USER-MAPPING
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
-revision: 5
+revision: 7
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -241,7 +241,8 @@ input opened before the case with no other message on the case's controllers.
   - Otherwise, Value Scaling applies n when |n − c| ≤ w and keeps c when p = n.
     Else it moves c by the travelled fraction of the remaining distance:
     c + (hi − c)(n − p)/(hi − p) when n > p, and c − (c − lo)(p − n)/(p − lo)
-    when n < p. This result is not rounded, even for a stepped parameter.
+    when n < p. This is the unrounded value passed to the setter. A stepped
+    parameter's value after such a move has no expectation; the setter was not traced.
   - Every bound is inclusive. The result is clamped to [lo, hi].
 
   These rules also hold for 14-bit pairs, the crossfader's included, and for a
@@ -279,6 +280,21 @@ input opened before the case with no other message on the case's controllers.
     reporting quantized (PRB-N7-04);
   - several assignments on one channel and controller number. Each appears to
     receive every message, but this is inferred.
+
+- **X (revision 7; finite supplied-state arithmetic only).** The
+  [1,006 MUR-REL cases](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/cases-added.json)
+  record the exact low-binary32 return bits of the supplied x86_64 value
+  calculation for their enumerated relative-mode inputs. Each evaluation supplies
+  current 0.5, range [0,1], not stepped, sensitivity 1 and
+  not reversed, with the recorded input data. The
+  [complete 1,024-input catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/complete-catalog.json)
+  covers all eight relative modes and data bytes 0–127, including 18 older
+  observations retained by reference rather than repeated as new cases.
+  Code-to-mode-name association is inherited from the existing reviewed
+  X1/static mapping; these calls do not observe UI enum selection or an
+  application's parameter receiver. This finite X scope does not promote the
+  general S relative law above, establish ARM/Apple bit equality, or supply
+  a portable candidate comparator. See the finite annex below.
 
 ### REQ-MIDI-USER-006 — drum pads
 
@@ -414,7 +430,13 @@ input opened before the case with no other message on the case's controllers.
 MIDI channels and control numbers are zero-based integer identifiers; MIDI data
 values in these cases are integer bytes in 0–127. Value cases compare a
 parameter value on its own scale within τ = max(1e-6, 2⁻²² × R), where
-R = max(|min|, |max|) (revision 5; was 1e-6). τ covers the one computation
+R = max(|min|, |max|) (revision 5; was 1e-6). The rules use exact arithmetic;
+the original computes in binary32. A value reached by k relative messages in a row
+on a parameter that is not stepped is compared within k × τ (revision 6, RV4-02).
+Rounding can accumulate: the retained review ran 200 messages on 0–5.3 and found
+5.2τ drift, and on −3.3–4.9 it first exceeded τ after 25 messages
+([midi-config-v4 review](../../handoff/midi-config-v4/REVIEW.md#findings)).
+For one message, τ covers the one computation
 the two slices perform differently. arm64 forms the absolute target
 lo·(1 − t) + hi·t with one fused multiply-add, and x86_64 rounds twice. Over
 every data value and every 14-bit pair in ten ranges, the two results differ by
@@ -422,8 +444,25 @@ at most one binary32 unit in the last place of R, and not at all when lo = 0
 (E16). Value Scaling can magnify that difference: a model of both slices gives
 up to 18 × 2⁻²² × R for range −999 to 999. A takeover comparison that lies
 within about one such unit of its bound can also come out differently. Cases
-with a Value Scaling result or a boundary input therefore use lo = 0. No
-wall-clock, musical-clock, latency, jitter or other numerical tolerance is
+with a Value Scaling result or a boundary input therefore use lo = 0.
+
+Revision 6 also adopts the [v4 review](../../handoff/midi-config-v4/REVIEW.md#scope-rulings)
+precision limits. Outside explicitly stated X case expectations, these have no expectation,
+and neither do subsequent values in the same sequence:
+
+- A takeover test whose two sides lie within 8τ: c and a window bound, |p − c| and
+  (hi − lo)/256, |n − c| and w, p and −129, or p and n (except p = n from the same
+  data value). The existing X boundary cases retain their stated values.
+- A stepped target n or p within 8τ of a half-integer (RV4-01); binary32 rounding
+  can select the other adjacent integer.
+- A Value Scaling move. Even at lo = 0, binary32 can magnify error beyond τ. The
+  reviewer's operation-order model found 96τ on 0–1, 386τ on 0–3 and 408τ on
+  0–127 for 14-bit pairs near the upper bound with c at the lower bound; the author's
+  earlier 3.8τ was a sample result, not a bound (RV4-06). These are model results,
+  not additional extracted executions. Only the explicitly stated X moves are graded;
+  a stepped parameter's value after a move remains unknown (RV4-05).
+
+No wall-clock, musical-clock, latency, jitter or other numerical tolerance is
 established. Do not use an arbitrary timeout as evidence of a no-action result.
 A later execution harness must establish a bounded completion/observation
 method before claiming pass.
@@ -466,7 +505,8 @@ are unknown (PRB-S4-15). These are applicable gaps, not omitted passing cases.
 
 ## Acceptance cases
 
-Five case sets exist. None has run against a candidate, and no reference run
+The five pre-existing case sets are listed below; revision 7 adds a finite
+relative-byte annex after them. None has run against a candidate, and no reference run
 of the application will happen (ADR 0003). Revision 5 runs the original x86_64
 mapping chain on MT-01 to MT-23 and adds MT-24 to MT-56 from those runs (E16).
 
@@ -568,6 +608,38 @@ place the current value on a takeover bound and one binary32 step outside it.
 | MT-54 | X      | Absolute; Pick-Up; range 0–127, from 28.015625 − 2⁻¹⁹               | 32 1E                   | 28.01562, 28.01562                                                 |
 | MT-55 | X      | Absolute; Value Scaling; range 0–127, from 61.984375                | 0A 3C                   | 61.98438, 60                                                       |
 | MT-56 | X      | Absolute; Value Scaling; range 0–127, from 61.984375 + 2⁻¹⁸         | 0A 3C                   | 61.98438, 89.76884                                                 |
+
+### Finite supplied-state relative-byte cases added in revision 7
+
+[MUR-REL-0001–MUR-REL-1006](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/cases-added.json)
+are separately identified H/X cases under REQ-005. The
+[complete catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/complete-catalog.json)
+maps every relative-mode name/code and data byte to one new case or one of
+the [18 inherited observations](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/inherited-references.json).
+The numeric code-to-name association comes from the existing reviewed
+[X1/static dictionaries](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/mode-binding.json),
+not from observed selection of a UI enum or delivery to a mapped parameter.
+
+Each new case records all supplied scalar and 16-byte record bits, exact
+native x86_64 reference return bits, the frozen pre-call current-clause oracle
+and exact input/observation/receipt/raw-output pointers in the
+[whole batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-midi-user-relative-bytes-v1/manifest.json).
+The action is the recorded direct arithmetic evaluation after its existing
+unit initializer. The 1,006 fresh results agree with the frozen static
+expectations; they are not NULL-prior discoveries or a repaired model. The
+18 older observations gain no new case IDs or invented process receipts.
+
+The expected binary32 bits describe those supplied x86_64 results only;
+portable expected output and comparator are null. The existing application
+value/τ, repeated-sequence and precision comparators do not become bit-exact
+ARM/Apple comparators through this annex. No actual MIDI ingress, parameter
+identity/current-value reader/setter, receiver accumulator, 14-bit pairing,
+takeover, notification, deferred delivery, display/audio or lifecycle result
+follows. Other current/range/stepped/sensitivity axes remain outside this finite
+annex. All old S laws, U conditions, precision and history exclusions remain.
+Input counts are not required-outcome counts, application grades or a family
+denominator. All 56 old MT rows and 161 immutable released objects remain
+unchanged; this annex makes no release or candidate compatibility claim.
 
 ## Open questions
 
@@ -672,6 +744,14 @@ gives the method and results in full.
 | E15 | Preference: `LMidiPreferences` constructor x86 0x1023e0050 / arm64 0x1022cc18c; change handler x86 0x1023e2a60 / arm64 0x1022cec38 (`CallMemberFunc<&LMidiPreferences::OnTakeOverModeChanged>`); index getter x86 0x101556330 / arm64 0x1015661b8; entry text x86 0x1015566d0; engine handler x86 0x101bc0770 / arm64 0x101b83750. Reset: `MidiInputRouter.ResetInputHistory` handler arm64 0x101b68f98 (registered in 0x101b67c9c), refill 0x101b65c1c, sole poster 0x10259b710, Python method `reset_input_history` (0x1039fa2a4) | Excerpts in [static-e15.txt](../../analysis/ableton-live-12.4.3/r2/x2-midi-v1/static-e15.txt); the x86 handler, index getter and engine handler were also read in disassembly (`x86-disasm.txt`). In both slices the constructor builds the entry list from the three keys in the order None, Pick-Up, Value Scaling, installs it on the chooser at +0x148 and binds `OnTakeOverModeChanged` to it. The handler, the only code that posts `OSetMidiTakeOverMode`, sends the chooser index; an unset index (−99) sends 0. The engine stores it in the global the takeover reads. The displayed words of the keys were not read, because the language resources are packed. The preference default was not found. Of the shipped MIDI Remote Scripts, only `Launch_Control_XL/LaunchControlXL.pyc` contains `reset_input_history` |
 | E16 | X runs in `run_x2.py`, results `results/{mt,takeover,tolerance,value_scaling_model}.json`, cases `acceptance-cases-x2.json`; x86 → arm64 matches in `addresses.json`: CC receiver 0x101bbc3b0 → 0x101b7f894, 14-bit setters 0x101bbced0/0x101bbcf10 → 0x101b8028c/0x101b802bc, combiner 0x101bbc870 → 0x101b7fcc0, Apply 0x101bbc9c0 → 0x101b7fde4, value function 0x101bb27b0 → 0x101b76bf0, takeover 0x101bb8b70 → 0x101b7c508, Pick-Up 0x101bb8990 → 0x101b7c344 | The receivers, Apply, value function and takeover ran; the takeover index was set by the original handler. Stubbed under gdb: the owner and parameter accessors (0x101abb210, 0x101b3d680), the current-value read (0x101b6f830) and the setter (0x101b3d360), which together simulate the parameter, and the pick-up notification post, which is jumped over after the result is stored. Not run: the dispatcher and previous-value table (the harness supplies the previous value as E10 states), the parameter-details builder and the setter. Imports used: `operator new`, C++ guards, `__cxa_atexit`, pthread keys; no libm. Static slice comparison: the same operations and constants in all these functions. The only fused instructions are the value function's `fmadd` (E12) and the takeover's `fmadd s10,s0,s1,s10` with s1 = ±1, an exact product |
 
+Revision 7 finite evidence: the [whole relative-byte batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-midi-user-relative-bytes-v1/manifest.json)
+and its [approved independent actual review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-user-relative-bytes-v1-review.json)
+support only the enumerated supplied-state annex. The
+[owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-midi-user-r7-relative-bytes-v1/README.md)
+preserves its actual-review identity, mode-name lineage, complete provenance
+catalog and unchanged predecessor clauses/cases. No second observation review
+or source/body execution is part of owner assembly.
+
 Case derivation: `scripts/derive_cases.py` (SHA-256
 `b7fe6ce1c176a0b5f1a518c499f1661c534977eb7562598b9e034204de88c717`) regenerated
 `out/acceptance-cases.json` byte-identically (SHA-256
@@ -687,6 +767,11 @@ translate these documented contracts into candidate observable obligations. No
 generated pseudocode is an implementation input.
 
 ## Revision and handoff
+
+| Revision | Date | Change |
+| --- | --- | --- |
+| 7 | 2026-10-21 | Adds the fixed supplied-UNIT relative-byte X annex: 1,006 new MUR-REL draft IDs and18 inherited references complete the1,024 logical input catalog. General S laws,12other requirement bodies,56old MT rows,all U/precision/history limits and161released objects remain unchanged. Native x86 reference bits only; portable comparator null, no public/ARM promotion, new grade or release. |
+| 6 | 2026-10-19 | applies the released [midi-config-v4 review](../../handoff/midi-config-v4/REVIEW.md) RV4-01, RV4-02, RV4-05 and RV4-06: stepped half-integer exclusion, k × τ for repeated relative messages, no stepped value after a Value Scaling move, and 96–408τ model examples replacing the earlier sample figure. The exact rules are now qualified by those precision limits. 13 requirements, 55 configuration cases and 56 transform cases remain; no case expectation changes. midi-config-v4 is the current released partial contract with 161 cases, a superset of v3 with two precision corrections. |
 
 Revision 1, 2026-10-09: first bounded draft and unexecuted case matrix. An
 initial independent scope review (`scope-review.json`) requested two

@@ -1,0 +1,893 @@
+OV:B0001 HTML:28:29268 h1 Live API Overview
+OV:B0002 HTML:29:0 p Besides building new instruments and effects to be used in Live, Max For Live also allows to access Live itself, its tracks, clips, devices and hardware control surfaces. This chapter defines some basic terms used throughout the whole Live API and introduces the Max objects representing the Live API.
+OV:B0003 HTML:30:0 h2 Live Object Model
+OV:B0004 HTML:31:0 p The accessible parts of Live are represented by a hierarchy of objects called the Live Object Model (LOM).
+OV:B0005 HTML:32:0 p The model describes the hierarchy of objects inside Live, as seen from the Max devices. There are various types of objects in the model, like Track or Clip. For certain objects only a single instance exists, for other multiple instances are held in lists.
+OV:B0006 HTML:33:0 p The Live Object Model reference shows how to navigate from a number of root objects down a path to the particular object of interest, and what to do with it. Not all of Live's parameters are accessible via Live's API, the reference should give you an idea of what can and can't be done via Max for Live.
+OV:B0007 HTML:34:0 h2 Object Path
+OV:B0008 HTML:35:0 p Live objects are accessed using paths according to the Live Object Model. For example, the first clip in the third track can be accessed by the path live_set tracks 2 clip_slots 0 clip. Alternatively, it can be accessed via live_set scenes 0 clip_slots 2 clip. Or, if the clip is shown in the detail view, via live_set view detail_clip.
+OV:B0009 HTML:36:0 p As you can see, different paths can point to the same Live object. Only one of these paths is the canonical path (see below).
+OV:B0010 HTML:37:0 p When communicating with the Live API, no quotes are used in paths. List indexes start with 0.
+OV:B0011 HTML:38:0 p When navigating through the object model, besides these absolute paths, relative paths can be used. These determine a subpath beginning at the current position in the object hierarchy.
+OV:B0012 HTML:39:0 h2 Root objects
+OV:B0013 HTML:40:0 p (Absolute) paths to all objects start with one of live_app, live_set, control_surfaces N or this_device. These are the root objects.
+OV:B0014 HTML:41:0 p live_app : allows you to access controls of the Live application itself. This can be useful if you want to toggle the browser view, zoom or scroll features in Live. live_set : allows you to access various parameters within Live, for example Track Volume, Clip parameters (including launching Clips), etc. control_surfaces : allows you to access various control surface features (depending on your controller). this_device : allows you to construct API paths relative to the device you are in.
+OV:B0015 HTML:45:0 h2 Canonical Path
+OV:B0016 HTML:46:0 p Different paths can lead to the same object. live_set view selected_track and live_set tracks 3 are the same object if the fourth track is selected.
+OV:B0017 HTML:47:0 p Each object has a unique canonical path, live_set tracks 3 in this case. The canonical path is sent out of live.object in reponse to getpath. In the Live Object Model, the canonical path is shown by bold connectors.
+OV:B0018 HTML:48:0 h2 Canonical Parent
+OV:B0019 HTML:49:0 p Additionally to what is described in the LOM, all objects have a canonical_parent child which is used by Live to determine the canonical path of an object. The canonical parents are get-only and useful for patching, too. For example, goto this_device canonical_parent is the perfect way to get the own track object.
+OV:B0020 HTML:50:0 h2 Object ids
+OV:B0021 HTML:51:0 p An object id identifies a particular object instance in Live like a track or a clip.
+OV:B0022 HTML:52:0 p To get an id, a live.path object must be used to navigate to the Live object. When a live.path object sees this Live object the first time, an id is assigned to it.
+OV:B0023 HTML:53:0 p The id is only valid inside the device with the live.path and remains unchanged as long the object exists. If the object is moved in Live, its id usually remains unchanged. There may be exceptions if the movement is implemented as a delete/create sequence, though. When an object is deleted and a new object is created at its place, it will get a new id.
+OV:B0024 HTML:54:0 p An id is never reused in the scope of a Max device. Ids are not stored. Therefore, after loading a saved device, the live.path object must navigate to the object again.
+OV:B0025 HTML:55:0 p An object id consists of the word id and a number, separated by a space, like id 3. id 0 refers to no object. In Max terms it's a list of the symbol id and an integer.
+OV:B0026 HTML:56:0 h2 Object Types
+OV:B0027 HTML:57:0 p Each Live object is of a particular object type (or class), like Track or Clip. This object type determines what kind of object that is and what children, properties and functions it has. The object types are described in detail in the Live Object Model.
+OV:B0028 HTML:58:0 p When live.object refers to a Live object, sending it getinfo will send all the Live object's children, properties and functions to its left outlet.
+OV:B0029 HTML:59:0 h2 Children
+OV:B0030 HTML:60:0 p Live objects have children identified by name. Some names, like master_track for the Song object type, point to single objects. Others, like scenes, point to a list of objects. The child name hints at which object type you can expect to find there.
+OV:B0031 HTML:61:0 p List names are in plural, whereas single child names are in singular. Lists may be empty. Sending getcount child_name to live.path allows to find out how many children are in the list.
+OV:B0032 HTML:62:0 p Single children names may point to no object, in which case you get id 0 if you navigate there or send get child_name to live.object.
+OV:B0033 HTML:63:0 p Most children can be monitored using live.observer.
+OV:B0034 HTML:64:0 h2 Properties
+OV:B0035 HTML:65:0 p Live objects have properties which describe its actual state. Properties are accessed by sending get and set messages to live.object. Not all properties can be set, though.
+OV:B0036 HTML:66:0 p Many properties can be monitored using live.observer.
+OV:B0037 HTML:67:0 h2 Functions
+OV:B0038 HTML:68:0 p Many Live objects have functions which can be called by sending call and the function name to live.object, like call create_scene for a Song object. A function call may have parameters (a list of values). The return value will be sent out from the outlet of live.object.
+OV:B0039 HTML:69:0 h2 Datatypes
+OV:B0040 HTML:70:0 p Properties and function parameters or return values used in the Live Object Model and by the Max objects to access the Live API have one of the following data types:
+OV:B0041 HTML:112:18 th Datatype
+OV:B0042 HTML:112:35 th Description
+OV:B0043 HTML:112:79 td bool
+OV:B0044 HTML:112:92 td 0 for false and 1 for true
+OV:B0045 HTML:112:136 td symbol
+OV:B0046 HTML:112:151 td a string with unicode character setUse double quotes in message boxes to create symbols with spaces: set name "Smooth Synth" Double quotes in symbols are to be prefixed by backslashes: set name "Smooth \"Baby\" Synth" Backslashes are to be included as double backslashes: alpha beta \"gamma\" \\x\\ creates the symbol alpha beta "gamma" \x\.
+OV:B0047 HTML:112:621 td int
+OV:B0048 HTML:112:633 td a 32 bit signed integer
+OV:B0049 HTML:112:674 td float
+OV:B0050 HTML:112:688 td a 32 bit float value
+OV:B0051 HTML:112:726 td double
+OV:B0052 HTML:112:741 td a 64 bit float value (maily used for timing values)
+OV:B0053 HTML:112:810 td beats
+OV:B0054 HTML:112:824 td song beat time counted in quarter notes, represented as double
+OV:B0055 HTML:112:904 td time
+OV:B0056 HTML:112:917 td song time in seconds, represented as doubleTime is given in seconds: time = beats * 60 / tempo_in_bpm, or sometimes in milliseconds: time = 1000 * beats * 60 / tempo_in_bpm
+OV:B0057 HTML:112:1133 td list
+OV:B0058 HTML:112:1146 td a space separated list of the types above
+OV:B0059 HTML:113:0 h2 Notifications
+OV:B0060 HTML:114:0 p When Max devices need to know the state of the Live application and its objects, they can actively poll the state by navigating through the object hierarchy and getting object properties or calling functions.
+OV:B0061 HTML:115:0 p But changes happen in Live while the Max device is passive. To allow the Max device to react on these changes in Live, notifications are sent from Live to the Max device. Notifications are spontaneous in the sense that messages are sent to outlets spontaneously, not in response to a message received at an inlet.
+OV:B0062 HTML:116:0 p The notifications include object ids sent when the Live object at a certain path changes and values sent when a property changes.
+OV:B0063 HTML:117:85 p Note: changes to a Live Set and its contents are not possible from a notification. The error message in the Max Console is 'Changes cannot betriggered by notifications'. In many cases putting a deferlow between the notification outlet and the actual change helps to resolve the issue.
+OV:B0064 HTML:118:0 h2 Max Objects
+OV:B0065 HTML:119:0 p Four Max objects interact in a certain way to allow Max devices to access the Live objects.
+OV:B0066 HTML:145:18 th Max object
+OV:B0067 HTML:145:37 th Purpose
+OV:B0068 HTML:145:77 td live.path
+OV:B0069 HTML:145:200 td select objects in the Live object hierarchy
+OV:B0070 HTML:145:261 td live.object
+OV:B0071 HTML:145:390 td get and set properties and children, call functions
+OV:B0072 HTML:145:459 td live.observer
+OV:B0073 HTML:145:594 td monitor properties and children
+OV:B0074 HTML:145:643 td live.remote~
+OV:B0075 HTML:145:775 td control Live device parameters in real time
+OV:B0076 HTML:146:0 p The following patch shows the typical interconnections between the Live API objects. live.path is sending object ids out of its leftmost outlet connected to the rightmost inlet of live.object, live.observer and live.remote~. This causes these objects to operate on the object selected by live.path.
+OV:B0077 HTML:147:0 p
+OV:B0078 HTML:150:9 p
+OV:B0079 HTML:151:0 h3 live.path
+OV:B0080 HTML:152:0 p live.path objects are used to navigate to the Live objects on which live.object, live.observer and live.remote~ are supposed to operate. For this purpose, navigation messages like goto live_set are sent to live.path, which replies by sending an object id to the left outlet.
+OV:B0081 HTML:153:0 p live.path can also observe the given path, and when the object at this path changes, its id is sent to the middle outlet. This is particularly useful for paths like live_set view selected_track which point to the currently selected track.
+OV:B0082 HTML:154:0 h3 live.object
+OV:B0083 HTML:155:0 p live.object is used to operate on a particular Live object which id has been received from live.path. It allows to get or set properties of the Live object and to call its functions with parameters.
+OV:B0084 HTML:156:0 h3 live.observer
+OV:B0085 HTML:157:0 p live.observer monitors the state of a particular Live object which id has been received from live.path. After telling live.observer which property to observe it recognizes all changes of the property and sends the current values to its left outlet.
+OV:B0086 HTML:158:0 h3 live.remote~
+OV:B0087 HTML:159:0 p live.remote~ receives the id of a DeviceParameter object from live.path and then allows to feed this parameter with new values by sending them into the left inlet, in realtime, without effects on the undo history or the parameter automation, which is deactivated.
+OV:B0088 HTML:160:0 p DeviceParameter objects are children of Live devices, including Max devices, and also of tracks, like volume and pan.
+OV:B0089 HTML:161:0 h2 LiveAPI
+OV:B0090 HTML:162:0 p The Live API Javascript object is available in code written for the js object. It provides a succinct means of communicating with the Live API functions from JavaScript, incorporating the functionality provided by the live.path, live.object and live.observer objects.
+OV:B0091 HTML:163:0 h2 Examples
+OV:B0092 HTML:164:0 p Here are some examples of accessing Live from Max.
+OV:B0093 HTML:165:0 h3 Controlling the volume slider of the selected track
+OV:B0094 HTML:166:0 h4 Getting the volume of a track
+OV:B0095 HTML:167:0 p To get the volume of a track in Live, we first need to find the path to the volume parameter of the track's mixer device.
+OV:B0096 HTML:168:0 p In the Live Object Model reference, the graph can be navigated starting at the live_set root node. From the Song object, we use tracks to get the list of Track children. We select the second track with 1 (note that indexing starts at 0). We then use mixer_device to get its MixerDevice object, and finally by using volume, we get to the volume DeviceParameter object.
+OV:B0097 HTML:169:0 p We can now send this path to a live.path with the following message: path live_set tracks 1 mixer_device volume. live.path will give us back id n (where n is an integer), which represents the DeviceParameter object we need. It gives us access to the properties of the mixer device's volume control, like its range (min and max), default value (default_value) or current value (value).
+OV:B0098 HTML:170:0 p When we send this id to the right inlet of a live.object, we can get the properties of the DeviceParameter object with get messages. By sending get value to the live.object, it will send the current volume value to its left outlet as a number between 0 and 1.
+OV:B0099 HTML:171:0 h4 Initializing a path when the device loads
+OV:B0100 HTML:172:0 p If we want to make sure the live.object is set to the path we specified as soon as the device is loaded, we might be tempted to use loadbang to send the path message to live.path. It is important to know that we need to use live.thisdevice instead, to make sure the Live API is initialized before interacting with it.
+OV:B0101 HTML:173:0 h4 Getting the volume of the selected track
+OV:B0102 HTML:174:0 p In the previous example we hard-coded getting the volume value of the second track. However, if we would like to get the value of the selected track, we can use the selected_track child of the Song View instead.
+OV:B0103 HTML:175:0 p After finding the selected_track keyword in the Live Object Model reference, we see that it is a child of Song.View. In the graph we see that the Song.View can be reached from the Song object type with the view keyword. So we send the following message to live.path : path live_set view selected_track mixer_device volume. This will send the id of the currently selected track to the left outlet, which we send to live.object.
+OV:B0104 HTML:176:0 h4 Knowing when a different track is selected
+OV:B0105 HTML:177:0 p In the previous example, we got the id of the selected track once. However, if we select a different track, this id is no longer up to date. If we want the id from a path containing a dynamic element like selected_track to stay up to date, we can use the second outlet of live.path.
+OV:B0106 HTML:178:0 p Hovering the mouse cursor over the outlets over an object will show you what they send out. The second outlet of live.path reads id: follows path. When instead of the live.path 's left outlet we connect its second outlet to live.object, the live.object will be kept up to date, even after selecting a different track.
+OV:B0107 HTML:179:0 p There is one catch, as mentioned under Notifications. Since the second outlet of live.path sends us notifications from Live, when we connect it to another Live API object like live.object, we need to add a deferlow in-between to make sure the next API interaction is not attempted before the first is finished.
+OV:B0108 HTML:180:0 h4 Setting the volume of a track
+OV:B0109 HTML:181:0 p In much the same way as getting the current volume of a track like above, we can also change the value of a volume fader.
+OV:B0110 HTML:182:0 p We can add a slider with a range between 0 and 1, connected to a message box saying set value $1. We can then connect this to the live.object as set up above, and now our slider will control the volume slider in Live.
+OV:B0111 HTML:183:0 h4 Observing the volume of a track
+OV:B0112 HTML:184:0 p We might want to get an update in our device whenever a Live user changes a volume slider. For this, we can send the id from the previously set up live.path to a live.observer that has its argument set to the property value. Now, the up to date volume values will be output from the live.observer 's left outlet.
+OV:B0113 HTML:185:0 p Finally, we can set this value to the slider we created earlier. We now have a device with a slider that mimics and changes the volume slider of the selected track in Live.
+OV:B0114 HTML:186:0 p
+OV:B0115 HTML:189:9 p
+OV:B0116 HTML:190:0 h3 Triggering a clip with MIDI notes
+OV:B0117 HTML:191:0 h4 Navigating to a specific clip and triggering it
+OV:B0118 HTML:192:0 p Apart from children and properties, Live objects also have functions. Looking at the Live Object Model reference, under Clip, in the Functions section, we can find the fire function. To call this function, we first need to refer a live.object to the clip we want to launch. For this, we need the clip's id.
+OV:B0119 HTML:193:0 p Getting an id is done with live.path. Finding out what path to supply is most easily done by looking at the LOM graph. In the graph, we find the Clip object. To reach it, we start at the Song root node (live_set), go to its list of Track children and pick the first (track 0). Next we go to the list of ClipSlot children and pick, for example, the fourth (clip_slots 3), and finally we navigate to the Clip contained by this clip slot (clip). So the message we send to live.path will be path live_set tracks 0 clip_slots 3 clip.
+OV:B0120 HTML:194:0 p We send the id output from the left outlet of live.path to live.object 's second inlet. There are no dynamic elements in the path, so we don't need to use live.path 's second outlet. And now that we are ready to launch the clip, we simply send call fire to the left inlet of the live.object.
+OV:B0121 HTML:195:0 h4 Adding control of which clip to fire and checking if it exists
+OV:B0122 HTML:196:0 p We might want to use two live.numbox es to control the track number and the clip slot number that we want to launch. The outputs of the numboxes can be sent to pak and we can swap the hardcoded numbers in the path above with replaceable arguments: path live_set track $1 clip_slots $2 clip.
+OV:B0123 HTML:197:0 p Of course, with this approach, the user of this device will be able to select tracks or clip slots that don't exist in the Live set. To show a toggle that is on when the selection exists and off otherwise, we can use that id 0 is output for paths that don't exist.
+OV:B0124 HTML:198:0 p Finally, to make this a functional device, we can place this patch in a MIDI effect and use notein to trigger the selected clip. If the velocity is not 0, we know a note on comes in. So then, if the selected clip exists, we send call fire to it.
+OV:B0125 HTML:199:0 p
+OV:B0126 HTML:202:9 p
+PATH:B0001 HTML:28:18457 h1 live.path
+PATH:B0002 HTML:30:0 p Navigate to objects in the Live application
+PATH:B0003 HTML:33:53 h2 Description
+PATH:B0004 HTML:34:0 p live.path is used to navigate to Live objects on which the live.object, live.observer and live.remote~ objects operate. The navigation is purely path-based and is independent of the objects currently present in Live (navigating to a nonexistent path will result in the message id 0 being sent out the left and middle outputs rather than an error message). Note: The Live API runs in the main thread in Live, and all messages to and from the API are automatically deferred.
+PATH:B0005 HTML:40:49 h2 Arguments
+PATH:B0006 HTML:42:0 h3 initial path[symbol] optional
+PATH:B0007 HTML:48:27 p Specify an initial path as argument to live.path, without any quotes.
+PATH:B0008 HTML:51:67 h2 Attributes
+PATH:B0009 HTML:53:0 h3 Common Box Attributes
+PATH:B0010 HTML:59:0 h3 annotation[symbol]
+PATH:B0011 HTML:65:28 p Sets the text that will be displayed in the Clue window when the user moves the mouse over the object.
+PATH:B0012 HTML:70:0 h3 background[int]: 0
+PATH:B0013 HTML:76:28 p Adds or removes the object from the patcher's background layer. background 1 adds the object to the background layer, background 0 removes it. Objects in the background layer are shown behind all objects in the default foreground layer.
+PATH:B0014 HTML:81:0 h3 color[4 floats]
+PATH:B0015 HTML:87:28 p Sets the color for the object box outline.
+PATH:B0016 HTML:92:0 h3 fontface[int]
+PATH:B0017 HTML:98:28 p Sets the type style used by the object. The options are: plain bold italic bold italic Possible values:0 = 'regular' 1 = 'bold' 2 = 'italic' 3 = 'bold italic'
+PATH:B0018 HTML:116:0 h3 fontname[symbol]
+PATH:B0019 HTML:122:28 p Sets the object's font.
+PATH:B0020 HTML:127:0 h3 fontsize[float]
+PATH:B0021 HTML:133:28 p Sets the object's font size (in points). Possible values: '8' '9' '10' '11' '12' '13' '14' '16' '18' '20' '24' '30' '36' '48' '64' '72'
+PATH:B0022 HTML:170:0 h3 hidden[int]: 0
+PATH:B0023 HTML:176:28 p Toggles whether an object is hidden when the patcher is locked.
+PATH:B0024 HTML:181:0 h3 hint[symbol]
+PATH:B0025 HTML:187:28 p Sets the text that will be displayed in as a pop-up hint when the user moves the mouse over the object in a locked patcher.
+PATH:B0026 HTML:192:0 h3 ignoreclick[int]: 0
+PATH:B0027 HTML:198:28 p Toggles whether an object ignores mouse clicks in a locked patcher.
+PATH:B0028 HTML:203:0 h3 jspainterfile[symbol]
+PATH:B0029 HTML:209:28 p You can override the default appearance of a user interface object by assigning a JavaScript file with code for painting the object. The file must be in the search path.
+PATH:B0030 HTML:214:0 h3 patching_rect[4 floats]: 0. 0. 100. 0.
+PATH:B0031 HTML:221:0 p Aliases: patching_position, patching_size
+PATH:B0032 HTML:224:0 p Sets the position and size of the object in the patcher window.
+PATH:B0033 HTML:230:0 h3 position[2 floats] write-only
+PATH:B0034 HTML:236:28 p Sets the object's x and y position in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its size unchanged.
+PATH:B0035 HTML:241:0 h3 presentation[int]: 0
+PATH:B0036 HTML:247:28 p Sets whether an object belongs to the patcher's presentation.
+PATH:B0037 HTML:252:0 h3 presentation_rect[4 floats]: 0. 0. 0. 0.
+PATH:B0038 HTML:259:0 p Aliases: presentation_position, presentation_size
+PATH:B0039 HTML:262:0 p Sets the x and y position and width and height of the object in the patcher's presentation, leaving its patching position unchanged.
+PATH:B0040 HTML:268:0 h3 rect[4 floats] write-only
+PATH:B0041 HTML:274:28 p Sets the x and y position and width and height of the object in both patching and presentation modes (if the object belongs to its patcher's presentation).
+PATH:B0042 HTML:279:0 h3 size[2 floats] write-only
+PATH:B0043 HTML:285:28 p Sets the object's width and height in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its position unchanged.
+PATH:B0044 HTML:290:0 h3 textcolor[4 floats]
+PATH:B0045 HTML:296:28 p Sets the color for the object's text in RGBA format.
+PATH:B0046 HTML:301:0 h3 textjustification[int]
+PATH:B0047 HTML:307:28 p Sets the justification for the object's text. Possible values:0 = 'left' 1 = 'center' 2 = 'right'
+PATH:B0048 HTML:315:0 h3 valuepopup[int]: 0
+PATH:B0049 HTML:321:28 p For objects with single values, enabling valuepopup will display the object's current value in a popup caption when the mouse is over the object or it is being changed with the mouse.
+PATH:B0050 HTML:326:0 h3 valuepopuplabel[int]: 0
+PATH:B0051 HTML:332:28 p Sets the source of a text label shown in a value popup caption. Possible values:0 = 'None' 1 = 'Hint' 2 = 'Scripting Name' 3 = 'Parameter Long Name' 4 = 'Parameter Short Name'
+PATH:B0052 HTML:342:0 h3 varname[symbol]
+PATH:B0053 HTML:348:28 p Sets the patcher's scripting name, which can be used to address the object by name in pattr, scripting messages to thispatcher, and the js object.
+PATH:B0054 HTML:353:59 h2 Inlets
+PATH:B0055 HTML:355:0 h3 Single inlet
+PATH:B0056 HTML:361:61 h2 Outlets
+PATH:B0057 HTML:363:0 h3 Left outlet
+PATH:B0058 HTML:374:0 h3 Middle outlet
+PATH:B0059 HTML:389:0 h3 Right outlet
+PATH:B0060 HTML:395:62 h2 Messages
+PATH:B0061 HTML:397:0 h3 getid
+PATH:B0062 HTML:401:25 p TEXT_HERE
+PATH:B0063 HTML:406:0 h3 getcount
+PATH:B0064 HTML:411:0 p Arguments: child-name is the name of a child of the object at the current path. Operation: Sends a count message to the right outlet, containing the name of the child and its number of entries. Remarks: The given child must be a list.
+PATH:B0065 HTML:429:7 th Outlet
+PATH:B0066 HTML:432:7 th Output
+PATH:B0067 HTML:435:7 th Example
+PATH:B0068 HTML:440:7 td right
+PATH:B0069 HTML:443:7 td count child-name count
+PATH:B0070 HTML:446:7 td count clip_slots 2
+PATH:B0071 HTML:453:27 li child-name [symbol]
+PATH:B0072 HTML:459:0 h3 getchildren
+PATH:B0073 HTML:463:25 p Operation: Sends a list of children of the object at the current path, if any, to the right outlet. Remarks: The child names are the same names as used in the goto message.
+PATH:B0074 HTML:476:7 th Outlet
+PATH:B0075 HTML:479:7 th Output
+PATH:B0076 HTML:482:7 th Example
+PATH:B0077 HTML:487:7 td right
+PATH:B0078 HTML:490:7 td children list-of-child-names
+PATH:B0079 HTML:493:7 td children canonical_parent clip_slots
+PATH:B0080 HTML:501:0 h3 getpath
+PATH:B0081 HTML:505:25 p Operation: Sends a path message with the current path to the right outlet.
+PATH:B0082 HTML:513:7 th Outlet
+PATH:B0083 HTML:516:7 th Output
+PATH:B0084 HTML:519:7 th Example
+PATH:B0085 HTML:524:7 td right
+PATH:B0086 HTML:527:7 td path path
+PATH:B0087 HTML:530:7 td path live_set scenes 1
+PATH:B0088 HTML:538:0 h3 bang, getid
+PATH:B0089 HTML:542:25 p Operation: Sends the id of the object at the current path to left and middle outlets. Sends id 0 if there is no object at the current path.
+PATH:B0090 HTML:550:7 th Outlet
+PATH:B0091 HTML:553:7 th Output
+PATH:B0092 HTML:556:7 th Example
+PATH:B0093 HTML:561:7 td left
+PATH:B0094 HTML:564:7 td id nn
+PATH:B0095 HTML:567:7 td id 5
+PATH:B0096 HTML:572:7 td middle
+PATH:B0097 HTML:575:7 td id nn
+PATH:B0098 HTML:578:7 td id 5
+PATH:B0099 HTML:586:0 h3 path
+PATH:B0100 HTML:591:0 p Same as goto but limited to absolute paths that start with a root object name like live_app , live_set , this_device or control_surfaces N .
+PATH:B0101 HTML:595:27 li absolute-path [symbol]
+PATH:B0102 HTML:601:0 h3 goto
+PATH:B0103 HTML:606:0 p Arguments: path is an absolute path (starts with live_app, live_set or control_surfaces N ) or a relative path, or up Operation: Navigates to given path and sends id of the object at that path out the left and middle outlets. If there is no object at the path, id 0 is sent. Remarks: You cannot go to a list property, only to one of its members. invalid: goto live_set scenes correct: goto live_set scenes 3
+PATH:B0104 HTML:625:7 th Outlet
+PATH:B0105 HTML:628:7 th Output
+PATH:B0106 HTML:631:7 th Example
+PATH:B0107 HTML:636:7 td left
+PATH:B0108 HTML:639:7 td id nn
+PATH:B0109 HTML:642:7 td id 5
+PATH:B0110 HTML:647:7 td middle
+PATH:B0111 HTML:650:7 td id nn
+PATH:B0112 HTML:653:7 td id 5
+PATH:B0113 HTML:660:27 li path [symbol]
+PATH:B0114 HTML:664:62 h2 See Also
+PATH:B0115 HTML:667:0 th Name
+PATH:B0116 HTML:668:0 th Description
+PATH:B0117 HTML:672:0 td JS API
+PATH:B0118 HTML:675:0 td JS API
+PATH:B0119 HTML:678:0 td Live API Overview
+PATH:B0120 HTML:681:0 td Live API Overview
+PATH:B0121 HTML:684:0 td Creating Devices that use the Live API
+PATH:B0122 HTML:687:0 td Creating Devices that use the Live API
+PATH:B0123 HTML:690:0 td Live Object Model
+PATH:B0124 HTML:693:0 td Live Object Model
+PATH:B0125 HTML:696:0 td live.object
+PATH:B0126 HTML:699:0 td Perform operations on Live objects
+PATH:B0127 HTML:704:0 td live.observer
+PATH:B0128 HTML:707:0 td Monitor changes in Live objects
+PATH:B0129 HTML:710:0 td live.remote~
+PATH:B0130 HTML:713:0 td Realtime control of parameters in Ableton Live and Max for Live.
+OBJ:B0001 HTML:28:19479 h1 live.object
+OBJ:B0002 HTML:30:0 p Perform operations on Live objects
+OBJ:B0003 HTML:33:53 h2 Description
+OBJ:B0004 HTML:34:0 p live.object is used to perform operations on Live objects that have been selected using the live.path object. These operations include retrieving information on the current state of the Live API and setting values to control Live. Note: The Live API runs in the main thread in Live, and all messages to and from the API are automatically deferred.
+OBJ:B0005 HTML:40:49 h2 Arguments
+OBJ:B0006 HTML:41:0 p None.
+OBJ:B0007 HTML:41:106 h2 Attributes
+OBJ:B0008 HTML:43:0 h3 Common Box Attributes
+OBJ:B0009 HTML:49:0 h3 annotation[symbol]
+OBJ:B0010 HTML:55:28 p Sets the text that will be displayed in the Clue window when the user moves the mouse over the object.
+OBJ:B0011 HTML:60:0 h3 background[int]: 0
+OBJ:B0012 HTML:66:28 p Adds or removes the object from the patcher's background layer. background 1 adds the object to the background layer, background 0 removes it. Objects in the background layer are shown behind all objects in the default foreground layer.
+OBJ:B0013 HTML:71:0 h3 color[4 floats]
+OBJ:B0014 HTML:77:28 p Sets the color for the object box outline.
+OBJ:B0015 HTML:82:0 h3 fontface[int]
+OBJ:B0016 HTML:88:28 p Sets the type style used by the object. The options are: plain bold italic bold italic Possible values:0 = 'regular' 1 = 'bold' 2 = 'italic' 3 = 'bold italic'
+OBJ:B0017 HTML:106:0 h3 fontname[symbol]
+OBJ:B0018 HTML:112:28 p Sets the object's font.
+OBJ:B0019 HTML:117:0 h3 fontsize[float]
+OBJ:B0020 HTML:123:28 p Sets the object's font size (in points). Possible values: '8' '9' '10' '11' '12' '13' '14' '16' '18' '20' '24' '30' '36' '48' '64' '72'
+OBJ:B0021 HTML:160:0 h3 hidden[int]: 0
+OBJ:B0022 HTML:166:28 p Toggles whether an object is hidden when the patcher is locked.
+OBJ:B0023 HTML:171:0 h3 hint[symbol]
+OBJ:B0024 HTML:177:28 p Sets the text that will be displayed in as a pop-up hint when the user moves the mouse over the object in a locked patcher.
+OBJ:B0025 HTML:182:0 h3 ignoreclick[int]: 0
+OBJ:B0026 HTML:188:28 p Toggles whether an object ignores mouse clicks in a locked patcher.
+OBJ:B0027 HTML:193:0 h3 jspainterfile[symbol]
+OBJ:B0028 HTML:199:28 p You can override the default appearance of a user interface object by assigning a JavaScript file with code for painting the object. The file must be in the search path.
+OBJ:B0029 HTML:204:0 h3 patching_rect[4 floats]: 0. 0. 100. 0.
+OBJ:B0030 HTML:211:0 p Aliases: patching_position, patching_size
+OBJ:B0031 HTML:214:0 p Sets the position and size of the object in the patcher window.
+OBJ:B0032 HTML:220:0 h3 position[2 floats] write-only
+OBJ:B0033 HTML:226:28 p Sets the object's x and y position in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its size unchanged.
+OBJ:B0034 HTML:231:0 h3 presentation[int]: 0
+OBJ:B0035 HTML:237:28 p Sets whether an object belongs to the patcher's presentation.
+OBJ:B0036 HTML:242:0 h3 presentation_rect[4 floats]: 0. 0. 0. 0.
+OBJ:B0037 HTML:249:0 p Aliases: presentation_position, presentation_size
+OBJ:B0038 HTML:252:0 p Sets the x and y position and width and height of the object in the patcher's presentation, leaving its patching position unchanged.
+OBJ:B0039 HTML:258:0 h3 rect[4 floats] write-only
+OBJ:B0040 HTML:264:28 p Sets the x and y position and width and height of the object in both patching and presentation modes (if the object belongs to its patcher's presentation).
+OBJ:B0041 HTML:269:0 h3 size[2 floats] write-only
+OBJ:B0042 HTML:275:28 p Sets the object's width and height in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its position unchanged.
+OBJ:B0043 HTML:280:0 h3 textcolor[4 floats]
+OBJ:B0044 HTML:286:28 p Sets the color for the object's text in RGBA format.
+OBJ:B0045 HTML:291:0 h3 textjustification[int]
+OBJ:B0046 HTML:297:28 p Sets the justification for the object's text. Possible values:0 = 'left' 1 = 'center' 2 = 'right'
+OBJ:B0047 HTML:305:0 h3 valuepopup[int]: 0
+OBJ:B0048 HTML:311:28 p For objects with single values, enabling valuepopup will display the object's current value in a popup caption when the mouse is over the object or it is being changed with the mouse.
+OBJ:B0049 HTML:316:0 h3 valuepopuplabel[int]: 0
+OBJ:B0050 HTML:322:28 p Sets the source of a text label shown in a value popup caption. Possible values:0 = 'None' 1 = 'Hint' 2 = 'Scripting Name' 3 = 'Parameter Long Name' 4 = 'Parameter Short Name'
+OBJ:B0051 HTML:332:0 h3 varname[symbol]
+OBJ:B0052 HTML:338:28 p Sets the patcher's scripting name, which can be used to address the object by name in pattr, scripting messages to thispatcher, and the js object.
+OBJ:B0053 HTML:343:59 h2 Inlets
+OBJ:B0054 HTML:345:0 h3 Left inlet
+OBJ:B0055 HTML:353:0 h3 Right inlet
+OBJ:B0056 HTML:361:61 h2 Outlets
+OBJ:B0057 HTML:363:0 h3 Left outlet
+OBJ:B0058 HTML:371:62 h2 Messages
+OBJ:B0059 HTML:373:0 h3 getid
+OBJ:B0060 HTML:377:25 p The current object's id is sent from the outlet, preceded by the word id . If there is no current object, id 0 will be sent.
+OBJ:B0061 HTML:382:0 h3 id nn
+OBJ:B0062 HTML:386:25 p Operation: Sets the current object. The message has the same effect if sent to both the right or the left inlet. For clarity it is suggested to always use the right inlet to supply the object id. - no output -
+OBJ:B0063 HTML:396:0 h3 getpath
+OBJ:B0064 HTML:400:25 p Operation: Sends the canonical path of current object.
+OBJ:B0065 HTML:408:7 th Outlet
+OBJ:B0066 HTML:411:7 th Output
+OBJ:B0067 HTML:414:7 th Example
+OBJ:B0068 HTML:419:7 td left
+OBJ:B0069 HTML:422:7 td path path
+OBJ:B0070 HTML:425:7 td path live_set return_tracks 0
+OBJ:B0071 HTML:433:0 h3 gettype
+OBJ:B0072 HTML:437:25 p Operation: Sends the type (a.k.a. class) of the current object.
+OBJ:B0073 HTML:445:7 th Outlet
+OBJ:B0074 HTML:448:7 th Output
+OBJ:B0075 HTML:451:7 th Example
+OBJ:B0076 HTML:456:7 td left
+OBJ:B0077 HTML:459:7 td type object-type
+OBJ:B0078 HTML:462:7 td type Song
+OBJ:B0079 HTML:470:0 h3 getinfo
+OBJ:B0080 HTML:474:25 p Operation: Sends a description of the current object. Output to left outlet (most lines may occur multiple times, last line is info done ): info id nn info type object-type info description description info children list-child object-type info child child object-type info property property property-type info function function info done Example output: info id 3 info type Scene info description This class represents a series of ClipSlots in Lives session view matrix info children clip_slots ClipSlot info child canonical_parent Song info property is_triggered bool info property name symbol info property tempo float info function fire info function fire_as_selected info function set_fire_button_state info done
+OBJ:B0081 HTML:522:0 h3 bang, getid
+OBJ:B0082 HTML:526:25 p Operation: Sends the id of the current Live object to the outlet.
+OBJ:B0083 HTML:534:7 th Outlet
+OBJ:B0084 HTML:537:7 th Output
+OBJ:B0085 HTML:540:7 th Example
+OBJ:B0086 HTML:545:7 td left
+OBJ:B0087 HTML:548:7 td id nn
+OBJ:B0088 HTML:551:7 td id 5
+OBJ:B0089 HTML:559:0 h3 call
+OBJ:B0090 HTML:564:0 p Arguments: function the name of the function parameter-list an optional list of parameters Operation: Calls the given function of the current object, optionally with a list of parameters. Remark: The types of the parameters are given in the Live Object Model.
+OBJ:B0091 HTML:584:7 th Outlet
+OBJ:B0092 HTML:587:7 th Output
+OBJ:B0093 HTML:590:7 th Example
+OBJ:B0094 HTML:595:7 td left
+OBJ:B0095 HTML:598:7 td function value
+OBJ:B0096 HTML:601:7 td get_beats_loop_length 004.00.00.000
+OBJ:B0097 HTML:609:0 li function [symbol]
+OBJ:B0098 HTML:612:0 li parameter-list [list of different types]
+OBJ:B0099 HTML:619:0 h3 set
+OBJ:B0100 HTML:624:0 p Arguments: list-child the name of a list child of the current object id nn ... id mm the new list of objects for the given name Operation: Set the list child to contain the given ids. Remark: Not all children can be set. - no output -
+OBJ:B0101 HTML:646:0 li list-child [symbol]
+OBJ:B0102 HTML:649:0 li id nn ... id mm [id-list]
+OBJ:B0103 HTML:656:0 h3 set
+OBJ:B0104 HTML:661:0 p Arguments: child the name of a child of the current object id nn the new child object for this name Operation: Set the child name to point to the given child. Remark: Not all children can be set. - no output -
+OBJ:B0105 HTML:683:0 li child [symbol]
+OBJ:B0106 HTML:686:0 li id nn [id]
+OBJ:B0107 HTML:693:0 h3 set
+OBJ:B0108 HTML:698:0 p Arguments: list-property the name of a list property of the current object value-list the new values for the property Operation: Set the given list property to the value list. Remark: Not all properties can be set. The types of the properties are given in the Live Object Model. - no output -
+OBJ:B0109 HTML:720:0 li list-property [symbol]
+OBJ:B0110 HTML:723:0 li value-list [various types]
+OBJ:B0111 HTML:730:0 h3 set
+OBJ:B0112 HTML:735:0 p Arguments: property the name of a single-value property of the current object value the new value for the property Operation: Set the value of given property of the current object. Remark: Not all properties can be set. The types of the properties are given in the Live Object Model. - no output -
+OBJ:B0113 HTML:757:0 li property [symbol]
+OBJ:B0114 HTML:760:0 li value [various types]
+OBJ:B0115 HTML:767:0 h3 get
+OBJ:B0116 HTML:772:0 p Arguments: list-child the name of a list-child of the current object Operation: Sends the ids of the elements of the list-child of the current object.
+OBJ:B0117 HTML:785:7 th Outlet
+OBJ:B0118 HTML:788:7 th Output
+OBJ:B0119 HTML:791:7 th Example
+OBJ:B0120 HTML:796:7 td left
+OBJ:B0121 HTML:799:7 td list-child id nn ... id mm
+OBJ:B0122 HTML:802:7 td clip_slots id 4 id 5
+OBJ:B0123 HTML:809:27 li list-child [symbol]
+OBJ:B0124 HTML:815:0 h3 get
+OBJ:B0125 HTML:820:0 p Arguments: child the name of a child of the current object Operation: Sends the id of the child of the current object.
+OBJ:B0126 HTML:833:7 th Outlet
+OBJ:B0127 HTML:836:7 th Output
+OBJ:B0128 HTML:839:7 th Example
+OBJ:B0129 HTML:844:7 td left
+OBJ:B0130 HTML:847:7 td child id nn
+OBJ:B0131 HTML:850:7 td master_track id 10
+OBJ:B0132 HTML:857:27 li child [symbol]
+OBJ:B0133 HTML:863:0 h3 get
+OBJ:B0134 HTML:868:0 p Arguments: list-property the name of a list property of the current object Operation: Sends the list of values of given property of the current object.
+OBJ:B0135 HTML:881:7 th Outlet
+OBJ:B0136 HTML:884:7 th Output
+OBJ:B0137 HTML:887:7 th Example
+OBJ:B0138 HTML:892:7 td left
+OBJ:B0139 HTML:895:7 td list-property list of values
+OBJ:B0140 HTML:898:7 td input_routings Ext. In Max Resampling 1-Audio A-Return Master No Input
+OBJ:B0141 HTML:905:27 li list-property [symbol]
+OBJ:B0142 HTML:911:0 h3 get
+OBJ:B0143 HTML:916:0 p Arguments: property the name of a single-value property of the current object Operation: Sends value of given property of the current object.
+OBJ:B0144 HTML:929:7 th Outlet
+OBJ:B0145 HTML:932:7 th Output
+OBJ:B0146 HTML:935:7 th Example
+OBJ:B0147 HTML:940:7 td left
+OBJ:B0148 HTML:943:7 td property value
+OBJ:B0149 HTML:946:7 td name base solo 3
+OBJ:B0150 HTML:953:27 li property [symbol]
+OBJ:B0151 HTML:957:61 h2 Inspector
+OBJ:B0152 HTML:959:0 h3 Persistence
+OBJ:B0153 HTML:960:23 p The live.object object has a special entry in its inspector labelled "Use Persistent Mapping". This setting, when enabled, causes the id associated with the object to persist when the Live document is saved and restored, and when the Max Device is moved between the Live application and the Max editor, or within the Live Set. Beginning in Live 8.2.2, Live API ids remain persistent between launches of Live, which in conjunction with the Persistence feature of live.object, live.observer and live.remote~, makes it possible to create simpler devices which retain their association with elements in the Live user interface.
+OBJ:B0154 HTML:963:62 h2 See Also
+OBJ:B0155 HTML:966:0 th Name
+OBJ:B0156 HTML:967:0 th Description
+OBJ:B0157 HTML:971:0 td JS API
+OBJ:B0158 HTML:974:0 td JS API
+OBJ:B0159 HTML:977:0 td Live API Overview
+OBJ:B0160 HTML:980:0 td Live API Overview
+OBJ:B0161 HTML:983:0 td Creating Devices that use the Live API
+OBJ:B0162 HTML:986:0 td Creating Devices that use the Live API
+OBJ:B0163 HTML:989:0 td Live Object Model
+OBJ:B0164 HTML:992:0 td Live Object Model
+OBJ:B0165 HTML:995:0 td live.path
+OBJ:B0166 HTML:998:0 td Navigate to objects in the Live application
+OBJ:B0167 HTML:1003:0 td live.observer
+OBJ:B0168 HTML:1006:0 td Monitor changes in Live objects
+OBJ:B0169 HTML:1009:0 td live.remote~
+OBJ:B0170 HTML:1012:0 td Realtime control of parameters in Ableton Live and Max for Live.
+OBS:B0001 HTML:28:19536 h1 live.observer
+OBS:B0002 HTML:30:0 p Monitor changes in Live objects
+OBS:B0003 HTML:31:53 h2 Description
+OBS:B0004 HTML:32:0 p live.observer is used to listen to changes in the values of properties of Live objects. This object works in conjunction with the live.path object, which sends id nn messages into the right inlet of live.observer . After an object id and property is specified, its value is sent out the left outlet. From this moment on, the value is sent on each change of the property ('notification') as well as in response to bang messages. The left outlet is reserved for value messages, all other output is sent to the right outlet. Not all properties can be observed, please consult the Live Object Model to see which can. Also, it is not possible to modify the live set from a notification, i.e. while you are receiving a value message spontaneously sent by a live.observer 's outlet. Besides properties, it is also possible to observer children of Live objects. Their values are object ids or lists of them. Note: The Live API runs in the main thread in Live, and all messages to and from the API are automatically deferred.
+OBS:B0005 HTML:73:49 h2 Arguments
+OBS:B0006 HTML:75:0 h3 property[symbol] optional
+OBS:B0007 HTML:81:27 p Specify a property or child name as argument to live.observer .
+OBS:B0008 HTML:86:67 h2 Attributes
+OBS:B0009 HTML:88:0 h3 Common Box Attributes
+OBS:B0010 HTML:94:0 h3 annotation[symbol]
+OBS:B0011 HTML:100:28 p Sets the text that will be displayed in the Clue window when the user moves the mouse over the object.
+OBS:B0012 HTML:105:0 h3 background[int]: 0
+OBS:B0013 HTML:111:28 p Adds or removes the object from the patcher's background layer. background 1 adds the object to the background layer, background 0 removes it. Objects in the background layer are shown behind all objects in the default foreground layer.
+OBS:B0014 HTML:116:0 h3 color[4 floats]
+OBS:B0015 HTML:122:28 p Sets the color for the object box outline.
+OBS:B0016 HTML:127:0 h3 fontface[int]
+OBS:B0017 HTML:133:28 p Sets the type style used by the object. The options are: plain bold italic bold italic Possible values:0 = 'regular' 1 = 'bold' 2 = 'italic' 3 = 'bold italic'
+OBS:B0018 HTML:151:0 h3 fontname[symbol]
+OBS:B0019 HTML:157:28 p Sets the object's font.
+OBS:B0020 HTML:162:0 h3 fontsize[float]
+OBS:B0021 HTML:168:28 p Sets the object's font size (in points). Possible values: '8' '9' '10' '11' '12' '13' '14' '16' '18' '20' '24' '30' '36' '48' '64' '72'
+OBS:B0022 HTML:205:0 h3 hidden[int]: 0
+OBS:B0023 HTML:211:28 p Toggles whether an object is hidden when the patcher is locked.
+OBS:B0024 HTML:216:0 h3 hint[symbol]
+OBS:B0025 HTML:222:28 p Sets the text that will be displayed in as a pop-up hint when the user moves the mouse over the object in a locked patcher.
+OBS:B0026 HTML:227:0 h3 ignoreclick[int]: 0
+OBS:B0027 HTML:233:28 p Toggles whether an object ignores mouse clicks in a locked patcher.
+OBS:B0028 HTML:238:0 h3 jspainterfile[symbol]
+OBS:B0029 HTML:244:28 p You can override the default appearance of a user interface object by assigning a JavaScript file with code for painting the object. The file must be in the search path.
+OBS:B0030 HTML:249:0 h3 patching_rect[4 floats]: 0. 0. 100. 0.
+OBS:B0031 HTML:256:0 p Aliases: patching_position, patching_size
+OBS:B0032 HTML:259:0 p Sets the position and size of the object in the patcher window.
+OBS:B0033 HTML:265:0 h3 position[2 floats] write-only
+OBS:B0034 HTML:271:28 p Sets the object's x and y position in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its size unchanged.
+OBS:B0035 HTML:276:0 h3 presentation[int]: 0
+OBS:B0036 HTML:282:28 p Sets whether an object belongs to the patcher's presentation.
+OBS:B0037 HTML:287:0 h3 presentation_rect[4 floats]: 0. 0. 0. 0.
+OBS:B0038 HTML:294:0 p Aliases: presentation_position, presentation_size
+OBS:B0039 HTML:297:0 p Sets the x and y position and width and height of the object in the patcher's presentation, leaving its patching position unchanged.
+OBS:B0040 HTML:303:0 h3 rect[4 floats] write-only
+OBS:B0041 HTML:309:28 p Sets the x and y position and width and height of the object in both patching and presentation modes (if the object belongs to its patcher's presentation).
+OBS:B0042 HTML:314:0 h3 size[2 floats] write-only
+OBS:B0043 HTML:320:28 p Sets the object's width and height in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its position unchanged.
+OBS:B0044 HTML:325:0 h3 textcolor[4 floats]
+OBS:B0045 HTML:331:28 p Sets the color for the object's text in RGBA format.
+OBS:B0046 HTML:336:0 h3 textjustification[int]
+OBS:B0047 HTML:342:28 p Sets the justification for the object's text. Possible values:0 = 'left' 1 = 'center' 2 = 'right'
+OBS:B0048 HTML:350:0 h3 valuepopup[int]: 0
+OBS:B0049 HTML:356:28 p For objects with single values, enabling valuepopup will display the object's current value in a popup caption when the mouse is over the object or it is being changed with the mouse.
+OBS:B0050 HTML:361:0 h3 valuepopuplabel[int]: 0
+OBS:B0051 HTML:367:28 p Sets the source of a text label shown in a value popup caption. Possible values:0 = 'None' 1 = 'Hint' 2 = 'Scripting Name' 3 = 'Parameter Long Name' 4 = 'Parameter Short Name'
+OBS:B0052 HTML:377:0 h3 varname[symbol]
+OBS:B0053 HTML:383:28 p Sets the patcher's scripting name, which can be used to address the object by name in pattr, scripting messages to thispatcher, and the js object.
+OBS:B0054 HTML:388:59 h2 Inlets
+OBS:B0055 HTML:390:0 h3 Left inlet
+OBS:B0056 HTML:397:0 h3 Right inlet
+OBS:B0057 HTML:416:61 h2 Outlets
+OBS:B0058 HTML:418:0 h3 Left outlet
+OBS:B0059 HTML:435:0 h3 Right outlet
+OBS:B0060 HTML:447:62 h2 Messages
+OBS:B0061 HTML:449:0 h3 property
+OBS:B0062 HTML:454:0 p Arguments: property the name of a property of the current object Operation: Selects the property to be observed. Outputs the current value to the left outlet if a proper Live object is selected. Remark: Not all properties can be observed. The types of the properties are given in the Live Object Model.
+OBS:B0063 HTML:479:1 th Outlet
+OBS:B0064 HTML:480:1 th Output
+OBS:B0065 HTML:481:1 th Example
+OBS:B0066 HTML:484:1 td left
+OBS:B0067 HTML:485:1 td value
+OBS:B0068 HTML:491:1 td 3.1415926
+OBS:B0069 HTML:499:27 li property [symbol]
+OBS:B0070 HTML:505:0 h3 property
+OBS:B0071 HTML:510:0 p Arguments: child the name of a child of the current object Operation: Selects the child id to be observed. Outputs the id (or "id 0") to the left outlet if the selected Live object has such a child. Remark: Not all children can be observed.
+OBS:B0072 HTML:533:1 th Outlet
+OBS:B0073 HTML:534:1 th Output
+OBS:B0074 HTML:535:1 th Example
+OBS:B0075 HTML:538:1 td left
+OBS:B0076 HTML:539:1 td id nn
+OBS:B0077 HTML:547:1 td id 17
+OBS:B0078 HTML:555:27 li child [symbol]
+OBS:B0079 HTML:561:0 h3 property
+OBS:B0080 HTML:566:0 p Arguments: child the name of a child list of the current object Operation: Selects the child list to be observed. Outputs the id list (or nothing) to the left outlet if the selected Live object has such a list child. Remark: Not all child lists can be observed.
+OBS:B0081 HTML:589:1 th Outlet
+OBS:B0082 HTML:590:1 th Output
+OBS:B0083 HTML:591:1 th Example
+OBS:B0084 HTML:594:1 td left
+OBS:B0085 HTML:595:1 td id nn ... id mm
+OBS:B0086 HTML:605:1 td id 4 id 5
+OBS:B0087 HTML:613:27 li list-child [symbol]
+OBS:B0088 HTML:619:0 h3 getproperty
+OBS:B0089 HTML:623:25 p Operation: Sends the name of the selected property (or child resp. list-child) out the right outlet.
+OBS:B0090 HTML:632:1 th Outlet
+OBS:B0091 HTML:633:1 th Output
+OBS:B0092 HTML:634:1 th Example
+OBS:B0093 HTML:637:1 td right
+OBS:B0094 HTML:638:1 td property property or property child
+OBS:B0095 HTML:653:1 td property name or property selected_track
+OBS:B0096 HTML:668:0 h3 gettype
+OBS:B0097 HTML:672:25 p Operation: Sends the type of currently observed property or child to the right outlet. The types of the properties and children are given in the Live Object Model. For list-children it just sends type tuple , w/o further type information.
+OBS:B0098 HTML:685:1 th Outlet
+OBS:B0099 HTML:686:1 th Output
+OBS:B0100 HTML:687:1 th Example
+OBS:B0101 HTML:690:1 td right
+OBS:B0102 HTML:691:1 td type property-type or type object-type
+OBS:B0103 HTML:703:1 td type int or type Track
+OBS:B0104 HTML:715:0 h3 getid
+OBS:B0105 HTML:719:25 p Operation: Sends the id of the currently observed Live object to the right outlet.
+OBS:B0106 HTML:728:1 th Outlet
+OBS:B0107 HTML:729:1 th Output
+OBS:B0108 HTML:730:1 th Example
+OBS:B0109 HTML:733:1 td right
+OBS:B0110 HTML:734:1 td id nn
+OBS:B0111 HTML:742:1 td id 20
+OBS:B0112 HTML:751:0 h3 bang
+OBS:B0113 HTML:755:25 p Operation: Sends current value of selected property of current object to the left outlet. Does nothing if no property or no Live object is selected or if they don't match.
+OBS:B0114 HTML:765:1 th Outlet
+OBS:B0115 HTML:766:1 th Output
+OBS:B0116 HTML:767:1 th Example
+OBS:B0117 HTML:770:1 td left
+OBS:B0118 HTML:771:1 td value
+OBS:B0119 HTML:777:1 td Drums
+OBS:B0120 HTML:786:0 h3 id nn
+OBS:B0121 HTML:790:25 p Operation: Sets the current object. The message has the same effect if sent to both the right or the left inlet. For clarity it is suggested to always use the right inlet to supply the object id. - no output -
+OBS:B0122 HTML:801:61 h2 Inspector
+OBS:B0123 HTML:803:0 h3 Persistence
+OBS:B0124 HTML:804:23 p The live.observer object has a special entry in its inspector labelled "Use Persistent Mapping". This setting, when enabled, causes the id associated with the object to persist when the Live document is saved and restored, and when the Max Device is moved between the Live application and the Max editor, or within the Live Set. Beginning in Live 8.2.2, Live API ids remain persistent between launches of Live, which in conjunction with the Persistence feature of live.object , live.observer and live.remote~ , makes it possible to create simpler devices which retain their association with elements in the Live user interface.
+OBS:B0125 HTML:825:62 h2 See Also
+OBS:B0126 HTML:828:0 th Name
+OBS:B0127 HTML:829:0 th Description
+OBS:B0128 HTML:833:0 td JS API
+OBS:B0129 HTML:836:0 td JS API
+OBS:B0130 HTML:839:0 td Live API Overview
+OBS:B0131 HTML:842:0 td Live API Overview
+OBS:B0132 HTML:845:0 td Creating Devices that use the Live API
+OBS:B0133 HTML:848:0 td Creating Devices that use the Live API
+OBS:B0134 HTML:851:0 td Live Object Model
+OBS:B0135 HTML:854:0 td Live Object Model
+OBS:B0136 HTML:857:0 td live.path
+OBS:B0137 HTML:860:0 td Navigate to objects in the Live application
+OBS:B0138 HTML:865:0 td live.object
+OBS:B0139 HTML:868:0 td Perform operations on Live objects
+OBS:B0140 HTML:873:0 td live.remote~
+OBS:B0141 HTML:876:0 td Realtime control of parameters in Ableton Live and Max for Live.
+REM:B0001 HTML:28:17575 h1 live.remote~
+REM:B0002 HTML:30:0 p Realtime control of parameters in Ableton Live and Max for Live.
+REM:B0003 HTML:31:53 h2 Description
+REM:B0004 HTML:32:0 p The live.remote~ object allows you to remotely control parameters in Ableton Live and Max for Live in realtime. To understand more about Live's parameters, look up the DeviceParameter Object Class in the Live Object Model .
+REM:B0005 HTML:40:0 h4 Discussion
+REM:B0006 HTML:41:0 p A parameter in Live and Max for Live is selected using live.path or live.map and its id is sent to the right inlet of live.remote~ . An example path of a DeviceParameter is live_set master_track mixer_device volume . Alternatively, you can get the path to a parameter in Ableton Live's interface by right-clicking a parameter and selecting "Copy LOM Path" in the context-menu (available only in Ableton Live 12). Integer or float values are sent to the left inlet of live.remote~ , as messages or as an audio signal. The values are applied sample-accurately (if sent by the audio thread of Max) with a constant latency of a single audio buffer. A parameter is disabled in Live while it is controlled by a live.remote~ , just as if it were controlled by a Macro parameter (but without the green dot). This means that any parameter automation is disabled and the value in the Live set is not changed. Additionally, no undo steps are created. The envelopes remain active. To stop remote-controlling a device parameter and to re-enable it, send id 0 to the right inlet of live.remote~ .
+REM:B0007 HTML:71:49 h2 Arguments
+REM:B0008 HTML:72:0 p None.
+REM:B0009 HTML:72:106 h2 Attributes
+REM:B0010 HTML:74:0 h3 smoothing[float]
+REM:B0011 HTML:80:28 p Set the ramp time that is used for each incoming event. This also performs a temporal downsampling of any signal you send in. For example, a smoothing value of 1 ms will sample the incoming signal every 1 ms and send ramp events which output a linear approximation of the signal. This attribute defaults to 1 ms.
+REM:B0012 HTML:86:0 h3 normalized[int]
+REM:B0013 HTML:92:28 p Toggles the live.remote~ object's normalized mode, which automatically scales the input values to the target parameter range. When the normalized attribute is set to 1, sending a signal or values in the range 0 to 1 to live.remote~ will automatically scale the values to the range of the receiving parameter. If the normalized attribute is set to 0, automatic scaling is disabled. You will need to provide values between the minimum and maximum of the parameter in order to control it.
+REM:B0014 HTML:101:0 h3 Common Box Attributes
+REM:B0015 HTML:107:0 h3 annotation[symbol]
+REM:B0016 HTML:113:28 p Sets the text that will be displayed in the Clue window when the user moves the mouse over the object.
+REM:B0017 HTML:118:0 h3 background[int]: 0
+REM:B0018 HTML:124:28 p Adds or removes the object from the patcher's background layer. background 1 adds the object to the background layer, background 0 removes it. Objects in the background layer are shown behind all objects in the default foreground layer.
+REM:B0019 HTML:129:0 h3 color[4 floats]
+REM:B0020 HTML:135:28 p Sets the color for the object box outline.
+REM:B0021 HTML:140:0 h3 fontface[int]
+REM:B0022 HTML:146:28 p Sets the type style used by the object. The options are: plain bold italic bold italic Possible values:0 = 'regular' 1 = 'bold' 2 = 'italic' 3 = 'bold italic'
+REM:B0023 HTML:164:0 h3 fontname[symbol]
+REM:B0024 HTML:170:28 p Sets the object's font.
+REM:B0025 HTML:175:0 h3 fontsize[float]
+REM:B0026 HTML:181:28 p Sets the object's font size (in points). Possible values: '8' '9' '10' '11' '12' '13' '14' '16' '18' '20' '24' '30' '36' '48' '64' '72'
+REM:B0027 HTML:218:0 h3 hidden[int]: 0
+REM:B0028 HTML:224:28 p Toggles whether an object is hidden when the patcher is locked.
+REM:B0029 HTML:229:0 h3 hint[symbol]
+REM:B0030 HTML:235:28 p Sets the text that will be displayed in as a pop-up hint when the user moves the mouse over the object in a locked patcher.
+REM:B0031 HTML:240:0 h3 ignoreclick[int]: 0
+REM:B0032 HTML:246:28 p Toggles whether an object ignores mouse clicks in a locked patcher.
+REM:B0033 HTML:251:0 h3 jspainterfile[symbol]
+REM:B0034 HTML:257:28 p You can override the default appearance of a user interface object by assigning a JavaScript file with code for painting the object. The file must be in the search path.
+REM:B0035 HTML:262:0 h3 patching_rect[4 floats]: 0. 0. 100. 0.
+REM:B0036 HTML:269:0 p Aliases: patching_position, patching_size
+REM:B0037 HTML:272:0 p Sets the position and size of the object in the patcher window.
+REM:B0038 HTML:278:0 h3 position[2 floats] write-only
+REM:B0039 HTML:284:28 p Sets the object's x and y position in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its size unchanged.
+REM:B0040 HTML:289:0 h3 presentation[int]: 0
+REM:B0041 HTML:295:28 p Sets whether an object belongs to the patcher's presentation.
+REM:B0042 HTML:300:0 h3 presentation_rect[4 floats]: 0. 0. 0. 0.
+REM:B0043 HTML:307:0 p Aliases: presentation_position, presentation_size
+REM:B0044 HTML:310:0 p Sets the x and y position and width and height of the object in the patcher's presentation, leaving its patching position unchanged.
+REM:B0045 HTML:316:0 h3 rect[4 floats] write-only
+REM:B0046 HTML:322:28 p Sets the x and y position and width and height of the object in both patching and presentation modes (if the object belongs to its patcher's presentation).
+REM:B0047 HTML:327:0 h3 size[2 floats] write-only
+REM:B0048 HTML:333:28 p Sets the object's width and height in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its position unchanged.
+REM:B0049 HTML:338:0 h3 textcolor[4 floats]
+REM:B0050 HTML:344:28 p Sets the color for the object's text in RGBA format.
+REM:B0051 HTML:349:0 h3 textjustification[int]
+REM:B0052 HTML:355:28 p Sets the justification for the object's text. Possible values:0 = 'left' 1 = 'center' 2 = 'right'
+REM:B0053 HTML:363:0 h3 valuepopup[int]: 0
+REM:B0054 HTML:369:28 p For objects with single values, enabling valuepopup will display the object's current value in a popup caption when the mouse is over the object or it is being changed with the mouse.
+REM:B0055 HTML:374:0 h3 valuepopuplabel[int]: 0
+REM:B0056 HTML:380:28 p Sets the source of a text label shown in a value popup caption. Possible values:0 = 'None' 1 = 'Hint' 2 = 'Scripting Name' 3 = 'Parameter Long Name' 4 = 'Parameter Short Name'
+REM:B0057 HTML:390:0 h3 varname[symbol]
+REM:B0058 HTML:396:28 p Sets the patcher's scripting name, which can be used to address the object by name in pattr, scripting messages to thispatcher, and the js object.
+REM:B0059 HTML:401:59 h2 Inlets
+REM:B0060 HTML:403:0 h3 Left inlet
+REM:B0061 HTML:417:0 h3 Right inlet
+REM:B0062 HTML:441:62 h2 Messages
+REM:B0063 HTML:443:0 h3 float
+REM:B0064 HTML:448:0 p A floating point number value received in the left inlet will be applied to the selected Live parameter (DeviceParameter Object), if any, at the beginning of the next audio buffer, or at the end of a pending ramp (see smoothing).
+REM:B0065 HTML:453:27 li value [float]
+REM:B0066 HTML:459:0 h3 int
+REM:B0067 HTML:464:0 p An integer number value received in the left inlet will be applied to the selected Live parameter (DeviceParameter Object), if any, at the beginning of the next audio buffer, or at the end of a pending ramp (see smoothing).
+REM:B0068 HTML:469:27 li value [int]
+REM:B0069 HTML:475:0 h3 list
+REM:B0070 HTML:480:0 p Start a ramp with a list of two floats, similar to the line~ object. Sending in “1 500” means that the value 1 will be reached in 500 ms, starting at the current value. New ramps will always override the current ramp, so if you want to cut short a ramp, send another value.
+REM:B0071 HTML:486:0 li target-value [float]
+REM:B0072 HTML:489:0 li delta-time [number]
+REM:B0073 HTML:496:0 h3 signal
+REM:B0074 HTML:500:25 p Signal input values received in the left inlet will be applied to the selected parameter (DeviceParameter Object), if any, in realtime.
+REM:B0075 HTML:507:0 h3 id
+REM:B0076 HTML:512:0 p In right inlet: Sets the selected object. The message has no effect if the id is not a parameter (DeviceParameter Object).
+REM:B0077 HTML:518:27 li parameter id [int]
+REM:B0078 HTML:524:0 h3 getid
+REM:B0079 HTML:528:25 p The mapped object's id is sent from the outlet, preceded by the word id . If there is no mapped object, id 0 will be sent.
+REM:B0080 HTML:531:61 h2 Inspector
+REM:B0081 HTML:533:0 h3 Persistence
+REM:B0082 HTML:534:23 p The live.remote~ object has a special entry in its inspector labeled "Use Persistent Mapping". This setting, when enabled, causes the id associated with the object, in this case the id of the parameter, to persist when the Ableton Live Set is saved and restored, and when the Max Device is moved between the Live application and the Max editor, or within the Live Set. Beginning in Live 8.2.2, Live API ids remain persistent between launches of Live, which in conjunction with the Persistence feature of live.object , live.observer and live.remote~ , makes it possible to create simpler devices which retain their association with elements in the Ableton Live user interface.
+REM:B0083 HTML:555:62 h2 See Also
+REM:B0084 HTML:558:0 th Name
+REM:B0085 HTML:559:0 th Description
+REM:B0086 HTML:563:0 td JS API
+REM:B0087 HTML:566:0 td JS API
+REM:B0088 HTML:569:0 td Live API Overview
+REM:B0089 HTML:572:0 td Live API Overview
+REM:B0090 HTML:575:0 td Creating Devices that use the Live API
+REM:B0091 HTML:578:0 td Creating Devices that use the Live API
+REM:B0092 HTML:581:0 td Live Object Model
+REM:B0093 HTML:584:0 td Live Object Model
+REM:B0094 HTML:587:0 td live.object
+REM:B0095 HTML:590:0 td Perform operations on Live objects
+REM:B0096 HTML:595:0 td live.observer
+REM:B0097 HTML:598:0 td Monitor changes in Live objects
+REM:B0098 HTML:601:0 td live.path
+REM:B0099 HTML:604:0 td Navigate to objects in the Live application
+REM:B0100 HTML:609:0 td live.modulate~
+REM:B0101 HTML:612:0 td Modulate Ableton Live and Max for Live Parameters
+INIT:B0001 HTML:28:15301 h1 live.thisdevice
+INIT:B0002 HTML:30:0 p Send a bang automatically when a Max Device is loaded, report device state
+INIT:B0003 HTML:33:53 h2 Description
+INIT:B0004 HTML:34:0 p live.thisdevice reports three pieces of information about your Max Device. A bang message is automatically sent from the left outlet when the Max Device is opened and completely initialized, or when the containing patcher is part of another file that is opened. Additionally, a bang will be reported every time a new preset is loaded or the device is saved (and thus reloaded within the Live application). A 1 or 0 will be sent from the middle outlet when the Device is enabled or disabled, respectively. A 1 or 0 will be sent from the right outlet when preview mode for the Device is enabled or disabled, respectively. Used within Max, live.thisdevice functions essentially like the loadbang object. The middle and right outlets are inactive in this case.
+INIT:B0005 HTML:37:49 h2 Arguments
+INIT:B0006 HTML:38:0 p None.
+INIT:B0007 HTML:38:106 h2 Attributes
+INIT:B0008 HTML:40:0 h3 openinpresentation[int]
+INIT:B0009 HTML:46:28 p Open in Presentation
+INIT:B0010 HTML:51:0 h3 Common Box Attributes
+INIT:B0011 HTML:57:0 h3 annotation[symbol]
+INIT:B0012 HTML:63:28 p Sets the text that will be displayed in the Clue window when the user moves the mouse over the object.
+INIT:B0013 HTML:68:0 h3 background[int]: 0
+INIT:B0014 HTML:74:28 p Adds or removes the object from the patcher's background layer. background 1 adds the object to the background layer, background 0 removes it. Objects in the background layer are shown behind all objects in the default foreground layer.
+INIT:B0015 HTML:79:0 h3 color[4 floats]
+INIT:B0016 HTML:85:28 p Sets the color for the object box outline.
+INIT:B0017 HTML:90:0 h3 fontface[int]
+INIT:B0018 HTML:96:28 p Sets the type style used by the object. The options are: plain bold italic bold italic Possible values:0 = 'regular' 1 = 'bold' 2 = 'italic' 3 = 'bold italic'
+INIT:B0019 HTML:114:0 h3 fontname[symbol]
+INIT:B0020 HTML:120:28 p Sets the object's font.
+INIT:B0021 HTML:125:0 h3 fontsize[float]
+INIT:B0022 HTML:131:28 p Sets the object's font size (in points). Possible values: '8' '9' '10' '11' '12' '13' '14' '16' '18' '20' '24' '30' '36' '48' '64' '72'
+INIT:B0023 HTML:168:0 h3 hidden[int]: 0
+INIT:B0024 HTML:174:28 p Toggles whether an object is hidden when the patcher is locked.
+INIT:B0025 HTML:179:0 h3 hint[symbol]
+INIT:B0026 HTML:185:28 p Sets the text that will be displayed in as a pop-up hint when the user moves the mouse over the object in a locked patcher.
+INIT:B0027 HTML:190:0 h3 ignoreclick[int]: 0
+INIT:B0028 HTML:196:28 p Toggles whether an object ignores mouse clicks in a locked patcher.
+INIT:B0029 HTML:201:0 h3 jspainterfile[symbol]
+INIT:B0030 HTML:207:28 p You can override the default appearance of a user interface object by assigning a JavaScript file with code for painting the object. The file must be in the search path.
+INIT:B0031 HTML:212:0 h3 patching_rect[4 floats]: 0. 0. 100. 0.
+INIT:B0032 HTML:219:0 p Aliases: patching_position, patching_size
+INIT:B0033 HTML:222:0 p Sets the position and size of the object in the patcher window.
+INIT:B0034 HTML:228:0 h3 position[2 floats] write-only
+INIT:B0035 HTML:234:28 p Sets the object's x and y position in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its size unchanged.
+INIT:B0036 HTML:239:0 h3 presentation[int]: 0
+INIT:B0037 HTML:245:28 p Sets whether an object belongs to the patcher's presentation.
+INIT:B0038 HTML:250:0 h3 presentation_rect[4 floats]: 0. 0. 0. 0.
+INIT:B0039 HTML:257:0 p Aliases: presentation_position, presentation_size
+INIT:B0040 HTML:260:0 p Sets the x and y position and width and height of the object in the patcher's presentation, leaving its patching position unchanged.
+INIT:B0041 HTML:266:0 h3 rect[4 floats] write-only
+INIT:B0042 HTML:272:28 p Sets the x and y position and width and height of the object in both patching and presentation modes (if the object belongs to its patcher's presentation).
+INIT:B0043 HTML:277:0 h3 size[2 floats] write-only
+INIT:B0044 HTML:283:28 p Sets the object's width and height in both patching and presentation modes (if the object belongs to its patcher's presentation), leaving its position unchanged.
+INIT:B0045 HTML:288:0 h3 textcolor[4 floats]
+INIT:B0046 HTML:294:28 p Sets the color for the object's text in RGBA format.
+INIT:B0047 HTML:299:0 h3 textjustification[int]
+INIT:B0048 HTML:305:28 p Sets the justification for the object's text. Possible values:0 = 'left' 1 = 'center' 2 = 'right'
+INIT:B0049 HTML:313:0 h3 valuepopup[int]: 0
+INIT:B0050 HTML:319:28 p For objects with single values, enabling valuepopup will display the object's current value in a popup caption when the mouse is over the object or it is being changed with the mouse.
+INIT:B0051 HTML:324:0 h3 valuepopuplabel[int]: 0
+INIT:B0052 HTML:330:28 p Sets the source of a text label shown in a value popup caption. Possible values:0 = 'None' 1 = 'Hint' 2 = 'Scripting Name' 3 = 'Parameter Long Name' 4 = 'Parameter Short Name'
+INIT:B0053 HTML:340:0 h3 varname[symbol]
+INIT:B0054 HTML:346:28 p Sets the patcher's scripting name, which can be used to address the object by name in pattr, scripting messages to thispatcher, and the js object.
+INIT:B0055 HTML:351:62 h2 Messages
+INIT:B0056 HTML:353:0 h3 bang
+INIT:B0057 HTML:357:25 p Sending a bang message to a live.thisdevice object causes it to output a bang message from the leftmost outlet.
+INIT:B0058 HTML:362:0 h3 (mouse)
+INIT:B0059 HTML:366:25 p Double-clicking on a live.thisdevice object causes it to output a bang message from the leftmost outlet.
+INIT:B0060 HTML:371:0 h3 getstate
+INIT:B0061 HTML:375:25 p Sending a getstate message to a live.thisdevice object causes it to output the Max Device state from the rightmost outlet.
+INIT:B0062 HTML:382:0 h3 loadbang
+INIT:B0063 HTML:386:25 p Same as bang .
+INIT:B0064 HTML:391:0 h3 setwidth
+INIT:B0065 HTML:396:0 p The setwidth message will dynamically set the width of the Max for Live device. Note: This width is not automatically saved as part of the preset and/or Live set. The message setwidth 0 will return to the default condition where the width of the device is calculated by using the devices's visible objects.
+INIT:B0066 HTML:404:27 li width [int]
+INIT:B0067 HTML:408:62 h2 See Also
+INIT:B0068 HTML:411:0 th Name
+INIT:B0069 HTML:412:0 th Description
+INIT:B0070 HTML:416:0 td active
+INIT:B0071 HTML:419:0 td Send 1 when patcher window is active, 0 when inactive
+INIT:B0072 HTML:424:0 td button
+INIT:B0073 HTML:427:0 td Blink and send a bang
+INIT:B0074 HTML:432:0 td closebang
+INIT:B0075 HTML:435:0 td Send a bang on close
+INIT:B0076 HTML:440:0 td freebang
+INIT:B0077 HTML:443:0 td Send a bang when a patcher is freed
+INIT:B0078 HTML:448:0 td loadbang
+INIT:B0079 HTML:451:0 td Send a bang when a patcher is loaded
+INIT:B0080 HTML:456:0 td loadmess
+INIT:B0081 HTML:459:0 td Send a message when a patch is loaded
+INIT:B0082 HTML:464:0 td thispatcher
+INIT:B0083 HTML:467:0 td Send messages to a patcher
+JS:B0001 HTML:28:28217 h1 class LiveAPI
+JS:B0002 HTML:29:0 p A means of communicating with the Live API from JavaScript.
+JS:B0003 HTML:30:0 p For background information on this functionality, please see the Live API Overview and Live Object Model documents, as well as the Reference pages for live.path, live.object and live.observer objects, which provide the same basic functionality as the LiveAPI object, but from the Max patcher.
+JS:B0004 HTML:31:0 p Technical note: you cannot use the LiveAPI object in JavaScript global code. Use the live.thisdevice object to determine when your Max Device has completely loaded (the object sends a bang from its left outlet when the Device is fully initialized, including the Live API).
+JS:B0005 HTML:32:0 p Legacy note: previous versions of the LiveAPI object required the jsthis object's this.patcher property as the first argument. For backward-compatibility, this first argument is still supported, but is no longer necessary.
+JS:B0006 HTML:33:0 p Beginning with release 6.0 of Max, it is no longer possible to configure JavaScript functions to run in the high-priority thread of Max's scheduler. The LiveAPI object cannot be created or used in the high-priority thread, so users should be sure to use the defer or deferlow objects to re-queue messages to the js object.
+JS:B0007 HTML:34:0 p Example
+JS:B0008 HTML:35:0 pre var api = new LiveAPI(sample_callback, "live_set tracks 0"); if (!api) { post("no api object\n"); return; } post("api.mode", api.mode ? "follows path" : "follows object", "\n"); post("api.id is", api.id, "\n"); post("api.path is", api.path, "\n"); post("api.children are", api.children, "\n"); post('api.getcount("devices")', api.getcount("devices"), "\n"); api.property = "mute"; post("api.property is", api.property, "\n"); post("type of", api.property, "is", api.proptype, "\n"); function sample_callback(args) { post("callback called with arguments:", args, "\n"); }
+JS:B0009 HTML:54:0 h2 Index
+JS:B0010 HTML:55:0 p Constructors
+JS:B0011 HTML:57:0 li new LiveAPI(callback, path)
+JS:B0012 HTML:59:0 p Properties
+JS:B0013 HTML:61:0 li children
+JS:B0014 HTML:62:0 li id
+JS:B0015 HTML:63:0 li info
+JS:B0016 HTML:64:0 li mode
+JS:B0017 HTML:65:0 li patcher
+JS:B0018 HTML:66:0 li path
+JS:B0019 HTML:67:0 li property
+JS:B0020 HTML:68:0 li proptype
+JS:B0021 HTML:69:0 li type
+JS:B0022 HTML:70:0 li unquotedpath
+JS:B0023 HTML:71:0 li valid
+JS:B0024 HTML:73:0 p Methods
+JS:B0025 HTML:75:0 li call(fn, arguments)
+JS:B0026 HTML:76:0 li get(property)
+JS:B0027 HTML:77:0 li getcount(child)
+JS:B0028 HTML:78:0 li getstring(property)
+JS:B0029 HTML:79:0 li goto(path)
+JS:B0030 HTML:80:0 li set(property, value)
+JS:B0031 HTML:82:0 h2 new LiveAPI(callback, path)
+JS:B0032 HTML:83:0 pre new LiveAPI(callback?: Function, path?: string);
+JS:B0033 HTML:85:0 p Constructs a new instance of the LiveAPI class
+JS:B0034 HTML:106:18 th Parameter
+JS:B0035 HTML:106:36 th Type
+JS:B0036 HTML:106:49 th Description
+JS:B0037 HTML:106:93 td optional callback
+JS:B0038 HTML:106:128 td Function
+JS:B0039 HTML:106:145 td a function to be called when the LiveAPI object refers to a new object in Live (if the LiveAPI object's path changes, for instance) or when an observed property changes
+JS:B0040 HTML:106:336 td optional path
+JS:B0041 HTML:106:367 td string
+JS:B0042 HTML:106:382 td the object in Live pointed to by the LiveAPI object (e.g. "live_set tracks 0 devices 0") or a valid LiveAPI object id
+JS:B0043 HTML:107:0 h2 call(fn, arguments)
+JS:B0044 HTML:108:0 p Calls the given function of the current object, optionally with a list of arguments.
+JS:B0045 HTML:109:0 pre call(fn: string, ...arguments: any[]): any;
+JS:B0046 HTML:136:18 th Name
+JS:B0047 HTML:136:31 th Type
+JS:B0048 HTML:136:44 th Description
+JS:B0049 HTML:136:88 td fn
+JS:B0050 HTML:136:99 td string
+JS:B0051 HTML:136:114 td the name of the Live API function to call
+JS:B0052 HTML:136:173 td arguments
+JS:B0053 HTML:136:191 td any[]
+JS:B0054 HTML:136:205 td any arguments to the function
+JS:B0055 HTML:136:252 td Return Value
+JS:B0056 HTML:136:273 td any
+JS:B0057 HTML:136:285 td
+JS:B0058 HTML:137:0 h2 children string[]
+JS:B0059 HTML:138:0 p An array of children of the object at the current path
+JS:B0060 HTML:139:0 h2 get(property)
+JS:B0061 HTML:140:0 p Returns the value or list of values of the specified property of the current object.
+JS:B0062 HTML:141:0 pre get(property: string): number | number[];
+JS:B0063 HTML:163:18 th Name
+JS:B0064 HTML:163:31 th Type
+JS:B0065 HTML:163:44 th Description
+JS:B0066 HTML:163:88 td property
+JS:B0067 HTML:163:105 td string
+JS:B0068 HTML:163:120 td the object's property
+JS:B0069 HTML:163:164 td Return Value
+JS:B0070 HTML:163:185 td number | number[]
+JS:B0071 HTML:163:211 td
+JS:B0072 HTML:164:0 h2 getcount(child)
+JS:B0073 HTML:165:0 p The count of children of the object at the current path
+JS:B0074 HTML:166:0 pre getcount(child: string): number;
+JS:B0075 HTML:188:18 th Name
+JS:B0076 HTML:188:31 th Type
+JS:B0077 HTML:188:44 th Description
+JS:B0078 HTML:188:88 td child
+JS:B0079 HTML:188:102 td string
+JS:B0080 HTML:188:117 td the child to count children of
+JS:B0081 HTML:188:165 td Return Value
+JS:B0082 HTML:188:186 td number
+JS:B0083 HTML:188:201 td
+JS:B0084 HTML:189:0 h2 getstring(property)
+JS:B0085 HTML:190:0 p Returns the value or list of values of the specified property of the current object as a String object.
+JS:B0086 HTML:191:0 pre getstring(property: string): string | string[];
+JS:B0087 HTML:213:18 th Name
+JS:B0088 HTML:213:31 th Type
+JS:B0089 HTML:213:44 th Description
+JS:B0090 HTML:213:88 td property
+JS:B0091 HTML:213:105 td string
+JS:B0092 HTML:213:120 td the object's property
+JS:B0093 HTML:213:164 td Return Value
+JS:B0094 HTML:213:185 td string | string[]
+JS:B0095 HTML:213:211 td
+JS:B0096 HTML:214:0 h2 goto(path)
+JS:B0097 HTML:215:0 p Navigates to the path and causes the id of the object at that path out be sent to the callback function defined in the Constructor. If there is no object at the path, id 0 is sent.
+JS:B0098 HTML:216:0 pre goto(path: string): void;
+JS:B0099 HTML:233:18 th Name
+JS:B0100 HTML:233:31 th Type
+JS:B0101 HTML:233:44 th Description
+JS:B0102 HTML:233:88 td path
+JS:B0103 HTML:233:101 td string
+JS:B0104 HTML:233:116 td
+JS:B0105 HTML:234:0 h2 id number
+JS:B0106 HTML:235:0 p The id of the Live object referred to by the LiveAPI object. These ids are dynamic and awarded in realtime from the Live application, so should not be stored and used over multiple runs of Max for Live.
+JS:B0107 HTML:236:0 h2 info string read-only
+JS:B0108 HTML:237:0 p A description of the object at the current path, including id, type, children, properties and functions
+JS:B0109 HTML:238:0 h2 mode number
+JS:B0110 HTML:239:0 p The follow mode of the LiveAPI object. 0 (default) means that LiveAPI follows the object referred to by the path, even if it is moved in the Live user interface.
+JS:B0111 HTML:240:0 p For instance, consider a Live Set with two tracks, "Track 1" and "Track 2", left and right respectively. If your LiveAPI object's path is live_set tracks 0, the left-most track, it will refer to "Track 1". Should the position of "Track 1" change, such that it is now to the right of "Track 2", the LiveAPI object continues to refer to "Track 1". A mode of 1 means that LiveAPI updates the followed object based on its location in the Live user interface. In the above example, the LiveAPI object would always refer to the left-most track, updating its id when the object at that position in the user interface changes.
+JS:B0112 HTML:241:0 h2 patcher Patcher read-only
+JS:B0113 HTML:242:0 p The patcher of the LiveAPI object, as passed into the constructor
+JS:B0114 HTML:243:0 h2 path string
+JS:B0115 HTML:244:0 p The path to the Live object referred to by the LiveAPI object.
+JS:B0116 HTML:245:0 p These paths are dependent on the currently open Set in Live, but are otherwise stable: live_set tracks 0 devices 0 will always refer to the first device of the first track of the open Live Set.
+JS:B0117 HTML:246:0 h2 property string
+JS:B0118 HTML:247:0 p The observed property, child or child-list of the object at the current path, if desired
+JS:B0119 HTML:248:0 p For instance, if the LiveAPI object refers to "live_set tracks 1", setting the property to "mute" would cause changes to the "mute" property of the 2nd track to be reported to the callback function defined in the LiveAPI Constructor.
+JS:B0120 HTML:249:0 h2 proptype string read-only
+JS:B0121 HTML:250:0 p The type of the currently observed property or child
+JS:B0122 HTML:251:0 p The types of the properties and children are given in the Live Object Model.
+JS:B0123 HTML:252:0 h2 set(property, value)
+JS:B0124 HTML:253:0 p Sets the value or list of values of the specified property of the current object.
+JS:B0125 HTML:254:0 pre set(property: string, value: any): void;
+JS:B0126 HTML:276:18 th Name
+JS:B0127 HTML:276:31 th Type
+JS:B0128 HTML:276:44 th Description
+JS:B0129 HTML:276:88 td property
+JS:B0130 HTML:276:105 td string
+JS:B0131 HTML:276:120 td the object's property to set
+JS:B0132 HTML:276:171 td value
+JS:B0133 HTML:276:185 td any
+JS:B0134 HTML:276:197 td the new value or values of the property
+JS:B0135 HTML:277:0 h2 type string read-only
+JS:B0136 HTML:278:0 p The type of the object at the current path
+JS:B0137 HTML:279:0 p Please see the Live API Overview and Live Object Model documents for more information.
+JS:B0138 HTML:280:0 h2 unquotedpath string
+JS:B0139 HTML:281:0 p The path to the Live object referred to by the LiveAPI object, without any quoting (the path property contains a quoted path)
+JS:B0140 HTML:282:0 p These paths are dependent on the currently open Set in Live, but are otherwise stable: live_set tracks 0 devices 0 will always refer to the first device of the first track of the open Live Set.
+JS:B0141 HTML:283:0 h2 valid number read-only
+JS:B0142 HTML:284:0 p Whether the LiveAPI object refers to a valid Live object

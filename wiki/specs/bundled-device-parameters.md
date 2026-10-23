@@ -2,9 +2,9 @@
 id: SPEC-BUNDLED-DEVICE-PARAMETERS
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-22
 access: analysis
-revision: 2
+revision: 3
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -273,8 +273,12 @@ unreleased. Clauses that differ from v1 because of the review say so.
   Not in v1: the release excludes this switch's labels (review RVB-01), because revision 1
   gave them reversed.
 - **D.** Corpus `Pipe Resonator.adv` stores `ResonanceType` 5 and `Tubular Pan.adv` stores 6.
-- **U.** Electric `Polyphony`: the program holds the labels `2` to `32` and a separate
-  `Voices` text, so the displayed text is not established. Corpus `LfoType` (Sine, Square,
+- **S (labels), X (voice-count meaning).** Electric `Polyphony` index p = 0..30
+  corresponds to labels `2` to `32` and permits p + 2 voices. Extracted execution
+  tested all 31 indices ([REQ-DEVICE-ELECTRIC-005](device-electric.md#req-device-electric-005--voices-and-polyphony),
+  DEL-025; retained `t12-electric-v1/results/probes_events.json` `voices.limit`).
+  The exact display text combining the label and `Voices` remains U.
+- **U.** Corpus `LfoType` (Sine, Square,
   Triangle, SawUp, SawDown, Sample & Hold, Random Ramp), `LfoSync` (Free, Sync) and
   `LfoStereoMode` (Phase, Spin): the program holds a second name list after each of these
   label lists, which suggests that the user interface shows icons or short names. These
@@ -966,7 +970,7 @@ The last column names the static route that could still settle each one.
 | Save output of 12.4.3: order, omissions, target `Id`s, ranges of re-created parameters | 001, 002, 008, 012, 013 | Exact file comparison of saved presets and sets | Member writer against each device's registration, for order and omissions; constructor ranges (REQ-006) for re-created parameters; none identified for `Id`s and bindings |
 | Value displayed, used and saved after an out-of-range, narrower-range or fractional value | 006, 007, 010 | Round trip of hand-edited or foreign documents | Create path (A1) and device post-load step, for the saved value; none known for the display |
 | Defaults of a newly inserted device | 009 | Values of new devices | Insert path, for a read of the Defaults preset |
-| Labels of Analog, Tension and Collision; Electric `Polyphony` and Corpus LFO labels | 014 | Display of enum values | Run-time label tables; display of the second name lists and the `Voices` text |
+| Labels of Analog, Tension and Collision; Electric `Voices` display text and Corpus LFO labels | 014 | Display of enum values | Run-time label tables; display of the second name lists and the `Voices` text |
 | Meaning of the stored 0..1 positions (contradiction) | 015 | None for storage; sound only | Value emitted by the Live-side float parameter unit |
 | Negative Enum text | 010 | Whether such a document opens | Integer text reader, owned by REQ-TRANSPORT-STATE-006 |
 | The document create path for device list items (assumption A1) | 007, 008, 010 | All A1 clauses | Trace from the list-item factory |
@@ -1006,7 +1010,7 @@ record in N6 `out/live_corpus_excerpts.jsonl`. Transport rules come from
 | 012 | H4 target counts (37,794 / 13,618; 215 documents; 3,553 envelopes, none on these devices) | D |
 | 013 | H4 `KeyMidi` counts (1,672; contexts) | D |
 | 014 | N5 constructor label lists (`FUN_1026ef060` label arrays in `0x1030b4934`, `0x1030c9c90`, `0x1030e9578`, `0x1030e277c`, `0x1030e3830`); H4 `out/corpus_resonance.json`. Revision 2: `FUN_1030c9c90` passes `"Dynamic"`, `"Condenser"` to `FUN_102a43394`; `FUN_10143bab0` keeps the first at +0x18 and the second at +0x20; `FUN_10143bb10` returns +0x18 for a nonzero value (corpus chunks `chunk-02350`, `chunk-00780`; RVB-01). `FUN_1030e9578` builds labels `2`…`32` and passes `"Voices"` separately (`chunk-02352`; F4); `FUN_1030e3830` holds `ModulationSine`…, `ModulationHertz`/`ModulationBeat`, `Phi`/`Spin` after the label lists (`chunk-02351`; F5) | S (A3); D; U |
-| 015 | N5 position contradiction; N6 cross-check (Collision bundle entries 51, 53, 54, 84, 86, 87 are kind 1 −2..2). Static route: the float parameter unit created by `0x10319c4dc`, whose emitted value N5 inferred but did not trace | U |
+| 015 | N5 position contradiction; N6 cross-check (Collision bundle entries 51, 53, 54, 84, 86, 87 are kind 1 −2..2). 2026-10-22 evidence qualification: the [sole-reviewed five-branch factory study](../research/device-analog-dsp.md#five-branch-factory-source-adoption--2026-10-22) makes the earlier direct AFloat creation association stale; actual class/current receiver and emitted value remain untraced | U |
 
 **Internal mapping (not a requirement).** Each stored parameter reaches the device engine
 as an indexed value through Live's mapping. The complete index and conversion tables are
@@ -1043,6 +1047,7 @@ Corrections and contradictions:
 | --- | --- | --- |
 | 1 | 2026-10-17 | First draft from H4 (DEV-C01 to C10), N5 (DEV-M01 to M10) and N6: 15 requirements (1 D only; 2 D and S; 12 with D or S clauses and U parts; none U only); 37 unexecuted cases, 4 not graded (BDP-017, 033, 034, 037), 4 with unresolved parts (BDP-014–016, 028) |
 | 2 | 2026-10-18 | Applies the v1 review findings. Applied: RVB-01 (REQ-014: Cabinet switch true Dynamic, false Condenser; marked not in v1); RVB-02 (REQ-006 value-read clause, positions excluded as in v1; REQ-015); RVB-04 (REQ-006 S: Amp and Cabinet `DryWet` traced, 0..1; 372 of 372 Float); RVB-05 with F1 (REQ-011: unstored Collision fields removed), F2 (seven Corpus side-chain fields), F4 and F5 (Electric `Polyphony` and Corpus `LfoType`, `LfoSync`, `LfoStereoMode` labels moved to U); RVB-06 (REQ-006: 22 Enum domains rest on the stored range); F3 (tables regenerated in document order, one row per instance, plain fields included, cross-checked against H4 `current`, the v1 tables and all 1,064 shipped occurrences); F6 (research note only, N6 page); F7 (REQ-002 and scope: 20 stored envelope members); F8 (REQ-006: no narrower range in `.adv`). A1's dependency list corrected (REQ-006 to 008 and 010, not 009). Also brought into line with v1: REQ-003 plain-field and group shape and `.adv` form, REQ-011 unknown child of a group. RVB-03 and RVB-07 to 09 concern only the release text; none rejected. U clauses, cases and open questions reworded for ADR 0003 with static routes. Counts unchanged: 15 requirements (1 D only; 2 D and S; 12 with D or S clauses and U parts); 37 cases, 4 not graded, 4 with unresolved parts |
+| 3 | 2026-10-19 | REQ-014 distinguishes Electric Polyphony's X voice-count meaning (all 31 indices) from the unobserved `Voices` display text. N5's rounded Electric Volume default is corrected in the canonical mapping research to 0.7047892213; the Electric table here already held that value. The t12 peak correction (0.296 with the exact default and settled ramp) is owned by the [Electric research](../research/device-electric-dsp.md#corrections-to-other-pages), not a storage acceptance criterion. 15 requirements and 37 cases remain; no case expectation changes. The current v1 partial release remains immutable and does not include the new Polyphony meaning. |
 
 Before the 2026-10-18 review, a first handoff could carry REQ-001 to 008 and 011 with
 the parameter tables, the S and D clauses of REQ-010, 012 and 013, and REQ-014 for Amp,

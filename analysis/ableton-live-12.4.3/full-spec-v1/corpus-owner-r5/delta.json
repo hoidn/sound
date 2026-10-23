@@ -1,0 +1,97 @@
+{
+  "before_path": "spec-before-r4.md",
+  "before_bytes": 41194,
+  "before_sha256": "62ccc40debde55baf7fed54bbbc6eaa803f0d6a12f2a3b4b2841baabae6775d8",
+  "after_path": "spec-r5.md",
+  "after_bytes": 51090,
+  "after_sha256": "aba64f5c420091617c16d28c9f0d2437c0eacf67ed1940bfe27250644038eecf",
+  "replacements": [
+    {
+      "reason": "Proposed revision/date only",
+      "before": "updated: 2026-10-19\naccess: analysis\nrevision: 4",
+      "after": "updated: 2026-10-20\naccess: analysis\nrevision: 5"
+    },
+    {
+      "reason": "Bound MIDI exclusion to two declared host-input histories",
+      "before": "- the MIDI side-chain features: MidiPitch, MidiGate, Transpose, FineTranspose,\n  PitchBendRange, DecayOnNoteOff, MidiMode and the side-chain routing fields (REQ-013, U);",
+      "after": "- MIDI side-chain behavior beyond the two exact extracted held-note host-input cases\n  DCO-030 and DCO-031: general MidiPitch, MidiGate, Transpose, FineTranspose,\n  PitchBendRange, DecayOnNoteOff, MidiMode and Live side-chain routing remain U\n  (REQ-013). The two cases define finite bundle outputs, not Live routing;"
+    },
+    {
+      "reason": "Add exact event history and prevent old invariance transfer",
+      "before": "  output is stereo binary32, one output frame for each input frame.\n",
+      "after": "  output is stereo binary32, one output frame for each input frame.\n- **X; proposed finite engineering scope.** DCO-030 and DCO-031 use the complete\n  38-value host vector and event fixture below: new instance, 44,100 Hz, parameters\n  in index order, one held note-on at absolute host/test frame1537, then one\n  16,384-frame process in blocks512 with I1 at4096. The only difference between\n  those two histories is key60 versus72. MidiPitch=1 and MidiGate=0; LFO is off.\n  Stopped transport is `{playing:0, position:0, tempo:120}` and is not advanced;\n  input flag1, MXCSR0x1f80 and time seed0 characterize the reference calls.\n  No reset, warm-up, note-off, bend, sustain, second note or parameter update\n  occurs. The event has status0x90, channel0 and velocity100, and remains held\n  through destruction. The canonical input coordinate is1537 (block1536/local1);\n  do not subtract again in an adapter. Live's event base and actual delivery are U.\n  No block-size, repeatability, rate/reset, clock, FTZ/DAZ, MXCSR, startup or other\n  invariance below is extended to these two new vectors. Their dedicated modal\n  comparisons alone apply; DCO-029's separate Ramp rule is unchanged.\n"
+    },
+    {
+      "reason": "Narrow only REQ013 finite note60/note72 subset, retain general U",
+      "before": "- **U.** These were not rendered:\n  - the effect of MIDI notes, pitch bend and sustain received through Corpus's side-chain input;\n  - MidiPitch (pitch from the note), MidiGate (gate from held notes) and DecayOnNoteOff (decay\n    while the gate is closed);\n  - Transpose, FineTranspose and PitchBendRange (active only with MidiPitch);\n  - MidiMode (Live-side note priority).\n\n  The bundle's note handling and Live's routing of side-chain MIDI are untraced. Effect on T1:\n  sets that route MIDI to Corpus, or that turn MidiPitch or MidiGate on, are not verifiable.\n",
+      "after": "- **X; proposed finite project criterion.** Only DCO-030 and DCO-031 have a proposed\n  finite event-bearing expectation: one held note60 or72 under REQ-001's exact\n  fixture, compared to that captured output with the fixed modal lists below.\n  This does not recover a general note-to-pitch, velocity, gate or event-timing law.\n  DCO-030's scored bytes equal an older fixed-pitch render after4096: that case\n  alone cannot detect ignoring MIDI. DCO-031 supplies a distinct finite output;\n  its wrong-note60 rejection is a bounded control, not proof of every MIDI path.\n- **U.** Beyond those two declared extracted histories, the general features remain unknown:\n  - the effect of MIDI notes, pitch bend and sustain received through Corpus's side-chain input;\n  - MidiPitch (pitch from the note), MidiGate (gate from held notes) and DecayOnNoteOff (decay\n    while the gate is closed);\n  - Transpose, FineTranspose and PitchBendRange (active only with MidiPitch);\n  - MidiMode (Live-side note priority).\n\n  Live's side-chain routing/event base, other histories and the full bundle-event\n  admission/handling path remain unproved. Effect on T1: general sets routing MIDI\n  to Corpus or enabling MidiPitch/MidiGate remain unverifiable beyond these exact\n  two finite host-input cases. DCO-026 remains U and unchanged.\n"
+    },
+    {
+      "reason": "Explicit finite metric selection, no generic startup/LFO transfer",
+      "before": "any start-up ramp. **DCO-029 is the sole exception to selecting rows by general\nsignal class:** only its dedicated finite Ramp row applies. The older modal,\npitch and timing comparisons retain their separate case scopes.",
+      "after": "any start-up ramp. **DCO-029, DCO-030 and DCO-031 have dedicated finite rows:**\nonly the specified row and validation for each applies. DCO-029 retains its Ramp\nrule; DCO-030/031 use only the modal measurements and first256 post-impulse frames\nspecified below. General startup, timing, LFO, Ramp and other signal rows do not\nadd checks to these two MIDI cases. The older case scopes remain unchanged."
+    },
+    {
+      "reason": "Add dedicated two finite modal metric rows",
+      "before": "| DCO-029 only: Free Ramp Up, exact frozen input/protocol | Every frame4096\u201316383inclusive, each channel independently; no fitting, alignment or alternate windows | Relative waveform RMS \u22640.01; both channel energies positive and full-file samples finite |",
+      "after": "| DCO-029 only: Free Ramp Up, exact frozen input/protocol | Every frame4096\u201316383inclusive, each channel independently; no fitting, alignment or alternate windows | Relative waveform RMS \u22640.01; both channel energies positive and full-file samples finite |\n| DCO-030 only: held note60, exact frozen input/protocol | Fixed32 mode points (16per channel) copied exactly from CORPUS-AUDIO-013-04; original modal estimator and first256 frames4096\u20134351 inclusive | Unchanged modal frequency/log-radius/complex-amplitude budgets and early waveform relative RMS\u22640.002; full-file finite validation |\n| DCO-031 only: held note72, exact frozen input/protocol | Fixed30 mode points (first15per channel), cutoff100Hz, from the retained calibration's fixed navigation list; first256 frames4096\u20134351 inclusive | Same unchanged modal budgets and early waveform relative RMS\u22640.002; explicit post-observation finite engineering eligibility, not recovered pole eligibility |"
+    },
+    {
+      "reason": "Specify finite modal method, engineering eligibility and limits",
+      "before": "Why not a sample-by-sample maximum error.",
+      "after": "For DCO-030/031, decode exactly16384 stereo interleaved little-endian binary32\nframes and widen to binary64. Reject bad length or any nonfinite sample anywhere;\nreference and candidate must have positive post4096 energy independently on each\nchannel. Compare every frozen point on both channels and the early256-frame\nwaveform. Do not align, rescale, mix channels, recenter modes, remove failed fits\nor substitute another window. An absent/unmeasurable/nonfinite mode or zero\namplitude denominator fails. Frames0\u20134095 have length/finiteness validation only:\nno silence/floor, energy, phase, onset, event timing or startup accuracy is graded.\nFinite corruption in that prefix can pass.\n\nThe unchanged modal procedure is the released v2 comparator's `modal` branch:\ncausal1455-tap scaled Hamming FIR at100Hz, global demodulation, group delay727,\nfit frames5551\u201316383 inclusive (earliest contributing input4097), and amplitude\nextrapolation to4096. The early waveform uses frames4096\u20134351 inclusive with\nrelative RMS\u22640.002. For each listed mode, candidate and reference are measured\nwith exactly the same center and cutoff. Compare frequency with absolute bound\n`reference_frequency*4*(3*2^-25/theta^2+2^-23)`,\n`theta=2*pi*reference_frequency/44100`; per-frame log-radius absolute error\n\u2264`8*2^-25`; complex amplitude ratio error\u22640.005. These are unchanged finite\nengineering budgets, not a new bound on native poles, original math-library\nerror or physical note accuracy. Expected mode values come from measuring the\nfrozen reference, not from the navigation centers or an inferred MIDI pitch law.\n\nDCO-030 copies all32 points of released evaluation CORPUS-AUDIO-013-04. All\nscored source samples are byte-identical after4096, so its existing measurement\neligibility transfers only on those samples; full files differ. This cannot by\nitself reject an implementation ignoring this MIDI event.\n\nDCO-031 is an **explicit post-observation engineering eligibility proposal**:\nfreeze the first15 navigation points per channel from the fixed16-point\ncalibration list, without refitting centers or changing any numeric budget.\nThis case-specific choice replaces the general modal row's recovered-pole\neligibility condition for this case only. Both mode16 observations are omitted\nbecause their full/half estimates were window-sensitive; all32 original research\nrows, including those two, remain retained. The omission was selected after\nobservation, not predeclared or an automated stability test. The retained\n[method proposal](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-modal-method/README.md)\nand its proposed [independent criterion review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-modal-method-review.json)\nare separate gates before owner adoption. No p1 hypothesis, recovered actual\ncoefficient/pole, complete significant-gap, estimator uncertainty, general mode\neligibility, hidden-spectrum or newly resolved174-omission claim follows.\nOmitting mode16 leaves that observation ungraded; it does not prove it absent.\n\nBoth cases retain only their exact vector/input/history and the fixed listed\nmeasurements. There is no new render, candidate result or application grade in\nthis owner draft. A source route or a reference-self comparison is not such a grade.\n\nWhy not a sample-by-sample maximum error."
+    },
+    {
+      "reason": "Fixture/protocol/raw identities for the two added histories",
+      "before": "### Cases\n",
+      "after": "DCO-030/031 use the complete vector and exact event objects in the additive\n[R5 case fixture](../../analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r5/cases-additions.json).\nAll38 host binary32 values are explicit; the pair differs only at the event key,\n60 versus72. Both use I1 at44100Hz,16384frames/block512 and the REQ-001 fixed\nhistory. Their [reviewed capture](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/README.md)\nretains original scripts/raw/logs without replay. The two raw files are each\n131072bytes: note60 SHA-256\n`5866c6b9e4915336648da87bd92c38927cb3e532fe81ab38b5300664c7bb984f`,\nnote72 SHA-256\n`f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc`.\nThe event interface is an externally declared test input, not a required internal\nrecord representation or a recovered Live-side frame convention. No extra\nadapter-minus-one correction is permitted. Full source/capture history remains\nunchanged. The original four U cases and all29 earlier case rows remain exact.\n\n### Cases\n"
+    },
+    {
+      "reason": "Append two proposed case rows without changing old29",
+      "before": "| DCO-029 | 001, 011 | P | Exact DCO-020 host/input/protocol, only LfoType=3 (Free Ramp Up); I1 at44100Hz,16384frames/block512 | Dedicated per-channel post4096waveform RMS \u22640.01 only; positive energies/full-file finite validation; finite engineering criterion, no Live/application grade | New `raw/ramp-up.f32` (`40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec`) |",
+      "after": "| DCO-029 | 001, 011 | P | Exact DCO-020 host/input/protocol, only LfoType=3 (Free Ramp Up); I1 at44100Hz,16384frames/block512 | Dedicated per-channel post4096waveform RMS \u22640.01 only; positive energies/full-file finite validation; finite engineering criterion, no Live/application grade | New `raw/ramp-up.f32` (`40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec`) |\n| DCO-030 | 001, 013 | P | Exact38-value R5 fixture, MidiPitch1/MidiGate0/LFOoff; one held note60 velocity100/channel0 at1537, I1 at44100Hz,16384frames/block512 | Dedicated fixed32-point modal/early-waveform criterion only; prefix finite-only; cannot alone reject ignored MIDI | Captured `raw/note60.f32` (`5866c6b9e4915336648da87bd92c38927cb3e532fe81ab38b5300664c7bb984f`) |\n| DCO-031 | 001, 013 | P | Same complete vector/protocol as DCO-030, only event key72 | Dedicated fixed30-point modal/early-waveform criterion only; post-observation engineering eligibility; both mode16 observations ungraded | Captured `raw/note72.f32` (`f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc`) |"
+    },
+    {
+      "reason": "Preserve general MIDI route unknown after finite additions",
+      "before": "- **MIDI side-chain path (REQ-013).** It needs both a bundle trace (event to note) and a Live\n  trace (side-chain routing).",
+      "after": "- **MIDI side-chain path (REQ-013).** It needs both a bundle trace (event to note) and a Live\n  trace (side-chain routing). The two finite extracted histories do not resolve the general\n  route, all notes/gates or event timing; their engineering comparisons are case-specific."
+    },
+    {
+      "reason": "Add exact evidence route for finite additions",
+      "before": "| arm64 equivalence | Static:",
+      "after": "| 001/013 finite DCO-030/031 | [Capture review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-pitch-review.json); note60 scored-byte identity with released013-04; all32 note72 research rows in the [proposed method packet](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-modal-method/README.md). The R2 preflight approved readiness only, not criteria/eligibility; proposed method/owner reviews remain separate. No actual Live result or new original call |\n| arm64 equivalence | Static:"
+    },
+    {
+      "reason": "Record proposal revision/counts",
+      "before": "| 4 | 2026-10-19 | Proposes one finite Free Ramp Up host-input audio case DCO-029 with its own explicit 1%per-channel waveform-RMS budget. All13requirement IDs/28earlier case rows, A1 and174modal omissions remain unchanged. Independent criterion/owner review and successor release are separate gates; no complete-profile or actual Live/candidate claim. |",
+      "after": "| 4 | 2026-10-19 | Proposes one finite Free Ramp Up host-input audio case DCO-029 with its own explicit 1%per-channel waveform-RMS budget. All13requirement IDs/28earlier case rows, A1 and174modal omissions remain unchanged. Independent criterion/owner review and successor release are separate gates; no complete-profile or actual Live/candidate claim. |\n| 5 | 2026-10-20 | Proposes two exact held-note host-input modal cases DCO-030/031, preserving all13IDs/29oldcase rows;31cases:27finite proposed expectations/fourU. REQ001/013 narrowed only to these histories. Note72 eligibility is an explicit post-observation first15perchannel engineering choice, both mode16 records retained/ungraded. Criterion, owner adoption and release remain separate; no candidate/application grade or complete profile. |"
+    },
+    {
+      "reason": "Qualify historical v1 statements without editing them",
+      "before": "The finite pilot is recorded under the [handoff plan]",
+      "after": "**Historical R1\u2013R3 release statements, retained as of those freezes.**\n\nThe finite pilot is recorded under the [handoff plan]"
+    },
+    {
+      "reason": "Qualify historical v2 proposal without rewriting history",
+      "before": "Revision4 preserves the revision3 finite release and its immutable payloads.",
+      "after": "**Historical R4 author-freeze proposal, retained verbatim below.**\n\nRevision4 preserves the revision3 finite release and its immutable payloads."
+    },
+    {
+      "reason": "Append current proposed R5 routing/status, retain history",
+      "before": "",
+      "after": "\n\n## Proposed R5 owner successor (2026-10-20)\n\nDevice-corpus-v2 is now a separately released immutable provider; its69 finite\nevaluations and every v1/v2 payload remain unchanged. This R5 draft proposes two\ncanonical cases only; no successor release IDs or evaluation grouping are assigned\nhere. DCO-030/031 do not rename DCO-025\u2013028, and no new requirement ID is created.\nThe [R5 proposal record](../../analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r5/README.md)\nretains exact R4before/R5proposal text, literal deltas and complete finite inputs.\nAS-OF AUTHOR DRAFT: the method packet/criterion review and this owner review are\npending. No canonical page is adopted or release published by this proposal.\n",
+      "operation": "append"
+    }
+  ],
+  "requirement_ids_before_after": 13,
+  "old_case_rows_exact": 29,
+  "new_case_ids": [
+    "DCO-030",
+    "DCO-031"
+  ],
+  "case_count": 31,
+  "finite_proposed_cases": 27,
+  "U_cases": 4,
+  "adopted": false,
+  "release_or_application_grade": null
+}

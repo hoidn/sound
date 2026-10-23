@@ -1,0 +1,142 @@
+{
+  "revision": 3,
+  "requirements": [
+    {
+      "id": "REQ-NATIVE-MIDI-001",
+      "title": "scale-aware pitch controls",
+      "contract": "\n**D12 (M 0003–0004).** Enabling Use Current Scale changes pitch controls from\nsemitones to scale degrees. Device-specific ownership of root/scale appears\nbelow. **U:** absent clip/scale, out-of-scale input selection, tuning systems,\nscale changes while notes sound, and rounding of nonintegral transpositions.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-002",
+      "title": "Arpeggiator sequence styles",
+      "contract": "\n**D12 (M 0011–0020, 0026).** Style selects and displays a note pattern; previous\nand next buttons cycle styles. Play Order follows input play order; Chord Trigger\nrepeats the held pitches together. Random continuously randomizes; Random Other\navoids reusing a note until the others have been used; Random Once repeats one\nrandom ordering until incoming MIDI changes. Pattern Offset 1 starts at the\nsecond pattern position and moves the former first to last. **U:** exact orders\nfor Up/Down/Converge/Diverge and all other styles, duplicate-pitch identity,\nrandom seed/distribution, what changes invalidate Random Once, and offsets beyond\none cycle. A finite random test does not prove distribution or fairness.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-003",
+      "title": "Arpeggiator rate, gate and transposition",
+      "contract": "\n**D12 (M 0021–0024).** Rate is milliseconds in Free or a tempo-synced division.\nGate expresses duration as a percentage of Rate; values over 100% overlap.\nDistance is semitones or scale degrees; Steps counts successive transpositions\nfollowing the original pattern. Distance +12 st, Steps 2 gives original, +12,\n+24. Negative Distance lowers successive repetitions. Root/Scale choosers set\nlocal scale; Use Current Scale takes the clip scale and disables these choosers.\n**U:** first event phase, exact division catalog, timing grid, gate rounding,\nend-of-pattern overlaps, groove interaction and pitches beyond the MIDI range.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-004",
+      "title": "Arpeggiator held set, retrigger and repetition",
+      "contract": "\n**D12 (M 0025, 0030–0035).** Hold keeps a pattern after physical release; adding\nheld keys adds pitches and playing a pitch a second time removes it as described\nby the manual. Retrigger Off does not restart the pattern, Note restarts on a\nnew note, Beat restarts at Interval; the retrigger LED flashes. Repeats controls\npattern repetition; its documented default is infinite. **U:** replacement versus\naddition when all physical keys are up (the manual also says repetition continues\nuntil another key), pedal interaction, last-note removal, finite-repeat restart,\ntransport stop/jump and held-note retirement. The held-set ambiguity is retained,\nnot resolved by choosing an interpretation.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-005",
+      "title": "Arpeggiator velocity and groove",
+      "contract": "\n**D12 (M 0027–0029, 0036–0037).** Groove selects swing influenced by Global\nGroove Amount. Velocity enables Target/Decay; Decay is the time to Target.\nVelocity Retrigger restarts the velocity slope when the pattern retriggers.\n**U:** decay curve, event velocities, target-zero note suppression, groove\nquantities, retrigger phase and behavior when toggled during a held pattern.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-006",
+      "title": "CC Control event families",
+      "contract": "\n**D12 (M 0041–0049).** The three fixed controls produce modulation, pitch bend\nand channel pressure; Pitch Bend has downward negative and upward positive\nvalues. Custom A switches between on/off or minimum/maximum and can be assigned\nthrough CC Type Chooser; CC64 sustain is its documented intended use. There are\n12 customizable dials B–M. Pitch bend and pressure must be observed as their own\nMIDI event families, not assumed to be 7-bit CC messages. **U:** numeric ranges,\nwire encoding, channel choice, quantization, reset-to-center and repeated-value\nsuppression; this source does not supply their byte-level laws.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-007",
+      "title": "CC Control assignment, Send and automation",
+      "contract": "\n**D12 (M 0050–0052).** B–M have custom names and assignments, shown on Push and\nsaveable as presets. Values can be automated or moved in real time. Bank toggles\nshow controls 1–8 or 9–16. Send outputs current MIDI CC values. Learn assigns\nincoming CC data to a customizable control. Existing CC automation and outgoing\nCC Control data merge. **U:** learning target selection, multi-message learning,\nconsumption versus forwarding, Send order/count and treatment of non-CC fixed\ncontrols, duplicate assignments, same-time merge order, smoothing, preset-load\nemission and hardware receipt. Preset storage is a documentary promise, not an\nobserved successful round trip.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-008",
+      "title": "Chord pitches and duplicate shifts",
+      "contract": "\n**D12 (M 0056–0058).** An input note supplies the root and up to six additional\npitches with Shift 1–6 in −36..+36 st. +4 and +7 form the root major triad,\nindependent of which slots hold those values. Reassigning the same pitch to\nanother Shift deactivates that additional assignment. **U:** zero-shift slot\nactivation, collision with another input note, pitch overflow, note-off ownership\nand simultaneous ordering.\n\n**D12 (M 0057).** The LED next to each Shift knob flashes to indicate when its corresponding note is being played. This indicator role is not independent proof of delivered note events.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-009",
+      "title": "Chord learning",
+      "contract": "\n**D12 (M 0059).** With Learn enabled, the first held key is the root and consumes\nno Shift; subsequent held pitches fill Shift slots in play order. Additional\nheld keys extend the learned chord; disabling Learn ends assignment.\n**U:** more than six additions, release/repress, sustain, removal, monitoring\nwhile learning, cancelling a partially learned chord and undo grouping.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-010",
+      "title": "Chord dynamics and chance",
+      "contract": "\n**D12 (M 0060–0063).** Each generated note has relative Velocity 1%..200%; 100%\nmatches input velocity. Chance is 0%..100%, with 100% generating that note for\nevery input. **U:** velocity multiply rounding/clipping, chance seed/distribution\nor correlation, and note-off behavior after a suppressed note. No finite trial\ncount is required to reproduce a probability proportion.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-011",
+      "title": "Chord strum, scale and per-note events",
+      "contract": "\n**D12 (M 0064–0073).** Strum offers delays up to 400 ms between notes; positive\norder is original then Shift1..Shift6, negative reverses it. The context option\nallows duplicate notes when strumming. Positive Tension accelerates successive\nstrums; negative slows them. Crescendo raises or lowers successive velocities.\nUse Current Scale selects degree shifts. Send Per Note Events to Generated Notes\nextends MPE data to generated notes; with scale awareness, per-note bend follows\nthe clip scale. **U:** delay curve/exact timestamps, tension/crescendo arithmetic,\nlate note-offs during a pending strum, duplicate policy with Strum zero, expression\nchannel allocation and bend values.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-012",
+      "title": "Note Length triggered on note-on",
+      "contract": "\n**D12 (M 0077–0078).** With Trigger Source Note On and Latch off, output duration\nis Length multiplied by Gate/100; Gate 50%, 100%, 200% yields half, full, double\nLength. Time Mode selects milliseconds or tempo divisions. **U:** exact start\nlatency, source note-off suppression, same-key retrigger, gate/length control\nbounds and updating Length or tempo while an output note sounds.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-013",
+      "title": "Note Length triggered on note-off",
+      "contract": "\n**D12 (M 0079).** With Note Off selected, the output note starts when its input\nnote is released, rather than at input note-on, and then uses Gate and Length.\n**U:** unpaired release, simultaneous releases, sustain's effect with Latch off,\noutput note-off velocity and event-grid placement.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-014",
+      "title": "Note Length release dynamics",
+      "contract": "\n**D12 (M 0080–0083).** In Note Off mode, Release Velocity blends input on/off\nvelocities. Decay begins at incoming note-on; its value at note-off sets output\nvelocity, reaching zero after Decay Time. Positive Key Scale lengthens notes\nbelow C3 and shortens those above; negative reverses that relationship.\n**U:** blend equation, decay shape, order of operations, pitch scaling law and\nzero-velocity result. No numeric output oracle follows from the qualitative law.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-015",
+      "title": "Note Length latch",
+      "contract": "\n**D12 (M 0084).** Note On latch sustains triggered notes until the next note-on.\nNote Off latch depends on all keys/pedal being released and a new note-off.\nLatch disables Gate and Length; in Note Off latch, Release Velocity, Decay Time\nand Key Scale are also disabled. **U:** exact Note Off latch transition (especially\nwhich release qualifies), chord release ordering, pedal and repeated-note cases.\nThe documented UI disablement is gradable; the ambiguous Note Off event sequence\nis not assigned a fabricated oracle.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-016",
+      "title": "Pitch transposition and step controls",
+      "contract": "\n**D12 (M 0088–0092).** Pitch offers ±128 st or ±30 scale degrees. Step Up/Down\nchanges Pitch by Step Width, 1..48 st or 1..30 degrees. Controls accept key/MIDI\nmapping (mapping math belongs to the mapping spec). **U:** clipping/wrapping at\ncontrol bounds, overflowed outgoing keys, off-scale degree selection and effects\nof an automated pitch change on already sounding notes.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-017",
+      "title": "Pitch range modes",
+      "contract": "\n**D12 (M 0093–0097).** Lowest and Range define permitted pitches. Block drops\nout-of-range notes and flashes its LED; Fold transposes them into range; Limit\nmoves below-range notes to the lower bound and above-range notes to the upper\nbound. **U:** range width/end inclusion, filtering before versus after Pitch,\nFold interval and empty/one-note range. Cases use Pitch zero to avoid inventing\nthe processing order and avoid unproven exact upper endpoints.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-018",
+      "title": "Random pitch selection and signs",
+      "contract": "\n**D12 (M 0101–0104, 0107–0114).** Chance controls probability of pitch alteration;\nChoices has 1..24 possibilities and Interval controls their spacing. Add raises,\nSub lowers, Bi permits both; the +/0/− LEDs identify the direction. The documented\nRandom/Add example Choices 1, Interval 12, Chance 50% restricts outputs to C3 or\nC4 for input C3. Choices12/Interval1 permits unaltered C3 or C#3..C4.\n**U:** seed/distribution, finite proportions, exact Chance thresholds, Bi zero\nhandling and overflow. The examples authorize pitch-membership predicates only,\nnot a fixed random sequence or a 50/50 finite-sample test.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-019",
+      "title": "Random Alt mode and contradictory examples",
+      "contract": "\n**D12 (M 0105).** Alt uses a cyclic order. Chance100% advances to the next step;\nChance0% outputs the incoming pitch. **U (M 0106):** a 12-choice example describes\nC3 through C4 before reset (13 notes), while Choices2/Interval2 describes only\nC3,D3 (2 notes). These cannot support a single generalized cycle-length formula.\nBoth setups are retained as ungraded cases; phase/reset and intermediate Chance\nare unknown. No algorithm is inferred from the parameter names.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-020",
+      "title": "Random with a scale",
+      "contract": "\n**D12 (M 0115).** Use Current Scale constrains generated pitches to the clip\nscale. **U:** degree spacing with Interval, inclusion of off-scale dry notes,\nscale changes during Alt and cross-note versus per-pitch cycle state.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-021",
+      "title": "Scale matrix and root",
+      "contract": "\n**D12 (M 0119–0122).** Matrix columns select incoming notes and rows outgoing\nnotes; mapping C to D converts incoming Cs to Ds. Base/Scale Name choose the\nmapping; Use Current Scale uses the clip root/scale and disables those choosers.\nUser mode permits moving or deleting highlighted assignments; deletion prevents\nthat input note from producing output. **U:** top/right 13th grid cell semantics,\nselection gestures and mapping ordinal encodings. The manual calls it a 13×13\ngrid representing 12 notes; no extra note class is inferred.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-022",
+      "title": "Scale User fold",
+      "contract": "\n**D12 (M 0124).** In User mode, Fold changes a mapped pitch when its distance\nfrom input exceeds six semitones. The documented C3→A3 mapping becomes C3→A2.\n**U:** exactly ±6, downward counterpart, transpose ordering and range edges.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-023",
+      "title": "Scale transposition and selected range",
+      "contract": "\n**D12 (M 0123, 0125).** Transpose is ±36 st. Lowest C2, Range+36 applies mapping\nto C2..B4 and leaves other notes alone; Transpose+7 applies within that same\nrange. **U:** arbitrary range interpretation, one-note/zero ranges, overflow,\nrange versus fold/transpose order outside this documented example.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-024",
+      "title": "Velocity transfer and operation",
+      "contract": "\n**D12 (M 0129–0132).** Lowest/Range select the input velocity interval; Out Low/Hi\nselect the output interval. The displayed curve shows the transfer. Operation\nchooses Note On, Note Off (Rel. Vel.) or both. Out Low80/Hi127 constrains outputs\nto the higher range. **U:** exact transfer formula and rounding, velocity zero,\nfractional upstream velocities, swapped ranges and off-event ownership.\nThe manual's “essentially bypassed” example authorizes no bit-identity claim.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-025",
+      "title": "Velocity outside-range modes",
+      "contract": "\n**D12 (M 0133–0136).** Clip constrains incoming out-of-range velocities; Gate\nremoves out-of-range events and flashes its LED when blocking a note; Fixed sets\noutgoing velocity to Out Hi regardless of incoming velocity. **U:** exact range\nendpoint inclusion, whether a gated note-on suppresses its later note-off,\nrelease-only Gate lifecycle and precedence of Fixed versus Random/curve controls.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-026",
+      "title": "Velocity randomness and curve shaping",
+      "contract": "\n**D12 (M 0137–0142).** Random modulates velocity within the output range; the\nOutLow60/Hi127, Random50 example permits up/down changes of at most50 while\nremaining in60..127. Positive Drive favors higher velocities; negative favors\nlower. Positive Compand expands toward extremes; negative compresses toward the\nmiddle. **U:** formulas, distribution, seed, correlation, curve sampling and\nprocessing order. Shading represents the random range; it is not a distribution\nmeasurement.\n\n"
+    },
+    {
+      "id": "REQ-NATIVE-MIDI-027",
+      "title": "device lifecycle and failures",
+      "contract": "\n**U.** For every device independently, establish automation at an event boundary\nand during a held note, bypass/re-enable, stop/continue/reset, save/reopen, undo,\ncancel, malformed input and deletion/track teardown. Stored `Timeable*` fields\nand `On` prove none of these emitted-event outcomes. Do not borrow upstream clip\nnote-off laws or assume reset clears random/held state. Concrete probes below\ncapture outstanding obligations without prescribing guessed behavior.\n\n"
+    }
+  ],
+  "exact_build_grade": "U",
+  "complete": false
+}

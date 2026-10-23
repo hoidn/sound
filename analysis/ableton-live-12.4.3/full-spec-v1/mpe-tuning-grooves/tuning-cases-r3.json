@@ -1,0 +1,1189 @@
+[
+  {
+    "id": "TUN-001",
+    "requirement": "REQ-TUNING-001",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "No tuning loaded; valid user ASCL located in browser Places.",
+    "action": "Browse Tunings/User; hover file.",
+    "expected": "User file discoverable; Info View contains tuning description/note count.",
+    "comparator": "Compare listed file and known description/count; indexing delay U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T1"
+  },
+  {
+    "id": "TUN-002",
+    "requirement": "REQ-TUNING-002",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "Browser Tuning section hidden; valid shipped tuning.",
+    "action": "Load by double-click then, reset, Enter; save/reopen Set.",
+    "expected": "Tuning section opens and loaded tuning retained in Set.",
+    "comparator": "Compare tuning identity across methods and reopen; bitwise serialization U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2"
+  },
+  {
+    "id": "TUN-003",
+    "requirement": "REQ-TUNING-003",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning with documented degree name and reference.",
+    "action": "Hover tuning note in piano roll and audition.",
+    "expected": "Status Bar reports pitch/frequency corresponding to displayed tuning note.",
+    "comparator": "Compare known degree label; audio and arbitrary frequency equation/tolerance U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2"
+  },
+  {
+    "id": "TUN-004",
+    "requirement": "REQ-TUNING-004",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Clip has note indices 60 and 64; Retune Set disabled.",
+    "action": "Change tuning then remove.",
+    "expected": "Indices 60/64 retained; no destructive-retune confirmation; ruler labels can change.",
+    "comparator": "Compare indices exactly and confirmation absence; frequencies U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H2"
+  },
+  {
+    "id": "TUN-005",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Existing melody; Retune Set enabled and a distinct valid tuning selected.",
+    "action": "Load new tuning.",
+    "expected": "Retune confirmation shown before destructive retuning.",
+    "comparator": "Compare confirmation presence; closest-pitch arithmetic/tie/collision survivor and actual note output U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H2"
+  },
+  {
+    "id": "TUN-006",
+    "requirement": "REQ-TUNING-006",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Scale Mode visible and scale-aware device Use Current Scale on.",
+    "action": "Load retained 12-TET ASCL.",
+    "expected": "Scale choosers hidden; device Use Current Scale unavailable.",
+    "comparator": "Compare visibility/enabled state even though loaded file describes 12TET; preserved hidden state U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H3"
+  },
+  {
+    "id": "TUN-007",
+    "requirement": "REQ-TUNING-007",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning; reference display captured; stable compatible sustained test note.",
+    "action": "Change reference Octave/Note identity without directly editing frequency.",
+    "expected": "Displayed reference frequency updates while sounding pitch does not change.",
+    "comparator": "Compare before/after pitch equality under identity-only edit; exact new displayed number and measured tolerance U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3"
+  },
+  {
+    "id": "TUN-008",
+    "requirement": "REQ-TUNING-008",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning with reference 440Hz in compatible setup.",
+    "action": "Edit Ref. Pitch/Freq to 432Hz.",
+    "expected": "Reference control reads 432Hz and note pitches lower.",
+    "comparator": "Compare numeric reference value and direction only; absolute frequencies, settling time and held-note policy U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3,H3"
+  },
+  {
+    "id": "TUN-009",
+    "requirement": "REQ-TUNING-009",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Tuning range with N intervening indices captured.",
+    "action": "Change Lowest Note by one tuning position, then separately Highest Note.",
+    "expected": "Other endpoint updates keeping N intervening positions.",
+    "comparator": "Compare index-count invariant, avoiding limits; frequency monotonicity U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3"
+  },
+  {
+    "id": "TUN-010",
+    "requirement": "REQ-TUNING-010",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Loaded tuning edited to reference 432Hz; separate tuning without LINK.",
+    "action": "Save tuning via disk button; inspect arrow for unlinked tuning.",
+    "expected": "ASCL output has current tuning; no-link arrow disabled.",
+    "comparator": "Compare saved tuning/reference metadata and disabled arrow; save dialog path/overwrite/error U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T3,A5"
+  },
+  {
+    "id": "TUN-011",
+    "requirement": "REQ-TUNING-011",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning selected; Retune Set off.",
+    "action": "Press Delete.",
+    "expected": "Default 12TET restored, existing note indices retained.",
+    "comparator": "Compare loaded tuning absence and unchanged indices; previously heard pitch need not be restored.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,T3,H2"
+  },
+  {
+    "id": "TUN-012",
+    "requirement": "REQ-TUNING-012",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded non-12TET tuning; two MIDI tracks, one with Drum Rack.",
+    "action": "Enable Bypass on other track.",
+    "expected": "Bypassed track displays 12TET and passes original MIDI; Drum Rack track automatically bypasses.",
+    "comparator": "Compare bypass state/ruler and input/output note-number identity at documented abstraction; exact MIDI bytes U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T4,H2"
+  },
+  {
+    "id": "TUN-013",
+    "requirement": "REQ-TUNING-013",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Loaded tuning and external keyboard input.",
+    "action": "Choose Black Keys Only then White Keys Only.",
+    "expected": "Layout choices center at C#3 and C3 respectively.",
+    "comparator": "Compare selected mapping mode and center labels; full note table and boundary keys U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T5"
+  },
+  {
+    "id": "TUN-014",
+    "requirement": "REQ-TUNING-014",
+    "kinds": [
+      "positive",
+      "persistence"
+    ],
+    "setup": "Custom layout editable for a MIDI track.",
+    "action": "Choose Custom, open ellipsis, make one valid mapping edit; save/reopen Set.",
+    "expected": "Custom dialog opens and mapping is recalled.",
+    "comparator": "Compare edited mapping state before/after reopen; exact valid domain and duplicate mapping U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T5"
+  },
+  {
+    "id": "TUN-015",
+    "requirement": "REQ-TUNING-015",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "External MPE-capable receiver or plugin with documented bend setting.",
+    "action": "Enable MPE and set per-note bend range ±48.",
+    "expected": "Configured prerequisites for tuning receiver met.",
+    "comparator": "Compare capability/enable and range settings; arbitrary receiver sound and Live auto-negotiation U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T1,H3"
+  },
+  {
+    "id": "TUN-016",
+    "requirement": "REQ-TUNING-016",
+    "kinds": [
+      "positive",
+      "negative"
+    ],
+    "setup": "Valid SCL has intervals but no reference; optional KBM available.",
+    "action": "Load SCL; separately attempt KBM selection.",
+    "expected": "Live supplies 440Hz reference near middle of MIDI range; KBM unsupported.",
+    "comparator": "Compare reference frequency 440Hz and documented unsupported classification only; generated note index and KBM UI U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "H3"
+  },
+  {
+    "id": "TUN-017",
+    "requirement": "REQ-TUNING-017",
+    "kinds": [
+      "negative",
+      "malformed"
+    ],
+    "setup": "Valid SCL pitch list followed by Ableton directive with deliberately non-UTF-8 byte in a name.",
+    "action": "Import through extension parser.",
+    "expected": "Non-UTF-8 extension input is rejected by documented compliant-parser rule.",
+    "comparator": "Compare rejection rather than accepted extended tuning; dialog/recovery state U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A1"
+  },
+  {
+    "id": "TUN-018",
+    "requirement": "REQ-TUNING-018",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Valid 12-entry ASCL, REFERENCE_PITCH 3 9 440.0 and twelve NOTE_NAMES.",
+    "action": "Import.",
+    "expected": "Reference fields describe octave 3 degree 9 at 440Hz; name list begins at degree zero.",
+    "comparator": "Compare reference identity/frequency and degree-zero name; extra directives and parser normalization U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A2"
+  },
+  {
+    "id": "TUN-019",
+    "requirement": "REQ-TUNING-019",
+    "kinds": [
+      "negative",
+      "malformed"
+    ],
+    "setup": "Valid ASCL with both NOTE_RANGE_BY_INDEX and NOTE_RANGE_BY_FREQUENCY directives.",
+    "action": "Import.",
+    "expected": "Multiple range directives are an error.",
+    "comparator": "Compare presence of range-validation error; transaction recovery/error text and refusal stage U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A3"
+  },
+  {
+    "id": "TUN-020",
+    "requirement": "REQ-TUNING-020",
+    "kinds": [
+      "positive",
+      "boundary"
+    ],
+    "setup": "Valid 12-note ASCL without range; reference suitable for unambiguous nearest A3.",
+    "action": "Import.",
+    "expected": "Note closest to A3 440Hz placed at tuning index 69 in twelve-note special case.",
+    "comparator": "Compare nearest-note/index relationship; ties and arbitrary explicit-reference recentering U.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A4"
+  },
+  {
+    "id": "TUN-021",
+    "requirement": "REQ-TUNING-021",
+    "kinds": [
+      "positive"
+    ],
+    "setup": "Valid nonmonotonic tuning with earlier REFERENCE_PITCH, explicit index range, SOURCE/LINK.",
+    "action": "Import and inspect order/range labels/metadata.",
+    "expected": "Index range means first/last positions rather than sorted frequency extrema; origin/link represented.",
+    "comparator": "Compare preserved degree order/range positions and metadata; software may restrict clickable URL.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A3,A5"
+  },
+  {
+    "id": "TUN-022",
+    "requirement": "REQ-TUNING-017",
+    "kinds": [
+      "malformed",
+      "negative"
+    ],
+    "setup": "Malformed SCL/ASCL variants: empty/truncated pitch count, invalid ratio denominator, unknown/duplicate directive, invalid quote/BOM.",
+    "action": "Import each independently.",
+    "expected": "U: rejection/repair, error text and preserved Set state; UTF-8 known case remains TUN-017.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A1,A2"
+  },
+  {
+    "id": "TUN-023",
+    "requirement": "REQ-TUNING-018",
+    "kinds": [
+      "boundary",
+      "malformed"
+    ],
+    "setup": "REFERENCE_PITCH octave -3/9, degree -1/count, frequency 0/negative/NaN/infinity; reversed ranges.",
+    "action": "Import each variant.",
+    "expected": "U: response for numeric invalidity, clamping/error policy and retained data.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A2,A3"
+  },
+  {
+    "id": "TUN-024",
+    "requirement": "REQ-TUNING-020",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Equal-distance reference/nearest-retuned degree and non-12-note tuning without range.",
+    "action": "Load/change tuning.",
+    "expected": "U: tie direction, exact generated reference, base-frequency math and cap priority.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "A3,A4"
+  },
+  {
+    "id": "TUN-025",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "negative",
+      "boundary"
+    ],
+    "setup": "Two time-overlapping notes map to same target; also just-touching notes and overlapping equal pitches.",
+    "action": "Confirm automatic retuning.",
+    "expected": "U: deleted/shortened survivor, overlap predicate, ordering and attached expression consequences.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,H2"
+  },
+  {
+    "id": "TUN-026",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Retune confirmation displayed; existing notes/tuning snapshotted.",
+    "action": "Cancel then repeat with dialog close/Escape.",
+    "expected": "U: whether tuning and/or notes revert, dialog dismissal and partial application.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2"
+  },
+  {
+    "id": "TUN-027",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "undo"
+    ],
+    "setup": "Set retuned with noncolliding notes; repeat with colliding notes.",
+    "action": "Undo, redo, then make another edit.",
+    "expected": "U: complete undo transaction scope and collision restoration; FAQ supplies one undo recipe only.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "H2"
+  },
+  {
+    "id": "TUN-028",
+    "requirement": "REQ-TUNING-002",
+    "kinds": [
+      "persistence"
+    ],
+    "setup": "Loaded tuning, custom reference/range/layout/bypass; original file removed after save.",
+    "action": "Reopen Set and inspect.",
+    "expected": "U: embedded-content completeness and all settings/error paths beyond documented loaded tuning/layout persistence.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,T5,H3"
+  },
+  {
+    "id": "TUN-029",
+    "requirement": "REQ-TUNING-014",
+    "kinds": [
+      "cancellation"
+    ],
+    "setup": "Custom layout dialog open with known prior map.",
+    "action": "Change duplicate/unmapped keys, then cancel/save-dialog cancel.",
+    "expected": "U: valid map domain, immediate/deferred application and restored map.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T5"
+  },
+  {
+    "id": "TUN-030",
+    "requirement": "REQ-TUNING-012",
+    "kinds": [
+      "teardown"
+    ],
+    "setup": "Active notes with tuning and bypassed/drum track.",
+    "action": "Delete tuning/track/rack; close Set or unplug controller.",
+    "expected": "U: reset/note-off/cleanup ordering and implicit bypass after rack removal.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T4"
+  },
+  {
+    "id": "TUN-031",
+    "requirement": "REQ-TUNING-008",
+    "kinds": [
+      "boundary"
+    ],
+    "setup": "Held note and running transport under compatible tuning receiver.",
+    "action": "Change reference, range, layout or tuning while held.",
+    "expected": "U: held-note pitch migration, smoothing, allocation and scheduling boundary.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T2,T3,T5"
+  },
+  {
+    "id": "TUN-032",
+    "requirement": "REQ-TUNING-006",
+    "kinds": [
+      "negative",
+      "teardown"
+    ],
+    "setup": "Scale-aware device active before tuning, bypassed/nested Drum Racks and Drum Synth present.",
+    "action": "Load/remove tuning and add/remove racks.",
+    "expected": "U: restored scale-enabled state, nested/individual device exceptions and layout/bypass interaction.",
+    "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+    "documentary_grade": "U",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "source": "T1,T2,T4,H3"
+  },
+  {
+    "id": "TUN-033",
+    "requirement": "REQ-TUNING-001",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Browser descriptions and owned tuning entry",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Use a known recognized owned Core tuning and independently valid owned SCL and ASCL copies. First demonstrate productive ordinary Places listing and Info View description on the known file, with readiness independently established. In separate reset folders propose adding each owned SCL/ASCL to an admitted Places folder and inspect Tunings/User. Compare browser file hover, actual file selection and loaded-tuning-name hover as distinct inputs. Record offered description and note-count fields without computing arbitrary counts, asserting indexing deadlines or grading saved bytes.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "The Core Library also comes with a set of tuning systems, which can be found in the Tunings label of the browser. Tuning files from the Core Library use an Ableton-specific extension to the SCL (Scala) file format called ASCL. When hovering over or selecting tuning systems in the browser, a short description of the tuning, including the number of notes per octave, is shown in the Info View. This description is also shown when hovering over the name of a loaded tuning system. You can add your own .scl or .ascl files to any folder in Live’s Places so that they show up in the Tunings label of the browser under the User tag.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/3",
+        "block": "TUN:B004"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/4",
+        "block": "TUN:B005"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/5",
+        "block": "TUN:B006"
+      }
+    ],
+    "adoption_group": "TSA-G01",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-034",
+    "requirement": "REQ-TUNING-002",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Section menu, external drag and triangle entries",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "First obtain a productive ordinary browser load through the existing double-click/Enter route on independently recognized owned tuning. Record known hidden/visible section state; actually open the section using the browser view control menu on an independent reset. Separately drag one independently valid owned external SCL, then one ASCL, into the actual Tuning section on separate resets. Inspect loaded name. Use the triangle next to that name to expand/collapse the settings. No forced initial default, multi-file drop ordering, Hot-Swap button absence, identity codec or extra persistence is assumed; existing TUN002 already saves/reopens.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": "The browser view control menu opens the Tuning section; its name readout identifies the loaded tuning and the adjacent triangle expands the additional settings.",
+    "documentary_comparator": "Named offered UI entry/selection/visibility role only; no numeric, parser, file, signal, timing, URI or unsupported availability outcome.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "To load a tuning system into a Set, you can double-click on a tuning file in the browser, or select the file and press Enter. These methods will automatically open the Tuning section of the browser, which is hidden by default. You can also open the Tuning section using the browser’s view control menu. External ASCL or SCL files on your computer can be dragged and dropped into the Tuning section as well. As long as the file is loaded in the Tuning section, the tuning will be saved with the Live Set. You can toggle the triangle next to the name of the tuning file to expand the section and access additional settings for the lowest and highest notes for the reference pitch. Tuning displays the name of the tuning system. L35: Can Tuning Systems be hot-swapped?\nL36: It's not possible to hot-swap tuning systems, but they are quick to load. Just double-click a Tuning System in the Browser, or select it and press Enter.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/9",
+        "block": "TUN:B010"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/10",
+        "block": "TUN:B011"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/11",
+        "block": "TUN:B012"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/20",
+        "block": "TUN:B021"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/21",
+        "block": "TUN:B022"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/0",
+        "supplement": "TSA-S01"
+      }
+    ],
+    "adoption_group": "TSA-G02",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-035",
+    "requirement": "REQ-TUNING-003",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Keyboard audition versus Status Bar description",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Keep actual TUN003 piano-note hover/audition. In a separate admitted keyboard context identify a loaded tuning degree with independently known display label. First demonstrate a genuinely effective accepted tuning on a compatible receiver and active unmuted nonzero source/output route; independently recognized keyboard input and ordinary productive note audition are required. Play the known note via that keyboard and separately hover its piano-roll note, retaining Status Bar pitch/frequency field roles and observed sound independently. Do not derive pitch from a marker or specify any note-frequency, bend, amplitude, latency or tolerance result. Missing input or productive tuning response stays U.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "When a tuning system is added to a Live Set, the notes in the piano roll no longer represent standard MIDI notes, but instead show the corresponding notes of the tuning. You can hover over a note in the piano roll to see useful information, such as the note’s pitch and frequency, in the Status Bar. The specified pitch is produced when a note is played in the piano roll or via a keyboard.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/12",
+        "block": "TUN:B013"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/13",
+        "block": "TUN:B014"
+      }
+    ],
+    "adoption_group": "TSA-G03",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-036",
+    "requirement": "REQ-TUNING-005",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Literal Options entry and On-before-Off confirmation contrast",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Use nonempty owned melody and two independently valid distinct tunings, exact known original note data and reset histories. Actually invoke Options > Retune Set On Loading Tuning Systems rather than treating an On setup as this gesture. Independently show a successful ordinary load and matched Retune-On load with the documented confirmation. Only then reset original content, explicitly switch Retune Off through the entry and perform the matched tuning change to inspect confirmation absence and existing note indices, keeping the prior TUN004/005/011 actions exact. Separately retain collision/removal-On/cancel/Undo investigations U after a productive noncolliding control baseline; do not require a removal popup or select closest-note/tie/survivor/rollback/restoration arithmetic.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": "The offered Options entry selects Retune Set On Loading Tuning Systems; its On/Off control states are distinct from the subsequent retuning result.",
+    "documentary_comparator": "Named offered UI entry/selection/visibility role only; no numeric, parser, file, signal, timing, URI or unsupported availability outcome.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "By default, if a tuning system is removed or changed to a different tuning, the position of existing notes in the piano roll is not changed, but the pitches shown in the note ruler are updated to match the new tuning. This means the original notes may not produce the same pitch. The “Retune Set On Loading Tuning Systems” entry in the Options menu can be enabled so that when a tuning system is loaded or changed, the notes will closely match the pitches of the original notes, ensuring that a melody sounds as close to the original as possible. You will see a dialog appear to confirm this process when loading a tuning system. When automatic note retuning is enabled, removing or switching between tuning systems can cause original notes to be changed or lost. This can happen when two notes which overlap in time and originally had different pitches both get mapped to the same pitch in the new tuning system, as that new pitch is closest to both original pitches. In that case, one of the notes may be deleted or shortened. You can select a file in the Tuning section and press the Delete key to remove it and return to 12TET tuning. L41: How do I preserve the sound of my MIDI Clip?\nL42: The same MIDI Clip, created in one tuning, may sound very different if loaded with a different tuning applied, or if loaded in software that doesn’t support tunings. To export a MIDI Clip for use in a context that does not support tunings and have it sound as close as possible to the original, in Live’s Options menu enable “Retune Set on Loading Tuning Systems,” select the tuning  “12-TET(EDO),” then export the Clip. Then use Undo to return to your desired tuning.\n L45: What happens to MIDI notes when I load or remove a tuning system? What does the option “Retune Set on loading Tuning Systems” do?\nL46: When the Tuning System of a Live Set is deleted or changed, existing MIDI notes won't produce the same pitch. Live has two options to deal with this situation. When the Option menu setting \"Retune Set on loading Tuning Systems\" is enabled, MIDI notes in existing clips will be moved to the tuned note that is nearest in pitch, or deleted. As this is a destructive action, a pop-up will warn you about it.\nL47: cite12†Image L48: \nL49: With \"Retune Set on loading Tuning Systems\" disabled, MIDI notes will retain the same note index in the new tuning as in the previous one. This change is non-destructive, so there is no pop-up. However, the notes likely won't play the same pitches as before.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/14",
+        "block": "TUN:B015"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/15",
+        "block": "TUN:B016"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/16",
+        "block": "TUN:B017"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/30",
+        "block": "TUN:B031"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/1",
+        "supplement": "TSA-S02"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/2",
+        "supplement": "TSA-S03"
+      }
+    ],
+    "adoption_group": "TSA-G04",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-037",
+    "requirement": "REQ-TUNING-006",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Productive Scale controls before loaded tuning restriction",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Before independently successful load, actually expose and operate eligible Clip View and Control Bar Scale controls and a known eligible scale-aware device Use Current Scale control; record prior state and a functioning ordinary control baseline. Load the recognized retained 12-TET ASCL in a separate reset copy and inspect those exact visibility/enabled roles. Reuse current selected Clip/Workspace/MIDI control owners without duplicating their editing cases. Do not treat the loaded12TET flag as numeric/sound equivalence, infer hidden state or removal restoration, or require every device to expose the same fallback.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Note that the Scale Mode choosers in Clip View and the Control Bar are no longer visible when a tuning system is loaded, and the devices that are scale aware have their Use Current Scale toggle disabled. L70: Can the reference pitch be changed when using standard equal temperament tunings?\nL71: The reference pitch can only be changed once a Tuning System is loaded. The Core Library includes the tuning 12-TET(EDO), which matches Live's standard equal temperament tunings, however it does not work with the existing scales functions.\nL72: Is the loaded Tuning System saved with the Live Set?\nL73: When saving a Live Set, the loaded Tuning System will be saved within the Live Set file (.als file). To export a loaded tuning to your User Library as an .ascl file, click the Save button in the Tuning section.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/17",
+        "block": "TUN:B018"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/6",
+        "supplement": "TSA-S07"
+      }
+    ],
+    "adoption_group": "TSA-G05",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-038",
+    "requirement": "REQ-TUNING-007",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Reference identity, direct frequency and range reset histories",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Retain actual TUN007 identity-only edits, TUN008 direct440-to432 and TUN009 both endpoints. On reset loaded contexts first demonstrate accepted editable Ref. Pitch/Freq and, only for audible comparison, genuinely observed effective tuning response and productive direct-frequency pitch change on a stable compatible active unmuted nonzero route. Restore exact original control/note/output conditions before separately changing Octave and Note identity without directly editing frequency; retain displayed-field response and sound independently, with no numeric or audio comparator. Separately reset accepted interior range controls before each actual Lowest/Highest edit, preserving source index-coordinate context, not sorted frequency extrema. Failed positive tuning/audio baseline makes audible equality U, not success.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Octave sets the octave of the note used for the reference pitch. Note sets the note in the octave used for the reference pitch. Ref. Pitch/Freq sets the frequency of the reference pitch. The pitch of all notes in the Set can be raised or lowered by changing the frequency. Lowest Note sets what the lowest note plays by assigning it to an octave and pitch class. Changing the lowest note also affects the highest note, preserving the number of notes in between. Highest Note sets what the highest note plays; changing the highest note will also update the lowest note. Note that the reference pitch is only audibly affected by the Ref. Pitch/Freq value. Changing the Octave or Note values will update the frequency displayed in the Ref. Pitch/Freq slider to match the newly specified notes, however, no audible change is produced until the reference pitch frequency value itself is adjusted. This is to prevent any sudden pitch changes when setting the Octave or Note values. L70: Can the reference pitch be changed when using standard equal temperament tunings?\nL71: The reference pitch can only be changed once a Tuning System is loaded. The Core Library includes the tuning 12-TET(EDO), which matches Live's standard equal temperament tunings, however it does not work with the existing scales functions.\nL72: Is the loaded Tuning System saved with the Live Set?\nL73: When saving a Live Set, the loaded Tuning System will be saved within the Live Set file (.als file). To export a loaded tuning to your User Library as an .ascl file, click the Save button in the Tuning section.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/22",
+        "block": "TUN:B023"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/23",
+        "block": "TUN:B024"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/24",
+        "block": "TUN:B025"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/25",
+        "block": "TUN:B026"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/26",
+        "block": "TUN:B027"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/27",
+        "block": "TUN:B028"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/6",
+        "supplement": "TSA-S07"
+      }
+    ],
+    "adoption_group": "TSA-G06",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-039",
+    "requirement": "REQ-TUNING-010",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Save and link control positives before no-link absence",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "First obtain successful ordinary tuning Save in an independently admitted writable owned destination, and independently verify an actually available enabled link-arrow control on a relevant loaded tuning; LINK text alone is insufficient. On separate reset copies invoke disk Save and the offered enabled arrow as future entry roles, then inspect the no-relevant-link tuning arrow only after that productive control baseline. Do not access network or claim launched page, URI scheme, website widgets/export, ASCL bytes, atomic save, path repair, overwritten/cancelled file outcome or clickability from SOURCE/LINK metadata. Existing TUN010 Save/reference/no-link proposal remains exact.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "The floppy disk button to the right of the reference pitch frequency can be used to save the currently loaded tuning as an .ascl file to the Tunings label in the browser. Pressing the arrow button next to the Save Tuning System button opens a link to Ableton’s Tuning website that contains more information about the loaded tuning system, as well as an interactive editor for trying out variations of the associated pitches. You can also export any custom tuning systems you create there. Note that not all tuning systems have external webpages, and the arrow button will be greyed out if no relevant link is available. L70: Can the reference pitch be changed when using standard equal temperament tunings?\nL71: The reference pitch can only be changed once a Tuning System is loaded. The Core Library includes the tuning 12-TET(EDO), which matches Live's standard equal temperament tunings, however it does not work with the existing scales functions.\nL72: Is the loaded Tuning System saved with the Live Set?\nL73: When saving a Live Set, the loaded Tuning System will be saved within the Live Set file (.als file). To export a loaded tuning to your User Library as an .ascl file, click the Save button in the Tuning section.\n L75: Why doesn't my .scl file produce the tuning I expect in Live?\nL76: A .scl file defines a tuning system as a set of intervals, rather than determining the absolute frequencies of notes in the system. This means it defines the distance of each note in the system from some base pitch, which must be set via a “reference pitch” before note frequencies can be calculated. For example, in 12TET (twelve tone equal temperament tuning), the reference pitch A3 (the note A in the third octave) is typically defined with a frequency of 440Hz.\nL77: Applying a different value, such as 432 Hz, results in different frequencies being calculated for all notes, even though the tuning system is still 12TET.\nL78: A basic .scl file contains no reference pitch. In some cases, this can be supplied with a paired .kbm file. However, many software tools that import .scl files don’t support .kbm files. In this case, the software using the .scl file must apply a reference pitch, which can either be configurable via the tool’s UI or hardcoded. Live does not support .kbm files, but the .ascl files shipped with Live, unlike basic .scl files, do include a reference pitch.\nL79: When a .scl file without a reference pitch is loaded, Live generates a reference pitch, in order to determine frequencies for all the notes in the tuning system, by assigning the frequency 440 Hz to a note near the middle of the 0-127 MIDI range. The remaining notes in the system are then derived from this reference. If you have a .scl file you’ve used previously in some other tool, it may sound different in Live, since that tool may have used a different strategy to determine the reference pitch.\nL80: To correct this, you can try to determine the reference pitch used by that tool and adjust the reference pitch used in Live via the tuning UI. You can also do this “by ear”, and simply tweak the reference pitch in Live until it matches the tuning in the other tool.\nL81: Once you’ve corrected the reference pitch, you can export your tuning from Live as a .ascl file so that you don’t need to repeat these steps every time you use that tuning in Live – the tuning will be exported as a .ascl file containing the custom reference pitch you set. Just click the Save icon in the tuning UI.\n L82: Where can I learn more about Live’s Tuning Systems?\nL83: Click the right-most button in Live’s Tuning section to access cite15†Ableton’s Tuning website†tuning.ableton.com . If more information about the loaded Tuning System is available,  it will directly be displayed there.\n L140:     ! ## Documentation directives:\nL141:     !\nL142:     ! -- SOURCE\nL143:     !     Arguments:\nL144:     !      Text until end of line\nL145:     !\nL146:     ! Source text is used to document where a tuning system came from or who maintains the\nL147:     ! file.\nL148:     !\nL149:     ! @ABL SOURCE Ableton AG\nL150:     !\nL151:     ! -- LINK\nL152:     !     Arguments\nL153:     !      A URL where someone can learn more information about the tuning system. Note that\nL154:     !      for security reasons, Ableton software may not provide direct access within\nL155:     !      applications to this link.\nL156:     !\nL157:     ! @ABL LINK https://www.ableton.com/tuning-system-spec",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/28",
+        "block": "TUN:B029"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/29",
+        "block": "TUN:B030"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/6",
+        "supplement": "TSA-S07"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/7",
+        "supplement": "TSA-S08"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/8",
+        "supplement": "TSA-S09"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/16",
+        "supplement": "TSA-S17"
+      }
+    ],
+    "adoption_group": "TSA-G07",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-040",
+    "requirement": "REQ-TUNING-012",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Productive tuned track before Bypass interpretation",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Use known valid loaded non-12TET tuning, an eligible nonDrum MIDI track and a separate known Drum Rack context. Establish functioning ordinary configuration toggle/ruler and record loaded-state I/O controls before manual Bypass. For any no-retuning/output comparison additionally demonstrate genuinely effective accepted tuning through a compatible receiver on an active unmuted nonzero route before Bypass; a loaded flag, ruler label or preset field does not prove this. Reset matched conditions before toggling Bypass and keep the actual TUN012 ruler/Drum Rack subsets. Record control/ruler separately from received-note/audio data; no MIDI byte/frequency equality, arbitrary rack nesting/removal, converse unloaded-hide, default or lifecycle rule.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "You will see a few tuning-specific options appear in the I/O section of MIDI tracks when a tuning system is loaded that let you customize your track and controller setups. The Bypass Tuning toggle can be used to ignore a tuning system for a specific MIDI track. When enabled, the MIDI Note Editor will display 12TET tuning notes in the piano roll for any clips in that track. Note that MIDI tracks containing Drum Racks automatically bypass any loaded tuning file. L50: What does Bypass Tuning do?\nL51: When the Bypass Tuning toggle in the track In/Out section is enabled, MIDI instruments and plug-ins receive the original MIDI without any retuning. This is important for instruments like Drum Rack, where the MIDI note number is typically used to select which drum to play, as opposed to instruments where the MIDI note is traditionally used to decide which pitch to play.\nL52: Can I adjust how my MIDI controller maps to notes in an activated Tuning System?\nL53: With a Tuning System loaded, MIDI tracks will have a drop down in the track In/Out section showing \"All keys\". Select a layout to determine how MIDI controllers map to the loaded tuning system for this track or create a Custom Controller Layout.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/32",
+        "block": "TUN:B033"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/34",
+        "block": "TUN:B035"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/35",
+        "block": "TUN:B036"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/36",
+        "block": "TUN:B037"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/3",
+        "supplement": "TSA-S04"
+      }
+    ],
+    "adoption_group": "TSA-G08",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-041",
+    "requirement": "REQ-TUNING-013",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Remaining All Keys and Closest layout entries",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Use recognized loaded tuning and eligible MIDI track with an independently working layout chooser in the track In/Out section. Actually select All Keys and Closest in Pitch to Keyboard on separate resets, retaining offered selection state. Existing TUN013 Black/White centers and TUN014 actual Custom ellipsis/edit/reopen remain exact and are reused. Only investigate actual key mapping after independently valid recognized controller input, active accepted route and genuinely productive matched mapping baseline; unavailable hardware/capability stays U. No nearest-pitch formula, tie, full keymap, channel/output codec or label-as-delivered-sound proof.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": "The offered track layout chooser accepts the named All Keys and Closest in Pitch to Keyboard selections in the independently admitted configuration.",
+    "documentary_comparator": "Named offered UI entry/selection/visibility role only; no numeric, parser, file, signal, timing, URI or unsupported availability outcome.",
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "As notes in a tuning system can differ from 12TET layouts, the Track Tuning MIDI Controller Layout settings allow you to specify which notes a controller can be mapped to, as well as create a custom layout if needed. This is useful for re-aligning the layout of an external keyboard to match the piano roll, if the layout differs when using certain tunings. All Keys maps notes in the tuning system to all keys on the controller. Black Keys Only maps notes to the black keys only. This layout is centered around C#3. White Keys Only maps notes to the white keys only. This layout is centered around C3. Closest in Pitch to Keyboard maps notes to the closest pitch on the keys. Custom Controller Layout lets you define a specific layout for the controller. When Custom Controller Layout is selected in the chooser, you can press the … button to the right to access the Configure MIDI Layout dialog and adjust the layout settings. Custom controller layouts will be saved and recalled with the Live Set. L50: What does Bypass Tuning do?\nL51: When the Bypass Tuning toggle in the track In/Out section is enabled, MIDI instruments and plug-ins receive the original MIDI without any retuning. This is important for instruments like Drum Rack, where the MIDI note number is typically used to select which drum to play, as opposed to instruments where the MIDI note is traditionally used to decide which pitch to play.\nL52: Can I adjust how my MIDI controller maps to notes in an activated Tuning System?\nL53: With a Tuning System loaded, MIDI tracks will have a drop down in the track In/Out section showing \"All keys\". Select a layout to determine how MIDI controllers map to the loaded tuning system for this track or create a Custom Controller Layout.",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/38",
+        "block": "TUN:B039"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/39",
+        "block": "TUN:B040"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/40",
+        "block": "TUN:B041"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/41",
+        "block": "TUN:B042"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/42",
+        "block": "TUN:B043"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/43",
+        "block": "TUN:B044"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/44",
+        "block": "TUN:B045"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/45",
+        "block": "TUN:B046"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/3",
+        "supplement": "TSA-S04"
+      }
+    ],
+    "adoption_group": "TSA-G09",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-042",
+    "requirement": "REQ-TUNING-017",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Recognized ASCL positive before encoding/directive variants",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Use disposable owned independently recognized valid UTF-8 ASCL with actual productive ordinary import and recognized extension/control fields before every alternate/error comparison. Never modify retained original source/example bytes. Propose separate one-variable owned copies for extra initial ! disabling one known directive, quoted-space argument versus independently admitted unquoted input, and one valid reference/name directive context. Retain old TUN017 non-UTF8 and TUN019 double-range errors only after the matched recognized positive, with no inferred error dialog/recovery/commit stage. Representation of reference/name/format rules is source-asof12.1; no generated example is supplied or executed and no parser/format conformance is proved.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Using the ASCL format, you can also create and import your own tuning systems for Live by following the designated specifications. L75: Why doesn't my .scl file produce the tuning I expect in Live?\nL76: A .scl file defines a tuning system as a set of intervals, rather than determining the absolute frequencies of notes in the system. This means it defines the distance of each note in the system from some base pitch, which must be set via a “reference pitch” before note frequencies can be calculated. For example, in 12TET (twelve tone equal temperament tuning), the reference pitch A3 (the note A in the third octave) is typically defined with a frequency of 440Hz.\nL77: Applying a different value, such as 432 Hz, results in different frequencies being calculated for all notes, even though the tuning system is still 12TET.\nL78: A basic .scl file contains no reference pitch. In some cases, this can be supplied with a paired .kbm file. However, many software tools that import .scl files don’t support .kbm files. In this case, the software using the .scl file must apply a reference pitch, which can either be configurable via the tool’s UI or hardcoded. Live does not support .kbm files, but the .ascl files shipped with Live, unlike basic .scl files, do include a reference pitch.\nL79: When a .scl file without a reference pitch is loaded, Live generates a reference pitch, in order to determine frequencies for all the notes in the tuning system, by assigning the frequency 440 Hz to a note near the middle of the 0-127 MIDI range. The remaining notes in the system are then derived from this reference. If you have a .scl file you’ve used previously in some other tool, it may sound different in Live, since that tool may have used a different strategy to determine the reference pitch.\nL80: To correct this, you can try to determine the reference pitch used by that tool and adjust the reference pitch used in Live via the tuning UI. You can also do this “by ear”, and simply tweak the reference pitch in Live until it matches the tuning in the other tool.\nL81: Once you’ve corrected the reference pitch, you can export your tuning from Live as a .ascl file so that you don’t need to repeat these steps every time you use that tuning in Live – the tuning will be exported as a .ascl file containing the custom reference pitch you set. Just click the Save icon in the tuning UI.\n L12: Learn how to use the ASCL file format, an Ableton-specific extension to the SCL (Scala) format used to store tuning system information. The example below specifies supported directives for reference pitch, note names, note range, and documentation as of Ableton Live 12.1.\nL13: \nL14:     `! ASCL Specification\nL15:     !\nL16:     ! ASCL is an Ableton-specific extension to the SCL file format originally developed for\nL17:     ! use with the Scala software to store tuning system information. It is a backwards\nL18:     ! -compatible format where all Ableton-specific extensions are stored in SCL comments\nL19:     ! (whose lines start with !). That means that any ASCL file can be read by software\nL20:     ! capable of reading SCL files.\nL21:     !\nL22:     ! This specification is itself an ASCL file.\nL23:     !\nL24:     ! To start with, the file contains a text description, an integer number of notes per\nL25:     ! octave and a list of pitches for each of these notes in either cents (expects a decimal\nL26:     ! number) or integer ratio (e.g. 5/4). These notes are defined in relation to an implied\nL27:     ! but not written zeroeth index. The last number gives the size of the psuedo-octave.\nL28:     ! This format is described in more detail by the official SCL file documentation:\nL29:     !\nL30:     !   https://www.huygens-fokker.org/scala/scl_format.html\n L33:     An example tuning system to document the ASCL format. If loaded in Live, the short description on this line will be shown in the info text associated with this tuning.\nL34:      12\nL35:     !\nL36:      100.0\nL37:      200.0\nL38:      300.0\nL39:      400.0\nL40:      500.0\nL41:      600.0\nL42:      700.0\nL43:      800.0\nL44:      900.0\nL45:      1000.0\nL46:      1100.0\nL47:      1200.0\n L50:     ! # General notes for Ableton extensions\nL51:     !\nL52:     !   All extended data is stored in comment lines with the prefix @ABL which come after\nL53:     !   the list of note pitches. All arguments to these definitions are separated by spaces.\nL54:     !   If you wish your argument to include a space in it, surround it with double-quotes:\nL55:     !   `\"`\nL56:     !\nL57:     !   All Scala files that implement Ableton extensions must be in UTF-8 format. A\nL58:     !   compliant parser for ABL extensions must reject any file that contains Ableton\nL59:     !   extensions but is not in UTF-8 format.\nL60:     !\nL61:     !   Note, if you wish to temporarily disable a directive, simply add an extra ! sign at\nL62:     !   the beginning of the line, and it will be ignored.\n L67:     ! -- REFERENCE_PITCH - set a reference pitch for this tuning\nL68:     !     Arguments:\nL69:     !       Octave number (integer from -2 to 8)\nL70:     !       Note index within the octave- which note pitch is the frequency set for\nL71:     !         (positive integer, 0-indexed, less than the number of note pitches in this\nL72:     !         tuning system. The zeroeth pitch is the implied 0-cent first note pitch.)\nL73:     !       Frequency (nonzero positive float, in Hz)\nL74:     !\nL75:     ! @ABL REFERENCE_PITCH 4 9 440.0\nL76:     !\nL77:     !\nL78:     ! -- NOTE_NAMES - set default names for the pitch classes in this tuning\nL79:     !     Arguments:\nL80:     !      A sequence of note names for every note pitch in the tuning system. The first\nL81:     !        entry in the sequence applies to the zeroeth note.\nL82:     !\nL83:     ! @ABL NOTE_NAMES C C♯/D♭ D D♯/E♭ E F F♯/G♭ G G♯/A♭ A A♯/B♭ B\n L86:     ! ## Note range directives:\nL87:     !\nL88:     !   These directives set the range of notes considered valid in the tuning system. You\nL89:     !   can use one of either of these directives. It is optional to include a NOTE_RANGE\nL90:     !   directive. It is an error to provide more than one NOTE_RANGE_BY_XXX directive in\nL91:     !   a file.\nL92:     !\nL93:     ! -- NOTE_RANGE_BY_FREQUENCY\nL94:     !     Arguments:\nL95:     !       Minimum frequency in Hz (float from 4.0 to 21000.0)\nL96:     !       Maximum frequency in Hz (float from 4.0 to 21000.0, optional)\nL97:     !\nL98:     ! -- NOTE_RANGE_BY_INDEX\nL99:     !     Arguments:\nL100:     !      Minimum octave (-99 to 99)\nL101:     !      Minimum note pitch index within the octave (integer)\nL102:     !      Maximum octave (-99 to 99, optional)\nL103:     !      Maximum note pitch index within the octave (integer, optional)",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/48",
+        "block": "TUN:B049"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/7",
+        "supplement": "TSA-S08"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/9",
+        "supplement": "TSA-S10"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/10",
+        "supplement": "TSA-S11"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/11",
+        "supplement": "TSA-S12"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/12",
+        "supplement": "TSA-S13"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/13",
+        "supplement": "TSA-S14"
+      }
+    ],
+    "adoption_group": "TSA-G11",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  },
+  {
+    "id": "TUN-043",
+    "requirement": "REQ-TUNING-019",
+    "kinds": [
+      "source-context",
+      "future-action"
+    ],
+    "title": "Single range and metadata source contexts",
+    "setup": "Use separate disposable independently owned valid recognized tuning/clip targets and exact original reset copies. Record actual loaded tuning, reference/range, Retune, bypass, layout, device/receiver, selection/focus, view and transport histories; accepted controls must be established independently. Demonstrate productive matched load/save/configuration/control before negative/absence/cancel/error comparisons. Audible equality/no-retuning needs genuinely effective accepted tuning, a compatible receiver and active unmuted nonzero source/output; labels/flags are not sound proof. Configuration-only inspection needs no audio/hardware. A failed or unavailable prerequisite stays U. ",
+    "action": "Start from independently recognized owned single-range ASCL and genuinely productive valid import/range-control baseline. Propose frequency versus index range and optional upper endpoint on separate independently admitted reset copies; index context requires earlier REFERENCE_PITCH. Retain known monotonic versus nonmonotonic input identity separately; keep old TUN020 twelve-note no-range/index69 and TUN021 explicit nonmonotonic first/last proposals exact. Separately retain non12 no-range and SOURCE/LINK context without computing centers/caps/nearest ties or sorted extrema. All returned numeric/file/parser outcomes remain ungraded. This is not SCL fallback440 near middle, an API dictionary-key schema, clickable URI promise or general reference constructor.",
+    "expected": null,
+    "comparator": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "documentary_grade": "D12",
+    "target_build_grade": "U",
+    "execution": "unexecuted",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "source_claim": "Using the ASCL format, you can also create and import your own tuning systems for Live by following the designated specifications. L75: Why doesn't my .scl file produce the tuning I expect in Live?\nL76: A .scl file defines a tuning system as a set of intervals, rather than determining the absolute frequencies of notes in the system. This means it defines the distance of each note in the system from some base pitch, which must be set via a “reference pitch” before note frequencies can be calculated. For example, in 12TET (twelve tone equal temperament tuning), the reference pitch A3 (the note A in the third octave) is typically defined with a frequency of 440Hz.\nL77: Applying a different value, such as 432 Hz, results in different frequencies being calculated for all notes, even though the tuning system is still 12TET.\nL78: A basic .scl file contains no reference pitch. In some cases, this can be supplied with a paired .kbm file. However, many software tools that import .scl files don’t support .kbm files. In this case, the software using the .scl file must apply a reference pitch, which can either be configurable via the tool’s UI or hardcoded. Live does not support .kbm files, but the .ascl files shipped with Live, unlike basic .scl files, do include a reference pitch.\nL79: When a .scl file without a reference pitch is loaded, Live generates a reference pitch, in order to determine frequencies for all the notes in the tuning system, by assigning the frequency 440 Hz to a note near the middle of the 0-127 MIDI range. The remaining notes in the system are then derived from this reference. If you have a .scl file you’ve used previously in some other tool, it may sound different in Live, since that tool may have used a different strategy to determine the reference pitch.\nL80: To correct this, you can try to determine the reference pitch used by that tool and adjust the reference pitch used in Live via the tuning UI. You can also do this “by ear”, and simply tweak the reference pitch in Live until it matches the tuning in the other tool.\nL81: Once you’ve corrected the reference pitch, you can export your tuning from Live as a .ascl file so that you don’t need to repeat these steps every time you use that tuning in Live – the tuning will be exported as a .ascl file containing the custom reference pitch you set. Just click the Save icon in the tuning UI.\n L86:     ! ## Note range directives:\nL87:     !\nL88:     !   These directives set the range of notes considered valid in the tuning system. You\nL89:     !   can use one of either of these directives. It is optional to include a NOTE_RANGE\nL90:     !   directive. It is an error to provide more than one NOTE_RANGE_BY_XXX directive in\nL91:     !   a file.\nL92:     !\nL93:     ! -- NOTE_RANGE_BY_FREQUENCY\nL94:     !     Arguments:\nL95:     !       Minimum frequency in Hz (float from 4.0 to 21000.0)\nL96:     !       Maximum frequency in Hz (float from 4.0 to 21000.0, optional)\nL97:     !\nL98:     ! -- NOTE_RANGE_BY_INDEX\nL99:     !     Arguments:\nL100:     !      Minimum octave (-99 to 99)\nL101:     !      Minimum note pitch index within the octave (integer)\nL102:     !      Maximum octave (-99 to 99, optional)\nL103:     !      Maximum note pitch index within the octave (integer, optional)\n L105:     ! Without a NOTE_RANGE directive, the notes available in the tuning system will be\nL106:     ! centered around A3 440.0 Hz (MIDI note number 69) unless the tuning system has 12 notes\nL107:     ! per pseudo-octave. All other notes in the tuning system will be calculated accordingly\nL108:     ! on either side: 64 notes below the center point, and 63 notes above it.\nL109:     !\nL110:     ! If there are 12 notes per pseudo-octave it sets the note closest to A3 440.0 Hz\nL111:     ! to note index 69 in the tuning. The 12 notes per pseudo-octave special case is\nL112:     ! implemented in order for the tuning system note indices to match the default MIDI note\nL113:     ! numbers and thus remain MIDI keyboard compatible by default for 12-note keyboard-based\nL114:     ! tuning systems.\n L116:     ! Including a highest note or frequency in a NOTE_RANGE directive is optional\nL117:     !\nL118:     ! If a NOTE_RANGE directive is used, the first usable note in the tuning system will be\nL119:     ! set to the one specified by the minimum note and octave index (NOTE_RANGE_BY_INDEX), or\nL120:     ! to the first note at or above the minimum frequency (NOTE_RANGE_BY_FREQUENCY).\nL121:     !\nL122:     ! The maximum playable pitch will be the first note either:\nL123:     ! - 127 steps above the minimum note\nL124:     ! - closest to and below 21kHz\nL125:     ! - the one set as a maximum (NOTE_RANGE_BY_INDEX)\nL126:     ! - or the last note below or equal to the maximum frequency (NOTE_RANGE_BY_FREQUENCY)\nL127:     !\nL128:     ! If using NOTE_RANGE_BY_INDEX with a tuning where notes are not always in order of\nL129:     ! increasing frequency (non-monotonically increasing), the minimum and/or maximum is\nL130:     ! treated as first and last and may not necessarily correspond to the lowest or\nL131:     ! highest frequency note in the tuning.\nL132:     !\nL133:     ! NOTE_RANGE_BY_INDEX can only be used if there is an already declared REFERENCE_PITCH\nL134:     ! as the frequency of the minimum (and maximum) pitches are calculated in relation to the\nL135:     ! octave, pitch class index, and frequency given by the reference pitch.\n L140:     ! ## Documentation directives:\nL141:     !\nL142:     ! -- SOURCE\nL143:     !     Arguments:\nL144:     !      Text until end of line\nL145:     !\nL146:     ! Source text is used to document where a tuning system came from or who maintains the\nL147:     ! file.\nL148:     !\nL149:     ! @ABL SOURCE Ableton AG\nL150:     !\nL151:     ! -- LINK\nL152:     !     Arguments\nL153:     !      A URL where someone can learn more information about the tuning system. Note that\nL154:     !      for security reasons, Ableton software may not provide direct access within\nL155:     !      applications to this link.\nL156:     !\nL157:     ! @ABL LINK https://www.ableton.com/tuning-system-spec",
+    "source_contexts": [
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/blocks/48",
+        "block": "TUN:B049"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/7",
+        "supplement": "TSA-S08"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/13",
+        "supplement": "TSA-S14"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/14",
+        "supplement": "TSA-S15"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/15",
+        "supplement": "TSA-S16"
+      },
+      {
+        "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/tuning-source-audit/audit.json",
+        "json_pointer": "/supplemental_contexts/16",
+        "supplement": "TSA-S17"
+      }
+    ],
+    "adoption_group": "TSA-G12",
+    "positive_guard": {
+      "independently_owned_recognized_valid_input": true,
+      "exact_context_and_original_resets": true,
+      "productive_matched_control_before_negative": true,
+      "actual_effective_tuning_and_nonzero_route_before_audio_or_bypass": true,
+      "recognized_valid_UTF8_import_before_error": true,
+      "working_Save_and_enabled_link_before_absence": true,
+      "On_confirmation_before_Off_absence": true,
+      "configuration_needs_no_audio_or_hardware": true,
+      "failed_prerequisite_stays_U": true
+    },
+    "fixture": "tuning-fixtures-r3.json#TUNING-OWNED-R3"
+  }
+]

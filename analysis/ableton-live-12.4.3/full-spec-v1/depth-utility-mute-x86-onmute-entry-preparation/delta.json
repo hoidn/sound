@@ -1,0 +1,149 @@
+{
+  "scope": "Only necessary fixed mainLive direct-thin source/header/geometry/destination adaptation; variable-prefix/accounting core retained.",
+  "collector_before": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/collect-once.py",
+    "bytes": 9986,
+    "sha256": "5055dddb94716656a595b4aa4013f8848d8a8285e53d6acd799e47d48353c297"
+  },
+  "collector_after": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-mute-x86-onmute-entry-preparation/collect-once.py",
+    "bytes": 8864,
+    "sha256": "8605b833fa8da8f085869ba13a13ee972cd643acd4888e4b1a495247e44f91c6"
+  },
+  "collector_literal_operations": [
+    {
+      "before": "depth-corpus-x86-calca-entry-instructions",
+      "after": "depth-utility-mute-x86-onmute-entry-instructions",
+      "occurrences": 1
+    },
+    {
+      "before": "IMAGE = Path('/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Devices/Mac/Corpus.bundle/Contents/MacOS/Corpus')",
+      "after": "IMAGE = Path('/var/tmp/sound-analysis/helpers/Live_x86_64/Live_x86_64.x86_64')",
+      "occurrences": 1
+    },
+    {
+      "before": "START, LENGTH = 0x29c0, 240",
+      "after": "START, LENGTH = 0x10224e760, 240",
+      "occurrences": 1
+    },
+    {
+      "before": "        assert identity(IMAGE) == metadata['bundle']\n        with IMAGE.open('rb') as stream:\n            fat_header = stream.read(8)\n            assert fat_header.hex() == metadata['fat_header_hex']\n            magic, nfat = struct.unpack('>II', fat_header)\n            assert magic == 0xcafebabe and nfat == 2\n            arch_bytes = stream.read(nfat * 20)\n            assert arch_bytes.hex() == metadata['fat_arch_table_hex']\n            arches = [struct.unpack_from('>IIIII', arch_bytes, i * 20) for i in range(nfat)]\n            matches = [r for r in arches if r[0] == 0x1000007 and r[1] == 3]\n            assert len(matches) == 1\n            cpu, subtype, slice_offset, slice_size, alignment = matches[0]\n            assert (slice_offset, slice_size, alignment) == (16384, 250352, 14)\n            assert slice_offset + slice_size <= metadata['bundle']['bytes']\n            stream.seek(slice_offset)\n            assert hashlib.sha256(stream.read(slice_size)).hexdigest() == metadata['slice_sha256']\n            stream.seek(slice_offset)\n            header = stream.read(32)\n            assert header.hex() == metadata['header_hex']\n            values = struct.unpack('<IiiIIIII', header)\n            assert values[0] == 0xfeedfacf and values[1] == cpu and values[2] == subtype\n            assert values[4] == 14 and values[5] == 1696 and 32 + values[5] <= slice_size\n            commands = stream.read(values[5])\n            assert commands.hex() == metadata['load_commands_hex']\n            assert hashlib.sha256(commands).hexdigest() == metadata['load_commands_sha256']\n            segments, cursor = [], 0\n            for _ in range(values[4]):\n                command, size = struct.unpack_from('<II', commands, cursor)\n                assert size >= 8 and cursor + size <= len(commands)\n                if command == 0x19:\n                    name, va, vs, fo, fs, mp, ip, ns, fl = struct.unpack_from('<16sQQQQiiII', commands, cursor + 8)\n                    assert fo + fs <= slice_size\n                    segments.append(dict(name=name.rstrip(b'\\0').decode(), vmaddr=va, vmsize=vs,\n                                         fileoff=fo, filesize=fs, maxprot=mp, initprot=ip, nsects=ns, flags=fl))\n                cursor += size\n            assert cursor == len(commands) and segments == metadata['segments']\n            matches = [s for s in segments if s['vmaddr'] <= START and START + LENGTH <= s['vmaddr'] + s['filesize']]\n            assert matches == [metadata['selected_segment']] and matches[0]['name'] == '__TEXT'\n            assert matches[0]['initprot'] & 4\n            slice_file_offset = matches[0]['fileoff'] + START - matches[0]['vmaddr']\n            bundle_file_offset = slice_offset + slice_file_offset\n            assert slice_file_offset == metadata['slice_file_offset'] == 10688\n            assert bundle_file_offset == metadata['bundle_file_offset'] == 27072\n            assert metadata['length'] == LENGTH\n            stream.seek(bundle_file_offset)\n            raw = stream.read(LENGTH)\n",
+      "after": "        assert identity(IMAGE) == metadata['image']\n        with IMAGE.open('rb') as stream:\n            header = stream.read(32)\n            assert header.hex() == metadata['header_hex']\n            values = struct.unpack('<IiiIIIII', header)\n            assert values[0] == 0xfeedfacf and values[1:3] == (0x1000007, 3)\n            assert values[4] == 54 and values[5] == 6832 and 32 + values[5] <= metadata['image']['bytes']\n            commands = stream.read(values[5])\n            assert commands.hex() == metadata['load_commands_hex']\n            assert hashlib.sha256(commands).hexdigest() == metadata['load_commands_sha256']\n            segments, cursor = [], 0\n            for _ in range(values[4]):\n                command, size = struct.unpack_from('<II', commands, cursor)\n                assert size >= 8 and cursor + size <= len(commands)\n                if command == 0x19:\n                    name, va, vs, fo, fs, mp, ip, ns, fl = struct.unpack_from('<16sQQQQiiII', commands, cursor + 8)\n                    assert fo + fs <= metadata['image']['bytes']\n                    segments.append(dict(name=name.rstrip(b'\\0').decode(), vmaddr=va, vmsize=vs,\n                                         fileoff=fo, filesize=fs, maxprot=mp, initprot=ip, nsects=ns, flags=fl))\n                cursor += size\n            assert cursor == len(commands) and segments == metadata['segments']\n            matches = [s for s in segments if s['vmaddr'] <= START and START + LENGTH <= s['vmaddr'] + s['filesize']]\n            assert matches == [metadata['selected_segment']] and matches[0]['name'] == '__TEXT'\n            assert matches[0]['initprot'] & 4\n            slice_file_offset = matches[0]['fileoff'] + START - matches[0]['vmaddr']\n            assert slice_file_offset == metadata['slice_file_offset'] == 0x224e760\n            assert metadata['length'] == LENGTH\n            stream.seek(slice_file_offset)\n            raw = stream.read(LENGTH)\n",
+      "occurrences": 1
+    },
+    {
+      "before": "'bundle_file_offset': bundle_file_offset, 'slice_file_offset': slice_file_offset, 'start': hex(START),",
+      "after": "'slice_file_offset': slice_file_offset, 'start': hex(START),",
+      "occurrences": 1
+    },
+    {
+      "before": "calca-240",
+      "after": "onmute-entry-240",
+      "occurrences": 4
+    }
+  ],
+  "checker_before": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/check.py",
+    "bytes": 10756,
+    "sha256": "58b25a9738076b46836e54196b7ece301ed6e5f3be6071287dd01f9b575ba56b"
+  },
+  "checker_after": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-mute-x86-onmute-entry-preparation/check.py",
+    "bytes": 10799,
+    "sha256": "45bc5e9ba41977675b1e295479e83dd7df4ddcc57b953e26c39f79ec253c23cd"
+  },
+  "checker_literal_operations": [
+    {
+      "before": "depth-corpus-x86-calca-entry-instructions",
+      "after": "depth-utility-mute-x86-onmute-entry-instructions",
+      "occurrences": 1
+    },
+    {
+      "before": "0x29c0",
+      "after": "0x10224e760",
+      "occurrences": 12
+    },
+    {
+      "before": "0x29c1",
+      "after": "0x10224e761",
+      "occurrences": 1
+    },
+    {
+      "before": "0x2ab0",
+      "after": "0x10224e850",
+      "occurrences": 2
+    },
+    {
+      "before": "'stream.seek(bundle_file_offset)'",
+      "after": "'stream.seek(slice_file_offset)'",
+      "occurrences": 2
+    },
+    {
+      "before": "    assert identity(Path(m['bundle']['path'])) == m['bundle']\n    # Header/LC reads only; no selected instruction-window seek/read.\n    with Path(m['bundle']['path']).open('rb') as stream:\n        fat = stream.read(8); assert fat.hex() == m['fat_header_hex']\n        magic, count = struct.unpack('>II', fat); assert (magic, count) == (0xcafebabe, 2)\n        arches = stream.read(20 * count); assert arches.hex() == m['fat_arch_table_hex']\n        matches = [struct.unpack_from('>IIIII', arches, i * 20) for i in range(count)]\n        matches = [a for a in matches if a[:2] == (0x1000007, 3)]\n        assert len(matches) == 1 and matches[0][2:4] == (16384, 250352)\n        stream.seek(16384); header = stream.read(32); assert header.hex() == m['header_hex']\n        values = struct.unpack('<IiiIIIII', header); assert values[4:6] == (14, 1696)\n        commands = stream.read(values[5]); assert commands.hex() == m['load_commands_hex']\n",
+      "after": "    assert identity(Path(m['image']['path'])) == m['image']\n    # Header/LC metadata only; no selected instruction-window seek/read.\n    with Path(m['image']['path']).open('rb') as stream:\n        header = stream.read(32); assert header.hex() == m['header_hex']\n        values = struct.unpack('<IiiIIIII', header)\n        assert values[0:3] == (0xfeedfacf, 0x1000007, 3) and values[4:6] == (54, 6832)\n        commands = stream.read(values[5]); assert commands.hex() == m['load_commands_hex']\n",
+      "occurrences": 1
+    },
+    {
+      "before": "assert matched[0]['fileoff'] + 0x10224e760 - matched[0]['vmaddr'] == m['slice_file_offset'] == 10688\n    assert 16384 + m['slice_file_offset'] == m['bundle_file_offset'] == 27072",
+      "after": "assert matched[0]['vmaddr'] == 0x100000000 and matched[0]['fileoff'] == 0\n    assert matched[0]['fileoff'] + 0x10224e760 - matched[0]['vmaddr'] == m['slice_file_offset'] == 0x224e760",
+      "occurrences": 1
+    },
+    {
+      "before": "calca-240",
+      "after": "onmute-entry-240",
+      "occurrences": 1
+    },
+    {
+      "before": "    tree = source_guard(text)\n",
+      "after": "    checker_source = (HERE / 'check.py').read_text()\n    restored_checker = checker_source\n    for op in reversed(delta['checker_literal_operations']):\n        assert restored_checker.count(op['after']) == op['occurrences']\n        restored_checker = restored_checker.replace(op['after'], op['before'])\n    assert restored_checker.encode() == Path(delta['checker_before']['path']).read_bytes()\n    tree = source_guard(text)\n",
+      "occurrences": 1
+    }
+  ],
+  "preserved_parent_files": [
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/README.md",
+      "bytes": 3253,
+      "sha256": "3b1f3580f2d312458e55d5ae5889b4f5ea5f534309ac7b69a00d52d5aa758371"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/check.py",
+      "bytes": 10756,
+      "sha256": "58b25a9738076b46836e54196b7ece301ed6e5f3be6071287dd01f9b575ba56b"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/collect-once.py",
+      "bytes": 9986,
+      "sha256": "5055dddb94716656a595b4aa4013f8848d8a8285e53d6acd799e47d48353c297"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/delta.json",
+      "bytes": 14876,
+      "sha256": "8327d79d6f8bbf18673a05372030fc78994a82b728eafca5fbe8ae4d1e6f2cab"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/function-starts-design-asof.md",
+      "bytes": 5551,
+      "sha256": "d349318fc82f0aab5070d6e70a4a72cfc504a3a98d39ba092b9ae07652fd789b"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/header-map.json",
+      "bytes": 5463,
+      "sha256": "d424742c89c62da363b0fb3a59cd06b668f2e4f1e6d83989565e0d955e052db2"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/inputs.json",
+      "bytes": 12331,
+      "sha256": "c7f4a09b0ffff08b042cc3d7b193de7b128f4d0e51f1939d6c5650537247f8e9"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/manifest.json",
+      "bytes": 1547,
+      "sha256": "9dfebe9aa8ae297e3fbb67d46727d51179fc14ca347e6515b068fcb8f3e9f333"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-x86-calca-entry-instructions-preparation/proposal.json",
+      "bytes": 1486,
+      "sha256": "61fea15ef4397ec3b5c666565b853cb721651a35cc01da9b96484ec398068a02"
+    }
+  ]
+}

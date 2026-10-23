@@ -1,0 +1,137 @@
+--- midi-note-storage-v3/manifest.json
++++ midi-note-storage-v3-r2/manifest.json
+@@ -1,7 +1,7 @@
+ {
+   "schema": "handoff-manifest-v1",
+   "release_id": "midi-note-storage-v3",
+-  "release_status": "staged-unreviewed-unpublished",
++  "release_status": "final-seal-pending",
+   "release_date": null,
+   "target": "Ableton Live 12 Suite 12.4.3 (2026-07-07_e3d8be4d07) / macOS arm64",
+   "specification": {
+@@ -91,11 +91,27 @@
+   "fixture_origin": "72 independently authored v2 gzip Set fixtures retained byte-identically; six full authored Sets replace only the Notes content of the structurally repaired v2 MNS-001 carrier with reviewed concrete group data; no shipped file or program code",
+   "approved_public_sources": [],
+   "review": {
+-    "status": "pending-independent-handoff-review",
+-    "reviewers": [],
+-    "date": null,
+-    "findings": [],
+-    "disposition": "No handoff approval or publication yet; author data checks are not independent review."
++    "status": "final-seal-pending",
++    "reviewers": [
++      "independent handoff content reviewer /root/family_route_review"
++    ],
++    "date": "2026-10-20T21:40:29.434860+00:00",
++    "content_review": {
++      "id": "REVIEW-MIDI-NOTE-STORAGE-V3-HANDOFF-CONTENT",
++      "sha256": "60147aa28eeb2b68785940294059dce2fcf62696ed1df5c57064b5f8398f483a",
++      "disposition": "content-approvable-with-required-final-seal-metadata-correction",
++      "publication_disposition": "withheld-until-corrected-final-seal-independent-review"
++    },
++    "findings": [
++      {
++        "id": "MIDI-V3-H01",
++        "severity": "medium",
++        "category": "release-metadata",
++        "disposition": "correction prepared in separate successor; independent final-seal review pending",
++        "correction": "Removed stale copied v2-to-v1 supersession object. The single active supersedes object names v2 with its exact manifest hash, 72 unchanged carried case records/fixtures and current six-local-case v3 change list; current case_count remains78."
++      }
++    ],
++    "disposition": "Behavioral content approvable; H01 correction prepared. Publication remains withheld until separate bounded independent final-seal review."
+   },
+   "supersedes": {
+     "release_id": "midi-note-storage-v2",
+@@ -108,21 +124,6 @@
+       "no final group state, save, counter repair, later effects or public lifecycle expectation added"
+     ]
+   },
+-  "supersession": {
+-    "relationship": "superset in effect: every midi-note-storage-v1 clause and case is carried with the same expectation within its scope; REQ-006 clause 3 and REQ-007 are qualified only for negative zero, which midi-note-storage-v1 excluded; midi-note-storage-v1 stays immutable, but its fixtures lack Live Set structure that opening requires and must not be used",
+-    "superseded_manifest_sha256": "90e799158256b226dde22aff88bae18cdc789d49952469611a455b25cc08e0d4",
+-    "restated_cases": "the 67 midi-note-storage-v1 case records, unchanged; each fixture is the midi-note-storage-v1 fixture with one empty freeze slot and one scene added",
+-    "changes": [
+-      "fixtures: all 67 rebuilt; each gains, and only gains, a FreezeSequencer whose ClipSlotList holds one empty slot, after the MIDI track's MainSequencer, and a Scenes list with one scene after Tracks; MNS-012 gets the same additions, so its only defect is the repeated attribute",
+-      "REQ-002: -0 reads as negative zero; MNS-073 and MNS-074",
+-      "REQ-005: limits exact at the binary32 bounds; negative zero for each limited value; MNS-074, MNS-075",
+-      "REQ-006: the stated formula governs next to halfway points; -0 stored as +0, so clause 3 (values on the grid unchanged) now excepts negative zero; a value rounding to zero from below stored as -0; MNS-023, MNS-072, MNS-074",
+-      "REQ-007: the note that loads and saves unchanged has a Duration of positive zero; a Duration of -0 is saved as 0 (MNS-074)",
+-      "REQ-016: negative zero written -0; MNS-023, MNS-073",
+-      "exclusion of negative zero narrowed to VelocityDeviation, event TimeOffset and Value, and curve controls; MNS-023 released",
+-      "provenance label extracted execution added for the five new cases, with the stated assumptions it rests on; carried records keep the static-derived label; the general number-text assumption now also names ties to even on save (already in REQ-016) and MNS-072, which depends on the nearest-value reading of its text"
+-    ]
+-  },
+   "entrypoint": "README.md",
+   "case_count": 78,
+   "inventory_excludes": [
+@@ -141,8 +142,8 @@
+     },
+     {
+       "path": "REVIEW.md",
+-      "bytes": 898,
+-      "sha256": "20e1807a323d10ba0c7110e41da455332101f7ce08d54a785e69714c204e0cc6"
++      "bytes": 2401,
++      "sha256": "4b10e04952b508eaf3ac2679d577dce8efd2acbebbe0f498ddd55c3f36927a46"
+     },
+     {
+       "path": "cases.json",
+--- midi-note-storage-v3/REVIEW.md
++++ midi-note-storage-v3-r2/REVIEW.md
+@@ -1,17 +1,43 @@
+-# Candidate review gate
++# Handoff content review and pending final seal
+ 
+-Independent handoff review is pending. This candidate is not published and
+-is not an approved implementation input. Author data checks do not substitute
+-for independent behavioral and sanitization review.
++Independent handoff content reviewer: **/root/family_route_review**.
++Review date: **2026-10-20T21:40:29.434860+00:00**.
++Review identity: `REVIEW-MIDI-NOTE-STORAGE-V3-HANDOFF-CONTENT`.
++Sealed review SHA-256:
++`60147aa28eeb2b68785940294059dce2fcf62696ed1df5c57064b5f8398f483a`.
++The reviewer did not author this candidate or its canonical owner. Earlier
++independent source/owner reviews are disclosed as supporting reviews, not
++handoff approval.
+ 
+-The candidate carries 72 reviewed v2 case records, their gzip fixtures and
+-13 partial requirement bodies unchanged. Its six additions derive from a
+-separately reviewed conditional static Notes/group contract. Review must
+-check the exact additions, A1 and supplied-counter premises, local versus
+-public outcome separation, sanitized input shape, and absence of new saved
+-state or playback claims. All original-application and candidate comparisons
+-remain unexecuted.
++Disposition: **content-approvable-with-required-final-seal-metadata-correction**.
++Publication disposition:
++**withheld-until-corrected-final-seal-independent-review**.
+ 
+-A final publication step must record independent reviewer identity, findings,
+-disposition, final payload hashes and a new manifest seal. Nothing in this
+-staged file claims that approval has occurred.
++The review found the bounded 78-case behavioral content, sanitization, fixture
++representability and local/public boundary approvable. It verified all 83
++payloads, 72 carried case records/fixtures and 13 carried requirement bodies.
++The six additions support four local refusals and two local nonrefusals only;
++no saved-state, public-open or implementation-pipeline claim is added.
++
++One publication-blocking finding, **MIDI-V3-H01 (medium, release metadata)**:
++the active supersession block still described v2 replacing v1 rather than v3
++replacing v2. Behavioral and fixture content had no blocking finding.
++
++This separate corrected successor removes that stale duplicate metadata.
++The remaining active predecessor is midi-note-storage-v2, with its exact
++manifest identity, all 72 case records/fixtures carried, and six new local
++cases for 78 total. The current change list is retained. Only this review
++record and the manifest change; all other payload bytes remain exact.
++The reviewed earlier candidate remains unchanged.
++
++**Final seal pending.** The correction is prepared but still needs bounded
++independent review of the metadata/status and unchanged content identities.
++It is not final handoff approval or publication. A later publication step must
++record that separate disposition and final payload hashes first. The unchanged
++candidate documents conservatively retain their earlier staging status.
++
++No original application or candidate execution, native run, compatibility
++grade or clean implementation occurred. The local observations still require
++A1 and the supplied-counter premises; public Set-open observations alone do
++not establish them. No final group save, whole-load counter repair or later
++missing-note behavior is judged.

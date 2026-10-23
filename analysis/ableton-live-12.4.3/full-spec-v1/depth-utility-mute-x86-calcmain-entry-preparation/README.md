@@ -1,0 +1,17 @@
+# Utility x86 CalcMain entry preparation
+
+Preparation only. AS OF AUTHOR FREEZE, full Root and independent code preflight plus a separate exact actual selection remain pending. No selected instruction window was read, no collector/decoder/tool ran, and no original/native/harness/ESIL/model/audio/candidate execution occurred.
+
+Root selected physical `[0x10224ef20,0x10224f010)`, 240 bytes at direct-thin file offset `0x224ef20`, with `pdj16` only. Existing reviewed nlist70768 names the CalcMain-related entry at this exact address. Names/addresses/section metadata are navigation, not class, ABI, receiver, callability, processing role, native extent or public Utility binding. OnMute, every processing callee/target, global and future unused suffix remain unselected.
+
+The same pinned mainLive x86 thin is163,716,848 bytes, SHA-256 `1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0`; header54LC/6832 and unique TEXT base0x100000000/file0 are unchanged. The new range is mapped as metadata only. No original instruction bytes are retained in this preparation; whole-image hashing is opaque identity.
+
+The collector and checker derive from the immutable current Utility OnMute preparation. Only necessary fixed entry/geometry/rawfilename/destination literals and the metadata nomination change. [delta.json](delta.json) reverses every collector/checker change; the complete prefix validator AST, process guards, receipts and failure paths retain their parent logic. All nine parent files and inherited provider pins remain exact in place; no old archive copies or old tool/main replay. Historical Corpus providers remain hash-only lineage, not current Utility behavioral evidence. Existing function-start context stays routed to its immutable retained snapshot, never a future mutable wiki gate.
+
+Future static tool flags remain `-NN -n -x -f`, x86/64/little, selected mapped VA and `pdj16`. Exactly16 normalized valid rows require integer sizes1..15, cumulative offsets, matching byte lengths and concatenation equal to the occupied raw prefix within240. The selected unused suffix stays opaque, and no native function/body completeness is inferred.
+
+After full source inspection, `python3 -B check.py --check` checks identities/header mapping, exact reversible deltas, pure prefix-validator synthetic cases and source guards. Three valid prefixes,29 malformed row/raw controls (including cancelling byte boundaries), and10source mutations remain. No collector import/main or instruction-window extraction occurs.
+
+The future collector interface is `python3 -B collect-once.py --collect-selected`, only after Root separate selection. It uses the exclusive new `depth-utility-mute-x86-calcmain-entry-instructions` destination; one30second decoder child, core0/DEVNULL, attempt-before-Popen and returned-PID distinction, retained ordinary failure/stdout/stderr/status/maps, and no retry. A separately selected outer coordinator must account for pretry setup, interruption, process-group cleanup, catastrophic I/O and uncatchable/escaped descendants. Finite receipt/resource guarantees are unchanged.
+
+This packet adds no framework, options, native readout or implementation. All38Utility outcomes remainU/null/unexecuted; no normative ID/case/criterion/grade/completion or public state/default/audio law. Any native argument/result carrier or process-target nomination awaits a separate actual capture and independent review.

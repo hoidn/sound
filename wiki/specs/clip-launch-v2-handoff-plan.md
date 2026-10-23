@@ -2,7 +2,7 @@
 id: PLAN-CLIP-LAUNCH-V2-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -16,6 +16,11 @@ Released 2026-10-18 as [clip-launch-v2](../../handoff/clip-launch-v2/README.md),
 - **Framing.** The value functions are renamed `rounded_beat` and `grid-boundary`, and the text says they are not launch timing.
 - **REQ-016.** The global argument is only a value on that item's scale. Which global value and time signatures a launch uses is excluded.
 - **REQ-011.** For an out-of-range follow time, whether the document opens is excluded.
+
+Draft reconciliation, 2026-10-19: [revision 5](clip-launch.md#revision-and-handoff)
+applies the global-load assumption shared with PLAYBACK-CORE A4, distinguishes
+follow-time member rounding from document opening, and distinguishes source scenarios
+from authored release fixtures. No released clause or expectation changed.
 
 The 11.0_405 fixtures pass the structure rules when read directly, which confirms that the audit tool's advice for them is wrong. A sample of the X cases re-ran bit for bit.
 
@@ -44,12 +49,14 @@ release. v2 therefore releases the grid and boundary arithmetic only as function
 arguments. It contains no request sample, pre-delay, activation sample or move to B + g.
 
 New cases carry the provenance "extracted execution (x86_64 slice); arm64 equivalence inferred".
-Carried records keep "static-derived". Opening, reading the text, saving and the grid selection
-of REQ-016 stay static-derived in every case. No reference application or candidate has run, and
+Carried records keep "static-derived". Opening, reading the text and saving stay static-derived. The released
+REQ-016 arithmetic takes an explicit global argument; which loaded global value
+and signatures the engine uses is excluded by the review. No reference application or candidate has run, and
 no compatibility is claimed (ADR 0002, ADR 0003).
 
 This page is the analyst-side plan and traceability record, not an implementation input. The
-candidate is **staged, unreviewed and unpublished**. Nothing has been written into `handoff/`.
+staging and review-gate sections below record the pre-review candidate; the released
+outcome above governs current status.
 
 ## Scope
 
@@ -207,7 +214,7 @@ it. The payload mentions SPEC-PLAYBACK-CORE by ID only, as the owner of launch t
 Not checked: any reference or candidate execution, A2, A3, A5, arm64 equivalence, the
 conversion of the 12117 and 405 fixtures' other content, and F1 and F2.
 
-## Review gates still required
+## Pre-review gates (historical)
 
 1. **Scope review** in a separate context. Rule on whether REQ-015 to 018 may be released as a
    value contract. The v1 review, RVC-01, removed REQ-015 because a grid length is observable
@@ -227,6 +234,8 @@ conversion of the 12117 and 405 fixtures' other content, and F1 and F2.
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate: 100 cases, partial REQ-CLIP-LAUNCH-001 to 007,
-009 and 011 to 018, with 008, 010 and 019 to 023 unreleased. It is not published.
-clip-launch-v1 remains the only release for SPEC-CLIP-LAUNCH, and its fixtures stay invalid.
+Released 2026-10-18 as clip-launch-v2 with 100 cases, partial REQ-CLIP-LAUNCH-001
+to 007, 009 and 011 to 018; 008, 010 and 019 to 023 remain unreleased. It is
+current and supersedes v1, whose invalid fixtures must judge no case. Grid arithmetic
+takes explicit arguments; engine global selection, launch timing and opening with
+out-of-range follow times are excluded. Draft revision 5 reconciles these limits.

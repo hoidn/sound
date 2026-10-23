@@ -1,0 +1,23 @@
+# Distortion owner revision 3
+
+AS-OF AUTHOR FREEZE: independent owner review pending; shared spec/research indexes carry current disposition. The author wrote source-audit R1, which received a required association correction and independent approval through source R2. The author does not approve this owner successor. No full-family/runtime/compatibility or released implementation claim follows.
+
+The [current case catalog](cases-r3.json) is a top-level list of 200 objects: all [190 original records](cases.json) exact plus ten U action histories. All [67 requirements](requirements.json), bodies, sources, old D12/Dpkg/U fields and 83 prior recursive files remain exact. The [current actual overlay](actual-overlay-r3.json) explicitly keeps all 200 actual outcomes null/U/unexecuted; old 29 D12/18 historical file-only Dpkg/143 U fields remain documentary, never actual measurements. Every new expected/comparison/documentary pair is null. No new normative ID or duplicate requirement catalog is added.
+
+The approved [corrected source audit](../distortion-source-audit/README-r2.md), [formal R1 review](../reviews/distortion-source-audit-review.json) and [focused R2 review](../reviews/distortion-source-audit-r2-review.json) support [ten bounded selected histories](adoption-r3.json). These add Bass Meter/qualified lows, Erosion display roles, Overdrive sliders/productive return, optional Pedal examples, Roar Parallel Blend modulation, gain-stage Filter Frequency and eligible filter controls, Matrix/global amount/activity, feedback-MIDI eligibility, Color sliders and both Vinyl typed-Freq entries. Optional or unselected recipe branches remain pending; Dynamic Tube/Redux receive no invented generic cases.
+
+Roar gain-stage Filter Frequency is explicitly actually operated, separately from analysis/feedback Frequency. A filter-sensitive baseline alone is not a gesture. EACH eligible filter/control AND nonlinear shaper response must independently work before Pre/loss/order. Both stages/modulators/channels/voices/targets/routes and dry/wet paths need independent genuine positives where compared. Feedback absence/tail/input-removal requires genuine NONZERO sustaining feedback first. Erosion003 retains Blend100/enabled Width before modifier-Y;006 uses ONLY the first1s identical-channel S1. UI-only gestures need no audio/hardware. Missing input, controls, fixtures or productive paths stay U; no enabled flag or S0-as-generator-absence proof.
+
+[Immutable inputs](inputs-r3.json) pin 103 files, including all 83 prior owner files, corrected source audit/reviews and as-of consumers. Root's research revision3 metadata was already current: [its exact before bytes](research-before-owner-r3.md) are preserved. Owner R3 uses [spec revision3](spec-r3.md) and [research revision4](research-owner-r3.md), with [exact page delta](delta-r3.json). The earlier R2 research snapshot is not substituted for that current-before page. No whole archive is duplicated.
+
+[The finite consumer ledger](consumer-history-r3.json) preserves five exact old-current-canonical hash occurrences in four frozen JSON files, including one external spec pin. No consumer or shared file is edited; old validators/reports remain as-of and no automatic replay/adapter or future cross-owner canonical hash gate is added.
+
+Run the [current read-only checker](check-r3.py):
+
+```sh
+python3 -B check-r3.py --check
+```
+
+It verifies history/source/review pins, exact old objects, corrected source interpretation, new source pointers, null overlay, 67 browser IDs, exact owned snapshots/delta and local links. It actually dereferences EACH of 200 overlay and ten adoption pointers against the top-level list and checks case IDs. Independent reference mutations reject shared invalid prefix, wrong index, missing/duplicate and out-of-range refs. Substantive guards reject baseline-to-Frequency promotion, analysis/feedback substitution, weak positives and invented oracles. Unsupported arguments refuse before input reads. Only this new stdlib analyst checker executes; no old tool/main/parser/decoder/replay, original/vendor/native/UI/audio/MIDI/hardware/network/install or candidate action occurs.
+
+[The author seal](manifest-author-r3.json) freezes 94 payloads: 83 old plus eleven additions, with no overwrite. Source Version12/date-only UTC unknown/exact12.4.3U and modern/Legacy/quality/RNG/mix/Listen/zero-path limits remain intact. Independent byte watch, writer/seal refusal, meaningful mutations and untracked-aware whitespace checks accompany freeze; no numeric DSP/RNG/clock/default/CPU/codec/formula/file law is introduced.

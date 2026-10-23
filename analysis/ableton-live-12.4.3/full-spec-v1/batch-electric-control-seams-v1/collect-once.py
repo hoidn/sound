@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""One selected Electric batch, unchanged existing xdev model. Never retry."""
+import array,collections,datetime,hashlib,json,math,os,pathlib,re,resource,struct,subprocess,sys,time
+ROOT=pathlib.Path('/home/ollie/Documents/sound')
+HERE=pathlib.Path(__file__).resolve().parent
+OLD=ROOT/'analysis/ableton-live-12.4.3/r2/t12-electric-v1'
+LOADER=pathlib.Path('/var/tmp/sound-analysis/t12-electric/xdev')
+IMAGE=pathlib.Path('/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Devices/Mac/Electric.bundle/Contents/MacOS/Electric')
+EXPECTED_LOADER='6eb5dd284452960f623e0bb6ed26b8743bdf789b8eac09a48b4a9291995ed8e1'
+EXPECTED_IMAGE='bb0d404b75c609888e7dfb49eb4b9683758fc8dc4a0e046b7d6089a19b85ef95'
+ENV={'PATH':'/usr/bin:/bin','LANG':'C','LC_ALL':'C'}
+def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def ident(p):
+ b=p.read_bytes();return {'path':str(p),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}
+def write(p,obj):
+ with p.open('x') as f:
+  json.dump(obj,f,indent=2);f.write('\n');f.flush();os.fsync(f.fileno())
+ p.chmod(0o444)
+def words(token):
+ x=float(token);return {'token':token,'host_parse_binary64_le':struct.pack('<d',x).hex(),'supplied_binary32_le':struct.pack('<f',x).hex(),'supplied_binary32_uint_hex':f'0x{struct.unpack("<I",struct.pack("<f",x))[0]:08x}'}
+def guard(rows):
+ if len(rows)!=8 or len({x['id'] for x in rows})!=8:raise ValueError('whole8 selection')
+ if [x['class'] for x in rows].count('P1')!=3 or [x['class'] for x in rows].count('P2')!=5:raise ValueError('whole class partition')
+ if sorted(a for x in rows if x['class']=='P1' for a in x['stored_alphabet_aliases'])!=[0,11.99999,12,24]:raise ValueError('whole stored alphabet')
+ seen=set()
+ for x in rows:
+  lines=x['script'].splitlines();params=[l.split() for l in lines if l.startswith('param ')]
+  if len(params)!=33 or [int(p[1]) for p in params]!=list(range(33)):raise ValueError('full ordered33')
+  if params[32]!=['param','32','48.0'] or words(params[2][2])['supplied_binary32_uint_hex']!='0x3f346d11':raise ValueError('runtime/default exactbits')
+  if lines[:2]!=['create','rate 44100'] or lines[-1]!='destroy':raise ValueError('factory/rate/destroy')
+  expected=['event 11264 0x90 60 100',f'event {11264+x["off"]} 0x80 60 0','inflag 0','input zero','process 11264 512',f'process {x["frames"]} 512','destroy']
+  if lines[35:]!=expected:raise ValueError('exact cumulative protocol')
+  if x['class']=='P1':
+   if x['frames']!=44100 or x['off']!=22050 or any(params[i]!=BASE_PARAMS[i] for i in range(33) if i!=30):raise ValueError('P1 unselected change')
+  else:
+   change=x['change']
+   if x['frames']!=13230 or x['off']!=8820:raise ValueError('P2 quant history')
+   if change is not None and (change['index'],change['host_value']) not in {(21,.25),(21,.2525),(22,.25),(22,.2525)}:raise ValueError('whole P2 setting')
+   if any(params[i]!=BASE_PARAMS[i] for i in range(33) if change is None or i!=change['index']):raise ValueError('P2 unselected change')
+  key=hashlib.sha256(x['script'].encode()).hexdigest()
+  if key in seen:raise ValueError('undocumented duplicate child')
+  seen.add(key)
+ if {(x['change']['index'],x['change']['host_value']) for x in rows if x['class']=='P2' and x['change']}!={(21,.25),(21,.2525),(22,.25),(22,.2525)}:raise ValueError('P2 Cartesian incomplete')
+ if sum(x['class']=='P2' and x['change'] is None for x in rows)!=1:raise ValueError('P2 baseline')
+BASE_TEXT=(OLD/'raw/defaults_c4.script').read_text()
+BASE_PARAMS=[l.split() for l in BASE_TEXT.splitlines() if l.startswith('param ')]
+def selection():
+ rows=[]
+ for t,aliases in [(12,[11.99999,12]),(0,[0]),(24,[24])]:
+  # Literal existing el.host_values conversion, evaluated as ordinary author math.
+  assert all(float(int(round(min(max(float(s),0.0),24.0)*32768)/32768))==t for s in aliases)
+  script=BASE_TEXT.replace('param 30 12.0\n',f'param 30 {float(t)!r}\n')
+  historical='defaults_c4' if t==12 else f'p30_{t}'
+  # Historical transpose controls have a shorter note/render history. Only
+  # the complete parameter vector is shared with this selected common history.
+  assert script.splitlines()[:35]==(OLD/f'raw/{historical}.script').read_text().splitlines()[:35]
+  rows.append({'id':f'P1-transpose-{t:02d}','class':'P1','stored_alphabet_aliases':aliases,'stored_input_binary64':[{ 'decimal_token':repr(s),'binary64_le':struct.pack('<d',float(s)).hex()} for s in aliases],'author_host_value':float(t),'author_conversion':'float(int(round(clamp(stored,0,24)*32768)/32768)); then binary32','historical_script':str(OLD/f'raw/{historical}.script'),'baseline':t==12,'frames':44100,'off':22050,'script':script})
+ for index,value in [(None,None),(21,.25),(21,.2525),(22,.25),(22,.2525)]:
+  script=BASE_TEXT.replace('event 33314 0x80 60 0','event 20084 0x80 60 0').replace('process 44100 512','process 13230 512')
+  if index is not None:script=script.replace(f'param {index} 0.5\n',f'param {index} {value!r}\n')
+  rows.append({'id':'P2-baseline' if index is None else f'P2-p{index}-{str(value).replace(".","p")}','class':'P2','change':None if index is None else {'index':index,'parameter':'PickupSymmetry' if index==21 else 'PickupDistance','host_value':value},'baseline':index is None,'frames':13230,'off':8820,'script':script})
+ guard(rows)
+ return rows
+def controls(rows):
+ import copy
+ bad=[]
+ for name,mutate in [('omitted_child',lambda r:r.pop()),('omitted_param',lambda r:r[0].update(script=r[0]['script'].replace('param 8 0.5\n',''))),('runtime32',lambda r:r[0].update(script=r[0]['script'].replace('param 32 48.0','param 32 0.0'))),('wrong_default',lambda r:r[0].update(script=r[0]['script'].replace('param 2 0.7047892212867737','param 2 0.704789'))),('new_setup',lambda r:r[0].update(script=r[0]['script'].replace('destroy','reset\ndestroy'))),('wrong_event_coordinate',lambda r:r[0].update(script=r[0]['script'].replace('event 11264','event 0'))),('drop_stored_alias',lambda r:r[0].update(stored_alphabet_aliases=[12])),('extra_param_change',lambda r:r[4].update(script=r[4]['script'].replace('param 4 0.5','param 4 1.0'))),('duplicate_pair',lambda r:r[-1].update(change={'index':21,'host_value':.25}))]:
+  r=copy.deepcopy(rows);mutate(r)
+  try:guard(r)
+  except ValueError:bad.append(name)
+  else:raise AssertionError('negative guard accepted '+name)
+ return bad
+def audio(p,warm):
+ b=p.read_bytes();a=array.array('I');a.frombytes(b)
+ if sys.byteorder!='little':a.byteswap()
+ finite=all((x&0x7f800000)!=0x7f800000 for x in a)
+ stereo=all(a[i]==a[i+1] for i in range(0,len(a),2))
+ silent=all((x&0x7fffffff)==0 for x in a[:warm*2])
+ onset=next((i for i in range(len(a)//2-warm) if a[(i+warm)*2]&0x7fffffff),None)
+ return {'bytes':len(b),'finite':finite,'channels_word_equal':stereo,'warmup_numeric_zero':silent,'first_nonzero_render_frame':onset,'render_stereo_sha256':hashlib.sha256(b[warm*8:]).hexdigest()}
+def main():
+ if sys.argv[1:]!=['--execute-once']:raise SystemExit('exact --execute-once only; data checking uses retained JSON, never rerun this recorder')
+ with (HERE/'native-attempt.json').open('x') as f:json.dump({'utc':utc(),'retry':False,'prior_authoring_failure':'authoring-failure.json; zero original processes'},f);f.flush();os.fsync(f.fileno())
+ # Empty directories were created before the failed authoring guard. Refuse
+ # any retained native output/script before this sole native attempt.
+ for name in ('raw','scripts'):
+  p=HERE/name;p.mkdir(exist_ok=True);assert not any(p.iterdir()),'refuse existing child evidence; no retry'
+ rows=selection();negative=controls(rows)
+ custody_before=[ident(LOADER),ident(IMAGE)]
+ assert custody_before[0]['sha256']==EXPECTED_LOADER and custody_before[1]['sha256']==EXPECTED_IMAGE,'existing loader/image identity mismatch; refuse without retry'
+ source_rel=['el.py','xdevpy.py','probes_params.py','manifest.json','results/cases.json','raw/defaults_c4.script','raw/p30_0.script','raw/p30_24.script','harness/xdev.c','harness/xdev_bind.c','harness/xdev_load.c','harness/xdev_cxx.c','harness/xdev.h']
+ sourcepins=[ident(OLD/p) for p in source_rel]+[ident(ROOT/p) for p in ['wiki/specs/device-electric.md','analysis/ableton-live-12.4.3/full-spec-v1/family-electric-routes-v1/structure.md','analysis/ableton-live-12.4.3/full-spec-v1/family-electric-routes-v1/batch-inputs.json','analysis/ableton-live-12.4.3/full-spec-v1/batch-high-X-eligibility-v1/manifest.json','analysis/ableton-live-12.4.3/full-spec-v1/batch-high-X-eligibility-v1/eligibility.json','analysis/ableton-live-12.4.3/full-spec-v1/batch-high-X-eligibility-v1/finite-class-selectors.json']]
+ oldcases=json.loads((OLD/'results/cases.json').read_text())['cases']
+ allowed_used=sorted(set().union(*(set(c['imports']) for c in oldcases.values())))
+ for row in rows:
+  script=HERE/'scripts'/f'{row["id"]}.script';script.write_text(row.pop('script'));script.chmod(0o444)
+  tokens=[l.split() for l in script.read_text().splitlines()]
+  row['script']=ident(script);row['parameters']=[{'index':int(x[1]),**words(x[2])} for x in tokens if x[0]=='param']
+  row['events']=[{'absolute_output_frame':int(x[1]),'status':x[2],'d1':int(x[3]),'d2':int(x[4]),'packed16_le_hex':struct.pack('<qBBBB4x',int(x[1]),int(x[2],16),int(x[3]),int(x[4]),0).hex()} for x in tokens if x[0]=='event']
+  row['transport_default']={'playing':0,'position_binary64_le':struct.pack('<d',0).hex(),'tempo_binary64_le':struct.pack('<d',120).hex(),'packed24_le_hex':struct.pack('<ii dd',0,0,0,120).hex()}
+  row['warmup']=11264;row['block']=512;row['calc_calls']=22+math.ceil(row['frames']/512);row['direct_export_calls']=row['calc_calls']+36;row['expected_output_bytes']=(row['frames']+11264)*8
+  row['argv']=[str(LOADER),str(IMAGE),str(script),str(HERE/'raw'/f'{row["id"]}.f32'),'--imports']
+ write(HERE/'inputs.json',{'frozen_utc':utc(),'environment':ENV,'negative_guard_controls':negative,'processes':rows,'custody_before':custody_before,'sourcepins':sourcepins,'allowed_used_import_symbols':allowed_used,'expected_new_output_law':None,'limits':'Finite discovery only; stored mapping A1 actual dispatch unknown; no physical/calibration/deterministic/public/ARM promotion.'})
+ receipts=[];stop=None
+ for row in rows:
+  start=utc();startns=time.monotonic_ns();out=HERE/'raw'/f'{row["id"]}.stdout';err=HERE/'raw'/f'{row["id"]}.stderr';timeout=False;rc=None;pid=None
+  with out.open('xb') as fo,err.open('xb') as fe:
+   try:
+    p=subprocess.Popen(row['argv'],stdin=subprocess.DEVNULL,stdout=fo,stderr=fe,env=ENV,preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)));pid=p.pid
+    try:rc=p.wait(timeout=20)
+    except subprocess.TimeoutExpired:p.kill();rc=p.wait();timeout=True
+   finally:fo.flush();fe.flush();os.fsync(fo.fileno());os.fsync(fe.fileno())
+  endns=time.monotonic_ns();end=utc();stdout=out.read_text(errors='replace');stderr=err.read_text(errors='replace')
+  used={m.group(1):int(m.group(2)) for m in re.finditer(r'^used (\S+) (\d+)$',stdout,re.M)}
+  imports=[line for line in stdout.splitlines() if line.startswith('import ')]
+  procs=[{'frames':int(a),'block':int(b),'blocks':int(c)} for a,b,c in re.findall(r'^process (\d+) (\d+) flags:.*blocks=(\d+)$',stdout,re.M)]
+  output=pathlib.Path(row['argv'][3]);aud=audio(output,11264) if output.exists() and output.stat().st_size%8==0 else None
+  issues=[]
+  if timeout or rc!=0:issues.append('timeout/nonzero exit')
+  if stderr or re.search(r'TRAP|FAULT',stdout):issues.append('stderr/trap/fault')
+  if 'create ok' not in stdout or 'cxx-failbits 0' not in stdout or '\ndestroy\n' not in stdout:issues.append('factory/destroy/cxx status')
+  if not used or set(used)-set(allowed_used):issues.append('unexpected import-use set')
+  if [p['frames'] for p in procs]!=[11264,row['frames']] or sum(p['blocks'] for p in procs)!=row['calc_calls']:issues.append('process/block count')
+  if len(re.findall(r'^param \d+ ',stdout,re.M))!=33:issues.append('parameter output count')
+  if aud is None or aud['bytes']!=row['expected_output_bytes'] or not all(aud[x] for x in ['finite','channels_word_equal','warmup_numeric_zero']):issues.append('output shape/model invariant')
+  if output.exists():
+   with output.open('rb') as ff:os.fsync(ff.fileno())
+  rec={'id':row['id'],'argv':row['argv'],'environment':ENV,'pid':pid,'start_utc':start,'end_utc':end,'start_monotonic_ns':startns,'end_monotonic_ns':endns,'returncode':rc,'timeout':timeout,'stdout':ident(out),'stderr':ident(err),'output':ident(output) if output.exists() else None,'used_imports':used,'declared_import_lines':len(imports),'process_commands':procs,'direct_export_calls':sum(p['blocks'] for p in procs)+len(re.findall(r'^param \d+ ',stdout,re.M))+int('create ok' in stdout)+int(bool(re.search(r'^rate ',stdout,re.M)))+int(bool(re.search(r'^destroy$',stdout,re.M))),'audio_data':aud,'issues':issues}
+  receipts.append(rec)
+  with (HERE/'receipts.jsonl').open('a') as f:f.write(json.dumps(rec)+'\n');f.flush();os.fsync(f.fileno())
+  if issues:stop={'id':row['id'],'issues':issues};break
+  print(json.dumps({'id':row['id'],'status':'retained','output_bytes':aud['bytes'],'used_imports':len(used)}),flush=True)
+ after=[ident(LOADER),ident(IMAGE)]
+ if after!=custody_before:stop={'id':None,'issues':['after custody mismatch']}
+ pairs=[]
+ if stop is None:
+  byid={r['id']:r for r in receipts}
+  for p in [21,22]:
+   a=byid[f'P2-p{p}-0p25'];b=byid[f'P2-p{p}-0p2525']
+   pairs.append({'parameter_index':p,'inputs':[a['id'],b['id']],'finite_render_bytes_equal':a['audio_data']['render_stereo_sha256']==b['audio_data']['render_stereo_sha256'],'interpretation':'Descriptive equality of this finite capture only; no preasserted new law or metric.'})
+ write(HERE/'analysis.json',{'status':'STOPPED' if stop else 'COMPLETE','stop':stop,'completed_children':len(receipts),'direct_export_calls':sum(r['direct_export_calls'] for r in receipts),'custody_after':after,'custody_equal':after==custody_before,'P2_finite_pair_comparisons':pairs,'new_application_grades':0,'existing_released_evaluations':117,'existing_unstable_exclusions':3,'limits':'No effect assumption, deterministic waveform, calibration, smoothing, Live A1 dispatch/A2 protocol binding, public audio or ARM claim. All partial history retained; no retry.'})
+ print(json.dumps({'status':'STOPPED' if stop else 'COMPLETE','children':len(receipts),'direct_export_calls':sum(r['direct_export_calls'] for r in receipts),'stop':stop}),flush=True)
+if __name__=='__main__':main()

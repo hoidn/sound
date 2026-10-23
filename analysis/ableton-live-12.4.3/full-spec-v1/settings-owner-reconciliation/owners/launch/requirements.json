@@ -1,0 +1,486 @@
+[
+  {
+    "id": "REQ-SESSION-LAUNCH-001",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Session launch setting scope",
+    "contract": "Launch settings apply to Session clips, not Arrangement timeline clips. Session Clip View exposes them; multi-selection supports editing launch settings together. Shared panel/grid selection belongs to existing owners.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B004",
+      "LC-B005",
+      "LC-B006"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-002",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Trigger gesture role",
+    "contract": "Trigger: down starts clip; release is ignored. The source covers mouse, key and mapped MIDI-note gesture categories but supplies no dispatch/frame/note-off matching law.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B008",
+      "LC-B009"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-003",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Gate gesture role",
+    "contract": "Gate: down starts and up stops. Exact quantized release, held/repeated MIDI pairing and cancellation remain U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B008",
+      "LC-B010"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-004",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Toggle gesture role",
+    "contract": "Toggle: down starts, up is ignored, next down stops. Multiple input-source arbitration and grid-boundary timing remain U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B008",
+      "LC-B011"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-005",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Repeat gesture role",
+    "contract": "Repeat retriggers while input remains held at clip quantization rate. None/Global edge behavior, first/last repeat and exact timing are not supplied.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B008",
+      "LC-B012"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-006",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Legato takeover role",
+    "contract": "Launching Legato clip takes previous clip play position in same track, including with quantization off. Position units, wrap, unequal lengths and activation timing are unproven for target.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B014",
+      "LC-B015",
+      "LC-B016"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-007",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Legato media and RAM context",
+    "contract": "Different-sample Legato jumps may cause dropouts because material was not preloaded; Clip RAM is documented as remedy. This is no zero-dropout, deadline or RAM/disk-load guarantee.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B017"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-008",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Quantization selector roles",
+    "contract": "None disables launch onset correction; Global selects Control Bar quantization. Existing enum/grid/Trigger arithmetic retains its canonical owner and assumptions; Follow Action Global behavior is separately unresolved.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B019",
+      "LC-B020"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-009",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Launch velocity endpoints",
+    "contract": "Velocity Amount0 gives no launch-note-velocity volume influence;100% says softest notes play silently. Softest valid launch velocity, interpolation, volume codec and non-MIDI launch response remain U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B023"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-010",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Nudge role",
+    "contract": "Nudge Backward/Forward jumps within playing clip by global quantization period. Source/file/loop bounds, None behavior and exact rounding remain U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B025"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-011",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Nudge and scrub mapping affordances",
+    "contract": "Nudge buttons can map to keys/MIDI; MIDI Map Mode reveals a scrub control between buttons for rotary-encoder continuous scrubbing. Mapping codec/takeover/relative interpretation remains outside this clause.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B026"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-012",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Offset relative to master clock",
+    "contract": "Sub-bar quantization plus launch, nudge or scrub can offset clip playback relative to master clock. It does not specify a phase-offset equation or reset law.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B027"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-013",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Clip Follow groups",
+    "contract": "Clip Follow Actions operate within successive occupied slots on one track; empty slots separate groups. Group definition here is clips, not a proven scene-group/empty-scene rule.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B029"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-014",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Scene Follow entry and local enable",
+    "contract": "Follow Actions also have Scene View controls. Selected clip/scene local Follow button enables/disables them; source describes default disabled and Shift+Enter toggle. Actual constructor/focus/default-load state remains U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B030",
+      "LC-B031"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-015",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Two action choices",
+    "contract": "Each clip/scene exposes two Follow Action choices, A and B. Exact labels/images versus stored-code associations stay with scoped enum evidence and U control-context work.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B032"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-016",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Chance endpoints",
+    "contract": "The source says A 100%/B 0% selects A every launch and0% suppresses its action. The later B 90%/~one-in-ten example leaves actual coupled-field changes unspecified; no general probability or normalization law follows.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B033"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-017",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Linked versus scene eligibility",
+    "contract": "Linked/Unlinked is clip-only; Linked is described as default. Follow Time is exposed for both clips and scenes. No saved-field/default constructor parity is inferred.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B034"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-018",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Linked timing role",
+    "contract": "Linked clip Follow occurs at clip end or after number of loops in Multiplier. Which region/end/loop accounting, nonlooped clips and clock rounding require target evidence.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B034"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-019",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Unlinked Time role",
+    "contract": "Unlinked clip Follow uses duration in Follow Time; clip/scene Time is bars-beats-sixteenths from point where play starts. Default one bar and editor marker drag are documentary only; exact meter/offset codec remains U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B034"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-020",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "No-follow role",
+    "contract": "The no-follow description says no Follow occurs; once clip is triggered with No Action, other selected Follow Action in that clip no longer gets a chance even if its Chance100%. Re-launch/re-enable/reset scope remains U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B036"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-021",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Stop role",
+    "contract": "Stop description stops clip after chosen Follow Time, overriding clip loop/region settings. Exact linked/unlinked preconditions, stop grid and note/tail cutoff are U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B037"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-022",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Restart role",
+    "contract": "Restart description restarts clip; start marker, Legato interaction, repeat counters and exact dispatch are not provided.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B038"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-023",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Previous role",
+    "contract": "Previous description triggers clip immediately above current. Top-of-group wrap or escape across empty slot is not documented here.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B039"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-024",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Next and clip wrap",
+    "contract": "Next description selects next clip down within group; last clip wraps to first. This clip statement is not applied automatically to scene-empty-group boundaries.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B040"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-025",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "First role",
+    "contract": "First description launches top clip in group. Exact empty-slot/reordering/concurrent group edits remain U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B041"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-026",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Last role",
+    "contract": "Last description launches bottom clip in group; self-target behavior when already last remains unresolved.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B042"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-027",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Any role",
+    "contract": "Any description permits any clip in group; source gives no uniformity, independence, seed, repeat history or finite completion guarantee.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B043"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-028",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Nonconsecutive role",
+    "contract": "Other-like description excludes consecutive same clip while current clip is not alone in group; singleton exception does not establish a specific fallback/retrigger law.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B044"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-029",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Jump selector role",
+    "contract": "Jump exposes Jump Target slider for target clip slot or scene; drag or numeric entry adjusts target. UI numbering, stored jump fields, invalid/empty target behavior and action/image associations remain U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B045"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-030",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Assigned Follow indicator",
+    "contract": "Clips/scenes with assigned Follow Actions show striped launch buttons. Assigned versus enabled versus stored default fields is unresolved control context.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B046"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-031",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Global Follow enable",
+    "contract": "Enable Follow Actions Globally governs all clip and scene Follow Actions. Source says grayed when Set contains none; which fields count as present versus assigned/enabled remains U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B048"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-032",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Scene precedence role",
+    "contract": "Clip Follow continues while scene Follow is created/scheduled; scene Follow takes precedence once triggered. Exact same-time priority, affected tracks and pending-request cancellation are U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B049"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-033",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Cycle construction role",
+    "contract": "Source describes Next cycles of clips or scenes and occasional alternatives using lower relative chances. This is no general scene-group/wrap or RNG law.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B060",
+      "LC-B061"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-034",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Create Follow Action Chain",
+    "contract": "Clip context Create Follow Action Chain sets selected clips to cycle; selection need not be contiguous. Generated action codes, order, times, chances, enable flags and gap crossing are not specified.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B062"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-035",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Intro into loop composition",
+    "contract": "Documented recipe splits nonlooped introduction from looping tail, places adjacent Session clips, sets first Next 100 and Time to first duration, second Loop on. Editing/transfer owners retain their own laws; exact derived timing remains U.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B053",
+      "LC-B054",
+      "LC-B055",
+      "LC-B056",
+      "LC-B057",
+      "LC-B058"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-036",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Temporary restart composition",
+    "contract": "Single-clip Play Again 80/No Action 20 example restarts a portion and may later continue; the source eventual-language supplies no bounded-trial deadline or finite guarantee. A subsequent looping clip can have separate Follow configuration.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B065",
+      "LC-B066"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-037",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "title": "Legato Follow variation role",
+    "contract": "Legato Follow can transfer beat-time position among similar clips with differing settings/envelopes/notes. This describes composed roles, not audible identity or complete automation/warp interaction.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B068",
+      "LC-B069"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-U-GLOBAL-FOLLOW",
+    "provenance": "U",
+    "target_applicability": "U",
+    "title": "GLOBAL-FOLLOW",
+    "contract": "Global Follow quantization wording is unresolved between LC-B021 and LC-B047; no rule is selected.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B021",
+      "LC-B047"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-U-CHANCE-COUPLING",
+    "provenance": "U",
+    "target_applicability": "U",
+    "title": "CHANCE-COUPLING",
+    "contract": "Chance A/B coupled editing, actual fields and probability/RNG law remain unknown.",
+    "source_id": "D12-LAUNCHING-CLIPS",
+    "source_blocks": [
+      "LC-B033"
+    ]
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-U-ACTION-CONTEXT",
+    "provenance": "U",
+    "target_applicability": "U",
+    "title": "ACTION-CONTEXT",
+    "contract": "Image/label/action identity and target control contexts remain unknown beyond released stored enum vocabulary.",
+    "source_id": null,
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-U-BOUNDARIES",
+    "provenance": "U",
+    "target_applicability": "U",
+    "title": "BOUNDARIES",
+    "contract": "Region/group/target/time endpoints and ordering require exact target evidence.",
+    "source_id": null,
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-U-CLIP-LIFECYCLE",
+    "provenance": "U",
+    "target_applicability": "U",
+    "title": "CLIP-LIFECYCLE",
+    "contract": "Clip-specific automation, storage/error/cancel/rate/teardown remain required unknowns.",
+    "source_id": null,
+    "source_blocks": []
+  },
+  {
+    "id": "REQ-SESSION-LAUNCH-U-SCENE-LIFECYCLE",
+    "provenance": "U",
+    "target_applicability": "U",
+    "title": "SCENE-LIFECYCLE",
+    "contract": "Scene-specific automation, storage/error/cancel/rate/teardown remain required unknowns.",
+    "source_id": null,
+    "source_blocks": []
+  }
+]

@@ -1,0 +1,87 @@
+{
+  "id": "REVIEW-DYNAMICS-R1",
+  "date_utc": "2026-10-19T20:46:35.215152+00:00",
+  "reviewer": "independent analyst /root/arrangement_spec",
+  "disposition": "approved-as-partial-analyst-draft",
+  "reviewed_manifest_sha256": "7eaf6c5b97efad1352aaf2820c21a66ebb5c6d53bbf9e7f218df516418a825eb",
+  "scope": "All62 requirements and129 cases for Compressor,Gate,Glue Compressor,Limiter and Multiband Dynamics; all123 retained manual blocks and compound documentary predicates; package/schema derivations, fixture scope, canonical snapshots and frozen payload identities. Not a release, executable probe, numerical DSP or compatibility approval.",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "DYN-REVIEW-N01",
+      "severity": "low",
+      "locations": [
+        "cases.json: DYN-COMPRESSOR-013 through019 and analogous per-device effective-audio U cases",
+        "spec-r1.md: Preconditions, inputs and comparison rules"
+      ],
+      "finding": "The U audio probes require explicitly selected relevant controls but do not pin their selected settings or a witnessed active-processing positive control. For example the asymmetric-channel probe can be masked by main Dry/Wet0, Ratio1, Glue Range0, disabled bands/Amount0, or Listen replacing the normal output. No false pass is currently asserted: all such expected values are null and the spec explicitly requires later measurement/oracle work.",
+      "requested_follow_up": "Before execution or promotion to acceptance cases, retain accepted displayed settings, the intended normal/detector/listen output path, and an active-processing control for each branch. Separate deliberate bypass/neutral branches from active response probes; do not infer legal control values or calibrated detector levels."
+    },
+    {
+      "id": "DYN-REVIEW-N02",
+      "severity": "low",
+      "locations": [
+        "fixture-signals.json: common.sample_rate_hz,common.frames,signals.S2",
+        "cases.json: DYN-COMPRESSOR-016,DYN-GATE-013,DYN-GLUE-COMPRESSOR-013,DYN-LIMITER-013,DYN-MULTIBAND-DYNAMICS-017"
+      ],
+      "finding": "The rate matrix requests44100/48000/96000Hz but S2 is defined only as48000frames at48000Hz with its impulse at frame24000. It does not choose unchanged-frame reinterpretation, regenerated time-aligned impulse or host resampling for the other rates. Those choices produce different input timing/duration, so this is not yet a unique executable time/latency fixture. The oracle is correctly null.",
+      "requested_follow_up": "Pin frames, impulse index, duration and any host resampling/source-rate behavior separately at each rate before collecting comparable timing evidence. Keep unavailable rate/block requests and observed host behavior distinct."
+    }
+  ],
+  "semantic_checks": {
+    "compressor": "Threshold/ratio and Knee examples remain documentary changes, not calibrated sample/dB equations. Makeup external-sidechain restriction, main versus detector Dry/Wet, display modes/colors, lookahead options, Peak/RMS/Expand and Lin/Log clauses match cited text; no RMS window, envelope formula or neutral whole-device identity inferred.",
+    "gate": "Threshold/Return, Flip, Attack-Hold-Release ordering, Floor endpoints, display colors, lookahead and sidechain/EQ/Listen clauses match cited text. Exact equality, hysteresis arithmetic, curve and effective Flip interactions stay U.",
+    "glue_compressor": "Implicit ratio-dependent knee, ms versus second units and Auto description, main mix/Range distinction, Makeup/needle, Soft Clip indication and oversampling exception,2x documentary rate and sidechain/EQ/Listen roles match cited text. No fixed ceiling asserted across oversampling or invented numeric release model.",
+    "limiter": "Input Gain/Ceiling and Maximize relabeling/output role, Release availability,1.5/3/6ms choices, mode labels and True Peak documentary role, Link endpoints and M/S encode-limit-decode match cited text. Independent L/R wording is correctly qualified by Link. Later gain and Main-volume conditions preserved; no exact true-peak algorithm, latency, intermediate linking or dB conversion supplied.",
+    "multiband_dynamics": "High/Low combinations and500/2000Hz example, band activator/solo and Input-output ordering, bars, threshold/ratio modifiers, four processing directions, T/B/A editors, opposing crossing directions, Soft Knee/RMS/Peak, Time scaling/Amount0 and detector-only sidechain/Listen roles match cited text. Amount0 is not total-device bypass; no crossover, summation, simultaneous-solo or envelope equation invented.",
+    "case_nonvacuity": "47D12 cases are explicitly documentary/UI-role comparators, not audio measurements; none is credited as effective DSP proof.77U cases have null expected values and preserve boundary/negative/automation/persistence/undo/malformed/cancellation/transport/teardown per device. Future active-path execution needs N01/N02 refinements.",
+    "storage": "Five schema declarations and five historical Creator12.4d1 presets support vocabulary/file presence only. No runtime range/enum/default, loader acceptance, fallback or constructor guarantee inferred.",
+    "ownership": "Generic chain, rack, Set storage, mix/mixer and automation owners are dependencies. Five profiles are not silently added to the existing seven-device host contract; no candidate implementation API introduced.",
+    "version": "Official current Version12 source captured2026-10-19; exact12.4.3 applicability remains unknown. All124 application cases are unexecuted exact-target U; five Dpkg cases are artifact-only audits."
+  },
+  "integrity_checks": {
+    "manifest_payloads_hash_size": 26,
+    "canonical_snapshot_byte_matches": 2,
+    "source_pins_hash_size": 7,
+    "original_installed_preset_byte_matches": 5,
+    "installed_schema_byte_match": true,
+    "manual_HTML_sha256": "9cb15cb3d80bda4771e5add2c2b74f5c57d73ee8850e198acf7cf8a51dfd1299",
+    "schema_sha256": "b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299",
+    "manual_original_source_identity": "D12-AUDIO-EFFECTS in audio-utilities/sources.json; URL/date/version/hash/size match",
+    "manual_blocks_reextracted_from_pinned_HTML": {
+      "compressor": 33,
+      "gate": 16,
+      "glue-compressor": 16,
+      "limiter": 13,
+      "multiband-dynamics": 45
+    },
+    "manual_text_derivations_exact": true,
+    "schema_class_records_equal_inventory": 5,
+    "preset_root_attributes_and_all_field_XML_exact": 5,
+    "unique_requirement_ids": 62,
+    "unique_case_ids": 129,
+    "requirement_texts_equal_JSON": 62,
+    "case_table_ID_requirement_kind_provenance_match": 129,
+    "all_requirements_have_cases": true,
+    "case_provenance_counts": {
+      "D12": 47,
+      "Dpkg": 5,
+      "U": 77
+    },
+    "null_U_expected": 77,
+    "exact_target_U_application_cases": 124,
+    "author_validator": "Read validate.py before invoking without --freeze; default path is read-only. Passed; frozen26payloads rechecked unchanged afterward. No capture.py execution.",
+    "changed_page_file_links_frontmatter": "pass by read-only validator",
+    "git_diff_check": "pass"
+  },
+  "execution_limits": {
+    "original_execution": false,
+    "candidate_execution": false,
+    "audio_generation": false,
+    "runtime_compatibility_pass": false,
+    "source_images_independently_inspected": false,
+    "author_shared_source_mutation": false,
+    "tool_installation": false
+  },
+  "remaining_risk": "Partial analyst documentation only. Exact-build version parity, effective numerical DSP, timing/calibration, active-path fixtures, automation/lifecycle/malformed behavior and complete per-device profiles remain unresolved. The two probe notes must be resolved before executable measurement or grading."
+}

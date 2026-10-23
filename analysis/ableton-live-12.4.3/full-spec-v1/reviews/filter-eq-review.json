@@ -1,0 +1,53 @@
+{
+  "id": "REVIEW-FILTER-EQ-AUTHOR-R1",
+  "date": "2026-10-19",
+  "reviewer": "independent coordinator /root",
+  "disposition": "changes-requested-for-partial-draft",
+  "manifest_sha256": "0f25052e22eacc205ba7bf5d5a902027c1902051e3174e9c66f1ab22fcc3c49e",
+  "checks": {
+    "payload_hashes_sizes": 29,
+    "source_pins_and_originals": 7,
+    "manual_blocks_against_HTML": 108,
+    "schema_classes": 11,
+    "original_compressed_XML_pairs": 5,
+    "file_assertion_cases": 4,
+    "requirements": 65,
+    "cases": 126,
+    "D12": 78,
+    "Dpkg": 4,
+    "U": 44,
+    "source_semantics": "Read all108 manual blocks and all65 requirements/126 scenario rows; detector tap and sidechain chooser discrepancy retained U; modern semantics not imported into Legacy; all quantitative and exact-build gaps preserved.",
+    "runtime_executions": 0
+  },
+  "findings": [
+    {
+      "id": "FEQ-001",
+      "severity": "medium",
+      "required": true,
+      "location": "AF-C016..020,023..028 and fixture-signals.json",
+      "issue": "Signal recipes do not establish nonzero observable LFO/envelope modulation. Several signal-response cases omit active amount, nonzero stimulus, unclamped/nonmuted wet path and control isolation. The retained default actually stores Lfo_Amount=0 and Envelope_Amount=0. Negative no-effect checks can pass with every modulation path inactive, and positive response cases are not reproducible.",
+      "requested": "Add explicit per-case or shared modulation fixtures: accepted nonzero amount for tested modulator, other modulator off, fixed suitable active filter/cutoff/Drive/mix/output, independently observable precomparison modulation response, defined source/time settings as applicable. Ensure case baseline tests the enabled path before no-effect comparison. UI-only availability assertions can be kept separate from ungraded signal claims. Preserve original seal/payloads and keep exact-target/numerical U."
+    },
+    {
+      "id": "FEQ-002",
+      "severity": "low",
+      "required": false,
+      "location": "EQ8-C018",
+      "issue": "Scale exclusion is exercised without specifying nonzero gain for included peak filter; at zero gain the inclusion assertion can be vacuous.",
+      "requested": "Use accepted nonzero gain for the peak and two accepted distinct Scale values; keep numeric law and stored-value mutation U."
+    },
+    {
+      "id": "FEQ-003",
+      "severity": "low",
+      "required": false,
+      "location": "EQ3-C005..007",
+      "issue": "Energy in a band alone need not cross an unknown-calibration detector threshold; initial LED state is not specified.",
+      "requested": "Establish a stable lit baseline under each active band, hold source constant, then disable band and observe continued activity; retain calibration/tie/hold timing U."
+    }
+  ],
+  "limits": [
+    "No original code/application/candidate/audio execution or figure inspection.",
+    "No complete profiles or target compatibility passes.",
+    "All original source hashes and published releases unchanged; only this report written."
+  ]
+}

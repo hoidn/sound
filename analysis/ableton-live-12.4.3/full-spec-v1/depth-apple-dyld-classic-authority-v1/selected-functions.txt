@@ -1,0 +1,1317 @@
+
+===== MachOAnalyzer.cpp:1793-2302 complete validBindInfo, invalidBindState and all three forEachBind overloads; includes unselected legacy relocation branches as full-function context =====
+bool MachOAnalyzer::validBindInfo(Diagnostics& diag, const char* path) const
+{
+    forEachBind(diag, ^(const char* opcodeName, const LinkEditInfo& leInfo, const SegmentInfo segments[],
+                         bool segIndexSet, bool libraryOrdinalSet, uint32_t dylibCount, int libOrdinal,
+                         uint32_t ptrSize, uint8_t segmentIndex, uint64_t segmentOffset,
+                         uint8_t type, const char* symbolName, bool weakImport, bool lazyBind, uint64_t addend, bool& stop) {
+        if ( invalidBindState(diag, opcodeName, path, leInfo, segments, segIndexSet, libraryOrdinalSet, dylibCount,
+                              libOrdinal, ptrSize, segmentIndex, segmentOffset, type, symbolName) ) {
+            stop = true;
+        }
+    }, ^(const char* symbolName) {
+    });
+    return diag.noError();
+}
+
+bool MachOAnalyzer::invalidBindState(Diagnostics& diag, const char* opcodeName, const char* path, const LinkEditInfo& leInfo, const SegmentInfo segments[],
+                                    bool segIndexSet,  bool libraryOrdinalSet, uint32_t dylibCount, int libOrdinal, uint32_t ptrSize,
+                                    uint8_t segmentIndex, uint64_t segmentOffset, uint8_t type, const char* symbolName) const
+{
+    if ( !segIndexSet ) {
+        diag.error("in '%s' %s missing preceding BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB", path, opcodeName);
+        return true;
+    }
+    if ( segmentIndex >= leInfo.layout.linkeditSegIndex )  {
+        diag.error("in '%s' %s segment index %d too large", path, opcodeName, segmentIndex);
+        return true;
+    }
+    if ( segmentOffset > (segments[segmentIndex].vmSize-ptrSize) ) {
+        diag.error("in '%s' %s current segment offset 0x%08llX beyond segment size (0x%08llX)", path, opcodeName, segmentOffset, segments[segmentIndex].vmSize);
+        return true;
+    }
+    if ( symbolName == NULL ) {
+        diag.error("in '%s' %s missing preceding BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM", path, opcodeName);
+        return true;
+    }
+    if ( !libraryOrdinalSet ) {
+        diag.error("in '%s' %s missing preceding BIND_OPCODE_SET_DYLIB_ORDINAL", path, opcodeName);
+        return true;
+    }
+    if ( libOrdinal > (int)dylibCount ) {
+        diag.error("in '%s' %s has library ordinal too large (%d) max (%d)", path, opcodeName, libOrdinal, dylibCount);
+        return true;
+    }
+    if ( libOrdinal < BIND_SPECIAL_DYLIB_WEAK_LOOKUP ) {
+        diag.error("in '%s' %s has unknown library special ordinal (%d)", path, opcodeName, libOrdinal);
+        return true;
+    }
+    switch ( type )  {
+        case BIND_TYPE_POINTER:
+            if ( !segments[segmentIndex].writable() ) {
+                diag.error("in '%s' %s pointer bind is in non-writable segment", path, opcodeName);
+                return true;
+            }
+            if ( segments[segmentIndex].executable() && enforceFormat(Malformed::executableData) ) {
+                diag.error("in '%s' %s pointer bind is in executable segment", path, opcodeName);
+                return true;
+            }
+            break;
+        case BIND_TYPE_TEXT_ABSOLUTE32:
+        case BIND_TYPE_TEXT_PCREL32: {
+            // Text relocations are permitted in x86_64 kexts
+            bool forceAllowTextRelocs = false;
+#if BUILDING_APP_CACHE_UTIL
+            if ( isKextBundle() && (isArch("x86_64") || isArch("x86_64h")) )
+                forceAllowTextRelocs = true;
+#endif
+            if ( !forceAllowTextRelocs && !segments[segmentIndex].textRelocs ) {
+                diag.error("in '%s' %s text bind is in segment that does not support text relocations", path, opcodeName);
+                return true;
+            }
+            if ( segments[segmentIndex].writable() ) {
+                diag.error("in '%s' %s text bind is in writable segment", path, opcodeName);
+                return true;
+            }
+            if ( !segments[segmentIndex].executable() ) {
+                diag.error("in '%s' %s pointer bind is in non-executable segment", path, opcodeName);
+                return true;
+            }
+            break;
+        }
+        default:
+            diag.error("in '%s' %s unknown bind type %d", path, opcodeName, type);
+            return true;
+    }
+    return false;
+}
+
+void MachOAnalyzer::forEachBind(Diagnostics& diag, void (^handler)(uint64_t runtimeOffset, int libOrdinal, uint8_t type, const char* symbolName,
+                                                                  bool weakImport, bool lazyBind, uint64_t addend, bool& stop),
+                                                   void (^strongHandler)(const char* symbolName)) const
+{
+    __block bool     startVmAddrSet = false;
+    __block uint64_t startVmAddr    = 0;
+    forEachBind(diag, ^(const char* opcodeName, const LinkEditInfo& leInfo, const SegmentInfo segments[],
+                        bool segIndexSet, bool libraryOrdinalSet, uint32_t dylibCount, int libOrdinal,
+                        uint32_t ptrSize, uint8_t segmentIndex, uint64_t segmentOffset,
+                        uint8_t type, const char* symbolName, bool weakImport, bool lazyBind, uint64_t addend, bool& stop) {
+       if ( !startVmAddrSet ) {
+            for (int i=0; i <= segmentIndex; ++i) {
+                if ( strcmp(segments[i].segName, "__TEXT") == 0 ) {
+                    startVmAddr = segments[i].vmAddr;
+                    startVmAddrSet = true;
+                    break;
+               }
+            }
+        }
+        uint64_t bindVmOffset  = segments[segmentIndex].vmAddr + segmentOffset;
+        uint64_t runtimeOffset = bindVmOffset - startVmAddr;
+        handler(runtimeOffset, libOrdinal, type, symbolName, weakImport, lazyBind, addend, stop);
+    }, ^(const char* symbolName) {
+        strongHandler(symbolName);
+    });
+}
+
+void MachOAnalyzer::forEachBind(Diagnostics& diag, void (^handler)(uint64_t runtimeOffset, int libOrdinal, const char* symbolName,
+                                                                  bool weakImport, bool lazyBind, uint64_t addend, bool& stop),
+                                                   void (^strongHandler)(const char* symbolName)) const
+{
+    forEachBind(diag, ^(uint64_t runtimeOffset, int libOrdinal, uint8_t type, const char* symbolName,
+                        bool weakImport, bool lazyBind, uint64_t addend, bool &stop) {
+        handler(runtimeOffset, libOrdinal, symbolName, weakImport, lazyBind, addend, stop);
+    }, strongHandler);
+}
+
+void MachOAnalyzer::forEachBind(Diagnostics& diag,
+                                 void (^handler)(const char* opcodeName, const LinkEditInfo& leInfo, const SegmentInfo segments[],
+                                                 bool segIndexSet,  bool libraryOrdinalSet, uint32_t dylibCount, int libOrdinal,
+                                                 uint32_t ptrSize, uint8_t segmentIndex, uint64_t segmentOffset, uint8_t type,
+                                                 const char* symbolName, bool weakImport, bool lazyBind, uint64_t addend, bool& stop),
+                                 void (^strongHandler)(const char* symbolName)) const
+{
+    const uint32_t  ptrSize = this->pointerSize();
+    bool            stop    = false;
+
+    LinkEditInfo leInfo;
+    getLinkEditPointers(diag, leInfo);
+    if ( diag.hasError() )
+        return;
+
+    BLOCK_ACCCESSIBLE_ARRAY(SegmentInfo, segmentsInfo, leInfo.layout.lastSegIndex+1);
+    getAllSegmentsInfos(diag, segmentsInfo);
+    if ( diag.hasError() )
+        return;
+
+
+
+    const uint32_t dylibCount = dependentDylibCount();
+
+    if ( leInfo.dyldInfo != nullptr ) {
+        // process bind opcodes
+        const uint8_t*  p    = getLinkEditContent(leInfo.layout, leInfo.dyldInfo->bind_off);
+        const uint8_t*  end  = p + leInfo.dyldInfo->bind_size;
+        uint8_t         type = 0;
+        uint64_t        segmentOffset = 0;
+        uint8_t         segmentIndex = 0;
+        const char*     symbolName = NULL;
+        int             libraryOrdinal = 0;
+        bool            segIndexSet = false;
+        bool            libraryOrdinalSet = false;
+
+        int64_t         addend = 0;
+        uint64_t        count;
+        uint64_t        skip;
+        bool            weakImport = false;
+        while ( !stop && diag.noError() && (p < end) ) {
+            uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+            uint8_t opcode = *p & BIND_OPCODE_MASK;
+            ++p;
+            switch (opcode) {
+                case BIND_OPCODE_DONE:
+                    stop = true;
+                    break;
+                case BIND_OPCODE_SET_DYLIB_ORDINAL_IMM:
+                    libraryOrdinal = immediate;
+                    libraryOrdinalSet = true;
+                    break;
+                case BIND_OPCODE_SET_DYLIB_ORDINAL_ULEB:
+                    libraryOrdinal = (int)read_uleb128(diag, p, end);
+                    libraryOrdinalSet = true;
+                    break;
+                case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
+                    // the special ordinals are negative numbers
+                    if ( immediate == 0 )
+                        libraryOrdinal = 0;
+                    else {
+                        int8_t signExtended = BIND_OPCODE_MASK | immediate;
+                        libraryOrdinal = signExtended;
+                    }
+                    libraryOrdinalSet = true;
+                    break;
+                case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+                    weakImport = ( (immediate & BIND_SYMBOL_FLAGS_WEAK_IMPORT) != 0 );
+                    symbolName = (char*)p;
+                    while (*p != '\0')
+                        ++p;
+                    ++p;
+                    break;
+                case BIND_OPCODE_SET_TYPE_IMM:
+                    type = immediate;
+                    break;
+                case BIND_OPCODE_SET_ADDEND_SLEB:
+                    addend = read_sleb128(diag, p, end);
+                    break;
+                case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+                    segmentIndex = immediate;
+                    segmentOffset = read_uleb128(diag, p, end);
+                    segIndexSet = true;
+                    break;
+                case BIND_OPCODE_ADD_ADDR_ULEB:
+                    segmentOffset += read_uleb128(diag, p, end);
+                    break;
+                case BIND_OPCODE_DO_BIND:
+                    handler("BIND_OPCODE_DO_BIND", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                            ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                    segmentOffset += ptrSize;
+                    break;
+                case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+                    handler("BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                            ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                    segmentOffset += read_uleb128(diag, p, end) + ptrSize;
+                    break;
+                case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+                    handler("BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                            ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                    segmentOffset += immediate*ptrSize + ptrSize;
+                    break;
+                case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+                    count = read_uleb128(diag, p, end);
+                    skip = read_uleb128(diag, p, end);
+                    for (uint32_t i=0; i < count; ++i) {
+                        handler("BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                                ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                        segmentOffset += skip + ptrSize;
+                        if ( stop )
+                            break;
+                    }
+                    break;
+                default:
+                    diag.error("bad bind opcode 0x%02X", *p);
+            }
+        }
+        if ( diag.hasError() )
+            return;
+
+        // process lazy bind opcodes
+        uint32_t lazyDoneCount = 0;
+        uint32_t lazyBindCount = 0;
+        if ( leInfo.dyldInfo->lazy_bind_size != 0 ) {
+            p               = getLinkEditContent(leInfo.layout, leInfo.dyldInfo->lazy_bind_off);
+            end             = p + leInfo.dyldInfo->lazy_bind_size;
+            type            = BIND_TYPE_POINTER;
+            segmentOffset   = 0;
+            segmentIndex    = 0;
+            symbolName      = NULL;
+            libraryOrdinal  = 0;
+            segIndexSet     = false;
+            libraryOrdinalSet= false;
+            addend          = 0;
+            weakImport      = false;
+            stop            = false;
+            while (  !stop && diag.noError() && (p < end) ) {
+                uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+                uint8_t opcode = *p & BIND_OPCODE_MASK;
+                ++p;
+                switch (opcode) {
+                    case BIND_OPCODE_DONE:
+                        // this opcode marks the end of each lazy pointer binding
+                        ++lazyDoneCount;
+                        break;
+                    case BIND_OPCODE_SET_DYLIB_ORDINAL_IMM:
+                        libraryOrdinal = immediate;
+                        libraryOrdinalSet = true;
+                        break;
+                    case BIND_OPCODE_SET_DYLIB_ORDINAL_ULEB:
+                        libraryOrdinal = (int)read_uleb128(diag, p, end);
+                        libraryOrdinalSet = true;
+                        break;
+                    case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
+                        // the special ordinals are negative numbers
+                        if ( immediate == 0 )
+                            libraryOrdinal = 0;
+                        else {
+                            int8_t signExtended = BIND_OPCODE_MASK | immediate;
+                            libraryOrdinal = signExtended;
+                        }
+                        libraryOrdinalSet = true;
+                        break;
+                    case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+                        weakImport = ( (immediate & BIND_SYMBOL_FLAGS_WEAK_IMPORT) != 0 );
+                        symbolName = (char*)p;
+                        while (*p != '\0')
+                            ++p;
+                        ++p;
+                        break;
+                    case BIND_OPCODE_SET_ADDEND_SLEB:
+                        addend = read_sleb128(diag, p, end);
+                        break;
+                    case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+                        segmentIndex = immediate;
+                        segmentOffset = read_uleb128(diag, p, end);
+                        segIndexSet = true;
+                        break;
+                    case BIND_OPCODE_DO_BIND:
+                        handler("BIND_OPCODE_DO_BIND", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                                ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, true, addend, stop);
+                        segmentOffset += ptrSize;
+                        ++lazyBindCount;
+                        break;
+                    case BIND_OPCODE_SET_TYPE_IMM:
+                    case BIND_OPCODE_ADD_ADDR_ULEB:
+                    case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+                    case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+                    case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+                    default:
+                        diag.error("bad lazy bind opcode 0x%02X", opcode);
+                        break;
+                }
+            }
+            if ( lazyDoneCount > lazyBindCount+7 ) {
+                // diag.error("lazy bind opcodes missing binds");
+            }
+        }
+        if ( diag.hasError() )
+            return;
+
+        // process weak bind info
+        if ( leInfo.dyldInfo->weak_bind_size != 0 ) {
+            p               = getLinkEditContent(leInfo.layout, leInfo.dyldInfo->weak_bind_off);
+            end             = p + leInfo.dyldInfo->weak_bind_size;
+            type            = BIND_TYPE_POINTER;
+            segmentOffset   = 0;
+            segmentIndex    = 0;
+            symbolName      = NULL;
+            libraryOrdinal  = BIND_SPECIAL_DYLIB_WEAK_LOOKUP;
+            segIndexSet     = false;
+            libraryOrdinalSet= true;
+            addend          = 0;
+            weakImport      = false;
+            stop            = false;
+            while ( !stop && diag.noError() && (p < end) ) {
+                uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+                uint8_t opcode = *p & BIND_OPCODE_MASK;
+                ++p;
+                switch (opcode) {
+                    case BIND_OPCODE_DONE:
+                        stop = true;
+                        break;
+                    case BIND_OPCODE_SET_DYLIB_ORDINAL_IMM:
+                    case BIND_OPCODE_SET_DYLIB_ORDINAL_ULEB:
+                    case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
+                        diag.error("unexpected dylib ordinal in weak_bind");
+                        break;
+                    case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+                        weakImport = ( (immediate & BIND_SYMBOL_FLAGS_WEAK_IMPORT) != 0 );
+                        symbolName = (char*)p;
+                        while (*p != '\0')
+                            ++p;
+                        ++p;
+                        if ( immediate & BIND_SYMBOL_FLAGS_NON_WEAK_DEFINITION ) {
+                            strongHandler(symbolName);
+                        }
+                        break;
+                    case BIND_OPCODE_SET_TYPE_IMM:
+                        type = immediate;
+                        break;
+                    case BIND_OPCODE_SET_ADDEND_SLEB:
+                        addend = read_sleb128(diag, p, end);
+                        break;
+                    case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+                        segmentIndex = immediate;
+                        segmentOffset = read_uleb128(diag, p, end);
+                        segIndexSet = true;
+                        break;
+                    case BIND_OPCODE_ADD_ADDR_ULEB:
+                        segmentOffset += read_uleb128(diag, p, end);
+                        break;
+                    case BIND_OPCODE_DO_BIND:
+                        handler("BIND_OPCODE_DO_BIND", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                                ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                        segmentOffset += ptrSize;
+                        break;
+                    case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+                        handler("BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                                ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                        segmentOffset += read_uleb128(diag, p, end) + ptrSize;
+                        break;
+                    case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+                        handler("BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                                ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                        segmentOffset += immediate*ptrSize + ptrSize;
+                        break;
+                    case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+                        count = read_uleb128(diag, p, end);
+                        skip = read_uleb128(diag, p, end);
+                        for (uint32_t i=0; i < count; ++i) {
+                            handler("BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB", leInfo, segmentsInfo, segIndexSet, libraryOrdinalSet, dylibCount, libraryOrdinal,
+                                    ptrSize, segmentIndex, segmentOffset, type, symbolName, weakImport, false, addend, stop);
+                            segmentOffset += skip + ptrSize;
+                            if ( stop )
+                                break;
+                        }
+                        break;
+                    default:
+                        diag.error("bad bind opcode 0x%02X", *p);
+                }
+            }
+        }
+    }
+    else if ( leInfo.chainedFixups != nullptr ) {
+        // binary uses chained fixups, so do nothing
+    }
+    else if ( leInfo.dynSymTab != nullptr ) {
+        // old binary, process external relocations
+        const uint64_t                  relocsStartAddress = externalRelocBaseAddress(segmentsInfo, leInfo.layout.linkeditSegIndex);
+        const relocation_info* const    relocsStart = (relocation_info*)getLinkEditContent(leInfo.layout, leInfo.dynSymTab->extreloff);
+        const relocation_info* const    relocsEnd   = &relocsStart[leInfo.dynSymTab->nextrel];
+        bool                            is64Bit     = is64() ;
+        const uint8_t                   relocSize   = (is64Bit ? 3 : 2);
+        const void*                     symbolTable = getLinkEditContent(leInfo.layout, leInfo.symTab->symoff);
+        const struct nlist_64*          symbols64   = (nlist_64*)symbolTable;
+        const struct nlist*             symbols32   = (struct nlist*)symbolTable;
+        const char*                     stringPool  = (char*)getLinkEditContent(leInfo.layout, leInfo.symTab->stroff);
+        uint32_t                        symCount    = leInfo.symTab->nsyms;
+        uint32_t                        poolSize    = leInfo.symTab->strsize;
+        for (const relocation_info* reloc=relocsStart; (reloc < relocsEnd) && !stop; ++reloc) {
+            bool isBranch = false;
+#if BUILDING_APP_CACHE_UTIL
+            if ( isKextBundle() ) {
+                // kext's may have other kinds of relocations, eg, branch relocs.  Skip them
+                if ( isArch("x86_64") || isArch("x86_64h") ) {
+                    if ( reloc->r_type == X86_64_RELOC_BRANCH ) {
+                        if ( reloc->r_length != 2 ) {
+                            diag.error("external relocation has wrong r_length");
+                            break;
+                        }
+                        if ( reloc->r_pcrel != true ) {
+                            diag.error("external relocation should be pcrel");
+                            break;
+                        }
+                        isBranch = true;
+                    }
+                }
+            }
+#endif
+
+            if ( !isBranch ) {
+                if ( reloc->r_length != relocSize ) {
+                    diag.error("external relocation has wrong r_length");
+                    break;
+                }
+                if ( reloc->r_type != 0 ) { // 0 == X86_64_RELOC_UNSIGNED == GENERIC_RELOC_VANILLA == ARM64_RELOC_UNSIGNED
+                    diag.error("external relocation has wrong r_type");
+                    break;
+                }
+            }
+            uint32_t segIndex  = 0;
+            uint64_t segOffset = 0;
+            if ( segIndexAndOffsetForAddress(relocsStartAddress+reloc->r_address, segmentsInfo, leInfo.layout.linkeditSegIndex, segIndex, segOffset) ) {
+                uint32_t symbolIndex = reloc->r_symbolnum;
+                if ( symbolIndex > symCount ) {
+                    diag.error("external relocation has out of range r_symbolnum");
+                    break;
+                }
+                else {
+                    uint32_t strOffset  = is64Bit ? symbols64[symbolIndex].n_un.n_strx : symbols32[symbolIndex].n_un.n_strx;
+                    uint16_t n_desc     = is64Bit ? symbols64[symbolIndex].n_desc : symbols32[symbolIndex].n_desc;
+                    uint8_t  n_type     = is64Bit ? symbols64[symbolIndex].n_type : symbols32[symbolIndex].n_type;
+                    uint32_t libOrdinal = libOrdinalFromDesc(n_desc);
+                    if ( strOffset >= poolSize ) {
+                        diag.error("external relocation has r_symbolnum=%d which has out of range n_strx", symbolIndex);
+                        break;
+                    }
+                    else {
+                        const char*     symbolName = stringPool + strOffset;
+                        bool            weakImport = (n_desc & N_WEAK_REF);
+                        const uint8_t*  content    = (uint8_t*)this + segmentsInfo[segIndex].vmAddr - leInfo.layout.textUnslidVMAddr + segOffset;
+                        uint64_t        addend     = (reloc->r_length == 3) ? *((uint64_t*)content) : *((uint32_t*)content);
+                        // Handle defined weak def symbols which need to get a special ordinal
+                        if ( ((n_type & N_TYPE) == N_SECT) && ((n_type & N_EXT) != 0) && ((n_desc & N_WEAK_DEF) != 0) )
+                            libOrdinal = BIND_SPECIAL_DYLIB_WEAK_LOOKUP;
+                        uint8_t type = isBranch ? BIND_TYPE_TEXT_PCREL32 : BIND_TYPE_POINTER;
+                        handler("external relocation", leInfo, segmentsInfo, true, true, dylibCount, libOrdinal,
+                                ptrSize, segIndex, segOffset, type, symbolName, weakImport, false, addend, stop);
+                    }
+                }
+            }
+            else {
+                diag.error("local relocation has out of range r_address");
+                break;
+            }
+        }
+        // then process indirect symbols
+        forEachIndirectPointer(diag, ^(uint64_t address, bool bind, int bindLibOrdinal,
+                                       const char* bindSymbolName, bool bindWeakImport, bool bindLazy, bool selfModifyingStub, bool& indStop) {
+            if ( !bind )
+               return;
+            uint32_t segIndex  = 0;
+            uint64_t segOffset = 0;
+            if ( segIndexAndOffsetForAddress(address, segmentsInfo, leInfo.layout.linkeditSegIndex, segIndex, segOffset) ) {
+                handler("indirect symbol", leInfo, segmentsInfo, true, true, dylibCount, bindLibOrdinal,
+                         ptrSize, segIndex, segOffset, BIND_TYPE_POINTER, bindSymbolName, bindWeakImport, bindLazy, 0, indStop);
+            }
+            else {
+                diag.error("indirect symbol has out of range address");
+                indStop = true;
+            }
+        });
+    }
+
+}
+
+===== ImageLoaderMachOCompressed.cpp:1236-1450 complete eachBind, including unsupported threaded context =====
+void ImageLoaderMachOCompressed::eachBind(const LinkContext& context, bind_handler handler)
+{
+    try {
+		uint8_t type = 0;
+		int segmentIndex = -1;
+		uintptr_t address = segActualLoadAddress(0);
+		uintptr_t segmentStartAddress = segActualLoadAddress(0);
+		uintptr_t segmentEndAddress = segActualEndAddress(0);
+		const char* symbolName = NULL;
+		uint8_t symboFlags = 0;
+		bool libraryOrdinalSet = false;
+		long libraryOrdinal = 0;
+		intptr_t addend = 0;
+		uintptr_t count;
+		uintptr_t skip;
+        uintptr_t segOffset = 0;
+
+		dyld3::OverflowSafeArray<ThreadedBindData> ordinalTable;
+        bool useThreadedRebaseBind = false;
+        ExtraBindData extraBindData;
+		LastLookup last = { 0, 0, NULL, 0, NULL };
+		const uint8_t* const start = fLinkEditBase + fDyldInfo->bind_off;
+		const uint8_t* const end = &start[fDyldInfo->bind_size];
+		const uint8_t* p = start;
+		bool done = false;
+		while ( !done && (p < end) ) {
+			uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+			uint8_t opcode = *p & BIND_OPCODE_MASK;
+			++p;
+			switch (opcode) {
+				case BIND_OPCODE_DONE:
+					done = true;
+					break;
+				case BIND_OPCODE_SET_DYLIB_ORDINAL_IMM:
+					libraryOrdinal = immediate;
+					libraryOrdinalSet = true;
+					break;
+				case BIND_OPCODE_SET_DYLIB_ORDINAL_ULEB:
+					libraryOrdinal = read_uleb128(p, end);
+					libraryOrdinalSet = true;
+					break;
+				case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
+					// the special ordinals are negative numbers
+					if ( immediate == 0 )
+						libraryOrdinal = 0;
+					else {
+						int8_t signExtended = BIND_OPCODE_MASK | immediate;
+						libraryOrdinal = signExtended;
+					}
+					libraryOrdinalSet = true;
+					break;
+				case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+					symbolName = (char*)p;
+					symboFlags = immediate;
+					while (*p != '\0')
+						++p;
+					++p;
+					break;
+				case BIND_OPCODE_SET_TYPE_IMM:
+					type = immediate;
+					break;
+				case BIND_OPCODE_SET_ADDEND_SLEB:
+					addend = read_sleb128(p, end);
+					break;
+				case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+					segmentIndex = immediate;
+					if ( (segmentIndex >= fSegmentsCount) || (segmentIndex < 0) )
+						dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is out of range (0..%d)",
+								segmentIndex, fSegmentsCount-1);
+			#if TEXT_RELOC_SUPPORT
+					if ( !segWriteable(segmentIndex) && !segHasRebaseFixUps(segmentIndex) && !segHasBindFixUps(segmentIndex) )
+			#else
+					if ( !segWriteable(segmentIndex) )
+			#endif
+						dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is not writable", segmentIndex);
+					segOffset = read_uleb128(p, end);
+					if ( segOffset > segSize(segmentIndex) )
+						dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has offset 0x%08lX beyond segment size (0x%08lX)", segOffset, segSize(segmentIndex));
+					segmentStartAddress = segActualLoadAddress(segmentIndex);
+					address = segmentStartAddress + segOffset;
+					segmentEndAddress = segActualEndAddress(segmentIndex);
+					break;
+				case BIND_OPCODE_ADD_ADDR_ULEB:
+					address += read_uleb128(p, end);
+					break;
+				case BIND_OPCODE_DO_BIND:
+                    if (!useThreadedRebaseBind) {
+                        if ( (address < segmentStartAddress) || (address >= segmentEndAddress) )
+                            throwBadBindingAddress(address, segmentEndAddress, segmentIndex, start, end, p);
+                        if ( symbolName  == NULL )
+                            dyld::throwf("BIND_OPCODE_DO_BIND missing preceding BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM");
+                        if ( segmentIndex == -1 )
+                            dyld::throwf("BIND_OPCODE_DO_BIND missing preceding BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB");
+                        if ( !libraryOrdinalSet )
+                            dyld::throwf("BIND_OPCODE_DO_BIND missing preceding BIND_OPCODE_SET_DYLIB_ORDINAL*");
+                        handler(context, this, address, type, symbolName, symboFlags, addend, libraryOrdinal,
+								&extraBindData, "", &last, false);
+                        address += sizeof(intptr_t);
+                    } else {
+                        ordinalTable.push_back(ThreadedBindData(symbolName, addend, libraryOrdinal, symboFlags, type));
+                    }
+					break;
+				case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+					if ( (address < segmentStartAddress) || (address >= segmentEndAddress) )
+						throwBadBindingAddress(address, segmentEndAddress, segmentIndex, start, end, p);
+					if ( symbolName  == NULL )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB missing preceding BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM");
+					if ( segmentIndex == -1 )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB missing preceding BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB");
+					if ( !libraryOrdinalSet )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB missing preceding BIND_OPCODE_SET_DYLIB_ORDINAL*");
+                    handler(context, this, address, type, symbolName, symboFlags, addend, libraryOrdinal,
+                                     &extraBindData, "", &last, false);
+					address += read_uleb128(p, end) + sizeof(intptr_t);
+					break;
+				case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+					if ( (address < segmentStartAddress) || (address >= segmentEndAddress) )
+						throwBadBindingAddress(address, segmentEndAddress, segmentIndex, start, end, p);
+					if ( symbolName  == NULL )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED missing preceding BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM");
+					if ( segmentIndex == -1 )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED missing preceding BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB");
+					if ( !libraryOrdinalSet )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED missing preceding BIND_OPCODE_SET_DYLIB_ORDINAL*");
+                    handler(context, this, address, type, symbolName, symboFlags, addend, libraryOrdinal,
+                                     &extraBindData, "", &last, false);
+					address += immediate*sizeof(intptr_t) + sizeof(intptr_t);
+					break;
+				case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+					if ( symbolName  == NULL )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB missing preceding BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM");
+					if ( segmentIndex == -1 )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB missing preceding BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB");
+					count = read_uleb128(p, end);
+					if ( !libraryOrdinalSet )
+						dyld::throwf("BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB missing preceding BIND_OPCODE_SET_DYLIB_ORDINAL*");
+					skip = read_uleb128(p, end);
+					for (uint32_t i=0; i < count; ++i) {
+						if ( (address < segmentStartAddress) || (address >= segmentEndAddress) )
+							throwBadBindingAddress(address, segmentEndAddress, segmentIndex, start, end, p);
+                        handler(context, this, address, type, symbolName, symboFlags, addend, libraryOrdinal,
+                                         &extraBindData, "", &last, false);
+						address += skip + sizeof(intptr_t);
+					}
+                    break;
+                case BIND_OPCODE_THREADED:
+                    if (sizeof(intptr_t) != 8) {
+                        dyld::throwf("BIND_OPCODE_THREADED require 64-bit");
+                        return;
+                    }
+                    // Note the immediate is a sub opcode
+                    switch (immediate) {
+                        case BIND_SUBOPCODE_THREADED_SET_BIND_ORDINAL_TABLE_SIZE_ULEB:
+                            count = read_uleb128(p, end);
+                            ordinalTable.clear();
+                            // FIXME: ld64 wrote the wrong value here and we need to offset by 1 for now.
+                            ordinalTable.reserve(count + 1);
+                            useThreadedRebaseBind = true;
+                            break;
+                        case BIND_SUBOPCODE_THREADED_APPLY: {
+                            uint64_t delta = 0;
+                            do {
+                                address = segmentStartAddress + segOffset;
+                                uint64_t value = *(uint64_t*)address;
+
+
+                                bool isRebase = (value & (1ULL << 62)) == 0;
+                                if (isRebase) {
+                                    {
+                                        // Call the bind handler which knows about our bind type being set to rebase
+                                        handler(context, this, address, BIND_TYPE_THREADED_REBASE, nullptr, 0, 0, 0,
+                                                         nullptr, "", &last, false);
+                                    }
+                                } else {
+                                    // the ordinal is bits [0..15]
+                                    uint16_t ordinal = value & 0xFFFF;
+                                    if (ordinal >= ordinalTable.count()) {
+                                        dyld::throwf("bind ordinal (%d) is out of range (max=%lu) for disk pointer 0x%16llX at segIndex=%d, segOffset=0x%0lX in %s",
+                                                    ordinal, ordinalTable.count(),value, segmentIndex, segOffset, this->getPath());
+                                        return;
+                                    }
+                                    std::tie(symbolName, addend, libraryOrdinal, symboFlags, type) = ordinalTable[ordinal].pack();
+                                    if ( (address < segmentStartAddress) || (address >= segmentEndAddress) )
+                                        throwBadBindingAddress(address, segmentEndAddress, segmentIndex, start, end, p);
+                                    {
+                                        handler(context, this, address, BIND_TYPE_THREADED_BIND,
+                                                         symbolName, symboFlags, addend, libraryOrdinal,
+                                                         nullptr, "", &last, false);
+                                    }
+                                }
+
+                                // The delta is bits [51..61]
+                                // And bit 62 is to tell us if we are a rebase (0) or bind (1)
+                                value &= ~(1ULL << 62);
+                                delta = ( value & 0x3FF8000000000000 ) >> 51;
+                                segOffset += delta * sizeof(intptr_t);
+                            } while ( delta != 0 );
+                            break;
+                        }
+
+                        default:
+                            dyld::throwf("bad threaded bind subopcode 0x%02X", *p);
+                    }
+                    break;
+				default:
+					dyld::throwf("bad bind opcode %d in bind info", *p);
+			}
+		}
+	}
+	catch (const char* msg) {
+		const char* newMsg = dyld::mkstringf("%s in %s", msg, this->getPath());
+		free((void*)msg);
+		throw newMsg;
+	}
+}
+
+===== ImageLoaderMachOCompressed.cpp:1452-1547 complete eachLazyBind =====
+void ImageLoaderMachOCompressed::eachLazyBind(const LinkContext& context, bind_handler handler)
+{
+	try {
+		uint8_t type = BIND_TYPE_POINTER;
+		int segmentIndex = -1;
+		uintptr_t address = segActualLoadAddress(0);
+		uintptr_t segmentStartAddress = segActualLoadAddress(0);
+		uintptr_t segmentEndAddress = segActualEndAddress(0);
+		uintptr_t segOffset;
+		const char* symbolName = NULL;
+		uint8_t symboFlags = 0;
+		long libraryOrdinal = 0;
+		intptr_t addend = 0;
+		const uint8_t* const start = fLinkEditBase + fDyldInfo->lazy_bind_off;
+		const uint8_t* const end = &start[fDyldInfo->lazy_bind_size];
+		const uint8_t* p = start;
+		bool done = false;
+		while ( !done && (p < end) ) {
+			uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+			uint8_t opcode = *p & BIND_OPCODE_MASK;
+			++p;
+			switch (opcode) {
+				case BIND_OPCODE_DONE:
+					// there is BIND_OPCODE_DONE at end of each lazy bind, don't stop until end of whole sequence
+					break;
+				case BIND_OPCODE_SET_DYLIB_ORDINAL_IMM:
+					libraryOrdinal = immediate;
+					break;
+				case BIND_OPCODE_SET_DYLIB_ORDINAL_ULEB:
+					libraryOrdinal = read_uleb128(p, end);
+					break;
+				case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
+					// the special ordinals are negative numbers
+					if ( immediate == 0 )
+						libraryOrdinal = 0;
+					else {
+						int8_t signExtended = BIND_OPCODE_MASK | immediate;
+						libraryOrdinal = signExtended;
+					}
+					break;
+				case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+					symbolName = (char*)p;
+					symboFlags = immediate;
+					while (*p != '\0')
+						++p;
+					++p;
+					break;
+				case BIND_OPCODE_SET_TYPE_IMM:
+					type = immediate;
+					break;
+				case BIND_OPCODE_SET_ADDEND_SLEB:
+					addend = read_sleb128(p, end);
+					break;
+				case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+					segmentIndex = immediate;
+					if ( (segmentIndex >= fSegmentsCount) || (segmentIndex < 0) )
+						dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is out of range (0..%d)",
+								segmentIndex, fSegmentsCount-1);
+					if ( !segWriteable(segmentIndex) )
+						dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is not writable", segmentIndex);
+					segOffset = read_uleb128(p, end);
+					if ( segOffset > segSize(segmentIndex) )
+						dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has offset 0x%08lX beyond segment size (0x%08lX)", segOffset, segSize(segmentIndex));
+					segmentStartAddress = segActualLoadAddress(segmentIndex);
+					segmentEndAddress = segActualEndAddress(segmentIndex);
+					address = segmentStartAddress + segOffset;
+					break;
+				case BIND_OPCODE_ADD_ADDR_ULEB:
+					address += read_uleb128(p, end);
+					break;
+				case BIND_OPCODE_DO_BIND:
+					if ( segmentIndex == -1 )
+						dyld::throwf("BIND_OPCODE_DO_BIND missing preceding BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB");
+					if ( (address < segmentStartAddress) || (address >= segmentEndAddress) )
+						throwBadBindingAddress(address, segmentEndAddress, segmentIndex, start, end, p);
+					if ( symbolName  == NULL )
+						dyld::throwf("BIND_OPCODE_DO_BIND missing preceding BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM");
+                    handler(context, this, address, type, symbolName, symboFlags, addend, libraryOrdinal,
+                                     NULL, "forced lazy ", NULL, false);
+					address += sizeof(intptr_t);
+					break;
+				case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+				case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+				case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+				default:
+					dyld::throwf("bad lazy bind opcode %d", *p);
+			}
+		}
+	}  
+
+	catch (const char* msg) {
+		const char* newMsg = dyld::mkstringf("%s in %s", msg, this->getPath());
+		free((void*)msg);
+		throw newMsg;
+	}
+}
+
+===== ImageLoaderMachOCompressed.cpp:1626-1670 complete doBindFastLazySymbol =====
+uintptr_t ImageLoaderMachOCompressed::doBindFastLazySymbol(uint32_t lazyBindingInfoOffset, const LinkContext& context,
+															void (*lock)(), void (*unlock)())
+{
+	// <rdar://problem/8663923> race condition with flat-namespace lazy binding
+	if ( this->usesTwoLevelNameSpace() ) {
+		// two-level namespace lookup does not require lock because dependents can't be unloaded before this image
+	}
+	else {
+		// acquire dyld global lock
+		if ( lock != NULL )
+			lock();
+	}
+
+	DyldSharedCache::DataConstLazyScopedWriter patcher(context.dyldCache, mach_task_self(), context.verboseMapping ? &dyld::log : nullptr);
+	
+	const uint8_t* const start = fLinkEditBase + fDyldInfo->lazy_bind_off;
+	const uint8_t* const end = &start[fDyldInfo->lazy_bind_size];
+	uint8_t segIndex;
+	uintptr_t segOffset;
+	int libraryOrdinal;
+	const char* symbolName;
+	bool doneAfterBind;
+	uintptr_t result;
+	do {
+		if ( ! getLazyBindingInfo(lazyBindingInfoOffset, start, end, &segIndex, &segOffset, &libraryOrdinal, &symbolName, &doneAfterBind) )
+			dyld::throwf("bad lazy bind info");
+
+		if ( segIndex >= fSegmentsCount )
+			dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is too large (0..%d)", 
+							segIndex, fSegmentsCount-1);
+		if ( segOffset > segSize(segIndex) )
+			dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has offset 0x%08lX beyond segment size (0x%08lX)", segOffset, segSize(segIndex));
+		uintptr_t address = segActualLoadAddress(segIndex) + segOffset;
+        result = bindAt(context, this, address, BIND_TYPE_POINTER, symbolName, 0, 0, libraryOrdinal,
+                              NULL, "lazy ", patcher, NULL, true);
+		// <rdar://problem/24140465> Some old apps had multiple lazy symbols bound at once
+	} while (!doneAfterBind && !context.strictMachORequired);
+
+	if ( !this->usesTwoLevelNameSpace() ) {
+		// release dyld global lock
+		if ( unlock != NULL )
+			unlock();
+	}
+	return result;
+}
+
+===== ImageLoaderMachOCompressed.cpp:1672-1685 complete initializeCoalIterator =====
+void ImageLoaderMachOCompressed::initializeCoalIterator(CoalIterator& it, unsigned int loadOrder, unsigned)
+{
+	it.image = this;
+	it.symbolName = " ";
+	it.loadOrder = loadOrder;
+	it.weakSymbol = false;
+	it.symbolMatches = false;
+	it.done = false;
+	it.curIndex = 0;
+	it.endIndex = (this->fDyldInfo ? this->fDyldInfo->weak_bind_size : 0);
+	it.address = 0;
+	it.type = 0;
+	it.addend = 0;
+}
+
+===== ImageLoaderMachOCompressed.cpp:1688-1778 complete incrementCoalIterator =====
+bool ImageLoaderMachOCompressed::incrementCoalIterator(CoalIterator& it)
+{
+	if ( it.done )
+		return false;
+		
+	if ( (this->fDyldInfo == nullptr) || (this->fDyldInfo->weak_bind_size == 0) ) {
+		/// hmmm, ld set MH_WEAK_DEFINES or MH_BINDS_TO_WEAK, but there is no weak binding info
+		it.done = true;
+		it.symbolName = "~~~";
+		return true;
+	}
+	const uint8_t* start = fLinkEditBase + fDyldInfo->weak_bind_off;
+	const uint8_t* p = start + it.curIndex;
+	const uint8_t* end = fLinkEditBase + fDyldInfo->weak_bind_off + this->fDyldInfo->weak_bind_size;
+	uintptr_t count;
+	uintptr_t skip;
+	uintptr_t segOffset;
+	while ( p < end ) {
+		uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+		uint8_t opcode = *p & BIND_OPCODE_MASK;
+		++p;
+		switch (opcode) {
+			case BIND_OPCODE_DONE:
+				it.done = true;
+				it.curIndex = p - start;
+				it.symbolName = "~~~"; // sorts to end
+				return true;
+			case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+				it.symbolName = (char*)p;
+				it.weakSymbol = ((immediate & BIND_SYMBOL_FLAGS_NON_WEAK_DEFINITION) == 0);
+				it.symbolMatches = false;
+				while (*p != '\0')
+					++p;
+				++p;
+				it.curIndex = p - start;
+				return false;
+			case BIND_OPCODE_SET_TYPE_IMM:
+				it.type = immediate;
+				break;
+			case BIND_OPCODE_SET_ADDEND_SLEB:
+				it.addend = read_sleb128(p, end);
+				break;
+			case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+				if ( immediate >= fSegmentsCount )
+					dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is too large (0..%d)",
+							immediate, fSegmentsCount-1);
+		#if __arm__
+				// <rdar://problem/23138428> iOS app compatibility
+				if ( !segWriteable(immediate) && it.image->isPositionIndependentExecutable() )
+		#elif TEXT_RELOC_SUPPORT
+				// <rdar://problem/23479396&23590867> i386 OS X app compatibility
+				if ( !segWriteable(immediate) && !segHasRebaseFixUps(immediate) && !segHasBindFixUps(immediate)
+					&& (!it.image->isExecutable() || it.image->isPositionIndependentExecutable()) )
+		#else
+				if ( !segWriteable(immediate) )
+        #endif
+					dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB targets segment %s which is not writable", segName(immediate));
+				segOffset = read_uleb128(p, end);
+				if ( segOffset > segSize(immediate) )
+					dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has offset 0x%08lX beyond segment size (0x%08lX)", segOffset, segSize(immediate));
+				it.address = segActualLoadAddress(immediate) + segOffset;
+				break;
+			case BIND_OPCODE_ADD_ADDR_ULEB:
+				it.address += read_uleb128(p, end);
+				break;
+			case BIND_OPCODE_DO_BIND:
+				it.address += sizeof(intptr_t);
+				break;
+			case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+				it.address += read_uleb128(p, end) + sizeof(intptr_t);
+				break;
+			case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+				it.address += immediate*sizeof(intptr_t) + sizeof(intptr_t);
+				break;
+			case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+				count = read_uleb128(p, end);
+				skip = read_uleb128(p, end);
+				for (uint32_t i=0; i < count; ++i) {
+					it.address += skip + sizeof(intptr_t);
+				}
+				break;
+			default:
+				dyld::throwf("bad weak bind opcode '%d' found after processing %d bytes in '%s'", *p, (int)(p-start), this->getPath());
+		}
+	}
+	/// hmmm, BIND_OPCODE_DONE is missing...
+	it.done = true;
+	it.symbolName = "~~~";
+	//dyld::log("missing BIND_OPCODE_DONE for image %s\n", this->getPath());
+	return true;
+}
+
+===== ImageLoaderMachOCompressed.cpp:1780-1790 complete getAddressCoalIterator =====
+uintptr_t ImageLoaderMachOCompressed::getAddressCoalIterator(CoalIterator& it, const LinkContext& context)
+{
+	//dyld::log("looking for %s in %s\n", it.symbolName, this->getPath());
+	const ImageLoader* foundIn = NULL;
+	const ImageLoader::Symbol* sym = this->findShallowExportedSymbol(it.symbolName, &foundIn);
+	if ( sym != NULL ) {
+		//dyld::log("sym=%p, foundIn=%p\n", sym, foundIn);
+		return foundIn->getExportedSymbolAddress(sym, context, this);
+	}
+	return 0;
+}
+
+===== ImageLoaderMachOCompressed.cpp:1793-1886 complete updateUsesCoalIterator =====
+void ImageLoaderMachOCompressed::updateUsesCoalIterator(CoalIterator& it, uintptr_t value, ImageLoader* targetImage, unsigned targetIndex, const LinkContext& context)
+{
+	// <rdar://problem/6570879> weak binding done too early with inserted libraries
+	if ( this->getState() < dyld_image_state_bound  )
+		return;
+
+	if ( fDyldInfo == nullptr )
+		return;
+		
+	const uint8_t* start = fLinkEditBase + fDyldInfo->weak_bind_off;
+	const uint8_t* p = start + it.curIndex;
+	const uint8_t* end = fLinkEditBase + fDyldInfo->weak_bind_off + this->fDyldInfo->weak_bind_size;
+
+	uint8_t type = it.type;
+	uintptr_t address = it.address;
+	const char* symbolName = it.symbolName;
+	intptr_t addend = it.addend;
+	uintptr_t count;
+	uintptr_t skip;
+	uintptr_t segOffset;
+	bool done = false;
+	bool boundSomething = false;
+	while ( !done && (p < end) ) {
+		uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+		uint8_t opcode = *p & BIND_OPCODE_MASK;
+		++p;
+		switch (opcode) {
+			case BIND_OPCODE_DONE:
+				done = true;
+				break;
+			case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+				done = true;
+				break;
+			case BIND_OPCODE_SET_TYPE_IMM:
+				type = immediate;
+				break;
+			case BIND_OPCODE_SET_ADDEND_SLEB:
+				addend = read_sleb128(p, end);
+				break;
+			case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+				if ( immediate >= fSegmentsCount )
+					dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has segment %d which is too large (0..%d)",
+							immediate, fSegmentsCount-1);
+		#if __arm__
+				// <rdar://problem/23138428> iOS app compatibility
+				if ( !segWriteable(immediate) && it.image->isPositionIndependentExecutable() )
+		#elif TEXT_RELOC_SUPPORT
+				// <rdar://problem/23479396&23590867> i386 OS X app compatibility
+				if ( !segWriteable(immediate) && !segHasRebaseFixUps(immediate) && !segHasBindFixUps(immediate)
+					&& (!it.image->isExecutable() || it.image->isPositionIndependentExecutable()) )
+		#else
+				if ( !segWriteable(immediate) )
+        #endif
+					dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB targets segment %s which is not writable", segName(immediate));
+				segOffset = read_uleb128(p, end);
+				if ( segOffset > segSize(immediate) )
+					dyld::throwf("BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB has offset 0x%08lX beyond segment size (0x%08lX)", segOffset, segSize(immediate));
+				address = segActualLoadAddress(immediate) + segOffset;
+				break;
+			case BIND_OPCODE_ADD_ADDR_ULEB:
+				address += read_uleb128(p, end);
+				break;
+			case BIND_OPCODE_DO_BIND:
+				bindLocation(context, this->imageBaseAddress(), address, value, type, symbolName, addend, this->getPath(), targetImage ? targetImage->getPath() : NULL, "weak ", NULL, fSlide);
+				boundSomething = true;
+				address += sizeof(intptr_t);
+				break;
+			case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+				bindLocation(context, this->imageBaseAddress(), address, value, type, symbolName, addend, this->getPath(), targetImage ? targetImage->getPath() : NULL, "weak ", NULL, fSlide);
+				boundSomething = true;
+				address += read_uleb128(p, end) + sizeof(intptr_t);
+				break;
+			case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+				bindLocation(context, this->imageBaseAddress(), address, value, type, symbolName, addend, this->getPath(), targetImage ? targetImage->getPath() : NULL, "weak ", NULL, fSlide);
+				boundSomething = true;
+				address += immediate*sizeof(intptr_t) + sizeof(intptr_t);
+				break;
+			case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+				count = read_uleb128(p, end);
+				skip = read_uleb128(p, end);
+				for (uint32_t i=0; i < count; ++i) {
+					bindLocation(context, this->imageBaseAddress(), address, value, type, symbolName, addend, this->getPath(), targetImage ? targetImage->getPath() : NULL, "weak ", NULL, fSlide);
+					boundSomething = true;
+					address += skip + sizeof(intptr_t);
+				}
+				break;
+			default:
+				dyld::throwf("bad bind opcode %d in weak binding info", *p);
+		}
+	}
+	// C++ weak coalescing cannot be tracked by reference counting.  Error on side of never unloading.
+	if ( boundSomething && (targetImage != this) )
+		context.addDynamicReference(this, targetImage);
+}
+
+===== ImageLoader.cpp:1909-1927 complete read_uleb128 =====
+uintptr_t ImageLoader::read_uleb128(const uint8_t*& p, const uint8_t* end)
+{
+	uint64_t result = 0;
+	int		 bit = 0;
+	do {
+		if (p == end)
+			dyld::throwf("malformed uleb128");
+
+		uint64_t slice = *p & 0x7f;
+
+		if (bit > 63)
+			dyld::throwf("uleb128 too big for uint64, bit=%d, result=0x%0llX", bit, result);
+		else {
+			result |= (slice << bit);
+			bit += 7;
+		}
+	} while (*p++ & 0x80);
+	return (uintptr_t)result;
+}
+
+===== ImageLoader.cpp:1930-1946 complete read_sleb128 =====
+intptr_t ImageLoader::read_sleb128(const uint8_t*& p, const uint8_t* end)
+{
+	int64_t result = 0;
+	int bit = 0;
+	uint8_t byte;
+	do {
+		if (p == end)
+			throw "malformed sleb128";
+		byte = *p++;
+		result |= (((int64_t)(byte & 0x7f)) << bit);
+		bit += 7;
+	} while (byte & 0x80);
+	// sign extend negative numbers
+	if ( ((byte & 0x40) != 0) && (bit < 64) )
+		result |= (~0ULL) << bit;
+	return (intptr_t)result;
+}
+
+===== ImageLoaderMachO.cpp:1970-2051 complete bindLocation =====
+uintptr_t ImageLoaderMachO::bindLocation(const LinkContext& context, uintptr_t baseVMAddress,
+                                         uintptr_t location, uintptr_t value,
+                                         uint8_t type, const char* symbolName,
+                                         intptr_t addend, const char* inPath, const char* toPath, const char* msg,
+                                         ExtraBindData *extraBindData, uintptr_t slide)
+{
+    auto logBind = [&]() {
+        if ( !context.verboseBind )
+            return;
+        if ( addend != 0 ) {
+            dyld::log("dyld: %sbind: %s:0x%08lX = %s:%s, *0x%08lX = 0x%08lX + %ld\n",
+                      msg, shortName(inPath), (uintptr_t)location,
+                      ((toPath != NULL) ? shortName(toPath) : "<missing weak_import>"),
+                      symbolName, (uintptr_t)location, value, addend);
+        } else {
+            dyld::log("dyld: %sbind: %s:0x%08lX = %s:%s, *0x%08lX = 0x%08lX\n",
+                      msg, shortName(inPath), (uintptr_t)location,
+                      ((toPath != NULL) ? shortName(toPath) : "<missing weak_import>"),
+                      symbolName, (uintptr_t)location, value);
+        }
+    };
+
+
+#if LOG_BINDINGS
+//	dyld::logBindings("%s: %s\n", targetImage->getShortName(), symbolName);
+#endif
+	
+	// do actual update
+	uintptr_t* locationToFix = (uintptr_t*)location;
+	uint32_t* loc32;
+	uintptr_t newValue = value+addend;
+	uint32_t value32;
+	switch (type) {
+		case BIND_TYPE_POINTER:
+            logBind();
+			// test first so we don't needless dirty pages
+			if ( *locationToFix != newValue )
+				*locationToFix = newValue;
+			break;
+        case BIND_TYPE_TEXT_ABSOLUTE32:
+            logBind();
+			loc32 = (uint32_t*)locationToFix;
+			value32 = (uint32_t)newValue;
+			if ( *loc32 != value32 )
+				*loc32 = value32;
+			break;
+        case BIND_TYPE_TEXT_PCREL32:
+            logBind();
+			loc32 = (uint32_t*)locationToFix;
+			value32 = (uint32_t)(newValue - (((uintptr_t)locationToFix) + 4));
+			if ( *loc32 != value32 )
+				*loc32 = value32;
+            break;
+        case BIND_TYPE_THREADED_BIND:
+            logBind();
+            // test first so we don't needless dirty pages
+            if ( *locationToFix != newValue )
+                *locationToFix = newValue;
+            break;
+        case BIND_TYPE_THREADED_REBASE: {
+            // Regular pointer which needs to fit in 51-bits of value.
+            // C++ RTTI uses the top bit, so we'll allow the whole top-byte
+            // and the signed-extended bottom 43-bits to be fit in to 51-bits.
+            uint64_t top8Bits = *locationToFix & 0x0007F80000000000ULL;
+            uint64_t bottom43Bits = *locationToFix & 0x000007FFFFFFFFFFULL;
+            uint64_t targetValue = ( top8Bits << 13 ) | (((intptr_t)(bottom43Bits << 21) >> 21) & 0x00FFFFFFFFFFFFFF);
+            newValue = (uintptr_t)(targetValue + slide);
+            if ( context.verboseRebase ) {
+                dyld::log("dyld: rebase: %s:*0x%08lX += 0x%08lX = 0x%08lX\n", shortName(inPath), (uintptr_t)locationToFix, slide, newValue);
+            }
+            *locationToFix = newValue;
+			break;
+        }
+		default:
+			dyld::throwf("bad bind type %d", type);
+	}
+	
+	// update statistics
+	++fgTotalBindFixups;
+	
+	return newValue;
+}
+
+===== ImageLoaderMachO.cpp:2911-2969 complete getLazyBindingInfo =====
+bool ImageLoaderMachO::getLazyBindingInfo(uint32_t& lazyBindingInfoOffset, const uint8_t* lazyInfoStart, const uint8_t* lazyInfoEnd,
+													uint8_t* segIndex, uintptr_t* segOffset, int* ordinal, const char** symbolName, bool* doneAfterBind)
+{
+	if ( lazyBindingInfoOffset > (lazyInfoEnd-lazyInfoStart) )
+		return false;
+	bool done = false;
+	const uint8_t* p = &lazyInfoStart[lazyBindingInfoOffset];
+	while ( !done && (p < lazyInfoEnd) ) {
+		uint8_t immediate = *p & BIND_IMMEDIATE_MASK;
+		uint8_t opcode = *p & BIND_OPCODE_MASK;
+		++p;
+		switch (opcode) {
+			case BIND_OPCODE_DONE:
+				*doneAfterBind = false;
+				return true;
+				break;
+			case BIND_OPCODE_SET_DYLIB_ORDINAL_IMM:
+				*ordinal = immediate;
+				break;
+			case BIND_OPCODE_SET_DYLIB_ORDINAL_ULEB:
+				*ordinal = (int)read_uleb128(p, lazyInfoEnd);
+				break;
+			case BIND_OPCODE_SET_DYLIB_SPECIAL_IMM:
+				// the special ordinals are negative numbers
+				if ( immediate == 0 )
+					*ordinal = 0;
+				else {
+					int8_t signExtended = BIND_OPCODE_MASK | immediate;
+					*ordinal = signExtended;
+				}
+				break;
+			case BIND_OPCODE_SET_SYMBOL_TRAILING_FLAGS_IMM:
+				*symbolName = (char*)p;
+				while (*p != '\0')
+					++p;
+				++p;
+				break;
+			case BIND_OPCODE_SET_TYPE_IMM:
+				break;
+			case BIND_OPCODE_SET_SEGMENT_AND_OFFSET_ULEB:
+				*segIndex  = immediate;
+				*segOffset = read_uleb128(p, lazyInfoEnd);
+				break;
+			case BIND_OPCODE_DO_BIND:
+				*doneAfterBind = ((*p & BIND_OPCODE_MASK) == BIND_OPCODE_DONE);
+				lazyBindingInfoOffset += p - &lazyInfoStart[lazyBindingInfoOffset];
+				return true;
+				break;
+			case BIND_OPCODE_SET_ADDEND_SLEB:
+			case BIND_OPCODE_ADD_ADDR_ULEB:
+			case BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB:
+			case BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED:
+			case BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB:
+			default:
+				return false;
+		}
+	}	
+	return false;
+}
+
+===== ImageLoader.h:344-359 complete CoalIterator struct type context =====
+	struct CoalIterator
+	{
+		ImageLoader*	image;
+		const char*		symbolName;
+		unsigned int	loadOrder;
+		bool			weakSymbol;
+		bool			symbolMatches;
+		bool			done;
+		// the following are private to the ImageLoader subclass
+		uintptr_t		curIndex;
+		uintptr_t		endIndex;
+		uintptr_t		address;
+		uintptr_t		type;
+		uintptr_t		addend;
+		uintptr_t		imageIndex;
+	};
+
+===== ImageLoader.h:710-711 LEB return-type declarations =====
+	static uintptr_t read_uleb128(const uint8_t*& p, const uint8_t* end);
+	static intptr_t read_sleb128(const uint8_t*& p, const uint8_t* end);
+
+===== ImageLoaderMachO.h:132-133 getLazyBindingInfo declaration =====
+	static bool							getLazyBindingInfo(uint32_t& lazyBindingInfoOffset, const uint8_t* lazyInfoStart, const uint8_t* lazyInfoEnd,
+														  uint8_t* segIndex, uintptr_t* segOffset, int* ordinal, const char** symbolName, bool* doneAfterBind);
+
+===== ImageLoaderMachO.h:157-162 bindLocation declaration =====
+	static uintptr_t					bindLocation(const LinkContext& context, uintptr_t baseVMAddress,
+                                                     uintptr_t location, uintptr_t value,
+                                                     uint8_t type, const char* symbolName,
+                                                     intptr_t addend, const char* inPath, const char* toPath, const char* msg,
+                                                     ExtraBindData *extraBindData,
+                                                     uintptr_t fSlide);
+
+===== ImageLoaderMachOCompressed.h:66-69 virtual weak coalescing declarations =====
+	virtual	void						initializeCoalIterator(CoalIterator&, unsigned int loadOrder, unsigned);
+	virtual	bool						incrementCoalIterator(CoalIterator&);
+	virtual	uintptr_t					getAddressCoalIterator(CoalIterator&, const LinkContext& contex);
+	virtual	void						updateUsesCoalIterator(CoalIterator&, uintptr_t newAddr, ImageLoader* target, unsigned targetIndex, const LinkContext& context);

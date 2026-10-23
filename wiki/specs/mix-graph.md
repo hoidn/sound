@@ -2,9 +2,9 @@
 id: SPEC-MIX-GRAPH
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
-revision: 1
+revision: 3
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -102,13 +102,13 @@ with its condition. U clauses block the behavior they name.
 
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
-| A1 | **Proposed for T1, not Live behavior.** A render starts from a settled state. Every ramp that the loaded state starts has finished before the first rendered sample: switch fades, crossfade-assign ramps and the first matrix values. In Live a set is loaded before playback starts, and these ramps last 75 samples or 2 ms | REQ-011; every render case |
+| A1 | **Decided for T1 by [ADR 0004](../decisions/adr-0004-target-scope-t1.md#render-conventions), not Live behavior.** A render starts from a settled state. Every ramp that the loaded state starts has finished before the first rendered sample: switch fades, crossfade-assign ramps and the first matrix values. In Live a set is loaded before playback starts, and these ramps last 75 samples or 2 ms | REQ-011; every render case |
 | A2 | A loaded `SoloSink` true has the effect of pressing the track's Solo button, under the loaded `SoloInPlace`. A loaded `SoloOrPflSavedValue` sets the Solo/Cue switch. Untraced: the load notification of the solo observer and the copy of the saved switch value. Static route: the post-load notification path (notes-solo.txt) | REQ-008; MG-024 to MG-027 |
 | A3 | For a loaded track envelope on a Float parameter, the envelope's conversion provider is that parameter's automation target. The value conversion is then the parameter's own. Static route: the owner at `AListAutomation`+0x130 (notes-q019.txt 1d). Engine consistency supports it: the volume input of the crossfade stage takes a position | REQ-015; MG-035 |
-| A4 | The send level reaches the send matrix through a level-conversion node of the send curve, with the floor. Static route: the connection of that node to the port `Send<k>` (notes-q019.txt 3c) | REQ-005 send gain; every R case with a send above its minimum |
+| A4 | For sends above the exact stored minimum that reach a playing return, the send level reaches the send matrix through a level-conversion node of the send curve, with the floor. Static route: the connection of that node to the port `Send<k>` (notes-q019.txt 3c) | REQ-005 send gain; every R case with a send above its minimum |
 | A5 | Audio, MIDI and return tracks take the crossfade wiring branch. The branch is chosen by a track virtual method that was not resolved. With crossfade assign None both branches give the same gain | REQ-003 for A or B assignments; MG-028 |
 | A6 | Track-mixer Float parameters use the default automation settings: data step (range)/1000, a minimum ramp of 200 samples and no smoothing. No override was found for them | REQ-014; MG-035 |
-| A7 | A send whose holder has `EnabledByUser` true, on a T1 graph (all outputs to Main), is active (a_k = 1). The engine bit is the holder's derived active state (`mpActive`); its derivation was not traced. The shipped defaults are true for audio and MIDI tracks | REQ-005; MG-020 to MG-030, MG-036 |
+| A7 | A send whose holder has `EnabledByUser` true, on a T1 graph (all outputs to Main), is active (a_k = 1). The engine bit is the holder's derived active state (`mpActive`); its derivation was not traced. The shipped defaults are true for audio and MIDI tracks | REQ-005; cases with a nonzero send reaching a playing return (MG-020 to 022, 024, 026 to 028, 030, 036); not MG-023 |
 | A8 | After load every track's automation index is the arrangement. A session launch on a track sets it to the clip's slot, and the end or stop of that clip sets it to none; only Back to Arrangement, which is not a T1 action, restores the arrangement. Return and main tracks have no clip slots, so their arrangement envelopes always drive. Static: the index values and their setters (engine `OAsyncTrack`, notes-automation.txt §3); inferred: the initial value and the stop transition | REQ-012, 016; MG-032 to MG-037 |
 
 ## Requirements
@@ -151,13 +151,17 @@ with its condition. U clauses block the behavior they name.
   - Transition (curve 6): v = floor(curve1(p × c)).
   - Every result at or below 0.0003199999919 is 0.
 - **X.** The conversions and curves are those of REQ-MIXER-VALUES-005 and 014. A stored gain
-  in range returns bit-exactly through position and back (X2).
-- **S.** Consequences:
+  does not generally return unchanged through position and back; REQ-MIXER-VALUES-005
+  records the seven tested exact curve points and the counterexamples. Keep both
+  conversions in the computation above.
+- **Conditional derivation; load outcome U (REQ-MIXER-VALUES-015).** If an out-of-range volume survives opening unchanged:
   - A stored volume above 1.99526238 plays at 1.99526238 (+6 dB).
   - A stored volume below 0.0003162277571, including 0 and negative values, is silent.
-  - So is any stored volume up to 0.0003199999919.
+  - The silence threshold applies to the computed gain, not directly to the stored
+    volume; there is no general round-trip error bound near that threshold.
 
-  This settles the rendering part of REQ-MIXER-VALUES-015 for volume.
+  These are conversion consequences only. Whether opening preserves an out-of-range
+  value is unknown, so they do not settle rendering from such a document.
 - **S.** The main track's volume follows the same rule. The main's `CrossFadeState` is `1`
   (None) in the fixture and in every shipped set (REQ-MIXER-VALUES-009), so its c is 1.
 - **U.** The main track with crossfade assign A or B, or with `Speaker` false. T1 effect:
@@ -191,7 +195,9 @@ with its condition. U clauses block the behavior they name.
   ramps q_k linearly over the fade time.
 - **S-cond (A4).** g_k = floor(curve0(r_k)), where r_k is the stored send gain mapped by the
   send curve's gain → position conversion, clamped to [0, 1]. A stored send at or below
-  0.0003199999919 contributes nothing; this includes the shipped value `0.00031622799`.
+  0.0003199999919 after conversion contributes nothing. At the exact stored minimum
+  0.0003162277571, the position is 0 (X), so the send contributes nothing without
+  A4 or A7. Claims for other stored values retain A4 and the conversion rounding.
 - **S (A7).** a_k = 1 for a send whose holder has `EnabledByUser` true.
 - **U.** a_k for a holder with `EnabledByUser` false. The engine bit is the holder's active
   state (`mpActive`), whose derivation from `EnabledByUser` and routing is not traced
@@ -298,7 +304,7 @@ with its condition. U clauses block the behavior they name.
 
 ### REQ-MIX-GRAPH-011 — render start
 
-- **Proposed (A1).** At the first rendered sample every gain has its settled value for the
+- **Decided render convention (A1; ADR 0004).** At the first rendered sample every gain has its settled value for the
   loaded state and the start position.
   - Every on value, q_k and w already has its target.
   - Every automated parameter has the value of REQ-013 at the start position.
@@ -317,8 +323,11 @@ with its condition. U clauses block the behavior they name.
   clip ends or stops, each parameter takes its `Manual` value.
 - **S.** Consequence for T1: arrangement automation acts on return tracks, the main track,
   and audio or MIDI tracks before their first launch.
-- **U.** Which value an arrangement envelope with only its leading event applies. T1 effect:
-  such envelopes are excluded from graded cases.
+- **S, U.** Opening discards track envelopes on Pan, Speaker and CrossFadeState
+  with fewer than two events (REQ-AUTOMATION-ENVELOPES-007). The one-event main-track
+  tempo and time-signature envelopes are retained as the T11-MIN fixture shows; they
+  are exempt from this exclusion. What other retained one-event arrangement
+  envelopes apply remains U and is excluded from graded playback cases.
 - **U.** The time base of a session clip's envelope (clip start, loop and warp), as in
   REQ-AUTOMATION-ENVELOPES-010. T1 effect: session clips with envelopes are excluded; the
   T1 target "automation applied during playback" is limited to arrangement envelopes under
@@ -326,8 +335,9 @@ with its condition. U clauses block the behavior they name.
 
 ### REQ-MIX-GRAPH-013 — song position to envelope value
 
-- **S.** Playback uses a point list built from the envelope's events in order
-  (REQ-AUTOMATION-ENVELOPES-006):
+- **S.** Float playback uses a point list built from the envelope’s events in
+  order (REQ-AUTOMATION-ENVELOPES-006). Bool/Enum lookup keeps event times and
+  is specified only at or after its first event:
   - The first event's time becomes −10,000,000 beats, whatever it was. In every shipped
     envelope that event is the leading event at the lower bound (−63,072,000 beats,
     REQ-AUTOMATION-ENVELOPES-005). An envelope whose first event lies at another time (for
@@ -338,16 +348,21 @@ with its condition. U clauses block the behavior they name.
 - **X.** The point values are those of the original Bezier evaluator. For E9 (pan
   (0, −1) with controls 0.5/0/0.5/0 to (4, 1)) the 15 interior points start (0.352539,
   −0.999512) and end (3.647461, 0.647949). MG-031 gives all of them.
-- **S.** At song beat t the current segment starts at the last point whose time is at or
-  before t′. Here t′ is t minus the automation offset, rounded to the 1/3,843,840-beat grid.
-  At two points with the same time the later one applies, which is the evaluator's mode 1.
-  Point times are sample-accurate events, independent of the buffer size.
-- **X.** Within a segment from (t_a, v_a) to (t_b, v_b), the value at t is computed with
+- **S; offset U.** At envelope time t′ the segment starts at the last point at or
+  before t′. t′ is song beat t minus an automation offset, rounded to the
+  1/3,843,840-beat grid. The offset is present but untraced even for arrangement
+  envelopes (t14 `notes-automation.txt` §1b and §3; staging F6). No zero-offset
+  or sample-timing claim is established. Computation cases take envelope time
+  as input. At coincident points the later one applies (lookup mode 1).
+- **X, under default settings with a nonzero data step (A6).** Within a segment
+  from (t_a, v_a) to (t_b, v_b), the value at envelope time t is computed with
   durations in samples:
   - slope = float32(v_b − v_a) / ((t_b − t_a) · samples per beat), in binary64;
   - value = v_a + max(0, (t − t_a) · samples per beat) · slope, kept inside [v_a, v_b];
   - v_a = v_b gives a constant segment;
-  - with no later point the value holds.
+  - with no later point the value holds;
+  - without a nonzero data step the segment value is held, rather than interpolated
+    (mix-graph-v1 review RMG-01).
 - **S.** Therefore what is played differs from REQ-AUTOMATION-ENVELOPES-010's E(t) in three
   ways. The curve cases (AEN-021, 022) and the leading-event ramp (AEN-018) do not describe
   playback:
@@ -363,7 +378,9 @@ with its condition. U clauses block the behavior they name.
 
 - **S (A6).** While the transport plays, a Float parameter's value moves along its current
   segment through ramps of L samples:
-  - L = clamp(trunc(step / |slope|), 200, 65,536);
+  - for r = step / |slope| < 2³¹, L = clamp(trunc(r), 200, 65,536);
+  - for r ≥ 2³¹, L = 200: the 32-bit truncating conversion overflows to
+    −2³¹ before the clamps (staging F3, confirmed by x86 disassembly);
   - step is the parameter's engine-side range divided by 1000: 0.001 for volume and send
     (positions in [0, 1]); 0.002 for pan, inferred from its range −1 to 1;
   - slope is the segment slope per sample (REQ-013);
@@ -405,8 +422,9 @@ with its condition. U clauses block the behavior they name.
 
 - **Units.** Gains are linear amplitude; positions are 0 … 1; song time is in beats. Samples
   per beat = sample rate × 60 / tempo, as in SPEC-TRANSPORT-STATE.
-- **Granularity.** Gains act per sample (REQ-009). Automation events and segment starts fall
-  on exact samples; buffer size has no effect.
+- **Granularity.** Gains act per sample (REQ-009). The mapping of automation
+  envelope time to a song sample remains untraced (REQ-013); value computations
+  alone do not establish sample timing.
 - **Constants.**
   - fade time 75 samples (REQ-010);
   - crossfade-assign ramp 2 ms;
@@ -462,7 +480,7 @@ None of these cases has been run against Live, and none will be (ADR 0003).
 | MG-005 | 005 | C | Post-fader, g 1, M = pan law of pan −0.5 at volume 0.5 (0.65328, 0, 0, 0.270598); then pre-fader | (0.65328, 0, 0, 0.270598); (1, 0, 0, 1) | X |
 | MG-006 | 004 | C | Main matrix (0.9, 0.1, 0.2, 0.6) with MainOn 1, 0, 0.5 | the matrix; zeros; half the matrix | X |
 | MG-007 | 007, 008 | C | On values for solo types 0 to 7 with `Speaker` true and false | The table of REQ-008; types outside 0–6 as 0 | X |
-| MG-008 | 008 | C | Solo predicates over types 0 to 7 | speaker ignored for {1, 3, 4}; soloed or pre-hear {1, 6}; muted for solo {3, 4, 5} | X |
+| MG-008 | 008 | Withdrawn | Internal solo predicates have no behavioral observable | No graded result. The old speaker-ignored claim for type 4 contradicted REQ-008: its main gate follows Speaker | Withdrawn (staging F1) |
 | MG-009 | 010 | C | Fade time without a developer option | 75 samples | X |
 | MG-010 | 009 | C | Control ramp from 0 to 1 over 4 samples, advanced one sample at a time | 0.25, 0.5, 0.75, 1, then 1 | X |
 | MG-011 | 009 | C | Control ramp from 0 to 1·10⁻⁹ over 10,000 samples; value 5·10⁻¹³ | Jumps to 1·10⁻⁹ at once; reads as 0 | X |
@@ -470,20 +488,20 @@ None of these cases has been run against Live, and none will be (ADR 0003).
 | MG-020 | 002, 005, 006 | R | B0, A send `0.5011872053` | Main = 1.5011872·x on both channels | S-cond (A1, A4, A7); gains X |
 | MG-021 | 005 | R | B0, A volume `0.5011872053`, A send `0.5011872053`, `SendPreBool` `true`; separately `false` | Pre: main = 1.0023744·x. Post: main = 0.7523758·x | S-cond (A1, A4, A7); gains X |
 | MG-022 | 004, 005 | R | B0, A pan `-1`, A send `0.5011872053`, pre; separately post | Pre: main L = 1.9154008·x, main R = 0.5011972·x. Post: main L = 2.1229993·x, main R = 1.5011872·10⁻⁵·x | S-cond (A1, A4, A7); gains X |
-| MG-023 | 007 | R | B0, A send `0.5011872053`, A `Speaker` `false` | Main = 0 (no direct and no return contribution) | S (A1, A7); on values X |
+| MG-023 | 007 | R | B0, A send `0.5011872053`, A `Speaker` `false` | Main = 0 (no direct and no return contribution) | S (A1); on values X |
 | MG-024 | 008 | R | As MG-023 with A `SoloSink` `true` | Main = 1.5011872·x (soloed: speaker ignored; R plays, solo in place) | S (A1, A2, A7) |
 | MG-025 | 008 | R | B0, A send `0.5011872053`, A `SoloSink` `true`, `SoloInPlace` `false` | Main = x (R muted) | S (A1, A2) |
 | MG-026 | 008 | R | B0, A send `0.5011872053`, R `SoloSink` `true` | Main = 0.5011872·x (A type 5: no main output, send kept) | S (A1, A2, A7) |
 | MG-027 | 008 | R | B0, A send `0.5011872053`, A `SoloSink` `true`, `SoloOrPflSavedValue` `false` | Main = 1.5011872·x (Cue mode: no muting) | S (A1, A2, A7) |
 | MG-028 | 003, 005 | R | B0, A `CrossFadeState` `0` (A), crossfader `1`, A send `0.5011872053`, pre; separately post | Pre: main = 0.5011872·x (only through R). Post: main = 0 | S-cond (A1, A4, A5, A7); curve X |
-| MG-029 | 003 | R | B0, A volume `2`; separately `0`; separately `-1` | Main = 1.9952624·x; 0; 0 | S-cond (A1) |
+| MG-029 | 003 | U | B0, A volume `2`; separately `0`; separately `-1` | Conditional conversion result: Main = 1.9952624·x; 0; 0 only if opening holds each out-of-range value unchanged; not graded from a document | U (load assumption; staging F2) |
 | MG-030 | 003, 006 | R | B0, A send `0.5011872053`, M volume `0.5011872053` | Main = 0.7523758·x | S-cond (A1, A4, A7) |
 | MG-031 | 013 | C | Curved segment of E9 ([automation fixtures](automation-envelopes.md#fixtures)): (0, −1) with controls 0.5/0/0.5/0 to (4, 1); the 15 interior polyline points | (0.352539, −0.999512), (0.664062, −0.996094), (0.94043, −0.986816), (1.1875, −0.96875), (1.411133, −0.938965), (1.617188, −0.894531), (1.811523, −0.83252), (2, −0.75), (2.188477, −0.644043), (2.382812, −0.511719), (2.588867, −0.350098), (2.8125, −0.15625), (3.05957, 0.072754), (3.335938, 0.339844), (3.647461, 0.647949), within 10⁻⁶ | X |
-| MG-032 | 012, 013 | R | B0 + source + E9's events on M's pan (`PointeeId` 337); M's pan at beats 1, 2, 3 | −0.98246047, −0.75, 0.01753953 within 10⁻⁶ | S (A8); values X |
-| MG-033 | 013 | R | B0 + source + E13's events on M's pan; M's pan at beat 0 | 3.9999984·10⁻⁷ within 10⁻¹² | S (A8); value X |
-| MG-034 | 013, 014 | R | B0 + source + E1's events on M's pan; M's pan at beats 5, 6, 7 | 0.25, 0.5, 0.75 | S (A8); values X |
-| MG-035 | 014, 015 | R | B0 + source + M volume envelope (`PointeeId` 338) (L, `1`), (0, `1`), (4, `0.5011872053`) | M's fader position is linear from 0.85 at beat 0 to 0.70 at beat 4. M's gain is curve 1 of that position at every 587-sample ramp end from beat 0, linear in between. At beat 2 (sample 44,100) the position is 0.775 within 10⁻⁶ | S-cond (A3, A6, A8); curve X |
-| MG-036 | 007, 010 | R | B0 + source, A send `0.5011872053`, R `Speaker` envelope (`PointeeId` 330) `BoolEvent` (L, `true`), (4, `false`), (8, `true`) | Main = 1.5011872·x before sample 88,200. From sample 88,200 R's main gain falls linearly to 0 over 75 samples: main = (1 + 0.5011872·(1 − k/75))·x at the k-th sample, then x. From sample 176,400 it rises back over 75 samples | S (A1, A7, A8); fade X |
+| MG-032 | 012, 013 | U | B0 + source + E9's events on M's pan (`PointeeId` 337); M's pan at beats 1, 2, 3 | −0.98246047, −0.75, 0.01753953 as segment values, not ramped sample values | U for song-time render (offset and A8); values X |
+| MG-033 | 013 | U | B0 + source + E13's events on M's pan; M's pan at beat 0 | 3.9999984·10⁻⁷ as a segment value, not a ramped sample value | U for song-time render (offset and A8); value X |
+| MG-034 | 013, 014 | U | B0 + source + E1's events on M's pan; M's pan at beats 5, 6, 7 | 0.25, 0.5, 0.75 | U for song-time render (offset and A8); values X |
+| MG-035 | 014, 015 | U | B0 + source + M volume envelope (`PointeeId` 338) (L, `1`), (0, `1`), (4, `0.5011872053`) | M's fader position is linear from 0.85 at beat 0 to 0.70 at beat 4. M's gain is curve 1 of that position at every 587-sample ramp end from beat 0, linear in between. At beat 2 (sample 44,100) the position is 0.775 within 10⁻⁶ | S-cond (A3, A6, A8); curve X; song-time offset U |
+| MG-036 | 007, 010 | U | B0 + source, A send `0.5011872053`, R `Speaker` envelope (`PointeeId` 330) `BoolEvent` (L, `true`), (4, `false`), (8, `true`) | Main = 1.5011872·x before sample 88,200. From sample 88,200 R's main gain falls linearly to 0 over 75 samples: main = (1 + 0.5011872·(1 − k/75))·x at the k-th sample, then x. From sample 176,400 it rises back over 75 samples | S (A1, A7, A8); fade X; song-time offset U |
 | MG-037 | 012 | R | B0 + source + E1 on A's pan (`PointeeId` 323) | A's pan stays at `Manual` (0) at beats 5, 6, 7, because A's clip was launched at beat 0 | S (A8) |
 | MG-038 | 001 | U | B0 with thirteen returns and a thirteenth `SendPreBool` | Unresolved (excluded) | U |
 | MG-039 | 005 | U | B0, R send to itself `0.5011872053` with `EnabledByUser` false | Unresolved (a_k untraced) | U |
@@ -499,12 +517,11 @@ None of these cases has been run against Live, and none will be (ADR 0003).
 - **Excluded.** Cancellation and teardown kinds are omitted: a render has no cancellable
   step in this scope. Malformed input has no case: the document rules are SPEC-MIXER-VALUES
   and SPEC-AUTOMATION-ENVELOPES.
-- **Count.** 34 cases:
-  - 13 C cases, all X: MG-001 to 012 and MG-031.
-  - 16 R cases: MG-020 to 030 and MG-032 to 036. The cases with sends rest on A7, the
-    automation cases on A8, MG-024 to 027 also on A2, and the levels after a change on A1.
-  - 1 R case with a static expectation only: MG-037.
-  - 4 unresolved: MG-038 to 041.
+- **Count.** 34 case IDs: 1 withdrawn (MG-008), 12 X computations
+  (MG-001 to 007, 009 to 012, 031), 11 conditional composed renders
+  (MG-020 to 028, 030, 037), and 10 unresolved (MG-029, 032 to 036,
+  038 to 041). Nonzero sends reaching a playing return need A4/A7;
+  automation renders retain the untraced offset and A8 conditions.
 
 ## Open questions
 
@@ -594,9 +611,123 @@ bit. That is inside the proposed comparator.
 | Revision | Date | Change |
 | --- | --- | --- |
 | 1 | 2026-10-18 | First draft (T1.4). 16 requirements: X clauses in 003, 004, 005, 007, 008, 009, 010 and 013; S-cond clauses in 003, 005 and 015; U clauses in 001, 003, 005, 006, 008, 010, 011, 012, 014 and 016; 011 is a proposed definition; 002 is S only. Assumptions A1 to A8. Q-019 settled statically with conditions. 34 cases: 13 C (X), 17 R (composed, unmeasured), 4 U |
+| 2 | 2026-10-19 | Correct REQ-003’s exact-round-trip claim and direct stored-value silence threshold using mixer-values-v2 review RVM2-01. Keep both fader conversions. Apply staging F1–F6 and review RMG-01 to 03: MG-008 withdrawn, MG-029 ungraded; 32-bit ramp overflow, data-step condition, untraced automation offset, one-event tempo/meter exception, A4/A7 scope. Other case IDs preserved; song-time automation render cases MG-032 to 036 are ungraded. 34 IDs: 12 X, 11 conditional renders, 10 U, 1 withdrawn. |
+| 3 | 2026-10-21 | Add 25 ungraded finite supplied-input send observations MG-042–066 and seven historical references for one complete32-tuple Boolean class. Existing 16 requirement bodies, 34 acceptance rows, precision/state/error/U qualifications and published 28-case scope stay exact; portable expectations/comparators remain NULL. |
 
-Not released. A release candidate is the X-backed computation cases MG-001 to 012 and
-MG-031, with REQ-004, 005, 007, 009 and 010 limited to their X and S clauses. The R cases
-need A1 decided as project policy; the send cases need A7, the automation cases A8 and the
-solo cases A2. Q-019's conditions A3 and A4
-are open; until they close, REQ-003 and REQ-015 can be released only with them.
+Current release: [mix-graph-v1](../../handoff/mix-graph-v1/README.md),
+28 cases approved with narrowing (review RMG-01 to 03). Its automation
+computations take envelope time as input under default settings; no song-time
+offset or automation-drive expectation is released.
+
+## Finite supplied-input send observations (revision3)
+
+This annex records one finite extracted-x86 class under REQ-MIX-GRAPH-005.
+The16 requirement bodies and the34 existing acceptance rows above remain unchanged.
+The preceding34-case count describes that existing acceptance table. This annex
+adds25 ungraded observation IDs, MG-042–066, plus seven historical references;
+the revised owner therefore names59 case/observation IDs without adding an accepted
+criterion. The published28-case scope, all proposed precision/assumption/state/error
+conditions and every general U remain unchanged.
+
+**Evidence and limits.** The [fixed batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-send-gates-v1/manifest.json)
+contains25 once-only new calls and seven exact inherited historical joins.
+Its [sole independent actual review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-send-gates-v1-review.json)
+approves only those finite observations and inherited joins.
+The [complete finite catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-mix-r3-send-gates-finite-v1/finite-catalog.json)
+preserves every13-word input and distinguishes fresh receipts from inherited projections.
+X in this annex labels the extracted source of a finite observation; it supplies
+no new application compatibility grade or candidate acceptance criterion.
+
+The two contexts G0 and G1 are recorded argument vectors, not identified current
+track/group receivers. Group tracks remain excluded by Scope. G1 does not add a
+public grouped-send contract. No input here varies MainOn, so these observations
+cannot establish MainOn independence or the pan/volume/crossfade/floor consequences
+for arbitrary values. Actual receiver, graph delivery, public controls, lifecycle,
+ARM/Apple precision and calibration joins remain outside this finite class.
+
+**Exact supplied input.** Each fresh child uses the unchanged MXB-01 call shape:
+`call 0x101b40d30 buf:8 hex:<52 bytes below> buf:16 dump b2 16`.
+There is one direct entry call, fresh owned buffers and no setter, constructor,
+rate/audio process, MIDI/clock phase, patch or FP perturbation. The52-byte vector
+is thirteen little-endian uint32 words, interpreted by the recorded call model.
+The Boolean argument order in both tables is words0,1,2,8: recorded SendsOn,
+sendActive, prePost and GroupOn. Each0 is `00000000`; each1 is `3f800000`.
+The names identify supplied arguments and do not establish a public binding.
+
+| Word | Recorded role | G0 raw uint32 | G1 raw uint32 |
+| --- | --- | --- | --- |
+| 0 | SendsOn | Boolean tuple | Boolean tuple |
+| 1 | sendActive | Boolean tuple | Boolean tuple |
+| 2 | prePost | Boolean tuple | Boolean tuple |
+| 3 | send gain | `3f000000` | `3f000000` |
+| 4 | M[0] | `3f666666` | `3f666666` |
+| 5 | M[1] | `3dcccccd` | `3dcccccd` |
+| 6 | M[2] | `3e4ccccd` | `3e4ccccd` |
+| 7 | M[3] | `3f19999a` | `3f19999a` |
+| 8 | GroupOn | Boolean tuple | Boolean tuple |
+| 9 | G[0] | `3f800000` | `3f000000` |
+| 10 | G[1] | `00000000` | `3d4ccccd` |
+| 11 | G[2] | `00000000` | `3d8f5c29` |
+| 12 | G[3] | `3f800000` | `3e800000` |
+
+**Twenty-five new finite observations.** These are every new tuple in the
+complete G0/G1 × {0,1}⁴ catalog, not a selected subset. Each fresh b2 output is
+the exact16-byte sequence `00000000000000000000000000000000`: four raw
+binary32 positive-zero words. This is the observed native result for that exact
+input, not a portable required output. All pre-execution predictions remain NULL
+in the immutable batch. Every portable expected value, candidate comparator and
+candidate grade below remains NULL; the existing C-case10⁻⁶ precision is not
+silently assigned to these observation rows. Neither volatile pointer values nor
+unpromised/high return-register lanes become candidate criteria.
+
+| Case ID | Requirement context | Recorded G | Boolean tuple (0,1,2,8) | Native b2 observation | Portable expected | Comparator / grade |
+| --- | --- | --- | --- | --- | --- | --- |
+| MG-042 | 005 | G0 | 0000 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-043 | 005 | G0 | 0001 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-044 | 005 | G0 | 0010 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-045 | 005 | G0 | 0011 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-046 | 005 | G0 | 0100 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-047 | 005 | G0 | 0101 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-048 | 005 | G0 | 0110 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-049 | 005 | G0 | 1000 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-050 | 005 | G0 | 1001 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-051 | 005 | G0 | 1010 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-052 | 005 | G0 | 1100 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-053 | 005 | G1 | 0000 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-054 | 005 | G1 | 0001 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-055 | 005 | G1 | 0010 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-056 | 005 | G1 | 0011 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-057 | 005 | G1 | 0100 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-058 | 005 | G1 | 0101 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-059 | 005 | G1 | 0110 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-060 | 005 | G1 | 0111 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-061 | 005 | G1 | 1000 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-062 | 005 | G1 | 1001 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-063 | 005 | G1 | 1010 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-064 | 005 | G1 | 1011 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-065 | 005 | G1 | 1100 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+| MG-066 | 005 | G1 | 1110 | Four `00000000` words; finite X observation only | NULL | NULL / NULL |
+
+**Seven historical references, with no new IDs or calls.** The following exact
+tuples already had approved outputs. They were not replayed or given fresh receipts.
+The three zero records and four enabled pre/post records complete the32-tuple
+logical catalog. The enabled records are inherited productive calculation baselines,
+not fresh controls, host audio or evidence that every new gated-off tuple is productive.
+
+| Historical reference | Recorded G | Boolean tuple (0,1,2,8) | Native b2 bytes, little endian |
+| --- | --- | --- | --- |
+| retained-006 | G0 | 0111 | `00000000000000000000000000000000` |
+| retained-008 | G0 | 1011 | `00000000000000000000000000000000` |
+| retained-002 | G0 | 1101 | `0000003f00000000000000000000003f` |
+| retained-010 | G0 | 1110 | `00000000000000000000000000000000` |
+| retained-001 | G0 | 1111 | `6666e63ecdcc4c3dcdcccc3d9a99993e` |
+| retained-004 | G1 | 1101 | `0000003f00000000000000000000003f` |
+| retained-003 | G1 | 1111 | `e7fb693e295c0f3d7368913d0bd7a33d` |
+
+These historical references name copied approved input/output projections, not
+old case regradings. In particular, G1 records and the GroupOn-off record are not
+silently substituted for the ungrouped MG-001/MG-002/MG-004 acceptance setups.
+The complete catalog has28 observed zero tuples, three inherited and25 fresh,
+and four inherited nonzero enabled pre/post tuples. It supports no universal
+group-gating equation, statistical/calibration model, new public failure law or
+expanded release. Unsupported required behavior remains U; coverage remains open.

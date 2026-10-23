@@ -1,0 +1,17 @@
+--- released-v3/compare.py
++++ private-candidate/compare.py
+@@ -94,0 +95,9 @@
++        elif kind == 'noteoff_decay_zero_waveform':
++            post_y = [float(v) for v in y[4096:]]
++            post_r = [float(v) for v in r[4096:]]
++            ref_energy = math.fsum(v * v for v in post_r)
++            candidate_energy = math.fsum(v * v for v in post_y)
++            if ref_energy <= 0 or candidate_energy <= 0:
++                raise ValueError('NoteOff zero endpoint requires positive energy in both channels')
++            error_energy = math.fsum((a - b) * (a - b) for a, b in zip(post_y, post_r))
++            limit(label + ' NoteOff zero endpoint waveform', math.sqrt(error_energy / ref_energy), 0.01)
+@@ -141,0 +151,4 @@
++                if evaluation['metric']['kind'] == 'noteoff_decay_zero_waveform':
++                    raw_reference = (HERE/evaluation['reference']).read_bytes()
++                    if hashlib.sha256(raw_reference).hexdigest() != 'a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829':
++                        raise ValueError('NoteOff zero endpoint reference hash differs from the pinned capture')

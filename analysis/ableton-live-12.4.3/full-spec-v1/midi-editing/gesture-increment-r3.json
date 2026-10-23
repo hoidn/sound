@@ -1,0 +1,513 @@
+{
+  "scope": "Bounded source/input adoption only; eleven audit groups receive selected subsets, not full-group/chapter completion",
+  "reviewed_audit_manifest_sha256": "f31e97284b1a83587c82516ed79476e723462153629f191503dbd55e02083e99",
+  "requirement_rows_before": {
+    "REQ-MIDI-EDIT-001": [
+      "REQ-MIDI-EDIT-001",
+      "Create empty clip",
+      "Empty Session slot on a MIDI track; double-click or Insert Empty MIDI Clip(s). In Arrangement select an empty timespan on a MIDI track and invoke the same command.",
+      "Create a MIDI clip in that location. Initial length for double-click, defaults and occupied/audio-slot behavior remain U.",
+      "D12/E1; target U"
+    ],
+    "REQ-MIDI-EDIT-002": [
+      "REQ-MIDI-EDIT-002",
+      "Draw and erase",
+      "Focused Notes editor; toggle Draw Mode with B; click empty grid, then existing note. In inactive Draw Mode double-click empty grid or an existing note.",
+      "Draw adds notes; clicking an existing note in Draw Mode deletes it. Outside Draw Mode double-click adds or deletes respectively. Pitch-lock preference confines a draw gesture to one pitch; Alt/Option temporarily reverses pitch-lock behavior.",
+      "D12/E2; target U"
+    ],
+    "REQ-MIDI-EDIT-005": [
+      "REQ-MIDI-EDIT-005",
+      "Grid snapping",
+      "Drag selected note or resize edge with grid on; toggle grid off or use the temporary grid modifier.",
+      "Movement is initially free until a grid/offset point, then snaps; original grid offset can be retained. Modifier temporarily reverses grid-enabled state. Snap thresholds, ties and zoom-dependent grid choice U.",
+      "D12/E5; target U"
+    ],
+    "REQ-MIDI-EDIT-006": [
+      "REQ-MIDI-EDIT-006",
+      "Move, copy and overlap",
+      "Select notes, drag or use arrows; paste clipboard notes at insert marker; place a same-pitch new note over an old note.",
+      "Horizontal movement changes time; vertical movement changes pitch. Paste begins at insert marker. A new note overlapping the old note start replaces the old note; overlap limited to the old note end shortens the old note. Exact touching-edge and expression collision results U.",
+      "D12/E6; target U"
+    ],
+    "REQ-MIDI-EDIT-009": [
+      "REQ-MIDI-EDIT-009",
+      "Deactivate and undo",
+      "Select notes and invoke Deactivate or 0, then 0 again. Edit notes imported from a MIDI file and invoke Undo.",
+      "Deactivated notes are muted/grayed; second toggle reactivates. Undo permits return to prior clip state. Editing imported MIDI leaves original file bytes unchanged. Undo grouping for gestures and persistence of history U.",
+      "D12/E9; target U"
+    ],
+    "REQ-MIDI-EDIT-014": [
+      "REQ-MIDI-EDIT-014",
+      "Velocity randomization and deviation",
+      "Invoke Randomize with selected notes or none; set Velocity Deviation on a note.",
+      "Randomize changes selected velocities or all notes if none selected, within the stated amount relative to originals. Deviation is a playback-time range; velocity 60 with +20 yields values in 60..80. Double-click a deviated marker resets deviation to zero. Random distribution/seed/repeatability U.",
+      "D12/E14; target U"
+    ]
+  },
+  "requirement_rows_after": {
+    "REQ-MIDI-EDIT-001": [
+      "REQ-MIDI-EDIT-001",
+      "Create empty clip",
+      "Empty Session slot on a MIDI track; double-click or Insert Empty MIDI Clip(s). In Arrangement select an empty timespan on a MIDI track and invoke the same command. Explicit remaining entries are Create > Insert Empty MIDI Clip(s) on an empty Session slot, Arrangement track-display double-click, and CtrlShiftM Win/CmdShiftM Mac on an empty Arrangement MIDI timespan.",
+      "Create a MIDI clip in that location. Initial length for double-click, defaults and occupied/audio-slot behavior remain U.",
+      "D12/E1; target U"
+    ],
+    "REQ-MIDI-EDIT-002": [
+      "REQ-MIDI-EDIT-002",
+      "Draw and erase",
+      "Focused Notes editor; toggle Draw Mode with B; click empty grid, then existing note. In inactive Draw Mode double-click empty grid or an existing note. Explicit Draw entries are Control Bar button and focused B; Pitch Lock preference state is declared.",
+      "Draw adds notes; clicking an existing note in Draw Mode deletes it. Outside Draw Mode double-click adds or deletes respectively. Pitch-lock preference confines a draw gesture to one pitch; Alt/Option temporarily reverses pitch-lock behavior. With Pitch Lock OFF drawing is melodic and Alt Win/Option Mac temporarily enables pitch lock. Melodic overdraw erases an existing note; pitch-locked backtracking erases drawn notes. Focused Options/context labels state Draw Mode (Pitch Lock On/Off).",
+      "D12/E2; target U"
+    ],
+    "REQ-MIDI-EDIT-005": [
+      "REQ-MIDI-EDIT-005",
+      "Grid snapping",
+      "Drag selected note or resize edge with grid on; toggle grid off or use the temporary grid modifier. Exact grid entry controls include Grid Settings button, Options Snap to Grid and Ctrl4 Win/Cmd4 Mac.",
+      "Movement is initially free until a grid/offset point, then snaps; original grid offset can be retained. Modifier temporarily reverses grid-enabled state. Snap thresholds, ties and zoom-dependent grid choice U.",
+      "D12/E5; target U"
+    ],
+    "REQ-MIDI-EDIT-006": [
+      "REQ-MIDI-EDIT-006",
+      "Move, copy and overlap",
+      "Select notes, drag or use arrows; paste clipboard notes at insert marker; place a same-pitch new note over an old note. Copy-drag uses Ctrl Win/Option Mac, including introducing the modifier after a drag starts.",
+      "Horizontal movement changes time; vertical movement changes pitch. Paste begins at insert marker. A new note overlapping the old note start replaces the old note; overlap limited to the old note end shortens the old note. Exact touching-edge and expression collision results U. The admitted modifier drag makes copies at the destination; exact identities and collisions U.",
+      "D12/E6; target U"
+    ],
+    "REQ-MIDI-EDIT-009": [
+      "REQ-MIDI-EDIT-009",
+      "Deactivate and undo",
+      "Select notes and invoke Deactivate or 0, then 0 again. Edit notes imported from a MIDI file and invoke Undo. Deactivate Note(s) entries include Edit menu, piano-ruler context and MIDI Note Editor context.",
+      "Deactivated notes are muted/grayed; second toggle reactivates. Undo permits return to prior clip state. Editing imported MIDI leaves original file bytes unchanged. Undo grouping for gestures and persistence of history U.",
+      "D12/E9; target U"
+    ],
+    "REQ-MIDI-EDIT-014": [
+      "REQ-MIDI-EDIT-014",
+      "Velocity randomization and deviation",
+      "Invoke Randomize with selected notes or none; set Velocity Deviation on a note. Randomize can target selected notes or selected markers; validating a typed Randomization Amount with Enter is a separate entry.",
+      "Randomize changes selected velocities or all notes if none selected, within the stated amount relative to originals. Deviation is a playback-time range; velocity 60 with +20 yields values in 60..80. Double-click a deviated marker resets deviation to zero. Random distribution/seed/repeatability U. Validating the typed amount with Enter triggers randomization; no guaranteed changed realization follows.",
+      "D12/E14; target U"
+    ]
+  },
+  "new_cases": [
+    {
+      "id": "MED-061",
+      "requirement": "REQ-MIDI-EDIT-005",
+      "kind": "Grid entry routes and original offset",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. On independently reset copies set a declared grid and a known nonzero original note offset relative to it, well away from clip edges. Establish ordinary note drag plus working grid on/off first. Use Grid Settings button, Options Snap to Grid and Ctrl4 Win/Cmd4 Mac separately to disable/enable; retain actual switch state and drag note. In separate enabled/disabled resets use literal Alt Win/Cmd Mac during drag. Independently identify the original offset, then drag across several visible grid encounters, retaining grid-relative position. Missing known offset or productive drag is U.",
+      "expected": "Named entry controls toggle/bypass grid, temporary modifier reverses enabled state, and snapping can preserve the note's original grid-relative offset.",
+      "comparator": "Compare only offered grid controls/states and source-described original-offset retention in the admitted history. No grid spacing formula, snap threshold, first-encounter distance, ties, offset codec or pixel/sensitivity oracle.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B027,MIDI:B028",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/26",
+          "block": "MIDI:B027"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/27",
+          "block": "MIDI:B028"
+        }
+      ],
+      "adoption_group": "MIDA-G03",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-062",
+      "requirement": "REQ-MIDI-EDIT-001",
+      "kind": "Remaining empty MIDI clip entries",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Independently establish a successful ordinary empty MIDI clip creation, then reset separate empty eligible MIDI-track targets. Actually select an empty Session slot and choose Create > Insert Empty MIDI Clip(s). Separately double-click the Arrangement MIDI track display in an admitted empty region. In another reset select an empty Arrangement MIDI timespan and invoke CtrlShiftM Win/CmdShiftM Mac with the relevant view focused. Current MED001 already covers Session double-click/Arrangement menu, and Keyboard NAV060 owns the Session shortcut; those are retained/reused.",
+      "expected": "A MIDI clip is created at each independently admitted empty MIDI target through the stated entry.",
+      "comparator": "Compare clip type and chosen target/location only; initial length/content/defaults, occupied/audio target policy, exact keyboard dispatch outside declared focus, timing and file codec U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B034",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/33",
+          "block": "MIDI:B034"
+        }
+      ],
+      "adoption_group": "MIDA-G06",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-063",
+      "requirement": "REQ-MIDI-EDIT-002",
+      "kind": "Draw controls, PitchLockOff and erase histories",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. From successful ordinary note add/delete and independently recorded DrawMode/PitchLock, use Control Bar Draw Mode button and separately B with Notes editor focused, KeyMap/ComputerMIDI/modal state declared. Reset PitchLock OFF, draw across pitches without modifier then with Alt Win/Option Mac; retain the reverse of the existing MED002 ON history. On separate resets establish actual newly drawn notes, then draw over a known existing note in melodic mode; in pitch-locked mode actually backtrack the drawing cursor toward the first newly added note. Inspect focused Options and MIDI editor context labels under explicit ON/OFF preference histories. Missing productive add/erase admission remains U.",
+      "expected": "OFF permits melodic drawing and the modifier enables pitch-locked drawing. Melodic overdraw erases the covered existing note; pitch-locked backtracking erases drawn notes. Named menus reflect Pitch Lock On/Off while Notes editor is focused.",
+      "comparator": "Compare named modes/menu labels and admitted before/after note existence only. No count, NoteId, arbitrary key dispatch, erasure threshold/trajectory sampling, initial preference or gesture undo/rollback.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B038,MIDI:B039",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/37",
+          "block": "MIDI:B038"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/38",
+          "block": "MIDI:B039"
+        }
+      ],
+      "adoption_group": "MIDA-G07",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-064",
+      "requirement": "REQ-MIDI-EDIT-006",
+      "kind": "Copy-drag early and late modifier",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use distinct selected interior notes with DrawMode OFF, accepted empty destination and ordinary successful move and genuine copy baseline, then restore originals. In separate resets Ctrl Win/Option Mac plus mouse-drag copies to another interior location; repeat by starting an ordinary drag then introducing Ctrl Win/Option Mac before completing it. Keep actual modifier phase, selected notes/grid/selection and source/destination content, without serializing NoteIds.",
+      "expected": "The admitted modifier drag creates copies at the destination, including when the modifier is introduced after drag begins.",
+      "comparator": "Compare source content and copied-note presence at the chosen admitted destination only; exact displacement/snapping, original identity allocation, overlap/edge collision, clipboard codec and time U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B072",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/71",
+          "block": "MIDI:B072"
+        }
+      ],
+      "adoption_group": "MIDA-G12",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-065",
+      "requirement": "REQ-MIDI-EDIT-009",
+      "kind": "Explicit Deactivate entry routes",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use an actually active identifiable selected note and genuinely productive ordinary activation/deactivation control baseline. Reset each trial, choose Deactivate Note(s) through Edit menu, piano-ruler context and MIDI Note Editor context separately. Retain gray/active display and use 0 in the declared focused editor to reactivate. Input capability, selected note and productive control must be established before a deactivated absence/status observation; no audio is inferred.",
+      "expected": "Each offered Deactivate command deactivates the selected note and it is displayed gray; 0 reactivates in the admitted input context.",
+      "comparator": "Compare only named command/active flag/gray display role. Sound absence, tail/note-off deadline, RGB/pixels, universal0dispatch, undo transaction and saved status U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B086",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/85",
+          "block": "MIDI:B086"
+        }
+      ],
+      "adoption_group": "MIDA-G15",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-066",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Double and Halve target contexts",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Establish successful factor control and independently admitted nonzero note, time-selection and loop-region targets. On separate reset copies with unambiguous actual target and declared selected/unselected state, press the actual Double x2 then separately Halve /2 buttons in each target context; retain original and resulting target content/bounds. Do not choose target precedence when note/time/loop selections coexist. Existing MED012 StretchFactor2 and unchanged loop recipe remain exact.",
+      "expected": "The named Double and Halve buttons extend/shorten the independently admitted note-duration, time-selection or loop target as described by the existing utility contract. No new numeric or target-precedence oracle.",
+      "comparator": null,
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B116,MIDI:B117",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/115",
+          "block": "MIDI:B116"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/116",
+          "block": "MIDI:B117"
+        }
+      ],
+      "adoption_group": "MIDA-G18",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-067",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Actual Reverse selection branches",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use three distinguishable distinct-time notes and known loop/time bounds, with independently productive ordinary edit and offered Reverse button. On separate exact original resets, explicitly select a proper multi-note subset and invoke the actual Reverse button; then invoke it with no selected notes on a separate nonempty clip. Retain ordered note content and original selection without assuming persistent saved NoteIds.",
+      "expected": "Reverse flips time ordering for the selected material; with no notes selected the entire clip is reversed.",
+      "comparator": "Compare only source-described note ordering and admitted selected versus entire-clip scope. No precise pivot/coordinate formula, simultaneous-note tie order, expression carryover, clipping, loop-boundary or scheduler oracle.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B125",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/124",
+          "block": "MIDI:B125"
+        }
+      ],
+      "adoption_group": "MIDA-G19",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-068",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Actual utility Legato button",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use independently admitted distinct-time selected notes and known positive loop end, with working ordinary length edit and offered Legato utility button. Retain exact initial note starts/ends/selection, then actually invoke that button on a reset original. MED035 really exercises three Span modes, which is a separate tool and is not this utility-button action.",
+      "expected": "The Legato utility adjusts selected note durations toward following note starts and extends the final note to loop end under the documented admitted context.",
+      "comparator": null,
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B127",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/126",
+          "block": "MIDI:B127"
+        }
+      ],
+      "adoption_group": "MIDA-G19",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-069",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Humanize Amount then actual button, Q053",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use valid nonempty selected notes with known original starts, explicit grid and independently admitted productive Humanize operation. Reset originals, set actual Humanize Amount slider to an accepted value and separately invoke the actual Humanize button. Retain exact before/after notes and source contexts without selecting quarter-before/after versus half-grid interpretation. The retained-native private coefficients do not supply this public operation's oracle.",
+      "expected": null,
+      "comparator": null,
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B123",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/122",
+          "block": "MIDI:B123"
+        }
+      ],
+      "adoption_group": "MIDA-G20",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-070",
+      "requirement": "REQ-MIDI-EDIT-014",
+      "kind": "Velocity Randomize targets and Enter entry",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use distinct independently accepted interior velocity values on valid nonempty notes, working Randomize control and exact original resets. Actually invoke Randomize for separately selected notes, selected velocity markers and no notes/markers selected. In a separate reset type an accepted nonzero Randomization Amount and validate with Enter. Retain actual inputs, targeted identities and outputs. Do not infer that every random realization changes a value or that velocity slider changes alone have the same behavior as Chance. Failed admission or empty generation is U.",
+      "expected": "Randomize targets selected notes/markers or all notes when neither is selected; validating a typed amount with Enter triggers randomization.",
+      "comparator": null,
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B146,MIDI:B147",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/145",
+          "block": "MIDI:B146"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/146",
+          "block": "MIDI:B147"
+        }
+      ],
+      "adoption_group": "MIDA-G23",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-071",
+      "requirement": "REQ-MIDI-EDIT-013",
+      "kind": "Actual velocity Ramp Start and End",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use at least three distinct-time selected identifiable notes, independently accepted distinct interior endpoint velocities a/c and successful ordinary Ramp slider edit, resetting originals for each offered Ramp Start/Ramp End control history. Actually set first and last endpoints through these sliders, retain ordered note identities and displayed endpoint values plus interior values for research. No same-time ordering or new interpolation/rounding is supplied.",
+      "expected": "Ramp Start sets the first selected note's velocity and Ramp End sets the last; the source describes intermediate distribution, whose numeric/rounding criterion is not newly asserted.",
+      "comparator": "Compare only the actual named sliders, ordered first/last note identity and admitted displayed endpoint values a/c. Intermediate numeric samples/rounding/equal-time ordering and audio U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B148",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/147",
+          "block": "MIDI:B148"
+        }
+      ],
+      "adoption_group": "MIDA-G24",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-072",
+      "requirement": "REQ-MIDI-EDIT-020",
+      "kind": "Foreground-only Chance with Focus Off",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use two independently editable distinct MIDI clips A/B with distinguishable admitted Chance values, actual successful Chance edits on each before exclusions and exact reset originals. Select both clips, explicitly disable Focus, make A foreground and show Chance lane; retain which clip's markers are displayed. Select a marker belonging to A, type a distinct independently accepted Chance value and press Enter, then inspect both clips. Reset and repeat B foreground. Existing MED020 already performs foreground Velocity and is retained, not declared missing. Failed productive per-clip Chance admission or absent foreground history stays U.",
+      "expected": "Chance markers and editing apply to the foreground clip, with the other selected clip excluded even when Focus is OFF.",
+      "comparator": "Compare actual foreground marker identity, admitted changed value on the targeted clip and absence of that edit on the other after genuine productive per-clip baselines. No probability playback/RNG, exact10percent key law, pixel/geometry, stored codec or global focus policy.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B217,MIDI:B165",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/216",
+          "block": "MIDI:B217"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/164",
+          "block": "MIDI:B165"
+        }
+      ],
+      "adoption_group": "MIDA-G35",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    }
+  ],
+  "adopted_partial_groups": [
+    "MIDA-G03",
+    "MIDA-G06",
+    "MIDA-G07",
+    "MIDA-G12",
+    "MIDA-G15",
+    "MIDA-G18",
+    "MIDA-G19",
+    "MIDA-G20",
+    "MIDA-G23",
+    "MIDA-G24",
+    "MIDA-G35"
+  ],
+  "other_groups": "All unselected groups and unselected facets of these eleven groups remain required/pending; all17tool clauses/actions unchanged, separate full MIDI Tools audit authoring.",
+  "no_resolution": [
+    "Q052",
+    "Q053",
+    "C1",
+    "C2",
+    "C3"
+  ],
+  "source_questions_retained": true
+}

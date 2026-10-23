@@ -1,0 +1,66 @@
+{
+  "id": "CORPUS-RAMP-RMS-PROPOSAL-01",
+  "proposed_utc": "2026-10-20T05:46:18.924213+00:00",
+  "author": "/root",
+  "status": "proposed-finite-T1-engineering-criterion-pending-independent-review",
+  "candidate_results_consulted": false,
+  "threshold": {
+    "value": 0.01,
+    "choice": "Explicit one-percent normalized waveform RMS error budget per channel, chosen by analyst before any candidate results; NOT inferred original tolerance, inaudibility threshold, architecture error bound or max-times-factor theorem.",
+    "intended_admitted_evidence": [
+      "nominal",
+      "plus1",
+      "minus1"
+    ],
+    "intended_contrasts": [
+      "wrong-shape-sine",
+      "gain-half",
+      "polarity-inversion",
+      "gain-plus-two-percent",
+      "swap-channels",
+      "one-frame-delay",
+      "planar-repacking"
+    ],
+    "justification": "This local budget permits at most1e-4 error energy/reference energy in EACH channel. The two recorded coherent import substitutions lie below it; their observed maximum about0.0070808 leaves margin within the chosen budget. Known counterexamples lie above it. These finite checks justify this explicitly chosen engineering acceptance set only, not all reference portability variation or every wrong implementation."
+  },
+  "measurement": {
+    "reference": {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-lfo-ramp-up/raw/ramp-up.f32",
+      "bytes": 131072,
+      "sha256": "40b77412adfc4768bd18e76e5df330ecd536544c50553212ba3125a8de7982ec"
+    },
+    "frames": 16384,
+    "channels": 2,
+    "encoding": "headerless little-endian interleaved binary32",
+    "full_file_finite": true,
+    "post_impulse_interval_inclusive": [
+      4096,
+      16383
+    ],
+    "positive_reference_and_candidate_energy_each_channel": true,
+    "formula": "E_c = sqrt(fsum((float64(y[n,c])-float64(r[n,c]))^2) / fsum(float64(r[n,c])^2))",
+    "arithmetic": "Exact binary32 values decoded into binary64 before subtraction/squaring; each product/subtraction rounds as Python binary64, math.fsum combines positive terms, math.sqrt and inclusive computed-binary64 E<=0.01. No epsilon or boundary slack; shipped comparator defines evaluator rounding.",
+    "combination": "both channels must pass independently",
+    "fitting": "none: no phase/gain/offset/alignment/window selection"
+  },
+  "scope": {
+    "host_protocol": "Exact admitted frozen nominal Ramp script; input/rate/frames/38hostvalues/block/transport/MXCSR/history must match. Values are HOST inputs, not stored-to-host/A1 proof.",
+    "predicted_case": "DCO-029 not yet allocated/adopted; no current requirement/case is changed here",
+    "not_established": [
+      "internal LFO samples/waveform/frequency law",
+      "full-cycle or absence of right phase wrap",
+      "per-sample/onset/late-tail/transition error limits",
+      "pre-4096 behavior beyond full-file validity",
+      "all libm mixed percall directions/Applelibm/arm64 equivalence",
+      "Live hostA1/emission/Sync/Spin/random or candidate compatibility"
+    ],
+    "cross_owner": "All earlier Corpus clauses/cases and174modal omissions remain unchanged; startup/timing/lifecycle and other controls retain their separate obligations."
+  },
+  "new_normative_requirements": 0,
+  "new_normative_cases": 0,
+  "new_application_grades": 0,
+  "new_X_executions": 0,
+  "required_outcome_denominator": null,
+  "candidate_conformance": null,
+  "complete": false
+}

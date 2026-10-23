@@ -1,0 +1,977 @@
+{
+  "C74-LOM-CONTROLSURFACE": [
+    {
+      "tag": "h1",
+      "anchor": "controlsurface",
+      "section": null,
+      "html_line": 28,
+      "html_column": 19158,
+      "text": "ControlSurface",
+      "block": "B0001"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": null,
+      "html_line": 29,
+      "html_column": 0,
+      "text": "A ControlSurface can be reached either directly by the root path control_surfaces N or by getting a list of active control surface IDs, via calling get control_surfaces on an Application object. The latter list is in the same order in which control surfaces appear in Live's Link/MIDI Preferences. Note the same order is not guaranteed when getting a control surface via the control_surfaces N path. A control surface can be thought of as a software layer between the Live API and, in this case, Max for Live. Individiual controls on the surface are represented by objects that can be grabbed and released via Max for Live, to obtain and give back exclusive control (see grab_control and release_control). In this way, parts of the hardware can be controlled via Max for Live while other parts can retain their default functionality. Additionally, Live offers a special MaxForLive control surface that has a register_midi_control function. Using this, Max for Live developers can set up entirely custom control surfaces by adding and grabbing arbitrary controls.",
+      "block": "B0002"
+    },
+    {
+      "tag": "h2",
+      "anchor": "canonical-path",
+      "section": "canonical-path",
+      "html_line": 35,
+      "html_column": 0,
+      "text": "Canonical Path",
+      "block": "B0003"
+    },
+    {
+      "tag": "pre",
+      "anchor": null,
+      "section": "canonical-path",
+      "html_line": 36,
+      "html_column": 0,
+      "text": "control_surfaces N",
+      "block": "B0004"
+    },
+    {
+      "tag": "h2",
+      "anchor": "properties",
+      "section": "properties",
+      "html_line": 38,
+      "html_column": 0,
+      "text": "Properties",
+      "block": "B0005"
+    },
+    {
+      "tag": "h3",
+      "anchor": "pad_layout",
+      "section": "properties",
+      "html_line": 39,
+      "html_column": 0,
+      "text": "pad_layout symbol",
+      "block": "B0006"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 40,
+      "html_column": 0,
+      "text": "Access: getobserve",
+      "block": "B0007"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 41,
+      "html_column": 0,
+      "text": "The active pad layout. On Push 2 and 3, the layout can be changed with the Note and Session buttons and depends on the loaded instrument. Layout variants can be selected by pressing the Layout button. Available layouts are:\\",
+      "block": "B0008"
+    },
+    {
+      "tag": "li",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 47,
+      "html_column": 0,
+      "text": "Melodic mode - the device chain is empty or an Instrument is loaded note.melodic.64_notes - Melodic: 64 Notes note.melodic.64_notes_and_macro_variations - Melodic: 64 Notes + Macro Variations note.melodic.sequencer - Melodic: Sequencer note.melodic.sequencer_and_32_notes - Melodic: Sequencer + 32 Notes",
+      "block": "B0009"
+    },
+    {
+      "tag": "li",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 54,
+      "html_column": 0,
+      "text": "Drums mode - a Drum Rack is loaded note.drums.macro_variations - Drums: Macro Variations note.drums.64_pads - Drums: 64 Pads note.drums.loop_selector - Drums: Loop Selector note.drums.16_velocities - Drums: 16 Velocities note.drums.16_pitches - Drums: 16 Pitches",
+      "block": "B0010"
+    },
+    {
+      "tag": "li",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 62,
+      "html_column": 0,
+      "text": "Session mode - the Session button was pressed session - Session is active",
+      "block": "B0011"
+    },
+    {
+      "tag": "h2",
+      "anchor": "functions",
+      "section": "functions",
+      "html_line": 67,
+      "html_column": 0,
+      "text": "Functions",
+      "block": "B0012"
+    },
+    {
+      "tag": "h3",
+      "anchor": "get_control",
+      "section": "functions",
+      "html_line": 68,
+      "html_column": 0,
+      "text": "get_control",
+      "block": "B0013"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 69,
+      "html_column": 0,
+      "text": "Parameter: name Returns the control with the given name.",
+      "block": "B0014"
+    },
+    {
+      "tag": "h3",
+      "anchor": "get_control_names",
+      "section": "functions",
+      "html_line": 71,
+      "html_column": 0,
+      "text": "get_control_names",
+      "block": "B0015"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 72,
+      "html_column": 0,
+      "text": "Returns the list of all control names.",
+      "block": "B0016"
+    },
+    {
+      "tag": "h3",
+      "anchor": "grab_control",
+      "section": "functions",
+      "html_line": 73,
+      "html_column": 0,
+      "text": "grab_control",
+      "block": "B0017"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 74,
+      "html_column": 0,
+      "text": "Parameter: control Take ownership of the control. This releases all standard functionality of the control, so that it can be used exclusively via Max for Live.",
+      "block": "B0018"
+    },
+    {
+      "tag": "h3",
+      "anchor": "grab_midi",
+      "section": "functions",
+      "html_line": 76,
+      "html_column": 0,
+      "text": "grab_midi",
+      "block": "B0019"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 77,
+      "html_column": 0,
+      "text": "Forward MIDI messages received by the control surface script from the control surface to Max for Live. Note: the control surface script will only receive those channel messages from Live's engine that it explicitly requests. For example, a script might use a specific note message to toggle transport in Live; it will thus request that this note message be forwarded to it from Live. Messages used for purely real-time purposes, on the other hand, will often bypass the script and instead just be sent to Live's tracks; this is true, for example, of Push's pads in Note (but not Session) mode. Accordingly, the API object will not output these real-time pad messages; to work with track messages, use objects such as midiin.",
+      "block": "B0020"
+    },
+    {
+      "tag": "h3",
+      "anchor": "register_midi_control",
+      "section": "functions",
+      "html_line": 81,
+      "html_column": 0,
+      "text": "register_midi_control",
+      "block": "B0021"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 82,
+      "html_column": 0,
+      "text": "Parameters: name [symbol] status [int] number [int] (MaxForLive control surface only) Register a MIDI control defined by status and number. Supported status codes are 144 (note on), 176 (continuous control) and 224 (pitchbend). Returns the LOM ID associated with the control. Once a control is registered and grabbed via grab_control, Live will forward associated MIDI messages that it receives to Max for Live. Max for Live can send values to the control (e.g. to light an LED) by calling send_value on the control object.",
+      "block": "B0022"
+    },
+    {
+      "tag": "h3",
+      "anchor": "release_control",
+      "section": "functions",
+      "html_line": 90,
+      "html_column": 0,
+      "text": "release_control",
+      "block": "B0023"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 91,
+      "html_column": 0,
+      "text": "Parameter: control Re-establishes the standard functionality for the control.",
+      "block": "B0024"
+    },
+    {
+      "tag": "h3",
+      "anchor": "release_midi",
+      "section": "functions",
+      "html_line": 93,
+      "html_column": 0,
+      "text": "release_midi",
+      "block": "B0025"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 94,
+      "html_column": 0,
+      "text": "Stop forwarding MIDI messages received from the control surface to Max for Live.",
+      "block": "B0026"
+    },
+    {
+      "tag": "h3",
+      "anchor": "send_midi",
+      "section": "functions",
+      "html_line": 95,
+      "html_column": 0,
+      "text": "send_midi",
+      "block": "B0027"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 96,
+      "html_column": 0,
+      "text": "Parameter: midi_message [list of int] Send midi_message to the control surface.",
+      "block": "B0028"
+    },
+    {
+      "tag": "h3",
+      "anchor": "send_receive_sysex",
+      "section": "functions",
+      "html_line": 98,
+      "html_column": 0,
+      "text": "send_receive_sysex",
+      "block": "B0029"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "functions",
+      "html_line": 99,
+      "html_column": 0,
+      "text": "Parameters: sysex_message [list of int] timeout [symbol, int] Send sysex_message to the control surface and await a response. If the message is followed by the word timeout and a float, this sets the response timeout accordingly. The default timeout value is 0.2. If the response times out and MIDI has not been grabbed via grab_midi, it's not forwarded to Max for Live. If MIDI has been grabbed via Max for Live, received messages are always forwarded, but the timeout is still reported.",
+      "block": "B0030"
+    }
+  ],
+  "C74-LOM-DEVICEIO": [
+    {
+      "tag": "h1",
+      "anchor": "deviceio",
+      "section": null,
+      "html_line": 28,
+      "html_column": 17604,
+      "text": "DeviceIO",
+      "block": "B0001"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": null,
+      "html_line": 29,
+      "html_column": 0,
+      "text": "This class represents an input or output bus of a Live device.",
+      "block": "B0002"
+    },
+    {
+      "tag": "h2",
+      "anchor": "properties",
+      "section": "properties",
+      "html_line": 30,
+      "html_column": 0,
+      "text": "Properties",
+      "block": "B0003"
+    },
+    {
+      "tag": "h3",
+      "anchor": "available_routing_channels",
+      "section": "properties",
+      "html_line": 31,
+      "html_column": 0,
+      "text": "available_routing_channels dictionary",
+      "block": "B0004"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 32,
+      "html_column": 0,
+      "text": "Access: getobserve",
+      "block": "B0005"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 33,
+      "html_column": 0,
+      "text": "The available channels for this input/output bus. The channels are represented as a dictionary with the following key: available_routing_channels [list] The list contains dictionaries as described in routing_channel.",
+      "block": "B0006"
+    },
+    {
+      "tag": "h3",
+      "anchor": "available_routing_types",
+      "section": "properties",
+      "html_line": 36,
+      "html_column": 0,
+      "text": "available_routing_types dictionary",
+      "block": "B0007"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 37,
+      "html_column": 0,
+      "text": "Access: getobserve",
+      "block": "B0008"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 38,
+      "html_column": 0,
+      "text": "The available types for this input/output bus. The types are represented as a dictionary with the following key: available_routing_types [list] The list contains dictionaries as described in routing_type.",
+      "block": "B0009"
+    },
+    {
+      "tag": "h3",
+      "anchor": "default_external_routing_channel_is_none",
+      "section": "properties",
+      "html_line": 41,
+      "html_column": 0,
+      "text": "default_external_routing_channel_is_none bool",
+      "block": "B0010"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 42,
+      "html_column": 0,
+      "text": "Access: getset",
+      "block": "B0011"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 43,
+      "html_column": 0,
+      "text": "1 = the default routing channel for External routing types is none. Available since Live 11.0.",
+      "block": "B0012"
+    },
+    {
+      "tag": "h3",
+      "anchor": "routing_channel",
+      "section": "properties",
+      "html_line": 46,
+      "html_column": 0,
+      "text": "routing_channel dictionary",
+      "block": "B0013"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 47,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0014"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 48,
+      "html_column": 0,
+      "text": "The current routing channel for this input/output bus. It is represented as a dictionary with the following keys: display_name [symbol] identifier [symbol] Can be set to any of the values found in available_routing_channels.",
+      "block": "B0015"
+    },
+    {
+      "tag": "h3",
+      "anchor": "routing_type",
+      "section": "properties",
+      "html_line": 52,
+      "html_column": 0,
+      "text": "routing_type dictionary",
+      "block": "B0016"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 53,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0017"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 54,
+      "html_column": 0,
+      "text": "The current routing type for this input/output bus. It is represented as a dictionary with the following keys: display_name [symbol] identifier [symbol] Can be set to any of the values found in available_routing_types.",
+      "block": "B0018"
+    }
+  ],
+  "C74-LOM-GROOVE": [
+    {
+      "tag": "h1",
+      "anchor": "groove",
+      "section": null,
+      "html_line": 28,
+      "html_column": 17737,
+      "text": "Groove",
+      "block": "B0001"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": null,
+      "html_line": 29,
+      "html_column": 0,
+      "text": "This class represents a groove in Live. Available since Live 11.0. All grooves are stored in Live's groove pool.",
+      "block": "B0002"
+    },
+    {
+      "tag": "h2",
+      "anchor": "canonical-paths",
+      "section": "canonical-paths",
+      "html_line": 33,
+      "html_column": 0,
+      "text": "Canonical Paths",
+      "block": "B0003"
+    },
+    {
+      "tag": "pre",
+      "anchor": null,
+      "section": "canonical-paths",
+      "html_line": 34,
+      "html_column": 0,
+      "text": "live_set groove_pool grooves N",
+      "block": "B0004"
+    },
+    {
+      "tag": "pre",
+      "anchor": null,
+      "section": "canonical-paths",
+      "html_line": 36,
+      "html_column": 0,
+      "text": "live_set tracks N clip_slots M clip groove",
+      "block": "B0005"
+    },
+    {
+      "tag": "h2",
+      "anchor": "children",
+      "section": "children",
+      "html_line": 38,
+      "html_column": 0,
+      "text": "Children",
+      "block": "B0006"
+    },
+    {
+      "tag": "h3",
+      "anchor": "base",
+      "section": "children",
+      "html_line": 39,
+      "html_column": 0,
+      "text": "base int",
+      "block": "B0007"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 40,
+      "html_column": 0,
+      "text": "Access: getset",
+      "block": "B0008"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 41,
+      "html_column": 0,
+      "text": "Get/set the groove's base grid (index based setter). 0 = 1/4 1 = 1/8 2 = 1/8T 3 = 1/16 4 = 1/16T 5 = 1/32",
+      "block": "B0009"
+    },
+    {
+      "tag": "h3",
+      "anchor": "name",
+      "section": "children",
+      "html_line": 48,
+      "html_column": 0,
+      "text": "name symbol",
+      "block": "B0010"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 49,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0011"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 50,
+      "html_column": 0,
+      "text": "Get/set/observe the name of the groove.",
+      "block": "B0012"
+    },
+    {
+      "tag": "h3",
+      "anchor": "quantization_amount",
+      "section": "children",
+      "html_line": 51,
+      "html_column": 0,
+      "text": "quantization_amount float",
+      "block": "B0013"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 52,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0014"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 53,
+      "html_column": 0,
+      "text": "Get/set/observe the groove's quantization amount.",
+      "block": "B0015"
+    },
+    {
+      "tag": "h3",
+      "anchor": "random_amount",
+      "section": "children",
+      "html_line": 54,
+      "html_column": 0,
+      "text": "random_amount float",
+      "block": "B0016"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 55,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0017"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 56,
+      "html_column": 0,
+      "text": "Get/set/observe the groove's random amount.",
+      "block": "B0018"
+    },
+    {
+      "tag": "h3",
+      "anchor": "timing_amount",
+      "section": "children",
+      "html_line": 57,
+      "html_column": 0,
+      "text": "timing_amount float",
+      "block": "B0019"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 58,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0020"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 59,
+      "html_column": 0,
+      "text": "Get/set/observe the groove's timing amount.",
+      "block": "B0021"
+    },
+    {
+      "tag": "h3",
+      "anchor": "velocity_amount",
+      "section": "children",
+      "html_line": 60,
+      "html_column": 0,
+      "text": "velocity_amount float",
+      "block": "B0022"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 61,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0023"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 62,
+      "html_column": 0,
+      "text": "Get/set/observe the groove's velocity amount.",
+      "block": "B0024"
+    }
+  ],
+  "C74-LOM-GROOVEPOOL": [
+    {
+      "tag": "h1",
+      "anchor": "groovepool",
+      "section": null,
+      "html_line": 28,
+      "html_column": 16993,
+      "text": "GroovePool",
+      "block": "B0001"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": null,
+      "html_line": 29,
+      "html_column": 0,
+      "text": "This class represents the groove pool in Live. It provides access to the current set's list of grooves.",
+      "block": "B0002"
+    },
+    {
+      "tag": "h2",
+      "anchor": "canonical-path",
+      "section": "canonical-path",
+      "html_line": 30,
+      "html_column": 0,
+      "text": "Canonical Path",
+      "block": "B0003"
+    },
+    {
+      "tag": "pre",
+      "anchor": null,
+      "section": "canonical-path",
+      "html_line": 31,
+      "html_column": 0,
+      "text": "live_set groove_pool",
+      "block": "B0004"
+    },
+    {
+      "tag": "h2",
+      "anchor": "children",
+      "section": "children",
+      "html_line": 33,
+      "html_column": 0,
+      "text": "Children",
+      "block": "B0005"
+    },
+    {
+      "tag": "h3",
+      "anchor": "grooves",
+      "section": "children",
+      "html_line": 34,
+      "html_column": 0,
+      "text": "grooves list of Groove",
+      "block": "B0006"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 35,
+      "html_column": 0,
+      "text": "Access: getobserve",
+      "block": "B0007"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "children",
+      "html_line": 36,
+      "html_column": 0,
+      "text": "List of grooves in the groove pool from top to bottom, can be accessed via index.",
+      "block": "B0008"
+    }
+  ],
+  "C74-LOM-THIS_DEVICE": [
+    {
+      "tag": "h1",
+      "anchor": "this_device",
+      "section": null,
+      "html_line": 28,
+      "html_column": 16057,
+      "text": "this_device",
+      "block": "B0001"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": null,
+      "html_line": 29,
+      "html_column": 0,
+      "text": "This root path represents the device containing the live.path object to which the goto this_device message is sent. The class of this object is Device.",
+      "block": "B0002"
+    },
+    {
+      "tag": "h2",
+      "anchor": "canonical-path",
+      "section": "canonical-path",
+      "html_line": 30,
+      "html_column": 0,
+      "text": "Canonical Path",
+      "block": "B0003"
+    },
+    {
+      "tag": "pre",
+      "anchor": null,
+      "section": "canonical-path",
+      "html_line": 31,
+      "html_column": 0,
+      "text": "live_set tracks N devices M",
+      "block": "B0004"
+    }
+  ],
+  "C74-LOM-TUNINGSYSTEM": [
+    {
+      "tag": "h1",
+      "anchor": "tuningsystem",
+      "section": null,
+      "html_line": 28,
+      "html_column": 17755,
+      "text": "TuningSystem",
+      "block": "B0001"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": null,
+      "html_line": 29,
+      "html_column": 0,
+      "text": "This class represents a tuning system in Live.",
+      "block": "B0002"
+    },
+    {
+      "tag": "h2",
+      "anchor": "canonical-path",
+      "section": "canonical-path",
+      "html_line": 30,
+      "html_column": 0,
+      "text": "Canonical Path",
+      "block": "B0003"
+    },
+    {
+      "tag": "pre",
+      "anchor": null,
+      "section": "canonical-path",
+      "html_line": 31,
+      "html_column": 0,
+      "text": "live_set tuning_system",
+      "block": "B0004"
+    },
+    {
+      "tag": "h2",
+      "anchor": "properties",
+      "section": "properties",
+      "html_line": 33,
+      "html_column": 0,
+      "text": "Properties",
+      "block": "B0005"
+    },
+    {
+      "tag": "h3",
+      "anchor": "name",
+      "section": "properties",
+      "html_line": 34,
+      "html_column": 0,
+      "text": "name symbol",
+      "block": "B0006"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 35,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0007"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 36,
+      "html_column": 0,
+      "text": "The name of the currently active tuning system.",
+      "block": "B0008"
+    },
+    {
+      "tag": "h3",
+      "anchor": "pseudo_octave_in_cents",
+      "section": "properties",
+      "html_line": 37,
+      "html_column": 0,
+      "text": "pseudo_octave_in_cents float",
+      "block": "B0009"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 38,
+      "html_column": 0,
+      "text": "Access: get",
+      "block": "B0010"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 39,
+      "html_column": 0,
+      "text": "The pseudo octave in cents of the currently active tuning system.",
+      "block": "B0011"
+    },
+    {
+      "tag": "h3",
+      "anchor": "lowest_note",
+      "section": "properties",
+      "html_line": 40,
+      "html_column": 0,
+      "text": "lowest_note dictionary",
+      "block": "B0012"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 41,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0013"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 42,
+      "html_column": 0,
+      "text": "The note index within the pseudo octave and octave of the lowest note.",
+      "block": "B0014"
+    },
+    {
+      "tag": "h3",
+      "anchor": "highest_note",
+      "section": "properties",
+      "html_line": 43,
+      "html_column": 0,
+      "text": "highest_note dictionary",
+      "block": "B0015"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 44,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0016"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 45,
+      "html_column": 0,
+      "text": "The note index within the pseudo octave and octave of the highest note.",
+      "block": "B0017"
+    },
+    {
+      "tag": "h3",
+      "anchor": "reference_pitch",
+      "section": "properties",
+      "html_line": 46,
+      "html_column": 0,
+      "text": "reference_pitch dictionary",
+      "block": "B0018"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 47,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0019"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 48,
+      "html_column": 0,
+      "text": "The reference pitch of the current tuning system.",
+      "block": "B0020"
+    },
+    {
+      "tag": "h3",
+      "anchor": "note_tunings",
+      "section": "properties",
+      "html_line": 49,
+      "html_column": 0,
+      "text": "note_tunings dictionary",
+      "block": "B0021"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 50,
+      "html_column": 0,
+      "text": "Access: getsetobserve",
+      "block": "B0022"
+    },
+    {
+      "tag": "p",
+      "anchor": null,
+      "section": "properties",
+      "html_line": 51,
+      "html_column": 0,
+      "text": "The relative note tunings of the Tuning System in cents. Provided as a single-element dictionary holding an array.",
+      "block": "B0023"
+    }
+  ]
+}

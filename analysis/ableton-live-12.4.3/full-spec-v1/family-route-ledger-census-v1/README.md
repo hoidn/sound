@@ -1,0 +1,7 @@
+# Retained-document whole-family route census
+
+Read correction-proposal.md first. This is a proposed governance correction, not a new behavioral owner or route map. One independent review is pending; Root owns canonical adoption.
+
+`selection.json` explicitly selects all32 current frozen cuts from the as-of atlas. `source-pins.json` pins only the retained documents actually read; `authority-snapshots.json` preserves the three mutable authorities as-of capture. `census.json` contains every family's unit contract, counts, excluded arrays/gaps, source identities and priority proposal. `required-units.jsonl` contains all5,624 required row identities and pointers; resolve each row against its family's `required_rows_source`, and optional Analog overlay pointer against its v2 ledger.
+
+The stdlib-only census.py reads listed retained documents and own packet data, never follows their nested evidence paths or runs old helpers. Run from any cwd with `python3 -I -B /absolute/path/to/census.py --check`. It verifies immutable inputs/manifest-ledger joins, exact row identities/routes/output bytes and13 synthetic negative controls. It permits current mutable authorities to advance while validating their frozen snapshots. `--build` authored deterministic outputs before freeze; do not mutate the frozen packet after seal. This packet's manifest seals payloads without self-hashing; predecessor map approvals and source semantic audits are explicitly inherited.

@@ -1,0 +1,1825 @@
+[
+  {
+    "id": "AW-001",
+    "requirements": [
+      "REQ-AUTO-WF-001"
+    ],
+    "title": "Automation and modulation indicators",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: compare an actually automated control, one with modulation and a nonautomated control; inspect indicators and the Session editor versus Arrangement lane. Retain theme; no exact pixel/color metric.",
+    "source_blocks": [
+      "automation:B003",
+      "automation:B004"
+    ],
+    "source_claim": "An automated control has a theme-dependent colored indicator, typically red; blue denotes modulation. Session automation is available as a clip envelope, while Arrangement automation is displayed in track lanes.",
+    "documentary_expected": "An automated control has a theme-dependent colored indicator, typically red; blue denotes modulation. Session automation is available as a clip envelope, while Arrangement automation is displayed in track lanes.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-002",
+    "requirements": [
+      "REQ-AUTO-WF-002"
+    ],
+    "title": "Session automation recording eligibility",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: compare armed A and unarmed B with independently playing nonempty clips; enable Automation Arm and Session Record, move an eligible device parameter. In reset trial select All Tracks and repeat with B unarmed. Inspect recorded envelopes; no event codec, event density or negative arm law.",
+    "source_blocks": [
+      "automation:B008",
+      "automation:B009",
+      "automation:B010"
+    ],
+    "source_claim": "Session clip automation recording uses Automation Arm, eligible armed tracks and Session Record. Record Session automation in: All Tracks permits recording into all playing Session clips regardless of track arm, including automation overdub without recording MIDI notes.",
+    "documentary_expected": "Session clip automation recording uses Automation Arm, eligible armed tracks and Session Record. Record Session automation in: All Tracks permits recording into all playing Session clips regardless of track arm, including automation overdub without recording MIDI notes.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-003",
+    "requirements": [
+      "REQ-AUTO-WF-003"
+    ],
+    "title": "Session recording stop controls",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: start a positive Session automation pass with moving parameter and explicit running transport. In separate copies press Session Record or Stop; inspect recording/transport state and editor envelope. Transition timing remains U.",
+    "source_blocks": [
+      "automation:B011",
+      "automation:B012"
+    ],
+    "source_claim": "Session Record can stop automation recording while playback continues; Stop ends transport and recording. Recorded clip automation is viewed/edited in the Envelope Editor.",
+    "documentary_expected": "Session Record can stop automation recording while playback continues; Stop ends transport and recording. Recorded clip automation is viewed/edited in the Envelope Editor.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-004",
+    "requirements": [
+      "REQ-AUTO-WF-004"
+    ],
+    "title": "Session transfer and performance recording",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC/F-VIEWS: use a Session clip with a visible changing envelope, active output and a second independently changed parameter. In separate trials copy it to Arrangement and record its performance through the recording owner. Inspect envelope ownership; flattening, event merge and scheduling remain U.",
+    "source_blocks": [
+      "automation:B007",
+      "automation:B013"
+    ],
+    "source_claim": "Session-to-Arrangement recording stores parameter changes as track automation, not Session clip automation, and can record tempo changes. Copying automated Session clips to Arrangement also copies automation as track automation; Session performance recording includes existing clip automation alongside live parameter changes.",
+    "documentary_expected": "Session-to-Arrangement recording stores parameter changes as track automation, not Session clip automation, and can record tempo changes. Copying automated Session clips to Arrangement also copies automation as track automation; Session performance recording includes existing clip automation alongside live parameter changes.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-005",
+    "requirements": [
+      "REQ-AUTO-WF-005"
+    ],
+    "title": "Arrangement automation recording",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: on A/B with explicit arm states, enable Automation Arm and Arrangement Record, confirm actual running transport, change a mixer/device parameter and tempo separately. Inspect new track envelopes without deriving arm refusal, point spacing or tempo precedence.",
+    "source_blocks": [
+      "automation:B015",
+      "automation:B016",
+      "automation:B018"
+    ],
+    "source_claim": "With Automation Arm enabled, Arrangement automation recording applies to all tracks. Arrangement Record is described as starting transport/recording by default and records tempo, mixer and device adjustments into track lanes; this is no unconditional transport-start guarantee.",
+    "documentary_expected": "With Automation Arm enabled, Arrangement automation recording applies to all tracks. Arrangement Record is described as starting transport/recording by default and records tempo, mixer and device adjustments into track lanes; this is no unconditional transport-start guarantee.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-006",
+    "requirements": [
+      "REQ-AUTO-WF-006"
+    ],
+    "title": "Arrangement recording stop controls",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: positively record a changing Arrangement parameter, then use each stop control on separate copies. Observe record/play state only, not sample-aligned stop or event ownership.",
+    "source_blocks": [
+      "automation:B017"
+    ],
+    "source_claim": "Arrangement Record can stop recording while playback continues; the adjacent Stop button ends both transport and recording.",
+    "documentary_expected": "Arrangement Record can stop recording while playback continues; the adjacent Stop button ends both transport and recording.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-007",
+    "requirements": [
+      "REQ-AUTO-WF-007"
+    ],
+    "title": "Overwrite and Session touch/latch contexts",
+    "kind": "timing",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC/F-MAPPING: compare an existing two-level Session envelope with a first pass in separate copies; record mouse drag/release and separately an actually accepted controller knob. Keep Automation Arm/record, active playback, nonzero parameter excursion and paired prior-envelope baseline. Capture values/events around release and loop end without a timing oracle.",
+    "source_blocks": [
+      "automation:B020",
+      "automation:B021"
+    ],
+    "source_claim": "Adjusting an already automated parameter during recording replaces its recorded adjustments. For Session overwrite, mouse release returns to prior automation, whereas MIDI knobs/faders hold the new setting until clip/loop end. A first Session automation pass uses the hold behavior regardless of input method. No overwrite interval or controller protocol law is supplied.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-008",
+    "requirements": [
+      "REQ-AUTO-WF-008"
+    ],
+    "title": "Manual override presentation",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-OVERRIDE: two parameters have independently changing active envelopes and positive source/output. Confirm recording off, change only the first manually, inspect gray/inactive indication and active Re-Enable button. Record envelope inventory separately; no stored override law.",
+    "source_blocks": [
+      "automation:B023",
+      "automation:B024",
+      "automation:B025"
+    ],
+    "source_claim": "With recording off, manually changing an automated parameter overrides its automation, turns its automation indicator gray and activates Re-Enable Automation. This is distinct from overwriting recorded data.",
+    "documentary_expected": "With recording off, manually changing an automated parameter overrides its automation, turns its automation indicator gray and activates Re-Enable Automation. This is distinct from overwriting recorded data.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-009",
+    "requirements": [
+      "REQ-AUTO-WF-009"
+    ],
+    "title": "Global and per-parameter re-enable",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-OVERRIDE: override two previously active envelopes while not recording. Use the first parameter menu and then the global button on separate/reset copies; inspect active/overridden indicators for both. Value return timing and sound remain U.",
+    "source_blocks": [
+      "automation:B026",
+      "automation:B027"
+    ],
+    "source_claim": "The Control Bar Re-Enable Automation button restores all overridden automation; a parameter context-menu command restores only that parameter. The active button indicates at least one overridden automated parameter.",
+    "documentary_expected": "The Control Bar Re-Enable Automation button restores all overridden automation; a parameter context-menu command restores only that parameter. The active button indicates at least one overridden automated parameter.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-010",
+    "requirements": [
+      "REQ-AUTO-WF-010"
+    ],
+    "title": "Session relaunch re-enable role",
+    "kind": "timing",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-OVERRIDE/F-VIEWS: with a positively active Session envelope, recording off, override its target then relaunch that automated clip using the launch owner. Retain competing Arrangement state and indicators; observe control/audio return without a launch or reset-time oracle.",
+    "source_blocks": [
+      "automation:B027"
+    ],
+    "source_claim": "Relaunching a Session clip that contains automation is another documented way to re-enable overridden automation. This does not identify every affected target, launch boundary or Arrangement-return transition.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-011",
+    "requirements": [
+      "REQ-AUTO-WF-011"
+    ],
+    "title": "Session envelope selection",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: select a MIDI clip, enable Automation, choose mixer/device/MIDI Ctrl as actually offered, and compare automated and untouched controls. Audio-specific entries are scoped by the clip-type requirement below.",
+    "source_blocks": [
+      "automation:B031",
+      "automation:B032",
+      "automation:B033"
+    ],
+    "source_claim": "The Session Envelope Editor Automation toggle and Device/Control choosers select a target envelope; device/mixer and MIDI Ctrl entries are described. Automated controls/devices have indicators; an unautomated selected control appears as a dashed line at its current value. Actual entries depend on clip type.",
+    "documentary_expected": "The Session Envelope Editor Automation toggle and Device/Control choosers select a target envelope; device/mixer and MIDI Ctrl entries are described. Automated controls/devices have indicators; an unautomated selected control appears as a dashed line at its current value. Actual entries depend on clip type.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-012",
+    "requirements": [
+      "REQ-AUTO-WF-012"
+    ],
+    "title": "Session adjusted-envelope filter",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: display unautomated X alongside automated Y in the chooser, enable the adjusted-only filter, inspect combined chooser and retained X display, then restore All.",
+    "source_blocks": [
+      "automation:B034",
+      "automation:B035",
+      "automation:B036"
+    ],
+    "source_claim": "Show Adjusted Envelopes Only combines Session Device/Control choices into an Automated Control chooser; Show All Envelopes restores the full choices. An unautomated envelope already displayed remains displayed when filtering is enabled.",
+    "documentary_expected": "Show Adjusted Envelopes Only combines Session Device/Control choices into an Automated Control chooser; Show All Envelopes restores the full choices. An unautomated envelope already displayed remains displayed when filtering is enabled.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-013",
+    "requirements": [
+      "REQ-AUTO-WF-013"
+    ],
+    "title": "Stacked Session control focus",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: explicitly stack views and open editor; click untouched X and automated Y with filter off, then filter on in reset trial. Grade selection/display only, retaining the already-displayed exception.",
+    "source_blocks": [
+      "automation:B036"
+    ],
+    "source_claim": "With Envelope Editor open and Clip/Device Views stacked, clicking a track device or mixer control displays its envelope, including unautomated controls. Adjusted-only filtering prevents newly opening an unautomated envelope this way.",
+    "documentary_expected": "With Envelope Editor open and Clip/Device Views stacked, clicking a track device or mixer control displays its envelope, including unautomated controls. Adjusted-only filtering prevents newly opening an unautomated envelope this way.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-014",
+    "requirements": [
+      "REQ-AUTO-WF-014"
+    ],
+    "title": "Arrangement Automation Mode and choosers",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: Arrangement focus, computer MIDI keyboard/text focus cleared under keyboard owner, toggle Mode with button and offered key; select device/mixer then None. Compare untouched and automated targets without general shortcut-dispatch assumptions.",
+    "source_blocks": [
+      "automation:B038",
+      "automation:B039",
+      "automation:B040",
+      "automation:B041"
+    ],
+    "source_claim": "Automation Mode button or A opens main track automation lanes. Device/Automation Control select envelopes; None hides the envelope and empties the control chooser. Automated entries have indicators and an untouched selected parameter is dashed.",
+    "documentary_expected": "Automation Mode button or A opens main track automation lanes. Device/Automation Control select envelopes; None hides the envelope and empties the control chooser. Automated entries have indicators and an untouched selected parameter is dashed.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-015",
+    "requirements": [
+      "REQ-AUTO-WF-015"
+    ],
+    "title": "Arrangement filters and focus commands",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: compare automated Y and untouched X with filter off/on; invoke both menu options on reset copies and inspect Mode/focus/availability. Include X displayed before enabling filter.",
+    "source_blocks": [
+      "automation:B042",
+      "automation:B043",
+      "automation:B044"
+    ],
+    "source_claim": "Show Automated Parameters Only combines the Arrangement choosers; Show All Parameters restores them. In Automation Mode, clicking a control or its Show Automation/Show Automation in New Lane commands selects its envelope. With automated-only filtering, untouched controls cannot newly open and those menu options are disabled/unavailable; an already displayed untouched envelope remains.",
+    "documentary_expected": "Show Automated Parameters Only combines the Arrangement choosers; Show All Parameters restores them. In Automation Mode, clicking a control or its Show Automation/Show Automation in New Lane commands selects its envelope. With automated-only filtering, untouched controls cannot newly open and those menu options are disabled/unavailable; an already displayed untouched envelope remains.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-016",
+    "requirements": [
+      "REQ-AUTO-WF-016"
+    ],
+    "title": "Add lane and main-lane None",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: main Y selected, Add, inspect new lane/main None/Add absence, select X and inspect Add returning. No data deletion or target duplication is inferred.",
+    "source_blocks": [
+      "automation:B045"
+    ],
+    "source_claim": "Add Automation Lane moves the main envelope into an additional lane and sets main Device to None. Selecting a new main target permits another lane; Add is absent while None is selected.",
+    "documentary_expected": "Add Automation Lane moves the main envelope into an additional lane and sets main Device to None. Selecting a new main target permits another lane; Add is absent while None is selected.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-017",
+    "requirements": [
+      "REQ-AUTO-WF-017"
+    ],
+    "title": "Additional lane visibility and order",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: create Y/Z lanes, reorder them, set main None and hide/show; inspect promoted target. Use focused lane arrows only through existing keyboard context.",
+    "source_blocks": [
+      "automation:B046",
+      "automation:B047",
+      "automation:B048"
+    ],
+    "source_claim": "A main-lane toggle hides/shows additional lanes; when main Device is None, hiding promotes the top additional lane to main. Additional lanes can be reordered by drag; arrows navigate lanes or show/hide from main context.",
+    "documentary_expected": "A main-lane toggle hides/shows additional lanes; when main Device is None, hiding promotes the top additional lane to main. Additional lanes can be reordered by drag; arrows navigate lanes or show/hide from main context.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-018",
+    "requirements": [
+      "REQ-AUTO-WF-018"
+    ],
+    "title": "Existing lane focus and duplicate limit",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: create Y additional lane and select Y again; then on reset copy put X in main and attempt first, second and third modified Add. Inspect focus/lane count only; duplicates are views, not additional recorded sources.",
+    "source_blocks": [
+      "automation:B049"
+    ],
+    "source_claim": "Choosing a parameter already in an additional lane focuses that lane. Ctrl-click Windows/Option-click macOS on Add creates a duplicate of the main envelope, with up to two such duplicates documented.",
+    "documentary_expected": "Choosing a parameter already in an additional lane focuses that lane. Ctrl-click Windows/Option-click macOS on Add creates a duplicate of the main envelope, with up to two such duplicates documented.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-019",
+    "requirements": [
+      "REQ-AUTO-WF-019"
+    ],
+    "title": "All lanes and lane removal",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: A has two automated targets plus untouched X; use all-lanes action. In separate copies remove one, a discontiguous header selection, a Shift range and selected-plus-below. Inspect lanes separately from retained envelopes.",
+    "source_blocks": [
+      "automation:B050",
+      "automation:B051",
+      "automation:B054",
+      "automation:B055",
+      "automation:B056"
+    ],
+    "source_claim": "Alt Windows/Cmd macOS Add or Add Lane for Each Automated Envelope adds lanes for automated parameters. Remove applies to selected additional lanes; modified Remove also removes lanes below. Main-lane Add and additional-lane Remove are available in the corresponding header menus.",
+    "documentary_expected": "Alt Windows/Cmd macOS Add or Add Lane for Each Automated Envelope adds lanes for automated parameters. Remove applies to selected additional lanes; modified Remove also removes lanes below. Main-lane Add and additional-lane Remove are available in the corresponding header menus.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-020",
+    "requirements": [
+      "REQ-AUTO-WF-020"
+    ],
+    "title": "Breakpoint insertion",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: untouched admitted continuous parameter; use click-line, click-drag, Shift drag, off-line double-click and hover/Add Value on reset copies. Inspect visible points/values, no event Id or float-serialization law.",
+    "source_blocks": [
+      "automation:B059",
+      "automation:B061",
+      "automation:B063"
+    ],
+    "source_claim": "Clicking a selected control\u2019s dashed envelope line inserts a breakpoint and makes it solid. Click-drag sets the new point value, Shift refines the adjustment, and double-click away from the line inserts there. Hover values and Add Value context entry support a chosen displayed value.",
+    "documentary_expected": "Clicking a selected control\u2019s dashed envelope line inserts a breakpoint and makes it solid. Click-drag sets the new point value, Shift refines the adjustment, and double-click away from the line inserts there. Hover values and Add Value context entry support a chosen displayed value.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-021",
+    "requirements": [
+      "REQ-AUTO-WF-021"
+    ],
+    "title": "Breakpoint grid and display",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: choose known visible grid and three separated points. Compare snap/bypass and horizontal/vertical Shift drags; inspect nearest-point tooltip. No hidden grid arithmetic, tie policy or pixel tolerance.",
+    "source_blocks": [
+      "automation:B062",
+      "automation:B063",
+      "automation:B080",
+      "automation:B087"
+    ],
+    "source_claim": "Inserted/moved breakpoints snap to grid, with Alt Windows/Cmd macOS bypass. Hover/drag exposes point values; segment hover/drag shows the closest breakpoint\u2019s value. Shift horizontal drag constrains the horizontal axis and Shift vertical drag refines value adjustment.",
+    "documentary_expected": "Inserted/moved breakpoints snap to grid, with Alt Windows/Cmd macOS bypass. Hover/drag exposes point values; segment hover/drag shows the closest breakpoint\u2019s value. Shift horizontal drag constrains the horizontal axis and Shift vertical drag refines value adjustment.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-022",
+    "requirements": [
+      "REQ-AUTO-WF-022"
+    ],
+    "title": "Discrete envelope presentation",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: independently offered Bool/choice target and continuous positive control, insert separated points and inspect shape options. This supplies no Enum numeric mapping or playback interpolation.",
+    "source_blocks": [
+      "automation:B064",
+      "automation:B074"
+    ],
+    "source_claim": "Discrete controls such as toggles/radio choices display stepped rather than diagonal automation and permit only the square inserted shape.",
+    "documentary_expected": "Discrete controls such as toggles/radio choices display stepped rather than diagonal automation and permit only the square inserted shape.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-023",
+    "requirements": [
+      "REQ-AUTO-WF-023"
+    ],
+    "title": "Draw Mode and snapping",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: confirmed editor focus and keyboard context, Draw off then button/menu/key/hold in separate trials; draw across nonempty selection at two offered grids and with snap bypass. Inspect envelope shape only, no smoothing kernel.",
+    "source_blocks": [
+      "automation:B067",
+      "automation:B068",
+      "automation:B069"
+    ],
+    "source_claim": "Draw Mode is toggled through Options, Control Bar or B; holding B temporarily enables it when off. Drawing creates grid-width steps by default; grid size and Snap to Grid or Alt Windows/Cmd macOS bypass alter drawing alignment.",
+    "documentary_expected": "Draw Mode is toggled through Options, Control Bar or B; holding B temporarily enables it when off. Drawing creates grid-width steps by default; grid size and Snap to Grid or Alt Windows/Cmd macOS bypass alter drawing alignment.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-024",
+    "requirements": [
+      "REQ-AUTO-WF-024"
+    ],
+    "title": "Shape insertion extent",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: admitted continuous control, proper nonempty selection then marker-only trial at known grid. Insert each text-named offered family on reset copies and inspect displayed extent; figures and numerical waveform construction are not oracles.",
+    "source_blocks": [
+      "automation:B071",
+      "automation:B072"
+    ],
+    "source_claim": "Context-menu automation shapes can be inserted at a marker or time selection; selection width determines horizontal extent and parameter range the vertical extent, while no selection uses current grid width. Source text names sine, triangle, sawtooth, inverse sawtooth, square, ramps and ADSR.",
+    "documentary_expected": "Context-menu automation shapes can be inserted at a marker or time selection; selection width determines horizontal extent and parameter range the vertical extent, while no selection uses current grid width. Source text names sine, triangle, sawtooth, inverse sawtooth, square, ramps and ADSR.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-025",
+    "requirements": [
+      "REQ-AUTO-WF-025"
+    ],
+    "title": "Waveform and ramp surroundings",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: two distinct admitted surrounding values and positive visible selection; compare one waveform and one ramp under reversed surroundings on reset copies. Grade visible contextual role only.",
+    "source_blocks": [
+      "automation:B073"
+    ],
+    "source_claim": "Inserted waveforms retain their shape irrespective of surrounding values, whereas ramps depend on values on either side of the insertion selection. Exact ramp coefficients, clipping and boundary events are unknown.",
+    "documentary_expected": "Inserted waveforms retain their shape irrespective of surrounding values, whereas ramps depend on values on either side of the insertion selection. Exact ramp coefficients, clipping and boundary events are unknown.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-026",
+    "requirements": [
+      "REQ-AUTO-WF-026"
+    ],
+    "title": "Breakpoint deletion and selection",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: three separated interior points with neighbors retained; delete middle, then select/move/delete multiple in reset copies. Record visible point membership, not interpolation or duplicate-time handling.",
+    "source_blocks": [
+      "automation:B079",
+      "automation:B081",
+      "automation:B082"
+    ],
+    "source_claim": "Points can be dragged; clicking a breakpoint deletes it and joins its neighbors by a new segment. Background drag selects multiple points, whose point drag moves the selection and whose context Delete removes selected points.",
+    "documentary_expected": "Points can be dragged; clicking a breakpoint deletes it and joins its neighbors by a new segment. Background drag selects multiple points, whose point drag moves the selection and whose context Delete removes selected points.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-027",
+    "requirements": [
+      "REQ-AUTO-WF-027"
+    ],
+    "title": "Segment movement and selection edges",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: proper interior selection on a diagonal envelope with outside neighbors; move segment inside and across the selection boundary in separate copies. Inspect inserted boundary points without sample-time or stored-point law.",
+    "source_blocks": [
+      "automation:B083",
+      "automation:B084"
+    ],
+    "source_claim": "Dragging near a segment moves it; Shift-click/hold then releasing Shift is an alternative selection gesture. Moving a segment inside a time selection inserts points at the edges, and moving it outside inserts further edge points. Fine vertical and constrained horizontal drags are documented.",
+    "documentary_expected": "Dragging near a segment moves it; Shift-click/hold then releasing Shift is an alternative selection gesture. Moving a segment inside a time selection inserts points at the edges, and moving it outside inserts further edge points. Fine vertical and constrained horizontal drags are documented.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-028",
+    "requirements": [
+      "REQ-AUTO-WF-028"
+    ],
+    "title": "Drop overwrites and drag preview",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: point group with an independently retained destination group; drag over it, inspect preview before release, then drop. Record source/destination points; cancel and Undo have separate U probes.",
+    "source_blocks": [
+      "automation:B085"
+    ],
+    "source_claim": "Dropping a dragged point/segment onto existing breakpoints overwrites them; while dragging before drop, existing parts are not permanently overwritten. This says nothing about Escape rollback or transaction atomicity.",
+    "documentary_expected": "Dropping a dragged point/segment onto existing breakpoints overwrites them; while dragging before drop, existing parts are not permanently overwritten. This says nothing about Escape rollback or transaction atomicity.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-029",
+    "requirements": [
+      "REQ-AUTO-WF-029"
+    ],
+    "title": "Diagonal curve gesture",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: compare admitted diagonal, horizontal and discrete segments using documented modifier drag, then straighten a curved diagonal. Grade offered visible editing only, no polynomial reconstruction.",
+    "source_blocks": [
+      "automation:B086"
+    ],
+    "source_claim": "Alt Windows/Option macOS segment drag adds a curve only to diagonal segments; modified double-click changes curved to straight. Numeric curve controls and runtime interpolation remain with the finite envelope/mix owners.",
+    "documentary_expected": "Alt Windows/Option macOS segment drag adds a curve only to diagonal segments; modified double-click changes curved to straight. Numeric curve controls and runtime interpolation remain with the finite envelope/mix owners.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-030",
+    "requirements": [
+      "REQ-AUTO-WF-030"
+    ],
+    "title": "Exact value editing",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: use two distinct admitted displayed values on an interior continuous target with headroom. Edit one, then a multi-selection; inspect visible relative movement without extrapolating beyond range or parser rules.",
+    "source_blocks": [
+      "automation:B088"
+    ],
+    "source_claim": "Edit Value on a point/segment accepts a typed value. With multiple selected points, the edited point takes that value and the others move relatively. Admission, saturation and error grammar are unknown.",
+    "documentary_expected": "Edit Value on a point/segment accepts a typed value. With multiple selected points, the edited point takes that value and the others move relatively. Admission, saturation and error grammar are unknown.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-031",
+    "requirements": [
+      "REQ-AUTO-WF-031"
+    ],
+    "title": "Stretch and skew handles",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: known interior selection and retained outside points; separately drag vertical/horizontal/corner handles, Shift and mirrored modifiers, then cross an outside point. Inspect preview/points only; no affine formula or clipping law.",
+    "source_blocks": [
+      "automation:B091",
+      "automation:B092",
+      "automation:B093",
+      "automation:B094",
+      "automation:B095"
+    ],
+    "source_claim": "Time-selection handles transform the selected envelope: top/bottom centers stretch vertically, side centers horizontally and corners skew. Outline snaps with horizontal bypass; Shift refines vertical stretch and Alt Windows/Option macOS mirrors opposite handles. Dragging over outside points removes them.",
+    "documentary_expected": "Time-selection handles transform the selected envelope: top/bottom centers stretch vertically, side centers horizontally and corners skew. Outline snaps with horizontal bypass; Shift refines vertical stretch and Alt Windows/Option macOS mirrors opposite handles. Dragging over outside points removes them.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-032",
+    "requirements": [
+      "REQ-AUTO-WF-032"
+    ],
+    "title": "Simplify Envelope command",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: select a dense admitted envelope then a sparse one in separate trials and invoke Simplify Envelope. Inspect points/visible shape without waveform equality or an exact count oracle.",
+    "source_blocks": [
+      "automation:B097"
+    ],
+    "source_claim": "Simplify Envelope on a selected segment reduces unnecessary breakpoints using straight/curved segments. The source supplies no error tolerance, optimum algorithm or guaranteed reduction for every input.",
+    "documentary_expected": "Simplify Envelope on a selected segment reduces unnecessary breakpoints using straight/curved segments. The source supplies no error tolerance, optimum algorithm or guaranteed reduction for every input.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-033",
+    "requirements": [
+      "REQ-AUTO-WF-033"
+    ],
+    "title": "Delete Automation parameter action",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: retain an actually automated eligible parameter, its offered default identity and another automated target; select first parameter, invoke menu then shortcut on reset copies. Compare indicator/envelope removal and visible default, no guessed numeric value.",
+    "source_blocks": [
+      "automation:B099"
+    ],
+    "source_claim": "Parameter Delete Automation context action or Ctrl-Backspace Windows/Cmd-Delete macOS deletes that parameter\u2019s automation, removes its indicator and returns the value to its default. This does not identify a numeric default or general clip-editor shortcut dispatch.",
+    "documentary_expected": "Parameter Delete Automation context action or Ctrl-Backspace Windows/Cmd-Delete macOS deletes that parameter\u2019s automation, removes its indicator and returns the value to its default. This does not identify a numeric default or general clip-editor shortcut dispatch.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-034",
+    "requirements": [
+      "REQ-AUTO-WF-034"
+    ],
+    "title": "Clear command scopes",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: multiple parameters in D, a second device, another track and clip envelope. On disposable copies invoke each offered scope command and inventory envelopes separately. Source scope is documentary, not Undo or durable deletion proof.",
+    "source_blocks": [
+      "automation:B100",
+      "automation:B101",
+      "automation:B102",
+      "automation:B103",
+      "automation:B104"
+    ],
+    "source_claim": "Clear Envelope removes selected-parameter envelope; lane-header Clear All Envelopes of\u2026 removes automated envelopes for the selected device; Clear All Envelopes removes automation throughout the Set. Partial removal uses point/segment editing instead.",
+    "documentary_expected": "Clear Envelope removes selected-parameter envelope; lane-header Clear All Envelopes of\u2026 removes automated envelopes for the selected device; Clear All Envelopes removes automation throughout the Set. Partial removal uses point/segment editing instead.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-035",
+    "requirements": [
+      "REQ-AUTO-WF-035"
+    ],
+    "title": "Tempo envelope and mapped range",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC/F-MAPPING: positive running Arrangement recording, Automation Arm on; change tempo, inspect Main lane. Then edit admitted visible min/max range and an actually assigned control in reset trial. Observe offered range without borrowing controller normalization or signal-clock arithmetic.",
+    "source_blocks": [
+      "automation:B107",
+      "automation:B108",
+      "automation:B109"
+    ],
+    "source_claim": "Tempo can be recorded during Arrangement recording or edited in Main\u2019s Mixer/Song Tempo lane. Tempo Minimum/Maximum Range controls set its displayed BPM range and also the value range of a MIDI controller assigned to tempo. Numeric mapping, global tempo precedence and clock response remain separate.",
+    "documentary_expected": "Tempo can be recorded during Arrangement recording or edited in Main\u2019s Mixer/Song Tempo lane. Tempo Minimum/Maximum Range controls set its displayed BPM range and also the value range of a MIDI controller assigned to tempo. Numeric mapping, global tempo precedence and clock response remain separate.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-036",
+    "requirements": [
+      "REQ-AUTO-WF-036"
+    ],
+    "title": "Lock Envelopes entry point",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: use toggle and Options on reset copies with a visible Arrangement envelope and nonempty clip. Inspect lock state; route clip movement comparisons to the existing Arrangement owner.",
+    "source_blocks": [
+      "automation:B111"
+    ],
+    "source_claim": "Lock Envelopes is available through its toggle or Options menu. Arrangement REQ-ARRANGEMENT-032 retains the lock-on clip-move contract; the source\u2019s broader lock-off move statement does not close that owner\u2019s partial-selection and transformation unknowns.",
+    "documentary_expected": "Lock Envelopes is available through its toggle or Options menu. Arrangement REQ-ARRANGEMENT-032 retains the lock-on clip-move contract; the source\u2019s broader lock-off move statement does not close that owner\u2019s partial-selection and transformation unknowns.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-037",
+    "requirements": [
+      "REQ-AUTO-WF-037"
+    ],
+    "title": "Envelope Edit commands and target transfer",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: two lanes with separate envelope/clip before-inventory. Apply each edit to an interior selection then a multi-lane selection on reset copies; paste between two known admitted targets. Inspect visible scope; cross-domain values, endpoints and conversion remain U.",
+    "source_blocks": [
+      "automation:B113",
+      "automation:B114"
+    ],
+    "source_claim": "Cut, Copy, Duplicate and Delete on an automation-lane time selection affect only selected envelope portions rather than clip content or other portions; multi-lane selections apply to the included envelopes. Segments can be copied across time and parameter targets, without a conversion rule for unrelated controls.",
+    "documentary_expected": "Cut, Copy, Duplicate and Delete on an automation-lane time selection affect only selected envelope portions rather than clip content or other portions; multi-lane selections apply to the included envelopes. Segments can be copied across time and parameter targets, without a conversion rule for unrelated controls.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-038",
+    "requirements": [
+      "REQ-AUTO-WF-038"
+    ],
+    "title": "Clip-type chooser vocabulary",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: separately open owned audio and MIDI clips with known devices; inspect offered categories and altered/untouched target indicators. Do not generalize the Automation chapter\u2019s generic MIDI Ctrl wording to audio clips.",
+    "source_blocks": [
+      "clip-envelopes:B004",
+      "clip-envelopes:B005",
+      "clip-envelopes:B006",
+      "clip-envelopes:B007",
+      "clip-envelopes:B008"
+    ],
+    "source_claim": "Clip Envelopes tab has Device and Control choosers; audio clips expose Clip sample controls, track effects and mixer, while MIDI clips expose MIDI Ctrl, track devices and mixer. Altered envelopes have adjacent indicators and an adjusted-only filter.",
+    "documentary_expected": "Clip Envelopes tab has Device and Control choosers; audio clips expose Clip sample controls, track effects and mixer, while MIDI clips expose MIDI Ctrl, track devices and mixer. Altered envelopes have adjacent indicators and an adjusted-only filter.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-039",
+    "requirements": [
+      "REQ-AUTO-WF-039"
+    ],
+    "title": "Session versus Arrangement envelope kinds",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: compare Session and Arrangement clips, add an actually supported automation and modulation envelope to one Session target, inspect toggles and separate indicators. Keep source active and amounts nonzero; numeric combination is ungraded.",
+    "source_blocks": [
+      "clip-envelopes:B009",
+      "clip-envelopes:B010",
+      "clip-envelopes:B038",
+      "clip-envelopes:B040",
+      "clip-envelopes:B041"
+    ],
+    "source_claim": "Session clips offer Automation/Modulation toggles; Arrangement Clip View exposes modulation only and track automation uses lanes. Automation specifies a control\u2019s absolute value while modulation influences its current/automated value. Both kinds can coexist, with separate indicators and knob position/ring presentation; no universal combiner formula follows.",
+    "documentary_expected": "Session clips offer Automation/Modulation toggles; Arrangement Clip View exposes modulation only and track automation uses lanes. Automation specifies a control\u2019s absolute value while modulation influences its current/automated value. Both kinds can coexist, with separate indicators and knob position/ring presentation; no universal combiner formula follows.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-040",
+    "requirements": [
+      "REQ-AUTO-WF-040"
+    ],
+    "title": "Clear clip envelope entry",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: known altered clip envelope and separately retained offered default state; use context-menu Clear Envelope and inspect selected envelope. Do not use the ambiguous shortcut as a positive oracle.",
+    "source_blocks": [
+      "clip-envelopes:B011"
+    ],
+    "source_claim": "Clear Envelope in the Clip View envelope context menu resets the selected clip envelope to its default. Exact default values and the source\u2019s shortcut-to-menu wording remain unresolved; parameter Delete Automation is a distinct context.",
+    "documentary_expected": "Clear Envelope in the Clip View envelope context menu resets the selected clip envelope to its default. Exact default values and the source\u2019s shortcut-to-menu wording remain unresolved; parameter Delete Automation is a distinct context.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-041",
+    "requirements": [
+      "REQ-AUTO-WF-041"
+    ],
+    "title": "MIDI Envelope Auto-Reset option",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI: known nonempty MIDI clip and separately positive controller destination; inspect option availability/state in each documented context. Message capture is an ungraded future probe; no all-controller reset is assumed.",
+    "source_blocks": [
+      "clip-envelopes:B012"
+    ],
+    "source_claim": "MIDI Envelope Auto-Reset is offered through Options or the Sample Editor context menu and is described as resetting certain MIDI control messages at new clip start. Which messages/values, delivery time and persistence are unknown.",
+    "documentary_expected": "MIDI Envelope Auto-Reset is offered through Options or the Sample Editor context menu and is described as resetting certain MIDI control messages at new clip start. Which messages/values, delivery time and persistence are unknown.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-042",
+    "requirements": [
+      "REQ-AUTO-WF-042"
+    ],
+    "title": "Non-destructive sample modulation",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: retain identical owned source hash shared by two clips with distinct active envelopes and positive output, edit one envelope and observe source identity/audio separately. Export/consolidation is not executed and no codec or waveform oracle is supplied.",
+    "source_blocks": [
+      "clip-envelopes:B017",
+      "clip-envelopes:B018"
+    ],
+    "source_claim": "Clip-envelope modulation is non-destructive to the referenced sample on disk; clips can reuse one sample with different envelopes. Render/resample/consolidate are separate ways to commit audio, owned by their workflow pages.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-043",
+    "requirements": [
+      "REQ-AUTO-WF-043"
+    ],
+    "title": "Audio transposition envelope context",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: positively playing warped owned pitched sample, nonzero admitted Transpose base and envelope; inspect Clip/Transposition and fine edits, compare accepted Warp contexts in reset trials. Retain no DSP/timing expectation.",
+    "source_blocks": [
+      "clip-envelopes:B020",
+      "clip-envelopes:B021",
+      "clip-envelopes:B022",
+      "clip-envelopes:B023",
+      "clip-envelopes:B025"
+    ],
+    "source_claim": "The audio Clip/Transposition workflow uses Warp on and supports Draw Mode or fine breakpoint edits. The source describes additive influence bounded by the Transpose range and Warp-mode/granularity-dependent response; no frequency law, warp kernel, smoothing or numeric event conversion is added.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-044",
+    "requirements": [
+      "REQ-AUTO-WF-044"
+    ],
+    "title": "Audio Clip Gain modulation role",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: independently positive source and nonzero Clip Gain, active nonzero envelope; compare upper setting and attenuation in reset copies using paired dry/active baselines. No waveform gain ratio or silence floor oracle.",
+    "source_blocks": [
+      "clip-envelopes:B027",
+      "clip-envelopes:B028"
+    ],
+    "source_claim": "Clip/Gain envelope can shape sample level. Its influence is relative to Clip Gain, can attenuate to silence and cannot exceed that absolute setting; this documentary role supplies no calibrated gain-domain formula.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-045",
+    "requirements": [
+      "REQ-AUTO-WF-045"
+    ],
+    "title": "Sample Offset eligibility",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: nonempty independently positive rhythmic sample, Warp on; compare Beats and another actually offered mode with nonzero offset envelope retained for the Beats positive trial. Grade visible eligibility only.",
+    "source_blocks": [
+      "clip-envelopes:B030",
+      "clip-envelopes:B031"
+    ],
+    "source_claim": "Clip/Sample Offset modulation is available only in Beats Warp Mode and is edited as a clip envelope. The chapter\u2019s beat-scrambling examples do not establish random, resampling or analytic cut-and-splice behavior.",
+    "documentary_expected": "Clip/Sample Offset modulation is available only in Beats Warp Mode and is edited as a clip envelope. The chapter\u2019s beat-scrambling examples do not establish random, resampling or analytic cut-and-splice behavior.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-046",
+    "requirements": [
+      "REQ-AUTO-WF-046"
+    ],
+    "title": "Track volume stage and indicator",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: enabled audible effect, nonzero Track Volume and distinct Clip Gain modulation; inspect target identities and slider dot while manually changing the base. Numerical output remains U.",
+    "source_blocks": [
+      "clip-envelopes:B043",
+      "clip-envelopes:B044"
+    ],
+    "source_claim": "Clip Gain and Track Volume are distinct envelope targets; Track Volume modulation affects the mixer\u2019s post-effect gain stage and a dot below its slider indicates the modulated setting. No stored-unit or signal multiplier law is restated.",
+    "documentary_expected": "Clip Gain and Track Volume are distinct envelope targets; Track Volume modulation affects the mixer\u2019s post-effect gain stage and a dot below its slider indicates the modulated setting. No stored-unit or signal multiplier law is restated.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-047",
+    "requirements": [
+      "REQ-AUTO-WF-047"
+    ],
+    "title": "Send modulation ceiling role",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: nonzero send to independently positive nonmuted wet return with correct monitoring, active nonzero envelope and a paired positive return baseline. Compare attenuation/upper role without a numerical or silence-threshold oracle.",
+    "source_blocks": [
+      "clip-envelopes:B045"
+    ],
+    "source_claim": "Send modulation is relative to the Send control: it cannot open the send beyond the knob and can reduce it to minus infinity. This does not extend finite send coefficients or define event conversion.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-048",
+    "requirements": [
+      "REQ-AUTO-WF-048"
+    ],
+    "title": "Pan modulation contextual range",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: independently positive distinguishable stereo path, admitted nonzero pan envelope; establish centered positive modulation, then an intermediate base and full-left control on reset copies. Confirm active envelope and output before no-effect observation; no channel equality metric.",
+    "source_blocks": [
+      "clip-envelopes:B047"
+    ],
+    "source_claim": "Pan modulation range depends on the base knob: center permits the full stereo span, movement toward an edge reduces available influence, and full left is described as no-effect. This is not a pan law or formula for every mode.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-049",
+    "requirements": [
+      "REQ-AUTO-WF-049"
+    ],
+    "title": "Device modulation relative role",
+    "kind": "signal",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: an actually eligible device target with active section, nonzero base/amount and independently positive processed output; compare two admitted base settings while keeping envelope. No unsupported target or preset replacement is inferred.",
+    "source_blocks": [
+      "clip-envelopes:B049"
+    ],
+    "source_claim": "Clip modulation acts on devices in that clip\u2019s track and changes controls relative to their current setting rather than defining preset values. Per-device eligible targets and combination arithmetic require their owners/evidence.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-050",
+    "requirements": [
+      "REQ-AUTO-WF-050"
+    ],
+    "title": "MIDI controller envelope editing",
+    "kind": "control",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI: independently valid MIDI clip and known listed controller, edit a nonzero changing envelope, inspect imported/recorded indicator in separately accepted fixtures. Receiver path/data semantics remain U.",
+    "source_blocks": [
+      "clip-envelopes:B051",
+      "clip-envelopes:B052",
+      "clip-envelopes:B053"
+    ],
+    "source_claim": "MIDI Ctrl/Control selects listed controller envelopes for creation/editing with steps or points, including imported/recorded data indicated by adjacent LEDs. Most controller numbers through 119 are described as supported; this is not every number or a MIDI codec. Receiver conventions may differ from names such as Pitch Bend or Pan.",
+    "documentary_expected": "MIDI Ctrl/Control selects listed controller envelopes for creation/editing with steps or points, including imported/recorded data indicated by adjacent LEDs. Most controller numbers through 119 are described as supported; this is not every number or a MIDI codec. Receiver conventions may differ from names such as Pitch Bend or Pan.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-051",
+    "requirements": [
+      "REQ-AUTO-WF-051"
+    ],
+    "title": "Envelope-local region controls",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LOOP: positive warped looping sample and a known active envelope; unlink that envelope and toggle its Loop off/on, inspect sample Loop unchanged. Playback duration/phase/reset remains a separate ungraded observation.",
+    "source_blocks": [
+      "clip-envelopes:B056",
+      "clip-envelopes:B059",
+      "clip-envelopes:B060"
+    ],
+    "source_claim": "Unlinking gives the selected envelope its own local region/loop controls and colored loop braces. Its Loop switch is independent of the sample\u2019s Loop switch, allowing a one-shot envelope while the sample continues looping.",
+    "documentary_expected": "Unlinking gives the selected envelope its own local region/loop controls and colored loop braces. Its Loop switch is independent of the sample\u2019s Loop switch, allowing a one-shot envelope while the sample continues looping.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-052",
+    "requirements": [
+      "REQ-AUTO-WF-052"
+    ],
+    "title": "Independent envelope lengths and start markers",
+    "kind": "timing",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LOOP: positive sample loop and two admitted unlinked envelopes with distinct nonzero lengths and starts; inspect controls at two zoom levels and an offered non-bar length. Retain phase/clock observations ungraded.",
+    "source_blocks": [
+      "clip-envelopes:B067",
+      "clip-envelopes:B068",
+      "clip-envelopes:B069",
+      "clip-envelopes:B070",
+      "clip-envelopes:B071"
+    ],
+    "source_claim": "Each unlinked envelope can have its own loop length, extended by braces or numeric controls, including non-bar-aligned lengths. Its start marker identifies where envelope playback begins on clip start; start/end and braces obey the zoom-adaptive grid. No clip-time equation or sample-rounded extent follows.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-053",
+    "requirements": [
+      "REQ-AUTO-WF-053"
+    ],
+    "title": "Local-loop rhythmic role",
+    "kind": "timing",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LOOP: independently positive long source and short envelope, then short source and long envelope on reset copies. Hide grid and adjust admitted local endpoints. Observe repeated control/audio influence with no period, beat/sample or synchronization comparator.",
+    "source_blocks": [
+      "clip-envelopes:B073",
+      "clip-envelopes:B075",
+      "clip-envelopes:B076"
+    ],
+    "source_claim": "Local envelope loops may be shorter or longer than source playback and can be shaped with handles/shapes. The source describes tempo-relative repetition and grid-hidden independent endpoints; it does not specify clock arithmetic, rate limits or a free-running oscillator implementation.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-054",
+    "requirements": [
+      "REQ-AUTO-WF-054"
+    ],
+    "title": "Linked envelope Warp interaction",
+    "kind": "state",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LOOP: positive warped clip, Linked envelope and two independently identified markers; move an interior marker via ordinary editor then envelope editor in reset copies. Inspect visible relative envelope change; no exact time conversion or waveform oracle.",
+    "source_blocks": [
+      "clip-envelopes:B078"
+    ],
+    "source_claim": "In Linked mode, moving a clip Warp Marker lengthens/shortens its envelope accordingly, and Warp Markers can be adjusted within the envelope editor. Exact marker/envelope transformation and interpolation stay unknown or with the finite Warp owner.",
+    "documentary_expected": "In Linked mode, moving a clip Warp Marker lengthens/shortens its envelope accordingly, and Warp Markers can be adjusted within the envelope editor. Exact marker/envelope transformation and interpolation stay unknown or with the finite Warp owner.",
+    "documentary_comparator": "Compare only named visible control/state predicates; compound signal/timing clauses remain ungraded, with no numerical or runtime parity proof.",
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-RECORD-EVENTS",
+    "requirements": [
+      "REQ-AUTO-WF-U-RUNTIME"
+    ],
+    "title": "Record events",
+    "kind": "recording",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: record an independently changing accepted parameter over beats 1-4 and a second loop with Automation Arm/appropriate record and actual running transport confirmed. Retain resulting envelope/event inventory only through understood format; no point thinning, Id, sentinel, overwrite-bound or codec oracle.",
+    "source_blocks": [
+      "automation:B020",
+      "automation:B021",
+      "automation:B027",
+      "clip-envelopes:B038",
+      "clip-envelopes:B078"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-VALUE-RETURN",
+    "requirements": [
+      "REQ-AUTO-WF-U-RUNTIME"
+    ],
+    "title": "Value return",
+    "kind": "timing",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-OVERRIDE: two independently active envelopes, recording off, positive output; compare per-target re-enable, global re-enable and automated clip relaunch on reset copies. Capture indicator/value/audio return around events, without assuming immediate jumps, ramps, clip-time reset or Back to Arrangement equivalence.",
+    "source_blocks": [
+      "automation:B020",
+      "automation:B021",
+      "automation:B027",
+      "clip-envelopes:B038",
+      "clip-envelopes:B078"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-ARRANGEMENT-RETURN",
+    "requirements": [
+      "REQ-AUTO-WF-U-RUNTIME"
+    ],
+    "title": "Arrangement return",
+    "kind": "transport",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-VIEWS: establish positive Arrangement envelope and a different Session envelope; launch, stop Session and request Back to Arrangement in separate trials using existing owners. Keep nonzero source/output and explicit transport; record ownership without extending mix-graph A8 beyond its finite scope.",
+    "source_blocks": [
+      "automation:B020",
+      "automation:B021",
+      "automation:B027",
+      "clip-envelopes:B038",
+      "clip-envelopes:B078"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-CLEAR-SHORTCUT",
+    "requirements": [
+      "REQ-AUTO-WF-U-SOURCE"
+    ],
+    "title": "Clear shortcut",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: on reset copies focus parameter, Session Envelope Editor and Arrangement lane separately with a retained positive altered envelope, then use documented platform deletion shortcut or menu. Record whether menu/direct clear/delete is offered; local source wording supplies no dispatch oracle.",
+    "source_blocks": [
+      "automation:B099",
+      "automation:B114",
+      "clip-envelopes:B011",
+      "clip-envelopes:B012",
+      "clip-envelopes:B036"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-REPLACEMENT",
+    "requirements": [
+      "REQ-AUTO-WF-U-SOURCE"
+    ],
+    "title": "Replacement",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO: two owned positive samples with known equal duration, then a different duration in separate trials. Retain envelope and Warp-marker before-inventory, replace sample via existing CV041 owner, compare identities/settings. Do not adopt the clip chapter all-settings wording as marker preservation for unequal samples.",
+    "source_blocks": [
+      "automation:B099",
+      "automation:B114",
+      "clip-envelopes:B011",
+      "clip-envelopes:B012",
+      "clip-envelopes:B036"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-MIDI-AUTO-RESET",
+    "requirements": [
+      "REQ-AUTO-WF-U-SOURCE"
+    ],
+    "title": "Midi auto reset",
+    "kind": "midi-output",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MIDI: with independently accepted controller destination and positive nonzero envelope messages, compare Auto-Reset off/on while launching a different clip. Capture actual messages only with available path; unknown message set, values and timing stay null.",
+    "source_blocks": [
+      "automation:B099",
+      "automation:B114",
+      "clip-envelopes:B011",
+      "clip-envelopes:B012",
+      "clip-envelopes:B036"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-MAPPED-OVERWRITE",
+    "requirements": [
+      "REQ-AUTO-WF-U-MAPPING"
+    ],
+    "title": "Mapped overwrite",
+    "kind": "mapping",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MAPPING/F-REC: establish accepted unique MIDI assignment and takeover preference using mapping owner, positive nonzero parameter excursion and active recording first. Compare mouse, MIDI knob and key input separately with recording on/off. No takeover, latch interval or universal key-recording rule is borrowed.",
+    "source_blocks": [
+      "automation:B021",
+      "automation:B109",
+      "clip-envelopes:B053"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-TEMPO-RANGE",
+    "requirements": [
+      "REQ-AUTO-WF-U-MAPPING"
+    ],
+    "title": "Tempo range",
+    "kind": "mapping",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MAPPING: independently active nonzero tempo automation, known accepted assigned controller and actual min/max controls; compare two admitted display ranges while transport runs then stops. Retain control/value traces without controller normalization, numeric range repair or global-clock oracle.",
+    "source_blocks": [
+      "automation:B021",
+      "automation:B109",
+      "clip-envelopes:B053"
+    ],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-INACTIVE-CONTROLS",
+    "requirements": [
+      "REQ-AUTO-WF-U-BOUNDARY"
+    ],
+    "title": "Inactive controls",
+    "kind": "negative",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC/F-AUDIO: first establish recorded automation and active eligible target with nonzero output/base/depth. Then separately disable Automation Arm/record or relevant section/route and edit one parameter. Compare paired positive trial; inactive/silent paths cannot prove no-effect or a universal refusal.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-EMPTY-AND-EDGES",
+    "requirements": [
+      "REQ-AUTO-WF-U-BOUNDARY"
+    ],
+    "title": "Empty and edges",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: compare a proper nonempty time selection and three separated valid points against empty lane, marker only, exact envelope/clip/loop edge and equal-time candidates in reset copies. Use offered edits only; no reader normalization, event sorting, refusal or half-open endpoint law.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-TRANSFORM-LIMITS",
+    "requirements": [
+      "REQ-AUTO-WF-U-BOUNDARY"
+    ],
+    "title": "Transform limits",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: independently valid interior transform first, then drag handles across each other, collapse width/height or cross outside neighbors in separate copies. Record admitted state, clipping and point loss without formulas or a guaranteed repair.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-TARGET-CONTEXTS",
+    "requirements": [
+      "REQ-AUTO-WF-U-BOUNDARY"
+    ],
+    "title": "Target contexts",
+    "kind": "boundary",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: start from positive ordinary-track automation, then inspect actually offered targets on group, return, Main and multi-clip selections separately. Preserve valid positive source/receiver paths; broad all-target support is not inferred from practically-all wording.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-UNDO-REDO",
+    "requirements": [
+      "REQ-AUTO-WF-U-STATE"
+    ],
+    "title": "Undo redo",
+    "kind": "undo",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR/F-REC: on separate copies perform insertion, drag/drop overwrite, clear, transform, recording pass and override/re-enable. Undo then Redo with complete point/control/route before-inventory. No grouping, file or override restoration oracle.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-CANCEL",
+    "requirements": [
+      "REQ-AUTO-WF-U-STATE"
+    ],
+    "title": "Cancel",
+    "kind": "cancel",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: begin point/segment/handle drag or typed value edit, then use actually offered Escape/cancel before commit; separately dismiss shape/clear menu. Retain preview versus committed state, no atomic rollback law.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-SAVE-REOPEN",
+    "requirements": [
+      "REQ-AUTO-WF-U-STATE"
+    ],
+    "title": "Save reopen",
+    "kind": "persistence",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC/F-OVERRIDE: save/reopen owned Set after record, unlinked edits, override and re-enable separately, with source/controller/target present then absent in copies. Inventory envelopes, link/loop state and visible arm/filter/override state; storage/evaluator owners do not imply UI persistence.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-TRANSPORT-LOOP",
+    "requirements": [
+      "REQ-AUTO-WF-U-CLOCK"
+    ],
+    "title": "Transport loop",
+    "kind": "transport",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-LOOP/F-REC: positive active automation with explicit record/arm and source/output; stop/start, seek, loop, change 120 to 90 BPM and meter on separate copies. Capture point/control traces without expected release, reset, beat conversion or event race order.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-RATE-ENGINE",
+    "requirements": [
+      "REQ-AUTO-WF-U-CLOCK"
+    ],
+    "title": "Rate engine",
+    "kind": "sample-rate",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: repeat positive pass at actually supported 44.1/48/96 kHz and 64/512-frame blocks, then request rate/block change or engine restart while recording on separate copies. Retain pre-change baseline; no sample-aligned equality, event count or smoothing invariant.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-TARGET-REMOVAL",
+    "requirements": [
+      "REQ-AUTO-WF-U-LOSS"
+    ],
+    "title": "Target removal",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-AUDIO/F-REC: independently active nonzero source/envelope/output first; remove target device, clip or track separately while recording/playing or while a transform is pending. Inventory references, other paths and diagnostics without guessed rebinding, silence or cleanup.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-SOURCE-CONTROLLER-LOSS",
+    "requirements": [
+      "REQ-AUTO-WF-U-LOSS"
+    ],
+    "title": "Source controller loss",
+    "kind": "source-loss",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-MAPPING/F-AUDIO: retain positive source and accepted controller delivery, then make only owned media or available controller port absent in separate copies during automation. Record output/record state and recovery; no absent capability is simulated.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-MALFORMED",
+    "requirements": [
+      "REQ-AUTO-WF-U-LOSS"
+    ],
+    "title": "Malformed",
+    "kind": "malformed",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-EDITOR: on owned copies enter abc, NaN or out-of-domain numeric text only in an offered editable control; a malformed saved envelope is used only through independently understood storage-owner format. No hidden parser/schema or all-errors refusal is invented.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-CLOSE-ACTIVE",
+    "requirements": [
+      "REQ-AUTO-WF-U-TEARDOWN"
+    ],
+    "title": "Close active",
+    "kind": "teardown",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC/F-LOOP: while positive automation recording, unlinked playback or a pending transform is active, close/replace Set or quit through offered controls in separate copies. Record prompts, retained state and output without completion, flush, silence or resource deadline.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "AW-U-CONCURRENT-EDIT",
+    "requirements": [
+      "REQ-AUTO-WF-U-TEARDOWN"
+    ],
+    "title": "Concurrent edit",
+    "kind": "concurrency",
+    "preconditions": [
+      "F0",
+      "positive-path-gate"
+    ],
+    "setup_and_action": "F-REC: independently changing accepted parameter and positive output with running transport; attempt an offered envelope edit, target move/removal or clear during record, separately stop and retry. Record eligibility and resulting inventory, no snapshot-time or transaction ordering law.",
+    "source_blocks": [],
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  }
+]

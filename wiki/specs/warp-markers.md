@@ -2,8 +2,8 @@
 id: SPEC-WARP-MARKERS
 type: spec
 status: draft
-revision: 4
-updated: 2026-10-18
+revision: 5
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -56,7 +56,7 @@ Static clauses rest on these assumptions:
 
 | ID | Assumption | Affects |
 | --- | --- | --- |
-| A1 | The per-object check that runs after an audio clip is read runs when a Live Set is opened. This is inferred, not traced; it is the same assumption as in SPEC-MIDI-NOTE-STORAGE | REQ-004 |
+| A1 | Settled S, reconciled 2026-10-19: the set-open reader sets context flag +0x2c and runs each post-load check. [SPEC-LIVE-SET-STRUCTURE A1](live-set-structure.md#assumptions) and its retained load-path trace establish the flag that REQ-004 needs | REQ-004; no longer an open assumption |
 | A2 | Opening leaves each marker and warp setting as the document gives it, and a scripting call made right after opening sees those values. A static check in the warp-markers-v1 review found that the read, and the completion steps that run for each read clip, marker and sample part, write no marker time, add or remove no marker and write no value child. Two onset helpers and five indirect calls in those steps were not traced, nor whether automatic warping acts on opening. Revision 2 narrowed A2 to opening; the saving half is A4 | Every clause marked (A2): held values and scripting calls in REQ-002 to 004, 006 to 008 and 010 to 016. Every graded case except WMK-005, 006 and 025 to 027, which are decided while reading |
 | A3 | A conversion called right after opening uses the marker list as loaded. The conversion table is built on first use; when it is rebuilt after edits was not traced | REQ-008 cases |
 | A4 | Saving a set with no edit writes the values held after opening: nothing between opening and saving, and nothing in the save, changes markers or warp settings (no re-analysis, auto-warp or region-driven change). Not traced | Every clause marked (A4); the saved values of WMK-001 to 004, 007, 014, 021, 023 and 024 |
@@ -130,8 +130,12 @@ Support: documented and static-derived, with unknown parts.
 - **S (A2).** The loaded value is held without rounding, clamping or a range check.
 - **S (A4).** On save both are written by the 64-bit rule of REQ-TRANSPORT-STATE-011. All
   44,058 shipped values match that rule (D).
-- **U.** How `Id` is read and whether it is preserved. Shipped `Id`s are unique within a list
-  but not always ascending (18 lists). Cases do not compare `Id`.
+- **S-cond (SPEC-LIVE-SET-STRUCTURE A5).** Duplicate `Id`s in one marker list,
+  negative `Id`s and non-integer `Id` text refuse the set under
+  [REQ-LIVE-SET-STRUCTURE-016](live-set-structure.md#req-live-set-structure-016--list-item-ids).
+  That shared list-loader assumption is still open; no unconditional refusal is inferred.
+- **U.** Whether `Id` is preserved, and the outcome when it is absent. Shipped `Id`s
+  are unique within a list but not always ascending (18 lists). Cases do not compare `Id`.
 - **Inferred.** `SecTime` is seconds from the start of the sample and `BeatTime` is beats of
   clip time. Support: REQ-008 divides a sample-frame position by the sample rate before
   comparing it with `SecTime`, and shipped region fields agree with markers extrapolated to
@@ -152,7 +156,7 @@ Support: documented and static-derived.
 
 Support: static-derived, with unknown parts.
 
-- **S (A1).** An `AudioClip` whose `WarpMarkers` has no `WarpMarker` is refused. The error
+- **S (A1 settled).** An `AudioClip` whose `WarpMarkers` has no `WarpMarker` is refused. The error
   detail is an empty warp marker array.
 - **S.** `SampleWarpProperties` have no such check: an empty list there does not cause a
   refusal. 4,244 shipped `SampleWarpProperties` have empty lists (D).
@@ -188,15 +192,10 @@ Support: documented and static-derived, with unknown parts.
   (REQ-009, S).
 - **S.** Where Live creates or re-places the shadow marker, it puts it 1/32 beat after the
   preceding marker, with the beat rounded as in REQ-016. Which user operations do this is U.
-- **X.** The append routine (x86_64 `0x102738d90`, arm64 `0x102612464`) adds a marker with
-  `BeatTime = q(b + 1/32)` and `SecTime = s + (p₂ × 60 / p₁) / 32`, where (s, b) is the last
-  marker and p₁, p₂ are its two arguments. Run on real `AWarpMarker` lists: (0, 0), (1, 2),
-  (2, 3) with p₁ = 120, p₂ = 1 gives (2.015625, 3.03125), M1's shadow; (0, 0) with p₁ = 167,
-  p₂ = 1 gives `SecTime` 0.0112275449101796407 and `BeatTime` 0.03125, M0's shadow, bit for
-  bit; a last beat of 2.0000001 gives a shadow beat of 2.03125 (rounded) ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json),
-  `warp_REQ007_shadow_*`). **U.** What p₁ and p₂ are at each caller: the clip passes a tempo
-  value and its slot +0x2d0 value, neither traced; inferred: the tempo in BPM and a rate
-  factor of 1 for an unaltered clip.
+- **U.** Which user operations create or re-place the shadow and what times they
+  give it. The extracted append routine has no observable acceptance case: its
+  caller arguments are untraced. Its formula is retained as research in the
+  [evidence appendix](#analyst-evidence-appendix), not a release-ready requirement.
 - **D.** In shipped lists the last marker is exactly 1/32 beat after the previous one in
   2,869 of 2,878 audio clips and 7,313 of 7,372 sampler lists; the others use 1/16 or 1/64.
 - **S (A2).** On load a different spacing is kept: no completion step moves the last marker.
@@ -267,8 +266,9 @@ Support: static-derived for the conversion step (revision 4), with unknown parts
     start (`OWarperUnWarped::StartFileSmpl`, Engine names, x86_64);
   - the scripting conversion refuses unwarped clips (REQ-008).
 
-  So with warping off, session playback is fully specified elsewhere and owes nothing to this
-  mapping.
+  This is a playback claim: a marker or document-value comparison cannot observe it.
+  Its render acceptance belongs to SPEC-PLAYBACK-CORE, and REQ-009 remains unreleased
+  (warp-markers-v2 review RVW2-02).
 - **U.** For warped playback:
   - which file sample each output sample reads, in each warp mode: the Beats grains,
     Tones/Texture, Complex and Complex Pro, and Re-Pitch's rate;
@@ -549,17 +549,20 @@ has been run against Live, and under ADR 0003 none will be.
 | WMK-036 | 015 | B | M1 and `<IsWarped Value="false" />`; Script `remove_warp_marker(2)`; `move_warp_marker(2.001, 1)` | First accepted; second refused: no such marker. Neither is refused as not warped | W0+M1 |
 | WMK-037 | 015 | B | M1; Script add (1.5 s, 2.0416666666666665); add (1.5 s, 2.0416664065101564) | First accepted (left segment tempo exactly 5 BPM: q′ equals the computed lower bound); second refused: segment length out of range (one grid step below) | W0+M1 |
 | WMK-038 | 015 | B | M1; Script add (2.5 s, 11.325); add (2.5 s, 11.325000260156509) | First accepted (segment from the last visible marker at exactly 999 BPM; the next marker is the shadow, so there is no right bound); second refused: segment length out of range (one grid step above) | W0+M1 |
-| WMK-039 | 015, 016 | B | M1; Script `remove_warp_marker(2.0000001300782553)`; `remove_warp_marker(2.0000001300782544)` | First refused: no such marker (the 64-bit value nearest to beat 2 + ½ grid step rounds up to 2 + 1/3,843,840); second accepted (two units in the last place lower, it rounds to 2) | W0+M1 |
+| WMK-039 | 015, 016 | B | M1; Script `remove_warp_marker(2.0000001300782553)`; `remove_warp_marker(2.000000130078255)`; `remove_warp_marker(2.0000001300782544)` | First and second refused: no marker at the rounded beat 2 + 1/3,843,840. The second is below the exact half-step and distinguishes the binary64 sequence from exact rounding (X for q()). Third accepted: rounds to 2 (computed by the confirmed sequence) | W0+M1 |
 
 Cancellation and teardown kinds are omitted: loading, saving and the scripting calls in scope
-have no cancellable step or resource. REQ-009 has no case. Its S step (revision 4) is observable only
-through warped audio playback, which is excluded, and the per-mode measurement that PRB-S8-08
-describes is not available (ADR 0003). The REQ-015 clauses on an unchanged list have
+have no cancellable step or resource. REQ-009 has no case. Both its warped-conversion
+claim and its unwarped claim require playback output, which these document and scripting
+cases do not observe. Per-mode warped playback is excluded, and the measurement that
+PRB-S8-08 describes is not available (ADR 0003). The REQ-015 clauses on an unchanged list have
 no case: no procedure here observes the list after a call except a save, under A4. The
 shadow append of REQ-007 has no case: no procedure here makes the clip recompute its shadow.
 Thirty-nine cases: 32 gradable (WMK-006 for refusal only, WMK-025 to 027 for opening only) and
-7 unresolved (WMK-008 to 013, 022). Revision 3: the values of WMK-016 to 019 are confirmed by
-extracted execution of the conversion cores (REQ-008, X), and WMK-037 to 039 take their
+7 unresolved (WMK-008 to 013, 022). Correction, revision 5: X2 ran the M1/M2
+conversion cores for WMK-016 to 018; WMK-019 uses M0, which it did not run.
+WMK-019 is computed by the confirmed formula, with frame scaling static-derived.
+The wrappers, document opening and scripting dispatch were not executed. WMK-037 to 039 take their
 outcomes from the X-settled 64-bit sequences of REQ-015 and REQ-016.
 
 ## Open questions
@@ -571,8 +574,8 @@ have settled it. No reference observation is available (ADR 0003), so each item 
 unless its static route, where one exists, settles it:
 
 - empty-list presentation (PRB-S8-01): trace how opening reports a corrupt-document error
-  (REQ-ALS-CONTAINER-009). Assumption A1: trace whether the set-open path enables the
-  per-object check that runs after a clip is read;
+  (REQ-ALS-CONTAINER-009). A1 is now settled by the set-open trace in
+  SPEC-LIVE-SET-STRUCTURE; the empty-list refusal is S, while its presentation remains U;
 - one-marker, unordered and equal-time lists (PRB-S8-02, 03) and missing or `Invalid`
   positions (PRB-S8-04): trace the steps that use the list on opening and saving; what the clip
   shows has no practical static route;
@@ -636,6 +639,18 @@ undecoded.
 | 014 | Direct store in `0x101487310` (n1); ARemoteableEnum setter range check `0x10156675c` not on the load path | S / U |
 | 015 | `0x1033bf42c` ✓ (s8-0001): class and warped tests; `fcmp d8,#0; fccmp d8,d0,#2,ge; b.hi`; insertion scan by `SecTime` stopping at the shadow; left `b.mi` and right checks; q(); bounds `0x1027afd40` ✓ (s8-0002; 999 and 5 BPM; called only from the add). Lookup `0x1027c79d0` (pseudocode): q() then exact match, scan stops past the target. Move limits `0x1027b83bc` not traced. Warp-mode setter `0x1033bded8`/`0x1033be004` (pseudocode, list partly read). Messages: `Cannot add warp marker to an unwarped clip.`, `Warp marker sample time is out of range.`, `Warp marker beat time is ahead of left adjacent marker's beat time.` (beat below the left neighbour), `Warp marker beat time is behind right adjacent marker's beat time.`, `Segment length out of range.`, `The shadow marker can't be deleted.`, `The shadow marker can't be moved.`, `The specified warp marker doesn't exist` | S / U |
 | 016 | BeatTime setter `0x1026101b4` ✓ (s8-0003); q() in `0x1033bf42c` ✓; sentinels `0x1055d9680` = (−1.7976931348623155e308, 1.7976931348623155e308, DBL_MAX, +∞) (`s7-midi-notes-v1/vtable-reads.txt` line 470). SecTime setter `0x1026101a0` (pseudocode). `checks.beat_on_1/3843840_grid` 22,029 | S; D |
+
+**Shadow-append evidence (X; no behavioral acceptance case).**
+
+- **X.** The append routine (x86_64 `0x102738d90`, arm64 `0x102612464`) adds a marker with
+  `BeatTime = q(b + 1/32)` and `SecTime = s + (p₂ × 60 / p₁) / 32`, where (s, b) is the last
+  marker and p₁, p₂ are its two arguments. Run on real `AWarpMarker` lists: (0, 0), (1, 2),
+  (2, 3) with p₁ = 120, p₂ = 1 gives (2.015625, 3.03125), M1's shadow; (0, 0) with p₁ = 167,
+  p₂ = 1 gives `SecTime` 0.0112275449101796407 and `BeatTime` 0.03125, M0's shadow, bit for
+  bit; a last beat of 2.0000001 gives a shadow beat of 2.03125 (rounded) ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json),
+  `warp_REQ007_shadow_*`). **U.** What p₁ and p₂ are at each caller: the clip passes a tempo
+  value and its slot +0x2d0 value, neither traced; inferred: the tempo in BPM and a rate
+  factor of 1 for an unaltered clip.
 
 **Revision 3 evidence (X).** Extracted execution,
 [x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json)
@@ -736,9 +751,15 @@ choosers, the recording-path collinearity delete (support for REQ-009 only), and
 | 2 | 2026-10-18 | Applies the warp-markers-v1 review findings ([plan](warp-markers-handoff-plan.md#review-outcome), [REVIEW.md](../../handoff/warp-markers-v1/REVIEW.md)). Applied: F1 and RVW-01 (A2 narrowed to opening and marked on every load and scripting clause, including REQ-003's load clause; saving half is the new A4; "held after opening" defined; later changes by the application excluded); F3 and RVW-03 (REQ-015 as inclusive beat bounds, the zero-distance and first-marker cases, U bands of 0.001 BPM, 0.001 grid step and 0.0005 s; REQ-016 tie band U); F4 (accepted add or remove can leave the list unchanged); F5 (move has no warped check; new WMK-036); F6 and RVW-05 (TransientResolution labels and the code 5 label inferred; loop-mode and parameter names inferred internal names); RVW-02 (TransientEnvelope created at 100 without a clamp; range U); RVW-04 (WMK-029 now 10,000,000 s; sample-length unit assumed); RVW-06 and RVW-07 (assumptions confirmed or stated); RVW-08 (d7 rounds cited from their retained run). F7 needed no change: the text was fixed at release. Rejected: F2, because the review's corpus check shows creation stores 100 without a clamp, so REQ-010 and WMK-021 keep the default; RVW-09, which concerns release status text only. ADR 0003: probe wording changed and static routes named. 16 requirements: 2 without unknown parts (003, 012), 12 with D or S clauses and unknown parts, 2 unknown (005, 009). 36 unexecuted cases: 29 gradable (4 in part), 7 unresolved |
 | 3 | 2026-10-18 | Extracted execution X2 ([x2-envelope-warp-v1](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/manifest.json)). Added label X. REQ-008 conversion X (cores run, WMK-016 to 019 confirmed); REQ-007 shadow append X with its seconds formula (operands' meaning U); REQ-015 bounds and REQ-016 rounding X as exact 64-bit sequences, which replace revision 2's uncertainty bands; new finding: q(−0) = +0. REQ-009 playback stays U (no static caller to the engine found). New cases WMK-037 to 039. 16 requirements: 2 without unknown parts (003, 012), 12 with D, S or X clauses and unknown parts, 2 unknown (005, 009). 39 cases: 32 gradable (4 in part), 7 unresolved |
 | 4 | 2026-10-18 | Correction from [SPEC-PLAYBACK-CORE](playback-core.md) r1 (packet T1.3). REQ-009: revision 3's "no static caller" is wrong. The conversion cores are the Engine's marker-list conversions, called by the warpers' playback functions. The conversion step of warped playback becomes S (Engine names; x86_64 matched; arm64 by caller count). Warping off is stated as not using the markers for session clips (SPEC-PLAYBACK-CORE REQ-017). Per-mode read positions stay U, outside T1. REQ-007's playback inference becomes S. WM-15's unit settled for unwarped clips. 16 requirements: 2 without unknown parts (003, 012), 13 with D, S or X clauses and unknown parts (009 now among them), 1 unknown (005). 39 cases unchanged: 32 gradable (4 in part), 7 unresolved |
+| 5 | 2026-10-19 | applies the v2 staging/review findings F1 to F6 and RVW2-02. WMK-019 is computed from confirmed rules, not run by X; WMK-039 adds the discriminating one-ulp-below-half input. A1 is settled by the structure load trace; REQ-002 references the shared conditional list-Id refusal. The unobservable shadow append formula moves to the evidence appendix; REQ-009 explicitly needs playback acceptance and stays unreleased. 16 requirements and 39 cases remain (32 gradable, 7 unresolved); no released expectation changes. |
 
 Before the 2026-10-18 review, a first release candidate could
 contain the D and S clauses of REQ-001 to 004, 007, 008 and 010 to 016 with their gradable
 cases, under assumptions A1 to A3.
 
-Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1. The plan's [scope table](warp-markers-handoff-plan.md#scope) lists the released part of each requirement; every other clause of this draft is broader than v1. Revision 3's X clauses (REQ-007, 008, 015, 016) and cases WMK-037 to 039 are not released; a later release revision could carry them after review. Revision 4's REQ-009 clauses are unreleased; warp-markers-v1 excludes REQ-009, so they contradict nothing released.
+Released 2026-10-18: [warp-markers-v1](../../handoff/warp-markers-v1/README.md), 38 cases, approved with narrowing by a separate review agent (partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased). The review findings to apply in the next revision are on the [handoff plan](warp-markers-handoff-plan.md#review-outcome). Revision 2 applies them; the release stays pinned to revision 1. The plan's [scope table](warp-markers-handoff-plan.md#scope) lists the released part of each requirement; every other clause of this draft is broader than v1. The current [warp-markers-v2](../../handoff/warp-markers-v2/README.md), released
+2026-10-18 with 63 cases, supersedes v1 and repairs its invalid fixture carriers.
+Its review withdraws device placement and sample-part case 018 (RVW2-01), excludes
+REQ-009 (RVW2-02), and distinguishes executed values from computed-by-rules values
+(RVW2-03). It excludes the unobservable shadow-append formula. Revision 5's settled
+A1 does not retroactively release the empty-list clause, which v2 omitted.

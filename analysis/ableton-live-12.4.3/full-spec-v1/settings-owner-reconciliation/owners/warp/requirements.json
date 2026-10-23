@@ -1,0 +1,681 @@
+[
+  {
+    "id": "REQ-WFW-001",
+    "title": "Tempo field controls",
+    "contract": "Control Bar tempo exposes coarse BPM and fine hundredths of BPM controls which can be key/MIDI mapped separately. Numeric storage, ranges, interpolation and mapping protocol retain existing owners.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B006",
+      "WFW:B007"
+    ],
+    "dependencies": [
+      "transport-state.md",
+      "automation-envelopes.md",
+      "midi-user-mapping.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-002",
+    "title": "Tap Tempo inputs",
+    "contract": "Tap Tempo accepts mouse clicks, a key assigned through Key Map Mode, or a MIDI note/controller assigned through MIDI Map Mode. Tap estimation, dispatch latency and accuracy remain ungraded.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B010",
+      "WFW:B011",
+      "WFW:B012",
+      "WFW:B013",
+      "WFW:B014",
+      "WFW:B015",
+      "WFW:B016",
+      "WFW:B017",
+      "WFW:B018",
+      "WFW:B019"
+    ],
+    "dependencies": [
+      "midi-user-mapping.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-003",
+    "title": "Tap-start option",
+    "contract": "Start Playback with Tap Tempo in Record, Warp & Launch Settings enables tap-triggered playback; the source describes four taps in 4/4. No estimator, interval tolerance, other-meter count or Link alignment oracle is established.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B020",
+      "WFW:B021"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-004",
+    "title": "Phase Nudge controls",
+    "contract": "Phase Nudge Up/Down can temporarily speed or slow playback and can be key/MIDI mapped. Rate, duration, recovery curve, phase and external synchronization are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B023"
+    ],
+    "dependencies": [
+      "transport-state.md",
+      "midi-user-mapping.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-005",
+    "title": "Audio clip Lead and Follow",
+    "contract": "Warped audio clips are documented as followers by default; Arrangement clips can select Lead through Audio Utilities Lead/Follow. This is documentary context, not an exact-target constructor default or Session eligibility rule.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B025"
+    ],
+    "dependencies": [
+      "video-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-006",
+    "title": "Leader role and disabled tempo field",
+    "contract": "For an active tempo leader, clip Warp Markers determine Set tempo and the Control Bar tempo field is deactivated. The source describes leader playback as if unwarped; no time-map, DSP or sample equality follows.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B026"
+    ],
+    "dependencies": [
+      "warp-markers.md",
+      "transport-state.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-007",
+    "title": "Leader-generated automation presentation",
+    "contract": "Tempo automation tracking leader/Set tempo changes appears in Main and is not editable; rearranging leader clips moves the corresponding automation. Exact points, ownership boundaries and scheduling remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B028"
+    ],
+    "dependencies": [
+      "automation-envelopes.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-008",
+    "title": "Unfollow Tempo Automation",
+    "contract": "Unfollow Tempo Automation in the tempo field context menu makes all leader clips followers and makes the Main tempo automation editable. Envelope point identity, numerical values and Undo are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B028"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-009",
+    "title": "External sync toggle eligibility",
+    "contract": "With EXT enabled, the Lead/Follow toggle is deactivated. Accepted external source, protocol, activation timing and fallback remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B030"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-010",
+    "title": "Leader versus audio Tempo Follower",
+    "contract": "Clip-leader tempo automation is documented to override tempo from an audio input synchronized through Tempo Follower. This does not establish all tempo-source precedence or real-time alignment.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B029"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-011",
+    "title": "Short-sample load policy controls",
+    "contract": "Record, Warp & Launch Settings offers Loop/Warp Short Samples: Unwarped One Shot, Warped One Shot, Warped Loop and Auto. The first is unwarped; the second warped using Default Warp Mode without looping; the third warped/looped. Auto chooses a policy and is documented as selected by default. Classification threshold and Auto choice remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B038",
+      "WFW:B039",
+      "WFW:B040",
+      "WFW:B041",
+      "WFW:B042",
+      "WFW:B043"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-012",
+    "title": "Long-sample load policy",
+    "contract": "Auto-Warp Long Samples is documented enabled by default. Enabled requests automatic warping on load; disabled loads long samples unwarped. The source claims a first-beat-per-bar marker policy, without establishing analysis or exact marker results for any supplied sample.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B038",
+      "WFW:B044"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-013",
+    "title": "Default Warp Mode preference",
+    "contract": "Default Warp Mode selects the mode applied when samples are warped; this chapter describes Beats as the initial default. This documentary default does not settle missing-field load behavior, preference precedence or exact-target factory state.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B045"
+    ],
+    "dependencies": [
+      "warp-markers.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-014",
+    "title": "Insert an interactive Warp Marker",
+    "contract": "In the Sample Editor upper half, double-click adds a Warp Marker; Ctrl+I (Windows)/Cmd+I (macOS) places one at the insert marker. Selection-driven insertion has its separate documented context below. Numeric marker validation, identity and scripting limits are not imported.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B050",
+      "WFW:B051"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-015",
+    "title": "Move interactive markers",
+    "contract": "Warp Markers can be dragged or moved with arrow keys to change their timeline placement. Step size, snapping, bounds, rounding and audio output are unknown here.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B051"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-016",
+    "title": "Shift waveform under a marker",
+    "contract": "With a Warp Marker selected, Shift-drag moves the waveform beneath the marker to adjust the audio starting point under it. Exact coordinate transformation and collateral marker changes are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B052",
+      "WFW:B085",
+      "WFW:B086"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-017",
+    "title": "Delete interactive Warp Markers",
+    "contract": "Double-click deletes a Warp Marker; selecting its corresponding time and pressing Backspace (Windows)/Delete (macOS) is another documented route. Last/protected markers, deduplication and exact resulting list remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B053"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-018",
+    "title": "Transient presentation and editing",
+    "contract": "Detected transients appear as small gray markers. Create menu and Ctrl+Shift+I (Windows)/Cmd+Shift+I (macOS) create transients; Ctrl+Shift+Backspace (Windows)/Cmd+Shift+Delete (macOS) deletes them. Detection output and numerical positions remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B056",
+      "WFW:B057",
+      "WFW:B058"
+    ],
+    "dependencies": [
+      "audio-to-midi.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-019",
+    "title": "Reset manually created transients",
+    "contract": "Sample Editor Reset Transients removes all manually created transients. The source does not establish restoration of moved/deleted automatically detected transients or exact redetection results.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B058"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-020",
+    "title": "Selection-based Warp Marker insertion",
+    "contract": "Insert Warp Markers in Create or Ctrl+I (Windows)/Cmd+I (macOS) creates markers for selected-area transients. For a selected area containing no transients, the source describes markers at selection start and end. Numerical endpoint, count/deduplication and detector outcomes remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B059"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-021",
+    "title": "Pseudo-marker conversion",
+    "contract": "Hovering a transient shows a gray pseudo-Warp Marker; double-click or drag converts it to a real Warp Marker. The source says clip tempo changes if no Warp Markers follow the new one, without a numerical tempo oracle.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B060"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-022",
+    "title": "Pseudo-marker adjacent anchors",
+    "contract": "Ctrl (Windows)/Cmd (macOS) while creating a real marker from a pseudo-marker also creates Warp Markers at adjacent transients. First/last transient, duplicates and exact resulting lists remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B060"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-023",
+    "title": "Move transient via pseudo-marker",
+    "contract": "Shift-dragging a pseudo-marker moves the transient to a new Sample Editor location. This is distinct from moving waveform under a selected real Warp Marker.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B060"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-024",
+    "title": "Saved markers and Auto-Warp",
+    "contract": "A sample saved with Warp Markers is unaffected by ordinary Auto-Warp; manual Warp From context commands remain available. Saving default clip settings and their media scope remain with the media owner. Exact identity/ASD precedence and corruption outcomes remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B062",
+      "WFW:B063"
+    ],
+    "dependencies": [
+      "media-file-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-025",
+    "title": "Clip BPM and Arrangement edge adjustment",
+    "contract": "Audio Utilities BPM shows estimated sample tempo, permits direct known-BPM input and Shift-drag fine adjustment. Shift-drag from an Arrangement clip edge stretches or compresses its tempo. Accepted range, increment, anchors and timing arithmetic are unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B068"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-026",
+    "title": "Double and halve clip tempo",
+    "contract": "The clip tempo ×2 and ÷2 buttons double or halve estimated tempo for correction. Limits, repeated-operation rounding and resulting marker/sample mapping remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B069"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-027",
+    "title": "Set 1.1.1 Here contexts",
+    "contract": "For an uneven short-loop example, moving the insert marker to the downbeat and Set 1.1.1 Here places a Warp Marker there; in the long-sample correction example the command moves the start marker to that downbeat. Preserve these source contexts without asserting a complete region/marker transform.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B076",
+      "WFW:B077",
+      "WFW:B085",
+      "WFW:B087",
+      "WFW:B088"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-028",
+    "title": "Same-length multi-clip marker editing",
+    "contract": "For multiple clips of the same length, adding or adjusting Warp Markers in one applies the changes to all selected clips. Length equality definition, mixed Warp/region states, deletion and unequal-length behavior remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B079"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-029",
+    "title": "Warp Sample as command",
+    "contract": "For a seamlessly edited loop, Warp Sample as in Sample Editor context menu displays a suggested loop length fitting Set tempo. Suggested length and generated markers are ungraded.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B089"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-030",
+    "title": "Warp Selection as command",
+    "contract": "Warp Selection as operates on selected sample time; the source describes assumed loop length, loop start/end markers and warping to fill the loop. Algorithm choice, exact markers, bounds and audio are ungraded.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B090"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-031",
+    "title": "Move multiple Warp Markers",
+    "contract": "Ctrl (Windows)/Cmd (macOS) selects multiple Warp Markers for moving together. Anchor, spacing, snapping, coordinate and refusal laws remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B091"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-032",
+    "title": "Warp From Here scope",
+    "contract": "Warp From Here context commands reset markers to the right of the chosen grid division/marker while leaving left-side markers unchanged. The basic command requests Auto-Warp to the right and adds a marker at the specified grid point if none is selected. Exact generated list and selected-point ownership remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B092",
+      "WFW:B093"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-033",
+    "title": "Warp From Here Start At baseline",
+    "contract": "Warp From Here (Start At …) uses Set tempo as the Auto-Warp baseline. The described preparation turns Warp off, taps the source tempo, re-enables Warp and invokes the command. Estimation and generated marker outcomes remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B094"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-034",
+    "title": "Warp From Here Straight",
+    "contract": "Warp From Here (Straight) is intended for material without tempo variation; the source describes one starting marker based on estimated original BPM. This is a source claim, not a graded automatic marker count or position for unprovided media.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B095"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-035",
+    "title": "Warp BPM From Here",
+    "contract": "Warp … BPM From Here assumes source tempo equals Set tempo and describes a single starting marker. Known BPM may be entered in Control Bar before invoking it; exact resulting map and boundary handling remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B096"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-036",
+    "title": "Quantize command focus",
+    "contract": "With Sample Editor focused, Edit Quantize or Ctrl+U (Windows)/Cmd+U (macOS) uses current Quantize settings. Clip View owns the Quantize panel availability and grid/Amount controls.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B103"
+    ],
+    "dependencies": [
+      "clip-view-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-037",
+    "title": "Audio quantization role",
+    "contract": "The source describes moving a nearest transient to a closest grid line; current or specific/triplet grid and Amount affect Warp Marker movement. Selection, ties, Amount equation, marker generation and exact output remain unknown. Groove application/commit remains groove-owned.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B102",
+      "WFW:B104"
+    ],
+    "dependencies": [
+      "groove-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-038",
+    "title": "Beats Preserve control",
+    "contract": "Beats mode exposes Preserve with Transients or grid divisions to choose segment divisions. Actual segmentation, transient preservation, grains, crossfades, values and output quality are ungraded; stored enums/settings remain Warp-marker-owned.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B109",
+      "WFW:B110"
+    ],
+    "dependencies": [
+      "warp-markers.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-039",
+    "title": "Beats Transient Loop modes",
+    "contract": "Transient Loop Mode offers Loop Off, Loop Forward and Loop Back-and-Forth. The source describes segment stop/silence, forward looping and alternating direction respectively; zero-crossing choice, endpoints, loops and delivered audio remain unknown.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B111",
+      "WFW:B112",
+      "WFW:B113",
+      "WFW:B114"
+    ],
+    "dependencies": [
+      "warp-markers.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-040",
+    "title": "Transient Envelope role",
+    "contract": "Transient Envelope controls segment fades; the source describes no fade at 100 and quicker decay at 0. No numeric gain envelope, time constant, normalization, detector or click-quality criterion follows. Existing stored range/default uncertainty remains unchanged.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B115"
+    ],
+    "dependencies": [
+      "warp-markers.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-041",
+    "title": "Tones Grain Size role",
+    "contract": "Tones exposes Grain Size for approximate average grain size, described as affected by pitch clarity. Suggested material and grain size are guidance, not a pitch detector, DSP, noise or quality guarantee.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B117",
+      "WFW:B118"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-042",
+    "title": "Texture controls",
+    "contract": "Texture exposes Grain Size and Fluctuation; the former is described independently of tonal characteristics, the latter as increasing processing randomness. No RNG, seed, distribution, correlation, grain process or monotonic statistical oracle is established.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B120",
+      "WFW:B121",
+      "WFW:B122"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-043",
+    "title": "Re-Pitch control and signal role",
+    "contract": "Re-Pitch changes playback rate and pitch with tempo; its sample transposition controls are deactivated. The doubled-rate/octave source example is descriptive, not a new rate-conversion or sample-accuracy contract.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B124",
+      "WFW:B125"
+    ],
+    "dependencies": [
+      "warp-markers.md",
+      "playback-core.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-044",
+    "title": "Complex Pro Formants and Envelope",
+    "contract": "Complex Pro exposes Formants and Envelope. The source describes formant preservation at 100% with transposition and no Formants effect without transposition; Envelope changes tonal character. Exact response, defaults/ranges and byte values retain existing storage owner or remain unknown; no quality/CPU guarantee is inferred.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B127",
+      "WFW:B128",
+      "WFW:B129",
+      "WFW:B130",
+      "WFW:B131"
+    ],
+    "dependencies": [
+      "warp-markers.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-U-AUTO",
+    "title": "Detection and automatically generated markers",
+    "contract": "Short/long classification, initial BPM/markers, downbeat accuracy, transient detection and exact output of every Auto-Warp/Warp From/Selection/Sample command require evidence. Short-loop and odd-loop examples do not provide universal estimators or correct marker positions.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B038",
+      "WFW:B044",
+      "WFW:B048",
+      "WFW:B056",
+      "WFW:B065",
+      "WFW:B067",
+      "WFW:B071",
+      "WFW:B072",
+      "WFW:B073",
+      "WFW:B075",
+      "WFW:B081",
+      "WFW:B083"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-U-DSP",
+    "title": "Warp audio and randomness",
+    "contract": "Per-mode audio/pitch/time behavior, Formants/Envelope/Transient settings, zero-crossing/grain behavior, resampling, tail/phase continuity, determinism and comparison tolerances remain unknown. Manual material/quality recommendations and internal explanations are not required implementation mechanisms.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B003",
+      "WFW:B106",
+      "WFW:B109",
+      "WFW:B112",
+      "WFW:B113",
+      "WFW:B114",
+      "WFW:B115",
+      "WFW:B118",
+      "WFW:B121",
+      "WFW:B122",
+      "WFW:B124",
+      "WFW:B129",
+      "WFW:B130",
+      "WFW:B131"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-WFW-U-EDIT",
+    "title": "Interactive limits and quantization boundaries",
+    "contract": "Interactive marker/region limits, protected/shadow edits, duplicate/order/selection transforms, near/equal boundaries, unequal multi-clips, quantization ties and Amount rounding remain unknown. Existing scripting limits do not establish interactive behavior.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B051",
+      "WFW:B053",
+      "WFW:B059",
+      "WFW:B060",
+      "WFW:B079",
+      "WFW:B091",
+      "WFW:B099",
+      "WFW:B102",
+      "WFW:B104"
+    ],
+    "dependencies": [
+      "warp-markers.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-U-TIMING",
+    "title": "Tempo and transport interactions",
+    "contract": "Tap estimation/start schedule, nudge curves, leader handoffs and tempo/automation/scene/external-source precedence, live edit dispatch and clip-update timing remain unknown beyond documented controls. The existing video owner retains its documented active-leader selection context.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B019",
+      "WFW:B020",
+      "WFW:B021",
+      "WFW:B023",
+      "WFW:B027",
+      "WFW:B028",
+      "WFW:B029",
+      "WFW:B030",
+      "WFW:B054"
+    ],
+    "dependencies": [
+      "video-workflows.md",
+      "transport-state.md",
+      "clip-view-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-U-STATE",
+    "title": "State and lifecycle",
+    "contract": "Marker/default/analysis interactions on save/reopen/migration, undo/redo, cancel, automation during edits, source/device loss, rate/engine changes, errors and teardown have no complete oracle. Existing finite storage/reader/ASD contracts retain their scope.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": [
+      "warp-markers.md",
+      "media-file-workflows.md",
+      "project-media-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-WFW-U-IMPORT",
+    "title": "Import source differences",
+    "contract": "This chapter first-import readiness and Import Audio File format/destination text is retained context, not a complete codec or readiness law. Its all-first-import wording versus media owner long-analysis wording, accepted AAC/Ogg variants, platform scope and destination interactions require separate reconciliation.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "WFW:B047",
+      "WFW:B048"
+    ],
+    "dependencies": [
+      "media-file-workflows.md"
+    ]
+  }
+]

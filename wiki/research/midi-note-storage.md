@@ -2,7 +2,7 @@
 id: RESEARCH-MIDI-NOTE-STORAGE
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-23
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -443,3 +443,369 @@ Ghidra `FUN_` names are generated. Demangled names come from the symbol table an
 evidence, not proof. Pseudocode was checked against disassembly only where marked ✓. Shipped
 documents are not 12.4.3 saves, and 103 binary grooves were not parsed. Document text and
 recovered strings are treated as data.
+
+## Family route map — pending independent review, 2026-10-20 20:37 UTC
+
+The analyst [MIDI note-storage family packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-midi-note-routes-v1/structure.md)
+cuts SPEC-MIDI-NOTE-STORAGE revision 4 from approved integration packet 1b,
+I-01/I-02/I-06/I-10, and the approved playback family map. Its
+[ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-midi-note-routes-v1/route-ledger.json)
+enumerates 88 required predicates: 12 X routes, 52 S routes and 24 with no
+established route. These are bounded route inventory counts, not grades,
+coverage percentages or a frozen whole-product denominator. All 75 case IDs
+are unchanged; 17 auxiliary clauses and 12 excluded/unresolved scope records
+remain separate. REQ-011 defines no required outcome for unsafe, missing or
+duplicate MidiKeys, so its getter/stores are auxiliary and it contributes no
+required predicate. The six group-shape cases remain blocked.
+
+The packet retains A1 as established statically for Live Set post-read checks,
+A2 for every saved comparison and A3 for inferred per-field parser binding.
+Generic loading/writing does not prove the public Save/catch lifecycle or
+loaded-note-to-active-player delivery. Expression boundary adjustment through
+virtual `+0x308`, group XML/save shape, list-Id preservation, unsorted/overlap
+persistence and the empty-KeyTrack gate remain explicit gaps. Covered negative
+zero parsing cites the retained transport/parser and v2 review evidence;
+X2 note-limit/grid buffers alone did not parse the text.
+
+Four unexecuted finite batch candidates reference 161 historical result rows
+through six exact raw command rows, with retained inputs, setup and gdb-script
+identities. These rows are neither outcomes nor call counts and do not authorize
+new object construction. The
+[author check](../../analysis/ableton-live-12.4.3/full-spec-v1/family-midi-note-routes-v1/author-check.json)
+checks documentary integrity, source/case identities and the unchanged research
+prefix. Root owns the seal, one independent structure review and shared atlas,
+index, plan, coverage and log changes. No original/provider/harness/decoder
+execution, normative change or new behavior grade occurred.
+
+
+### Family route review adopted — 2026-10-20
+
+The [frozen MIDI storage map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-midi-note-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-midi-note-routes-v1-review.json)
+with no finding. Its 88 required predicates (12 X / 52 S / 24 without an
+established route) remain inventory, not grades. The review checked all 17
+requirements, 71 parent-clause dispositions, 75 case identities and 52 source
+rows. REQ-011's undefined unsafe inputs have no required reference outcome;
+getter/stores remain auxiliary. Six group-shape cases stay blocked and envelope
+adjustment virtual +0x308 remains unresolved. Admission-only MNS-036/070 does
+not establish their saved result. Actual public Save, error recovery and active
+player delivery remain unjoined. No normative clause, case or release changed.
+
+
+## Probability-group source-depth batch — 2026-10-20 (pending review)
+
+Following the approved family map, one [source batch](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-probability-groups-v1/README.md)
+addresses all five REQ-015 questions and all six shape-blocked MNS-054–059
+cases. It retains 39 exact C1 records/86,545 C bytes from 16 approved-input
+chunks, five inherited conditional class-table rows and 70 native call-index
+rows. GroupId's child flag and NoteId's attribute flag support concrete proposed
+XML; ordered enum labels associate 0/1 with PlayAll/PlayOne without proving
+playback meaning. Generic list/array/class writer links remain conditional.
+
+The batch explicitly rejects expanded C beyond the native callback/registration
+bodies: the four-byte wrapper tail-jumps to the 176-byte notifier, and the
+244-byte registration body is distinct from the actual AMidiNotes post-load
+record. Local NoteId-to-group map insertion is not proof of active behavior,
+final saved text, public load/save or absence of all group-counter repair.
+Six complete Notes-fragment proposals materialize existing case setups, but
+current r4 cases remain shape-blocked until separate owner adoption/review.
+The old statement that shape was known only from schema is now historical;
+this new evidence is pending independent review and grants no normative change,
+original execution, behavior grade, new case ID or release.
+
+
+## Group source approval and r5 owner refinement — 2026-10-20
+
+The [independent source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-probability-groups-v1-review.json)
+approves the conditional evidence/proposal batch, manifest SHA256
+`ff7497c86f2979399cea18f90b7a3741df1894191ce73b56c0011f882f48bcdb`;
+review SHA256 `facf6bdf5cb017f8d964b8f8928992df186397074506a6c6ebfb43810dc16600`.
+It supports the GroupId child/NoteId attribute shape, 0/1 internal label association,
+bounded map registration and six concrete Notes fragments. Pending-source-review
+prose above is author history. It proves no public Save, later missing-note effect,
+unsupported enum admission or whole-load group-counter repair.
+
+The separate [r5 owner refinement](../../analysis/ableton-live-12.4.3/full-spec-v1/midi-probability-groups-owner-r5/README.md)
+is **pending independent owner review**. It adopts those conditional shapes in
+REQ-015/Fragment G and the six existing 054–059 cases as four refusal/two
+admission-only expectations. All 16 other bodies/69 other rows and all17/75 IDs
+are preserved. Saved group state and later effects remain U; no original or
+candidate ran, and current v2/72 released cases remain unchanged. The r4 family
+map stays frozen; the refinement's route delta supplies qualified current context
+without inventing a new whole-family denominator or application grade.
+
+
+## Group r5 owner approval — 2026-10-20
+
+The [separate owner review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-probability-groups-owner-r5-review.json)
+approves the [six-case refinement](../../analysis/ableton-live-12.4.3/full-spec-v1/midi-probability-groups-owner-r5/README.md).
+Root [adopted](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-probability-groups-owner-r5-adoption.json)
+the exact reviewed draft with an additive current disposition, preserving all
+reviewed bytes. Earlier pending-owner text is author history. All six former
+shape-blocked cases now have concrete conditional static reader expectations;
+only admission/refusal is assessed. Final Save, later missing-note behavior,
+unsupported enum meaning and whole-load repair stay U. The r4 map is historical
+under the qualified route delta, not a new r5 outcome denominator. Current v2's
+72 released cases remain unchanged; no application or candidate ran.
+
+
+## Current partial release v3 — 2026-10-20
+
+[MIDI note storage v3](../../handoff/midi-note-storage-v3/README.md) is now the current local partial release,
+superseding v2 with72 case objects/fixtures carried exactly plus six conditional
+local group comparisons. Its14 partial requirement bodies include bounded REQ015;
+011/012/017 remain unreleased. [Review and publication record](../specs/midi-note-storage-v3-handoff-plan.md#review-outcome-and-current-disposition)
+pins content/correction/final exact-tree approval and manifest `fa281c37472e13a6ba840499687e90928654c9862582fa5bd4d04f4436da7c2c`.
+Earlier current-v2 statements above record the as-of owner-adoption history;
+this dated release disposition governs. No original/candidate execution,
+compatibility grade or new public load/save/later-effect/counter-repair result.
+All 75 draft IDs and the historical r4 family-map inventory remain unchanged.
+
+## Remaining MIDI storage unknowns: one source batch — 2026-10-20
+
+**Source/proposals only; independent review pending.** The
+[remaining-U packet](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-storage-remaining-u-v1/README.md)
+follows the reviewed MIDI family map, r5 group source/owner refinement and
+midi-note-storage-v3 publication. It addresses all eight remaining U case IDs
+(MNS-011,024,034,035,037,038,053,060) together, plus final group Save, later
+missing-note effects and whole-load counter repair. These eleven bounded
+questions add no case IDs, required-outcome denominator, adopted expectation,
+behavior grade, owner revision or release.
+
+The selected Int64 wrapper/converter supports the existing local mixed-space
+refusal reading, while public error/remaining state stays unknown. `Invalid`
+Time is not ordinary grid rounding, but final note retention/text remains
+unjoined to Save. Negative counters stay excluded, and sorting a collected
+NoteId vector is not proof that the notes are sorted. MNS-037 keeps **zero
+required safe-refusal outcomes**; no guard or defined reference outcome is
+manufactured for unsafe, missing or duplicate MidiKeys.
+
+For MNS-038, the constructor/KeyTrack descriptor and inherited RemoteableList
++140 wrapper conditionally reach the generic list loader's explicit duplicate
+parsed-Id refusal. This is a new local source proposal, not an adopted public
+load outcome; saved Id identity/meaning and empty-KeyTrack flag ownership
+remain unknown. For MNS-053, the receiver frontier narrows to conditional
+APerNoteAutomationAdapter vptr1067decd8, whose +308 slot reaches a four-byte
+thunk 1025c6068→312-byte body 1025c606c. Its +2e8/+398 targets 10256314c/1025654e8,
+transaction helpers and underlying event-array effects remain untraced. All
+four existing boundary variants remain U. Retained indirect sites 1025c6110/1025c6148
+stay unresolved; main resolution inventory receives zero credit.
+
+[Exact source locators](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-storage-remaining-u-v1/source-locators.json)
+reuse 25 already retained records without copying them again, and retain six
+needed existing C1 projections once from two approved hash-pinned chunks.
+Twenty-five exact C spans, two inherited class-row projections, eight existing
+call rows and two unresolved indirect rows preserve version/body/chunk/byte
+provenance. The thunk's expanded C is not a second implementation. The older
+group callback/registration body boundaries remain in force.
+
+MNS-060 still needs the shared ALS009 public catch/presentation/rollback
+receiver. Group writer shape and local registration are not final Save or
+later playback/listener effects, and note-counter repair is not group-counter
+repair across a whole load. A1, A2/A3, supplied-counter and valid class/receiver
+premises remain distinct. All broader existing exclusions remain unchanged.
+
+[Data-only integrity checks](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-storage-remaining-u-v1/author-check.json)
+include eight negative controls against omitted questions, unsafe-key oracle
+creation, local-to-public promotion and body/slot/span corruption. No original,
+provider/native/binary/decoder/harness/model/comparator/module/fixture/build
+execution or old-script import occurs. Only targeted retained source/index
+lookups and stdlib integrity checks were used. Any later owner reconciliation
+must separately review the whole proposal batch; this packet changes none.
+
+
+## Remaining-U source batch review approval — 2026-10-20
+
+Root read the complete [independent source/proposal review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-storage-remaining-u-v1-review.json), SHA256 `bd3052e837d596467e221313f46190caba54d55d30b7230406b40b6d57ac24c8`. It approves [manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-storage-remaining-u-v1/manifest.json) `6b5b0f4a9a7ba99af6d23ea546bdf496a4bd86bdda990cc9e6589eac441a83f0`,9payloads/93,941bytes as bounded retained-source facts/proposals only. All eight existing U cases and three retained group gaps were assessed together. The local mixed-space parser and duplicate-list-Id refusal proposals retain field/class/ordinary-reader premises; they do not establish public Open, catch, remaining state or Save.
+
+MNS053 now has a qualified adapter constructor/vptr/thunk/body frontier, but all four expression variants stay U. Two native sites remain unresolved, adding zero indirect-resolution credit. Unsafe MNS037 still has zero required safe-refusal outcomes. Group final Save, later missing-note effects and whole-load counter ordering remain U. The reviewer used independent read-only assertions rather than the supplied checker's final frozen-file write; nine payloads/23pins/31source records/25spans/class/call rows and six independent negatives were checked. No original/native/provider/binary/decoder/harness/model/comparator/fixture/build or inherited module execution occurred.
+
+The preceding unreviewed section is author history. Root separately selected one r6 owner reconciliation across this whole eleven-question batch; source approval itself changes no expectation, case, grade or release. Existing public U cases must remain qualified; any local comparison needs its own explicit scope.
+
+
+## Four expression-boundary variants: range-operation source frontier — 2026-10-20
+
+Pending independent source review: Root selected [both conditional range-operation bodies](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-expression-boundaries-v1/README.md) from the approved remaining-U frontier in one bounded source batch across all four MNS053 variants. Exact retained C1 entries10256314c/1025654e8 contain4,966UTF8Cbytes/166lines;836/320native body bytes are retained metadata, not fresh instruction coverage. Forward/backward comparison strictness, indexed mutation requests and count-like traversal are visible in source. Actual list/provider/callback identity, indexed mutation10156da64, first-call interval global values, transaction effects and resulting event arrays remain unknown. No encountered callee/slot/global was followed; all four variants retain null expected/actual, adding zero indirect-site or grade credit.
+
+The [owned read-only checks](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-midi-expression-boundaries-v1/author-check.json) pass selected source/pin/span integrity and five false-promotion controls. One wrapper-format assumption failed before writes and was corrected directly against the existing record field, with disclosure in findings; no frozen adapter. No original/native/provider/decoder/harness/model/comparator/fixture/build or inherited-module execution occurred. This source packet is separate from r6 owner review and changes no requirement, case or release.
+
+
+## R6 owner adopted; v4 staging selected — 2026-10-20
+
+Root read the [separate r6 owner review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-storage-remaining-u-owner-r6-review.json), SHA256 `492476f9376b1f2ff2e8f558b30d3fedae4bca828136e3d717a2aa15a7d8ab84`, and [adopted](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/midi-storage-remaining-u-owner-r6-root-adoption.json) its exact72,839-byte reviewed prefix. Only002/012/014bodies change; all75oldrows/14otherbodies/allXclauses/eightpublicUrows remain exact.076/077 are separate conditional local-reader comparison projections, not public Open/rollback/Save or a mandated native API/pipeline.77draft IDs are navigation, not an outcome denominator. Twelve false-promotion controls and40local links passed; the review's initially reported54-link chat count was corrected to its recorded40without rewriting evidence.
+
+V4 staging is separately selected:78v3case objects/78existinggzip fixtures carried byte-exact, plus exactlytwo local comparisons via explicit data-only edits over the existing authored MNS001fixture. No new carrier generation is needed. Existing14requirement bodies stay exact; the002local supplement and newpartial012yield15partial IDs. Content review, exact-tree approval and full prerelease lint must precede local publication. V3 remains current; no original/candidate or compatibility grade follows. The concurrent expression source packet remains a separate review/adoption and supplies no new r6 outcome.
+
+
+## Expression range-operation source review approval — 2026-10-20
+
+Root read the complete [separate source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-expression-boundaries-v1-review.json), SHA256 `60f16989eebef6be56fe17a0b153b3f04ae6fe9109598b605473cd1f0f779595`, and adopted only its bounded frontier. Eight payloads/27,524bytes/two C1records/4,966Cbytes/seven exactspans and five false-promotion controls were verified;17watched paths unchanged. Native836/320-byte extents are retained metadata, not fresh instruction coverage. Conditional comparison strictness is supported as C syntax; inferred list/count roles, underlying provider/index mutation/callbacks/interval globals/transaction effects do not become resulting event-array laws. Allfour MNS053variants remainU; no indirect-site credit, owner/case/criterion/release change or successor follows. The preceding pending source section is author history, distinct from the already approved r6 owner and v4 staging.
+
+
+## V4 local partial release — 2026-10-20
+
+[MIDI v4 publication](../specs/midi-note-storage-v4-handoff-plan.md#current-local-publication--2026-10-20)
+is complete after independent content approval, separate final exact-tree seal
+and full prerelease lint.83payloads/223,995bytes plus24,458-byte manifest copied
+exactly; all84destination files verified.78oldcaseobjects/78gzip/14oldbodies exact,
+two local comparisons reuse existing authored MNS001with explicit Notes edits.
+No new fixture, original/candidate execution, compatibility grade or publicU
+resolution. V3 is immutable/superseded; v4 is current. Allfour053variants and
+group final Save/later effects/counter order remainU.36releases/19current/17superseded
+are catalog units, not outcomes. The pending/current-v3 statements above retain
+their dated histories. No implementation or restricted-workspace update selected.
+
+## Standing whole-class selection assessment — 2026-10-21
+
+The approved [12-X family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-midi-note-routes-v1/manifest.json),2,866bytes/SHA-256 `96547699ca57189013abd582f7c0657a87ce540459dfc7481716cd9caff49a95`, currently identifies existing128note-limit/copy/grid vectors, nine offset-grid inputs,22text-number inputs and two typed negative-zero parser inputs. The bounded selection assessment consulted retained map/input metadata and current R6/v4 dispositions, without replaying oldraw/source behavior or originals. No mapped whole unrun standing class was found. This is a current eligibility result, not proof that further legal classes cannot exist.
+
+Remaining MNS-053/public mutation/provider/Save/transaction/sorted-ID joins require a legal receiver/state or a separate evidence route; another arbitrary scalar sweep would not close them. Existing finite refinements/releasev4 remain exact. No new original run/model/tool/source frontier or owner/case/release/grade/site is selected. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+
+## All-four MNS-053 frontier metadata selected — 2026-10-23
+
+The [approved expression-boundaries source report](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/depth-midi-expression-boundaries-v1-review.json),5293bytes/SHA256 `60f16989eebef6be56fe17a0b153b3f04ae6fe9109598b605473cd1f0f779595`, `/semantic_assessment`, supplies one coherent remaining metadata question across **allfour MNS-053variants**. CanonicalEvidence binds this study to Live.arm64/3a99…cfad, not an inferred same-number x86function. Currentr6/v4refinements, publicOpen/Save/mutation/provider/transaction/sorted-ID gaps, allcaseIDs/criteria/releases and null expected/actual values stayexact.
+
+Select ONE **depth-midi-MNS053-frontier-metadata-v1**:recover exact declared range topology/HEADER_STATUSmetadata for the two already reviewed source bodies0x10256314c/0x1025654e8(retained native counts836/320bytes, not instruction coverage); census exactARMalias/export/C1declarations for the two newly named direct-callee keys0x10156da64/0x10156d4c8; classify the two interval-global keys0x105847020/0x105847028through inherited approved mapmetadata, with contents/accesswidth/objectextentUunless explicitly admitted. Carry unresolved provider predicates **slot offsets**+0x3c8/+0x3d8/+0x250asoffsets, never absolute addresses. Unnamed transaction-helper/current receiver/list/provider/callback and resulting-event-array questions remainU; no arbitrary scalar sweep or convenient single-variant subset.
+
+A finite whitelist may first inspect approved oldmanifestnames/pins and the retained two C1records' HEADER_STATUS/ranges only, with C/code/optext opaque. This is topology reuse, not a second source-semantic review. CorrectARMauthority only; no numeric lookup in a different architecture. External rows must be excluded before hexadecimal parsing and ordinals count only nonexternalrows. New meaningful actual-shaped external/malformed/ordinal/overlap/opaque-invariance controls and fully read/prebound new methods/PREPythoneligibility precede one census. No oldhelper/checker/fixture/decoder/proof replay, source-body/native/image/header/vtable/pointee/runtime/model/provider/guest/QMP/UI/media/profile/AUZ or opaque-scope action.
+
+Tension_review_finish authors; tension_owner_finish solely reviews after its separate Automationv2authoring, never its own packet; RootCITEONLY. Preserve minimum7893696512bytes or larger full6039814144currentconcurrent plus12MiBremaining-parent/output/log/512MiBfinal/128MiBheadroom allowances from the first point, without trimming, deletion or Analog59subset. Onefinalfreeze/sole report with SAFEunderstanding/completequestionunion/qualified geometry/lineage/limits/history, no new preparation/review gate or automatic acquisition retry/body follow. This metadata selection changes no case, criterion, grade, site, O, release or whole-product completion.
+
+
+## MNS-053 preparation stopped before acquisition — 2026-10-23
+
+The selected all-four-variant packet remains **unbound/unsealed preparation**, not acquired metadata or approved evidence. Its [retained resource stop](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-midi-MNS053-frontier-metadata-v1/resource-stop-PREACQUISITION.json),770bytes/SHA256 `ca4cd02b3533e3454007c704c7f3b844500cbf99e9c2d620b600ebed27951931`, records3313270784available bytes against7893696512required, full6039814144concurrent unchanged, at2026-10-23T16:24:29UTC. The prebinding builder failed its capacity assertion before writing a binding. Because the next shell command was not conditional, controls.py then launched and failed opening missing prebinding.json before any method import, owned fixture/control, interpreter eligibility check or original-source operation. Both preparation failures remain retained; do not call this zero command launches or passing controls.
+
+No original metadata census/parent read, binding/control result or sole review exists. All four MNS-053 variants and the unnamed joins remainU; no r6/v4case/criterion/release change. Hold further preparation and acquisition until actual capacity satisfies the unchanged full contract. Do not lower budgets, trim the class, delete retained evidence or substitute an Analog59 subset. This environmental stop is not metadata-route exhaustion or whole-product progress.
+
+
+## All-four metadata preparation resumed after capacity change — 2026-10-23
+
+The user says “proceed” after cleanup changed actualcapacity. Explicitly resume fresh fullbudget admission/newbinding, followed only by the **first unused owned controls and first once-only original metadata census** in the already-selected allfourMNS053packet. Preserve the failed prebindingbuilder and subsequent unconditionalcontrolslaunch/missing-binding trace,770byte resource-stop record and zero fixture/import/source outcome; no completed proof prefix or oldhelper/checker is replayed. Original unbound methods must be fully read/control/prebound and PREPython312-I-Beligible before firstuse.
+
+Same complete question/architecture/offset predicates/zero contentsemantics/full6039814144concurrent+lifecycle/7893696512minimum-or-larger/fullhistory/firstfault rules remain. Tension_review authors, tension_owner solelyreviews afterfreeze and its independentAutomationauthoringboundary; RootCITEONLY. Later soleAnalog59review is a differentpacket, never an own-source review. No Source/native fact, publicMNS053expectation, case/criterion/release or evidencegrade changes at resumption; wholeLiveOPEN and Claudeguesthold unchanged.
+
+
+## All-four frontier metadata adopted — 2026-10-23
+
+The [sole metadata review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/midi-MNS053-frontier-metadata-v1-review.json),70392bytes/SHA256 `c624a64a30ad32a49963f74916292dd26849803501a1eb21fb42c928ac7fdcdc`, approves only qualified metadata across **MNS-053(a)–(d)**. [Manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-midi-MNS053-frontier-metadata-v1/manifest.json),5348bytes/SHA256 `534f1700d7a63d2415af94ea22ce81b1b39625465ef580aa61792f1adcc31262`, seals33payloads223621bytes/all34files0444/private0700 unchanged. Root verified the sole-report pin and read only its whitelisted approvedSAFE/understanding/wholeunion/geometry/global-slot/lineage/limits/history/checker/tree projections, no original C/native/parent/proof/helper replay.
+
+All six approved groups are at `/approved_understanding_METADATA/groups`:
+
+| Group | Qualified metadata understanding |
+| --- | --- |
+| MNSMETA01 | The complete question is all four canonical MNS-053 variants(a)-(d), not one example. Each retains null expected/actual and unknown public Open/Save, resulting event array, mutation, callback/provider and lifecycle joins. Current owner r6 and local partial release v4 remain unchanged; no new standalone case IDs or released outcomes are created. |
+| MNSMETA02 | HEADER_STATUS/range topology reuse, with old C/code/optext excluded, locates the two already source-reviewed declarations as separate single ranges:836B[0x10256314c,0x102563490) and320B[0x1025654e8,0x102565628), both in inherited ARM64 __TEXT/__text mapping. Prior source comparison/strictness syntax is inherited solely from the approved5293B review; it is not rederived here. Native instruction coverage remains zero. The836B record retains global-symbol-overlap and subroutine-does-not-return decompiler warnings. These warnings are metadata, not newly established runtime nonreturn, complete CFG, ABI or whole object laws. |
+| MNSMETA03 | Both new direct-callee keys have exact unique nonexternal ARM aliases and exact C1 declarations:16B[0x10156da64,0x10156da74) and8B[0x10156d4c8,0x10156d4d0). Nonexternal ordinals83625/83608 select lines26/9 of the same chunk00836. No source expressions or native bodies were selected, so indexed mutation, traversal, event-array behavior and callback semantics remain unknown. The16B record warns that the jumptable at0x10156da70 could not be recovered and that an indirect jump was treated as a call. That is a decompiler warning locator only; it does not resolve an actual site/target or certify whole runtime implementation extent. |
+| MNSMETA04 | The complete four-declaration topology is four disjoint ranges/1180 declared native bytes/295 prospective four-byte rows. Bounded overlap against inherited240 selected native ranges is zero; global novelty, ownership, cold/exception/all-exit extent and actual ABI remain unknown. This is a whole future metadata nomination, not selected native/C content or a completed behavior profile. |
+| MNSMETA05 | The two interval-global keys0x105847020 and0x105847028 map to inherited __TEXT/__const file points92565536 and92565544. Their contents, access widths and whole object extents remain unknown. Eight-byte spacing is not evidence for reading eight bytes, a double interpretation, a complete interval object or a zero value. |
+| MNSMETA06 | Provider+0x3c8/+0x3d8/+0x250 remain three slot-offset predicates with unknown actual site PCs, receiver/vptr/provider and target binding. They are not absolute addresses and were never queried as index keys. Unnamed transaction helpers/current receiver/list/callback identities and public resulting event arrays remain unknown; no automatic callee/body/global/pointee follow, source-runtime replay or numeric sweep is selected. |
+
+The complete four declared ranges are836B `[10256314c,102563490)`/fileoffset39203148;320B `[1025654e8,102565628)`/39212264;16B `[10156da64,10156da74)`/22469220;8B `[10156d4c8,10156d4d0)`/22467784, all inheritedARM64`__TEXT/__text`. Fourdisjointfragments total1180bytes/295**prospective**rows, zero boundedprior240nativeoverlap; globalnovelty/ownership/runtimeCFG/ABI stayU. The newcallee sizes are16+8, not an assumed equal-size pair. OldC1hash/countfields aredeclaredmetadata/not recomputed Csemantics. The836Bnonreturn/globaloverlap and16Bunrecoveredjumptable/indirect-jump-as-call warnings remainwarnings, not runtimefacts or indirectresolution. No body/nativecontent was selected or read.
+
+The globalpoints `105847020`/`105847028` maptofilepoints92565536/92565544 in`__TEXT/__const`, with widths/contents/objectextentsU; eightbytespacing proves no eightbyte access or doublevalue. Provider`+3c8/+3d8/+250` remainoffsetpredicates, notaddresses/sitePCs. Unnamedtransaction/currentreceiver/list/provider/callback, finalarrays/mutation/sortedIDs/Open/Save/lifecycle remainU/null. Currentownerr6/localreleasev4/oldcases/criteria/expectations/fixtures stayexact; no standaloneIDs wereinvented for the fourexistingvariants.
+
+Freshcustody covers threephysicalparents122426303bytes:6014byte oldsource-rows parent with C/code/optextopaque,122340555bytealiases and79734byte C1parent. Actualnonexternalordinals83625/83608 locate newrecords atchunk00836lines26/9; aliases420470total/418417eligible/2053external skippedbeforeparse. Four endpoints/size/hash matching is boundedcustody, not continuousstability/ancestorhistory/snapshot/crashdurability. Inheritedmap/image/header/oldSourcecomparison semantics were not reacquired/reviewed. SourceC/native/MachOheader/vtable/slot/global/pointeesemanticbytes selected:zero.
+
+Five newmethods199lines/firsteligible20ownednegatives/oneoncecensus/oneauthorsafecheck passed. Solepeer ranonlythatneweligiblecheckeronce/217bytestdout exact/emptyerr plus tenindependentmetadatanegatives; all34filesunchanged. The checker reads a fixedPythonidentity inadditiontopacket and reexecutes onlynew ownedmetadatamethods/controls, notoldSource/decoder/helper/nativeproof. OwnPython312-I-B/sourceeligibility and effectiveparentCPU60/AS1GiB/FSIZE12MiB/NOFILE256/STACK8MiB were recordedPREsource; nochild/tool waslaunched, no wallwatchdog/transitiveruntime identity claim.
+
+Thirteenadmittedresume resourcepoints hadminimumstorefree13693661184 versus unchangedneed7893696512/full6039814144concurrentFROMRESUMESTART/tenunchanged12MiBunits+metadataoutput/final/headroom. **These are store-filesystem points**, notseparateroot/physicalRAM measurements, quota orcontinuouscapacity. Earlier770bytecapacitystop and768byte missing-bindingstderr remainexact. That unconditionalfailedcontrolsprocess is failedorchestrationhistory, notcleanfirstfault; it stoppedbeforemethodimport/Pythoneligibility/actualfixtures/Source. Freshresume admitted FIRSTunusedcontrols andFIRSToncecensus, no failedprefix relabelled or oldproofreplay. Prior146checker-textdisplayexception remainscite-only history. No automaticbody/global/provider/pointee successor or case/grade/site/O/release/wholeclosure credit.
+
+
+## Whole four-declaration native question selected — 2026-10-23
+
+After sole metadata approval, explicitly select ONE **depth-midi-MNS053-four-declarations-native-v1** for allfour admitted ARMdeclarations:836B `[10256314c,102563490)`/fileoffset39203148;320B `[1025654e8,102565628)`/39212264;16B `[10156da64,10156da74)`/22469220;8B `[10156d4c8,10156d4d0)`/22467784. Wholeunion **1180newnativebytes/fourseparateexactpreads/295prospectiverows**, no convenientvariant subset. One preferred149711904byte ARMimageROFD/fresh3a99…cfadwholehash; inheritedapprovedgeometry/map only. No oldC1/alias/source-rows/bodysemanticproof, MachOheader/vtable/slot/global/pointee/string/neighbor/field contents or callee-body follow. The two globalpoints have no admitted accesswidth; eightbytespacing still grants no read.
+
+Authority is the [70392byte approved metadata report](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/midi-MNS053-frontier-metadata-v1-review.json),SHA256 `c624a64a30ad32a49963f74916292dd26849803501a1eb21fb42c928ac7fdcdc`, its whitelisted declaredgeometry/wholequestion/Source-lineage/limits/history. Carry oldSourcecomparisonsemantics and both decompilerwarningclasses bycitation; nativecode must establish any NEWlocal instruction/branch/site understanding, never turn a warninglocation/nonreturnlabel into proof. FormalABI/currentreceiver/provider, completeCFG/all-exits/objectextents/FPnumericlaws/publicoutcomes remainU unlessnewscope evidence actuallysupports a narrowly qualified local claim.
+
+O137authors afteritsclosedAnalog59authoringboundary; tension_review solelyreviews frozenNEWnative/code/understanding afteritsclosedClipauthoring/Analog59sole-reviewboundary. RootCITEONLY. O137's separateAutoV3sole-review role takesplaceonlyataclosedMNSauthoringboundary, neverinterrupting Source/decoder/checkerprefixes and neverreviewingthisownMNSnativepacket. AllfourexistingMNS053(a)–(d)/r6/v4/IDs/criteria/releases/nullpublicexpectations remainexact.
+
+Fullyread/control/prebindNEWmethods/PREPython312-I-B/pinnedRizinidentity and prospectiveparent-to-child CPU/AS/FSIZE/NOFILE/STACK/COREcompatibility beforeFIRSTuse. Use byte-count `pDj LEN(raw)` ononlyownbuffers, no ESIL/emu/analysis/originalcode invocation. Necessary NEWownedfixtures include one whole836bytefixedword case to test fullbytecoverage past the observed256byteboundary; preserve exactrawtooloutput and formatter/type/ptr qualifications. No oldtoys/helper/checker/fixture/proofprefix replay, automaticretry/tweak or alternativedecoder. StopfirstfaultandcheckeveryresultbeforelaterSource/toolstep; retainwholepartialifanyunitfails.
+
+From START retain full6039814144currentconcurrent plus allparent/fourbody/twoownedtoy/output/log/final/headroom allowances, minimum7893696512or largercompletecontract at everyrequiredstep; no actual-size/budget/scopecut/deletion/Analog59subset. Onefinalfreeze/solepeer/directSAFEallgroups/entirecalls-sites-fields-return-nominationunion/allgeometry/lineage/qualifiedlimits/history. Newunreadtarget/site/field/objectquestions are nominationsonly, no automaticfollow. No originalfunction/application/Xaudio/reference/runtime/model/provider/FP/opaque, VM/guest/QMP/UI/media/profile/AUZ action (Claudehold), case/grade/site/O/release/productclosure credit.
+
+
+### Native sole reviewer scheduling amendment — 2026-10-23
+
+Tension_review confirmed its queuedMNS4nativepayload/method/checker review had notbegun, with only activationmetadata received while itsAnalog59review remainedactive. Root reassigned **one sole MNS4nativepeer to tension_owner after itsAutoV3finalfreeze/closedauthoringboundary**; tension_review's unbegunqueuednative review was withdrawn. O137remains nativeauthor. Frozenauthorselection naming the earlier reviewer isasof schedulehistory. OldMNSmetadatareview and newnativeproof remain distinct; no ownpacketreview, interruptedSource/checkerprefix, second actualreview, Rootgate or Source/behavioral expansion follows.
+
+
+## All-four declaration native review adopted — 2026-10-23
+
+The [sole native review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/mns053-native-peer-work/midi-MNS053-four-declarations-native-v1-review.json), **261,055 bytes**, SHA256 `8345810a780c3e086d7910fb8edd392a0f47360ef2bcfcbd7a9eb4aa463b17a4`, approves the selected static cohort and conditional local annotations, with the bootstrap evidence limit below. Its `/approved_SAFE_scalar`, `/approved_understanding`, `/approved_complete_question_union`, `/approved_all4_geometry_METADATA`, `/approved_source_lineage_METADATA`, `/approved_image_custody_METADATA`, `/approved_limits`, `/approved_PRE_chronology_qualification`, `/approved_history` and resource/history projections are the adoption authority. The [frozen native manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-midi-MNS053-four-declarations-native-v1/manifest.json), 8,412 bytes/SHA256 `c918d8b74111bbb08841ae5d5716c4cb65e4bc42a14814b582e4c0ec4fd7af1e`, seals 58 payloads/1,357,520 bytes; all 59 files remained unchanged. No original source, image, index, tool, decoder, old checker or proof was replayed for this documentary adoption.
+
+The author retained **1,180 native bytes in four separate preads and 295 guarded four-byte rows**, covering the complete admitted class:
+
+| ARM64 declared range, end exclusive | Bytes | File offset | Guarded rows |
+| --- | ---: | ---: | ---: |
+| `[0x10256314c,0x102563490)` | 836 | 39,203,148 | 209 |
+| `[0x1025654e8,0x102565628)` | 320 | 39,212,264 | 80 |
+| `[0x10156da64,0x10156da74)` | 16 | 22,469,220 | 4 |
+| `[0x10156d4c8,0x10156d4d0)` | 8 | 22,467,784 | 2 |
+
+All four use the inherited ARM64 `__TEXT/__text` mapping. Declared extents and zero bounded overlap against the inherited 240-range catalogue do not prove global novelty, ownership, complete cold/exception/all-exit extent or an ABI. The earlier metadata sections remain records of their original zero-content scope; this separate native study supplies the new instruction observations. Source comparison semantics and the old C1/header/map authorities remain accepted by citation, without a second source-semantic review.
+
+All twelve conditional groups from `/approved_understanding` are adopted here. These describe visible local instructions under valid memory, reached paths, ordinary outside-call returns and any required register preservation; they do not establish legal runtime receiver state or public outcomes.
+
+| Approved group | Conditional native understanding |
+| --- | --- |
+| 1 | All four selected ARM declarations are retained as 1,180 bytes/295 guarded rows. All existing MNS-053(a)–(d), owner r6/release v4, IDs, criteria and null public expected/actual values remain unchanged. Open/Save, resulting arrays, sorted IDs, mutation and lifecycle outcomes remain unknown. |
+| 2 | In `0x10256314c`, sites `0x102563168`–`0x10256318c` save entry X2/X1/X0 in X19/X20/X21 and pass X0=SP+0x40 and X1=saved entry X0 to direct BL `0x102415e20`. Later roles and the helper-initialized local aggregate remain unknown. Saved-register survival across outside calls is a condition, not an established formal ABI. |
+| 3 | Both larger declarations repeatedly load receiver/vptr carriers and use slot displacements 0x60 and 0x20 through X8, then dereference returned storage at +8 and load D registers at +0x50. The inventory locates these carriers; current provider classes, event formats, legal receiver state and callback semantics remain unknown. |
+| 4 | The 836-byte body uses two FABD operations, FCMP and B.PL for a direction split; later flag-byte CMPs choose FCMP branches LE/GE, LT/LE, PL/LS and LS/MI on the two legs. Only literal operands, condition codes and destinations are claimed. No FP evaluation, NaN/order law, threshold, interval-inclusion rule or portable numeric model follows. FABD's raw `type=null` remains unchanged. |
+| 5 | The BLs at `0x102563354` and `0x1025633bc` to the selected 16-byte helper receive X0 loaded from saved entry receiver+0x58, X1=SP+0x28 and X2 from W22/X22. Forward advance steps increment W22; reverse steps decrement it, seeded from W0 minus 1 on that leg. These narrow argument/cursor/count delivery; actual container mutation and final arrays remain unknown. |
+| 6 | The reverse leg at `0x102563370`–`0x102563398` loads a Q0-sized, unread 16-byte window at preferred address `0x1055d9680`, stores Q0 at SP+0x10 and stores the low two bytes of W8=1 at SP+0xe. A runtime slot+0x398 call receives X0=saved entry receiver, X1=SP+0x10 and X2=SP+0xe. The initializer and passed addresses are visible; literal contents, pointee objects, provider meaning and resulting state remain unknown. STRH's raw `type=null` is retained. |
+| 7 | The 320-byte entry loads a D-register pair from entry X1, materializes comparison inputs with MOV/MOVK/FMOV transfers and uses FCMP/FCCMP plus B.EQ for a separate dispatch leg. That leg loads runtime slot+0x250, BLRs, restores its frame and tail-branches to selected `0x10156d4c8`. Constant bits remain opaque; no FP/numeric outcome, current target, returned value or public interval rule is established. FCCMP's raw `type=null` remains unchanged. |
+| 8 | In the 320-byte body's other leg, first flag byte equal to 1 selects runtime slot+0x3c8; otherwise it selects +0x3d8. Both set X8=SP+8 before BLR; +0x3c8 also clears W1. The new PCs locate transfer carriers without resolving targets or assigning a formal hidden-result ABI. W21 starts at zero, increments on reached advance steps and is copied through X21 to X0 before the ordinary RET; this is a local register counter, not a proved public event count. |
+| 9 | All four rows of `0x10156da64` copy entry X1 to X3 and entry X0 to X1, load X4/X0 from entry X0+0x128/+0x130 and BR through X4. X2 is locally unchanged. This carrier/site observation comes from the new native rows, not the inherited jumptable warning. Current pair contents, target, provider and formal ABI remain unknown. |
+| 10 | `0x10156d4c8` adds 0x70 to X0 and tail-branches to unread `0x1014670e8`. It establishes neither a local RET nor returned identity. The outside declaration and content remain unselected. |
+| 11 | The 836-byte body passes SP+0x40 to cleanup BL `0x102415ebc`, then compares a saved value with a freshly dereferenced ADRP/LDR-derived carrier. Its ordinary path restores the frame and RETs without subsequently normalizing X0, leaving the cleanup-call return in that visible register. A mismatch reaches the separate final BL `0x1054d56b4` at the declared end. Neither this BL nor the historical warning proves runtime nonreturn, exception or fallthrough behavior. |
+| 12 | Original global points `0x105847020`/`0x105847028` remain unread, with access widths, values and object extents unknown. New native-only nominations are an 8-byte conditional access at `0x1064f8818` and a 16-byte Q0 access at `0x1055d9680`. These are access windows, not whole-object prefixes, current values or automatic data acquisitions. The three old slot predicates remain ASOF; separately located native load/transfer carriers retain unknown actual targets. |
+
+The complete current frontier is retained at `/approved_complete_question_union`: **4 outside destinations, 20 unresolved indirect sites, 73 bounded numeric candidates, 136 lexical load/store rows, 6 explicit access classes and 2 visible RET rows**. The outside destination keys are `0x1014670e8`, `0x102415e20`, `0x102415ebc` and `0x1054d56b4`; none is followed. The 20 indirect sites retain unknown actual targets. The 73 candidates include scalar/displacement/unsigned-wrapped formatter values, pages and slot offsets; numerical map containment, including PAGEZERO membership, does not promote them to runtime addresses or objects. The memory-row total is **lexical**, not 136 established field widths, complete memory effects or runtime accesses.
+
+The six explicit access classes comprise two unread static windows, three runtime slot-offset carriers and one receiver-relative pair delivery. The static nominations total **24 bytes**, `0x1064f8818`/8 bytes (`__DATA_CONST/__got`, file offset 105,875,480) and `0x1055d9680`/16 bytes (`__TEXT/__const`, file offset 90,019,456). No field contents were acquired. New PCs locate +0x3c8 at load/transfer `0x102565540`/`0x10256554c`, +0x3d8 at `0x1025655f0`/`0x1025655f8`, and +0x250 at `0x1025655d0`/`0x1025655d4`; these remain runtime displacements, not absolute address queries or resolved targets. The pair delivery at `0x10156da6c`/`0x10156da70` has a conditional 16-byte access at entry X0+0x128, with the first eight-byte carrier delivered to X4/BR and the next to X0; its current binding and whole object extent remain unknown. Original global points and the earlier three metadata predicates stay unchanged as their ASOF records. No current provider, receiver, transaction/list/callback identity, resulting arrays or public variant is closed.
+
+### Native custody, bootstrap qualification and retained history
+
+The author used one read-only FD for the 149,711,904-byte standalone ARM64 image, whole SHA256 `3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad`, and the four exact preads above. Before/after path/FD identities matched. Whole-file hashing physically contacts unselected bytes, including the header; only the four native ranges were retained for this study. This does not prove current universal-parent derivation, an atomic snapshot, continuous stability, ancestor-path history or runtime load addresses. Old source/alias/C1/index/header/map proofs and prior Source semantics were inherited, not reacquired or recertified.
+
+Eight new methods/232 lines were read and prebound. The pinned Rizin 0.9.1 static formatter ran only on new owned buffers: two new fixtures and four selected body buffers, **six once-only children, all exit 0/empty stderr**. The 836-byte fixture checks all 209 rows, including the word at byte 256 and final word 832–835; one fixture is not a general decoder guarantee. The short BL/B/RET fixture uses a known standard literal sequence at a new fake address, without replaying an old fixture artifact. Fifteen author pre-use negatives and twelve final retained negatives passed. Passive ESIL strings were data; no emulator, numeric evaluation or original native execution was performed. Raw `type`, `ptr`, `val` and formatter qualifications remain intact.
+
+**Bootstrap evidence limit:** the prebinding writer asserted the 8,020,928-byte Python executable hash but retained only a declaration/boolean for that pre-module check. A separate detailed shell hash/stat/four-endpoint receipt **before first new module evaluation was not retained**. The first detailed `eligible()` receipt is `controls.json/PRE`, after pure module definitions, before actual pure controls, toys and original image use. Later receipts do not establish or retroactively approve earlier bootstrap eligibility. The accepted scope retains that unknown; neither frozen bytes nor history were repaired. Python 3.12 isolated/source dependencies were used, while standard-library and other transitive runtime identities remain unproved. This qualification is explicit at `/approved_PRE_chronology_qualification`.
+
+The resource record has 29 distinct full-bound points: minimum root/store account-available **14,294,315,008 bytes**, required **7,893,696,512 bytes**, and minimum MemAvailable **94,465,011,712 bytes**. Full **6,039,814,144-byte concurrency from START**, twenty unchanged 12-MiB parent units, complete native/metadata/code/six-child-output allowances, 512-MiB final allowance and 128-MiB headroom were preserved without scope/budget cuts. These are unreserved endpoint measurements, not continuous capacity, quota or guest-readiness proof. Requested child limits were CPU 20 seconds, AS 1 GiB, FSIZE 4 MiB, NOFILE 256, STACK 8 MiB and CORE 0, with prospective parent-hard-limit compatibility and a preexec assertion. Child wall timeout was 20 seconds with bounded group cleanup. Parent CPU/AS/FSIZE were unbounded; no parent wall watchdog, independent in-child syscall trace or escaped-descendant guarantee was established. Child maxrss is cumulative. Raw files/JSON receipts were fsynced; formatter stdout/stderr used ordinary close, and directory crash durability remains unproved. See `/approved_limits`, `/approved_resources` and `/approved_resource_qualification`.
+
+The sole peer ran only the eligible frozen-packet safe checker once: 232-byte stdout matched the author's bytes exactly, stderr was empty, and all 59 frozen files stayed unchanged. Its first read-only summary projection used a wrong key and produced a truncated display/KeyError; a later peer audit stopped on a list-versus-dict TypeError after its finite 295-row/branch arithmetic prefix. Fourteen new negatives and that prefix are inferred from the sequential traceback; no intermediate result file was written. The failure source/binding/567-byte traceback remain retained. A new adapter completed only the unused suffix, with three new shape/count negatives and the one still-unused checker; it did not rerun the completed prefix or any original/tool/decoder action. These limits are direct in `/peer_history` and `/sole_safe_checker`, not relabelled clean first-fault orchestration.
+
+The old metadata packet's 770-byte low-capacity stop, subsequent unconditional controls launch/missing-binding failure, and later explicit first-unused-controls/first-census resumption remain history as adopted above. The native author corrected an unsealed prose spelling before the single inspector use; no source/method/row/control acquisition was replayed. The inherited 836-byte global-overlap/nonreturn warnings and 16-byte unrecovered-jumptable/indirect-jump-as-call warnings remain exact warnings. New visible RET and a separate final BL do not establish whole CFG, runtime return/nonreturn, exception behavior, formal ABI, object ownership or global extent, and do not invalidate the historical warnings.
+
+This adoption selects **no successor or new source work**. All four MNS-053(a)–(d), current r6/v4, IDs, criteria, releases, fixtures and null public expected/actual values remain unchanged; Open/Save, mutation, final arrays, sorted IDs, lifecycle and provider joins remain unknown. There is no global-novelty, behavioral/native-grade, resolved-site, case, O, release or whole-Live completion credit. No FP model/evaluation, provider/model expansion, original application/runtime/audio/X experiment, opaque-scope change or guest/QMP/UI/media/profile/AUZ action occurred; Claude's exclusive guest hold remains in force.
+
+
+### Shared file-window nomination reconciled by approved metadata — 2026-10-23
+
+The native24Bstatic-access nomination remainsasof its Sourcecohort, but the16Bwindow1055d9680 is now known to coincide exactly with a separately approved ClipFILEBITS capture on the same3a99ARMimage/fileoffset90019456. [Cross-cohortreconciliation](program-structure.md#cross-cohort-static-reference-reconciliation--2026-10-23) carries its rawhex/SHA bycitation for this NEWreferenceassociation, without anotherimage/windowread or FP/currentmemory/objectlaw. The other8Bcell1064f8818 remainsunread and issharedwith AutoV3'sfive-cellnomination. Originaltwointervalglobalpoints stillhavewidth/value/extentU; there isno publicMNS053expectation, Sourceproofreplay or automaticfollow.
+
+
+## Complete four-body dependency metadata class selected — 2026-10-23
+
+Select one **depth-midi-MNS053-four-body-dependency-metadata-v1** after the current independent author/reviewer boundaries. Its authority is the [sole four-body native report](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/mns053-native-peer-work/midi-MNS053-four-declarations-native-v1-review.json),261055bytes/SHA256 `8345810a780c3e086d7910fb8edd392a0f47360ef2bcfcbd7a9eb4aa463b17a4`, approved SAFE understanding, complete question union, geometry, lineage, limits, history and resource projections only. Underlying four-body source, native bytes, decoder, fixtures and proof stay by citation. All four MNS-053 variants, r6/v4 criteria and public Open/Save/event-array/mutation/lifecycle questions remain unchanged unknown.
+
+Account for the entire four-destination/twenty-site/73-candidate/six-access-class frontier. Exact ARM alias/C1 declaration and HEADER_STATUS metadata are selected for `1014670e8`, `102415e20` and `102415ebc`; bounded predecessor topology is permitted only if exact lookup fails. The fourth destination, `1054d56b4`, already has a12-byte declaration in Analog59 `/approved_dependency_nomination_METADATA/all_known242_ranges_METADATA`: carry it by citation, with no old C1 or native reread. Look up function/name/in-thunk/flow/resolved-target metadata for all twenty explicit native-site keys in `/approved_complete_question_union/unresolved_indirect_sites`; static hints are distinct from actual targets. No caller-body, target-body or hint-target follow is selected.
+
+Carry all73 heterogeneous numeric candidates and their existing numerical map classification, all136 lexical memory rows, six explicit access classes and two return records by citation. Classify their existing roles against the four approved native ranges and newly admitted metadata; small scalars, raw wrapped values, pages and slot offsets are not automatically addresses. Do not requery old point membership or enlarge access windows. Preserve the original globals `105847020`/`105847028` with unknown widths, contents and object extents, and old three slot predicates as historical records separate from the new native PC/carrier questions.
+
+No file content is selected. The16-byte `1055d9680` access already has Clip FILEBITS evidence and stays by citation; `1064f8818` is in the separately selected Automation five-cell class and can be associated by citation only after sole approval. Neither association establishes FP meaning, current pointers, shared objects or provider behavior. The other four access classes are runtime-relative predicates, not file addresses. No field, vtable slot, object, pointee, string prefix, gap or neighboring bytes are admitted.
+
+Tension_owner authors after its closed Clip authoring boundary; o137 is the sole actual peer only after closing its current Automation authoring and Analog sole-review work and receiving the final freeze. This replaces the unbegun original o137-author/tension_owner-peer queue: o137 explicitly confirmed zero new MNS dependency source, methods, controls, acquisition or directory, and tension_owner had closed Clip authoring before reassignment. Tension_owner’s unstarted Automation sole review waits for its new MNS author boundary; no active prefix is interrupted and there is one author/one actual peer. Root remains citation-only. Fully read, control and prebind new finite methods; retain detailed interpreter stat/hash evidence before their first evaluation, with later eligibility stages distinguished chronologically. Source schemas not retained in context remain unknown until established by one selected metadata census; source bodies stay opaque, ambiguous shapes do not pass, and discovery does not retroactively establish pre-source schema validation. External rows are filtered before hexadecimal parsing; C1 ordinals count nonexternal rows. Preserve every failure and stop at the first failed stage, without retrying completed reads, helpers, controls or proof prefixes.
+
+Retain the full6,039,814,144-byte concurrent term from START, conservative complete index/chunk/output/code/log/final/headroom allowances and a7,893,696,512-byte minimum or larger complete contract at every required point. No actual-size budget shrink, subset, evidence deletion or guest action. One census, one frozen packet and one sole review report directly provide all qualified groups, complete frontier, geometry, source lineage, resource/PRE limitations and history; no separate Root preflight or second proof review. This selects no original function/audio execution, FP/model/provider work, opaque-return scope, Claude-held guest/VM/QMP/UI/media/profile/AUZ action, new behavior case, criterion, grade, resolved site, O, release or whole-Live closure.
+
+
+## Windows priority parks the once-census terminal record — 2026-10-23
+
+[Current Session0→SessionA priority](../decisions/adr-0006-reference-observation-reopened.md#confirmed-handoff-and-windows-sitting-priority-supersede-static-queues--2026-10-23) supersedes the preceding active MNS author/peer and Claude-hold scheduling prose. The dependency packet is a **truthful terminal author freeze, UNREVIEWED**, not a completed mapped/semantic study or adopted source result. Its [manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-midi-MNS053-four-body-dependency-metadata-v1/manifest.json) is reported3923bytes/SHA256 `3e2018bcc01eecd7529abff5318a8c004a86a29742b945e5a4656afd4f3a7bc2`,27payloads/all28files0444. The [author SAFE terminal summary](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-midi-MNS053-four-body-dependency-metadata-v1/SAFE-summary.json),3259bytes/SHA256 `b67b544953848305fef4d9dbd741a27a5cd58e31de7fdb19c5e9f9435debb8dc`, is an unreviewed routing locator only.
+
+Author-reported closed stages are11controls, one four-parent census/177,641,091physical bytes, three exact declarations totaling148bytes and twenty empty hint lists, followed by eight terminal negatives. These counts/hints are not actual targets, native content or reviewed findings. Post-census mapping, new73-membership derivations, expanded synthesis, ordinary success checker, o137 sole peer and tension_owner's Automation peer remain UNATTEMPTED/PARKED. No source/old proof/checker prefix is rerun; all four public variants, r6/v4 criteria, globals/slots/current bindings and earlier histories remain unchanged. Root alone controls the guest; no static follow/review ahead of Windows, no case/grade/site/O/release or wholeOPEN change.

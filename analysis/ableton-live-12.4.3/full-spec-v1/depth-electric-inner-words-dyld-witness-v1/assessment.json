@@ -1,0 +1,224 @@
+{
+  "id": "ELECTRIC-INNER-WORDS-DYLD-WITNESS-V1-ASSESSMENT",
+  "author": "automation_actual_review",
+  "sole_independent_peer": "Root; no author approval",
+  "created_utc": "2026-10-21T06:34:24.205385+00:00",
+  "fresh_scope": {
+    "selected_content_bytes": 7816,
+    "words_bytes": 48,
+    "header_bytes": 32,
+    "whole_LC_bytes": 1704,
+    "streams_bytes": 6032,
+    "raw_files": 12,
+    "new_source_or_native_bodies": 0,
+    "whole_streams": "All declared bytes retained; no opcode semantic decoding or runtime binding interpretation.",
+    "old_payload_replay": false
+  },
+  "inherited_review": {
+    "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/electric-outer-wrapper-c-native-v1-review.json",
+    "bytes": 5338,
+    "sha256": "224cc3b99dd12c52c5280e227aa59eea339169df3329e4af319410b2cc02e730",
+    "status": "approved; read as context, no prior raw/native/source replay"
+  },
+  "claims": [
+    {
+      "id": "EIW-01",
+      "kind": "observed static bytes",
+      "claim": "Exactly six selected 8B words contain unsigned little-endian integers 0xcb0c,0xd2e0,0xd688,0xd9b8,0xd9c8,0xdbe4 in order. These are raw stored integer nominations, not validated callable functions or runtime targets.",
+      "anchors": [
+        "capture/word-300c0.bin",
+        "capture/word-300e8.bin",
+        "capture/word-30100.bin",
+        "capture/word-30108.bin",
+        "capture/word-30110.bin",
+        "capture/word-30118.bin"
+      ]
+    },
+    {
+      "id": "EIW-02",
+      "kind": "observed geometry",
+      "claim": "32B header is little-endian MH_MAGIC_64, ARM64, MH_BUNDLE with 15 commands and 1704 command bytes. All commands cover [32,1736) exactly; actual __text starts at15732. __DATA_CONST has matching vmaddr/fileoff196608; selected __const starts196768 and contains all six words.",
+      "anchors": [
+        "capture/header.bin",
+        "capture/load-commands.bin",
+        "capture/projection.json"
+      ]
+    },
+    {
+      "id": "EIW-03",
+      "kind": "observed geometry",
+      "claim": "One complete 48B LC_DYLD_INFO_ONLY at1360 declares the four full raw streams. They are disjoint contiguous [229376,235408),6032B total inside declared __LINKEDIT [229376,265920),filesize36544/vmsize49152. Exports begin exactly235408 and are excluded. No chained-fixups command exists within this entire declared LC table; this is not a whole-product/runtime absence claim.",
+      "anchors": [
+        "capture/load-commands.bin",
+        "capture/rebase.bin",
+        "capture/bind.bin",
+        "capture/weak_bind.bin",
+        "capture/lazy_bind.bin"
+      ]
+    },
+    {
+      "id": "EIW-04",
+      "kind": "bounded unknown",
+      "claim": "Stream bytes and declared file geometry are witnessed, but stream opcodes/sites/rebase deltas/bind ordinals/addends/targets were not decoded. No selected word is proved to be, or not be, a rebased/bound site. No final relocated/runtime value follows from these six integers.",
+      "anchors": [
+        "capture/projection.json"
+      ]
+    },
+    {
+      "id": "EIW-05",
+      "kind": "inherited conditional composition",
+      "claim": "Prior approved six wrappers conditionally forward the current [incoming+8] receiver through slots0x10/0x38/0x50/0x58/0x60/0x68. A=literal0x300b0 as a runtime addresspoint is a premise not established here; current outer/inner vptr, A/O/R/C identities, construction/class/lifetime success and formal ABI remain unknown. Existing source warnings, register/FP/normal-return/valid-memory qualifications remain inherited.",
+      "anchors": [
+        "prior review SHA224cc3b99dd12c52c5280e227aa59eea339169df3329e4af319410b2cc02e730"
+      ]
+    },
+    {
+      "id": "EIW-06",
+      "kind": "custody/verification",
+      "claim": "One collector process performed12 exact selected-content reads totalling7816B; eleven expected endpoint custody identities match before/after. No original instructions, decoder child, provider acquisition or retry. Whole-image hashes are custody only; endpoint equality is not continuous monitoring or dependency closure.",
+      "anchors": [
+        "capture/receipt.json",
+        "pre-call-manifest.json",
+        "mechanical-check.json",
+        "packet-controls.json"
+      ]
+    },
+    {
+      "id": "EIW-07",
+      "kind": "coverage limits",
+      "claim": "No new exact-input observation, case, grade, release, main-Live site resolution or required-unit closure. REQ002/A1/REQ014 indexed receiver/state, public bindings/clock/audio/calibration/lifecycle/portable laws remain open. Main image universe is separate from this helper bundle.",
+      "anchors": [
+        "README.md"
+      ]
+    }
+  ],
+  "exact_words": [
+    {
+      "virtual_address": "0x300c0",
+      "file_offset": 196800,
+      "raw_hex": "0ccb000000000000",
+      "little_endian_u64": 51980
+    },
+    {
+      "virtual_address": "0x300e8",
+      "file_offset": 196840,
+      "raw_hex": "e0d2000000000000",
+      "little_endian_u64": 53984
+    },
+    {
+      "virtual_address": "0x30100",
+      "file_offset": 196864,
+      "raw_hex": "88d6000000000000",
+      "little_endian_u64": 54920
+    },
+    {
+      "virtual_address": "0x30108",
+      "file_offset": 196872,
+      "raw_hex": "b8d9000000000000",
+      "little_endian_u64": 55736
+    },
+    {
+      "virtual_address": "0x30110",
+      "file_offset": 196880,
+      "raw_hex": "c8d9000000000000",
+      "little_endian_u64": 55752
+    },
+    {
+      "virtual_address": "0x30118",
+      "file_offset": 196888,
+      "raw_hex": "e4db000000000000",
+      "little_endian_u64": 56292
+    }
+  ],
+  "exact_streams": {
+    "rebase": {
+      "file_offset": 229376,
+      "bytes": 208
+    },
+    "bind": {
+      "file_offset": 229584,
+      "bytes": 2464
+    },
+    "weak_bind": {
+      "file_offset": 232048,
+      "bytes": 120
+    },
+    "lazy_bind": {
+      "file_offset": 232168,
+      "bytes": 3240
+    },
+    "exports_excluded": {
+      "file_offset": 235408,
+      "bytes": 152
+    }
+  },
+  "excluded_declarations_from_owned_LC_only": [
+    {
+      "kind": "nlist_64 symbols",
+      "offset": 236464,
+      "bytes": 2240,
+      "declared_count": 140
+    },
+    {
+      "kind": "string table",
+      "offset": 239512,
+      "bytes": 4640
+    },
+    {
+      "kind": "indirect symbol table",
+      "offset": 238704,
+      "bytes": 808,
+      "declared_count": 202
+    },
+    {
+      "kind": "function starts",
+      "offset": 235560,
+      "bytes": 904
+    },
+    {
+      "kind": "data in code",
+      "offset": 236464,
+      "bytes": 0
+    },
+    {
+      "kind": "code signature",
+      "offset": 244160,
+      "bytes": 21760
+    },
+    {
+      "kind": "exports",
+      "offset": 235408,
+      "bytes": 152
+    }
+  ],
+  "excluded_declaration_check": "Each computed declaration is in-image and has zero overlap with all12 selected raw ranges; no excluded content was acquired. Counts/widths from LC structures only, not symbols or provider content.",
+  "controls": {
+    "before_actual": "18 malformed-data controls + positive geometry and empty-stream case; complete13936B collector/check source read before tests/capture",
+    "after_actual": "Owned --check PASS plus7 isolated-copy raw/word/receipt/custody/promotion/missing/extra-read tamper rejections. Both full checker sources read before execution."
+  },
+  "actual": {
+    "pid": 1348276,
+    "UTC": [
+      "2026-10-21T06:31:57.459909+00:00",
+      "2026-10-21T06:31:57.578264+00:00"
+    ],
+    "collector_exit_code_observed": 0,
+    "status": "PASS_STATIC_CAPTURE",
+    "custody_pairs": 11,
+    "automatic_retry": false,
+    "original_execution": 0,
+    "decoder_children": 0,
+    "outer_command_as_invoked": "python3 analysis/ableton-live-12.4.3/full-spec-v1/depth-electric-inner-words-dyld-witness-v1/capture-once.py --capture-once",
+    "argv_qualification": "Precall execution.collector_argv nominated resolved absolute Python/script paths; actual shell used python3 and relative script path. Receipt sys.argv preserves relative script spelling and omits interpreter, as Python does. This is a literal spelling deviation, disclosed rather than claiming exact argv equality; before/after pins establish identical resolved collector and Python executable. No changed flag/input or retry."
+  },
+  "parser_reuse": "Only definitions/constants from fully inertly read H4 bundles.py201lines/H3 macho_inspect.py232lines. No old main/import/export/symbol decoder or new rebase/bind opcode decoder.",
+  "failure_limits": [
+    "Successful attempt does not test real interrupted writes/permission failures/filesystem faults.",
+    "Files flush/fsync, no directory or power-loss proof.",
+    "Collector records exception partials, does not promise after-custody sampling on a failing path.",
+    "No continuous image mutation monitoring or dynamic provider/dependency closure.",
+    "No child process; no signal/timeout/cleanup claims about original or decoder execution."
+  ],
+  "successor_selected": false,
+  "shared_docs_changed": false
+}

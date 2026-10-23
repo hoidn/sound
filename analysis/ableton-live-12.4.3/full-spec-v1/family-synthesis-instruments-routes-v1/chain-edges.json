@@ -1,0 +1,140 @@
+{
+  "scope": "Family cut extending approved1a/1b I07/I08, Playback/Automation/Mix/sample boundaries; not a disconnected new runtime graph.",
+  "edges": [
+    {
+      "id": "SY01",
+      "source": "Document/preset resource vocabulary",
+      "target": "Admitted loaded instrument instance",
+      "status": "unknown",
+      "reason": "Stored root/field names and supplied preset metadata do not establish version admission, constructor defaults, loading or legal media/voice state.",
+      "evidence": "synthesis-instruments/spec-r3.md lines23-41,303-310",
+      "state_and_data_owner": "Document owns storage; actual instrument instance/provider/receiver owner unknown"
+    },
+    {
+      "id": "SY02",
+      "source": "I03/I04 playback note/event dispatch",
+      "target": "Same synthesis processor and active-note owner",
+      "status": "unknown",
+      "reason": "101ab5cec due-event virtual+0x10 has no exact selected device receiver/event codec/timebase join. A NoteOn/Off wrapper name is not that join.",
+      "evidence": "integration-structure-v1/mix-component-edges.json#/execution_interfaces/0",
+      "state_and_data_owner": "Playback owns due events; actual per-note/device/voice ownership unknown"
+    },
+    {
+      "id": "SY03",
+      "source": "I05/I06 stored/logic envelope values",
+      "target": "Current synthesis parameter/control target",
+      "status": "unknown",
+      "reason": "Stored values/E(t)/ideal P(t) are distinct from loaded provider units, clip/song time, control sampling and ramped samples; A3/A6/A8 remain.",
+      "evidence": "family-automation-routes-v1/structure.md#keep-the-value-and-time-boundaries-separate",
+      "state_and_data_owner": "Automation owns stored/evaluated values; actual parameter provider/current device target unknown"
+    },
+    {
+      "id": "SY04",
+      "source": "Generic instantiated device chain",
+      "target": "Mix unit InL/R",
+      "status": "unknown",
+      "reason": "No exact synthesis instance/voice/output buffer supplies unit+0x168/+0x170 merely because a processor/module name exists.",
+      "evidence": "integration-structure-v1/mix-component-edges.json#/edges/5",
+      "state_and_data_owner": "Instrument should own voice/output state; concrete owner/chain unknown"
+    },
+    {
+      "id": "SY05",
+      "source": "Mix unit InL/R",
+      "target": "Constructed TrackOut member",
+      "status": "observed-static",
+      "reason": "102731438 C1482-1489 registers inputs; C1898-1903 links unit+0x168/+0x170 to TrackOut+0x428. This is local construction under helper/receiver/lifetime premises, not runtime device delivery.",
+      "evidence": "integration-structure-v1/mix-component-edges.json#/edges/5",
+      "state_and_data_owner": "Mix builder owns constructed unit fields; actual reached processor receiver unknown"
+    },
+    {
+      "id": "SY06",
+      "source": "TrackOut local wrapper/destinations",
+      "target": "Main bus/export/host output",
+      "status": "unknown",
+      "reason": "101b1c114 and101b1afbc local input/state/output expressions do not bind actual main/send destinations or callback order.",
+      "evidence": "family-mix-routes-v1/structure.md#state-data-and-call-chain-boundaries",
+      "state_and_data_owner": "Mix local referenced state known conditionally; host/device output owner and clock unknown"
+    },
+    {
+      "id": "SY07",
+      "source": "Exact RTTI/address-point candidate",
+      "target": "Selected exported slot target",
+      "status": "observed-static",
+      "reason": "32 structural metadata headers/124 selected prefix slots constrain candidate membership only; no physical receiver/slot/native-PC/ABI proof. Large leading3 are construction/lifetime prefix only.",
+      "evidence": "components.json",
+      "state_and_data_owner": "Metadata candidate type association; no runtime data owner proved"
+    },
+    {
+      "id": "SY08",
+      "source": "Lexical literal-store candidate",
+      "target": "Actual constructor/current vptr/receiver",
+      "status": "unknown",
+      "reason": "50 stored-address lexical quotes retain source-line/hash/warnings but no full C/native body or receiver/lifetime proof.38 extra store-only entries are not followed.",
+      "evidence": "retained-metadata.jsonl kind literal-store-candidate",
+      "state_and_data_owner": "Construction/state lifetime unknown"
+    },
+    {
+      "id": "SY09",
+      "source": "Selected source entry",
+      "target": "One-hop indexed direct target",
+      "status": "observed-static",
+      "reason": "246 direct call-index references from exact115 approved sources. Targets are next frontier only; no execution order, preserved receiver, arguments or callee semantics inferred.",
+      "evidence": "retained-metadata.jsonl kind outgoing-call",
+      "state_and_data_owner": "Caller/target addresses are index metadata; actual argument/state transfer unknown"
+    },
+    {
+      "id": "SY10",
+      "source": "Selected computed call/jump site",
+      "target": "Unresolved target",
+      "status": "unknown",
+      "reason": "37 indirect rows:26 calls and11 jumps, all empty resolved targets. No global/slot or encountered-callee query selected; no new resolved-site credit.",
+      "evidence": "retained-metadata.jsonl kind indirect",
+      "state_and_data_owner": "Current receiver, vptr and dispatch-state ownership unknown"
+    },
+    {
+      "id": "SY11",
+      "source": "UI command/control gesture",
+      "target": "Same loaded/current selected engine/parameter",
+      "status": "unknown",
+      "reason": "Type/menu/enum/field/callback names do not establish actual offered control, gesture dispatch, selected engine, units or resulting visible/audio state.",
+      "evidence": "synthesis-instruments/spec-r3.md lines352-373",
+      "state_and_data_owner": "UI owns selections/gestures; actual current model/control receiver unknown"
+    },
+    {
+      "id": "SY12",
+      "source": "Sample/AMS/wavetable resource or media source",
+      "target": "Admitted productive synthesis/sample consumer",
+      "status": "unknown",
+      "reason": "DrumCell/InstrumentVector/schema roots and presets do not establish valid current media admission, preprocessing, samples/positions, waveform import/export, source loss or consumer identity.",
+      "evidence": "family-sample-instruments-routes-v1/structure.md",
+      "state_and_data_owner": "Media/container owners distinct from actual sample/oscillator/voice buffers"
+    },
+    {
+      "id": "SY13",
+      "source": "Device/voice/control state transition",
+      "target": "Undo/save/reopen/cancel/teardown/error result",
+      "status": "unknown",
+      "reason": "Named stored state, flags, callbacks and lexical destructors do not establish transaction grouping, rollback, active-note cleanup, errors, resource release or history continuity.",
+      "evidence": "synthesis-instruments/spec-r3.md lines226-250",
+      "state_and_data_owner": "Document/history/media/voice resource owners not composed by generic edges"
+    },
+    {
+      "id": "SY14",
+      "source": "Typed Wavetable oscillator specialization metadata",
+      "target": "Accepted oscillator/interpolation/phase/unison algorithm",
+      "status": "unknown",
+      "reason": "All8 exact specializations/whole6-slot exported prefixes are retained as metadata. Typed names and template enum numerals are not current algorithm/domain/phase/output proof.",
+      "evidence": "components.json selected eight WavetableUnisonOscillator candidates",
+      "state_and_data_owner": "Actual oscillator/current table/voice/history state and consumer unknown"
+    }
+  ],
+  "all_public_required_bindings": "unknown",
+  "new_resolved_sites": 0,
+  "inherited_indirect_inventory": {
+    "exported_reference_sites": 25071,
+    "conditional_additions": 24,
+    "combined": 25095,
+    "all_sites": 268015
+  },
+  "no_new_C_native_provider_original_or_callee_global_slot_execution": true
+}

@@ -2,7 +2,7 @@
 id: RESEARCH-MIXER-VALUES
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -240,8 +240,9 @@ by 50; whether `L`/`R` suffixes are accepted is unknown.
   applied next (below). A result ≤ 0.00032 (`0x39a7c5ac`) becomes exactly 0. The generic
   `OConvertLevelProcessor::OnIn` (✓ `0x101aee5e8`) applies the same rule for its configured
   curve. **Inferred:** the logic layer sends the volume as a position (the gain → position
-  slot), so a stored gain round-trips to the same gain. The stored minimum (−70 dB, display
-  `-inf dB`) is rendered as silence, and any stored gain at or below 0.00032 (−69.9 dB) is
+  slot). The conversions do not generally preserve the same binary32 gain; see
+  the round-trip correction below. The stored minimum (−70 dB, display
+  `-inf dB`) is rendered as silence, and any converted gain at or below 0.00032 (−69.9 dB) is
   silent too. The value the logic layer puts on the `Volume` port was not traced
   (PRB-S9-01).
 - **Pan law** (✓ `0x101b3b95c`): per track, a 2×2 matrix from inputs [w, pan, splitL, splitR,
@@ -372,10 +373,16 @@ ulp) at positions 0, 0.25, 0.5, 0.7, 0.85, 1: e.g. volume 0 → `0.0003162277571
 `0.1995263398`, 0.7 → `0.5011872053`, 0.85 → `1`, 1 → `1.99526238`; send 0.5 → `0.1000001132`,
 0.85 → `0.5011872053`, 1 → `1`. Gain → position agrees within the released 1e-6 (volume 1.0 →
 0.85000002, derive_curves 0.84999996; difference is one float32 ulp). **Round trip:** feeding
-a stored gain through gain → position and then position → gain returns the stored gain
-**exactly** (bit-equal) for −70, −6, 0 and +6 dB on both curves. So if the logic layer puts
+the seven released curve-point gains through gain → position and then position → gain
+returns those gains **exactly** under the release assumption. For arbitrary gains, if the logic layer puts
 `gain → position(stored gain)` on the engine port (REQ-011's condition), the round trip is
-exact; which value it actually puts there is a caller question and stays unknown (Q-019).
+not generally exact. **Correction 2026-10-19:** the
+[mixer-values-v2 review](../../handoff/mixer-values-v2/REVIEW.md#scope-and-checks)
+limits exactness to seven tested curve points and reports 765 non-identical returns
+out of 1,601 sampled non-point gains (up to two binary32 steps, not a general bound).
+The earlier generalization above is withdrawn; use
+[REQ-MIXER-VALUES-005](../specs/mixer-values.md#req-mixer-values-005--volume-and-send-fader-curves).
+The caller question was subsequently narrowed by T1.4 below.
 
 **Pan law (X; settles PRB-S9-02/03 numerics).** The 2×2 matrix `0x101b719e0` (arm64
 `0x101b3b95c`) ran on `[w, pan, splitL, splitR, vol]`:
@@ -431,7 +438,8 @@ Where arm64 fuses a multiply-add, x86 uses two separately rounded operations, so
 
 - Position ↔ gain conversions: both slices compute the interpolation in a `double`
   intermediate (arm64 `fmadd`/`fnmsub` in double, x86 two doubles then one round), so the
-  float32 outputs agree; the round trip is exact. No slice difference here.
+  float32 outputs agree for the tested inputs; this is not a general exact-round-trip
+  guarantee. No slice difference was found in those checks.
 - dB table builder (`0x101ac2bf8`/`0x101aec640`): arm64 fuses the 3-point landing correction
   (`fmadd s6,s0,3.0,s6`); x86 uses `mulss`+`addss`. This is a ≤1 float32 ulp difference at the
   three lowest table points (positions 0.01, 0.02, 0.03, dB ≈ −66.4/−63.37/−60.92). The table
@@ -447,6 +455,17 @@ position 0.85 from gain 1.0: script 0.84999996, X 0.85000002). This is a model l
 a slice difference, and is inside the released 1e-6 tolerance (MV-025). `norm_to_gain`,
 `matrix` and the crossfade/pan constants reproduce X with no such gap.
 
+## Current limits after T1.4 (2026-10-19)
+
+The following Unknowns and Phase 4 probe rows retain the historical query plan.
+Under ADR 0003 those whole-application probes cannot run. Q-019's volume/send
+port wiring was narrowed statically by T1.4; its remaining A3–A5 conditions
+are canonical in [mix graph](mix-graph.md#q-019-values-on-the-volume-and-send-ports).
+Exact round-trip identity applies only to the seven tested curve points,
+not arbitrary gains. The silence floor tests the computed gain after both
+conversions. UI binding, malformed/out-of-range load behavior, writer paths
+and unresolved routing remain unknown; do not infer a pass from the old probes.
+
 ## Unknowns
 
 Narrowed by X2 above. Still unknown under [ADR 0003](../decisions/adr-0003-no-reference-execution.md)
@@ -455,8 +474,7 @@ function):
 
 - **Which value the logic layer puts on the engine `Volume` and send ports** (stored gain, the
   fader position `gain → position(stored gain)`, or something else), and where sends are
-  converted and floored. The conversions themselves are now X (above) and the round trip is
-  exact, but the value that reaches the port is a logic → engine data-flow question, not a pure
+  converted and floored. The conversions themselves are now X (above), but the value that reaches the port is a logic → engine data-flow question, not a pure
   function, so it is not settleable by extracted execution. *Resolved statically 2026-10-18
   (T1.4):* the fader position, clamped to [0, 1]. Sends use the send curve through a level node
   with the floor. Conditions are listed in
@@ -486,7 +504,7 @@ static target, or a permanent unknown. The records are in
 
 | Probe | Planned observation | Status under ADR 0003 |
 | --- | --- | --- |
-| PRB-S9-01 | Minimum volume renders silence; −69.8 dB and −60 dB render at their dB values | **Partly X** (x2): the fader curve conversions and their exact round trip ran; the floor rule is static (`0x101aede40`). Whether the stored gain reaches the floored path is the Q-019 caller question, still U |
+| PRB-S9-01 | Minimum volume renders silence; −69.8 dB and −60 dB render at their dB values | **Partly X** (x2): the fader curve conversions and round trips at selected curve points ran; the floor rule is static (`0x101aede40`). Whether the stored gain reaches the floored path is the Q-019 caller question, still U |
 | PRB-S9-02 | Stereo pan law: 0 dB centre, +3.01/−100 dB at hard pan, −0.5 → +2.32/−5.33 dB | **X** (x2): the matrix computes exactly these gains. Audible effect (port routing, ramps) stays U |
 | PRB-S9-03 | Split Stereo per-input sin/cos panning | **X** (x2): split (−1,+1) pass-through, (0,0) → −3.01 dB each |
 | PRB-S9-04 | Volume, send and pan display text, incl. `-69.7 dB`/`-inf dB` and 3-decimal values | **X** (x1): see [extracted execution](extracted-execution.md); which UI surface uses which formatter stays U |
@@ -509,3 +527,121 @@ rounded per operation, so last-ulp differences from Apple libm are possible; X2 
 the correction above). Shipped documents are 12.4d1/12.1d1 writes, not 12.4.3 saves. The X2
 manifest is not byte-stable across reruns because `raw/runs.jsonl` records ASLR heap addresses;
 `results/mixer.json` is stable.
+
+
+## Reviewed scalar curve-boundary evidence — 2026-10-20
+
+The [mix leaf batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/README.md)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json)
+as bounded extracted evidence. Seven scalar crossfade helpers were evaluated at
+43 legal binary32 positions each, including immediate binary32 neighbors of
+retained/static knots. The [exact output bits](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/boundary-levels.json)
+include 49 historical function/position overlaps that match and 252 distinct
+additional pairs. These are finite evaluations, not required-outcome counts or
+newly graded application cases.
+
+**X, supplied x86 inputs with substituted Linux math.** At binary32 0.96
+(`0x1.eb851e0000000p-1`), Fast Cut helper `0x101b1a880` returns binary32
+`0xb33bbd2e` (−4.371138828673793e−8). This finite helper result gives no basis
+for imposing a nonnegative clamp on that helper's computed output. The existing
+T14 harness was used unchanged. The batch records `_cos` and `_cosf` replacements;
+[post-run host context](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-runtime-context.json)
+reports glibc 2.39, but is not a per-child loaded-library/FP-mode trace.
+
+**Do not lift scalar samples into the runtime table.** Current
+[REQ-MIXER-VALUES-014](../specs/mixer-values.md#req-mixer-values-014--crossfade-effect)
+separately describes a 129-point table with linear interpolation. Binary32 0.96
+is not one of that table's regular 1/64-spaced input positions. A helper's value
+there does not establish the interpolated table value, actual track factor,
+rendered audio, or an ARM/Apple-math sign. Public assign/sign/timebase/delivery
+and cross-slice qualifications remain unchanged. New boundary rows stay
+ungraded pending the mixer family route map and canonical contract/case
+reconciliation; this evidence revises no current clause or release.
+
+
+## Mixer-values family route map — 2026-10-20 (pending review)
+
+The [family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-mixer-routes-v1/structure.md)
+cuts integration I-07/I-08 and the approved mix graph map against current
+SPEC-MIXER-VALUES revision 5. Its
+[bounded ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-mixer-routes-v1/route-ledger.json)
+has 104 local predicate/context rows (14 X, 52 S, 38 without a complete
+established route), not a frozen required-outcome denominator or grade count.
+The 15 requirement bodies and 80 released case objects remain unchanged.
+
+This is **pending independent structure review** and selects no execution.
+Computed formatter, fader-conversion, matrix and scalar-helper outputs remain
+distinct from runtime T-table construction/interpolation, track branch,
+computed-gain floor and public load/render/save. Q019 retains A3/A4/A5, bypass
+and cross-slice qualifications; there is no arbitrary exact round trip or
+new current stored-floor expectation. The 252 new scalar boundary pairs remain
+ungraded discovery. Off-grid 0.96 supplies no runtime table/public factor law.
+The 36 allocator-patched curve construction rows remain withheld from standing
+replay. Exact source/pointer pins, finite input-set references and six missing
+bridges are navigation for later independent review and batch selection; no
+requirement, case, expectation, release or grade is adopted here. Earlier
+research, including the reviewed scalar-boundary section above, is preserved.
+
+
+## Mixer family-map approval — 2026-10-20
+
+The [independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-mixer-routes-v1-review.json)
+approves the bounded structure packet above, manifest SHA256
+`d4072f4e01a2c6e378bce75b10e8f7639cb0a7eb67793399c2d3d086c156a108`;
+review SHA256 `8504984521f39d71bdeacc7cc85f270b1245d5e07b506ecfd7da249741d437b0`.
+The pending-review section is retained as author history. All 104 predicate/context
+rows remain route inventory; no case, normative contract, grade or release changes.
+The review independently matches 43 released compute cases to 112 retained
+binary32 fields and 44 formatter strings. Those finite matches do not establish
+loaded/public values, runtime table delivery, exact general round trips or the
+stored-floor boundary. Q-019 A3/A4/A5, identity bypass and ARM qualifications
+remain. All 252 new scalar pairs remain ungraded and 36 patched setup rows
+withheld. No original or candidate execution occurred in the review.
+
+
+## Whole scalar-boundary owner-scope reconciliation — 2026-10-20
+
+Root read the [initial positions-only review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v1-review.json), which found MIX-RECON-001: Root's v1 receipt incorrectly called the historical scalar inputs T14. The [minimal v2 correction](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v2.json), SHA256 `d9cdb9773ee39596942574920d11f8c3981be7ff8d4af73dd5349b63eb75f9a5`, [passed focused independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v2-review.json), SHA256 `3f75a39c4029a2aa476f4d5743d03c470015216c1b180d7bb2b33ffd0ebeca32`. Root adopts this corrected lineage/disposition only; original v1/batch/map/release bytes remain unchanged.
+
+The historical source is **X2 scalar inputs**; the reused batch harness derives from T14. Per curve, nine original X2inputs include both±0.25 and±binary32(0.95). Seven released positions include±0.25 and exclude±0.95;43boundary positions include±0.95 and exclude±0.25. Thus301boundary evaluations include49historical-X2 overlaps/252new-relative-X2 pairs, but only35at released positions/266outside the released sets;14released inputs are absent from this boundary batch. Those counts name distinct input relations, not outcomes/grades. Raw command outputs/old semantic proofs were not reexecuted or recomputed; fresh lineage proof uses the retained manifest-pinned input pointers.
+
+All252new pairs are deliberately retained as ungraded discovery after this whole-set owner-scope assessment. Existing49released function/position inputs and their criteria are unchanged; no new criterion, normative owner revision or case is adopted. Direct helper values,129-node runtime-table interpolation, actual track factor and host output remain separate;±0.95execution stays unreleased, off-grid0.96sign proves no table/public/ARM/Apple sign, and36patchedsetup rows remain withheld. The earlier pending-reconciliation statements describe history; they do not authorize sample-count-based promotion. MIX-RECON-001 is resolved by the external correction, not a frozen adapter or silent rewrite.
+
+
+## Mixer owner r6 finite adoption — 2026-10-21
+
+The [owner r6 packet](../../analysis/ableton-live-12.4.3/full-spec-v1/mixer-values-owner-r6-batch/manifest.json), SHA256 `90b1e68eb9c5433420381dd2559cead190a5f3669aa9aa46c2c9e7f0ed3f6f6c`, directly adopts all 252 new-relative-X2 scalar boundary pairs as MV-049–MV-300 under REQ-014. Eight new payloads total 373,378 bytes. All 301 approved observations remain cited; 49 historical-X2 overlaps are controls. The earlier discovery-only owner disposition is superseded under design12, with frozen history unchanged.
+
+Root's [added-wording/mapping review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mixer-values-owner-r6-added-wording-review.json), SHA256 `f5732099730ad06b77c384308d3dd0fab07f15350993bf9a3c9160fc3dc5fda6`, reuses the approved observation and corrected lineage reviews. The data-only owner check passed all 252 projections, 12 negative controls, 14 unchanged requirement bodies and 48 exact prior rows. Exact input/output bits apply only to the supplied x86 scalar helper and recorded Linux math; there is no new portable ARM/Apple bound. The Fast Cut negative value at binary32 0.96 is a finite helper expectation, not a runtime-table or public audio sign.
+
+Historical X2 inputs include ±0.25 and ±binary32(0.95); the seven released positions exclude ±0.95, and the boundary set excludes ±0.25. Only 35 boundary pairs overlap the 49 released pairs, 266 lie outside and 14 released pairs are absent. All 80 released case objects and their existing comparators remain unchanged. The 36 patched setup rows remain withheld. The new analyst draft cases add no public delivery, host audio, candidate result, behavior denominator or whole-family completion. Neutral-fixture/ordinary release review remains separate; unsupported required behavior stays U/OPEN.
+
+## Complete regular-node helper batch selection — 2026-10-21
+
+The next eligible14-X standing class uses the seven existing scalar crossfade helpers at **every regular position p=k/64, k=−64…64**. This finite set is naturally named by the retained table-builder input expression T(i/64−1), i=0…128, cited under REQ-MIXER-VALUES-014. It is not an arbitrary first-N sweep. Select **903 logical function/position pairs:77 exact inherited observations and826 fresh calls in seven sequential children**,118 calls per helper. Inherited k values are {−64,−60,−48,−32,−16,0,16,32,48,60,64}; no old original call is repeated or supplied fabricated fresh receipts.
+
+In retained order the targets are0x101b1a470 NormalDip/Dipped,0x101b1a550 SlightDip/Intermediate,0x101b1a630 ConstantPower,0x101b1a6f0 Dipless/SlowFade,0x101b1a7b0 SlowCut,0x101b1a880 FastCut and0x101b1a8e0 Transition. The unchanged scalar route appends `call FUNCTION f:<exact hexadecimal p>` tokens to the existing T14 loader with `--imports`. There is no receiver, owned object/buffer, initializer, constructor/setter, patch, GDB or new construction model. Semantic output is low32 saved XMM0; retain full saved RAX/RDX/XMM0/XMM1 carriers (64 bits each), actual text-conversion/temporary-float behavior, raw stdout/stderr, PID/UTC/argv/status/import uses and custody. This does not independently attest entry registers or floating-point state.
+
+[Earlier batch manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/manifest.json), SHA-256 `68bf972bccd18c0cbdd7e1bc1289196575336c085c71271b40efbca435fe3ce5`, [sole review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json), SHA-256 `00cebf7dca67b0e3fa6b88c5619d7cf405265db487ea820c4c383dbe2a7c4ff3`, and [owner R6](../../analysis/ableton-live-12.4.3/full-spec-v1/mixer-values-owner-r6-batch/manifest.json), SHA-256 `90b1e68eb9c5433420381dd2559cead190a5f3669aa9aa46c2c9e7f0ed3f6f6c`, supply inherited authority. The approved input metadata (193,918 bytes/SHA-256 `df60835f109019751e3261c4b63c30a5dc3d1bbb7c97758137db449537513338`) provides49 older regular pairs and28 additional ±0.75/±0.9375 pairs. Existing executable79,728 bytes/SHA-256 `188b1197bd69ab4700ae47eade48f00982a2d11139d865f3cee46e64b80d3078`, harness C22,912 bytes/SHA-256 `851696ae9fac7b2d9791604a30b570b6e04a5cb8deb675dce7d927478a752d54`, driver6,768 bytes/SHA-256 `5685e93cc781f1076ba688e308b55112fb58ee51064cf9bdd7f7120f40fc85f0` and existing x86 slice163,716,848 bytes/SHA-256 `1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0` remain unchanged. Source/method proof is inherited, not a replay of earlier raw/source/native reviews.
+
+Mix authors this packet; Auto is sole independent actual/source peer after seal, and Root remains citation-only for all new actual source/raw/results/code. Freeze exact826inputs/newcode/authority/harness/executable/image/environment before once execution. Every new expectation is initially NULL: record outputs without formula fitting/clamping or new tolerance. Existing Linux cos/cosf substitutions only; distinguish bound imports from actual use, reject unexpected use.20s per child/minimal environment/DEVNULL/core0/new process group/full receipt/raw lanes/custody and first-anomaly-stop/no-retry apply; already queued within-child calls cannot be retroactively stopped. No build, install, new tool/model/provider, FP perturbation or automatic extension. One frozen manifest and one independent review, no additional readiness chain.
+
+This completes the selected helper-input set only. It neither captures the actual129-entry runtime table nor proves its construction, interpolation, current track factor, audio sign, ARM/Apple equality or public delivery. The36 allocator-patched setup rows stay withheld. No case/grade/release/site or general-law admission follows from selection. Frozen routes remain691 X/1,076 S/3,857 none; main Live25,071+24=25,095of268,015, bundle sites separate; requiredU/productOPEN.
+
+## Whole regular-node helper actual adoption — 2026-10-21
+
+The [frozen regular-node packet](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mixer-regular-knots-v1/manifest.json),5,455-byte manifest/SHA-256 `47d0e5b615f82dba8a6a87e9f88ceda336e7d4f620b6d389fc0393b86abf4aa7`, passed [Auto's sole actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mixer-regular-knots-v1-review.json),631,459bytes/SHA-256 `51d8f66ab21e3759ce80bcf3b5d4aa04feff2f498eb42fb084de816d9d55c8ce`, with no blockers/corrections and source window CLEAR. Root adopts by citation without opening the new actual source/raw/results/code or repeating checks. All31payloads/4,721,407bytes and32files remain read-only. The3,578-byte pre-call manifest/SHA-256 `6dda926dc3469a30e4f5a8942f4c9ff3a3fbbcb4cf1d2fb97a8abd9f9547f8bc` froze the exact class/plans/newcode/context before once execution.
+
+All **826 fresh scalar evaluations** completed in seven sequential118-call children at10:12:23.522571–10:12:25.768129UTC, outerPID1389090; all exit0 with empty stderr/no timeout/retry. They fill every missing regular p=k/64 position for the seven helpers. The complete903-point class includes77 inherited observations, omitted from fresh argv without oldraw/original replay or fabricated historical PIDs. Fresh results are809 finite nonzero values plus17 positive zeros; the complete class has879nonzero finite values plus24positive zeros, no NaN/Inf/negative-zero normalization. All826 pre-execution expectations remain NULL; this is observation admission, not oracle agreements or a fitted law. Auto's complete `reviewed_points` summary supplies native bits/provenance for the next owner peer.
+
+The peer read full new collector/checker and inert retained protocol sources, checked all903inputgrid/parser projections, every826raw four-carrier/low32 result and allseven receipts/import declarations/uses. Twelve input/twenty packet/twenty-two independent controls pass. **Eighteen common pre-batch custody identities** match each child's after-endpoint: these are not separately sampled per-child before hashes. Every child declares1,882symbols; only `_cosf` has counted native import use (249/249/137/81/40/3/0,759total). Declared imports are not calls; counters do not prove absence of all other effects or continuous/executed provider identity. The21owned historical records/70,666bytes join77selected old observations; old numeric/source meaning is inherited from its sole approval, not re-audited.
+
+Inputs are exact dyadic finite scalars, converted through recorded host strtod/double→float bookkeeping and the existing one-FP-slot call adapter. Only low32 of saved64-bit XMM0 has the inherited scalar meaning. Four carriers are64bits each, not128-bit SIMD capture; no original entry-register/fenv/exception trace or formal ABI proof. Existing loader skips static initializers/weak binds under the inherited model. JSON bookkeeping was fsynced; raw stdout/stderr was closed and hashed without explicit raw-FD fsync. Recorded success/endpoints do not prove every timeout/crash/cleanup/directory/power-loss path.
+
+The observations do not capture or establish the actual129-entry runtime table, its construction/interpolation, current track factor/branch/ramp/audio sign, public crossfader delivery, ARM/Apple equality, a generic1ULP bound or calibration. The36patched setup rows stay withheld. Arrangement prepares a narrow R7 owner annex from Auto's approved903-point summary; owner review covers only new wording/mapping/IDs/preservation, without actual re-review. R6 remains canonical until approval, portable comparators NULL. No case/grade/release/site yet; current adopted newIDs3,890, not outcomes/passes. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+## Mixer owner R7 regular-node annex adoption — 2026-10-21
+
+[Canonical R7](../specs/mixer-values.md) is adopted after [Auto's sole new-wording/mapping/IDs/preservation review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/owner-mixer-r7-regular-nodes-finite-v1-review.json),49,583bytes/SHA-256 `053a92cd77f1ef918bf7daedd4d425c008143535ecca4ca10e3b32c768a3f912`, with no blockers/corrections/CLEAR. Root adopts by citation without repeating actual or owner review. The [owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-mixer-r7-regular-nodes-finite-v1/manifest.json),3,494-byte manifest/SHA-256 `c1dc7e670ed7864f3b299ba7591ec60d6218d6e53c5e9b40eef776239fed53c3`, has10read-only payloads/473,301bytes. Exact applied owner:74,008bytes/SHA-256 `ce0c1ebae5c21913b2b2e36ef9edd6277a642906e8f41f5042a3ca03bfc94f16`.
+
+MV-301…MV-1126 add826finite native scalar observations;77inherited joins receive no newIDs/replay. Twenty-eight references name existing R6 IDs as navigation only, with exact input/function/output correspondence. No fresh pair duplicates the252R6objects. Auto joined every903point to its approved actual summary, without actual/source/raw/original/model rereview. Twenty-one author/fourteen independent controls and full R6 reversal pass. All14other requirement bodies, priorREQ014prefix,48old rows,252R6objects and80released objects remain exact, including off-grid negative MV-262. Native bits describe captured x86/Linuxcosf only; freshNULL history and portableexpected/comparator/gradeNULL remain intact. Eighteen COMMON baseline identities→seven child after/final endpoints,759cosfuses, FP/ABI/raw-no-fsync limits are not strengthened. No actual129table/interpolation/currenttrackfactor/publicsign/audio/ARM/tolerance/calibration/generalclamp law or new release/site. Current owneradoptions4,994newfiniteIDs/notpassesordenominator. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.

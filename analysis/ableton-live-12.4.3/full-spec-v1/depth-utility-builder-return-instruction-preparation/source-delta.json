@@ -1,0 +1,86 @@
+{
+  "pattern_provider": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-utility-candidate-name-instruction-preparation/extract-decode-once.py",
+    "bytes": 6436,
+    "sha256": "c5bd2ba2d6525433f33d15eecfa0fb585c12544c1a356133c9886ae196017011"
+  },
+  "design_provider": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/utility-mute-builder-return-instruction-preparation-2026-10-20.json",
+    "bytes": 6544,
+    "sha256": "5bc76876fff741756108509573dbf39312480524f4c9e85a4d04c5190d93c91c"
+  },
+  "literal_code_changes": [
+    {
+      "old": "exact16B static-data decode",
+      "new": "exact96B static-data decode",
+      "occurrences": 1
+    },
+    {
+      "old": "depth-utility-candidate-name-instruction-data",
+      "new": "depth-utility-builder-return-instruction-data",
+      "occurrences": 1
+    },
+    {
+      "old": "START=0x101482918\nLENGTH=16",
+      "new": "START=0x101aa80cc\nLENGTH=96",
+      "occurrences": 1
+    },
+    {
+      "old": "assert plan['caller_window'] is None and plan['helper']['va']==hex(START) and plan['helper']['length']==LENGTH",
+      "new": "assert plan['caller_window'] is None and plan['helper']['va']==hex(START) and plan['helper']['length']==LENGTH\n  assert plan['helper']['body_start']=='0x101aa7f64' and plan['helper']['body_end_exclusive']=='0x101aa812c'\n  assert int(plan['helper']['body_start'],16)<=START and START+LENGTH==int(plan['helper']['body_end_exclusive'],16)",
+      "occurrences": 1
+    },
+    {
+      "old": "header-mapping-and16B-extraction",
+      "new": "header-mapping-and96B-extraction",
+      "occurrences": 1
+    },
+    {
+      "old": "len(raw)==16",
+      "new": "len(raw)==LENGTH",
+      "occurrences": 1
+    },
+    {
+      "old": "helper-16.bin",
+      "new": "helper-tail-96.bin",
+      "occurrences": 1
+    },
+    {
+      "old": "length=16",
+      "new": "length=LENGTH",
+      "occurrences": 1
+    },
+    {
+      "old": "range(0,16,4)",
+      "new": "range(0,LENGTH,4)",
+      "occurrences": 1
+    },
+    {
+      "old": "'pdj 4'",
+      "new": "'pdj 24'",
+      "occurrences": 1
+    },
+    {
+      "old": "len(decoded)==4",
+      "new": "len(decoded)==24",
+      "occurrences": 1
+    },
+    {
+      "old": "decoded4byteexact-rows-no-semantic-conclusion",
+      "new": "decoded24byteexact-rows-no-semantic-conclusion",
+      "occurrences": 2
+    },
+    {
+      "old": "with (DEST/'decoder.stdout.json').open('xb') as f:f.write(stdout)",
+      "new": "with (DEST/'decoder.stdout.json').open('xb') as f:f.write(stdout);f.flush();os.fsync(f.fileno())",
+      "occurrences": 1
+    },
+    {
+      "old": "with (DEST/'decoder.stderr').open('xb') as f:f.write(stderr)",
+      "new": "with (DEST/'decoder.stderr').open('xb') as f:f.write(stderr);f.flush();os.fsync(f.fileno())",
+      "occurrences": 1
+    }
+  ],
+  "no_run": true,
+  "old_file_unchanged": true
+}

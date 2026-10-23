@@ -1,0 +1,86 @@
+[
+  {
+    "id": "REQ-GROOVE-001",
+    "preconditions": "Drag a library AGR onto a clip; or double-click it in browser. Or select a pooled entry with the Clip Groove chooser.",
+    "contract": "Dropping assigns/applies groove timing to clip; double-click loads it into Groove Pool before assignment. Pool contains loaded and assigned grooves; unused entries have grayed parameters. Duplicate import/identity handling U. The Clip Groove chooser selects the groove for a clip from entries available in the Groove Pool.",
+    "evidence": "G1\u2013G2; CV:B062"
+  },
+  {
+    "id": "REQ-GROOVE-002",
+    "preconditions": "Assign groove to a MIDI or audio clip.",
+    "contract": "MIDI supports grooves; audio supports them through Warp and requires Warp enabled. Assignment to unwarped audio has no supported groove effect; exact disable/auto-enable/refusal UI U.",
+    "evidence": "G1"
+  },
+  {
+    "id": "REQ-GROOVE-003",
+    "preconditions": "Use browser view-control entry or Ctrl+Alt+6 (Win)/Cmd+Option+6 (Mac); adjust shared groove control.",
+    "contract": "Toggle pool visibility. Pool settings can change in real time and affect clips using that groove. Update boundary, automation/mapping and persistence U.",
+    "evidence": "G2"
+  },
+  {
+    "id": "REQ-GROOVE-004",
+    "preconditions": "Select Base 1/4 or 1/8.",
+    "contract": "Groove note offsets are measured relative to nearest corresponding grid division, affecting assigned clip notes proportionally. A groove note exactly on reference grid contributes no timing offset to its corresponding clip notes. Nearest-grid tie and correspondence rules U.",
+    "evidence": "G3"
+  },
+  {
+    "id": "REQ-GROOVE-005",
+    "preconditions": "Set Quantize before application, Base explicit.",
+    "contract": "Apply straight quantization before groove: 100% snaps notes to nearest Base positions; 0% keeps original positions at this stage. Partial-amount law, tie and endpoint rounding U.",
+    "evidence": "G3"
+  },
+  {
+    "id": "REQ-GROOVE-006",
+    "preconditions": "Change Timing with all other controls explicit.",
+    "contract": "Timing controls the groove pattern's timing influence. Zero Timing contributes no pattern timing; exact interpolation, saturation and over-100 behavior U.",
+    "evidence": "G3, G6"
+  },
+  {
+    "id": "REQ-GROOVE-007",
+    "preconditions": "Set Random nonzero on simultaneous voices.",
+    "contract": "Apply random timing fluctuation separately per voice, allowing formerly coincident notes to separate. No requirement that every realization differs, and no numeric bound, distribution, seed, loop repeat, statistical independence or cross-voice/cross-clip correlation law is supplied.",
+    "evidence": "G3"
+  },
+  {
+    "id": "REQ-GROOVE-008",
+    "preconditions": "Set Velocity within -100..100%.",
+    "contract": "Velocity controls use of groove velocity information; negative values reverse its emphasis (loud becomes quiet and vice versa). Zero gives no groove velocity influence. Numeric blending, rounding, clipping, audio gain mapping and note-off velocity U.",
+    "evidence": "G3, G6"
+  },
+  {
+    "id": "REQ-GROOVE-009",
+    "preconditions": "Change Global Amount, including 100% or upper endpoint 130%.",
+    "contract": "Scale Timing, Random and Velocity across all grooves; 100% uses configured values. Quantize is outside this stated scale. Control-bar global slider appears when grooves are assigned to Set clips. Exact composite equation and lower endpoint U.",
+    "evidence": "G3"
+  },
+  {
+    "id": "REQ-GROOVE-010",
+    "preconditions": "Commit groove on assigned MIDI/audio clip.",
+    "contract": "Write groove result: MIDI notes move; audio obtains Warp Markers at appropriate positions. Assignment then becomes None. Exact note/velocity/marker data, duplicate/endpoint marker policy, random realization, repeat commit and undo scope U. For a groove using positive velocity values, committing to an audio clip creates a volume clip envelope to represent that velocity information as audio volume changes, overwriting a volume clip envelope already in the clip. This named envelope relation supplies no velocity-to-gain, point/curve, marker, sample or timing law.",
+    "evidence": "G4; CV:B064"
+  },
+  {
+    "id": "REQ-GROOVE-011",
+    "preconditions": "Drag AGR from browser or pool into MIDI track.",
+    "contract": "Create a MIDI clip containing editable groove material; normal MIDI edits apply. Re-extract edited clip to create a groove. Initial naming, track insertion/target conflicts and round-trip normalization U.",
+    "evidence": "G5"
+  },
+  {
+    "id": "REQ-GROOVE-012",
+    "preconditions": "Drag audio/MIDI clip into pool or invoke Extract Groove on clip.",
+    "contract": "Create a groove using timing/volume information from playing portion only. Transient detection, volume-to-velocity measurement, playing-region endpoint rules, naming and defaults U.",
+    "evidence": "G5"
+  },
+  {
+    "id": "REQ-GROOVE-013",
+    "preconditions": "Set Timing=Random=Velocity=0; adjust Base/Quantize.",
+    "contract": "Provide real-time nondestructive quantization; groove file contents do not affect this mode. Before commit this is a playback modification, rather than rewriting source note positions. Exact rendered/audio schedule U.",
+    "evidence": "G6"
+  },
+  {
+    "id": "REQ-GROOVE-014",
+    "preconditions": "Enable Hot-Swap above clip Groove chooser and select other grooves while playing; use pool save/hot-swap buttons.",
+    "contract": "Clip groove can be auditioned by replacement while playing; pool exposes save/hot-swap. Dialog overwrite/cancel, other-clip sharing/duplicate-entry behavior, autosave, media locations and failure recovery U. After enabling Clip Hot-Swap, double-clicking the selected alternative groove or pressing Enter loads it onto the clip and replaces the previously loaded groove in the Groove Pool as well. The source does not specify how other clips or duplicate/shared entry identities change.",
+    "evidence": "G1\u2013G2; CV:B063"
+  }
+]

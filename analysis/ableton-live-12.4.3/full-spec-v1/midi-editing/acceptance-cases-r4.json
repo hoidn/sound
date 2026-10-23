@@ -1,0 +1,2438 @@
+{
+  "format_revision": 4,
+  "provenance": "R4 preserves all72 R3 records verbatim and appends21 bounded Tools control/action proposals; legacy expected/comparator are documentary, never target measurements.",
+  "units": "Beat positions use quarter-note beats, note durations such as 1/8 are musical note values; half-open ranges describe authored fixture spans only, not a claimed target boundary rule.",
+  "cases": [
+    {
+      "id": "MED-001",
+      "requirement": "REQ-MIDI-EDIT-001",
+      "kind": "Positive",
+      "setup_action": "In a fresh MIDI track, double-click an empty Session slot, then separately invoke Insert Empty MIDI Clip(s) on an Arrangement timespan [0,4).",
+      "expected": "A MIDI clip exists at each chosen location; initial length/defaults ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E1",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-002",
+      "requirement": "REQ-MIDI-EDIT-002",
+      "kind": "Positive/negative",
+      "setup_action": "With Draw Mode on and pitch-lock on, drag across pitches; repeat holding Alt (Windows)/Option (macOS). Click an existing note. Turn Draw Mode off and double-click empty then occupied space.",
+      "expected": "First gesture remains on one pitch; modifier permits melodic drawing; occupied note is removed; inactive-mode double clicks add then remove.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E2",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-003",
+      "requirement": "REQ-MIDI-EDIT-003",
+      "kind": "Positive/cancellation",
+      "setup_action": "Select notes A and B, Shift-click B, invert selection, then Escape. Separately select a time range containing A and press Enter.",
+      "expected": "B removed before inversion; complement selected after inversion; Escape leaves no notes selected; Enter toggles range/note selection.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E3",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-004",
+      "requirement": "REQ-MIDI-EDIT-004",
+      "kind": "Positive/negative",
+      "setup_action": "Fixture A pitches 60,64 and 72; enable Pitch filter C, then Invert; click editor.",
+      "expected": "Pitches 60 and 72 selected, then 64 selected, then none; no filtering latency asserted.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E4",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-005",
+      "requirement": "REQ-MIDI-EDIT-005",
+      "kind": "Boundary",
+      "setup_action": "With grid on, drag a note past several grid lines; repeat with Alt (Windows)/Cmd (macOS). Disable grid and repeat with that modifier.",
+      "expected": "Unmodified grid-on motion snaps after first encounter; modifier bypasses; modifier with grid off temporarily enables snapping. Pixel thresholds ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E5",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-006",
+      "requirement": "REQ-MIDI-EDIT-006",
+      "kind": "Positive/boundary",
+      "setup_action": "Same pitch: old [0,2), new [1,3); separately old [0,2), new [-1,1). Paste a copied note at beat 4.",
+      "expected": "First old note shortened at new start; second old note overwritten; pasted material starts at insert marker 4. Boundary-touch-only case ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E6",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-007",
+      "requirement": "REQ-MIDI-EDIT-007",
+      "kind": "Positive",
+      "setup_action": "Select two unequal notes, choose a quarter-note Duration and Set Length; deselect and choose eighth-note duration and Set Length.",
+      "expected": "Selected notes become one beat long, then all clip notes become half a beat long; no acceptance claim for malformed duration.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E7",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-008",
+      "requirement": "REQ-MIDI-EDIT-008",
+      "kind": "Positive/boundary",
+      "setup_action": "Select notes at beats 0 and 2 with time selection [0,4), stretch right marker to 8 with snapping disabled; separately cross markers. Include linked and unlinked envelopes.",
+      "expected": "First operation scales note times/lengths proportionally by two; crossing reverses order; linked timing follows, unlinked timing unchanged. Exact expression samples ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E8",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-009",
+      "requirement": "REQ-MIDI-EDIT-009",
+      "kind": "Positive/undo",
+      "setup_action": "Deactivate note A, reactivate it; move imported-file note A then Undo; compare source MIDI file hash before/after.",
+      "expected": "Active status toggles; clip edit is reversible; original MIDI file digest unchanged. Playback timing/audio ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E9",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-010",
+      "requirement": "REQ-MIDI-EDIT-010",
+      "kind": "Positive/negative",
+      "setup_action": "Note [0,2): split at 1; then join both same-pitch parts. At an insert marker outside all notes with no note selection inspect Split availability.",
+      "expected": "Two parts after split; one note after join; Split command unavailable in the stated no-intersection setup.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E10",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-011",
+      "requirement": "REQ-MIDI-EDIT-011",
+      "kind": "Positive/boundary",
+      "setup_action": "Clip scale C major; selected C-sharp at MIDI 61; Fit to Scale. Turn scale off and inspect Fit to Scale.",
+      "expected": "Note becomes C (60), lower of equidistant C/D; button unavailable without scale. Pitch-limit handling U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E11",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-012",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Boundary",
+      "setup_action": "One-beat grid; Humanize at maximum on selected note at beat 2. In separate fixture use Stretch factor 2 on quarter note with loop [0,4).",
+      "expected": "Humanized start remains in [1.75,2.25]; stretched duration becomes 2 beats; loop length stays 4. No random sample sequence asserted.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E12",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-013",
+      "requirement": "REQ-MIDI-EDIT-013",
+      "kind": "Positive/negative",
+      "setup_action": "Two pitches at beat 0, select only A, draw velocity 40 in their grid cell; type 80 and Enter for A marker.",
+      "expected": "A changes to 40 then 80; unselected B unchanged.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E13",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-014",
+      "requirement": "REQ-MIDI-EDIT-014",
+      "kind": "Boundary",
+      "setup_action": "Set note velocity 60 and deviation +20; inspect range, then double-click marker. Set randomization amount 0 and apply.",
+      "expected": "Deviation range 60..80, then zero; zero randomization amount permits no velocity offset. Playback RNG not tested.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E14",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-015",
+      "requirement": "REQ-MIDI-EDIT-015",
+      "kind": "Positive/boundary",
+      "setup_action": "No selection: set randomize amount 25 on notes at Chance 50; inspect before pressing Randomize, then apply.",
+      "expected": "Before application Chance stays 50; after application each value lies in 25..75. No distribution asserted.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E15",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-016",
+      "requirement": "REQ-MIDI-EDIT-016",
+      "kind": "Positive/boundary",
+      "setup_action": "Create group from simultaneous A/B with Play All, change to Play One, then ungroup B.",
+      "expected": "One diamond then triangle marker; B becomes individual after ungroup. Distribution and cross-time grouping ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E16",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-017",
+      "requirement": "REQ-MIDI-EDIT-017",
+      "kind": "Positive/negative",
+      "setup_action": "Clip C major contains C and F-sharp; enable Fold to Scale, then Fold to Notes.",
+      "expected": "F-sharp row remains visible despite being out of scale; Fold to Notes shows used C/F-sharp rows; notes retained.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E17",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-018",
+      "requirement": "REQ-MIDI-EDIT-018",
+      "kind": "Positive/boundary",
+      "setup_action": "Loop [0,4), notes fully inside and fully outside; Crop Clip. Separately Insert Time using [1,2) with later note at beat 3.",
+      "expected": "Outside note removed without creating disk file; Insert Time moves later note to beat 4 while clip/loop bounds stay unchanged. Spanning-note cases ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E18",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-019",
+      "requirement": "REQ-MIDI-EDIT-019",
+      "kind": "Positive",
+      "setup_action": "Loop [0,4), note at beat 1 and outside note at 5; select brace and Duplicate.",
+      "expected": "Loop becomes length 8, copy at beat 5, original outside note moves to 9; distinguish note identity in comparison.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E19",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-020",
+      "requirement": "REQ-MIDI-EDIT-020",
+      "kind": "Positive/negative",
+      "setup_action": "Two clips A/B; focus A, select/move A notes; attempt cross-clip selection. Disable Focus, select notes across A/B; edit velocity in foreground A lane.",
+      "expected": "Focus confines edits to A; nonfocus supports cross-clip note selection; velocity edit still affects foreground A only.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E20",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-021",
+      "requirement": "REQ-MIDI-EDIT-021",
+      "kind": "Boundary",
+      "setup_action": "Select eight looped Session clips; separately select eight Arrangement MIDI tracks over clips; then attempt nine and an unlooped Session clip.",
+      "expected": "First two setups permitted with documented order; ninth/unlooped fallback explicitly U, never assume rejection or truncation.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E21",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-022",
+      "requirement": "REQ-MIDI-EDIT-022",
+      "kind": "Positive",
+      "setup_action": "With instrument/audible path, enable Preview, add note; select another MIDI track. Start playback with Follow, edit, then stop/restart.",
+      "expected": "Audition exists; switch shared; Follow pauses then resumes. No sample/audio or note-off timing claim.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E22",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-023",
+      "requirement": "REQ-MIDI-EDIT-023",
+      "kind": "Positive/negative",
+      "setup_action": "Empty clip loop [0,4), time selection [1,3), apply Rhythm; then no time selection and apply in a reset empty clip.",
+      "expected": "First generated material lies in target [1,3); second targets loop [0,4). Existing-content collision cases ungraded under C1.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T1",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-024",
+      "requirement": "REQ-MIDI-EDIT-024",
+      "kind": "Positive/cancellation",
+      "setup_action": "From pristine selected notes choose Chop and change Parts with Auto Apply on; switch Auto Apply off; change Parts; Apply.",
+      "expected": "Immediate first transformation; disabling restores starting notes; parameter edit alone has no effect while off; Apply transforms.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T1",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-025",
+      "requirement": "REQ-MIDI-EDIT-025",
+      "kind": "Undo/negative",
+      "setup_action": "Auto Apply off, set Chop Parts 4 and apply; Undo/Redo; Reset tool.",
+      "expected": "Note transformation reverses/reapplies while Parts remains 4; Reset restores parameters with notes unchanged; exact default value ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T1",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-026",
+      "requirement": "REQ-MIDI-EDIT-026",
+      "kind": "Positive",
+      "setup_action": "Enable C-major scale and inspect Arpeggiate Distance units; select Velocity Shaper and Euclidean in a working Suite installation.",
+      "expected": "Distance uses scale degrees; bundled tools selectable. This is a documented-domain proposal, not target/platform availability evidence.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T2",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-027",
+      "requirement": "REQ-MIDI-EDIT-027",
+      "kind": "Boundary",
+      "setup_action": "Same chord/rate/style, compare Gate 50, 100, 150 percent with other controls fixed.",
+      "expected": "Durations respectively shorter than, equal to baseline at 100, and longer than baseline. Exact sequence/style law ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T3",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-028",
+      "requirement": "REQ-MIDI-EDIT-028",
+      "kind": "Boundary",
+      "setup_action": "With Variation 0 and no gaps/emphasis, divide one note with Parts 2, then 64 in separate reset fixtures; manually toggle gap and adjust Gaps.",
+      "expected": "Two then 64 divisions; manual change gives dash then is superseded by Gaps setting. Length/rounding near minimum U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T4",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-029",
+      "requirement": "REQ-MIDI-EDIT-029",
+      "kind": "Boundary",
+      "setup_action": "Two nonoverlapping source notes, Density 100, Spread 0, Tie 0, valid Rate.",
+      "expected": "Gaps filled as documented; inserted pitches have no random shift; exact note count and endpoint fitting ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T5",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-030",
+      "requirement": "REQ-MIDI-EDIT-030",
+      "kind": "Positive/negative",
+      "setup_action": "Two successive different pitches, apply Start 50 percent; inspect MPE editor. Repeat with one selected note.",
+      "expected": "Two-note input has pitch connection whose bend begins halfway through note; one-note creation unsupported, UI response ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T6",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-031",
+      "requirement": "REQ-MIDI-EDIT-031",
+      "kind": "Boundary",
+      "setup_action": "Target Pitch Bend with clip range ±60 semitones; inspect Amount/base ranges; set Attack 100 after positive Decay.",
+      "expected": "Amount allows -120..120, base -60..60; Decay resets to 0. No exact generated curve samples asserted.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T7",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-032",
+      "requirement": "REQ-MIDI-EDIT-032",
+      "kind": "Boundary",
+      "setup_action": "One-beat grid, selected note starts at beat 2; Flam Position -100 percent then separately +100 percent.",
+      "expected": "Flam occupies one grid division before original for negative, beginning of original for positive; no assertion about expression carryover.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T8",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-033",
+      "requirement": "REQ-MIDI-EDIT-033",
+      "kind": "Boundary",
+      "setup_action": "Note start 0.1 beat, end 0.8; quarter-note quantization of start only, Amount 0 percent; repeat end-only at full amount.",
+      "expected": "Zero amount leaves timing unchanged; end-only can change duration without moving start. Exact quantized end withheld pending tie/boundary law.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T9",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-034",
+      "requirement": "REQ-MIDI-EDIT-034",
+      "kind": "Positive/boundary",
+      "setup_action": "Three successive notes velocities 20,60,100; choose Velocity, Mirror only; then reset with all toggles off and rotation zero.",
+      "expected": "Mirror gives 100,60,20 at corresponding ordered notes; disabled permutation leaves order. Random sequences ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T10",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-035",
+      "requirement": "REQ-MIDI-EDIT-035",
+      "kind": "Positive",
+      "setup_action": "Starts 0,2,5 within selection [0,8), Offset/Variation 0: compare Legato, Tenuto, Staccato in reset fixtures.",
+      "expected": "Legato lengths 2,3,3; Tenuto original lengths; Staccato lengths 1 (half minimum start distance).",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T11",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-036",
+      "requirement": "REQ-MIDI-EDIT-036",
+      "kind": "Boundary",
+      "setup_action": "Chord pitches 60,64,67 at beat 2; grid one beat; Low=High=0, vary Tension.",
+      "expected": "No start-time effect when both offsets zero. Nonzero curved offset numerical law ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T12",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-037",
+      "requirement": "REQ-MIDI-EDIT-037",
+      "kind": "Boundary",
+      "setup_action": "Selected notes within [0,4), nonconstant valid speed curve and Preserve Time Range on.",
+      "expected": "Result fits original selected range; exact warped starts/durations ungraded. This tool is distinct from audio Warp markers.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T13",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-038",
+      "requirement": "REQ-MIDI-EDIT-038",
+      "kind": "Boundary",
+      "setup_action": "Select successive notes; set minimum=40, maximum=80 and apply; separately Rotate 1 with Division Grid.",
+      "expected": "Velocities constrained to 40..80; rotation moves envelope right one grid step; exact sample positions ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T14",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-039",
+      "requirement": "REQ-MIDI-EDIT-039",
+      "kind": "Boundary",
+      "setup_action": "Time selection one 4/4 bar; Steps 8, Density 8, duration 1/8, Split 0, Accent Frequency 1; then duration 1/16.",
+      "expected": "One pattern repetition then two; every generated note accented. Edge clipping/tie identities ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T15",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-040",
+      "requirement": "REQ-MIDI-EDIT-040",
+      "kind": "Boundary",
+      "setup_action": "Pitch min=max=60, duration min=max=1/8, velocity min=max=64; nonzero valid density, Voices 1.",
+      "expected": "All produced notes pitch 60, half-beat duration and velocity 64; simultaneous note count at most one. Exact total count U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T16",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-041",
+      "requirement": "REQ-MIDI-EDIT-041",
+      "kind": "Boundary",
+      "setup_action": "Pitch minimum=60, maximum=72, Jitter 100 percent, nonzero valid density.",
+      "expected": "All generated pitches remain in 60..72 despite Jitter; exact timing/count ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T17",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-042",
+      "requirement": "REQ-MIDI-EDIT-042",
+      "kind": "Positive/boundary",
+      "setup_action": "Active C-major clip; choose root and add second chord; select each chord and adjust one duration.",
+      "expected": "Root chooser restricted to scale notes; each selected chord shows its own settings. Exact chord pitches ungraded absent chord-bank contract.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T18",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-043",
+      "requirement": "REQ-MIDI-EDIT-043",
+      "kind": "Positive/negative",
+      "setup_action": "One active voice pitch 60 velocity 90; other three disabled and assigned different pitches; generate with nonzero density.",
+      "expected": "Generated notes originate only from active pitch-60 voice, with configured velocity; exact phase/pattern/count U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T19",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-044",
+      "requirement_scope": "001–043",
+      "kind": "Malformed note data",
+      "setup_action": "Load invalid/duplicate note IDs, nonfinite times or truncated clip XML.",
+      "expected": "U here; load validation belongs to MIDI note storage and Live Set structure; their finite released clauses do not establish editor recovery.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-045",
+      "requirement_scope": "023–043",
+      "kind": "Invalid tool parameter",
+      "setup_action": "Enter nonnumeric, nonfinite or out-of-range value in each tool control; attempt unavailable choice.",
+      "expected": "U: no clamp/refuse/default/error-message law claimed.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-046",
+      "requirement_scope": "002,005–008",
+      "kind": "Cancel edit gesture",
+      "setup_action": "Begin drag/draw/stretch, then Escape before release; change focus or close editor midgesture.",
+      "expected": "U: selection Escape is specified, edit-gesture rollback/commit and undo grouping are not.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-047",
+      "requirement_scope": "009,023–043",
+      "kind": "Undo grouping",
+      "setup_action": "Perform a continuous parameter drag in Auto Apply, switch tools, Undo once, then Redo.",
+      "expected": "U for transaction granularity and restored selection; only finite prior-state reversibility/parameter non-undo clauses specified.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-048",
+      "requirement_scope": "001–043",
+      "kind": "Save/reopen",
+      "setup_action": "Save edited clips/tool settings, close and reopen Set.",
+      "expected": "U for editor/tool-settings serialization and selection/focus restoration; note data uses canonical note-storage clauses only.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-049",
+      "requirement_scope": "022–043",
+      "kind": "Teardown and failure",
+      "setup_action": "Delete active clip/track, unload instrument or Max tool, close Set during preview/apply; make AMXD missing/unreadable.",
+      "expected": "U for note-off, resource cleanup, partial-note mutations, recovery prompt and latency.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-050",
+      "requirement_scope": "023",
+      "kind": "Generator replacement contradiction C1",
+      "setup_action": "Apply each generator to occupied time selection with nonoverlapping and overlapping pitches/times.",
+      "expected": "U because introduction and detailed usage differ; no replacement semantics selected.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-051",
+      "requirement_scope": "033",
+      "kind": "Shortcut contradiction C2",
+      "setup_action": "Press Ctrl+Shift+U (Windows)/Cmd+Shift+U (macOS) after changing quantize settings.",
+      "expected": "U whether opens settings or applies without opening; use explicit menu/panel for graded cases.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-052",
+      "requirement_scope": "031",
+      "kind": "LFO visibility contradiction C3",
+      "setup_action": "Apply pitch-target LFO; switch Notes/MPE views and expression lanes.",
+      "expected": "U for Notes-view curve visibility because section contains conflicting statements.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-053",
+      "requirement_scope": "002–043",
+      "kind": "Live note interaction",
+      "setup_action": "Edit sounding/sustained notes while transport loops or MIDI input is held; change loop/clip selection.",
+      "expected": "U for engine scheduling, stuck-note handling and sample timing; playback-core owner remains canonical.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-054",
+      "requirement_scope": "023",
+      "kind": "Tool targeting ambiguity",
+      "setup_action": "Keep time selection and disjoint note selection active together; apply transform.",
+      "expected": "U for precedence and boundary membership; no inferred target intersection/union.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-055",
+      "requirement_scope": "006–012,027–043",
+      "kind": "MPE preservation",
+      "setup_action": "Transform notes with pitch, slide, pressure and release-velocity data, including overlap, split/join and reverse.",
+      "expected": "U for expression preservation/resampling except documented Join preservation and named MPE tool output.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-056",
+      "requirement_scope": "006–008,011–012,027–043",
+      "kind": "Input limits",
+      "setup_action": "Move or transform notes beyond minimum/maximum pitch, negative time, zero duration or across loop bounds.",
+      "expected": "U for clipping/refusal/deletion/wrapping; serialization domain limits are not editing rules.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-057",
+      "requirement_scope": "012,014–016,027–043",
+      "kind": "Random reproducibility",
+      "setup_action": "Reset identical note/tool state; reapply random mode, save/reopen and repeat.",
+      "expected": "U for generator seed, distribution, sample count, persistence, independence and repeatability; range predicates remain only finite documented expectations.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    {
+      "id": "MED-058",
+      "requirement": "REQ-MIDI-EDIT-011",
+      "kind": "Positive/selection",
+      "setup_action": "Use separate disposable owned editable MIDI clips with two distinct interior notes (for example MIDI60/64 at known distinct beats), Scale Mode explicitly Off, admitted Interval Size control/value (for example +7 semitones), stopped transport, recorded editor/foreground/focus and exact selection state. Independently demonstrate a productive ordinary note edit and restore a known original copy. No real hardware, instrument/audio output or vendor function is required or run; this is a future editor-data recipe. Explicitly select the two original notes. Adjust the actual Interval Size slider to the admitted nonzero value WITHOUT invoking Add Interval. Retain before/after note content and selected-note identities; source “immediately” means this documented separate-button distinction, not a zero-time deadline. Missing/unsupported/inactive control or failed ordinary edit baseline remains U.",
+      "expected": "In the documented selected-note context, adjusting the Interval Size slider adds interval notes and selects the new notes without a separate Add Interval invocation.",
+      "comparator": "Compare only actual note addition and new-note selection under the stated source context. Exact counts/NoteIds, repeat accumulation, pitch clipping/collisions, event order and timing remain U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E11; retained Intervals§10.5.9.4 HTML588 paragraph2; source-context-r2.json",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null
+    },
+    {
+      "id": "MED-059",
+      "requirement": "REQ-MIDI-EDIT-011",
+      "kind": "Negative/selection",
+      "setup_action": "Use separate disposable owned editable MIDI clips with two distinct interior notes (for example MIDI60/64 at known distinct beats), Scale Mode explicitly Off, admitted Interval Size control/value (for example +7 semitones), stopped transport, recorded editor/foreground/focus and exact selection state. Independently demonstrate a productive ordinary note edit and restore a known original copy. No real hardware, instrument/audio output or vendor function is required or run; this is a future editor-data recipe. First independently establish a genuinely productive Add Interval button baseline on a matched original nonempty clip with NO selected notes and the same admitted interval, observing newly added notes. Restore a separate exact original owned copy; explicitly deselect all notes and retain that none are selected. Adjust the accepted Interval Size slider alone and DO NOT invoke Add Interval; observe whether any notes are added. An absent control, empty clip, accidental note selection, unsupported setting or failed genuine Add Interval positive baseline is U, never a passing no-addition observation.",
+      "expected": "With no notes selected, the slider alone sets the interval size; addition requires the separately applied Add Interval button.",
+      "comparator": "Compare accepted interval setting and absence of new note addition before button use only after the genuine matched productive button baseline. No general no-side-effect, selection persistence, numeric pitch or scheduler oracle.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E11; retained Intervals§10.5.9.4 HTML588 paragraph2; source-context-r2.json",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null
+    },
+    {
+      "id": "MED-060",
+      "requirement": "REQ-MIDI-EDIT-011",
+      "kind": "Positive/no-selection-button",
+      "setup_action": "Use separate disposable owned editable MIDI clips with two distinct interior notes (for example MIDI60/64 at known distinct beats), Scale Mode explicitly Off, admitted Interval Size control/value (for example +7 semitones), stopped transport, recorded editor/foreground/focus and exact selection state. Independently demonstrate a productive ordinary note edit and restore a known original copy. No real hardware, instrument/audio output or vendor function is required or run; this is a future editor-data recipe. On a separate original reset retain two original notes with NO note selection; set the admitted Interval Size, then actually invoke Add Interval. Independently observe the original-note set and the added interval-note relation for all existing clip notes. Retain each original and resulting editor note population without borrowing a MIDI transport/output or saved NoteId rule. Failed admitted editing/control prerequisites remain U.",
+      "expected": "When Add Interval is used with no note selection, interval notes are added for all existing notes in the clip at the specified interval.",
+      "comparator": "Compare the documentary all-existing-notes interval-addition role on the finite admitted note set. No new total-count, NoteId, existing-note mutation, repeated invocation, colliding/boundary-note, audio or timing law.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E11; retained Intervals§10.5.9.4 HTML588 paragraph2; source-context-r2.json",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null
+    },
+    {
+      "id": "MED-061",
+      "requirement": "REQ-MIDI-EDIT-005",
+      "kind": "Grid entry routes and original offset",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. On independently reset copies set a declared grid and a known nonzero original note offset relative to it, well away from clip edges. Establish ordinary note drag plus working grid on/off first. Use Grid Settings button, Options Snap to Grid and Ctrl4 Win/Cmd4 Mac separately to disable/enable; retain actual switch state and drag note. In separate enabled/disabled resets use literal Alt Win/Cmd Mac during drag. Independently identify the original offset, then drag across several visible grid encounters, retaining grid-relative position. Missing known offset or productive drag is U.",
+      "expected": "Named entry controls toggle/bypass grid, temporary modifier reverses enabled state, and snapping can preserve the note's original grid-relative offset.",
+      "comparator": "Compare only offered grid controls/states and source-described original-offset retention in the admitted history. No grid spacing formula, snap threshold, first-encounter distance, ties, offset codec or pixel/sensitivity oracle.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B027,MIDI:B028",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/26",
+          "block": "MIDI:B027"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/27",
+          "block": "MIDI:B028"
+        }
+      ],
+      "adoption_group": "MIDA-G03",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-062",
+      "requirement": "REQ-MIDI-EDIT-001",
+      "kind": "Remaining empty MIDI clip entries",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Independently establish a successful ordinary empty MIDI clip creation, then reset separate empty eligible MIDI-track targets. Actually select an empty Session slot and choose Create > Insert Empty MIDI Clip(s). Separately double-click the Arrangement MIDI track display in an admitted empty region. In another reset select an empty Arrangement MIDI timespan and invoke CtrlShiftM Win/CmdShiftM Mac with the relevant view focused. Current MED001 already covers Session double-click/Arrangement menu, and Keyboard NAV060 owns the Session shortcut; those are retained/reused.",
+      "expected": "A MIDI clip is created at each independently admitted empty MIDI target through the stated entry.",
+      "comparator": "Compare clip type and chosen target/location only; initial length/content/defaults, occupied/audio target policy, exact keyboard dispatch outside declared focus, timing and file codec U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B034",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/33",
+          "block": "MIDI:B034"
+        }
+      ],
+      "adoption_group": "MIDA-G06",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-063",
+      "requirement": "REQ-MIDI-EDIT-002",
+      "kind": "Draw controls, PitchLockOff and erase histories",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. From successful ordinary note add/delete and independently recorded DrawMode/PitchLock, use Control Bar Draw Mode button and separately B with Notes editor focused, KeyMap/ComputerMIDI/modal state declared. Reset PitchLock OFF, draw across pitches without modifier then with Alt Win/Option Mac; retain the reverse of the existing MED002 ON history. On separate resets establish actual newly drawn notes, then draw over a known existing note in melodic mode; in pitch-locked mode actually backtrack the drawing cursor toward the first newly added note. Inspect focused Options and MIDI editor context labels under explicit ON/OFF preference histories. Missing productive add/erase admission remains U.",
+      "expected": "OFF permits melodic drawing and the modifier enables pitch-locked drawing. Melodic overdraw erases the covered existing note; pitch-locked backtracking erases drawn notes. Named menus reflect Pitch Lock On/Off while Notes editor is focused.",
+      "comparator": "Compare named modes/menu labels and admitted before/after note existence only. No count, NoteId, arbitrary key dispatch, erasure threshold/trajectory sampling, initial preference or gesture undo/rollback.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B038,MIDI:B039",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/37",
+          "block": "MIDI:B038"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/38",
+          "block": "MIDI:B039"
+        }
+      ],
+      "adoption_group": "MIDA-G07",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-064",
+      "requirement": "REQ-MIDI-EDIT-006",
+      "kind": "Copy-drag early and late modifier",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use distinct selected interior notes with DrawMode OFF, accepted empty destination and ordinary successful move and genuine copy baseline, then restore originals. In separate resets Ctrl Win/Option Mac plus mouse-drag copies to another interior location; repeat by starting an ordinary drag then introducing Ctrl Win/Option Mac before completing it. Keep actual modifier phase, selected notes/grid/selection and source/destination content, without serializing NoteIds.",
+      "expected": "The admitted modifier drag creates copies at the destination, including when the modifier is introduced after drag begins.",
+      "comparator": "Compare source content and copied-note presence at the chosen admitted destination only; exact displacement/snapping, original identity allocation, overlap/edge collision, clipboard codec and time U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B072",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/71",
+          "block": "MIDI:B072"
+        }
+      ],
+      "adoption_group": "MIDA-G12",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-065",
+      "requirement": "REQ-MIDI-EDIT-009",
+      "kind": "Explicit Deactivate entry routes",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use an actually active identifiable selected note and genuinely productive ordinary activation/deactivation control baseline. Reset each trial, choose Deactivate Note(s) through Edit menu, piano-ruler context and MIDI Note Editor context separately. Retain gray/active display and use 0 in the declared focused editor to reactivate. Input capability, selected note and productive control must be established before a deactivated absence/status observation; no audio is inferred.",
+      "expected": "Each offered Deactivate command deactivates the selected note and it is displayed gray; 0 reactivates in the admitted input context.",
+      "comparator": "Compare only named command/active flag/gray display role. Sound absence, tail/note-off deadline, RGB/pixels, universal0dispatch, undo transaction and saved status U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B086",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/85",
+          "block": "MIDI:B086"
+        }
+      ],
+      "adoption_group": "MIDA-G15",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-066",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Double and Halve target contexts",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Establish successful factor control and independently admitted nonzero note, time-selection and loop-region targets. On separate reset copies with unambiguous actual target and declared selected/unselected state, press the actual Double x2 then separately Halve /2 buttons in each target context; retain original and resulting target content/bounds. Do not choose target precedence when note/time/loop selections coexist. Existing MED012 StretchFactor2 and unchanged loop recipe remain exact.",
+      "expected": "The named Double and Halve buttons extend/shorten the independently admitted note-duration, time-selection or loop target as described by the existing utility contract. No new numeric or target-precedence oracle.",
+      "comparator": null,
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B116,MIDI:B117",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/115",
+          "block": "MIDI:B116"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/116",
+          "block": "MIDI:B117"
+        }
+      ],
+      "adoption_group": "MIDA-G18",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-067",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Actual Reverse selection branches",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use three distinguishable distinct-time notes and known loop/time bounds, with independently productive ordinary edit and offered Reverse button. On separate exact original resets, explicitly select a proper multi-note subset and invoke the actual Reverse button; then invoke it with no selected notes on a separate nonempty clip. Retain ordered note content and original selection without assuming persistent saved NoteIds.",
+      "expected": "Reverse flips time ordering for the selected material; with no notes selected the entire clip is reversed.",
+      "comparator": "Compare only source-described note ordering and admitted selected versus entire-clip scope. No precise pivot/coordinate formula, simultaneous-note tie order, expression carryover, clipping, loop-boundary or scheduler oracle.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B125",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/124",
+          "block": "MIDI:B125"
+        }
+      ],
+      "adoption_group": "MIDA-G19",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-068",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Actual utility Legato button",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use independently admitted distinct-time selected notes and known positive loop end, with working ordinary length edit and offered Legato utility button. Retain exact initial note starts/ends/selection, then actually invoke that button on a reset original. MED035 really exercises three Span modes, which is a separate tool and is not this utility-button action.",
+      "expected": "The Legato utility adjusts selected note durations toward following note starts and extends the final note to loop end under the documented admitted context.",
+      "comparator": null,
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B127",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/126",
+          "block": "MIDI:B127"
+        }
+      ],
+      "adoption_group": "MIDA-G19",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-069",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Humanize Amount then actual button, Q053",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use valid nonempty selected notes with known original starts, explicit grid and independently admitted productive Humanize operation. Reset originals, set actual Humanize Amount slider to an accepted value and separately invoke the actual Humanize button. Retain exact before/after notes and source contexts without selecting quarter-before/after versus half-grid interpretation. The retained-native private coefficients do not supply this public operation's oracle.",
+      "expected": null,
+      "comparator": null,
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B123",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/122",
+          "block": "MIDI:B123"
+        }
+      ],
+      "adoption_group": "MIDA-G20",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-070",
+      "requirement": "REQ-MIDI-EDIT-014",
+      "kind": "Velocity Randomize targets and Enter entry",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use distinct independently accepted interior velocity values on valid nonempty notes, working Randomize control and exact original resets. Actually invoke Randomize for separately selected notes, selected velocity markers and no notes/markers selected. In a separate reset type an accepted nonzero Randomization Amount and validate with Enter. Retain actual inputs, targeted identities and outputs. Do not infer that every random realization changes a value or that velocity slider changes alone have the same behavior as Chance. Failed admission or empty generation is U.",
+      "expected": "Randomize targets selected notes/markers or all notes when neither is selected; validating a typed amount with Enter triggers randomization.",
+      "comparator": null,
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B146,MIDI:B147",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/145",
+          "block": "MIDI:B146"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/146",
+          "block": "MIDI:B147"
+        }
+      ],
+      "adoption_group": "MIDA-G23",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-071",
+      "requirement": "REQ-MIDI-EDIT-013",
+      "kind": "Actual velocity Ramp Start and End",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use at least three distinct-time selected identifiable notes, independently accepted distinct interior endpoint velocities a/c and successful ordinary Ramp slider edit, resetting originals for each offered Ramp Start/Ramp End control history. Actually set first and last endpoints through these sliders, retain ordered note identities and displayed endpoint values plus interior values for research. No same-time ordering or new interpolation/rounding is supplied.",
+      "expected": "Ramp Start sets the first selected note's velocity and Ramp End sets the last; the source describes intermediate distribution, whose numeric/rounding criterion is not newly asserted.",
+      "comparator": "Compare only the actual named sliders, ordered first/last note identity and admitted displayed endpoint values a/c. Intermediate numeric samples/rounding/equal-time ordering and audio U.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B148",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/147",
+          "block": "MIDI:B148"
+        }
+      ],
+      "adoption_group": "MIDA-G24",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-072",
+      "requirement": "REQ-MIDI-EDIT-020",
+      "kind": "Foreground-only Chance with Focus Off",
+      "setup_action": "Use separate disposable owned valid nonempty MIDI clips with distinct identifiable interior notes, admitted ordinary edit controls and exact reset copies. Record editor/tab/focus, foreground, platform, grid, DrawMode, PitchLock, scale, note/time/loop selection and transport histories explicitly. Establish genuinely productive matched operation before a no-effect/exclusion/erase or other negative comparison; a flag, empty clip, unsupported control or failed positive stays U. Independently accept symbolic values in the actual editor; source/note-storage domains do not prove UI admission. Pure editor-data probes need no instrument, audio, MIDI hardware or vendor execution; audible operations would need separate productive nonzero output. No files/media/instrument/original result are supplied here. Use two independently editable distinct MIDI clips A/B with distinguishable admitted Chance values, actual successful Chance edits on each before exclusions and exact reset originals. Select both clips, explicitly disable Focus, make A foreground and show Chance lane; retain which clip's markers are displayed. Select a marker belonging to A, type a distinct independently accepted Chance value and press Enter, then inspect both clips. Reset and repeat B foreground. Existing MED020 already performs foreground Velocity and is retained, not declared missing. Failed productive per-clip Chance admission or absent foreground history stays U.",
+      "expected": "Chance markers and editing apply to the foreground clip, with the other selected clip excluded even when Focus is OFF.",
+      "comparator": "Compare actual foreground marker identity, admitted changed value on the targeted clip and absence of that edit on the other after genuine productive per-clip baselines. No probability playback/RNG, exact10percent key law, pixel/geometry, stored codec or global focus policy.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained Editing MIDI audit, MIDI:B217,MIDI:B165",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/216",
+          "block": "MIDI:B217"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing-source-audit/source-blocks.json",
+          "json_pointer": "/164",
+          "block": "MIDI:B165"
+        }
+      ],
+      "adoption_group": "MIDA-G35",
+      "fixture": "fixtures-r3.json#MIDI-OWNED-R3",
+      "positive_guard": {
+        "owned_nonempty_editable_source": true,
+        "independently_admitted_values_controls": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-073",
+      "requirement": "REQ-MIDI-EDIT-023",
+      "kind": "Targeting and occupied generator contexts",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. On reset copies independently try a time selection, a note selection, and no selection with a declared loop. Separately record simultaneous selections without choosing precedence. Generate into an initially empty admitted time span, first observing actual NONEMPTY output; only then compare occupied overlap/nonoverlap and Rhythm deselection/layering histories. Retain the conflicting source statements as C1, not a replacement/merge law.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "Transformation Tools modify various note properties of existing notes, including MPE data. They require a selection of notes as input for the transformation. Generative Tools do not use any input and instead add new notes to the clip loop or time selection. Note that if there are already notes in the clip or time selection, the generated notes will replace the existing notes. Transformations are applied to the time selection, note selection, or clip loop (when there is no time or note selection). When using Transformations, the existing notes get replaced with the transformed notes. Generators are applied to the time selection or clip loop (when there is no time selection). If there are already notes present in the MIDI Note Editor when a Generator is applied, the generated notes will be added alongside the existing content (if the existing notes and the generated notes don’t overlap) or will replace the existing notes (if the existing and generated notes overlap). To add to your rhythmic pattern, deselect the previously generated notes and adjust Rhythm’s parameters again for a different pitch or drum pad. Stacks is a MIDI Tool you can use to add individual chords or create chord progressions within a selected scale. The generated chords fill time selection or the length of the loop if there is no time selection. Euclidean generates notes based on Euclidean rhythms for up to four voices at a time. New notes will be generated within the time selection or, if there is no time selection, within the loop.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/2",
+          "block": "TOOLS:B003"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/4",
+          "block": "TOOLS:B005"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/11",
+          "block": "TOOLS:B012"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/12",
+          "block": "TOOLS:B013"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/117",
+          "block": "TOOLS:B118"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/130",
+          "block": "TOOLS:B131"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/141",
+          "block": "TOOLS:B142"
+        }
+      ],
+      "adoption_group": "MTA-G01",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-074",
+      "requirement": "REQ-MIDI-EDIT-024",
+      "kind": "Tool application entries and initial-state context",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. First produce a genuine change with the actual Apply button on a valid transformed-note target, then reset original notes/settings. With Auto Apply explicitly off, change an admitted parameter and separately invoke literal Ctrl+Enter Windows or Cmd+Enter macOS for the current tool. Contrast explicit on/off/reset histories. Initial or restored preference state is recorded, never assumed from a fresh-looking panel.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": "The actual Apply button and literal platform shortcut apply the current tool in the explicitly admitted context.",
+      "documentary_comparator": "Named offered controls and categorical state only; no numerical, signal, file, timing or arbitrary availability oracle.",
+      "source_claim": "In order to transform notes or generate notes using a MIDI Tool, open the Transform or Generate panel, select a tool from the Transformation/Generator Selector chooser and tweak the settings in the selected MIDI Tool’s interface. By default, the Auto Apply button is active for all MIDI Tools. This means that MIDI notes will be transformed or generated immediately when adjusting a MIDI Tool’s settings. You can also apply the currently selected MIDI Tool without leaving the MIDI Note Editor by pressing CtrlEnter (Win) / CmdEnter (Mac).",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/7",
+          "block": "TOOLS:B008"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/10",
+          "block": "TOOLS:B011"
+        }
+      ],
+      "adoption_group": "MTA-G02",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-075",
+      "requirement": "REQ-MIDI-EDIT-025",
+      "kind": "Reset-state and tool-history refinements",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Change selected-tool parameters and genuinely apply a productive note transformation. Use Undo then Redo while recording note data and parameters separately. Reset actual selected-tool parameters, inspect disabled/gray Reset, then change a parameter again. Reset notes from the independent original, not by assuming Reset undoes the transformation. Exact default values and transaction grouping remain U.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": "Reset affects selected-tool parameters and is disabled/gray after restoration; note Undo/Redo remains separate.",
+      "documentary_comparator": "Named offered controls and categorical state only; no numerical, signal, file, timing or arbitrary availability oracle.",
+      "source_claim": "The transformation or generation of notes can be undone and redone with the Undo and Redo commands in the Edit menu. Note that these commands only affect changes made to MIDI notes and not changes made to a MIDI Tool’s parameters. You can restore the parameters to their default state with the Reset button. The button becomes grayed out when the MIDI Tool is reset to default. The Reset button only applies to the parameters in the selected MIDI Tool and has no effect on the MIDI notes.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/14",
+          "block": "TOOLS:B015"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/15",
+          "block": "TOOLS:B016"
+        }
+      ],
+      "adoption_group": "MTA-G03",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-076",
+      "requirement": "REQ-MIDI-EDIT-026",
+      "kind": "Max, Browser and scale entry reconciliation",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. In independently admitted Standard and Suite contexts inspect the bundled Velocity Shaper and Euclidean entries via Browser MIDI Tools group or MIDI Tool Content tag; actually select an admitted entry. Separately declare Suite or Standard plus Max for Live add-on before any owned-tool editing/building/third-party probe. Reuse Max host Edit/Save/folder cases and Browser filter roles; do not infer built-in editability from a Max entry or arbitrary missing-tool availability. On a productive pitch tool compare independently accepted scale on/off control units, without deriving a pitch formula.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": "Named Browser tool selection and bundled availability roles are distinct from independently qualified Max editing/building/third-party roles.",
+      "documentary_comparator": "Named offered controls and categorical state only; no numerical, signal, file, timing or arbitrary availability oracle.",
+      "source_claim": "Transformations and Generators are further divided into native MIDI Tools and Max for Live MIDI Tools. Native MIDI Tools are built into Live and their properties cannot be edited. In contrast, the bundled Max for Live MIDI Tools can be edited, and you can also build additional MIDI Tools or install MIDI Tools from third-party creators to further expand your toolset for note transformation and generation. The Max for Live MIDI Tools you built or saved can be quickly located in the browser with a dedicated MIDI Tools filter group or the MIDI Tool tag in the Content filter group. Since MIDI Tools are scale-aware, if a scale is enabled for a clip, any MIDI Tools’ parameters related to pitch will use scale degrees instead of semitones. In addition to Live’s native MIDI Tools, you can also access Max for Live MIDI Tools to transform and generate notes in clips. Max for Live MIDI Tools are AMXD files that can be used in the Transform or Generative Tools tab/panel in the Clip View. You can edit or create Max for Live MIDI Tools in a Max patcher like any other Max device. There are two built-in Max for Live MIDI Tools included with Live Standard and Suite: Velocity Shaper and Euclidean. If you use the Suite edition or the Standard edition with the Max for Live add-on, you can also edit and build your own Max for Live MIDI Tools or use Max for Live MIDI Tools from third-party creators. In order for third-party Max for Live MIDI Tools to show up in the Transform and Generative tabs/panels in the Clip View, save them in these folders on your computer: Transformations: ~/Music/Ableton/User Library/MIDI Tools/Max Transformations Generators: ~/Music/Ableton/User Library/MIDI Tools/Max Generators Alternatively, you can save third-party MIDI Tools’ AMXD files in any folder within Places in Live’s browser.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/5",
+          "block": "TOOLS:B006"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/13",
+          "block": "TOOLS:B014"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/17",
+          "block": "TOOLS:B018"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/18",
+          "block": "TOOLS:B019"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/19",
+          "block": "TOOLS:B020"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/20",
+          "block": "TOOLS:B021"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/21",
+          "block": "TOOLS:B022"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/22",
+          "block": "TOOLS:B023"
+        }
+      ],
+      "adoption_group": "MTA-G04",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      },
+      "related_audit_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/4",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/5",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/6",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/7",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/8",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/9",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/10",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/11",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/12",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/13",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/14",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/15",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/16",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/17",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/18",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/19",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/20",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/external_contexts/21",
+          "role": "Only quoted selected Max/Browser roles; no generic-owner closure"
+        }
+      ]
+    },
+    {
+      "id": "MED-077",
+      "requirement": "REQ-MIDI-EDIT-027",
+      "kind": "Arpeggiate remaining controls",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. On a reset nonempty chord first obtain a productive arpeggiation. Actually choose offered Style entries, then change independently admitted Distance, Steps, Rate and Gate separately; contrast scale explicitly off/on for Distance. Record the selected controls and resulting nonempty sequence without asserting style algorithms, random streams, transposition formula, clipping or gate rounding.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Style drop-down menu allows you to select an arpeggiated sequence which will be applied to the selected notes. The Arpeggiate Transformation offers the same 18 style patterns known from Arpeggiator. The Distance control determines the transposition of steps in the pattern using scale degrees or semitones, depending on whether a scale is set for the clip. The Steps slider allows you to select the number of transposed steps in the pattern. The Rate and Gate controls determine how notes are distributed on a timeline: the former sets the rate of the pattern (which also affects note length), while the latter affects note duration. When Gate is set to values below 100%, notes will be shortened, whereas at values above 100% notes will be lengthened.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/27",
+          "block": "TOOLS:B028"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/28",
+          "block": "TOOLS:B029"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/29",
+          "block": "TOOLS:B030"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/30",
+          "block": "TOOLS:B031"
+        }
+      ],
+      "adoption_group": "MTA-G05",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-078",
+      "requirement": "REQ-MIDI-EDIT-028",
+      "kind": "Chop signed gaps, repeat, emphasis and variation",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Start with a genuine productive Chop, then on independent resets set Parts above 16, signed Gaps +2 and -2, and inspect the repeating pattern. Toggle a manual gap and record dash, then actually change Gaps to replace that manual pattern. Enable emphasis, change Stretch Chunks and inspect corresponding gray positions. Change Variation and apply repeatedly without requiring a different realization. Preserve the original 2..64 and manual-gap case; pattern-note replacement supplies no timeline-duration insertion law.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Chop Transformation divides selected MIDI notes into a maximum of 64 parts. It can also be used to design note division patterns; for example, you can create a pattern where some notes are extended relatively to others, or where a random variation is added to note start or end times. You can create a note chopping pattern by setting the number of parts for the chopped note(s) with the Parts control, from 2 to 64 parts. The Gaps control adds spaces to the pattern, with the exact minimum and maximum number of gaps depending on the number of parts the pattern contains. When set to positive values, the control represents the number of notes after which a gap will be added. When set to negative values, the control represents the number of gaps that will be added after each note. For example, when set to 2, a gap replaces a note in the sequence after two successive notes. When set to -2, two gaps are added after each note. Note that a pattern can consist of a maximum of 16 parts. If the Parts control is set to a higher value, the pattern will repeat. The Pattern toggles visualize the pattern designed with the Parts and Gaps controls and let you manually add and remove gaps within the pattern, which can be helpful in creating rhythmic variations. When the number of gaps is changed with the Pattern toggles, the Gaps control shows a dash. If the control is adjusted, the manually added gaps in the pattern are replaced with those set through the Gaps control. The Emphasis toggles let you select which notes or gaps are emphasized in the pattern. Emphasized pattern elements are affected by the Stretch Chunk(s) value, which stretches the relative length of notes or gaps from 2 to 8 times longer. When notes or gaps are emphasized, their corresponding Pattern toggles are grayed out. You can use the Variation slider to add random variation to the note start and end times.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/32",
+          "block": "TOOLS:B033"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/33",
+          "block": "TOOLS:B034"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/34",
+          "block": "TOOLS:B035"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/35",
+          "block": "TOOLS:B036"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/36",
+          "block": "TOOLS:B037"
+        }
+      ],
+      "adoption_group": "MTA-G06",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-079",
+      "requirement": "REQ-MIDI-EDIT-029",
+      "kind": "Connect remaining parameter contexts",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. First demonstrate actual inserted notes between independently identifiable original notes. On exact resets set nonzero Spread, an admitted intermediate Density, and distinct Rate and Tie settings; actually Apply each. Inspect generated note data relative to original bounds without inventing distributions, pairing, endpoint equality or exact counts. An empty or failed insertion is U before any absence/bounds assertion.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Connect Transformation generates new notes that fill the gaps between existing notes. The placement of the interpolated notes is randomized, but some particulars of the pattern can be determined using Connect’s parameters. The Spread control sets the maximum random pitch shift of the connecting notes based on the original note pitches, in scale degrees or semitones. Density allows you to specify the percentage of the time interval between original notes to be filled with interpolated notes. At 100%, all the gaps between existing notes will be filled. Use the Rate control to set the length of the interpolated notes and the Tie control to determine the probability that the length of a generated note will be extended to the next original note.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/38",
+          "block": "TOOLS:B039"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/39",
+          "block": "TOOLS:B040"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/40",
+          "block": "TOOLS:B041"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/41",
+          "block": "TOOLS:B042"
+        }
+      ],
+      "adoption_group": "MTA-G07",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-080",
+      "requirement": "REQ-MIDI-EDIT-030",
+      "kind": "Glissando control gestures and display contexts",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Use at least two successive notes and first obtain an actual pitch-bend result. Reset independently, edit Start and Curve directly; then drag the Glissando tool display yellow breakpoint horizontally and connecting line vertically. Record actual control changes. Reuse current MPE mode/lane actions for inspecting expression, without treating generic lane points as this tool display. Record Notes, folded-note and optional Pitch Bend lane contexts separately; do not settle C3, range mapping or curve interpolation.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Glissando Transformation is an MPE MIDI Tool that connects the pitch of one note to the pitch of a successive note along a pitch bend curve, tying the notes together. At least two notes must be selected to create a glissando. The Start control sets the starting point of the pitch bend curve, expressed as a percentage of the note length. The Curve control changes the shape of the pitch bend curve. You can click and drag the yellow breakpoint in Glissando’s display left or right to adjust pitch bend start, or click and drag the line up or down to adjust the pitch bend curve shape. Note that you can only view the pitch bend curve in the MPE Editor. When the MIDI Note Editor is open, the Glissando Transformation is applied, but the pitch bend curve is not visible. When working with folded notes, you can display the pitch bend curve below the MIDI Note Editor by activating the Pitch Bend expression lane.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/43",
+          "block": "TOOLS:B044"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/44",
+          "block": "TOOLS:B045"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/45",
+          "block": "TOOLS:B046"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/46",
+          "block": "TOOLS:B047"
+        }
+      ],
+      "adoption_group": "MTA-G08",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      },
+      "related_current_owner_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json",
+          "json_pointer": "/29",
+          "role": "Generic MPE lane/mode or folded-note gesture only; not tool-display equivalence or C3 closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json",
+          "json_pointer": "/30",
+          "role": "Generic MPE lane/mode or folded-note gesture only; not tool-display equivalence or C3 closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json",
+          "json_pointer": "/41",
+          "role": "Generic MPE lane/mode or folded-note gesture only; not tool-display equivalence or C3 closure"
+        }
+      ]
+    },
+    {
+      "id": "MED-081",
+      "requirement": "REQ-MIDI-EDIT-031",
+      "kind": "LFO target, shape, time and visibility contexts",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. On independent nonempty note resets first obtain actual nonzero expression from an accepted target. Select Pitch Bend, Slide and Pressure separately; operate Sine/Square/Triangle/Random, Shape, Random Reseed, Rate, signed Time Shift, Amount, Base and Attack/Decay. Retain the genuine Attack-100 reset branch from the old case. Inspect Notes/MPE/fold/optional-lane contexts without resolving C3. Do not require a new random realization or grade waveform samples, phase, bend conversion, numeric bounds or scheduling.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "LFO is an MPE Transformation that uses a low-frequency oscillator to set the value of one of three MPE parameters: pitch bend, slide, or pressure. The oscillator’s shape, rate, and global amplitude can all be customized using the Transformation’s parameters. The Target chooser lets you set Pitch Bend, Slide, or Pressure as a modulation target for the LFO. The LFO curve display shows the shape of the LFO used as a modulation source. The Envelope Attack and Decay sliders set the attack and decay of the oscillator’s amplitude envelope, relative to the total length of the oscillation. Note that the envelope’s attack and decay values influence each other. This means that if, for example, Attack is set to 100%, Decay is automatically reset to 0%. The Shape control adjusts the shape of the oscillator based on the shape selected in the Shape Type chooser. You can choose from the following four types: Sine, Square, Triangle, or Random. When Random is selected, the Reseed button can be used to generate new random shapes for the LFO. The Rate control sets the period of the oscillator in musical time, from 1 to 1/128. For example, setting the rate to 1 equates to 4 beats. The Time Shift slider below Rate shifts the LFO in time. Positive values delay the start of the oscillation and negative values adjust its phase. The Amount control sets the oscillator’s amplitude. When Pitch Bend is selected as the modulation target, Amount can be set to any value within double the clip’s current pitch bend range. For example, if the range is set to ±60 st, Amount can be set from -120 st to 120 st. When Slide or Pressure are selected, Amount can be set from -127 to 127. You can set the base value for the amplitude using the Amplitude Base slider below the Amount control. When Pitch Bend is selected as a modulation target, Amplitude Base can be set to any value within the clip’s current pitch bend range. For example, if the range is set to ±60 st, Amplitude Base can be set from -60 st to 60 st. When Slide or Pressure are selected, Amplitude Base can be set from -127 to 127. The MPE curve for the Pitch Bend modulation target is displayed in the MIDI Note Editor. You can also choose to display it below the MIDI Note Editor by activating the Pitch Bend expression lane, which can be helpful when working with folded notes. Modulation curves for Slide and Pressure are displayed in their respective expression lanes. Note that the modulation applied by the LFO Transformation is only displayed in the MPE Editor. When the MIDI Note Editor is open, the Transformation is applied, but the expression curves are not visible.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/48",
+          "block": "TOOLS:B049"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/49",
+          "block": "TOOLS:B050"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/50",
+          "block": "TOOLS:B051"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/51",
+          "block": "TOOLS:B052"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/52",
+          "block": "TOOLS:B053"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/53",
+          "block": "TOOLS:B054"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/54",
+          "block": "TOOLS:B055"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/55",
+          "block": "TOOLS:B056"
+        }
+      ],
+      "adoption_group": "MTA-G09",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      },
+      "related_current_owner_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json",
+          "json_pointer": "/29",
+          "role": "Generic MPE lane/mode or folded-note gesture only; not tool-display equivalence or C3 closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json",
+          "json_pointer": "/30",
+          "role": "Generic MPE lane/mode or folded-note gesture only; not tool-display equivalence or C3 closure"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/mpe-cases-r3.json",
+          "json_pointer": "/41",
+          "role": "Generic MPE lane/mode or folded-note gesture only; not tool-display equivalence or C3 closure"
+        }
+      ]
+    },
+    {
+      "id": "MED-082",
+      "requirement": "REQ-MIDI-EDIT-032",
+      "kind": "Ornament Grace, velocity and reapply contexts",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. On separate reset originals establish genuinely productive Flam and Grace operations before comparing toggles/no-effect. Apply each repeatedly, use positive/negative Position in a declared grid with note length chosen independently, and change Velocity. For Grace choose alternating up/down and Same pitch modes, Chance and Amount separately. Record actual note additions without new count, fractional-grid, random, clipping or cross-boundary arithmetic; preserve the old Flam-only endpoint example.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Ornament Transformation contains Flam and Grace Notes options which allow for ornamental notes to be added to the beginning of selected notes. Reapplying the Transformation to the same selection results in additional flam or grace notes being inserted. Select which type of ornamental notes to add by switching on either the Flam or Grace Notes toggle. When using Flam, a single note is added to the beginning of each selected note. The Flam Position parameter controls the placement of the flam note: at positive values, the flam note will replace the beginning of the original note, while at negative values, the flam note is prepended to the start of the selected note. The parameter’s value represents the percentage of the current grid setting, so the length of the flam note will be determined by the grid size rather than the length of the original note. This means that at 100% / -100% the flam note’s length will be equal to one grid division, placed respectively at the start of the original note or before it, and will become proportionally shorter as Flam Position’s value approaches 0%. The Flam Velocity parameter sets the velocity of the flam notes relative to the velocity of the original notes. When using Grace Notes, multiple notes of equal length are added to the beginning of each original note. The Grace Notes Pitch buttons allow you to determine the pitch of the added grace notes relative to the original note. When High is selected, every other grace note is placed one semitone (or scale degree, if a scale is active) higher than the original notes, while when Low is selected, the pitch of every other grace note is one semitone or scale degree lower than the existing notes. If Same is selected, the grace notes are added at the same pitch as the original notes. The Grace Notes Position parameter controls whether the added grace notes replace the beginning of the selected notes (when the parameter is set to positive values) or are prepended to the original notes (at negative values). The value represents the percentage of the current grid size: at 100% / -100% the inserted graces notes will fill one grid division, placed respectively at the start of the original note or before it. The Grace Notes Velocity parameter determines the velocity of grace notes relative to the velocity of the original notes. The Grace Notes Chance control determines the probability that each grace note will be played relative to the original note’s Chance values. The Grace Notes Amount parameter allows you to specify the number of grace notes to be applied to each selected note. The individual grace notes are always equivalent in size.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/57",
+          "block": "TOOLS:B058"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/58",
+          "block": "TOOLS:B059"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/59",
+          "block": "TOOLS:B060"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/60",
+          "block": "TOOLS:B061"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/61",
+          "block": "TOOLS:B062"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/62",
+          "block": "TOOLS:B063"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/63",
+          "block": "TOOLS:B064"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/64",
+          "block": "TOOLS:B065"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/65",
+          "block": "TOOLS:B066"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/66",
+          "block": "TOOLS:B067"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/67",
+          "block": "TOOLS:B068"
+        }
+      ],
+      "adoption_group": "MTA-G10",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-083",
+      "requirement": "REQ-MIDI-EDIT-033",
+      "kind": "Quantize extra targets and explicit entries",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. First produce actual quantization on independently offset notes. On resets select Current Grid and an offered explicit meter/triplet setting, then start, end and both targets with admitted Amount. Invoke Edit > Quantize Settings and inspect the tool panel. Separately retain the source CtrlShiftU apply-without-opening claim as context, without equating the conflicting settings shortcut (C2) or deriving nearest-line, tie, rounding, minimum-duration or audio-Warp laws.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Quantize MIDI Tool adjusts the timing of selected notes by moving or stretching them according to the specified quantization settings. Note that an equivalent Quantize tool exists for audio clips. You can transform notes according to the current grid size or set a specific meter value for quantization (including triplets). It’s possible to quantize note start or end time, or both note start and end time simultaneously. Quantizing the note end will stretch the note so that it ends at the chosen meter subdivision. You can also quantize notes without giving them that “quantized” sound using the Amount control, which will move notes only by a percentage of the set quantization value. Aside from navigating to the Transformation using Clip View’s tabs/panels, you can also open the Quantize MIDI Tool to change its parameters by using the Quantize Settings… command in the Edit menu, or use the CtrlShiftU (Win) / CmdShiftU (Mac) shortcut to apply quantization to the selected notes without opening the Transform tab/panel.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/69",
+          "block": "TOOLS:B070"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/70",
+          "block": "TOOLS:B071"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/71",
+          "block": "TOOLS:B072"
+        }
+      ],
+      "adoption_group": "MTA-G11",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-084",
+      "requirement": "REQ-MIDI-EDIT-034",
+      "kind": "Recombine dimensions and nonzero rotation",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Retain the productive old Mirror operation. On reset distinguishable notes, operate Position, Pitch, Duration and Velocity columns separately. Change Rotate to an independently admitted nonzero value by drag and step buttons in both directions, then toggle Rotate on Grid. Combine Shuffle/Mirror/Rotate in source-described order and reapply Shuffle without requiring difference. Record actual admitted controls and productive permutation, not exact ordering of coincident notes or a rotation formula.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Recombine MIDI Tool rearranges the position, pitch, duration, or velocity for a selection of notes, so that a parameter value set for one note in the selection is applied to a different note. You can use the Dimension chooser to select one of four note parameters for Recombine to permute: Position, Pitch, Duration, or Velocity. There are three ways of rearranging note parameters using Recombine: 1. Shuffle, where note parameters are permuted randomly. 2. Mirror, where note parameters are permuted to be in reverse order to the note selection. 3. Rotate, where note parameters are permuted in a circular way. The Shuffle and Mirror permutation types can be activated using their respective toggles, whereas for Rotate to take effect, you need to set the number of Rotation Steps to a value other than 0. Rotation Steps can be set by clicking and dragging your mouse across the columns in Recombine’s display or by using the Rotate Step Down/Up buttons below the display. The number of available steps is always one step fewer than the number of selected notes. Positive numbers rotate parameter values clockwise, and negative numbers rotate parameter values counter-clockwise. When Position is selected in the Dimension chooser, you can switch on the Rotate on Grid toggle. When on, Recombine uses the number of grid cells in the selection as a basis for the number of available Rotation Steps rather than the number of notes. The exact number of available Rotation Steps depends on the current grid settings. Each permutation type can be used individually or in conjunction with others. Permutation types are applied in the following order: Shuffle, then Mirror, then Rotate. Note that when Shuffle is active, a new parameter permutation is created each time the Apply button is pressed.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/73",
+          "block": "TOOLS:B074"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/74",
+          "block": "TOOLS:B075"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/75",
+          "block": "TOOLS:B076"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/76",
+          "block": "TOOLS:B077"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/77",
+          "block": "TOOLS:B078"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/78",
+          "block": "TOOLS:B079"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/79",
+          "block": "TOOLS:B080"
+        }
+      ],
+      "adoption_group": "MTA-G12",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-085",
+      "requirement": "REQ-MIDI-EDIT-035",
+      "kind": "Span nonzero modifiers and final-loop branch",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Retain all three genuine old Legato/Tenuto/Staccato branches. From reset nonempty successive notes apply each mode, then actual signed nonzero Offset and Variation separately. Contrast a declared time selection with no time selection and a known loop for the final note. Reapply Variation without requiring difference. Productive length change precedes no-effect comparisons; no degenerate minimum, loop-boundary equality, randomness or new length equation is graded.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Span MIDI Tool transforms the durations of selected notes using three articulation types: legato, tenuto and staccato. Offset adjusts note end times up to a grid step. At positive values, note length is extended; at negative values, note length is shortened. Variation adds random variation to note lengths. At positive values, note length is shortened; at negative values, note length is extended. If set to values other than 0%, new note length variation will be produced whenever the Transformation is reapplied. Legato extends the length of selected notes to the start time of the next note in the sequence. The last of the selected notes will be extended to the end of the time selection or, if there is no time selection, to the end of the loop. Tenuto preserves the original note length unless the Offset and Variation parameters are adjusted. When using the Staccato articulation type, note length is determined by the distance between start times of the selected notes. The smallest distance between start times is halved and this duration is used as the new note length for the transformed notes. Note length can be further modified using the Offset and Variation parameters.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/81",
+          "block": "TOOLS:B082"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/83",
+          "block": "TOOLS:B084"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/84",
+          "block": "TOOLS:B085"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/85",
+          "block": "TOOLS:B086"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/86",
+          "block": "TOOLS:B087"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/87",
+          "block": "TOOLS:B088"
+        }
+      ],
+      "adoption_group": "MTA-G13",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-086",
+      "requirement": "REQ-MIDI-EDIT-036",
+      "kind": "Strum productive nonzero before zero",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. The historical MED-036 zero-only trial remains unchanged and was not a productive baseline. On a fresh identifiable chord, actually set an admitted NONZERO Low or High and apply until a genuine start-offset effect is observed. Reset original notes, repeat this productive history, then set both Low and High to zero and apply; contrast admitted Tension values only after a productive offset. Separately drag the tool display breakpoints and type signed values. If the nonzero baseline fails, zero/no-effect stays U; no nonlinear formula or numeric offset is graded.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Strum MIDI Tool adjusts the start times of notes in a chord following a shape set by the Strum Low, Strum High and Tension parameters. The Strum Low parameter determines the offset of the successive notes, starting with the lowest note. At positive values, the note start times are moved forward, whereas at negative values the start times are moved back. The start time of the lowest note is offset up to one grid step at 100% / -100%. The other notes are proportionally, matching the shape in the Strum Position display. If the Tension parameter is set to 0.0%, notes are distributed at an equal distance between each other. The Strum High parameter determines the offset of the original chord starting with the highest note. When set to positive values, the note start times are moved forward, whereas at negative values the start times are moved back. The highest note is offset up to a grid step at 100% / -100%. The other notes are distributed proportionally to match the shape in the display. If the Tension parameter is set to 0.0%, notes are distributed at an equal distance between each other. In order for the Transformation to have effect, the Strum Low and/or Strum High parameters must be set to a value other than 0.0%. You can make changes to both parameters by adjusting their respective breakpoints in the Strum Position display, or by entering a value for each using your computer keyboard. The Tension parameter changes the offset of note start times so that they are no longer placed at an equal distance between each other, but instead alongside a curve, with distances between notes being larger or smaller, depending on the settings. At positive Tension values, the distance between the notes will be greater at the start of the note sequence and decrease exponentially. At negative values, the distance between notes at the start of the sequence will be shorter and increase exponentially.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/89",
+          "block": "TOOLS:B090"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/90",
+          "block": "TOOLS:B091"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/91",
+          "block": "TOOLS:B092"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/92",
+          "block": "TOOLS:B093"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/93",
+          "block": "TOOLS:B094"
+        }
+      ],
+      "adoption_group": "MTA-G14",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-087",
+      "requirement": "REQ-MIDI-EDIT-037",
+      "kind": "Time Warp tool controls",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. First obtain a genuinely nonidentity tool result on identifiable notes in a declared time span. On independent originals toggle one, two and three speed breakpoints, drag enabled points and inspect selected Time/Speed feedback. Operate Quantize, Preserve Time Range and Include Note End separately, with explicit grid. Record actual controls and note data without integrating a speed curve, assuming audio Warp equivalence or grading duration/boundary formulas.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "Time Warp is a time-stretching MIDI Tool that transforms selected notes according to a speed curve. This allows creating tempo variations such as accelerando or ritardando. You can create the speed curve in the Breakpoints display. The time range of the curve is mapped to the time selection. It is possible to enable between one and three breakpoints in the speed curve using their respective toggles. You can either drag a breakpoint in the display or select it and use the Breakpoint Time and Breakpoint Speed sliders to set the breakpoint’s timeline position and speed, respectively. The sliders’ values always reflect the values of the currently selected breakpoint. The toggles below the Breakpoints display allow you to make further adjustments to the time-warping applied. When Quantize is on, the warped notes will be quantized according to the grid settings. When the Preserve Time Range switch is enabled, the results of the Transformation will fit within the same range as the original note selection. When the Include Note End switch is toggled on, the end positions of the original notes are taken into account when applying the speed curve, which will have an effect on the duration of the original notes.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/95",
+          "block": "TOOLS:B096"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/96",
+          "block": "TOOLS:B097"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/97",
+          "block": "TOOLS:B098"
+        }
+      ],
+      "adoption_group": "MTA-G15",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-088",
+      "requirement": "REQ-MIDI-EDIT-038",
+      "kind": "Velocity Shaper display and Loop",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Require independently admitted Max tool capability and nonempty notes. First produce actual velocity variation, then on resets add and drag envelope points, edit Loop and repeat. Retain the old admitted minimum/maximum and Rotate=1 at Grid history, but add no new numeric envelope sampling or rotation oracle. Compare productive controls before any flat/no-effect trial; editor-data inspection needs no hardware.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "Velocity Shaper is a Max for Live Transformation. Velocity Shaper allows you to shape the velocities of selected notes using an adjustable envelope. The envelope shape in the display will influence how the velocities of the selected notes are transformed. Click in the display to add more breakpoints to the envelope and drag them to adjust the envelope shape. You can use the Minimum and Maximum Velocity parameters on the right of the display to define the velocity range for the transformed notes. The Loop parameter below the display sets the number of times the envelope shape will be applied to the note selection. The Rotate control determines the number of steps the envelope shape is offset, relative to the start of the note selection. The size of the step is determined by the Division parameter. For example, if Rotate is set to 1 and Division is set to “Grid”, the envelope shape will be shifted to the right by one grid step.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/99",
+          "block": "TOOLS:B100"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/100",
+          "block": "TOOLS:B101"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/101",
+          "block": "TOOLS:B102"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/102",
+          "block": "TOOLS:B103"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/103",
+          "block": "TOOLS:B104"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/104",
+          "block": "TOOLS:B105"
+        }
+      ],
+      "adoption_group": "MTA-G16",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-089",
+      "requirement": "REQ-MIDI-EDIT-039",
+      "kind": "Rhythm remaining inputs and layering context",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. An initially empty generator target is allowed. Actually generate NONEMPTY rhythm notes before testing population, repetition, accent or absence. On reset targets use pitch/pad and Alt/Option piano entry; change Steps, Pattern and Duration with the documented availability dependency, signed Shift, Split and Velocity/Accent/Frequency/Offset controls. Retain the old one-versus-two repetition example. Separately deselect and add a different pitch, recording C1 without a merge law. A nonzero Density flag alone is not productive output.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Rhythm MIDI Tool generates a note pattern according to the set parameters, repeated to fill a given time selection. The notes can be generated for a particular pitch or for an individual drum pad when working with Drum Racks. You can choose a pitch or a drum pad using the Pitch control, or by holding the Alt (Win) / Option (Mac) key and clicking on the piano ruler. Use the Steps control to set the number of steps in the pattern, up to 16 steps. The Pattern knob is used to determine the placement of the generated notes (the shape of the pattern). The number of available patterns depends on the values set for the Steps and Density parameters. The Density knob controls the number of notes in a pattern. Note that the maximum value is determined by the number set with the Steps control. The Step Duration slider can be used to adjust the number of times a pattern is repeated in the time selection. For example, for a time selection of one bar, if Step Duration is set to 1/8 and Steps is set to 8, the pattern will be repeated only once. When Step Duration is changed to 1/16 in the same scenario, the pattern is repeated twice. Note that Step Duration will affect the maximum number of steps to be set using the Steps control. The Split control allows you to set a probability for a step in a pattern to be divided in half. Shift moves the generated notes by a specified number of steps to the right when set to positive values and to the left when set to negative values. You can set the note velocity for the generated notes and specify a different velocity for accented notes using the Velocity and Accent sliders. The number of accented notes that occur in the pattern is determined by the Accent Frequency parameter, which sets the number of notes between accented notes. This value ranges from 0 to the number of notes specified by the Density parameter. Note that an accented note is counted as a note occurrence — if the Accent Frequency is set to 1, every note will be accented. You can use the Accent Offset arrows to shift the placement of accented notes in the pattern. To add to your rhythmic pattern, deselect the previously generated notes and adjust Rhythm’s parameters again for a different pitch or drum pad.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/108",
+          "block": "TOOLS:B109"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/109",
+          "block": "TOOLS:B110"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/110",
+          "block": "TOOLS:B111"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/111",
+          "block": "TOOLS:B112"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/112",
+          "block": "TOOLS:B113"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/113",
+          "block": "TOOLS:B114"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/114",
+          "block": "TOOLS:B115"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/115",
+          "block": "TOOLS:B116"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/116",
+          "block": "TOOLS:B117"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/117",
+          "block": "TOOLS:B118"
+        }
+      ],
+      "adoption_group": "MTA-G17",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-090",
+      "requirement": "REQ-MIDI-EDIT-040",
+      "kind": "Seed gestures, domains and nonvacuity",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Allow an empty initial generator target, but actually observe NONEMPTY generated notes before every range/capacity/absence comparison. On resets merge and separate pitch handles by click or independently admitted Min/Max, then use Alt/Option piano click/drag. Drag duration/velocity range handles separately and change Voices and Density. Record admitted scale on/off context. Density flags alone do not prove population; do not infer distributions, seed reproducibility, clamping or exact density-to-count.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "The Seed MIDI Tool randomly generates notes within specified pitch, length and velocity ranges. Additional parameters allow specifying the number of simultaneously occurring notes, as well as the overall number of generated notes. To select the range of pitches within which new notes will be generated, drag the Minimum and Maximum Pitch or Key Track sliders or the triangular handles in the Pitch Range slider. If one of the handles is dragged to overlap the other, the handles get merged; in this case, notes will be generated in one pitch only. To revert to two handles, click anywhere in the Pitch Range slider or set different values in the Minimum and Maximum Pitch or Key Track sliders. You can also hold the Alt (Win) / Option (Mac) key and click in the piano ruler to select a single pitch for notes to be generated in or click and drag to select a range of pitches. Note that if the clip has an active scale, the slider will be displayed in purple; otherwise, it will be displayed in the same color as the other two sliders. The Duration and Velocity Range sliders work in the same way as the Pitch Range slider to set note length and velocity ranges for generated notes. The minimum note length you can set for the duration range is 1/128 note and the maximum is one note. Velocity can range from 1 to 127. You can also control the number of notes added using the Voices and Density controls, which allow setting the maximum number of simultaneous notes to be generated, as well as the number of all generated notes, represented as a percentage of the pitch range to be populated.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/119",
+          "block": "TOOLS:B120"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/120",
+          "block": "TOOLS:B121"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/121",
+          "block": "TOOLS:B122"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/122",
+          "block": "TOOLS:B123"
+        }
+      ],
+      "adoption_group": "MTA-G18",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-091",
+      "requirement": "REQ-MIDI-EDIT-041",
+      "kind": "Shape generation controls and nonvacuity",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Allow empty initial targets. Choose a Shape preset and actually draw a custom shape on separate resets; use Alt/Option piano range entry and change Rate, Tie and Density. Require actual NONEMPTY output before assessing bounds or comparing Jitter=0 and admitted nonzero Jitter. Record the output without requiring any pitch to differ between random realizations or grading shape sampling, pitch rounding, length or probability.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "Shape is a MIDI Tool that generates a sequence of notes within a range of pitches. The notes are distributed following a shape defined in the MIDI Tool’s display. In order to determine the shape that will be used for note generation you can use the Shape Presets drop-down menu or draw your own shape in the display. Use the Minimum and Maximum Pitch sliders to set a range in which the notes will be added. You can also hold the Alt (Win) / Option (Mac) key and click and drag to select a range. Note that when a clip scale is active, the shape is displayed in purple. Use the Rate control to set the minimum length of the generated notes. Note duration can also be affected by the Tie parameter, which sets the probability that a generated note will be extended to the next note. The Density knob allows you to set the number of notes to be added, represented as a percentage of the shape to be populated. If you want to randomize the pitches of the generated notes, use the Jitter parameter. At 0%, the notes will follow the shape set out in the Shape Levels display exactly and will move progressively further away from the shape as you increase the Jitter value. Note that the randomized pitches will always stay within the range specified by the Minimum and Maximum Pitch sliders.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/124",
+          "block": "TOOLS:B125"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/125",
+          "block": "TOOLS:B126"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/126",
+          "block": "TOOLS:B127"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/127",
+          "block": "TOOLS:B128"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/128",
+          "block": "TOOLS:B129"
+        }
+      ],
+      "adoption_group": "MTA-G19",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-092",
+      "requirement": "REQ-MIDI-EDIT-042",
+      "kind": "Stacks gestures, bank entry and selected chord scope",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Use an independently valid owned recognized .stacks bank with a known productive load and chord output before comparing load/absence. Allow empty generator targets, but establish NONEMPTY chord output before range/origin claims. Click/drag the chord pad and Ctrl/Cmd Up/Down, inspect hover Status Bar text, use Root plus Alt/Option piano and arrow entry, then inversion/duration/offset on the explicitly selected chord. Actually Add and Delete Chord. In separate reset bank contexts double-click the owned bank in Places and inspect Stacks tag under the source MIDI Tool filter-group wording or MIDI Tool Content tag. Do not infer JSON grammar, arbitrary bank acceptance, Tonnetz pixels or linked instructions.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "Stacks is a MIDI Tool you can use to add individual chords or create chord progressions within a selected scale. The generated chords fill time selection or the length of the loop if there is no time selection. You can select a chord pattern by clicking and dragging the Chord Selector Pad or using Ctrl (Win) / Cmd (Mac) and the up and down arrow keys. The chord pattern diagrams are simple illustrations of the relationship between the intervals in a chord; they are based on the Tonnetz system. When hovering over a Chord Selector Pad, additional information about the chord is displayed in the Status Bar. You can use custom chords in Stacks by creating your own chord banks. These are text files that define specific chord rules in the JSON format and are saved with the .stacks extension. Read more about how to create chord banks in this Knowledge Base article. To load a custom chord bank into the Stacks Generator, place a .stacks file in a folder that has been added to the browser’s Places section. Then double-click the file name in the browser to replace the default bank in Stacks. You can quickly locate all chord files by using the browser’s dedicated Stacks tag in the MIDI Tool filter group, or the MIDI Tool tag in the Content filter group. To create a chord progression, use the Add Chord plus button to the right of the Chord Selector Pad/s and select a pattern for the additional chords. You can reduce the number of chords using the Delete Chord minus button. Use the Chord Root knob to set the root note for the chord. You can also hold the Alt (Win) / Option (Mac) key and click in the piano ruler to make the selection, or use up and down arrow keys to cycle through root notes. If there is a scale set for the clip, the Chord Root will be automatically adjusted to the root note of that scale. You can still choose a different root note for the chord, but whenever a clip scale is active, the root note options for the chord will be limited to the notes within the clip scale. The Chord Inversion knob allows you to rearrange a chord using one of the available inversions. Positive values cycle through the possible inversions for a selected chord and negative values cycle through the same inversions an octave lower. Chord Duration and Offset can be used to set the length and position of a chord. Both can be adjusted in eighths of the original chord length. Note that all of the parameters visible in the Stacks Generator’s display at a given moment are specific for the currently selected chord. This means that whenever another chord is selected, the display will be updated to show that chord’s parameters.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/130",
+          "block": "TOOLS:B131"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/131",
+          "block": "TOOLS:B132"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/132",
+          "block": "TOOLS:B133"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/133",
+          "block": "TOOLS:B134"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/134",
+          "block": "TOOLS:B135"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/135",
+          "block": "TOOLS:B136"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/136",
+          "block": "TOOLS:B137"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/137",
+          "block": "TOOLS:B138"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/138",
+          "block": "TOOLS:B139"
+        }
+      ],
+      "adoption_group": "MTA-G20",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    },
+    {
+      "id": "MED-093",
+      "requirement": "REQ-MIDI-EDIT-043",
+      "kind": "Euclidean controls and nonempty active baseline",
+      "setup_action": "Use separate disposable independently valid owned MIDI targets, explicit actual tool/tab/focus/selection/loop/grid/scale/Auto Apply state, accepted controls and exact original resets. A transformer needs nonempty input; a generator may start empty but needs actual NONEMPTY generated output before bounds/capacity/origin/absence. A flag alone is insufficient. Productive matched effects precede negative/no-effect/disabled/zero comparisons; failed prerequisites stay U. Pure editor-data actions need no hardware/audio; any audible observation separately needs eligible active nonzero expression/route/depth and nonmuted productive output. Require independently admitted Max generator capability. Empty initial targets are allowed. Actually obtain NONEMPTY output from a specifically enabled voice with accepted pitch/velocity before any population, range, origin or disabled-voice trial; Density or enable flags alone are insufficient. In Pattern tab operate per-voice rotation and Randomize; in Voices tab operate pitch/velocity and all-pitch arrows. On reset targets change Steps, Density and Division within explicit time-selection/loop contexts. Compare disable only after productive voice output and reset; do not infer pattern algorithm, wrapping formula, random law or MIDI delivery.",
+      "expected": null,
+      "comparator": null,
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "source_claim": "Euclidean is a Max for Live Generator. Euclidean generates notes based on Euclidean rhythms for up to four voices at a time. New notes will be generated within the time selection or, if there is no time selection, within the loop. The Pattern tab contains a visual representation of how generated notes will be added to the clip. To the right of the visualization, there are individual toggles that can be used for activating and deactivating voices, as well as individual Rotation sliders for setting the offset of generated notes for each voice, relative to the beginning of the time selection. In the middle of the pattern visualization, there is a randomization button, which sets the Rotation sliders’ value for each voice at random. You can click on Voices to select the Voices tab. Like in the Pattern tab, there are toggles to activate or deactivate individual voices, as well as the option to set each voice to a specific pitch (when using instrument devices) or drum pad (when using Drum Racks). Use the up and down arrows to the left of the voice activation toggles to simultaneously change all the pitches or drum pads used to generate notes. You can also set individual velocity values for the notes generated for each voice using the Velocity sliders on the right. Below the Pattern and Voices tabs, there are additional parameters that can be used to further define the shape of the generated rhythmic pattern: Steps — Determines the length of the generated pattern. If the pattern length is shorter than the length of the time selection, the pattern will be repeated and potentially wrapped around the time selection. Density — Determines the number of times the pattern is repeated within a time selection. If the pattern doesn’t fit within the time selection, notes will be wrapped around the time selection. Division — Sets the length of a step in the pattern.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "Retained current Version12 MIDI Tools; exact 12.4.3 applicability U",
+      "execution": "not-run",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "source_contexts": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/140",
+          "block": "TOOLS:B141"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/141",
+          "block": "TOOLS:B142"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/142",
+          "block": "TOOLS:B143"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/143",
+          "block": "TOOLS:B144"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/144",
+          "block": "TOOLS:B145"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-tools-source-audit/audit.json",
+          "json_pointer": "/blocks/145",
+          "block": "TOOLS:B146"
+        }
+      ],
+      "adoption_group": "MTA-G21",
+      "fixture": "fixtures-r4.json#MIDI-TOOLS-OWNED-R4",
+      "positive_guard": {
+        "independently_owned_admitted_editable_target": true,
+        "transformer_nonempty_input": true,
+        "generator_initial_empty_allowed": true,
+        "actual_nonempty_output_before_generator_bounds_capacity_origin_absence": true,
+        "productive_matched_operation_before_negative": true,
+        "separate_exact_original_reset": true,
+        "hardware_required_for_editor_data": false,
+        "failed_prerequisite_stays_U": true
+      }
+    }
+  ],
+  "actual_result_status": {
+    "role": "Explicit current status of all93 records, not historical measurement: legacy fields remain documentary proposals; first72 records preserved verbatim.",
+    "actual_expected": null,
+    "actual_comparison": null,
+    "target_grade": "U",
+    "executed": false
+  }
+}

@@ -1,0 +1,522 @@
+[
+  {
+    "id": "REQ-DEVICE-AF-001",
+    "device": "AF",
+    "title": "frequency-selective processing",
+    "text": "Incoming device-chain audio is filtered by the selected filter. LFO and envelope follower can modulate the filtering; the envelope follower can use internal or external sidechain audio. Exact internal detector tap is not established: the opening summary says filtered signal, whereas the sidechain section says input source.",
+    "evidence": "auto-filter:B02,B53",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-002",
+    "device": "AF",
+    "title": "filter selection",
+    "text": "The documented Filter Type chooser offers Low-pass, High-pass, Band-pass, Notch, Morph, DJ, Comb, Resampling, Notch + LP and Vowel. Numeric enum mapping and mode-change state retention are U.",
+    "evidence": "auto-filter:B04",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-003",
+    "device": "AF",
+    "title": "low/high/band/notch slope choices",
+    "text": "Low-pass attenuates above cutoff; High-pass attenuates below; Band-pass passes a range around cutoff; Notch attenuates a narrow range. Each offers 12 and 24 dB slope choices. These labels do not establish measured slope at cutoff, Q law, pole locations or coefficients.",
+    "evidence": "auto-filter:B05–B08",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-004",
+    "device": "AF",
+    "title": "Morph filter slopes",
+    "text": "Morph traverses low-pass through band-pass to high-pass with increasing Morph. Its documented slope options are 6, 12, 24 and 48 dB. Transition law and endpoint transfer functions are U.",
+    "evidence": "auto-filter:B09,B18",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-005",
+    "device": "AF",
+    "title": "DJ bipolar control",
+    "text": "DJ uses a bipolar Control: above zero removes low frequencies; below zero removes high frequencies. Emphasis grows as values approach −100%/+100%. The description does not establish a transparent 0% transfer function or a numeric resonance law.",
+    "evidence": "auto-filter:B10,B15",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-006",
+    "device": "AF",
+    "title": "Comb, Resampling, Vowel and Notch + LP",
+    "text": "Comb produces repeated peaks/notches. Resampling continuously resamples at a rate determined by cutoff, reducing high-frequency content with aliasing. Vowel emphasizes vocal formants. Notch + LP combines a notch with low-pass rolloff, with 12/24 dB choices. Delay lengths, sampling ratios, formant tables and coefficients are U.",
+    "evidence": "auto-filter:B11–B14",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-007",
+    "device": "AF",
+    "title": "frequency and vowel controls",
+    "text": "Freq sets cutoff except DJ, where Control replaces Freq, and Vowel, where Pitch shifts formants in semitones. For Vowel, Formant replaces Res and traverses a, e, i, o, u. No numeric pitch/formant domain or map is established.",
+    "evidence": "auto-filter:B15–B16",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-008",
+    "device": "AF",
+    "title": "resonance availability",
+    "text": "Res emphasizes cutoff for applicable filters. Res has no effect in Resampling and is grayed out. Exact resonance scale, instability boundary and self-oscillation are U.",
+    "evidence": "auto-filter:B16",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-009",
+    "device": "AF",
+    "title": "filter Morph variants",
+    "text": "Morph, Comb, Notch + LP and Vowel have Morph controls. Comb moves from peaks at low Morph toward notches at high Morph at cutoff multiples. In Notch + LP the notch approaches cutoff as Morph rises and reaches cutoff at 100%. Vowel Morph increasingly normalizes formant gain. Exact frequency/gain interpolation is U.",
+    "evidence": "auto-filter:B17–B21",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-010",
+    "device": "AF",
+    "title": "filter display and dragging",
+    "text": "The display shows selected filter curve, modulated left/right curves and output spectrum. Dragging its handle changes Freq and Res, or Pitch and Formant for Vowel. Pixel mapping, display FFT and other modes’ handle mapping are U.",
+    "evidence": "auto-filter:B23",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-011",
+    "device": "AF",
+    "title": "modulation-section selection",
+    "text": "LFO and Envelope sections below the display expose their section parameters at the display bottom when selected. Selection alone supplies no documented reset or sound-change rule.",
+    "evidence": "auto-filter:B24",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-012",
+    "device": "AF",
+    "title": "stereo LFO modes",
+    "text": "Phase keeps L/R LFO frequency equal with offset in degrees: 180° places one peak at the other minimum. Spin detunes L/R rates by its percentage. Phase 0° or Spin 0% modulates channels identically. Random-waveform caveats belong to REQ-DEVICE-AF-016.",
+    "evidence": "auto-filter:B26–B27",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-013",
+    "device": "AF",
+    "title": "phase-offset time-mode dependency",
+    "text": "LFO Phase Offset shifts both waveform starting points only for tempo-synced beat divisions or sixteenth-note time modes. Its parameter has no effect in the other documented time modes. Transport-start reset, phase origin and seek behavior are U.",
+    "evidence": "auto-filter:B28",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-014",
+    "device": "AF",
+    "title": "LFO quantization",
+    "text": "Steps divides an LFO cycle into the number of intervals selected by LFO Steps. S&H quantizes LFOs to the LFO S&H beat-time setting. Exact sampling edge, interpolation and legal divisions are U.",
+    "evidence": "auto-filter:B29",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-015",
+    "device": "AF",
+    "title": "LFO amount and time modes",
+    "text": "LFO Amt controls modulation depth and can combine with envelope modulation. Rate is expressed in Hz, seconds, synced beat divisions or sixteenth-note values according to Mode; Time mode labels the control Time. Rate domains, tempo-change smoothing and amount scaling are U.",
+    "evidence": "auto-filter:B30–B31",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-016",
+    "device": "AF",
+    "title": "LFO waveform controls",
+    "text": "Wave offers Sine, Triangle, Saw, Square, Ramp Up, Ramp Down, Wander and S&H. S&H generates random positive and negative modulation. Wander and S&H disable Spin with a gray control. LFO Morph transforms waveform shape; for S&H it is replaced by Smooth. Random distributions, seeds, repeatability and waveform equations are U.",
+    "evidence": "auto-filter:B32–B33",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-017",
+    "device": "AF",
+    "title": "envelope attack and release",
+    "text": "Envelope modulates filter frequency. Lower Attack responds faster to rising input; higher Attack integrates changes more slowly. Lower Release responds faster to falling level; higher Release extends decay. No detector transfer, time-constant definition or sum/clamp law with LFO is established.",
+    "evidence": "auto-filter:B35–B36,B38",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-018",
+    "device": "AF",
+    "title": "envelope Hold",
+    "text": "With Envelope Hold on the entire attack phase completes before release starts. Exact attack-completion criterion, retrigger and release interruption are U.",
+    "evidence": "auto-filter:B37",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-019",
+    "device": "AF",
+    "title": "envelope sample-and-hold",
+    "text": "Envelope S&H enables envelope quantization at the beat-time value selected with Envelope S&H Rate. Exact clock edge and off-state phase retention are U.",
+    "evidence": "auto-filter:B39",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-020",
+    "device": "AF",
+    "title": "envelope polarity/depth",
+    "text": "Envelope control determines direction and extent of modulation. Numeric endpoints and polarity-to-cutoff map for each filter are U.",
+    "evidence": "auto-filter:B40",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-021",
+    "device": "AF",
+    "title": "input Drive",
+    "text": "Drive applies drive before filtering. At 0.0% the drive contribution is described as unaltered; increasing Drive produces progressively greater distortion/saturation. This does not prove whole-device identity, a transfer curve, headroom or oversampling.",
+    "evidence": "auto-filter:B42",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-022",
+    "device": "AF",
+    "title": "circuit selection and availability",
+    "text": "Filter Circuit offers SVF, DFM, MS2 and PRD and affects only Low-pass, High-pass, Band-pass, Notch and Morph. SVF is described as clean with distortion possible above zero Drive; DFM has distortion feedback; MS2 soft-clips resonance; PRD has no explicit resonance limiting. Architectural descriptions are documentary characterizations, not recovered algorithms.",
+    "evidence": "auto-filter:B43–B47",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-023",
+    "device": "AF",
+    "title": "output, Clip and Dry/Wet",
+    "text": "Clip soft-clips effect output and its LED flashes on clipping. Output sets processed-signal level; Dry/Wet balances processed and unprocessed audio. Exact threshold, clipping function, gain range, mix law and stage ordering beyond named input Drive/output clipping remain U.",
+    "evidence": "auto-filter:B49–B51",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-024",
+    "device": "AF",
+    "title": "external sidechain routing",
+    "text": "The Sidechain Section toggle exposes controls; External enables external triggering. External Source selects a signal, and External Tapping Point offers Pre FX, Post FX or Post Mixer. Missing/deleted source, routing cycles, compensation and device off-state are U.",
+    "evidence": "auto-filter:B53–B54",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-025",
+    "device": "AF",
+    "title": "sidechain mix and gain",
+    "text": "Mix 100% follows external sidechain exclusively; Mix 0% follows internal sidechain only. SC Gain changes external detector input level, not source-track volume. Mix interpolation, internal tap and detector calibration are U.",
+    "evidence": "auto-filter:B55–B56",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-026",
+    "device": "AF",
+    "title": "sidechain Listen",
+    "text": "Sidechain Listen bypasses Auto Filter output and exposes sidechain input for monitoring. Exact monitored stage, stereo/mono relationship, gain and switching ramp are U.",
+    "evidence": "auto-filter:B57",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-027",
+    "device": "AF",
+    "title": "sidechain filtering",
+    "text": "SC Filter enables frequency-selective detection. Sidechain Filter Frequency sets cutoff; low-shelf, peak and high-shelf use signed gain for boost/cut, with shelf response leveling at gain rather than continued rolloff. Sidechain Filter Q controls bandwidth. The complete Type enum is U: B59 lists band-pass while B63 instead explains Notch. Neither a merged enum nor a correction is inferred.",
+    "evidence": "auto-filter:B58–B63",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-028",
+    "device": "AF",
+    "title": "mono sidechain",
+    "text": "By default the sidechain is converted to mono, giving identical L/R envelope modulation. The Mono Sidechain context-menu option disables that conversion. Off-state stereo detector mapping, summing coefficients and interactions with Listen/LFO are U.",
+    "evidence": "auto-filter:B65",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-AF-029",
+    "device": "AF",
+    "title": "retained current-device state",
+    "text": "The retained named Auto Filter default has an AutoFilter2 root and the schema declares its filter, LFO, envelope, sidechain and output vocabulary. Exact file observations are retained in package-values.json. Filename default does not prove a runtime constructor default; HiQuality naming does not prove oversampling.",
+    "evidence": "PKG-SCHEMA:AutoFilter2; PKG-AUTO-FILTER",
+    "provenance": "Dpkg"
+  },
+  {
+    "id": "REQ-DEVICE-AF-030",
+    "device": "AF",
+    "title": "unresolved lifecycle and exact audio",
+    "text": "Every D12 clause remains exact-12.4.3 U. Automation scheduling, transport restart/seek, undo/redo, edit cancellation, invalid fields/ranges, saved-state migration, routing source failure, sample-rate/block-size changes, deletion and teardown have no outcome oracle. Numerical response, modulation kernels, stochastic laws, smoothing, latency, clipping thresholds and tolerances are U. Legacy AutoFilter behavior is a separate unmapped obligation; the current manual is not its behavioral source.",
+    "evidence": "U",
+    "provenance": "U"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-001",
+    "device": "CEQ",
+    "title": "three-band signal processing",
+    "text": "Channel EQ is a three-band audio equalizer. Its host chain position determines incoming signal; insertion/routing/preset lifecycle belongs to the rack/host owner. No processing order or channel-coupling matrix is established.",
+    "evidence": "channel-eq:B02,B10–B12",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-002",
+    "device": "CEQ",
+    "title": "HP 80 Hz switch",
+    "text": "HP 80 Hz toggles a high-pass filter. Its label supplies the documented nominal frequency, not a measured −3 dB location, order, slope or coefficient set.",
+    "evidence": "channel-eq:B03",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-003",
+    "device": "CEQ",
+    "title": "adaptive low shelf",
+    "text": "Low controls a low shelf tuned to 100 Hz over −15 to +15 dB; its curve changes dynamically relative to applied gain. Q-versus-gain law, gain normalization and meaning of tuning are U.",
+    "evidence": "channel-eq:B04",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-004",
+    "device": "CEQ",
+    "title": "sweepable mid peak",
+    "text": "Mid gain ranges from −12 to +12 dB. Its frequency slider sets peak center over 120 Hz–7.5 kHz. Bandwidth and exact response around center are U.",
+    "evidence": "channel-eq:B05",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-005",
+    "device": "CEQ",
+    "title": "asymmetric High control",
+    "text": "Positive High boosts a high shelf up to +15 dB. Negative High combines shelf attenuation with low-pass: from 0 toward −15 dB, low-pass cutoff moves from 20 kHz to 8 kHz. Intermediate mapping, shelf frequency and filter slope are U.",
+    "evidence": "channel-eq:B06",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-006",
+    "device": "CEQ",
+    "title": "spectrum and curves",
+    "text": "Visualization shows resulting filter curves and processed-signal spectrum in real time. FFT, window, amplitude calibration, pixel rendering and update latency are U.",
+    "evidence": "channel-eq:B07",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-007",
+    "device": "CEQ",
+    "title": "processed output gain",
+    "text": "Output adjusts gain of processed signal. Track mixer laws do not establish this control’s conversion, domain, saturation or smoothing. Placing Saturator after it is a documented use case, not a Channel EQ distortion algorithm.",
+    "evidence": "channel-eq:B08,B12",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-008",
+    "device": "CEQ",
+    "title": "retained state vocabulary",
+    "text": "Schema ChannelEq declares HighpassOn, LowShelfGain, MidGain, MidFrequency, HighShelfGain and Gain; Boom Capture.adv retains concrete values. Raw saved values do not establish displayed dB conversion, constructor defaults or accepted ranges.",
+    "evidence": "PKG-SCHEMA:ChannelEq; PKG-CHANNEL-EQ",
+    "provenance": "Dpkg"
+  },
+  {
+    "id": "REQ-DEVICE-CEQ-009",
+    "device": "CEQ",
+    "title": "lifecycle and response gaps",
+    "text": "Exact-build D12 applicability, complete stereo response, automation, undo/redo, persistence, invalid text/state, cancel, bypass, sample-rate/block-size changes and teardown remain U. Cases below retain finite probes without success oracles.",
+    "evidence": "U",
+    "provenance": "U"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-001",
+    "device": "EQ8",
+    "title": "filter count and channel modes",
+    "text": "Up to eight parametric filters per input channel are documented. Stereo applies one curve equally to both input channels; L/R independently edits L and R; M/S provides independently editable curves for the documented M/S-encoded signal use. Encoding/decoding matrix and normalization are U.",
+    "evidence": "eq-eight:B02–B03",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-002",
+    "device": "EQ8",
+    "title": "active editing channel",
+    "text": "In L/R and M/S both curves are visible, but only the Edit-selected channel is editable. Edit toggles curves. Mode-switch copying, inactive-value retention and saved selection are U.",
+    "evidence": "eq-eight:B04",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-003",
+    "device": "EQ8",
+    "title": "eight response choices",
+    "text": "Per band the chooser offers 48 and 12 dB/octave low cut, low shelf, peak, notch, high shelf, and 12 and 48 dB/octave high cut, in that documented vertical order. Response labels establish directional selection, not coefficient sets, exact cutoff attenuation or numeric stored enums.",
+    "evidence": "eq-eight:B05–B11",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-004",
+    "device": "EQ8",
+    "title": "independent band enable",
+    "text": "Each band has its own activator under the chooser. More than one filter can share parameters for stronger combined filtering. Bypass ramps, internal execution/CPU measurements and summation order are U.",
+    "evidence": "eq-eight:B12",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-005",
+    "device": "EQ8",
+    "title": "graph editing and selection",
+    "text": "Dragging dots horizontally changes frequency and vertically changes gain for gain-supporting filters. Drag-enclosing multiple dots selects them for simultaneous mouse or arrow-key changes. Selection geometry, key increment and mixed-response constraints are U.",
+    "evidence": "eq-eight:B13",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-006",
+    "device": "EQ8",
+    "title": "Q and cut/notch restrictions",
+    "text": "Alt on Windows or Option on macOS while dragging adjusts Q. Low cut, Notch and High cut do not support gain changes; vertical dragging changes Q for these response types. Numeric Q range and bandwidth convention are U.",
+    "evidence": "eq-eight:B13",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-007",
+    "device": "EQ8",
+    "title": "expanded display",
+    "text": "The title-bar button moves the display between device chain and main window. In expanded view all eight filters can be edited simultaneously in Device View. Layout sizes, focus transfer and hidden-state persistence are U.",
+    "evidence": "eq-eight:B14",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-008",
+    "device": "EQ8",
+    "title": "output spectrum visibility",
+    "text": "Analyze displays output spectrum behind curves in every processing mode. The output spectrum is shown by default according to the manual; Analyze off disables spectrum view. FFT/window, channel combination, display latency and runtime constructor default are U.",
+    "evidence": "eq-eight:B03,B15",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-009",
+    "device": "EQ8",
+    "title": "Adaptive Q",
+    "text": "With Adaptive Q enabled, Q increases as boost/cut amount increases. Exact gain-to-Q relation, shelf applicability and interaction with Scale are U; AdaptiveQFactor=1.12 in one file is not such a law.",
+    "evidence": "eq-eight:B16",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-010",
+    "device": "EQ8",
+    "title": "held Audition",
+    "text": "Enabling Audition with the headphone icon permits temporary single-filter solo by clicking and holding a filter dot, so only that filter’s effect is heard. Release ends the described temporary hold; exact audition transfer, transitions and transport interaction are U.",
+    "evidence": "eq-eight:B17",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-011",
+    "device": "EQ8",
+    "title": "numeric editing",
+    "text": "Clicking near a band number selects it for Freq/Gain/Q dials or direct numeric-field entry. Text parsing, units, malformed input and out-of-range normalization are U.",
+    "evidence": "eq-eight:B18",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-012",
+    "device": "EQ8",
+    "title": "global Gain",
+    "text": "Global Gain adjusts output level. Its range, dB conversion, processing order relative to oversampling and smoothing are U.",
+    "evidence": "eq-eight:B19",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-013",
+    "device": "EQ8",
+    "title": "Scale eligibility",
+    "text": "Scale adjusts gain of all gain-supporting filters, excluding low cut, notch and high cut. Scale domain, arithmetic law, sign/inversion and parameter mutation versus effective-gain behavior are U.",
+    "evidence": "eq-eight:B20",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-014",
+    "device": "EQ8",
+    "title": "Oversampling context option",
+    "text": "Oversampling is available from the device title-bar context menu. When enabled, internal processing is documented at twice the current sample rate. This is a D12 rate statement only; resampling filters, latency, precision, transition handling and exact target operation are U.",
+    "evidence": "eq-eight:B21–B23",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-015",
+    "device": "EQ8",
+    "title": "response-specific sound",
+    "text": "Low cut removes below-frequency content; high cut above-frequency content; shelves boost/cut their respective sides, peak a range, notch a narrow range. No ideal brick wall, perfect null, linear-phase design, minimum-phase coefficients or response tolerance is specified.",
+    "evidence": "eq-eight:B06–B11",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-016",
+    "device": "EQ8",
+    "title": "retained two-bank storage",
+    "text": "Schema declares Bands.0–Bands.7 as Eq8Band, each with ParameterA/ParameterB; Eq8BandParameter declares IsOn, Mode, Freq, Gain, Q. Retained EQ Eight.adv stores both banks plus Precision/Mode/EditMode, gain/Scale/analyzer/AdaptiveQ state. The A/B-to-L/R/M/S mapping and Precision-to-Oversampling mapping are U.",
+    "evidence": "PKG-SCHEMA:Eq8,Eq8Band,Eq8BandParameter; PKG-EQ-EIGHT",
+    "provenance": "Dpkg"
+  },
+  {
+    "id": "REQ-DEVICE-EQ8-017",
+    "device": "EQ8",
+    "title": "lifecycle and numerical gaps",
+    "text": "Exact-build applicability, mode conversion, live automation and overrides, state save/reopen, legacy migration, undo/cancel, malformed state, engine and display teardown and numerical DSP remain U. The independent Spectrum device’s fields do not supply EQ Eight analyzer algorithms.",
+    "evidence": "U",
+    "provenance": "U"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-001",
+    "device": "EQ3",
+    "title": "independent low/mid/high levels",
+    "text": "EQ Three independently adjusts low, mid and high frequency bands of incoming audio. This is an audible band-split processor, not a guaranteed transparent path with gains at zero.",
+    "evidence": "eq-three:B02,B08",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-002",
+    "device": "EQ3",
+    "title": "gain endpoints",
+    "text": "Each band gain ranges from minus infinity dB to +6 dB. Complete removal at the lower endpoint is documentary band removal, not a measured full-signal null at any frequency. Gain conversion, clipping and ramps are U.",
+    "evidence": "eq-three:B03",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-003",
+    "device": "EQ3",
+    "title": "band On/Off",
+    "text": "Each band has an independent On/Off button below gain. A disabled band can still indicate input-band activity with its LED; numeric gain value retention and toggling transitions are U.",
+    "evidence": "eq-three:B04–B05",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-004",
+    "device": "EQ3",
+    "title": "band activity LEDs",
+    "text": "Three LEDs indicate signal presence in the three bands even if a band is disabled. The documented internal threshold is −24 dB. Reference level, detector stage/window, equality tie, hold and fall times are U.",
+    "evidence": "eq-three:B05",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-005",
+    "device": "EQ3",
+    "title": "crossover meaning",
+    "text": "FreqLo and FreqHi define low/mid/high divisions. At FreqLo=500 Hz and FreqHi=2000 Hz, documented ranges are 0–500, 500–2000 and above 2000 Hz to the sample-rate/soundcard limit. These labels do not specify response at either crossover, exclusive frequency bins or Nyquist handling.",
+    "evidence": "eq-three:B06",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-006",
+    "device": "EQ3",
+    "title": "24/48 slope switch",
+    "text": "24 dB/48 dB selects crossover filter sharpness; higher setting is described as more drastic filtering with higher CPU cost. Actual measured slope, phase and cost are U.",
+    "evidence": "eq-three:B07",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-007",
+    "device": "EQ3",
+    "title": "nonflat 48 dB mode",
+    "text": "48 dB mode is documented as slightly coloring input even when all gain controls are 0.00 dB; 24 dB is described as more linear. No exact coloration curve, null tolerance or assertion of perfectly flat 24 dB mode is supported.",
+    "evidence": "eq-three:B08",
+    "provenance": "D12"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-008",
+    "device": "EQ3",
+    "title": "retained state vocabulary",
+    "text": "FilterEQ3 declares three gains, two crossover frequencies, three enables, Slope and FlatResponse. Boost HiHats.adv retains exact values. FlatResponse=false is a file observation, not a migration law or response oracle.",
+    "evidence": "PKG-SCHEMA:FilterEQ3; PKG-EQ-THREE",
+    "provenance": "Dpkg"
+  },
+  {
+    "id": "REQ-DEVICE-EQ3-009",
+    "device": "EQ3",
+    "title": "lifecycle and numerical gaps",
+    "text": "Exact-build applicability, crossing/equal/out-of-range crossover values, automation and modulation, undo/persistence/cancel, malformed state, bypass, engine changes and teardown remain U. Threshold and slope labels do not supply DSP coefficients or calibration.",
+    "evidence": "U",
+    "provenance": "U"
+  }
+]

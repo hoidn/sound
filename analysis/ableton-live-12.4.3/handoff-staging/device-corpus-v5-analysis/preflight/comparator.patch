@@ -1,0 +1,30 @@
+--- v4/compare.py
++++ v5/compare.py
+@@ -101,6 +101,16 @@
+                 raise ValueError('NoteOff zero endpoint requires positive energy in both channels')
+             error_energy = math.fsum((a - b) * (a - b) for a, b in zip(post_y, post_r))
+             limit(label + ' NoteOff zero endpoint waveform', math.sqrt(error_energy / ref_energy), 0.01)
++        elif kind == 'pickup_step_waveform':
++            for part, start, end in [('pre', 4096, 8192), ('post', 8192, 16384)]:
++                window_y = [float(v) for v in y[start:end]]
++                window_r = [float(v) for v in r[start:end]]
++                ref_energy = math.fsum(v * v for v in window_r)
++                candidate_energy = math.fsum(v * v for v in window_y)
++                if ref_energy <= 0 or candidate_energy <= 0:
++                    raise ValueError('Pickup step requires positive energy in each window/channel')
++                error_energy = math.fsum((a - b) * (a - b) for a, b in zip(window_y, window_r))
++                limit(label + ' pickup ' + part + ' waveform', math.sqrt(error_energy / ref_energy), 0.01)
+         elif kind == 'startup':
+             limit(label + ' floor before frame 100', float(np.max(np.abs(y[:100]))), 1e-18)
+             limit(label + ' onset at frame 100', 0 if abs(y[100]) > 1e-18 else 1, 0)
+@@ -152,6 +162,10 @@
+                     raw_reference = (HERE/evaluation['reference']).read_bytes()
+                     if hashlib.sha256(raw_reference).hexdigest() != 'a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829':
+                         raise ValueError('NoteOff zero endpoint reference hash differs from the pinned capture')
++                if evaluation['metric']['kind'] == 'pickup_step_waveform':
++                    raw_reference = (HERE/evaluation['reference']).read_bytes()
++                    if hashlib.sha256(raw_reference).hexdigest() != '1336d90115bd24c058e556aa95e9140014d168dad7111dec64eb8edd1d977e73':
++                        raise ValueError('Pickup step reference hash differs from the pinned capture')
+                 result = compare(candidate, reference, evaluation['metric'], evaluation['sample_rate_hz'])
+             except (OSError, ValueError, FloatingPointError, ZeroDivisionError) as error:
+                 result = {'pass': False, 'error': str(error)}

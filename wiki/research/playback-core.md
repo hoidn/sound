@@ -2,7 +2,7 @@
 id: RESEARCH-PLAYBACK-CORE
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 (Live arm64 and x86_64 slices; x86_64 Live Engine as named donor)
 ---
@@ -40,7 +40,7 @@ answers:
 - **Stopping.** Stop presses use the global grid and the same boundary rule; transport Stop keeps
   the playing clips assigned.
 
-The behavioral contract is [SPEC-PLAYBACK-CORE](../specs/playback-core.md) revision 1.
+The behavioral contract is [SPEC-PLAYBACK-CORE](../specs/playback-core.md) revision 2.
 
 Evidence: [t13-playback-v1](../../analysis/ableton-live-12.4.3/r2/t13-playback-v1/manifest.json).
 - **Area subdirectories.** `transport/`, `launch/`, `midi/`, `audio/` and `stop/` each hold
@@ -203,7 +203,11 @@ execution of the Live x86_64 function; U = unknown. "Lattice" means rounding to 
   - Play from 10 with loop [4, 8) never jumps.
 - **S, x86_64 and arm64.** A playing session clip is not moved by the jump.
   `OAsyncTrack::OnSongPositionJumped` (x86_64 `0x101b06500`, arm64 `0x101adb6b0`) shifts the
-  clip's fire time by the jump, so the clip continues seamlessly.
+  clip's fire time by the jump. The later event beats therefore shift by minus
+  (loop end − loop start) and are placed from the new anchor. Their samples can
+  differ by one from an independent placement that ignores the jump: the two
+  anchors round their placements separately. The released loop cases agree under
+  both readings; see the [review outcome](../specs/playback-core-handoff-plan.md#review-outcome--2026-10-19).
 
 ### 5. Launching a clip
 
@@ -599,10 +603,17 @@ SPEC-MIDI-NOTE-STORAGE, the extracted-execution triage and the x86_64-only bundl
 - **Audio.**
   - Exact fade gains are U, so Fade-on renders are graded within a tolerance or excluded.
   - The FIR outputs of 16-bit files depend on the untraced chunk type (up to 4.9e-4).
-  - Formats other than 16-bit PCM WAV, `StartRelative` ≠ 0, LoopOn true on an unwarped clip,
+  - Formats other than 16-bit PCM WAV, audio `StartRelative` ≠ 0, LoopOn true on an unwarped clip,
     files with more than two channels, and gain or pitch changes during playback are excluded.
   - arm64 fused operations and Apple's `powf` keep interpolated outputs from being bit-exact
-    against the release slice: about 2 binary32 ulp, and 1e-6 absolute for FIR outputs.
+    against the release slice. The reviewed linear comparator uses an absolute
+    bound of two binary32 units in the last place of the largest source-frame
+    magnitude read by the window; a relative bound on the output fails near
+    cancellation. FIR output retains the proposed 1e-6 absolute bound.
+  - With Fade off and the region extending through the file, silence past the
+    final frame cannot establish the clip's scheduled end sample. The end-beat
+    extraction is retained, but grading the end sample needs another observable
+    (handoff plan F7).
 
 ## Limits
 
@@ -618,3 +629,205 @@ SPEC-MIDI-NOTE-STORAGE, the extracted-execution triage and the x86_64-only bundl
   would change an X result's meaning, not its arithmetic.
 - No retained Ableton documentation exists in `raw/`. Nothing here is labelled documented except
   shipped schemas and sets.
+
+## Bounded playback route inventory — 2026-10-20
+
+**Authored; pending independent structure review.** The
+[playback family structure packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-playback-routes-v1/structure.md)
+cuts the approved integration packet’s I-03–I-06 into the current
+SPEC-PLAYBACK-CORE revision 2 requirements 001–023. Its
+[bounded route ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-playback-routes-v1/route-ledger.json)
+enumerates 243 semantic outcomes after collapsing eight repeated cross-references:
+43 X-route, 69 S-route, 131 no-established-route. Counts describe this authored
+inventory, not grades, application evidence, a completed family or a frozen
+whole-product denominator. Existing requirements, cases, releases, U parts,
+A1–A5 and cross-architecture/clock/receiver assumptions remain unchanged.
+
+**Observed-static/inferred/unknown remain separate.** Exact retained function,
+call-index PC/byte/row and C-line locators support guarded producer/packet,
+consumer/state, same-local launch preparation/activation and local scheduler/
+MIDI/audio relationships. Public admission, asynchronous command delivery/order,
+actual scheduler events, active player/provider identity, MIDI-to-instrument and
+audio-parameters-to-voice/output remain unjoined. ARM StartFileSmpl is a file-start
+position calculation, not proved voice activation. An available internal X leaf
+does not close an emitted-note, gesture, host or clip-audio outcome.
+
+The packet pins predecessor manifest
+`7dddd59650ca3395d10e1b3c8aded3cda01d66b522dda4973a08f32e7bfb8f83`
+and selected T13/X2/release evidence without copying normative snapshots. It
+retains 703 historical input/result rows as auxiliary batch enumeration, including
+explicit unresolved actual-receiver/host input sets. These are not call or
+required-outcome counts. No new provider, runtime, harness, decoder, installation,
+original-function call or candidate work occurred. Root owns the freeze, separate
+structure review, atlas/catalog/coverage/log updates and subsequent batch selection.
+
+
+### Family route review adopted — 2026-10-20
+
+The [frozen playback family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-playback-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-playback-routes-v1-review.json)
+with no findings. All 23 owner requirements and the 243 bounded predicates were
+reviewed; eight cross-references remain collapsed and 703 historical result/input
+rows remain auxiliary. Its 43 X / 69 S / 131 no-established-route inventory
+changes no grades. Public receiver, clock/callback, event/audio delivery and
+F6/F7/F8/F9 limits remain explicit. The map selects no original calls or public
+output expectations; clip-launch mapping proceeds from the reviewed context.
+
+
+## Playback whole117 scalar quantization actual approval — 2026-10-21
+
+Root adopts the [whole117 actual batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/manifest.json), SHA256 `e0086f7249ecf7a121991affebc2966d6525177d3cb788327a5aab4b4b8b8646`, by its [independent actual review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-standing-leaves-v1-review.json), SHA256 `275e720fd33c6992463d7f807b8d9d527bce206b7c4b812a4a63775aa1431a7f`. The 243 payloads total 10,028,789 bytes. Each of 117 original children made one supplied-double call to the existing x86 scalar helper `0x10235b910`; the selected result is the complete saved binary64 XMM0 word. Eight historical exact controls agree; 109 pre-call expectations remain NULL in the frozen capture and can become new finite owner expectations under design12.
+
+The closed class retains signed node/half-threshold neighbors around all seven historical lattice magnitudes, zero/quantum/subnormal/minimum-normal, precision and finite scaling/overflow frontiers, infinities and the selected canonical positive/negative quiet NaNs. It is not the infinite lattice or all NaN payloads; no signaling NaN was selected. There are 107 finite and ten nonfinite results: eight infinities, including six from finite inputs, and two canonical signed quiet-NaN words. Twelve returned words are signed zeros. These are local observations, not application faults or legal file/sentinel admission.
+
+All children exited zero with empty stderr and no timeout/TRAP/FAULT/counted-import use/retry. The reviewer read the complete 192-line collector, 87-line analyzer and 93-line checker before data checks, then verified all 117 input words/tokens/strtod results, 234 raw files, call projections, controls and 22 recorded custody identities. Eleven independent negative controls and seven fresh safe host-parser controls passed. Each process lists 1,796 trap/85 Linux/one Linux-data bindings; zero counted use is not proof of absent providers or global-data access. Existing helper ABI/native semantics and the built loader are inherited, not fresh native-body or loaded-provider proof.
+
+JSON records are explicitly fsynced; raw stdout/stderr are closed and hashed without explicit raw-file fsync. No crash/power-loss durability, child input-register/FP-state trace, native arithmetic cause or fitted mathematical replacement is established. Scope is only the supplied scalar function. Clip voices, file admission, public timebase, audio delivery, ARM/Apple equivalence, A1–A5/F6/F7 and builder/kernel/gain joins remain open. Current owner revision3 adoption will pin this approved observation review without repeating it; release review remains separate. Unsupported required behavior stays U and coverage OPEN.
+
+
+## Playback owner r3 finite adoption — 2026-10-21
+
+The [R3 owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/manifest.json), SHA256 `03701f9ddf119cee9be0bb62632ae8f98e7a2ae089a275eb3f07a569d0ffa437`, adopts 109 new finite scalar cases PBC-097–205 and retains eight known-oracle agreements as supporting controls. Ten payloads total 242,938 bytes. Root's [added-wording/mapping review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-owner-r3-added-wording-review.json), SHA256 `c3bf0a3ef962ce4a05b3d79656ffc3e6bd7d0330c88a1d587c91f69b069c47be`, reuses the approved actual observations, without reviewing them again. The 122-line data-only checker passed ten negative controls, all109 mappings/eight agreements, 22 unchanged requirement bodies/68 old rows and exact reversal to the 61,890-byte R2 predecessor. Current draft has 177 case IDs, not new outcome-denominator units.
+
+REQ-017 now limits the finite-grid reading to supplied scalar observations: signed zero, six finite inputs returning infinity and canonical signed quiet NaNs do not establish an arbitrary-binary64 finite-grid, native arithmetic cause, FP-state guarantee or portable ARM/Apple bound. Original NULL expectations remain unchanged in the frozen batch; H cases use separate scalar setup and do not inherit timing/audio/file comparators. Public clip/sentinel/Open/audio input admission, A1–A5/F6/F7 and receiver/builder/gain/kernel joins stay open. All 92 released objects remain unchanged. Owner edit followed closure of the peer source-pin window; prior mutable R2 identities remain as-of evidence, not future gates. Neutral fixtures and ordinary release review remain required; unsupported required behavior stays U/OPEN.
+
+## Standing-class eligibility after finite adoption — 2026-10-21
+
+The [117-point batch and R3 adoption](#playback-owner-r3-finite-adoption--2026-10-21)
+record every member of their selected supplied-one-double quantization class. This does not
+exhaust the standing Playback routes. The `whole_classes` of the `playback` entry
+in the retained
+[eligibility assessment](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-high-X-eligibility-v1/eligibility.json)
+separate 413 historical clock, launch,
+position, stop and dependency rows, plus 86 scalar increment/quantization rows,
+from 204 builder/gain/kernel rows outside that unpatched scalar class. These are
+input-navigation rows, not new observations, callable totals or outcomes.
+
+The [map input inventory](../../analysis/ableton-live-12.4.3/full-spec-v1/family-playback-routes-v1/batch-inputs.json)
+retains the existing supplied-state classes. Its `enumeration_gaps` names only
+PBC-007's start-beat −2 as a concrete unrun vector, with rate/setup still
+unspecified; that lone vector is not a selected whole class. The three-scalar
+increment and supplied clock/loop/stop routes are not declared unavailable, but
+this assessment identifies no additional complete, missing input partition in
+the reviewed inventory. Replaying the historical 499 potentially eligible rows
+would not itself settle a new required predicate.
+
+Allocator-intercepted MIDI builder/audio gain and constructed kernel/FIR states
+remain separate from receiver-free arithmetic. Public clock and player delivery,
+A1–A5, F6 positive-predelay activation and F7 silent-end discrimination remain
+open. No new raw/source/runtime evidence or execution was acquired for this
+selection assessment. Its conditional lack of a concrete next class is not
+proof that all classes are exhausted or Playback/product coverage is complete.
+
+
+## Post-adoption standing input assessment — 2026-10-21
+
+The [Corpus-first/playback input assessment](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/corpus-playback-next-standing-input-eligibility.json),528,975 bytes/SHA-256 `9f202e2e8ba59344f2cf2b8abb44fb902497802becea09a251605503aacd04e5`, carries the prior standing-class conclusion without replaying observations: the selected117 quantization class is fully observed/adopted, while413 historical supplied-state/clock rows and86 scalar increment/quantization rows remain input navigation, not a new missing class. The existing three-binary64 increment and supplied clock/loop/stop models are not globally unavailable. A next selection needs one complete exact input-bit/branch/typed partition and its existing ABI/state/stub setup; the lone named PBC007 startbeat−2 still has no selected rate/setup. No new such matrix was frozen here.
+
+The allocator-intercepted builder/gain and constructed kernel/FIR paths remain distinct from the admitted unpatched scalar class. Public delivery, A1–A5, positive-predelay activation and silent-end discrimination remain U; neither replaying499 historical rows nor a scalar result settles those joins. Corpus's proposed128-cell Decay input class is the higher-priority concrete route, pending separate Root selection. No original/sourcebehavior/raw/audio/numeric metric replay, model/tool/provider acquisition, new capture/ID/criterion or global exhaustion claim follows.
+
+## Integer semitone and retained-rate class selected — 2026-10-21
+
+Root’s [INPUT-only matrix](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-integer-semitone-rate-input-eligibility.json),715,435bytes/SHA256 `31342332ca3aabfb37a6f3e3b37ad5b722edc0d697274c9e199cea1bf2f2f5fc`, freezes a concrete finite next class: all97 integer semitones−48..48 crossed with the six rate pairs already in the retained `run_inc` declaration:48000/48000,44100/48000,48000/44100,96000/48000,22050/44100,44100/44100. The582 distinct three-binary64 input tuples contain528 new argument tuples and54 historical argument-only matches. Input tokens are exact `d:` hexadecimal values; thirteen meaningful input negatives pass, with zero original calls or output/formula evaluation.
+
+**Whole histories are not argument tuples.** The old78 increment calls shared a process; the proposed582 each use a fresh single-call child. Fifty-four argument intersections are support/navigation, not whole-history equality or old PID/receipt/metric/output/criterion transfer. None may be silently removed by argument-only deduplication. All582 result-bit priors remain NULL, without a powf/ratio evaluator, old result review, fitted formula or portable criterion. This is a complete bounded supplied-helper matrix, not all fine-pitch/rates/loaded clips or a native clamp/rounding/general increment law.
+
+Root selects ONE `batch-playback-integer-semitone-rates-v1` under the standing model. Mix authors after Collision523 final seal; Auto is SOLE actual/source peer after its Collision523 review. Root is citation-only for ALL new playback actual/code/source/raw/results before any reads. Root authored the INPUT enumeration only, never the capture/analysis/control/checker code. One frozen packet receives one independent actual review; no prep/readiness/root-review chain is created.
+
+Use only the existing74792-byte `/var/tmp/sound-analysis/xexec-t13-audio/xexec`, inherited SHA256 `f7fdae69a26d930a4326a2a3eecce271ddf406a1c3ce364e87451dca0c4c13aa`, and existing Live x86 slice identified in the old approved quantization manifest. These identities are inherited metadata here, not fresh loader/image/provider proof. The selected function is `0x10236f1f0`, three binary64 `d:` arguments via the existing XMM0/1/2 bridge, one selected direct call per child, full saved XMM0 output word, no receiver/integer arguments/initializers/setup. The ordinary driver/source declarations were read but not imported or run. Do not import historical Runner (which can build), execute run_x.py, rebuild/install, patch native code, intercept allocators, construct objects, initialize gain/kernel paths or introduce provider/FP treatment. Existing strtod's temporary float cast remains qualified; all selected integer/rate inputs are exactly binary32 representable, which does not trace native entry FP state or ABI.
+
+All new recorder/parent/analysis/checker/initial-assembler source, exact argv/scripts/context bind before calls. Record all registers/raw/import declarations and counted use, host token-to-bit checks, parents/custody and resource outcomes; counted nested work remains separate from582 selected exports. Planning192MiB lifecycle plus128MiB concurrent headroom includes repeated import logs/receipts/author and peer reports; it is unreserved/not a quota. Fresh parent/pre-child remaining-output admission, strict output shape, first-fault stop/no retry/partial retention remain required. If unchanged route cannot fit, stop/file its exact blocker. Prior source/default/FP/provider/OS-exec/cleanup/durability qualifications persist. No IDs/criteria/grades/release/public or ARM/Apple law/whole-product closure follow from selection; public clock/file/player/A1–A5/predelay/silent-end remain U.
+
+
+## Integer semitone/rate pre-call freeze — 2026-10-21
+
+The selected [whole582 single-call input packet is frozen](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/batch-playback-integer-semitone-rates-v1/pre-call-manifest.json),3,017bytes/SHA256 `e64000779adb7df8fab0bc428038f4e929fb0bff715a5bbd9b6f4ef600952230`:15payloads including every new assembler/recorder/parent/data/checker/freezer, exact input matrix, parser checks and unchanged method-source copies. Existing r2-large resolves to `/var/tmp/sound-analysis/full-spec-v1/batch-playback-integer-semitone-rates-v1`; no new link/storage move/cleanup. All582 are fresh histories, including54 historical argument-only supporting controls; no old PID/receipt/metric/output/criterion inheritance or multicall-history equivalence. ALL priors/portable criteria/grades remain NULL.
+
+Before calls,17input/15protocol/5parent negatives, tworesourceboundaries/six returned-word positives pass; all1,746 original d:hex tokens match whole-token libcstrtod binary64 words. Temporary float cast/native input registers/FPstate remain untraced. Existing xexec/T13 source is retained as data, never built/imported/run as an old helper. Only receiver-free0x10236f1f0/threebinary64/onecall/no setup is selected. Allfour raw carriers and complete imports/positive counted Linux-code uses remain; nonfinite return words are retained discovery, not silently normalized or rejected.
+
+Capture is once582/20sCPUwall/core0/1MiBfile/DEVNULL/newgroups/firstfaultstop/noretry. Seven runtime/image/tool/cache/interpreter plus five new code/input identities use ONE common initial endpoint→each-child-after, explicitly NOT per-child-before custody. Fresh pre-parent and per-child guards retain unreserved192MiB lifecycle+128MiBheadroom/remaining stdout allowance+64MiBmetadata; possible launched-child overshoot/concurrent consumption remains. FDfsync requests are not directory/crash or OSexec/FP/provider proof. AutoSOLEactual/sourcepeer after finalseal; Rootcitation-only ALLnewactual/code/source/raw/results/INPUTmatrixauthor only. No IDs, criteria, public/ARM/audio/clock/filebinding law or whole-product closure; unsupportedU/OPEN.
+
+
+The full582 class is now [author-sealed for Auto's sole actual/source review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/batch-playback-integer-semitone-rates-v1/manifest.json),193,818bytes/SHA256 `bbbdb872f8063d2f2b0ad4e05a97feb20870a2d5b8443766c821972d967ee5f0`:1,187payloads/127,393,172bytes/all1,188files0444/exacttreehashPASS. Once582children completed16:04:07.493290–16:06:18.791216UTC/outer1458813/recorderexit0/errorNULL/no retry;582selecteddirectcalls/0selectedinitializers/nestedunknown. Wholeclass includes54argument-only supporting controls, with no oldwholehistory/PIDmetriccriterioninheritance. Sevenruntime+fivecode ONEcommoninitial→eachafter6,984pairs, notperchildbefore. Author receipt/frozen-input bookkeeping passes without own actual stdout/carrier/formula reanalysis; Auto independently reviews allnewsource/raw/results. Root remains citation-only. ALLpriors/portablecriteria/gradesNULL, no owner IDs or public/ARM/file/audio/clock/general increment law; requiredU/OPEN.
+
+## Integer semitone/rate actual adoption — 2026-10-21
+
+[Auto’s sole actual/source review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-integer-semitone-rates-v1-review.json),4,549,979bytes/SHA256 `c1e4fae9d02a733440d31f5f3ba9a069ee1152964cd0cd60992a3ca8fcd5f1de`, approves the full582 fresh single-call histories. The [manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/batch-playback-integer-semitone-rates-v1/manifest.json),193,818bytes/SHA256 `bbbdb872f8063d2f2b0ad4e05a97feb20870a2d5b8443766c821972d967ee5f0`, seals1,187payloads/127,393,172bytes/1,188files0444. Root adopts by citation ONLY, without reading any new actual/code/source/raw/result payload or repeating numeric proof.
+
+The reviewer read all six new source files/README/assessment/history before the packet-only safe check, then independently checked all582stdout/stderr/receipts/four64-bit carriers,1,746 complete strtod tokens and exact input bits/binary32 representability,582matrix members,precall/parents/resources and custody. Fifteen independent protocol negatives plus seven unsigned-word positives (including raw signaling-NaN words without float decoding) pass, with owned17input/15protocol/5parent/2resource/6word/11retained controls. All582once-only children completed16:04:07.493290–16:06:18.791216UTC/all0/no fault/retry,582selected direct calls/zero selected initializers/nested original/provider calls unknown.47,995,008stdout bytes are retained. All582saved XMM0 words are positive finite normal values,485unique words descriptive only; each counted _powf once. Current1,882declarations comprise85Linux/one data/1,796trap, distinct from counted use and no provider/global-data absence proof.
+
+Twelve COMMON initial identities join each582after endpoint (6,984pairs), NOT per-child before snapshots; six whole-source endpoint pairs are separate. Same loader/slice/three exact d:hex arguments/function0x10236f1f0/no receiver/constructor/init/patch/build/provider/FP treatment remain. Loader strtod’s temporary float cast, native FP/ABI/OS-exec/provider/cleanup/durability/resource guard limits retain scope. Ordinary source/argv endpoints do not prove input-register state or continuous loaded-provider identity.
+
+All582 frozen result priors remain NULL; no powf/ratio formula/model/fit or old increment raw/source-behavior review occurred. Fifty-four old argument-only intersections are not inherited whole histories: old78calls shared a process, these use fresh single-call children. They carry no old PID/receipt/metric/output/criterion transfer or historical replay credit. The full582 newly observed histories may enter R4 as finite supplied-helper cases, while the54relationship and528novel argument tuples remain explicit. Only the saved XMM0 word has the selected observation meaning; other returned registers remain raw carriers. Portable criteria/grades remain NULL/applicationFalse/no public clip/frame/read-step/clock/ARM law, A1–A5/F6/F7 or completion proof.
+
+Arr authors R4 after its priority INPUT assessment seals; Root is sole NEW wording/IDs/mapping/preservation peer while remaining citation-only ALL new actual payloads. Append only bounded REQ017/annex/revision, preserve22otherwhole/old017R3prefix/177oldnavigationIDs68legacyrows/R3objects/old NULL/signed-zero/infinity/NaN qualifications/criteria/release92cases/history/fullreverse. Use current canonical, this new approved summary and prior R3 peer embedded metadata only; absent older individual bytes are not reconstructed or re-audited. No IDs until application, no new release/portable grade or whole-product closure; required U/OPEN.
+
+
+## Playback owner R4 integer semitone and rate annex adoption — 2026-10-21
+
+[Auto's sole new-owner review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-owner-r4-integer-semitone-rates-finite-v1-review.json),3,876,369bytes/SHA256 `f9257844d94896382ffb7427a83605fd1adfc3a9197242f0c9d8254327658da3`, approves the new wording, IDs, mapping and preservation. The [manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r4-integer-semitone-rates-finite-v1/manifest.json),4,261bytes/SHA256 `d6f7dda855370b76b221b25654f07b55eb757bfcafe28ac7006aa04645373e0e`, lists11payloads/3,445,510bytes. Mix applied ONLY the report's complete embedded four-fragment delta and exact75,822-byte target, SHA256 `348a58b89415e912e0f6cf09508bae7c8f7b3950da6f0d27a1dd2765e503c30e`, after exact composition and full reversal to68,222-byte R3. No proposal payload, actual/source/raw/numeric/formula, old catalog/provider or release-fixture proof was reopened; manifest listing/counts alone are metadata.
+
+Arrangement authored R4; Auto was assigned SOLE new-owner wording/mapping/IDs/preservation peer BEFORE any Root new-proposal read. Frozen intended-Root labels remain historical and are superseded by that assignment. Root and this application inherit Auto's embedded approval by citation, without a second owner/actual review. Auto's32owned and25independent negative controls pass; its earlier582actual approval is inherited, not repeated.
+
+R4 adds582 PBC-206–787 IDs/full582fresh single-call histories:97integersemitones−48..48×six retained file/engine-rate pairs. Native expectations copy exact approved SAVED XMM0 binary64 little-endian words; the other three raw carriers have no assigned return meaning. All582frozenpriors remain NULL, portable expected/comparator/grade NULL and new application proof false. Fifty-four historical argument projections are ARG-only supporting references, not old whole-history/PID/receipt/metric/oracle/criterion transfer;528triples are novel in that bounded argument cut. No formula/powf/ratio evaluation, fit, pitch calibration or general semitone/rate/clamp/rounding/publicclip/audio/file/clock/ARM law is inferred.
+
+Only bounded REQ017 is appended, plus its finite annex and revision record. The22otherwhole requirements/old017R3prefix,177oldnavigationIDs/68oldrows/109R3case links/eight known agreements/oldAcceptance and protected sections remain exact, with full reversal. The priorR3owner review lacks individual catalog bytes: only its embedded approved scope/owner pin/counts are inherited, with no invented catalog reconstruction. All92releasedobjects stay unchanged as inherited reviewed scope, not a fresh fixture audit. Old signedzero/sixfinite-inputInf/canonical±qNaN/NULLhistory and A1–A5/F6positivepredelay/F7silentend/currentpublic/ARM gaps keep their scopes. The759draftIDs are navigation, not passes or a whole-product denominator.
+
+Temporaryfloatcast/1746hoststrtod words do not attest native input registers/FPstate. Current1,882declarations (1,796trap/85Linux/oneLinux-data) differ from counted `_powf` once per selected call;485positive-finite words are descriptive only. Six source endpoints and ONEcommon12initial→582after snapshots/6,984pairs are NOT per-child-before or continuous provider/ABI/OSexec/source-version proof. FDfsync/resource/cleanup and initial-materializer qualifications remain unchanged; no old-gap repair. No new release, candidate conformance, grade/site or product closure. Required unsupportedU/OPEN.
+
+The [focused application delta](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-r4-owner-adoption-incremental-check.json) checks only sole-review/manifest metadata, the exact applied target and affected docs/browser. Prior CorpusR15 checkpoint carries as-of9,519 without proof replay; this adoption brings cumulative additions to10,101draftIDs. Analog193 and Corpus890 actual adoptions/later owners are excluded from this delta and routed separately by Root.
+
+
+## Shipped unwarped file-rate INPUT class — 2026-10-21
+
+The [sealed INPUT-only catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-shipped-unwarped-rate-input-eligibility.json),1,731,262 bytes/SHA256 `cb7a6fbca5a68067e41fb566ff10129f8a0300b5aab2f1e35c6f578afd15dc9b`, covers all2,479 retained shipped-unwarped metadata rows and exact source-row locators. All have literal PitchCoarse=`0`/PitchFine=`0`. Distinct DefaultSampleRate values/counts are44,100(2,058),96,000(288),48,000(130),22,000(2),22,050(1). Crossing this COMPLETE retained five-value source class with BOTH engine rates declared in the owner's Definitions (44,100/48,000), at supplied semitones+0, gives10 distinct three-binary64 helper INPUT histories. It is not all possible UI/engine rates, a fine-pitch grid or a whole-product denominator. No referenced sets/audio files are opened.
+
+Six exact+0 entries of the approved582 single-call catalog qualify as historical INPUT references: identical d:hex tokens/three f64 words, target0x10236f1f0, fresh-process/no-init/no-object/one-call history, fixed environment and unchanged loader/slice/runtime-expected metadata. No old PID, receipt, output, metric, oracle or criterion transfers. Their old78 argument-only multi-call references are not used as whole-history joins. Future custody/current runtime equivalence remains a required recorded condition, not acquired or inferred here. The four missing pairs in this bounded whole source class are(96000,44100),(22000,44100),(22000,48000),(22050,48000), file rate first. All exact d:hex tokens/f64 words and six qualified INPUT pointers are retained, with NULL new priors/native expectations/portable criteria/grades/application proof false. No pow/ratio/output/native/provider evaluation or original call occurred.
+
+The retained schema's `/classes/AudioClip/fields/44` and45 identify BOTH PitchCoarse and PitchFine as UserFloat, not Int. Combined with all-zero retained values, this supplies NO complete101-cent/all-fine partition or integer-step/public admission law. General Fine and A3 remain U; selecting an arbitrary fine grid would not complete that domain. Thirteen meaningful INPUT corruptions and full-rate/source-row/context-intersection assertions pass. If separately selected, the four missing members would use the already-admitted audio xexec74792-byte/no-initializer/no-receiver/three-double/one-call fresh-child model only, with first-anomaly stop/no retry and no new source/tool/patch/provider/object/calibration.16MiB lifecycle+128MiB headroom is unreserved planning only. No capture/owner IDs/release/grade/site or compatibility/closure is selected; required U/product OPEN.
+
+## Shipped unwarped file-rate class selected — 2026-10-21
+
+Root selects the complete [retained rate INPUT class](#shipped-unwarped-file-rate-input-class--2026-10-21), pinned by the [1,731,262-byte INPUT catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-shipped-unwarped-rate-input-eligibility.json)/SHA256 `cb7a6fbca5a68067e41fb566ff10129f8a0300b5aab2f1e35c6f578afd15dc9b`: five file sample rates found in all2479retained unwarped-clip records, crossed with the two engine rates already named in the owner's Definitions. Every retained record has literal PitchCoarse=0/PitchFine=0. The ten supplied native-input histories use semitones positive zero and all pairs of file rates44100/48000/96000/22000/22050 with engine44100/48000. Six match approved582 INPUT metadata under the same declared fresh single-call context and remain references only; they receive no replay, new PID, receipt, metrics, native output or criterion. The four missing pairs are96000/44100,22000/44100,22000/48000 and22050/48000. The old78 shared-child argument-only projections are not used as whole-history references.
+
+Arrangement authored this INPUT catalog and retained all2479row locators/line hashes. Thirteen meaningful INPUT controls pass; Root reconstructed all ten three-binary64 words and exact d:hex call tokens. Root's first metadata validator wrongly expected numeric0 rather than the correct literal string+0; it failed before documentation edits or original calls. Its sealed failure remains, and v2 corrects only that field-type assertion, without changing input/evidence bytes. The existing report's shared context/env/target/runtime declarations qualify the six INPUT references, without a new binary/provider read, runtime equivalence proof or output transfer. Fresh capture custody must still establish its own endpoints. No pow, ratio, expected output or native arithmetic was evaluated to choose inputs. The retained schema summary types PitchCoarse/PitchFine as UserFloat, and the observed zero-only inventory gives no complete101-cent/all-fine-pitch partition. That domain, A3/public clip/file/audio admission, general rates and ARM/Apple/FP equivalence remain U; this class is the bounded retained dataset, not a product denominator.
+
+Auto authors ONE `batch-playback-shipped-unwarped-rates-v1` after sealing Electric124. Mix is SOLE actual/source peer after its Corpus3586 final seal; Root remains citation-only for all new Playback actual/source/code/raw/results before any read. Four once-only children each make one selected original call to0x10236f1f0 using the unchanged74792-byte audio xexec/Live163716848 model: three d:hex arguments in XMM0/1/2, no initializer, receiver, integer argument, original construction, patch, tool/build/model/provider/stub or FP change. The saved XMM0 word is the sole proposed native expectation carrier; the other three raw words remain unassigned. There is one frozen packet and one actual/source review, without preparation/readiness/Root gate chains.
+
+All new capture/control/parent/assembler/analysis/checker/finalizer source, exact scripts/context and future artifact guards freeze BEFORE calls. Author post-capture bookkeeping remains metadata-only. Planning16MiB full lifecycle plus128MiB headroom is unreserved; fresh guards admit complete remaining stdout/stderr/receipt/metadata/final allowance and headroom. First detected fault/resource limit stops later children; retain partials, do not retry or relax guards. No old baseline/native-output replay, f0/metric/fit/calibration/tolerance or new portable criterion is selected. Priors, portable expected/comparator/grade remain NULL/appFalse. No new owner ID, release, candidate comparison or closure follows from selection; requiredU/productOPEN.
+
+
+## Shipped unwarped rate capture author status — 2026-10-21
+
+Auto froze the complete four-missing/six-INPUT-reference packet before any selected call: [pre-call manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/batch-playback-shipped-unwarped-rates-v1/pre-call-manifest.json), 2,339 bytes, SHA256 `78c541c6ccbd6c09e2501bc988f7f7baecacf766c7bad51791af48d484e101aa`, binding all 13 initial payloads (1,881,905 bytes), including the parent, recorder, checker, finalizer, exact initial authoring sources, immutable INPUT authority, context and ten-point catalog. The unchanged selected helper receives four once-only fresh single-call histories; six old points remain INPUT-only references without replay or output/criterion transfer. Mix is the sole independent actual/source peer after final seal; Root is citation-only for all new actual code and results. Capture and author bookkeeping are not independent approval, case admission, portable criteria or public/ARM proof.
+
+## Shipped unwarped rate actual adoption — 2026-10-21
+
+[Mix's sole actual/source review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-shipped-unwarped-rates-v1-review.json), 2,551,036 bytes, SHA256 `6607fb750a4a9dd68648a5d1f1702f8078e55b09b00b538aae2b6b5bc4679fb5`, approves the four fresh local observations in the ten-history catalog. The [packet manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/batch-playback-shipped-unwarped-rates-v1/manifest.json), 5,012 bytes, SHA256 `803367dca790f43fc62ae9aba6b25ec57aa4224e2ca000b8bacc08ffa3f030a3`, lists 28 payloads/2,781,492 bytes; all 29 files remain readonly. This adoption uses only the approved report summary, with no actual/source/raw/numeric proof replay. Auto authored capture/control source, Mix was the sole peer, and Root remains citation-only for those new payloads.
+
+Four once-only children captured file/engine-rate pairs 22000/44100, 22000/48000, 22050/48000 and 96000/44100, each with supplied semitones positive zero and one receiver-free three-double call. They exited zero without a recorded fault or retry. All four saved XMM0 words are positive normal finite values and distinct; each logs one counted `_powf` use. These are descriptive observations, without a ratio evaluator or fitted law. The six other catalog entries remain qualified INPUT-only references to the earlier 582 class, with no old output, PID, receipt, metric or criterion transfer. Other raw carriers remain unassigned.
+
+The peer read all eight new Python sources and checked all four logs, sixteen raw carriers, twelve host argument words, the complete catalog and readonly tree. Thirty-one independent negative controls and eight unsigned-word positives pass. Seven runtime identities plus thirteen pre-call payload identities form **one common initial snapshot followed by four after-child snapshots: 80 matching pairs**, not per-child-before or continuous custody. Host `strtod` bookkeeping does not attest child entry registers, temporary-float-cast FP flags or native fenv. File-fsync requests do not establish directory/crash durability, OS exec or loaded-provider continuity; cleanup and inherited source-version limits remain.
+
+No owner IDs or release are admitted here. Fresh priors, native expectations, portable expected/comparator and grades remain NULL; application proof is false. General fine-pitch/rate, current clip/file/audio/clock admission, A1–A5/F6/F7 and ARM/Apple behavior remain unresolved. The earlier selection and author-status paragraphs remain historical as-of records. Required unsupported behavior stays U and product coverage OPEN.
+
+## Playback owner R5 shipped-rate annex adoption — 2026-10-21
+
+Root's [sole NEW wording/IDs/mapping/preservation review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-owner-r5-shipped-unwarped-rates-finite-v1-review.json),4041361bytes/SHA256 `3da7e77dfd793ec52e64789f892df34be45d118f6bb89b8b6c408e216feed8ab`, approves and applies exactly80268bytes/SHA256 `767541e4ab1a4e9da180355c65ee4a5b17797672be89302311d6264ad77e4b92`. The [manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r5-shipped-unwarped-rates-finite-v1/manifest.json),2595bytes/SHA256 `f209e3e7fe73f1c3794a372b13c8493791feeb4803ab8d24b0c33fdecc719291`, seals12payloads3479015bytes/all13files0444/private0700/exacttree.
+
+Four PBC788–791 map only the sole-approved fresh SAVEDXMM0 observations; full10history catalog retains six INPUT-only references/no newPIDreceiptoutputmetriccriteriontransfer/existingR4IDs navigationonly. Other3rawcarrier semantics remain unassigned. All23wholeREQ/759oldIDs68rows/R3R4objects/criteria/U/history/92releasedobjects remain exact/fullreverse; absentR3individualcatalog metadata is not reconstructed. New priors/portablecriteria/gradesNULL/appFalse; no formula/rate-domain/finepitch/publicclip/ARM law or oldproof repair.
+
+Root FULLread newchecker/historicalstager/README/delta/history INERT before ONLYsafecheck/NEVERstager.26owned28Rootnegative controlsPASS; exactly currentR4+Mixapproved4REPORT+AutoR4ownerREPORTembeddedmetadata. No actual/source/raw/numeric/provider/oldR4proposal/catalog/fixtures proof replay, and no embeddedactualmethodsource copied. The80commoninitial→after custody pairs are NOTperchildbefore; FP/OSexec/provider/source/FDfsync/resource/cleanup qualifications remain.763navigationIDs are not passes/productdenominator; no release/implementation/closure.
+
+
+## Remaining scalar INPUT class assessment — 2026-10-21
+
+The retained 86 scalar navigation rows are exactly **78 increment inputs plus eight quantization inputs**, not 86 newly missing observations. The [map INPUT inventory](../../analysis/ableton-live-12.4.3/full-spec-v1/family-playback-routes-v1/batch-inputs.json), 375,615 bytes/SHA256 `4e8915af2d8e33d4a81aab293b2ff95a5a3da6d353dafc50c9b1f96b785d2442`, `/batches/4/rows`, separates them from the same batch's 32 gain, 150 kernel and ten shipped-render navigation rows. The 413 clock/state rows retain their earlier supplied-state/setup limits; they are not added to this receiver-free scalar class.
+
+The exact retained [driver INPUT declarations](../../analysis/ableton-live-12.4.3/r2/t13-playback-v1/audio/run_x.py), 16,646 bytes/SHA256 `3d469c231aa4c045a91c476e3cf0219e2669005a387d6539936689ee5a5f3c61`, lines43–49, enumerate semitones `0,1,-1,12,-12,0.5,-0.25,7,24,48,-48,0.01,3.3` at all six declared rate pairs: 48000/48000,44100/48000,48000/44100,96000/48000,22050/44100,44100/44100. That exact span is 388 bytes/SHA256 `a25d6cef549b2459b315254b95d71b580f448965cf87534a6d293484f2d323f7`. INPUT-only binary64/tuple checks find 54 argument intersections with the [already adopted integer582 matrix](#integer-semitonerate-actual-adoption--2026-10-21); the other 24 are the four already recorded fractional semitone values at those six pairs. They do not become new required behavior merely by assigning fresh single-call process histories. Old shared-process calls and the newer single-call histories remain distinct, with no PID, receipt, output or criterion transfer.
+
+Lines64–67 declare the eight quantization inputs (196-byte span/SHA256 `60f60ad065e97c32715997fe0457151a1ce0d85b65bc380fc08c7e716c0e3c7b`). All eight exact binary64 input words already occur in the [117-input catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/inputs.json), 50,056 bytes/SHA256 `451c5f9a51fd2e1c44a48464ef26385aa53b006f0351b688a0d464f876478757`. That catalog already names its complete bounded anchor/half-step/lattice/representation-boundary neighborhoods. The separately adopted shipped-rate class is also accounted. No old result, formula, comparator, numeric estimator or native-source behavior was reevaluated for these INPUT joins.
+
+The existing unchanged scalar route remains available: `0x10236f1f0` accepts three binary64 `d:hex` arguments, while `0x10235b910` accepts one, through the admitted 74,792-byte audio xexec and pinned Live x86 slice. Neither needs a receiver, buffer, initializer, integer argument or new stub; the inherited loader/image identities and bridge limits are in the [integer INPUT authority](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-integer-semitone-rate-input-eligibility.json). These are retained setup metadata, not fresh executable/provider/entry-register or FP-state proof. All 78 declared increment arguments and eight quantization seed arguments have finite binary64 storage; this says nothing about unselected output behavior or public input admission.
+
+This bounded read identifies **no additional complete missing scalar boundary matrix**. The missing bridge is a source-owned exact input partition with justified boundaries/endpoints and fixed rate/setup context, beyond the already accounted classes; a legal ABI alone does not supply that partition. UserFloat fields and all-zero retained fine-pitch metadata still do not declare an integer-cent or other complete fine domain. No arbitrary fractional grid, clipped slice, parameter crossproduct or replay of the 86 historical rows is proposed. This is not a global exhaustion claim or a ban on future scalar discovery with NULL priors. Public delivery, A1–A5/F6/F7, ARM/Apple behavior and required unsupported predicates remain U; coverage stays OPEN. No capture, new artifact gate, IDs, owner change or shared routing edit follows.

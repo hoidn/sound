@@ -1,0 +1,308 @@
+{
+  "id": "TENSION-CONSTRUCTION-PAIR-COMBINED-ASSESSMENT",
+  "created_utc": "2026-10-21T06:05:46.655194+00:00",
+  "status": "AUTHOR_COMPLETE_PENDING_ONE_ROOT_COMBINED_REVIEW",
+  "selected_source_records": [
+    {
+      "entry": "0x1b7c",
+      "path": "/var/tmp/sound-analysis/helpers/Tension/corpus/decomp/chunks/chunk-00000.jsonl",
+      "row": 1,
+      "byte_offset": 0,
+      "raw_bytes": 671,
+      "raw_sha256": "090160b7fff5f1cbe24bc3021f446fcc1bf8144f8ebbb9db358aabeebbae27db",
+      "metadata": {
+        "entry": "0x1b7c",
+        "name": "FUN_00001b7c",
+        "thunk": false,
+        "body_bytes": 120,
+        "body_ranges": [
+          [
+            "0x1b7c",
+            "0x1bf3"
+          ]
+        ],
+        "signature": "undefined FUN_00001b7c()",
+        "state": "exported",
+        "error": null,
+        "timed_out": false,
+        "partial_code": false,
+        "warnings": [],
+        "ms": 39,
+        "code_bytes": 306,
+        "code_sha256": "4bbcde5e4305ed1a8ea50ca636cf2566639b3a581526ad7ecdf6172d273a5bc0"
+      },
+      "C_projection": "1b7c.c",
+      "C_lines": 17
+    },
+    {
+      "entry": "0x1c18",
+      "path": "/var/tmp/sound-analysis/helpers/Tension/corpus/decomp/chunks/chunk-00000.jsonl",
+      "row": 2,
+      "byte_offset": 671,
+      "raw_bytes": 1059,
+      "raw_sha256": "9ee7e34f79e74b2b6c222f543b254546b5c232b77b4ee95b8a376d92481c2ff7",
+      "metadata": {
+        "entry": "0x1c18",
+        "name": "FUN_00001c18",
+        "thunk": false,
+        "body_bytes": 108,
+        "body_ranges": [
+          [
+            "0x1c18",
+            "0x1c83"
+          ]
+        ],
+        "signature": "undefined FUN_00001c18()",
+        "state": "exported-with-warnings",
+        "error": null,
+        "timed_out": false,
+        "partial_code": false,
+        "warnings": [
+          "/* WARNING: Could not recover jumptable at 0x00001c74. Too many branches */",
+          "/* WARNING: Treating indirect jump as call */"
+        ],
+        "ms": 15,
+        "code_bytes": 551,
+        "code_sha256": "9fd32e83cf80e967f731bf3b26bbc3f19af922ceed5f4fb8f9fd6a2c88f3cb2d"
+      },
+      "C_projection": "1c18.c",
+      "C_lines": 21
+    }
+  ],
+  "totals": {
+    "source_records": 2,
+    "raw_source_bytes": 1730,
+    "C_bytes": 857,
+    "C_lines": 38,
+    "native_bytes": 228,
+    "native_rows": 57
+  },
+  "source_signature_mismatches_preserved": true,
+  "source_warnings_preserved": [
+    "/* WARNING: Could not recover jumptable at 0x00001c74. Too many branches */",
+    "/* WARNING: Treating indirect jump as call */"
+  ],
+  "local_symbols": {
+    "P": "First51e48return in1b7c, savedX19",
+    "O": "Second51e48return in1b7c, savedX20 andconditionallyreturned",
+    "Q": "IncomingX0 to1c18 cleanup",
+    "D": "Nonnull51ea8return in1c18, savedX19; possibleadjustment/identityunknown",
+    "I": "Currentmemory64[D+8] reloadedafter161cc, notassumedP"
+  },
+  "claims": [
+    {
+      "id": "TP01",
+      "source": "1b7c.c",
+      "C_lines": [
+        1,
+        17
+      ],
+      "PCs": [
+        "0x1b94",
+        "0x1b98",
+        "0x1b9c",
+        "0x1ba8",
+        "0x1bac",
+        "0x1bb0"
+      ],
+      "text": "Complete17line source and30nativewords: localP isfirstunreadcallresult savedX19; localO issecondresult savedX20. Native forwardsP to1e04 andO to15860 despite emptyrecoveredCargumentlists. No expansionofthunk1e04/target1c84 or15860. P=O andP!=O bothunknown; no allocator/class/constructor-success/ownership proof."
+    },
+    {
+      "id": "TP02",
+      "source": "1b7c.c",
+      "C_lines": [
+        12,
+        15
+      ],
+      "PCs": [
+        "0x1bb4",
+        "0x1bc0",
+        "0x1bc4",
+        "0x1bc8",
+        "0x1bd4",
+        "0x1bd8",
+        "0x1bdc",
+        "0x1be0"
+      ],
+      "text": "Raw store[O+8]=P at1bb4; subsequent15950/161c0 calls receiveO inX0 andS0 bitpatterns3a83126f/472c4400. Normalreturn puts preservedO inX0. Thoseunreadcalls maymutateO+8/vptr/otherstate; stablefieldI=P isnotestablished. No numericmeaning/parameter/rate/calibrationlaw assignedtoliterals."
+    },
+    {
+      "id": "TP03",
+      "source": "1c18.c",
+      "C_lines": [
+        7,
+        10
+      ],
+      "PCs": [
+        "0x1c24",
+        "0x1c28",
+        "0x1c30",
+        "0x1c38",
+        "0x1c3c",
+        "0x1c40",
+        "0x1c44",
+        "0x1c48"
+      ],
+      "text": "CleanupinputQ isnull-guarded, else passedX0 with addressconstantsX1=5d6b8,X2=5d630,X3=0 to unread51ea8 (dynamic_cast metadata/source name). NonnullreturnD savedX19, remainsX0 at161cc. Castsuccess/D=Q/O/typeidentity notproved; table/typeinfocontentsunread."
+    },
+    {
+      "id": "TP04",
+      "source": "1c18.c",
+      "C_lines": [
+        10,
+        13
+      ],
+      "PCs": [
+        "0x1c48",
+        "0x1c4c",
+        "0x1c50",
+        "0x1c54",
+        "0x1c58",
+        "0x1c5c"
+      ],
+      "text": "After161cc, reloadI=[D+8]. Ifnonzero, target=[[I]+8] andX0=I atBLRX8. Explicitpost-helperreload preventsreusingearlierP storeasunconditionalcurrentI. Otherarguments, targetsemantics/destruction/legality andtargetencoding remainunknown."
+    },
+    {
+      "id": "TP05",
+      "source": "1c18.c",
+      "C_lines": [
+        14,
+        19
+      ],
+      "PCs": [
+        "0x1c60",
+        "0x1c64",
+        "0x1c68",
+        "0x1c6c",
+        "0x1c70",
+        "0x1c74",
+        "0x1c78",
+        "0x1c80"
+      ],
+      "text": "Completeoutertailreloadtarget[[D]+8] intoX1;D toX0,restoreownframe/originalLR,thenBRX1. Native isnonlinkingindirectbranch, whiletwooriginalCwarnings retainedverbatim. Nullinput/castnull useRETpath. No destructor/returncontract/classoractualtargetinferred."
+    },
+    {
+      "id": "TP06",
+      "source": "bothcompletebodies",
+      "C_lines": null,
+      "PCs": [
+        "0x1b7c",
+        "0x1c18"
+      ],
+      "text": "All57nativewords/38Clines/allmetadata read. Normalpathcomposes1b7creturnO withpreviousapprovedCreatequeryreceiver conditionally; actualSetParam/Calc/factory/Live identity stillunknown. No addresspointorigin forO/P proved: constructorsthatmayassignit remainunread. CleanupADRconstants alone are not objectaddresspoints."
+    }
+  ],
+  "whole57_read_map": [
+    {
+      "start": "0x1b7c",
+      "last": "0x1b98",
+      "words": 8,
+      "assessment": "48-byte frame; literal0xe0130 to first unread51e48 call; first resultP savedX19. Source operator_new name does not prove allocation contract/class/validstate."
+    },
+    {
+      "start": "0x1b9c",
+      "last": "0x1bb0",
+      "words": 6,
+      "assessment": "First P remainsX0 at BL1e04; second51e48 call literal0x48070 producesO savedX20; O remainsX0 at BL15860. Neither callee body read."
+    },
+    {
+      "start": "0x1bb4",
+      "last": "0x1bc8",
+      "words": 6,
+      "assessment": "StoreP viaX19 to[O+8] at this point; literalbits3a83126f inS0 andO inX0 to unread15950. No laterfieldstability/sample-rate/parameterlaw."
+    },
+    {
+      "start": "0x1bcc",
+      "last": "0x1bf0",
+      "words": 10,
+      "assessment": "Literalbits472c4400 inS0 andO inX0 to unread161c0, then preservedO returnedX0, frame restore/RET. Conditional normalreturn/callee preservation only."
+    },
+    {
+      "start": "0x1c18",
+      "last": "0x1c40",
+      "words": 11,
+      "assessment": "32-byte frame, inputQnull earlyreturn; else ADR5d6b8/5d630 intoX1/X2,X3zero, unread51ea8; nullcastresult alsoearlyreturn. Namedtypeinfoaddresses not read."
+    },
+    {
+      "start": "0x1c44",
+      "last": "0x1c5c",
+      "words": 7,
+      "assessment": "CastresultD savedX19 and forwardedX0 to unread161cc; afterward reloadI=[D+8]. IfInonnull call[[I]+8] withX0=I. No D=Q/O or I=P assumption."
+    },
+    {
+      "start": "0x1c60",
+      "last": "0x1c74",
+      "words": 6,
+      "assessment": "Reloadcurrent[D] then+8 target intoX1, putD inX0, restoreframe/originalLR, BRX1. Nonlinkingtailbranch, notBLR/jumptable proof; target remains unknown."
+    },
+    {
+      "start": "0x1c78",
+      "last": "0x1c80",
+      "words": 3,
+      "assessment": "Nullinput/nullcastresult ordinary epilogueRET. No cast-success/destruction/lifetime proof."
+    }
+  ],
+  "premises": [
+    "Selectedordinarypath andcorrectARM64LEinterpretation; no exception/fault/nonlocaltransfer/asynchronousinterference.",
+    "Allunreadcallees returnnormally andpreserverequiredcallee-savedX19/X20/SP/frame; no implementation/conformance checked.",
+    "Referencedstate/stack validandnonaliasingasspecified; allocationlabels/sizes/sourceoperatornames do notprove memorylegality orsuccessfulconstruction.",
+    "Memoryandvptrcontinuity acrossunreadcalls notassumed; alltarget/runtimepointerencoding/class identitiesremainunknown."
+  ],
+  "constructor_relation": {
+    "P_forwarded_to_1e04": "conditional normalpath X0carrier",
+    "O_forwarded_to_15860_15950_161c0": "conditional normalpath X0carrier",
+    "store_at_1bb4": "[O+8]=P atthatpoint",
+    "returned_pointer": "conditional preservedO",
+    "P_equals_or_distinct_from_O": "unknown",
+    "O_current_field8_equals_P": "unknown",
+    "actual_allocator_class_success": "unknown"
+  },
+  "cleanup_relation": {
+    "Q_to_51ea8": "conditional guardedX0 plusliteralX1/X2/X3",
+    "D_equals_Q_or_O": "unknown",
+    "I_equals_P": "unknown",
+    "inner_target": "unresolved current[[I]+8], BLRX8",
+    "outer_target": "unresolved current[[D]+8], BRX1 afterframe restore",
+    "destructor_or_lifetime_semantics": "unknown"
+  },
+  "unread_direct_targets": [
+    "0x51e48",
+    "0x1e04",
+    "0x15860",
+    "0x15950",
+    "0x161c0",
+    "0x51ea8",
+    "0x161cc"
+  ],
+  "unread_named_address_constants": [
+    "0x5d6b8",
+    "0x5d630"
+  ],
+  "newly_resolved_targets": [],
+  "source_custody": "Exactlytwofixedoriginalrecordrangesreadonce/hashmatched; rawrecordsandCprojectionsretained. No fullchunkhashscan orhistoricalrawcustody repair. No sourceoutside2selectedbodies acquired; encounteredcallees/tablewordsunread.",
+  "native_capture": {
+    "utc": [
+      "2026-10-21T06:03:31.099736+00:00",
+      "2026-10-21T06:03:31.354143+00:00"
+    ],
+    "outer_pid": 1341132,
+    "children": 2,
+    "attempts": 2,
+    "decoded_rows": 57,
+    "selected_bytes": 228,
+    "recorded_custody_pairs": 14,
+    "before_after_equal": true,
+    "native_original_instruction_execution": 0
+  },
+  "prior_context": "ApprovedTension3exportsourceb3281412.../native d681deb18... inheritedbycitationonly; no payload/check/actualreplay. Named56/63/67 remainhostmappingcontext, notengineinternalstateproof.",
+  "remaining_unknowns": [
+    "Fourexportslotruntime targets+38/+60/+68",
+    "P/O/CastD/Icurrentvptrandactualreceiver/class/factorybinding",
+    "Index63/FPdeliveryinternalDamperstate andungatedpredicate",
+    "ActualABI/transport/clock/LiveA1/A2/output/lifecycle/calibration/ARMnumerics"
+  ],
+  "new_original_model_harness_calls": 0,
+  "new_indirect_site_case_grade_release_inventory_credit": 0,
+  "coverage": "OPEN-required-unsupported-remains-U",
+  "no_successor_selected": true
+}

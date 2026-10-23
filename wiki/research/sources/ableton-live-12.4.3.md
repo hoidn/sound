@@ -2,7 +2,7 @@
 id: SRC-ABLETON-12-4-3
 type: source
 status: current
-updated: 2026-10-17
+updated: 2026-10-20
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -186,3 +186,59 @@ reopen was refused by fresh-launch capacity, so neither incomplete job is an
 accepted checkpoint. Source bytes and the default-profile exports remain
 unchanged; these tool-side captures add no application behavior or compatibility
 result. Use the linked report for exact commands, hashes and current next steps.
+
+
+## Bounded menu-resource query — 2026-10-19
+
+The [retained resource query](../../../analysis/ableton-live-12.4.3/full-spec-v1/keyboard-menu-static-context/README.md)
+pins exact newly retained Info.plist and two MainMenu.nib bytes from the current
+local copy. Info reports12.4.3; this does not reverify all bundle bytes against
+its historical directory identity. Plain-data archive/XML parsing yielded65
+literal strings/17menu-field records and19selected XML name/connection records.
+The application/Help scaffold did not resolve Q052 Export/Rename/note-selection
+contexts. Scoped string negatives do not prove commands absent from Live or its
+runtime menus. The XML format preflight failure, exact read scope and hashes are
+retained; [independent review](../../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/keyboard-menu-static-context-review.json)
+approved only this inconclusive research scope. No original selector,
+Cocoa object, OS menu, application, hardware or network operation ran, and no
+behavioral requirement, case or coverage credit was added.
+
+
+## Bounded Humanize retained-native query — 2026-10-19
+
+The [Humanize context](../../../analysis/ableton-live-12.4.3/full-spec-v1/humanize-static-context/README.md)
+[passed independent inconclusive research review](../../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/humanize-static-context-review.json).
+Sixteen complete retained pseudocode bodies and warnings,11selected index records,
+seven actual direct-call records and64literal pointer words were read. The thin
+arm64 file was freshly reverified at149711904bytes/SHA256
+`3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad`.
+512ordinary read-only file bytes at constructor-written address0x106916a18
+contain literal0x10341c29c at displacement0x190; this proves no complete class
+boundary, callable ABI or actual dispatch. No executable mapping was used.
+Private coefficients and names do not bind public grid/control/kernel inputs or
+resolve Q053. Native export UTC remains unknown, and62other lexical hits remain
+unassigned. All32watched inputs stayed exact; no original function, application,
+native project/decompiler, hardware, network or candidate ran. Zero normative
+requirements/cases or behavioral credit follows.
+
+The [producer follow-up](../../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/humanize-context-producer-followup.json)
+[passed independent inconclusive review](../../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/humanize-context-producer-followup-review.json):16additional full retained bodies/43730codebytes,
+12warnings across6records, identify a private context setter at+0x28 and a generic
+indirect call at0x190. The initializer uses qword index5 (sixth slot,byteoffset
+0x28); seed+0x64 is separate. Decompiled FP/vector call/signature differences,
+public provider identity/units, actual panel/kernel binding and dispatch remain
+unknown. No binary reread/mapping or original/native/runtime execution occurred
+for this follow-up. All16watched paths stayed exact; Q053 remains open with zero
+normative requirements/cases or behavioral credit.
+
+
+## Local manual filename frontier — 2026-10-20
+
+A bounded [local path-name query](../../../analysis/ableton-live-12.4.3/full-spec-v1/queries/offline-manual-path-frontier-2026-10-20.json)
+found zero paths matching case-insensitive manual/PDF/docs names under the local
+Contents/Resources view, including hidden/ignored files and without following
+symlinks. No contents were read. This filename heuristic does not prove absence
+of documentation, full-copy identity or exact-build manual parity. The original
+executable/plist-only local-copy verification boundary above remains; current
+online manual behavior is still version-uncertain. No behavioral/compatibility
+claim, source capture, native execution or broader investigation follows.

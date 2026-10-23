@@ -1,0 +1,300 @@
+{
+  "source_expression_only": true,
+  "extracts": [
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/probes_events.py",
+        "bytes": 11205,
+        "sha256": "23d81d71b9f0d94aa921941f6e48957b6c8b9fdb4082df34d907ebbf3d888309"
+      },
+      "lines": [
+        21,
+        21
+      ],
+      "utf8_bytes": 35,
+      "sha256": "d071bc5498e10cf8c303a5ec880b66cd9b8286def7c07211b2462739fb5ed013",
+      "text": "H = el.host_values(el.CONSTRUCTOR)\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/probes_events.py",
+        "bytes": 11205,
+        "sha256": "23d81d71b9f0d94aa921941f6e48957b6c8b9fdb4082df34d907ebbf3d888309"
+      },
+      "lines": [
+        63,
+        64
+      ],
+      "utf8_bytes": 91,
+      "sha256": "05a186a25758f492efb1b7af0dc70069963a2b21e48df54a0d8ad62de2efada9",
+      "text": "    ev = el.note(60, 100, 0, 13230)\n    base, _ = el.render(H, ev, 44100, 'm_base', 22050)\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/probes_events.py",
+        "bytes": 11205,
+        "sha256": "23d81d71b9f0d94aa921941f6e48957b6c8b9fdb4082df34d907ebbf3d888309"
+      },
+      "lines": [
+        72,
+        73
+      ],
+      "utf8_bytes": 103,
+      "sha256": "8fadab11705b2e9cedf2521fcba5ab83446e8b508c3857ae25ccf84bfc8adfdc",
+      "text": "    for n in (0, 127):\n        x, _ = el.render(H, el.note(n, 100, 0, 13230), 44100, f'm_n{n}', 22050)\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/probes_events.py",
+        "bytes": 11205,
+        "sha256": "23d81d71b9f0d94aa921941f6e48957b6c8b9fdb4082df34d907ebbf3d888309"
+      },
+      "lines": [
+        109,
+        112
+      ],
+      "utf8_bytes": 166,
+      "sha256": "fd0e36571e8c23aa4b4b0557da62f5803b772ae2f8b6f0e1cc20d02614b29874",
+      "text": "def _tune(a):\n    n, changes, fs = a\n    h = {**H, **changes}\n    x, _ = el.render(h, el.note(n, 100, 0, 17640), fs, f'tu_{n}_{sorted(changes.items())}_{fs}', 17640)\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/probes_events.py",
+        "bytes": 11205,
+        "sha256": "23d81d71b9f0d94aa921941f6e48957b6c8b9fdb4082df34d907ebbf3d888309"
+      },
+      "lines": [
+        119,
+        126
+      ],
+      "utf8_bytes": 998,
+      "sha256": "153e97c19695dcf77e9c7d6237c05821e5928dcf90e21e60ed31cd9459e508b1",
+      "text": "    for label, ch, fs, notes in (('defaults_44', {}, 44100, range(0, 128)), ('defaults_48', {}, 48000, range(21, 109, 12)),\n                                 ('stretch_0', {31: 0.0}, 44100, range(21, 109, 3)), ('stretch_1', {31: 1.0}, 44100, range(21, 109, 3)),\n                                 ('stretch_0.25', {31: 0.25}, 44100, range(21, 109, 12)), ('stretch_0.75', {31: 0.75}, 44100, range(21, 109, 12)),\n                                 ('finetune_0', {3: 0.0}, 44100, (36, 60, 84)), ('finetune_0.25', {3: 0.25}, 44100, (36, 60, 84)),\n                                 ('finetune_0.75', {3: 0.75}, 44100, (36, 60, 84)), ('finetune_1', {3: 1.0}, 44100, (36, 60, 84)),\n                                 ('transpose_0', {30: 0.0}, 44100, (48, 60, 72)), ('transpose_11', {30: 11.0}, 44100, (60,)),\n                                 ('transpose_13', {30: 13.0}, 44100, (60,)), ('transpose_24', {30: 24.0}, 44100, (48, 60, 72))):\n        out[label] = dict(pool.map(_tune, [(n, ch, fs) for n in notes]))\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/el.py",
+        "bytes": 7218,
+        "sha256": "8b27fdfe5acea97b50116d70ac792bf6f22b8e9ceb1eb274ee35d9924e5d71a5"
+      },
+      "lines": [
+        30,
+        31
+      ],
+      "utf8_bytes": 101,
+      "sha256": "83658cc838e032694d6a686cf96027e83e5aeea1bd9d3b0cc817f122773d62c2",
+      "text": "WARM = {44100: 11264, 48000: 12288}           # 22 * 512 = 256 * 44; 24 * 512 = 256 * 48\nBLOCK = 512\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/el.py",
+        "bytes": 7218,
+        "sha256": "8b27fdfe5acea97b50116d70ac792bf6f22b8e9ceb1eb274ee35d9924e5d71a5"
+      },
+      "lines": [
+        107,
+        125
+      ],
+      "utf8_bytes": 890,
+      "sha256": "9baaaa9e707c056b0a4a9e9e3b879ddf4f02c065b58b52f6c0b2cb022f9d410a",
+      "text": "def script(host, events, fs, frames, block=BLOCK, warm=None, extra=()):\n    \"\"\"Loader script. events: (frame, status, d1, d2) with frames counted from render frame 0.\n    extra: (frame, 'param I V' or 'reset') commands applied between blocks at that render frame\n    (must be a multiple of block).\"\"\"\n    warm = WARM[fs] if warm is None else warm\n    lines = ['create', f'rate {fs}'] + [f'param {i} {v!r}' for i, v in sorted(host.items())]\n    lines += [f'event {warm + f} {s:#x} {a} {b}' for f, s, a, b in events]\n    lines += ['inflag 0', 'input zero']\n    if warm:\n        lines.append(f'process {warm} {block}')\n    t = 0\n    for f, cmd in sorted(extra):\n        assert f % block == 0 and f >= t\n        if f > t:\n            lines.append(f'process {f - t} {block}')\n            t = f\n        lines.append(cmd)\n    lines += [f'process {frames - t} {block}', 'destroy']\n    return lines\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/el.py",
+        "bytes": 7218,
+        "sha256": "8b27fdfe5acea97b50116d70ac792bf6f22b8e9ceb1eb274ee35d9924e5d71a5"
+      },
+      "lines": [
+        142,
+        150
+      ],
+      "utf8_bytes": 710,
+      "sha256": "16ff948dedb2ec511f01cf737f9e55c183ee5c3798a1ac53439c4d351a91194f",
+      "text": "def render(host, events, fs, name, frames, env=None, block=BLOCK, warm=None, extra=(), script_path=None):\n    \"\"\"Run one render in a fresh process. Returns (left channel after the warm-up, as float64; log).\n    Asserts that the warm-up output is exactly zero and that both channels are bit-identical.\n    The stereo binary32 output goes to SCRATCH/name.f32; the script to script_path (default scratch).\"\"\"\n    lines = script(host, events, fs, frames, block, warm, extra)\n    w = WARM[fs] if warm is None else warm\n    SCRATCH.mkdir(parents=True, exist_ok=True)\n    out = SCRATCH / f'{name}.f32'\n    y, log = xdevpy.render('Electric', lines, out, script_path=script_path or SCRATCH / f'{name}.script', env=env)\n"
+    },
+    {
+      "source_pin": {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-electric-v1/el.py",
+        "bytes": 7218,
+        "sha256": "8b27fdfe5acea97b50116d70ac792bf6f22b8e9ceb1eb274ee35d9924e5d71a5"
+      },
+      "lines": [
+        156,
+        157
+      ],
+      "utf8_bytes": 91,
+      "sha256": "304e66fc78433a18bbe9f34e07734e523ae18b7b49be4f3b6e8bbefa4c034778",
+      "text": "def note(n, v=100, on=0, dur=13230):\n    return [(on, 0x90, n, v), (on + dur, 0x80, n, 0)]\n"
+    }
+  ],
+  "intersection": {
+    "P1_exact_inherited_keys": [
+      60
+    ],
+    "fresh_keys": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127
+    ],
+    "historical_all128_tuning": {
+      "rate": 44100,
+      "warmup": 11264,
+      "block": 512,
+      "render_frames": 17640,
+      "render_on": 0,
+      "render_off": 17640,
+      "absolute_on": 11264,
+      "absolute_off": 28904,
+      "exclusive_end": 28904
+    },
+    "historical_edge0_127_and_base60_A4_69": {
+      "rate": 44100,
+      "warmup": 11264,
+      "block": 512,
+      "render_frames": 22050,
+      "render_on": 0,
+      "render_off": 13230,
+      "absolute_on": 11264,
+      "absolute_off": 24494,
+      "exclusive_end": 33314
+    },
+    "selected_P1": {
+      "rate": 44100,
+      "warmup": 11264,
+      "block": 512,
+      "render_frames": 44100,
+      "render_on": 0,
+      "render_off": 22050,
+      "absolute_on": 11264,
+      "absolute_off": 33314,
+      "exclusive_end": 55364
+    },
+    "released_other_keys": "21/36/48/72/84/96/108 have22050render/off13230, notP1",
+    "scope": "Exact bounded selected declarations/input/release metadata; no global absence claim. Historical key domain already existed, but these complete histories differ. No numeric oldresults or estimator behavior used."
+  }
+}

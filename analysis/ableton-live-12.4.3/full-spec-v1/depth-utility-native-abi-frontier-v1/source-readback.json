@@ -1,0 +1,128 @@
+{
+  "schema": "root-bounded-native-abi-source-readback-v1",
+  "status": "pending-independent-actual-result-review",
+  "written_utc": "2026-10-20T23:45:44.884368+00:00",
+  "fresh_read": "All249retained decoded rows and associated rawbytes/per-child receipts; selected rawbranch bitfields and two malformed-rendering bitfields. Earlier source/class facts remain pinned predecessor evidence.",
+  "premises": [
+    "Selected instructions are entered at the retained address and the stated normal path returns; no actual original invocation occurred.",
+    "Unread calls preserve the explicitly used saved-register/stack carriers and return normally where a cross-call relation is stated; this preservation was not established by reading outside-window callees.",
+    "Memory operands are valid and nonwrapping; object/write regions do not alias saved stack/code or other stated disjoint regions, and no concurrent external write interferes."
+  ],
+  "facts": [
+    {
+      "id": "UNABI-01",
+      "entry": "0x101aff380",
+      "inclusive_PC_span": [
+        "0x101aff380",
+        "0x101aff388"
+      ],
+      "claim": "Three decoded words store XZR/XZR at incomingX0+[0..15],WZR at+[16..19],thenRET. No branch/call or X0/X19/X20 assignment occurs within this selected12-byte range.",
+      "limits": "Conditional explicit20-byte memory effect only; actual invocation/address validity/public state not proved."
+    },
+    {
+      "id": "UNABI-02",
+      "entry": "0x101bc3aa0",
+      "inclusive_PC_span": [
+        "0x101bc3aa8",
+        "0x101bc3adc"
+      ],
+      "claim": "After BL101a9fdec,all following selected words leave X0 unchanged throughRET while vptr/field stores use that post-call X0. Thus the carrier consumed as B by the caller is the same post-unread-call carrier V on this normal path,despite the C void/bare-return projection.",
+      "limits": "Incoming X0 versus post-call V remains unknown because101a9fdec is unread. This is register-carrier continuity,not a recovered language signature,actual object or B=Q."
+    },
+    {
+      "id": "UNABI-03",
+      "entry": "0x10215f2b8",
+      "inclusive_PC_span": [
+        "0x10215f2c4",
+        "0x10215f2e8"
+      ],
+      "claim": "IncomingX1 is saved inX20 and incomingX0 inX19. After the base-helper BL,the address1067734e0 is stored through post-callX0 B with post-increment0x48; that incremented carrier goes into the next BL. X19/Q is a separate saved incoming carrier.",
+      "limits": "B=Q is not established; the next physical target1047bd0cc is unread and not silently identified with the projected thunk_FUN1047bcd58 name."
+    },
+    {
+      "id": "UNABI-04",
+      "entry": "0x10215f2b8",
+      "inclusive_PC_span": [
+        "0x10215f300",
+        "0x10215f3ac"
+      ],
+      "claim": "Subsequent member operations use X19/Q. The selected normal epilogue explicitly movesX19 intoX0 before restoring saved registers andRET,so the returned carrier is incomingQ under the stated preservation premises. The selected body directly reads incomingX1 throughX20; it does not directly consume incomingX2 before/after the base call.",
+      "limits": "This narrows recovered argument/return carriers only. X2 may be consumed by an unread callee reached while it remains live; third-argument meaning/unusedness and native full ABI remain unknown."
+    },
+    {
+      "id": "UNABI-05",
+      "entry": "0x10215f2b8",
+      "inclusive_PC_span": [
+        "0x10215f324",
+        "0x10215f39c"
+      ],
+      "claim": "A32-bit zero store atQ+15f precedes nine BLs to selected101aff380 with X0=Q+168,180,198,1b0,1c8,1e0,1f8,210,228. Their explicit20-byte writes excludeQ+15f..162. Remaining selected stores also exclude this interval; no unread helper is called after that zero store. Therefore those four bytes remain zero at the selected normal return under the stated memory/preservation premises.",
+      "limits": "Conditional initializer-local final bytes only. No Q=P=M,current public Mute/default/legacy/load/host state or actual successful construction is established."
+    },
+    {
+      "id": "UNABI-06",
+      "entry": "0x10214b954",
+      "inclusive_PC_span": [
+        "0x10214b968",
+        "0x10214b9cc"
+      ],
+      "claim": "Caller saves incomingX1 inX19(C),incomingX0 inX20(A),and unread-helper resultH inX21. Before BL10215f3d8,it loadsX0 from[H+18],setsX1=A andX2=C. The selected epilogue explicitly returnsH inX0.",
+      "limits": "Opaque helper success/ownership/allocation and loaded receiver identity remain unknown; literal28 and parsed-size arithmetic do not prove an allocator/publicfactory/object size. Two malformed stack-offset renderings are separately qualified."
+    },
+    {
+      "id": "UNABI-07",
+      "entry": "0x10215f3d8",
+      "inclusive_PC_span": [
+        "0x10215f3d8",
+        "0x10215f3d8"
+      ],
+      "claim": "The sole four-byte unconditional B has signed immediate target10215f2b8; no independent248-byte implementation is present in this selected thunk range.",
+      "limits": "Branch target calculation verified from raw imm26; does not prove actual calls/whole-class lifetime or public object admission."
+    },
+    {
+      "id": "UNABI-08",
+      "entry": "0x1023a1004",
+      "inclusive_PC_span": [
+        "0x1023a1014",
+        "0x1023a11e8"
+      ],
+      "claim": "IncomingX0/T is saved inX19 before BL10247e678. Initial address-point stores use post-callX0/V; member operations useX19/T. Final MOV X0,X19 returns incomingT under saved-carrier preservation premises.",
+      "limits": "V=T remains unproved; unread helpers may fail/alter memory. Reference-shaped operations,J1/J2 aliasing,ownership/currentvalues/registration/lifecycle remain unknown."
+    },
+    {
+      "id": "UNABI-09",
+      "entry": "0x102f4fadc",
+      "inclusive_PC_span": [
+        "0x102f4fae4",
+        "0x102f4fb0c"
+      ],
+      "claim": "Outer wrapper does not replace incomingX0 before BL1023a1004. Composing selected callee normal return with this caller,its consumed B equals incomingT under the stated preservation premises. It installs1068ae7f8/1068aedc0/1068aedf8/1068aee70 at B+0/+50/+58/+1b8 and leavesX0 unchanged throughRET.",
+      "limits": "This resolves the projection omission at the native carrier join only. Internal base-helper V=T,formal constructor role,actual model/D/G identity,public admission/currentvalue/output remain unknown."
+    },
+    {
+      "id": "UNABI-10",
+      "entry": "all7ranges",
+      "inclusive_PC_span": [
+        "selected",
+        "selected"
+      ],
+      "claim": "Thirty-eight direct BL targets and one B target independently match signed imm26 arithmetic over selected raw words and retained decoder targettext. The direct site10214b9b0 targets10215f3d8 as in the earlier selected call index.",
+      "limits": "Direct native associations are not new indirect resolution sites. No target bytes/global/slot/callee was followed; no complete CFG,public order,execution or outcome grade follows."
+    }
+  ],
+  "projection_spelling_guard": {
+    "native_site": "0x10215f2e8",
+    "native_BL_target": "0x1047bd0cc",
+    "prior_C1_projected_name": "thunk_FUN_1047bcd58",
+    "identity_join": "unknown/unread; no alias/body/global query selected"
+  },
+  "decoder_issue": "UDN-001:two retained0lr operand strings are malformed; rawbytes unchanged and separate immediate-field reconstruction retained.",
+  "all_six_public_bridges": "unknown",
+  "application_outcomes_U": 38,
+  "family_predicate_inventory": 48,
+  "new_resolved_indirect_sites": 0,
+  "new_behavior_grades": 0,
+  "owner_case_release_changes": 0,
+  "original_instructions_executed": 0,
+  "selected_successor": null
+}

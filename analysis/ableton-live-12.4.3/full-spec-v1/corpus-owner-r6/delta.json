@@ -1,0 +1,99 @@
+{
+  "id": "CORPUS-OWNER-R6-EXACT-TEXT-DELTA",
+  "before_bytes": 51090,
+  "before_sha256": "aba64f5c420091617c16d28c9f0d2437c0eacf67ed1940bfe27250644038eecf",
+  "after_bytes": 58472,
+  "after_sha256": "07a89f25de6b3c987d448e0e049bdd7dfaec52f479532b3aca3faddedcd511cd",
+  "replacements": [
+    {
+      "operation": "replace",
+      "before": "revision: 5\n",
+      "after": "revision: 6\n"
+    },
+    {
+      "operation": "replace",
+      "before": "- MIDI side-chain behavior beyond the two exact extracted held-note host-input cases\n  DCO-030 and DCO-031: general MidiPitch, MidiGate, Transpose, FineTranspose,\n  PitchBendRange, DecayOnNoteOff, MidiMode and Live side-chain routing remain U\n  (REQ-013). The two cases define finite bundle outputs, not Live routing;",
+      "after": "- MIDI side-chain behavior beyond the three exact extracted host-input cases\n  DCO-030, DCO-031 and DCO-032: general MidiPitch, MidiGate, Transpose, FineTranspose,\n  PitchBendRange, DecayOnNoteOff, MidiMode and Live side-chain routing remain U\n  (REQ-013). The cases define finite bundle outputs, not Live routing;"
+    },
+    {
+      "operation": "replace",
+      "before": "- **X; proposed finite project criterion.** Only DCO-030 and DCO-031 have a proposed\n",
+      "after": "- **X; proposed finite project criterion.** DCO-030 and DCO-031 retain their proposed\n"
+    },
+    {
+      "operation": "replace",
+      "before": "- **U.** Beyond those two declared extracted histories, the general features remain unknown:\n",
+      "after": "- **X; proposed finite engineering exception.** DCO-032 adds only the exact\n  note60 On1537/Off3073 history with host MidiPitch=1, MidiGate=1, host index34=+0\n  and LFO off, using the complete fixture below. Compare its captured B output\n  only with `noteoff_decay_zero_waveform`, not a modal or general gate rule.\n  This is the third finite history; it proves no stored/UI conversion, actual\n  Note Off admission, general decay law or Live route. The observed output flags\n  do not prescribe silence, stopping or scheduling. Earlier behavior statements\n  and DCO-030/031 comparisons remain unchanged.\n- **U.** Beyond these three declared extracted histories, the general features remain unknown:\n"
+    },
+    {
+      "operation": "replace",
+      "before": "  two finite host-input cases. DCO-026 remains U and unchanged.",
+      "after": "  three finite host-input cases. DCO-026 remains U and unchanged."
+    },
+    {
+      "operation": "replace",
+      "before": "any start-up ramp. **DCO-029, DCO-030 and DCO-031 have dedicated finite rows:**\nonly the specified row and validation for each applies. DCO-029 retains its Ramp\nrule; DCO-030/031 use only the modal measurements and first256 post-impulse frames\nspecified below. General startup, timing, LFO, Ramp and other signal rows do not\nadd checks to these two MIDI cases. The older case scopes remain unchanged.",
+      "after": "any start-up ramp. **DCO-029, DCO-030, DCO-031 and DCO-032 have dedicated finite rows:**\nonly the specified row and validation for each applies. DCO-029 retains its Ramp\nrule; DCO-030/031 use only the modal measurements and first256 post-impulse frames\nspecified below. DCO-032 uses only its dedicated post4096 waveform row. General\nstartup, timing, LFO, Ramp and other signal rows do not add checks to these three\nMIDI cases. The older case scopes remain unchanged."
+    },
+    {
+      "operation": "replace",
+      "before": "| DCO-031 only: held note72, exact frozen input/protocol | Fixed30 mode points (first15per channel), cutoff100Hz, from the retained calibration's fixed navigation list; first256 frames4096\u20134351 inclusive | Same unchanged modal budgets and early waveform relative RMS\u22640.002; explicit post-observation finite engineering eligibility, not recovered pole eligibility |",
+      "after": "| DCO-031 only: held note72, exact frozen input/protocol | Fixed30 mode points (first15per channel), cutoff100Hz, from the retained calibration's fixed navigation list; first256 frames4096\u20134351 inclusive | Same unchanged modal budgets and early waveform relative RMS\u22640.002; explicit post-observation finite engineering eligibility, not recovered pole eligibility |\n| DCO-032 only: note60 On1537/Off3073, gate1, host34=+0, exact frozen input/protocol | `noteoff_decay_zero_waveform`: every frame4096\u201316383 inclusive, each channel independently; no fitting/alignment or alternate window | Relative waveform RMS\u22640.01; positive scored reference/candidate energy in EACH channel, exact length/full-file finite; new finite engineering budget only |"
+    },
+    {
+      "operation": "replace",
+      "before": "Why not a sample-by-sample maximum error.",
+      "after": "For DCO-032 only, decode exactly16384 interleaved stereo little-endian binary32\nframes and widen exactly to binary64. Reject invalid length or any nonfinite\nsample anywhere; reference and candidate must each have positive scored energy\nin EACH channel. The actual reference must have SHA-256\n`a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829`.\nOn ALL frames4096\u201316383 inclusive, independently for left and right, compute\n`sqrt(math.fsum((candidate-reference)**2)/math.fsum(reference**2))`.\nBinary64 subtraction/products, `math.fsum`, division and `math.sqrt`, then\ninclusive computed-binary64 `E <= 0.01`, define rounding; no acceptance epsilon.\nBoth channel checks must pass. No fitting, alignment, rescaling, offset removal,\nchannel mixing, frame deletion, transient exclusion or alternate window occurs.\nFrames0\u20134095 are validated only for length/finiteness; finite prefix corruption\ncan pass, and no prefix silence, floor, energy, onset or event timing is graded.\n\nThis is a NEW finite1% engineering budget for this one nonstationary B transient,\nnot transferred Ramp applicability/sensitivity, the older0.0001 waveform rule,\nmodal eligibility, a native tolerance, calibrated uncertainty, inaudibility,\nApple/arm64/ULP/mixed-libm bound or a guarantee for future correct candidates.\nNo B-specific sensitivity/repeatability calibration is claimed. The rounded\nsquare-root comparison controls acceptance; the mathematical1e-4normalized\nerror-energy interpretation is explanatory only. The [criterion proposal](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-noteoff-decay-zero-criterion-proposal/README.md)\nrequires separate independent method review before owner adoption. Its three\nnamed wrong references have only ONE unique scored waveform; they do not supply\nthree independent contrasts or a universal wrong-output detector.\n\nThe aggregate budget can hide concentrated/onset/low-energy-tail defects.\nDeliberately zeroing the entire last8192frames can pass this aggregate rule,\nalthough B's retained later samples are nonzero. There is no tail cutoff,\nper-sample/local-envelope/silence threshold, decay constant or output-flag check.\nThe full captured reference remains retained. No general MIDI/gate/decay law,\nsource/setter/registry closure, stored/UI conversion or Live delivery is adopted.\nDCO-032 gains no repeatability, block/rate/reset/transport/clock/MXCSR/FTZ/DAZ,\nseed/lifecycle or other invariance from older cases. Independent capture,\ncriterion, owner and later release review remain distinct gates; this private\nproposal runs no original or candidate code and assigns no application grade.\n\nWhy not a sample-by-sample maximum error."
+    },
+    {
+      "operation": "replace",
+      "before": "### Cases\n\n| Case ID |",
+      "after": "DCO-032 uses the complete38-value HOST vector and exact event objects in the\n[R6 case fixture](../../analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r6/cases-additions.json).\nIt is the captured B history: MidiPitch12=1, MidiGate13=1, LFO17=0 and\nhost34=positive0, with note60/channel0/velocity100 On1537 and velocity64 Off3073.\nThe host/test coordinates are absolute: block1536/local1 and block3072/local1;\nno extra adapter subtraction or claimed Live frame-base conversion. Use I1 at\n44100Hz,16384frames/block512, fresh instance/rate then all38parameters in order,\nstopped0/0/120, inputflag1, reference MXCSR0x1f80 and time0; no reset, warm-up,\nsecond note, bend, sustain or additional update. Those reference environment\nvalues do not mandate candidate internals or imply newly tested invariance.\nThe [reviewed capture](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-noteoff-decay-zero/CAPTURE.md)\nretains complete scripts/logs/raws; B is131072bytes with SHA-256\n`a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829`.\nThe observed B process flags21x(ret0,flag1)/11x(ret0,flag0) are not an expectation\nor scheduling/silence/admission law. All31previous case rows and original fourU\ncases are preserved; A1,174oldmodal omissions and both note72mode16 omissions\nremain unaccepted/ungraded. No release evaluation ID is allocated by this draft.\n\n### Cases\n\n| Case ID |"
+    },
+    {
+      "operation": "replace",
+      "before": "| DCO-031 | 001, 013 | P | Same complete vector/protocol as DCO-030, only event key72 | Dedicated fixed30-point modal/early-waveform criterion only; post-observation engineering eligibility; both mode16 observations ungraded | Captured `raw/note72.f32` (`f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc`) |",
+      "after": "| DCO-031 | 001, 013 | P | Same complete vector/protocol as DCO-030, only event key72 | Dedicated fixed30-point modal/early-waveform criterion only; post-observation engineering eligibility; both mode16 observations ungraded | Captured `raw/note72.f32` (`f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc`) |\n| DCO-032 | 001, 013 | P | Exact R6 HOST fixture: note60 On1537/Off3073, MidiPitch1/MidiGate1/LFOoff, host34=+0; I1 at44100Hz,16384frames/block512 | Dedicated `noteoff_decay_zero_waveform`, ALL post4096 per-channel relative RMS\u22640.01; full-file finite/exact length, positive scored energies; prefix finite-only; new finite engineering budget | Captured B `raw/gate1-off.f32` (`a378ac6de6c04041a21aee501094be643fdb6615d3fc212ebbcc32afdf76d829`) |"
+    },
+    {
+      "operation": "replace",
+      "before": "The two finite extracted histories do not resolve the general",
+      "after": "The three finite extracted histories do not resolve the general"
+    },
+    {
+      "operation": "replace",
+      "before": "  not prove that assumption or bound mixed per-call differences.\n",
+      "after": "  not prove that assumption or bound mixed per-call differences. DCO-032's\n  separate1% engineering budget transfers none of that sensitivity evidence.\n"
+    },
+    {
+      "operation": "replace",
+      "before": "| arm64 equivalence | Static:",
+      "after": "| 013 finite DCO-032 | [Endpoint capture review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-noteoff-decay-zero-capture-review.json) supports bounded X observations only; [criterion proposal](../../analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-noteoff-decay-zero-criterion-proposal/README.md) proposes its own1% waveform budget. Independent method/owner/release gates are separate. No new original/candidate execution or UI/source-binding closure |\n| arm64 equivalence | Static:"
+    },
+    {
+      "operation": "replace",
+      "before": "| 5 | 2026-10-20 | Proposes two exact held-note host-input modal cases DCO-030/031, preserving all13IDs/29oldcase rows;31cases:27finite proposed expectations/fourU. REQ001/013 narrowed only to these histories. Note72 eligibility is an explicit post-observation first15perchannel engineering choice, both mode16 records retained/ungraded. Criterion, owner adoption and release remain separate; no candidate/application grade or complete profile. |",
+      "after": "| 5 | 2026-10-20 | Proposes two exact held-note host-input modal cases DCO-030/031, preserving all13IDs/29oldcase rows;31cases:27finite proposed expectations/fourU. REQ001/013 narrowed only to these histories. Note72 eligibility is an explicit post-observation first15perchannel engineering choice, both mode16 records retained/ungraded. Criterion, owner adoption and release remain separate; no candidate/application grade or complete profile. |\n| 6 | 2026-10-20 | Private proposed DCO-032 only: exact note60 On1537/Off3073/gate1/host34=+0 B reference and independently reviewable1%post4096per-channel waveform budget. All13IDs/31oldrows/001\u2013012bodies preserved;32cases28finite/fourU if approved. No new gate/decay/flag/UI law, invariance, grade or completion. |"
+    },
+    {
+      "operation": "replace",
+      "before": "## Proposed R5 owner successor (2026-10-20)",
+      "after": "## Historical R5 owner proposal (2026-10-20)"
+    },
+    {
+      "operation": "append",
+      "after": "\n\n## Proposed R6 owner successor (2026-10-20)\n\nThe separately adopted R5 and released device-corpus-v3 remain immutable history:\n31canonical cases and71finite release evaluations, with no candidate grade.\nThis R6 private draft adds only DCO-032; it creates no requirement ID and assigns\nno release evaluation/group ID. The [private R6 record](../../analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r6/README.md)\nretains exact R5before bytes, literal deltas, full finite inputs and separate\ncriterion-review binding. AS-OF PRIVATE DRAFT: independent criterion disposition\nand owner review/adoption remain pending. No canonical/shared page, comparator,\nrelease or candidate has been changed by this preparation.\n"
+    },
+    {
+      "operation": "replace",
+      "before": "requires separate independent method review before owner adoption. Its three\nnamed wrong references",
+      "after": "has a separately [approved finite method review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-midi-noteoff-decay-zero-criterion-review.json).\nThat review does not adopt this owner or a release. Its three named wrong references"
+    },
+    {
+      "operation": "replace",
+      "before": "criterion-review binding. AS-OF PRIVATE DRAFT: independent criterion disposition\nand owner review/adoption remain pending. No canonical/shared page, comparator,\nrelease or candidate has been changed by this preparation.",
+      "after": "criterion-review binding. AS-OF AUTHOR FREEZE: the finite method has separate\nindependent approval; this owner review/adoption remains pending. No canonical/\nshared page, comparator, release or candidate is changed by this proposal.\nCurrent disposition is routed through the shared specification index after review."
+    }
+  ],
+  "preservation": "All13normative IDs/31anchored case rows/complete clauses001\u2013012 exact. No old catalog/source/release edited."
+}

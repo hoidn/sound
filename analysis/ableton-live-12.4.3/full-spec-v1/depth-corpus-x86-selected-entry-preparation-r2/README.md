@@ -1,0 +1,19 @@
+# Corpus x86 selected-entry diagnostic preparation R2
+
+Preparation only. AS OF AUTHOR FREEZE, independent Root and peer code preflight and a separate synthetic-R2 selection remain pending. Their reports carry later disposition. No Ghidra, Java/compiler, decoder, original slice import or original execution ran during this R2 preparation. The owned synthetic bytes were copied exactly; the builder was not rerun.
+
+R1's synthetic-only import reached the Java script but failed the unchanged compound machine guard before any function export. Its launcher exited zero; the driver correctly exited one. The retained logs do not identify which of the six values differed. R1 preparation, failed fixture and outer receipts remain immutable and pinned. This is diagnostic preparation, not a fix or a retry.
+
+The sole Java difference appends all six observed values to the existing `IllegalArgumentException` message: `java.version`, maximum heap, available processors, default thread pool, `cpu.core.override`, and `cpu.core.limit`. Ordinary String concatenation handles null properties. The same six predicates and expected values remain byte-identical. No new JSON artifact, schema, helper or identity-file meaning is introduced. Existing headless logs retain any future exception.
+
+The driver changes only three fixed paths: preparation, exclusive fixture/actual destinations, and their Root-selection directories acquire the R2 suffix. [source-delta.json](source-delta.json) reconstructs exact changes from pinned R1 sources/configs/input ledger. The whole installed launcher, resource supervision, environment, fixed command, failure accounting and success rules retain R1 logic. [check.py](check.py) checks the exact exception substitution and three path substitutions, as well as the inherited controls.
+
+The two entries remain ordered `0x23b0` and `0x29c0`, with 1,024-byte windows. A future importer/decompiler receives the whole thin Program as data; the windows limit selected output/body construction rather than all internal reads. No automatic analysis, callee export, third entry, window expansion, original instruction execution or emulation is permitted. The strict x86 language/compiler/base and Ghidra/JDK identity gates remain unchanged.
+
+Resources remain 4 GiB heap, 6 GiB aggregate group RSS, 3 GiB disk floor, CPU two, 180-second supervision and 60 seconds per decompile. One-second resource sampling and bounded cleanup are supervisory limits. PID/start-string ownership does not prove that escaped descendants cannot exist; unproven cleanup is failure. Root's outer coordinator must retain pretry, interruption and catastrophic-I/O outcomes. One attempt, no automatic retry.
+
+Only after Root and independent full-code preflights may Root separately select one synthetic-R2 run. It must produce both known complete functions and receive independent actual review before a separately selected actual-R2 run. Actual mode must not read or extract the original slice before that fixture gate. The fixture's addresses/bytes are owned synthetic data, not original behavior proof.
+
+The future fixed driver form is `python3 -B run-selected.py fixture|actual PREPARATION_SHA SELECTION_SHA`. Selection receipts live in `reviews/corpus-x86-selected-entry-{fixture,actual}-r2-selected-execution/selection.json`; outputs are the exclusive `depth-corpus-x86-selected-entry-{fixture,actual}-r2` directories. This describes a future interface, not an execution request.
+
+The current offline entry is `python3 -B check.py --check`. It evaluates only five fully read new pure config/scope functions, never imports the driver or calls source extraction, supervision, main or tools. It requires future R2 destinations absent and preserves the old failed R1 artifacts as history. All 174 historical modal omissions, two note72 omissions, cases, requirements and application grades remain unchanged. No successful fixture or actual export is claimed.

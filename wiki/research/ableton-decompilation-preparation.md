@@ -126,3 +126,30 @@ outside a released behavioral handoff.
 Track these in [open questions](../questions.md) and
 [verification coverage](../verification/coverage.md). Earlier preparation sessions
 were closed; the current owned session is tracked in the execution ledger.
+
+
+## Retained decoder operand qualification — 2026-10-20
+
+The [Utility native static readback](device-audio-utilities.md#utility-native-abi-static-review-approval--2026-10-20) records UDN-001, a bounded decoder-rendering defect. Exact row-byte association alone does not independently validate rendered operands. The canonical finding preserves raw output and separate selected-field reconstruction; it does not assert that other outputs or every decoder operand were inspected. No tooling patch, installation or new execution is selected by this note.
+
+
+[UDN-002](device-audio-utilities.md#udn-002--inconsistent-auxiliary-esil-branch-targets) records two conflicting auxiliary ESIL strings in a reviewed x86 capture. The canonical note owns exact fields and limits;raw signed branch arithmetic and agreeing opcode/jump fields support the local readback. ESIL is not an execution/model oracle. Preserve the captured output and select no rerun merely to repair its label. The later [inner-entry actual approval](device-audio-utilities.md#utility-x86-inner-entry-static-review-approval--2026-10-20) records a further EB00 auxiliary-target conflict under the same exclusion;allESIL remains outside semantic/model proof.
+
+
+The [consumermetadata actualapproval](program-structure.md#consumer-load-command-actual-approval--2026-10-20) separates wholeimage custodyhashes fromboundedheader/loadcommandcontent. Declarations/tablelocations andrawstub-index arithmetic supply no actualprovider/runtimebinding. Selectedtablecontent requires a distinctboundedselection/sourcepreflight/readiness/actualrecord. Preserveunknowncommands/rawreceipts;collectorUTC/toolwallfields are separate observations,not a precise elapsed/deadline oracle.
+
+
+The [DeviceKit selected-symbol acquisition](program-structure.md#selected-devicekit-symbol-review-approval--2026-10-20)
+passed separate source/readiness/actual gates and independent retained-byte
+review: 3,148 selected content bytes, no child/original/provider execution.
+Raw declarations are distinct from weak runtime binding and callable bodies.
+A separately approved exact27-address export census now supports a bounded
+whole27-record source-reading packet; it selects no native or encountered-callee
+follow and no extracted execution. Keep all required unsupported behavior U.
+
+
+The [fixed27 DeviceKit source review](program-structure.md#devicekit-fixed27-source-review-approval--2026-10-20)
+approves exact retained C projections and conditional claims with original chunk
+custody inherited. Lexical call expressions are not native instruction sites;
+allocation shapes, recovered signatures, stack payloads and warnings establish
+no ready setup/ABI or complete callable math leaf. No new native/original run.

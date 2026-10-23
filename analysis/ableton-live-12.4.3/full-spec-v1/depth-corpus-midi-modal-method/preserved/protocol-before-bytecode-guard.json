@@ -1,0 +1,79 @@
+{
+  "status": "Prepared only. Root must approve before its one selected data-only execution; author has NOT executed/imported the script or comparator.",
+  "invocation": [
+    "python3",
+    "-B",
+    "/tmp/corpus-midi-note72-modal-preparation.py",
+    "--calibrate-data-once"
+  ],
+  "script_identity": {
+    "bytes": 11745,
+    "sha256": "aa7b4b2d8273cb6ce193a41595fd81a8ef7457bf52fd2cabef5a9d07c1bb8b86"
+  },
+  "comparator_path": "/home/ollie/Documents/sound/handoff/device-corpus-v2/compare.py",
+  "note72_path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/raw/note72.f32",
+  "note60_path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/raw/note60.f32",
+  "pins": [
+    {
+      "path": "/home/ollie/Documents/sound/handoff/device-corpus-v2/compare.py",
+      "bytes": 7795,
+      "sha256": "f4d660c0c8a798d99f8e560f9505705dea9517174fdc0d5fb8151dc126ad0c83"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/raw/note72.f32",
+      "bytes": 131072,
+      "sha256": "f98b465f7186680830bc87c97f4a4096e1e53b2ad1b07aa5333ccccd6ea36ddc"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/raw/note60.f32",
+      "bytes": 131072,
+      "sha256": "5866c6b9e4915336648da87bd92c38927cb3e532fe81ab38b5300664c7bb984f"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/raw/note72.script",
+      "bytes": 713,
+      "sha256": "380f954b68bf544a2b45aa8eeb848092658eab7f06c24e35d1a1ec0a0274e449"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/wiki/specs/device-corpus.md",
+      "bytes": 41194,
+      "sha256": "62ccc40debde55baf7fed54bbbc6eaa803f0d6a12f2a3b4b2841baabae6775d8"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/corpus-dsp-v1/report-resonator.md",
+      "bytes": 15058,
+      "sha256": "b8250285f2544c00b9e2fcfec870a446f1e312f8ab4c25aaf299a03a7a7523ee"
+    }
+  ],
+  "conditional_hypothesis": {
+    "pitch": 1,
+    "type": "String",
+    "regular_modes": 16,
+    "tone": 0,
+    "inharmonicity": 0,
+    "decay_seconds": 35,
+    "gate": "open",
+    "detune_and_LFO": 0,
+    "W0_source_bits": "0x44cd79d3",
+    "formula_sources": "Canonical REQ005 denominator/poles and REQ007 d=8/T; retained report-resonator section4 exact W0 bits.",
+    "numeric_policy": "Explicit binary32 rounding at each written operation for w/theta/d/alpha/a1/a2; host binary64 sin/cos rounded tobinary32; pi rounded tobinary32. Extract poles from resulting binary32 coefficients using binary64 sqrt/acos/log. This is a stated mathematical/rounding approximation, NOT proven original operation order/FMA/libm/ABI or actual coefficient readback. A(whole octave)=2 follows the stated formula; no doubled old fitted centers used."
+  },
+  "navigation_fixed_before_any_fits": {
+    "centers": "Derived once from the above p1 hypothesis, all16 perchannel; never adjusted to measured peaks.",
+    "cutoff_hz": 100,
+    "regular_mode_gap_check": "100<=0.4*minimum adjacent hypothetical pole gap; if not valid, stop without selecting another cutoff. Also report actual nearest significant fitted regular-mode gaps; any invalid100Hz result is exposed, not silently changed.",
+    "eligibility": "Report abs(reference fit-center)/center<=1e-4 for every mode and bothchannels. Relative amplitude>=1e-3 marks significant modes. No failed mode is silently omitted from the whole16-mode self/wrong comparison."
+  },
+  "outputs": "JSON stdout only. Fullmode fit and eligibility, relative amplitudes/significant gaps, descriptive first/second half fits against full fit, exact existing modal compare self and wrong60, independent bothchannel wrong earlyRMS; six mathematical/invalid-data selftests. Scratch TemporaryDirectory files only for short/NaN audio-loader fixtures. No repository outputs written.",
+  "half_fit_definition": "Same FIR, original global phase/time origin, and amplitude extrapolation to4096; ONLY fit segment splits at midpoint of [5551,16384). No half-fit acceptance limits.",
+  "limitations": [
+    "Conditional p1/parameter/settling hypothesis is NOT closed by these fits; no Live MIDI routing/admission or reference note identity claim.",
+    "Only the16 assumed regular modes are navigated. Bleed/unmodeled significant components and hidden modes prevent a complete significant-gap or spectrum claim.",
+    "Existing modal thresholds are evaluated unchanged; no looser thresholds, Ramp1percent, Sine0.2Hz, or new waveform criterion. Self pass is a measurement sanity check, not eligibility/adoption proof.",
+    "Prefix0..4095 is finite-format-only; no onset/event offset/silence/floor/phase or startup accuracy claim.",
+    "No original/native/candidate calls, collector, FFT, device synthesis, old model/main/CLI or comparator run(); only exact fully read released audio()/mode()/compare()/relative_rms() and a diagnostic fit-slice variant.",
+    "No normative ID, case release, application/arm64 grade, performance/clock/rate/block/reset/repeatability law or whole-spectrum coverage."
+  ],
+  "grade": null,
+  "adopted": false
+}

@@ -2,7 +2,7 @@
 id: RESEARCH-EXTRACTED-EXECUTION
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-23
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 x86_64 (Live x86_64 slice)
 ---
@@ -89,6 +89,8 @@ its own process with a 20 s timeout, so a fault or a trap ends only that run. Wi
 execution reaches `addr`, gdb prints the expressions and leaves the function with
 `return`, so its body does not run. The pilot uses this once, to stop the 14-bit
 receiver before it touches parameter objects.
+Wider gdb use is the method in
+[gdb introspection](#gdb-introspection--2026-10-23).
 
 **Harness problems met on the way.** Each was a missing setup step, not a
 difference in the original code. Traps named `_newlocale`, `___cxa_guard_acquire`,
@@ -402,3 +404,93 @@ sh analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/run.sh
 
 This needs gcc, gdb, objdump and python3. `XEXEC_SLICE` and `XEXEC_BIN` override
 the slice and loader paths. A run takes about 40 s and starts 476 processes.
+
+
+The [whole50 Automation construction review](automation-envelopes.md#automation-withheld50-construction-review-approval--2026-10-20)
+owns the later X2 initializer/registry/provider qualifications. A retained factory
+recipe and numeric return agreement do not establish complete legal state after
+partial initialization. This limits automatic admission of that setup class;
+it neither changes historical raw returns nor the separate supplied-data model.
+
+
+[Whole Automation M boundary actual review](automation-envelopes.md#automation-m-boundary-actual-review-approval--2026-10-20)
+approves bounded provenance for2,138calls/17children with five confirmed local
+expectation discrepancies. Recording completion does not mean all comparisons
+passed. All259NULLrows stay ungraded; selected Boolean is RAX&1, not wholeRAX.
+No expectation/criterion repair, rerun or public normalization/Save grade follows.
+Rawfiles are retained/hashverified; receiptJSON/payloadJSON fsync is distinct
+from unperformed explicit rawfile fsync. Fiftyfactorysetup rows stay withheld.
+
+## gdb introspection — 2026-10-23
+
+User direction on 2026-10-23: gdb is for looking inside the code, not only for
+diagnosing failures. [Plan revision 6](full-live-specification-plan.md#revision-6--paired-observation-and-static-analysis-2026-10-23)
+rule 6 schedules this method. Before it, 2 of about 108 X packets used gdb,
+both to stub one callee and print one register, and the loader's fault
+handler printed only the signal, address and instruction pointer.
+
+### Setup, once
+
+1. **One reusable tracer.** A gdb Python script in `tools/xexec/`, loaded with
+   `gdb -x`, replaces hand-written per-packet scripts such as the Session A
+   `intercept.gdb`. It takes lists of addresses with what to capture at each
+   and writes one JSON line per event. Its breakpoints subclass
+   `gdb.Breakpoint` with a `stop()` that records and returns `False`, so the
+   process never pauses, and `gdb.FinishBreakpoint` captures callee returns.
+   `xexec.py` gains an option to run a call sequence under a given gdb script,
+   beside `skip`.
+2. **Names.** A symbol-only object built from the Ghidra export of the slice,
+   loaded with `add-symbol-file`, gives breakpoints and backtraces function
+   names. Ghidra's default `FUN_…` labels are stable enough; demangled names
+   are used where the slice has them.
+3. **Where to break.** The existing indexes in
+   `/var/tmp/sound-analysis/corpus-x86/indexes/` list call sites
+   (`calls.jsonl`, 1,572,950 edges) and indirect jump and call sites with their
+   instruction (`indirect.jsonl`, 271,501). Basic-block starts come from
+   Ghidra's block model, exported per target function.
+4. **Types, when layouts are known.** Recovered structure layouts compiled as
+   C structs with `-g` into the same symbol object let gdb print an object
+   field by field. Worth doing for a family whose layouts are stable.
+
+### What to capture
+
+Coverage and exit paths are the default for every X target. The other
+techniques are used when the question needs them.
+
+| Technique | gdb mechanism | Answers |
+| --- | --- | --- |
+| Branch coverage | One-shot breakpoint at every basic block of the target and its static callees | Which code the inputs reached. An unreached block names the next input to find: static work reads its branch condition and X supplies an input that meets it. |
+| Exit paths | Breakpoint at each return or exit block, with registers | Which path produced each return value, so a return such as CalcA's gets a code-level meaning instead of being recorded as opaque. |
+| Stage values | Breakpoints at the calls between processing stages; `dump binary memory` for buffers | Intermediate values per block, so a device spec can describe stages and not only final output. |
+| Call trace | Breakpoints on callee entries from `calls.jsonl`, finish breakpoints for returns | The dynamic call tree with arguments and returns, which confirms or corrects static call chains. |
+| Indirect targets | Breakpoint at each indirect site from `indirect.jsonl` that the target reaches, reading the target register or memory | Resolved indirect calls for exercised paths. Each site and target pair is added to the indirect-resolution count. |
+| Object state | Hardware watchpoints (`watch -l`, `rwatch`, `awatch`), at most four at a time | Which fields of a hand-built object a function reads or writes, so X constructs only the state that matters. |
+| Value origin | `record full` over a short span, then reverse execution | Where an output value came from. Short functions only, since recording is slow and memory-heavy. |
+| Calls the loader cannot make | `call` through a cast function-pointer type | Stack arguments and struct returns. Exceptions, Objective-C and `%gs` thread-local storage stay out of reach. |
+| Setup reuse | `checkpoint` after initializers and constructors, `restart` for each input | Many inputs from one constructed state without repeating setup, and fewer processes. |
+| Failure diagnosis | `catch signal`, `backtrace` and registers at the failing return or fault | Why a history failed. The failed result stays recorded and the rerun adds evidence. |
+
+### Cost rules
+
+- Use one-shot breakpoints for coverage and Python `stop()` handlers that
+  return `False`. CLI `commands` blocks are slower.
+- Put no unconditional breakpoint inside a per-sample loop. Break at block
+  boundaries, add a condition, or sample with an `ignore` count.
+- Use at most four hardware watchpoints at once, rotating fields across runs.
+- Hardware branch tracing is unavailable: gdb's `record btrace` needs Intel
+  Processor Trace or BTS, and this host is AMD.
+- gdb disables address randomization by default, so heap addresses repeat
+  between runs under gdb. Record that setting with the run. For gdb runs it
+  removes the rerun caveat about varying heap addresses in [Limits](#limits).
+
+### Evidence
+
+Values read through gdb are X evidence about the macOS slice, recorded with
+the breakpoint address, the inputs and the gdb script hash, as
+[design revision 18](full-live-specification-design.md#revision-18--paired-observation-and-static-analysis--2026-10-23)
+states. A coverage map is a fact about the input set, not about behaviour. It
+is reported with any X claim about a whole function and is not a gate.
+
+A debugger on the Windows reference guest, including QEMU's gdb stub, stays
+out of scope. The guest runs a different binary from the slice that the specs
+cite, so its addresses would first need mapping.

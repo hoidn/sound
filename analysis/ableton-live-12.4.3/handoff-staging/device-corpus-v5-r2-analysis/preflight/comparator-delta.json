@@ -1,0 +1,19 @@
+{
+  "before": {
+    "path": "/home/ollie/Documents/sound/handoff/device-corpus-v4/compare.py",
+    "bytes": 8830,
+    "sha256": "9964de11da79eb61c0624d34e402d238cd5c466093d15ccc91fd630ac4c54110"
+  },
+  "after": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/handoff-staging/device-corpus-v5-r2/compare.py",
+    "bytes": 9969,
+    "sha256": "09ff0efc60e8c7f20cf9cf90e47b780881ce6a9fce1c95cac0a03295cfe42697"
+  },
+  "literal_branch": "        elif kind == 'pickup_step_waveform':\n            for part, start, end in [('pre', 4096, 8192), ('post', 8192, 16384)]:\n                window_y = [float(v) for v in y[start:end]]\n                window_r = [float(v) for v in r[start:end]]\n                ref_energy = math.fsum(v * v for v in window_r)\n                candidate_energy = math.fsum(v * v for v in window_y)\n                if ref_energy <= 0 or candidate_energy <= 0:\n                    raise ValueError('Pickup step requires positive energy in each window/channel')\n                error_energy = math.fsum((a - b) * (a - b) for a, b in zip(window_y, window_r))\n                limit(label + ' pickup ' + part + ' waveform', math.sqrt(error_energy / ref_energy), 0.01)\n",
+  "literal_hash_guard": "                if evaluation['metric']['kind'] == 'pickup_step_waveform':\n                    raw_reference = (HERE/evaluation['reference']).read_bytes()\n                    if hashlib.sha256(raw_reference).hexdigest() != '1336d90115bd24c058e556aa95e9140014d168dad7111dec64eb8edd1d977e73':\n                        raise ValueError('Pickup step reference hash differs from the pinned capture')\n",
+  "branch_insertion_before": "        elif kind == 'startup':\n",
+  "guard_insertion_before": "                result = compare(candidate, reference, evaluation['metric'], evaluation['sample_rate_hz'])\n",
+  "inverse": "Remove each exact literal addition once to recover fullold8830B; no other byte changes",
+  "new_imports": 0,
+  "execution": false
+}

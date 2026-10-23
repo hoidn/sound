@@ -1,0 +1,647 @@
+[
+  {
+    "id": "MED-008",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r2.json",
+    "json_pointer": "/cases/7",
+    "quoted_scoped_predicate": {
+      "id": "MED-008",
+      "requirement": "REQ-MIDI-EDIT-008",
+      "kind": "Positive/boundary",
+      "setup_action": "Select notes at beats 0 and 2 with time selection [0,4), stretch right marker to 8 with snapping disabled; separately cross markers. Include linked and unlinked envelopes.",
+      "expected": "First operation scales note times/lengths proportionally by two; crossing reverses order; linked timing follows, unlinked timing unchanged. Exact expression samples ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E8",
+      "execution": "not-run"
+    },
+    "row_sha256": "0414b39a8ef8b67f6def60e3afa2e229f3c766afb731f1eac76b4f83d3ddeda1",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "MED-012",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r2.json",
+    "json_pointer": "/cases/11",
+    "quoted_scoped_predicate": {
+      "id": "MED-012",
+      "requirement": "REQ-MIDI-EDIT-012",
+      "kind": "Boundary",
+      "setup_action": "One-beat grid; Humanize at maximum on selected note at beat 2. In separate fixture use Stretch factor 2 on quarter note with loop [0,4).",
+      "expected": "Humanized start remains in [1.75,2.25]; stretched duration becomes 2 beats; loop length stays 4. No random sample sequence asserted.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "E12",
+      "execution": "not-run"
+    },
+    "row_sha256": "a925301dbe698125636789e28b7660c4c781b8d6adbe2b99b13859df257d1b0d",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "MED-030",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r2.json",
+    "json_pointer": "/cases/29",
+    "quoted_scoped_predicate": {
+      "id": "MED-030",
+      "requirement": "REQ-MIDI-EDIT-030",
+      "kind": "Positive/negative",
+      "setup_action": "Two successive different pitches, apply Start 50 percent; inspect MPE editor. Repeat with one selected note.",
+      "expected": "Two-note input has pitch connection whose bend begins halfway through note; one-note creation unsupported, UI response ungraded.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T6",
+      "execution": "not-run"
+    },
+    "row_sha256": "eb65b65595480cf492ced30d4777673e34088d2b14bd3c41e72bfd8550c7beb8",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "MED-031",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r2.json",
+    "json_pointer": "/cases/30",
+    "quoted_scoped_predicate": {
+      "id": "MED-031",
+      "requirement": "REQ-MIDI-EDIT-031",
+      "kind": "Boundary",
+      "setup_action": "Target Pitch Bend with clip range ±60 semitones; inspect Amount/base ranges; set Attack 100 after positive Decay.",
+      "expected": "Amount allows -120..120, base -60..60; Decay resets to 0. No exact generated curve samples asserted.",
+      "documented_domain_grade": "D12",
+      "target_12_4_3_grade": "U",
+      "evidence": "T7",
+      "execution": "not-run"
+    },
+    "row_sha256": "c24f85ab05a06bbc0ed2febe402d3f876b032a3b75448eed8f794f4c7648c6aa",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "MED-052",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/midi-editing/acceptance-cases-r2.json",
+    "json_pointer": "/cases/51",
+    "quoted_scoped_predicate": {
+      "id": "MED-052",
+      "requirement_scope": "031",
+      "kind": "LFO visibility contradiction C3",
+      "setup_action": "Apply pitch-target LFO; switch Notes/MPE views and expression lanes.",
+      "expected": "U for Notes-view curve visibility because section contains conflicting statements.",
+      "documented_domain_grade": "U",
+      "target_12_4_3_grade": "U",
+      "execution": "not-run"
+    },
+    "row_sha256": "493a2bb6ac9e28d89b5c6e3a97f067b5161ebc0df3fc7f0a75041ca0b5a6d89a",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-008",
+    "kind": "Markdown",
+    "snapshot": "midi-editing-tools-asof.md",
+    "text_span": [
+      5672,
+      6103
+    ],
+    "quoted_scoped_predicate": "| REQ-MIDI-EDIT-008 | Proportional stretch | Select multiple notes or time; drag a Note Stretch marker. | Selected material scales proportionally; crossing the other marker mirrors note order. Interior pseudo marker stretches/compresses within fixed boundaries without changing outside material. Linked clip envelope timing follows stretch; unlinked envelope timing does not. Exact envelope curve resampling U. | D12/E8; target U |",
+    "text_sha256": "fdfd5ca19a27c28645062f6549eb82d89ece5afa581daf056e0d1fe127ff7512",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-012",
+    "kind": "Markdown",
+    "snapshot": "midi-editing-tools-asof.md",
+    "text_span": [
+      7481,
+      7994
+    ],
+    "quoted_scoped_predicate": "| REQ-MIDI-EDIT-012 | Time utilities | Use Stretch factor, double/halve, Humanize, Reverse or Legato in Pitch and Time Utilities. | Stretch factor changes note duration without changing loop length; double/halve scales targeted note duration, time selection or loop by two. Humanize shifts starts within a quarter-grid division either direction at maximum amount. Reverse flips note-time order; Legato ends notes at next start, final note at loop end. Precise random law and reverse pivot U. | D12/E12; target U |",
+    "text_sha256": "e08be2c074f59bad34b8b0821206d7d404f51f1d8cdab8d24b31049220e32930",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-030",
+    "kind": "Markdown",
+    "snapshot": "midi-editing-tools-asof.md",
+    "text_span": [
+      15435,
+      15817
+    ],
+    "quoted_scoped_predicate": "| REQ-MIDI-EDIT-030 | Glissando | At least two selected successive notes; set Start percent and Curve. | Tie pitches by per-note pitch-bend curve; Start controls bend start relative to note length; Curve controls shape. Bend visible in MPE editor. With fewer than two notes no glissando can be created; exact UI rejection/no-op U. Bend mapping/range clipping U. | D12/T6; target U |",
+    "text_sha256": "97e27c50d8f1076c302b9b54c21cab048b27c5fea1b5acd6781753acd5c3addc",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-031",
+    "kind": "Markdown",
+    "snapshot": "midi-editing-tools-asof.md",
+    "text_span": [
+      15818,
+      16289
+    ],
+    "quoted_scoped_predicate": "| REQ-MIDI-EDIT-031 | LFO tool | Selected notes; select Pitch Bend, Slide or Pressure; choose Sine/Square/Triangle/Random, Rate, envelope and amount. | Write selected expression using oscillator. Rate 1 corresponds to 4 beats; range 1..1/128. Attack 100 percent resets Decay to 0. Bend Amount spans twice clip bend range and base spans that range; Slide/Pressure controls allow -127..127. Curve visibility C3 and exact waveform/sampling/random law U. | D12/T7; target U |",
+    "text_sha256": "2900910df0898041f0a8e82670b364164c24d283c2c56e67fc0a7365fbf5e2ee",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "C3",
+    "kind": "Markdown",
+    "snapshot": "midi-editing-tools-asof.md",
+    "text_span": [
+      26445,
+      26691
+    ],
+    "quoted_scoped_predicate": "| C3 | T7 says Pitch Bend modulation is displayed in MIDI Note Editor, then says modulation appears only in MPE Editor and is invisible in Notes view. | Notes-view LFO visibility U; MED-052. Generated expression versus display remains distinct. |",
+    "text_sha256": "bc5e7f3a7c306280313c6093815687e81d41d16c6538095062e8c0d72ea0d1dd",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "REQ-CLIP-VIEW-008",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/requirements-r2.json",
+    "json_pointer": "/7",
+    "quoted_scoped_predicate": {
+      "id": "REQ-CLIP-VIEW-008",
+      "provenance": "D12",
+      "target_applicability": "U",
+      "contract": "Audio editor modes are Sample/Envelope; MIDI modes Notes/Envelope/MPE. Tabs/View commands or Alt+Tab Win/Option+Tab Mac switch modes.",
+      "source_id": "D12-CLIP-VIEW",
+      "source_blocks": [
+        "CV:B040",
+        "CV:B041",
+        "CV:B042",
+        "CV:B043",
+        "CV:B044",
+        "CV:B045"
+      ],
+      "html_lines": [
+        442,
+        464
+      ],
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/39",
+          "block": "CV:B040",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/40",
+          "block": "CV:B041",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/41",
+          "block": "CV:B042",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/42",
+          "block": "CV:B043",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/43",
+          "block": "CV:B044",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/44",
+          "block": "CV:B045",
+          "role": "retained public source role, not target observation"
+        }
+      ],
+      "complete": false
+    },
+    "row_sha256": "c30a3b69bebea1d36e13d1184b018d5b18887ce28f6c8be7d7d07d70199b3500",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "CV-008",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view/cases-r2.json",
+    "json_pointer": "/7",
+    "quoted_scoped_predicate": {
+      "id": "CV-008",
+      "requirements": [
+        "REQ-CLIP-VIEW-008"
+      ],
+      "kind": "positive",
+      "fixture": "fixtures-r2.json#CV-BASE-R2",
+      "setup_and_action": "Select A then M, enumerate tabs and switch via each route with editor focused; no MIDI expression or envelope computation is defined here.",
+      "documentary_expected": "Audio editor modes are Sample/Envelope; MIDI modes Notes/Envelope/MPE. Tabs/View commands or Alt+Tab Win/Option+Tab Mac switch modes.",
+      "documentary_comparator": "Compare only named visible controls, choices/eligibility, identities, file locations or explicit state relations; no pixels, hidden state, audio or timing tolerance.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "source_blocks": [
+        "CV:B040",
+        "CV:B041",
+        "CV:B042",
+        "CV:B043",
+        "CV:B044",
+        "CV:B045"
+      ],
+      "complete": false,
+      "source_claim": "Audio editor modes are Sample/Envelope; MIDI modes Notes/Envelope/MPE. Tabs/View commands or Alt+Tab Win/Option+Tab Mac switch modes.",
+      "evidence": [
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/39",
+          "block": "CV:B040",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/40",
+          "block": "CV:B041",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/41",
+          "block": "CV:B042",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/42",
+          "block": "CV:B043",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/43",
+          "block": "CV:B044",
+          "role": "retained public source role, not target observation"
+        },
+        {
+          "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/clip-view-source-audit/source-blocks.json",
+          "json_pointer": "/44",
+          "block": "CV:B045",
+          "role": "retained public source role, not target observation"
+        }
+      ]
+    },
+    "row_sha256": "62574e768d58bc8fae6e6c2f8aa9ad36a3460f29ff09eda6bf4ca1a0feffb2b2",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-SYN-DF-017",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/synthesis-instruments/requirements.json",
+    "json_pointer": "/16",
+    "quoted_scoped_predicate": {
+      "id": "REQ-SYN-DF-017",
+      "device": "Drift",
+      "provenance": "D12",
+      "target_applicability": "U",
+      "contract": "Volume and Vel > Vol control output/velocity; Transpose spans -48 to +48 semitones. Note PB toggles per-note pitch bend independently of global PB Range.",
+      "source_id": "SAMPLE-INSTRUMENTS-MANUAL",
+      "source_blocks": [
+        "drift:B094",
+        "drift:B095"
+      ],
+      "html_lines": [
+        840
+      ]
+    },
+    "row_sha256": "16ccf7a52a7a808c91710688dd904a0bd9acb85bb205bf896ed2e4eb57663ab7",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-SYN-ME-012",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/synthesis-instruments/requirements.json",
+    "json_pointer": "/46",
+    "quoted_scoped_predicate": {
+      "id": "REQ-SYN-ME-012",
+      "device": "Meld",
+      "provenance": "D12",
+      "target_applicability": "U",
+      "contract": "Velocity and Pitch sources use note values for that note duration; Random gets new value at note trigger. MIDI Pitch Bend/Press/Wheel and MPE Note Pitch Bend/Slide/Press supply sources, including clip envelopes.",
+      "source_id": "SAMPLE-INSTRUMENTS-MANUAL",
+      "source_blocks": [
+        "meld:B051",
+        "meld:B052",
+        "meld:B053",
+        "meld:B054"
+      ],
+      "html_lines": [
+        1238
+      ]
+    },
+    "row_sha256": "7f87cc855df0b6277d5eae682acfcf30d4abb2aa46a2c02988f150aa79bb4b55",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "SYN-DF-017",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/synthesis-instruments/cases.json",
+    "json_pointer": "/16",
+    "quoted_scoped_predicate": {
+      "id": "SYN-DF-017",
+      "requirements": [
+        "REQ-SYN-DF-017"
+      ],
+      "device": "Drift",
+      "kind": "documented-control",
+      "preconditions": [
+        "common-setup",
+        "positive-signal-guard"
+      ],
+      "setup_and_action": "Inspect Transpose -48/0/+48; send equal-pitch notes at velocities 32/96 with nonzero Vel > Vol; send per-note bend on one of two held notes with Note PB off/on, then global bend. Grade labels/state only; per-note sound isolation remains U.",
+      "documentary_expected": "Volume and Vel > Vol control output/velocity; Transpose spans -48 to +48 semitones. Note PB toggles per-note pitch bend independently of global PB Range.",
+      "documentary_comparator": "Compare only named visible controls, units, choices, eligibility or explicit state transitions. No waveform, hidden-state, timing tolerance or DSP assertion.",
+      "expected": null,
+      "target_grade": "U",
+      "comparison": null,
+      "executed": false,
+      "source_blocks": [
+        "drift:B094",
+        "drift:B095"
+      ],
+      "fixture": "stimulus-recipes.json#DF"
+    },
+    "row_sha256": "2b75faa96261f9c0d539693dbc2e50b356cdb78ed809983d959f888545456d1d",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "SYN-ME-012",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/synthesis-instruments/cases.json",
+    "json_pointer": "/46",
+    "quoted_scoped_predicate": {
+      "id": "SYN-ME-012",
+      "requirements": [
+        "REQ-SYN-ME-012"
+      ],
+      "device": "Meld",
+      "kind": "signal-obligation",
+      "preconditions": [
+        "common-setup",
+        "positive-signal-guard"
+      ],
+      "setup_and_action": "Two simultaneous distinct notes and independent expression events; route each source separately to audible target with nonzero depth and event control. Random sampling distribution, seeding and per-note isolation tolerance remain U.",
+      "documentary_expected": "Velocity and Pitch sources use note values for that note duration; Random gets new value at note trigger. MIDI Pitch Bend/Press/Wheel and MPE Note Pitch Bend/Slide/Press supply sources, including clip envelopes.",
+      "documentary_comparator": null,
+      "expected": null,
+      "target_grade": "U",
+      "comparison": null,
+      "executed": false,
+      "source_blocks": [
+        "meld:B051",
+        "meld:B052",
+        "meld:B053",
+        "meld:B054"
+      ],
+      "fixture": "stimulus-recipes.json#ME"
+    },
+    "row_sha256": "3a696c07063c9b5f05af364cdbce5ce278db3ee1d304a7385d412ff27bd08647",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-REMOTE-WORKFLOW-009",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/remote-control-workflows/requirements.json",
+    "json_pointer": "/8",
+    "quoted_scoped_predicate": {
+      "id": "REQ-REMOTE-WORKFLOW-009",
+      "title": "Manual setup entry boundary",
+      "contract": "An unlisted control surface can be set up for manual mapping through MIDI Ports. This workflow uses the routing owner's Remote input/output roles, rather than redefining Track/Sync/Remote or promising arbitrary hardware support.",
+      "strength": "D12",
+      "target_applicability": "U",
+      "evidence": [
+        {
+          "id": "RC-B025",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 334
+        },
+        {
+          "id": "RC-B026",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 348
+        }
+      ]
+    },
+    "row_sha256": "11b72b4590365c358d2143689cb9798de2b4ee5e84fc4a3c1396b888e0937479",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-REMOTE-WORKFLOW-010",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/remote-control-workflows/requirements.json",
+    "json_pointer": "/9",
+    "quoted_scoped_predicate": {
+      "id": "REQ-REMOTE-WORKFLOW-010",
+      "title": "Feedback prerequisite",
+      "contract": "Physical/visual feedback surfaces require the output-port Remote role so value changes can be reflected by faders or LEDs. The general port switch belongs to routing; feedback eligibility, startup state, bytes, loops and physical movement law remain U.",
+      "strength": "D12",
+      "target_applicability": "U",
+      "evidence": [
+        {
+          "id": "RC-B027",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 348
+        }
+      ]
+    },
+    "row_sha256": "de3c3f4fb90e5e73f1e3cec66ac8c20f1893791817f4a4cf2accb3477e1ff601",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-REMOTE-WORKFLOW-011",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/remote-control-workflows/requirements.json",
+    "json_pointer": "/10",
+    "quoted_scoped_predicate": {
+      "id": "REQ-REMOTE-WORKFLOW-011",
+      "title": "Incoming activity indicator",
+      "contract": "The Control Bar MIDI indicators flash when Live recognizes incoming MIDI. This is an activity indicator role, not proof of a mapping, source identity, output feedback, MIDI-track admission or hardware synchronization.",
+      "strength": "D12",
+      "target_applicability": "U",
+      "evidence": [
+        {
+          "id": "RC-B028",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 348
+        }
+      ]
+    },
+    "row_sha256": "c71d8a88c80ffcd2368afaa15040e8d72c8ee5df8a0dda17a937c60da723a488",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "RC-009",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/remote-control-workflows/cases.json",
+    "json_pointer": "/8",
+    "quoted_scoped_predicate": {
+      "id": "RC-009",
+      "requirements": [
+        "REQ-REMOTE-WORKFLOW-009"
+      ],
+      "kind": "control",
+      "provenance": "D12",
+      "fixture": "fixtures.json#RC-OWNED",
+      "preconditions": [
+        "common",
+        "active-positive-guard"
+      ],
+      "setup_and_action": "Identify an available input from an unlisted owned controller, inspect MIDI Ports and explicitly enable the routing owner's Remote input role. Keep Track/Sync settings declared; verify usable input separately before attempting an assignment.",
+      "source_claim": "An unlisted control surface can be set up for manual mapping through MIDI Ports. This workflow uses the routing owner's Remote input/output roles, rather than redefining Track/Sync/Remote or promising arbitrary hardware support.",
+      "documentary_expected": "An unlisted control surface can be set up for manual mapping through MIDI Ports. This workflow uses the routing owner's Remote input/output roles, rather than redefining Track/Sync/Remote or promising arbitrary hardware support.",
+      "documentary_comparator": "Named visible entry, eligibility, mapping-row and indicator relations only; no MIDI byte, numeric value, event/audio/timing or hardware compatibility proof.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "evidence": [
+        {
+          "id": "RC-B025",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 334
+        },
+        {
+          "id": "RC-B026",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 348
+        }
+      ]
+    },
+    "row_sha256": "e88839dbd1d3ea7f3ce05ca1bb1f1c3201398777d00e92ea10f41bcc7c14ea8f",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "RC-010",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/remote-control-workflows/cases.json",
+    "json_pointer": "/9",
+    "quoted_scoped_predicate": {
+      "id": "RC-010",
+      "requirements": [
+        "REQ-REMOTE-WORKFLOW-010"
+      ],
+      "kind": "signal",
+      "provenance": "D12",
+      "fixture": "fixtures.json#RC-OWNED",
+      "preconditions": [
+        "common",
+        "active-positive-guard"
+      ],
+      "setup_and_action": "Use an independently working feedback surface, selected output and active mapped target; retain a positive feedback baseline. Disable only output Remote in a reset trial, preserving input and value changes. No feedback bytes, motor deadline or silence criterion is supplied.",
+      "source_claim": "Physical/visual feedback surfaces require the output-port Remote role so value changes can be reflected by faders or LEDs. The general port switch belongs to routing; feedback eligibility, startup state, bytes, loops and physical movement law remain U.",
+      "documentary_expected": null,
+      "documentary_comparator": null,
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "evidence": [
+        {
+          "id": "RC-B027",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 348
+        }
+      ]
+    },
+    "row_sha256": "8528022bbab8fa9aa3b5eb625aba606543e457c28e144db5ac9d2408854e9f1e",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "RC-011",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/remote-control-workflows/cases.json",
+    "json_pointer": "/10",
+    "quoted_scoped_predicate": {
+      "id": "RC-011",
+      "requirements": [
+        "REQ-REMOTE-WORKFLOW-011"
+      ],
+      "kind": "control",
+      "provenance": "D12",
+      "fixture": "fixtures.json#RC-OWNED",
+      "preconditions": [
+        "common",
+        "active-positive-guard"
+      ],
+      "setup_and_action": "Retain independently identified usable controller traffic and inspect incoming activity, then separately send an unmapped eligible control. Keep mapped-target response and track input observations independent of indicator status.",
+      "source_claim": "The Control Bar MIDI indicators flash when Live recognizes incoming MIDI. This is an activity indicator role, not proof of a mapping, source identity, output feedback, MIDI-track admission or hardware synchronization.",
+      "documentary_expected": "The Control Bar MIDI indicators flash when Live recognizes incoming MIDI. This is an activity indicator role, not proof of a mapping, source identity, output feedback, MIDI-track admission or hardware synchronization.",
+      "documentary_comparator": "Named visible entry, eligibility, mapping-row and indicator relations only; no MIDI byte, numeric value, event/audio/timing or hardware compatibility proof.",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false,
+      "evidence": [
+        {
+          "id": "RC-B028",
+          "anchor": "manual-control-surface-setup",
+          "html_line": 348
+        }
+      ]
+    },
+    "row_sha256": "7190f6c4473a3fb25d480c5e9cd9fae443c09b5d27cd7e2e847e510dfa40177d",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "RC-002",
+    "kind": "JSON",
+    "catalog": "analysis/ableton-live-12.4.3/full-spec-v1/recording/cases-r3.json",
+    "json_pointer": "/records/1",
+    "quoted_scoped_predicate": {
+      "id": "RC-002",
+      "requirement_suffix": "001",
+      "kind": "P",
+      "action": "Select MIDI device/channel; record matching input",
+      "documentary_comparator_or_unknown": "Record uses the chosen source",
+      "evidence": "D12 R19 §19.1",
+      "expected": null,
+      "comparison": null,
+      "target_grade": "U",
+      "executed": false
+    },
+    "row_sha256": "41d05266618f8b7cf638dbfd0a5d0f25c7205b14a55420331eb6f9c0164bb043",
+    "role": "Actual selected clause/action only, not full external family"
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-001",
+    "kind": "Markdown",
+    "snapshot": "recording-comping-asof.md",
+    "text_span": [
+      2336,
+      2996
+    ],
+    "quoted_scoped_predicate": "### REQ-RECORDING-COMPING-001 — input and arm selection\n\n**D12, R19 §19.1–19.2.** A track records the input selected in its In/Out\ncontrols. Audio inputs can be mono/stereo; MIDI input can select device/channel;\nanother track can be the source. Session and Arrangement Arm controls address\nthe same tracks. In the documented ordinary arm operation, clicking one Arm\ndisarms other tracks; Ctrl on Windows/Cmd on macOS allows multiple arms.\nFor multiple selected tracks, clicking an Arm arms the other selected tracks.\nArming selects the track. **U:** preference-dependent exceptions, implicit arm,\nfrozen/nonrecordable tracks and arm changes during recording.\n\n",
+    "text_sha256": "59498b9826d2591699159485b2e05c7853518b2da098027cc6f522cc92887535",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "REQ-RECORDING-COMPING-003",
+    "kind": "Markdown",
+    "snapshot": "recording-comping-asof.md",
+    "text_span": [
+      3668,
+      4091
+    ],
+    "quoted_scoped_predicate": "### REQ-RECORDING-COMPING-003 — Arrangement record start\n\n**D12, R19 §19.3.1.** With Start Playback with Record enabled, Arrangement\nRecord starts recording. Disabled, Record waits for Play or a Session clip\nlaunch. Shift while pressing Record reverses that preference's behavior.\nRecording creates clips on armed tracks. **U:** exact scheduler order at the\nstart event and pressing Record again before the delayed start.\n\n",
+    "text_sha256": "010bd091e2e84a0ab21cf09ecf7068d43f41a3a409dad06a0d060b46f4fed40b",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  },
+  {
+    "id": "REQ-TUNING-015",
+    "kind": "Markdown",
+    "snapshot": "tuning-systems-asof.md",
+    "text_span": [
+      7067,
+      7484
+    ],
+    "quoted_scoped_predicate": "| REQ-TUNING-015 | Use tuning with external hardware, plugin or Max receiver. | Receiver must support and enable MPE, with per-note bend range ±48 semitones for the documented path. Incompatible/range-mismatched setups can be out of tune; there is no required precise failure sound. Manual's general built-in-instrument support is qualified by FAQ's Drum Synth exception; individual device scope remains U. | T1, H3 |",
+    "text_sha256": "1ea6e467f3977fb1c47bafa0388f4ea7e9ad1839f9c7208d27e8643b10959c5f",
+    "role": "Actual scoped Markdown predicate/action, no invented original JSON"
+  }
+]

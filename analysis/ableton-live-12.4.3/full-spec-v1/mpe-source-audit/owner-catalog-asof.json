@@ -1,0 +1,783 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-MPE-001",
+      "inputs": "Enable a controller's MPE mode in MIDI settings; choose that controller as track input.",
+      "contract": "Input channel selection is fixed to All Channels. Receiving/recording per-note expression requires the controller's MPE mode. Disabled-mode interpretation and hot-unplug outcome U.",
+      "evidence": "M1",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        2514,
+        2807
+      ],
+      "original_markdown": "| REQ-MPE-001 | Enable a controller's MPE mode in MIDI settings; choose that controller as track input. | Input channel selection is fixed to All Channels. Receiving/recording per-note expression requires the controller's MPE mode. Disabled-mode interpretation and hot-unplug outcome U. | M1 |"
+    },
+    {
+      "id": "REQ-MPE-002",
+      "inputs": "Open any MIDI clip, including one made without MPE hardware; choose Note Expression or Alt+3 (Win)/Option+3 (Mac).",
+      "contract": "Provide Pitch, Slide, Pressure, Velocity and Release Velocity editing. Pitch overlays notes; chapter 12 describes the other four as lanes, with Slide/Pressure initially visible. Optional Pitch Bend lane contexts remain U (below).",
+      "evidence": "M1–M2",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        2808,
+        3180
+      ],
+      "original_markdown": "| REQ-MPE-002 | Open any MIDI clip, including one made without MPE hardware; choose Note Expression or Alt+3 (Win)/Option+3 (Mac). | Provide Pitch, Slide, Pressure, Velocity and Release Velocity editing. Pitch overlays notes; chapter 12 describes the other four as lanes, with Slide/Pressure initially visible. Optional Pitch Bend lane contexts remain U (below). | M1–M2 |"
+    },
+    {
+      "id": "REQ-MPE-003",
+      "inputs": "Toggle lane selectors or the triangle; drag lane split lines.",
+      "contract": "Selectors show/hide lanes; triangle toggles enabled lanes together, shows all when none enabled; Alt/Option-click shows all. Splits resize an individual lane or all lanes. Hiding lanes through triangle/split also hides selectors. Minimum sizes U.",
+      "evidence": "M2",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        3181,
+        3514
+      ],
+      "original_markdown": "| REQ-MPE-003 | Toggle lane selectors or the triangle; drag lane split lines. | Selectors show/hide lanes; triangle toggles enabled lanes together, shows all when none enabled; Alt/Option-click shows all. Splits resize an individual lane or all lanes. Hiding lanes through triangle/split also hides selectors. Minimum sizes U. | M2 |"
+    },
+    {
+      "id": "REQ-MPE-004",
+      "inputs": "Note Expression open; select a note or expression dimension.",
+      "contract": "Selected note has an overlay and editable Pitch/Slide/Pressure breakpoints; Velocity/Release Velocity use markers. Other notes/envelopes are dimmed. Selecting a line exposes its draggable breakpoints/segments; background drag defines selection.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        3515,
+        3845
+      ],
+      "original_markdown": "| REQ-MPE-004 | Note Expression open; select a note or expression dimension. | Selected note has an overlay and editable Pitch/Slide/Pressure breakpoints; Velocity/Release Velocity use markers. Other notes/envelopes are dimmed. Selecting a line exposes its draggable breakpoints/segments; background drag defines selection. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-005",
+      "inputs": "Active envelope; click a segment, click a breakpoint, or choose Edit Value/Add Value with an admissible expression UI value.",
+      "contract": "Segment click adds a breakpoint; breakpoint click deletes it. Edit Value sets the typed admissible value; Add Value adds a preview breakpoint at that value. Multiple selected breakpoint values move relatively. Hover/create/drag exposes the value at the cursor position. Specific admissible numeric domains, invalid input and rounding U.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        3846,
+        4332
+      ],
+      "original_markdown": "| REQ-MPE-005 | Active envelope; click a segment, click a breakpoint, or choose Edit Value/Add Value with an admissible expression UI value. | Segment click adds a breakpoint; breakpoint click deletes it. Edit Value sets the typed admissible value; Add Value adds a preview breakpoint at that value. Multiple selected breakpoint values move relatively. Hover/create/drag exposes the value at the cursor position. Specific admissible numeric domains, invalid input and rounding U. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-006",
+      "inputs": "Drag a selected breakpoint or a selected line segment.",
+      "contract": "Selected breakpoints move together. Segment in a time selection inserts breakpoints at selection edges and moves that section together. Shift-drag restricts an axis and supports finer vertical adjustment. Dragging horizontally over a neighbor can remove it. Thresholds/equal-time ordering/clipping U.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        4333,
+        4713
+      ],
+      "original_markdown": "| REQ-MPE-006 | Drag a selected breakpoint or a selected line segment. | Selected breakpoints move together. Segment in a time selection inserts breakpoints at selection edges and moves that section together. Shift-drag restricts an axis and supports finer vertical adjustment. Dragging horizontally over a neighbor can remove it. Thresholds/equal-time ordering/clipping U. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-007",
+      "inputs": "Use Note Expression grid, Ctrl+4 (Win)/Cmd+4 (Mac), then save clip.",
+      "contract": "Grid starts disabled, is separate from other tabs and is saved with clip. Enabled edits snap to neighboring breakpoint times; creation near grid lines snaps. Pixel thresholds, grid storage and load failures U.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        4714,
+        5016
+      ],
+      "original_markdown": "| REQ-MPE-007 | Use Note Expression grid, Ctrl+4 (Win)/Cmd+4 (Mac), then save clip. | Grid starts disabled, is separate from other tabs and is saved with clip. Enabled edits snap to neighboring breakpoint times; creation near grid lines snaps. Pixel thresholds, grid storage and load failures U. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-008",
+      "inputs": "Alt/Option-drag a segment, then Alt/Option-double-click it.",
+      "contract": "First gesture curves segment; second restores a straight segment. Exact interpolation/sample values U; ordinary automation's evaluator is not imported.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        5017,
+        5253
+      ],
+      "original_markdown": "| REQ-MPE-008 | Alt/Option-drag a segment, then Alt/Option-double-click it. | First gesture curves segment; second restores a straight segment. Exact interpolation/sample values U; ordinary automation's evaluator is not imported. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-009",
+      "inputs": "Click outside a note then drag a highlighted non-Pitch expression vertically; alternatively select all breakpoints in one envelope then drag.",
+      "contract": "First gesture proportionally scales Slide/Pressure/Velocity/Release Velocity over note duration, also across selected notes. Second adds equal value/time movement to selected breakpoints. Pitch is excluded from proportional scaling. Scale origin, zero crossing and clipping U.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        5254,
+        5697
+      ],
+      "original_markdown": "| REQ-MPE-009 | Click outside a note then drag a highlighted non-Pitch expression vertically; alternatively select all breakpoints in one envelope then drag. | First gesture proportionally scales Slide/Pressure/Velocity/Release Velocity over note duration, also across selected notes. Second adds equal value/time movement to selected breakpoints. Pitch is excluded from proportional scaling. Scale origin, zero crossing and clipping U. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-010",
+      "inputs": "Move a note or stretch it with note stretch markers or ÷2/x2.",
+      "contract": "Attached expression follows note movement and stretches with note duration. Absolute-time copy/trim, transpose/bend interaction, interpolation and boundary reconstruction U. Note-command targeting remains with MIDI editing.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        5698,
+        6008
+      ],
+      "original_markdown": "| REQ-MPE-010 | Move a note or stretch it with note stretch markers or ÷2/x2. | Attached expression follows note movement and stretches with note duration. Absolute-time copy/trim, transpose/bend interaction, interpolation and boundary reconstruction U. Note-command targeting remains with MIDI editing. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-011",
+      "inputs": "Pitch edit/draw with grid off; hold Alt (Win)/Cmd (Mac). Open Note Expression and invoke Zoom to Clip Selection.",
+      "contract": "Modifier snaps Pitch to nearest semitone; with grid on it bypasses this behavior. Zoom includes pitch bends in selected time. Chapter 12 says Fold hides over-note Pitch envelopes; availability of a separate folded Pitch Bend lane is unresolved. Tie direction U.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        6009,
+        6408
+      ],
+      "original_markdown": "| REQ-MPE-011 | Pitch edit/draw with grid off; hold Alt (Win)/Cmd (Mac). Open Note Expression and invoke Zoom to Clip Selection. | Modifier snaps Pitch to nearest semitone; with grid on it bypasses this behavior. Zoom includes pitch bends in selected time. Chapter 12 says Fold hides over-note Pitch envelopes; availability of a separate folded Pitch Bend lane is unresolved. Tie direction U. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-012",
+      "inputs": "Select one or multiple notes in Note Expression and invoke Clear All Envelopes.",
+      "contract": "Clear all selected notes' expression envelopes. Whether note velocities/release velocities reset, resulting defaults, undo scope and note data beyond envelopes U.",
+      "evidence": "M3",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        6409,
+        6676
+      ],
+      "original_markdown": "| REQ-MPE-012 | Select one or multiple notes in Note Expression and invoke Clear All Envelopes. | Clear all selected notes' expression envelopes. Whether note velocities/release velocities reset, resulting defaults, undo scope and note data beyond envelopes U. | M3 |"
+    },
+    {
+      "id": "REQ-MPE-013",
+      "inputs": "Enable Draw Mode with B/menu/switch, or hold B temporarily; draw Pitch/Slide/Pressure.",
+      "contract": "Draw edits selected expression; grid-on drawing creates steps at visible grid width. Alt (Win)/Cmd (Mac) temporarily enables grid drawing while grid off; Shift gives finer vertical adjustment. Sampling, endpoint and sparse gesture laws U.",
+      "evidence": "M4",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        6677,
+        7027
+      ],
+      "original_markdown": "| REQ-MPE-013 | Enable Draw Mode with B/menu/switch, or hold B temporarily; draw Pitch/Slide/Pressure. | Draw edits selected expression; grid-on drawing creates steps at visible grid width. Alt (Win)/Cmd (Mac) temporarily enables grid drawing while grid off; Shift gives finer vertical adjustment. Sampling, endpoint and sparse gesture laws U. | M4 |"
+    },
+    {
+      "id": "REQ-MPE-014",
+      "inputs": "MPE controller values pass a MIDI track meter; use an MPE-enabled plug-in.",
+      "contract": "Meter's lowest dot indicates per-note changes in blue. Plug-in MPE mode is saved with device default configuration; MPE-enabled plug-ins with MIDI outs can output MPE. Plug-in failures, expression destinations and emitted encoding U.",
+      "evidence": "M2, M5",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        7028,
+        7365
+      ],
+      "original_markdown": "| REQ-MPE-014 | MPE controller values pass a MIDI track meter; use an MPE-enabled plug-in. | Meter's lowest dot indicates per-note changes in blue. Plug-in MPE mode is saved with device default configuration; MPE-enabled plug-ins with MIDI outs can output MPE. Plug-in failures, expression destinations and emitted encoding U. | M2, M5 |"
+    },
+    {
+      "id": "REQ-MPE-015",
+      "inputs": "Select external output target in External Instrument or track MIDI To; choose MPE then MPE Settings. For plug-in use MPE-enabled device context menu.",
+      "contract": "Open MPE/Multi-channel Settings for that routing target. Track mixer access applies in Session/Arrangement. Missing target and modal cancel behavior U.",
+      "evidence": "M6",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        7366,
+        7692
+      ],
+      "original_markdown": "| REQ-MPE-015 | Select external output target in External Instrument or track MIDI To; choose MPE then MPE Settings. For plug-in use MPE-enabled device context menu. | Open MPE/Multi-channel Settings for that routing target. Track mixer access applies in Session/Arrangement. Missing target and modal cancel behavior U. | M6 |"
+    },
+    {
+      "id": "REQ-MPE-016",
+      "inputs": "Choose lower/upper MPE output zone and note-channel count.",
+      "contract": "One zone per track; lower global channel is 1 and upper global channel 16, with note channels drawn from other channels. Two tracks are needed for both zones. Zones are documented for output only. Input zone filtering, allocation and overlapping-track conflicts U.",
+      "evidence": "M7",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        7693,
+        8041
+      ],
+      "original_markdown": "| REQ-MPE-016 | Choose lower/upper MPE output zone and note-channel count. | One zone per track; lower global channel is 1 and upper global channel 16, with note channels drawn from other channels. Two tracks are needed for both zones. Zones are documented for output only. Input zone filtering, allocation and overlapping-track conflicts U. | M7 |"
+    },
+    {
+      "id": "REQ-MPE-017",
+      "inputs": "Select multi-channel mode instead of zone mode.",
+      "contract": "Allow an arbitrary range of note channels. Accepted limits, reversed/empty ranges, inclusion of global channels, defaults and persistence U. A MIDI channel label does not establish a wire codec.",
+      "evidence": "M7",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        8042,
+        8309
+      ],
+      "original_markdown": "| REQ-MPE-017 | Select multi-channel mode instead of zone mode. | Allow an arbitrary range of note channels. Accepted limits, reversed/empty ranges, inclusion of global channels, defaults and persistence U. A MIDI channel label does not establish a wire codec. | M7 |"
+    },
+    {
+      "id": "REQ-MPE-018",
+      "inputs": "MPE controller and receiving MPE instrument use pitch bend.",
+      "contract": "Correct tracking requires matching pitch-bend ranges. No default range, numeric editor domain, asymmetric endpoint scale, RPN behavior or live range-change policy is inferred. Tuning-specific ±48 prerequisite belongs to tuning owner.",
+      "evidence": "H1",
+      "snapshot": "spec-asof-r2.md",
+      "markdown_span": [
+        8310,
+        8628
+      ],
+      "original_markdown": "| REQ-MPE-018 | MPE controller and receiving MPE instrument use pitch bend. | Correct tracking requires matching pitch-bend ranges. No default range, numeric editor domain, asymmetric endpoint scale, RPN behavior or live range-change policy is inferred. Tuning-specific ±48 prerequisite belongs to tuning owner. | H1 |"
+    }
+  ],
+  "cases": [
+    {
+      "id": "MPE-001",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/0",
+      "original_record": {
+        "id": "MPE-001",
+        "requirement": "REQ-MPE-001",
+        "kinds": [
+          "positive",
+          "negative"
+        ],
+        "setup": "Controller selected as MIDI input; individually selectable input channel.",
+        "action": "Enable controller MPE mode.",
+        "expected": "Track input is All Channels; individual channel selection unavailable.",
+        "comparator": "Compare selected channel and allowed channel choices; incoming MIDI handling outside this case.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M1"
+      }
+    },
+    {
+      "id": "MPE-002",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/1",
+      "original_record": {
+        "id": "MPE-002",
+        "requirement": "REQ-MPE-002",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "MIDI clip with notes made without MPE hardware; Note Expression closed.",
+        "action": "Open Note Expression with tab or Alt/Option+3.",
+        "expected": "Pitch overlay and Slide/Pressure/Velocity/Release Velocity controls accessible; Slide/Pressure default-visible.",
+        "comparator": "Compare dimension names and visibility in an uncustomized view; optional Pitch lane U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M1,M2"
+      }
+    },
+    {
+      "id": "MPE-003",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/2",
+      "original_record": {
+        "id": "MPE-003",
+        "requirement": "REQ-MPE-003",
+        "kinds": [
+          "positive",
+          "boundary"
+        ],
+        "setup": "No expression lanes enabled.",
+        "action": "Click triangle, then hide; Alt/Option-click triangle; resize one lane then total split.",
+        "expected": "All lanes shown from empty state; visibility toggles hide with lanes; resizing affects selected lane or total group.",
+        "comparator": "Compare visible selectors and relative lane sizes; no pixel/minimum-size assertion.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M2"
+      }
+    },
+    {
+      "id": "MPE-004",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/3",
+      "original_record": {
+        "id": "MPE-004",
+        "requirement": "REQ-MPE-004",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "Two notes with distinct Pressure envelopes.",
+        "action": "Select first note then its Pressure envelope.",
+        "expected": "First note/curve editable and highlighted; second dimmed; background drag defines selection.",
+        "comparator": "Compare selected-note identity and editable breakpoint set.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-005",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/4",
+      "original_record": {
+        "id": "MPE-005",
+        "requirement": "REQ-MPE-005",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "Pressure envelope has interior points at local beats 0.25 and 0.75 with values a and b. Precondition: a,b,c are three distinct admissible interior Pressure UI values; no particular numeric domain is asserted and exact-build instantiation remains U.",
+        "action": "Click middle segment, delete added point by click; choose Edit Value on first and enter admissible c.",
+        "expected": "One point added then removed; edited point displays entered c.",
+        "comparator": "Compare point count changes +1/-1 and final displayed value c under the admissible-value precondition; numeric instantiation, rounding, invalid-input and codec behavior U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-006",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/5",
+      "original_record": {
+        "id": "MPE-006",
+        "requirement": "REQ-MPE-006",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "One note, interior Pressure points at 0.25/0.5/0.75; middle time region selected.",
+        "action": "Drag middle segment vertically; Shift-drag a selected point horizontally.",
+        "expected": "Segment region gets edge breakpoints and moves together; Shift restricts axis.",
+        "comparator": "Compare edge-point presence and unchanged perpendicular coordinates; drag thresholds/clipping U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-007",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/6",
+      "original_record": {
+        "id": "MPE-007",
+        "requirement": "REQ-MPE-007",
+        "kinds": [
+          "positive",
+          "persistence"
+        ],
+        "setup": "Note Expression grid off, Notes-tab grid on.",
+        "action": "Toggle Expression grid on; switch tabs; save/reopen clip.",
+        "expected": "Expression grid independent of other tab and saved with clip.",
+        "comparator": "Compare per-tab enabled state and reopened Expression-grid state; full clip save errors U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-008",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/7",
+      "original_record": {
+        "id": "MPE-008",
+        "requirement": "REQ-MPE-008",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "Straight interior Pressure segment.",
+        "action": "Alt/Option-drag segment then Alt/Option-double-click.",
+        "expected": "Curve becomes curved, then straight.",
+        "comparator": "Compare curve/straight visual state only; numerical sample interpolation U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-009",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/8",
+      "original_record": {
+        "id": "MPE-009",
+        "requirement": "REQ-MPE-009",
+        "kinds": [
+          "positive",
+          "negative"
+        ],
+        "setup": "Nonzero non-Pitch envelope with several selected points, values away from limits.",
+        "action": "Scale via outside-note hover gesture; separately select all points and move vertically.",
+        "expected": "First adjusts proportionally; second moves all chosen values equally; Pitch lacks proportional gesture.",
+        "comparator": "Compare relative versus equal movement of nonzero values; scale amount/origin and clipping U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-010",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/9",
+      "original_record": {
+        "id": "MPE-010",
+        "requirement": "REQ-MPE-010",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "Note starts at beat 1, duration 2; expression local points 0.5 and 1.5.",
+        "action": "Move note start to beat 3; separately stretch duration by x2.",
+        "expected": "Move carries expression +2 beats in clip time; stretch carries expression timing with doubled note.",
+        "comparator": "Compare +2 absolute time translation; stretch corresponding interior times 1 and 3 relative to new note start; exact endpoints U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-011",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/10",
+      "original_record": {
+        "id": "MPE-011",
+        "requirement": "REQ-MPE-011",
+        "kinds": [
+          "positive",
+          "boundary"
+        ],
+        "setup": "Unfolded Note Expression with grid off and bend above note.",
+        "action": "Modifier-edit bend near an unambiguous semitone; invoke Zoom to Clip Selection.",
+        "expected": "Pitch snaps to nearest semitone; zoom includes selected bends.",
+        "comparator": "Compare displayed semitone and visible selected bend extent; half-semitone tie and folded lane state U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-012",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/11",
+      "original_record": {
+        "id": "MPE-012",
+        "requirement": "REQ-MPE-012",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "Two selected notes with Pressure and Slide, third unselected.",
+        "action": "Choose Clear All Envelopes in Note Expression.",
+        "expected": "Selected notes expression envelopes clear.",
+        "comparator": "Compare absence of selected curves; velocity/default reset and unselected-state guarantee U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-013",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/12",
+      "original_record": {
+        "id": "MPE-013",
+        "requirement": "REQ-MPE-013",
+        "kinds": [
+          "positive",
+          "boundary"
+        ],
+        "setup": "Note Expression Pitch/Pressure/Slide target and visible one-quarter-beat grid.",
+        "action": "Turn Draw Mode on, draw over interior region; repeat holding B temporarily.",
+        "expected": "Grid drawing creates steps at visible grid width; holding B temporarily toggles Draw Mode.",
+        "comparator": "Compare step horizontal widths 0.25 beat and restored mode on release; point samples/endpoints U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M4"
+      }
+    },
+    {
+      "id": "MPE-014",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/13",
+      "original_record": {
+        "id": "MPE-014",
+        "requirement": "REQ-MPE-014",
+        "kinds": [
+          "positive",
+          "persistence"
+        ],
+        "setup": "MPE-enabled plugin with MIDI out and saved default configuration.",
+        "action": "Save its enabled MPE default; create instance from default.",
+        "expected": "MPE enable state recalled; MPE output supported when enabled.",
+        "comparator": "Compare default-enabled flag; exact emitted messages and blue-meter timing U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M2,M5"
+      }
+    },
+    {
+      "id": "MPE-015",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/14",
+      "original_record": {
+        "id": "MPE-015",
+        "requirement": "REQ-MPE-015",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "External Instrument or MIDI track with valid MIDI To target; MPE-enabled plugin instance.",
+        "action": "Choose MPE then MPE Settings in each output route; open plugin context entry.",
+        "expected": "Settings dialog accessible through three documented entry points.",
+        "comparator": "Compare dialog presence/associated target in each location; commit/cancel U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M6"
+      }
+    },
+    {
+      "id": "MPE-016",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/15",
+      "original_record": {
+        "id": "MPE-016",
+        "requirement": "REQ-MPE-016",
+        "kinds": [
+          "positive",
+          "negative",
+          "boundary"
+        ],
+        "setup": "Two tracks share an external output; no sounding notes.",
+        "action": "Configure one lower zone, one upper; inspect single-track zone choices.",
+        "expected": "Lower global channel 1; upper global channel 16; each track one zone.",
+        "comparator": "Compare configured labels/global channels and inability to select both zones as one track configuration; message allocation U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M7"
+      }
+    },
+    {
+      "id": "MPE-017",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/16",
+      "original_record": {
+        "id": "MPE-017",
+        "requirement": "REQ-MPE-017",
+        "kinds": [
+          "positive"
+        ],
+        "setup": "MPE output settings with no sounding notes.",
+        "action": "Select multi-channel mode and choose note-channel range 3..8.",
+        "expected": "Configuration exposes chosen arbitrary note-channel range.",
+        "comparator": "Compare displayed endpoints 3 and 8; emitted ordering, upper/lower limits and global-channel exclusion U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M7"
+      }
+    },
+    {
+      "id": "MPE-018",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/17",
+      "original_record": {
+        "id": "MPE-018",
+        "requirement": "REQ-MPE-018",
+        "kinds": [
+          "positive",
+          "negative"
+        ],
+        "setup": "Controller and compatible MPE instrument, both with known bend-range setting.",
+        "action": "Set matching ranges; separately mismatch them.",
+        "expected": "Matching range is required configuration for correct tracking; mismatch cannot be graded to a precise sound.",
+        "comparator": "Compare matched setup values only; output pitch curve, failure size, default and codec remain U.",
+        "documentary_grade": "D12",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "H1"
+      }
+    },
+    {
+      "id": "MPE-019",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/53",
+      "original_record": {
+        "id": "MPE-019",
+        "requirement": "REQ-MPE-005",
+        "kinds": [
+          "malformed",
+          "negative"
+        ],
+        "setup": "Numeric expression field open.",
+        "action": "Enter NaN, infinity, letters, empty text and out-of-domain finite value separately.",
+        "expected": "U: acceptance/rejection, clipping, dialog and prior-data preservation.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-020",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/54",
+      "original_record": {
+        "id": "MPE-020",
+        "requirement": "REQ-MPE-017",
+        "kinds": [
+          "boundary"
+        ],
+        "setup": "MPE/multichannel output settings.",
+        "action": "Choose 0,17,reversed and empty note-channel ranges; mismatch bend ranges.",
+        "expected": "U: accepted UI ranges, clamps/defaults, channel-bend codec and negotiation.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M7,H1"
+      }
+    },
+    {
+      "id": "MPE-021",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/55",
+      "original_record": {
+        "id": "MPE-021",
+        "requirement": "REQ-MPE-010",
+        "kinds": [
+          "boundary"
+        ],
+        "setup": "Zero-duration note or points exactly at/beyond note ends.",
+        "action": "Resize/stretch/move/trim across endpoints.",
+        "expected": "U: reconstruction, removal/resampling, value and same-time order.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3; storage-013/014"
+      }
+    },
+    {
+      "id": "MPE-022",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/56",
+      "original_record": {
+        "id": "MPE-022",
+        "requirement": "REQ-MPE-015",
+        "kinds": [
+          "cancellation"
+        ],
+        "setup": "Output settings dialog open with prior configuration.",
+        "action": "Change zone/range then cancel or dismiss with Escape.",
+        "expected": "U: immediate versus deferred application, previous-state restoration.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M6,M7"
+      }
+    },
+    {
+      "id": "MPE-023",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/57",
+      "original_record": {
+        "id": "MPE-023",
+        "requirement": "REQ-MPE-006",
+        "kinds": [
+          "undo"
+        ],
+        "setup": "Two notes with known curves.",
+        "action": "Perform multi-point drag/clear, undo, redo and new edit.",
+        "expected": "U: transaction count, exact restored curves and redo invalidation.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3"
+      }
+    },
+    {
+      "id": "MPE-024",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/58",
+      "original_record": {
+        "id": "MPE-024",
+        "requirement": "REQ-MPE-014",
+        "kinds": [
+          "persistence"
+        ],
+        "setup": "Edited curves, grid, lanes and output settings plus saved plugin default.",
+        "action": "Save/reopen Set/clip/default in each supported route.",
+        "expected": "U: fields beyond documented grid/default state, normalization, errors and history.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3,M5"
+      }
+    },
+    {
+      "id": "MPE-025",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/59",
+      "original_record": {
+        "id": "MPE-025",
+        "requirement": "REQ-MPE-016",
+        "kinds": [
+          "boundary",
+          "teardown"
+        ],
+        "setup": "Held notes routed through lower zone.",
+        "action": "Change zone/range/MPE enable or disconnect/reconnect target.",
+        "expected": "U: note-off/reset, channel reuse, stuck-note prevention and live transition timing.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M7"
+      }
+    },
+    {
+      "id": "MPE-026",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/60",
+      "original_record": {
+        "id": "MPE-026",
+        "requirement": "REQ-MPE-014",
+        "kinds": [
+          "teardown"
+        ],
+        "setup": "MPE notes/changes in flight.",
+        "action": "Delete clip/plugin/track then close Set.",
+        "expected": "U: release/reset ordering, cleanup/resource failure and last modulation state.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M2,M5"
+      }
+    },
+    {
+      "id": "MPE-027",
+      "original_catalog": "analysis/ableton-live-12.4.3/full-spec-v1/mpe-tuning-grooves/cases.json",
+      "original_json_pointer": "/61",
+      "original_record": {
+        "id": "MPE-027",
+        "requirement": "REQ-MPE-011",
+        "kinds": [
+          "boundary"
+        ],
+        "setup": "Folded Note Expression, Glissando/LFO-generated Pitch Bend and optional lane states.",
+        "action": "Compare under exact tab/fold/lane preconditions from both chapters.",
+        "expected": "U: same-control/context correspondence; consult MIDI editing/tools C3 before claiming contradiction.",
+        "comparator": "U: retain observations for a future evidenced contract; no pass/fail oracle is asserted.",
+        "documentary_grade": "U",
+        "target_build_grade": "U",
+        "execution": "unexecuted",
+        "source": "M3; midi-editing-tools C3"
+      }
+    }
+  ],
+  "common_fixture": {
+    "snapshot": "spec-asof-r2.md",
+    "text_span": [
+      1374,
+      2312
+    ],
+    "text": "## Inputs, units and state\n\nCases use an editable MIDI clip with two distinguishable notes, ordinary finite\nbreakpoints strictly inside each note, explicit tab/fold/grid state, and reset\nstate per case. Time is in quarter-note beats; pitch labels use semitones where\ndisplayed. Slide/Pressure and note velocities are named expression values; their\nUI domains, scaling and conversion to stored/MIDI values are U here. In\nparticular, storage's CC -2 domain is not a semitone conversion law.\n\nClip selection, note/breakpoint/time selection, grid and lane visibility,\nexpression data, controller MPE enablement, track input choice, output target,\noutput zone/channel range and plug-in MPE state are distinct. UI cases compare\nvisible state and represented editing results, without pixel or latency claims.\nOutput-zone cases compare selectable configuration only; message bytes,\nallocation/stealing, RPN negotiation and receiver audio are U.\n\n",
+    "role": "Future scenario recipe; no actual fixtures or target numeric domain"
+  }
+}

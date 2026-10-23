@@ -1,0 +1,129 @@
+{
+  "id": "CORPUS-A1-CALLBACK-WRAPPER-FRONTIER-2026-10-20",
+  "retained_utc": "2026-10-20T10:16:49.753091+00:00",
+  "source_export_utc": null,
+  "status": "One selected complete wrapper C1 record plus exact metadata; STOP before target/helper bodies and further words",
+  "source_identity": "Live.arm64 SHA2563a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad (carried selected source identity, no new image read this query)",
+  "selection": "Root selected only metadata and wrapper1024fd8a8 complete retained C if<=2048bytes. Actual1154Cbytes, stateexported/no warnings/no partialcode.",
+  "source_record": {
+    "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-01766.jsonl",
+    "line": 36,
+    "raw_line_bytes_excluding_terminator": 1700,
+    "raw_line_sha256": "238fd54c4a184e9b3de357ead03bf0211f7e8eb22e4d25ecbd8bc0b22e0bc15f",
+    "chunk": {
+      "path": "/var/tmp/sound-analysis/corpus/decomp/chunks/chunk-01766.jsonl",
+      "bytes": 211387,
+      "sha256": "1f6f612aa6ba850d4190517fb77d3756a4674711dae8ae643f15b1897e42ca6e"
+    },
+    "record": {
+      "entry": "0x1024fd8a8",
+      "name": "ableton::utility::detail::CallbackTypes<AFloatModulatorModule,void>::CallMemberFunc<&AFloatModulatorModule::Update>",
+      "thunk": false,
+      "body_bytes": 4,
+      "body_ranges": [
+        [
+          "0x1024fd8a8",
+          "0x1024fd8ab"
+        ]
+      ],
+      "signature": "void __cdecl CallMemberFunc<&AFloatModulatorModule::Update>(void * param_1)",
+      "state": "exported",
+      "error": null,
+      "timed_out": false,
+      "partial_code": false,
+      "warnings": [],
+      "ms": 11,
+      "code_bytes": 1154,
+      "code_sha256": "246ae76c9b3993dd2052ed6b9198358204b92e5d958f550055e86160c3525264",
+      "code": "\n/* void ableton::utility::detail::CallbackTypes<AFloatModulatorModule,\n   void>::CallMemberFunc<&AFloatModulatorModule::Update>(void*) */\n\nvoid ableton::utility::detail::CallbackTypes<AFloatModulatorModule,void>::\n     CallMemberFunc<&AFloatModulatorModule::Update>(void *param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  long lStack_40;\n  undefined8 uStack_38;\n  \n  if ((*(char *)((long)param_1 + 0x130) == '\\x01') && (iVar1 = FUN_102329db8(), iVar1 != 0)) {\n    FUN_101ab7348(&lStack_40,&DAT_10700a978,0x100500,0x10100,0);\n    uVar2 = FUN_102329fb4(param_1,0);\n    FUN_101a9c630(uStack_38,uVar2);\n    FUN_101a9c534(uStack_38,(long)*(char *)((long)param_1 + 0x11e));\n    FUN_101a9c534(uStack_38,(long)*(char *)((long)param_1 + 0x11f));\n    FUN_101a9c57c(*(undefined4 *)((long)param_1 + 0x120),uStack_38);\n    FUN_101a9c57c(*(undefined4 *)((long)param_1 + 0x124),uStack_38);\n    FUN_101a9c57c(*(undefined4 *)((long)param_1 + 0x128),uStack_38);\n    FUN_101a9c57c(*(undefined4 *)((long)param_1 + 300),uStack_38);\n    (**(code **)(lStack_40 + 0x10))(&lStack_40);\n    FUN_101ab786c(&lStack_40);\n    *(undefined1 *)((long)param_1 + 0x130) = 0;\n  }\n  return;\n}\n\n"
+    }
+  },
+  "one_actual_callee_metadata": {
+    "path": "/var/tmp/sound-analysis/corpus/indexes/calls.jsonl",
+    "line": 712528,
+    "raw_line_sha256": "e994b6ea2a21473bd60dd2511535e53392cec338dd1f6265d1b8e2d80c677b01",
+    "record": {
+      "caller": "0x1024fd8a8",
+      "caller_name": "ableton::utility::detail::CallbackTypes<AFloatModulatorModule,void>::CallMemberFunc<&AFloatModulatorModule::Update>",
+      "site": "0x1024fd8a8",
+      "kind": "tail-jump",
+      "ref_type": "UNCONDITIONAL_JUMP",
+      "to": "0x1024f46bc",
+      "callee": "0x1024f46bc",
+      "callee_name": "FUN_1024f46bc",
+      "callee_resolved": null,
+      "callee_resolved_name": null
+    },
+    "callee_body_read": false
+  },
+  "findings": [
+    {
+      "fact": "The actual stored callback word from the preceding reviewed query points to this wrapper. Existing bind body1024f5318 forms a callback descriptor from literal106530350 and [player+0x90], passing it with [player+0x80] into102413328.",
+      "source": "queries/corpus-a1-cell-frontier-2026-10-19.json#/parts/bridge/records/2/record/code",
+      "qualification": "Descriptor construction is not proof of callback admission/execution or of102413328 eventual argument delivery."
+    },
+    {
+      "fact": "The selected wrapper metadata has native body_bytes4, range1024fd8a8..1024fd8ab. Exact call-index row records a single unconditional tail-jump at1024fd8a8 to1024f46bc.",
+      "qualification": "This is retained branch/index evidence, not a new instruction-byte/bitfield read. If that4-byte single-tail-branch metadata is accurate, the branch instruction itself preserves argument registers. Actual dispatch passing the bound object inX0 and ordinary ABI remain explicit assumptions, not freshly closed here."
+    },
+    {
+      "fact": "The recovered wrapper signature is void CallMemberFunc<...Update>(void* param_1), but its C text is a larger recovered body rather than a visible one-line forwarding call. Treat this as an inlined/folded-looking decompiler view; do not count every C helper as a separate direct wrapper branch or assert exact ABI from recovered parameter types.",
+      "qualification": "No separate1024f46bc body was read to reconcile this representation."
+    },
+    {
+      "fact": "The retained C view tests byte[param_1+0x130]==1, then102329db8()!=0. Under that branch it creates local state through101ab7348, obtains102329fb4(param_1,0), passes that result and the copied fields+11e/+11f/+120/+124/+128/+12c through named helpers, invokes indirect[lStack_40+0x10], calls101ab786c and clears byte+0x130.",
+      "qualification": "Exact field/call sequence in recoveredC only. Names, numeric values, status flags and apparent serialization do not establish float-value semantics or public behavior; none of those helper bodies/indirecttargets was read."
+    },
+    {
+      "fact": "This C view has no direct load of module+0x48/currentcell or explicit unitOut/Indexer call. It may invoke uninspected helpers and an indirect call.",
+      "qualification": "Function-local source observation only; not absence of consumption in the target/helpers/other processing route and not a no-route verdict."
+    }
+  ],
+  "same_control_gap_remaining": "Even assuming selected post-substitution q, stable constructed player/input, boundobjectM=[player+0x90], ordinary ABI, actualcallbackexecution and no interference, no proven read/resolve path from that q/module+0x48 current scalar to the unitOut/Indexer input has been supplied. The source-local current pull/converter identity does not fill this gap. Neutral modulation and public model\u2192processor delivery remain unknown.",
+  "smallest_next_frontier_proposed_only": {
+    "candidate": "Metadata for exact recorded tail-target1024f46bc, first to reconcile whether the wrapper C is a folded view of the same canonical body. Do not automatically duplicate its body or follow the logging/configuration-shaped helpers.",
+    "decision_needed": "If that metadata shows the same recovered body, return this lead to STOP for currentcell-consumption purposes and select a directly evidenced processing consumer separately. If representation materially differs, propose one bounded target span for Root selection. No source/helper continuation is authorized here."
+  },
+  "read_limits": "Exact existing alias/call-index metadata; bounded entry-prefix lookup in adjacent chunks01765/01766 located only target01766:36. C body printed/read only after code_bytes1154<=2048 metadata check. An initial functions.jsonl guess was absent; no absence inference. No other complete function body, rawimageword, instructionopcode, native/original/capture/checker/model/fit execution or canonical/shared edit. All code is retained data.",
+  "providers_before": [
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-a1-callback-word-frontier-2026-10-20.json",
+      "bytes": 7887,
+      "sha256": "5843a68736c1ed6f1feba06d4d6f6fc94019ef32867cd087eebaa801db082669"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-a1-callback-word-review.json",
+      "bytes": 776,
+      "sha256": "840cc88d08505220b82d4aa916a49f1fa4322c333bca0efb7418fdae18526018"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-a1-cell-frontier-2026-10-19.json",
+      "bytes": 44158,
+      "sha256": "c473cd52f9a879a8d0bf9a0918ca7a7d27221eae9fefc7c3c6008f57d7179d12"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-position-trace/records.json",
+      "bytes": 321404,
+      "sha256": "9a1708988dd150e5ee0c3ba1661a1b92d424b9f449cabba0623320bfbcb5f889"
+    }
+  ],
+  "checks": {
+    "exact_raw_code_hash": true,
+    "chunk_unchanged": true,
+    "providers_unchanged": true,
+    "new_complete_C_bodies": 1,
+    "new_complete_C_bytes": 1154,
+    "new_image_words": 0,
+    "callee_bodies_read": 0,
+    "original_calls": 0,
+    "numeric_calls": 0
+  },
+  "A1": "U",
+  "application_expected": null,
+  "application_comparison": null,
+  "grade": null,
+  "new_requirements": 0,
+  "new_cases": 0,
+  "coverage_credit": 0,
+  "complete": false
+}

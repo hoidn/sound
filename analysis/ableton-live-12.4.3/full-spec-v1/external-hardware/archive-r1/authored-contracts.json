@@ -1,0 +1,220 @@
+{
+  "EA": {
+    "slug": "external-audio-effect",
+    "name": "External Audio Effect",
+    "schema_class": "BufferAudioDevice",
+    "source": "D12-AUDIO-EFFECTS",
+    "requirements": [
+      {
+        "id": "REQ-EHW-EA-001",
+        "blocks": [
+          "B002",
+          "B003"
+        ],
+        "kind": "control",
+        "contract": "With External Audio Effect in an audio path, Audio To selects physical audio outputs to the external processor and Audio From selects physical inputs returning its processed signal. This is a hardware-routing effect; the section supplies no internal effect algorithm.",
+        "action": "Inspect Audio To and Audio From using an independently identified configured output/input pair; keep the two selector roles distinct.",
+        "documentary_expected": "Audio To offers outgoing hardware outputs and Audio From offers returning hardware inputs; actual transmission and returned samples are ungraded."
+      },
+      {
+        "id": "REQ-EHW-EA-002",
+        "blocks": [
+          "B003"
+        ],
+        "kind": "control",
+        "contract": "Available Audio To and Audio From choices depend on Audio Settings. Configure… at the bottom of each chooser reaches those settings. No complete port domain, mono/stereo grouping, order or unavailable-port policy is specified.",
+        "action": "Open each chooser and choose Configure… separately with a valid audio configuration.",
+        "documentary_expected": "Each chooser provides Configure… leading to Audio Settings; exact port inventory depends on the separately retained configuration."
+      },
+      {
+        "id": "REQ-EHW-EA-003",
+        "blocks": [
+          "B004"
+        ],
+        "kind": "control",
+        "contract": "A Peak level indicator below each chooser shows the highest attained audio level; clicking an indicator resets it. Measurement convention, observation window, reset sentinel and update timing are unknown.",
+        "action": "Locate both indicators and exercise each click target separately; use the distinct ungraded peak-signal probe for measurement/reset behavior.",
+        "documentary_expected": "There is a click-reset peak indicator below each chooser; no peak number, reset value or refresh deadline is graded."
+      },
+      {
+        "id": "REQ-EHW-EA-004",
+        "blocks": [
+          "B005"
+        ],
+        "kind": "control",
+        "contract": "Separate Gain knobs beside the choosers adjust the level going out to the processor and the level coming back into Live. Gain domains, dB-to-amplitude law and clipping behavior are unknown.",
+        "action": "Identify send and return Gain separately and enter two accepted nonzero interior values in one control at a time.",
+        "documentary_expected": "Distinct send and return Gain controls can be addressed beside their respective choosers; no audible gain or isolation equality is graded."
+      },
+      {
+        "id": "REQ-EHW-EA-005",
+        "blocks": [
+          "B006"
+        ],
+        "kind": "control",
+        "contract": "Dry/Wet controls the balance of dry and externally processed signals; the manual recommends 100% when placed on a return track. This recommendation is not a mandatory insertion setting or a specified mixing law.",
+        "action": "In separate valid audio-track and return-track placements inspect Dry/Wet, and request the documented 100% value on the return placement.",
+        "documentary_expected": "Dry/Wet is available and admits the documented 100% setting when otherwise editable; mix samples and all other numeric ranges remain ungraded."
+      },
+      {
+        "id": "REQ-EHW-EA-006",
+        "blocks": [
+          "B007"
+        ],
+        "kind": "control",
+        "contract": "Invert applies phase inversion to the processed signal returning into Live. No phase convention, channel matrix, numeric negation rule or dry-path sample comparator is established.",
+        "action": "Select an active external-return configuration and toggle Invert off/on; retain control state separately from the signal probe.",
+        "documentary_expected": "Invert offers the stated on/off control; its processed-return audio effect has no supplied numerical oracle."
+      },
+      {
+        "id": "REQ-EHW-EA-007",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "control",
+        "contract": "Hardware Latency allows manual compensation for hardware delay not automatically detected by Live. Its adjacent button selects milliseconds or samples. Sample fine tuning followed by a return to milliseconds before a rate change is documented guidance; conversion, range and precision are unknown.",
+        "action": "With a configured hardware route and Delay Compensation on, select samples and milliseconds separately; enter 128 samples or 2.5 ms only if admitted.",
+        "documentary_expected": "Both documented units can be selected on the editable latency control; no automatic measurement, exact round-trip alignment or cross-unit conversion is graded."
+      },
+      {
+        "id": "REQ-EHW-EA-008",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "state",
+        "contract": "When Hardware Latency is set in samples, the specified sample count is retained across a sample-rate change. The selected count is the state observation, not a promised measured hardware delay.",
+        "action": "With editable hardware latency, successfully set 128 samples at 48 kHz; leave samples selected and request 44.1 kHz then 48 kHz. If either entry or rate is unavailable, leave the case unexecuted.",
+        "documentary_expected": "After each successfully accepted rate change, the selected-unit amount remains the admitted 128-sample count; equivalent formatting is allowed, while rounding and physical timing remain ungraded."
+      },
+      {
+        "id": "REQ-EHW-EA-009",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "state",
+        "contract": "When Hardware Latency is set in milliseconds, the specified duration is retained across a sample-rate change. No sample conversion, rounding or compensation implementation is specified.",
+        "action": "With editable hardware latency, successfully set 2.5 ms at 48 kHz; leave milliseconds selected and request 44.1 kHz then 48 kHz. If either entry or rate is unavailable, leave the case unexecuted.",
+        "documentary_expected": "After each successfully accepted rate change, the selected-unit amount remains the admitted 2.5 ms duration; equivalent formatting is allowed, while sample conversion and actual timing remain ungraded."
+      },
+      {
+        "id": "REQ-EHW-EA-010",
+        "blocks": [
+          "B009"
+        ],
+        "kind": "control",
+        "contract": "Unchecking Delay Compensation in the Options menu disables Hardware Latency. Restored value, hidden-state updates and audible behavior on re-enabling are unknown.",
+        "action": "On a valid configured hardware route, inspect Hardware Latency with Delay Compensation on, then uncheck Delay Compensation.",
+        "documentary_expected": "Hardware Latency is disabled while Delay Compensation is unchecked; no additional bypass, timing or re-enable state claim is made."
+      }
+    ]
+  },
+  "EI": {
+    "slug": "external-instrument",
+    "name": "External Instrument",
+    "schema_class": "BufferInstrument",
+    "source": "SAMPLE-INSTRUMENTS-MANUAL",
+    "requirements": [
+      {
+        "id": "REQ-EHW-EI-001",
+        "blocks": [
+          "B002",
+          "B003"
+        ],
+        "kind": "control",
+        "contract": "External Instrument sends MIDI and returns audio for external synthesizers or multitimbral plug-ins. For a physical destination, the upper MIDI To chooser selects the MIDI port and the lower chooser supplies MIDI channel numbers. No channel domain or wire encoding is specified here.",
+        "action": "With a separately identified active physical MIDI destination, inspect both MIDI To choosers and select two available channels in separate reset trials.",
+        "documentary_expected": "The upper chooser addresses the physical MIDI destination and the lower chooser lists channel numbers; emitted messages and synthesizer response are ungraded."
+      },
+      {
+        "id": "REQ-EHW-EI-002",
+        "blocks": [
+          "B004"
+        ],
+        "kind": "control",
+        "contract": "When another Set track contains a qualifying multitimbral plug-in, the upper MIDI To chooser can select that track and the lower chooser selects a specific MIDI channel in that plug-in. Arbitrary plug-in support is not established.",
+        "action": "Prepare an independently known qualifying multitimbral plug-in on another track; choose that track and inspect its offered MIDI channel choices.",
+        "documentary_expected": "The qualifying plug-in track and its channel choice are selectable; plug-in callback, scheduling and sound are ungraded."
+      },
+      {
+        "id": "REQ-EHW-EI-003",
+        "blocks": [
+          "B005"
+        ],
+        "kind": "control",
+        "contract": "For a hardware synthesizer, Audio From selects interface inputs connected to the synthesizer outputs. Available choices depend on Audio Settings. This section does not independently establish a Configure… entry in this chooser.",
+        "action": "With independently identified active synth-return inputs, inspect Audio From before and after a supported change to enabled audio inputs in Audio Settings.",
+        "documentary_expected": "Audio From offers hardware returns according to the accepted audio configuration; exact inventory/order, hotplug and disappearance behavior are unknown."
+      },
+      {
+        "id": "REQ-EHW-EI-004",
+        "blocks": [
+          "B006"
+        ],
+        "kind": "control",
+        "contract": "For a qualifying multitimbral plug-in on another track, Audio From lists the plug-in auxiliary outputs. Its main outputs are heard on the track that contains the instrument. This does not specify channel matrices, gain or summing.",
+        "action": "Use a qualifying plug-in with independently identified distinct main and auxiliary outputs; inspect Audio From and record which track hosts the instrument.",
+        "documentary_expected": "The auxiliary-output choices are listed for that plug-in; host-track main-output ownership is documentary context with its audio probe ungraded, not an asserted waveform or absence predicate."
+      },
+      {
+        "id": "REQ-EHW-EI-005",
+        "blocks": [
+          "B007"
+        ],
+        "kind": "control",
+        "contract": "Gain adjusts the audio returning from the selected sound source. The section specifies no separate MIDI-send gain, amplitude law, legal range or clipping limiter.",
+        "action": "On an active return configuration, identify Gain and enter two admitted nonzero interior values separately.",
+        "documentary_expected": "The return Gain control is addressable; returned audio and any effect on external or plug-in state remain ungraded."
+      },
+      {
+        "id": "REQ-EHW-EI-006",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "control",
+        "contract": "For external hardware, Hardware Latency permits manual compensation of delay Live cannot automatically detect, using milliseconds or samples. Sample fine tuning and switching back to milliseconds before changing rate is guidance; no conversion or rounding is specified.",
+        "action": "With a configured hardware route and Delay Compensation on, select both units; request 128 samples or 2.5 ms only if admitted.",
+        "documentary_expected": "Both documented units are selectable on an editable hardware-route latency control; measured latency and cross-unit numerical conversion are ungraded."
+      },
+      {
+        "id": "REQ-EHW-EI-007",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "state",
+        "contract": "With a hardware route and Hardware Latency in samples, the specified sample count is retained when the sample rate changes. This does not establish physical alignment or event latency.",
+        "action": "Successfully set hardware latency to 128 samples at 48 kHz; keep samples selected and request 44.1 kHz then 48 kHz, leaving the case unexecuted if entry or rate is unavailable.",
+        "documentary_expected": "The admitted selected-unit amount remains 128 samples after successful rate changes; exact formatting, conversion and measured timing are outside this state comparator."
+      },
+      {
+        "id": "REQ-EHW-EI-008",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "state",
+        "contract": "With a hardware route and Hardware Latency in milliseconds, the specified duration is retained when the sample rate changes. No sample conversion or numerical rounding law is established.",
+        "action": "Successfully set hardware latency to 2.5 ms at 48 kHz; keep milliseconds selected and request 44.1 kHz then 48 kHz, leaving the case unexecuted if entry or rate is unavailable.",
+        "documentary_expected": "The admitted selected-unit amount remains 2.5 ms after successful rate changes; exact formatting, sample conversion and measured timing are outside this state comparator."
+      },
+      {
+        "id": "REQ-EHW-EI-009",
+        "blocks": [
+          "B008"
+        ],
+        "kind": "control",
+        "contract": "For internal routing, latency introduced by devices within Live is documented as automatically compensated, and External Instrument Hardware Latency is disabled. Its timing accuracy, limits and algorithm remain ungraded; this is not an internal mechanism requirement.",
+        "action": "With Delay Compensation enabled, select a qualifying internal multitimbral plug-in route and inspect Hardware Latency. Test a separately reset physical route only as a context distinction.",
+        "documentary_expected": "Hardware Latency is disabled for the internal route; automatic compensation is a documented signal goal with a separate null-oracle probe, not a measured timing result."
+      },
+      {
+        "id": "REQ-EHW-EI-010",
+        "blocks": [
+          "B009"
+        ],
+        "kind": "control",
+        "contract": "Unchecking Delay Compensation in Options disables Hardware Latency. The internal-route restriction also applies; neither statement promises a physical route is always editable under every other condition.",
+        "action": "Inspect a valid physical route and a qualifying internal plug-in route separately with Delay Compensation unchecked, then inspect the internal route with it checked.",
+        "documentary_expected": "Hardware Latency is disabled whenever Delay Compensation is unchecked and remains disabled for the internal route; re-enabled hidden values and sound remain unknown."
+      }
+    ]
+  }
+}

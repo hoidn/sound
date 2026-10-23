@@ -1,0 +1,148 @@
+{
+  "id": "ANALOG-1774C-RECEIVER-SOURCE-V1",
+  "created_utc": "2026-10-21T04:56:18.964736+00:00",
+  "role": "analyst retained-data source assessment; not implementation",
+  "selection": "Root selected exactly 0x1774c, raw and C <=32768 bytes and <=1000 C lines; 0x15e0 context only; no automatic successor",
+  "selected_entries": [
+    "0x1774c"
+  ],
+  "parent_context": {
+    "owner": "SPEC-DEVICE-ANALOG revision3",
+    "requirements": [
+      "REQ-DEVICE-ANALOG-002",
+      "A1",
+      "REQ-DEVICE-ANALOG-022"
+    ],
+    "inventory_qualification": "Analog199 X-route belongs to old-r1 qualified map; this packet changes no denominator or route count",
+    "receiver_symbols": {
+      "P": "incoming pointer recovered in caller 0x15e0",
+      "Q": "incoming pointer recovered in selected 0x1774c",
+      "B": "return value assigned to puVar1 at caller C7"
+    }
+  },
+  "result": {
+    "callee_Q_returned_as_B": "literal-C-only-under-stated-premises",
+    "caller_P_equals_callee_Q": "unknown",
+    "caller_P_equals_returned_B": "unknown",
+    "public_binding": "unknown",
+    "actual_ABI_carriers": "unknown",
+    "construction_success": "unknown"
+  },
+  "signature_mismatch_preserved": true,
+  "claims": [
+    {
+      "id": "AC01",
+      "status": "observed-retained-source",
+      "C_lines": [
+        2,
+        2
+      ],
+      "text": "C signature projects a pointer argument Q and pointer return; record signature metadata instead says undefined FUN_0001774c(). Neither establishes actual incoming/return registers."
+    },
+    {
+      "id": "AC02",
+      "status": "observed-retained-source",
+      "C_lines": [
+        7,
+        12
+      ],
+      "text": "Projection writes named address constants59338/59400/59460 through Q and clears fields. These are expressions, not verified class/vtable layouts or postconditions after unread helpers."
+    },
+    {
+      "id": "AC03",
+      "status": "observed-retained-source",
+      "C_lines": [
+        13,
+        20
+      ],
+      "text": "Projection passes Q+0x1c006 to unread1b138, then writes59690 and additional zero/constant fields. Effects of the helper and data contents remain unknown; no numeric constant is interpreted as an observable sample-rate law."
+    },
+    {
+      "id": "AC04",
+      "status": "observed-retained-source",
+      "C_lines": [
+        21,
+        24
+      ],
+      "text": "Projection receives uVar1 from unread1ac0c, stores it in Q[0x1c005], passes uVar1,0 to unread1b058, then reloads Q[0x1c005] for unread1b0fc with1. The two arguments need not be equal after unread1b058; no allocation, registration, ownership, successful initialization or DSP role is assigned."
+    },
+    {
+      "id": "AC05",
+      "status": "conditional-source-relation",
+      "C_lines": [
+        25,
+        25
+      ],
+      "text": "On the normal return path of the literal recovered projection, the returned pointer is its own incoming Q. This is Q-to-B at the source abstraction only, conditional on valid state, helpers returning, and accurate recovery; it is not a machine ABI observation."
+    },
+    {
+      "id": "AC06",
+      "status": "observed-context-plus-unknown-join",
+      "context": "family-analog-routes-v1/analog-records.jsonl row1, caller0x15e0 C7-8/C19",
+      "text": "Caller invokes FUN_0001774c() without a recovered argument, writes580c0 through returned B, and returns its own separately recovered P. The selected callee supplies no caller-to-callee argument carrier proof, so neither Q=P nor B=P follows."
+    },
+    {
+      "id": "AC07",
+      "status": "metadata-only",
+      "text": "Record declares a non-thunk236-byte body range1774c..17837 inclusive and no warnings/error/partial/timeout. No native bytes, machine argument carriers, complete instruction behavior or ABI were verified."
+    }
+  ],
+  "premises": [
+    "Literal recovered C is a useful but fallible projection; metadata signature mismatch remains material.",
+    "Normal return of all four unread helpers is conditional, not proven execution.",
+    "Incoming Q and referenced state must be valid for the recovered accesses; legal state size, lifetime and ownership are not established by the largest offset."
+  ],
+  "unread_direct_callees": [
+    "0x1b138",
+    "0x1ac0c",
+    "0x1b058",
+    "0x1b0fc"
+  ],
+  "unread_named_data": [
+    "0x59338",
+    "0x59400",
+    "0x59460",
+    "0x59690"
+  ],
+  "residual_frontier": {
+    "minimal_identity_proof": "Evidence for actual incoming carrier Q at the exact caller0x15e0 to callee0x1774c boundary and return carrier B, compared with caller P. Source projection alone leaves implicit/unrecovered arguments unresolved. No native capture is selected here.",
+    "addresspoint_proof": "Caller writes580c0 through B; assigning that table to P or to any actual factory/Live receiver needs independent identity proof and retained table evidence. Named addresses are not instance identity.",
+    "wrapper_context_only": [
+      "17074:+68",
+      "17624:+38",
+      "17404:+60",
+      "17424:+68",
+      "176bc:+58",
+      "1a244:+10",
+      "18768",
+      "18890",
+      "188cc"
+    ],
+    "wrapper_targets_resolved": [],
+    "not_selected": "No callee, table, pointer word, native window, global, factory rerun, new object model or successor is selected."
+  },
+  "requirement_contribution": {
+    "REQ002_A1": "Adds a bounded local source return relationship but does not prove indexed delivery into the same object; current-value/parameter-unit/emitted-value and actual Live admission remain unknown.",
+    "REQ022": "Does not establish automation arrival, same-instance control effects, smoothing/latching/history/settling or any100ms bound.",
+    "preserved_unknowns": [
+      "A1",
+      "A2",
+      "I07/I08 actual Analog receiver",
+      "host output delivery",
+      "public input admission",
+      "lifecycle",
+      "calibration",
+      "ARM numerical behavior"
+    ]
+  },
+  "fresh_vs_inherited": {
+    "fresh": "Complete selected27 C lines, all raw metadata, exact alias/locator/hashes, context21 C lines and pointer comparison.",
+    "inherited": "Approved family wrapper/call map, prior finite observations and x86 model, helper export/binary identities. No full prior source/release/review replay.",
+    "index_limitation": "Helper index manifest pins aliases and image identity, not decomp chunk content. New raw record/chunk hashes bind current retained bytes; historical origin is retained exporter metadata plus existing context, not an independently pinned old whole-chunk digest."
+  },
+  "new_original_calls": 0,
+  "new_native_bytes": 0,
+  "new_resolved_indirect_sites": 0,
+  "new_case_or_grade_changes": 0,
+  "coverage": "OPEN-required-unsupported-remains-U"
+}

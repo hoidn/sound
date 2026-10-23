@@ -1,0 +1,124 @@
+---
+id: RES-DISTORTION-DEVICES
+type: research
+status: current
+updated: 2026-10-19
+access: analysis
+revision: 1
+target: Ableton Live 12 Suite 12.4.3; current official Version 12 manual
+---
+
+# Distortion device evidence
+
+## Scope and route
+
+This packet supports the [distortion draft](../specs/distortion-devices.md) for
+nine separate device profiles: Drum Buss, Dynamic Tube, modern Erosion,
+Overdrive, Pedal, current Redux, Roar, Saturator and Vinyl Distortion. The
+[full inventory](full-live-coverage-inventory.md) supplies profile identities;
+[coverage design](full-live-specification-design.md) defines partial versus
+complete, and the [execution plan](full-live-specification-plan.md) owns status.
+Root owns shared indexes, coverage, questions and append-only log integration.
+The draft owns behavioral wording; this page owns source interpretation/limits.
+
+## Source identities and observed evidence
+
+**Observed, documentary.** Reused D12-AUDIO-EFFECTS from the existing
+[manual source record](../../analysis/ableton-live-12.4.3/full-spec-v1/audio-utilities/sources.json),
+not a fresh fetch. Original URL is the official
+[Version 12 audio-effect reference](https://www.ableton.com/en/live-manual/12/live-audio-effect-reference/),
+captured 2026-10-19; no exact 12.4.3 publication is established. Exact reused
+HTML SHA-256 is `9cb15cb3d80bda4771e5add2c2b74f5c57d73ee8850e198acf7cf8a51dfd1299`
+(588328 bytes). The packet's [source manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/distortion/sources.json)
+pins this external retained file and its original identity. Separate extraction
+files preserve 216 paragraphs/headings/list items with HTML start-line and stable
+B locators; all text is validated against the pinned HTML.
+
+**Observed, package bytes.** Installed latest schema 12.0_12402 is reused from the
+inventory, SHA-256 `b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299`
+(441285 bytes). Nine complete class field records are retained in
+[schema-fields.json](../../analysis/ableton-live-12.4.3/full-spec-v1/distortion/schema-fields.json).
+Exactly one inventoried preset per device was copied and hash-checked against
+its inventory example, retaining all bytes and historical Creator 12.4d1.
+[Package values](../../analysis/ableton-live-12.4.3/full-spec-v1/distortion/package-values.json)
+retain /Ableton/class, root attributes and exact field XML. This proves presence
+and one represented configuration, not loading, defaults, GUI domains or DSP.
+
+| Profile | Schema and start line | Manual blocks | Bounded preset |
+| --- | --- | --- | --- |
+| Drum Buss | DrumBuss at line 1873 | drum-buss:B001–B024, §29.12 | Bonzo on the Dials.adv |
+| Dynamic Tube | Tube at line 8203 | dynamic-tube:B001–B009, §29.13 | Broken Tube.adv |
+| Erosion | Erosion2 2377 | erosion:B001–B007, §29.17 | Dusty Mids.adv |
+| Overdrive | Overdrive at line 5913 | overdrive:B001–B007, §29.27 | Distort.adv |
+| Pedal | Pedal at line 5942 | pedal:B001–B036, §29.28 | Bass Guitar Front of Stage.adv |
+| Redux | Redux2 6321 | redux:B001–B015, §29.30 | Chiptune Filter.adv |
+| Roar | Roar at line 6568 | roar:B001–B081, §29.33 | Roar.adv |
+| Saturator | Saturator at line 6878 | saturator:B001–B029, §29.34 | Saturator.adv |
+| Vinyl Distortion | Vinyl at line 8495 | vinyl-distortion:B001–B008, §29.41 | Awfull.adv |
+
+## Interpretation and limits
+
+**Documented, not executed.** The manual supplies named modes, control gestures,
+signal order and qualitative interaction descriptions. The draft separates
+main Drive from Saturator Waveshaper Drive; global gain from wet-only output;
+Dynamic Tube's zero-Envelope follower gate; Erosion's sine-only disabled width;
+Drum Buss's Decay at zero versus nonzero Boom; and Overdrive/Pedal zero drive
+from a bypass guarantee. Each requirement maps exact retained blocks in
+[requirements.json](../../analysis/ableton-live-12.4.3/full-spec-v1/distortion/requirements.json).
+
+Roar adds routing/stage/filter/shaper modes, LFO/noise/follower modulation,
+feedback/gate/compression, external audio and MIDI-note sidechains. No private
+schema enum index is converted into a public mode identity. The manual's claim
+that MIDI sidechain inactivates Feedback Mode/Amount is preserved as D12 rather
+than corrected by intuition. Current Erosion explicitly says pre-12.4 Sets load
+Erosion Legacy (erosion:B007). That is a documented version boundary, not a
+retained old-Set loading test. Erosion2 and legacy Erosion remain separate.
+Current Redux does not establish Redux Legacy semantics or migration.
+
+**Unknown.** Exact 12.4.3 applicability of current-manual statements; nonlinear
+transfer equations, oscillator/PRNG/random correlations, jitter/degradation,
+quantization rounding, clipping thresholds, saturation gain normalization,
+oversampling kernels/factors, filter coefficients/phase, envelope timing,
+modulation summation/clipping, feedback stability and all calibrated audio,
+CPU or latency tolerances. Schema-only fields such as Roar HiQuality or Redux
+EcoProcessing do not establish visible controls or processing law. No file or
+GUI malformed-input policy, undo grouping, cancellation restoration, save/reopen
+preservation, reset or teardown response is inferred from storage presence.
+
+The finite audio experiments are all U. Any effect/no-effect comparison requires
+independently established source, active path, nonzero effective control or
+modulation amount, nonmuted processed output and control-sensitive positive
+baselines; other paths must be isolated. This is particularly necessary for
+Erosion width, Dynamic Tube follower timing, Saturator Waveshaper zero influence,
+Roar filter/feedback/matrix and Vinyl crackle versus harmonic paths. A setting
+alone does not prove activation. Failed or missing prerequisites produce U,
+never a pass. Silence and digital-zero input are not assumed to disable a
+noise generator, tail, feedback or DC path.
+
+## Finite cases and reproducibility
+
+The packet contains **67 requirements and 190 case entries**: 18 Dpkg source
+assertions, 29 D12 documented UI/state criteria and 143 U outcomes with null
+expected values. Counts are authored coverage only; no original/candidate case
+has run. All nine profiles include positive, negative, boundary, automation,
+persistence, undo, malformed, cancellation, transport, rate/block and teardown
+cases. Device-specific sound interactions remain independently ungraded. The
+proposed signals are deterministic analytic test inputs, not original output
+captures or calibrated validators.
+
+Reproduce documentary capture/validation with existing Python standard library:
+
+```sh
+python3 analysis/ableton-live-12.4.3/full-spec-v1/distortion/capture.py
+python3 analysis/ableton-live-12.4.3/full-spec-v1/distortion/validate.py
+```
+
+Capture verifies existing retained bytes rather than silently replacing them.
+The [author freeze](../../analysis/ableton-live-12.4.3/full-spec-v1/distortion/manifest-author-r1.json)
+contains payload hashes, external source pins, canonical spec/research snapshots,
+case/source records and [validation report](../../analysis/ableton-live-12.4.3/full-spec-v1/distortion/validation-author-r1.json).
+Frozen files must remain unchanged; corrections require a new manifest revision.
+Separate review is required before any reviewed-contract claim or release.
+No tooling installation, executable/bytecode/binary analysis, original-code probe,
+reference application run, candidate change, publication or commit occurred.
+The Amp/Cabinet unavailable-emulation route remains outside this packet.

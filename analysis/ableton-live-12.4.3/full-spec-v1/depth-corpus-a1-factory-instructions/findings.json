@@ -1,0 +1,93 @@
+{
+  "id": "corpus-a1-factory-instructions",
+  "retained_utc": "2026-10-20T10:35:21.694575+00:00",
+  "status": "Conditional construction identity narrowed; STOP before any processing slot or other code/data.",
+  "scope": {
+    "original_image_code_bytes": 100,
+    "original_image_instruction_words": 25,
+    "synthetic_control_bytes": 4,
+    "new_source_bodies": 0,
+    "original_instructions_executed": false,
+    "tool": "Rizin static pdj only; ESIL text in output was not evaluated.",
+    "factory_decodes": 1,
+    "synthetic_decodes": 1
+  },
+  "flow": [
+    {
+      "addresses": [
+        "0x1024f416c"
+      ],
+      "fact": "MOV X19,X8 saves the entry X8 value.",
+      "meaning": "Actual store base later comes from the entry X8 carrier. Under AAPCS64 conventions this is an indirect-result pointer, rather than an ordinary X0 argument. Its validity and caller provision remain premises."
+    },
+    {
+      "addresses": [
+        "0x1024f4170",
+        "0x1024f4174",
+        "0x1024f4178",
+        "0x1024f417c"
+      ],
+      "fact": "MOV W0,0xa8; BL 0x1012d9734; MOV X20,X0; BL 0x1026e8e50. No intervening instruction writes X0.",
+      "meaning": "On normal allocator return, its X0 is both saved in X20 and supplied as constructor X0. This resolves the constructor argument omitted by decompiled C. Allocation success and valid callable/ABI behavior are premises."
+    },
+    {
+      "addresses": [
+        "0x1024f4180",
+        "0x1024f4184",
+        "0x1024f4188",
+        "0x1024f418c",
+        "0x1024f4190"
+      ],
+      "fact": "ADRP X8,0x1067c6000; ADD X8,X8,0xb90; STR X8,[X0]; ADD X8,X8,0x308; STR X8,[X0,0x28].",
+      "meaning": "On normal constructor return, returned X0 receives literal vptr address 0x1067c6b90 and secondary field+0x28 receives 0x1067c6e98. These are computed address constants, not reads of either table. No symbolic class or slot identity is inferred."
+    },
+    {
+      "addresses": [
+        "0x1024f4194",
+        "0x1024f4198"
+      ],
+      "fact": "BL 0x101486414; STR X20,[X19].",
+      "meaning": "Assuming callee-save preservation of X19/X20, the original allocation is written through the saved entry X8 carrier. The helper was not inspected and no other side effects or aliasing are inferred."
+    },
+    {
+      "addresses": [
+        "0x1024f419c",
+        "0x1024f41a0",
+        "0x1024f41a4",
+        "0x1024f41a8",
+        "0x1024f41ac"
+      ],
+      "fact": "LDR W8,[X20,8]; ADD W8,W8,1; STR W8,[X20,8]; MOV X0,X20; BL 0x101482718.",
+      "meaning": "Literal field+8 increment and later helper argument are visible. No lifetime/reference-count correctness, later mutation or processing behavior is established."
+    }
+  ],
+  "conditional_join": {
+    "instruction_backed": [
+      "Allocator return X0 is constructor input X0.",
+      "Preserved allocator return X20 is stored through entry X8 under callee-save assumptions.",
+      "Constructor returned X0 is the base of the two final vptr stores."
+    ],
+    "remaining_source_premise": "Retained complete constructor 0x1026e8e50 returns its input param_1 on its represented normal-return path. Equality of that input with returned X0 therefore remains conditional on faithful source recovery, normal return and ABI, not a new instruction-level proof of the constructor itself.",
+    "other_premises": [
+      "Valid caller-provided indirect-result pointer in entry X8.",
+      "Successful allocation, valid object and normal calls; no unwinding/failure path taken.",
+      "Callee-save X19/X20 and no conflicting mutation of result/object.",
+      "Existing wrapper/model/substitution/source association remains qualified by its earlier reports."
+    ]
+  },
+  "unknowns": [
+    "No processing virtual slot or direct module+0x48/+0x50 current-cell consumer was selected or resolved.",
+    "Opaque module+0x38 remains uninterpreted.",
+    "No actual scheduler, runtime object identity, active input+0x158 binding or public/Live behavior is established.",
+    "No vtable entry word was read, including for 0x1067c6b90 or 0x1067c6e98.",
+    "No claim of absent/global no-route."
+  ],
+  "A1": "unknown",
+  "application_expected": null,
+  "application_comparison": null,
+  "grade": null,
+  "new_requirements": 0,
+  "new_cases": 0,
+  "coverage_credit": 0,
+  "complete": false
+}

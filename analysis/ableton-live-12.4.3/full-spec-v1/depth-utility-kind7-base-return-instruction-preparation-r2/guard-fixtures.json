@@ -1,0 +1,346 @@
+{
+  "activity": "AST-extracted row predicate on syntheticdata only; no collector import/main, rawwindow/image/decoder/originalfunction execution",
+  "R1_guard": "assert len(decoded)==8 and all(r['offset']==START+4*i and r['size']==4 and r.get('type')!='ill' and r.get('opcode') not in [None,'invalid'] for i,r in enumerate(decoded))",
+  "R2_guard": "assert len(decoded)==8 and all(r['offset']==START+4*i and r['size']==4 and str(r.get('type','')).strip().lower() not in ('invalid','ill') and isinstance(r.get('opcode'),str) and r['opcode'].strip().lower() not in ('','invalid','ill','none') for i,r in enumerate(decoded))",
+  "base_rows": [
+    {
+      "offset": 4331744516,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744520,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744524,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744528,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744532,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744536,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744540,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    },
+    {
+      "offset": 4331744544,
+      "size": 4,
+      "type": "mov",
+      "opcode": "mov x0, x0",
+      "bytes": "00000000"
+    }
+  ],
+  "fixtures": [
+    {
+      "label": "valid_control",
+      "change": {
+        "base": "8matching synthetic rows; no actualinstruction bytes"
+      },
+      "expected_R2_accept": true,
+      "actual_R2_accept": true,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "exact_review_counterexample",
+      "change": {
+        "allrows": {
+          "type": "invalid",
+          "opcode": ""
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "type_'invalid'",
+      "change": {
+        "row0": {
+          "type": "invalid"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "type_'ill'",
+      "change": {
+        "row0": {
+          "type": "ill"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "type_'INVALID'",
+      "change": {
+        "row0": {
+          "type": "INVALID"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "type_' Ill '",
+      "change": {
+        "row0": {
+          "type": " Ill "
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "type_'\\tInVaLiD\\n'",
+      "change": {
+        "row0": {
+          "type": "\tInVaLiD\n"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_None",
+      "change": {
+        "row0": {
+          "opcode": null
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "opcode_0",
+      "change": {
+        "row0": {
+          "opcode": 0
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_False",
+      "change": {
+        "row0": {
+          "opcode": false
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_[]",
+      "change": {
+        "row0": {
+          "opcode": []
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_{}",
+      "change": {
+        "row0": {
+          "opcode": {}
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_''",
+      "change": {
+        "row0": {
+          "opcode": ""
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_' '",
+      "change": {
+        "row0": {
+          "opcode": " "
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_'invalid'",
+      "change": {
+        "row0": {
+          "opcode": "invalid"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "opcode_'INVALID'",
+      "change": {
+        "row0": {
+          "opcode": "INVALID"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_' ill '",
+      "change": {
+        "row0": {
+          "opcode": " ill "
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_'Ill'",
+      "change": {
+        "row0": {
+          "opcode": "Ill"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_'none'",
+      "change": {
+        "row0": {
+          "opcode": "none"
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_' NoNe '",
+      "change": {
+        "row0": {
+          "opcode": " NoNe "
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": true
+    },
+    {
+      "label": "opcode_absent",
+      "change": {
+        "row0_remove": "opcode"
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "wrong_offset",
+      "change": {
+        "row0_offset_delta": 4
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "wrong_size_zero",
+      "change": {
+        "row0": {
+          "size": 0
+        }
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "short7",
+      "change": {
+        "row_count": 7
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "extra9",
+      "change": {
+        "row_count": 9
+      },
+      "expected_R2_accept": false,
+      "actual_R2_accept": false,
+      "actual_R1_accept": false
+    },
+    {
+      "label": "valid_case_space_control",
+      "change": {
+        "row0": {
+          "type": "MoV",
+          "opcode": " MOV X0, X0 "
+        }
+      },
+      "expected_R2_accept": true,
+      "actual_R2_accept": true,
+      "actual_R1_accept": true
+    }
+  ],
+  "fixture_count": 26,
+  "valid_controls": 2,
+  "rejections": 24
+}

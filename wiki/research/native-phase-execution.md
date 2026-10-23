@@ -2,12 +2,18 @@
 id: PLAN-NATIVE-PHASE-EXECUTION
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-20
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / arm64
 ---
 
 # Native phase execution design and task plan
+
+**Current analyst selector:** [full Live specification plan](full-live-specification-plan.md),
+authorized 2026-10-19 under [ADR 0005](../decisions/adr-0005-full-live-specification-coverage.md).
+The older native/T1 rows below retain their evidence and dispositions. Whole-product
+specification coverage is in progress; none of these historical tool or release
+gates establishes that broader completion.
 
 The user authorized drafting associated designs **and executing** the
 [next-phase roadmap](native-decompilation-roadmap.md) on 2026-10-09. This page
@@ -154,16 +160,17 @@ defines them). M1–M6 above remain the revision 1 record.
 | S4 MIDI closure | Done: [closure assessment](midi-closure-r2.md), spec revision 2, [midi-config-v2](../../handoff/midi-config-v2/README.md) released | Clause classification |
 | H2, H3 Handoffs | **Both released 2026-10-17:** [transport-state-v1](../../handoff/transport-state-v1/README.md) (18 cases) and [als-container-v1](../../handoff/als-container-v1/README.md) (35 cases), each approved with narrowing by a separate reviewer | Reviewed releases |
 | H4 Revision 1 draft handoffs | **Nine released 2026-10-18**, each staged by an author agent and approved by a separate review agent: [midi-config-v3](../../handoff/midi-config-v3/README.md) (127 cases, supersedes v2), clip-launch-v1 (50), midi-note-storage-v1 (67), mixer-values-v1 (37), automation-envelopes-v1 (21), bundled-device-parameters-v1 (82), browser-index-v1 (26), plugin-discovery-v1 (35), warp-markers-v1 (38); see the [catalog](../../handoff/index.md). Corrections owed to the draft specs are on each handoff plan | Reviewed releases |
-| Phase 4 probe batch | **Will not run as planned** ([ADR 0003](../decisions/adr-0003-no-reference-execution.md), 2026-10-18): no macOS host. The [run sheet](phase4-probe-batch.md), 146 records, is kept as the record of open observations and is being triaged into extracted execution, static investigation or permanent unknowns | Triage of every record |
+| Phase 4 probe batch | **Will not run as planned** ([ADR 0003](../decisions/adr-0003-no-reference-execution.md), 2026-10-18): no macOS host. Reinstated 2026-10-21 by [ADR 0006](../decisions/adr-0006-reference-observation-reopened.md), pending host decision D-07. The [run sheet](phase4-probe-batch.md), 146 records, is kept as the record of open observations and is being triaged into extracted execution, static investigation or permanent unknowns | Triage of every record |
 | X1 Extracted execution | **Passed 2026-10-18:** the [harness](extracted-execution.md) (`tools/xexec/`) loads the original x86_64 slice and calls self-contained functions. 476 runs, no trap or fault; agrees with every released check tried (mixer 44/44 texts, MIDI 18/18, transport 8/8) and 45 spec examples. Findings: REQ-TRANSPORT-STATE-011 imprecise next to powers of ten (release correction needed); arm64 fuses one multiply-add in Absolute mode (no released case affected) | Harness reproduces released expectations or explains each difference |
 | X2 Settle by extracted execution | **Done 2026-10-18:** mixer r3, MIDI r5, transport r3 and r4, notes r3, clip launch r3, automation r3, warp r3 (see the log). [transport-state-v2](../../handoff/transport-state-v2/README.md) released, correcting v1's REQ-011 | Open clauses settled, or recorded as unsettleable |
-| T1.1 Live Set structure | **Draft done 2026-10-18:** [SPEC-LIVE-SET-STRUCTURE](../specs/live-set-structure.md) r1. Opening always runs the validation walk, so 204 released fixtures are invalid and need superseding releases ([roadmap revision 3](native-decompilation-roadmap.md#revision-3--t1-completion-plan-2026-10-18)) | Draft SPEC-LIVE-SET-STRUCTURE |
-| T1.2 Device audio | **Feasibility gate passed 2026-10-18:** Corpus renders are bit-repeatable and explained against the static model; [SPEC-DEVICE-CORPUS](../specs/device-corpus.md) r1. Analog, Tension and Electric render; Collision needs work; Amp and Cabinet wait on a user decision (Q-025) | Reference render agrees with the static DSP model, then one spec per device |
-| T1.3 Playback core | **Draft done 2026-10-18:** [SPEC-PLAYBACK-CORE](../specs/playback-core.md) r1; clip-launch r4 and warp r4 corrected | Draft SPEC-PLAYBACK-CORE |
-| T1.4 Mix graph and automation in playback | **Draft done 2026-10-18:** [SPEC-MIX-GRAPH](../specs/mix-graph.md) r1; automation r4 and mixer r4 corrected; Q-019 settled with conditions | Draft SPEC-MIX-GRAPH |
-| T1.5 Releases | **First round done 2026-10-18:** the six releases with invalid fixtures are superseded; midi-config-v4, mixer-values-v2, live-set-structure-v1 and mix-graph-v1 released. playback-core-v1 is staged but unreviewed (dispatch paused by user direction). Device specs are unreleased | Reviewed releases for every T1 family |
-| T1.6 Implementation workspace | Pending user decision (bwrap sandbox proposed) | Restricted workspace provisioned |
-| T1.7 Candidate and verification | Pending T1.5 and T1.6 | Candidate passes released expectations |
+| T1.1 Live Set structure | **Draft reconciled 2026-10-19:** [SPEC-LIVE-SET-STRUCTURE](../specs/live-set-structure.md) r2. Opening always runs the validation walk; the six releases containing 204 invalid fixtures were superseded ([roadmap revision 3](native-decompilation-roadmap.md#revision-3--t1-completion-plan-2026-10-18)) | Draft SPEC-LIVE-SET-STRUCTURE |
+| T1.2 Device audio | Historical finite feasibility gate passed2026-10-18; current partial scope belongs to [Corpus draft](../specs/device-corpus.md) and [device research](device-dsp-extracted.md). Five devices have finite reviewed releases; current versions/evaluations belong to the [catalog](../../handoff/index.md). All profiles remain incomplete. Amp/Cabinet audio stay blocked by Q-025; [amended revision4](full-live-specification-plan.md#current-selection--revision-4-amended-2026-10-20) answers D01 capability and keeps D03 open, after the component/integration prerequisites | Reviewed bounded device contracts; unknown required outcomes keep full-profile closure open |
+| T1.3 Playback core | **Draft reconciled 2026-10-19:** [SPEC-PLAYBACK-CORE](../specs/playback-core.md) r2; clip-launch r5 and warp r5 corrected; finite playback-core-v1 released | Draft SPEC-PLAYBACK-CORE |
+| T1.4 Mix graph and automation in playback | **Draft reconciled 2026-10-19:** [SPEC-MIX-GRAPH](../specs/mix-graph.md) r2; automation r5 and mixer r5 corrected; Q-019 settled with conditions | Draft SPEC-MIX-GRAPH |
+| T1.5 Releases | First reviewed releases exist; corrected successors supersede invalid fixtures. Current versions, supersession and evaluation counts belong to the [catalog](../../handoff/index.md); the [sole plan](full-live-specification-plan.md) selects successors. General device/Live protocol and Amp/Cabinet remain open; T1.5 is partial | Reviewed releases for every required T1 family/outcome |
+| T1.6 Implementation workspace | Provisioned2026-10-19 by [plan revision3](full-live-specification-plan.md#revision-3--depth-before-breadth-2026-10-19): restricted worktree `~/Documents/sound-impl`, branch `impl`. Approved handoff inputs copied provisionally; exact availability belongs to the [implementation index](../implementation/index.md) | Restricted workspace and approved input availability |
+| T1.7 Candidate and verification | Deferred by user-directed plan revision4 until whole-product specification closure or explicit resequencing; restricted workspace remains idle. No candidate run or compatibility evidence. State belongs to [candidate coverage](../implementation/coverage.md); analyst agents do not become clean implementers by changing prompts | Candidate passes released expectations |
+| Full Live specification coverage | OPEN under [amended plan revision4](full-live-specification-plan.md#revision-4--analyst-depth-throughput-2026-10-20): component/indirect recovery, integration and family maps precede batch grading; D01 answered, D03 open, T1.7 deferred. No complete family/profile or frozen required-outcome denominator | Reviewed contracts/cases for the reconciled whole-product denominator; unknown required outcomes keep closure open |
 | S5 Clip launch | **Done 2026-10-17:** [clip launch](clip-launch.md), 23 candidates, 11 probes; SPEC-CLIP-LAUNCH draft started | Research page with candidate requirements |
 | Extension packets | **Done 2026-10-17:** draft specs SPEC-PLUGIN-DISCOVERY, SPEC-BROWSER-INDEX, SPEC-CLIP-LAUNCH, SPEC-MIDI-NOTE-STORAGE, SPEC-BUNDLED-DEVICE-PARAMETERS, SPEC-AUTOMATION-ENVELOPES, SPEC-WARP-MARKERS and SPEC-MIXER-VALUES r1, and SPEC-MIDI-USER-MAPPING r3; N8 x86_64 paths. Resumed 2026-10-18; first releases under H4 | Research pages, candidate tables and draft specs |
 | Helper and device Live sides | Done: [helper launch](helper-launch-live-side.md), [device parameter mapping](device-parameter-mapping-native.md) | Research pages |

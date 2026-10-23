@@ -1,0 +1,142 @@
+--- playback-core-r2
++++ wiki/specs/playback-core.md
+@@ -2,9 +2,9 @@
+ id: SPEC-PLAYBACK-CORE
+ type: spec
+ status: draft
+-updated: 2026-10-19
++updated: 2026-10-21
+ access: analysis
+-revision: 2
++revision: 3
+ target: Ableton Live 12 Suite 12.4.3 / macOS
+ ---
+ 
+@@ -18,6 +18,12 @@
+ snapshot is based on revision 1 with these corrections; the broader draft
+ remains unreleased outside that scope. Reference and candidate execution are
+ not-run. Staging approval is not catalog publication.
++
++Revision 3 adds the finite scalar-helper annex under REQ-017 from one already
++[approved extracted batch](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-standing-leaves-v1-review.json).
++It preserves the revision 2 public-behavior scope and all earlier case rows.
++The new reference bits describe supplied x86 calculations, including local
++floating-point probes; they are not whole-application or ARM observations.
+ 
+ ## Scope
+ 
+@@ -417,7 +423,26 @@
+ - **S.** The first file frame is the integer part of file rate × LoopStart, with fraction 0. For
+   LoopStart 0.1 s of a 48 kHz file that is frame 4,800; for 0.000015 s, frame 0. Output sample k
+   of the clip reads file position first frame + k × step. The position is accumulated exactly in
+-  fixed point and quantized to 2⁻²⁴ frame (X).
++  fixed point. Quantization to 2⁻²⁴ frame is X for the retained supplied scalar
++  calculations below; this is not a promise of a finite grid result for every
++  binary64 argument.
++- **X (revision 3; finite scalar-helper scope).** Each exact input in
++  [PBC-097–PBC-205](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/cases-added.json)
++  has the listed expected binary64 output bit pattern in the recorded supplied
++  x86/Linux helper calculation. These 109 cases adopt the whole approved batch's
++  previously NULL-prior discovery rows; its eight known-oracle agreements remain
++  supporting controls. The original NULL history is unchanged, and no formula or
++  oracle was fitted or repaired from the new results.
++- **X (same scope).** Across all 117 recorded inputs, twelve returns are signed
++  zeros (six of each sign), eight are infinities (four of each sign, including
++  six finite extreme inputs), and two are the selected canonical signed quiet
++  NaNs. Exact input/output bit identities are retained; the native cause remains unknown.
++  This gives no general finite-grid guarantee for arbitrary binary64 arguments,
++  no sNaN or all-NaN-payload rule, and no portable ARM/Apple bound, sign or payload
++  guarantee. These are direct helper inputs, not proved admissible loaded clip
++  values, file-position sentinels, open/render behavior or host-audio outcomes.
++  Host `strtod` token-to-bit checks are not an input-register or FP-state trace;
++  the unchanged loader's temporary float cast may affect untraced FP flags.
+ - **S.** With pre-delay 0, output sample 0 of the clip is the sample where its launch takes
+   effect (REQ-009).
+ - **U.** `StartRelative` ≠ 0, and a clip that starts later than its launch sample. **T1 effect:**
+@@ -576,6 +601,8 @@
+ Expectations are X results of the original x86_64 functions or static derivations, as labelled.
+ None has been run against Live, and under ADR 0003 none will be. Kinds: P positive, B boundary,
+ G timing, A audio values, C cancellation, U unresolved (not graded).
++Revision 3 also has H cases for supplied scalar-helper reference values. Their
++setup and bit-reference scope are stated separately in the finite annex below.
+ 
+ Comparators:
+ 
+@@ -716,6 +743,37 @@
+ | PBC-094 | 022 | N | F2; an empty slot (slot 5, `HasStop` true) pressed at t = 5.3 while slot 1 plays | As PBC-091 | S-cond (A5) |
+ | PBC-095 | 023, 005 | P | Transport Stop at beat 6; Play from start beat 0 | Slide sounds again after Play; first sample not graded | S, U |
+ | PBC-096 | 022, 023 | N | Transport Stop at beat 6; track stop button; Play from start beat 0 | Slide does not sound | S |
++
++### Finite scalar-helper cases added in revision 3
++
++[PBC-097–PBC-205](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/cases-added.json)
++are 109 separately identified H/X cases under REQ-017, one per new exact
++binary64 input/result pair from the
++[reviewed whole batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/manifest.json).
++The complete selected input union covers the signed representable neighbors of
++every retained anchor's lattice node and half-step threshold, the named
++zero/precision/finite-endpoint frontiers and explicit canonical nonfinite
++probes. It is a bounded finite set, not all lattice thresholds or NaN payloads.
++Each case records exact input bits, expected output bits, classification, the
++original NULL-prior state and its approved observation pointer. Signed zeros
++and NaNs retain their bit identities rather than numeric-equality treatment.
++
++The action is the recorded one-double scalar helper calculation with no
++receiver, constructor, initializer or patch. These reference bits are exact
++for those recorded supplied x86 results. They establish no portable ARM/Apple
++comparator or tolerance; ADR 0003's ARM equivalence remains an inference.
++Native floating-point operation order and the cause of nonfinite results are
++unknown. No public clock, clip/audio/file-input admission, sentinel, loaded
++state, mode, host-output or candidate grade follows. The fixture/common-setup,
++timing and audio comparators of the preceding tables do not apply to H cases.
++
++[Eight known-oracle agreements](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/known-oracle-agreements.json)
++preserve the older `audio/results/quant.json` input/output provenance and exact
++new control matches. They are supporting observations, not duplicate new case
++IDs or a replacement oracle. The preserved tables retain all 68 earlier IDs;
++this annex adds 109, giving 177 draft IDs. Those counts are not a required-
++outcome denominator, application coverage or new behavior grades. All 92
++objects in playback-core-v1 remain unchanged; no release is made here.
+ 
+ Omitted kinds:
+ 
+@@ -816,6 +874,26 @@
+ Apple's `powf`, `exp`, `sinf` and `exp10f` were not available. REQ-017 to 019 therefore bind to
+ glibc's results, which is one reason for their tolerances. No process exceeded 256 calls.
+ 
++**Revision 3 finite helper adoption.** The
++[batch approval](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-standing-leaves-v1-review.json)
++approved all 117 exact low-64-bit XMM0 observations: eight known-oracle
++agreements and 109 NULL-prior discoveries. The
++[owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/README.md)
++pins the batch manifest/review and minimally reversible revision delta. It
++changes no frozen observation, input, original NULL, prior case row or release.
++There is no second observation review or new original/model execution.
++
++The existing audio xexec loader called only the selected scalar helper
++`0x10235b910`, once per child, without a receiver or initializer. All 117
++children returned normally and all eight declared controls agreed. Every log
++has 1,882 import declarations (1,796 trap, 85 Linux code, one Linux data) and
++zero counted import use; that is not proof of no internal calls or absence of
++a provider. Recorded image/loader/library/cache custody is not a per-child
++loaded-library/FP-state trace, and host parser checks do not prove process
++input registers. New native bodies/order/cause were not acquired. The recorder
++explicitly fsyncs JSON FDs; raw stdout/stderr are closed and hash-verified
++without explicit raw-FD fsync or a crash/power-loss durability claim.
++
+ **Derived values.**
+ 
+ - Sample indices in the cases come from the X-confirmed placement rule with the anchor at render
+@@ -838,6 +916,12 @@
+ 
+ | 2 | 2026-10-19 | Reconciles playback-core-v1 review: immediate E ≤ t activation lacks an independent observable; PBC-023 relaunch ordering and PBC-061/064 end samples ungraded; PBC-024 limited to 44.1 kHz; audio StartRelative remains open independently of the MIDI rule. 68 case IDs: 60 fully graded, 2 partly graded (063, 095), 6 ungraded (023, 032, 051, 061, 064, 069); seven rows accept P or P+1 at 48 kHz (005, 014, 015, 020, 022, 050, 080). The immutable release pins parent r1 and carries its reviewed corrections; this draft records them as r2. |
+ 
++### Revision 3 finite adoption
++
++| Revision | Date | Change |
++| --- | --- | --- |
++| 3 | 2026-10-21 | Direct design12 adoption of the already approved whole scalar quantization batch under the bounded local helper part of REQ-017: 109 NULL-prior discoveries become exact finite reference cases PBC-097–PBC-205, eight known-oracle results remain supporting agreements, and the unqualified arbitrary-binary64 finite-grid reading is withdrawn. All 22 other requirement bodies and 68 prior case rows remain exact. Signedzero, six finite-input infinity returns and canonical ±qNaN are finite local observations only; native cause/FP state/public admission/ARM bound remain unknown. All 92 released objects are unchanged; no new release or grade. |
++
+ The released finite clauses and cases are identified below; all U-dependent
+ behavior remains outside the handoff.
+ 

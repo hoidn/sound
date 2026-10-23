@@ -1,0 +1,37 @@
+{
+  "driver_identity": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+    "bytes": 8128,
+    "sha256": "2e550951a4c7eb669ecdf9fa50734b2227c0768cda0b62099e2e975bad9430a9"
+  },
+  "spans": [
+    {
+      "start_line": 33,
+      "end_line": 39,
+      "text": "typedef struct { int64_t frame; uint8_t status, d1, d2, d3, pad[4]; } event_t;\ntypedef void *(*create_t)(void);\ntypedef void (*destroy_t)(void *);\ntypedef long (*rate_t)(void *, long);\ntypedef long (*info_t)(long, void *, long);\ntypedef long (*calc_t)(void *, long, float *, float *, long, event_t *, transport_t *, int *);\ntypedef void (*param_t)(void *, int, float);\n"
+    },
+    {
+      "start_line": 57,
+      "end_line": 87,
+      "text": "\n/* Render N frames in blocks of B; returns the number of blocks. Prints the per-block flag and\n * return value as run-length pairs. */\nstatic void process(void *inst, long n, long b, FILE *in, FILE *out, transport_t *tp, int inflag)\n{\n    float *L = calloc(b, 4), *R = calloc(b, 4), *io = calloc(2 * b, 4);\n    event_t blk[4096];\n    long done = 0, nb = 0, prev_ret = -2, prev_flag = -2, run = 0;\n    printf(\"process %ld %ld flags:\", n, b);\n    while (done < n) {\n        long k = n - done < b ? n - done : b;\n        if (in) { if ((long)fread(io, 8, k, in) != k) die(\"input ended at frame %ld\", done); }\n        else memset(io, 0, 8 * k);\n        for (long i = 0; i < k; i++) { L[i] = io[2 * i]; R[i] = io[2 * i + 1]; }\n        int m = 0;\n        for (int e = 0; e < nevents; e++)\n            if (events[e].frame >= done && events[e].frame < done + k) { blk[m] = events[e]; blk[m++].frame -= done; }\n        int flag = inflag;\n        enter();\n        long ret = x.calc(inst, k, L, R, m, m ? blk : NULL, tp, &flag);\n        leave();\n        if (ret != prev_ret || flag != prev_flag) {\n            if (run) printf(\" %ldx(ret=%ld,flag=%ld)\", run, prev_ret, prev_flag);\n            prev_ret = ret; prev_flag = flag; run = 0;\n        }\n        run++;\n        for (long i = 0; i < k; i++) { io[2 * i] = L[i]; io[2 * i + 1] = R[i]; }\n        fwrite(io, 8, k, out);\n        done += k; nb++;\n    }\n    printf(\" %ldx(ret=%ld,flag=%ld) blocks=%ld\\n\", run, prev_ret, prev_flag, nb);\n"
+    },
+    {
+      "start_line": 95,
+      "end_line": 107,
+      "text": "    xdev_load(argv[1]);\n    printf(\"slice offset=%lu size=%lu\\n\", xdev_slice_offset(), xdev_slice_size());\n    if (argc > 4 && !strcmp(argv[4], \"--imports\")) xdev_print_imports();\n    x.create = (create_t)need(\"_CreateInstanceU\"); x.destroy = (destroy_t)need(\"_DestroyInstanceU\");\n    x.rate = (rate_t)need(\"_SetSampleRateU\"); x.info = (info_t)need(\"_GetPlugInfoU\");\n    x.calc = (calc_t)need(\"_CalcA\"); x.param = (param_t)need(\"_SetParameterA\"); x.reset = (reset_t)need(\"_ResetA\");\n    FILE *sc = fopen(argv[2], \"r\"), *out = fopen(argv[3], \"wb\"), *in = NULL;\n    if (!sc || !out) die(\"cannot open script or output\");\n    void *inst = NULL;\n    transport_t tp = { 0, 0, 0.0, 120.0 };\n    int inflag = 0;\n    char line[512], cmd[32], arg[400];\n    while (fgets(line, sizeof line, sc)) {\n"
+    },
+    {
+      "start_line": 129,
+      "end_line": 159,
+      "text": "        } else if (!strcmp(cmd, \"transport\") && sscanf(line, \"%*s %ld %lf %lf\", &a, &tp.position, &tp.tempo) == 3) {\n            tp.playing = (int32_t)a; printf(\"transport %d %.17g %.17g\\n\", tp.playing, tp.position, tp.tempo);\n        } else if (!strcmp(cmd, \"input\") && sscanf(line, \"%*s %399s\", arg) == 1) {\n            if (in) fclose(in);\n            in = strcmp(arg, \"zero\") ? fopen(arg, \"rb\") : NULL;\n            if (strcmp(arg, \"zero\") && !in) die(\"cannot open input %s\", arg);\n            printf(\"input %s\\n\", arg);\n        } else if (!strcmp(cmd, \"inflag\") && sscanf(line, \"%*s %ld\", &a) == 1) {\n            inflag = (int)a; printf(\"inflag %d\\n\", inflag);\n        } else if (!strcmp(cmd, \"event\") && sscanf(line, \"%*s %ld %li %li %li\", &a, &b, &c, &d) == 4) {\n            if (nevents == 4096) die(\"too many events\");\n            events[nevents++] = (event_t){ a, (uint8_t)b, (uint8_t)c, (uint8_t)d, 0, {0} };\n            printf(\"event %ld 0x%02lx %ld %ld\\n\", a, b, c, d);\n        } else if (!strcmp(cmd, \"mxcsr\") && sscanf(line, \"%*s %lx\", &a) == 1) {\n            mxcsr = (unsigned)a; printf(\"mxcsr 0x%x\\n\", mxcsr);\n        } else if (!strcmp(cmd, \"process\") && sscanf(line, \"%*s %ld %ld\", &a, &b) == 2) {\n            if (b < 1 || b > 65536) die(\"bad block size\");\n            process(inst, a, b, in, out, &tp, inflag);\n        } else if (!strcmp(cmd, \"destroy\")) {\n            enter(); x.destroy(inst); leave(); inst = NULL; printf(\"destroy\\n\");\n        } else die(\"bad script line: %s\", line);\n    }\n    fclose(out);\n    xdev_print_used();\n    printf(\"cxx-failbits %ld\\n\", xdev_cxx_failbits);\n    return 0;\n}\n"
+    }
+  ],
+  "canonical_parent_asof": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r5/spec-r5.md",
+    "bytes": 51090,
+    "sha256": "aba64f5c420091617c16d28c9f0d2437c0eacf67ed1940bfe27250644038eecf"
+  },
+  "parent_req013_context": " \u2014 MIDI side-chain features\n\n- **X; proposed finite project criterion.** Only DCO-030 and DCO-031 have a proposed\n  finite event-bearing expectation: one held note60 or72 under REQ-001's exact\n  fixture, compared to that captured output with the fixed modal lists below.\n  This does not recover a general note-to-pitch, velocity, gate or event-timing law.\n  DCO-030's scored bytes equal an older fixed-pitch render after4096: that case\n  alone cannot detect ignoring MIDI. DCO-031 supplies a distinct finite output;\n  its wrong-note60 rejection is a bounded control, not proof of every MIDI path.\n- **U.** Beyond those two declared extracted histories, the general features remain unknown:\n  - the effect of MIDI notes, pitch bend and sustain received through Corpus's side-chain input;\n  - MidiPitch (pitch from the note), MidiGate (gate from held notes) and DecayOnNoteOff (decay\n    while the gate is closed);\n  - Transpose, FineTranspose and PitchBendRange (active only with MidiPitch);\n  - MidiMode (Live-side note priority).\n\n  Live's side-chain routing/event base, other histories and the full bundle-event\n  admission/handling path remain unproved. Effect on T1: general sets routing MIDI\n  to Corpus or enabling MidiPitch/MidiGate remain unverifiable beyond these exact\n  two finite host-input cases. DCO-026 remains U and unchanged.\n- **X.** With MidiPitch and MidiGate off, these parameters do not change the output. Transpose 12,\n  FineTranspose 50, PitchBendRange 24, DecayOnNoteOff 1 (host 0) and MidiMode 1 together render\n  bit-identically to the defaults.\n\n",
+  "source_export_utc": null,
+  "author_scope": "Fresh full xdev.c/xdev.h/previous8157B collector and note60 script; relevant R5REQ013. Other native loader/bind/shim semantics carried only from pinned prior reviewed harness readiness, identities freshly checked; no fresh whole native-source/helper proof."
+}

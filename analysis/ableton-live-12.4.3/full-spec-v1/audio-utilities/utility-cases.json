@@ -1,0 +1,763 @@
+{
+  "device": "Utility",
+  "revision": 1,
+  "target": "Ableton Live 12 Suite 12.4.3",
+  "status": "partial draft; all runtime cases unexecuted",
+  "requirements": [
+    {
+      "title": "audio input and output",
+      "contract": "Input is the stereo audio arriving at this device-chain position; output is the signal processed by the selected Utility controls. Device insertion, ordering, deletion and generic activation belong to SPEC-DEVICE-RACKS. The manual does not establish a complete processing order among Utility controls.",
+      "locator": "utility:B02–B14",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-001"
+    },
+    {
+      "title": "independent phase controls",
+      "contract": "Provide separate Left and Right Phase controls that invert the corresponding input-channel phase. The composition order with channel selection, Mono, Width, Bass Mono, gain and balance is U. This clause does not specify coefficient precision, latency or ramping.",
+      "locator": "utility:B03",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-002"
+    },
+    {
+      "title": "channel selection",
+      "contract": "Channel Mode can select the Left source: ignore the right source and present the left source on both outputs. The documented disablement rule also names Right mode. Right-mode sample routing, the full mode list and numeric enum-to-label mapping require separate evidence; preset filenames do not prove those laws.",
+      "locator": "utility:B04, B07",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-003"
+    },
+    {
+      "title": "Width",
+      "contract": "Width 0% gives mono; values greater than 100% widen the stereo panorama. If Channel Mode is Left or Right, Width is disabled and has no function. Complete domain, width matrix, normalization, 100% identity and behavior for already mono input are U.",
+      "locator": "utility:B05, B07",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-004"
+    },
+    {
+      "title": "Mid/Side view and endpoints",
+      "contract": "The Width context menu switches between Width and Mid/Side controls. At 100M audio is summed to mono; from 0 toward 100S the stereo/out-of-phase components are emphasized. At 100S only the side signal is heard and the output channels are 180 degrees out of phase. Left/Right Channel Mode disables this control. Parameter remapping, endpoint gain and remembered hidden values are U.",
+      "locator": "utility:B06–B07",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-005"
+    },
+    {
+      "title": "Mono",
+      "contract": "Enabling Mono converts stereo input to mono. Summing coefficients and interactions with Channel Mode, Width/Mid-Side, Bass Mono, phase and Balance are U.",
+      "locator": "utility:B08",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-006"
+    },
+    {
+      "title": "Bass Mono cutoff",
+      "contract": "Enabling Bass Mono converts low frequencies to mono. Bass Mono Frequency adjusts a cutoff over 50–500 Hz. Filter type, order, slope, crossover phase, normalization and exact response around cutoff are U.",
+      "locator": "utility:B09",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-007"
+    },
+    {
+      "title": "Bass Mono Audition",
+      "contract": "Enabling Bass Mono Audition makes only the low frequencies audible. Dependence on the Bass Mono switch, cutoff transition and bypass/off behavior are U.",
+      "locator": "utility:B10",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-008"
+    },
+    {
+      "title": "Gain domain",
+      "contract": "Gain adjusts the input level over minus infinity dB through +35 dB. No linear-to-dB formula, numerical floor, float precision, automation interpolation, clipping or smoothing is claimed. Track fader laws from SPEC-MIXER-VALUES have not been traced to this device and do not apply by name alone.",
+      "locator": "utility:B11",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-009"
+    },
+    {
+      "title": "Gain arrow editing",
+      "contract": "Up/down arrow editing changes Gain in 1 dB steps between −18 and +35 dB; between −18 and minus infinity the adjustment smoothly accelerates. Repetition cadence, exact lower-region sequence, endpoint key handling and text-entry parsing are U.",
+      "locator": "utility:B11",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-010"
+    },
+    {
+      "title": "Balance",
+      "contract": "Balance pans the signal within the stereo field. Pan law, center gain, normalized storage range, extreme-channel attenuation, mono behavior and coupling with other controls are U.",
+      "locator": "utility:B12",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-011"
+    },
+    {
+      "title": "Mute at chain position",
+      "contract": "Mute silences the incoming signal at Utility’s device-chain position. Utility can precede a delay or reverb and mute its input without switching off that downstream device’s output. Tail waveform/duration is owned by the downstream effect and is not specified here.",
+      "locator": "utility:B13",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-012"
+    },
+    {
+      "title": "DC filtering",
+      "contract": "DC filters out DC offsets and extremely low frequencies below the audible range. Cutoff, filter response, startup/transient behavior, numerical precision and interaction order are U. The manual’s audibility discussion does not establish sample-exact output.",
+      "locator": "utility:B14",
+      "grade": "D12",
+      "id": "REQ-DEVICE-UTILITY-013"
+    },
+    {
+      "title": "retained preset state vocabulary",
+      "contract": "The retained StereoGain schema and ten shipped presets establish named stored fields and exact saved values, summarized in the research packet. They do not establish constructor defaults, accepted malformed ranges, load/save normalization or live UI state. LegacyGain and LegacyMode are retained historical fields; their migration semantics are U.",
+      "locator": "PKG-SCHEMA:StereoGain; package-values.json device=Utility",
+      "grade": "Dpkg",
+      "id": "REQ-DEVICE-UTILITY-014"
+    },
+    {
+      "title": "lifecycle and numerical gaps",
+      "contract": "Exact 12.4.3 applicability of every D12 clause is U. Save/reopen, preset replace/hot-swap, undo/redo, aborted edits, invalid numeric text, malformed files, automation scheduling, sample-rate/block-size changes, suspension, audio-device failure, deletion and teardown require outcome evidence. This draft provides finite ungraded probes, not invented success behavior.",
+      "locator": "No outcome evidence",
+      "grade": "U",
+      "id": "REQ-DEVICE-UTILITY-015"
+    }
+  ],
+  "cases": [
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-002"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO; all unrelated controls neutral",
+      "actions": "Enable Left Phase only",
+      "parameters": {},
+      "expected": "Left input-channel phase is inverted; separate Right control exists. Combined-control processing order and numerical output remain U.",
+      "evidence": "utility:B03",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-001"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-002"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Enable Right Phase only",
+      "parameters": {},
+      "expected": "Right input-channel phase is inverted independently.",
+      "evidence": "utility:B03",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-002"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-001",
+        "REQ-DEVICE-UTILITY-003"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO with distinct frequencies",
+      "actions": "Choose Left Channel Mode",
+      "parameters": {},
+      "expected": "Right source is ignored; both outputs carry the left source. Gain normalization and exact samples U.",
+      "evidence": "utility:B04",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-003"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-004",
+        "REQ-DEVICE-UTILITY-005"
+      ],
+      "kind": "negative",
+      "setup": "Channel Mode Left",
+      "actions": "Attempt to edit Width and Mid/Side",
+      "parameters": {},
+      "expected": "Both controls are disabled and have no function.",
+      "evidence": "utility:B07",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-004"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-004",
+        "REQ-DEVICE-UTILITY-005"
+      ],
+      "kind": "negative",
+      "setup": "Channel Mode Right",
+      "actions": "Attempt to edit Width and Mid/Side",
+      "parameters": {},
+      "expected": "Both controls are disabled and have no function.",
+      "evidence": "utility:B07",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-005"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-004"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-STEREO; channel mode supports Width",
+      "actions": "Set Width 0%",
+      "parameters": {
+        "Width_percent": 0
+      },
+      "expected": "Output is mono; summing gain and tolerance U.",
+      "evidence": "utility:B05",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-006"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-004"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO; Width available",
+      "actions": "Compare Width 100% and 150%",
+      "parameters": {
+        "Width_percent": [
+          100,
+          150
+        ]
+      },
+      "expected": "150% is described as a widened panorama; exact stereo metric, level and 100% identity U.",
+      "evidence": "utility:B05",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-007"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-005"
+      ],
+      "kind": "positive",
+      "setup": "Width visible",
+      "actions": "Choose Mid/Side Mode from Width context menu",
+      "parameters": {},
+      "expected": "The visible control changes between Width and Mid/Side; hidden-value retention U.",
+      "evidence": "utility:B06",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-008"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-005"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-STEREO; Mid/Side available",
+      "actions": "Set 100M",
+      "parameters": {},
+      "expected": "Audio sums to mono; endpoint gain U.",
+      "evidence": "utility:B06",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-009"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-005"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-STEREO; Mid/Side available",
+      "actions": "Set 100S",
+      "parameters": {},
+      "expected": "Only side signal is heard; output L/R are 180 degrees out of phase; normalization and tolerance U.",
+      "evidence": "utility:B06",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-010"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-006"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Enable Mono",
+      "parameters": {},
+      "expected": "Stereo input becomes mono.",
+      "evidence": "utility:B08",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-011"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-007"
+      ],
+      "kind": "positive",
+      "setup": "SIG-BASS-SIDE",
+      "actions": "Enable Bass Mono at 120 Hz",
+      "parameters": {
+        "BassMonoFrequency_Hz": 120
+      },
+      "expected": "Low frequencies become mono. Exact crossover response and residual tolerance U.",
+      "evidence": "utility:B09",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-012"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-007"
+      ],
+      "kind": "boundary",
+      "setup": "Bass Mono available",
+      "actions": "Set cutoff 50 Hz then 500 Hz",
+      "parameters": {
+        "BassMonoFrequency_Hz": [
+          50,
+          500
+        ]
+      },
+      "expected": "Both documented cutoff endpoints are in the control domain. Response at endpoints U.",
+      "evidence": "utility:B09",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-013"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-008"
+      ],
+      "kind": "positive",
+      "setup": "SIG-BASS-SIDE; Bass Mono enabled at 120 Hz",
+      "actions": "Enable Bass Mono Audition",
+      "parameters": {},
+      "expected": "Only low-frequency content is heard; rejection amount and cutoff shape U.",
+      "evidence": "utility:B10",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-014"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-009"
+      ],
+      "kind": "boundary",
+      "setup": "SIG-440",
+      "actions": "Set Gain to minus infinity and +35 dB using the control",
+      "parameters": {
+        "Gain_dB": [
+          "-inf",
+          35
+        ]
+      },
+      "expected": "Both documented endpoint settings exist. Numerical silence floor, output amplitude, clipping and transitions U.",
+      "evidence": "utility:B11",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-015"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-010"
+      ],
+      "kind": "positive",
+      "setup": "Gain −18 dB",
+      "actions": "Press Up once",
+      "parameters": {
+        "initial_Gain_dB": -18,
+        "keys": [
+          "Up"
+        ]
+      },
+      "expected": "Gain becomes −17 dB.",
+      "evidence": "utility:B11",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-016"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-010"
+      ],
+      "kind": "positive",
+      "setup": "Gain +35 dB",
+      "actions": "Press Down once",
+      "parameters": {
+        "initial_Gain_dB": 35,
+        "keys": [
+          "Down"
+        ]
+      },
+      "expected": "Gain becomes +34 dB.",
+      "evidence": "utility:B11",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-017"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-010"
+      ],
+      "kind": "boundary",
+      "setup": "Gain −17 dB",
+      "actions": "Press Down once",
+      "parameters": {},
+      "expected": "Gain becomes −18 dB; lower-region sequence is ungraded.",
+      "evidence": "utility:B11",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-018"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-011"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO",
+      "actions": "Move Balance left then right",
+      "parameters": {},
+      "expected": "Signal pans in the stereo field; exact channel gains U.",
+      "evidence": "utility:B12",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-019"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-012"
+      ],
+      "kind": "positive",
+      "setup": "SIG-STEREO; Utility directly before capture point",
+      "actions": "Enable Mute",
+      "parameters": {},
+      "expected": "Incoming signal is silenced at this position; transient/timing tolerance U.",
+      "evidence": "utility:B13",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-020"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-012"
+      ],
+      "kind": "positive",
+      "setup": "Utility before active downstream reverb with an existing tail",
+      "actions": "Enable Utility Mute",
+      "parameters": {},
+      "expected": "Utility cuts the input without disabling the downstream output; no exact tail is graded.",
+      "evidence": "utility:B13",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-021"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-013"
+      ],
+      "kind": "positive",
+      "setup": "SIG-DC plus SIG-440",
+      "actions": "Enable DC",
+      "parameters": {},
+      "expected": "DC offset is filtered; exact attenuation, settling time and audible-tone preservation tolerance U.",
+      "evidence": "utility:B14",
+      "provenance": "D12",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "Compare only the stated documented relationship/control state; no sample, pixel, time or detection tolerance is supplied. Exact 12.4.3 result is U.",
+      "id": "DUT-022"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-014"
+      ],
+      "kind": "file observation",
+      "setup": "Retained package/Utility/Bass Mono.adv",
+      "actions": "Decode gzip/XML without application execution",
+      "parameters": {},
+      "expected": "StereoGain has BassMono/Manual=true, BassMonoFrequency/Manual=120, Gain/Manual=1 and LegacyMode=false.",
+      "evidence": "package/Utility/Bass Mono.adv:.//StereoGain",
+      "provenance": "Dpkg",
+      "target_grade": "Dpkg",
+      "execution": "unexecuted",
+      "comparison": "Exact retained-file values only; does not grade application load, UI or signal behavior.",
+      "id": "DUT-023"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-014"
+      ],
+      "kind": "file observation",
+      "setup": "Retained package/Utility/Phase Invert.adv",
+      "actions": "Decode gzip/XML",
+      "parameters": {},
+      "expected": "PhaseInvertL/Manual=true and PhaseInvertR/Manual=true; no output assertion.",
+      "evidence": "package/Utility/Phase Invert.adv:.//StereoGain",
+      "provenance": "Dpkg",
+      "target_grade": "Dpkg",
+      "execution": "unexecuted",
+      "comparison": "Exact retained-file values only; does not grade application load, UI or signal behavior.",
+      "id": "DUT-024"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-014"
+      ],
+      "kind": "file observation",
+      "setup": "Retained Left.adv and Right.adv",
+      "actions": "Read ChannelMode/Manual",
+      "parameters": {},
+      "expected": "Left.adv stores 0; Right.adv stores 2. Enum labels/engine mapping remain ungraded.",
+      "evidence": "package/Utility/{Left,Right}.adv:.//StereoGain/ChannelMode/Manual",
+      "provenance": "Dpkg",
+      "target_grade": "Dpkg",
+      "execution": "unexecuted",
+      "comparison": "Exact retained-file values only; does not grade application load, UI or signal behavior.",
+      "id": "DUT-025"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "negative",
+      "setup": "Gain −18 dB",
+      "actions": "Press Down repeatedly and record values",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-026"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "boundary",
+      "setup": "Gain +35 dB",
+      "actions": "Press Up; enter a value above +35 dB",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-027"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "malformed",
+      "setup": "Utility Gain text field",
+      "actions": "Enter NaN, infinity and nonnumeric text; then Enter",
+      "parameters": {
+        "text": [
+          "NaN",
+          "inf",
+          "abc"
+        ]
+      },
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-028"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "error",
+      "setup": "Copy of saved Utility preset",
+      "actions": "Remove Gain; duplicate ChannelMode; set invalid ChannelMode enum and BassMonoFrequency negative",
+      "parameters": {
+        "mutations": [
+          "remove Gain",
+          "duplicate ChannelMode",
+          "ChannelMode/Manual=99",
+          "BassMonoFrequency/Manual=-1"
+        ]
+      },
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-029"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "cancel",
+      "setup": "Gain text editing in progress",
+      "actions": "Type replacement value then Escape",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-030"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "undo",
+      "setup": "Mono off and Gain 0 dB",
+      "actions": "Toggle Mono; change Gain; Undo twice; Redo twice",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-031"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "persistence",
+      "setup": "Nondefault phase/channel/width/mono/bass/gain/balance/DC settings",
+      "actions": "Save Set; reopen; compare every setting and output; repeat with preset save/replace",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-032"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "automation",
+      "setup": "Gain/Mute/Bass Mono automation while audio streams",
+      "actions": "Cross automation breakpoints and manually override then re-enable",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-033"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "teardown",
+      "setup": "Audio streams through Utility",
+      "actions": "Delete Utility; Undo deletion; disable/re-enable audio engine",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-034"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "timing",
+      "setup": "SIG-STEREO",
+      "actions": "Change sample rate and processing block size; toggle phase and Mute at named sample offsets",
+      "parameters": {
+        "sample_rates_Hz": [
+          44100,
+          48000,
+          96000
+        ],
+        "block_frames": [
+          1,
+          64,
+          512
+        ]
+      },
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-035"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "coupling",
+      "setup": "SIG-STEREO",
+      "actions": "Combine PhaseInvertR, Left mode, Mono, Bass Mono, Width, Balance and DC; compare isolated stages",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-036"
+    },
+    {
+      "requirements": [
+        "REQ-DEVICE-UTILITY-015"
+      ],
+      "kind": "legacy",
+      "setup": "Historical Utility preset with LegacyMode true",
+      "actions": "Open then save in target; compare migration and audible result",
+      "parameters": {},
+      "expected": null,
+      "evidence": "U",
+      "provenance": "U",
+      "target_grade": "U",
+      "execution": "unexecuted",
+      "comparison": "No expected outcome or tolerance; do not grade.",
+      "id": "DUT-037"
+    }
+  ]
+}

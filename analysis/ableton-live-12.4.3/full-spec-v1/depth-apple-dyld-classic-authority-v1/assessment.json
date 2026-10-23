@@ -1,0 +1,307 @@
+{
+  "id": "APPLE-DYLD-CLASSIC-IMPLEMENTATION-AUTHORITY-V1",
+  "author": "automation_actual_review",
+  "sole_independent_peer": "Root; pending",
+  "created_utc": "2026-10-21T07:10:19.129919+00:00",
+  "role": "analyst/source method research",
+  "question": "Primary Apple authority for classic ADD_ADDR_ULEB / DO_BIND_ADD_ADDR_ULEB arithmetic, lazy defaults/reset, and weak site application.",
+  "retained_authority_search": "Existing canonical Apple Mach-O source register, extracted execution, native phase and source preparation plus bounded local source metadata search found XNU declarations and the analyst xexec implementation, not primary Apple dyld implementation. No existing raw image, provider/tool binary or old actual stream was read.",
+  "version": {
+    "repository": "https://github.com/apple-oss-distributions/dyld",
+    "tag": "dyld-852.2",
+    "tag_object": "a63afe9606ae76df6ec7055c62d09e6da6d37ff2",
+    "commit": "3f24a36068a96722cf3acbd5087983ce658e9d70",
+    "tag_signature_verified": false,
+    "actual_Live_host_dyld_build_applicability": "UNKNOWN"
+  },
+  "sources": [
+    {
+      "path": "ImageLoaderMachOCompressed.cpp",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp",
+      "bytes": 92065,
+      "sha256": "56c88482fb0a9570096756b09f0b693de90cb46778a3991c39a7b7b2fff4dadb"
+    },
+    {
+      "path": "MachOAnalyzer.cpp",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp",
+      "bytes": 231688,
+      "sha256": "0c078cb7ba98a02bc646762b16b1b118f1bad432181ad1c32521c1c1db9f0bbe"
+    },
+    {
+      "path": "ImageLoader.h",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoader.h",
+      "bytes": 36290,
+      "sha256": "cec16337bbb98859923b26b4d9585164c5952bd427e33d565491df4428f235ed"
+    },
+    {
+      "path": "ImageLoaderMachO.h",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachO.h",
+      "bytes": 15262,
+      "sha256": "c7f857b0485eedd555e00eaccd84274172efe2857d8e08728c374c5aca04decf"
+    },
+    {
+      "path": "ImageLoaderMachOCompressed.h",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.h",
+      "bytes": 10427,
+      "sha256": "e4aeac0a61d077b402f81dedac15af36ac83bc248cad19e0a830a784585bfd6f"
+    },
+    {
+      "path": "ImageLoader.cpp",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoader.cpp",
+      "bytes": 72503,
+      "sha256": "7e8b0a87ea46677d102ae0acc49b9fb02ccbde1b54db7bcb9621193f2846cb6f"
+    },
+    {
+      "path": "ImageLoaderMachO.cpp",
+      "URL": "https://raw.githubusercontent.com/apple-oss-distributions/dyld/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachO.cpp",
+      "bytes": 118152,
+      "sha256": "b346c457f0c790efa9ea10b10c24ab32a60550f323095c92b8974a025571ce05"
+    }
+  ],
+  "selected_semantic_scope": {
+    "ranges": 17,
+    "lines": 1283,
+    "source_bytes": 59396,
+    "lossless_projection": "selected-functions.txt",
+    "exact_map": "selected-source-map.json",
+    "scope": "Complete mapped relevant functions and narrow type/declaration context were read. Full seven source files are retained for version/hash custody, not claimed completely semantically read. Incidental include/license/navigation snippets are context only. No unselected callees/provider or build closure is inferred."
+  },
+  "claims": [
+    {
+      "id": "DYA-01",
+      "kind": "primary source/version custody",
+      "conclusion": "Official Apple OSS tag dyld-852.2 resolves via an annotated, unsigned tag object to commit 3f24a36068a96722cf3acbd5087983ce658e9d70. Retained raw URLs use that immutable commit. This identifies a published implementation source snapshot; it does not identify the dyld build used by Live or authenticate a running loader.",
+      "anchors": [
+        {
+          "file": "tag-ref.json"
+        },
+        {
+          "file": "tag-object.json"
+        },
+        {
+          "file": "capture-receipt.json"
+        },
+        {
+          "file": "context-receipt.json"
+        },
+        {
+          "file": "helper-context-receipt.json"
+        }
+      ]
+    },
+    {
+      "id": "DYA-02",
+      "kind": "source fact plus explicit language inference",
+      "conclusion": "The analyzer classic ordinary and weak paths keep segmentOffset as uint64_t and use += read_uleb128 for ADD_ADDR_ULEB and += read_uleb128 + ptrSize for DO_BIND_ADD_ADDR_ULEB. The legacy eachBind uses uintptr_t address and matching operators. Inference: for a 64-bit unsigned state these additions use modulo2^64 arithmetic rather than a checked-overflow exception. The source statements do not themselves prove a resulting destination is valid.",
+      "anchors": [
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 1945,
+          "last_line": 2031,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L1945-L2031"
+        },
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 2120,
+          "last_line": 2198,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L2120-L2198"
+        },
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1236,
+          "last_line": 1382,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1236-L1382"
+        }
+      ]
+    },
+    {
+      "id": "DYA-03",
+      "kind": "separate validity checks",
+      "conclusion": "validBindInfo supplies invalidBindState as the emission callback. That callback requires prior segment and ordinal state, segment index before LINKEDIT, a full pointer-width write within segment vmSize, a symbol, ordinary/special ordinal bounds, recognized type, and applicable segment permissions. The legacy eachBind instead tests an actual address against segment start/end and checks symbol/segment/ordinal state before its handler. Those legacy checks do not separately express the analyzer full pointer-width test. No global validation/security or actual bundle acceptance claim follows from reading these functions; prerequisite segment/loading/format checks are not traced completely.",
+      "anchors": [
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 1793,
+          "last_line": 1878,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L1793-L1878"
+        },
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1300,
+          "last_line": 1382,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1300-L1382"
+        }
+      ]
+    },
+    {
+      "id": "DYA-04",
+      "kind": "emission versus advance order",
+      "conclusion": "DO_BIND_ADD_ADDR_ULEB invokes the handler at the current site before computing the subsequent address/offset update in both selected implementations. A separately selected site extractor should separate the current validated emission from the next modular state transition; checked failure of its old combined operation is not proof the source would suppress the current emission. This is a generic source-order finding; no old stream operation is reinterpreted here.",
+      "anchors": [
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 2005,
+          "last_line": 2013,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L2005-L2013"
+        },
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 2170,
+          "last_line": 2178,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L2170-L2178"
+        },
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1338,
+          "last_line": 1350,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1338-L1350"
+        }
+      ]
+    },
+    {
+      "id": "DYA-05",
+      "kind": "whole-stream lazy defaults and persistence",
+      "conclusion": "The analyzer initializes lazy type POINTER, addend0 and other state once before its loop. Each DONE increments a count and does not reset state. It rejects SET_TYPE_IMM and address-advance/repeat opcodes in lazy mode. The legacy eachLazyBind likewise starts POINTER/addend0 and continues through DONE without resets, but accepts SET_TYPE_IMM and ADD_ADDR_ULEB while rejecting DO_BIND_ADD_ADDR/repeat variants. Therefore no single acceptance table should be silently merged across these source paths. A conservative site method can restrict itself to their shared supported subset and preserve unknowns elsewhere.",
+      "anchors": [
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 2037,
+          "last_line": 2117,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L2037-L2117"
+        },
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1452,
+          "last_line": 1547,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1452-L1547"
+        }
+      ]
+    },
+    {
+      "id": "DYA-06",
+      "kind": "single-entry lazy path is distinct",
+      "conclusion": "doBindFastLazySymbol uses getLazyBindingInfo from a requested stream offset, validates selected segment/offset, and calls bindAt with POINTER type, flags0 and addend0. getLazyBindingInfo has a distinct restricted opcode parser: it ignores SET_TYPE_IMM, rejects ADDEND/address-update/repeat forms, and returns at bind/DONE. These functions do not justify assuming full-stream persisted state across independent lazy entry requests, or defaulting fields not established by a valid record. No helper/provider/runtime call was executed or followed.",
+      "anchors": [
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1626,
+          "last_line": 1670,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1626-L1670"
+        },
+        {
+          "file": "ImageLoaderMachO.cpp",
+          "first_line": 2911,
+          "last_line": 2969,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachO.cpp#L2911-L2969"
+        }
+      ]
+    },
+    {
+      "id": "DYA-07",
+      "kind": "weak enumeration differs from ordinary binding",
+      "conclusion": "The analyzer weak path initializes POINTER and BIND_SPECIAL_DYLIB_WEAK_LOOKUP, marks ordinal state set, rejects ordinal-setting opcodes, and invokes strongHandler when NON_WEAK_DEFINITION is present. Emission sites still use the bind callback/state checks. In contrast legacy CoalIterator initialization starts type0 until encoded updates establish it; the iterator carries unsigned uintptr_t address/type/addend fields. These are explicitly different implementation paths, not a universal default-state law. A strong-definition symbol marker alone is not an emitted write or runtime replacement.",
+      "anchors": [
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 2118,
+          "last_line": 2198,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L2118-L2198"
+        },
+        {
+          "file": "ImageLoader.h",
+          "first_line": 344,
+          "last_line": 359,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoader.h#L344-L359"
+        },
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1672,
+          "last_line": 1778,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1672-L1778"
+        }
+      ]
+    },
+    {
+      "id": "DYA-08",
+      "kind": "conditional weak write application",
+      "conclusion": "Legacy updateUsesCoalIterator returns before image state bound or without dyld info. Otherwise it walks the current symbol uses until DONE/next symbol and invokes bindLocation for DO_BIND variants with caller-supplied value/targetImage. bindLocation computes value+addend and writes a POINTER location only when it differs. Lookup/coalescing selection and actual image/process state are outside this read; an encoded weak site therefore does not establish that any selected process applies a replacement or which provider/value wins.",
+      "anchors": [
+        {
+          "file": "ImageLoaderMachOCompressed.cpp",
+          "first_line": 1780,
+          "last_line": 1886,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachOCompressed.cpp#L1780-L1886"
+        },
+        {
+          "file": "ImageLoaderMachO.cpp",
+          "first_line": 1970,
+          "last_line": 2051,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoaderMachO.cpp#L1970-L2051"
+        }
+      ]
+    },
+    {
+      "id": "DYA-09",
+      "kind": "operand and unsafe-implementation limits",
+      "conclusion": "The legacy ULEB helper returns uintptr_t from a uint64 accumulator and detects end-of-stream and shift positions above63. The SLEB helper returns intptr_t and checks end-of-stream but lacks an explicit maximum byte/shift bound. These bodies are source authority, not a safe parser to execute or copy literally. A proposed stdlib reader must retain explicit ten-byte/range/NUL and bounded-work checks, reject unsupported types/threaded forms, and avoid relying on malformed operand or host signed-shift behavior.",
+      "anchors": [
+        {
+          "file": "ImageLoader.cpp",
+          "first_line": 1909,
+          "last_line": 1946,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoader.cpp#L1909-L1946"
+        },
+        {
+          "file": "ImageLoader.h",
+          "first_line": 710,
+          "last_line": 711,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/src/ImageLoader.h#L710-L711"
+        }
+      ]
+    },
+    {
+      "id": "DYA-10",
+      "kind": "bounded recommendation, not selection or implementation",
+      "conclusion": "YES: this pinned primary implementation supports a separately selected data-only classic-pointer site extractor revision that models the two researched ordinary/weak address-update forms modulo2^64 and validates each emission independently. It does not justify blanket wrapping of LEB decoding, segment/file geometry, arbitrary repeat counts or provider/runtime arithmetic. Keep explicit mode-specific type/ordinal/strong-definition rules, finite-run bounds, complete per-stream uncertainty and no runtime patching/provider resolution. Current strict extractor and all frozen results remain unchanged; no new extractor was implemented or run, and no old suffix was parsed.",
+      "anchors": [
+        {
+          "file": "README.md"
+        },
+        {
+          "file": "MachOAnalyzer.cpp",
+          "first_line": 1793,
+          "last_line": 2302,
+          "URL": "https://github.com/apple-oss-distributions/dyld/blob/3f24a36068a96722cf3acbd5087983ce658e9d70/dyld3/MachOAnalyzer.cpp#L1793-L2302"
+        }
+      ]
+    },
+    {
+      "id": "DYA-11",
+      "kind": "applicability and coverage unknown",
+      "conclusion": "Actual Live host OS/dyld version, selected build switches, prevalidation, current mappings, slide, provider resolution, weak coalescing, constructor/class/ABI/public bindings and final runtime targets remain UNKNOWN. Public Apple implementation does not establish product behavior, calibration, portable compatibility, required-unit closure, a grade, a released contract or any main-Live indirect site. Root alone reviews/adopts this source packet and selects any later method revision.",
+      "anchors": [
+        {
+          "file": "README.md"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "owned_source_checker": "PASS",
+    "source_capture_HTTP_200": 9,
+    "negative_controls": 5,
+    "tests_scope": "Exact API tag/commit chain, official URL provenance and raw/selected-source projection custody; no semantic execution of Apple C++ or data parser.",
+    "source_capture_scripts": "Both retained Python HTTP collectors were fully read before execution; final helper-context HTTP batch is specified by its receipt exact URLs/hashes. No tool installed."
+  },
+  "recommendation": "Evidence supports a separately selected bounded extractor revision, subject to Root review and selection. No automatic revision or successor selected.",
+  "execution_and_mutation": {
+    "old_extractor_run": false,
+    "new_extractor_implemented": false,
+    "old_suffix_reinterpreted": false,
+    "original_image_or_runtime_acquisition": false,
+    "native_or_provider_acquisition": false,
+    "frozen_packet_patch": false,
+    "shared_docs_edit": false,
+    "Apple_Cpp_source_compile_or_execution": false
+  }
+}

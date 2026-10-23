@@ -2,7 +2,7 @@
 id: PLAN-AUTOMATION-ENVELOPES-V2-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -23,6 +23,13 @@ For the spec author:
 - fix REQ-005 and REQ-007 in SPEC-AUTOMATION-ENVELOPES;
 - fix REQ-014's open condition in SPEC-LIVE-SET-STRUCTURE;
 - correct SF-3's unconfirmed status.
+
+## Draft reconciliation (2026-10-19)
+
+Applied SF-1 to SF-6 and review RA2-01 to 03 in draft r5. SF-3’s original
+unconfirmed status below is superseded by the independent review: the discard
+was confirmed in both builds. The timeline base is now v2 case 032. Ideal
+segment values are not a comparison for ramped samples. No release changed.
 
 ## Decision and boundary
 

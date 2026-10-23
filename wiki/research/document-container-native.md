@@ -2,7 +2,7 @@
 id: RESEARCH-DOCUMENT-CONTAINER-NATIVE
 type: research
 status: draft
-updated: 2026-10-17
+updated: 2026-10-20
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -426,3 +426,42 @@ Statically traceable next steps, if wanted before runtime work:
 The probe records are in [probe-batch.json](../../analysis/ableton-live-12.4.3/r2/n2-container-v1/probe-batch.json).
 Related open questions: [Q-006](../questions.md#q-006-native-analysis-and-resource-decoding)
 and [Q-012](../questions.md#q-012-transport-state-load-and-save-semantics).
+
+
+## 2026-10-20 — combined structure/container route map (pending review)
+
+The [combined family route packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/structure.md)
+proposes a bounded cut of approved integration I-01/I-02/I-10 for the current
+18 Live Set structure and nine ALS container requirement bodies. Its
+[ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/route-ledger.json)
+records 196 local predicate/context rows (129 S, one existing CRC X, 66 without
+an established complete route), not a frozen required-outcome denominator or
+coverage/completion claim. The shared integer parser remains an auxiliary X
+dependency; helper steps and numeric case instances are not extra outcomes.
+
+This is **pending independent structure review**, not new normative evidence or
+a selected execution. Existing 34 Live Set and 35 ALS case objects are retained
+by exact identity; envelope acceptance remains distinct from a Set opening,
+and stored fields remain distinct from active song/audio state. Generic save,
+public Save admission, file replacement/durability, reopen and error recovery
+remain separately qualified. No requirement, case, released byte, expectation
+or grade changes. The packet's exact source spans, input sets, 33-row minimal
+status crosswalk and six missing bridges are navigation for a later reviewed
+batch. Existing unresolved malformed/range/load-precedence and save/media
+assumptions remain unknown. This additive pointer preserves the earlier
+research and its as-of evidence.
+
+
+### Combined family route review adopted — 2026-10-20
+
+The [frozen Live Set/ALS map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-structure-als-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-structure-als-routes-v1-review.json)
+with no finding. Its 196 bounded rows (one CRC X / 129 S / 66 without an
+established route), 33 crosswalk rows and 69 current case objects remain separate
+units; none is a whole-product denominator or new grade. Envelope acceptance
+is distinct from Set opening. Five unspecified-class refusal cases still require
+refusal, while sample fallback codes 2–7, active state, public Save/reopen,
+repair UI and error recovery remain unresolved. Source/trace/unwind associations
+are carried retained evidence, with no new original-body proof or execution.
+Requirements, cases, released bytes and existing conditional qualifications remain
+unchanged. The reviewed map supplies context for subsequent enumerated batches.

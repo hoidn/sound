@@ -1,0 +1,178 @@
+{
+  "id": "REVIEW-LIVE-API-CORE-SESSION-AUTHOR-R1",
+  "date_utc": "2026-10-19T22:45:34.629706+00:00",
+  "reviewer": "independent analyst /root/delay_reverb_correction; not the author",
+  "disposition": "required-corrections-before-partial-approval",
+  "reviewed_manifest": "../live-api-core-session/manifest-author-r1.json",
+  "reviewed_manifest_sha256": "bdf008faa891620132a1e93ff20b0381f5de9418c517fbc644bda685848e65c6",
+  "scope": "Independent source/member review of ten exact references,226 direct declarations and their typed/access/argument/result/omission roles,234 requirements and262 future cases. Partial documentary scope only; no exact12.4.3, executable API, message/event, timing, numeric, signal or complete class/API compatibility approval.",
+  "source_semantic_read_scope": {
+    "Application": 39,
+    "Application.View": 28,
+    "Song": 240,
+    "Song.View": 38,
+    "Track": 164,
+    "Track.View": 18,
+    "Scene": 45,
+    "ClipSlot": 57,
+    "CuePoint": 13,
+    "TakeLane": 17,
+    "total": 659,
+    "qualification": "Read every selected retained reference-body text block. Inspected all226 typed/access declarations and73 manually stated function signatures/actions, all36 non-positive branch/U actions and eight U contracts. The153 non-function positive cases use four exact access-driven template variants; reviewed those variants against every member access/context rather than claiming separate novel behavior for duplicated wording. Independently reconstructed every226 documentary contract from its exact source body plus source type/access template and checked canonical equality. Nine local source questions and canonical scope/owner boundaries were read. No semantic reading claim for all53 pages; no figures, linked help, source scripts/examples, API/Max/runtime/native/hardware/candidate were inspected or executed."
+  },
+  "checks": {
+    "manifest_payload_hashes_sizes": 16,
+    "exact_packet_file_inventory": 17,
+    "original_R1_inventory_payload_hashes_sizes": 65,
+    "retained_source_pages_hash_checked": 53,
+    "inventory_input_pins": 7,
+    "canonical_owner_pins": 23,
+    "browser_parser_pins": 1,
+    "selected_source_HTML_and_blocks_reproduced": 10,
+    "source_blocks": 659,
+    "direct_members": 226,
+    "direct_categories": {
+      "children": 30,
+      "properties": 123,
+      "functions": 73
+    },
+    "exact_member_ledger_and_requirement_case_reconciliation": true,
+    "independent_exact_source_contract_reconstructions": 226,
+    "mapped_direct_members": 226,
+    "selected_unmapped_members": 0,
+    "target_unknown_members": 226,
+    "complete_members": 0,
+    "complete_entries": 0,
+    "unflattened_inherited_or_alias_closure": true,
+    "requirements": 234,
+    "requirement_provenance": {
+      "D-current-public": 226,
+      "U": 8
+    },
+    "cases": 262,
+    "documentary_and_target_oracles_null": true,
+    "all_target_U_unexecuted": true,
+    "exact_browser_ID_set": 234,
+    "canonical_snapshot_pairs": 2,
+    "local_links_and_anchors": 730,
+    "all_nine_local_source_questions_preserved": true,
+    "validator_inspected_before_execution": true,
+    "validator_command": "python3 -B analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/validate.py",
+    "validator_exit": 0,
+    "validator_writes": false,
+    "untracked_aware_whitespace": "pass, packet text and both canonicals",
+    "packet_byte_identities_unchanged": true,
+    "packet_canonical_or_shared_mutation": false
+  },
+  "required_findings": [
+    {
+      "id": "CORE-REVIEW-001",
+      "severity": "medium",
+      "requirements": [
+        "REQ-LAPI-CORE-173",
+        "REQ-LAPI-CORE-174"
+      ],
+      "cases": [
+        "LCS-173",
+        "LCS-174"
+      ],
+      "locations": [
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/cases.json:4942",
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/cases.json:4970",
+        "wiki/specs/live-api-core-session.md:1824",
+        "wiki/specs/live-api-core-session.md:1834"
+      ],
+      "source": [
+        {
+          "source": "C74-LOM-TRACK",
+          "block": "B0146",
+          "html_line": 214,
+          "anchor": "create_audio_clip"
+        },
+        {
+          "source": "C74-LOM-TRACK",
+          "block": "B0148",
+          "html_line": 221,
+          "anchor": "create_midi_clip"
+        }
+      ],
+      "finding": "The Track audio-creation action labels position4 as beats, and the MIDI-creation action labels start_time/length4 as beats. These exact two source paragraphs declare float arguments and Arrangement placement/range, but do not state their units. Explicit beat units in TakeLane creation, Track duplication or other time properties cannot supply these members by analogy. The admitted-fixture qualifier does not identify independent evidence for the asserted beat units.",
+      "required_change": "Remove the unsupported beat labels from only these two Track actions, retain independently admitted member-specific finite values, and explicitly leave units unknown until independently established for these calls. Preserve the separate ClipSlot/TakeLane actions whose paragraphs actually state beats. Add a bounded source-context omission note/flag if useful; do not introduce conversions or numeric oracles."
+    },
+    {
+      "id": "CORE-REVIEW-002",
+      "severity": "medium",
+      "requirements": [
+        "REQ-LAPI-CORE-082"
+      ],
+      "cases": [
+        "LCS-082"
+      ],
+      "locations": [
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/requirements.json:3718",
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/member-ledger.json:4292",
+        "wiki/specs/live-api-core-session.md:910",
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/validate.py:122"
+      ],
+      "source": {
+        "source": "C74-LOM-SONG",
+        "block": "B0175",
+        "html_line": 238,
+        "anchor": "capture_midi"
+      },
+      "finding": "capture_midi destination is typed int but optional:null, flagged some-argument-optionality-not-stated and rendered as optionality unstated. The same retained paragraph explicitly describes destination not being set and its view-selection behavior. This is documentary omission support in prose even though the initial parameter annotation lacks an optional marker. The current validator only permits optional:true when the literal word optional appears, so that guard cannot admit this source-supported prose case.",
+      "required_change": "Record destination omission/optionality as supported by this exact prose in the requirement, ledger and canonical typed rendering, removing the false unstated-optionality flag. Keep the source argument type int and no invented default token/coercion. Adapt the successor read-only validator narrowly to accept and verify the exact prose evidence for this member; preserve original validator/history. Source_claim prose, actions, counts, sources and all actual oracles can remain unchanged."
+    },
+    {
+      "id": "CORE-REVIEW-003",
+      "severity": "low",
+      "requirements": [
+        "REQ-LAPI-CORE-098"
+      ],
+      "cases": [
+        "LCS-098"
+      ],
+      "locations": [
+        "analysis/ableton-live-12.4.3/full-spec-v1/live-api-core-session/cases.json:2789",
+        "wiki/specs/live-api-core-session.md:1070"
+      ],
+      "source": {
+        "source": "C74-LOM-SONG",
+        "block": "B0207",
+        "html_line": 290,
+        "anchor": "get_current_smpte_song_time"
+      },
+      "finding": "The SMPTE case says to record strings although this member only describes hours:min:sec and does not declare a symbol/string result type. Its own signature correctly leaves result_type null and flags the result type unstated. The action should preserve that same representation uncertainty.",
+      "required_change": "Change the action to retain the raw result/representation without assuming strings. Preserve the published format-selector context and untyped hours:min:sec source description; no result type, serialization or frame/drop-frame arithmetic oracle should be added."
+    }
+  ],
+  "semantic_assessment": [
+    {
+      "scope": "Application and Application.View",
+      "assessment": "Version examples remain examples, get_document identity stays untyped, control-surface inactive id0 contexts and audio-processing CPU load are not generalized to OS CPU. View access types and omitted show_view behavior remain explicit. Arranger/Arrangement spelling, empty-name typography, direction/modifier context and scrollability/zoom distinctions are retained without guessed aliases, pixel displacement or shortcut dispatch."
+    },
+    {
+      "scope": "Song transport, capture, construction and device operations",
+      "assessment": "Aside from capture optionality metadata and SMPTE action wording findings, source blocks, arguments, result annotations and omissions are faithful. Active MIDI capture/record/Link/automation prerequisites and list-boundary cases prevent vacuous negative success. Public enum/range/default, beat-form and nearest insertion descriptions supply source context only; native finite launch/playback/storage/automation laws and REQ020..023/automation013 gaps remain unchanged."
+    },
+    {
+      "scope": "Song.View, Track and Track.View",
+      "assessment": "Selection, appointed-device/blue-hand and actual track visibility remain distinct; Push3 mapping and Push implicit arm remain scoped context. Track kind restrictions, routing dictionary wrapper/identifier fields, meter peak/hold descriptions, fold/device/mixer topology caveats and prints-versus-throws wording remain source context with null API/signal/timing comparators. Native-device insertion since12.3 does not prove exact target support. The only Track action corrections required are the unstated time units noted above."
+    },
+    {
+      "scope": "Scene, ClipSlot, CuePoint and TakeLane",
+      "assessment": "Scene force-legato/select flags and source defaults, disabled tempo/signature sentinel, selected-scene versus receiver, held-button and armed/empty-group preferences remain documented roles with active baselines. ClipSlot get-only/observable differences and ambiguous group status1/2 wording are preserved rather than solved. MIDI empty-slot positive length and occupied-target overwrite are source-backed roles; CuePoint quantized jump and TakeLane file/track/frozen/recording constraints remain null-oracle context. TakeLane/ClipSlot explicitly stated beat units are not part of the Track-unit finding."
+    },
+    {
+      "scope": "Denominator, ownership and lifecycle",
+      "assessment": "Every selected226 original direct-member ID maps once, all remain incomplete/targetU; outside35references/362direct declarations and inherited/root/alias closure are not excluded or counted complete. Member-specific positive calls and property templates are finite proposals, not complete per-member error/lifecycle coverage. Source/owner pins, current12.4.5-versus-target12.4.3 and no-execution limits are clear."
+    }
+  ],
+  "nonblocking_gaps": [
+    "All source-version/target, full payload and message grammars, API error/refusal/coercion, result encoding, observer ordering/cadence, timing/signal, lifecycle and inherited closure gaps remain U.",
+    "Positive property/child proposals share access-driven templates and preserve member-specific source restrictions by reference. They are appropriate only as partial mapping, not exhaustive fixture or branch closure.",
+    "Case IDs LCS-* and local Q-LCS-* overlap other packets. Parent confirms identity is explicitly packet path plus ID/JSON pointer; this scoped reuse is not a required semantic correction and must not be conflated in shared catalogs.",
+    "The sealed validator currently passes mechanical integrity. Required finding002 identifies a semantic validation limitation for prose-supported omission, not an observed API/runtime failure; a successor should verify that evidence without relaxing unrelated checks."
+  ],
+  "conclusion": "Require the three bounded omission/type/unit corrections before partial documentary approval. Keep exact R1 history before any revision. No source, packet, canonical or shared file was changed by review; no API calls, scripts/examples/patches, Max/runtime/native/hardware/candidate, recapture or installation occurred."
+}

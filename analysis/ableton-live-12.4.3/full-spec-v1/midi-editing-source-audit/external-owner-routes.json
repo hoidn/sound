@@ -1,0 +1,90 @@
+[
+  {
+    "canonical_route": "wiki/specs/recording-comping.md",
+    "origin_identity_asof": {
+      "bytes": 37874,
+      "sha256": "5a58868078c17cb3bb60c8fdafac37976ae12a2e48156ff209ecb8926f25ee48"
+    },
+    "snapshot": "owner-snapshots/recording-comping.md",
+    "policy": "Exact as-of context only; validate this frozen local snapshot, never future live canonical identity",
+    "selected_clauses": [
+      {
+        "id": "REQ-RECORDING-COMPING-001",
+        "excerpt": "### REQ-RECORDING-COMPING-001 — input and arm selection\n\n**D12, R19 §19.1–19.2.** A track records the input selected in its In/Out\ncontrols. Audio inputs can be mono/stereo; MIDI input can select device/channel;\nanother track can be the source. Session and Arrangement Arm controls address\nthe same tracks. In the documented ordinary arm operation, clicking one Arm\ndisarms other tracks; Ctrl on Windows/Cmd on macOS allows multiple arms.\nFor multiple selected tracks, clicking an Arm arms the other selected tracks.\nArming selects the track. **U:** preference-dependent exceptions, implicit arm,\nfrozen/nonrecordable tracks and arm changes during recording.",
+        "line": 51
+      },
+      {
+        "id": "REQ-RECORDING-COMPING-010",
+        "excerpt": "### REQ-RECORDING-COMPING-010 — stopped-transport step recording\n\n**D12, R19 §19.3.4.** With the MIDI track armed, clip editor Preview enabled\nand an insert marker placed, Right Arrow advances by the editor grid and adds\nheld notes. Continuing to hold while advancing extends them. Left Arrow with\nthose keys held removes newly entered notes. Transport need not run.\n**U:** grid-off behavior, event timing while keys change and undo grouping.",
+        "line": 132
+      },
+      {
+        "id": "REQ-RECORDING-COMPING-011",
+        "excerpt": "### REQ-RECORDING-COMPING-011 — record quantization and undo\n\n**D12, R19 §19.5.** Record Quantization aligns incoming notes to the selected\nsubdivision. For Arrangement recording its quantization is a separate Undo\nstep: Undo can remove quantization while retaining the recording. The setting\ncannot change during ordinary Session/Arrangement recording; during overdub\nwith Clip View Loop on, changes apply immediately and their quantization is\nnot separately undoable. These are distinct documented modes. Enum/storage\nvalues remain [REQ-CLIP-LAUNCH-006](clip-launch.md#req-clip-launch-006--record-quantization-values).\n**U:** rounding/ties, note-off treatment, mixed-grid selection and exact input\ntimestamps. No grid formula is imported from clip launching.",
+        "line": 140
+      },
+      {
+        "id": "REQ-RECORDING-COMPING-014",
+        "excerpt": "### REQ-RECORDING-COMPING-014 — Capture MIDI eligibility\n\n**D12, R19 §19.10.** Capture MIDI retrieves recently played input from armed or\ninput-monitored MIDI tracks without prior Record. **U:** buffer capacity,\neviction, clear/reset triggers, no-input behavior, controllers, MPE expression\nand the relationship of armed eligibility to suppressed Auto monitoring.",
+        "line": 169
+      },
+      {
+        "id": "REQ-RECORDING-COMPING-015",
+        "excerpt": "### REQ-RECORDING-COMPING-015 — Capture MIDI in an empty stopped Set\n\n**D12, R19 §19.10.1.** In an empty stopped Set, Capture creates a phrase clip\non each monitored MIDI track, in the currently focused Session or Arrangement\nview. It infers tempo within 80–160 BPM and loop boundaries, and starts loop\nplayback. Material preceding the chosen phrase remains before the start\nmarker. **U:** the detection algorithm, exact phrase, tempo or alignment for\narbitrary input; tempo-automated Sets use REQ-017's documented branch.",
+        "line": 176
+      },
+      {
+        "id": "REQ-RECORDING-COMPING-016",
+        "excerpt": "### REQ-RECORDING-COMPING-016 — single-note Capture MIDI\n\n**D12, R19 §19.10.1 note.** With a single note in the first captured MIDI clip,\nthe documented loop bounds are that note's start/end and the inferred tempo\nproduces a one-, two-, four- or eight-bar loop. **U:** how the bar count is\nchosen, zero-duration input, tempo at exact boundaries and held/incomplete notes.",
+        "line": 185
+      },
+      {
+        "id": "REQ-RECORDING-COMPING-017",
+        "excerpt": "### REQ-RECORDING-COMPING-017 — Capture MIDI in an established Set\n\n**D12, R19 §19.10.2.** If transport runs, other clips exist, or tempo is\nautomated, Capture uses the existing tempo instead of changing it. It selects\na loop from the played phrase and retains preceding material. Playing over a\nrunning clip on the same track and pressing Capture adds the material to that\nclip. **U:** stopped/nonplaying occupied-slot placement, capture repeated\nwithout new input and collisions with ordinary recording/overdub.",
+        "line": 192
+      }
+    ]
+  },
+  {
+    "canonical_route": "wiki/specs/mpe-workflows.md",
+    "origin_identity_asof": {
+      "bytes": 12334,
+      "sha256": "1c8c6c7fbda5f85ed4608ab6e6b64f3999853b4a7c4783f8a28ca1ab1e789de2"
+    },
+    "snapshot": "owner-snapshots/mpe-workflows.md",
+    "policy": "Exact as-of context only; validate this frozen local snapshot, never future live canonical identity",
+    "selected_clauses": [
+      {
+        "id": "REQ-MPE-002",
+        "excerpt": "| REQ-MPE-002 | Open any MIDI clip, including one made without MPE hardware; choose Note Expression or Alt+3 (Win)/Option+3 (Mac). | Provide Pitch, Slide, Pressure, Velocity and Release Velocity editing. Pitch overlays notes; chapter 12 describes the other four as lanes, with Slide/Pressure initially visible. Optional Pitch Bend lane contexts remain U (below). | M1–M2 |",
+        "line": 54
+      },
+      {
+        "id": "REQ-MPE-003",
+        "excerpt": "| REQ-MPE-003 | Toggle lane selectors or the triangle; drag lane split lines. | Selectors show/hide lanes; triangle toggles enabled lanes together, shows all when none enabled; Alt/Option-click shows all. Splits resize an individual lane or all lanes. Hiding lanes through triangle/split also hides selectors. Minimum sizes U. | M2 |",
+        "line": 55
+      }
+    ]
+  },
+  {
+    "canonical_route": "wiki/specs/application-workspace.md",
+    "origin_identity_asof": {
+      "bytes": 10417,
+      "sha256": "b1ee123b292caf87094a1ebec3372fd0ae42c8a648ab753c9d0c5f2df6ac5eb5"
+    },
+    "snapshot": "owner-snapshots/application-workspace.md",
+    "policy": "Exact as-of context only; validate this frozen local snapshot, never future live canonical identity",
+    "selected_clauses": [
+      {
+        "id": "REQ-WORKSPACE-CONTROL-002",
+        "excerpt": "### REQ-WORKSPACE-CONTROL-002 — Shared scale selection and future clips\n\n**D12/target-U.** Control Bar scale controls reflect the selected clip and offer Scale Mode, Root Note and Scale Name. With no clip selected, chosen scale settings apply to subsequently created clips. This adds the global selection/default context to Clip View properties; accepted scale lists, data codec, preference scope and numerical pitch transforms remain with existing owners or unknown.\n\nEvidence: `CONCEPT-B008`, `CONCEPT-B074`, `CONCEPT-B075`, `CONCEPT-B076`; [exact routes](#analysis-only-evidence).",
+        "line": 58
+      },
+      {
+        "id": "REQ-WORKSPACE-CONTROL-003",
+        "excerpt": "### REQ-WORKSPACE-CONTROL-003 — Scale controls with multiple clips\n\n**D12/target-U.** Control Bar Scale controls can turn Scale Mode on/off or set the same scale for multiple selected clips. Mixed audio/MIDI selections, incompatible tuning, empty-slot versus existing-clip propagation and merge/display precedence remain unknown. This does not redefine perclip Scale or a device retuning law.\n\nEvidence: `CONCEPT-B076`; [exact routes](#analysis-only-evidence).",
+        "line": 64
+      }
+    ]
+  }
+]

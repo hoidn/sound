@@ -1,0 +1,179 @@
+{
+  "id": "REVIEW-SAMPLE-INSTRUMENTS-R1",
+  "reviewer": "independent analyst /root/recording_comping_spec",
+  "date_utc": "2026-10-19T20:39:44.963254+00:00",
+  "disposition": "changes-requested-before-independent-review-completion",
+  "scope": "Read-only review of all 61 requirements and 88 planned cases for Simpler/Sampler/Impulse, canonical research and linked domain ownership, direct retained manual sections/text/HTML heading identity, five source pins, original schema/preset bytes, 28 payload hashes and four canonical snapshots, all 576,000 synthetic stereo frame pairs and malformed input bytes. Not a handoff release review.",
+  "reviewed_inputs": {
+    "wiki/specs/device-simpler.md": "56325d889858276122ada3a3ab2353417dfe7377bad52f639abf367b527b1231",
+    "wiki/specs/device-sampler.md": "90efe9d613597485f39108ec78d6572a996e544b9fd36325317c49b99e9a1cf0",
+    "wiki/specs/device-impulse.md": "76312b44a31eb46e2ee8e2fb9919b224bfaf5459b44895ccfa661bdbe1a63d69",
+    "wiki/research/sample-instruments.md": "a61e544561b392cf03dc89f02bc035f03bc3f5731096bfdedc20834725a5403e",
+    "analysis/ableton-live-12.4.3/full-spec-v1/sample-instruments/manifest-author-r1.json": "277da7d53e395b45bf9d58ea803636d79002e20101163ec244f20a9ce100cf4b"
+  },
+  "findings": [
+    {
+      "id": "SI-REVIEW-001",
+      "severity": "medium",
+      "required_for_review_completion": true,
+      "location": "wiki/specs/device-sampler.md#req-sampler-009--sample-extent-sustain-loop-and-link; requirements.json REQ-SAMPLER-009",
+      "problem": "The requirement unconditionally says Sample End terminates playback even if the volume envelope continues. The retained manual qualifies that behavior with an active-loop exception. In particular the draft itself correctly specifies a Release Loop that reaches Sample End and loops rather than terminating. The current general sentence can impose the wrong result on that documented case.",
+      "evidence": {
+        "source": "manual-instruments-2026-10-19.html",
+        "sha256": "3975fec856ada335526b35504ab3ca058dbf8f2885169944e0a819d45990fd6a",
+        "section": "31.10.6.1, #sample-playback, HTML line 1800",
+        "locator": "Sample End list item; exception for enabled loops; Release Loop Enabled and Back-and-Forth Release Loop Enabled list items"
+      },
+      "requested_change": "Narrow Sample End termination to unlooped playback and preserve sustain/release-loop behavior as the controlling exception. Reconcile canonical text and requirement snapshot; add a bounded unlooped-end scenario or explicitly keep that subclause outside the finite case selection. Do not change the correctly retained loop cases or invent sample-boundary rounding."
+    },
+    {
+      "id": "SI-REVIEW-002",
+      "severity": "medium",
+      "required_for_review_completion": true,
+      "location": "SIMPLER-022 and SAMPLER-025; fixtures.json setup; cases.json and the respective spec tables",
+      "problem": "The common fixture setup disables filter and optional modulation. SIMPLER-022 only disables LFO retrigger and changes Offset: it never enables the LFO or supplies a nonzero destination depth. SAMPLER-025 enables the filter envelope with Amount=0 but never enables the main filter. Their unchanged-audio predicates can therefore pass with the entire modulation/filter path disabled, even if Offset were wrongly applied or Amount=0 wrongly allowed modulation. The evidence supports the intended feature law, but these case preconditions do not isolate it.",
+      "evidence": [
+        "fixtures.json.setup explicitly disables filter and optional modulation unless overridden.",
+        "cases.json SIMPLER-022 setup is LFO retrigger disabled; no LFO enable/wave/rate/nonzero destination is provided. Retained manual #lfo describes per-voice LFO modulation, retrigger and Offset; lack of an active routed LFO makes the negative audio observation non-discriminating.",
+        "cases.json SAMPLER-025 setup enables only the filter envelope. Retained manual #the-filter describes a filter envelope with its own F. Env switch and Amount; enabling that envelope is distinct from enabling the main filter processing path."
+      ],
+      "requested_change": "Explicitly override the shared neutral setup: enable the LFO, select a concrete offered rate/waveform and a nonzero audible destination for SIMPLER-022; enable and configure the main filter on spectrally suitable retained input for SAMPLER-025. Establish an active-path positive control or otherwise state a nonvacuous observable predicate before comparing retrigger-off Offset or zero envelope Amount. Keep unsupported numeric thresholds/DSP curves U. Update both case tables and cases.json, fixture setup notes if needed, then reseal; no runtime is requested."
+    },
+    {
+      "id": "SI-REVIEW-003",
+      "severity": "medium",
+      "required_for_review_completion": true,
+      "location": "Cross-section evidence locators in requirements.json/cases.json and the three spec evidence links",
+      "problem": "All primary anchors resolve mechanically, but several selected anchors do not contain the clauses tested. A parenthetical second heading name in some requirement bodies partly signals this; the frozen case index still pins only the wrong sibling section for those behaviors. Existence of an anchor is not proof that its section supports the whole case.",
+      "examples": [
+        {
+          "case": "SIMPLER-007",
+          "current_anchor": "classic-playback-mode",
+          "missing_support": "Fade unavailable with Warp enabled",
+          "actual_section": "#context-menu-options-for-simpler, section31.11.7, HTML line2194"
+        },
+        {
+          "case": "SIMPLER-023; REQ-SIMPLER-014 sample Gain subclause",
+          "current_anchor": "global-parameters-1",
+          "missing_support": "Separate sample Gain versus final output Volume stage",
+          "actual_section": "#classic-playback-mode, section31.11.1.1, HTML line2014, Gain paragraph; #global-parameters-1 still supports Volume/Spread/Pan"
+        },
+        {
+          "case": "SAMPLER-030; REQ-SAMPLER-019 title-menu subclauses",
+          "current_anchor": "importing-third-party-multisamples",
+          "missing_support": "Save as Default Preset and Sampler-to-Simpler title-menu commands",
+          "actual_section": "#title-bar-options, section31.10.3, HTML line1518"
+        },
+        {
+          "case": "IMPULSE-009 saturation half; REQ-IMPULSE-006",
+          "current_anchor": "filter",
+          "missing_support": "Saturator on/off and Drive controls",
+          "actual_section": "#saturator-and-envelope, section31.7.4, HTML line1040; #filter supports filter modulation half"
+        },
+        {
+          "case": "IMPULSE-012 global-controls half; REQ-IMPULSE-008",
+          "current_anchor": "pan-and-volume",
+          "missing_support": "Global Volume, Transpose and Time controls",
+          "actual_section": "#global-controls, section31.7.6, HTML line1040; #pan-and-volume supports per-slot controls"
+        }
+      ],
+      "requested_change": "Add exact secondary evidence locators where a requirement/case spans sibling sections, or split/narrow its selected clauses. Ensure case-index metadata retains the actual supporting section(s), not merely one resolving anchor. The original source captures already contain the supporting prose; preserve their bytes. Do not infer any additional signal order: the Gain paragraph only establishes separate sample Gain and final Volume after the filter, not a complete sample-Gain/filter ordering."
+    }
+  ],
+  "accepted_partial_findings": {
+    "provenance_and_owners": "Three canonical behavioral owners with shared research provenance; all D clauses explicitly retain U applicability to 12.4.3. Schema/preset presence is not promoted to parser/writer/DSP/runtime behavior. Generic racks/media/Set/warp/automation owners remain linked without claiming those interactions solved.",
+    "Simpler": "Manual supports modes, region percentages, looping/snap/fades with Warp restriction, oldest-voice replacement and Retrig prerequisites, One-Shot Trigger/Gate distinction, slices and their retention, Warp speed controls, documented filter availability, envelope/LFO options, pitch controls and copy-based non-destructive file actions. Slicing lowest-note/overflow, marker rounding, DSP and full processing order remain U.",
+    "Sampler": "Manual supports key/velocity/selector eligibility and selector trigger latch, layer management, current-manual Round Robin modes, per-layer/global exceptions, reverse without generated file, Link value retention, release loops, envelope controls, modulation/filter/shaper/MIDI assignments and named import routes. Round Robin remains version-uncertain with reset/unequal-zone/single-layer boundaries U; no target availability is inferred.",
+    "Impulse": "Manual supports eight slots, C3 leftmost trigger and octave range without enumerating the six middle notes, per-sample new-note latching including automation, reciprocal 7/8 Link, named controls and distinct Gate/Trigger decay, and overall/individual output routing availability. Complete pitch map, routing gains/layout/timing and generic global/latch propagation remain U.",
+    "fixtures": "All three WAVs exactly match their declared 4-second 48 kHz stereo PCM16, identical L/R channels and 8,192-amplitude sine construction. Segmented 220/330/440/550-Hz order and distinct 660/880-Hz layers are retained input identities; they can distinguish broad region/order/source cases, not waveform equivalence or every loop marker. Empty/truncated files are deliberately malformed with no application error oracle. No external REX or official-Pack fixture is falsely claimed as supplied.",
+    "lifecycle_and_metrics": "All 15 device lifecycle/DSP requirements and the unresolved Impulse middle-note case remain U. No numerical audio-error, timing, CPU, random, MPE/tuning or lifecycle success guarantee is invented. Proposed state/source-identity/presence predicates do not amount to executed compatibility passes, and ambiguous source identification is expressly rejected."
+  },
+  "checks": {
+    "author_manifest_sha256": "277da7d53e395b45bf9d58ea803636d79002e20101163ec244f20a9ce100cf4b",
+    "payloads": 28,
+    "canonical_snapshots": "four exact matches",
+    "source_identities_verified": 5,
+    "direct_manual_headings_and_text_extraction": "matches retained original HTML",
+    "schema_class_declarations_verified": 9,
+    "original_preset_bytes_XML_and_selected_observations": "3 exact matches",
+    "preset_sample_reference_counts": [
+      0,
+      0,
+      8
+    ],
+    "synthetic_PCM_frames_verified_exactly": 576000,
+    "synthetic_audio_format": "3 stereo PCM16 48000-Hz 4-second files; distinct ordered bands, never original output",
+    "malformed_input_bytes_and_parser_failure": "verified; application outcome remains unknown",
+    "requirements": 61,
+    "requirement_provenance": {
+      "D": 46,
+      "U": 15
+    },
+    "cases": 88,
+    "case_provenance": {
+      "D": 72,
+      "U": 16
+    },
+    "counts": {
+      "simpler": {
+        "requirements": 23,
+        "cases": 35,
+        "requirement_provenance": {
+          "D": 18,
+          "U": 5
+        },
+        "case_provenance": {
+          "D": 30,
+          "U": 5
+        }
+      },
+      "sampler": {
+        "requirements": 24,
+        "cases": 35,
+        "requirement_provenance": {
+          "D": 19,
+          "U": 5
+        },
+        "case_provenance": {
+          "D": 30,
+          "U": 5
+        }
+      },
+      "impulse": {
+        "requirements": 14,
+        "cases": 18,
+        "requirement_provenance": {
+          "D": 9,
+          "U": 5
+        },
+        "case_provenance": {
+          "D": 12,
+          "U": 6
+        }
+      }
+    },
+    "case_table_JSON_and_requirement_body_consistency": "pass",
+    "case_primary_anchors_resolve": "pass mechanically; cross-section support finding separately",
+    "all_case_exact_target_grades": "U",
+    "all_application_execution_flags": false,
+    "frontmatter_local_links_heading_anchors_whitespace": "pass"
+  },
+  "remaining_limits": [
+    "All 88 application cases are unexecuted and have exact-target U; no profile is complete.",
+    "Current-manual Round Robin may postdate the target; preserving D12/U classification is mandatory.",
+    "Three synthetic files are analyst inputs, not target render or timing evidence. Mode, pitch/root, routing, release/sustain, sample duration and active control paths must make each future comparison nonvacuous.",
+    "No published handoff, original source bytes or historical release should be changed by corrections. A revised author manifest/snapshot is needed for focused review."
+  ],
+  "execution_limits": {
+    "ran_author_capture_or_validator": false,
+    "ran_Live": false,
+    "ran_extracted_original_code": false,
+    "ran_candidate": false,
+    "figures_inspected": false,
+    "installed_tools": false,
+    "modified_author_or_shared_files": false,
+    "modified_frozen_source_or_payload": false,
+    "wrote_only_requested_review_report": true,
+    "compatibility_pass": false
+  }
+}

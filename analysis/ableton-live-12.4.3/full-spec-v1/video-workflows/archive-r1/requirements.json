@@ -1,0 +1,277 @@
+[
+  {
+    "id": "REQ-VIDEO-WORKFLOW-001",
+    "title": "Movie import",
+    "contract": "The current manual documents .mov QuickTime movies appearing in Browser and drag import into a Set. This is not a complete accepted extension/container/codec profile, OS entitlement or a rejection rule for other formats.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B006",
+        "anchor": "importing-video",
+        "html_line": 280
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-002",
+    "title": "Arrangement versus Session",
+    "contract": "Video display is documented for movie clips in Arrangement. A movie placed in Session is treated as an audio clip. Audio-only Session treatment does not specify source-file rewriting or the behavior of a simultaneous Arrangement movie.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B007",
+        "anchor": "importing-video",
+        "html_line": 280
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-003",
+    "title": "Video title indication",
+    "contract": "An Arrangement video clip is described with sprocket-hole markings in its title bar. Pixel geometry, asset, color, scale and accessible description are unknown; the source figure was not inspected.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B010",
+        "anchor": "video-clips-in-the-arrangement-view",
+        "html_line": 280
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-004",
+    "title": "Edge trimming",
+    "contract": "Dragging the left or right Arrangement clip edge trims the video clip. The underlying audio/Arrangement edge-edit contract remains in SPEC-ARRANGEMENT-EDITING; frame/sample rounding, bounds and audio-video boundary alignment are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B011",
+        "anchor": "video-clips-in-the-arrangement-view",
+        "html_line": 294
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-005",
+    "title": "Audio-only results of processing commands",
+    "contract": "Consolidate, Reverse and Crop applied to a video clip replace it with an audio clip without altering the original movie file. This is a video-retention boundary, not a new audio processing/codec law. General command semantics remain with Arrangement and Clip View.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B011",
+        "anchor": "video-clips-in-the-arrangement-view",
+        "html_line": 294
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-006",
+    "title": "Floating Video Window",
+    "contract": "Video Window floats above Live's main window, can be moved, and has a visibility command in View. The text does not promise priority over other applications, OS dialogs or all display configurations.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B013",
+        "anchor": "the-video-window",
+        "html_line": 314
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-007",
+    "title": "Window size and location retention",
+    "contract": "Dragging the bottom-right Video Window corner resizes it. Its size/location are not Set-specific and are described as restored when a video is opened again. Persistence across full application/OS restarts, missing monitors and invalid geometry is unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B013",
+        "anchor": "the-video-window",
+        "html_line": 314
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-008",
+    "title": "Full screen and original size",
+    "contract": "Double-clicking Video Window shows full screen, optionally on another monitor. Alt on Windows or Option on Mac plus double-click restores original video size. Full-screen exit gestures and OS-specific exclusive display policy are not supplied.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B013",
+        "anchor": "the-video-window",
+        "html_line": 314
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-009",
+    "title": "Partial stream gaps",
+    "contract": "QuickTime movie audio/video streams may cover different intervals. During a video gap Video Window shows black; an audio gap plays silence. Missing-stream files, decoded sample floor, gap boundary inclusivity and background RGB are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B015",
+        "anchor": "movies-with-partial-tracks",
+        "html_line": 314
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-010",
+    "title": "Video tempo-leader prerequisite",
+    "contract": "The video clip Warp switch must be on to set Tempo Leader. The documented scoring setup uses video as leader and audio as follower; these are described defaults/guidance, not evidence of target constructor defaults. Warp algorithms and tempo-map arithmetic remain outside this packet.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B017",
+        "anchor": "clip-view",
+        "html_line": 314
+      },
+      {
+        "block": "VID-B028",
+        "anchor": "matching-sound-to-video",
+        "html_line": 340
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-011",
+    "title": "Active leader selection in the video setup",
+    "contract": "Of warped Arrangement clips marked Leader, the bottom-most currently playing clip is documented as the actual tempo leader. A nonplaying flagged clip is not described as the active leader. Exact overlapping-region boundary, hierarchy order and mapping from marker positions to tempo remain unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B018",
+        "anchor": "clip-view",
+        "html_line": 328
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-012",
+    "title": "Nonleader video warping",
+    "contract": "An Arrangement video clip that is not the active tempo leader may become warped and produce warped video output. The source gives no frame interpolation/drop/repeat, codec, frame-rate or synchronization tolerance.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B019",
+        "anchor": "clip-view",
+        "html_line": 328
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-013",
+    "title": "Warp-marker visual feedback",
+    "contract": "Dragging a video clip Warp Marker updates Video Window to the corresponding frame. The source does not give frame selection rounding, delivery deadline, exact decoded image or behavior while media is unavailable.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B021",
+        "anchor": "warp-markers",
+        "html_line": 328
+      },
+      {
+        "block": "VID-B029",
+        "anchor": "matching-sound-to-video",
+        "html_line": 340
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-014",
+    "title": "Embedded QuickTime markers",
+    "contract": "Embedded QuickTime markers are displayed as visual cues for placing Warp Markers. Accepted marker codecs, text encoding, counts, naming, duplicate positions and exact time conversion are unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B022",
+        "anchor": "warp-markers",
+        "html_line": 328
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-015",
+    "title": "Pre-roll working region",
+    "contract": "The documented scoring example puts a movie at Arrangement1.1.1 and moves its Clip View Start Marker past pre-roll so action begins at song start. This changes the working region, not the original movie. Generic start-marker editing remains with Clip View; SMPTE/sample conversion is unknown.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B033",
+        "anchor": "video-trimming-tricks",
+        "html_line": 340
+      },
+      {
+        "block": "VID-B034",
+        "anchor": "video-trimming-tricks",
+        "html_line": 340
+      },
+      {
+        "block": "VID-B035",
+        "anchor": "video-trimming-tricks",
+        "html_line": 352
+      },
+      {
+        "block": "VID-B036",
+        "anchor": "video-trimming-tricks",
+        "html_line": 364
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-016",
+    "title": "Restoring pre-roll for delivery",
+    "contract": "The example restores pre-roll by moving the whole composition later, selecting the video alone and extending its left edge back to reveal the omitted material. Its selected movie then supplies the example export range. General export range/options/codecs remain in SPEC-AUDIO-VIDEO-EXPORT, not a universal output-duration promise here.",
+    "strength": "D12",
+    "target_applicability": "U",
+    "evidence": [
+      {
+        "block": "VID-B037",
+        "anchor": "video-trimming-tricks",
+        "html_line": 364
+      },
+      {
+        "block": "VID-B038",
+        "anchor": "video-trimming-tricks",
+        "html_line": 378
+      },
+      {
+        "block": "VID-B039",
+        "anchor": "video-trimming-tricks",
+        "html_line": 392
+      }
+    ]
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-U-MEDIA",
+    "title": "Media/codec and numerical outputs",
+    "contract": "Decode, source/container/codec/frame-rate/marker/timecode/track-gap handling, missing streams, frame selection, audio output and resource limits remain required unknowns.",
+    "strength": "U",
+    "target_applicability": "U",
+    "evidence": []
+  },
+  {
+    "id": "REQ-VIDEO-WORKFLOW-U-LIFECYCLE",
+    "title": "Lifecycle, state and failure outcomes",
+    "contract": "Undo/cancel/save/source-loss, editing/tempo/transport ordering, window/display recovery, concurrency and teardown remain required unknowns.",
+    "strength": "U",
+    "target_applicability": "U",
+    "evidence": []
+  }
+]

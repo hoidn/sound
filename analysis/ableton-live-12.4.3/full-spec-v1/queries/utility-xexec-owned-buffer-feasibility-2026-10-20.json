@@ -1,0 +1,170 @@
+{
+  "schema": "focused-own-harness-feasibility-query-v1",
+  "utc": "2026-10-20T17:04:04.776773+00:00",
+  "status": "STATIC OWN-SOURCE FEASIBILITY ONLY; no futureX preparation/call selected",
+  "author": "modulation_finish analyst",
+  "providers": [
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/extracted-execution.md",
+      "bytes": 24813,
+      "sha256": "5d29f7e58544567fc4d4e57deef3b77a25bc3c9e57355657b2f940eec0947d9e"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/tools/xexec/xexec.c",
+      "bytes": 20282,
+      "sha256": "63ef178734c86c0fd42c2a4ca4c4f96426e5d339a0cadbdfc3c0367786b6e117"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/tools/xexec/xexec.py",
+      "bytes": 6632,
+      "sha256": "dd63656a4b4b47fead5d3d15c32d2b724e94460ff87bbd63dff181dc439c5460"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/manifest.json",
+      "bytes": 2591,
+      "sha256": "fe2d8482f4553211a6b30ac479db70520042711ac5f5e93a6050e3814890330b"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/run.sh",
+      "bytes": 328,
+      "sha256": "a46b598b7326fea91fcf16d77c58be19864ebf35d82a051d689a30e01154842f"
+    },
+    {
+      "path": "/var/tmp/sound-analysis/xexec/xexec",
+      "bytes": 74040,
+      "sha256": "5d236b76351b3a30f56addd37305e8e8935a34ba959fd9be0873cd84886d5385"
+    }
+  ],
+  "read_scope": {
+    "fresh": "Complete tools/xexec/xexec.c20282B and xexec.py6632B asDATA; fullX1manifest2591B and run.sh328B asDATA. Canonical extracted-execution method/loader/protocol/results/limits/reproduction consulted; initial longdump truncated a small unrelated MIDIresults middle, not claimed a new fullX1case re-review. Currentbinary hash/size ONLY; no ELF/opcode/class/dependency/toolprobe/native import.",
+    "retained_method": "X1canonical method and manifest are historical provenance. run.sh invokes run_pilot then manifestgeneration; neither script/tool ran or was imported. No X1 rawrun replay or broadsource/bodysearch."
+  },
+  "bounded_capability": [
+    {
+      "id": "XH01",
+      "locator": "tools/xexec/xexec.c:270\u2013283,347\u2013374",
+      "fact": "For each explicitcallcommand, six uint64 integer slots and eight uint64 FPslots beginzero. Integer tokens independently fill RDI,RSI,RDX,RCX,R8,R9. FP tokens independently fill low64XMM0\u20137 viaMOVQ. Assemblythunk calls selectedaddress afterregisterloading and copiesRAX,RDX,low64XMM0,low64XMM1 tohostout; AL is set8 beforecall. Stackarguments beyond6integer/8FP are unsupported.",
+      "limits": "Only SystemV-shaped register setup; actualtargetABI/hiddenargs/receiver validity/normalcallee-save/stack behavior requireseparateproof. Upper64bits ofXMMreturns are notcaptured; no arbitrary128-bitpacked return orregister image."
+    },
+    {
+      "id": "XH02",
+      "locator": "tools/xexec/xexec.c:285\u2013314,347\u2013368",
+      "fact": "buf:N allocates16-byte-aligned storage roundedup16 and zeroesallocatedbytes, recordslogicalN and placespointerinnextintegerreg. hex:HH createsbufferfromvalidselectedhexbytes, bounded4096B decodedinput. straddsNUL. Buffersremainforlatercommandsinsameprocess; load() occurs oncebeforecommandloop.",
+      "limits": "No automaticguardpages/target-accessbounds proof; malformed/oddhex and negative/outofrangeindices mustbeexcludedbyfuturefixedprotocol. Useexplicitvalid evenhex and nonnegativeboundedbuffer indices. Header/loader/source availability doesnotproveactualcurrentbinarymatches."
+    },
+    {
+      "id": "XH03",
+      "locator": "tools/xexec/xexec.c:291\u2013305,339\u2013344,374\u2013376; xexec.py:58\u201378",
+      "fact": "ref:b0 passesownedbufferpointerwithoutallocating. ExpressionspermitbK/rK and+/- offsets, qword* andu32@ loads. dumpEXPRLEN emitsrawbytes; outputauto-outcoversONLYbuffersnewlycreatedduringthatcall. Reusedbufferstateisnotautomaticallyredumped. rKmeanscallK RAXonly, notXMMreturn.",
+      "limits": "Dump/exprareuncheckedhostmemorydereferences; futureprotocolmustrestrictliteralownedbuffers+validatedoffsetlength, notoriginaladdresses/derivedunknownpointers. Result.outs[b0]canremainfirstcall snapshot; explicitdumpneededafterreuse."
+    },
+    {
+      "id": "XH04",
+      "locator": "tools/xexec/xexec.c:285\u2013288,310,371\u2013380; xexec.py:81\u2013111",
+      "fact": "CurrentC refusesa257thexplicitcall beforexcall after256storedRAXresults; maximum256buffers. Thislimitcounts top-level callcommands, notnestedoriginal/importcalls. Callsinoneinvocationretainloadedimageandownedbuffers; PythonRunner.run usesafreshprocessforeachsequence, defaulttimeout20s.",
+      "limits": "No reset/warmup/reseed automatically between explicitcommands, but originalcall effects/globalwrites remainunknown. Do notinstantiateRunner now: __init__callsbuild(), which maycompile/overwritedefaultbinaryusingmtime. DirectfixedbinaryinvocationwouldavoidthatimplicitbuildonlyAFTERseparatereadiness/Rootselection."
+    },
+    {
+      "id": "XH05",
+      "locator": "tools/xexec/xexec.c complete commanddispatcher/xcall; xexec.py fullsource",
+      "fact": "No MXCSRset/get/record command orSTMXCSR/LDMXCSR machinery appears in theinspectedcurrentprotocol/thunk. No callerFPenvironmentresetbetweencommands; integer/FPargumentarrayszeroingisnotMXCSRinitialization.",
+      "limits": "CannotclaimMXCSR1f80, roundingmode/FTZ/DAZ/exceptionflags orstatepersistencefromthesesources. No externalFPcontrolmechanismwasinvestigated/selected. A provenbyte-onlysetter neednotbecomeaFPnumericaltest; anylaterprocessingcomparisonmustseparatelyresolveitsrequiredFPenvironment/readback."
+    }
+  ],
+  "smallest_setter_protocol_design_NOT_AUTHORIZATION": {
+    "target": "Root-nominated known13B setter0x104b8c760; no targetbytes/read/newverification here.",
+    "premise": "IF separately reviewednativebody/ABI provesonlybyteaccessatRDI+0xcf fromlowintegercarrierRSI andordinaryreturn, a208-byteownedstate coversoffset207; anyotheraccess/hiddenpremiseinvalidates thatminimum. Thisreportdoesnotreprovethetargetfunction.",
+    "token_shape": [
+      "call",
+      "0x104b8c760",
+      "buf:208",
+      "i:1",
+      "dump",
+      "b0+0xcf",
+      "1"
+    ],
+    "registers": "RDI=b0,RSI=1; remainingintegerregs0 andlow64FPslots0. This doesnotturnsetterintofloatargumentcall.",
+    "observations_available": "Automaticoutb0full208bytesafterinitialcall plusoneexplicitowned1-byte dump. RetainallrawregisterresultsbutneverconsumeunspecifiedRAXasobjectpointer.",
+    "optional_samebuffer_design_only": "A later separatelyselectedsecondsettercoulduseref:b0/i:0 andexplicitdumpagain; no newbuforimplicitout for reuse. This is not aselectedsecondcall orappliedbehavioralexpectedvalue.",
+    "bounded_load": "Oneexplicitcallforinitialshape; atmosttwoifRootlaterselectsbothoff/onhistories, notanautomaticmatrix/sweep. Nodeclaredcurrentexpected/actual/grade."
+  },
+  "possible_processing_protocol_design_NOT_AUTHORIZATION": {
+    "premise": "Exact x86helperaddress/completeinputABI andallstate/inputreadwritebounds mustfirstbe independentlyproved. DoNOTuse208asprocessingstateextent merelybecauseitcoverssetterbyte. Nohelper/callee/globalselectedhere.",
+    "fresh_standalone_shape": "call EXACT_LATER_SELECTED_HELPER buf:EXACT_PROVED_STATE_BYTES hex:EXACT_16_HEX_DIGITS_FOR_8_INPUT_BYTES; RDI=state,RSI=new8Binput; otherargregs0 unless separatelyprovenneeded.",
+    "samebuffer_aftersetter_shape": "call EXACT_LATER_SELECTED_HELPER ref:b0 hex:EXACT_16_HEX_DIGITS_FOR_8_INPUT_BYTES; thendumpb0EXACT_PROVED_STATE_BYTES. Originalb0mustalreadyhavesufficientallocation/fieldinitializationandallpointerfieldsvalid.",
+    "return_capture": "low64XMM0rawhexiscapturedwithoutfloatformatting. IF actualreturnABIprovespackedtwo32-bitlanes, those64bitscanlaterbeinterpretedaslow/high32rawwords. No suchABI/type/pairmeaningorfullXMMvectorpromiseisprovenbyharnessalone.",
+    "memory_capture": "Newinputbufferauto-outrecordscancheckwhetherits8byteschanged; explicitboundedstatedumpcapturesreusedstate. Noinput/outputchannelroles,audioorpublicMutelaw follows.",
+    "missing": "Validstateinitialization/fields/types/targets/lifetime/nointerference,helpercallability andnormalABI, actualpackedreturn convention/FPenvironment/observablecontract; cannotformareviewableconcretecallfromgenericcapabilityalone."
+  },
+  "current_binding_and_history": {
+    "X1_recorded_harness": {
+      "tools/xexec/xexec.c": "ec41326ac35cb504b6e3974018eb000caf0fc5efb016805dd96c99b2b4d6c362",
+      "tools/xexec/xexec.py": "dd63656a4b4b47fead5d3d15c32d2b724e94460ff87bbd63dff181dc439c5460",
+      "built_loader": {
+        "path": "/var/tmp/sound-analysis/xexec/xexec",
+        "sha256": "5ff5decfc7c650d7e240eb0301ca05138e07c57fb7ed6c62673ae918084eb66a"
+      }
+    },
+    "current_C_matches_X1_C": false,
+    "current_Python_matches_X1_Python": true,
+    "current_binary_matches_X1_binary": false,
+    "meaning": "CurrentC63ef1787...e117 andcurrent74040Bbinary5d236b76...5385 differfromX1recordedCec41326a...c362/binary5ff5decf...b66a. CurrentPythondriverisexacthistoricaldd63656a...5460. No currentreproduciblebuild/compiledsourcebindingwasidentifiedwithinselectedsixproviders. Mtime/build()heuristicisnotproof. X1successesdonotcertifycurrentC/binaryornewUtilityfunctions.",
+    "known_history": "Canonical records later256callboundsfix afteroriginalX1; thisexplainssourcehistorydirectionbutdoesnotprovewhichbinarywascompiledfromwhichsource. No binaryinstruction/disassembly/ELF inspectiondone.",
+    "no_historical_claim_rewrite": "Historical476runs/results/importbindings remainasofX1; noreplay/nochangedmanifest/source."
+  },
+  "loader_and_future_readiness_limits": [
+    "Currentownsource mapsmainLivepreferredvmaddrs/no slide,appliesrebase/bind/lazyandnotweak,leavesstaticinitializersunrun,substitutesknownimports/trapsrest. Thosearesourcefactsnotcurrentbinaryexecutionobservation.",
+    "Onlyselectedexplicitself-containedcallinputsreviewable; loaderfixedaddressavailability,import/data/staticsetup andoriginalfunctionfault/trappaths remainactualunknown untilseparatepreflight/Rootselection.",
+    "PythonRunnerinheritsenvironmentanddoesnotprovideexclusiveoutput/preservationmaps/core0/minimalenv/groupownership/completefailureaccounting. Existing20s timeout/trap/faultparseisnotasufficientnewexecutionreceipt; futureboundedprep/outerselectionneeded.",
+    "No gdbskip/intercepts,compiler,versionprobe,original/native/decoder/model/API/installation or speculative harnesspatch wasselectedorperformed."
+  ],
+  "activity": {
+    "current_binary_identity_only": true,
+    "original_targetbytes_or_newsourcebodies_read": false,
+    "new_harness_code_or_patch": false,
+    "imports_Runner_build_main_probes_compiler_decoder_gdb_original": 0,
+    "new_method_or_behavioral_packet": false,
+    "new_grade": 0,
+    "actual_expected": null,
+    "comparison": null,
+    "complete": false
+  },
+  "watch": {
+    "paths": 6,
+    "before": [
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/extracted-execution.md",
+        "bytes": 24813,
+        "sha256": "5d29f7e58544567fc4d4e57deef3b77a25bc3c9e57355657b2f940eec0947d9e"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/xexec/xexec.c",
+        "bytes": 20282,
+        "sha256": "63ef178734c86c0fd42c2a4ca4c4f96426e5d339a0cadbdfc3c0367786b6e117"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/xexec/xexec.py",
+        "bytes": 6632,
+        "sha256": "dd63656a4b4b47fead5d3d15c32d2b724e94460ff87bbd63dff181dc439c5460"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/manifest.json",
+        "bytes": 2591,
+        "sha256": "fe2d8482f4553211a6b30ac479db70520042711ac5f5e93a6050e3814890330b"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/x1-extracted-exec-v1/run.sh",
+        "bytes": 328,
+        "sha256": "a46b598b7326fea91fcf16d77c58be19864ebf35d82a051d689a30e01154842f"
+      },
+      {
+        "path": "/var/tmp/sound-analysis/xexec/xexec",
+        "bytes": 74040,
+        "sha256": "5d236b76351b3a30f56addd37305e8e8935a34ba959fd9be0873cd84886d5385"
+      }
+    ],
+    "after_unchanged": true,
+    "scope": "Six selectedproviders hashedaftertextreadandagainacrossreportassembly; notbroadrepo/historicalwatch."
+  },
+  "decision": "Existingprotocolisexpressiveenoughforownedbyte-setterstateandconditionalRDIstate/RSI8Binput/low64XMM0capturewithoutnewharnessAPI. CurrentC-to-currentbinarybindingandFPcontrol/targetABI/statevalidityremainconcretegates. STOPfeasibility; Rootseparatelyselectsanyfuturepreparation/call."
+}

@@ -1,0 +1,97 @@
+{
+  "id": "REVIEW-DISTORTION-R1",
+  "date_utc": "2026-10-19T20:55:33.786460+00:00",
+  "reviewer": "independent analyst /root/arrangement_spec",
+  "disposition": "changes-requested-for-fixture-preconditions",
+  "reviewed_manifest_sha256": "5a75e9b74f218fb34b19dc46ad1134b63a7c4546ede9c10b379eea72262e5ade",
+  "scope": "All67 requirements and190 cases for nine partial distortion-device profiles; all216 retained official manual blocks; source/package/schema identities and derivations; active-path and UI-state preconditions; canonical snapshots, table/JSON equality and authored whitespace. No reference or candidate execution.",
+  "findings": [
+    {
+      "id": "DST-REVIEW-01",
+      "severity": "medium",
+      "blocking_partial_approval": true,
+      "locations": [
+        "wiki/specs/distortion-devices.md:386",
+        "cases.json:781 DST-EROSION-003",
+        "manual-erosion-blocks.json#erosion:B005"
+      ],
+      "finding": "The positive D12 gesture case unconditionally expects modifier-Y to change Filter Width, but never selects a nonzero Noise Blend. The common prerequisites record modes and disallow assumed defaults; they do not select an enabled width state. The same retained manual explicitly says Filter Width is grayed out at Noise Blend0%. Thus a permitted initial state enters a documented disabled branch, for which modifier-drag updating the stored parameter has not been established. Recording current state or audio P-AUDIO prerequisites does not close this UI-state condition.",
+      "requested_change": "Set and verify an accepted nonzero Noise Blend (for example the already requested100% endpoint) before the positive modifier-Y branch. Keep the sine-only disabled state as a separate case and leave whether its XY gesture can update an inactive stored value U unless separately evidenced. Update JSON/rendered row and freeze a new revision; preserve r1."
+    },
+    {
+      "id": "DST-REVIEW-02",
+      "severity": "low",
+      "blocking_partial_approval": false,
+      "locations": [
+        "wiki/specs/distortion-devices.md:389",
+        "cases.json:817 DST-EROSION-006",
+        "fixture-signals.json:6 signals.S1"
+      ],
+      "finding": "DST-EROSION-006 requests identical-channel S1 for its Stereo Width probe, but S1 is dual mono only in the first second. The second second uses different channel frequencies/amplitudes and the third is opposite-polarity. Using the full defined signal does not supply the named dual-mono baseline. Its null U oracle correctly prevents a false compatibility pass, but the intended finite input is ambiguous.",
+      "requested_change": "Choose S1 first-second segment explicitly, or retain a separately named L=R variant with duration, amplitudes and channel formula pinned. Retain independently established width-sensitive modulation/processed-output requirements and null oracle."
+    }
+  ],
+  "semantic_checks": {
+    "drum_buss": "Trim/Comp/Drive order, Soft/Medium/Hard identities, Crunch/Damp/Transients descriptions, Force To Note, Boom-zero versus positive-Boom Decay branches, audition and processed-path output gain match cited blocks. No transfer, tuning reference/tie, decay equation or bypass identity inferred.",
+    "dynamic_tube": "A/B/C descriptions, Bias/Drive/Tone and signed Envelope behavior supported. Attack/Release no-effect clause is scoped to Envelope0 follower path, and U case requires a witnessed positive nonzero-envelope baseline. Hi-Quality qualitative aliasing/CPU role does not invent a factor or exposed DryWet control.",
+    "erosion": "Current short-delay sine/noise carriers, blend endpoints, disabled Filter Width, Stereo Width and pre12.4 Erosion Legacy load description supported. Erosion2 remains distinct from legacy Erosion; old-Set loading/migration U with no qualifying retained old Set. Two fixture corrections above.",
+    "overdrive": "Pre-distortion band-pass XY axes, Drive0 not guaranteeing zero distortion, post Tone, Dynamics/makeup and return DryWet roles match text. No noise/silence distortion guarantee or calibrated normalization.",
+    "pedal": "Three types, Gain0 caveat, global Output, adaptive post EQ with100/500/1000/2000/3300Hz nominal frequencies, Sub below250Hz and recipes match source. Recipe amounts are not defaults; subjective sound remains U.",
+    "redux": "Device Rate is distinct from host rate; Jitter randomness, Pre/Post order and Post Octave relative to Rate/2, Bits/Shape, DC Shift and mixing roles supported. No rounding, PRNG law, host-rate substitution or Redux Legacy/EcoProcessing semantics inferred.",
+    "roar": "Routing-stage/Blend/crossover conditions, twelve shapers, nine filters and conditional Resonance/Peak/Morph controls, modulation-source choices and units, follower Hold, matrix clearing, feedback gating/filtering, wet gain-hardclip-DryWet order and audio/MIDI sidechain roles match retained text. Feedback indefinite-tail wording is conditional in probes. The unusual MIDI sidechain inactivating Feedback Mode and Amount is retained as documentary, not silently corrected. No numerical topology/normalization, note mapping, random distribution, DSP equation or candidate architecture imposed.",
+    "saturator": "Eight curves, Bass Shaper documented0 to-50dB threshold, main versus Waveshaper Drive, Color order/handles, postclip qualification, six expanded controls and context modes supported. Wet-bound versus dry-mixture distinction maintained. Waveshaper no-effect probes retain active positive-depth/drive controls and U oracle; no undocumented Post Clip disable assumed.",
+    "vinyl_distortion": "Tracing/Pinch harmonic descriptions, XY/modifier routes and global Drive, Soft/Hard, Pinch stereo/mono and independent Crackle controls match source. Generator baseline is separate from harmonic path; density-zero, seed/channel relation and audio laws remain U.",
+    "numeric_and_path_fixtures": "S0-S3 are proposed analytic inputs, not original outputs. Nonzero source, active stage/model/route, effective modulation depth, audible processed path, control-sensitive baselines and other-path isolation are explicit P-AUDIO prerequisites. No invented tolerance, transfer function, silence threshold, oscillator/random seed/distribution, aliasing or oversampling metric.",
+    "lifecycle_and_domains": "All9 devices retain automation, boundary, persistence, undo, malformed-file versus invalid-UI, cancellation, transport, rate/block and teardown probes with null expected values. Recorded legal low/mid/high values do not assert GUI domains; malformed XML paths address actual retained fields. No loader/default, rollback/reset, continuity or fallback promise from stored vocabulary.",
+    "version_ownership": "Current Version12 manual exact12.4.3 parity stays U; profiles remain partial, separate from generic host/rack/mix/automation owners and legacy profiles.18Dpkg cases audit installed bytes only; all172 application cases remain exact-targetU/unexecuted."
+  },
+  "integrity_checks": {
+    "payload_hashes_and_sizes": 38,
+    "source_pins_hashes_and_sizes": 11,
+    "canonical_snapshot_byte_matches": 2,
+    "original_installed_preset_byte_matches": 9,
+    "installed_schema_byte_match": true,
+    "schema_class_field_records_equal_pinned_schema_and_inventory": 9,
+    "preset_root_attributes_and_complete_field_XML_derivations": 9,
+    "manual_source_identity": "D12-AUDIO-EFFECTS in audio-utilities/sources.json; reused original URL/date/version/hash/size match",
+    "manual_HTML_sha256": "9cb15cb3d80bda4771e5add2c2b74f5c57d73ee8850e198acf7cf8a51dfd1299",
+    "schema_sha256": "b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299",
+    "exact_HTML_reextracted_blocks": {
+      "drum-buss": 24,
+      "dynamic-tube": 9,
+      "erosion": 7,
+      "overdrive": 7,
+      "pedal": 36,
+      "redux": 15,
+      "roar": 81,
+      "saturator": 29,
+      "vinyl-distortion": 8
+    },
+    "manual_text_derivations_exact": 216,
+    "unique_requirements": 67,
+    "unique_cases": 190,
+    "all_requirement_contracts_match_canonical": 67,
+    "all_case_rows_ID_input_requirement_kind_provenance_oracle_match_JSON": 190,
+    "all_requirements_have_cases": true,
+    "case_provenance": {
+      "D12": 29,
+      "Dpkg": 18,
+      "U": 143
+    },
+    "null_U_oracles": 143,
+    "exact_target_U_application_cases": 172,
+    "author_validator": "Read validate.py before invoking its read-only default; no --freeze. Passed, then38frozen payloads independently rechecked unchanged. capture.py not executed.",
+    "canonical_links_frontmatter": "pass by read-only validator",
+    "authored_untracked_text_whitespace": "all frozen JSON/MD/TXT/PY payloads scanned directly; no trailing whitespace"
+  },
+  "execution_limits": {
+    "original_execution": false,
+    "candidate_execution": false,
+    "audio_generation": false,
+    "source_figures_independently_inspected": false,
+    "author_shared_source_mutation": false,
+    "tool_installation": false,
+    "compatibility_pass": false
+  },
+  "remaining_risk": "Correct the positive UI-state precondition before partial approval. Exact-build parity, all measured sound/effect/no-effect results, numeric calibration, stochastic behavior, timing, lifecycle and complete profile coverage remain unresolved. Null probes are investigation coverage only."
+}

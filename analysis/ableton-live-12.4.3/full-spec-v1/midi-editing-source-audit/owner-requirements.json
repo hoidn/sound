@@ -1,0 +1,432 @@
+[
+  {
+    "id": "REQ-MIDI-EDIT-001",
+    "operation": "Create empty clip",
+    "preconditions": "Empty Session slot on a MIDI track; double-click or Insert Empty MIDI Clip(s). In Arrangement select an empty timespan on a MIDI track and invoke the same command.",
+    "contract": "Create a MIDI clip in that location. Initial length for double-click, defaults and occupied/audio-slot behavior remain U.",
+    "evidence": "D12/E1; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 54,
+    "literal_row": "| REQ-MIDI-EDIT-001 | Create empty clip | Empty Session slot on a MIDI track; double-click or Insert Empty MIDI Clip(s). In Arrangement select an empty timespan on a MIDI track and invoke the same command. | Create a MIDI clip in that location. Initial length for double-click, defaults and occupied/audio-slot behavior remain U. | D12/E1; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-002",
+    "operation": "Draw and erase",
+    "preconditions": "Focused Notes editor; toggle Draw Mode with B; click empty grid, then existing note. In inactive Draw Mode double-click empty grid or an existing note.",
+    "contract": "Draw adds notes; clicking an existing note in Draw Mode deletes it. Outside Draw Mode double-click adds or deletes respectively. Pitch-lock preference confines a draw gesture to one pitch; Alt/Option temporarily reverses pitch-lock behavior.",
+    "evidence": "D12/E2; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 55,
+    "literal_row": "| REQ-MIDI-EDIT-002 | Draw and erase | Focused Notes editor; toggle Draw Mode with B; click empty grid, then existing note. In inactive Draw Mode double-click empty grid or an existing note. | Draw adds notes; clicking an existing note in Draw Mode deletes it. Outside Draw Mode double-click adds or deletes respectively. Pitch-lock preference confines a draw gesture to one pitch; Alt/Option temporarily reverses pitch-lock behavior. | D12/E2; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-003",
+    "operation": "Selection and insertion",
+    "preconditions": "Click empty editor, drag a time span, click a note, Shift-click another note, or press Escape.",
+    "contract": "Empty click sets insert marker; dragging selects time and contained notes; Enter toggles time/note selection; Shift-click adds/removes a note; Escape deselects. Invert Selection swaps a proper subset with its complement.",
+    "evidence": "D12/E3; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 56,
+    "literal_row": "| REQ-MIDI-EDIT-003 | Selection and insertion | Click empty editor, drag a time span, click a note, Shift-click another note, or press Escape. | Empty click sets insert marker; dragging selects time and contained notes; Enter toggles time/note selection; Shift-click adds/removes a note; Escape deselects. Invert Selection swaps a proper subset with its complement. | D12/E3; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-004",
+    "operation": "Find and select",
+    "preconditions": "Enable Find and Select Notes and change Pitch, Time, Chance, Condition, Count, Duration, Scale or Velocity filter parameters.",
+    "contract": "Matching notes are selected as parameters change; Invert selects nonmatches; Select reapplies current criteria. Pitch matches across octaves. Clicking editor deactivates applied filters and deselects notes. Combining-filter Boolean rules and range inclusivity U.",
+    "evidence": "D12/E4; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 57,
+    "literal_row": "| REQ-MIDI-EDIT-004 | Find and select | Enable Find and Select Notes and change Pitch, Time, Chance, Condition, Count, Duration, Scale or Velocity filter parameters. | Matching notes are selected as parameters change; Invert selects nonmatches; Select reapplies current criteria. Pitch matches across octaves. Clicking editor deactivates applied filters and deselects notes. Combining-filter Boolean rules and range inclusivity U. | D12/E4; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-005",
+    "operation": "Grid snapping",
+    "preconditions": "Drag selected note or resize edge with grid on; toggle grid off or use the temporary grid modifier.",
+    "contract": "Movement is initially free until a grid/offset point, then snaps; original grid offset can be retained. Modifier temporarily reverses grid-enabled state. Snap thresholds, ties and zoom-dependent grid choice U.",
+    "evidence": "D12/E5; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 58,
+    "literal_row": "| REQ-MIDI-EDIT-005 | Grid snapping | Drag selected note or resize edge with grid on; toggle grid off or use the temporary grid modifier. | Movement is initially free until a grid/offset point, then snaps; original grid offset can be retained. Modifier temporarily reverses grid-enabled state. Snap thresholds, ties and zoom-dependent grid choice U. | D12/E5; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-006",
+    "operation": "Move, copy and overlap",
+    "preconditions": "Select notes, drag or use arrows; paste clipboard notes at insert marker; place a same-pitch new note over an old note.",
+    "contract": "Horizontal movement changes time; vertical movement changes pitch. Paste begins at insert marker. A new note overlapping the old note start replaces the old note; overlap limited to the old note end shortens the old note. Exact touching-edge and expression collision results U.",
+    "evidence": "D12/E6; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 59,
+    "literal_row": "| REQ-MIDI-EDIT-006 | Move, copy and overlap | Select notes, drag or use arrows; paste clipboard notes at insert marker; place a same-pitch new note over an old note. | Horizontal movement changes time; vertical movement changes pitch. Paste begins at insert marker. A new note overlapping the old note start replaces the old note; overlap limited to the old note end shortens the old note. Exact touching-edge and expression collision results U. | D12/E6; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-007",
+    "operation": "Resize and duration",
+    "preconditions": "Drag note edge or use Shift+left/right; choose Duration then Set Length in utilities.",
+    "contract": "Edge and keyboard changes follow grid unless bypassed. Set Length applies chosen duration to selected notes, or all clip notes if none selected. Fit to Time Range fits selected note starts/ends to selected range. Minimum duration and edge reversal U.",
+    "evidence": "D12/E7; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 60,
+    "literal_row": "| REQ-MIDI-EDIT-007 | Resize and duration | Drag note edge or use Shift+left/right; choose Duration then Set Length in utilities. | Edge and keyboard changes follow grid unless bypassed. Set Length applies chosen duration to selected notes, or all clip notes if none selected. Fit to Time Range fits selected note starts/ends to selected range. Minimum duration and edge reversal U. | D12/E7; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-008",
+    "operation": "Proportional stretch",
+    "preconditions": "Select multiple notes or time; drag a Note Stretch marker.",
+    "contract": "Selected material scales proportionally; crossing the other marker mirrors note order. Interior pseudo marker stretches/compresses within fixed boundaries without changing outside material. Linked clip envelope timing follows stretch; unlinked envelope timing does not. Exact envelope curve resampling U.",
+    "evidence": "D12/E8; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 61,
+    "literal_row": "| REQ-MIDI-EDIT-008 | Proportional stretch | Select multiple notes or time; drag a Note Stretch marker. | Selected material scales proportionally; crossing the other marker mirrors note order. Interior pseudo marker stretches/compresses within fixed boundaries without changing outside material. Linked clip envelope timing follows stretch; unlinked envelope timing does not. Exact envelope curve resampling U. | D12/E8; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-009",
+    "operation": "Deactivate and undo",
+    "preconditions": "Select notes and invoke Deactivate or 0, then 0 again. Edit notes imported from a MIDI file and invoke Undo.",
+    "contract": "Deactivated notes are muted/grayed; second toggle reactivates. Undo permits return to prior clip state. Editing imported MIDI leaves original file bytes unchanged. Undo grouping for gestures and persistence of history U.",
+    "evidence": "D12/E9; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 62,
+    "literal_row": "| REQ-MIDI-EDIT-009 | Deactivate and undo | Select notes and invoke Deactivate or 0, then 0 again. Edit notes imported from a MIDI file and invoke Undo. | Deactivated notes are muted/grayed; second toggle reactivates. Undo permits return to prior clip state. Editing imported MIDI leaves original file bytes unchanged. Undo grouping for gestures and persistence of history U. | D12/E9; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-010",
+    "operation": "Split, chop and join",
+    "preconditions": "Use Split on an intersected note, Chop Note(s) on Grid on selected notes, or Join on same-pitch selected notes.",
+    "contract": "Split divides into two; command without note selection requires a note intersecting insert marker/spanning time selection. Chop divides according to current grid. Join creates one note per selected pitch and joins MPE envelopes with notes. Conflicting values/gaps/overlap expression interpolation U.",
+    "evidence": "D12/E10; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 63,
+    "literal_row": "| REQ-MIDI-EDIT-010 | Split, chop and join | Use Split on an intersected note, Chop Note(s) on Grid on selected notes, or Join on same-pitch selected notes. | Split divides into two; command without note selection requires a note intersecting insert marker/spanning time selection. Chop divides according to current grid. Join creates one note per selected pitch and joins MPE envelopes with notes. Conflicting values/gaps/overlap expression interpolation U. | D12/E10; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-011",
+    "operation": "Pitch utilities",
+    "preconditions": "Transpose selection; use Fit to Scale with active clip scale; use Invert or Add Interval.",
+    "contract": "Transpose uses semitones or active scale degrees; octave shortcut transposes by octaves. Fit to Scale moves to nearest scale pitch, with equal-distance ties downward, and is disabled without active scale. Invert flips pitch ordering. Interval slider immediately adds selected-note intervals; with no selection Add Interval applies to all notes.",
+    "evidence": "D12/E11; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 64,
+    "literal_row": "| REQ-MIDI-EDIT-011 | Pitch utilities | Transpose selection; use Fit to Scale with active clip scale; use Invert or Add Interval. | Transpose uses semitones or active scale degrees; octave shortcut transposes by octaves. Fit to Scale moves to nearest scale pitch, with equal-distance ties downward, and is disabled without active scale. Invert flips pitch ordering. Interval slider immediately adds selected-note intervals; with no selection Add Interval applies to all notes. | D12/E11; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-012",
+    "operation": "Time utilities",
+    "preconditions": "Use Stretch factor, double/halve, Humanize, Reverse or Legato in Pitch and Time Utilities.",
+    "contract": "Stretch factor changes note duration without changing loop length; double/halve scales targeted note duration, time selection or loop by two. Humanize shifts starts within a quarter-grid division either direction at maximum amount. Reverse flips note-time order; Legato ends notes at next start, final note at loop end. Precise random law and reverse pivot U.",
+    "evidence": "D12/E12; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 65,
+    "literal_row": "| REQ-MIDI-EDIT-012 | Time utilities | Use Stretch factor, double/halve, Humanize, Reverse or Legato in Pitch and Time Utilities. | Stretch factor changes note duration without changing loop length; double/halve scales targeted note duration, time selection or loop by two. Humanize shifts starts within a quarter-grid division either direction at maximum amount. Reverse flips note-time order; Legato ends notes at next start, final note at loop end. Precise random law and reverse pivot U. | D12/E12; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-013",
+    "operation": "Velocity edit and draw",
+    "preconditions": "Edit selected velocity marker by drag or numeric entry; draw in velocity lane.",
+    "contract": "Numeric entry plus Enter sets selected value. Drawing affects notes in traversed grid division, restricted to selected notes if a selection exists. Without selection drawing can affect all notes there. Ramp assigns first/last values and evenly distributes intervening note velocities. Clipping/rounding and same-time ramp tie order U.",
+    "evidence": "D12/E13; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 66,
+    "literal_row": "| REQ-MIDI-EDIT-013 | Velocity edit and draw | Edit selected velocity marker by drag or numeric entry; draw in velocity lane. | Numeric entry plus Enter sets selected value. Drawing affects notes in traversed grid division, restricted to selected notes if a selection exists. Without selection drawing can affect all notes there. Ramp assigns first/last values and evenly distributes intervening note velocities. Clipping/rounding and same-time ramp tie order U. | D12/E13; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-014",
+    "operation": "Velocity randomization and deviation",
+    "preconditions": "Invoke Randomize with selected notes or none; set Velocity Deviation on a note.",
+    "contract": "Randomize changes selected velocities or all notes if none selected, within the stated amount relative to originals. Deviation is a playback-time range; velocity 60 with +20 yields values in 60..80. Double-click a deviated marker resets deviation to zero. Random distribution/seed/repeatability U.",
+    "evidence": "D12/E14; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 67,
+    "literal_row": "| REQ-MIDI-EDIT-014 | Velocity randomization and deviation | Invoke Randomize with selected notes or none; set Velocity Deviation on a note. | Randomize changes selected velocities or all notes if none selected, within the stated amount relative to originals. Deviation is a playback-time range; velocity 60 with +20 yields values in 60..80. Double-click a deviated marker resets deviation to zero. Random distribution/seed/repeatability U. | D12/E14; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-015",
+    "operation": "Chance editing",
+    "preconditions": "Show Chance lane; edit marker by drag or typed numeric value and Enter; use randomize amount.",
+    "contract": "Chance lies in documented 0..100 percent range. Probability 50 with randomize amount 25 yields 25..75 percent. With no note selection, changing amount alone does not apply; Enter or Randomize applies to all. With selection parameter change applies immediately. RNG law and out-of-range text handling U.",
+    "evidence": "D12/E15; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 68,
+    "literal_row": "| REQ-MIDI-EDIT-015 | Chance editing | Show Chance lane; edit marker by drag or typed numeric value and Enter; use randomize amount. | Chance lies in documented 0..100 percent range. Probability 50 with randomize amount 25 yields 25..75 percent. With no note selection, changing amount alone does not apply; Enter or Randomize applies to all. With selection parameter change applies immediately. RNG law and out-of-range text handling U. | D12/E15; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-016",
+    "operation": "Probability groups",
+    "preconditions": "Select notes and create Play All or Play One group; remove a member with Ungroup or add it to another group.",
+    "contract": "One shared probability marker replaces individual markers: diamond for Play All, triangle for Play One. All group notes share trigger decision in Play All; Play One chooses at most one group note per decision, selected randomly when triggered. Adding to a new group removes original membership. Ungroup restores individual markers. Cross-time decision scheduling U.",
+    "evidence": "D12/E16; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 69,
+    "literal_row": "| REQ-MIDI-EDIT-016 | Probability groups | Select notes and create Play All or Play One group; remove a member with Ungroup or add it to another group. | One shared probability marker replaces individual markers: diamond for Play All, triangle for Play One. All group notes share trigger decision in Play All; Play One chooses at most one group note per decision, selected randomly when triggered. Adding to a new group removes original membership. Ungroup restores individual markers. Cross-time decision scheduling U. | D12/E16; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-017",
+    "operation": "Fold and scale display",
+    "preconditions": "Enable Fold to Notes, or enable scale and Fold to Scale.",
+    "contract": "Fold to Notes hides unused pitches. Fold to Scale hides out-of-scale rows except those containing notes. Drum Rack without Fold to Notes displays populated-device pad rows. Folding applies globally across clips; it changes visible rows, not note deletion. Scale highlighting is global.",
+    "evidence": "D12/E17; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 70,
+    "literal_row": "| REQ-MIDI-EDIT-017 | Fold and scale display | Enable Fold to Notes, or enable scale and Fold to Scale. | Fold to Notes hides unused pitches. Fold to Scale hides out-of-scale rows except those containing notes. Drum Rack without Fold to Notes displays populated-device pad rows. Folding applies globally across clips; it changes visible rows, not note deletion. Scale highlighting is global. | D12/E17; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-018",
+    "operation": "Crop and time commands",
+    "preconditions": "Crop Clip with loop brace; Crop to Time Selection; use Duplicate Time, Delete Time or Insert Time.",
+    "contract": "Crop deletes MIDI outside loop/time selection and creates no new file. Duplicate Time inserts copied selected time and notes; Delete Time closes selected gap; Insert Time inserts selected-length silence before selection. These time commands do not change clip start/end or loop-brace settings. Notes crossing crop/cut boundaries U.",
+    "evidence": "D12/E18; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 71,
+    "literal_row": "| REQ-MIDI-EDIT-018 | Crop and time commands | Crop Clip with loop brace; Crop to Time Selection; use Duplicate Time, Delete Time or Insert Time. | Crop deletes MIDI outside loop/time selection and creates no new file. Duplicate Time inserts copied selected time and notes; Delete Time closes selected gap; Insert Time inserts selected-length silence before selection. These time commands do not change clip start/end or loop-brace settings. Notes crossing crop/cut boundaries U. | D12/E18; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-019",
+    "operation": "Loop duplication",
+    "preconditions": "Select loop brace and Duplicate.",
+    "contract": "Double loop length, duplicate original loop notes, zoom out as needed, and shift later notes so their distance from loop end is retained. MIDI clips loop by default; disabling loop grays brace. Crossing-edge notes U.",
+    "evidence": "D12/E19; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 72,
+    "literal_row": "| REQ-MIDI-EDIT-019 | Loop duplication | Select loop brace and Duplicate. | Double loop length, duplicate original loop notes, zoom out as needed, and shift later notes so their distance from loop end is retained. MIDI clips loop by default; disabling loop grays brace. Crossing-edge notes U. | D12/E19; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-020",
+    "operation": "Multi-clip focus",
+    "preconditions": "Select multiple MIDI clips; enable Focus Mode; select a foreground clip by note or loop bar.",
+    "contract": "Focus limits editing to foreground clip; others remain visible/inactive. Without Focus, note editing may span selected clips. Velocity/Chance lanes always target one foreground clip. Focus ignores loop-bar multiselection. Notes display clip colors when active, gray when inactive.",
+    "evidence": "D12/E20; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 73,
+    "literal_row": "| REQ-MIDI-EDIT-020 | Multi-clip focus | Select multiple MIDI clips; enable Focus Mode; select a foreground clip by note or loop bar. | Focus limits editing to foreground clip; others remain visible/inactive. Without Focus, note editing may span selected clips. Velocity/Chance lanes always target one foreground clip. Focus ignores loop-bar multiselection. Notes display clip colors when active, gray when inactive. | D12/E20; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-021",
+    "operation": "Session and Arrangement multi-clip limits",
+    "preconditions": "Select Session MIDI clips or Arrangement time selection across MIDI tracks.",
+    "contract": "Session displays up to eight MIDI clips, all looped, ordered by track then scene; repeats loops until realignment. Arrangement displays MIDI clips from up to eight tracks, ordered by track/time, allows drawing across clip boundaries except in Focus, and fits first-to-last clip range. Excess/unlooped-selection fallback U.",
+    "evidence": "D12/E21; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 74,
+    "literal_row": "| REQ-MIDI-EDIT-021 | Session and Arrangement multi-clip limits | Select Session MIDI clips or Arrangement time selection across MIDI tracks. | Session displays up to eight MIDI clips, all looped, ordered by track then scene; repeats loops until realignment. Arrangement displays MIDI clips from up to eight tracks, ordered by track/time, allows drawing across clip boundaries except in Focus, and fits first-to-last clip range. Excess/unlooped-selection fallback U. | D12/E21; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-022",
+    "operation": "Preview and follow",
+    "preconditions": "Instrument present; enable Preview and add/move note. Enable Follow during playback then edit.",
+    "contract": "Preview auditions corresponding pitch; Preview switch state is shared across MIDI tracks. Follow pauses for editor edits and resumes upon Follow activation or transport restart. Preview note-off lifecycle and exact output/onset U.",
+    "evidence": "D12/E22; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 75,
+    "literal_row": "| REQ-MIDI-EDIT-022 | Preview and follow | Instrument present; enable Preview and add/move note. Enable Follow during playback then edit. | Preview auditions corresponding pitch; Preview switch state is shared across MIDI tracks. Follow pauses for editor edits and resumes upon Follow activation or transport restart. Preview note-off lifecycle and exact output/onset U. | D12/E22; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-023",
+    "operation": "Tool target and application",
+    "preconditions": "Open Transform/Generate, select tool; choose time/note selection or none.",
+    "contract": "Transform replaces transformed input notes, targeting time selection, note selection or loop if none; priority when both coexist U. Generator targets time selection or loop. Generator treatment of existing material remains U because source statements differ (C1).",
+    "evidence": "D12/T1; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 76,
+    "literal_row": "| REQ-MIDI-EDIT-023 | Tool target and application | Open Transform/Generate, select tool; choose time/note selection or none. | Transform replaces transformed input notes, targeting time selection, note selection or loop if none; priority when both coexist U. Generator targets time selection or loop. Generator treatment of existing material remains U because source statements differ (C1). | D12/T1; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-024",
+    "operation": "Auto Apply and deferred Apply",
+    "preconditions": "Auto Apply initially enabled; adjust valid tool settings; disable Auto Apply; edit settings; press Apply.",
+    "contract": "Enabled adjustments immediately transform/generate notes; disabling restores original notes; with disabled state settings changes wait for Apply. Ctrl/Cmd+Enter also applies current tool. Meaning of original after switching selection/tool and commit boundaries U.",
+    "evidence": "D12/T1; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 77,
+    "literal_row": "| REQ-MIDI-EDIT-024 | Auto Apply and deferred Apply | Auto Apply initially enabled; adjust valid tool settings; disable Auto Apply; edit settings; press Apply. | Enabled adjustments immediately transform/generate notes; disabling restores original notes; with disabled state settings changes wait for Apply. Ctrl/Cmd+Enter also applies current tool. Meaning of original after switching selection/tool and commit boundaries U. | D12/T1; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-025",
+    "operation": "Tool undo, redo and reset",
+    "preconditions": "Apply a tool; use Undo/Redo; change tool parameters then Reset.",
+    "contract": "Undo/Redo changes MIDI note results, not parameter values. Reset affects selected-tool parameters, not notes, and is disabled when defaults restored. Exact defaults and undo granularity U.",
+    "evidence": "D12/T1; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 78,
+    "literal_row": "| REQ-MIDI-EDIT-025 | Tool undo, redo and reset | Apply a tool; use Undo/Redo; change tool parameters then Reset. | Undo/Redo changes MIDI note results, not parameter values. Reset affects selected-tool parameters, not notes, and is disabled when defaults restored. Exact defaults and undo granularity U. | D12/T1; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-026",
+    "operation": "Scale-aware tools and Max availability",
+    "preconditions": "Enable clip scale and use pitch-related tool parameter; select bundled Max tools.",
+    "contract": "Pitch parameters use scale degrees instead of semitones when scale active. Velocity Shaper and Euclidean are documented bundled Max tools in Standard/Suite; third-party discovery accepts AMXD under dedicated library tool directories or browser Places. Max load/failure/authorization/editor ABI U.",
+    "evidence": "D12/T2; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 79,
+    "literal_row": "| REQ-MIDI-EDIT-026 | Scale-aware tools and Max availability | Enable clip scale and use pitch-related tool parameter; select bundled Max tools. | Pitch parameters use scale degrees instead of semitones when scale active. Velocity Shaper and Euclidean are documented bundled Max tools in Standard/Suite; third-party discovery accepts AMXD under dedicated library tool directories or browser Places. Max load/failure/authorization/editor ABI U. | D12/T2; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-027",
+    "operation": "Arpeggiate",
+    "preconditions": "Selected chord; configure Style, Distance, Steps, Rate and Gate.",
+    "contract": "Split selected notes into a sequence using one of 18 styles. Distance controls transposed-step interval in semitones/scale degrees, Steps count, Rate spacing, Gate duration. Gate below 100 percent shortens, above 100 lengthens. Exact styles, retriggering, clipping and random modes U.",
+    "evidence": "D12/T3; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 80,
+    "literal_row": "| REQ-MIDI-EDIT-027 | Arpeggiate | Selected chord; configure Style, Distance, Steps, Rate and Gate. | Split selected notes into a sequence using one of 18 styles. Distance controls transposed-step interval in semitones/scale degrees, Steps count, Rate spacing, Gate duration. Gate below 100 percent shortens, above 100 lengthens. Exact styles, retriggering, clipping and random modes U. | D12/T3; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-028",
+    "operation": "Chop tool",
+    "preconditions": "Select note(s); choose Parts 2..64, Gaps, pattern/emphasis, Stretch Chunks and Variation.",
+    "contract": "Divide notes into selected parts; positive Gaps inserts a gap after that many notes, negative Gaps sets gaps after each note. Pattern has at most 16 parts and repeats above 16. Manual gap edits replace Gaps display with dash; changing Gaps replaces manual pattern. Emphasis stretches chunks by 2..8. Exact variation law U.",
+    "evidence": "D12/T4; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 81,
+    "literal_row": "| REQ-MIDI-EDIT-028 | Chop tool | Select note(s); choose Parts 2..64, Gaps, pattern/emphasis, Stretch Chunks and Variation. | Divide notes into selected parts; positive Gaps inserts a gap after that many notes, negative Gaps sets gaps after each note. Pattern has at most 16 parts and repeats above 16. Manual gap edits replace Gaps display with dash; changing Gaps replaces manual pattern. Emphasis stretches chunks by 2..8. Exact variation law U. | D12/T4; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-029",
+    "operation": "Connect",
+    "preconditions": "Select notes separated in time; set Spread, Density, Rate and Tie.",
+    "contract": "Insert notes into gaps; Spread bounds randomized pitch shift relative to original pitches; Density specifies filled fraction, with 100 percent filling gaps; Rate controls inserted lengths and Tie extension chance to next original. Precise randomness, polyphonic pairing and endpoints U.",
+    "evidence": "D12/T5; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 82,
+    "literal_row": "| REQ-MIDI-EDIT-029 | Connect | Select notes separated in time; set Spread, Density, Rate and Tie. | Insert notes into gaps; Spread bounds randomized pitch shift relative to original pitches; Density specifies filled fraction, with 100 percent filling gaps; Rate controls inserted lengths and Tie extension chance to next original. Precise randomness, polyphonic pairing and endpoints U. | D12/T5; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-030",
+    "operation": "Glissando",
+    "preconditions": "At least two selected successive notes; set Start percent and Curve.",
+    "contract": "Tie pitches by per-note pitch-bend curve; Start controls bend start relative to note length; Curve controls shape. Bend visible in MPE editor. With fewer than two notes no glissando can be created; exact UI rejection/no-op U. Bend mapping/range clipping U.",
+    "evidence": "D12/T6; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 83,
+    "literal_row": "| REQ-MIDI-EDIT-030 | Glissando | At least two selected successive notes; set Start percent and Curve. | Tie pitches by per-note pitch-bend curve; Start controls bend start relative to note length; Curve controls shape. Bend visible in MPE editor. With fewer than two notes no glissando can be created; exact UI rejection/no-op U. Bend mapping/range clipping U. | D12/T6; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-031",
+    "operation": "LFO tool",
+    "preconditions": "Selected notes; select Pitch Bend, Slide or Pressure; choose Sine/Square/Triangle/Random, Rate, envelope and amount.",
+    "contract": "Write selected expression using oscillator. Rate 1 corresponds to 4 beats; range 1..1/128. Attack 100 percent resets Decay to 0. Bend Amount spans twice clip bend range and base spans that range; Slide/Pressure controls allow -127..127. Curve visibility C3 and exact waveform/sampling/random law U.",
+    "evidence": "D12/T7; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 84,
+    "literal_row": "| REQ-MIDI-EDIT-031 | LFO tool | Selected notes; select Pitch Bend, Slide or Pressure; choose Sine/Square/Triangle/Random, Rate, envelope and amount. | Write selected expression using oscillator. Rate 1 corresponds to 4 beats; range 1..1/128. Attack 100 percent resets Decay to 0. Bend Amount spans twice clip bend range and base spans that range; Slide/Pressure controls allow -127..127. Curve visibility C3 and exact waveform/sampling/random law U. | D12/T7; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-032",
+    "operation": "Ornament",
+    "preconditions": "Select notes; choose Flam or Grace Notes; set Position, Velocity and grace pitch/count/chance.",
+    "contract": "Flam adds one initial note; Position sign replaces beginning or prepends, magnitude uses grid fraction. Grace adds equal-duration notes filling grid fraction; alternating notes shift up/down semitone or scale degree, or Same keeps pitch. Reapplication adds further ornaments. Chance/velocity relative to originals; exact rounding/cross-boundary handling U.",
+    "evidence": "D12/T8; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 85,
+    "literal_row": "| REQ-MIDI-EDIT-032 | Ornament | Select notes; choose Flam or Grace Notes; set Position, Velocity and grace pitch/count/chance. | Flam adds one initial note; Position sign replaces beginning or prepends, magnitude uses grid fraction. Grace adds equal-duration notes filling grid fraction; alternating notes shift up/down semitone or scale degree, or Same keeps pitch. Reapplication adds further ornaments. Chance/velocity relative to originals; exact rounding/cross-boundary handling U. | D12/T8; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-033",
+    "operation": "Quantize tool",
+    "preconditions": "Select notes; set grid/meter, start/end targets and Amount.",
+    "contract": "Quantize chosen start/end times toward specified divisions, including triplets. End quantization changes length; Amount applies a fraction of movement. Edit-menu Quantize uses tool settings. Exact nearest-line tie law, zero-length prevention and conflicting settings shortcut C2 U.",
+    "evidence": "D12/T9; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 86,
+    "literal_row": "| REQ-MIDI-EDIT-033 | Quantize tool | Select notes; set grid/meter, start/end targets and Amount. | Quantize chosen start/end times toward specified divisions, including triplets. End quantization changes length; Amount applies a fraction of movement. Edit-menu Quantize uses tool settings. Exact nearest-line tie law, zero-length prevention and conflicting settings shortcut C2 U. | D12/T9; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-034",
+    "operation": "Recombine",
+    "preconditions": "Select notes; choose Position/Pitch/Duration/Velocity; enable Shuffle/Mirror and nonzero Rotate.",
+    "contract": "Permute chosen values among notes in order Shuffle then Mirror then Rotate. Without Rotate on Grid, steps span up to note count minus one in either direction. Grid rotation uses grid-cell count. Shuffle generates new permutation per Apply, with no guarantee of difference. Simultaneous-note ordering U.",
+    "evidence": "D12/T10; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 87,
+    "literal_row": "| REQ-MIDI-EDIT-034 | Recombine | Select notes; choose Position/Pitch/Duration/Velocity; enable Shuffle/Mirror and nonzero Rotate. | Permute chosen values among notes in order Shuffle then Mirror then Rotate. Without Rotate on Grid, steps span up to note count minus one in either direction. Grid rotation uses grid-cell count. Shuffle generates new permutation per Apply, with no guarantee of difference. Simultaneous-note ordering U. | D12/T10; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-035",
+    "operation": "Span",
+    "preconditions": "Select successive notes; choose Legato, Tenuto or Staccato with Offset/Variation.",
+    "contract": "Legato ends notes at next start and final note at time-selection end or loop end. Tenuto preserves length with zero controls. Staccato uses half minimum inter-start distance. Positive Offset lengthens and negative shortens up to grid step; positive Variation shortens randomly, negative lengthens. Coincident/single-note minimum U.",
+    "evidence": "D12/T11; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 88,
+    "literal_row": "| REQ-MIDI-EDIT-035 | Span | Select successive notes; choose Legato, Tenuto or Staccato with Offset/Variation. | Legato ends notes at next start and final note at time-selection end or loop end. Tenuto preserves length with zero controls. Staccato uses half minimum inter-start distance. Positive Offset lengthens and negative shortens up to grid step; positive Variation shortens randomly, negative lengthens. Coincident/single-note minimum U. | D12/T11; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-036",
+    "operation": "Strum",
+    "preconditions": "Select chord; set Strum Low, High and Tension.",
+    "contract": "Adjust note starts by pitch-position curve. Low/High at ±100 percent offset lowest/highest by up to one grid step respectively; zero Tension distributes offsets evenly; zero Low and High has no effect. Exact nonlinear curve and chord grouping U.",
+    "evidence": "D12/T12; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 89,
+    "literal_row": "| REQ-MIDI-EDIT-036 | Strum | Select chord; set Strum Low, High and Tension. | Adjust note starts by pitch-position curve. Low/High at ±100 percent offset lowest/highest by up to one grid step respectively; zero Tension distributes offsets evenly; zero Low and High has no effect. Exact nonlinear curve and chord grouping U. | D12/T12; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-037",
+    "operation": "Time Warp tool",
+    "preconditions": "Select notes/time range; enable one to three speed breakpoints; set time/speed and toggles.",
+    "contract": "Map speed curve over selection; Quantize snaps warped notes according to grid. Preserve Time Range keeps results within original range. Include Note End accounts for note ends in transformation and may change duration. Integration/interpolation and zero-speed domains U.",
+    "evidence": "D12/T13; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 90,
+    "literal_row": "| REQ-MIDI-EDIT-037 | Time Warp tool | Select notes/time range; enable one to three speed breakpoints; set time/speed and toggles. | Map speed curve over selection; Quantize snaps warped notes according to grid. Preserve Time Range keeps results within original range. Include Note End accounts for note ends in transformation and may change duration. Integration/interpolation and zero-speed domains U. | D12/T13; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-038",
+    "operation": "Velocity Shaper",
+    "preconditions": "Working Max tool; select notes, edit envelope, minimum/maximum, Loop, Rotate and Division.",
+    "contract": "Shape note velocities with breakpoint envelope bounded by chosen minimum/maximum. Loop sets envelope repetition count; Rotate shifts by Division steps (Rotate 1 at Grid shifts one grid step right). Exact sample/interpolation and equal-time ordering U.",
+    "evidence": "D12/T14; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 91,
+    "literal_row": "| REQ-MIDI-EDIT-038 | Velocity Shaper | Working Max tool; select notes, edit envelope, minimum/maximum, Loop, Rotate and Division. | Shape note velocities with breakpoint envelope bounded by chosen minimum/maximum. Loop sets envelope repetition count; Rotate shifts by Division steps (Rotate 1 at Grid shifts one grid step right). Exact sample/interpolation and equal-time ordering U. | D12/T14; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-039",
+    "operation": "Rhythm",
+    "preconditions": "Choose pitch/pad, Steps up to 16, pattern, Density, duration, Split, Shift and accents.",
+    "contract": "Repeat pattern through selected time. Density note-count maximum equals Steps; Step Duration determines repetitions. Shift moves by steps; Split probabilistically halves step. Accent Frequency 1 accents every note. Exact pattern enumeration/random splitting U.",
+    "evidence": "D12/T15; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 92,
+    "literal_row": "| REQ-MIDI-EDIT-039 | Rhythm | Choose pitch/pad, Steps up to 16, pattern, Density, duration, Split, Shift and accents. | Repeat pattern through selected time. Density note-count maximum equals Steps; Step Duration determines repetitions. Shift moves by steps; Split probabilistically halves step. Accent Frequency 1 accents every note. Exact pattern enumeration/random splitting U. | D12/T15; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-040",
+    "operation": "Seed",
+    "preconditions": "Choose pitch/duration/velocity ranges plus Voices and Density.",
+    "contract": "Random notes stay in selected ranges; equal pitch handles yield one pitch. Duration chooser spans 1/128 note..whole note; velocity 1..127. Voices bounds simultaneous notes; Density controls population relative to pitch range. Distribution/seed and exact density-to-count U.",
+    "evidence": "D12/T16; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 93,
+    "literal_row": "| REQ-MIDI-EDIT-040 | Seed | Choose pitch/duration/velocity ranges plus Voices and Density. | Random notes stay in selected ranges; equal pitch handles yield one pitch. Duration chooser spans 1/128 note..whole note; velocity 1..127. Voices bounds simultaneous notes; Density controls population relative to pitch range. Distribution/seed and exact density-to-count U. | D12/T16; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-041",
+    "operation": "Shape",
+    "preconditions": "Choose/draw pitch shape, pitch bounds, Rate, Tie, Density and Jitter.",
+    "contract": "Generate pitches along shape in bounds. Rate sets minimum length; Tie can extend to next note. Jitter 0 follows shape, larger Jitter departs randomly but remains within pitch bounds. Shape sampling/pitch rounding and distribution U.",
+    "evidence": "D12/T17; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 94,
+    "literal_row": "| REQ-MIDI-EDIT-041 | Shape | Choose/draw pitch shape, pitch bounds, Rate, Tie, Density and Jitter. | Generate pitches along shape in bounds. Rate sets minimum length; Tie can extend to next note. Jitter 0 follows shape, larger Jitter departs randomly but remains within pitch bounds. Shape sampling/pitch rounding and distribution U. | D12/T17; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-042",
+    "operation": "Stacks",
+    "preconditions": "Choose chord(s), root, inversion, duration and offset in selected scale.",
+    "contract": "Fill time selection or loop with chords; add/remove progression chords. Clip scale initializes root and restricts root choices to scale pitches. Duration/offset use eighths of original chord length; controls refer to selected chord. Custom .stacks bank from browser Places replaces default. Chord tables, malformed-bank response and exact voice-leading U.",
+    "evidence": "D12/T18; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 95,
+    "literal_row": "| REQ-MIDI-EDIT-042 | Stacks | Choose chord(s), root, inversion, duration and offset in selected scale. | Fill time selection or loop with chords; add/remove progression chords. Clip scale initializes root and restricts root choices to scale pitches. Duration/offset use eighths of original chord length; controls refer to selected chord. Custom .stacks bank from browser Places replaces default. Chord tables, malformed-bank response and exact voice-leading U. | D12/T18; target U |"
+  },
+  {
+    "id": "REQ-MIDI-EDIT-043",
+    "operation": "Euclidean",
+    "preconditions": "Working Max generator; enable up to four voices and set pitch, velocity, rotation, steps, density, division.",
+    "contract": "Generate within selection/loop. Each voice has enable, pitch, velocity and rotation; disabled voices contribute no notes. Division controls step length; shorter patterns repeat/wrap; Density controls repetitions and wraps if needed. Rotation randomization changes voice offsets; exact Euclidean pattern algorithm U.",
+    "evidence": "D12/T19; target U",
+    "snapshot": "owner-snapshots/spec-r2.md",
+    "line": 96,
+    "literal_row": "| REQ-MIDI-EDIT-043 | Euclidean | Working Max generator; enable up to four voices and set pitch, velocity, rotation, steps, density, division. | Generate within selection/loop. Each voice has enable, pitch, velocity and rotation; disabled voices contribute no notes. Division controls step length; shorter patterns repeat/wrap; Density controls repetitions and wraps if needed. Rotation randomization changes voice offsets; exact Euclidean pattern algorithm U. | D12/T19; target U |"
+  }
+]

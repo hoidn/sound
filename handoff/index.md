@@ -2,20 +2,21 @@
 id: NAV-HANDOFF
 type: index
 status: active
-updated: 2026-10-18
+updated: 2026-10-20
 access: handoff
 ---
 
 # Reviewed implementation handoffs
 
-23 finite releases exist, and 13 are current:
-als-container-v1, automation-envelopes-v2, browser-index-v1, bundled-device-parameters-v1, clip-launch-v2, live-set-structure-v1, midi-config-v4, midi-note-storage-v2, mix-graph-v1, mixer-values-v2, plugin-discovery-v1, transport-state-v3, warp-markers-v2. The other 10 are superseded:
-automation-envelopes-v1, clip-launch-v1, midi-config-v1, midi-config-v2, midi-config-v3, midi-note-storage-v1, mixer-values-v1, transport-state-v1, transport-state-v2, warp-markers-v1. Each row's Supersedes column gives the chain. Approval
+36 finite releases exist, and 19 are current:
+als-container-v1, automation-envelopes-v2, browser-index-v1, bundled-device-parameters-v1, clip-launch-v2, device-analog-v1, device-collision-v1, device-corpus-v5, device-electric-v2, device-tension-v1, live-set-structure-v1, midi-config-v4, midi-note-storage-v4, mix-graph-v1, mixer-values-v2, playback-core-v1, plugin-discovery-v1, transport-state-v3, warp-markers-v2. The other 17 are superseded:
+automation-envelopes-v1, clip-launch-v1, device-corpus-v1, device-corpus-v2, device-corpus-v3, device-corpus-v4, device-electric-v1, midi-config-v1, midi-config-v2, midi-config-v3, midi-note-storage-v1, midi-note-storage-v2, midi-note-storage-v3, mixer-values-v1, transport-state-v1, transport-state-v2, warp-markers-v1. Each row's Supersedes column gives the chain. Approval
 is limited to explicitly partial requirement clauses. Expectations are labelled
 by provenance: static-derived, extracted execution of the original x86_64 code
 (ADR 0003), or composed spec conformance (ADR 0004). Nothing has been compared
-with a running Live. A fresh restricted implementation workspace is still
-required.
+with a running Live. The later analyst plan/neutral project status records a separate implementation
+workspace provisioned on2026-10-19; implementation requires a fresh role-appropriate
+context there. This catalog does not authorize implementation in an analyst context.
 
 > **Fixture defect, corrected 2026-10-18.**
 > [SPEC-LIVE-SET-STRUCTURE](../wiki/specs/live-set-structure.md) shows that opening a
@@ -55,6 +56,28 @@ required.
 | [automation-envelopes-v2](automation-envelopes-v2/README.md) | Automation envelope storage, targets, event order and load checks on openable fixtures, including the removal on open of under-populated envelopes; no evaluated or playback values | SPEC-AUTOMATION-ENVELOPES r4, partial REQ-001 to 003, 005 to 009, 012 only; 004, 010, 011, 013 unreleased | [Approved with listed corrections](automation-envelopes-v2/REVIEW.md) | `267554cb2edc6c9960bfd5d67bcf996b833de15b9375063edfce4232c09d3791` | automation-envelopes-v1 (corrects the fixture defect; withdraws v1 cases 003, 004 and 011, which were wrong) |
 | [warp-markers-v2](warp-markers-v2/README.md) | Warp markers in Live Sets as in v1 on device-free openable fixtures, plus beat-to-sample conversion and the REQ-015 and 016 edges from extracted execution; no playback mapping | SPEC-WARP-MARKERS r4, partial REQ-001 to 004, 007, 008, 010 to 013, 015, 016 only; 005, 006, 009, 014 unreleased | [Approved with narrowing](warp-markers-v2/REVIEW.md) | `8207ba862c73149821da6e2433b4e5f7fffbae118f540652645aadea5f186cd9` | warp-markers-v1 (corrects the fixture defect; withdraws case 018) |
 | [clip-launch-v2](clip-launch-v2/README.md) | Stored clip and scene launch settings as in v1 on openable fixtures, plus grid and boundary arithmetic as value functions of explicit inputs (not launch timing), chance rescaling and limits, and follow-time rounding from extracted execution | SPEC-CLIP-LAUNCH r4, partial REQ-001 to 007, 009, 011 to 018 only; 008, 010, 019 to 023 unreleased | [Approved with narrowing](clip-launch-v2/REVIEW.md) | `02c0212fe8d5b454e3d44e64cd0dbd20299919dddf135032693ba33eee8b6024` | clip-launch-v1 (corrects the fixture defect; carries all 50 cases) |
+| [playback-core-v1](playback-core-v1/README.md) | Transport, Trigger launch boundaries, MIDI note emission and unwarped PCM audio computations for explicit action scripts; extracted arithmetic with static control paths, no whole-application compatibility result | SPEC-PLAYBACK-CORE r1 (corrections carried into r2), partial REQ-001 to 015 and 017 to 020; 016 and 021 to 023 unreleased | [Approved with clarifications](playback-core-v1/REVIEW.md) | `c4dc2c5c2e6c963cadc5d06e314a38ad85d8ec9664dd4bb4a562119754b1e20b` | None |
+| [device-collision-v1](device-collision-v1/README.md) | Two fixed Collision output comparisons: constructor effective silence and the calibrated 44.1 kHz Pipe render; metrics and complete comparison-domain vectors included | SPEC-DEVICE-COLLISION r1, partial REQ-001/002/003/014 only; 2 cases; modal, noise and other outputs unreleased | [Approved finite review](device-collision-v1/REVIEW.md) | `c1ea731dcee088f9c6a64d786ddf2d36ad84a7799aba0af59b961dfb024d7da2` | None |
+| [device-electric-v1](device-electric-v1/README.md) | 117 finite mono Electric outputs with complete named control vectors, three explicit parameter histories and calibrated envelope/band/partial measurements; unstable and random-level portions excluded | SPEC-DEVICE-ELECTRIC r2, partial REQ-001, 005 to 012, 014 and 015; other clauses unreleased | [Approved finite review](device-electric-v1/REVIEW.md) | `1f4e84947bf1ffa9fd605f73381a9778ad8ab4af1b6f9e14662458d606e0dd4f` | None |
+| [device-corpus-v1](device-corpus-v1/README.md) | 24 finite Corpus groups, 68 evaluations from exact control vectors and generated signals; executable resolved-mode/onset/band/waveform criteria with explicit omitted modes | SPEC-DEVICE-CORPUS r3, partial REQ-001 and 004 to 012; 002, 003 and 013 unreleased | [Approved finite review](device-corpus-v1/REVIEW.md) | `9fa257fa0e76d666d17da3fc363bf0cfd2facd0db3542db05d22a4260b771af2` | None |
+| [device-electric-v2](device-electric-v2/README.md) | Electric finite mono outputs as v1; editorial correction to the restricted-workspace permission sentence only; all numerical inputs, outputs and measurements unchanged | SPEC-DEVICE-ELECTRIC r2, same partial scopes and 117 evaluations as v1 | [Approved finite review](device-electric-v2/REVIEW.md) | `c53a829a459bba8a32311b3f537adc54607e2d05c0b2182ed007012b34591273` | device-electric-v1 |
+| [device-tension-v1](device-tension-v1/README.md) | 27 calibrated Tension mono outputs: 26 stable settings plus one repeated-strike sequence; fixed waveform and partial comparisons; chaotic and uncalibrated settings excluded | SPEC-DEVICE-TENSION r2, partial REQ-001, 004, 005, 006, 007, 008, 009, 010, 011, 012; 27 evaluations only; other scopes unreleased | [Approved finite review](device-tension-v1/REVIEW.md) | `02f9a0166bd6538ecfca0dcbebaad79b2397b14c75ca8a6608b5de618a1ffa3d` | None |
+| [device-analog-v1](device-analog-v1/README.md) | 38 deterministic groups / 42 finite evaluations; selected onset, envelope and stationary audio measurements only | device-analog r1, finite partial REQ-001, 004–008, 011–017 and 023 | [Approved finite review](device-analog-v1/REVIEW.md) | `b98157cd4cc77661f0755002318d8019789a51790138668ff721a50376f6e231` | None |
+| [device-corpus-v2](device-corpus-v2/README.md) | Corpus finite comparisons as v1 plus one Free Ramp Up waveform vector under its own 1%per-channel RMS criterion; 24groups/69evaluations, old68exact | SPEC-DEVICE-CORPUS r4, same partial REQ-001 and004–012; 002,003,013 unreleased | [Approved finite extension](device-corpus-v2/REVIEW.md) | `7207cba976e25616e93efdb0e6685533570ed71b805d1920711c44c890047fab` | device-corpus-v1 (strict finite extension) |
+
+| [device-corpus-v3](device-corpus-v3/README.md) | Corpus finite comparisons as v2 plus two exact held-note inputs; 25 groups/71 evaluations, all 69 earlier evaluations retained | SPEC-DEVICE-CORPUS r5, partial REQ-001 and 004–013; 002/003 and general MIDI behavior unreleased | [Approved finite extension](device-corpus-v3/REVIEW.md) | `7b8b13d1b29345a8b29d9709fb8b1a45b35fed88f37a3b50976b469d63649900` | device-corpus-v2 (strict finite extension) |
+| [device-corpus-v4](device-corpus-v4/README.md) | Finite Corpus audio: earlier71 comparisons plus one exact note60 On/Off host34-zero history;26groups/72evaluations, dedicated engineering waveform criterion | SPEC-DEVICE-CORPUS r6, finite partial001/004–013 only;002/003 and broader MIDI/host/UI behavior unreleased | [Approved finite review](device-corpus-v4/REVIEW.md) | `5375571b14812cfc901e0970ab0c627b2e6a6a1a51e0ab3e4c6c29f9a959a1ad` | device-corpus-v3 (one finite extension) |
+
+| [device-corpus-v5](device-corpus-v5/README.md) | Finite Corpus audio: earlier72 comparisons plus one exact same-instance ListeningXL step;27groups/73evaluations, four independent pre/post L/R engineering waveform checks | SPEC-DEVICE-CORPUS r7, finite partial001/004–013 only;002/003 and general automation/MIDI/host/UI behavior unreleased | [Approved finite review](device-corpus-v5/REVIEW.md) | `60734632edbc8bae80f0a080e0af70cdc1217e61e8a5433f6ade67845f17f479` | device-corpus-v4 (one finite extension) |
+
+| [midi-note-storage-v3](midi-note-storage-v3/README.md) | All72 v2 comparisons unchanged, plus six conditional Notes/group comparisons: four local refusals/two nonrefusals under A1 and the supplied counter; no public group load/save or later-effect result | SPEC-MIDI-NOTE-STORAGE r5, partial001–010/013–016 only;011/012/017 unreleased;78 cases | [Approved bounded review](midi-note-storage-v3/REVIEW.md) | `fa281c37472e13a6ba840499687e90928654c9862582fa5bd4d04f4436da7c2c` | midi-note-storage-v2 (all72 case objects/fixtures exact; six local additions) |
+| [midi-note-storage-v4](midi-note-storage-v4/README.md) | All78 v3 cases and78fixtures exact, plus two conditional local-reader comparisons using explicit decoded Notes edits over an existing authored fixture; no public catch/load/save or rollback result | SPEC-MIDI-NOTE-STORAGE r6, partial001–010/012–016 only;011/017 unreleased;80cases/78fixtures | [Approved bounded content](midi-note-storage-v4/REVIEW.md) | `1d0cc553a37d95e25b66dad0f5048af8fc79349d9663b184228fac1d0ab24800` | midi-note-storage-v3 (all78objects/fixtures/14oldbodies exact; two local additions) |
+
+Local publication2026-10-20 copies the independently sealed v3 tree exactly.
+External seal `REVIEW-MIDI-NOTE-STORAGE-V3-FINAL-EXACT-TREE-SEAL`, SHA256
+`af2536c413fe1359541ca1f6963c6f85723ed05d35b8a5f81aef50e50ea7d2a4`, approves this manifest only.
+The ready-for-coordinator wording in the immutable payload records its state
+before copying; this catalog records actual local publication.
 
 ## Release contract
 
@@ -77,3 +100,13 @@ rewritten for that package. This repository is the staging workspace, not the
 isolated export itself.
 
 Implementation begins at its [own index](../wiki/implementation/index.md).
+
+
+Local publication2026-10-20: midi-note-storage-v4 is current after independent
+content approval, separate final84-file exact-tree approval and full prerelease
+lint. The sealed payload was copied byte-for-byte; manifest SHA256
+`1d0cc553a37d95e25b66dad0f5048af8fc79349d9663b184228fac1d0ab24800`.
+V3 remains immutable and is superseded. Eight local comparison projections are
+separate from public Open/Save outcomes; no runtime or compatibility grade.
+Payload finalization metadata records its preparation gates; this catalog
+records the actual local publication.

@@ -1,0 +1,9 @@
+# Analog whole initialization and override candidates
+
+Exactly two complete retained C/native records are selected:2c34..3018 (996B249words) and17e6c..1818c (800B200words),1796nativeB449words total. No new data/table/header/fixup/provider/target/callee bytes. Source signatures/warnings and full selected paths remain qualified.
+
+The approved whole509 report records580d0 raw integer17e6c, with no runtime pointer/target proof. Its conditional nomination is580c0+10. The approved388 packet records58150 raw integer2c34, conditional580c0+90. Those facts are inherited by report citation, not old payload replay. Actual candidate entry, receiver/member/current580c0 continuity, runtime encoding/fixup interpretation, valid nonalias state/stack, normal returns and required unread helper preservation remain premises. Initialization may identify or refuse a current[R+8] assignment/provenance/order; it is never presumed.
+
+One exact pre-call freeze before one actual attempt; one combined final manifest and sole Mix peer review; Root adopts by citation. Existing pinned Rizin fixed-window extraction method, max2sequential30s children, DEVNULL/core0/minimal environment/new sessions/group cleanup, no retry or original execution. Raw/JSON FDs flush/fsync; no directory/power-loss guarantee, continuous mutation monitoring or stdout memory cap. Normal success does not test all exceptional cleanup paths.
+
+All selected C/native bodies must be read, including failed/early paths. Encountered calls/constants/pointers remain opaque; do not repair prototypes, infer actual class/ABI/ownership/public control behavior, or follow any new content automatically. No18d8 builder included. PublicA1/A2/current-value/output/timebase/calibration/lifecycle/ARM numerics remain U; coverage OPEN. Main25095of268015 and heterogeneous routes691/1076/3857 unchanged; no case/owner/grade/release/shared edit or successor.

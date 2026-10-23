@@ -2,13 +2,28 @@
 id: SPEC-PLAYBACK-CORE
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
-revision: 1
+revision: 5
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
 # Playback core: transport, launch timing and clip playback
+
+## Review status
+
+Revision 2 incorporates the independent playback-core-v1 review corrections.
+The [handoff plan](playback-core-handoff-plan.md#review-outcome--2026-10-19)
+records the approved finite scope and retained review evidence. The reviewed
+snapshot is based on revision 1 with these corrections; the broader draft
+remains unreleased outside that scope. Reference and candidate execution are
+not-run. Staging approval is not catalog publication.
+
+Revision 3 adds the finite scalar-helper annex under REQ-017 from one already
+[approved extracted batch](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-standing-leaves-v1-review.json).
+It preserves the revision 2 public-behavior scope and all earlier case rows.
+The new reference bits describe supplied x86 calculations, including local
+floating-point probes; they are not whole-application or ARM observations.
 
 ## Scope
 
@@ -40,12 +55,12 @@ matched to Live's own code (appendix). No published Ableton documentation is ret
 
 Dependencies:
 
-- **[SPEC-CLIP-LAUNCH](clip-launch.md) r3**: launch values, the grid length (REQ-015) and the
+- **[SPEC-CLIP-LAUNCH](clip-launch.md) r4**: launch values, the grid length (REQ-015) and the
   boundary arithmetic (REQ-017).
 - **[SPEC-TRANSPORT-STATE](transport-state.md) r4**: the stored tempo, signature and loop values.
 - **[SPEC-MIDI-NOTE-STORAGE](midi-note-storage.md) r3**: the stored notes, their limits and the
   1/3,843,840-beat time grid.
-- **[SPEC-WARP-MARKERS](warp-markers.md) r3**: `IsWarped` and the warp fields.
+- **[SPEC-WARP-MARKERS](warp-markers.md) r4**: `IsWarped` and the warp fields.
 - **[SPEC-ALS-CONTAINER](als-container.md)**: the document envelope.
 
 Target: 12.4.3, documents with `MinorVersion="12.0_12402"`.
@@ -220,8 +235,12 @@ Applies while the transport plays with the arrangement loop on (`Transport/LoopO
     and 302,400.
   - Loop 2 to 2 + 10/3 at 48,000 Hz, 120 BPM: jumps at 128,000, 208,000 and 288,000.
   - Play from 10 with loop 4 to 8: no jump.
-- **S.** A playing session clip is not moved by the jump. Its clip position continues as if
-  song time had not jumped (REQ-011, REQ-017).
+- **S.** A jump does not restart a playing session clip. Later clip-event beats shift by
+  minus (loop end − loop start) and are placed from the new anchor. Placing them
+  independently as if no song jump had occurred can differ by one sample because
+  each anchor rounds its own placement. The released loop cases give the same
+  samples under both readings; that agreement is not a general identity (review F8
+  in the [handoff plan](playback-core-handoff-plan.md#findings-while-staging)).
 
 ### REQ-PLAYBACK-CORE-007 — launch request and grid (settles SPEC-CLIP-LAUNCH A1)
 
@@ -270,12 +289,18 @@ For a launch with grid g > 0, handled at request sample R while the transport pl
 - **S.** The clip previously playing on the track is replaced at the sample where the launch
   takes effect. Its notes are ended (REQ-014), and its audio is cut short over the crossfade
   (REQ-020).
-- **U.** The audio of either clip between E and B when o > 0. **T1 effect:** cases with o > 0
-  grade only the activation sample.
+- **U.** The audio of either clip between E and B when o > 0. The immediate
+  activation clause above has no independently graded observable in the released
+  MIDI cases: o = 0, B ≥ t, and note events are placed from their beats.
+  **T1 effect:** playback-core-v1 excludes nonzero pre-delay and crossfade
+  activation until the clip output supplies an observable (handoff plan F6).
 
 ### REQ-PLAYBACK-CORE-010 — launch without a grid, and launch while stopped
 
-- **S.** With no grid, B = L(t) and o = 0, so the clip starts at the request sample R.
+- **S.** With no grid, B = L(t) and o = 0: activation occurs for the press beat.
+  A first MIDI note is a beat event placed by REQ-002, so it may appear at R + 1
+  after lattice rounding; it is not guaranteed to coincide with activation.
+  The released no-grid cases put that first note at R.
 - **S.** A launch while the transport is stopped first sets the song position, then computes B
   from that position and starts the transport (REQ-004). The position is the start beat if it is
   a locator, and otherwise the start beat's downbeat, the bar line at or before it. The downbeat
@@ -398,11 +423,42 @@ Applies to a session `AudioClip` with `IsWarped` false.
 - **S.** The first file frame is the integer part of file rate × LoopStart, with fraction 0. For
   LoopStart 0.1 s of a 48 kHz file that is frame 4,800; for 0.000015 s, frame 0. Output sample k
   of the clip reads file position first frame + k × step. The position is accumulated exactly in
-  fixed point and quantized to 2⁻²⁴ frame (X).
+  fixed point. Quantization to 2⁻²⁴ frame is X for the retained supplied scalar
+  calculations below; this is not a promise of a finite grid result for every
+  binary64 argument.
+- **X (revision 3; finite scalar-helper scope).** Each exact input in
+  [PBC-097–PBC-205](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/cases-added.json)
+  has the listed expected binary64 output bit pattern in the recorded supplied
+  x86/Linux helper calculation. These 109 cases adopt the whole approved batch's
+  previously NULL-prior discovery rows; its eight known-oracle agreements remain
+  supporting controls. The original NULL history is unchanged, and no formula or
+  oracle was fitted or repaired from the new results.
+- **X (same scope).** Across all 117 recorded inputs, twelve returns are signed
+  zeros (six of each sign), eight are infinities (four of each sign, including
+  six finite extreme inputs), and two are the selected canonical signed quiet
+  NaNs. Exact input/output bit identities are retained; the native cause remains unknown.
+  This gives no general finite-grid guarantee for arbitrary binary64 arguments,
+  no sNaN or all-NaN-payload rule, and no portable ARM/Apple bound, sign or payload
+  guarantee. These are direct helper inputs, not proved admissible loaded clip
+  values, file-position sentinels, open/render behavior or host-audio outcomes.
+  Host `strtod` token-to-bit checks are not an input-register or FP-state trace;
+  the unchanged loader's temporary float cast may affect untraced FP flags.
 - **S.** With pre-delay 0, output sample 0 of the clip is the sample where its launch takes
   effect (REQ-009).
 - **U.** `StartRelative` ≠ 0, and a clip that starts later than its launch sample. **T1 effect:**
   fixtures use `StartRelative` 0.
+
+- **X (revision 4; finite supplied-three-double helper scope).**
+  [PBC-206–PBC-787](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r4-integer-semitone-rates-finite-v1/new-cases582.json) adopt582 fresh single-call histories
+  at `SSemitonesToInc` x86 `0x10236f1f0`: exact integer semitones−48..48 and
+  six fixed file/engine-rate pairs in the annex. Each native expectation is the
+  exact SAVED XMM0 word from the approved summary, with the frozen NULL prior
+  unchanged; portable expected/comparator/grade remain NULL. Fifty-four old
+  argument intersections are supporting ARG-only references, not inherited
+  whole histories/oracles; all582 are new finite observations. No general
+  semitone/rate/clamp/rounding/formula, public clip/file/audio/clock admission,
+  ARM/Apple bound or application proof follows. Earlier017 clauses, finite
+  signedzero/Inf/canonicalqNaN scopes and general U retain their old scope.
 
 ### REQ-PLAYBACK-CORE-018 — unwarped audio clip: interpolation
 
@@ -425,8 +481,10 @@ Applies to a session `AudioClip` with `IsWarped` false.
 - **U.** Resampling quality as a measure (frequency response, aliasing, group delay). It is
   defined only by these kernels and their renders.
 - **S-cond (A1).** arm64 fuses one operation in the linear kernel. **T1 effect:** interpolated
-  outputs are graded within 2 binary32 ulp (relative), and windowed-sinc outputs within 1e-6
-  absolute.
+  linear outputs are graded with an absolute bound of 2 binary32 units in the
+  last place of the largest source-frame magnitude read by the compared window.
+  A bound relative to the output is unsafe near cancellation. Windowed-sinc
+  outputs use 1e-6 absolute.
 
 ### REQ-PLAYBACK-CORE-019 — unwarped audio clip: gain, channels and sample format
 
@@ -472,6 +530,13 @@ Applies to a session `AudioClip` with `IsWarped` false.
     from 96,000 to 115,914, the last sample past the file's end. At 44,100 Hz it plays 18,296.
     `Rim DMX Vinyl.wav` (3,386 frames at 44.1 kHz) plays 3,686 samples at 48,000 Hz and 3,386 at
     44,100 Hz.
+- **U (acceptance observable).** With `Fade` off and a region extending through
+  the file, the silent output past the final frame does not reveal the clip's
+  scheduled end. The end-beat calculation above is supported, but an exact
+  end-sample acceptance case needs another observable, such as a subsequent
+  launch whose timing depends on whether the clip remains active. PBC-061 and
+  PBC-064 are not graded for the end sample, and REQ-021 is not released in
+  playback-core-v1.
 - **D.** No shipped unwarped clip has `LoopOn` true.
 - **U.** Whether a stored `LoopOn` true on an unwarped clip has any other observable effect.
   **T1 effect:** fixtures use `LoopOn` false on unwarped clips.
@@ -526,7 +591,8 @@ Applies to a session `AudioClip` with `IsWarped` false.
   This replaces, for T1 grading, the ±1/64-beat tolerance proposed in SPEC-CLIP-LAUNCH.
 - **Value tolerances.** These apply to audio values:
   - direct copies are bit-exact;
-  - linear outputs are graded within 2 binary32 ulp;
+  - linear outputs use an absolute bound of 2 binary32 units in the last place of
+    the largest source-frame magnitude read by the compared window;
   - windowed-sinc outputs within 1e-6 absolute (float source) or 5e-4 (16-bit source, REQ-018);
   - gains within 1.2e-7 relative.
 
@@ -547,6 +613,8 @@ Applies to a session `AudioClip` with `IsWarped` false.
 Expectations are X results of the original x86_64 functions or static derivations, as labelled.
 None has been run against Live, and under ADR 0003 none will be. Kinds: P positive, B boundary,
 G timing, A audio values, C cancellation, U unresolved (not graded).
+Revision 3 also has H cases for supplied scalar-helper reference values. Their
+setup and bit-reference scope are stated separately in the finite annex below.
 
 Comparators:
 
@@ -574,12 +642,19 @@ value and its envelope event to the same value (REQ-TRANSPORT-STATE-012).
 
 ### Clock and transport cases
 
+The draft tables name clock positions and jump samples, which are informative
+arithmetic unless an output is scheduled there. In playback-core-v1, generated
+probe clips make clock positions observable as note events; quantized presses
+after a jump expose the looped song clock. A no-grid launch at a negative Play
+start alone would not distinguish a clamped song clock, because its notes are
+relative to that launch (handoff plan F9).
+
 | Case ID | Requirement | Kind | Setup/action | Expected result/comparator | Provenance |
 | --- | --- | --- | --- | --- | --- |
 | PBC-001 | 001, 002, 004 | G | 48,000 Hz, 120 BPM | Events at beats 0, 0.25, 1, 4/3, 10/3, 4, 64: samples 0, 6,000, 24,000, 32,000, 80,000, 96,000, 1,536,000 | X |
 | PBC-002 | 001, 002 | G | 48,000 Hz, 140 BPM | Beats 0.25, 1, 4, 7: 5,143, 20,572, 82,286, 144,000 | X |
 | PBC-003 | 001, 002 | G | 44,100 Hz: 120 BPM; 128 BPM; binary32 121.2 BPM | 120: beat 0.25 → 5,513 and 10/3 → 73,500. 128: beat 1 → 20,672 and 1000 → 20,671,875. 121.2: beat 4 → 87,327 | X |
-| PBC-004 | 001, 002, 003 | G | 48,000 Hz, tempo 93.33333587646484 (binary32 of 93.3333) | Beat 1 → 30,858; beat 7 → 216,000 | X |
+| PBC-004 | 001, 002, 003 | G | 48,000 Hz, tempo 93.33333587646484 (binary32 nearest 280/3; binary32 of 93.3333 is 93.33329772949219) | Beat 1 → 30,858; beat 7 → 216,000 | X |
 | PBC-005 | 002 | B | 48,000 Hz, 90 BPM | Beat 1 → 32,000 or 32,001; beat 8 → 256,000 or 256,001; beat 8/3 → 85,334 | X (REQ-002 exception) |
 | PBC-006 | 004 | G | 48,000 Hz, 140 BPM, start beat 3.5 | Sample 0 plays beat 3.5; beat 4.5 → 20,572; beat 19.5 → 329,143 | X |
 | PBC-007 | 004 | B | Start beat −2 | Plays from beat 0 at sample 0 | S |
@@ -596,7 +671,9 @@ value and its envelope event to the same value (REQ-TRANSPORT-STATE-012).
 ### Launch cases
 
 F1 at 90 BPM, global 1 Bar, launches of "Slide" unless stated. "44.1" and "48" give the
-activation sample at 44,100 and 48,000 Hz. The CLC IDs name the press and grid setup of the
+activation sample at 44,100 and 48,000 Hz. PBC-023, PBC-061 and PBC-064 retain their IDs but have no graded expectation
+after review. PBC-024 is instantiated at 44,100 Hz only.
+The CLC IDs name the press and grid setup of the
 SPEC-CLIP-LAUNCH grid case of that number, whose B is X.
 
 | Case ID | Requirement | Kind | Setup/action | Expected result/comparator | Provenance |
@@ -604,10 +681,10 @@ SPEC-CLIP-LAUNCH grid case of that number, whose B is X.
 | PBC-020 | 007–009 | G | Presses of CLC-031 to 040, 042, 044, 046, 048 to 051 and 062 (B a whole or dyadic beat) | 44.1: 29,400 × B exactly (CLC-031: 235,200; CLC-032: 470,400; CLC-046: 44,100; CLC-048: 7,350). 48: 32,000 × B or 32,000 × B + 1 | X (B), S (path), REQ-002 |
 | PBC-021 | 007–009 | G | Presses of CLC-041, 043, 045, 047 (triplet B = 8/3, 4/3, 2/3, 1/3) | 44.1: 78,400, 39,200, 19,600, 9,800. 48: 85,334, 42,667, 21,334, 10,667 | X, S |
 | PBC-022 | 008, 009 | B | Press of CLC-054 at t = 3.99 | 44.1: 117,600; 48: 128,000 or 128,001 | X, S |
-| PBC-023 | 008, 009 | B | Slide already playing; launch Slide again by a press exactly at beat 8 (request sample 235,200 at 44.1) | Takes effect at the request sample (235,200), not at beat 12 (MIDI: o = 0) | S |
-| PBC-024 | 008, 009 | B | Press of CLC-064 (1/4T, t exactly 10/3) | 44.1: 117,600 (B = 4); 48: 128,000 or 128,001 | X, S |
+| PBC-023 | 008, 009 | U | Slide already playing; launch Slide again by a press exactly at beat 8 (request sample 235,200 at 44.1) | Not graded: the relaunch coincides with its wrap and note events; their order relative to launch is U under REQ-002. An on-line press of an idle clip at beat 4 is covered in playback-core-v1 | U; prior S expectation withdrawn |
+| PBC-024 | 008, 009 | B | Press of CLC-064 (1/4T, t exactly 10/3) | 44.1: 117,600 (B = 4). No integer request sample gives t exactly 10/3 at 90 BPM and 48 kHz, so the 48 kHz variant is not instantiated | X, S |
 | PBC-025 | 007–009 | G | F1-120 at 48,000 Hz; press at t = 5.3 | 192,000 | X, S |
-| PBC-026 | 010 | P | Slide set to launch quantization 1 (None); press at t = 5.3, request sample R | Starts at R | S |
+| PBC-026 | 010 | P | Slide set to launch quantization 1 (None); press at t = 5.3, request sample R | Activation at the press beat; the first note is placed from its lattice beat by REQ-002 and can be at R + 1. In the released cases it is at R | S |
 | PBC-027 | 010 | P | Transport stopped, start beat 0; launch Slide | Transport starts; Slide's first note-on at render sample 0 | S |
 | PBC-028 | 008, 009 | G | F2. Track 4 slot 1 launched by a press at t = 1 (no clip playing) | Starts at beat 4: 48: 115,200; 44.1: 105,840 | X (o = 0), S |
 | PBC-029 | 008, 009 | G | F2. Slot 1 playing since beat 4; slot 2 launched by a press at t = 5.3 | Activation at E = 7.993333229270729: 48: 230,208; 44.1: 211,504. Slot 2's start counts from beat 8 | X, S |
@@ -643,10 +720,10 @@ sample 96,000 (X, S). Values are the clip's output; x_k is the file's 16-bit fra
 | Case ID | Requirement | Kind | Setup/action | Expected result/comparator | Provenance |
 | --- | --- | --- | --- | --- | --- |
 | PBC-060 | 017–019 | A | Slot 102 (48 kHz file, HiQ on) | Output 96,000 + k equals x_k on both channels for k = 0 … 19,912, bit-exact. First values: 0.000274658203125, 0.0008544921875, 0.00067138671875, −0.000213623046875. Output 115,913 is 0 | X (kernel, both HiQ settings), S |
-| PBC-061 | 021 | G | As PBC-060 | The clip ends at 115,914. At 44,100 Hz the same clip ends at 88,200 + 18,296 = 106,496 | X (end beat), S |
-| PBC-062 | 017, 018 | A | Slot 129 (44.1 kHz file) with `HiQ` false | Output 96,000 + k reads position k × 3,946,001,203 ÷ 2³² frames. First values: 0.0, 0.055066678673028946, 0.20224608480930328, 0.3418603837490082, 0.41899415850639343, 0.45862865447998047 | X; arm64 within 2 ulp |
+| PBC-061 | 021 | U | As PBC-060 | Informative scheduled end: 115,914; at 44.1 kHz, 106,496. Not graded: past-file silence with Fade off cannot distinguish the clip end | X (end beat), S; end-sample observable U |
+| PBC-062 | 017, 018 | A | Slot 129 (44.1 kHz file) with `HiQ` false | Output 96,000 + k reads position k × 3,946,001,203 ÷ 2³² frames. First values: 0.0, 0.055066678673028946, 0.20224608480930328, 0.3418603837490082, 0.41899415850639343, 0.45862865447998047 | X; arm64 within the absolute window bound of REQ-018 |
 | PBC-063 | 018 | A | Slot 129, `HiQ` true | Outputs 96,008 onward within 5e-4 of the float-sample reference render (`audio/results/shipped.json`, which begins −0.000350424088537693, 0.0507950484752655, 0.19911181926727295); the first 8 outputs are not graded | X (both sample types), U (which one, and padding) |
-| PBC-064 | 021 | G | Slot 129 | The clip ends at 96,000 + 3,686 = 99,686 | X, S |
+| PBC-064 | 021 | U | Slot 129 | Informative scheduled end: 99,686. Not graded: past-file silence with Fade off cannot distinguish the clip end | X, S; end-sample observable U |
 | PBC-065 | 017, 018 | A | Slot 102, `PitchCoarse` 12, `HiQ` false | Step fixed `0x200001400`. First values: 0.000274658203125, 0.0006713856710121036, −0.0016479495679959655, −0.0014343236107379198, 0.0009765676222741604, 0.002319333143532276 | X |
 | PBC-066 | 019 | A | Slot 102, `SampleVolume` 0.5011872336; and separately 0, 10, 20 | Output = x_k × g in binary32, with g = 0.5011872053146362; 3.1622775713913143e-4; 9.999999046325684; 15.848933219909668 | X (gain), S |
 | PBC-067 | 017 | B | Slot 102, `LoopStart` 0.1 (and `LoopEnd` unchanged) | Output 96,000 is frame 4,800 | S |
@@ -679,12 +756,178 @@ differs.
 | PBC-095 | 023, 005 | P | Transport Stop at beat 6; Play from start beat 0 | Slide sounds again after Play; first sample not graded | S, U |
 | PBC-096 | 022, 023 | N | Transport Stop at beat 6; track stop button; Play from start beat 0 | Slide does not sound | S |
 
+### Finite scalar-helper cases added in revision 3
+
+[PBC-097–PBC-205](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/cases-added.json)
+are 109 separately identified H/X cases under REQ-017, one per new exact
+binary64 input/result pair from the
+[reviewed whole batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-playback-standing-leaves-v1/manifest.json).
+The complete selected input union covers the signed representable neighbors of
+every retained anchor's lattice node and half-step threshold, the named
+zero/precision/finite-endpoint frontiers and explicit canonical nonfinite
+probes. It is a bounded finite set, not all lattice thresholds or NaN payloads.
+Each case records exact input bits, expected output bits, classification, the
+original NULL-prior state and its approved observation pointer. Signed zeros
+and NaNs retain their bit identities rather than numeric-equality treatment.
+
+The action is the recorded one-double scalar helper calculation with no
+receiver, constructor, initializer or patch. These reference bits are exact
+for those recorded supplied x86 results. They establish no portable ARM/Apple
+comparator or tolerance; ADR 0003's ARM equivalence remains an inference.
+Native floating-point operation order and the cause of nonfinite results are
+unknown. No public clock, clip/audio/file-input admission, sentinel, loaded
+state, mode, host-output or candidate grade follows. The fixture/common-setup,
+timing and audio comparators of the preceding tables do not apply to H cases.
+
+[Eight known-oracle agreements](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/known-oracle-agreements.json)
+preserve the older `audio/results/quant.json` input/output provenance and exact
+new control matches. They are supporting observations, not duplicate new case
+IDs or a replacement oracle. The preserved tables retain all 68 earlier IDs;
+this annex adds 109, giving 177 draft IDs. Those counts are not a required-
+outcome denominator, application coverage or new behavior grades. All 92
+objects in playback-core-v1 remain unchanged; no release is made here.
+
 Omitted kinds:
 
 - Malformed documents belong to the storage specs.
 - Teardown is not specified.
 - The U-only parts (REQ-009 crossfade audio, REQ-013 chasing, REQ-015 random draws, REQ-016
   values, REQ-020 fade values) have no graded cases.
+
+### Revision 4 finite integer-semitone/rate helper cases
+
+The [complete582-case catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r4-integer-semitone-rates-finite-v1/cases582.json) and [case references](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r4-integer-semitone-rates-finite-v1/new-cases582.json)
+add PBC-206–PBC-787, one per approved fresh single-call history. The selected
+argument class is all97 integer semitones−48..48 for each of six declared
+(file rate, engine rate) pairs:(48000,48000),(44100,48000),(48000,44100),
+(96000,48000),(22050,44100),(44100,44100). These six retained pairs are a finite
+supplied argument class, not every device/file rate or every pitch/fine value.
+[All582 joins](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r4-integer-semitone-rates-finite-v1/joins582.json) retain the exact three binary64 words and literal `d:hex`
+call tokens. This is not a new full three-dimensional musical or file contract.
+
+Only [Auto's sole actual/source approval](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-integer-semitone-rates-v1-review.json),
+SHA256 `c1e4fae9d02a733440d31f5f3ba9a069ee1152964cd0cd60992a3ca8fcd5f1de`,
+supplies the observations. This owner maps that approved summary without any
+actual/source/raw/numeric/formula re-review. Each new process uses the existing
+unchanged audio scalar loader/slice, no initializer, receiver, integer argument,
+constructor, poke, buffer, patch or new provider/build. Exactly three `d:`
+tokens supply the inherited XMM0/XMM1/XMM2 input convention; there is ONE call
+to `0x10236f1f0` and one whole saved XMM0 output word. The four raw64-bit
+carriers RAX/RDX/XMM0/XMM1 remain retained, but no return meaning is assigned
+to the other three carriers, and they are not substitute output oracles.
+Host token-parser checks do not establish target register/ABI/FP-state traces.
+
+The [54 ARG-only projections](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r4-integer-semitone-rates-finite-v1/argument-only-support54.json) identify argument triples also present
+in the historical78-input multi-call process. They are NOT the same whole
+histories as these fresh single-call processes; they supply no old PID,
+receipt, metric, output oracle, criterion or no-import-use proof. The other528
+triples are new in that bounded argument cut. All582 fresh histories had
+NULL priors, and every one receives a new ID; none is silently removed as an
+inherited control or replayed to fabricate a whole-history agreement.
+
+For each exact supplied history, the native expected field is the approved
+SAVED XMM0 binary64 little-endian word, copied without fitting or recomputing
+SSemitonesToInc/powf/rate arithmetic. It is a finite native reference only;
+new portable expected/comparator/grade and application proof remain NULL/false.
+Frozen original expected bits/waveform priors remain NULL and immutable.
+All582 selected words are classified positive-finite-normal, with485 distinct
+words as reported, descriptive only; equality or rounding coincidences do
+not establish a mathematical replacement, pitch calibration, continuity,
+clamp/range, general deterministic waveform or portable ARM/Apple law.
+The fixture/common-setup/timing/audio comparators of the older tables do not
+apply to these H cases. No new f0, fit, metric, tolerance or modal budget.
+
+The [sole approved R3 owner review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-owner-r3-added-wording-review.json),
+SHA256 `c3bf0a3ef962ce4a05b3d79656ffc3e6bd7d0330c88a1d587c91f69b069c47be`,
+provides the older approved preservation scope and exact current R3 target.
+It does not embed individual R3 catalog objects; this proposal preserves the
+old177 navigation IDs/68 table rows/109 R3 case links/eight supporting known
+agreements and old canonical bytes without reconstructing absent metadata
+or opening old proposal/catalog/data/source/provider/released fixtures.
+All92 released objects remain unchanged as inherited reviewed scope, not a
+new release-fixture hash audit. R3 signedzeros/finite-input infinities/canonical
+signed qNaNs and old NULL history retain their original finite limitations;
+this R4's all-finite class does not override them or admit all nonfinite inputs.
+
+All new actual capture/parent/analysis/checker/materializer code was pre-call-
+bound according to the approved review; the initial materializer is historical,
+not a final regenerator. Six source endpoint pairs and ONE common set of12
+initial identities matching582 after snapshots (6,984pairs) are NOT separate
+per-child before or continuous loaded-provider/interpreter/FP/ABI/source-version/
+OSexec proof. Each selected call counts `_powf` once, while1,882 declarations
+(1,796trap/85Linux/oneLinux-data) describe availability; neither declares
+provider closure, data absence or all nested native work. No initializer is
+selected; nested provider/original calls remain unknown. New FDfsync requests
+are not directory/crash/powerloss durability or repairs to oldclosehash gaps.
+Resource192MiB lifecycle+128MiBheadroom/soft-stop/remaining-output guards are
+not quota/reservation/external-writer or unmodeled-file guarantees. Post-child
+checks cannot retract earlier calls; normal success does not test failure
+cleanup, escaped processes or uncatchable parent-loss paths.
+
+Only bounded017 text is appended. The22 other whole requirement bodies,
+old017 R3 prefix,177 prior navigation IDs/68 old rows/R3 objects and links,
+oldAcceptance prefix, original NULL/state/error/criteria/releases92/public
+clock A1–A5/F6positivepredelay/F7silentend and ARM/Apple gaps remain exact,
+with full reversal to the68,222-byte R3 predecessor. The759 draft navigation
+IDs are not passes or an application-outcome denominator. There is no new
+release, candidate conformance, site/grade, physical calibration or whole-
+product closure. Required unsupported U remains OPEN.
+
+### Revision 5 finite shipped-unwarped rate helper observations
+
+The [complete ten-history catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r5-shipped-unwarped-rates-finite-v1/cases10.json),
+[four new cases](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r5-shipped-unwarped-rates-finite-v1/new-cases4.json) and
+[ten joins](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-playback-r5-shipped-unwarped-rates-finite-v1/joins10.json) add PBC-788–791 under the existing
+bounded local helper scope of REQ-017. The whole retained source class has
+five shipped file rates (22,000, 22,050, 44,100, 48,000 and 96,000 Hz),
+crossed with the two owner engine rates 44,100 and 48,000 Hz at supplied
+positive-zero semitones. All 2,479 retained unwarped metadata rows have
+literal PitchCoarse/PitchFine zero. Their row locators are provenance,
+not new file admission, loaded-clip or audio execution evidence.
+
+Four missing pairs, file rate first, have one new original call each:
+22,000/44,100; 22,000/48,000; 22,050/48,000; and 96,000/44,100.
+Their four finite native expectations copy only the approved whole **SAVED
+XMM0 binary64 little-endian word** from the [sole actual/source review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/playback-shipped-unwarped-rates-v1-review.json).
+The other three raw carriers (RAX, RDX and saved XMM1) remain recorded but
+have no assigned return meaning. All four frozen fresh priors stay NULL;
+portable expected/comparator/grade remain NULL and application proof false.
+There is no powf/ratio/formula evaluation, fitting or portable numeric law.
+
+The six other pairs are qualified approved-R4 **INPUT references only**.
+They receive no new case ID, replay, PID, receipt, output, metric or
+criterion. Any existing R4 ID in the joins is navigation only. Exact
+three-binary64 tokens, positive-zero semitones and full one-call process
+history must agree; old argument-only multi-call projections are not
+whole-history substitutions. In particular, existing output expectations
+are neither recopied nor newly validated for these six references.
+
+The protocol is the unchanged 74,792-byte audio xexec and 163,716,848-byte
+x86 slice, target 0x10236f1f0, three d:hex binary64 supplied arguments and
+one selected original call per fresh child. There is no initializer,
+receiver, integer argument, buffer, poke, dump or new construction/model.
+Host strtod agreement and the existing temporary float cast do not attest
+actual child register-entry/FP flags or native-platform arithmetic.
+Twenty common initial custody records agree with each of four after
+snapshots (80 pairs), **not per-child before snapshots** or continuous
+loaded-provider proof. File-descriptor fsync requests are not directory,
+crash/power-loss durability or repairs to earlier recording gaps. Source
+association, OS exec, provider, FP/ABI, clock, resource soft-stop/overshoot,
+within-child checks and untested/escaped-process cleanup limits persist.
+
+All 23 whole requirement bodies, 759 prior navigation IDs, 68 old rows,
+R3/R4 objects and links, old Acceptance prefix, nonfinite/NULL history,
+existing criteria/U/state/error and 92 released objects remain unchanged,
+with exact reversal to R4. Earlier revision counts remain historical.
+Prior R3 individual catalog bytes absent from its approved report are
+not reconstructed or reopened. Preservation uses only the approved R4
+owner report's embedded metadata; no old proposal or actual proof repeats.
+The resulting 763 navigation IDs are not passes or a product denominator.
+There is no general rate-domain, fine-pitch, public clip/file/audio/clock,
+A1–A5/F6/F7, current receiver, ARM/Apple or physical calibration claim,
+new release, grade, site credit or whole-product closure. Required U stays
+OPEN. No embedded actual review/capture method source is copied into this
+new owner metadata.
 
 ## Open questions
 
@@ -706,7 +949,8 @@ Proposed for [Q-022](../questions.md) (playback core), with the clip-launch item
   - Crossfade content between E and B (REQ-009).
   - The 16-bit sample type. Static route: the caller of `OChunkedSample::Init`.
   - Chunk padding, other file formats and fade values (REQ-018 to 020).
-  - `StartRelative` ≠ 0 (REQ-017).
+  - Audio `StartRelative` ≠ 0 (REQ-017); MIDI offsets are covered by REQ-011.
+  - An observable for the unwarped end sample with Fade off (REQ-021).
 - **Stops.** The all-notes-off callbacks, and pending stops across a transport Stop or a jump
   (REQ-014, REQ-022).
 - **Documentation not retained.** What the user's Play, Stop and Continue controls do and which
@@ -777,6 +1021,26 @@ Imports called, all bound to glibc:
 Apple's `powf`, `exp`, `sinf` and `exp10f` were not available. REQ-017 to 019 therefore bind to
 glibc's results, which is one reason for their tolerances. No process exceeded 256 calls.
 
+**Revision 3 finite helper adoption.** The
+[batch approval](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/playback-standing-leaves-v1-review.json)
+approved all 117 exact low-64-bit XMM0 observations: eight known-oracle
+agreements and 109 NULL-prior discoveries. The
+[owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-playback-r3-finite-v1/README.md)
+pins the batch manifest/review and minimally reversible revision delta. It
+changes no frozen observation, input, original NULL, prior case row or release.
+There is no second observation review or new original/model execution.
+
+The existing audio xexec loader called only the selected scalar helper
+`0x10235b910`, once per child, without a receiver or initializer. All 117
+children returned normally and all eight declared controls agreed. Every log
+has 1,882 import declarations (1,796 trap, 85 Linux code, one Linux data) and
+zero counted import use; that is not proof of no internal calls or absence of
+a provider. Recorded image/loader/library/cache custody is not a per-child
+loaded-library/FP-state trace, and host parser checks do not prove process
+input registers. New native bodies/order/cause were not acquired. The recorder
+explicitly fsyncs JSON FDs; raw stdout/stderr are closed and hash-verified
+without explicit raw-FD fsync or a crash/power-loss durability claim.
+
 **Derived values.**
 
 - Sample indices in the cases come from the X-confirmed placement rule with the anchor at render
@@ -797,12 +1061,28 @@ SPEC-WARP-MARKERS REQ-009.
 | --- | --- | --- |
 | 1 | 2026-10-18 | First draft from packet T1.3. 23 requirements: 3 with D parts, all with S parts, 13 with S-cond parts, 15 with X parts, 19 with U parts (001, 003, 006 and 008 have none). A1 of SPEC-CLIP-LAUNCH settled for the Trigger fire path. 68 case IDs: 63 fully graded (8 accept P or P + 1 at 48,000 Hz: PBC-005, 014, 015, 020, 022, 024, 050, 080), 2 partly graded (PBC-063, 095), 3 not graded (PBC-032, 051, 069) |
 
-Not released. A first handoff could carry these clauses:
+| 2 | 2026-10-19 | Reconciles playback-core-v1 review: immediate E ≤ t activation lacks an independent observable; PBC-023 relaunch ordering and PBC-061/064 end samples ungraded; PBC-024 limited to 44.1 kHz; audio StartRelative remains open independently of the MIDI rule. 68 case IDs: 60 fully graded, 2 partly graded (063, 095), 6 ungraded (023, 032, 051, 061, 064, 069); seven rows accept P or P+1 at 48 kHz (005, 014, 015, 020, 022, 050, 080). The immutable release pins parent r1 and carries its reviewed corrections; this draft records them as r2. |
 
-- the X and S clauses of REQ-001 to 012, 017 to 019, 021 and 022;
-- the S-cond clauses of REQ-013 to 016 and 020, once A1 is accepted by review;
-- the cases that do not depend on a U part.
+### Revision 3 finite adoption
+
+| Revision | Date | Change |
+| --- | --- | --- |
+| 3 | 2026-10-21 | Direct design12 adoption of the already approved whole scalar quantization batch under the bounded local helper part of REQ-017: 109 NULL-prior discoveries become exact finite reference cases PBC-097–PBC-205, eight known-oracle results remain supporting agreements, and the unqualified arbitrary-binary64 finite-grid reading is withdrawn. All 22 other requirement bodies and 68 prior case rows remain exact. Signedzero, six finite-input infinity returns and canonical ±qNaN are finite local observations only; native cause/FP state/public admission/ARM bound remain unknown. All 92 released objects are unchanged; no new release or grade. |
+
+### Revision 4 finite integer-semitone/rate adoption
+
+| Revision | Date | Change |
+| --- | --- | --- |
+| 4 | 2026-10-21 | Add582 finite supplied-three-double single-call observations PBC-206–PBC-787/full582catalog. NativeexpectedSAVEDXMM0word copied only from soleapprovedsummary;54oldARGmatches supportARGonly,528newtriples,zero inheritedwholehistories/all582NULLpriors preserved. AppendONLYREQ017/annex/revision; preserve22otherwhole/old017R3prefix/177oldIDs68rows/R3objects/oldnonfiniteNULLscope/criteria/releases92/A1–A5F6F7/publicARMgaps exact/fullreverse. Fourrawcarriersretained/othermeaningsunknown,portablecriteria/gradeNULL/newappFalse/nofit. |
+| 5 | 2026-10-21 | Add four finite shipped-unwarped helper observations PBC-788–791/full ten-history catalog with six qualified INPUT-only references. Annex/revision only; preserve all 23 whole requirements, 759 prior IDs/68 rows/R3–R4 metadata/criteria/U/history and 92 released objects with full reversal. Native expected SAVED XMM0 only, other raw carriers unassigned; NULL priors/portable criteria/grades/application false. No public rate-domain/file/clip/audio/clock/ARM law or old output/criterion transfer. |
+
+The released finite clauses and cases are identified below; all U-dependent
+behavior remains outside the handoff.
 
 The near-boundary and pre-delay clauses of REQ-008 replace SPEC-CLIP-LAUNCH REQ-017's
-unknown clause. SPEC-CLIP-LAUNCH r4 and SPEC-WARP-MARKERS r4 apply this revision's corrections
+unknown clause. SPEC-CLIP-LAUNCH r5 and SPEC-WARP-MARKERS r5 apply the reviewed corrections
 and point here.
+
+Released locally 2026-10-19 as [playback-core-v1](../../handoff/playback-core-v1/README.md):
+92 cases, partial REQ-001 to 015 and 017 to 020, approved with clarifications
+by a separate reviewer. Requirements 016 and 021 to 023 remain unreleased.

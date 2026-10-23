@@ -1,0 +1,137 @@
+id	req	route	join	observable	ledger_outcomes	counted
+AER-001	001	S	schema	Declared track classes store arrangement envelopes at AutomationEnvelopes/Envelopes.	AER-001	true
+AER-002	001	S	schema	AudioClip/MidiClip store ClipEnvelope elements at Envelopes/Envelopes.	AER-002	true
+AER-003	001	S	schema	Both envelope classes carry an Id attribute.	AER-003	true
+AER-004	001	S	schema	Both envelope classes carry EnvelopeTarget/PointeeId.	AER-004	true
+AER-005	001	S	schema	Both envelope classes carry Automation/Events.	AER-005	true
+AER-006	001	S	schema	Both envelope classes carry AutomationTransformViewState.	AER-006	true
+AER-007	001	S	schema	EnvelopeTarget precedes Automation and Automation children have declared order.	AER-007	true
+AER-008	001	S	schema	Empty transform-state representation has pending=false and no transforms.	AER-008	true
+AER-009	001	N	transform	Meaning of a stored TimeAndValueTransform.	AER-136	false
+AER-010	001	S	schema	Arrangement/take-lane clip timelines reuse Events shape without being parameter envelopes.	AER-010	true
+AER-011	001	S	schema	Arrangement clip timelines can be empty and lack event at L.	AER-011	true
+AER-012	002	S	binding	PointeeId selects target by matching target Id in same document.	AER-012	true
+AER-013	002	S	binding	Envelope list position does not select target.	AER-013	true
+AER-014	002	N	lock	Meaning of target LockEnvelope.	AER-135	false
+AER-015	003	S	schema	FloatEvent corresponds to declared Float parameter/modulation/controller target kind.	AER-015	true
+AER-016	003	S	schema	BoolEvent corresponds to declared Bool target kind.	AER-016	true
+AER-017	003	S	schema	EnumEvent corresponds to declared Enum target kind.	AER-017	true
+AER-018	003	S	schema	Every event class has Id and binary64 Time attributes.	AER-018	true
+AER-019	003	S	schema	FloatEvent has binary32 Value and optional binary64 curve controls.	AER-019	true
+AER-020	003	S	schema	BoolEvent Value uses Boolean true/false.	AER-020	true
+AER-021	003	S	schema	EnumEvent Value uses integer representation.	AER-021	true
+AER-022	003	S	stored-units	Stored tempo event values are BPM.	AER-022	true
+AER-023	003	S	stored-units	Stored meter event values are dependency time-signature codes.	AER-023	true
+AER-024	003	S	stored-units	Stored modulation values use target units -1..1.	AER-024	true
+AER-025	003	S	stored-units	Most MIDI controller targets store0..127 units.	AER-025	true
+AER-026	003	S	stored-units	ControllerTargets.0 stores -3200..8191 units.	AER-026	true
+AER-027	003	N	kind	Behavior for event class mismatching target kind.	AER-027	true
+AER-028	004	S	ordering	Event Ids do not determine event ordering.	AER-028	true
+AER-029	004	S	ordering	Event Ids do not affect evaluator selection/value.	AER-029	true
+AER-030	004	N	id-load	Duplicate event Id in one list.	AER-030	true
+AER-031	004	N	id-load	Event without Id.	AER-031	true
+AER-032	004	N	save-id	Whether save preserves or renumbers event Ids.	AER-032	true
+AER-033	004	N	save-id	Whether save preserves or renumbers target Ids and bindings.	AER-033	true
+AER-034	004	N	missing	Event without Time.	AER-034	true
+AER-035	004	N	missing	FloatEvent without Value.	AER-035	true
+AER-036	004	N	missing	EnumEvent without Value.	AER-036	true
+AER-037	005	S	writer	Inferred leading-event writer rule puts event at L first.	AER-037	true
+AER-038	005	S	writer	Inferred leading-event writer rule copies next event value.	AER-038	true
+AER-039	005	N	save-leading	Whether every save writes one-event main tempo envelope.	AER-039	true
+AER-040	005	N	save-leading	Whether every save writes one-event main meter envelope.	AER-040	true
+AER-041	005	S	purge	A Pan envelope with only event at L is discarded on open under scoped discard premises.	AER-041	true
+AER-042	005	S	open-after-purge	Set with that Pan single-event envelope opens after discard.	AER-042	true
+AER-043	005	S	purge	Main-track one-event tempo envelope is exempt from that discard.	AER-043	true
+AER-044	005	S	purge	Main-track one-event meter envelope is exempt from that discard.	AER-044	true
+AER-045	005	N	save-leading	Whether save keeps a leading value different from next event value.	AER-045	true
+AER-046	005	S	evaluator	Leading event participates as ordinary event in Float/discrete evaluator rules.	AER-046	true
+AER-047	005	X	evaluator	Equal leading/next values yield that value before first ordinary event under stated conversion.	AER-084	false
+AER-048	005	X	evaluator	Different leading value yields evaluator ramp from L to next event.	AER-085	false
+AER-049	005	S	playback-points	Float playback ramp from leading value starts at-1e7 beats rather than L.	AER-098	false
+AER-050	006	S	ordering	Evaluators use document order and presume nondecreasing times.	AER-050	true
+AER-051	006	N	unsorted	Whether out-of-time-order events are sorted, kept or refused on load.	AER-051	true
+AER-052	006	N	unsorted	Evaluator values for out-of-time-order events.	AER-052	true
+AER-053	007	S	purge	Opening removes clip envelopes with exactly one event before survivor validation.	AER-053	true
+AER-054	007	S	purge	Empty clip envelopes survive event-count discard.	AER-054	true
+AER-055	007	S	purge	Opening removes Speaker/Pan/CrossFadeState track envelopes with fewer than two events before validation.	AER-055	true
+AER-056	007	S	purge	Removed envelopes do not trigger surviving-envelope empty-list refusal.	AER-056	true
+AER-057	007	S	purge	Removed envelopes do not trigger surviving-envelope invalid-first-time refusal.	AER-057	true
+AER-058	007	S	validation	Surviving envelope with empty Events list prevents document opening.	AER-058	true
+AER-059	007	S	validation	Surviving envelope with first time other than L or0 prevents opening.	AER-059	true
+AER-060	007	S	validation	First-time check compares parsed binary64 values so signed zero equals zero.	AER-060	true
+AER-061	007	S	validation	Only first event time is checked; later event times pass this check.	AER-061	true
+AER-062	007	S	validation	Check applies to AutomationEnvelope/ClipEnvelope rather than arrangement clip timelines.	AER-062	true
+AER-063	007	S	timeline	Empty arrangement clip timeline opens under stated no-other-owner-check premise.	AER-063	true
+AER-064	007	N	presentation	What user sees for an envelope load refusal.	AER-064	true
+AER-065	008	S	schema	Curve controls are the four declared FloatEvent attribute names/types.	AER-065	true
+AER-066	008	S	curve-storage	Missing curve-control attribute reads as0.5.	AER-066	true
+AER-067	008	S	curve-storage	Four controls all0.5 indicate no curve and a linear segment.	AER-067	true
+AER-068	008	S	curve-storage	Controls shape segment from their event to next event.	AER-068	true
+AER-069	008	S	writer	Each curve control exactly0.5 is omitted independently on save.	AER-069	true
+AER-070	008	S	writer	Each nondefault curve control uses dependency binary64 number text.	AER-070	true
+AER-071	009	X	monotone	M rejects a nonfinite control pair.	AER-071	true
+AER-072	009	X	monotone	M accepts ordered controls0<=c1<=c2<=1.	AER-072	true
+AER-073	009	X	monotone	Outside ordered shortcut M rejects overflowing c1^2/c2^2/c1*c2.	AER-073	true
+AER-074	009	X	monotone	Otherwise M accepts D<=2^-52.	AER-074	true
+AER-075	009	X	monotone	With larger D, M rejects root r1 strictly inside0..1.	AER-075	true
+AER-076	009	X	monotone	With r1 outside, M accepts exactly r2<=0 or r2>=1 and rejects NaN r2.	AER-076	true
+AER-077	009	S	normalization	Live Set opening enables member post-load context and curve normalization.	AER-077	true
+AER-078	009	S	normalization	Surviving event keeps all controls when both coordinate pairs pass M.	AER-078	true
+AER-079	009	S	normalization	Otherwise surviving event resets all four controls to0.5.	AER-079	true
+AER-080	009	S	curve-storage	Normalized reset segment is linear.	AER-067	false
+AER-081	009	S	writer	Normalized reset event writes no curve control attributes.	AER-069	false
+AER-082	010	X	evaluator	Float evaluator holds converted last value after final event.	AER-082	true
+AER-083	010	X	evaluator	At nonstep event time Float evaluator returns that event's converted value.	AER-083	true
+AER-084	010	X	evaluator	Between equal binary32 endpoint values Float evaluator returns common value.	AER-084	true
+AER-085	010	X	evaluator	Uncurved Float segment evaluates stated binary64/FMA linear formula rounded to binary32.	AER-085	true
+AER-086	010	X	evaluator	Curved Float segment constructs declared Bezier points and bisects X to1e-8 beats before binary32 Y.	AER-086	true
+AER-087	010	X	evaluator	At step mode0 Float evaluator returns previous event value.	AER-087	true
+AER-088	010	X	evaluator	At step mode1 Float evaluator returns last event value at time t.	AER-088	true
+AER-089	010	N	consumer-mode	Which Float evaluator consumer passes which mode.	AER-089	true
+AER-090	010	N	reading	Which user-visible reading exposes logic-side E(t).	AER-090	true
+AER-091	010	N	range	E(t) for values outside actual target range.	AER-091	true
+AER-092	010	N	range	Whether/how E(t) is clamped for actual target/provider.	AER-092	true
+AER-093	010	N	clip-time	Clip envelope time base relative to clip start.	AER-093	true
+AER-094	010	N	clip-time	Clip envelope time base across clip loop.	AER-094	true
+AER-095	010	N	clip-time	Clip envelope time base with warp.	AER-095	true
+AER-096	010	S	playback-points	Ideal Float playback P(t) uses16 straight pieces per curved segment.	AER-096	true
+AER-097	010	X	bezier	Fifteen interior point coordinates use Bezier parameter s=1/16 through15/16.	AER-097	true
+AER-098	010	S	playback-points	Float playback point list replaces first event time by-1e7 beats.	AER-098	true
+AER-099	010	S	playback-points	Ideal playback step selects later event, equivalent to mode1.	AER-099	true
+AER-100	010	N	song-time	Mapping ideal envelope-time P(t) to actual song time/offset.	AER-100	true
+AER-101	010	S	playback-points	Playback point-list rule defines value before original first event at0; evaluator exclusion remains separate.	AER-101	true
+AER-102	011	X	discrete	Bool evaluator holds last strictly earlier event value between event times and after last event.	AER-102	true
+AER-103	011	X	discrete	Enum evaluator holds last strictly earlier event value between event times and after last event.	AER-103	true
+AER-104	011	X	discrete	Bool evaluator requests no per-target converter and reads selected stored Boolean value.	AER-104	true
+AER-105	011	X	discrete	Enum evaluator requests no per-target converter and reads selected stored integer through declared getter.	AER-105	true
+AER-106	011	X	discrete	Bool mode1 at event time returns last event at that time.	AER-106	true
+AER-107	011	X	discrete	Bool mode0 at event time returns last event before that time.	AER-107	true
+AER-108	011	X	discrete	Enum mode1 at event time returns last event at that time.	AER-108	true
+AER-109	011	X	discrete	Enum mode0 at event time returns last event before that time.	AER-109	true
+AER-110	011	N	consumer-mode	Which discrete evaluator consumer passes which mode.	AER-110	true
+AER-111	011	S	playback-points	Ideal discrete playback selects last event at/before time with mode1.	AER-111	true
+AER-112	011	S	playback-points	Discrete lookup rule applies to time-signature envelope.	AER-112	true
+AER-113	011	N	meter	Actual time-signature envelope effect on meter.	AER-113	true
+AER-114	012	S	lexical	Event Time follows dependency binary64 lexical rules.	AER-114	true
+AER-115	012	S	lexical	Curve-control text follows dependency binary64 lexical rules.	AER-115	true
+AER-116	012	S	lexical	FloatEvent Value follows dependency binary32 lexical rules.	AER-116	true
+AER-117	012	S	lexical	BoolEvent Value follows dependency Boolean rules under A4.	AER-117	true
+AER-118	012	S	lexical	EnumEvent Value follows dependency integer rules under A4.	AER-118	true
+AER-119	012	S	lexical	Text rejected by those rules prevents document opening.	AER-119	true
+AER-120	012	S	writer	Time number writer uses dependency P17 rule.	AER-120	true
+AER-121	012	S	writer	Curve-control number writer uses dependency P17 rule.	AER-121	true
+AER-122	012	S	writer	FloatEvent Value writer uses dependency P9 rule.	AER-122	true
+AER-123	013	N	manual	Manual-versus-envelope precedence on open for tempo.	AER-123	true
+AER-124	013	N	manual	Manual-versus-envelope precedence on open for meter.	AER-124	true
+AER-125	013	N	manual	Manual-versus-envelope precedence on open for other parameters.	AER-125	true
+AER-126	013	N	override	Automation override behavior after manual parameter change.	AER-126	true
+AER-127	013	N	override	Automation re-enabling behavior.	AER-127	true
+AER-128	013	N	override	Whether set persists override/re-enable state.	AER-128	true
+AER-129	013	N	record	Events produced by an automation recording pass.	AER-129	true
+AER-130	013	N	record	Ids produced by an automation recording pass.	AER-130	true
+AER-131	013	N	record	Leading event produced by automation recording.	AER-131	true
+AER-132	013	N	record	Step pairs produced by automation recording.	AER-132	true
+AER-133	013	N	undo	Undo of envelope edits.	AER-133	true
+AER-134	013	N	undo	Redo of envelope edits.	AER-134	true
+AER-135	013	N	lock	Meaning of LockEnvelope.	AER-135	true
+AER-136	013	N	transform	Meaning of stored transforms.	AER-136	true

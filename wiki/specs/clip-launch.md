@@ -2,9 +2,9 @@
 id: SPEC-CLIP-LAUNCH
 type: spec
 status: draft
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
-revision: 4
+revision: 5
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
 
@@ -79,7 +79,7 @@ clauses that name it become unknown. No reference observation will test them
 | ID | Assumption | What rests on it |
 | --- | --- | --- |
 | A1 | **Settled in revision 4 (S)** for the Trigger fire path by [REQ-PLAYBACK-CORE-007](playback-core.md#req-playback-core-007--launch-request-and-grid-settles-spec-clip-launch-a1). A press on a session clip's launch button, and `ClipSlot.fire()` without arguments, reaches the launch-time computation without an explicit target time. The slot-state test means "the slot holds a clip"; the program then uses the clip's own grid when its launch quantization is not Global, and the set's global quantization otherwise. That the engine's global value equals the loaded `GlobalQuantisation` remains an assumption there (its A4), as does which other gestures take this path | REQ-016, REQ-017, REQ-018 |
-| A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document. A present value inside its stated range is kept as read: the values of REQ-004, REQ-005 and REQ-007 for launch mode, launch quantization and follow actions; the bounds of REQ-009 for velocity amount, loop iterations, chances and jump indices; 0 to below 1,000,000 for follow time. A present launch mode, launch quantization or follow action outside its values is accepted without a range check. Revision 3 (S, both slices): the member's own load step does not limit a value outside its bounds either. The loader stores the value directly, and the post-load hook of the UserFloat and RangedRemoteableInt classes is the generic one, which does not clamp; the RemoteableDouble hook only rounds (REQ-013). A later step that could change such a value is still untraced, except for the chances (REQ-012) | REQ-009 to REQ-013 |
+| A2 | A clip and its follow-action compound read from a document start with the initial values of REQ-009 and REQ-010 and then receive only the members present in the document. A present value inside its stated range is kept as read: the values of REQ-004, REQ-005 and REQ-007 for launch mode, launch quantization and follow actions; the bounds of REQ-009 for velocity amount, loop iterations, chances and jump indices; 0 to below 1,000,000 for follow time. A present launch mode, launch quantization or follow action outside its values is accepted without a range check. Revision 3 (S, both slices): the member's own load step does not limit a value outside its bounds either. The loader stores the value directly, and the post-load hook of the UserFloat and RangedRemoteableInt classes is the generic one, which does not clamp; the RemoteableDouble hook only rounds (REQ-013). A later step that could change or refuse such a value is still untraced, except for the chance normalization (REQ-012). Out-of-range follow-time rounding is X, but final document opening and the final held value remain U (REQ-011) | REQ-009 to REQ-013 |
 | A3 | The load-time corrections of REQ-012 and REQ-013 run for every clip read from a Live Set | REQ-012, REQ-013 |
 | A4 | In a set whose time signature never changes, the grid is anchored at song beat 0 | REQ-017 and the grid cases |
 | A5 | Opening a document whose `MinorVersion` has translator number c applies, in increasing order and before the values are loaded, every migration step numbered above c | REQ-014 |
@@ -253,10 +253,12 @@ clauses that name it become unknown. No reference observation will test them
 - **X (load path S; assumes A3).** Chances outside 0 to 100 are then rescaled by
   REQ-012 and limited by the chance setter: 150 and 50 give 75 and 25; −10 and 50 give
   0 and 100; 150 and −50 give 100 and 0; −10 and −10 give 50 and 50.
-- **X (load path S; assumes A3).** A follow time below 0 or from 1,000,000 is rounded
-  by REQ-013 and not limited: −0.3, −5 and 2,000,000 are held unchanged. The
-  follow-time controller's minimum of 0.25 belongs to controlled changes, not to the
-  load (S).
+- **X (member step only; final open outcome U).** A follow time below 0 or from
+  1,000,000 is rounded by REQ-013 without a range limit at that step: −0.3, −5 and
+  2,000,000 leave it unchanged. The extracted run did not open a document or run
+  the clip's later hook. Whether that hook changes or refuses the value, and thus
+  whether the document opens, stays U (A2; clip-launch-v2 review narrowing). The
+  follow-time controller's minimum of 0.25 belongs to controlled changes (S).
 - **U.** Whether the clip's own post-load hook, which was not read, changes or refuses
   such a value. So the value held after load for a velocity amount, loop-iteration count
   or jump index outside its bounds is unknown. Unknown too: what the user interface
@@ -375,8 +377,12 @@ to the nearest multiple of 1/3,843,840 beat (the rounding of REQ-013).
 
 ### REQ-CLIP-LAUNCH-016 — which grid a launch uses
 
-- **S (A1 settled in revision 4).** A clip with launch quantization 0 (Global) uses the set's
-  global value with the song's time signature in effect at the press.
+- **S-cond ([PLAYBACK-CORE A4](playback-core.md#assumptions)).** A clip with launch
+  quantization 0 (Global) uses the engine's global grid with the song's time signature
+  in effect at the press. That the engine holds the document's `GlobalQuantisation`
+  while the set is open is an untraced load-to-engine step. A1's settled Trigger
+  dispatch does not settle it. The arithmetic with an explicit global argument is
+  independent of that assumption (clip-launch-v2).
 - **S (A1 settled in revision 4).** A clip with launch quantization k ≥ 1 uses grid value k − 1
   with the clip's own time signature (`TimeSignature/TimeSignatures/RemoteableTimeSignature`
   `Numerator` and `Denominator`, truncated to integers). Example: a 6/8 clip set to
@@ -512,7 +518,7 @@ backed by X", X results of the original x86_64 functions. None has been run agai
 Live, and under ADR 0003 none will be. Kinds: P positive, N negative/malformed,
 B boundary, M missing, S save, G grid timing, U unresolved (not graded).
 
-### Fixtures
+### Source examples and authored fixtures
 
 | ID | Shipped document | SHA-256 | Content used (D) |
 | --- | --- | --- | --- |
@@ -523,9 +529,16 @@ B boundary, M missing, S save, G grid timing, U unresolved (not graded).
 | B6 | `Builtin/Templates/DefaultLiveSet.als` | `aeec3f07599da0a61cc86fd9ddeb78a5ce61fe473f676d50c1ae3e281c289a1f` | `12.0_12117`; global 4, record 0; 8 scenes with follow action (4, true, 1, 4, 0, 100, 0, 0, 0, false) |
 | B2 | `Core Library/MIDI Clips/Tonal/Single Chords/Staggered/Chord C Minor9 Staggered.alc` | `1dc59e9759cc9bf381e3df8717d550c443e0c770d2af454311f000841e3f7dc9` | clip launch mode 2, launch quantization 5; input to PRB-S5-09 and 10 only, which will not run (ADR 0003); no case uses it |
 
-Paths are relative to `Contents/App-Resources/` of the 12.4.3 bundle. A fixture is
-decoded, changed only as stated, and re-encoded as gzip. "Slide" means B1's slot-1
-clip. A song time-signature edit sets `TimeSignature/Manual/@Value` and the
+Paths are relative to `Contents/App-Resources/` of the 12.4.3 bundle. B1–B6
+identify retained source examples for the draft scenarios below; their names in the
+case table do not identify released fixture bytes. "Slide" means B1's slot-1 clip.
+The current [clip-launch-v2](../../handoff/clip-launch-v2/README.md) instead uses
+independently authored T11-MIN documents and generated sample audio. Its
+[fixture construction](clip-launch-v2-handoff-plan.md#fixture-construction-and-sanitization)
+records the carriers and edits. No shipped set is decoded and edited to make those
+released fixtures. Any future draft case must likewise be materialized on an authored
+valid carrier; source-example scenarios alone are not executable fixtures.
+A song time-signature edit sets `TimeSignature/Manual/@Value` and the
 `EnumEvent` value to the same code (REQ-TRANSPORT-STATE-010: 3/4 = 200, 5/4 = 202,
 6/8 = 302, 7/8 = 303), so REQ-TRANSPORT-STATE-012 does not arise.
 
@@ -571,7 +584,8 @@ clip. A song time-signature edit sets `TimeSignature/Manual/@Value` and the
 
 ### Grid cases
 
-Common setup: the stated fixture edit; transport playing from beat 0 at 90 BPM;
+Common setup: the stated scenario edit; global-grid cases additionally assume
+[PLAYBACK-CORE A4](playback-core.md#assumptions); transport playing from beat 0 at 90 BPM;
 Slide is launched once by a launch-button press handled at the render sample whose song beat
 is t, as defined in [SPEC-PLAYBACK-CORE](playback-core.md#definitions). Comparator: the song
 beat at which Slide's playback begins, exactly. The corresponding render samples are
@@ -768,6 +782,7 @@ values inside their stated ranges (RVC-03) and marks CL-15's API message unknown
 | 2 | 2026-10-18 | Staging and review findings of clip-launch-v1 applied; none rejected. F1, RVC-01: release proposal for REQ-015 to 018 dropped. F2, RVC-10: REQ-011 API message text U; CLC-016, 017 grade no text. F3, RVC-02: REQ-001 read-back limited to Booleans and numbers of at most six significant digits; CLC-025 grades the held value. F4, RVC-03: A2 limited to the stated ranges; out-of-range bounded values, chances and follow times U; 150/50 example removed; CLC-023 relabelled U. F5, RVC-09: REQ-013 byte evidence; near-tie values U. F6: both-forms clip U. F7, RVC-08: CLC-026, 027 grade held scene values; saved scene form U. F8: CLC-028, 029 use authored `11.0_405` fixtures. F9: scene corrections U. RVC-04: other conversion steps stated. RVC-05: REQ-005 worded as meaning. RVC-11: A7 named. RVC-13 coverage proposals deferred (no error). ADR 0003: probe references now say that no reference observation is available, with static routes. 23 requirements (3 D with S parts, 4 S only, 11 S with U parts, 5 U only); 56 unexecuted cases: 5 not graded (CLC-023, 030, 054–056), 3 with unresolved parts (CLC-013–015), all with a fixture |
 | 3 | 2026-10-18 | Extracted execution (packet X2, evidence label X added). REQ-012 and 013 become X with an S path. A7 is settled: the chance setter limits to 0–100 and does not run the chance controller. REQ-015's table and REQ-017's boundary arithmetic become X; REQ-017 still assumes A1, and its near-boundary clause stays U. REQ-011: chances and follow times outside their ranges settled by X; the other bounded values narrowed (S); the −99 rule added. A2 extended statically to out-of-range values. Errors found: REQ-016 said every negative clip value gives no grid, but −99 reads as Global; REQ-017 said B is always the first grid line at or after t, which fails for some presses exactly on a triplet line; REQ-013's near-tie U is replaced by the binary64 formula. CLC-023 becomes gradable (75/25); CLC-057 to 064 added. 23 requirements (3 D with S parts, 3 S only, 1 X only (015), 11 with U parts, 5 U only); 64 unexecuted cases: 5 not graded (CLC-030, 054–056, 064), 3 with unresolved parts (CLC-013–015); of the 59 graded, 12 document cases and 25 grid cases are backed by X, and 22 are static or documented |
 | 4 | 2026-10-18 | Corrections from [SPEC-PLAYBACK-CORE](playback-core.md) r1 (packet T1.3). A1 settled for the Trigger fire path (REQ-PLAYBACK-CORE-007). REQ-017: the offset is the track player's pre-delay (0 for MIDI, the audio crossfade length otherwise, X), not a run-time-only value; the "track condition" is the song-already-playing test; the move to B + g needs g > 0; activation at B − o; the audio between B − o and B stays U. REQ-018: no delay once the request is handled (S). REQ-019: stopped launch (S) with the start beat and downbeat helper U; revision 3's "no grid when not playing" note applied to stops, not launches. The ±1/64-beat tolerance is withdrawn in favour of REQ-PLAYBACK-CORE-002. CLC-054 and 064 become graded; CLC-052, 053 and 063 get exact expectations; grid-case setup restated with request samples. 23 requirements (3 D with S parts, 4 S only, 1 X only (015), 11 with U parts, 4 U only); 64 unexecuted cases: 3 not graded (CLC-030, 055, 056), 3 with unresolved parts (CLC-013–015); of the 61 graded, 12 document cases and 27 grid cases are backed by X, and 22 are static or documented |
+| 5 | 2026-10-19 | reconciles the v2 review and PLAYBACK-CORE A4. REQ-016 marks the loaded global-grid choice conditional; A2 and REQ-011 distinguish X follow-time rounding from the unknown final open outcome. Source-example scenarios are distinguished from v2's authored valid fixtures. 23 requirements and 64 cases remain (61 graded, 3 unresolved, 3 graded cases with unresolved parts); global-launch expectations carry A4. No numerical case expectation changes. |
 
 Revision 1 proposed that a first handoff could carry REQ-001 to 007, 009, 012, 013,
 015, 016 and the S clauses of 011, 014, 017 and 018, without REQ-017's near-boundary
@@ -777,9 +792,15 @@ is open under Q-017.
 
 Released 2026-10-18: [clip-launch-v1](../../handoff/clip-launch-v1/README.md), 50 cases, approved with narrowing by a separate review agent (partial REQ-001 to 007, 009, 011 to 014 only; 008, 010, 015 to 023 unreleased). The review findings to apply in the next revision are on the [handoff plan](clip-launch-handoff-plan.md#review-outcome). Revision 2 applies them; the revision table lists each one.
 
-clip-launch-v1 stays pinned to revision 1, and revision 3 is unreleased. A later release
-revision could carry REQ-012's and 013's X-backed cases and the out-of-range chance cases.
-Revision 4 settles A1, so a later release could also carry REQ-015 to 018 and the grid cases,
+clip-launch-v1 stays pinned to revision 1. Before v2, revision 3 proposed releasing
+REQ-012's and 013's X-backed cases and the out-of-range chance cases.
+Revision 4 settles A1 for Trigger dispatch. The current
+[clip-launch-v2](../../handoff/clip-launch-v2/README.md), 100 cases, supersedes v1
+and repairs its invalid fixture carriers. It releases grid arithmetic with explicit
+arguments; it excludes launch timing, the loaded-to-engine global choice and opening
+with out-of-range follow times. Revision 5 applies those limits. A later launch-timing
+release must account for PLAYBACK-CORE A4. Before the v2 review, revision 4 proposed
+that a later release could also carry REQ-015 to 018 and the grid cases,
 graded to the sample through SPEC-PLAYBACK-CORE. clip-launch-v1's manifest's partial scopes define
 what was released. These draft clauses are broader than the release and unreleased:
 clips in take lanes and the groove pool, and repeated clip children other than

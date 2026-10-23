@@ -2,7 +2,7 @@
 id: PLAN-MIDI-NOTE-STORAGE-V2-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -20,10 +20,10 @@ Narrowings:
 
 The change list is completed.
 
-For the spec author:
-- fix the "unchanged" wording in REQ-006 and REQ-007;
-- correct the case table's requirement IDs for MNS-072 to 075;
-- REQ-002 should state that `-0` reads as negative zero.
+Draft reconciliation, 2026-10-19: [revision 4](midi-note-storage.md#revision-and-handoff)
+applies all three corrections below, including review RVN2-01 to 03 and RVN2-07.
+REQ-006 and REQ-007 distinguish negative zero; MNS-072 to 075 list REQ-002 and MNS-073
+also REQ-004; REQ-002 states the covered `-0` reading. No released bytes or expectations changed.
 
 ## Decision and boundary
 
@@ -235,7 +235,7 @@ Not checked: any reference or candidate execution, the arm64 slice at run time, 
 and formatter, and whether the structure rules are complete for these fixtures (only the rules of
 SPEC-LIVE-SET-STRUCTURE r1 were checked).
 
-## Review gates still required
+## Pre-review gates (historical)
 
 1. **Scope review** in a separate context. Check the five new cases one by one against the X
    records and the static open and save evidence. Rule on F1 to F8, especially the added
@@ -260,8 +260,8 @@ SPEC-LIVE-SET-STRUCTURE r1 were checked).
 
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate with 72 cases: 67 carried (records unchanged,
-fixtures rebuilt on T11-MIN's rules) and 5 new, all of the new ones X-labelled. It covers partial
-REQ-MIDI-NOTE-STORAGE-001 to 010, 013, 014 and 016. REQ-011 stays excluded, and 012, 015 and 017
-unreleased. It is not published. midi-note-storage-v1 remains the current release in the
-catalog, with its fixture defect noted there.
+Released 2026-10-18 as midi-note-storage-v2 with 72 cases: 67 carried records
+on repaired carriers and 5 new X-labelled cases. It is current and supersedes
+v1. Partial REQ-001 to 010, 013, 014 and 016 are released; 011 stays excluded
+and 012, 015 and 017 unreleased. Draft revision 4 applies the review wording
+and requirement-reference corrections without changing an expectation.

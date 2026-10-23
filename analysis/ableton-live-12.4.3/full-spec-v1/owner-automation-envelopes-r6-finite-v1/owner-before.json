@@ -1,0 +1,9 @@
+{
+  "identity": {
+    "path": "wiki/specs/automation-envelopes.md",
+    "bytes": 62135,
+    "sha256": "86c92714db426aab8fc2390ee2c9889b8ea8b4235c80de8561fda6f4d1d67a7d"
+  },
+  "revision": 5,
+  "REQ009_historical_text": " — curve normalization on load\n\nFor control values c1, c2, let M(c1, c2) be true when the cubic Bézier coordinate\n(0, c1, c2, 1) is monotone on [0, 1], decided as follows:\n\n1. false if c1 or c2 is not finite;\n2. true if 0 ≤ c1 ≤ c2 ≤ 1;\n3. otherwise false if c1², c2² or c1·c2 overflows; else let\n   D = c1² + c2² − c1·c2 − c1, and true if D ≤ 2⁻⁵² (no sign change of the\n   derivative);\n4. otherwise let q = 2(3c1 − 3c2 + 1), a = c2 − 2c1, r1 = (2√D − 2a)/q and\n   r2 = (−2√D − 2a)/q; false if 0 < r1 < 1; else true exactly when r2 ≤ 0 or\n   r2 ≥ 1 (a NaN r2 gives false).\n\n- **S (Live Set structure A1 and staging SF-2).** Live Set opening enables the\n  post-load context and runs normalization. A surviving event keeps its controls when\n  M(x1, x2) and M(y1, y2) both hold. Otherwise all four become 0.5: the segment is\n  linear and no control is written on save (REQ-008).\n- **S.** All 4,151 shipped curves pass, including the 315 with x1 > x2 and the 7 with\n  a Y control above 1.\n- **X.** The monotone test M was run (x86_64 `0x1011f2080`, arm64 `0x1012132d8`):\n  M(0.5, 0.5) and M(0.2, 0.8) true, M(0.8, 0.2) true, M(1.5, −0.5) false\n  ([results](../../analysis/ableton-live-12.4.3/r2/x2-envelope-warp-v1/results/envelope-warp.json),\n  `warp_edges_REQ015_016.monotone`). The predicate matches the clauses above.\n- **S.** The context flag getter `0x1015192c0` gates this step;\n  `t11-structure-v1/traces/a1a2/trace.txt` records it enabled for Live Set open.\n  This settles PRB-S6-05 statically, not by a run of Live. AEN-014’s save\n  expectation follows the reset-to-0.5 rule for the non-monotone controls.\n\n"
+}

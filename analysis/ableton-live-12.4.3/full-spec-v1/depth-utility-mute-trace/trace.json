@@ -1,0 +1,301 @@
+{
+  "role": "D03 distinct bounded static Mute trace; private research only",
+  "disposition": "proposed function-local static predicate; independent review pending; no owner or application adoption",
+  "aliases": {
+    "P": "valid processor object address supplied to named callback/wrapper",
+    "K": "P+0x48",
+    "kernel_byte": "K+0xcf=P+0x117",
+    "saved_mute_byte": "P+0x161",
+    "legacy_branch_byte": "P+0x162",
+    "gate_bytes": [
+      "P+0x148",
+      "P+0x149"
+    ],
+    "output_words": [
+      "P+0x40",
+      "P+0x44"
+    ]
+  },
+  "proposed_static_result": {
+    "predicate": [
+      "Retained executable identity and selected word encodings as pinned; ordinary AArch64 register/branch/load/store semantics apply.",
+      "P and all accessed stack/object/task memory are valid for the exact called bodies; both P+0x30 and P+0x38 contain valid readable sample pointers even when muting.",
+      "For the setter segment P+0x162==0; actually invoke named OnMute wrapper with finite float32 +1.0 in S0 and P in X0.",
+      "No concurrent or intervening write changes K+0xcf or relevant pointers/state before the kernel invocation.",
+      "Named CalcMain callback is actually invoked with the SAME P. Callback selection alone is not scheduler invocation.",
+      "For the stable selector subtrace, P+0x148==1,P+0x149==1,P+0x162==0; existing*T is nonzero and cached entry computed by helper already equals0x1021658b0, with valid linked memory. This avoids the untraced changed-cache bookkeeping call."
+    ],
+    "consequence": "Setter writes byte1 at P+0x117; on the specified subsequent CalcMain invocation kernel returns S0/S1 float32 +0 bits and callback stores zero words at P+0x40/P+0x44. This is a conditional function-local proposal, not current application output or a graded acceptance case.",
+    "output_bits": [
+      "0x00000000",
+      "0x00000000"
+    ],
+    "application_mapping_proved": false,
+    "scheduler_delivery_proved": false,
+    "reviewed": false
+  },
+  "proof_steps": [
+    {
+      "id": "M01",
+      "title": "OnMute normal branch",
+      "source_claim": "For actual finite +1.0f or +0.0f argument, named OnMute compares S0 to zero, stores the Boolean at P+0x161, tests byte P+0x162 against1 and on the non-Legacy branch passes P+0x48 and Boolean W1 to0x1047bd760.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/22",
+          "id": "0x10216533c",
+          "scope": "full-body"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M02",
+      "title": "Same tested state byte",
+      "source_claim": "Setter0x1047bd760 stores low W1 byte at (P+0x48)+0xcf=P+0x117. Kernel0x1047bd790 reads exactly byte+0xcf from the same state base. Saved flagP+0x161 is DIFFERENT; it is not the kernel byte.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/61",
+          "id": "0x1047bd760",
+          "scope": "full-body"
+        },
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/64",
+          "id": "0x1047bd790",
+          "scope": "full-body"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M03",
+      "title": "Selected current callback",
+      "source_claim": "Selector with P+0x148==1 and P+0x149==1 and P+0x162==0 takes current branch. For a nonzero existing callback the raw ADRP/LDR sequence obtains slot0x106541200, whose immutable literal points0x1021658b0; it passes that value to callback registration helper.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/3",
+          "id": "0x10215f3e0",
+          "scope": "full-body"
+        },
+        {
+          "catalog": "records.json",
+          "pointer": "/new_full_functions/1",
+          "id": "0x101aa4c18"
+        },
+        {
+          "catalog": "records.json",
+          "pointer": "/new_full_functions/0",
+          "id": "0x101aa4b94"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M04",
+      "title": "Registration frontier and stable cached branch",
+      "source_claim": "Helper first stores callback at*T. Its cached-entry comparison has an early-return if already equal; this stable matched-cache path makes no further call. Changed-cache path invokes untraced0x101a41ce8, so merely passing a callback does NOT prove scheduler delivery or an unchanged post-return slot. Actual scheduler invocation remains a predicate, not an observed result.",
+      "refs": [
+        {
+          "catalog": "records.json",
+          "pointer": "/new_full_functions/0",
+          "id": "0x101aa4b94"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M05",
+      "title": "Callback invokes same kernel state",
+      "source_claim": "When named callback0x1021658b0 is actually invoked with P and its two input-pointer slots are valid, it reads both samples before calling kernel(P+0x48,&twoWords). The wrapper then stores S0/S1 into P+0x40/P+0x44.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/35",
+          "id": "0x1021658b0",
+          "scope": "full-body"
+        },
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/64",
+          "id": "0x1047bd790",
+          "scope": "full-body"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M06",
+      "title": "Narrow conditional result",
+      "source_claim": "With that kernel byte bit0 set, first instruction reads it, two fixed MOVI encodings zero D0/D1, and TBNZ bit0 jumps directly to its RET. Thus this invocation returns float32 +0 bits in S0/S1 and callback stores two zero words, conditional on valid invocation and no interference. No application/DUT020 grade follows.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/64",
+          "id": "0x1047bd790",
+          "scope": "full-body"
+        },
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/35",
+          "id": "0x1021658b0",
+          "scope": "full-body"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M07",
+      "title": "Inactive distinct route",
+      "source_claim": "If either selector gate byteP+0x148 orP+0x149 is not1, selector passes null callback then writes zero at P+0x40 spanning both output words. This distinct inactive path can also produce zero stored output; silence alone cannot identify Mute or prove this kernel executed.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/3",
+          "id": "0x10215f3e0",
+          "scope": "full-body"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    },
+    {
+      "id": "M08",
+      "title": "Legacy and unmute limits",
+      "source_claim": "If P+0x162==1, named OnMute calls selector instead of the kernel-byte setter. With BOTH selector gate bytes equal1, saved P+0x161==1 selects slot0x1065411b0, literally0x1021653a8. Its body remains metadata-only. Clearing modern byte with +0.0f removes this early-return predicate but does NOT prove nonzero audio, restored signal, stable tails or any other kernel branch result.",
+      "refs": [
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/22",
+          "id": "0x10216533c",
+          "scope": "full-body"
+        },
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/3",
+          "id": "0x10215f3e0",
+          "scope": "full-body"
+        },
+        {
+          "catalog": "preflight/records.json",
+          "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+          "pointer": "/functions/26",
+          "id": "0x1021653a8",
+          "scope": "metadata-only-body-not-read"
+        }
+      ],
+      "expected": null,
+      "comparison": null,
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false,
+      "normative_credit": 0
+    }
+  ],
+  "case_refs": [
+    {
+      "id": "DUT-020",
+      "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+      "pointer": "/owner_profile/cases/19",
+      "scope": "Unchanged owner proposal; no grade from this trace",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false
+    },
+    {
+      "id": "DUT-021",
+      "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+      "pointer": "/owner_profile/cases/20",
+      "scope": "Unchanged owner proposal; no grade from this trace",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false
+    },
+    {
+      "id": "DUT-040",
+      "provider": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-preflight-utility/records.json",
+      "pointer": "/owner_profile/cases/39",
+      "scope": "Unchanged owner proposal; no grade from this trace",
+      "actual_expected": null,
+      "actual_comparison": null,
+      "target": "U",
+      "executed": false
+    }
+  ],
+  "remaining_frontiers": [
+    "Exact Utility public UI/storage message and state mapping to named OnMute processor entry, including actual valid lifetime.",
+    "Actual scheduler invocation/delivery and changed-cache bookkeeping0x101a41ce8; no timing or thread-order law.",
+    "Unmute productive nonzero baseline, input admission/chain position, downstream effect/output/tails and other control/coefficient state.",
+    "Legacy processing/migration and inactive/bypass semantics; names and zero output do not identify equivalent operation."
+  ],
+  "metrics": {
+    "new_application_outcomes_graded": 0,
+    "new_owner_requirements": 0,
+    "new_owner_cases": 0,
+    "no_route_findings": 0,
+    "complete_profiles": 0,
+    "proposed_function_local_predicates": 1,
+    "source_or_original_execution": false
+  },
+  "history": {
+    "preseal_failures": [],
+    "scope": "Reuses immutable preflight; no old checker/main replay, duplicate bodies/helper sweep or new export."
+  }
+}

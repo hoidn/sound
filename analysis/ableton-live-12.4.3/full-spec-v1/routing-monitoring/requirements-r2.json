@@ -1,0 +1,555 @@
+[
+  {
+    "id": "REQ-RML-001",
+    "title": "I/O visibility",
+    "contract": "Track I/O controls can be shown or hidden in Session and Arrangement using the mixer View controls or the documented platform shortcut.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B002",
+      "routing:B003"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-002",
+    "title": "Input and output types",
+    "contract": "Audio From and MIDI From select their respective track input types. Tracks output audio except MIDI tracks without an instrument, which output MIDI; return inputs come from sends.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B004",
+      "routing:B005",
+      "routing:B007"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-003",
+    "title": "Type and channel hierarchy",
+    "contract": "The upper routing chooser selects a source/destination category; the lower chooser supplies its available channel or sub-selection.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B008"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-004",
+    "title": "Selected-track routing edits",
+    "contract": "External audio input/output chooser changes and MIDI input chooser changes apply to the selected tracks described by the chapter.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B019",
+      "routing:B026"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-005",
+    "title": "Monitoring path and existing gating owner",
+    "contract": "Monitoring passes selected input through the track device chain to its output. Off/Auto/In gating, arm interaction and selected-track Monitor dispatch are owned by REQ-RECORDING-COMPING-002; ordinary arming belongs to REQ-RECORDING-COMPING-001. No competing monitor-default rule is introduced here.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B010",
+      "routing:B011",
+      "routing:B012",
+      "routing:B013",
+      "routing:B014",
+      "routing:B016"
+    ],
+    "dependencies": [
+      "recording-comping.md#req-recording-comping-001--input-and-arm-selection",
+      "recording-comping.md#req-recording-comping-002--input-monitoring"
+    ]
+  },
+  {
+    "id": "REQ-RML-006",
+    "title": "Monitor reset context",
+    "contract": "With I/O expanded, the documented Monitor reset command restores Off for audio and Auto for MIDI. This is a reset-context statement, not a universal new-track/custom-default/armed-track default.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B017"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-007",
+    "title": "Recorded monitoring-latency option",
+    "contract": "In/Auto monitoring documents an enabled-by-default option to keep monitoring latency in recorded material, with manual switching through those Monitor controls. This establishes an option and context, not a timestamp correction formula or global constructor default.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B015"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-008",
+    "title": "External audio availability and configuration",
+    "contract": "Ext. In selects interface input channels; Audio Settings and channel configuration determine available mono/stereo inputs/outputs. Configure opens that settings route.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B019",
+      "routing:B020"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-009",
+    "title": "Device-associated channel names",
+    "contract": "Renaming configured audio channels changes their chooser names; names are associated with the audio device. Tab advances between names in the configuration dialog.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B021"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-010",
+    "title": "Input activity and overload role",
+    "contract": "External audio input entries expose activity/overload meters; MIDI input channel entries expose activity meters. Their calibration, red threshold, detector/window, hold and refresh timing are not established here.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B019",
+      "routing:B026"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-011",
+    "title": "External MIDI port and channel selection",
+    "contract": "MIDI From can select one external port or All Ins, and one channel or All Channels; the All choices describe merged inputs. No merge ordering or duplicate-event policy is supplied.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B026"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-012",
+    "title": "MIDI port role switches",
+    "contract": "The MIDI settings distinguish Track for note/CC traffic, Sync for clock/timecode use and Remote for controller mapping/feedback. These roles do not establish sync protocol, arbitrary hardware support or mapping takeover behavior.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B028",
+      "routing:B030",
+      "routing:B031",
+      "routing:B032",
+      "routing:B035",
+      "routing:B045",
+      "routing:B046",
+      "routing:B047"
+    ],
+    "dependencies": [
+      "midi-user-mapping.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-013",
+    "title": "External MIDI destination",
+    "contract": "A MIDI-output track selects a destination port and output channel through its To chooser pair. External Instrument is an alternative device-owned round-trip route, not the same controls.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B056",
+      "routing:B057"
+    ],
+    "dependencies": [
+      "external-hardware-devices.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-014",
+    "title": "MIDI indicator classification",
+    "contract": "Control-Bar MIDI indicators distinguish sync, remote and track traffic and incoming/outgoing direction. Sync indicators have an external-sync-source visibility condition; mapped remote messages are described as consumed before MIDI tracks.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B060",
+      "routing:B061",
+      "routing:B062",
+      "routing:B063",
+      "routing:B064",
+      "routing:B065"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-015",
+    "title": "Output-to-track and many-to-one routing",
+    "contract": "A track may choose another compatible receiver as output without changing that receiver’s own I/O settings; multiple senders can address that receiver. Source/destination signal types must be compatible.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B071",
+      "routing:B072",
+      "routing:B074"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-016",
+    "title": "Input-from-track and one-to-many routing",
+    "contract": "Selecting a compatible source as another track’s input taps it without otherwise changing the source’s routing; more receivers can tap that source.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B073",
+      "routing:B075"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-017",
+    "title": "Audio source tap selections",
+    "contract": "Audio From another track offers Pre FX, Post FX and Post Mixer: before devices, after devices/before mixer and after mixer respectively. Finite device/mixer calculations remain with their owners.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B077",
+      "routing:B078",
+      "routing:B079",
+      "routing:B080",
+      "routing:B081"
+    ],
+    "dependencies": [
+      "mix-graph.md",
+      "mixer-values.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-018",
+    "title": "Solo interaction for tapped tracks",
+    "contract": "The chapter distinguishes hearing a source when its receiving track is soloed at Pre FX/Post FX versus Post Mixer, and separately describes solo behavior for output-to-track many-to-one routing. No universal solo law for arbitrary graphs is inferred.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B074",
+      "routing:B079",
+      "routing:B080",
+      "routing:B081"
+    ],
+    "dependencies": [
+      "mix-graph.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-019",
+    "title": "Rack-chain tap exposure",
+    "contract": "Routing choices can expose Instrument/Effect Rack chain Pre FX/Post FX/Post Mixer and Drum Rack return-chain points, with documented chain-point solo behavior. Rack chain processing and drum return ownership remain with SPEC-DEVICE-RACKS.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B083",
+      "routing:B084",
+      "routing:B085",
+      "routing:B086",
+      "routing:B087"
+    ],
+    "dependencies": [
+      "device-racks.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-020",
+    "title": "MIDI source tap before instrument",
+    "contract": "When one MIDI track takes MIDI from another, the chapter describes tapping after MIDI effects and before the source instrument, permitting layered receivers even when the source track ultimately outputs audio.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B124",
+      "routing:B125"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-021",
+    "title": "Track In versus direct instrument destination",
+    "contract": "A MIDI sender targeting an instrument-hosting track can address Track In or the offered instrument directly. Direct instrument targeting bypasses the receiving track’s recording/monitoring stage in the chapter’s example.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B102",
+      "routing:B103"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-022",
+    "title": "No Input instrument-container context",
+    "contract": "In the documented instrument-container setup, selecting MIDI No Input hides its Arm control; it does not make its routed instrument output immune to the host track’s Activator.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B104"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-023",
+    "title": "Qualified auxiliary and sidechain choices",
+    "contract": "Multi-output instruments and sidechain-capable devices may expose named routing destinations/sources. Availability is device-specific: Impulse’s automatic removal of a tapped slot from its own mix must not be generalized to arbitrary plug-ins.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B106",
+      "routing:B107",
+      "routing:B109",
+      "routing:B110",
+      "routing:B120",
+      "routing:B121",
+      "routing:B122"
+    ],
+    "dependencies": [
+      "device-impulse.md",
+      "plugin-hosting.md",
+      "external-hardware-devices.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-024",
+    "title": "Post-effects recording topology",
+    "contract": "The chapter uses a monitored processing track and separate recording receivers taking Post FX, or Post Mixer when its level/pan is wanted. Recording transitions/media semantics belong to SPEC-RECORDING-COMPING.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B091",
+      "routing:B092",
+      "routing:B093",
+      "routing:B095",
+      "routing:B096"
+    ],
+    "dependencies": [
+      "recording-comping.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-025",
+    "title": "Submix and Sends Only choices",
+    "contract": "Multiple track outputs can feed a submix track that outputs to Main. Sends Only with a nonzero selected send uses its corresponding return as submixer; this describes routing roles, not a send-gain law.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B098",
+      "routing:B100"
+    ],
+    "dependencies": [
+      "mix-graph.md",
+      "mixer-values.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-026",
+    "title": "Grouping preserves custom output exception",
+    "contract": "Grouping retargets Main-routed children to the group; existing custom destinations are retained.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B099",
+      "mixing:B039"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-027",
+    "title": "Return and Main roles",
+    "contract": "Returns combine sent audio; Main is the usual final destination. Neither plays clips.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B005",
+      "mixing:B048",
+      "mixing:B051",
+      "mixing:B055"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-028",
+    "title": "Per-return send tap controls",
+    "contract": "Pre/Post is per return; the finite send-stage law remains in SPEC-MIX-GRAPH.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "mixing:B054"
+    ],
+    "dependencies": [
+      "mix-graph.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-029",
+    "title": "Cue output and mode controls",
+    "contract": "Cue requires distinct Main/Cue destinations on a qualifying multi-output interface; Cue mode replaces Solo controls and offers Cue Volume.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "mixing:B074",
+      "mixing:B075",
+      "mixing:B076",
+      "mixing:B077",
+      "mixing:B078",
+      "mixing:B079"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-030",
+    "title": "Cue versus Main admission",
+    "contract": "Cue routes the selected track to Cue Out while its Activator still controls Main admission; browser preview also uses configured cue output.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "mixing:B078",
+      "mixing:B080"
+    ],
+    "dependencies": [
+      "browser-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-031",
+    "title": "Main resampling route",
+    "contract": "An audio track’s Resampling input takes Main. During resampling its own output is suppressed from the recording; recording and media storage outcomes retain their existing owners.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B067",
+      "routing:B068",
+      "routing:B069"
+    ],
+    "dependencies": [
+      "recording-comping.md",
+      "media-file-workflows.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-032",
+    "title": "Delay Compensation switch and scope",
+    "contract": "Options exposes Delay Compensation, documented on by default for built-in devices and plug-ins including returns. The synchronization goal supplies no measured alignment, device-reporting contract or scheduling algorithm.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "compensation:B002",
+      "compensation:B003"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-033",
+    "title": "Reduced Latency When Monitoring policy",
+    "contract": "Reduced Latency When Monitoring is available with Delay Compensation on and changes compensation for input-monitored tracks while other compensated paths can remain different. Lowest-latency/in-sync language is an uncalibrated goal, not a zero-latency or alignment oracle.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "compensation:B004"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-034",
+    "title": "Track Delay control distinction",
+    "contract": "Track Delay offers sample/ms units and is unavailable with Delay Compensation off. It is distinct from automatic compensation and device-owned Hardware Latency controls.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "compensation:B006",
+      "mixing:B082",
+      "mixing:B083",
+      "mixing:B084",
+      "mixing:B085",
+      "mixing:B087"
+    ],
+    "dependencies": [
+      "external-hardware-devices.md"
+    ]
+  },
+  {
+    "id": "REQ-RML-035",
+    "title": "Track-meter context",
+    "contract": "Track meters describe peak/RMS output, or input while monitoring; no detector calibration follows.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "mixing:B009"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-U-SIGNAL",
+    "title": "General routed-signal outcomes",
+    "contract": "Exact audio/MIDI routing matrices, mono/stereo conversion coefficients, tap/solo/mute leakage, sums, duplicate delivery, sidechain admission, return feedback and onset/tail identity remain unknown outside linked finite owners. No all-graph equivalence is inferred.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B023",
+      "routing:B024"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-U-LATENCY",
+    "title": "Latency, clocks and real-time calibration",
+    "contract": "No latency arithmetic, graph maximum/difference calculation, driver/buffer/device-reporting law, clock phase/jitter, compensation accuracy, zero-latency deadline, CPU bound or calibration tolerance is established. Tempo-synced effects after delay and large-delay sluggishness are documented caveats only.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [
+      "compensation:B002",
+      "compensation:B004",
+      "compensation:B005",
+      "compensation:B006",
+      "compensation:B007"
+    ],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-U-STATE",
+    "title": "Routing persistence and identity",
+    "contract": "Saved port/source/channel/monitor/cue/group identities, renaming/reordering/missing-source repair, user/custom defaults, preference loading and old-version migration remain unknown. General document readers do not establish these routing transitions.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-U-LIFECYCLE",
+    "title": "Routing transactions and teardown",
+    "contract": "Automation/mapping eligibility and ownership, undo grouping, cancellation commit points, source loss/reconnection, malformed fields, graph-cycle handling, simultaneous edits, engine/rate changes and device/track/Set teardown remain required unknowns.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-U-HARDWARE",
+    "title": "Hardware and driver prerequisites",
+    "contract": "Actual port/driver/interface/hardware availability, supported channel counts/rates, delivery feedback, permission/refusal behavior, hotplug identity and independent source/return calibration are unknown on this analyst host. Hardware absence does not remove the required scope.",
+    "provenance": "U",
+    "target_applicability": "U",
+    "source_blocks": [],
+    "dependencies": []
+  },
+  {
+    "id": "REQ-RML-036",
+    "title": "Monitor In Activator indicator",
+    "contract": "With Monitor In selected, the source describes a blue track Activator indicator that remains recognizable when the In/Out section is hidden. This is a named categorical color/control role only, not an RGB value, theme/contrast guarantee, Off/Auto color law, disabled-Activator behavior, activation/audio gate or transition-time rule.",
+    "provenance": "D12",
+    "target_applicability": "U",
+    "source_blocks": [
+      "routing:B013"
+    ],
+    "dependencies": [
+      "recording-comping.md#req-recording-comping-002--input-monitoring"
+    ]
+  }
+]

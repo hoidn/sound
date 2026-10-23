@@ -1,0 +1,315 @@
+C74-LOM-DEVICE:B0001 HTML28:20735 h1 Device
+C74-LOM-DEVICE:B0002 HTML29:0 p This class represents a MIDI or audio device in Live.
+C74-LOM-DEVICE:B0003 HTML30:0 h2 Canonical Paths
+C74-LOM-DEVICE:B0004 HTML31:0 pre live_set tracks N devices M
+C74-LOM-DEVICE:B0005 HTML33:0 pre live_set tracks N devices M chains L devices K
+C74-LOM-DEVICE:B0006 HTML35:0 pre live_set tracks N devices M return_chains L devices K
+C74-LOM-DEVICE:B0007 HTML37:0 h2 Children
+C74-LOM-DEVICE:B0008 HTML38:0 h3 parameters list of DeviceParameter
+C74-LOM-DEVICE:B0009 HTML39:0 p Access: getobserve
+C74-LOM-DEVICE:B0010 HTML40:0 p Only automatable parameters are accessible. See DeviceParameter to learn how to modify them.
+C74-LOM-DEVICE:B0011 HTML41:0 h3 view Device.View
+C74-LOM-DEVICE:B0012 HTML42:0 p Access: get
+C74-LOM-DEVICE:B0013 HTML43:0 h2 Properties
+C74-LOM-DEVICE:B0014 HTML44:0 h3 can_have_chains bool
+C74-LOM-DEVICE:B0015 HTML45:0 p Access: get
+C74-LOM-DEVICE:B0016 HTML46:0 p 0 for a single device 1 for a device Rack
+C74-LOM-DEVICE:B0017 HTML48:0 h3 can_have_drum_pads bool
+C74-LOM-DEVICE:B0018 HTML49:0 p Access: get
+C74-LOM-DEVICE:B0019 HTML50:0 p 1 for Drum Racks
+C74-LOM-DEVICE:B0020 HTML51:0 h3 class_display_name symbol
+C74-LOM-DEVICE:B0021 HTML52:0 p Access: get
+C74-LOM-DEVICE:B0022 HTML53:0 p Get the original name of the device (e.g. Operator, Auto Filter).
+C74-LOM-DEVICE:B0023 HTML54:0 h3 class_name symbol
+C74-LOM-DEVICE:B0024 HTML55:0 p Access: get
+C74-LOM-DEVICE:B0025 HTML56:0 p Live device type such as MidiChord, Operator, Limiter, MxDeviceAudioEffect, or PluginDevice.
+C74-LOM-DEVICE:B0026 HTML57:0 h3 is_active bool
+C74-LOM-DEVICE:B0027 HTML58:0 p Access: getobserve
+C74-LOM-DEVICE:B0028 HTML59:0 p 0 = either the device itself or its enclosing Rack device is off.
+C74-LOM-DEVICE:B0029 HTML60:0 h3 name symbol
+C74-LOM-DEVICE:B0030 HTML61:0 p Access: getsetobserve
+C74-LOM-DEVICE:B0031 HTML62:0 p This is the string shown in the title bar of the device.
+C74-LOM-DEVICE:B0032 HTML63:0 h3 type int
+C74-LOM-DEVICE:B0033 HTML64:0 p Access: get
+C74-LOM-DEVICE:B0034 HTML65:0 p The type of the device. Possible types are: 0 = undefined, 1 = instrument, 2 = audio_effect, 4 = midi_effect.
+C74-LOM-DEVICE:B0035 HTML66:0 h3 latency_in_samples int
+C74-LOM-DEVICE:B0036 HTML67:0 p Access: getobserve
+C74-LOM-DEVICE:B0037 HTML68:0 p Device latency in samples.
+C74-LOM-DEVICE:B0038 HTML69:0 h3 latency_in_ms float
+C74-LOM-DEVICE:B0039 HTML70:0 p Access: getobserve
+C74-LOM-DEVICE:B0040 HTML71:0 p Device latency in milliseconds.
+C74-LOM-DEVICE:B0041 HTML72:0 h3 can_compare_ab bool
+C74-LOM-DEVICE:B0042 HTML73:0 p Access: get
+C74-LOM-DEVICE:B0043 HTML74:0 p 1 for devices that support the AB Compare feature. 0 otherwise. Available since Live 12.3.
+C74-LOM-DEVICE:B0044 HTML77:0 h3 is_using_compare_preset_b bool
+C74-LOM-DEVICE:B0045 HTML78:0 p Access: getsetobserve
+C74-LOM-DEVICE:B0046 HTML79:0 p 1 if the device has compare preset B loaded. 0 otherwise. (Only relevant if can_compare_ab, otherwise errors.) Available since Live 12.3.
+C74-LOM-DEVICE:B0047 HTML83:0 h2 Functions
+C74-LOM-DEVICE:B0048 HTML84:0 h3 store_chosen_bank
+C74-LOM-DEVICE:B0049 HTML85:0 p Parameters: script_index [int] bank_index [int] (This is related to hardware control surfaces and is usually not relevant.)
+C74-LOM-DEVICE:B0050 HTML89:0 h3 save_preset_to_compare_ab_slot
+C74-LOM-DEVICE:B0051 HTML90:0 p Save the device state to the other compare AB slot. (Only relevant if can_compare_ab, otherwise errors.) Available since Live 12.3.
+C74-LOM-DEVICE_VIEW:B0001 HTML28:17009 h1 Device.View
+C74-LOM-DEVICE_VIEW:B0002 HTML29:0 p Representing the view aspects of a Device.
+C74-LOM-DEVICE_VIEW:B0003 HTML30:0 h2 Canonical Paths
+C74-LOM-DEVICE_VIEW:B0004 HTML31:0 pre live_set tracks N devices M view
+C74-LOM-DEVICE_VIEW:B0005 HTML33:0 pre live_set tracks N devices M chains L devices K view
+C74-LOM-DEVICE_VIEW:B0006 HTML35:0 pre live_set tracks N devices M return_chains L devices K view
+C74-LOM-DEVICE_VIEW:B0007 HTML37:0 h2 Properties
+C74-LOM-DEVICE_VIEW:B0008 HTML38:0 h3 is_collapsed bool
+C74-LOM-DEVICE_VIEW:B0009 HTML39:0 p Access: getsetobserve
+C74-LOM-DEVICE_VIEW:B0010 HTML40:0 p 1 = the device is shown collapsed in the device chain.
+C74-LOM-DEVICEPARAMETER:B0001 HTML28:19812 h1 DeviceParameter
+C74-LOM-DEVICEPARAMETER:B0002 HTML29:0 p This class represents an (automatable) parameter within a MIDI or audio device. To modify a device parameter, set its value property or send its object ID to live.remote~.
+C74-LOM-DEVICEPARAMETER:B0003 HTML30:0 h2 Canonical Path
+C74-LOM-DEVICEPARAMETER:B0004 HTML31:0 pre live_set tracks N devices M parameters L
+C74-LOM-DEVICEPARAMETER:B0005 HTML33:0 h2 Properties
+C74-LOM-DEVICEPARAMETER:B0006 HTML34:0 h3 automation_state int
+C74-LOM-DEVICEPARAMETER:B0007 HTML35:0 p Access: getobserve
+C74-LOM-DEVICEPARAMETER:B0008 HTML36:0 p Get the automation state of the parameter. 0 = no automation. 1 = automation active. 2 = automation overridden.
+C74-LOM-DEVICEPARAMETER:B0009 HTML40:0 h3 default_value float
+C74-LOM-DEVICEPARAMETER:B0010 HTML41:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0011 HTML42:0 p Get the default value for this parameter. Only available for parameters that aren't quantized (see is_quantized).
+C74-LOM-DEVICEPARAMETER:B0012 HTML44:0 h3 is_enabled bool
+C74-LOM-DEVICEPARAMETER:B0013 HTML45:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0014 HTML46:0 p 1 = the parameter value can be modified directly by the user, by sending set to a live.object, by automation or by an assigned MIDI message or keystroke. Parameters can be disabled because they are macro-controlled, or they are controlled by a live-remote~ object, or because Live thinks that they should not be moved.
+C74-LOM-DEVICEPARAMETER:B0015 HTML48:0 h3 is_quantized bool
+C74-LOM-DEVICEPARAMETER:B0016 HTML49:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0017 HTML50:0 p 1 for booleans and enums 0 for int/float parameters Although parameters like MidiPitch.Pitch appear quantized to the user, they actually have an is_quantized value of 0.
+C74-LOM-DEVICEPARAMETER:B0018 HTML53:0 h3 max float
+C74-LOM-DEVICEPARAMETER:B0019 HTML54:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0020 HTML55:0 p Largest allowed value.
+C74-LOM-DEVICEPARAMETER:B0021 HTML56:0 h3 min float
+C74-LOM-DEVICEPARAMETER:B0022 HTML57:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0023 HTML58:0 p Lowest allowed value.
+C74-LOM-DEVICEPARAMETER:B0024 HTML59:0 h3 name symbol
+C74-LOM-DEVICEPARAMETER:B0025 HTML60:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0026 HTML61:0 p The short parameter name as shown in the (closed) automation chooser.
+C74-LOM-DEVICEPARAMETER:B0027 HTML62:0 h3 original_name symbol
+C74-LOM-DEVICEPARAMETER:B0028 HTML63:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0029 HTML64:0 p The name of a Macro parameter before its assignment.
+C74-LOM-DEVICEPARAMETER:B0030 HTML65:0 h3 state int
+C74-LOM-DEVICEPARAMETER:B0031 HTML66:0 p Access: getobserve
+C74-LOM-DEVICEPARAMETER:B0032 HTML67:0 p The active state of the parameter. 0 = the parameter is active and can be changed. 1 = the parameter can be changed but isn't active, so changes won't have an audible effect. 2 = the parameter cannot be changed.
+C74-LOM-DEVICEPARAMETER:B0033 HTML71:0 h3 value float
+C74-LOM-DEVICEPARAMETER:B0034 HTML72:0 p Access: getsetobserve
+C74-LOM-DEVICEPARAMETER:B0035 HTML73:0 p The internal value between min and max. Use display_value for the value as visible in the GUI.
+C74-LOM-DEVICEPARAMETER:B0036 HTML74:0 h3 display_value float
+C74-LOM-DEVICEPARAMETER:B0037 HTML75:0 p Access: getsetobserve
+C74-LOM-DEVICEPARAMETER:B0038 HTML76:0 p The value as visible in the GUI.
+C74-LOM-DEVICEPARAMETER:B0039 HTML77:0 h3 value_items StringVector
+C74-LOM-DEVICEPARAMETER:B0040 HTML78:0 p Access: get
+C74-LOM-DEVICEPARAMETER:B0041 HTML79:0 p Get a list of the possible values for this parameter. Only available for parameters that are quantized (see is_quantized).
+C74-LOM-DEVICEPARAMETER:B0042 HTML81:0 h2 Functions
+C74-LOM-DEVICEPARAMETER:B0043 HTML82:0 h3 re_enable_automation
+C74-LOM-DEVICEPARAMETER:B0044 HTML83:0 p Re-enable automation for this parameter.
+C74-LOM-DEVICEPARAMETER:B0045 HTML84:0 h3 str_for_value
+C74-LOM-DEVICEPARAMETER:B0046 HTML85:0 p Parameter: value [float] Returns: [symbol] String representation of the specified value.
+C74-LOM-DEVICEPARAMETER:B0047 HTML86:0 h3 __str__
+C74-LOM-DEVICEPARAMETER:B0048 HTML87:0 p Returns: [symbol] String representation of the current parameter value.
+C74-LOM-MIXERDEVICE:B0001 HTML28:19273 h1 MixerDevice
+C74-LOM-MIXERDEVICE:B0002 HTML29:0 p This class represents a mixer device in Live. It provides access to volume, panning and other DeviceParameter objects. See DeviceParameter to learn how to modify them.
+C74-LOM-MIXERDEVICE:B0003 HTML30:0 h2 Canonical Path
+C74-LOM-MIXERDEVICE:B0004 HTML31:0 pre live_set tracks N mixer_device
+C74-LOM-MIXERDEVICE:B0005 HTML33:0 h2 Children
+C74-LOM-MIXERDEVICE:B0006 HTML34:0 h3 sends list of DeviceParameter
+C74-LOM-MIXERDEVICE:B0007 HTML35:0 p Access: getobserve
+C74-LOM-MIXERDEVICE:B0008 HTML36:0 p One send per return track.
+C74-LOM-MIXERDEVICE:B0009 HTML37:0 h3 cue_volume DeviceParameter
+C74-LOM-MIXERDEVICE:B0010 HTML38:0 p Access: get
+C74-LOM-MIXERDEVICE:B0011 HTML39:0 p [in master track only]
+C74-LOM-MIXERDEVICE:B0012 HTML40:0 h3 crossfader DeviceParameter
+C74-LOM-MIXERDEVICE:B0013 HTML41:0 p Access: get
+C74-LOM-MIXERDEVICE:B0014 HTML42:0 p [in master track only]
+C74-LOM-MIXERDEVICE:B0015 HTML43:0 h3 left_split_stereo DeviceParameter
+C74-LOM-MIXERDEVICE:B0016 HTML44:0 p Access: get
+C74-LOM-MIXERDEVICE:B0017 HTML45:0 p The Track's Left Split Stereo Pan Parameter.
+C74-LOM-MIXERDEVICE:B0018 HTML46:0 h3 panning DeviceParameter
+C74-LOM-MIXERDEVICE:B0019 HTML47:0 p Access: get
+C74-LOM-MIXERDEVICE:B0020 HTML48:0 h3 right_split_stereo DeviceParameter
+C74-LOM-MIXERDEVICE:B0021 HTML49:0 p Access: get
+C74-LOM-MIXERDEVICE:B0022 HTML50:0 p The Track's Right Split Stereo Pan Parameter.
+C74-LOM-MIXERDEVICE:B0023 HTML51:0 h3 song_tempo DeviceParameter
+C74-LOM-MIXERDEVICE:B0024 HTML52:0 p Access: get
+C74-LOM-MIXERDEVICE:B0025 HTML53:0 p [in master track only]
+C74-LOM-MIXERDEVICE:B0026 HTML54:0 h3 track_activator DeviceParameter
+C74-LOM-MIXERDEVICE:B0027 HTML55:0 p Access: get
+C74-LOM-MIXERDEVICE:B0028 HTML56:0 h3 volume DeviceParameter
+C74-LOM-MIXERDEVICE:B0029 HTML57:0 p Access: get
+C74-LOM-MIXERDEVICE:B0030 HTML58:0 h2 Properties
+C74-LOM-MIXERDEVICE:B0031 HTML59:0 h3 crossfade_assign int
+C74-LOM-MIXERDEVICE:B0032 HTML60:0 p Access: getsetobserve
+C74-LOM-MIXERDEVICE:B0033 HTML61:0 p 0 = A, 1 = none, 2 = B [not in master track]
+C74-LOM-MIXERDEVICE:B0034 HTML62:0 h3 panning_mode int
+C74-LOM-MIXERDEVICE:B0035 HTML63:0 p Access: getsetobserve
+C74-LOM-MIXERDEVICE:B0036 HTML64:0 p Access to the Track mixer's pan mode: 0 = Stereo, 1 = Split Stereo.
+C74-LOM-RACKDEVICE:B0001 HTML28:21601 h1 RackDevice
+C74-LOM-RACKDEVICE:B0002 HTML29:0 p This class represents a Live Rack Device. A RackDevice is a type of Device, meaning that it has all the children, properties and functions that a Device has. Listed below are members unique to RackDevice.
+C74-LOM-RACKDEVICE:B0003 HTML31:0 h2 Children
+C74-LOM-RACKDEVICE:B0004 HTML32:0 h3 chain_selector DeviceParameter
+C74-LOM-RACKDEVICE:B0005 HTML33:0 p Access: get
+C74-LOM-RACKDEVICE:B0006 HTML34:0 p Convenience accessor for the Rack's chain selector.
+C74-LOM-RACKDEVICE:B0007 HTML35:0 h3 chains list of Chain
+C74-LOM-RACKDEVICE:B0008 HTML36:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0009 HTML37:0 p The Rack's chains.
+C74-LOM-RACKDEVICE:B0010 HTML38:0 h3 drum_pads list of DrumPad
+C74-LOM-RACKDEVICE:B0011 HTML39:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0012 HTML40:0 p All 128 Drum Pads for the topmost Drum Rack. Inner Drum Racks return a list of 0 entries.
+C74-LOM-RACKDEVICE:B0013 HTML41:0 h3 return_chains list of Chain
+C74-LOM-RACKDEVICE:B0014 HTML42:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0015 HTML43:0 p The Rack's return chains.
+C74-LOM-RACKDEVICE:B0016 HTML44:0 h3 visible_drum_pads list of DrumPad
+C74-LOM-RACKDEVICE:B0017 HTML45:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0018 HTML46:0 p All 16 visible DrumPads for the topmost Drum Rack. Inner Drum Racks return a list of 0 entries.
+C74-LOM-RACKDEVICE:B0019 HTML47:0 h2 Properties
+C74-LOM-RACKDEVICE:B0020 HTML48:0 h3 can_show_chains bool
+C74-LOM-RACKDEVICE:B0021 HTML49:0 p Access: get
+C74-LOM-RACKDEVICE:B0022 HTML50:0 p 1 = The Rack contains an instrument device that is capable of showing its chains in Session View.
+C74-LOM-RACKDEVICE:B0023 HTML51:0 h3 has_drum_pads bool
+C74-LOM-RACKDEVICE:B0024 HTML52:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0025 HTML53:0 p 1 = the device is a Drum Rack with pads. A nested Drum Rack is a Drum Rack without pads. Only available for Drum Racks.
+C74-LOM-RACKDEVICE:B0026 HTML55:0 h3 has_macro_mappings bool
+C74-LOM-RACKDEVICE:B0027 HTML56:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0028 HTML57:0 p 1 = any of a Rack's Macros are mapped to a parameter.
+C74-LOM-RACKDEVICE:B0029 HTML58:0 h3 is_showing_chains bool
+C74-LOM-RACKDEVICE:B0030 HTML59:0 p Access: getsetobserve
+C74-LOM-RACKDEVICE:B0031 HTML60:0 p 1 = The Rack contains an instrument device that is showing its chains in Session View.
+C74-LOM-RACKDEVICE:B0032 HTML61:0 h3 variation_count int
+C74-LOM-RACKDEVICE:B0033 HTML62:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0034 HTML63:0 p The number of currently stored macro variations. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0035 HTML66:0 h3 selected_variation_index int
+C74-LOM-RACKDEVICE:B0036 HTML67:0 p Access: getset
+C74-LOM-RACKDEVICE:B0037 HTML68:0 p Get/set the currently selected variation. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0038 HTML71:0 h3 visible_macro_count int
+C74-LOM-RACKDEVICE:B0039 HTML72:0 p Access: getobserve
+C74-LOM-RACKDEVICE:B0040 HTML73:0 p The number of currently visible macros.
+C74-LOM-RACKDEVICE:B0041 HTML74:0 h2 Functions
+C74-LOM-RACKDEVICE:B0042 HTML75:0 h3 copy_pad
+C74-LOM-RACKDEVICE:B0043 HTML76:0 p Parameters: source_index [int] destination_index [int] Copies all content of a Drum Rack pad from a source pad to a destination pad. The source_index and destination_index refer to pad indices inside a Drum Rack.
+C74-LOM-RACKDEVICE:B0044 HTML80:0 h3 add_macro
+C74-LOM-RACKDEVICE:B0045 HTML81:0 p Increases the number of visible macro controls. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0046 HTML84:0 h3 insert_chain
+C74-LOM-RACKDEVICE:B0047 HTML85:0 p Parameters: index [int] (optional) Attempts to insert a new chain at the given index, or at the end of the chain list if no index is provided. Throws an error if insertion is not possible. Available since Live 12.3.
+C74-LOM-RACKDEVICE:B0048 HTML90:0 h3 remove_macro
+C74-LOM-RACKDEVICE:B0049 HTML91:0 p Decreases the number of visible macro controls. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0050 HTML94:0 h3 randomize_macros
+C74-LOM-RACKDEVICE:B0051 HTML95:0 p Randomizes the values of eligible macro controls. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0052 HTML98:0 h3 store_variation
+C74-LOM-RACKDEVICE:B0053 HTML99:0 p Stores a new variation of the values of all currently mapped macros. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0054 HTML102:0 h3 recall_selected_variation
+C74-LOM-RACKDEVICE:B0055 HTML103:0 p Recalls the currently selected macro variation. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0056 HTML106:0 h3 recall_last_used_variation
+C74-LOM-RACKDEVICE:B0057 HTML107:0 p Recalls the macro variation that was recalled most recently. Available since Live 11.0.
+C74-LOM-RACKDEVICE:B0058 HTML110:0 h3 delete_selected_variation
+C74-LOM-RACKDEVICE:B0059 HTML111:0 p Deletes the currently selected macro variation. Does nothing if there is no selected variation. Available since Live 11.0.
+C74-LOM-RACKDEVICE_VIEW:B0001 HTML28:18206 h1 RackDevice.View
+C74-LOM-RACKDEVICE_VIEW:B0002 HTML29:0 p Represents the view aspects of a Rack Device. A RackDevice.View is a type of Device.View, meaning that it has all the properties that a Device.View has. Listed below are the members unique to RackDevice.View.
+C74-LOM-RACKDEVICE_VIEW:B0003 HTML31:0 h2 Children
+C74-LOM-RACKDEVICE_VIEW:B0004 HTML32:0 h3 selected_drum_pad DrumPad
+C74-LOM-RACKDEVICE_VIEW:B0005 HTML33:0 p Access: getsetobserve
+C74-LOM-RACKDEVICE_VIEW:B0006 HTML34:0 p Currently selected Drum Rack pad. Only available for Drum Racks.
+C74-LOM-RACKDEVICE_VIEW:B0007 HTML36:0 h3 selected_chain Chain
+C74-LOM-RACKDEVICE_VIEW:B0008 HTML37:0 p Access: getsetobserve
+C74-LOM-RACKDEVICE_VIEW:B0009 HTML38:0 p Currently selected chain.
+C74-LOM-RACKDEVICE_VIEW:B0010 HTML39:0 h2 Properties
+C74-LOM-RACKDEVICE_VIEW:B0011 HTML40:0 h3 drum_pads_scroll_position int
+C74-LOM-RACKDEVICE_VIEW:B0012 HTML41:0 p Access: getsetobserve
+C74-LOM-RACKDEVICE_VIEW:B0013 HTML42:0 p Lowest row of pads visible, range: 0 - 28. Only available for Drum Racks.
+C74-LOM-RACKDEVICE_VIEW:B0014 HTML44:0 h3 is_showing_chain_devices bool
+C74-LOM-RACKDEVICE_VIEW:B0015 HTML45:0 p Access: getsetobserve
+C74-LOM-RACKDEVICE_VIEW:B0016 HTML46:0 p 1 = the devices in the currently selected chain are visible.
+C74-LOM-CHAIN:B0001 HTML28:20641 h1 Chain
+C74-LOM-CHAIN:B0002 HTML29:0 p This class represents a group device chain in Live.
+C74-LOM-CHAIN:B0003 HTML30:0 h2 Canonical Paths
+C74-LOM-CHAIN:B0004 HTML31:0 pre live_set tracks N devices M chains L
+C74-LOM-CHAIN:B0005 HTML33:0 pre live_set tracks N devices M return_chains L
+C74-LOM-CHAIN:B0006 HTML35:0 pre live_set tracks N devices M chains L devices K chains P ...
+C74-LOM-CHAIN:B0007 HTML37:0 pre live_set tracks N devices M return_chains L devices K chains P ...
+C74-LOM-CHAIN:B0008 HTML39:0 h2 Children
+C74-LOM-CHAIN:B0009 HTML40:0 h3 devices Device
+C74-LOM-CHAIN:B0010 HTML41:0 p Access: getobserve
+C74-LOM-CHAIN:B0011 HTML42:0 h3 mixer_device ChainMixerDevice
+C74-LOM-CHAIN:B0012 HTML43:0 p Access: get
+C74-LOM-CHAIN:B0013 HTML44:0 h2 Properties
+C74-LOM-CHAIN:B0014 HTML45:0 h3 color int
+C74-LOM-CHAIN:B0015 HTML46:0 p Access: getsetobserve
+C74-LOM-CHAIN:B0016 HTML47:0 p The RGB value of the chain's color in the form 0x00rrggbb or (2^16 * red) + (2^8) * green + blue, where red, green and blue are values from 0 (dark) to 255 (light). When setting the RGB value, the nearest color from the color chooser is taken.
+C74-LOM-CHAIN:B0017 HTML50:0 h3 color_index long
+C74-LOM-CHAIN:B0018 HTML51:0 p Access: getsetobserve
+C74-LOM-CHAIN:B0019 HTML52:0 p The color index of the chain.
+C74-LOM-CHAIN:B0020 HTML53:0 h3 is_auto_colored bool
+C74-LOM-CHAIN:B0021 HTML54:0 p Access: getsetobserve
+C74-LOM-CHAIN:B0022 HTML55:0 p 1 = the chain will always have the color of the containing track or chain.
+C74-LOM-CHAIN:B0023 HTML56:0 h3 has_audio_input bool
+C74-LOM-CHAIN:B0024 HTML57:0 p Access: get
+C74-LOM-CHAIN:B0025 HTML58:0 h3 has_audio_output bool
+C74-LOM-CHAIN:B0026 HTML59:0 p Access: get
+C74-LOM-CHAIN:B0027 HTML60:0 h3 has_midi_input bool
+C74-LOM-CHAIN:B0028 HTML61:0 p Access: get
+C74-LOM-CHAIN:B0029 HTML62:0 h3 has_midi_output bool
+C74-LOM-CHAIN:B0030 HTML63:0 p Access: get
+C74-LOM-CHAIN:B0031 HTML64:0 h3 mute bool
+C74-LOM-CHAIN:B0032 HTML65:0 p Access: getsetobserve
+C74-LOM-CHAIN:B0033 HTML66:0 p 1 = muted (Chain Activator off)
+C74-LOM-CHAIN:B0034 HTML67:0 h3 muted_via_solo bool
+C74-LOM-CHAIN:B0035 HTML68:0 p Access: getobserve
+C74-LOM-CHAIN:B0036 HTML69:0 p 1 = muted due to another chain being soloed.
+C74-LOM-CHAIN:B0037 HTML70:0 h3 name unicode
+C74-LOM-CHAIN:B0038 HTML71:0 p Access: getsetobserve
+C74-LOM-CHAIN:B0039 HTML72:0 h3 solo bool
+C74-LOM-CHAIN:B0040 HTML73:0 p Access: getsetobserve
+C74-LOM-CHAIN:B0041 HTML74:0 p 1 = soloed (Solo switch on) does not automatically turn Solo off in other chains.
+C74-LOM-CHAIN:B0042 HTML76:0 h2 Functions
+C74-LOM-CHAIN:B0043 HTML77:0 h3 delete_device
+C74-LOM-CHAIN:B0044 HTML78:0 p Parameter: index [int] Delete the device at the given index.
+C74-LOM-CHAIN:B0045 HTML80:0 h3 insert_device
+C74-LOM-CHAIN:B0046 HTML81:0 p Parameters: device_name [symbol] target_index [int] (optional) Attempts to insert the device specified by device_name at the given index in the chain. If no index is provided, attempts to insert the device at the end. Throws an error if insertion is not possible. device_name is the name as it appears in the UI of Live. Not all indices are valid. As can be expected, indices outside of the range defined by the current length of the device chain are invalid, but there are other limitations: for example, a MIDI effect can't be inserted after an instrument. The rule of thumb is that if an index would be invalid when inserting using the mouse, it's invalid here. At the moment, only native Live devices can be inserted. Max for Live devices and plug-in are not supported. Available since Live 12.3.
+C74-LOM-CHAINMIXERDEVICE:B0001 HTML28:17419 h1 ChainMixerDevice
+C74-LOM-CHAINMIXERDEVICE:B0002 HTML29:0 p This class represents a chain's mixer device in Live.
+C74-LOM-CHAINMIXERDEVICE:B0003 HTML30:0 h2 Canonical Paths
+C74-LOM-CHAINMIXERDEVICE:B0004 HTML31:0 pre live_set tracks N devices M chains L mixer_device
+C74-LOM-CHAINMIXERDEVICE:B0005 HTML33:0 pre live_set tracks N devices M return_chains L mixer_device
+C74-LOM-CHAINMIXERDEVICE:B0006 HTML35:0 h2 Children
+C74-LOM-CHAINMIXERDEVICE:B0007 HTML36:0 h3 sends list of DeviceParameter
+C74-LOM-CHAINMIXERDEVICE:B0008 HTML37:0 p Access: getobserve
+C74-LOM-CHAINMIXERDEVICE:B0009 HTML38:0 p [in Audio Effect Racks and Instrument Racks only] For Drum Racks, otherwise empty.
+C74-LOM-CHAINMIXERDEVICE:B0010 HTML40:0 h3 chain_activator DeviceParameter
+C74-LOM-CHAINMIXERDEVICE:B0011 HTML41:0 p Access: get
+C74-LOM-CHAINMIXERDEVICE:B0012 HTML42:0 h3 panning DeviceParameter
+C74-LOM-CHAINMIXERDEVICE:B0013 HTML43:0 p Access: get
+C74-LOM-CHAINMIXERDEVICE:B0014 HTML44:0 p [in Audio Effect Racks and Instrument Racks only]
+C74-LOM-CHAINMIXERDEVICE:B0015 HTML45:0 h3 volume DeviceParameter
+C74-LOM-CHAINMIXERDEVICE:B0016 HTML46:0 p Access: get
+C74-LOM-CHAINMIXERDEVICE:B0017 HTML47:0 p [in Audio Effect Racks and Instrument Racks only]
+C74-LOM-DRUMCHAIN:B0001 HTML28:17176 h1 DrumChain
+C74-LOM-DRUMCHAIN:B0002 HTML29:0 p This class represents a Drum Rack device chain in Live. A DrumChain is a type of Chain, meaning that it has all the children, properties and functions that a Chain has. Listed below are the members unique to DrumChain.
+C74-LOM-DRUMCHAIN:B0003 HTML32:0 h2 Properties
+C74-LOM-DRUMCHAIN:B0004 HTML33:0 h3 in_note int
+C74-LOM-DRUMCHAIN:B0005 HTML34:0 p Access: getsetobserve
+C74-LOM-DRUMCHAIN:B0006 HTML35:0 p Get/set the MIDI note that will trigger this chain. The value -1 corresponds to the "All Notes" setting in the UI. Available since Live 12.3
+C74-LOM-DRUMCHAIN:B0007 HTML38:0 h3 out_note int
+C74-LOM-DRUMCHAIN:B0008 HTML39:0 p Access: getsetobserve
+C74-LOM-DRUMCHAIN:B0009 HTML40:0 p Get/set the MIDI note sent to the devices in the chain.
+C74-LOM-DRUMCHAIN:B0010 HTML41:0 h3 choke_group int
+C74-LOM-DRUMCHAIN:B0011 HTML42:0 p Access: getsetobserve
+C74-LOM-DRUMCHAIN:B0012 HTML43:0 p Get/set the chain's choke group.
+C74-LOM-DRUMPAD:B0001 HTML28:19278 h1 DrumPad
+C74-LOM-DRUMPAD:B0002 HTML29:0 p This class represents a Drum Rack pad in Live.
+C74-LOM-DRUMPAD:B0003 HTML30:0 h2 Canonical Path
+C74-LOM-DRUMPAD:B0004 HTML31:0 pre live_set tracks N devices M drum_pads L
+C74-LOM-DRUMPAD:B0005 HTML33:0 h2 Children
+C74-LOM-DRUMPAD:B0006 HTML34:0 h3 chains Chain
+C74-LOM-DRUMPAD:B0007 HTML35:0 p Access: getobserve
+C74-LOM-DRUMPAD:B0008 HTML36:0 h2 Properties
+C74-LOM-DRUMPAD:B0009 HTML37:0 h3 mute bool
+C74-LOM-DRUMPAD:B0010 HTML38:0 p Access: getsetobserve
+C74-LOM-DRUMPAD:B0011 HTML39:0 p 1 = muted
+C74-LOM-DRUMPAD:B0012 HTML40:0 h3 name symbol
+C74-LOM-DRUMPAD:B0013 HTML41:0 p Access: getobserve
+C74-LOM-DRUMPAD:B0014 HTML42:0 h3 note int
+C74-LOM-DRUMPAD:B0015 HTML43:0 p Access: get
+C74-LOM-DRUMPAD:B0016 HTML44:0 h3 solo bool
+C74-LOM-DRUMPAD:B0017 HTML45:0 p Access: getsetobserve
+C74-LOM-DRUMPAD:B0018 HTML46:0 p 1 = soloed (Solo switch on) Does not automatically turn Solo off in other chains.
+C74-LOM-DRUMPAD:B0019 HTML48:0 h2 Functions
+C74-LOM-DRUMPAD:B0020 HTML49:0 h3 delete_all_chains

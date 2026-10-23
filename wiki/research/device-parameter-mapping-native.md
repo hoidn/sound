@@ -2,7 +2,7 @@
 id: RESEARCH-DEVICE-PARAMETER-MAPPING-NATIVE
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -88,11 +88,23 @@ default stays.
 | 2 | +0x78 (1) | No reader found | 1 for all |
 | 3 | +0x80 (0) | Must be non-zero before an instance is created. A value of 2 makes the warm-up (`0x102fbff98`) clear the input buffers first | Effects 2, instruments 1 |
 | 4 | +0x84 (0; stored as non-zero → 1) | Non-zero creates a second engine instance (`0x102fbf644`). Parameter values go to both instances (`0x102fbfe54`) | Amp, Cabinet 1; others 0 |
-| 5 | +0x88 (1,024) | Read through the instance virtual `0x102fcc390`. The warm-up processes 1,024 frames in blocks of at most this size | Amp, Cabinet 32,767; others 512 |
-| 6 | +0x90 (1) | Enables the reset sequence in `0x102fbf220`: warm-up calls, then `ResetA`, then the latest index-0 value is sent again. It also enables batched parameter flushing when more than 10 values are pending (`0x102fbf19c`, `0x102fbf340`) | Amp, Cabinet 0; others 1 |
+| 5 | +0x88 (1,024) | Read through the instance virtual `0x102fcc390`. Each warm-up helper invocation processes 1,024 frames in blocks of at most this size; a grouped reset uses four invocations (see protocol correction below) | Amp, Cabinet 32,767; others 512 |
+| 6 | +0x90 (1) | Enables reset/index-0 restoration and grouped parameter handling. Ordinary reset has no warm-up; ResetAndDispatch uses four 1,024-frame warm-ups before reset/restoration. The distinct paths are traced in the reviewed processing-protocol correction below | Amp, Cabinet 0; others 1 |
 
 Inferred: selector 4 means "mono engine, run one per channel" (dual mono), which matches the H4
 hypothesis. The roles of selectors 1 and 2 on the Live side are unknown.
+
+## Processing-protocol correction — 2026-10-19
+
+The [reviewed protocol trace](device-host-protocol.md#initialization-reset-sample-rate-and-teardown)
+distinguishes ordinary Reset/NewRate (no warm-up) from ResetAndDispatch (four
+1,024-frame warm-up helper requests, then reset and cached index-0 restoration).
+The earlier selector summary conflated these paths and understated the grouped
+warm-up total as one helper invocation. The new trace retains 51 original records;
+its [independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/device-host-review-final.json)
+verifies their exact original bytes. Insertion/reset audio remains unknown.
+Internal event/control queue observations are research models, not independent
+application compatibility contracts or mandated candidate internals.
 
 ## From a stored parameter to `SetParameterA`
 
@@ -169,7 +181,7 @@ is `KeyboardTranspose`, 31 is `KeyboardStretch`, and 32 is the unstored `DummyPe
 | --- | --- | --- | --- | --- |
 | 0 | `Polyphony` | enum 0..30, labels "2"…"32" (`Voices`) | 30 | index |
 | 1 | `PitchBendRange` | 0..1 | 1 | identity, clamp |
-| 2 | `Volume` | 0..1 | 0.7047892 | identity, clamp |
+| 2 | `Volume` | 0..1 | 0.7047892213 | identity, clamp |
 | 3 | `KeyboardFineTune` (`Detune`) | 0..1 | 0.5 | identity, clamp |
 | 4–22 | `MalletStiffness` … `PickupDistance`, in schema order | 0..1 | 0.5 | identity, clamp |
 | 23 | `PickupModel` | enum 0..1, labels R, W | 0 | index |
@@ -301,6 +313,8 @@ the half of the engine range from the centre to about 0.72. The wrapper's `64 + 
 stops at the float parameter unit** (`AFloatParameterUnit`, created by `0x10319c4dc`), whose emitted
 value was inferred rather than traced.
 
+**Qualification (2026-10-22):** the [approved five-branch factory study](device-analog-dsp.md#five-branch-factory-source-adoption--2026-10-22) makes the preceding direct `AFloatParameterUnit` creation association stale. The recovered factory has five conditional alternatives; distinct AFloat/LFloat-labeled stores use receivers whose equality is unproved. Actual class/current receiver and emitted value remain unknown. The dated interpretation and immutable evidence remain historical; no rescale or compatibility conclusion follows.
+
 A blanket bipolar rescale in that unit would contradict Amp and Electric:
 
 - Amp: the Softube engine clamps to [0, 1].
@@ -387,6 +401,20 @@ an established display text. For Corpus `LfoType`, `LfoSync` and `LfoStereoMode`
 observed strings stand; their use as display labels is unknown. The Cabinet switch order is
 corrected under the Amp and Cabinet table above.
 
+## Follow-up correction, 2026-10-19
+
+The [Electric study](device-electric-dsp.md#corrections-to-other-pages) re-read the
+constructor's Volume as binary32 `0x3f346d11` = 0.7047892213. The retained N5
+`out/conversions.tsv` prints `sent_for_default` as `0.704789`, which reads as a
+different binary32; it stays immutable. Consumers must use the value above.
+The Electric evidence is `t12-electric-v1/el.py` and
+`results/probes_events.json` (`voices.limit`, all 31 indices): Polyphony index p
+allows p + 2 voices. Thus the `2` … `32` strings name voice counts; the exact
+displayed form with `Voices` remains unknown. This refines DEV-M05's scope without
+claiming an observed UI label. The t12 feasibility render also used the rounded
+Volume value and put the note inside the startup ramp; its later settled peak is
+0.296, recorded in Electric research.
+
 ## Unknowns
 
 - Analog, Tension and Collision index tables (nested builders using modes 1–5 and 8).
@@ -419,3 +447,16 @@ Live, must be established first.
 - `extract_mapping.py` parses decompiled text with regular expressions, and handles only flat builders.
 - The bundle-side Corpus semantics end at the 0..127 value passed to the engine.
 - No organization is attributed to any binary.
+
+## Bundled-parameter standing-class assessment — 2026-10-21
+
+The approved [bundled-parameter map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-bundled-parameters-routes-v1/manifest.json),1,586bytes/SHA-256 `0c3a074ea5a2dbe28075003343e4b601c5b1995930eddf4834d412f5dea5d5bc`, has one X unit, BP119/REQ-BUNDLED-DEVICE-PARAMETERS-014 clause014.4. Electric Polyphony's legal p=0…30→p+2voice meaning is already represented at **all31legal indices** by approved historical `voices.limit`, as the N5 follow-up above records. There is no missing legal member to execute. The current owner distinguishes static label strings2…32, extracted voice meaning and unknown exact label-plus-“Voices” display. Another arbitrary out-of-domain value/history is a different unenumerated class, not a missing BP119 member.
+
+[Approved structure review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-bundled-parameters-routes-v1-review.json),33,992bytes/SHA-256 `173b3f6967809122920248ab7a8d79cc1fbee9c245bfa43f20db4565aff981fc`, and its [batch inputs](../../analysis/ableton-live-12.4.3/full-spec-v1/family-bundled-parameters-routes-v1/batch-inputs.json),57,554bytes/SHA-256 `01063a6ab35bd7f74a5fab001966ad416d426ae44350a4d58af323e5150666e7`, retain82 public Open/Save fixture navigation links, with reference execution not-run. They are not callable constructor/parser vectors. Four prospective groups still need actual list-item/load/postload,502current-value/unit emission contexts including nine excluded positions, presentation receiver or public browser/Save/ID lifecycle. No frozen finite runtime input/current receiver/output join was found for them; scalar formatter/setter/voice values would not establish those public results.
+
+This assessment used routed canonical excerpts and approved map/review/input metadata, with no oldraw/source-behavior/native/original/tool/model replay or new artifact gate. It finds no currently mapped missing whole standing class, not global infeasibility or a prohibition overriding design12. No new execution/source frontier/model/owner/case/grade/release/site selected. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.
+
+
+## Parameter-unit factory association qualified — 2026-10-22
+
+The [canonical factory study](device-analog-dsp.md#five-branch-factory-source-adoption--2026-10-22) owns the new thirteen-method source evidence and its sole review. It qualifies the earlier unconditional type association, without tracing the current stored-to-emitted value or resolving P4-N5-01 / REQ-015. The earlier dated no-observation policy is historical: [D-07 now selects local Windows virtualization](../decisions/adr-0006-reference-observation-reopened.md#windows-guest-profile-selected--2026-10-22), with readiness still open and zero observations. A future Windows result would need its own build/platform applicability; it would not establish pinned macOS equivalence.

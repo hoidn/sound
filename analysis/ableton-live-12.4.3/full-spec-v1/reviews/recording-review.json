@@ -1,0 +1,87 @@
+{
+  "id": "REVIEW-RECORDING-COMPING-R1",
+  "reviewer": "independent analyst /root/arrangement_spec",
+  "date_utc": "2026-10-19T20:02:20.506505+00:00",
+  "disposition": "changes-requested-before-marking-independent-review-complete",
+  "scope": "Read-only review of 32 recording/comping requirements, all 78 case definitions, both canonical pages, all four retained official HTML chapters, packet source inventory and manifest; no handoff release review",
+  "reviewed_inputs": {
+    "wiki/specs/recording-comping.md": "750ed7d6831f6b9ff46f300f851b9d868b267321ba985bb5dfdde54519f36f37",
+    "wiki/research/recording-comping.md": "fde59c3c4f7e3474c20db5590de2399a6773d7ab1be185330f7601afe0e51079",
+    "analysis/ableton-live-12.4.3/full-spec-v1/recording/manifest.json": "d76c72ef6ac727d1ab1070f7d36a10c3e53b93da119b42d75a84d9802030d32e"
+  },
+  "findings": [
+    {
+      "id": "REC-REVIEW-001",
+      "severity": "medium",
+      "required_for_review_completion": true,
+      "location": "wiki/specs/recording-comping.md#req-recording-comping-031--session-performance-into-arrangement",
+      "problem": "The D12 clause generalizes recording of scene tempo/meter changes beyond the condition retained in its cited source. Captured R7 section 7.5 limits these changes to tempo/time-signature values included in names of launched scenes. The requirement currently omits the scene-name condition. It also has no explicit documentary case for scene tempo/meter changes.",
+      "evidence": {
+        "file": "manual-12-session-view-2026-10-19.html",
+        "section_id": "recording-sessions-into-the-arrangement",
+        "qualifier": "if they are included in the names of launched scenes",
+        "source_sha256": "16e29141f823e298d5fa7fee3b993861f6c38415f8432cd00ac89789e9470a31"
+      },
+      "requested_change": "Narrow the D12 statement to the retained launched-scene-name condition, or cite retained evidence for a broader field-based scene recording contract. Keep unestablished broader behavior U. Add or explicitly defer a documentary scene-tempo/meter scenario; do not import an exact-build assumption."
+    },
+    {
+      "id": "REC-REVIEW-002",
+      "severity": "low",
+      "required_for_review_completion": false,
+      "location": "wiki/specs/recording-comping.md#req-recording-comping-031--session-performance-into-arrangement",
+      "problem": "Session override and Back to Arrangement clauses and RC-074 duplicate Arrangement REQ-020/021 and AR-044 to AR-046. Both new drafts currently claim ownership of the same observable transition.",
+      "requested_change": "During parent integration choose Arrangement as the canonical playback-override contract and link the recording-specific dependency, or explicitly assign another single owner. Keep Session recording output in this recording draft."
+    },
+    {
+      "id": "REC-REVIEW-003",
+      "severity": "low",
+      "required_for_review_completion": false,
+      "location": "wiki/specs/recording-comping.md#req-recording-comping-026--recorded-audio-files",
+      "problem": "File Type/Bit Depth selection is a D12 clause, but RC-058 to RC-060 cover channel count and destinations only. The count of 78 scenarios should not be read as clause-complete acceptance coverage. Similar finite omissions exist for main/take selection defaults and some metronome controls.",
+      "requested_change": "Retain partial-coverage wording. If this clause is selected for a future handoff, add a finite format/bit-depth scenario or label that subclause excluded from the release."
+    }
+  ],
+  "checks": {
+    "sealed_manifest_hash": "pass",
+    "all_11_payload_hashes_and_sizes": "pass",
+    "four_capture_metadata_hashes": "pass",
+    "all_376_original_document_hashes": "pass",
+    "original_schema_hash_and_retained_class_fields": "pass",
+    "original_native_index_hash_and_seven_line_records": "pass",
+    "requirement_sequence": "32 unique contiguous IDs",
+    "case_sequence": "78 unique contiguous IDs",
+    "case_evidence_counts": {
+      "D12": 63,
+      "D12403": 4,
+      "U": 11
+    },
+    "original_document_facts": {
+      "documents": 376,
+      "documents_with_lanes": 9,
+      "lanes": 140,
+      "lane_MidiClip_events": 140,
+      "lane_AudioClip_events": 0,
+      "lane_Audition_false": 140,
+      "TakeId_elements": 4130,
+      "TakeId_zero": 3744
+    },
+    "manual_support": "All requirement/case documentary source sections inspected; REQ-031 qualifier finding above. Captured manual version 12 has exact patch U throughout. No source-name to runtime transition leap found.",
+    "storage_vs_runtime_boundary": "pass: stored metadata is not promoted to loader/save/allocation/identity proof",
+    "lifecycle_boundary": "pass: finite documented undo clauses distinguished; save/redo/cancel/failure/teardown/malformed/timing unknowns retained",
+    "scenario_vs_fixture_boundary": "pass: scenarios explicitly unexecuted, no generated/retained application fixtures claimed",
+    "frontmatter_relative_links_heading_anchors": "pass",
+    "retained_manual_section_ids": "pass",
+    "git_diff_check": "pass"
+  },
+  "execution_limits": {
+    "ran_Live": false,
+    "ran_extracted_original_code": false,
+    "ran_candidate": false,
+    "installed_tools": false,
+    "modified_author_files": false,
+    "compatibility_pass": false,
+    "application_cases_graded": 0,
+    "package_checks": "Independent source-byte/artifact audits only"
+  },
+  "integration_note": "All 74 application cases remain ungraded for 12.4.3; source integrity and D12 documentary support are not exact-build behavior or complete feature coverage."
+}

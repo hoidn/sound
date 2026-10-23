@@ -1,0 +1,284 @@
+{
+  "status": "FROZEN capability/design record only; no prepared capture script or execution selection",
+  "created_utc": "2026-10-20T09:56:02.710929+00:00",
+  "question": "Can the unchanged reviewed driver apply one ListeningXL host parameter step at an exact block boundary while preserving one fresh device instance?",
+  "decision": "YES at source-command sequencing level, using two process commands around one param command. No new harness or scheduler is justified for this event-free stopped-transport history. Actual processing/pickup response remains unobserved/U.",
+  "smallest_command_shape_not_executable_script": [
+    "one create, one rate, exact38initialparams to be separately selected",
+    "one inputFILE open containing entire16384frame input",
+    "inflag1 and explicit transport0 0 120 / mxcsr0x1f80",
+    "process8192 512",
+    "param15 NEW_VALUE (not selected here)",
+    "process8192 512",
+    "one destroy"
+  ],
+  "scope_of_shape": "Illustrative design only: no vector/stepvalue/captureargv/outputpath/collector/criterion selected. Host/test boundary8192 is after16 prefixCalcA calls and before suffixcall0 on the sameinstance. No Live scheduling/framebase claim.",
+  "evidence": [
+    {
+      "claim": "main owns one inst pointer; process commands forward it unchanged; only explicit create/destroy branches replace it",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            101,
+            107
+          ],
+          "literal": "    FILE *sc = fopen(argv[2], \"r\"), *out = fopen(argv[3], \"wb\"), *in = NULL;\n    if (!sc || !out) die(\"cannot open script or output\");\n    void *inst = NULL;\n    transport_t tp = { 0, 0, 0.0, 120.0 };\n    int inflag = 0;\n    char line[512], cmd[32], arg[400];\n    while (fgets(line, sizeof line, sc)) {"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            118,
+            128
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"create\")) {\n            enter(); inst = x.create(); leave();\n            printf(\"create %s\\n\", inst ? \"ok\" : \"NULL\");\n        } else if (!strcmp(cmd, \"rate\") && sscanf(line, \"%*s %ld\", &a) == 1) {\n            enter(); long r = x.rate(inst, a); leave();\n            printf(\"rate %ld ret=%ld\\n\", a, r);\n        } else if (!strcmp(cmd, \"param\") && sscanf(line, \"%*s %ld %lf\", &a, &v) == 2) {\n            enter(); x.param(inst, (int)a, (float)v); leave();\n            printf(\"param %ld %.9g\\n\", a, (float)v);\n        } else if (!strcmp(cmd, \"reset\")) {\n            enter(); x.reset(inst); leave(); printf(\"reset\\n\");"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            144,
+            148
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"process\") && sscanf(line, \"%*s %ld %ld\", &a, &b) == 2) {\n            if (b < 1 || b > 65536) die(\"bad block size\");\n            process(inst, a, b, in, out, &tp, inflag);\n        } else if (!strcmp(cmd, \"destroy\")) {\n            enter(); x.destroy(inst); leave(); inst = NULL; printf(\"destroy\\n\");"
+        }
+      ]
+    },
+    {
+      "claim": "process has no create/rate/reset/destroy/seed call; it allocates/frees hostbuffers, copies input, invokes CalcA and writes output. Same logicaldevicehandle persists; this does not prove calleeinternalstate behavior.",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            60,
+            88
+          ],
+          "literal": "static void process(void *inst, long n, long b, FILE *in, FILE *out, transport_t *tp, int inflag)\n{\n    float *L = calloc(b, 4), *R = calloc(b, 4), *io = calloc(2 * b, 4);\n    event_t blk[4096];\n    long done = 0, nb = 0, prev_ret = -2, prev_flag = -2, run = 0;\n    printf(\"process %ld %ld flags:\", n, b);\n    while (done < n) {\n        long k = n - done < b ? n - done : b;\n        if (in) { if ((long)fread(io, 8, k, in) != k) die(\"input ended at frame %ld\", done); }\n        else memset(io, 0, 8 * k);\n        for (long i = 0; i < k; i++) { L[i] = io[2 * i]; R[i] = io[2 * i + 1]; }\n        int m = 0;\n        for (int e = 0; e < nevents; e++)\n            if (events[e].frame >= done && events[e].frame < done + k) { blk[m] = events[e]; blk[m++].frame -= done; }\n        int flag = inflag;\n        enter();\n        long ret = x.calc(inst, k, L, R, m, m ? blk : NULL, tp, &flag);\n        leave();\n        if (ret != prev_ret || flag != prev_flag) {\n            if (run) printf(\" %ldx(ret=%ld,flag=%ld)\", run, prev_ret, prev_flag);\n            prev_ret = ret; prev_flag = flag; run = 0;\n        }\n        run++;\n        for (long i = 0; i < k; i++) { io[2 * i] = L[i]; io[2 * i + 1] = R[i]; }\n        fwrite(io, 8, k, out);\n        done += k; nb++;\n    }\n    printf(\" %ldx(ret=%ld,flag=%ld) blocks=%ld\\n\", run, prev_ret, prev_flag, nb);\n    free(L); free(R); free(io);"
+        }
+      ]
+    },
+    {
+      "claim": "One inputFILE persists in main; fread advances its cursor; avoid another input command between segments because input closes/reopens and startsfrombeginning. Firstprocess consumes8192frames, second consumesfollowing8192.",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            67,
+            70
+          ],
+          "literal": "        long k = n - done < b ? n - done : b;\n        if (in) { if ((long)fread(io, 8, k, in) != k) die(\"input ended at frame %ld\", done); }\n        else memset(io, 0, 8 * k);\n        for (long i = 0; i < k; i++) { L[i] = io[2 * i]; R[i] = io[2 * i + 1]; }"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            101,
+            105
+          ],
+          "literal": "    FILE *sc = fopen(argv[2], \"r\"), *out = fopen(argv[3], \"wb\"), *in = NULL;\n    if (!sc || !out) die(\"cannot open script or output\");\n    void *inst = NULL;\n    transport_t tp = { 0, 0, 0.0, 120.0 };\n    int inflag = 0;"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            131,
+            135
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"input\") && sscanf(line, \"%*s %399s\", arg) == 1) {\n            if (in) fclose(in);\n            in = strcmp(arg, \"zero\") ? fopen(arg, \"rb\") : NULL;\n            if (strcmp(arg, \"zero\") && !in) die(\"cannot open input %s\", arg);\n            printf(\"input %s\\n\", arg);"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            144,
+            146
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"process\") && sscanf(line, \"%*s %ld %ld\", &a, &b) == 2) {\n            if (b < 1 || b > 65536) die(\"bad block size\");\n            process(inst, a, b, in, out, &tp, inflag);"
+        }
+      ]
+    },
+    {
+      "claim": "One outFILE opens once inwb beforecommandloop; everyprocess fwrite advances thatsameFILE. One contiguousoutput is alreadyappended, so no offlineconcatenation/newoutput API needed. Hostbufferallocation changes cannotbeassumed behaviorallyinvariant; futurecontrol uses same segmentation.",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            83,
+            88
+          ],
+          "literal": "        for (long i = 0; i < k; i++) { io[2 * i] = L[i]; io[2 * i + 1] = R[i]; }\n        fwrite(io, 8, k, out);\n        done += k; nb++;\n    }\n    printf(\" %ldx(ret=%ld,flag=%ld) blocks=%ld\\n\", run, prev_ret, prev_flag, nb);\n    free(L); free(R); free(io);"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            101,
+            107
+          ],
+          "literal": "    FILE *sc = fopen(argv[2], \"r\"), *out = fopen(argv[3], \"wb\"), *in = NULL;\n    if (!sc || !out) die(\"cannot open script or output\");\n    void *inst = NULL;\n    transport_t tp = { 0, 0, 0.0, 120.0 };\n    int inflag = 0;\n    char line[512], cmd[32], arg[400];\n    while (fgets(line, sizeof line, sc)) {"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            144,
+            151
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"process\") && sscanf(line, \"%*s %ld %ld\", &a, &b) == 2) {\n            if (b < 1 || b > 65536) die(\"bad block size\");\n            process(inst, a, b, in, out, &tp, inflag);\n        } else if (!strcmp(cmd, \"destroy\")) {\n            enter(); x.destroy(inst); leave(); inst = NULL; printf(\"destroy\\n\");\n        } else die(\"bad script line: %s\", line);\n    }\n    fclose(out);"
+        }
+      ]
+    },
+    {
+      "claim": "The param branch calls SetParameterA on thesameinstance with parsedfloat value before the nextprocess command begins. No CalcA appears between prefixcompletion andthisparametercall.",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            124,
+            128
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"param\") && sscanf(line, \"%*s %ld %lf\", &a, &v) == 2) {\n            enter(); x.param(inst, (int)a, (float)v); leave();\n            printf(\"param %ld %.9g\\n\", a, (float)v);\n        } else if (!strcmp(cmd, \"reset\")) {\n            enter(); x.reset(inst); leave(); printf(\"reset\\n\");"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            144,
+            146
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"process\") && sscanf(line, \"%*s %ld %ld\", &a, &b) == 2) {\n            if (b < 1 || b > 65536) die(\"bad block size\");\n            process(inst, a, b, in, out, &tp, inflag);"
+        }
+      ]
+    },
+    {
+      "claim": "localdone resets0 on eachprocess; eventqueue staticandnotcleared. Existingeventcommands wouldreplay/rebase onsecondprocess. Restrict proposedhistory to noevents/MidiPitch0/MidiGate0, freshchild/staticqueuezero; do not extend to MIDI without newdesign.",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            55,
+            56
+          ],
+          "literal": "static event_t events[4096];\nstatic int nevents;"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            64,
+            76
+          ],
+          "literal": "    long done = 0, nb = 0, prev_ret = -2, prev_flag = -2, run = 0;\n    printf(\"process %ld %ld flags:\", n, b);\n    while (done < n) {\n        long k = n - done < b ? n - done : b;\n        if (in) { if ((long)fread(io, 8, k, in) != k) die(\"input ended at frame %ld\", done); }\n        else memset(io, 0, 8 * k);\n        for (long i = 0; i < k; i++) { L[i] = io[2 * i]; R[i] = io[2 * i + 1]; }\n        int m = 0;\n        for (int e = 0; e < nevents; e++)\n            if (events[e].frame >= done && events[e].frame < done + k) { blk[m] = events[e]; blk[m++].frame -= done; }\n        int flag = inflag;\n        enter();\n        long ret = x.calc(inst, k, L, R, m, m ? blk : NULL, tp, &flag);"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            138,
+            141
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"event\") && sscanf(line, \"%*s %ld %li %li %li\", &a, &b, &c, &d) == 4) {\n            if (nevents == 4096) die(\"too many events\");\n            events[nevents++] = (event_t){ a, (uint8_t)b, (uint8_t)c, (uint8_t)d, 0, {0} };\n            printf(\"event %ld 0x%02lx %ld %ld\\n\", a, b, c, d);"
+        }
+      ]
+    },
+    {
+      "claim": "Transportposition is not advanced byprocess; same tp ispassed. inflag freshlyset fromconfiguredvaluebeforeeachCalcA; returnedflagisnotcarriedforward. Keep stoppedtransport/inputflag explicit; do not infer runtime scheduling or tailpresencefromflag.",
+      "locators": [
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            74,
+            77
+          ],
+          "literal": "        int flag = inflag;\n        enter();\n        long ret = x.calc(inst, k, L, R, m, m ? blk : NULL, tp, &flag);\n        leave();"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            104,
+            105
+          ],
+          "literal": "    transport_t tp = { 0, 0, 0.0, 120.0 };\n    int inflag = 0;"
+        },
+        {
+          "source": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+          "lines": [
+            129,
+            137
+          ],
+          "literal": "        } else if (!strcmp(cmd, \"transport\") && sscanf(line, \"%*s %ld %lf %lf\", &a, &tp.position, &tp.tempo) == 3) {\n            tp.playing = (int32_t)a; printf(\"transport %d %.17g %.17g\\n\", tp.playing, tp.position, tp.tempo);\n        } else if (!strcmp(cmd, \"input\") && sscanf(line, \"%*s %399s\", arg) == 1) {\n            if (in) fclose(in);\n            in = strcmp(arg, \"zero\") ? fopen(arg, \"rb\") : NULL;\n            if (strcmp(arg, \"zero\") && !in) die(\"cannot open input %s\", arg);\n            printf(\"input %s\\n\", arg);\n        } else if (!strcmp(cmd, \"inflag\") && sscanf(line, \"%*s %ld\", &a) == 1) {\n            inflag = (int)a; printf(\"inflag %d\\n\", inflag);"
+        }
+      ]
+    }
+  ],
+  "future_minimal_experiment_requirements_not_selection": [
+    "One exact event-free modalinitialvector with LFO off, heldstoredrangeA1separate; hostindex15 step during ringing. Values/model/duration must be concretelyselected later, not borrowed from MIDI-enablednote60script.",
+    "Known impulse4096 in16384frames,44100Hz/block512; prefix8192/suffix8192 leaves an8192frame poststep record. Bothchannels must have genuinely nonzero pre-step ringing from actualfutureobservation before decay/affected-unaffected inference; flags/presetname are insufficient.",
+    "A matched control must have the SAME two-process segmentation, inputFILEcontinuation, environment/transport/rate/vector/instancehistory. Whether controlomitsparamor repeatsoldvalue must be selected explicitly; no single-process equivalence inferred.",
+    "Keep rightpickup unchanged and independentlyproductive. Actualrightinvariance/newleftresponse/4000frame movement need measurements and separatelyjustifiedcriteria; no existing4.1e-21number is transferred.",
+    "For the illustrated no-info38initialparam shape:32CalcA+38initialSetParameter+1step+create+rate+destroy=74directexports/child; under256. This is script-levelcount only, not nestedcallcount or captureauthorization."
+  ],
+  "existing_claim_and_unknowns": {
+    "owner": "immutablecorpus-owner-r6/spec-r6.md REQ008 lines266\u2013267",
+    "claim": "S: pickup moves linearly over4000frames(200steps20frames); not rendered.",
+    "navigation": "outcomes.json CRO-51, currentlyU; no expected/comparison",
+    "unknowns": [
+      "Actualbundle response atscheduledstep, productive ringing, latency/transition/smoothing/phase/history",
+      "Source-to-currentbinary correspondence relies on retainedreview/buildidentity; no newcompile/disassembly/binaryexecution proof",
+      "Same-instancehandle andhostcommandorder do not prove entirehiddenstatecontinuity/callee reset/reseed absence",
+      "Live/arm64/storedListeningXL dispatchA1/physicalrouting andmodeidentity",
+      "No capturevalidity, applicationgrade or criterion from this capability read"
+    ]
+  },
+  "providers": [
+    {
+      "path": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+      "bytes": 8128,
+      "sha256": "2e550951a4c7eb669ecdf9fa50734b2227c0768cda0b62099e2e975bad9430a9"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.h",
+      "bytes": 1830,
+      "sha256": "74cfa58ca4dfbf4fe5a51c19acb9e0b97ee6ec3416516aab8efecf732ead61be"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-harness-readiness-review.json",
+      "bytes": 26440,
+      "sha256": "b3ba401570052e61ccbbe72c2ada5fbba85a968fcbe0ea917ed36454da6c0402"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/proposal.json",
+      "bytes": 18749,
+      "sha256": "4259cbecb299b3545e8cb6a3b7dc717ecc8d150bb45051bc1298849f7069ed95"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-midi-pitch/note60.script",
+      "bytes": 713,
+      "sha256": "3d68c34283d7548bd2a3132c89b249b46181b20cd6f4e767a23a0a9e2dbb6630"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/corpus-owner-r6/spec-r6.md",
+      "bytes": 58472,
+      "sha256": "07a89f25de6b3c987d448e0e049bdd7dfaec52f479532b3aca3faddedcd511cd"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/full-spec-v1/corpus-required-outcomes-proposal/outcomes.json",
+      "bytes": 97502,
+      "sha256": "e6073736d0b9e3f236271fee0d243d48c904361114f065fe115039c173493152"
+    },
+    {
+      "path": "analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/inputs/impulse44.f32",
+      "bytes": 131072,
+      "sha256": "03a7d8daa68e79547578a53d7fed8e6cc872e0e81a22368615f0fa61b7b083f6"
+    },
+    {
+      "path": "/var/tmp/sound-analysis/t12-xdev/xdev",
+      "bytes": 149632,
+      "sha256": "4f3ff48d9a599e8c722bbdd8dd60a06cba35f799b113892bb83dcc68daeb9d9b"
+    }
+  ],
+  "fresh_read": "Complete8128B xdev.c and1830B xdev.h ASDATA; completeoldnote60script; selected immutableREQ008/CRO51 andoldproposalpin/command-limit scopes. Loader/binder/cxx andall5harnessfiles carried from explicitly pinned independentreadinessreview, not claimedfreshfullread. No code imported or invoked.",
+  "checks": {
+    "historical_source_binary_identities_match": true,
+    "direct_export_count_design": 74,
+    "new_harness_changes": 0,
+    "capture_scripts_authored": 0,
+    "native_or_original_calls": 0,
+    "numeric_or_model_calls": 0,
+    "new_grades": 0,
+    "actual_expected": null,
+    "actual_comparison": null,
+    "complete": false
+  }
+}

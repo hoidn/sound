@@ -2,7 +2,7 @@
 id: PLAN-PLAYBACK-CORE-HANDOFF
 type: research
 status: current
-updated: 2026-10-18
+updated: 2026-10-19
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 / macOS
 ---
@@ -38,7 +38,10 @@ Where the draft accepts P or P + 1, the case lists both samples and accepts
 either; the payload states this as an observable comparator.
 
 This page is the analyst-side plan and traceability record, not an
-implementation input. The candidate is **unreviewed and unpublished**.
+implementation input. The candidate was independently reviewed on 2026-10-19 and is **approved in
+staging, not yet published**. The [review outcome](#review-outcome--2026-10-19)
+is current; author checks and proposed gates below describe the original
+2026-10-18 staging record.
 
 ## Scope
 
@@ -264,7 +267,7 @@ packages.
 Not checked: any reference or candidate execution, and any proof of AS-1 to
 AS-5.
 
-## Review gates still required
+## Original review gates (completed 2026-10-19)
 
 1. **Scope review**, in a separate context.
    - Accept or reject overriding the brief's timing and audio exclusion with the
@@ -291,12 +294,67 @@ AS-5.
    the catalog, spec status, coverage, indexes, Q-024 (F10) and the log.
 7. An isolated implementation workspace remains unprovisioned.
 
+## Review outcome — 2026-10-19
+
+**Approved with listed clarifications** by a separate Codex handoff-review
+context that did not author this candidate and will not implement it. The
+[review record](../../analysis/ableton-live-12.4.3/handoff-staging/playback-core-v1/REVIEW.md)
+approves all 92 cases without changing an expectation: partial
+REQ-PLAYBACK-CORE-001 to 015 and 017 to 020 only. Requirements 016 and 021 to
+023 stay unreleased. No reference or candidate application ran.
+
+Scope gate 1 accepts timing and unwarped clip audio under ADR 0004's offline
+render convention. These are extracted arithmetic and static-derived paths,
+not measured application renders. F4's absolute window tolerance, F8's explicit
+beat shift and F11's self-contained grid arithmetic are upheld. F1 to F10 are
+carried into [SPEC-PLAYBACK-CORE revision 2](playback-core.md), with F10's shared
+Q-024 wording left to the coordinator. F11 does not expand another release;
+clip-launch-v2 already releases its arithmetic as functions of explicit inputs.
+Tempo changes, stops, replacing launches and audio crossfades remain excluded.
+
+Independent retained checks:
+
+- [reviewer_check.py](../../analysis/ableton-live-12.4.3/handoff-staging/playback-core-v1-analysis/reviewer_check.py):
+  `python3 -I -B analysis/ableton-live-12.4.3/handoff-staging/playback-core-v1-analysis/reviewer_check.py`.
+- [reviewer-validation.json](../../analysis/ableton-live-12.4.3/handoff-staging/playback-core-v1-analysis/reviewer-validation.json):
+  all 92 expectations independently recomputed from fixture inputs and the
+  contract, using retained X results for audio steps and gains, without importing
+  the author's model; 592 MIDI events and 4,784 audio values. All 92 planted
+  expectation mutations are detected.
+- All 58 sets pass existing schema and validation-walk checks with no refusal,
+  contradiction or unknown shape. A separate schema-directed check finds no
+  repeated member, missing base `Value`, or unknown list class. Tempo and meter
+  events equal their corresponding stored values. Both generated WAVs reproduce
+  their integer formulas and contain only `fmt ` and `data` chunks.
+- All 153 T13 artifacts, its three pinned images, and X2 `launch.json` match
+  their recorded hashes. The schema SHA-256 is
+  `b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299`.
+- A byte-identical temporary export outside the checkout reruns all 92
+  expectations. Inventory, sizes, links, inputs, symlinks and sanitization pass;
+  both the independent scan and the existing seal verifier were run. Review
+  prose initially triggered deny patterns through abbreviated requirement IDs
+  and an ordinary word; these were replaced before sealing. No expected result
+  changed.
+
+The final staged manifest SHA-256 is
+`c4dc2c5c2e6c963cadc5d06e314a38ad85d8ec9664dd4bb4a562119754b1e20b`.
+It lists 65 payload files, including the review record; the package contains 66
+files with the manifest. Release metadata is finalized for a byte-identical
+publication by the coordinator.
+
 ## Current disposition
 
-Staged on 2026-10-18 as an unreviewed candidate:
+Released locally on 2026-10-19 as [playback-core-v1](../../handoff/playback-core-v1/README.md),
+a byte-identical copy of the reviewed staging package. The catalog pins manifest
+`c4dc2c5c2e6c963cadc5d06e314a38ad85d8ec9664dd4bb4a562119754b1e20b`.
+All 92 expected outputs are unchanged. A restricted implementation workspace
+remains unprovisioned by user decision; no compatibility pass is claimed.
 
-- 92 cases;
-- partial REQ-PLAYBACK-CORE-001 to 015 and 017 to 020;
-- 016 and 021 to 023 unreleased.
 
-It is not published, and no handoff exists for SPEC-PLAYBACK-CORE.
+## Unreleased R4 finite helper annex — 2026-10-21
+
+The [current R4 draft](playback-core.md) applies the [sole-reviewed integer-semitone/rate annex](../research/playback-core.md#playback-owner-r4-integer-semitone-and-rate-annex-adoption--2026-10-21):582new PBC-206–787 IDs/759totalnavigationIDs/full582freshhistories. Fifty-four old argument projections do not transfer whole-history/output criteria; all native expectations are exact approved SAVEDXMM0 words, with NULLportablecriteria/grades and no application/public/ARM law. Auto superseded historical intendedRoot review labels before any Root proposal read; Root and Mix apply its embedded target by citation only. No actual/proposal/source/raw/numeric proof redo. All22otherwhole/old017R3prefix/177oldIDs68rows/R3scope/92releasedobjects/history/U remain exact/fullreverse. Immutable playback-core-v1 is unchanged; no new release or candidate comparison is selected. The publication-time unprovisioned-workspace note above is historical: T1.6 is now provisioned and idle, T1.7 deferred.
+
+## Unreleased finite owner adoption — 2026-10-21
+
+PlaybackR5 adds4nativeSAVEDXMM0observations/full10hist6INPUTrefs; othercarriersunassigned/portablecriteriaNULL/oldclausescriteriahistory/releases exact/no publicratefinepitchARMlaw. No new release selected.

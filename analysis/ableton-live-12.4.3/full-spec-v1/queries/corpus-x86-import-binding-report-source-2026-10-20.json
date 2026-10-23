@@ -1,0 +1,328 @@
+{
+  "retained_utc": "2026-10-20T14:51:57.043734+00:00",
+  "status": "PARTIAL_CONDITIONAL_OWN_LOADER_SOURCE_AND_HISTORICAL_TEXT_ONLY",
+  "scope": "Exact xdev_binding references and complete directly containing loader/bind/report/driver helpers; no current dispatch or source-to-binary proof.",
+  "author": "modulation_finish",
+  "prior_roles": "Prior harness/capture preparation and independent readiness/code-source peer work disclosed; this query is new authored source analysis, not independent approval of those authored tasks.",
+  "source_export_utc": null,
+  "identifier_counts": [
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "exact_literal": "xdev_binding",
+      "count": 1,
+      "cap": 20,
+      "count_first": true,
+      "matching_lines": [
+        {
+          "line_1based": 46,
+          "text": "        void *t = xdev_binding(sym, &data);"
+        }
+      ]
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+      "exact_literal": "xdev_binding",
+      "count": 0,
+      "cap": 20,
+      "count_first": true,
+      "matching_lines": []
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/raw/corpus/mode_membrane_44.log",
+      "exact_literal": "__Znwm",
+      "count": 1,
+      "cap": 20,
+      "count_first": true,
+      "matching_lines": [
+        {
+          "line_1based": 55,
+          "text": "used __Znwm 177"
+        }
+      ]
+    }
+  ],
+  "selected_spans": [
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "MAXSYM/GUARD_SLOT constants",
+      "line_start": 20,
+      "line_end_inclusive": 21,
+      "byte_start": 868,
+      "byte_end_exclusive": 911,
+      "bytes": 43,
+      "sha256": "dced5e74ab9984e8f8c6a718e5911ed4b74c9cc599590a6c7580373b72fa988b",
+      "text": "#define MAXSYM 4096\n#define GUARD_SLOT 256\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "registry declarations",
+      "line_start": 30,
+      "line_end_inclusive": 32,
+      "byte_start": 1198,
+      "byte_end_exclusive": 1339,
+      "bytes": 141,
+      "sha256": "5663e320b9e0125b44c2fec79729bc3ca01fc7ae692118b503e59ac688ab57a5",
+      "text": "static struct { char *name; void *target; long slots, uses; int data; } stubs[MAXSYM];\nstatic int nstubs;\nstatic uint8_t *stub_code, *guard;\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "complete stub_for",
+      "line_start": 39,
+      "line_end_inclusive": 58,
+      "byte_start": 1529,
+      "byte_end_exclusive": 2533,
+      "bytes": 1004,
+      "sha256": "81dc3352ed078f630a8b1163e12525783a3de66cb9ab4d0bf5a8832f96d8a712",
+      "text": "static uint64_t stub_for(const char *sym)\n{\n    int i;\n    for (i = 0; i < nstubs && strcmp(stubs[i].name, sym); i++) ;\n    if (i == nstubs) {\n        if (nstubs == MAXSYM) die(\"too many imported symbols\");\n        int data = 0;\n        void *t = xdev_binding(sym, &data);\n        stubs[i].name = strdup(sym); stubs[i].target = t; stubs[i].data = data; nstubs++;\n        if (t && !data) {                /* movabs r11,&uses; lock incq (r11); movabs r11,target; jmp r11 */\n            uint8_t *c = stub_code + 32 * i;\n            uint64_t u = (uint64_t)&stubs[i].uses, tt = (uint64_t)t;\n            c[0] = 0x49; c[1] = 0xbb; memcpy(c + 2, &u, 8); c[10] = 0xf0; c[11] = 0x49; c[12] = 0xff; c[13] = 0x03;\n            c[14] = 0x49; c[15] = 0xbb; memcpy(c + 16, &tt, 8); c[24] = 0x41; c[25] = 0xff; c[26] = 0xe3;\n        }\n    }\n    stubs[i].slots++;\n    if (!stubs[i].target) return (uint64_t)(guard + GUARD_SLOT * i);\n    return stubs[i].data ? (uint64_t)stubs[i].target : (uint64_t)(stub_code + 32 * i);\n}\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "complete at",
+      "line_start": 67,
+      "line_end_inclusive": 67,
+      "byte_start": 2927,
+      "byte_end_exclusive": 3032,
+      "bytes": 105,
+      "sha256": "fcc6cd00dbd0226785dabd386d75a7ae0f6d33822d24e661619ae483334ff9ba",
+      "text": "static uint64_t *at(int seg, uint64_t off) { return (uint64_t *)(XDEV_SLIDE + segs[seg].vmaddr + off); }\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "complete bind",
+      "line_start": 91,
+      "line_end_inclusive": 114,
+      "byte_start": 3965,
+      "byte_end_exclusive": 5159,
+      "bytes": 1194,
+      "sha256": "657500699d2c8c66a464854cb80fa1dbb25ecbe02dafd5f7548b4abec05425a9",
+      "text": "static void bind(const uint8_t *p, const uint8_t *end, int lazy)\n{\n    int seg = 0; uint64_t off = 0, n, skip; int64_t addend = 0; const char *sym = \"\";\n    while (p < end) {\n        uint8_t op = *p & 0xf0, imm = *p & 0x0f; p++;\n        switch (op) {\n        case 0x00: if (!lazy) return; break;\n        case 0x10: case 0x30: break;                                /* dylib ordinal: lookup is by name */\n        case 0x20: uleb(&p); break;\n        case 0x40: sym = (const char *)p; p += strlen(sym) + 1; break;\n        case 0x50: if (imm != 1) die(\"bind type %d\", imm); break;\n        case 0x60: addend = sleb(&p); break;\n        case 0x70: seg = imm; off = uleb(&p); break;\n        case 0x80: off += uleb(&p); break;\n        case 0x90: *at(seg, off) = stub_for(sym) + addend; off += 8; break;\n        case 0xa0: *at(seg, off) = stub_for(sym) + addend; off += uleb(&p) + 8; break;\n        case 0xb0: *at(seg, off) = stub_for(sym) + addend; off += imm * 8 + 8; break;\n        case 0xc0: n = uleb(&p); skip = uleb(&p);\n                   for (; n--; off += 8 + skip) *at(seg, off) = stub_for(sym) + addend;\n                   break;\n        default: die(\"bind opcode 0x%x\", op);\n        }\n    }\n}\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "complete xdev_load containing ordinary/lazy bind calls",
+      "line_start": 155,
+      "line_end_inclusive": 218,
+      "byte_start": 6663,
+      "byte_end_exclusive": 10309,
+      "bytes": 3646,
+      "sha256": "37f3abb4b66c873252f8b47e6cbfb73e75311ab4f392be5934a3015226ef2302",
+      "text": "void xdev_load(const char *path)\n{\n    int fd = open(path, O_RDONLY); if (fd < 0) die(\"open %s\", path);\n    struct stat st; fstat(fd, &st);\n    uint8_t *whole = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);\n    if (whole == MAP_FAILED) die(\"mmap file\");\n    find_slice(whole, st.st_size);\n    file = whole + slice_off;\n    if (*(uint32_t *)file != 0xfeedfacf || *(int32_t *)(file + 4) != 0x01000007) die(\"not an x86_64 Mach-O\");\n    if (*(uint32_t *)(file + 12) != 8 && *(uint32_t *)(file + 12) != 6) die(\"not an MH_BUNDLE or MH_DYLIB\");\n    uint32_t ncmds = *(uint32_t *)(file + 16);\n    const uint8_t *lc = file + 32, *dinfo = NULL;\n    for (uint32_t i = 0; i < ncmds; i++, lc += *(uint32_t *)(lc + 4)) {\n        uint32_t cmd = *(uint32_t *)lc;\n        if (cmd == 0x19) {\n            seg_t *s = &segs[nsegs++];\n            memcpy(s->name, lc + 8, 16);\n            memcpy(&s->vmaddr, lc + 24, 32);\n            s->prot = *(int32_t *)(lc + 60);\n        } else if (cmd == 0x80000022 || cmd == 0x22) dinfo = lc;\n        else if (cmd == 0x2) symtab_lc = lc;\n        else if (cmd == 0xb) dysymtab_lc = lc;\n        else if (cmd == 0x80000034) die(\"chained fixups not supported\");\n    }\n    if (!dinfo || !symtab_lc) die(\"no LC_DYLD_INFO or LC_SYMTAB\");\n    for (int i = 0; i < nsegs; i++) {\n        seg_t *s = &segs[i];\n        if (!s->vmsize || !s->prot) continue;\n        uint64_t va = XDEV_SLIDE + s->vmaddr, fsz = (s->filesize + 0xfff) & ~0xfffUL;\n        if (mmap((void *)va, fsz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_FIXED_NOREPLACE, fd,\n                 slice_off + s->fileoff) != (void *)va) die(\"cannot map %s\", s->name);\n        if (s->vmsize > fsz && mmap((void *)(va + fsz), s->vmsize - fsz, PROT_READ | PROT_WRITE,\n                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED_NOREPLACE, -1, 0) != (void *)(va + fsz))\n            die(\"cannot map zero fill of %s\", s->name);\n        /* the file's tail of the last page past filesize must read as zero (zerofill sections) */\n        if (s->filesize < fsz) memset((void *)(va + s->filesize), 0, fsz - s->filesize);\n        s->prot = (s->prot & 1 ? PROT_READ : 0) | (s->prot & 2 ? PROT_WRITE : 0) | (s->prot & 4 ? PROT_EXEC : 0);\n    }\n    zero_fill_sections(ncmds);\n    const uint32_t *d = (const uint32_t *)(dinfo + 8);              /* rebase, bind, weak, lazy, export */\n    stub_code = mmap(NULL, 32 * MAXSYM, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);\n    guard = mmap(NULL, GUARD_SLOT * MAXSYM, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);\n    if (stub_code == MAP_FAILED || guard == MAP_FAILED) die(\"mmap stubs\");\n    rebase(file + d[0], file + d[0] + d[1]);\n    bind(file + d[2], file + d[2] + d[3], 0);\n    bind(file + d[6], file + d[6] + d[7], 1);                         /* weak binds (d[4]) not applied */\n    mprotect(stub_code, 32 * MAXSYM, PROT_READ | PROT_EXEC);\n    for (int i = 0; i < nsegs; i++)\n        if (segs[i].vmsize && segs[i].prot)\n            mprotect((void *)(XDEV_SLIDE + segs[i].vmaddr), segs[i].vmsize, segs[i].prot);\n    close(fd);\n    /* Run __mod_init_func pointers (section type 9), in order, as dyld does for a loaded image. */\n    const uint8_t *sc;\n    for (int k = 0; (sc = section(ncmds, k)); k++) {\n        if ((*(uint32_t *)(sc + 64) & 0xff) != 9) continue;\n        uint64_t addr = *(uint64_t *)(sc + 32), size = *(uint64_t *)(sc + 40);\n        for (uint64_t o = 0; o < size; o += 8) {\n            void (*init)(void) = (void (*)(void))*(uint64_t *)(XDEV_SLIDE + addr + o);\n            printf(\"init 0x%lx\\n\", (uint64_t)init - XDEV_SLIDE);\n            fflush(stdout);\n            init();\n        }\n    }\n}\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "complete xdev_print_imports",
+      "line_start": 233,
+      "line_end_inclusive": 238,
+      "byte_start": 10812,
+      "byte_end_exclusive": 11035,
+      "bytes": 223,
+      "sha256": "7f6565c224692202e390a71e82056fa0cd00e778bd5e5a22bc6f74040bb798f0",
+      "text": "void xdev_print_imports(void)\n{\n    for (int i = 0; i < nstubs; i++)\n        printf(\"import %s %s slots=%ld\\n\", !stubs[i].target ? \"trap\" : stubs[i].data ? \"data\" : \"linux\",\n               stubs[i].name, stubs[i].slots);\n}\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+      "role": "complete xdev_print_used",
+      "line_start": 240,
+      "line_end_inclusive": 244,
+      "byte_start": 11036,
+      "byte_end_exclusive": 11186,
+      "bytes": 150,
+      "sha256": "0539987c1ca3603286a2b01f484902617843236ae579f6fe6dfea23ec369f56f",
+      "text": "void xdev_print_used(void)\n{\n    for (int i = 0; i < nstubs; i++)\n        if (stubs[i].uses) printf(\"used %s %ld\\n\", stubs[i].name, stubs[i].uses);\n}\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+      "role": "complete main containing import/used reporting",
+      "line_start": 91,
+      "line_end_inclusive": 155,
+      "byte_start": 4387,
+      "byte_end_exclusive": 8128,
+      "bytes": 3741,
+      "sha256": "53a8b87a5fb7542b69ce68aa09dc7eb81be50729d5b8edd82160f3d9a142e3e4",
+      "text": "int main(int argc, char **argv)\n{\n    if (argc < 4) die(\"usage: xdev BUNDLE_EXECUTABLE SCRIPT OUT.f32 [--imports]\");\n    xdev_install_fault_handler();\n    xdev_load(argv[1]);\n    printf(\"slice offset=%lu size=%lu\\n\", xdev_slice_offset(), xdev_slice_size());\n    if (argc > 4 && !strcmp(argv[4], \"--imports\")) xdev_print_imports();\n    x.create = (create_t)need(\"_CreateInstanceU\"); x.destroy = (destroy_t)need(\"_DestroyInstanceU\");\n    x.rate = (rate_t)need(\"_SetSampleRateU\"); x.info = (info_t)need(\"_GetPlugInfoU\");\n    x.calc = (calc_t)need(\"_CalcA\"); x.param = (param_t)need(\"_SetParameterA\"); x.reset = (reset_t)need(\"_ResetA\");\n    FILE *sc = fopen(argv[2], \"r\"), *out = fopen(argv[3], \"wb\"), *in = NULL;\n    if (!sc || !out) die(\"cannot open script or output\");\n    void *inst = NULL;\n    transport_t tp = { 0, 0, 0.0, 120.0 };\n    int inflag = 0;\n    char line[512], cmd[32], arg[400];\n    while (fgets(line, sizeof line, sc)) {\n        char *h = strchr(line, '#'); if (h) *h = 0;\n        if (sscanf(line, \"%31s\", cmd) != 1) continue;\n        long a = 0, b = 0, c = 0, d = 0; double v = 0;\n        fflush(stdout);\n        if (!strcmp(cmd, \"info\")) {\n            static const long sz[] = { 8, 8, 8, 4, 8, 4 };\n            for (long s = 1; s <= 6; s++) {\n                uint64_t o = 0; enter(); long r = x.info(s, &o, sz[s - 1]); leave();\n                printf(\"info %ld size=%ld ret=%ld value=%lu\\n\", s, sz[s - 1], r, sz[s - 1] == 4 ? (uint32_t)o : o);\n            }\n        } else if (!strcmp(cmd, \"create\")) {\n            enter(); inst = x.create(); leave();\n            printf(\"create %s\\n\", inst ? \"ok\" : \"NULL\");\n        } else if (!strcmp(cmd, \"rate\") && sscanf(line, \"%*s %ld\", &a) == 1) {\n            enter(); long r = x.rate(inst, a); leave();\n            printf(\"rate %ld ret=%ld\\n\", a, r);\n        } else if (!strcmp(cmd, \"param\") && sscanf(line, \"%*s %ld %lf\", &a, &v) == 2) {\n            enter(); x.param(inst, (int)a, (float)v); leave();\n            printf(\"param %ld %.9g\\n\", a, (float)v);\n        } else if (!strcmp(cmd, \"reset\")) {\n            enter(); x.reset(inst); leave(); printf(\"reset\\n\");\n        } else if (!strcmp(cmd, \"transport\") && sscanf(line, \"%*s %ld %lf %lf\", &a, &tp.position, &tp.tempo) == 3) {\n            tp.playing = (int32_t)a; printf(\"transport %d %.17g %.17g\\n\", tp.playing, tp.position, tp.tempo);\n        } else if (!strcmp(cmd, \"input\") && sscanf(line, \"%*s %399s\", arg) == 1) {\n            if (in) fclose(in);\n            in = strcmp(arg, \"zero\") ? fopen(arg, \"rb\") : NULL;\n            if (strcmp(arg, \"zero\") && !in) die(\"cannot open input %s\", arg);\n            printf(\"input %s\\n\", arg);\n        } else if (!strcmp(cmd, \"inflag\") && sscanf(line, \"%*s %ld\", &a) == 1) {\n            inflag = (int)a; printf(\"inflag %d\\n\", inflag);\n        } else if (!strcmp(cmd, \"event\") && sscanf(line, \"%*s %ld %li %li %li\", &a, &b, &c, &d) == 4) {\n            if (nevents == 4096) die(\"too many events\");\n            events[nevents++] = (event_t){ a, (uint8_t)b, (uint8_t)c, (uint8_t)d, 0, {0} };\n            printf(\"event %ld 0x%02lx %ld %ld\\n\", a, b, c, d);\n        } else if (!strcmp(cmd, \"mxcsr\") && sscanf(line, \"%*s %lx\", &a) == 1) {\n            mxcsr = (unsigned)a; printf(\"mxcsr 0x%x\\n\", mxcsr);\n        } else if (!strcmp(cmd, \"process\") && sscanf(line, \"%*s %ld %ld\", &a, &b) == 2) {\n            if (b < 1 || b > 65536) die(\"bad block size\");\n            process(inst, a, b, in, out, &tp, inflag);\n        } else if (!strcmp(cmd, \"destroy\")) {\n            enter(); x.destroy(inst); leave(); inst = NULL; printf(\"destroy\\n\");\n        } else die(\"bad script line: %s\", line);\n    }\n    fclose(out);\n    xdev_print_used();\n    printf(\"cxx-failbits %ld\\n\", xdev_cxx_failbits);\n    return 0;\n}\n"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.h",
+      "role": "XDEV_SLIDE constant",
+      "line_start": 14,
+      "line_end_inclusive": 14,
+      "byte_start": 730,
+      "byte_end_exclusive": 821,
+      "bytes": 91,
+      "sha256": "325e34b8b6f26351498e5d8d21a2249eb430168cad1cb30d5bab8836ca5309e4",
+      "text": "#define XDEV_SLIDE ((uint64_t)0x200000000)     /* image VA = XDEV_SLIDE + Mach-O vmaddr */\n"
+    }
+  ],
+  "incidental_complete_helper": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+    "line_start": 220,
+    "line_end_inclusive": 231,
+    "bytes": 501,
+    "sha256": "a9cb26b7c96e7e287bce202369a9abd36369682387aea7c3b6b113a8fbf53f44",
+    "text": "uint64_t xdev_symbol(const char *name)\n{\n    const uint32_t *s = (const uint32_t *)(symtab_lc + 8);       /* symoff, nsyms, stroff, strsize */\n    for (uint32_t i = 0; i < s[1]; i++) {\n        const uint8_t *nl = file + s[0] + 16 * i;\n        uint8_t type = nl[4];\n        if ((type & 0x0e) != 0x0e || !(type & 0x01)) continue;  /* N_SECT and N_EXT */\n        if (!strcmp((const char *)file + s[2] + *(uint32_t *)nl, name))\n            return XDEV_SLIDE + *(uint64_t *)(nl + 8);\n    }\n    return 0;\n}\n",
+    "role": "Incidental xdev_symbol body appeared in locator end-range dump; no conclusion or follow based on it."
+  },
+  "read_scope": {
+    "aggregate_selected_and_incidental_C_bytes": 10839,
+    "cap": 12000,
+    "selected_span_count": 10,
+    "complete_helpers": [
+      "stub_for",
+      "at",
+      "bind",
+      "xdev_load",
+      "xdev_print_imports",
+      "xdev_print_used",
+      "main"
+    ],
+    "incidental_locator_disclosure": "Definition-only locator rows and matching literal snippets also displayed; an end-range locator dump included xdev_symbol220\u2013231, retained separately/no claim. No unrelated helper follow. Source text only; no library/guestcallee/init_rune bodies."
+  },
+  "facts": [
+    {
+      "id": "IB01",
+      "claim": "Under valid stable symbol strings and ordinary strcmp, stub_for reuses first equal-name registry row; on a new name it calls xdev_binding(sym,&data), retains target and data flag, then increments slots on every stub_for request. slots is not independently deduplicated import-address count.",
+      "source": [
+        0,
+        1,
+        2
+      ],
+      "lines": "xdev_load.c39\u201357",
+      "limits": "Resolver implementation and allocation failures not freshly examined. No current invocation or successful compiled binding inferred."
+    },
+    {
+      "id": "IB02",
+      "claim": "For a nonnull target with data==0, source fills a per-name 32-byte stub using address of uses counter and returned target. Return expression selects the stub address. For a nonnull data target return expression selects the target directly; a null target selects guard+256*i.",
+      "source": [
+        0,
+        1,
+        2
+      ],
+      "lines": "xdev_load.c48\u201357",
+      "limits": "Generated bytes retained as source data only, not decoded/executed here. No signature/ABI/host-compatibility or actual target-address proof; uses is not a data-access counter."
+    },
+    {
+      "id": "IB03",
+      "claim": "Supported bind actions0x90/a0/b0/c0 assign stub_for(sym)+addend through at(seg,off), then advance offset according to their literal rules. at addresses XDEV_SLIDE+segs[seg].vmaddr+off. The image helper calls bind for ordinary and lazy streams; weak stream is not applied in selected source.",
+      "source": [
+        3,
+        4,
+        5,
+        9
+      ],
+      "lines": "xdev_load.c67,91\u2013114,194\u2013200; xdev.h14",
+      "limits": "Valid stream/segment/address/arithmetic premises required; malformed input safety is not proved. uleb/sleb/rebase/dependency bodies not expanded."
+    },
+    {
+      "id": "IB04",
+      "claim": "xdev_print_imports prints one registry row with category trap when target null, data when data flag true, otherwise linux, name, and slots. This diagnostic contains no target address. linux is source label, not independent provenance/compatibility proof.",
+      "source": [
+        6
+      ],
+      "lines": "xdev_load.c233\u2013238",
+      "limits": "No implication that every printed import is used; trap declarations alone are not fault hits."
+    },
+    {
+      "id": "IB05",
+      "claim": "xdev_print_used prints only registry rows whose uses field is nonzero, with name and signed long count. Source intends code-import stub to increment that field. No direct data-import use count, resolver-choice trace or target-address output is provided by this helper.",
+      "source": [
+        2,
+        7
+      ],
+      "lines": "xdev_load.c48\u201352,240\u2013244",
+      "limits": "No proof of instruction execution from source alone; normal source-to-compiled-binary equivalence remains a separate build/dispatch prerequisite."
+    },
+    {
+      "id": "IB06",
+      "claim": "main calls xdev_load before optional argv[4]==--imports report, export lookup and script execution; at normal tail it closes output, prints used report then cxx-failbits and returns0. --imports is additional reporting, not dry-run or a sandbox.",
+      "source": [
+        5,
+        8
+      ],
+      "lines": "xdev.c91\u2013155",
+      "limits": "Selected loader body includes possible initializer calls before return; no initializer/body follow or execution selected. Failures before tail need not produce used report."
+    },
+    {
+      "id": "IB07",
+      "claim": "The retained historical mode_membrane_44.log has one exact __Znwm line, at55: used __Znwm 177. It is a historical text observation; it does not state import category, target address, resolver path or the linked library that supplied it.",
+      "source": [],
+      "log_pointer": "/identifier_counts/2/matching_lines/0",
+      "limits": "Conditional interpretation as a uses count requires matching actual historical compiled stub/report code and valid unmodified counter/reporting. No current dispatch/allocation or original guest ABI inferred."
+    }
+  ],
+  "unknowns": [
+    "Actual current __Znwm target/resolver and compiled source-to-binary dispatch binding remain unknown here; build readiness is not actual build equality approval.",
+    "No imported allocator implementation, allocation/type/constructor/public model contract or runtime success is proved.",
+    "Source-generated stub call/return/register preservation, actual entry/counter reachability and target validity are not proven by text.",
+    "Historical log alone does not establish exact command line, --imports presence, environment, current reproduction, or a general import inventory.",
+    "All application/behavioral outcomes remain U; zero normative cases/IDs/grades/adoptions."
+  ],
+  "preservation": {
+    "providers": [
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev_load.c",
+        "bytes": 12247,
+        "sha256": "5f066004949c9af63710e646cf81fff6e6fe49204af5fbac481e5a9cdccfe515"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.c",
+        "bytes": 8128,
+        "sha256": "2e550951a4c7eb669ecdf9fa50734b2227c0768cda0b62099e2e975bad9430a9"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/harness/xdev.h",
+        "bytes": 1830,
+        "sha256": "74cfa58ca4dfbf4fe5a51c19acb9e0b97ee6ec3416516aab8efecf732ead61be"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/t12-device-dsp-v1/raw/corpus/mode_membrane_44.log",
+        "bytes": 3164,
+        "sha256": "28108845fc78d065b4c8b8ad5a4727ac2e330ca4655054a0e3196bd36e0b9af7"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-lfo-harness-readiness-review.json",
+        "bytes": 26440,
+        "sha256": "b3ba401570052e61ccbbe72c2ada5fbba85a968fcbe0ea917ed36454da6c0402"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-harness-reproducible-build-code-preflight-review.json",
+        "bytes": 19976,
+        "sha256": "06604e4b4c41d2cf006d14611c92934fc86619063473ba997ba8c8b28458fdf8"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/depth-corpus-harness-reproducible-build-preparation/manifest.json",
+        "bytes": 1225,
+        "sha256": "9dbe8a953d7f9e64a65dd265edc03d80eb558a65edffb73f4cca37327bb1ae1d"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-x86-znwm-earlier-resolver-source-2026-10-20.json",
+        "bytes": 5206,
+        "sha256": "94d84e20f4caa08ef9593d567c77385d4bb6035f01e908d2fbd8c4522b126b5a"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/reviews/corpus-x86-znwm-earlier-resolver-source-review.json",
+        "bytes": 7243,
+        "sha256": "91eb030194e33129f6e2453fc696a23aebddeaee6d6fb54cc1daff2efb05aa65"
+      }
+    ],
+    "after_equals_before": true,
+    "interval": "This finite retention/reconstruction interval; not retroactive claim of a whole-session watch."
+  },
+  "checks": {
+    "identifier_caps_pass": true,
+    "aggregate_cap_pass": true,
+    "span_offsets_bytes_hashes_reconstructed": true,
+    "whole_provider_identity_pass": true,
+    "supplied_tool_or_checker_executions": 0,
+    "compiler_loader_original_decoder_executions": 0,
+    "audio_or_comparator_executions": 0
+  },
+  "next_frontier": "Separate actual build-byte peer result may later support a source-to-binary premise; current query does not select source expansion, observer, runtime or new imports.",
+  "documentary_expected": null,
+  "documentary_comparison": null,
+  "actual_expected": null,
+  "actual_comparison": null,
+  "grade": "U",
+  "new_normative_ids": 0,
+  "new_cases": 0,
+  "complete": false
+}

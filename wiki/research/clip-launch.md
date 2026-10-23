@@ -2,7 +2,7 @@
 id: RESEARCH-CLIP-LAUNCH
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-23
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 arm64
 ---
@@ -252,6 +252,10 @@ DBL_MAX and +∞. The lattice 3,843,840 = 2⁸·3·5·7·11·13 holds triplet gr
   song grid when a song is passed, and −1.0 when none is passed.
 - At launch, `0x10245efa0` sends `0x102442998(clip, 0)` in `OSlotFireData.Create`, so Global
   reaches the engine as −1.0.
+  The later engine global grid is not established by this A-side trace.
+  [PLAYBACK-CORE A4](../specs/playback-core.md#assumptions) names the remaining
+  assumption that the engine holds the loaded `GlobalQuantisation`; the draft
+  launch contract now carries it too.
 - The engine's `0x101acffa4` decides:
   - It returns 0.0 when its second argument is 0 (inferred: quantization off for this
     request), and in some stopped or same-track cases.
@@ -427,6 +431,10 @@ with the loader copy `xexec_x2.c`, which adds `poke`. Results are in `results/la
   formula for all 33 values. Exact halves-away rounding differs for 6 of the 18 near-tie values
   (1.3007825507825505e-07 → h, not 0). There is no limit: −0.3, −5 and 2,000,000 are kept, and −0
   becomes +0. With the flag clear, the value is unchanged.
+  Reconciled 2026-10-19: this is only the member's step, not a document-open
+  result. The later clip hook is untraced, so out-of-range follow times may still
+  change or be refused; the final value and opening stay unknown
+  ([clip-launch-v2 review](../../handoff/clip-launch-v2/REVIEW.md)).
 
 **Static readings (S, both slices).**
 
@@ -475,3 +483,232 @@ given launch. The fire state machine was read only around the boundary computati
 The Python property semantics are inferred from getters that return the stored value.
 Shipped documents are 12.4d1/12.1d1 writes. Text in documents, strings and `.pyc` files
 is treated as data.
+
+## Bounded clip-launch route inventory — 2026-10-20
+
+**Authored; pending independent structure review.** The
+[clip-launch family structure packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-clip-launch-routes-v1/structure.md)
+cuts approved integration I-04 and retained S5/N1/X2/T13 evidence against current
+SPEC-CLIP-LAUNCH revision 5 requirements 001–023. Its
+[bounded ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-clip-launch-routes-v1/route-ledger.json)
+records 229 stated semantic outcomes: 21 X-route, 98 S-route, 110 no-established-route.
+One repeated chance-normalization clause points to three detailed outputs rather
+than adding a duplicate outcome. Counts describe the authored route inventory,
+not grades, a complete family or a frozen whole-product denominator. All existing
+requirements, cases, releases, U parts and qualified assumptions are unchanged.
+
+**Observed-static/inferred/unknown remain distinct.** Exact retained C, dossier
+reference/PC and disassembly locators support local typed members, constructor/
+preference reads, selected migration transforms, chance/time hooks, grid/boundary
+helpers and the guarded same-local preparation/activation record. They do not
+establish final document opening, public Save/reopen, actual UI labels, script
+error translation, loaded-global publication, actual active event/player identity
+or delivered clip output. Unavailable API-enum C remains unavailable rather than
+being replaced with invented source.
+
+**Bounded X limit.** X2 skips the FollowActionEnabled setter while recording its
+invocation with false. That invocation is partial evidence for the zero/zero
+case, not a retained Boolean write or final document flag. The route ledger keeps
+that required disable-state outcome unresolved without rewriting its existing
+owner X label or release expectation. Likewise member-local out-of-range
+FollowTime rounding does not establish final held value or document opening.
+T13’s note velocity processor `0x101b78010` and audio-property `0x10235ca20` are
+located landmarks despite the older discovery wording above; they do not close
+REQ-CLIP-LAUNCH-022’s U volume-scaling observable.
+
+The packet pins approved integration manifest
+`7dddd59650ca3395d10e1b3c8aded3cda01d66b522dda4973a08f32e7bfb8f83`
+and frozen playback sibling manifest
+`d69a45b394e6f1143a0efbaee61634aa5330ece0e1afe6c3d87a61d2304dc981`,
+without copying normative snapshots. Compact source-array selectors retain
+11,756 historical input/result rows as auxiliary enumeration, plus explicit
+prospective sentinel vectors and unresolved actual state/receiver/clock input
+sets. Rows are not calls or outcomes. No new provider, decoder, runtime, harness,
+installation, original-function call or candidate work occurred. Root owns the
+seal, independent structure review, shared atlas/catalog/coverage/log changes and
+subsequent batch selection.
+
+
+### Family route review adopted — 2026-10-20
+
+The [frozen clip-launch map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-clip-launch-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-clip-launch-routes-v1-review.json)
+with no findings. Its 229 required predicates (21 X / 98 S / 110 without an
+established route) remain inventory, not grades. The 11,756 historical result
+rows are a different unit. The review confirms that invocation(false) of the
+historically skipped Enabled setter is partial evidence; it does not establish
+final disabled state. Final load/save/UI/API state, active global-grid publication,
+mode/release/Legato/follow effects and clip output remain unresolved. Null C
+exports remain unavailable. Current owner labels, 64 draft IDs and 100 released
+case records are unchanged. The playback sibling is independently approved;
+its frozen inventory supplies context without adding behavioral authority.
+
+## Standing batch selection assessment — 2026-10-21
+
+**Selection decision:** no new whole21-X batch is selected under the unchanged, unpatched harness model. The approved [family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-clip-launch-routes-v1/structure.md) and [candidate inputs](../../analysis/ableton-live-12.4.3/full-spec-v1/family-clip-launch-routes-v1/batch-inputs.json) distinguish six already represented classes: enum getter(two predicates/ten rows), chance normalization(five/28), FollowTime member(three/66), grid lengths(four/6,463), lattice/boundary(six/5,173) and audio predelay(one/16). The11,756 rows are retained observations, not a call count or new requirement denominator. Replaying their selected finite contexts supplies no identified new required outcome.
+
+The expressly unrun input set is four FollowTime evaluations: binary64 words `0x7feffffffffffffe` and `0xffeffffffffffffe`, each with flag0 and1. The [existing X2 driver](../../analysis/ableton-live-12.4.3/r2/x2-notes-launch-v1/run_x2.py) (42,608bytes/SHA-256 `2d295c89a32f4ad173bc1e2b7309bdaa14fcf7a023366f8e22a573e4f7f9594d`), lines588–604, calls member0x101555850 on a supplied120-byte RemoteableDouble with vtable0x106bc07b0, value+0x58 and flag+0x70, while forcibly returning from generic post-load0x10147e120 through GDB. The scalar lattice helper would not test this member's sentinel bypass. No unmodified generic-post-load receiver/state route has been admitted here. Chance execution separately uses supplied object graphs and skips notification/Enabled setters; it cannot establish the missing final disable state.
+
+This was a bounded source/metadata selection assessment, with no new binary/harness/decoder/original execution, object model, artifact gate or replay of released computations. It does not establish global infeasibility. Modes, Legato, clock/anchor ownership, final load/Save and delivered clip behavior remain U. The next eligible assessment is MIDI user mapping19X; no new case, grade, release or main-image site is added. Frozen691 X/1,076 S/3,857 none and main25,071+24=25,095 of268,015 remain unchanged, bundle sites separate; required U/product OPEN.
+
+
+## AClip post-load locator metadata selected — 2026-10-23
+
+The [frozen S-scope assessment](full-live-coverage-inventory.md#frozen-s-route-scope-assessment-and-new-metadata-questions--2026-10-23) nominates20AClip contexts:CLR-062–077constructor,CLR-087/088preferences andCLR-107/108member-load questions. Their one named later hook is0x102441a30 in the [approved ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-clip-launch-routes-v1/route-ledger.json),209781bytes/SHA256 `a4cccb8d24c10f6ce4e632107ba494e7a16d757910be8c0df49ba7838884ffd2`, `/join_catalog/postload`; the [sole map review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-clip-launch-routes-v1-review.json),45208bytes/SHA256 `9246d64c9a19810b81d6ebb7c0f95f7a78ee2272daebf1a7c5b40493910520df`, remains inherited bounded authority. **CLR-057/058Song-constructor questions remain separate and have no named Song loader here.** One clip hook proves neither creation/preferences nor a complete transitive load graph.
+
+Architecture attribution is explicit in this page's Evidence/Reading-and-writing context:Live.arm64/3a99…cfad,AClipvtable0x1067b6cc0,genericloader0x101487310/writer0x101486cdc and post-load0x102441a30. The later both-slice member discussion does not turn it into an x86 target. The current architecture clarification uses those canonical locators, without reopening old vtable/source/native proof; x86counterpart remainsunknown. The frozen scope projection's earlier architecture-to-establish status staysas-of, not silently rewritten.
+
+Select ONE **depth-clip-aclip-postload-locator-v1**, a finite **metadata-only** locator study of that ARM64hook. Exact alias/export/C1HEADER/STATUS/body-range declaration fields and coherent membership/overlap may be read using inherited main-image identity/map metadata; bounded predecessor declaration only if exact entry lookup fails. Missing/ambiguous/extents/runtime ownership stayU. No C/native body, fresh image/header/vtable/slot/field/pointee/caller-index content or old semantic proof re-review. Full parent hashing may physically cover opaque C while selecting zero Csemantics.
+
+Tension_review_finish authors; o137_finish solely reviews frozen NEWmetadata/code after its Automation peer work; RootCITEONLY. Minimal new methods are fully read/control/prebound with exactPython312-I-B source eligibility, one census/finalfreeze, preserved failures/no retry, no old helper/checker/control/fixture/decoder replay. From the first point preserve full6039814144currentconcurrent bytes plus complete12MiBremaining-parent/output/log allowances/512MiBfinal/128MiBheadroom or larger, maximum with4563419136floor, at parent/everychild. No budget/scope shrink, deletion or Analog59subset. Direct SAFEscalar/declaration geometry/lineage/all20question limits/history in the sole report, with no additional preparation/review gate. No hook body or successor selected; no original/runtime/FP/model/provider/guest/QMP/UI/media/profile/AUZ/opaque action or case/grade/site/O/release credit. WholeLiveOPEN.
+
+
+## Locator reader failure retained; one bounded metadata recovery selected — 2026-10-23
+
+**Author-reported frozen failure, pending sole peer disposition:**[original locator manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-clip-aclip-postload-locator-v1/manifest.json),4053bytes/SHA256 `7f695d84d3be7e2306244d6ef43f245f10dfcb59efc05595fd65b0d93d0b730a`, seals25payloads192875bytes/all26files0444/private0700. The one alias-reader attempt raised ValueError on `EXTERNAL:0x1` because it parsed an entry before excluding external rows. Original five186-line methods,27owned controls, attempt/empty stdout/911-byte stderr remainunchanged. No C1/image/native/guest read or complete alias hash/endpoints/target receipt was produced; partial scan yields no admitted locator or geometry. The separately read/prebound27-line failure checker passed six promotion negatives; **only failure-check.py --check is eligible for the sole peer**, not the original success checker. All20AClip and separate Song57/58questions remainU; this tool failure is no Live behavior observation.
+
+Root explicitly selects **one corrected analysis-metadata-reader attempt** in a separate **depth-clip-aclip-postload-locator-recovery-v1**. This narrowly amends Root's earlier reader-no-retry instruction for this reversible schema-handling bug; it does **not** amend user decisions about failed/unattempted X histories, audio/reference execution, opaque returns, providers or models. Preserve the frozen failed packet byteexact; do not edit or rerun its collector/checkers/fixtures. The new companion must retain the original failure and total two-attempt history explicitly, not claim no retry.
+
+New corrected methods filter declared external records **before** hexadecimal parsing and derive ordinal by counting nonexternal rows. Before the one new attempt, fully read/control/prebind new code and meaningful actual-shaped external-label/sentinel, malformed-nonexternal, target/count/ordinal/custody controls. Do not reuse an unreceipted partial target. Obtain fresh complete parent identity/hash receipts and exact target/C1metadata, or retainU. This selection preserves the same whole20/separateSong scope, ARM64attribution, full6039814144currentconcurrent plus complete lifecycle/output/final/headroom from the first point, zero C/native/vtable/slot/body semantics, no budget reduction/deletion/Analog59subset.
+
+Tension_review_finish authors the new companion; o137_finish solely reviews after Automation and the old failure-only disposition; RootCITEONLY. One new freeze/report, no extra preparation/review gate and **no automatic third attempt** if recovery fails. No original function/application/device execution, failed audio-history replay, compiler/provider/runtime/guest/QMP/UI/media/profile/AUZ action or body/successor follow is selected. Full original failure and any recovery outcome stay distinct; no geometry/coverage credit before the new sole approval. WholeLiveOPEN.
+
+
+## Failed locator and qualified recovery metadata adopted — 2026-10-23
+
+The [sole failed-packet review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/clip-aclip-postload-locator-v1-review.json),29583bytes/SHA256 `1f562300f69a6748a6b343defa2a3aa60bd0d4cfbdffa24b003cfdb4ab59eb5d`, approves **failure preservation only**. Root read approved failure/scopes/lineage/limits/history by citation-only projection; the failed alias attempt supplies no completed source hash/endpoints/target membership/geometry. Sixmethods213lines/tenindependent false-promotion controls and the sole failure checker passed byteexact/empty stderr/all26files unchanged; original success checker and collector remainineligible/unexecuted by peer. The lost parent-before guard snapshot is not reconstructed. This record remainsfailed/U after recovery.
+
+The separate [sole recovery metadata review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/clip-aclip-postload-locator-recovery-v1-review.json),53739bytes/SHA256 `48409588a9691c2277a036e610985a3ac5a515c727571191160c17e68ed12e2b`, approves one exact declared ARM64hook with an additive peer geometry refinement, no frozen edits. [Recovery manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-clip-aclip-postload-locator-recovery-v1/manifest.json),4217bytes/SHA256 `e07b63e2aa5a32fa39cfa50cd1807f4f1b33c37179f08466ce282a9a4b6b761f`, seals26payloads199588bytes/all27files0444. Root verified/read only approved SAFEscalar/declaredgeometry/understanding/all20+2scope/lineage/limits/history, not underlying code/parents/checkers.
+
+Fresh custody covers122340555bytealiases+125551byteC1parent,122466106physical bytes, with equal four endpoints per parent. There is exactly one nonexternal target alias;171763nonexternal ordinal yieldschunk01717,line64. Headerstate is exported-with-warnings,partialfalse/timedoutfalse/errorfalse, with one retained global-symbol-overlap warning. **Author classifier remainsUNKNOWN** because its exported/warning whitelist omitted exported-with-warnings; its map/overlap guard did not run. The sole peer independently qualifies the retained count/alignment/header/inherited map as **[0x102441a30,0x102441bf4),452bytes/113prospective rows,fileoffset38017584,__TEXT/__text**. RawC1inclusiveend0x102441bf3matches that one record's452bytes; no global format/ABI/runtime-extent law is inferred. Declared1956Cbytes/hash remainopaque/not recomputed semantic evidence.
+
+Bounded overlap against exactly the prior240native ranges/37fields iszero. Root's additional approved-metadata comparison with the18Automationdeclarations isalsozero; global novelty/cold/all-exit extent remainsunproved. All20AClip public joins and the two separate Song-constructor questions remainU; one later hook proves neither constructor/preferences nor final held/refused values, Save, current receiver or runtime invocation.
+
+Five new methods215lines/18owned controls/14independent peer negatives were reviewed; only the new safe checker ran once, matching the author's UNKNOWN output byteexact/empty stderr/all27files unchanged. Elevenfresh unreserved points retain full6039814144concurrentFROMSTART,minimumfree9630937088/maximumneed6849514147; no reservation, watchdog, escaped-descendant, durability or continuous-identity proof. Totalmetadata attempts are **one failed plus one explicitly authorized corrected reader**, not no-retry and not permission for a third or a failed X/audio/runtime history replay. Old failed methods/results/checkers/controls remainbyteexact and unrerun; prior146scope display exception remainscited history only. Zero C/native/image-header/vtable/slot/pointee/caller-index content or semantics, case/grade/site/O/release or product closure. WholeLiveOPEN.
+
+## Whole AClip post-load native declaration selected — 2026-10-23
+
+Select ONE **depth-clip-aclip-postload-native-v1**:the whole qualified ARM64declaration[0x102441a30,0x102441bf4),452bytes/113rows,oneexactpread from the preferred149711904byte imageROFD/fresh3a99…cfadwholehash. PinnedRizin0.9.1decodes only the owned body and necessary new owned toys. No originalC1/aliases/header/vtable/slot/global/pointee/string/objectprefix or callee body follow. Record the entire encountered call/branch/site/read-field union as metadata nominations, not automatic successors or current values.
+
+Carry the retained warning/authorclassifierU/peerqualifiedgeometry and old failure+correctedmetadata history by citation; this is a **new first native-content question**, not a third metadata attempt. All20AClip+2Song public questions remainopen. Tension_review_finish authors; o137_finish solely reviews after Automationnative; RootCITEONLY. PREinterpreter/tool/source eligibility, new fully read/control/prebound methods, one native acquisition/no automaticretry, first-fault partials/history/SAFEgroups/fullfutureunion directly in the sole report. From the first point preserve full6039814144currentconcurrent plus entire parent/body/toy/output/log/final/headroom allowances, minimum7893696512or larger at parent/everychild. No budget/scope cut, deletion or Analog59subset; no ESIL/FP/numeric/model/provider/runtime/originalapplication/guest/QMP/UI/media/profile/AUZ/opaque action. No behavior, case, criterion, site, O, release or closure credit before reviewed findings support it.
+
+
+## Whole AClip hook native findings adopted — 2026-10-23
+
+The [sole native review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/clip-aclip-postload-native-v1-review.json),96,212bytes/SHA256 `6a46d68bf6c76bfa07187ebdb77ac977d96c1e570545597eac00da6853484e22`, approves conditional local static evidence for the entire declared ARM64 hook `[0x102441a30,0x102441bf4)`:452bytes/113rows/fileoffset38017584. [Manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-clip-aclip-postload-native-v1/manifest.json),8138bytes/SHA256 `1f2923a49b944ba71d43e888bca7249a79570c57e0623fd5f80e3f9dcf4e17a1`, seals51payloads211216bytes/all52files0444. One fresh149711904byte image hash3a99…cfad/oneROFD/one452bytepread and four equal path/FD endpoints support bounded custody. Root verified the review pin and read only its approved SAFE/geometry/whole-question/lineage/limits/history projections; no original source, tool, decoder or checker replay.
+
+All ten approved groups below inherit valid-memory, indicated-path, callee-return/lifetime and saved-register-preservation premises. Each row cites `/approved_safe_understanding_delta/groups` by its stable local group ID; none establishes public ABI, current class/object identity or externally observable behavior.
+
+| Local group | Conditional understanding | Still unknown |
+| --- | --- | --- |
+| ACN01 | The local prologue saves x19/x20 and d8/d9; x19 receives entry x0. The first direct call is to unread0x1024dece8 with entry x0 still set. Subsequent receiver-relative accesses use saved entry x19; the helper's x0 return is not substituted as that base. | First helper side effects, return, nonreturn/exception paths and actual receiver/entry ABI. |
+| ACN02 | The hook loads d0 from saved entry+0x50, duplicates its lane, and compares against two unread Q-register loads formed by adjacent ADRP/LDR pairs at0x1055d9680 and0x1055d9690. Vector compare/reduction output supplies w8 bit0; TBNZ branches directly to0x102441ad0. It is a local bypass condition, not a proven finite/NaN/infinity/sentinel test. | Both constant contents and comparison classification; each sixteen-byte access is an access width, not a whole object size. |
+| ACN03 | The other local branch contains scalar compare/select, integer immediate construction transferred to FP registers, multiply/fused-add/absolute/floor-round/divide/multiply instructions. At the join x0 is explicitly restored from x19 before unread0x1024dece0 is called; d0 is the path-dependent scalar register. No store to entry+0x50 is witnessed inside this selected arithmetic segment. | No numerical formula is evaluated or adopted; the outside helper's effect and final held value are unknown. |
+| ACN04 | After that helper returns, x0 is reloaded from saved entry+0xc8 and d0 is independently reloaded from saved entry+0x50 before direct call0x1015654e0. The next indirect call uses receiver loaded from saved entry+0x120 and function loaded through that receiver's current vptr+0x1e8. The earlier arithmetic value is not assumed equal to the newly loaded value. | Member identities, actual function binding and helper/store/delivery behavior. |
+| ACN05 | A snapshot of saved entry+0x288 is held in x20 before entry-vptr+0x300 is invoked with x0=saved entry. That indirect call's x0 return is moved to x1; the earlier x20 snapshot becomes x0 and w2 is set to1 for unread0x10256d5ac. The snapshot is distinct from later reloads of the same entry field. | Returned value meaning, same-instance continuity, current vptr/field identity and any receiver lifetime across the call. |
+| ACN06 | A fresh entry+0x288 load supplies x0; x20 is then overwritten with that receiver+0xb0 before0x10256cfd8. Its returned d0 participates in the literal fadd sequence retained in d9. Another fresh entry+0x288 load is sent to0x10256d358, followed by FCMP d0,d9 and B.PL. The two branches are characterized by the actual N flag, not by a high-level ordered numeric relation. | All helper laws/returns, floating classifications and identity/lifetime of the newly saved nested x20 carrier. |
+| ACN07 | On the B.PL fallthrough path, entry-vptr+0x2a0 is invoked through x9 with x0=saved entry and x8=sp+8. The same stack address is then passed as x0 to0x10256e724 and its d0 return is saved in d8. Entry-vptr+0x2b0 is called next. Two FCMP/FCSEL.MI steps select d0 using returned d0, saved d8 and saved d9; x0 becomes the later nested x20 carrier for0x1015652f0. | x8/sp+8 result protocol, stack object size/initialization, virtual targets and no asserted min/max/clamp/numeric law. |
+| ACN08 | On the B.PL taken path the hook reloads entry+0x288 and calls0x10256d358 again. It then passes the later nested x20 carrier in x0 to0x1015652f0; the callsite's d0 is the return from this repeated helper call, not an assumed preserved result of the earlier call. | Repeated helper equivalence, mutation, numeric values and eventual stored/output behavior. |
+| ACN09 | Each path loads entry+0x3a0 for0x1015692c0, then CMN w0,1 controls the final split. The non-all-ones result path restores saved registers and returns without normalizing x0. The all-ones32-bit path reloads entry+0x3a0, loads a function through its vptr+0x248, sets w1=0, invokes it, restores registers and returns its unnormalized x0. No boolean-return contract is inferred. | Helper return meaning, actual indirect binding and all nonlocal/exception behavior. |
+| ACN10 | The entire declared hook yields twelve direct BL sites to nine outside destinations, five indirect BLR sites, five in-body immediate branch sites, two adjacent sixteen-byte static-load field candidates and fourteen receiver-relative load classes. This bounds one hook's dependency question; the twenty AClip and two separate Song questions still lack final constructor/preference/load/public joins. | All outside declarations/bodies and actual targets, whole referenced objects, current fields, complete runtime CFG/cold/exception extent, caller census and global novelty. |
+
+The complete bounded dependency nomination is at `/approved_dependency_nomination_METADATA`:twelve BL sites/nine outside destinations (`1015652f0`,`1015654e0`,`1015692c0`,`1024dece0`,`1024dece8`,`10256cfd8`,`10256d358`,`10256d5ac`,`10256e724`),five unresolved BLR sites (`102441af0`,`102441b04`,`102441b4c`,`102441b68`,`102441bdc`),two unread16-byte static access windows `1055d9680`/`1055d9690`,fourteen runtime-relative load classes/22sites and17numeric candidates. The windows map to `__TEXT/__const` at fileoffset90019456/90019472; access width is not object extent. Raw scalar offsets/zero/page candidates are not automatically addresses or current pointers. All declarations/target bindings, caller census, object extents and contents remain unknown; no successor acquisition is automatic. The whole nine-destination/five-site/two-window class is nominated for later selection after capacity eligibility, with every runtime-relative class carried as unknown.
+
+Eight new methods175lines/six metadata and ten decoder negatives passed; two new owned toys and one body decoder each ran once/exit0/empty stderr. The sole peer ran only the safe checker once/byteexact/empty stderr,13independent negatives and limited48branch/ADRP/indirect/load-field confirmations plus11carrier/compare/return words and three N-flag fields; all52files unchanged. This was no second full decoder or FP evaluator. Seven raw type-null rows/four MOV ptr0 rows are preserved. The original34lexical bracket rows include one vector-lane DUP reference, leaving33actual LD/ST instructions; no formatter repair or dynamic dataflow completeness claim follows.
+
+Resource eligibility retained full6039814144concurrent bytes from START across14unreserved snapshots,minimumfree9573634048/maximumneed7893696512. Parent-limit snapshots before the three children were not retained; the later snapshot is POSTcapture evidence only. Original parent was unbounded with no parent watchdog; successful child preexec does not establish historical parent CPU/AS/FSIZE/NOFILE/stack bounds, descendant cleanup or enforcement on all failure paths. Four endpoint equality is not continuous identity/ancestor history/atomic snapshot/crash durability. Pinned direct Python312source and Rizin binary identities do not establish transitive runtime/plugin identity. Peer JSON packaging SyntaxError occurred before its writer executed; corrected packaging did not rerun any audit/checker/source/tool prefix. Earlier failed metadata plus its explicitly corrected second attempt/classifierUNKNOWN remain separate history, with no third metadata attempt or reference/audio-history retry.
+
+All20AClip questions CLR-062–077/087–088/107–108 and separate unnamed Song questions CLR-057/058 remain open at their constructor/preferences/member-load/public joins. Unread constants and callees prevent FP/sentinel/min/max/clamp/final-value claims. No new cases, requirements, criteria, behavioral grades, resolved indirect sites, O observations, releases or whole-product closure. Existing owner/release expectations stay exact.
+
+
+## Complete AClip dependency metadata and two constant windows selected — 2026-10-23
+
+After the sole-approved whole452bytehook and its ten qualified groups, select ONE **depth-clip-aclip-postload-frontier-and-fields-v1**, accounting its entire bounded dependency question in one freeze/sole review. Authority is the [approved native report](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/clip-aclip-postload-native-v1-review.json),96212bytes/SHA256 `6a46d68bf6c76bfa07187ebdb77ac977d96c1e570545597eac00da6853484e22`, only `/approved_dependency_nomination_METADATA`, approvedgeometry/whole20+2scope/source-lineage/limits/history. Carry the oldhook/source/failed+correctedlocator history by citation; do not re-review its bytes, oldhelpers/checkers/fixtures or recover its oldclassifierUNKNOWN by rewriting.
+
+Census all **nine** outside ARMdirect-callee keys `1015652f0`,`1015654e0`,`1015692c0`,`1024dece0`,`1024dece8`,`10256cfd8`,`10256d358`,`10256d5ac`,`10256e724`:exactalias/export/C1HEADER_STATUS/range declarations and bounded predecessor membership only if exactentrylookup fails, zero C/native-body semantics. Read previously uninspected retained-index fields for **allfive** BLRsites `102441af0`,`102441b04`,`102441b4c`,`102441b68`,`102441bdc`; keep function/name/in-thunk/flow/resolved-target hints distinct from actual runtime binding. Carry the full **17numeric candidates**, **14runtime-relative classes/22loads** and stacksp+8unknown from approvedmetadata. Classify candidates by their recorded roles and inherited map/membership; rawzero/displacements/ADRPpage are not automatically addresses, object boundaries or prefix-read permission. Missing/ambiguous declarations/actualtargets/currentobjects stayU; no target-body, vtable-slot or pointee follow.
+
+Select exactly the two already nominated **16-byte file windows**, `[1055d9680,1055d9690)` at fileoffset90019456 and `[1055d9690,1055d96a0)` at90019472, `__TEXT/__const`:**32new contentbytes/two exactpreads** from one preferred149711904byte ARMimageROFD/fresh3a99…cfadwholehash. These are rawfilebits only, never FP/sentinel/min/max/clamp/current-memory laws or whole-object extents. No page/neighbor/otherfield/header/vtable contents or decoder/tool children are selected. Geometry and old37field/nonoverlap information remain inherited by citation, not re-proved from originalheaders.
+
+Tension_review authors; tension_owner solelyreviews frozenNEWmetadata/code/DATA after its independentMNSreview/Automationauthoringboundary; RootCITEONLY. Tension_review's earlier/later soleAnalog59review is a differentpacket and takes place only at a closedClipauthoringboundary. Before FIRSTuse, fullyread/control/prebind newmethods/PREPython312-I-B/sourceeligibility; filterexternalalias records beforehexparse/derive nonexternalordinal, test actual-shaped status/range/opaque-invariance and first-fault stop controls. Check each subprocess/stage result before any laterSourceoperation; no repeat of the Automationpoststop protocol breach. Onecensus/imagecapture and no automaticretry/follow, all failures retained.
+
+From START preserve full6039814144currentconcurrent plus full12MiBremaining-parent/output/log/512MiBfinal/128MiBheadroom allowances, minimum7893696512or larger complete lifecycle budget at everyrequiredstep; no actual-size/scope/budgetcut, evidence deletion or Analog59subset. DirectSAFEunderstanding/wholeunion/allgeometry/lineage/qualifiedlimits/history in the one sole report. All20AClip+2Songpublic questions remainU and oldownerIDs/criteria/releases exact. No guest/QMP/UI/VM/media/profile/AUZ, originalexecution/ESIL/FP/model/provider/install/opaque or newcase-grade-site-O-release/closure credit.
+
+
+### Sole reviewer scheduling amendment — 2026-10-23
+
+Before any frontier/32Bpeer payload/method/checker review began, tension_owner confirmed it had only received locator/pin metadata and held its queuedreview behind activeAutoV3authoring. Root reassigned **one sole Clippeer to o137** at its closedMNSnativeauthoringboundary. Tension_owner's unbegunClipqueue was withdrawn; o137acknowledged and began the selected frozenNEWpacketreview. Frozenauthorselection strings naming the earlier reviewer remainasof schedulinghistory, not a second review or alteredSourcecontract. Sourcebytes/code/guards/fullscope unchanged; no activeprefix wasinterrupted and no Rootpreflight/extraactualreview or acquisition iscreated.
+
+## Complete AClip frontier metadata and raw file windows adopted — 2026-10-23
+
+**Observed metadata and raw FILEBITS only.** The [sole frontier/fields review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/clip-aclip-postload-frontier-and-fields-v1-review.json), 325,502 bytes / SHA256 `d44d73db4b19393aa38e4aea1f68df2d3df0929f62d715c39b52db3e929b5c4e`, approves the entire selected nine-callee/five-site/17-candidate frontier and exactly32 raw file bytes, with zero unresolved findings or frozen corrections. The [manifest](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-clip-aclip-postload-frontier-and-fields-v1/manifest.json), 5,933 bytes / SHA256 `6ef56731e1fcbb623eba56e6de41cf09a906d9e776b4fc3a41c4e4981e3e9d61`, seals37payloads398226bytes/all38files0444 under private0700. Adoption reads only approved SAFE metadata/FILEBITS/understanding/lineage/limits/history projections; the original hook's ten native groups remain inherited by their prior approved report citation, without reopening old source, code, native proof, helpers or checker.
+
+All six approved groups at `/approved_understanding_METADATA_FILEBITS/groups` are retained:
+
+1. **ACF01:** all nine outside-callee keys have exact unique nonexternal ARM aliases and C1 declarations, without predecessor fallback. Nine separate declared ranges total **1,032 bytes / 258 prospective four-byte rows**. Pairwise overlap and bounded overlap with the inherited241 selected native ranges are zero. No body was selected; callee effects, returns, actual ABI, cold/exception/all-exit extent and global ownership remain unknown.
+2. **ACF02:** the complete declarations are listed below. Five are exported without warnings and four retain global-symbol-overlap warnings. Declaration/header facts establish neither parameter/return behavior nor whole objects.
+3. **ACF03:** each of the five indirect PCs has one exact retained-index record naming owner `0x102441a30/FUN_102441a30`, `in_thunk=false`, flow `COMPUTED_CALL` and an empty `resolved_targets` hint list. Actual runtime bindings remain unknown. Empty hints establish neither dead calls nor absence of possible targets; resolved-site credit is zero.
+4. **ACF04:** only the two previously nominated16-byte windows were captured through two exact preads from one freshly hash-matched ARM image FD. Their raw hex and hashes below establish no floating-point decoding, sentinel classification, comparison/min/max/clamp/rounding law, current-memory value or object extent. Earlier hook arithmetic and public-outcome qualifications remain.
+5. **ACF05:** all17 typed candidates remain carried as three mapped static page/field candidates and fourteen raw scalar/displacement/zero candidates. Those fourteen are not absolute addresses, current null pointers or prefix-read permissions. All fourteen runtime-relative classes / 22 load sites and the SP+8 result-protocol/extent question remain metadata/unknown. No receiver, vptr, slot, pointee or neighbor was followed.
+6. **ACF06:** the bounded future question remains all nine declarations, five current indirect bindings, seventeen candidates, fourteen runtime classes and stack-result question together. All twenty AClip questions and the two separate unnamed Song questions remain unknown at creation, constructor, preferences, final held/refused and public joins. The failed locator, explicitly corrected second metadata attempt, original classifierUNKNOWN and separate peer geometry refinement remain exact history. No successor or behavioral closure follows.
+
+All nine approved **declaration geometries**, at `/approved_all9_DECLARED_geometry_METADATA`, are in `__TEXT/__text`:
+
+| Entry / start | End exclusive | Declared bytes | File offset |
+| --- | --- | --- | --- |
+| `0x1015652f0` | `0x1015653e8` | 248 | 22434544 |
+| `0x1015654e0` | `0x10156557c` | 156 | 22435040 |
+| `0x1015692c0` | `0x1015692c8` | 8 | 22450880 |
+| `0x1024dece0` | `0x1024dece8` | 8 | 38661344 |
+| `0x1024dece8` | `0x1024deda0` | 184 | 38661352 |
+| `0x10256cfd8` | `0x10256cfe0` | 8 | 39243736 |
+| `0x10256d358` | `0x10256d360` | 8 | 39244632 |
+| `0x10256d5ac` | `0x10256d63c` | 144 | 39245228 |
+| `0x10256e724` | `0x10256e830` | 268 | 39249700 |
+
+Per-record inclusive-end/count/alignment and inherited segment/section file-offset arithmetic support these ranges, not a global endpoint convention or native instruction/runtime ownership proof. The five static identity/hint PCs are `0x102441af0`, `0x102441b04`, `0x102441b4c`, `0x102441b68`, `0x102441bdc`; all five current targets stay unknown. The full17 typed candidates, fourteen runtime classes / 22 loads, SP+8 question, and whole twenty AClip plus two separate Song contexts are retained directly in the report's corresponding approved metadata keys. These heterogeneous units are not interchangeable counts of objects or behaviors. AClip IDs remain CLR-062–077 / CLR-087–088 / CLR-107–108; separate unnamed Song constructors CLR-057/058 remain unjoined. One hook's frontier establishes no transitive constructor/preferences/load graph.
+
+The exact new file content at `/approved_exact32_FILEBITS` is:
+
+| Separate `__TEXT/__const` window | File offset | Bytes | Raw hex, FILEBITS ONLY | SHA256 |
+| --- | --- | --- | --- | --- |
+| `[0x1055d9680,0x1055d9690)` | 90019456 | 16 | `feffffffffffeffffeffffffffffef7f` | `497821f671556433fbf3e1a747b925c0881e1cfb9fdd35a912f9f04b350eb32f` |
+| `[0x1055d9690,0x1055d96a0)` | 90019472 | 16 | `ffffffffffffef7f000000000000f07f` | `5054f00e87f83bf88bbf7c817689a856b262ea818b6defe598c96f7041ac0551` |
+
+One149,711,904-byte read-only image FD with fresh whole SHA256 `3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad` supplied **32 selected bytes / two exact preads**. The windows remain two separately admitted accesses, not an inferred32-byte object. Whole-image hashing physically covers other opaque image bytes for custody; none became selected native/header/vtable/slot/pointee/neighbor semantics. No FP unpacking, sentinel/numeric interpretation or runtime/fixup/current-value equality was adopted.
+
+The metadata census used seven complete parents once: one aliases parent, five finite C1 chunks and one indirect index, totaling **177,807,701 physical custody bytes**, including opaque C payload. Full-parent/raw-line hashes establish bounded custody, not selected C/code semantics. C1 declared C counts/hashes remain fields, without C-body interpretation or semantic hash recertification. Exact aliases matched all nine; no candidate-point alias queries or wider symbol/body follow occurred. These declaration and hint findings resolve neither runtime providers nor object extents, lifetimes, return behavior or public output.
+
+First-fault sequencing is explicit: controls exited0 before their binding; the census exited0 with empty stderr before its complete result receipt/hash was accepted; only then did field capture run. The fields method independently required that accepted zero-exit cohort/result hash before opening the image. New failed/unaccepted/incomplete-stage controls passed. There was one census and one image capture, no automatic retry, post-stop Source operation or automatic body/other-field follow.
+
+Six new methods / 233 lines were fully read. Eighteen owned controls and eighteen independent peer promotion/scope negatives passed. The sole peer ran only the eligible safe checker once, exit0 / **236-byte author-identical output / empty stderr**; all38 frozen files remained unchanged. That checker additionally reads the pinned8,020,928-byte Python executable and reruns only new owned metadata controls, not original source/image/index/C1/tool/decoder or old proof. No decoder/tool child was selected or launched for this packet.
+
+Full resource accounting retains **6,039,814,144 concurrent bytes from START**, unchanged24×12MiB parent/output/log units,12MiB metadata,512MiB final and128MiB headroom, with the unchanged **7,893,696,512-byte minimum guard**. Twenty-five recorded **store-filesystem-only** points have minimum available14,252,965,888bytes. Separate root-filesystem and physical MemAvailable histories were not retained; AS1GiB is a process cap, not RAM or guest-readiness proof. Snapshots remain unreserved/noncontinuous, without budget/scope shrink, deletion or Analog subset. Parent inheritance was captured/validated prospectively before setting CPU60seconds / AS1GiB / FSIZE12MiB / NOFILE256 / STACK8MiB. Parent wall watchdog, continuous process-tree enforcement and transitive runtime identity remain unknown.
+
+Pinned direct Python3.12 `-I -B` and exact new source eligibility apply before controls and source/image stages **after pure new method definitions have been evaluated**. These receipts are not pre-spawn or all-transitive-runtime custody. Final-component O_NOFOLLOW, one ROFD per parent/image and four equal path/FD endpoints establish bounded read custody, without ancestor-replacement history, atomic snapshot or continuous stability. Owned raw/JSON file descriptors were fsynced; directory-fsync/crash durability remains unestablished.
+
+Historical separation is unchanged: one failed locator plus one authorized corrected metadata reader, not a third locator retry; original exported-with-warnings classifierUNKNOWN and separately qualified452-byte declaration; old hook's POSTcapture parent-limit qualification; and prior146 checker-display exception by citation only. No old collector, checker, fixture, tool, decoder or proof was replayed. The actual sole reviewer was reassigned from tension_owner to o137 only after Root confirmed the former had read no payload/source/method and run no checker; the unbegun queue was withdrawn. Frozen selection strings naming the former reviewer remain ASOF history, not a second review. One oversized peer metadata display truncated; bounded retained-only views completed it without repeating source/audit/checker prefixes.
+
+No new native body, global/object/pointee content, actual Live function, FP/numerical model, provider, opaque-scope or guest/VM/QMP/UI/media/profile/AUZ action follows. All current bindings, whole objects, final behavior and twenty-plus-two public joins remain unknown. Owner IDs, cases, criteria, grades, resolved-site count, O and releases remain unchanged; this adoption selects no successor and grants no whole-product closure. **WholeLive remains OPEN.**
+
+
+## Whole nine-callee native class selected — 2026-10-23
+
+After solefrontierapproval, explicitly select ONE **depth-clip-aclip-nine-callees-native-v1** for **allnine separateARMdeclarations1032B/258prospectiverows/nineexactpreads** in approvedreport325502B/SHA256 `d44d73db4b19393aa38e4aea1f68df2d3df0929f62d715c39b52db3e929b5c4e`, `/approved_all9_DECLARED_geometry_METADATA/entries`:1015652f0/248B,1015654e0/156B,1015692c0/8B,1024dece0/8B,1024dece8/184B,10256cfd8/8B,10256d358/8B,10256d5ac/144B,10256e724/268B. Onepreferred149711904B ARMimageROFD/fresh3a99…cfadwholehash, inheritedmetadata/map/locatorwarnings only. No oldhook, prior32Bwindows, C1/alias/Csemantics/header/vtable/slot/global/pointee/neighbor contents or callee-bodyfollow; oldall10hook/all6metadata groups bycitation.
+
+Carry all20AClip+2Songpublicquestions, fiveactualindirectbindings/sp+8protocol/17typedcandidates14runtimeclassesU; exactC1generic signatures and fourglobal-overlap warnings do notestablishABI/ownership/all-exit extent. Allnew calls/sites/fields/return-gaps arewholenominations only. Do notexecuteFP/model/math, infer sentinel/currentvalues from priorFILEBITS or fabricate a receiver/provider; no newcase,criterion,grade,site,O,release/closure credit.
+
+Tension_owner authors; tension_reviewsolelyreviews at aclosedAnalog-nativeauthoringboundary afterfinalfreeze, RootCITEONLY. Fullyread/control/prebindnewmethods, detailedinterpreterhash/stat receipt beforefirstnewmoduleevaluation pluschronologicallyexplicitlaterSource/tool/per-childchecks; prospectiveparent-childCPU/AS/FSIZE/NOFILE/STACK/COREcompatibility. Use pinnedRizin byte-count `pDj LEN(raw)` ononlyownedbuffers/newnecessaryfixtures including whole268B/67word coveragepast256. Retainrawformatter/type/ptr/ESILlimits, no passive-expressionexecution/oldproof/helper/fixture/decoderreplay or seconddecoder. Stopfirstfault/checkeveryexitbeforelaterSource/tooluse, no autoretry/tweak.
+
+FromSTART preservefull6039814144currentconcurrent plus entireimage/ninebuffer/twofixture/output/log/final/headroom allowances, minimum7893696512or largercompletecontract/allrequiredpoints; no actual-size/scope/budgetcut/deletion or Analogsubset. Onefinalfreeze/solepeer/directSAFEallconditionalgroups/completefrontier/geometry/lineage/fullqualifiedlimits/history. No originalfunction/application/Xaudio/reference/FP/provider/model/opaque or Claudeheldguest/VM/QMP/UI/media/profile/AUZ action.
+
+
+### Nine-callee author freeze; sole review pending — 2026-10-23
+
+The author reports the [packet](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/depth-clip-aclip-nine-callees-native-v1/manifest.json) frozen:manifest11417bytes/SHA256 `f538d8e94e08e3d4d49fd995f1d6938e9b3f0fa714e12c307060fc66d5dbdbd3`,80payloads932261bytes/all81files0444. Root verified only that manifest's size/hash, without reading payloads or underlying proof. Twelve conditional groups and the complete reported29-transfer/seven-outside/one-new-indirect/nine-return/61-lexical-memory/52-numeric frontier await the sole actual review by tension_review after its Analog author boundary; these are author claims, not adopted findings or coverage.
+
+The author's retained history discloses that an approved-report orientation display exposed the prior32-byte FILEBITS hex despite citation-only intent. It reports no physical reread of the old original fields and no FP interpretation; the display overshoot stays explicit, without a zero-exposure or retroactive clean claim. The sole review must assess this alongside PRE chronology, resources and every conditional group. No successor, behavioral case, grade, resolved site, O or release credit follows from this freeze.
+
+
+## Windows priority parks the nine-callee review — 2026-10-23
+
+[The confirmed handoff and Session0→SessionA priority](../decisions/adr-0006-reference-observation-reopened.md#confirmed-handoff-and-windows-sitting-priority-supersede-static-queues--2026-10-23) supersede the earlier Claude-hold and active Clip9 reviewer schedule. The nine-callee packet remains **author-frozen UNREVIEWED** at its preceding manifest11417bytes/SHA256 `f538d8e94e08e3d4d49fd995f1d6938e9b3f0fa714e12c307060fc66d5dbdbd3`; its twelve proposed groups/frontier are not adopted. The tension_review sole-peer queue is unbegun/parked, with no checker or proof review selected ahead of Windows. Existing adopted hook/frontier32B evidence and their qualifications remain by citation; no native/body/data follow, failed-history replay, new grade/site/O/release or closure is implied. Root alone controls the guest; workers remain host-only.

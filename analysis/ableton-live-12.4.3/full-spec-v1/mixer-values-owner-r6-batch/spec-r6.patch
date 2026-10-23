@@ -1,0 +1,142 @@
+--- spec-r5.md
++++ wiki/specs/mixer-values.md
+@@ -2,9 +2,9 @@
+ id: SPEC-MIXER-VALUES
+ type: spec
+ status: draft
+-updated: 2026-10-19
++updated: 2026-10-21
+ access: analysis
+-revision: 5
++revision: 6
+ target: Ableton Live 12 Suite 12.4.3 / macOS
+ ---
+ 
+@@ -49,13 +49,16 @@
+ messages; which UI surface (mixer strip, Info View, automation lane, controller
+ display) shows which text.
+ 
++Revision 6 adds finite scalar-helper expectations under REQ-014; the application
++audio-path scope and unknowns above remain unchanged.
++
+ ## Evidence labels
+ 
+ | Label | Meaning |
+ | --- | --- |
+ | D | Documented in shipped bytes: the schema files or the 376 Live Sets and clips in the 12.4.3 bundle. These were written by Live 12.4d1 or 12.1d1, not by a 12.4.3 save |
+ | S | Static derivation from the 12.4.3 executable or shipped bytes; not an observed run |
+-| X | Extracted execution: the original x86_64 function was run in a harness on the recorded inputs ([ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code), packet [x2-mixer-v1](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json), and the x1 pilot for text). X shows what the code computes for those inputs with glibc substitutes; it does not show that Live reaches the code, nor what the user hears. The release target is arm64; equivalence is checked by comparing the two slices (noted per clause) |
++| X | Extracted execution: the original x86_64 function was run in a harness on the recorded inputs ([ADR 0003](../decisions/adr-0003-no-reference-execution.md#extracted-execution-of-original-code), packets [x2-mixer-v1](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json), [reviewed mix boundary batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/manifest.json), and the x1 pilot for text). X shows what the code computes for those inputs with glibc substitutes; it does not show that Live reaches the code, nor what the user hears. The release target is arm64; equivalence is checked by comparing the two slices (noted per clause) |
+ | S/Q-019 | Static derivation that rests on the Q-019 result of [SPEC-MIX-GRAPH](mix-graph.md) r1: the logic layer sends fader positions and the engine applies the curve and the floor. Revision 4: settled statically under that spec's conditions A3 to A5 (envelope owner, send conversion node, wiring branch), which a static trace could settle ([Q-019](../questions.md#q-019-mixer-volume-and-send-values-sent-to-the-engine)) |
+ | U | Unknown; no expected result, or only a static reading that must not be graded. A PRB ID names the Phase 4 probe that would have settled it. No reference observation is available (ADR 0003), so the clause stays unknown unless the static route or an extracted-execution run named with it settles it |
+ 
+@@ -418,6 +421,23 @@
+   and Intermediate fuse one multiply-add on arm64 (x86 separate, ≤1 float32 ulp); all seven use
+   `cosf` (glibc, ±1 ulp vs Apple). The curves are computed gains; per-track application and
+   ramps stay static (REQ-014 S bullets above, PRB-S9-06).
++
++- **X (revision 6; finite helper annex).** For each exact binary32 input and curve
++  code in [MV-049–MV-300](../../analysis/ableton-live-12.4.3/full-spec-v1/mixer-values-owner-r6-batch/cases-added.json),
++  the supplied x86 scalar helper returns the listed `level_binary32_hex` bit
++  pattern with the batch's recorded Linux math substitutions. These 252 distinct
++  new input/function pairs adopt the already-reviewed whole boundary batch; its
++  49 historical-X2 overlaps remain supporting controls rather than new cases.
++  The annex specifies exact reference values for this finite calculation only.
++  It supplies no new tolerance for ARM/Apple math. ADR 0003's ARM equivalence is
++  an inference; the prior slice note does not establish a general one-ulp bound
++  for these additional positions.
++- **X (same finite scope).** Fast Cut at binary32 input `0x3f75c28f`
++  (`0x1.eb851e0000000p-1`, binary32 0.96) returns `0xb33bbd2e`
++  (−4.371138828673793e−8). A nonnegative clamp would contradict this local helper
++  expectation. This position is off the runtime table's 1/64 grid: neither its
++  sign nor another helper sample determines the interpolated 129-point table,
++  actual track factor, host output, or an ARM/Apple result.
+ 
+ ### REQ-MIXER-VALUES-015 — out-of-range and alternative stored values
+ 
+@@ -538,11 +558,36 @@
+ | MV-047 | 014 | C | Crossfade curve level T(p) for each `CrossfadeCurve` code, at p = −1, −0.5, 0, 0.5, 1 | T(−1) = 1 and T(+1) = 0 for every curve. At p = 0: Dipped 0.5, Intermediate 0.582107, Constant Power 0.707107, Slow Fade 1, Slow Cut 1, Fast Cut 1, Transition 1. At p = −0.5: Dipped 0.791322, Intermediate 0.846931, Constant Power 0.931591, Slow Fade/Slow Cut/Fast Cut 1, Transition 1. At p = 0.5: Dipped 0.223238, Intermediate 0.278848, Constant Power 0.363508, Slow Fade 0.677282, Slow Cut 0.994978, Fast Cut 1, Transition 0.5. Rounded examples only; compare full-precision X levels in x2 results with one adjacent binary32 step or absolute error ≤ 10⁻¹² | X (x2, `0x101b1a470`–`0x101b1a8e0`) |
+ | MV-048 | 013 | C | Pan-law output-gain matrix (L→L, L→R, R→L, R→R) for `0x101b719e0` on [w, pan, splitL, splitR, vol] | Stereo (w 0, splits −1/+1, vol 1): pan −1 → (1.41421, 0, 0, 1e−5); −0.5 → (1.30656, 0, 0, 0.541196); 0 → (1, 0, 0, 1). Split (w 1, pan 0, vol 1): splits −1/+1 → (1, 6.1e−17, 6.1e−17, 1); 0/0 → (0.707107, 0.707107, 0.707107, 0.707107). vol 0 → all 0. Rounded examples only; compare full-precision X gains in x2 results with one adjacent binary32 step or absolute error ≤ 10⁻¹² (the 6·10⁻¹⁷ cross-feed is covered by the absolute bound, not one ulp at zero) | X (x2, `0x101b719e0`) |
+ 
++### Finite helper cases added in revision 6
++
++[MV-049–MV-300](../../analysis/ableton-live-12.4.3/full-spec-v1/mixer-values-owner-r6-batch/cases-added.json)
++are 252 separately identified C/X cases: all 36 new-relative-X2 binary32 positions
++for each of the seven scalar helpers, in retained source order. Each case records
++curve code, exact input bits, exact expected output bits and its reviewed result
++pointer. The action is a direct helper computation with the batch's supplied
++inputs and substitutions. The expected bits describe that recorded x86
++calculation; no portable ARM/Apple tolerance is established for these new inputs,
++and no application or candidate grade is assigned by adopting them.
++
++The [batch review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json)
++approved all 301 boundary observations. The
++[corrected lineage review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v2-review.json)
++distinguishes 49 repeated historical-X2 pairs from the 49 released pairs: only
++35 boundary pairs occur at released positions, 266 lie outside them, and 14
++released pairs are absent from the boundary batch. Per curve the historical
++nine inputs include both ±0.25 and ±binary32(0.95); the seven released positions
++include ±0.25 and exclude ±0.95, while the 43 boundary positions include ±0.95
++and exclude ±0.25. The ±0.95 observations are historical controls here, not new
++cases or a release extension. Existing MV-001–MV-048 rows and all 80 released
++objects, including the 49 released crossfade inputs and their comparators,
++remain unchanged. The 36 allocator-patched setup rows remain withheld.
++
+ Comparators: "opens" is judged by whether the set finishes loading. Text comparisons
+ are exact strings, against an observation in the forms of REQ-006 to 008 (with ` dB`
+ and `-inf dB`; with `C`, `L` or `R`; `On` or `Off`). An observation in another form,
+ for example the digits without the unit, is inconclusive, not a mismatch. Saved
+-values are exact attribute text. C cases compare numbers within the stated tolerance. For MV-047/048 the
++values are exact attribute text. The preserved table's C cases compare numbers within the stated tolerance;
++the revision 6 annex instead records exact bits in its stated x86-helper scope. For MV-047/048 the
+ full-precision reference is `results/mixer.json` in the
+ [x2 packet](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json),
+ not the rounded display examples above. The tolerance is the released
+@@ -554,7 +599,7 @@
+ text, other Boolean or code text) has no case and no expectation: the reading is
+ assumed for plain decimal text only (see the reading assumption above).
+ 
+-Count: 48 cases. 6 are extracted execution (X): MV-018 (On/Off text), MV-023 to MV-025
++The preserved MV-001–MV-048 table has 48 cases. 6 are extracted execution (X): MV-018 (On/Off text), MV-023 to MV-025
+ (fader-curve conversions and round trip), MV-047 (crossfade curve levels) and MV-048 (pan-law
+ gains). 20 are static or documented (MV-001 to MV-017, MV-019, MV-026, MV-046). 11 are audio
+ renders with static or X-derived gain expectations that remain unmeasured against a reference
+@@ -564,6 +609,10 @@
+ were independently confirmed by the x1 extracted-execution pilot
+ ([extracted execution](../research/extracted-execution.md)); they keep the S label here because
+ the x2 packet did not re-run them.
++
++Revision 6 adds 252 C/X finite helper cases to that table, giving 300 draft case
++IDs: 258 X, 20 static/documented, 11 unmeasured renders and 11 ungraded. These
++case counts are not required-outcome coverage or application grades.
+ 
+ ## Open questions
+ 
+@@ -618,6 +667,19 @@
+ | 013 | Matrix `0x101b3b95c` ✓ s9-0002; ramp inputs `0x101afb494` ✓. Input names, D8: `0x101b10fe4` ✓ d8-0002 registers `PanModeAmount`, `Pan`, `StereoSplitPanL`, `StereoSplitPanR`, `Volume` with handler pointers `0x1065423f8`/`400`/`408`/`410`/`4a0` → `OnPanRampEvent<0..3>` `0x101b18834`/`880`/`8cc`/`918` and `OnVolume` `0x101b18964` (pointer reads). Index meaning upgraded from inferred (port order) to static; `PanModeAmount` from `PanMode` not traced. **X (x2):** the matrix (x86 `0x101b719e0`) run on [w, pan, splitL, splitR, vol] gives MV-048's gains; glibc `cos`, ±1 ulp Revision 4: `PanMode` → `PanModeRamp` (75-sample `OMakeRampProcessor`) → `PanModeAmount`, x86_64 builder `0x102866450` (pc); fade time X (t14); matrix ramp recompute `0x101b27860` (X, t14). | S; gains X (MV-048); w mapping S |
+ | 014 | `0x101aedff0` ✓ (target 1 − state, 0.002 s ramp), `0x101aee124` ✓ (factor off when target 0), `0x101aede40` ✓ (x = (c·s′ + 1)·64 into a 129-point table; byte table `0x105bb3a43`), Dipped `0x101aee8b8` ✓; other shapes pseudocode. **X (x2):** all seven `OCrossFadeHelper::CrossfadeToLevel*` (x86 `0x101b1a470`–`0x101b1a8e0`) run — levels in MV-047; T(−1)=1, T(+1)=0; table builder `0x101b191e0` fills T(i/64−1); glibc `cosf`, Dipped/Intermediate have one arm64 `fmadd` (≤1 ulp) | S; shapes X (MV-047); per-track application U |
+ | 015 | Loader direct store (N1 rule, not re-traced for mixer classes; schema `12.0_12402` types `Tempo` as `TimeableSongTempo` and the mixer floats as `TimeableFloat`); `rare_value_docs` (Driver Error Compensation, Playing Software Instruments, Recording Audio, 8-Track Template, Podcast & Radio) Revision 4: rendering clause from the clamp in `0x102683d70` ✓ and the floor (REQ-MIX-GRAPH-003, 005). | U |
++
++Revision 6 adopts the finite boundary results from the
++[approved batch](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json)
++under design revision 12's one-review batch-adoption rule. Historical source
++inputs are X2; execution used the unchanged T14-derived loader. The
++[corrected lineage](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-boundary-owner-reconciliation-v2.json)
++and its approved review supersede the old T14 input label, not original bytes.
++The [adoption packet](../../analysis/ableton-live-12.4.3/full-spec-v1/mixer-values-owner-r6-batch/README.md)
++pins the revision 5 baseline and the result-to-case projection. Its finite annex
++supersedes the older discovery-only disposition for these 252 pairs; old research
++and review dispositions remain historical. No second observation review, original
++run, new source/receiver proof or release is supplied. Glibc 2.39 is supplementary
++post-run context, not a per-child loaded-library/FP-control trace.
+ 
+ Corrections and contradictions:
+ 
+@@ -669,6 +731,7 @@
+ | 3 | 2026-10-18 | Extracted execution of the x86_64 slice ([x2-mixer-v1](../../analysis/ableton-live-12.4.3/r2/x2-mixer-v1/manifest.json), label X; ADR 0003). New X label (evidence table). REQ-005 position ↔ gain conversions are X, with an exact round trip (bears on Q-019); REQ-008 On/Off text is X; REQ-013 pan-law gains are X; REQ-014 crossfade curve shapes are X. REQ-011's condition now cites the exact round trip; the engine-port value stays unknown (Q-019 narrowed, not closed). New cases MV-047 (crossfade curve levels) and MV-048 (pan-law gains), both X; MV-018, MV-023–025 relabelled X; MV-035–039 note the X-derived gains while the render stays unmeasured. Slice comparison recorded (`fma-scan.txt`): no `fma`/`fmaf` call in these functions, ≤1 ulp differences at the dB-table landing points and the Dipped/Intermediate curves, outside any graded value. `derive_curves.py` `gain_to_norm` correction. Requirement count unchanged. 48 cases: 6 X, 20 static/documented, 11 unmeasured renders, 11 ungraded |
+ | 4 | 2026-10-18 | T1.4 static trace ([SPEC-MIX-GRAPH](mix-graph.md) r1, [t14-mix-v1](../../analysis/ableton-live-12.4.3/r2/t14-mix-v1/manifest.json)). Q-019's engine-port value is settled statically with SPEC-MIX-GRAPH's conditions A3 to A5; the S/Q-019 label is redefined accordingly. REQ-011: the logic layer sends the clamped fader position, and the volume ramp and smoothing U is replaced by the mix-graph ramp rules. REQ-012: the U becomes S/Q-019, the send-curve gain with the floor, pre and post per REQ-MIX-GRAPH-005. REQ-013: both U clauses become S (w = `PanMode`, 75-sample ramp; pan ramps per the mix-graph rules). REQ-015: the rendering of out-of-range volume and send becomes S/Q-019; open, display and save stay U. MV-040 becomes a render case; MV-041 and 042 note their render parts. Requirement count unchanged. 48 cases: 6 X, 20 static or documented, 12 unmeasured renders, 10 ungraded |
+ | 5 | 2026-10-19 | Correct REQ-005, 011 and 012’s general exact-round-trip claim using mixer-values-v2 review RVM2-01; the seven tested curve points remain exact under the release assumption. Clarify the forward-fed snap (RVM2-07). No general round-trip bound is established. Pan-mode mapping labels aligned to the static trace; MV-047/048 use full-precision references and absolute 10⁻¹² bounds alongside adjacent-float comparisons. Out-of-range load behavior remains U; MV-034’s exact stored silence-boundary expectation is ungraded. 48 IDs: 6 X, 20 static/documented, 11 conditional renders, 11 ungraded. |
++| 6 | 2026-10-21 | Adopt all 252 new-relative-X2 scalar crossfade-helper pairs from the already independently reviewed boundary batch as exact finite X reference expectations under REQ-014, with cases MV-049–MV-300. All 49 historical agreements remain supporting controls; released ±0.25/±0.95 lineage and all 80 released objects remain unchanged. Exact bits apply only to the supplied x86 calculation with recorded glibc substitutions; no new portable ARM tolerance, runtime-table interpolation, public sign/audio law, application grade or release. All other 14 requirement bodies and prior 48 case rows remain exact. |
+ 
+ Before the 2026-10-18 review, revision 1 proposed a first candidate with MV-001–026.
+ Those cases exercise REQ-001 to 010; its list (001, 002, 003, 004, 006, 007, 009 and

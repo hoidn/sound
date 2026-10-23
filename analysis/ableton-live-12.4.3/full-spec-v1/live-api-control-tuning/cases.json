@@ -1,0 +1,822 @@
+[
+  {
+    "id": "LAC-001",
+    "requirements": [
+      "REQ-LAPI-CONTROL-001"
+    ],
+    "title": "ControlSurface.pad_layout",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Independently establish supported Push2/3 mode and instrument contexts, then query/observe pad_layout while changing only an actually supported mode through its existing owner. Retain full returned symbols and availability; no invented layout-switch API.",
+    "source_claim": "The symbol is get/observe only. Printed Push2/3 layouts distinguish melodic64, melodic64+variations, sequencer, sequencer+32notes; drum variations,64pads,loop selector,16velocities,16pitches; and session. Instrument and Note/Session/Layout context conditions apply. This is not a settable layout selector or a Push1 protocol.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-002",
+    "requirements": [
+      "REQ-LAPI-CONTROL-002"
+    ],
+    "title": "ControlSurface.get_control",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "On an independently admitted active surface choose a known name from its admitted name listing, request that control, and retain returned identity. Missing surface or name-list access is not an unsupported-name result.",
+    "source_claim": "Parameter name is printed without a declared type; the function returns the named control. Control object class, missing-name return and usable name grammar are not supplied.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-003",
+    "requirements": [
+      "REQ-LAPI-CONTROL-003"
+    ],
+    "title": "ControlSurface.get_control_names",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "For one admitted active surface request its control-name list and independently validate one known available control; repeat after a separately supported surface reconfiguration only as ungraded lifecycle evidence.",
+    "source_claim": "Returns a list of all control names for that surface. Ordering, name encoding, list length and implicit function arguments are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-004",
+    "requirements": [
+      "REQ-LAPI-CONTROL-004"
+    ],
+    "title": "ControlSurface.grab_control",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use an independently identified control and establish its ordinary positive functionality; propose grab, retain ownership/functionality observations, then independently restore/release on a reset copy. Never use absent functionality as sole proof of a successful grab.",
+    "source_claim": "Parameter control is printed without a type. Taking ownership releases standard functionality of that control for exclusive Max for Live use; the statement is scoped to that owned control, not a global hardware mute.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-005",
+    "requirements": [
+      "REQ-LAPI-CONTROL-005"
+    ],
+    "title": "ControlSurface.grab_midi",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "With independently admitted script-requested and bypassing track message contexts, establish positive reception at their respective owners, then compare surface API forwarding after grab. Do not treat unavailable script or missing input as a passing exclusion.",
+    "source_claim": "Forwarding concerns messages the surface script receives; the source limits engine channel-message delivery to those the script explicitly requests from Live. Pure realtime track messages can bypass that script; Push Note pads are the source example, contrasted with Session. This does not promise all raw MIDI from the hardware.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-006",
+    "requirements": [
+      "REQ-LAPI-CONTROL-006"
+    ],
+    "title": "ControlSurface.register_midi_control",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "On an independently admitted MaxForLive surface propose separate valid note,CC,pitchbend registrations with independently accepted numbers/names, then obtain and grab each returned control. Record IDs and associated forwarding; no numeric ID, wire codec or send_value signature oracle.",
+    "source_claim": "MaxForLive surface only: name[symbol],status[int],number[int]. Printed status codes are144 note-on,176 CC,224 pitchbend. Returns the control LOM ID; associated forwarding is described after registration plus grab. A send_value call on the returned control is mentioned without defining that separate object member.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-007",
+    "requirements": [
+      "REQ-LAPI-CONTROL-007"
+    ],
+    "title": "ControlSurface.release_control",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Establish a positively functioning ordinary control and separately confirmed grab, propose release, and retain ordinary functionality/ownership observations. Repeated or wrong-owner release remains ungraded.",
+    "source_claim": "Parameter control is printed without a type. Release re-establishes the standard functionality for that control; return value and repeated/unowned-release semantics are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-008",
+    "requirements": [
+      "REQ-LAPI-CONTROL-008"
+    ],
+    "title": "ControlSurface.release_midi",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Establish positive script-requested forwarding after an independently admitted grab, propose release_midi, and retain both source activity and API output so silence cannot be attributed to missing input.",
+    "source_claim": "Stops forwarding messages received from that surface to Max for Live. Interaction with other receivers or automatic cleanup is unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-009",
+    "requirements": [
+      "REQ-LAPI-CONTROL-009"
+    ],
+    "title": "ControlSurface.send_midi",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use a separately admitted surface and non-destructive valid message owned by an independently documented profile; retain input and actual surface/output response. No arbitrary integer sequence, protocol bytes or success oracle is supplied here.",
+    "source_claim": "Parameter midi_message is a list of int, sent to the surface. Range, message framing, running status, supported message classes, acknowledgement and return type are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-010",
+    "requirements": [
+      "REQ-LAPI-CONTROL-010"
+    ],
+    "title": "ControlSurface.send_receive_sysex",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Establish an independently admitted non-destructive request/response profile; separately propose timely and timed-out responses with MIDI grab off/on, retaining positive send/receive controls. Do not invent a seconds unit, int/float coercion, timeout boundary or response/report order.",
+    "source_claim": "Printed parameters sysex_message[list of int],timeout[symbol,int] coexist with prose specifying timeout followed by a float and a default0.2 with no unit in this entry. It awaits a response: ungrabbed timed-out response is not forwarded; grabbed MIDI is always forwarded while timeout is still reported. Exact report grammar, units, response correlation and boundary timing remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-011",
+    "requirements": [
+      "REQ-LAPI-CONTROL-011"
+    ],
+    "title": "DeviceIO.available_routing_channels",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Identify an eligible bus and independently available channel, query/observe available_routing_channels and retain the list/schema before and after a supported routing-context change.",
+    "source_claim": "Dictionary get/observe. Printed key available_routing_channels holds a list of dictionaries described by routing_channel. This is an availability listing, not audio-path activation proof.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-012",
+    "requirements": [
+      "REQ-LAPI-CONTROL-012"
+    ],
+    "title": "DeviceIO.available_routing_types",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Identify an eligible bus and known available type, query/observe available_routing_types, and retain returned identifiers separately from labels and actual signal routing.",
+    "source_claim": "Dictionary get/observe. Printed key available_routing_types holds a list of dictionaries described by routing_type; ordering and empty-list meaning are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-013",
+    "requirements": [
+      "REQ-LAPI-CONTROL-013"
+    ],
+    "title": "DeviceIO.default_external_routing_channel_is_none",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "On an admitted External-routing bus record explicit default state, propose separately accepted boolean settings and change type in reset contexts. Retain resulting selections without presuming current routing changes immediately.",
+    "source_claim": "Bool get/set, described since Live11:1 means the default channel for External routing types is none. Other values, initialization, persistence and switching/selection side effects are not specified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-014",
+    "requirements": [
+      "REQ-LAPI-CONTROL-014"
+    ],
+    "title": "DeviceIO.routing_channel",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Query the current positive availability list, choose an independently valid alternative channel, propose setting the listed value, and retain query/notification and actual positive routing controls separately.",
+    "source_claim": "Dictionary get/set/observe with display_name[symbol] and identifier[symbol]; can be set to values found in available_routing_channels. Label alone is not the stable identity or a complete serialization law.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-015",
+    "requirements": [
+      "REQ-LAPI-CONTROL-015"
+    ],
+    "title": "DeviceIO.routing_type",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "From a positive available-type listing choose an independently eligible alternative in a reset copy, propose setting that listed value, and retain channel interactions and notifications without a guessed fallback.",
+    "source_claim": "Dictionary get/set/observe with display_name[symbol] and identifier[symbol]; can be set to values found in available_routing_types. Compatibility with current channel and invalid/stale selection behavior remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-016",
+    "requirements": [
+      "REQ-LAPI-CONTROL-016"
+    ],
+    "title": "Groove.base",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use one independently loaded groove, query base, and propose each separately admitted printed index on reset copies. Retain actual value/acceptance without deriving beat durations, quantization or timing output.",
+    "source_claim": "Printed under Children despite primitive int; get/set only. Index-based values are0=1/4,1=1/8,2=1/8T,3=1/16,4=1/16T,5=1/32. Do not silently reclassify as an object child or infer an observable capability.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-017",
+    "requirements": [
+      "REQ-LAPI-CONTROL-017"
+    ],
+    "title": "Groove.name",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "With an admitted groove propose two valid owned names in reset copies, query/observe them, and retain identity independently of display spelling.",
+    "source_claim": "Printed under Children as symbol get/set/observe; represents the groove name. Encoding, duplicate-name identity and persistence are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-018",
+    "requirements": [
+      "REQ-LAPI-CONTROL-018"
+    ],
+    "title": "Groove.quantization_amount",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Independently establish two accepted distinguishable quantization amounts, propose read/set/observe within those contexts, and retain values separately from any note/signal transformation.",
+    "source_claim": "Printed under Children as float get/set/observe; represents the quantization amount. No unit, accepted range, percent conversion or timing algorithm is provided.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-019",
+    "requirements": [
+      "REQ-LAPI-CONTROL-019"
+    ],
+    "title": "Groove.random_amount",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use two independently admitted random-amount settings in reset contexts and retain queried/observed values. No random output inequality, distribution or repeatability oracle is supplied.",
+    "source_claim": "Printed under Children as float get/set/observe; represents random amount. Range, units, random distribution, seed and note correlation are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-020",
+    "requirements": [
+      "REQ-LAPI-CONTROL-020"
+    ],
+    "title": "Groove.timing_amount",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Independently admit two valid timing amounts, then propose read/set/observe with fixed valid groove/clip context; retain actual values with no timing comparator.",
+    "source_claim": "Printed under Children as float get/set/observe; represents timing amount. Units, scale, extrapolation, mapping and timing transformation remain unknown.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-021",
+    "requirements": [
+      "REQ-LAPI-CONTROL-021"
+    ],
+    "title": "Groove.velocity_amount",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "On a valid groove independently admit two distinct velocity amounts, propose read/set/observe, and retain property values without replacing finite note velocity/storage laws.",
+    "source_claim": "Printed under Children as float get/set/observe; represents velocity amount. Units, signed range, clipping and interaction with notes/groove dynamics remain unknown.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-022",
+    "requirements": [
+      "REQ-LAPI-CONTROL-022"
+    ],
+    "title": "GroovePool.grooves",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Establish two independently identified loaded grooves with distinguishable names and visible pool order; query/observe list and inspect accepted indices while preserving identity separately from names.",
+    "source_claim": "Child list of Groove, get/observe only; source says top-to-bottom pool order, accessible by index. Empty/stale indices, reordering, loading/removal and notification ordering are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-023",
+    "requirements": [
+      "REQ-LAPI-CONTROL-023"
+    ],
+    "title": "TuningSystem.name",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Independently establish an active valid tuning system, propose two admitted names and retain queried/observed name separately from pitch/sound behavior.",
+    "source_claim": "Symbol get/set/observe; names the currently active tuning system. Renaming is not evidence of loading a different system or changing pitch.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-024",
+    "requirements": [
+      "REQ-LAPI-CONTROL-024"
+    ],
+    "title": "TuningSystem.pseudo_octave_in_cents",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use an independently loaded system with independently documented pseudo-octave, propose query only, and retain the actual value; no universal1200-cent or octave conversion is inferred.",
+    "source_claim": "Float get only; pseudo-octave in cents for the current system. No setter, accepted numerical range or relationship to an octave number is specified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-025",
+    "requirements": [
+      "REQ-LAPI-CONTROL-025"
+    ],
+    "title": "TuningSystem.lowest_note",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use a separately admitted complete lowest-note dictionary for an active system; propose get/set/observe with an independently valid alternate boundary, retaining the complete returned structure without invented keys.",
+    "source_claim": "Dictionary get/set/observe describing note index within pseudo-octave and octave of the lowest note. Key names, key types, integer ranges and inclusive/exclusive boundary behavior are not supplied.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-026",
+    "requirements": [
+      "REQ-LAPI-CONTROL-026"
+    ],
+    "title": "TuningSystem.highest_note",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use an independently admitted complete highest-note dictionary and compatible lower bound, propose get/set/observe in a reset context and retain boundary interactions without constructing an undocumented dictionary.",
+    "source_claim": "Dictionary get/set/observe describing note index within pseudo-octave and octave of the highest note. Missing schema and range/interaction rules remain U.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-027",
+    "requirements": [
+      "REQ-LAPI-CONTROL-027"
+    ],
+    "title": "TuningSystem.reference_pitch",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Require an independently admitted reference-pitch dictionary, propose query and accepted alternate setting/observation, and retain full return structure without assuming frequency/note keys or a440Hz default.",
+    "source_claim": "Dictionary get/set/observe for current reference pitch. Keys, units, tuning reference coordinate and validation rules are unspecified.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-028",
+    "requirements": [
+      "REQ-LAPI-CONTROL-028"
+    ],
+    "title": "TuningSystem.note_tunings",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Require independently admitted complete note-tuning dictionaries for one active system, propose query/set/observe on reset copies and retain complete structure; no array keyed schema or pitch transform is guessed.",
+    "source_claim": "Dictionary get/set/observe; relative note tunings in cents, described as a single-element dictionary holding an array. The key, array size/order, reference meaning and accepted values are not supplied.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-029",
+    "requirements": [
+      "REQ-LAPI-CONTROL-029"
+    ],
+    "title": "this_device root context",
+    "kind": "message-role",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Independently identify the actual containing Device for an admitted live.path object, propose goto this_device, and retain returned identity and actual canonical path. Nested/return/Main contexts require separately admitted placements; absence is U.",
+    "source_claim": "The root identifies the Device containing the live.path object receiving goto this_device. The entry prints an ordinary track/device canonical path example; nested/return/Main placements and lifetime follow their own evidence, not an all-devices-on-tracks law. The entry declares zero direct members; Device inheritance is routed to its separate owner.",
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-CONTROL-1",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-CONTROL"
+    ],
+    "title": "Controller ownership, timeout and lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "With independently valid profile/control/message and confirmed ordinary functionality, propose grab/release/disconnect/reconnect in separate reset histories; retain ownership and positive source reception.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-CONTROL-2",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-CONTROL"
+    ],
+    "title": "Controller ownership, timeout and lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use independently admitted request/response timing profiles to distinguish timely, boundary and late responses with grab off/on; no timing tolerance, response grammar or order is supplied.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-CONTROL-3",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-CONTROL"
+    ],
+    "title": "Controller ownership, timeout and lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Compare independently identified surface IDs using Application listing and root paths under configuration changes; no same-index identity inference.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-ROUTING-1",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-ROUTING"
+    ],
+    "title": "Routing dictionary and bus lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Require independently valid positive bus/type/channel setup; retain accepted dictionaries and actual positive signal paths before proposing a supported selection.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-ROUTING-2",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-ROUTING"
+    ],
+    "title": "Routing dictionary and bus lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "After a separately supported device/configuration change retain current/available values and observers; stale ID response and fallback remain ungraded.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-ROUTING-3",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-ROUTING"
+    ],
+    "title": "Routing dictionary and bus lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Propose save/reopen or device removal only in an independently owned future disposable context; retain route/observer/positive audio histories, no persistence or latency oracle.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-GROOVE-1",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-GROOVE"
+    ],
+    "title": "Groove amounts and pool lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "With independently admitted grooves/values compare direct get/set/observe capabilities and metadata; do not call object-navigation methods on primitive declarations by assumption.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-GROOVE-2",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-GROOVE"
+    ],
+    "title": "Groove amounts and pool lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use positive MIDI note/groove fixtures through existing groove/MIDI owners before proposing timing/velocity/random comparisons; outputs remain null.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-GROOVE-3",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-GROOVE"
+    ],
+    "title": "Groove amounts and pool lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "After independently supported groove reorder/removal and save/reopen retain pool IDs/order/indices and source activity; no identity or event-order oracle.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-TUNING-1",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-TUNING"
+    ],
+    "title": "Tuning dictionaries and active-system lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Require independently admitted full active-system dictionaries; retain actual schema and get/set/observe capabilities with positive output, without inventing reference/boundary keys.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-TUNING-2",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-TUNING"
+    ],
+    "title": "Tuning dictionaries and active-system lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Use independently eligible scales/devices/clips and valid note input before proposed system change; retain audio/MIDI/pitch and availability separately, all signal outputs null.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  },
+  {
+    "id": "LAC-U-TUNING-3",
+    "requirements": [
+      "REQ-LAPI-CONTROL-U-TUNING"
+    ],
+    "title": "Tuning dictionaries and active-system lifecycle",
+    "kind": "unresolved",
+    "preconditions": [
+      "owned-context",
+      "positive-guard"
+    ],
+    "setup_and_action": "Propose no-system/load/unload/save/reopen in separately admitted disposable contexts; record association, property availability and observer lifetime, not an inferred default or cleanup law.",
+    "source_claim": null,
+    "documentary_expected": null,
+    "documentary_comparator": null,
+    "expected": null,
+    "comparison": null,
+    "target_grade": "U",
+    "executed": false
+  }
+]

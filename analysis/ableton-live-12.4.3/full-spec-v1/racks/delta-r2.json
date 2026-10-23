@@ -1,0 +1,66 @@
+{
+  "requirements": 28,
+  "changed_contracts": [
+    {
+      "id": "REQ-DEVICE-RACKS-005",
+      "before": "\n**D12 / E1 §§25.3–25.4.1.** Dropping devices, presets or chains in the chain-list\ndrop area adds chains. Selecting a chain shows its devices; multiple selections\nshow their count. Chains expose activator, solo and hot-swap; audio-output rack\nchains also expose volume/pan. Rack-title selection addresses the whole rack for\nmove/copy/delete. Auto Select selects chains currently processing signals;\nDrum Rack selection follows receipt of the assigned note. Exact solo/activator\naudio interaction, selection expiry and contention with manual selection are U.\n\n",
+      "after": "\n**D12 / E1 §§25.3–25.4.1.** Dropping devices, presets or chains in the chain-list\ndrop area adds chains. Selecting a chain shows its devices; multiple selections\nshow their count. Chains expose activator, solo and hot-swap; audio-output rack\nchains also expose volume/pan. Rack-title selection addresses the whole rack for\nmove/copy/delete. Auto Select selects chains currently processing signals;\nDrum Rack selection follows receipt of the assigned note. Exact solo/activator\naudio interaction, selection expiry and contention with manual selection are U.\n\nRack view selectors show or hide eligible Macro Controls, Chain List and Devices views, with Pad View unique to Drum Racks; hiding all views, context Fold or title double-click folds the Rack. Right-clicking the Device View selector offers a hierarchical device list whose selected entry is selected and revealed. With Chain List focused, up/down changes selection; dragging and hovering a selected chain over a Session or Arrangement track gives it focus and opens Device View. Rack and chain Rename use Edit; Info Text uses Edit or context, and chain color uses its context palette. Entire chains can be saved/recalled as browser presets without a specified save/recall gesture; file/geometry/timing outcomes remain U.\n\n"
+    },
+    {
+      "id": "REQ-DEVICE-RACKS-007",
+      "before": "\n**D12 / E1 §§25.5–25.5.4.1.** Zones can be moved and resized, with separately\neditable fades. Key zones cover selected MIDI keys; velocity zones use Note On\nvelocities 1–127. The selector scale is 0–127; the documented initial selector\nzone is the single value 0. Multiple chains may share ranges. Exact rounding,\nedge inclusion for resized ranges, out-of-range edits and MIDI velocity-zero\ninterpretation are U here; note encoding belongs to [MIDI note storage](midi-note-storage.md).\n\n",
+      "after": "\n**D12 / E1 §§25.5–25.5.4.1.** Zones can be moved and resized, with separately\neditable fades. Key zones cover selected MIDI keys; velocity zones use Note On\nvelocities 1–127. The selector scale is 0–127; the documented initial selector\nzone is the single value 0. Multiple chains may share ranges. Exact rounding,\nedge inclusion for resized ranges, out-of-range edits and MIDI velocity-zero\ninterpretation are U here; note encoding belongs to [MIDI note storage](midi-note-storage.md).\n\nKey, Velocity and Chain buttons select their editors; Hide hides them. Main and fade sections resize from left/right edges and move by interior drags; the Chain selector indicator is draggable. Exact gesture geometry and boundary arithmetic remain U.\n\n"
+    },
+    {
+      "id": "REQ-DEVICE-RACKS-015",
+      "before": "\n**D12 / E1 §25.7.3.** New stores current macro state as a variation, initially\nnamed sequentially Variation 1, Variation 2, and so on. Variations can be\nrenamed, duplicated and deleted. Launch recalls a stored state; Overwrite\nreplaces it with the current state. Exclude Macro From Variations prevents that\ncontrol changing on launch; disabling the exclusion restores participation.\nSnapshot behavior during mapping changes, which unmapped values are present,\nparameter automation ownership, launch scheduling and interpolation are U.\n\n",
+      "after": "\n**D12 / E1 §25.7.3.** New stores current macro state as a variation, initially\nnamed sequentially Variation 1, Variation 2, and so on. Variations can be\nrenamed, duplicated and deleted. Launch recalls a stored state; Overwrite\nreplaces it with the current state. Exclude Macro From Variations prevents that\ncontrol changing on launch; disabling the exclusion restores participation.\nSnapshot behavior during mapping changes, which unmapped values are present,\nparameter automation ownership, launch scheduling and interpolation are U.\n\nThe Show/Hide Macro Variations selector exposes the variations view. Launch Macro Variation and Overwrite Macro Variation are separate buttons; Edit/context commands manage selected entries.\n\n"
+    },
+    {
+      "id": "REQ-DEVICE-RACKS-016",
+      "before": "\n**D12 / E1 §25.6.** Receive selects the note triggering a drum chain; Play selects\nthe outgoing note delivered to its devices. Chains assigned the same one of\nsixteen choke groups silence one another when triggered. Receive All Notes\ndisables Play/Choke and passes through the received note. Preview fires a note\ninto a chain. Choke release envelopes, exact stop time, same-sample arbitration,\nself-choke and preview velocity are U.\n\n",
+      "after": "\n**D12 / E1 §25.6.** Receive selects the note triggering a drum chain; Play selects\nthe outgoing note delivered to its devices. Chains assigned the same one of\nsixteen choke groups silence one another when triggered. Receive All Notes\ndisables Play/Choke and passes through the received note. Preview fires a note\ninto a chain. Choke release envelopes, exact stop time, same-sample arbitration,\nself-choke and preview velocity are U.\n\nThe Receive list presents note names, MIDI note numbers and standard GM drum equivalents; no complete translation table is inferred.\n\n"
+    },
+    {
+      "id": "REQ-DEVICE-RACKS-018",
+      "before": "\n**D12 / E1 §25.6.1.** Each pad denotes a MIDI note. With factory dropping defaults,\na sample on an empty pad creates a chain with Simpler. Dropping an audio effect\non that pad adds it after the instrument. A replacement sample replaces the\nSimpler/sample and preserves upstream MIDI and downstream audio effects.\nCustom dropping defaults are outside this clause; failed-load atomicity is U.\n\n",
+      "after": "\n**D12 / E1 §25.6.1.** Each pad denotes a MIDI note. With factory dropping defaults,\na sample on an empty pad creates a chain with Simpler. Dropping an audio effect\non that pad adds it after the instrument. A replacement sample replaces the\nSimpler/sample and preserves upstream MIDI and downstream audio effects.\nCustom dropping defaults are outside this clause; failed-load atomicity is U.\n\nIndependently compatible browser instruments and presets can also be dropped onto pads; this does not establish arbitrary browser-object admission or new sample-dropping defaults.\n\n"
+    },
+    {
+      "id": "REQ-DEVICE-RACKS-020",
+      "before": "\n**D12 / E1 §25.6.1.** The 128-note pad map shows groups of sixteen. Changing Receive\nupdates pad presentation; matching chains, including nested ones, respond to\nthe note. A one-chain pad shows that chain's name and permits rename/hot-swap.\nA multiple-chain pad displays Multi; mute/solo/preview address all its chains,\nrename/hot-swap are disabled, and delete removes all those chains. Exact mixed\nmute/solo icon semantics and controller scrolling protocols are U.\n\n",
+      "after": "\n**D12 / E1 §25.6.1.** The 128-note pad map shows groups of sixteen. Changing Receive\nupdates pad presentation; matching chains, including nested ones, respond to\nthe note. A one-chain pad shows that chain's name and permits rename/hot-swap.\nA multiple-chain pad displays Multi; mute/solo/preview address all its chains,\nrename/hot-swap are disabled, and delete removes all those chains. Exact mixed\nmute/solo icon semantics and controller scrolling protocols are U.\n\nThe pad overview can be dragged or navigated with focused up/down keys; Alt Windows/Cmd macOS shifts by single rows. Empty-pad hover shows note and suggested GM instrument in Status Bar. One-chain pads also expose mute, solo, preview and delete. In active Hot-Swap, focused D switches the target between the Drum Rack and last selected pad; no global key exception or rollback is implied.\n\n"
+    }
+  ],
+  "old_records_exact": 61,
+  "new_case_ids": [
+    "RCK-062",
+    "RCK-063",
+    "RCK-064",
+    "RCK-065",
+    "RCK-066",
+    "RCK-067",
+    "RCK-068",
+    "RCK-069",
+    "RCK-070",
+    "RCK-071",
+    "RCK-072",
+    "RCK-073",
+    "RCK-074",
+    "RCK-075",
+    "RCK-076",
+    "RCK-077",
+    "RCK-078",
+    "RCK-079",
+    "RCK-080",
+    "RCK-081"
+  ],
+  "cases": 81,
+  "installed_assertions": 3,
+  "documentary": 66,
+  "U": 12,
+  "new_named_pairs": 3,
+  "new_null_pairs": 17,
+  "executed": 0,
+  "complete_topics": 0
+}

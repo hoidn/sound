@@ -2,7 +2,7 @@
 id: RESEARCH-MIX-GRAPH
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-21
 access: analysis
 target: Ableton Live 12 Suite 12.4.3 (x86_64 Live Engine as symbol donor; Live x86_64 for X runs; arm64 compared statically)
 ---
@@ -355,3 +355,110 @@ note on [mixer values](mixer-values.md).
 - **Release slice.** arm64 equivalence is inferred from the scan above.
 - **Not a mix render.** No rendered mix exists.
 - **Not byte-stable.** `raw/runs.jsonl` records heap addresses, so the manifest is not byte-stable.
+
+## Family route map — pending independent review, 2026-10-20
+
+The analyst [mix family structure packet](../../analysis/ableton-live-12.4.3/full-spec-v1/family-mix-routes-v1/structure.md)
+cuts current SPEC-MIX-GRAPH revision 2 from approved integration packet 1b,
+atlas revision 10 I-07/I-08. Its
+[route ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-mix-routes-v1/route-ledger.json)
+enumerates 110 required predicates across all 16 requirements: 17 X routes,
+70 S routes and 23 with no established route. These are bounded route inventory
+counts, not outcome grades, coverage percentages or a frozen whole-product
+denominator. All 34 current case IDs remain separate; two auxiliary clause
+records and 13 excluded/unresolved scope records prevent double counting and
+silent omission. Five retained-call batch candidates remain unexecuted.
+
+Observed-static unit-local wiring does not establish the actual TrackOut
+receiver, instantiated upstream device chain, return/main bus ownership or
+host/export delivery. A1 remains the settled project render convention;
+A2–A8, the automation offset/session timebase and the conditional Q-019
+provider/send-port/crossfade/slice premises remain explicit. Twelve local send
+construction iterations are not a global Live maximum. Internal X arithmetic
+supplies no new public waveform credit. MG-029 and MG-032–036 stay ungraded;
+MG-008 stays withdrawn; the partial released handoff is unchanged.
+
+The packet's
+[author check](../../analysis/ableton-live-12.4.3/full-spec-v1/family-mix-routes-v1/author-check-result.json)
+records source-span, retained-row, case-identity, selected-pin and reference
+integrity checks plus synthetic rejection controls. Independent structure
+review, Root's seal/catalog/atlas/coverage/log update and later batch selection
+remain the next gates. No original/provider/harness/decoder execution or new
+behavior grade occurred in this map stage.
+
+
+### Family route review adopted — 2026-10-20
+
+The [frozen family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-mix-routes-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-mix-routes-v1-review.json)
+as a bounded structure inventory: all 16 requirements, 110 predicates, 34 case
+identities, 51 retained source locators and 173 historical command rows were
+reviewed. The 17 X / 70 S / 23 no-established-route counts change no grades.
+The reviewer found no blocker. Editorial note MIX-ROUTE-REVIEW-N01 clarifies
+MXR-035: the selected send uses float32 products converted into binary64
+accumulators, as the retained notes and structure table already state. Frozen
+v1's ambiguous wording remains historical; no double-precision product law is
+adopted. All 36 allocator-patching setup rows retain their separate gate.
+Public receiver/clock/bus/host joins remain unknown, and proposed batches remain
+unexecuted. Shared routing now proceeds to the next scenario family maps.
+
+
+### Extracted leaf batch — pending independent review, 2026-10-20
+
+The [frozen mix leaf batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/README.md)
+replayed 137 unpatched recorded-model rows and seven scalar boundary sweeps in
+144 processes. All 517 direct harness calls returned, including 32 return-only
+allocation calls; all 77 retained dumps and 99 declared return fields matched.
+The 36 allocator-patching rows remain withheld. New boundary results contain
+252 distinct additional function/position pairs, all ungraded pending review
+and owner reconciliation. One Fast Cut result at binary32 0.96 is approximately
+−4.37e−8 with substituted glibc cosf; this supplies no public/ARM sign or clamp
+law. Active receiver, bus/host delivery and automation timebase gaps remain.
+No normative clause, current case, released payload or route grade is changed.
+
+
+### Leaf batch review adopted — 2026-10-20
+
+The [frozen leaf batch](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/manifest.json)
+[passed independent review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json)
+with no finding. Receipt/input correspondence, all retained comparisons and new
+scalar output bits were independently checked without executing original code.
+[Canonical scalar-boundary analysis](mixer-values.md#reviewed-scalar-curve-boundary-evidence--2026-10-20)
+owns the new finite helper results and their distinction from the interpolated
+runtime table. All 36 patched setup rows remain withheld. The current 110-row
+route inventory, public delivery gaps, requirements, cases and grades are unchanged.
+
+
+## Scalar batch owner adoption — 2026-10-21
+
+[Canonical mixer owner r6 adoption](mixer-values.md#mixer-owner-r6-finite-adoption--2026-10-21) now places the approved 252 new-relative-X2 helper pairs into finite draft expectations under mixer REQ-014. Its prior observation review is reused, with a review only of added wording/mapping. Earlier ungraded dispositions above remain historical. No mix-graph requirement, runtime-table/public factor, delivered audio, patched setup or released case changes; unsupported required application behavior remains U.
+
+## Complete Boolean send-gate batch selection — 2026-10-21
+
+The next eligible 17-X family route is MXB-01, TSendVolumes::Calc at 0x101b40d30, under the unchanged approved owned-buffer shape. Select the complete **two fixed recorded matrix contexts × 16 Boolean tuples** of SendsOn/sendActive/prePost/GroupOn. The seven exact historical tuples are inherited only; **25 fresh target calls in 25 sequential children** fill the missing members. The 32-row catalog must distinguish inherited outputs/provenance from fresh receipts. No old original call is repeated. Earlier q=0.5, fractional SendsOn, zero gain and alternate-M/gain rows are outside this specifically fixed-context binary class and remain intact.
+
+The [approved earlier batch manifest](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-leaves-v1/manifest.json), 2,686 bytes / SHA-256 `68bf972bccd18c0cbdd7e1bc1289196575336c085c71271b40efbca435fe3ce5`, and [sole review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-mix-leaves-v1-review.json), 13,025 bytes / SHA-256 `00cebf7dca67b0e3fa6b88c5619d7cf405265db487ea820c4c383dbe2a7c4ff3`, supply inherited authority. Its inputs (193,918 bytes / SHA-256 `df60835f109019751e3261c4b63c30a5dc3d1bbb7c97758137db449537513338`, records0…11) identify the exact modeled call: `call ENTRY buf:8 hex:<13 little-endian u32 words> buf:16 dump b2 16`. Every fresh call uses separate owned 8+52+16-byte buffers; no constructor/setter/poke/patch/return-only helper or repeated within-child call.
+
+Words0/1/2/8 enumerate lexicographic {0,1}^4, encoded `00000000`/`3f800000`. Both contexts fix word3=`3f000000` and words4…7=`3f666666,3dcccccd,3e4ccccd,3f19999a`. Identity G fixes words9…12=`3f800000,00000000,00000000,3f800000`; recorded nonidentity G fixes `3f000000,3d4ccccd,3d8f5c29,3e800000`. Inherited identity tuples are0111/1011/1101/1110/1111 (retained006/008/002/010/001); inherited nonidentity tuples are1101/1111 (retained004/003). Preserve gated-zero branches without assuming every input produces output.
+
+Arrangement authors and runs this one selected packet; Root is its sole independent actual/source peer after seal. Freeze all25plans/inputwords/newcode/authority/image/executable/environment before once execution. Existing xexec is79,728 bytes/SHA-256 `188b1197bd69ab4700ae47eade48f00982a2d11139d865f3cee46e64b80d3078`; Live x86_64 is163,716,848 bytes/SHA-256 `1bae9a972abadea304271696a2ccfe0ffb878d37e23a8d8e52effa297be999b0`. No build/install/new model/provider/patch/tooling/FP perturbation. Each child has20s bound, minimal environment, DEVNULL/core0/process-group cleanup, full stdout/stderr/raw result lanes/output/PID/UTC/argv/exit/timeout/import/custody records; first anomaly stops later children, no retry or automatic extension. Record actual per-child import uses separately from initial bindings; aggregate earlier cos/cosf uses do not prove these calls use them. Existing endpoint/cleanup/within-child/durability limitations remain explicit. Any unjustified oracle remains NULL; no output fitting.
+
+The route addresses supplied internal send-gating/pre-post arithmetic (REQ-MIX-GRAPH-005/MXR023–026). The second G is an already-recorded internal group-context extension, not current group/TrackOut receiver proof or a new public owner law. No MainOn operand is supplied, so this alone cannot prove MainOn independence; pan/volume/crossfade/floor are not varied. No audio/clock/MIDI/rate phase, host/ARM/Apple calibration, current binding, case/grade/release/site or whole-product closure follows from selection. Frozen routes remain691 X/1,076 S/3,857 none; main Live25,071+24=25,095of268,015, bundles separate; required U/product OPEN.
+
+## Whole Boolean send-gate actual adoption — 2026-10-21
+
+The [frozen send-gate packet](../../analysis/ableton-live-12.4.3/full-spec-v1/batch-mix-send-gates-v1/manifest.json),15,151-byte manifest/SHA-256 `996d17683cbe579ff03d7ddaac9d81667c9471b41ba5fc35c38265c3e522efa8`, passed [Root's sole actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/mix-send-gates-v1-review.json),57,280bytes/SHA-256 `7d6a67be34f37502485961629700525812a847ee807e15904e85aa00f87e0f8e`, with no blockers/corrections. All88payloads/5,549,531bytes and89files remain read-only. The pre-call manifest1,497bytes/SHA-256 `3bd56e5f018fb79f238fd8bb145bd0c3f5925b0e043b63edc36b83a228c7d86a` froze all inputs/newcode/environment/authority before execution.
+
+All **25 missing tuples** completed once, in25sequential one-call children at10:05:54.402859–10:06:02.401712UTC, outerPID1388117. Every child exited0 with empty stderr/no timeout/retry. All25 fresh16-byte output matrices are **four positive-zero binary32 words**. The complete32-row class includes28gated-off tuples (25fresh/threeinherited) and four enabled pre/post tuples whose productive outputs are inherited only. Seven exact historical input/output projections join the prior approved input metadata, without oldraw/source-behavior review, original replay or fabricated fresh receipts. The full32-point approved summary in Root's report provides the next owner peer's numerical/provenance authority.
+
+Root read the full275-line/14,965-byte collector and125-line/7,756-byte checker, README/assessment/catalog/context/precall, all25raw/stdout/stderr/receipt/import/memory/carrier records and seven copied provider joins. Eleven catalog/twelve synthetic-protocol/ten retained controls and16independent partition/input/protocol/custody/bit/lane controls pass; the packet-only safe check launched no originals. All125recorded runtime custody pairs and16authority endpoint pairs agree. Every child declares1,882bindings (1,796trap/85Linux-code/oneLinux-data), with zero actual counted imported-code uses. Bindings are not calls or exhaustive loader/libc/data tracing; unchanged library endpoints do not attest loaded Apple/provider identity or continuous custody.
+
+Every fresh b0 remains zero8bytes and b1 remains its exact52-byte supplied input; b2 supplies the16semantic output bytes. Four saved return carriers are64bits each, not full128-bit SIMD registers. Some XMM1 high bits are nonzero despite b2zeros; no return-register or pointer oracle follows. Fresh predictions were NULL, and outcomes are not fitted to a universal equation. The child environment is minimal; recorder ambient environment is not claimed scrubbed. The successful capture does not test timeout cleanup or all setup/interruption/uncatchable-kill/filesystem failure paths. Flush/fsync/0444 modes are not directory/power-loss durability or enforced immutable storage.
+
+The two exact supplied G contexts and fixed M/gain values remain the scope. No MainOn variation, actual group/TrackOut/current receiver, pan/volume/crossfade/floor, public delivery, ARM/Apple precision, physical calibration or general law is established. Approved observations enter the next owner directly; Arrangement prepares R3 with25new finite IDs plus seven references, and Auto reviews only new wording/mapping/IDs/preservation using Root's summary. Canonical R2 remains until that approval. Portable comparators NULL; no grade/release/site yet. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015, bundles separate; requiredU/productOPEN.
+
+## Mix owner R3 finite annex adoption — 2026-10-21
+
+[Canonical R3](../specs/mix-graph.md) is adopted after [Auto's sole new-wording/mapping/IDs/preservation review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/owner-mix-r3-send-gates-finite-v1-review.json),61,195bytes/SHA-256 `4fa279a6a2905f0af5ac8f5bf8c613f91c5d780eeee51948d5677ac2457926e2`, with no blockers/corrections/CLEAR. Root adopts by citation without another owner or actual review. The [owner packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-mix-r3-send-gates-finite-v1/manifest.json),3,211-byte manifest/SHA-256 `49bdd468f5443b0d668910e8efaa1bba9bbfd46f43133be1183d87389f008d2a`, has nine read-only payloads/82,412bytes. Exact applied owner:52,173bytes/SHA-256 `aa4b28842cc9e92354f5a6da7d37a681cd94a956cd5a763e498c2485a910ed2c`.
+
+**MG-042…MG-066** add25finite native-memory observations under REQ-005, with seven historical references/full32catalog. Auto joined every point and13-word vector to Root's approved summary, without actualpacket/source/raw/provider/numeric/original replay. Fifteen author/thirteen independent owner controls and full R2 reversal pass. All16requirement bodies,34old acceptance rows, protected state/error/precision/generalS/U text and published28-case scope remain exact;34old plus25new IDs are59navigation IDs, not required outcomes/passes. The fixed nonidentityG context is not a public grouped-track law; MainOn/currentreceiver/TrackOut/public/ARM/lifecycle/calibration gaps stay U. Portable expected/comparator/grade remain NULL; no release/site. Current owneradoptions **3,915newfinite IDs**, not a productdenominator. Frozen691X/1,076S/3,857none/main25,071+24=25,095of268,015/bundlesseparate/requiredUproductOPEN.

@@ -1,0 +1,15 @@
+# Corpus nominal setup entry: fixed96-byte preparation
+
+AS-OF AUTHOR FREEZE: current Root and independent full code preflights, then separate Root actual selection are required. No decoder, new native window or original instruction executed during preparation.
+
+The sole image input is the exact retained R5 Corpus.x86_64 thin250352-byte file. Preparation hashes it opaquely and reads only its32-byte header and1696-byte load commands. The new header-map derives unique executable TEXT mapping for fileoffset0x3ab0. The future collector would extract exactly96bytes[0x3ab0,0x3b10) and request `pDj 96`. Root explicitly chose that physical study cap; next linker start0x3b10 is not a body extent or cap justification. No original universal bundle or current Live image is an input.
+
+The current literal word and its reviewed context nominate3ab0 only. Actual table/vptr survival acrossf940, instance/record assignment, initialization/setup meaning, native ABI, model/callback/public binding remain unproved. The1d1d0 base body is unselected. This preparation adds no target-body/source/callee or code semantics.
+
+The fully inspected Utility904 parent pure validator definition is byte-identical. Only global fixed bounds change: variable widths1..15, contiguous integer addresses, valid type/opcode strings, canonical exact bytes and complete96-byte coverage are required. A straddling final instruction or partial span fails closed; no automatic expansion/retry. Three all96 synthetic geometries and malformed/source controls exercise it without native data decoding. Owned pDj4 precedent is finite command evidence, not universal decoder/CFG correctness.
+
+Exactly one prospective30-second decoder attempt, core0/DEVNULL and retained attempted/returnedPID/status/stdout/stderr/before-after receipts; exclusive absent future destination. No general framework, options or new harness API. Parent direct-child-only kill and pre-map/IO/defaultSIGTERM/uncatchable/escaped-descendant limits persist. Root outer custody must provide minimal environment/newgroup/finitecleanup/broadmaps/final actual inventory. A command-line flag alone is not execution authorization.
+
+After full source inspection, only `python3 -B check.py --check` is authorized here: pure current validator extracted via AST with synthetic bytes, fixed geometry/header-only checks, exact reversible whole collector/checker deltas, parent files/pins/inventory/watch checks. Other checker arguments refuse. It never imports collector/main, runs Rizin or seeks/reads the selected96 bytes. Source controls reject wrong geometry, header and fileoffset as well as weakened row/tool/timeout/exclusive guards.
+
+Synthesis authored prior144-byte preparation and reviewed the nominal setup word; those independently reviewed contexts are carried, not self-reapproved. Both prior packets/parents remain immutable in place. Every collector/checker changed line is retained in delta.json; no whole archives or original source captures duplicated. All new expected/comparison fields nullU/newgrade0. No numeric law, criterion/case/release/coverage completion or public behavior follows.

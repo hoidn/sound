@@ -1,0 +1,177 @@
+{
+  "status": "DESIGN_ONLY; no package, comparator candidate, execution, owner adoption or release authorized",
+  "prospective_release": "device-corpus-v5",
+  "parent_owner_proposal": "SPEC-DEVICE-CORPUS R7; independent owner review/adoption pending at this proposal freeze",
+  "scope": {
+    "only_new_group": "CORPUS-AUDIO-027",
+    "only_new_evaluation": "CORPUS-AUDIO-027-01",
+    "parent_case": "DCO-033",
+    "requirements": [
+      "REQ-DEVICE-CORPUS-001",
+      "REQ-DEVICE-CORPUS-012"
+    ],
+    "proposed_groups": 27,
+    "proposed_evaluations": 73,
+    "proposed_physical_F32": 82,
+    "proposed_payloads": 88,
+    "proposed_tree_including_manifest": 89,
+    "counts_are_design_not_built": true
+  },
+  "preservation": {
+    "old_groups": 26,
+    "old_evaluation_objects": 72,
+    "old_physical_F32": 81,
+    "old_measurement_count_carried_from_v4": 4795,
+    "old_requirement_scopes_and_budgets": "Unchanged except finite001/012 addition for027-01;013complete/general MIDI exclusions and174+2modal omissions unchanged",
+    "all_old_evaluation_objects": "Preserve exact JSON values/types/arrays in order, including historical provenance strings; no cleanup or retroactive status edit within those objects",
+    "old_fixtures": "Copy all old81 physical paths byte-for-byte, including duplicate streams; input01 remains byte-identical",
+    "old_comparator": "Insert ONLY one new elif branch and independent run() SHA guard; remove those exact two additions to recover old8830B/SHA9964de11da79eb61c0624d34e402d238cd5c466093d15ccc91fd630ac4c54110",
+    "all_old_branches_labels_errors_guards": "Literal unchanged, including separate Ramp and NoteOff endpoint hash checks",
+    "old_release": "Publishedv4 stays immutable"
+  },
+  "new_evaluation_design": {
+    "copy_exact_fields_from": {
+      "provider": "R7_case",
+      "pointer": "/0/evaluation",
+      "fields": [
+        "sample_rate_hz",
+        "frames",
+        "block_frames",
+        "signal",
+        "parameters",
+        "parameter_order",
+        "before_parameters",
+        "after_parameters",
+        "events"
+      ]
+    },
+    "initial_source_identity": "All38binary32 values/order exact old006-01; Membrane3/quality3, MidiPitch0/MidiGate0/LFO0, ListeningXL0.10000000149011612/ListeningXR0.8999999761581421",
+    "new_only_history_field": {
+      "parameter_updates": [
+        {
+          "frame": 8192,
+          "index": 15,
+          "parameter": "ListeningXL",
+          "value": 0.75
+        }
+      ]
+    },
+    "timeline": "Fresh instance; set rate44100 and all38parameters once in listed order. Process input frames0..8191 in16blocks512. Without resetting/reopening/restarting input, set only ListeningXL at absolute host/test boundary8192. Process input frames8192..16383 in16blocks512 on SAME instance. Concatenate outputs in that order, no alignment/extra frames.",
+    "input": "Existing signals/input-01.f32, stereo unit impulse at4096; no new signal",
+    "events": [],
+    "constant_context": "Stopped0/0/120, input-present bothchannels everyblock; no info, reset, warmup, extra events, seed perturbation, rate change or other parameter update. Reference MXCSR0x1f80/time0 are environment facts, not candidate architecture or invariance.",
+    "format": "Exactly16384stereo headerless little-endian binary32frames/131072bytes; no raw native offsets or original APIs required",
+    "reference": "reference/CORPUS-AUDIO-027-01.f32",
+    "reference_sha256": "1336d90115bd24c058e556aa95e9140014d168dad7111dec64eb8edd1d977e73",
+    "reference_source_provider": "step_reference",
+    "metric": {
+      "kind": "pickup_step_waveform"
+    },
+    "schema_choice": "Retain device-audio-cases-v1; document the one additive parameter_updates field only for027-01. before/after_parameters remain empty and existing72objects receive no new defaults/fields. No general scheduler/configuration surface."
+  },
+  "new_comparator_design": {
+    "imports": "No new import or dependency; oldmath/hashlib/audio()/limit()/CLI suffice",
+    "branch_location": "New elif kind == pickup_step_waveform inside existing channel loop, before existing startup branch; no oldbranch edits",
+    "windows": [
+      {
+        "axis": "preL",
+        "frames_half_open": [
+          4096,
+          8192
+        ],
+        "channel": 0
+      },
+      {
+        "axis": "preR",
+        "frames_half_open": [
+          4096,
+          8192
+        ],
+        "channel": 1
+      },
+      {
+        "axis": "postL",
+        "frames_half_open": [
+          8192,
+          16384
+        ],
+        "channel": 0
+      },
+      {
+        "axis": "postR",
+        "frames_half_open": [
+          8192,
+          16384
+        ],
+        "channel": 1
+      }
+    ],
+    "report_order_and_labels": [
+      "left pickup pre waveform",
+      "left pickup post waveform",
+      "right pickup pre waveform",
+      "right pickup post waveform"
+    ],
+    "axis_mapping": "Existing channel-major loop reports preL/postL/preR/postR; this is an explicit label mapping to method-record order preL/preR/postL/postR, not a change in windows or arithmetic.",
+    "fixed_loop": "Within eachchannel, iterate literal (pre,4096,8192),(post,8192,16384); create Python float lists from widened arrays, fsum r*r and y*y; reject nonpositive either; fsum((a-b)*(a-b)); limit named error sqrt(error_energy/ref_energy), literal0.01. Allfour independent <=, no epsilon/pooling/alternate windows.",
+    "positive_guard_error_text": "Pickup step requires positive energy in each window/channel",
+    "reference_guard": "In run(), only for newkind, read its reference bytes and require SHA1336d90115bd24c058e556aa95e9140014d168dad7111dec64eb8edd1d977e73; own error text Pickup step reference hash differs from the pinned capture. Keep both oldguards literally untouched; no bypass/configurablehash.",
+    "format_and_finite": "Existing audio() validates BOTH fullcandidate/reference exactsize/fullfinite; no prefix exception to validity.",
+    "synthetic_tests": "Boundary arithmetic may use direct compare() purefunction calls with explicitly syntheticarrays; public run() MUST always require trustedstep hash, never expose a synthetic-reference bypass.",
+    "code_authored_or_executed_here": false
+  },
+  "packaging_delta": [
+    {
+      "path": "AGENTS.md",
+      "change": "Copy v4 byte-exact; no access or role expansion"
+    },
+    {
+      "path": "cases.json",
+      "change": "Retain all26oldgroups/72evaluation objects literally in value; append group027/eval027-01. Update only release/status top-level metadata when true; no fabricatedapproval."
+    },
+    {
+      "path": "reference/CORPUS-AUDIO-027-01.f32",
+      "change": "One exact131072B step-reference copy; newhash fixed above"
+    },
+    {
+      "path": "compare.py",
+      "change": "Only fixed four-axis branch and own literal SHA guard; prove exact inverse to v4; no newhelper/framework/flags/dependencies"
+    },
+    {
+      "path": "spec.md",
+      "change": "Sanitized self-contained finiteR7addition to001/012, explicittimeline+fouraxes+newengineeringbudget/limits. Narrow earlier allotherparametersconstant/exclusion wording only enough to admit027-01; preserveoldbudgets and013 scope."
+    },
+    {
+      "path": "README.md",
+      "change": "Truthful source/method/handoff status, old26/72/81 and prospective27/73/82 counts, explicit one dynamicinput subset; report measurements only after actualrun."
+    },
+    {
+      "path": "REVIEW.md",
+      "change": "DRAFT/pending until separate independent handoffreview; no carriedpriorreview masquerading as newapproval"
+    },
+    {
+      "path": "manifest.json",
+      "change": "Exact adoptedparentR7identity only after Rootadoptionreceipt; newfinite001/012 scope and027input eligibility, newinventory/counts/reviewer onlywhenestablished. No privatepaths or analystlinks shipped."
+    }
+  ],
+  "planned_readiness_checks_not_executed": {
+    "structural": "Check allold72objects/81F32bytes/oldscope; initial38floatbits/order; exact one boundaryupdate/eventsnone; newreferenceidentity/fullformat; isolatedexportlinks/sanitization/inventory and no private/native payloads.",
+    "new_metric_controls": "Self fourchecks; ignored-step fails postL; each isolated1.02axis fails ownaxis with other3unchanged; fourzeroaxis/zero/short/extra/odd/NaN/Inf; wrongrealref guard and oldtwo guards; inclusive/adjacentboundarymath; point/splice/tail/prefix limitations remain literal. Reuse exact retained methoddata recipes/results as authority; no adaptive thresholds or window selection.",
+    "regression_dependency": "Changing comparator dispatch makes all72oldref-self evaluations a concrete future regression, plus new four-check self. Execute only after Rootseparateauthorization, fullcode inspection and adoptedowner gate; no oldmain/privatefits/model/originalcalls.",
+    "prospective_measurement_count": {
+      "old_carried": 4795,
+      "new_checks": 4,
+      "sum_if_all73_are_actually_run": 4799,
+      "actual_new_run_count": 0,
+      "not_a_result_or_grade": true
+    }
+  },
+  "limits": [
+    "New1% per-window/per-channel engineering budget for this fixed history only, not calibrateduncertainty/transferredRamp/Btolerance/ULP/vendor/Apple/arm64/inaudibility guarantee.",
+    "Prefix0..4095finite-only; allresponse8192..16383scored includingfirsteight equalframes, no 8latency/durationinference.",
+    "AggregateRMS canhide concentrated/local/taildefects: retainedlastrightcontrolE0.005000000371140732passes; finiteprefix123passes.",
+    "Artificial1/512splices andlast512zeroingfailthesevectors, notphysicallatency/4000movement/generalrightinvariance laws.",
+    "No A1, storedmapping, generalautomation, arbitraryhistories/rates/blocks/reset/lifecycle, Live/arm64/candidategrade or174+2omissionclosure."
+  ],
+  "authorization_boundary": "This record authorizes no package/staging build, comparator/evaluator/metric/model/FFT/native execution, neworiginalcalls, canonical/release/shared edits or publication. Root must separately authorize work after independent owner review/adoption."
+}

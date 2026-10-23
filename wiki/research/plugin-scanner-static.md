@@ -2,7 +2,7 @@
 id: RESEARCH-PLUGIN-SCANNER-STATIC
 type: research
 status: draft
-updated: 2026-10-18
+updated: 2026-10-20
 access: analysis
 target: Ableton Live 12 Suite 12.4.3
 ---
@@ -439,3 +439,84 @@ and test plug-ins built from public SDK samples.
 - The VST2 module-check internals (`createPluginInfo`, shell enumeration) and
   the VST3 load errors were read only for control flow.
 - The x86_64 slice was compared by strings only.
+
+## Plug-in discovery family route cut — 2026-10-20
+
+**Author map; independent structure review pending.** The
+[discovery family map](../../analysis/ableton-live-12.4.3/full-spec-v1/family-plugin-discovery-routes-v1/structure.md)
+was selected under amended plan4 item4, extending the approved integration map
+at I-01/I-02 document identity, I-07/I-08 instantiated device-chain and I-10
+save/reopen boundaries. Actual Set references, chosen plug-in instances,
+public browser/duplicate choice and hosted lifecycle remain unknown. It does
+not start an independent graph or implementation.
+
+The [bounded ledger](../../analysis/ableton-live-12.4.3/full-spec-v1/family-plugin-discovery-routes-v1/route-ledger.json)
+has 84 observable/context partitions across all 16 current r2 requirements:
+53 conditional/documentary S, 31 no-established-route, zero X. These are
+inventory counts, not a family/product denominator or new grades. All rows
+of U-only REQ-012 to 015 remain unresolved. The 62 draft case IDs and 35
+released candidate-set objects remain different units. The immutable release
+covers partial 001/002/004/005 only and judges candidate selection, not public
+listing, successful module load, instance choice or sound. Current owner,
+cases, releases and scope exclusions remain unchanged.
+
+[Exact retained source locators](../../analysis/ableton-live-12.4.3/full-spec-v1/family-plugin-discovery-routes-v1/source-map.json)
+point to 44 C files (32 scanner H1/twelve main Live N4), 21 C expressions,
+28 source/owner/review spans, six historical helper-table pointers and fourteen
+explicitly unretained helper/Live source pointers. Original H1 chunk/state/hash
+metadata is carried; missing bodies remain missing. No source/spec snapshot
+is copied, and no new corpus/provider/binary capture or decoder runs. Main
+Live and scanner image/address domains remain separate; x86 strings/options
+comparison does not establish execution or ABI equivalence. Main indirect
+inventory stays 25,071/268,015 with zero new resolved-site credit.
+
+The fourteen qualified relationships and nine unknown bridges distinguish
+source switches/root enumeration, conditional contribution/cache records and
+progress fields from actual UI/list/service delivery. Resolved VST3 names,
+VST2 directory-only/case-folded matching and candidate-set observation limits
+carry the release review. Iterator option5, symlink traversal, leading-period
+extension rules, UI controls/defaults, comma path admission and plain-file
+observation gaps remain qualified. Source format/architecture labels and
+private state/table names are not public discovery/load/sound proof.
+
+Crash bookkeeping, per-format processor-only LIMIT1/no-order updates, the
+module-with-plug-in-rows exception, local limit50<count/51 boundary and relaunch
+branches stay auxiliary derivations. They close no crash/hang/large-scan or
+duplicate outcome. A liveness check before the next candidate cannot establish
+interruption of a currently hung module or a bounded time after quit. The
+old top-level session shorthand above is historical, as already corrected by
+the current owner; no retry count or public completion is adopted here.
+
+The already retained [Live-side scanner section](helper-launch-live-side.md#plug-in-scanner)
+answers parts of the old invocation/folder/controller questions without a new
+investigation. Exact labels/defaults, actual public result consumption and
+full lifecycle still remain open. The database-open failure is not filled by
+inference. Same-size same-second executable changes remain U.
+
+[Data-only author checks](../../analysis/ableton-live-12.4.3/full-spec-v1/family-plugin-discovery-routes-v1/author-check.json)
+cover selected identities/spans, route/input integrity and twelve negative
+controls. No old script/model/comparator is imported or run; no original
+function, module load, harness, build, fixture or native analysis tool runs. No
+existing scanner-object/ABI/filesystem/Security/module-call harness model is
+established, so no X batch is selected. Parent seal, atlas/shared routing and
+independent review remain separate pending work.
+
+
+## Family route review approval — 2026-10-20
+
+The [independent structure review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-plugin-discovery-routes-v1-review.json),
+SHA256 `bc142e21ffeaf91d026defcf1bcf0230064f354f53f1c2f8075124997ec71870`,
+approves manifest `54c9d6631701587b023a2925bca9477b629d82e34be917d011190dd9f0d059d7`
+as bounded structure only. All 84 contexts/16 requirements are represented;
+53 conditional/documentary static routes and 31 without an established route
+remain separate from 62 draft IDs/35 released objects. All 012–015 crash/hang/
+large-scan/duplicate contexts remain without an established route.
+
+Main/scanner domains, null native call PCs, missing historical helper bodies,
+I1/I2 and earlier I3–I5 confirmations, and local crash/reset/51-confirmed-module/
+quit limits remain qualified. Current source and selected input identities
+were checked, not the full prior source/release universe. One reviewer-only
+preliminary FUN-name assertion was corrected for named callbacks; this was not
+a packet defect or original-code fault. No original/module/SQLite/model/build
+execution, norm/case/release/grade or whole-family completion follows. The
+earlier pending append is author history; Root owns subsequent batch selection.

@@ -1,0 +1,354 @@
+{
+  "id": "D01-CORPUS-POSITION-A1-TRACE",
+  "status": "partial-static-frontier; independent review pending",
+  "question": "Does the specific retained Live float unit pass stored Corpus ExcitationX/ListeningXL/ListeningXR values unchanged to SetParameterA?",
+  "image_sha256": "3a99ceeabce62ccd069b6b55d99d186c9bdf8a6b80a7e3350dd0f9d1c383cfad",
+  "source_only": true,
+  "original_or_X_executed": false,
+  "new_normative_requirements": [],
+  "new_cases": [],
+  "documentary_expected": null,
+  "documentary_comparison": null,
+  "actual_expected": null,
+  "actual_comparison": null,
+  "target": "U",
+  "executed": false,
+  "A1": "U-unresolved",
+  "coverage_credit": 0,
+  "complete": false,
+  "claims": [
+    {
+      "id": "A1-T01",
+      "strength": "retained-static-construction",
+      "claim": "Corpus constructor excerpt creates the three property wrappers at0x440/458/470 with1026f06b4; their stored pointers are read at0x448/460/478. Helper1026f06b4 invokes1026f070c, whose explicit construction installs vptr1067fb1b8. Names/default-setup and vector instruction excerpts bind these to Hit/Listening L/Listening R and the three successive mode0 entries. This is the explicit construction path, not a claim every later runtime object retains that vptr. Retained10150b1cc explicitly stores the passed pointer at wrapper+8, supporting those exact member-pointer reads.",
+      "entries": [
+        "0x1026f06b4",
+        "0x1026f070c",
+        "0x10150b1cc"
+      ],
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/functions/28/record/code",
+          "entry": "0x1026f06b4"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/29/record/code",
+          "entry": "0x1026f070c"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/44/record/code",
+          "entry": "0x10150b1cc"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/0"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/1"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/6"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/7"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/8"
+        }
+      ]
+    },
+    {
+      "id": "A1-T02",
+      "strength": "exact-pointer-and-equality-branch",
+      "claim": "File-backed word at1067fb1b8+170 points to1026f020c, which returns106e51f90. The factory first target getter1026f0200 returns the same address. Type helper10147fd68 immediately returns true for identical nonzero metadata pointers, so on this constructed-vptr path the first branch constructs1024f5674→1024f5710. Later alternatives102423228→10242d13c and102422efc→10242c75c are not selected on that path. No metadata-parent traversal contents or runtime branch execution are claimed.",
+      "entries": [
+        "0x10319c4dc",
+        "0x1026f020c",
+        "0x1026f0200",
+        "0x10147fd68",
+        "0x1024f5674",
+        "0x1024f5710"
+      ],
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/functions/34/record/code",
+          "entry": "0x10319c4dc"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/39/record/code",
+          "entry": "0x1026f020c"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/38/record/code",
+          "entry": "0x1026f0200"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/0/record/code",
+          "entry": "0x10147fd68"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/14/record/code",
+          "entry": "0x1024f5674"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/15/record/code",
+          "entry": "0x1024f5710"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/words/reads/0",
+          "role": "constructed parameter metadata slot"
+        }
+      ]
+    },
+    {
+      "id": "A1-T03",
+      "strength": "retained-source-name-binding",
+      "claim": "Imported selected alias SNewCompound<AFloatParameterUnit> and literal registration102502328 identify the first constructed class; alternatives have distinct constructor-installed vptrs. Class names alone are not emission semantics. Exact unit vptr1067c7a48+b8 resolves1024f5c08, while its+280 resolves1024f5f0c, not the bind method. Readonly pointer evidence avoids guessing adjacent virtual membership.",
+      "entries": [
+        "0x102502328",
+        "0x1024f54e4",
+        "0x1024f5c08"
+      ],
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/functions/6/record/code",
+          "entry": "0x102502328"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/13/record/code",
+          "entry": "0x1024f54e4"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/16/record/code",
+          "entry": "0x1024f5c08"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/words/reads/6",
+          "role": "unit bind slot"
+        }
+      ]
+    },
+    {
+      "id": "A1-T04",
+      "strength": "retained-wiring-context-not-emission-law",
+      "claim": "1024f5710 constructs a player/modulator and input/output components. Conditional bind1024f5c08 configures these through parameter virtuals, player setup/bind and named links. This is not a single direct float return. Exact player vptr slots resolve1024f5318/1024f51c8. Parameter+328 resolves1026fab14→1024dd6ec flag read, not a float-current-value getter; +2a8/+2b8 return separate model pointers. Scalar/FP-return assumptions at other virtuals remain unproved.",
+      "entries": [
+        "0x1024f5710",
+        "0x1024f5c08",
+        "0x1024f5318",
+        "0x1024f51c8",
+        "0x1026fab14",
+        "0x1024dd6ec",
+        "0x1026f1308",
+        "0x1026f1640"
+      ],
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/functions/15/record/code",
+          "entry": "0x1024f5710"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/16/record/code",
+          "entry": "0x1024f5c08"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/12/record/code",
+          "entry": "0x1024f5318"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/11/record/code",
+          "entry": "0x1024f51c8"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/22/record/code",
+          "entry": "0x1026fab14"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/17/record/code",
+          "entry": "0x1024dd6ec"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/32/record/code",
+          "entry": "0x1026f1308"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/33/record/code",
+          "entry": "0x1026f1640"
+        }
+      ]
+    },
+    {
+      "id": "A1-T05",
+      "strength": "conditional-private-math-context-only",
+      "claim": "Selected OFloatModulatorProcessor OnAbs/OnModVal bodies call101b09ac8; that body branches on mode and range state. Constructor/Reinit and AFloatModulatorModule Update retain the corresponding state fields/message roles. These bodies do not by themselves establish which state, incoming values or neutral modulation applies to these Corpus positions, nor actual Out dispatch or 0..1 versus -1..1. No candidate architecture or DSP law is prescribed.",
+      "entries": [
+        "0x101b17934",
+        "0x101b179bc",
+        "0x101b09ac8",
+        "0x101b0a300",
+        "0x101b0a430",
+        "0x1024fd8a8"
+      ],
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/functions/4/record/code",
+          "entry": "0x101b17934"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/5/record/code",
+          "entry": "0x101b179bc"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/25/record/code",
+          "entry": "0x101b09ac8"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/26/record/code",
+          "entry": "0x101b0a300"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/27/record/code",
+          "entry": "0x101b0a430"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/3/record/code",
+          "entry": "0x1024fd8a8"
+        }
+      ]
+    },
+    {
+      "id": "A1-T06",
+      "strength": "retained-static-downstream-subset",
+      "claim": "Existing N5 mode0 builder connects unit Out to Indexer In and Indexer output to device parameter input. Selected101e504ec stores incoming float at payload+4 then invokes an indirect callback with {index,value}; retained OnParameter stores value bits under the index;102fbfe54 forwards those bits and index through102fbec58 to the retained SetParameterA pointer. This downstream copied-payload subset has no demonstrated bipolar rescale. It does not supply the unresolved value arriving from the unit or prove callback delivery/scheduling. The SetParameterA name/loader binding is carried from existing N5, not freshly reproved as a loader/FP-ABI protocol.",
+      "entries": [
+        "0x10295bb44",
+        "0x101e504ec"
+      ],
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/functions/8/record/code",
+          "entry": "0x10295bb44"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/functions/7/record/code",
+          "entry": "0x101e504ec"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/2"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/3"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/4"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/9"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/10"
+        },
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/11"
+        }
+      ]
+    },
+    {
+      "id": "A1-T07",
+      "strength": "ABI-and-source-limit",
+      "claim": "Retained builder dossier at10319cba4 loads entry pointer into x1 and10319cbac prepares hidden result storage x8 before bl10319c4dc. Reconstructed source signatures/param_N labels must not be treated as recovered C ABI or executed arguments. Factory parameter-slot/virtual getter FP-return completeness is limited by available retained dossiers; no new instruction export/disassembly was performed.",
+      "evidence": [
+        {
+          "path": "records.json",
+          "pointer": "/excerpts/5"
+        }
+      ]
+    },
+    {
+      "id": "A1-T08",
+      "strength": "unresolved-frontier",
+      "claim": "The specific first float-unit branch is narrowed, but stored/current input delivery, model mode/range/neutral modulation and port emission into the proven downstream subset are not fully joined. Therefore A1 remainsU. Neither unchanged0..1 nor bipolar2v-1 is accepted. Existing CorpusR3 conditional position cases and bundled-parameter015 remain unchanged; no no-route verdict or profile completion follows.",
+      "evidence": []
+    }
+  ],
+  "frontier": [
+    {
+      "id": "F1",
+      "question": "Join actual stored/current value source to configured player/constant/modulator input and Out for this construction; distinguish message/model flags from float values.",
+      "entries": [
+        "0x1024f5c08",
+        "0x1024f5318",
+        "0x1024f51c8",
+        "0x1026fab14",
+        "0x1026f1308",
+        "0x1026f1640"
+      ]
+    },
+    {
+      "id": "F2",
+      "question": "Trace exact parameter+2e8 result/FP lanes behind+2f0/+2f8 and the mode/range/message state reaching101b0a430; no scalar return inferred from decompiler void or param2.",
+      "entries": [
+        "0x1026fa494",
+        "0x1026fa4a0",
+        "0x101b0a430",
+        "0x101b09ac8"
+      ]
+    },
+    {
+      "id": "F3",
+      "question": "Prove dispatch/data value joining conditional unit Out to mode0 Indexer input, including initial/changed-value histories without executing original code. Empty C2 indirect targets are not proof of absent edge or identity.",
+      "entries": [
+        "0x101e504ec",
+        "0x10319c4dc"
+      ]
+    }
+  ],
+  "limitations": [
+    "C2 vtables includes80named tables only; absence of these numeric vptrs does not prove no table. Exact necessary image words supply narrower evidence.",
+    "Main symbol-index path from artifactcatalog is absent locally; no symbol index was fabricated. Selected aliases are exact C2 retained records.",
+    "Metadata addresses+18 lie in virtual zero-fill tails without file-backed words; no initialized runtime metadata parent contents inferred. Equality branch does not require their contents.",
+    "Initial exploratory pointer loop raised StopIteration on first zero-fill metadata request after four valid file-backed words, one unused diagnostic word retained separately; only /tmp diagnostic failed. Corrected finite reader explicitly records all3unbacked addresses and never reads/invents their bytes. No frozen source changed.",
+    "One initial wildcard dossier grep included Electric neighbors/truncated; no claim to have fully read those incidental bodies. Selected complete-body record list is explicit."
+  ],
+  "source_read_scope": "45selected complete decompiler bodies with original warnings/state/signature; explicit bounded Corpus constructor/setup/vector/caller excerpts and3complete N5 downstream functions; selected C2 literal index records;12active exact file-backed pointer words plus1incidental diagnostic word/3unbacked metadata addresses. Prior N5 remaining tables/engine arithmetic and CorpusR3X results are retained context, not reexecuted or freshly reapproved."
+}

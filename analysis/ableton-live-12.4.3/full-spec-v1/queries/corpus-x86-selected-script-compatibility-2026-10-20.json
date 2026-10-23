@@ -1,0 +1,182 @@
+{
+  "id": "corpus-x86-selected-script-compatibility-2026-10-20",
+  "retained_utc": "2026-10-20T15:02:40.951525+00:00",
+  "author": "synthesis_finish",
+  "disposition": "STATIC OWN-SCRIPT COMPATIBILITY: existing selected exporter rejectsx86; minimal adaptation PROPOSED, no implementation/readiness approval",
+  "selection": "Root explicitly selected complete SelectedNativeExport.java9094B/RecoveryNativeExport.java12389B/RecoveryLaunchGate.java5418B under aggregate30000B cap plus governing canonical profile descriptions. No other helperbody/newscript/edit/compiler/tool/project/native/window run selected.",
+  "source_admission": {
+    "files": [
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/SelectedNativeExport.java",
+        "bytes": 9094,
+        "sha256": "dd5ca8bc9572b34298904c281a067ffa6942f46fb7c165e27a544c104251931c"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryNativeExport.java",
+        "bytes": 12389,
+        "sha256": "22de52d0cedbbff9a3d5ddeb1db5d113b02d2ba91ebe7f3b36babc70b422128a"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryLaunchGate.java",
+        "bytes": 5418,
+        "sha256": "bac687f0f5244ce0de3bb9e89472948d9287e333a230064c75e0a78c14ad078c"
+      }
+    ],
+    "total_bytes": 26901,
+    "cap": 30000,
+    "complete_sources_read": 3
+  },
+  "prior_proposal": {
+    "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-arm-helper-project-identity-and-x86-route-proposal-2026-10-20.json",
+    "bytes": 17487,
+    "sha256": "47f70eeb6fcad0a5b4735d83bfb5e8618ef5c90db20eadc20b751151cf63c497"
+  },
+  "canonical_providers": [
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/native-export-design.md",
+      "bytes": 14052,
+      "sha256": "882dac35293246f5ada0ccd8d59c34243e51cbcd2b7073e9d38c85fc2552233a"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/native-analysis-recovery.md",
+      "bytes": 41109,
+      "sha256": "bb672ac07b42eb71e4c43fb4e3749bfe57529ec3db30965a37070c70d52fcbf0"
+    }
+  ],
+  "selected_canonical_constraints": [
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/native-export-design.md",
+      "first_line": 107,
+      "last_line": 133,
+      "text": "The installed Ghidra `support/analyzeHeadlessREADME.md` documents `-noanalysis`\n(line 287), `-readOnly` (273), and `-postScript` (191). Its\n`Base-src.zip::ghidra/app/util/headless/HeadlessAnalyzer.java` gates initial\nanalysis at line 1043 and post-script analysis at line 1121 on `options.analyze`.\nA direct headless script can therefore import once with `-noanalysis`, decode\nselected bounded windows, create/update only the selected functions, and call\nthe decompiler without a whole-program analysis pass. This is source-supported\nfeasibility, not an executed fallback result.\n\nThe proposed `tools/ghidra/SelectedNativeExport.java` and\n`tools/run_targeted_native.py` pin a distinct profile and output directory\n`native-live-arm64-targeted-v1`. Inputs are at most twenty explicit arm64 entries\nwith their source locators and windows of at most 65,536 bytes. The default pilot\nuses one entry. The Java script uses `DisassembleCommand` with restricted address\nsets and `enableCodeAnalysis(false)`; the convenient `FlatProgramAPI.disassemble`\nwould otherwise allow incremental analysis. Every accepted body must contain\nits entry, remain inside its window, avoid overlap with other functions and have\nno unresolved/out-of-window non-call control transfer. Reaching a window boundary\nis a failure, not silent truncation. Indirect branches remain failures unless a\nlater profile establishes their targets. Body ranges are recovered in this\nrestricted context, not asserted original source boundaries.\n\n`DecompInterface.decompileFunction` uses an explicit sixty-second deadline per\nentry. The driver bounds the complete batch at 600 seconds and samples its owned\nprocess group every second, stopping below 3GiB free disk or above 6GiB aggregate\nRSS. This deadline includes import, disassembly and body construction, which do\nnot have separate per-entry deadlines. Output retains raw pseudocode, assembly, body ranges,"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/native-analysis-recovery.md",
+      "first_line": 119,
+      "last_line": 133,
+      "text": "Record the resolved executable, version, complete argv and effective properties.\n\nBefore A, exercise the exact standard-shell launch and gate with a tiny synthetic\nanalyst fixture in a separate project. Before B, reopen the saved target with\n`-process Live.arm64 -noanalysis -readOnly` and the same gate. Historical tiny\nfixture tests and the final author packet are recorded below; independent\ntooling reviews and the target test remain pending. The earlier standalone\npool probe and selected export do not cover them.\nEvery launch must own one process group and bind PIDs to creation identities.\nCapture `jcmd <owned-java-pid> VM.command_line`, `VM.flags`, and\n`VM.system_properties` with short deadlines. Do not attach to a historical PID.\n\nThe in-JVM gate must retain and require: Ghidra 12.1.4, the selected JDK, target\nhash and arm64 language, `Runtime.availableProcessors()==2`,\n`SystemUtilities.getDefaultThreadPoolSize()==2`, `cpu.core.override=2`,"
+    },
+    {
+      "path": "/home/ollie/Documents/sound/wiki/research/native-analysis-recovery.md",
+      "first_line": 175,
+      "last_line": 184,
+      "text": "   including startup, outcome script and save. Retain timeout status separately\n   from process exit. A cooperative timeout can yield a **partial** checkpoint\n   after successful save, close, hash and read-only reopen. A kill, failed save,\n   failed/missing gate or outcome record, any script-load error, or failed reopen leaves an unverified working tree;\n   retain its failure evidence and use the last verified baseline for recovery.\n3. **Export without reanalysis.** On a disposable working copy of a verified\n   analysis checkpoint, run `-process Live.arm64 -noanalysis -readOnly -max-cpu 2`, the launch gate,\n   and a separately reviewed custom export script. First stream an inventory\n   with address-space identity, external/body classification and counts. Bind\n   that snapshot to the checkpoint manifest and analysis outcome. Label a"
+    }
+  ],
+  "findings": [
+    {
+      "id": "X86COMP-01",
+      "source": "SelectedNativeExport.java:22-45",
+      "kind": "Explicit blocker",
+      "facts": "Requires two args/config/output, architecture exactlyarm64 AND currentProgram processor exactlyAARCH64; targetexecutableSHA and Ghidraversion exactchecks. Seeds1..20, canonical defaultspace0xlowerhex, window4..65536 bytes/divisible4/entryaligned4.",
+      "consequence": "Unchanged script refuses selectedx86target even though0x23b0/0x29c0 are4aligned. Exactx86language/compiler/addressbase/endianness/pointerwidth are not verified by the current hardARMguard. Source hash/version checks must be preserved in a new bounded x86profile; do not simply remove architecture protection."
+    },
+    {
+      "id": "X86COMP-02",
+      "source": "SelectedNativeExport.java:61-96",
+      "kind": "Selected body construction and DB mutation",
+      "facts": "Requires initialized executable block containingwholewindow; externalentry excluded. DisassembleCommand(entry,window,true) with enableCodeAnalysis(false), getFunctionBody, entry/body/window/endboundary/otherfunctionoverlap/partialinstruction/computedjump/noncalltransfer/fallthrough guards. Then createFunction or setBody on existingfunction.",
+      "consequence": "Constructs/disassembles and changes Program listing/function metadata. It is not a read-only existingcheckpoint exporter; only a freshdisposableproject can contain these writes. Originalfile bytes are not explicitly written by script, but projectsave/cache lifecycle belongs to launcher. Targetwindow and recoveredbody are separate; no nativefunctionextent inferred."
+    },
+    {
+      "id": "X86COMP-03",
+      "source": "SelectedNativeExport.java:53,67-69,97-107 and native-export-design.md:107-114",
+      "kind": "Analysis and data-access boundary",
+      "facts": "Metadata unconditionally labels auto_analysisfalse/incrementalfalse. Command-specific codeanalysisdisabled, but script extendsGhidraScript and does not itself call enableHeadlessAnalysis(false). Decompiler receives wholecurrentProgram/defaultoptions.",
+      "consequence": "Exact future launcher must use-noanalysis and demonstrate no initial/postscript automaticanalysis. Restricted constructedbody/exportedinstructions does not prove decompiler queries no globaldata/symbols/signatures/outsidewindowbytes; no currentProgram callback/data-read sandbox is present. Twofunction exports need not imply unrestrictedcalleeexport, and no suchcalleeexport is selected."
+    },
+    {
+      "id": "X86COMP-04",
+      "source": "SelectedNativeExport.java:36-38,47,92-118",
+      "kind": "Filesystem/failure semantics",
+      "facts": "Creates output/functions evenifalreadyexists, creates tempstagingdirectories, writes assembly/C/metadata CREATE_NEW and atomically moves stage tofunctions/address. No top-level outputabsence/symlink/uniqueseed check. Per-entry exceptions become statefailed and processingcontinues; code mayalreadybewritten before decompileCompleted check. No rollback of priorlisting/body mutation. Only decompileFunction has60sdeadline, not disassembly/bodyconstruction/fullbatch.",
+      "consequence": "Future outer driver must supply exclusiveabsentowned output/configexacttwo uniqueentries, own timeout/ownedcleanup and preserve partialfailedartifacts. Java/headless exit0 alone cannotgradeentrysuccess; inspect both metadata states/warnings. No retry/windowgrowth/callee or wholeprogram fallback."
+    },
+    {
+      "id": "X86COMP-05",
+      "source": "RecoveryNativeExport.java:16-22,39-72",
+      "kind": "Wrong producer for freshnoanalysisimport",
+      "facts": "DisablesHeadlessanalysis, ABORTuntilsuccessfulscriptcompletion. Delegates config/program/completion/outcome/lineage toRecoverySupport. inventorymode iterates allordinary+externalfunctions. functionsmode1..5exactuniquekeys reads pinnedinventory, requires existingFunctionAtentry and exactentry(fn)equalsinventoryrecord; explicitly no bodyrepair.",
+      "consequence": "Not a substitute for Selected bodybuilder on freshx86noanalysisimport with no verifiedcheckpoint/bodyinventory. Its inventorymode would exceed proposedtwo-entryscope. Directscriptcontains no visible fixedarchitecture guard, but unreadRecoverySupport.verifyProgram/completed may impose architecture/profile/state; x86compatibility cannot be inferred from absence here."
+    },
+    {
+      "id": "X86COMP-06",
+      "source": "RecoveryNativeExport.java:74-108",
+      "kind": "Export outputs and bounded-not-universal cleanup",
+      "facts": "Creates exports/stage/captures, C/metadata/manifests with CREATE_NEW/RecoverySupport.write/atomicmove. Pins nativedecompiler file, calls one exactexistingfunction with60sdeadline, retains completed/timedout/cancelled/failedstart/nullcode and partialC states. Samples current direct/decompilechildren after openProgram, disposes and waits3s for sampledchildren.",
+      "consequence": "Useful reviewed failure/lineage patterns only, not permission to copy wholecheckpoint/inventory pipeline. RecoverySupport file/config/lineage semantics are unread in this scope. Sampledchildren disposal does not demonstrate allpossible descendants/laterchildren are enumerated."
+    },
+    {
+      "id": "X86COMP-07",
+      "source": "RecoveryLaunchGate.java:11-24,37-49",
+      "kind": "Resource/profile and analysis-mode incompatibility",
+      "facts": "Starts analysisdisabled/ABORT, delegates programverification, requires nonce,2availableprocessors/2defaultpool/cpu.coreoverride+limit2, EXACT Runtime.maxMemory4294967296L, exacthome/tmp/jdk/JDK21.0.12.1 and Java executable. Writesgate, waits10s for matchingack/status/hash/PID/start/time. Modeverify-only leavesanalysisoff; enable-analysis-after-ack explicitlyturnsanalysisON.",
+      "consequence": "Unchangedgate refuses priorproposal JVMheap<=2GiB. Exact4GiBheap is not a4GiBaggregate processgroup cap. Future noanalysisroute must not select enable-analysis-after-ack. Either review a narrow gate/profileadaptation matchingactualx86identity and intendedheap/groupbudget, or separately justify a differentexplicitbudget; do not claimunmodified readiness."
+    },
+    {
+      "id": "X86COMP-08",
+      "source": "SelectedNativeExport.java:104 and RecoveryNativeExport.java:92",
+      "kind": "Narrow warning-representation caveat",
+      "facts": "Both source expressions use code.split(\"\\\\\\\\R\") before searching each resulting string forWARNING, rather than an asserted tested newline parser here. C text itself is retained.",
+      "consequence": "Per-line warning extraction is not independently validated in this staticreview; preserve complete diagnostic/C/sourcewarnings and do not treat warning-free metadata as semantic/nativecorrectness. No Java/regex test or change selected."
+    }
+  ],
+  "minimal_proposed_reuse": {
+    "recommendation": "Use a separately reviewed narrow x86 successor of SelectedNativeExport as the bodyproducer. Do not construct a genericloader/framework or import ARMprojectH. RecoveryNativeExport is unnecessary for the smallest two-entry freshproject route; itslineage/failurepatterns mayinformreview without invoking itsinventorypipeline.",
+    "required_precise_changes_or_gates": [
+      "Replace hardarm64/AARCH64check with exactselectedx86targetprofile: preserveSHA/versionchecks and bind actualselectedfull language/compiler/addressspace/imagebase/pointerwidth/endianness through reviewed identitymetadata/gate. Exactlanguage/compilerID not guessedfrommemory.",
+      "Make selectedwindowgeometry explicitlybyte-based for x86 and retain entrycontainment/nooverflow/executableblock/partialinstruction/bodyboundary/overlap/controlflowchecks. For these two4aligned entries, existing4alignment is a safersubset but does not establish agenericx86instruction-size law; all exported instruction lengths remainnativevariable. Future exactwindowbounds require separateapproval, notnextsymbolasextent.",
+      "Bind config to exactlythe two Root-nominated entries23b0/29c0 and uniqueseeds/exclusiveabsentproject+output. No thirdseed/callee/allfunctions/inventory/export or automaticgrowth.",
+      "Enforce-noanalysis beforeimport/postscript, effectiveanalysisoff and fixedsource/tool/config/output identities. If reusingHeadlessgatepatterns, newprofilemust matchintendedheap; anyRecoverySupportdependency needs separatelyselected read beforeitsguards canbeassumed.",
+      "Retain success/failed/partialC/warning states perentry, completecommandline/effectiveJVM/hash/language/compiler/addresses, ownedprocessidentities/finitefullbatch/perentrydeadline and fsync/partialfailure receipts. No readiness from exit0 or scriptmetadataauto_analysisfalse alone."
+    ],
+    "resource_proposal_correction": "Prior4GiBaggregate/<=2GiBheap was designonly. ExistingRecoveryLaunchGate is a4GiBHEAP gate and cannot be silentlyreused underthataggregatecap. Rootmust separatelyselect the narrownewprofile/heap/grouplimits; no tool/capacityexecution here.",
+    "independent_future_gates": "Rootselection of exactminimalcode/profile, independentpreflight, then separateexplicitboundedactualimport/export. This sourcequery doesnot authorize these steps."
+  },
+  "stop_and_unknowns": [
+    "No freshcurrentprojectopen/import/save/reopen or sourcecodewindow, toolversion/Java/compiler/Ghidra/native/original execution. No newcode implemented.",
+    "No RecoverySupport.java or othercallee/librarybody read; related architecture/config/lineage semantics remainunresolved, not absent.",
+    "No actualtargettypes/prototypes/nativeABI/constructorinitialization/count/allocation/bounds/publicLivebehavior or old174+2modal omission closure.",
+    "Sourcecompatibility assessment is partialmethodproposal, not independentapproval of a method authoredhere or current Ghidraworking capability."
+  ],
+  "preservation": {
+    "before": [
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/SelectedNativeExport.java",
+        "bytes": 9094,
+        "sha256": "dd5ca8bc9572b34298904c281a067ffa6942f46fb7c165e27a544c104251931c"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryNativeExport.java",
+        "bytes": 12389,
+        "sha256": "22de52d0cedbbff9a3d5ddeb1db5d113b02d2ba91ebe7f3b36babc70b422128a"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/tools/ghidra/RecoveryLaunchGate.java",
+        "bytes": 5418,
+        "sha256": "bac687f0f5244ce0de3bb9e89472948d9287e333a230064c75e0a78c14ad078c"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/native-export-design.md",
+        "bytes": 14052,
+        "sha256": "882dac35293246f5ada0ccd8d59c34243e51cbcd2b7073e9d38c85fc2552233a"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/wiki/research/native-analysis-recovery.md",
+        "bytes": 41109,
+        "sha256": "bb672ac07b42eb71e4c43fb4e3749bfe57529ec3db30965a37070c70d52fcbf0"
+      },
+      {
+        "path": "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/full-spec-v1/queries/corpus-arm-helper-project-identity-and-x86-route-proposal-2026-10-20.json",
+        "bytes": 17487,
+        "sha256": "47f70eeb6fcad0a5b4735d83bfb5e8618ef5c90db20eadc20b751151cf63c497"
+      }
+    ],
+    "after_equal": true,
+    "scope": "Three complete scripts26901B, two canonicalroutingpages andpriorquery checkedunchanged afterstaticread; no project/script/source/shared writes. No oldchecker/main/replay."
+  },
+  "new_ids_cases_or_grades": 0,
+  "actual_expected": null,
+  "comparison": null,
+  "complete": false
+}

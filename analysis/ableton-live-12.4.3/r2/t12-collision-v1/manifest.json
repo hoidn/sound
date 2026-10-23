@@ -1,0 +1,593 @@
+{
+ "id": "t12-collision-v1",
+ "created": "2026-10-18",
+ "packet": "T1.2 Collision audio by extracted execution",
+ "regenerate": "sh run.sh",
+ "loader": "harness/ is an unmodified copy of t12-device-dsp-v1/harness",
+ "tools": {
+  "host": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "python": "3.13.9",
+  "numpy": "2.3.1",
+  "scipy": "1.16.0",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "glibc": "ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39",
+  "objdump": "GNU objdump (GNU Binutils for Ubuntu) 2.42",
+  "gstreamer": "gst-launch-1.0 version 1.24.2",
+  "loader_binary": "/var/tmp/sound-analysis/t12-collision/xdev",
+  "loader_sha256": "8d004008c588dc3edda9e98f6f7fe2271ef11a157b0585ad620b15f01914178b"
+ },
+ "external_inputs": {
+  "bundle:Collision": {
+   "path": "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Devices/Mac/Collision.bundle/Contents/MacOS/Collision",
+   "file_sha256": "797e903cf3c147c6ee3d57054aaaa07988bd68999b153e82703bcf6aa550fcbd",
+   "x86_64": {
+    "offset": 16384,
+    "size": 367488,
+    "sha256": "69f7edfdc7954fe5019045cd77afd9807a17ed1d142aa35d02a81c88b3623b21"
+   },
+   "arm64": {
+    "offset": 393216,
+    "size": 332496,
+    "sha256": "2bc497cd849eb4412f04b40c84f18486305417f64b30519cab2278d9a1f105f7"
+   }
+  },
+  "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/n6-device-tables-v1/out/conversions.tsv": {
+   "sha256": "3fd82068ee78c017beb340583c41b5f99deca1fab7903fce76fb1ccc4bf2626c"
+  },
+  "/home/ollie/Documents/sound/analysis/ableton-live-12.4.3/r2/corpus-dsp-v1/tables.py": {
+   "sha256": "3561373cc0a8c0087dd360477ccf2bbd002753ef2dd107fa6631c0b840be8178"
+  },
+  "/home/ollie/Ableton Live 12 Suite.app/Contents/App-Resources/Core Library/Defaults/Instruments/Collision.adv": {
+   "sha256": "7b8be93e2595b7cbb4a9c835a1ffcb5df51d2577f6c1ba28e374d1b6ee995d3b"
+  },
+  "previews": {
+   "Ambient & Evolving/Air Of Dread": {
+    "adv_sha256": "d3d977ab2acf3149e1596853271b22d2bb71895c8d286112d6e3669c0ffc1f78",
+    "ogg_sha256": "fde637202d00aa472fe0bd4668844919c0e9841e79c9cee850f03f2fc9d26f1d"
+   },
+   "Ambient & Evolving/High Pad": {
+    "adv_sha256": "3549e96793af4aecdad99fef7d95b3ab2f90ff9f5daef3da397be4ca1662b30a",
+    "ogg_sha256": "9490c99176ed28f3399b4e6488c507c0cc031d8bbe1f16cda3e00bde7f07c230"
+   },
+   "Ambient & Evolving/Noisy Pad": {
+    "adv_sha256": "8e878e23ca5570ec64f52b97c97413de7e2a7bdc096c362ee9a9cca5a1fe6a44",
+    "ogg_sha256": "b0d57d3a9b72ecc65bc1fdfa9d0518db371c7244d5c6b5c52e9ce8eaa917e0b2"
+   },
+   "Ambient & Evolving/Slow Pad": {
+    "adv_sha256": "b8dfaadb6fbe77f8b65b75884757770304033bc62f603bcaf1645d21808aa979",
+    "ogg_sha256": "37be3fb26528bb3b5977fee4c482eb7e0856691ffa864eeaac1234bb32c01b7a"
+   },
+   "Guitar & Plucked/Acoustic String": {
+    "adv_sha256": "63be02e7b18ff31dfcbe436d8d77d09d2ad6b88939d0e3cd2ffadb1222db78c2",
+    "ogg_sha256": "63e730c7cb886a829470d1f4195d333593a6685c94ac9aa8625a72368b116f56"
+   },
+   "Guitar & Plucked/Digital String": {
+    "adv_sha256": "9f44610a071977c181a94d258aa06a387f16b791c248cd256b6bcffe286ba66e",
+    "ogg_sha256": "ac678a054b6106bea9c6036c595fc45409497e758971ccea55c5571d12c4849e"
+   },
+   "Guitar & Plucked/Resonant Casing": {
+    "adv_sha256": "d55cdb4862f4b67e8e474637955a76e6a6ed47b02cf06a6aebd429aa039ba886",
+    "ogg_sha256": "c0c3a58bec9bcc064c1a5890218427eb6720cb315a896b23fbdb5f294577c53f"
+   },
+   "Guitar & Plucked/Tube Harp": {
+    "adv_sha256": "63861c034472cb710c1d665b49eec29b0496923a31b4ce57627e5db6ef95b84b",
+    "ogg_sha256": "25cf6abd9d91e8c3af2572c5acbaeb9d026e57e8fcd9c01b47fc10e72c7e381e"
+   },
+   "Mallets/Balafon Bright": {
+    "adv_sha256": "5f14254181b51cf7a1fdaec1e8bcfbdf982ce27accf44f5bde07cc382f7ff1a0",
+    "ogg_sha256": "45c8fdfc3520f83a47cb9727e4f6cb467c666c10c2647fb11d80fcdedcbd7418"
+   },
+   "Mallets/Balafon Brushed": {
+    "adv_sha256": "fd117edf2fdf91396fbf33715973a956ee93c7861deae379eb0a501c8d69a0a2",
+    "ogg_sha256": "6ef4cff179d82ee5795e12426575594576a8d7ff71143aa35f97fa6ba7e0c521"
+   },
+   "Mallets/Bell Airy": {
+    "adv_sha256": "b4ddbdacaf00cdaf06695ec34c19df5e0163a9bfa9c7a5acffad2676ecccd380",
+    "ogg_sha256": "5056ee44013d70ed70a9436626c1519d07349c9cfb95fdf2f58203412b0312f0"
+   },
+   "Mallets/Bell Plate Long": {
+    "adv_sha256": "9895fa89616662064f758e00b45552dc88a0eaba096f591bb115996a48c868cb",
+    "ogg_sha256": "bcfbffe09bb82d8ae5b1fc2b0586cad694640fb6fbfa00b9b4df4951e0cd7213"
+   },
+   "Mallets/Bells Attack": {
+    "adv_sha256": "3d8bd0d5f38b539970e9c7f960a80c9e33a7e9a6a1df45f74d1bbbe5f56d570d",
+    "ogg_sha256": "4227adb0e9f384ee6e35781675fa0a8ddf1291b30f9afcea8e1b8b81cebfb9f7"
+   },
+   "Mallets/Bells Deep": {
+    "adv_sha256": "ba53927b6e0a4b14f73cd11581552b75336f8058152e40cc8d7ffd7dfa9b354f",
+    "ogg_sha256": "e73dd22493397d03f194f9e2da0c93b3bd2147bd3678ddb3c32d18ea29e2bd18"
+   },
+   "Mallets/Bells Glass": {
+    "adv_sha256": "3bf8c07e36471a66d3e5ce88f2dce763addfb732e61ebce4f0c524afd73d5982",
+    "ogg_sha256": "e0b84fb569b2fda9c34c837ea0cefb55b1640d875e78e6d5602aa8cfdbeb1105"
+   },
+   "Mallets/Bells Mellow": {
+    "adv_sha256": "959344b56cb4e8326ca379cad04a409a29434612a566674ddc557ba9c168d87d",
+    "ogg_sha256": "d0662ce6635fcc10192d00320e9a93bb559c9d8051398cc13b5e2fbe05f9079d"
+   },
+   "Mallets/Bells Random": {
+    "adv_sha256": "38dd74381a9a648b0d8f81c8f2a586814aef006b1615b4202d7e6c25de9c8353",
+    "ogg_sha256": "90e57930a32f8ac02b1641797d24f85216280e84217909e4cf9574858445a4c1"
+   },
+   "Mallets/Glockenspiel Basic": {
+    "adv_sha256": "acfe0ae91e913f7a0ad36de3faf95077a5125a2b2adc0658d20ca3ac829ceb28",
+    "ogg_sha256": "95f944af09efa57df15beb37810c08a4da5a208ea69c78b0cf7e38bd22e99e40"
+   },
+   "Mallets/Glockenspiel Detuned": {
+    "adv_sha256": "9ae4fff9c4eec5a8f9417aec8e9ef1c335c71f1a3b8d0154a9605e261c62a84f",
+    "ogg_sha256": "04543105e5eba9739154175bbf0001412966ce7f760c0fffcd514878bd06b27a"
+   },
+   "Mallets/Marimba Classic": {
+    "adv_sha256": "7e83ad325c40d810da36b19b08983e085be1d119454346a526e0f33ae105b168",
+    "ogg_sha256": "64edc56089f5481e9ad29a2562e6a060547c53a9ab7f01004d7d0e3995f52139"
+   },
+   "Mallets/Marimba Glassy": {
+    "adv_sha256": "dcfc19337cc68bb9fddb7245cbbcc06659167b2023a62092e76180eb15d6756e",
+    "ogg_sha256": "0776d1fbf36b705831b5247d4eb6f4e6ed5cfd73641389fde3dff9e0be1b0078"
+   },
+   "Mallets/Marimba Sustain": {
+    "adv_sha256": "c93a559354c90c2e70ca6c6362acee53d46f193eb5b8a01c5aa2bd37178a1087",
+    "ogg_sha256": "1285bfc9660530abba19c9a0874e2f117246e237e924502dac87ffd31acc6ac4"
+   },
+   "Mallets/Music Box Basic": {
+    "adv_sha256": "741b75a1c7273cf3842dd5fbc2f7734c58166f5468731de3a13eba1ac1455ea7",
+    "ogg_sha256": "7e384e6b743e4e1b95fac36bb48577650186879eec9d4ee2a172c3ab9e2b7a8b"
+   },
+   "Mallets/Music Box Beam": {
+    "adv_sha256": "b1950aa17df51a4b97313da168192a4bb10fdbbb4e13c8f37f77ada12440f46c",
+    "ogg_sha256": "b6e3bf2d47ff8b004ede8d3e0f45fda7f95988d06c054894eab345ef6ee6629a"
+   },
+   "Mallets/Music Box Slide": {
+    "adv_sha256": "24d95c7be8a46aca9ce66df5698254363b2a582d9d17a9f4c9bd17ce224a8d74",
+    "ogg_sha256": "b93caea07d9bad2d8ee89f42fac48581e9359b2da026d909959b78484b24ed6e"
+   },
+   "Mallets/Vibes Basic": {
+    "adv_sha256": "69f6e16c382ad17e8d7178d1463764542a041e757f20213fe17a114051280b0f",
+    "ogg_sha256": "86062f08814428a721edd89d67f507fda32e296640600dca9c9ee8da581b2073"
+   },
+   "Mallets/Vibes Bright": {
+    "adv_sha256": "c913849eff5c31bb7eaa9a602784168efb920ff2fa186d706d324ef65c44d0d9",
+    "ogg_sha256": "877eee3e419c963a9c9caee59b398ccc67eeb27ca95c449bd6e37ab09131a29d"
+   },
+   "Mallets/Vibes Mellow": {
+    "adv_sha256": "96d4dfdab29bd0f1e148522c93d83c23cfbc8394d03d341d0f97c2f38bcc8dfa",
+    "ogg_sha256": "4d622ffbe4cf7d81c88de14a231439787c2b9268905b76b7f618f81f69336f7c"
+   },
+   "Mallets/Vibes Modulated": {
+    "adv_sha256": "9acb0b148d38fca0904a6ac46f7ecd7f2b5984f531b4dd1bc055a9482abae7ae",
+    "ogg_sha256": "9ef84bcd2a3b35420480b43563592777416b4745e351b987b484ab7568dcbf36"
+   },
+   "Mallets/Xylophone Basic": {
+    "adv_sha256": "4d6bbeb4155577538a4f25b423a80a9d3f3d5f992dd2fda0aa01fa11262de0c2",
+    "ogg_sha256": "5f993fbbfac374fa95526d37a538536454d34a9a3076df88031f07c2e09ff899"
+   },
+   "Mallets/Xylophone Dark": {
+    "adv_sha256": "f59dc476a1767cbc8b83ae54147646a3b75256e7ec069b72eb52cdcf25d34f7b",
+    "ogg_sha256": "36ba5c0bf6a48490b762d734d36825e80013f67a966b47020233ee76a011adfb"
+   },
+   "Piano & Keys/E-Piano Dreamy": {
+    "adv_sha256": "92c1e0e84b24696fa112666e5be17d0f42eb7250cb203d9f405fbfa404dbed04",
+    "ogg_sha256": "163aa7387f1ce59b993afadfcf6158a999c74fbf7d6bda888c3991d7d73990f5"
+   },
+   "Piano & Keys/Toy Piano Bells": {
+    "adv_sha256": "ccb924f0506e1ecfeaf59f96c78bd178b28997519330bec288aff1f19ed2b3d4",
+    "ogg_sha256": "49dff33b62bd5dd1c8bf539749119a8363d6ac4f88fe138e32d7fe15ae44d668"
+   }
+  }
+ },
+ "files": {
+  "col.py": {
+   "sha256": "8c541de98dd4ccf2cbbd758b4b251a4a1ca04386a665e64f8a64b707f2d024ea",
+   "bytes": 6695
+  },
+  "fit.py": {
+   "sha256": "785fb765bce6c38a192eb9003b464f195d2af9a250bc7f863ef39e95d9fec767",
+   "bytes": 2022
+  },
+  "fma_scan.py": {
+   "sha256": "7153f10db778473b5b7d6314405355b71ca033a16fa4f6822d9e7798619be863",
+   "bytes": 3325
+  },
+  "harness/xdev.c": {
+   "sha256": "2e550951a4c7eb669ecdf9fa50734b2227c0768cda0b62099e2e975bad9430a9",
+   "bytes": 8128
+  },
+  "harness/xdev.h": {
+   "sha256": "74cfa58ca4dfbf4fe5a51c19acb9e0b97ee6ec3416516aab8efecf732ead61be",
+   "bytes": 1830
+  },
+  "harness/xdev_bind.c": {
+   "sha256": "0884c8f03174db209afa4dd3853b42de2d90035e0c1655effa7c5d04367617f2",
+   "bytes": 9881
+  },
+  "harness/xdev_cxx.c": {
+   "sha256": "a6d24d2dc367d8c833117a0bca0cd82d914a9c8be45177034845afb23f99e1f2",
+   "bytes": 20075
+  },
+  "harness/xdev_load.c": {
+   "sha256": "5f066004949c9af63710e646cf81fff6e6fe49204af5fbac481e5a9cdccfe515",
+   "bytes": 12247
+  },
+  "libm_sensitivity.py": {
+   "sha256": "f3d6cf083ce6a15df56c01344640533e8895f9b9d819d1413b86b51892b74ae8",
+   "bytes": 3244
+  },
+  "make_manifest.py": {
+   "sha256": "e59a99d748de03bfac0bba0eabc80724f41dee34d363aa8c35b1e6a53c5db5f4",
+   "bytes": 3055
+  },
+  "model.py": {
+   "sha256": "5c71620e5b2f53229539e85353a6470f52599b6b33c6b73282884c8edde20322",
+   "bytes": 6871
+  },
+  "previews.py": {
+   "sha256": "b9ff7bb21df3b884d20d4705d96b1d843199e0e9b6d5d49021cb46e45b16cf58",
+   "bytes": 7177
+  },
+  "raw/bright_1.script": {
+   "sha256": "319bb66fdc745b12e341a0829b97b2dfae174bf3314617cb9ea95f9c0549b574",
+   "bytes": 2021
+  },
+  "raw/bright_1.wav": {
+   "sha256": "298554e8923adae31c78ca50c6e2ee3f723cf29d02510360fbaef4a8869d54b1",
+   "bytes": 262202
+  },
+  "raw/coupling_parallel.script": {
+   "sha256": "1ca958d0d1fd7e2dfe08b98b77e8176a1210c5f77cf83e8bdd1b432e2340ba92",
+   "bytes": 2020
+  },
+  "raw/coupling_parallel.wav": {
+   "sha256": "0553bfd405266792fe3741d7badf0ebf664770820e27db37afd4a154e10fe6ba",
+   "bytes": 262202
+  },
+  "raw/coupling_serial.script": {
+   "sha256": "b079da88c599945a0216cf4274f411a0d6ea4fd509d27332e74f0d9618753eb5",
+   "bytes": 2020
+  },
+  "raw/coupling_serial.wav": {
+   "sha256": "475899a63f5e2465c880ae9831c11dd23b52ab0840c60dd197df796952715578",
+   "bytes": 262202
+  },
+  "raw/ctor_c4.script": {
+   "sha256": "0864767e6dc2b3b2bdb3e691454e7538e069ec56d246312c98797d8aad5d1686",
+   "bytes": 1990
+  },
+  "raw/ctor_c4.wav": {
+   "sha256": "775d38f661412aedeee8fdeb069b84b88e48e58c83b6f3bc8c4945958d038842",
+   "bytes": 176458
+  },
+  "raw/decay_0.25.script": {
+   "sha256": "3136b9ebe558b2fa48a9b488ecfbe59f905646ec23d7be66bd5114119f6cc246",
+   "bytes": 2021
+  },
+  "raw/decay_0.25.wav": {
+   "sha256": "51411db9fef67f84e0e536375ea5a0abbc33fac574e09898a7a85158a90fae57",
+   "bytes": 262202
+  },
+  "raw/hit_0.25.script": {
+   "sha256": "15e68a5b52a3d749894e9d00593910b1d4eb73c4929b4cbd7364f72ec0160fc1",
+   "bytes": 2022
+  },
+  "raw/hit_0.25.wav": {
+   "sha256": "cab5f3fff74b9c0a3aec080682facea7c2f58ff0bf3d4a5b33b446691db2de30",
+   "bytes": 262202
+  },
+  "raw/hit_0.script": {
+   "sha256": "1add143cfb6ee58ac5119566b93ea3c04754484a0c535f5fad38e0ce4b2dd47f",
+   "bytes": 2021
+  },
+  "raw/hit_0.wav": {
+   "sha256": "0b4c465c5bd6c0756f260a03e3d580b982bc9fab1f1326108ab574ae6175b478",
+   "bytes": 262202
+  },
+  "raw/hit_1.script": {
+   "sha256": "0971beb1b9f489da5e242e4eb217761b002c2c955a422b8eb6ee362745fd62f7",
+   "bytes": 2021
+  },
+  "raw/hit_1.wav": {
+   "sha256": "eaab61ddebcfcde17d1f058fa4edbf12a221fb6192f7ed8528c9524a007b2551",
+   "bytes": 262202
+  },
+  "raw/inharm_0.5.script": {
+   "sha256": "bd7732499bf593207e3d205492b2b33d6efacbbf7aebe84e1a782b6b3f89b7c6",
+   "bytes": 2021
+  },
+  "raw/inharm_0.5.wav": {
+   "sha256": "832649f355d829244fb2ca7391343275d9286ba3adffe6a908912264e27772bc",
+   "bytes": 262202
+  },
+  "raw/listen_L0_R0.5.script": {
+   "sha256": "666a794ca52f8ae0d207ad768f63663fcdf540dd670d49a8260daf0d20bdbdd5",
+   "bytes": 2003
+  },
+  "raw/listen_L0_R0.5.wav": {
+   "sha256": "1486ad0eb4d5f4e87190e668a343ee85640cf65cbd956a4fc8cb92cee58d999f",
+   "bytes": 262202
+  },
+  "raw/material_-1.script": {
+   "sha256": "5209eefec9e00469328f1b19a46f5c230a25a23032f603441e48a0a3434632d4",
+   "bytes": 2022
+  },
+  "raw/material_-1.wav": {
+   "sha256": "80433981e1413a6b55c9f90eec3ffcd17022e4d427f1e21814334d5b941374da",
+   "bytes": 262202
+  },
+  "raw/material_1.script": {
+   "sha256": "ced107d9c26da2e1d54a7bd1c968e0750e5e6b165a28da70bed0986b54b7c77a",
+   "bytes": 2021
+  },
+  "raw/material_1.wav": {
+   "sha256": "3233563212296e4ea60653203ba147428bf4f73e5a0c5dc3d6b52de4a68fb45c",
+   "bytes": 262202
+  },
+  "raw/mode_beam_48.script": {
+   "sha256": "9c184a461b8fc990187d59f3816cf73c7cd832f9fcf8d2d82e07181d5dce102a",
+   "bytes": 2021
+  },
+  "raw/mode_beam_48.wav": {
+   "sha256": "0e94d91071cef1d259094c0957752fd1c4b276bedaa2359ae469b2ff201a0ba0",
+   "bytes": 262202
+  },
+  "raw/mode_beam_high.script": {
+   "sha256": "f3c2db1ca2786bc91674e15594e218f7f05f794592a9567dcd071b218e7bdce9",
+   "bytes": 2021
+  },
+  "raw/mode_beam_high.wav": {
+   "sha256": "3386a94e34d9a17ee158c5f7e49b1b428f8077ba0691abbd5a6e40b6e281138f",
+   "bytes": 262202
+  },
+  "raw/mode_marimba_high.script": {
+   "sha256": "5bfbe9ba6918e99a795d808e2f7cbc267ad31f0c9b6ac96aaf6c20596938dabb",
+   "bytes": 2021
+  },
+  "raw/mode_marimba_high.wav": {
+   "sha256": "ed3381658b03cba5269e5dbd142aa900fb8712cc1c2d6da1161f7095cec0cf41",
+   "bytes": 262202
+  },
+  "raw/mode_membrane_high.script": {
+   "sha256": "e9e763e21c1931118079b131374f0275b5ee9b13115e39741c441002f05d2b9c",
+   "bytes": 2021
+  },
+  "raw/mode_membrane_high.wav": {
+   "sha256": "bcc3f4292f3420bc168a99a88ea27a6fd058fc46130c3dc8574861bccc7ead98",
+   "bytes": 262202
+  },
+  "raw/mode_plate_high.script": {
+   "sha256": "059d1d8b39d1d74f3d9d4089651613915e13d83ceff813bf5321bd8fcaa698e5",
+   "bytes": 2021
+  },
+  "raw/mode_plate_high.wav": {
+   "sha256": "3f11308fdb9d2ea43b2326612be48f06d0226c8942a883185eee87c8bb9d51e7",
+   "bytes": 262202
+  },
+  "raw/mode_string_high.script": {
+   "sha256": "fb1128b3e39a50a2b938d7c31c373b51fe89f3515f4f024e8b34b018db9a4f00",
+   "bytes": 2021
+  },
+  "raw/mode_string_high.wav": {
+   "sha256": "ebc98f66d48430acc1023c7d7096afec78cb2d4a5f5fc0b8c85d084952c3e51c",
+   "bytes": 262202
+  },
+  "raw/no_0.5.script": {
+   "sha256": "65643fe777c17fdd86de34787a7f8d5a88e437c4bf3232249d012a15ef01a25b",
+   "bytes": 2043
+  },
+  "raw/no_0.5.wav": {
+   "sha256": "c9b6a9f022f9bc159d2d2ba0b618f37d7a3ca5e0c490c627c4251a5b4b2f5565",
+   "bytes": 350402
+  },
+  "raw/noise_exc_adsr_s0.script": {
+   "sha256": "c9ce571bfcc708c19fc8b85610b15a3927f5cf3330d0b4cbd89b0da0ac4b600a",
+   "bytes": 2026
+  },
+  "raw/noise_exc_adsr_s0.wav": {
+   "sha256": "ba66d793dfe5106670a35999142b554668fa1508fa26d91e74aefec9680b2a82",
+   "bytes": 352858
+  },
+  "raw/noise_exc_bp_s0.script": {
+   "sha256": "6c9e3aa3e089320d1ba1988d6263c530def9258d3628e851532fdc5e58d4b134",
+   "bytes": 2042
+  },
+  "raw/noise_exc_bp_s0.wav": {
+   "sha256": "0838c0d4622d66e09f8bc0bef1b2cfa5f9c9f1d36e8178ea7aff32a386195655",
+   "bytes": 262202
+  },
+  "raw/noise_exc_default_s0.script": {
+   "sha256": "cf3e974157ebd9e97d1a354dfe7c3dc1ec727ece2498e416ec9a9768d8fb63a9",
+   "bytes": 2042
+  },
+  "raw/noise_exc_default_s0.wav": {
+   "sha256": "9d84cb9e62cc696f3ac74b1f16ab4956d1a5da09ea642296c0ab3aea00084ee5",
+   "bytes": 262202
+  },
+  "raw/noise_exc_hp_s0.script": {
+   "sha256": "08825d4b1032d508400e8fc5aa3a14e4d7a95747f5cb2639035002d2a6b9304e",
+   "bytes": 2042
+  },
+  "raw/noise_exc_hp_s0.wav": {
+   "sha256": "513dce85c8381a886051e8ad42e3fe84bf8d6a787338ffa8607670304e589d8d",
+   "bytes": 262202
+  },
+  "raw/noise_exc_lphp_s0.script": {
+   "sha256": "9c010f94f28132c79b5c9d7f960e99e35a63ab9035ce849ff27695a99cf51b70",
+   "bytes": 2042
+  },
+  "raw/noise_exc_lphp_s0.wav": {
+   "sha256": "2cafdbd6464b42b4f506094cb824cd4f9ff366ccb6ef57deb994e080b648b593",
+   "bytes": 262202
+  },
+  "raw/noise_exc_sustain1_s0.script": {
+   "sha256": "9d73b46d8e7ad96c53fb4ac0e33e827bd3c9bd1b1d583c070910184ff859b822",
+   "bytes": 2042
+  },
+  "raw/noise_exc_sustain1_s0.wav": {
+   "sha256": "1bf86a6c550578620c585214649aa4b92daf164f86918254dd64e1d9f78cdfb9",
+   "bytes": 262202
+  },
+  "raw/noise_mallet_amount1_s0.script": {
+   "sha256": "c3410237f48666d0b139292daed3ace276a1e994d2435543445cb6fa3629a067",
+   "bytes": 2020
+  },
+  "raw/noise_mallet_amount1_s0.wav": {
+   "sha256": "ec1b5d66b4eb1294c84883122a6e360b3e5c9a67446d850f144d3865d8f67170",
+   "bytes": 262202
+  },
+  "raw/noise_mallet_color0_s0.script": {
+   "sha256": "bc476220bd2e2a97ca4c5b226f0c190ef644d47df2557cb3d94ae6b4a72d9e73",
+   "bytes": 2020
+  },
+  "raw/noise_mallet_color0_s0.wav": {
+   "sha256": "9465e1147adb8e072d57b7474ef35bbdb3ef29c86a1a495cd751420db792a382",
+   "bytes": 262202
+  },
+  "raw/noise_preset_s0.script": {
+   "sha256": "7d030d6db5d6ac292cda25e459e72b45cc8af08dea11c454ea2038e0911f51b6",
+   "bytes": 2020
+  },
+  "raw/noise_preset_s0.wav": {
+   "sha256": "09b496c383bae5cbff00775d98698f9821e6229930de1b5446ad3a525e047ef9",
+   "bytes": 262202
+  },
+  "raw/penv_1_0.5.script": {
+   "sha256": "ce44a381457bb5777552bf70f0b4c7294c15779c5f42373474ab6f2c74516eff",
+   "bytes": 2020
+  },
+  "raw/penv_1_0.5.wav": {
+   "sha256": "e5d20a6e05f576d5fc101a889f52e98d47cc134fc40c43a9df3b176ad8e207ed",
+   "bytes": 262202
+  },
+  "raw/preset_c4.script": {
+   "sha256": "3b17f74d5f2b6500635628d48db81decdf5bf28ec1f5b18ba63bc3ab2a0e383b",
+   "bytes": 2045
+  },
+  "raw/preset_c4.wav": {
+   "sha256": "d57ce2f393d218d1ff28f27d24e0200728e399110a60541a1647e60f3de84976",
+   "bytes": 352858
+  },
+  "raw/ratio_3_0.75.script": {
+   "sha256": "4e86dc361a01d446756f9cfbdefba0ea044682476dd98b858063a0280e6ed4f5",
+   "bytes": 2022
+  },
+  "raw/ratio_3_0.75.wav": {
+   "sha256": "4073560c607324ef7f4412a815208848c08de2aee6b54b4044c2ebb60da009c8",
+   "bytes": 262202
+  },
+  "raw/ratio_4_0.75.script": {
+   "sha256": "9935a9a4cd3d7e1174c8269e79682cde34ae24a608ccbb177461728f33e845e5",
+   "bytes": 2022
+  },
+  "raw/ratio_4_0.75.wav": {
+   "sha256": "073b8ada9d9cc94e32146e64d9af85d35342f28e959f52ef20c5227e5f5feaea",
+   "bytes": 262202
+  },
+  "raw/res2_marimba_tr7.script": {
+   "sha256": "da8adc8b94236b010d0deb4a278abcf351b16ed97cbfc755c8af9fc152f89f3d",
+   "bytes": 2021
+  },
+  "raw/res2_marimba_tr7.wav": {
+   "sha256": "a886a12cfc79e6af715f38a298ae0143e200ad1d576acb4408991d61791118c8",
+   "bytes": 262202
+  },
+  "raw/steal_both.script": {
+   "sha256": "e4732c343307a38c093918ca4f2c3953a931c3fcc0a91e510974bdf98b82fa30",
+   "bytes": 2045
+  },
+  "raw/steal_both.wav": {
+   "sha256": "9eff0c2c802ec0fccc88b9da768237037b444f94f1b8b6dbeaa353e27c7b0eb4",
+   "bytes": 176458
+  },
+  "raw/stiff_0.15.script": {
+   "sha256": "393426d235027b7a92c766f9ecfdc5985120557549938580dfd12b68787bb9ca",
+   "bytes": 2022
+  },
+  "raw/stiff_0.15.wav": {
+   "sha256": "3ffce9ade23f761db4feb13e22c35d804e999f3d4b97f9eabed1c41efd2b0a49",
+   "bytes": 262202
+  },
+  "raw/stiff_1.script": {
+   "sha256": "c1105deaec4703e1581e2e968637c83064ebd874a2dfa7d23b7c257836c73c17",
+   "bytes": 2021
+  },
+  "raw/stiff_1.wav": {
+   "sha256": "ef3fd41471451279205186d5e84f685a427b6833b135f322a3d9137fbc9b0ec5",
+   "bytes": 262202
+  },
+  "raw/vel_2.5_1.script": {
+   "sha256": "63be52b8c3ec382e312555ab78dba8df571278029915ef74770d698ebc5b285a",
+   "bytes": 2018
+  },
+  "raw/vel_2.5_1.wav": {
+   "sha256": "ef24df205320a7ac49fc05db9896304a7faebaffdfc2f6ac3cbebe4438a73f53",
+   "bytes": 131130
+  },
+  "raw/vel_2.5_127.script": {
+   "sha256": "e7f829a2cca5e9c0b943853de067dd70f779e6f18e25e4fdc6f0aa5ec129ac1b",
+   "bytes": 2020
+  },
+  "raw/vel_2.5_127.wav": {
+   "sha256": "26e824eb1fcf5baa0a48cb937d4ace8db0fa4da188e3bc0658f8ad6ae78945dc",
+   "bytes": 131130
+  },
+  "raw/vstiff_2.5_127.script": {
+   "sha256": "954606b44f844e929207ae9f7a8a3fe3704d282ab44f28075f5d4171cefd716f",
+   "bytes": 2021
+  },
+  "raw/vstiff_2.5_127.wav": {
+   "sha256": "4be2ec455fe8cf56d20494cdf2b3f1b293e0958e4035380e20488788fb7ee641",
+   "bytes": 262202
+  },
+  "raw/wg_pipe.script": {
+   "sha256": "703dee489e0628c81c7245cd0f327a282a635f35e6c76ce1567066b45559a1d9",
+   "bytes": 2020
+  },
+  "raw/wg_pipe.wav": {
+   "sha256": "2297f2923e68a8f6110f1e7336588bdda8ad8d7451b65a6077a5b822b851e2f0",
+   "bytes": 262202
+  },
+  "raw/wg_tube.script": {
+   "sha256": "43366ffcb6aafa13d3d9794690fc8132a921784f6ed04744071fff83d52a3492",
+   "bytes": 2020
+  },
+  "raw/wg_tube.wav": {
+   "sha256": "5a4a3c3454a931a8c262d51f5e48e3d9554a92471c1dd2f417b481885c01be15",
+   "bytes": 262202
+  },
+  "results/collision.json": {
+   "sha256": "16019047fcc55c4d88e2c88a2ab3ef3f3def67215303bad0e1aee1e905db52db",
+   "bytes": 555856
+  },
+  "results/fma_scan.txt": {
+   "sha256": "a435094fd5ae33fb8d4e8d31f5583c9fa44e92ac41b5f44e64f5f6d51c5071df",
+   "bytes": 319
+  },
+  "results/libm_sensitivity.json": {
+   "sha256": "2744b05e39c19264d358872c71f19ca04028a1810b523b16f998a59bd2679b78",
+   "bytes": 2347
+  },
+  "results/noise.json": {
+   "sha256": "a4794b4f69bd2e87b6a76e0681b70fd35f16120c18a0c9e5369c8590092f4540",
+   "bytes": 86800
+  },
+  "results/previews.json": {
+   "sha256": "8bf2f1af8701a80392841c831c8ce41d4b9b6fd9fd36bbe39ab8c9df63bce54d",
+   "bytes": 56547
+  },
+  "run.sh": {
+   "sha256": "29ef17eb34548a1d395eaf6fe198d13fcfba123952f7f230d8ba06e4c960a223",
+   "bytes": 837
+  },
+  "run_collision.py": {
+   "sha256": "f48e866f7307bf3b71336d70b48cd1e0d822112660ef8276d21300084f9cd8e1",
+   "bytes": 30125
+  },
+  "run_noise.py": {
+   "sha256": "9c2e94083c1faea8a5e6ba77befe133b5b3ca1389902c93b3e340b22168eeb9e",
+   "bytes": 9592
+  },
+  "xdevpy.py": {
+   "sha256": "5c8c8cc08c9d8a857b59d5eb31611c4b1717b97441c401a772575d3e8b5eb158",
+   "bytes": 2903
+  }
+ },
+ "not_retained": "Sweeps, ensembles (members 1-7), perturbed renders, decoded previews and preview renders are written under /var/tmp/sound-analysis/t12-collision/; their measurements are in results/."
+}

@@ -1,0 +1,42 @@
+{
+  "status": "authored declarative setups only; not rendered audio, ALS files or executed reference tests",
+  "F0": {
+    "state": "F0: isolated active device in an otherwise empty audio chain; no custom default, automation, MIDI mapping, macros or rack modulation unless named. Explicitly select all named control values; do not inherit preset values as defaults. Use test-owned valid editable Set; compare only specified state. F1-F6 define audio/IR stimuli and nonvacuity controls.",
+    "tempo_bpm": 120,
+    "meter": "4/4",
+    "sample_rate_hz": 48000,
+    "render_seconds": 16,
+    "rule": "These times/rates are fixture choices, not compatibility limits. Fresh state per run; no presumed constructor/preset values. Main device On; track/monitor/output routed, unmuted and nonzero. Disable untested processing and all automation/modulation not explicitly named."
+  },
+  "F1": {
+    "stimulus": "Stereo PCM-like authored input definition; at 0.5,1.5,2.5 s use 1 ms Hann-windowed 1 kHz pulses at peak 0.125 in left only, then silence. For Freeze use pulse A as above, pulse B at 5 s with right-channel 2 kHz signature; for each rate use duration in seconds, not an assumed delay rounding.",
+    "positive_control": "Before freeze/input-rejection/no-effect reasoning, Freeze off or input-admitting state must yield nonzero wet output from both the A and B stimulus as appropriate. Retain baseline controls and output. If not achieved, mark setup inconclusive.",
+    "record": "Both output channels for 16 s; no tolerance/silence bound or event-onset oracle is asserted."
+  },
+  "F2": {
+    "stimulus": "Three 2 s sections separated by 0.5 s silence: left=110/440/1760 Hz tones summed to peak at most 0.125, right=165/660/2640 Hz tones similarly scaled; then left-only version and right-only version in separate runs. Use independently tagged channel spectra. Include 80 Hz left and 100 Hz right for Bass Mono/low-band tests, then high-frequency sections for positive control.",
+    "positive_control": "Wet-only nonzero output and stereo difference where a stereo operation is tested. For filter/modulation tests input must excite the relevant bands, destination/filter must be active, depth/gain/send nonzero; use an effect-on positive control before an effect-off/no-effect case.",
+    "record": "Independent L/R output, selected controls and active path; deterministic signal definition does not imply deterministic device output."
+  },
+  "F3": {
+    "stimulus": "Main input sustained 440 Hz at low/high peaks 0.01/0.25 in alternating 2 s sections plus silence; donor uses 733 Hz with different 1 s envelope timing. Threshold must be selected between observed low/high detector levels rather than assuming peak-to-meter calibration.",
+    "positive_control": "Gate/ducking disabled yields nonzero wet output; at enabled settings verify a detector/threshold response or mark setup inconclusive. For envelope-only modulation, retain LFO-only rate-change positive control and nonconstant envelope stimulus.",
+    "record": "Threshold/control/detector state if offered, wet output and donor availability; external sidechain remains U."
+  },
+  "F4": {
+    "assets": "Test-owned folder with IR-A.wav (stereo 0.5 s, left taps 0.5 at 0 s and 0.25 at 0.125 s, right taps 0.4 at 0.01 s and -0.2 at 0.2 s), IR-B.wav (different stereo 0.25 s two-tap IR), and not-audio.txt. No subfolders or other audio. IR file sample rate 48000 Hz, valid PCM WAV; actual bytes not generated in this packet.",
+    "positive_control": "Convolution-only route must produce nonzero wet response and its nonidentity IR character before Blend/Serial/Parallel tests; Algorithm-only must also respond. In combined modes isolate the engine when testing Freeze admission; surviving convolution output is not algorithm input-admission proof.",
+    "record": "IR content identity, file/reference/list state, selected route/algorithm/Blend and both output channels; no impulse normalization/convolution kernel oracle."
+  },
+  "F5": {
+    "context": "Separate valid Sets: no active tuning/scale awareness; a C-major active clip with awareness enabled; a separately approved non-twelve-tone tuning file with awareness context explicitly recorded. Note C2/C3 selections and relative I-V pitches are selected explicitly.",
+    "positive_control": "Resonators I-V active as specified, dry excluded and per-resonator gain nonzero. Channel-isolation tests enable only the tested resonator and verify matching-channel response first.",
+    "record": "Tuning-file identity/scale state, root/relative units and displayed values; no frequency calculation or fallback/precedence rule assumed."
+  },
+  "F6": {
+    "failures": "Only test-owned preset/Set/IR copies may be corrupted or removed. For Hybrid Reverb, missing IR, unreadable IR and cancelled IR import are distinct from malformed numeric input. No source/preset package bytes are modified.",
+    "record": "Offered operation, accepted/rejected input, diagnostics, selected control/IR, dirty state, undo state and actual file changes if later executed. Failure behavior remains expected=null."
+  },
+  "nonvacuity_gate": "Before any audio no-effect, bypass, channel exclusion, source exclusion, zero amount or freeze-admission comparison: record active route, nonzero stimulus and nonzero wet output from the tested path; retain baseline plus effect-on/input-admitted positive control; isolate other paths that can mask output. A failed gate is inconclusive, never a compatibility pass.",
+  "comparison": "No generated signal bytes, calibrated reference output or candidate comparison exists. Documentary predicates are not DSP oracles; U expected is null; all exact-target expected values are null."
+}

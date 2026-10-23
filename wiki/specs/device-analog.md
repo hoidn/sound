@@ -1,10 +1,11 @@
 ---
 id: SPEC-DEVICE-ANALOG
 type: spec
-status: draft
-updated: 2026-10-18
+status: draft (partial; finite extracted expectations adopted through R8; general mode, timing and public behavior U)
+updated: 2026-10-23
+evidence_status: partial (REQ-022 timing/trajectories U; bounded r2 correction approved)
 access: analysis
-revision: 1
+revision: 15
 target: Ableton Live 12 Suite 12.4.3 / macOS; reference renders from the Analog.bundle x86_64 slice
 ---
 
@@ -34,6 +35,12 @@ Excluded, each with its effect stated in the requirement named:
 - closed forms of the formant and 4-pole notch filters and of the random LFO shapes
   (REQ-012, REQ-018); these are graded only against reference renders;
 - display text, CPU load and latency reporting.
+
+Revision 3 adds only the explicitly listed finite extracted expectations in
+[its case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r3-finite-v1/case-aliases.json):
+eight paired parameter histories and twenty one-control envelope-mode inputs.
+These are bounded exceptions to the unverified modes/history scope above, not
+general laws or an extension of the released audio comparison metric.
 
 Every requirement is a **proposed contract**. Nothing was run against Live, and under
 [ADR 0003](../decisions/adr-0003-no-reference-execution.md) nothing will be. The audio evidence is
@@ -157,6 +164,16 @@ A U clause blocks the behavior it names. Each blocking U clause states its effec
   lin and sq applies where those requirements write n. Where a law is written with c/127 there is
   no midpoint case.
 
+- **X, finite R8 qualification.** [DAN-472–703](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r8-kind3-transpose-finite-v1/cases232.json)
+  retain 24 supplied Transpose integers and 208 further one-index native-kind3
+  vectors only in the fixed 203-word P1 history below. All 338 declared
+  index/value aliases join 254 full vectors, including inherited references;
+  the Transpose vectors receive no duplicate IDs or captures. Index 99 = 0
+  remains measurement-only auxiliary. These finite observations do not newly
+  validate clamp or rounding behavior between integers, stored/UI conversion,
+  a productive control, pitch formula, general event/state law or Live/ARM
+  behavior. The general clauses above retain their existing evidence scope.
+
 ### REQ-DEVICE-ANALOG-004 — note events and timing
 
 - **X.** Status 0x9n is a note-on and 0x8n a note-off. The channel n has no effect. A note-on with
@@ -174,6 +191,45 @@ A U clause blocks the behavior it names. Each blocking U clause states its effec
   start of f's block.
 - **U.** Live's grid phase and event frame base, as for Electric. **Effect on T1:** onsets are
   sample-exact only under A2. A different phase moves onsets by 0 to P − 1 frames.
+
+- **X, finite R4 qualification.** [DAN-076–202 and the inherited DAN-028/P1 reference](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r4-velocity-finite-v1/cases128.json)
+  supply the complete 128-value numeric velocity-byte catalog only for the exact fixed
+  203-value DAN028 setup and event history in the R4 annex. Velocity 0 produces only
+  positive-zero samples in this supplied capture. This observation does not independently
+  establish zero-velocity note-off dispatch, arbitrary prior-voice history, release-velocity
+  semantics or Live's event timing; those broader clauses are not newly validated here.
+
+- **X, finite R5 qualification.** [DAN-203–329 and inherited DAN-028/P1](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r5-note-keys-finite-v1/cases128.json)
+  supply all128 typed note-key values only in the fixed203-word P1 context at velocity100
+  described in the R5 annex. Both matching on/off keys vary; these finite observations
+  do not newly validate REQ-006's frequency formula, a clamp/alias mechanism, general
+  note-range/onset behavior or Live's event timing. REQ-006 is context, not a newly tested law.
+
+- **X, finite R6 qualification.** [DAN-330–344 and inherited DAN-028/P1](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r6-channel-finite-v1/cases16.json)
+  retain the complete 16-value matching note-on/off channel-nibble catalog only
+  in the fixed 203-word P1 key-60/velocity-100 history below. Fifteen fresh output
+  hashes match the inherited nibble-0 identity. This does not newly validate the
+  broader channel statement above, arbitrary event/voice histories, actual Live
+  channel dispatch, A1/A2, general determinism or ARM/Apple behavior.
+
+- **X, finite R7 qualification.** [DAN-345–471 and inherited DAN-028/P1](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r7-release-velocity-finite-v1/cases128.json)
+  retain all 128 typed note-off release-velocity bytes only in the fixed 203-word
+  P1 history below. The 127 fresh output hashes match the inherited byte-64
+  identity. This does not newly validate the broader release-velocity statement
+  above, arbitrary voices or event histories, dispatch/timing, Live A1/A2,
+  general determinism or ARM/Apple behavior.
+
+- **X, finite supplied independent MIDI-byte observations (revision 9).**
+  [DAN-704–987](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r9-independent-midi-finite-v1/new-cases284.json) add 284 once-only histories at the fixed P1 context:
+  127 On keys with Off key 60 fixed, 127 Off keys with On key 60 fixed,
+  15 On channel nibbles with Off status 80 fixed and 15 Off channel nibbles
+  with On status 90 fixed. Each axis varies one supplied event byte only.
+  Four baseline aliases share ONE inherited DAN-028 INPUT reference,
+  without replay, fresh PID/receipt/metrics or transfer of its criterion.
+  These observations do not newly validate the broader unmatched-note,
+  channel, release, dispatch, timing or public Live/ARM laws above.
+  New waveform priors/expectations and portable expected/comparator/grade
+  stay NULL; new application-predicate proofs remain false.
 
 ### REQ-DEVICE-ANALOG-005 — voices and polyphony
 
@@ -390,8 +446,13 @@ Each chain has a filter envelope (Envelope.0) and an amplifier envelope (Envelop
   (DAN-001, DAN-028).
 - **S.** The filter envelope is the same module as the amplifier envelope. Inferred: it follows the
   same law. Only its sustained level was rendered (REQ-013).
-- **U.** Envelope Loop, FreeRun and Legato. They were not rendered. **Effect on T1:** sets with a
-  non-default value are not verifiable.
+- **U.** General Envelope Loop, FreeRun and Legato semantics, combinations and lifecycle
+  histories remain unknown. **X, finite.** DAN-056–075 adopt the twenty supplied one-control
+  inputs and their exact finite observation records under the recorded factory protocol.
+  All four envelopes are retained, including the sixteen inputs whose outputs equal the
+  same-batch control. Equality is not inactivity, no-op or absence of an effect. These cases
+  supply finite reference facts, not a general mode law or portable waveform criterion.
+  **Effect on T1:** other non-default mode values/configurations/histories remain unverifiable.
 
 ### REQ-DEVICE-ANALOG-017 — velocity
 
@@ -403,6 +464,16 @@ Each chain has a filter envelope (Envelope.0) and an amplifier envelope (Envelop
   (REQ-PLAYBACK-CORE-012), reaches the device as a 7-bit data byte.
 - **U.** How Live rounds a fractional velocity to that byte. **Effect on T1:** graded cases use
   integer velocities.
+
+- **X, finite R4 qualification of the default-modifier sentence above.** Its assertion that
+  velocity has no effect must not be read as equality between zero and positive velocity
+  bytes. In the [exact R4 catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r4-velocity-finite-v1/cases128.json), all eight AmpMod/AttackMod
+  fields remain 0: the supplied velocity-0 capture contains only positive-zero samples,
+  while the 126 fresh positive velocities and inherited velocity 100 share the approved
+  historical output hash and descriptive metrics. These are fixed-input observations,
+  not a productive velocity-response curve, a universal no-effect/zero-note rule, or a
+  new proof of the AmpMod/AttackMod equations. Fractional-velocity/public binding, A1/A2,
+  ARM/Apple behavior and portable calibration remain unresolved.
 
 ### REQ-DEVICE-ANALOG-018 — LFOs
 
@@ -465,27 +536,51 @@ Each chain has one LFO. LFO 2 is taken as identical to LFO 1 (S, same module).
   resolved: the first note after creation appears to glide from an earlier pitch. Same for
   PortamentoMode and PortamentoLegato.
 - **U.** KeyboardUnisonToggle with KeyboardUnison, KeyboardDetune and KeyboardUnisonDelay.
-- **U.** Envelope Loop, FreeRun and Legato (REQ-016).
-- **Effect on T1:** Live Sets that turn on glide or unison, or change these envelope modes, are not
-  verifiable. DAN-043 and DAN-044 retain renders for a later revision; they are not graded.
+- **U.** General Envelope Loop, FreeRun and Legato behavior (REQ-016), beyond the explicitly
+  supplied DAN-056–075 input histories and their finite extracted expectations.
+- **Effect on T1:** general glide, unison and envelope-mode behavior remains unverifiable;
+  the finite mode inputs of REQ-016 do not establish simultaneous modes, repeated/overlapping
+  notes, Legato/FreeRun/reset/load lifecycle or arbitrary settings. DAN-043 and DAN-044
+  remain retained but not graded.
 
 ### REQ-DEVICE-ANALOG-022 — parameter changes over time
 
-- **X.** A host value set between blocks while a note sounds first changes the output at these
-  frames, for a change at block start 13,312 (g′ = 13,332):
+- **U.** The first output change, smoothing and subsequent trajectory when a host value changes
+  between blocks, including note-on latching, dependence on the prior note/control history,
+  settling time and timing for other controls. **Effect on T1:** parameter-change and automation
+  trajectories are not graded. No general first-change rule, 100 ms settling bound or portable
+  trajectory tolerance is established. The finite release excludes parameter changes; its
+  accepted stationary/onset/envelope criteria do not supply a post-change oracle.
+- **U.** In Live, on which block boundary an automated value arrives (Q-025), and how the stored
+  value, parameter unit and actual Analog instance receive and process it. **Effect on T1:** no
+  host-arrival or automation-delay bound is adopted, and these Live timing outcomes are not
+  graded. A1/A2 remain assumptions; extracted device differences do not bind the Live scheduler,
+  receiver or output path.
 
-  | Parameter | First changed frame |
-  | --- | --- |
-  | Volume | g′ |
-  | OscillatorSemi, OscillatorDetune | g′ + 8 |
-  | FilterCutoffFrequency | g′ + P |
-  | OscillatorLevel, AmplifierLevel, AmplifierPan | g′ + 58 |
-  | Amplifier AttackTime, during sustain | g′ + 4,402 |
-- **U.** The ramps that follow, and the timing for other parameters. **Effect on T1:** automation of
-  Analog parameters is graded only after the change has settled, from 100 ms after it on. Within
-  those 100 ms, and for parameters taken at note-on, nothing is graded.
-- **U.** In Live, on which block boundary an automated value arrives (Q-025). **Effect on T1:** as
-  for Electric, automation can be early or late by up to one Live block plus one period.
+  **Historical evidence qualification (ANRMAP-001).** The revision 1 table came from a retained
+  two-process history whose persistent event queue delivered its note again in the second
+  process request. AttackTime first-change 17,734 is a historical repeated-note result, not
+  uninterrupted-sustain delay. The seven earlier first-change scalars retain only their exact
+  finite supplied-history scope; neither that table nor its former 100 ms convention defines an
+  acceptance rule here. The reversible revision delta retains the exact superseded wording.
+
+  **X, finite observations adopted in revision 3.** DAN-048–055 adopt all eight paired
+  no-replay histories already approved by the
+  [independent actual-result review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-actual-review.json),
+  under design revision 12's batch-adoption rule. Each pair uses the exact 203-value setup,
+  a note-on at 8,192, a boundary at 13,312 and process intervals 13,312 then 7,680 frames in
+  512-frame blocks at 44,100 Hz. The old captured expectation-null/UNGRADED fields remain
+  immutable history; these new owner cases adopt only the reviewed finite facts.
+
+  Every pair's prechange prefix is byte-identical. Seven pairs first differ numerically
+  20–68 frames after the supplied boundary; the AttackTime pair is byte-identical through
+  frame 20,991, including the full 7,680-frame post-boundary interval. Exact per-control
+  values and first-difference coordinates are in the finite case catalog below. A missing
+  difference in that window is the finite expectation, not proof of latching or no effect.
+  No envelope stage is established by a held key. The U clauses above continue to govern
+  general first-change, smoothing, latching/history, settling and actual Live timing.
+  These cases introduce no calibrated waveform/trajectory tolerance, portable latency,
+  100 ms settling rule, ARM execution or Apple-library equivalence.
 
 ### REQ-DEVICE-ANALOG-023 — other MIDI input and sample rates
 
@@ -511,7 +606,10 @@ Each chain has one LFO. LFO 2 is taken as identical to LFO 1 (S, same module).
 
 ## Comparison metric
 
-Proposed, pending acceptance as the T1 device-audio criterion of ADR 0004. A candidate render of a
+Proposed as the general T1 device-audio criterion of ADR 0004. The finite metric
+of [device-analog-v1](../../handoff/device-analog-v1/README.md) is accepted
+only for its listed inputs and frozen measurement eligibility; broader criteria
+below remain proposed. A candidate render of a
 case passes when it meets every line that applies.
 
 | Signal | Comparator | Tolerance |
@@ -542,6 +640,9 @@ against Live, and under ADR 0003 none will be. Kinds: P positive, B boundary, T 
 graded.
 
 ### Fixtures
+
+This legacy fixture description applies to DAN-001–047. Revision 3 finite cases
+below instead alias retained raw interleaved stereo binary32 captures and full scripts.
 
 All renders are mono IEEE-float 32-bit WAV at the stated rate, made in host blocks of 512 frames.
 They are in [t12-analog-v1](../../analysis/ableton-live-12.4.3/r2/t12-analog-v1/manifest.json)
@@ -598,6 +699,751 @@ means key 60, velocity 100, on at frame 4,400, not released.
 | DAN-046 | 016, 021 | U | Envelope Loop, FreeRun or Legato; LFO sync, delay, fade | Not graded | — |
 | DAN-047 | 023 | U | Pitch bend, controllers, pressure, MPE | Not graded | — |
 
+### Revision 3 finite extracted cases
+
+These twenty-eight new case IDs are finite **X** expectations, admitted through
+the two batch reviews under design revision 12, not a second review of the observations.
+The [case catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r3-finite-v1/case-aliases.json)
+gives each complete input-script/vector/history alias, exact reviewed observation fields,
+raw-output hashes and independent review identity. All prior DAN-001–047 rows remain exact;
+DAN-046's broader ungraded mode/LFO scope is not closed by these finite cases.
+
+For DAN-048–055 (REQ-022), both baseline and changed scripts and outputs are retained.
+The initial vector is the released ANALOG-AUDIO-013-01 vector with all 203 host values
+in order. Note-on8192/key48/velocity100 is delivered once. At frame13,312 the baseline
+re-sends its original value and the paired run sends the value listed below; processing
+continues for7,680frames. No second note is delivered. Frame coordinates are zero-based;
++0 and −0 compare numerically equal, while the prechange prefix also requires byte identity.
+
+| Case | Changed host index/control/value | Finite expected relation between pair | Source pair |
+| --- | --- | --- | --- |
+| DAN-048 | 52 SignalChain1/FilterCutoffFrequency → 0.6000000238418579 | First numeric difference 13376 (boundary +64); prechange bytes identical | CTRL-01 |
+| DAN-049 | 45 SignalChain1/OscillatorLevel → 0.6000000238418579 | First numeric difference 13380 (boundary +68); prechange bytes identical | CTRL-02 |
+| DAN-050 | 68 SignalChain1/AmplifierLevel → 0.6000000238418579 | First numeric difference 13380 (boundary +68); prechange bytes identical | CTRL-03 |
+| DAN-051 | 2 Volume → 0.5 | First numeric difference 13332 (boundary +20); prechange bytes identical | CTRL-04 |
+| DAN-052 | 71 SignalChain1/AmplifierPan → 0.0 | First numeric difference 13380 (boundary +68); prechange bytes identical | CTRL-05 |
+| DAN-053 | 31 SignalChain1/OscillatorSemi → 19.0 | First numeric difference 13357 (boundary +45); prechange bytes identical | CTRL-06 |
+| DAN-054 | 34 SignalChain1/OscillatorDetune → 0.6000000238418579 | First numeric difference 13357 (boundary +45); prechange bytes identical | CTRL-07 |
+| DAN-055 | 105 SignalChain1/Envelope.1/AttackTime → 0.8999999761581421 | No numeric/byte difference through frame20,991; prechange bytes identical | CTRL-08 |
+
+For DAN-056–075 (REQ-016/021), the full DAN028 script is preserved except exactly one
+listed host value. Each capture uses all203values (index99=1), note-on4400/key60/velocity100,
+note-off35270/velocity64, zero input/flag0, rate44100, stopped transport(position0/120BPM),
+one44100-frame process request in512-frame blocks, then destroy. The fresh DAN028
+capture is an explicit control alias CONTROL-DAN028-P1, not a new case or a regrading of
+the old reference. All21captures have finite samples, positive per-channel RMS and
+byte-identical channels in this supplied history.
+
+| Case | Single host input change | Finite expected observation | Source capture |
+| --- | --- | --- | --- |
+| DAN-056 | 89 SignalChain1/Envelope.0/Loop = 1 | Byte-identical to control; last observed nonzero 40805 | mode-01-i89-v1 |
+| DAN-057 | 89 SignalChain1/Envelope.0/Loop = 2 | Byte-identical to control; last observed nonzero 40805 | mode-02-i89-v2 |
+| DAN-058 | 89 SignalChain1/Envelope.0/Loop = 3 | Byte-identical to control; last observed nonzero 40805 | mode-03-i89-v3 |
+| DAN-059 | 90 SignalChain1/Envelope.0/FreeRun = 1 | Byte-identical to control; last observed nonzero 40805 | mode-04-i90-v1 |
+| DAN-060 | 91 SignalChain1/Envelope.0/Legato = 1 | Byte-identical to control; last observed nonzero 40805 | mode-05-i91-v1 |
+| DAN-061 | 101 SignalChain1/Envelope.1/Loop = 1 | First numeric difference vs control 15525; last observed nonzero 40805 | mode-06-i101-v1 |
+| DAN-062 | 101 SignalChain1/Envelope.1/Loop = 2 | First numeric difference vs control 15525; last observed nonzero 40805 | mode-07-i101-v2 |
+| DAN-063 | 101 SignalChain1/Envelope.1/Loop = 3 | First numeric difference vs control 35245; last observed nonzero 44099 (window censored) | mode-08-i101-v3 |
+| DAN-064 | 102 SignalChain1/Envelope.1/FreeRun = 1 | First numeric difference vs control 15525; last observed nonzero 21085 | mode-09-i102-v1 |
+| DAN-065 | 103 SignalChain1/Envelope.1/Legato = 1 | Byte-identical to control; last observed nonzero 40805 | mode-10-i103-v1 |
+| DAN-066 | 172 SignalChain2/Envelope.0/Loop = 1 | Byte-identical to control; last observed nonzero 40805 | mode-11-i172-v1 |
+| DAN-067 | 172 SignalChain2/Envelope.0/Loop = 2 | Byte-identical to control; last observed nonzero 40805 | mode-12-i172-v2 |
+| DAN-068 | 172 SignalChain2/Envelope.0/Loop = 3 | Byte-identical to control; last observed nonzero 40805 | mode-13-i172-v3 |
+| DAN-069 | 173 SignalChain2/Envelope.0/FreeRun = 1 | Byte-identical to control; last observed nonzero 40805 | mode-14-i173-v1 |
+| DAN-070 | 174 SignalChain2/Envelope.0/Legato = 1 | Byte-identical to control; last observed nonzero 40805 | mode-15-i174-v1 |
+| DAN-071 | 184 SignalChain2/Envelope.1/Loop = 1 | Byte-identical to control; last observed nonzero 40805 | mode-16-i184-v1 |
+| DAN-072 | 184 SignalChain2/Envelope.1/Loop = 2 | Byte-identical to control; last observed nonzero 40805 | mode-17-i184-v2 |
+| DAN-073 | 184 SignalChain2/Envelope.1/Loop = 3 | Byte-identical to control; last observed nonzero 40805 | mode-18-i184-v3 |
+| DAN-074 | 185 SignalChain2/Envelope.1/FreeRun = 1 | Byte-identical to control; last observed nonzero 40805 | mode-19-i185-v1 |
+| DAN-075 | 186 SignalChain2/Envelope.1/Legato = 1 | Byte-identical to control; last observed nonzero 40805 | mode-20-i186-v1 |
+
+REQ-001's legacy repeat-run observations and the proposed general comparison chapter
+do not add unmeasured oracles to these new cases. These records are raw stereo reference
+data and finite observed relations, not a new portable waveform comparator. Descriptive RMS/peak/mean summaries in the catalog use
+host binary64; they are not calibrated tolerances. The released onset/envelope/stationary
+eligibility is not extended to these cases. Last observed nonzero at44,099 is capture-window
+censored, not eventual tail duration or a voice-end bound. Differences between separate
+fixed-input runs are not parameter-arrival, latching or host-latency measurements.
+No seed/repeat-run determinism, simultaneous modes, general lifecycle, actual Live binding
+or native ARM/Apple equivalence follows. ADR0003's arm64 inference caveat applies to
+these extracted expectations; no candidate conformance result or new release is claimed.
+
+### Revision 4 finite velocity-byte observations
+
+The [R4 catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r4-velocity-finite-v1/cases128.json) adds 127 **X finite native observations**, DAN-076–202,
+from the [sole independent actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-velocity-bytes-v1-review.json)
+SHA256 `8e62cca3b4de5efa1ebefb919f193cb90bdd45a0d4d1166f9ac42dc27374d71b`.
+The full 128-point catalog includes velocity 100 solely as the existing DAN-028 /
+CONTROL-DAN028-P1 historical reference, with no new ID or execution. The 127 new IDs
+follow ascending fresh velocity order 0–99, 101–127. All 75 prior IDs, 67 table rows and
+28 R3 finite case objects remain exact; these units are navigation, not outcome/pass totals.
+
+Every evaluation supplies the catalog's same 203 ordered binary32 parameter words
+(index 99 = 1), with all eight AmpMod/AttackMod fields 0. The recorded context is rate 44,100 Hz,
+zero input and flag 0, no warmup, stopped transport (position 0, 120 BPM), a note-on at
+frame 4,400 (status 0x90, key 60, selected integer velocity), and a note-off at frame
+35,270 (status 0x80, key 60, velocity 64). One 44,100-frame process request uses
+512-frame blocks (last block 68 frames), followed by destruction. Each fresh capture has
+its own process and exact script/receipt/PID/time links; inherited velocity 100 has only historical
+provenance. The shared vector/history and individual script/output pins are in the catalog.
+A1/A2 remain assumptions about Live, not newly observed public receiver behavior.
+
+The approving review retains each case's recorded Linux providers, typed raw/flag
+carriers and endpoint-custody, floating-point, durability and process-cleanup limits.
+Those observations supply no Apple-host or continuously attested runtime binding.
+
+At velocity 0, both channels contain 44,100 positive-zero samples, with peak/RMS/mean 0 and
+no first/last nonzero frame. Each of the 126 fresh positive-velocity captures is finite,
+has byte-identical left/right channels and matches the inherited velocity-100 output SHA256
+`c78d03bc527a8f0776cb84c5da401be9f49abf7b2b9bea9838ffcce0f6f56772`.
+Their per-channel peak is 0.4791160523891449, RMS 0.1475852307858183,
+mean 0.058815737467571426, with 36,405 numeric nonzero frames, first 4,401 and last 40,805.
+These exact finite facts become native expectations with extracted-execution provenance.
+Hash comparison uses approved historical metadata; no old-audio bytewise comparison or
+fresh velocity-100 control is implied. No repeat/seed stability or general velocity law follows.
+
+Original fresh waveform-prior NULLs remain immutable. Portable expected outputs,
+comparators and candidate grades are NULL; descriptive binary64 metrics and native
+hashes introduce no portable waveform criterion or accepted tolerance. The existing
+comparison metric, timing/state/error/U clauses and released 38 groups / 42 evaluations remain
+unchanged. No whole-Live execution, public mapping/dispatch, ARM/Apple equivalence,
+physical calibration, new release or whole-product closure follows; ADR 0003's arm64
+inference caveat applies. Review here concerns only added wording/mapping/preservation;
+observations are inherited by citation and are not reviewed again.
+
+### Revision 5 finite typed note-key observations
+
+The [R5 catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r5-note-keys-finite-v1/cases128.json)
+adds127 **X finite native observations**, DAN-203–329, from the
+[sole independent actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-note-keys-v1-review.json)
+SHA256 `2c1d02a7f73b9ef4588fb43b061efeb7d82f395044254415fe5686646e71e37a`.
+The128-point catalog includes key60 solely as the existing DAN-028 / CONTROL-DAN028-P1
+reference, with no new ID, original replay or fresh receipt. New IDs follow ascending
+fresh key order0–59,61–127. All202 prior IDs,67 prior table rows,28 R3 finite case objects,
+the complete R4 velocity catalog and released38 groups/42 evaluations remain exact.
+These navigation units are not behavior/pass totals.
+
+Only BOTH matching note-on and note-off key bytes vary across0–127. Every evaluation
+supplies the same203 ordered binary32 parameter words (index99=1), all eight
+AmpMod/AttackMod fields0, rate44100Hz, zero input/flag0, no warmup and stopped
+transport0/0/120. A note-on at4400 has status0x90/velocity100; note-off at35270 has
+status0x80/velocity64. One44100-frame process request uses512-frame blocks (last68),
+followed by destruction. The shared vector/history, exact event16-byte words and
+individual script/output/receipt/PID/time references are in the catalog. Inherited key60
+retains only approved historical provenance. A1/A2 remain Live-side assumptions.
+
+The approved summary records every fresh capture finite in both channels, with
+byte-identical left/right output and first nonzero frame4401 in this exact history.
+Each case retains its own reviewed native output identity and per-channel descriptive
+metrics as finite native expectations. Among127 fresh captures there are125 distinct
+hashes: keys125/126/127 share hash
+`47caef58ceb23dc37b0172d432320e39f8d8ae1b02d78a17b6fa4756d08f1a0f`.
+This is descriptive equality of those captures, not a clamp, alias, periodicity or pitch
+mechanism. No fresh hash matches the inherited key60 hash; old audio was not reread.
+Neither an f0 estimate nor a general frequency/key-range/onset law was tested here.
+REQ-004 is the finite mapping; REQ-006 remains unchanged pitch context only.
+
+Historical335 pitch rows omit complete203word/event/render/phase information.
+They supply no additional exact-context inherited joins or universal absence claim.
+All original fresh waveform-prior NULLs remain immutable. Portable expected outputs,
+comparators and candidate grades remain NULL. No new metric, model, fitting, tolerance,
+physical calibration, general pitch/channel law, public Live A1/A2 behavior or Apple/ARM
+compatibility is admitted. The sole actual review's recorded provider/import/typed-flag,
+endpoint-custody, floating-point, durability and process-cleanup qualifications remain.
+Hash identities and descriptive binary64 values are not portable waveform criteria.
+
+All R4 requirement bytes remain exact prefixes (the other22 whole bodies are exact),
+and existing U/state/error/history, comparison tolerances and release scope are unchanged.
+This revision introduces no new original call or handoff release; required unsupported
+behavior keeps whole-product coverage OPEN. Owner review concerns only new wording,
+case mapping/IDs and preservation; approved observations are inherited by citation.
+
+### Revision 6 finite matching channel-nibble observations
+
+The [R6 catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r6-channel-finite-v1/cases16.json) adds 15 finite **X native observations**,
+DAN-330–344, in ascending nibble order 1–15, from the
+[sole actual/source approval](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-channel-nibbles-v1-review.json)
+SHA256 `9cf7ed07ada75e3d8064e8a9e75791ce17d3efd5debbeb89ac1535eb90ab9108`.
+The complete 16-point catalog retains nibble 0 only as the existing DAN-028 /
+CONTROL-DAN028-P1 reference, with no duplicate ID, fresh control, receipt, PID or
+UTC. All 329 prior IDs, 67 table rows, 28 R3 objects and the complete 128-point
+R4 velocity and R5 note-key catalogs remain exact. The resulting 344 navigation
+IDs are not compatibility outcomes, grades or passes.
+
+Only both matching status low nibbles vary: note-on `0x90 | n` and note-off
+`0x80 | n`. The catalog records all 32 packed 16-byte event words. Key 60,
+note-on velocity 100, note-off velocity 64 and all 203 ordered binary32 parameter
+words (index 99 = 1, eight AmpMod/AttackMod fields 0) stay fixed. The P1 context
+is 44,100 Hz, zero input and flag 0, no warmup, stopped transport at position 0
+and 120 BPM, note-on at frame 4,400 and note-off at 35,270, one 44,100-frame
+process request in 512-frame blocks (last block 68), followed by destruction.
+No new event type, reset, segmentation or state crossproduct is inferred.
+
+Every fresh capture is finite and nonzero, with byte-identical left/right
+channels and first nonzero frame 4,401. Each matches the inherited nibble-0
+output SHA256 `c78d03bc527a8f0776cb84c5da401be9f49abf7b2b9bea9838ffcce0f6f56772`
+and its approved descriptive per-channel observations. Exact native identities,
+input scripts and retained receipt/provenance links are in the catalog. These
+finite facts become native expectations with extracted-execution provenance.
+The comparison uses approved historical metadata; old nibble-0 audio was not
+reopened, and no fresh paired baseline is implied. Equal hashes here establish
+no general channel invariance, repeat/seed stability, pitch or mechanism law.
+
+The historical channel-2 bare Boolean lacks a complete vector/event/render/
+phase/provenance bridge and supplies no additional exact-context inherited
+point or universal historical absence claim. Original fresh waveform priors,
+portable expected outputs, comparators and candidate grades remain NULL.
+Descriptive binary64 metrics and native hashes introduce no portable waveform
+criterion, new metric, fit, f0 estimate, tolerance or physical calibration.
+
+The approving review's recorded Linux providers, import-declaration versus code-
+use distinction, typed-return/flag and host-parse limits, endpoint/interpreter/
+floating-point custody, process-cleanup and regular-file fsync qualifications
+remain part of each observation. No current receiver/table/class/ABI or public
+Live A1/A2 channel path, Apple-host equivalence or ARM execution is proved;
+ADR 0003's arm64 inference caveat applies. All other requirement bodies, the old
+REQ-004 prefix, existing U/state/error/history, comparison tolerances and the
+released 38 groups / 42 evaluations remain unchanged. R4/R5 statements about
+unchanged bodies describe those revisions. No new release, candidate result or
+whole-product closure follows. Only new wording/mapping/ID/preservation needs
+the owner review; approved observations are inherited without actual replay.
+
+### Revision 7 finite note-off release-velocity observations
+
+The [R7 catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r7-release-velocity-finite-v1/cases128.json) adds 127 finite **X native observations**,
+DAN-345–471, in ascending release-byte order 0–63 and 65–127, from the
+[sole actual/source approval](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-release-velocity-bytes-v1-review.json)
+SHA256 `39514f4b22476e9fa4e32f3131785d138981e44c5ca8198652d996a718bf7c2e`.
+The complete 128-point catalog retains byte 64 only as the existing DAN-028 /
+CONTROL-DAN028-P1 reference, with no duplicate ID, fresh control, receipt, PID or
+UTC. All 344 prior IDs, 67 table rows, 28 R3 objects, the complete 128-point R4
+velocity and R5 note-key catalogs, and the 16-point R6 channel catalog remain
+exact. The resulting 471 navigation IDs are not compatibility grades or passes.
+
+Only note-off data2 varies. Status `0x80`, key 60 and frame 35,270 remain fixed;
+note-on is at frame 4,400 with status `0x90`, key 60 and velocity 100. All 203
+ordered binary32 parameter words (index 99 = 1, eight AmpMod/AttackMod fields 0)
+remain fixed. The P1 context is 44,100 Hz, zero input and flag 0, no warmup,
+stopped transport at position 0 and 120 BPM, one 44,100-frame process request
+in 512-frame blocks (last block 68), followed by destruction. All 256 packed
+16-byte event words and the 127 complete scripts are retained through the
+approved summary. No event type, reset, segmentation or state crossproduct is
+added.
+
+Every fresh capture is finite and nonzero, with byte-identical left/right
+channels, first nonzero frame 4,401 and last nonzero frame 40,805. Its output
+SHA256 is `c78d03bc527a8f0776cb84c5da401be9f49abf7b2b9bea9838ffcce0f6f56772`,
+matching the inherited byte-64 identity and approved descriptive observations.
+Exact native output identities, both-channel descriptors and input/receipt
+provenance are in the catalog. These finite results become native expectations
+with extracted-execution provenance. The equality joins fresh hashes to
+approved historical metadata; old byte-64 audio was not reopened or compared
+bytewise, and no fresh paired baseline is implied. These facts establish no
+general release/no-effect law, note dispatch, timing, repeat/seed stability,
+pitch or mechanism.
+
+The earlier release-127 bare Boolean lacks the complete vector/event/render/
+phase/provenance bridge and supplies no additional exact-context inherited
+point or universal historical absence claim. Original fresh waveform priors,
+portable expected outputs, comparators and candidate grades remain NULL.
+Descriptive binary64 metrics and native hashes introduce no portable waveform
+criterion, new metric, fit, f0 estimate, tolerance or physical calibration.
+
+All new capture code, including the parent launcher, was pre-call file-bound.
+The approved same-PID, planned exec-argv/environment and pre-call-seal receipts
+are source-level records, not independent OS execution/interpreter or child
+floating-point attestation. Per-child runtime/local/script endpoint hashes and
+whole-batch authority hashes do not establish continuous or transitive loaded
+state. Import declarations remain distinct from counted code use; selected
+direct exports and logged initializers do not bound nested native calls. Rate
+return and activity flags retain their recorded values without public meaning.
+Regular-file fsync was requested, without directory or crash-durability proof;
+post-child failure detection, cleanup and escaped-descendant limits remain.
+
+No current receiver/table/class/ABI or public Live A1/A2 release/timing path,
+Apple-host equivalence or ARM execution is proved; ADR 0003's arm64 inference
+caveat applies. The 22 other whole requirement bodies, old REQ-004 prefix,
+existing U/state/error/history, comparison tolerances and released 38 groups /
+42 evaluations remain unchanged. Earlier revision statements describe those
+revisions. No new release, candidate result or whole-product closure follows.
+Only added wording, mapping, IDs and preservation need the owner review;
+approved observations are inherited without an actual/source/raw replay.
+
+### Revision 8 finite supplied host-integer observations
+
+The [R8 cases](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r8-kind3-transpose-finite-v1/cases232.json) add 232 finite **X native observations** in one revision.
+The [whole 25-point Transpose catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r8-kind3-transpose-finite-v1/transpose-catalog25.json) assigns DAN-472–495 to the 24 fresh
+host-index-4 values 0–11 and 13–24; host 12 references existing DAN-028/P1.
+The [whole kind3 catalog](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r8-kind3-transpose-finite-v1/kind3-catalog338.json) retains all 338 index/value aliases and 254 full
+vectors from the 85 declared native integer domains. Its 208 further fresh
+vectors receive DAN-496–703 in recorded index/value order. Its other vectors
+reference the same 24 Transpose IDs, the existing DAN-028 baseline, 20 R3 mode
+cases and DAN-029 (index 100 = 0). The 85 baseline aliases share one vector.
+No alias creates an extra case, capture, PID, receipt or measurement. All 471
+prior IDs, 67 table rows, 28 R3 objects and complete R4/R5/R6/R7 catalogs remain
+exact. The resulting 703 navigation IDs are not compatibility grades or passes.
+
+Observation authority is the [sole Transpose actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-transpose-integers-v1-review.json)
+SHA256 `18904de75c1234e0b274e76decee87ea78025a318b13dd56858df2c2588c60c1`
+and [sole kind3 actual/source review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-kind3-host-domains-v1-review.json)
+SHA256 `58c868b77ce262b412fdd22a9d58049da2e28e9dcb76072796bd235213c4f7dd`.
+Only those approved summaries supply new native identities, descriptors and
+provenance; this owner adoption does not repeat actual/source/raw review.
+
+Each capture changes one supplied native host word only. The other 202 ordered
+binary32 words, including the fixed eight AmpMod/AttackMod fields 0 unless that
+selected word is itself varied, remain at the recorded P1 values. The catalog
+records every full vector and host token/f32/reconstructed-f64 projection.
+Key 60, on-velocity 100 at frame 4,400, off-velocity 64 at frame 35,270, 44,100 Hz,
+44,100 frames, 512-frame blocks (last 68), no warmup, zero input and flag 0,
+stopped transport 0/0/120, clock 0 and existing unperturbed method remain fixed.
+This is a one-index class, with no parameter, voice or event-state crossproduct.
+Declared native integer ranges do not independently establish Live emission,
+stored-value conversion, current parameter/receiver binding or public legality.
+
+All 24 Transpose captures are finite, nonzero and equal between channels, with
+24 distinct fresh hashes. All 208 further captures are finite and equal between
+channels, with 42 distinct fresh hashes. Silent i028-v00 and i065-v00 are retained.
+Index-99-zero i099-v00 remains explicitly **measurement-only auxiliary**, not
+an admitted application predicate, portable criterion or calibration case. Exact
+recorded native output hashes and per-channel word counts become finite native
+expectations in their supplied contexts. They are no general invariance,
+inactive-control, repeat/seed stability, mechanism, pitch or deterministic
+waveform law. REQ-006's pitch formula and all event/timing claims remain exact
+as previously written, without new validation here.
+
+Every relevant join retains the Transpose review's historical label
+qualification: its exact 80,667-byte owner pin identifies R7, although that
+frozen packet's scalar revision 6 and R6 prose are stale. Those bytes are not
+repaired and the discrepancy changes no input, model or finite result. The
+kind3 packet's own R7 identity is retained separately. The 47 old script and
+42 released-input projections are bounded input metadata, not a repeated old
+audio/criterion audit or universal historical-absence proof; the earlier 335
+source-version/executed-report association remains unknown. Inherited R3,
+baseline, Transpose and DAN-029 references acquire no new receipts or metrics.
+
+Original fresh waveform priors, portable expected outputs, comparators and
+candidate grades remain NULL. Exact finite native identities introduce no new
+metric, window, f0 estimate, fit, tolerance or physical calibration. Common
+whole-batch initial-to-child-after custody is not per-child-before or continuous
+loaded-provider/interpreter/OS execution/floating-point attestation. Import
+declarations stay distinct from counted code use; selected exports and logged
+initializers do not bound nested native work. Rate returns and activity flags
+retain their recorded values without a public meaning. Raw logs/audio were
+closed and hashed without explicit FD fsync; JSON regular-file fsync does not
+prove directory or crash durability. Post-child detection, group cleanup and
+escaped-descendant limits remain part of each observation.
+
+Only the bounded REQ-003 qualification is appended. The 22 other whole bodies,
+old REQ-003 prefix, every old acceptance annex, U/state/error/history, comparison
+tolerances and released 38 groups / 42 evaluations remain unchanged. ADR 0003's
+arm64 inference caveat applies. No public A1/A2, receiver/ABI, clock/audio,
+Apple/ARM equivalence, new release, candidate result or whole-product closure
+follows. Earlier revision count/preservation statements describe those revisions.
+The sole new owner review covers added wording, IDs, joins and preservation.
+
+### Revision 9 finite independent On/Off key and channel observations
+
+The [complete catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r9-independent-midi-finite-v1/cases285.json) retains 288 aliases / 285 WHOLE histories at one fixed
+203-word P1 vector. DAN-704–987 are 284 fresh observations: On key 0–127
+except 60 with Off key 60 fixed; Off key 0–127 except 60 with On key 60 fixed;
+On channel 0–15 except 0 with Off status 80 fixed; Off channel 0–15 except 0
+with On status 90 fixed. No paired key/channel changes, crossproducts,
+extra events, timing segmentation, host update or state changes.
+The four baseline aliases share ONE DAN-028 / CONTROL-DAN028-P1 INPUT
+reference without a new ID, original call, PID, receipt, output, metric,
+expectation or criterion. [All 288 joins](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r9-independent-midi-finite-v1/joins288.json) preserve complete histories,
+two packed 16-byte events, original decimal/binary64/binary32 words and
+exact approved-summary pointers; parameter-only dedup is invalid.
+
+Only [Auto's sole actual/source review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-independent-midi-bytes-v1-review.json),
+SHA-256 `5831d673770bc95169cffc2694ef5e6a77a0bd4dee3bf3b7336b1664b10a37e7`,
+supplies these finite observations. This owner maps that approved summary
+without actual/source/raw/audio/numeric re-review. Fresh output identities
+and unsigned word summaries are descriptive native references; they are
+not portable candidate waveform criteria. No old baseline audio is replayed
+or compared, and no prior criterion or modal budget transfers to new cases.
+
+All 203 original ordered decimal tokens and their parsed binary64/binary32
+identities remain fixed. The vector hashes to
+`18a94879168c2f73d621883d3a60b14de6f54a2b396fb8a0b11284c799926ed3`;
+index 99=1 and all eight AmpMod/AttackMod words remain zero. The unchanged
+P1 recipe uses rate 44100/render 44100/block 512/last 68, no warmup, zero input/
+flag 0, baseline On 4400/status 90/key 60/velocity 100 and Off 35270/status 80/
+key 60/velocity 64. Only the named event byte changes. Existing stopped
+transport 0/0/120, TIME0, per-entry MXCSR1f80 and unperturbed bindings are
+recorded-model context, not native FP/ABI or public current-receiver proof.
+No new constructor model, tool, build, patch, provider, FP treatment or
+calibration is introduced. Supplied coordinates do not prove Live timebase.
+
+All 284 approved fresh outputs are finite, nonzero and channel-word-equal;
+126 fresh hashes are descriptive only. Quiet/unequal outputs were permitted
+by the frozen guard and were not omitted through output-driven selection.
+These facts prove no unmatched-key handling, cross-channel matching,
+release/gating/voice semantics, productive control, deterministic waveform,
+physical accuracy or public/ARM law. The old shorter Boolean/input/source-
+version/default qualification and bounded 47-script intersection remain
+scoped metadata; no global absence or old-source execution attribution is
+repaired. All fresh waveform priors/new expectations, portable expected/
+comparator/grade stay NULL. No f0, estimator, metric, fit, window, tolerance,
+calibration, velocity-zero dispatch or new application proof is added.
+
+All new capture/parent/analysis/checker/initial-assembler source was file-
+bound before calls for THIS batch. The materializer is historical, not a
+final regenerator; this does not repair earlier preparation/checker/source/
+default/FP/OSexec qualifications. One common set of 311 initial identities matches
+each of 284 child-after snapshots (88,324 pairs), NOT separate per-child before
+snapshots or continuous loaded-provider/interpreter/mapping/FP proof.
+The parent and recorder have distinct PIDs; their recorded argv/endpoints
+are not independent OSexec attestation. Native raw/stdout/stderr FDs were
+closed/hash checked without explicit FDfsync; JSON receipts explicitly
+requested fsync, without directory/crash/powerloss durability. An author
+live checkpoint JSON read raced an ordinary in-progress truncate/write;
+final closed JSON was checked, with no capture retry or record repair.
+Post-child guards cannot retract earlier within-child calls. Cleanup of
+selected groups/direct children does not exhaust parent-loss/escaped/native
+process paths; normal runs do not validate failure paths. Resource floors,
+soft packet bounds and conditional overshoot remain recording limits,
+not OS quotas, reservations or unmodeled-file/external-writer guarantees.
+The existing r2-large lexical/resolved storage adds no relocatability claim.
+
+132 declared bindings (99 Linux/26 trap/7 data) differ from counted use: 64 Linux
+code names per child. Neither proves provider/global-data absence. Each
+child has 293 selected direct exports/87 CalcA plus initializer 314d0 logged
+separately; nested/all-native call counts remain unknown. Rate's signed
+integer remains opaque, not a public success/type/sample-clock law.
+
+Only bounded REQ-004 wording is appended. All 22 other whole requirements,
+including ENTIRE R8 REQ-003, old 004 R7 prefix, 67 original rows/703 prior IDs,
+all R3–R8 objects/catalogs, auxiliary i099=0 measurement-only status, silent
+gate observations, stale Transpose scalar-vs-exact-pin qualifications,
+old NULL criteria/general U/tolerances/state/error/history and released
+38 groups/42 evaluations remain unchanged, with full R8 reversal. The
+resulting 987 navigation IDs are not passes or application-outcome units.
+No release, portable criterion, public A1/A2/ARM grade, calibration, main-site
+credit or whole-product closure follows. Required unsupported U stays open.
+
+### Revision 10 finite converted Polyphony and virtual-target observations
+
+The [complete catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r10-converted-virtual-enums-finite-v1/cases194.json) adds 193 finite native observations,
+DAN-988–1180, across 198 aliases / 194 WHOLE histories. [Case references](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r10-converted-virtual-enums-finite-v1/new-cases193.json)
+and [all 198 joins](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r10-converted-virtual-enums-finite-v1/joins198.json) map each approved input to its recorded output.
+One inherited DAN-028 / CONTROL-DAN028-P1 INPUT reference serves five aliases
+without a new ID, original replay, PID, receipt, output, metric or criterion.
+These are bounded supplied-input observations associated with REQ-002/003;
+all existing requirement bodies remain unchanged. No broader conversion or
+public binding claim is newly validated, and REQ-005 gains no voice law.
+
+The five stored axes are Polyphony values 0–9 and four target domains 0–46.
+Polyphony supplies host 0=max(v−1,0) and host 7=(v>0.5) JOINTLY, with no
+independent 0/7 crossproduct. ChannelPressureTarget1/2 and MpeCC74Target1/2
+independently change host 195/197/199/201. Thus six virtual host entries are
+covered through five complete stored axes at the same P1 history, without
+changing any other word or adding pressure, slide, CC74, reset, timing,
+rate/block or state comparisons. The five extra rate/block points in the
+INPUT assessment were not selected. Parameter-only identity is insufficient.
+
+All four amount words at 196/198/200/202 remain exactly 0.5 in every one of
+the 194 histories: binary32 `0000003f`, binary64 `000000000000e03f`.
+[The sole actual review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-converted-virtual-enums-v1-review.json),
+SHA256 `acbc34ff27bb1bad169e6f3eec655f5bea025098d8978f977e513855f33e407d`,
+checks BOTH immutable INPUT v1 and mandatory erratum. Their single-field
+composition is 3,893,689 bytes/SHA256
+`99b9fa8b590f77601c2f79e4de7b04db731d67fc2cdc0651126a3124d1571408`.
+The wrong v1 main-field and embedded-method zero-amount prose is historical,
+explicitly superseded; no embedded materializer was executed. The original
+catalog and script amounts were already 0.5. No dormancy, inactivity,
+productive MPE dispatch or general no-effect law follows from this class.
+
+All 203 original decimal tokens/reconstructed binary64/converted binary32
+words remain exact except the selected coupled or individual host entries.
+Index 99=1, no warmup, create/rate 44100/203 setters/On 4400 status 0x90 key 60
+velocity 100/Off 35270 status 0x80 key 60 velocity 64/input flag 0/zero input/
+process 44100 at 512 (final 68)/destroy remain the recorded P1 recipe. TIME0,
+stopped transport 0,0,120 and existing per-entry MXCSR1f80 are inherited model
+context, not traced native input registers/FP state, source/default provenance,
+Live event-clock or public current receiver. No new constructor, provider,
+patch, tool, original body/callee or stored-to-host experiment is introduced.
+
+Only the approved summary supplies native observations; this owner performs
+no actual/source/raw/audio/numeric proof re-review. All 193 fresh outputs
+are finite, nonzero and channel-word-equal, with three distinct file hashes,
+descriptive only. Each new native expected file identity is copied directly
+from that summary for its exact supplied x86/Linux history; it is not a
+portable waveform criterion or general deterministic/effect law. Frozen fresh
+waveform priors stay NULL. New portable expected/comparator/grade remain
+NULL; new application proof is false. No f0, fit, metric, window, tolerance,
+physical calibration, voice capacity/stealing/labels, MPE/public/A1A2/ARM
+law or repaired old 335 source-executed-version gap is implied.
+
+The recorded initializer 314d0 entries (193) are separate from 56,549 selected
+exports /16,791 CalcA; all nested/native call counts remain unknown. Rate's
+literal 1 remains opaque. 132 declared bindings (99 Linux, 26 trap, seven data)
+differ from 64 counted Linux code names per child; this proves no provider or
+global-data absence. Eight whole-source endpoint pairs and 3,088 actual
+per-child 16 before/after pairs are recorded equality only, not continuous
+provider/interpreter/cache/native FP/ABI/source-origin or OSexec attestation.
+The same-PID parent/precall/argv bridge remains source-level metadata.
+
+All six new capture/parent/analysis/checker/initial-assembler sources were
+pre-call bound according to the approved review. The initial materializer
+is historical, not a final-directory regenerator. A checker count-substring
+mistake was corrected while mutable before input checks/freeze/calls; no
+native retry or frozen repair. New log/audio/JSON/JSONL FDfsync requests
+prove no directory/crash/powerloss durability and repair no old gap. Resource
+256 MiB lifecycle + 128 MiB headroom and remaining-output guards are unreserved,
+not quotas or protections against current-child overshoot/concurrent writers.
+Posthoc guards cannot retract prior within-child calls. Failure cleanup,
+escaped/native paths and uncatchable parent loss were not tested by normal
+success. Older source/default/FP/provider/0664/OSexec/fsync limits remain.
+
+All 23 whole requirement bodies, including ENTIRE REQ-003/R8 and REQ-004/R9,
+67 original rows/987 prior navigation IDs, R3–R9 objects/catalogs/old Acceptance
+prefix, auxiliary i099=0 measurement-only/silent-gate/stale scalar qualifiers,
+criteria/tolerances/U/state/error/history and released 38 groups/42 evaluations
+remain exact, with full reversal to R9. The resulting 1,180 navigation IDs
+are not passes or application-outcome units. No new release, grade, site
+credit, physical calibration or whole-product closure follows. Required
+unsupported U remains open.
+
+### Revision 11 finite secondary rate and block histories
+
+The [complete catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r11-secondary-protocol-finite-v1/cases6.json) and
+[joins](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r11-secondary-protocol-finite-v1/joins7.json) add five finite **X native observations**,
+DAN-1181–1185: 48000 Hz/block 512, then 44100 Hz/blocks 64, 256, 333 and 2048.
+The complete class contains six whole histories and seven aliases, not a
+rate-by-block crossproduct. The 44100 Hz/block 512 baseline serves two
+INPUT-only aliases with DAN-028 / CONTROL-DAN028-P1 navigation. It receives
+no new ID, original call, PID, receipt, output, metric or criterion transfer.
+Old baseline audio was not reopened or compared. REQ-001 and REQ-023 supply
+protocol/rate navigation only; all twenty-three whole requirement bodies,
+including their existing qualified broader X/S/U scope, remain exact.
+
+Only the [sole actual/source review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-secondary-protocol-v1-review.json),
+SHA256 `34aaab784bb5e7a3a9fd1635f1a2fd5bdc51a2db0fecddaaa39f016bbf057a12`,
+supplies the five observations. This annex maps its complete approved summary
+without a second actual/source/raw/audio/numeric review or new execution.
+Every point supplies the same 203 original decimal tokens and reconstructed
+binary64/binary32 P1 words, index 99=1 and the same eight zero modulation words.
+On remains frame 4400/status 0x90/key 60/velocity 100; Off remains frame
+35270/status 0x80/key 60/velocity 64. There is no warmup, reset, extra event,
+new parameter/timing crossproduct or history substitution. All points process
+exactly 44,100 frames, including the 48 kHz point: frames/events are NOT rescaled
+and that point is not a 48,000-frame one-second history. Zero input/flag 0,
+stopped transport 0/0/120, TIME0, unchanged per-entry MXCSR1f80 and existing
+Linux/provider bindings remain recorded-model premises, without a new
+construction, tool, build, patch, seed, FP treatment or calibration.
+
+| New case | Rate | Block | CalcA | Final block | Selected direct exports |
+| --- | --- | --- | --- | --- | --- |
+| DAN-1181 | 48000 | 512 | 87 | 68 | 293 |
+| DAN-1182 | 44100 | 64 | 690 | 4 | 896 |
+| DAN-1183 | 44100 | 256 | 173 | 68 | 379 |
+| DAN-1184 | 44100 | 333 | 133 | 144 | 339 |
+| DAN-1185 | 44100 | 2048 | 22 | 1092 | 228 |
+
+The block-64 capture's 690 CalcA records are retained positive finite evidence,
+not a generic xexec 256-call cap or an unlimited-call claim. The unchanged
+admitted device xdev is 149,608 bytes/SHA256
+`3eec4ad1cfa0765c9e8267806cf02b7e664a07157043e3a170388cfa4d63cf14`;
+its retained 8,128-byte source identity is
+`2e550951a4c7eb669ecdf9fa50734b2227c0768cda0b62099e2e975bad9430a9`.
+Source/model association is inherited, not independently rebuilt or proved as
+the binary's exact executed source. Actual success is established only by the
+approved retained logs, receipts and raw bytes under unchanged ret0/flag0-or-1,
+cxx-failbits0, finite-output and custody guards. The whole five contain 2,135
+selected direct exports, 1,105 CalcA and 1,764,000 raw stereo bytes. Five logged
+0x314d0 initializers are separate; all nested/native totals remain unknown.
+
+All five outputs are finite, nonzero and channel-word-equal, with three distinct
+whole-output hashes. These are descriptive finite native references, not a new
+rate/block/grid invariance, timing-scaling, pitch or deterministic waveform law.
+No old baseline hash/output comparison or missing historical criterion is
+invented. Fresh priors and native/new waveform expectations, portable expected
+outputs, comparators and grades remain NULL; application admission is false.
+No f0, fit, metric/window, tolerance, physical calibration, public Live route,
+current receiver/clock/state or Apple/ARM equivalence follows. The existing
+MPE prose erratum and its exact 0.5 amounts remain in their R10 scope, unchanged.
+
+The selected packet omitted a direct context copy for its INPUT history hash;
+the approving peer used the exact pinned INPUT authority projection
+`/analog_selected_candidate/context` to recompute all six whole-history hashes.
+That external projection is retained in the approved summary, without frozen
+packet repair, embedded-method execution or old actual proof. The mandatory
+MPE erratum does not change this context or protocol. Old executed-source,
+335-input, default/preparation and source/version binding gaps remain qualified.
+
+One COMMON initial set of 34 identities (10 runtime plus 24 frozen files) is
+compared with each of five child-after arrays: 170 pairs, NOT fresh
+per-child-before snapshots or continuous loaded-provider/interpreter/FP/OSexec
+attestation. All six capture/checker/parent/initial assembler/finalizer sources
+and inputs/scripts were pre-call-bound; the initial assembler/fragment are
+historical stages, not final regenerators. Rate's signed integer 1 is opaque.
+132 import declarations (99 Linux, 26 trap, seven data) differ from counted code
+use; neither proves implicit provider/global absence. Entry registers/fenv and
+transitive dependencies remain untraced. ADR 0003's arm64 inference caveat applies.
+
+Raw stdout/stderr/audio FDs closed and hashed without explicit FD fsync; JSON
+receipts request fsync without directory/crash/power-loss durability. First
+post-child failures stop later children, not earlier queued calls within that
+child. Selected-group cleanup does not exhaust parent loss, uncatchable or
+escaped-descendant/native/IO paths. Unreserved 128MiB lifecycle plus 128MiB
+headroom planning, full remaining-output/metadata guards and conditional soft
+overshoot are not quotas or guarantees against external/unmodeled writers.
+No retry or guard relaxation follows. The existing storage route is not a
+relocatable protocol. Old source/FP/provider/OSexec/history limits stay attached.
+
+All 1,180 previous IDs, 67 original table rows, R3–R10 objects/catalogs,
+old acceptance annexes, all twenty-three whole clauses, metric/tolerances,
+U/state/error/history and released 38 groups/42 evaluations remain exact,
+with full reversal to R10. Preservation uses only the approved R10 owner
+report's embedded mapping and baseline; no older proposal/catalog/code,
+provider, fixture or actual proof is reopened or absent bytes reconstructed.
+The resulting 1,185 navigation IDs are not passes or a product denominator.
+Arrangement reviews only new wording, mapping, IDs and preservation; Root
+remains citation-only new proposal payloads and actual observations. No
+release, site credit, portable criterion/grade or whole-product closure follows.
+
+### Revision 13 finite four-release-control observations
+
+The [four-history mapping](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r13-four-release-controls-finite-v1/mapping.json)
+adds only DAN-1190–1193 for the four newly approved supplied histories.
+REQ-005 is context only: its whole existing body and all23 whole requirements
+remain unchanged without new validation of parent voice-capacity, stealing,
+release, activation, envelope, timing or physical assertions. Each original
+release token0.6000000238/0.2 at storedPolyphony1 has full3 note-ons versus
+exactev[:2] (first two, omitting the last scheduled note), with the SAME44100
+end. Keys48/72/96 occur at4400/8800/22000, velocity100; there are no Off events.
+No arbitrary event subset, timing/model crossproduct, warmup or reset is added.
+
+The sole actual/source authority is the [approved four-control review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-four-unlaunched-release-controls-v1-review.json),
+688112bytes/SHA256 `19b784963d1ac45db17888515748d03f0a8b2da2807bd992fc4abe74a782d222`.
+Only its approved summary supplies original203 literal decimal/binary64/
+binary32 words, scripts, histories, receipts/output references, protocol
+and observations. The original probe's six differences from P1 at
+hosts29/36/105/106/108/110 remain declared INPUT provenance; each new history
+keeps its own supplied release token. Coupled host0=0/7=1 and host110 release
+are exact, MPEamounts196/198/200/202 remain0.5; no activity/dormancy/productive
+MPE inference follows. Existing149608-byte xdev/native model/C/TIME0/LIBM-
+unset/rate44100/zeroInputflag0/process44100at512/last68/destroy, no warmup,
+MXCSR/transport insertion or new receiver/provider/tool/model/FP treatment.
+
+All four once-only captures passed unchanged ret0/flag01/CXX0/exit/stderr/
+shape/finite/custody/resource guards.348CalcA/1172selected direct exports/
+four logged initializer314d0 entries count separately; nested native/
+provider work remains U. Rate signed projection is opaque, not a native
+return-ABI/success/error/clipping/cause law. All four are finite/nonzeroBOTH/
+stereoword-equal/two raw hashes/64usedLinux names, descriptive only. Each
+full3-versus-prefix2 pair has DIFFERENT raw bytes/hashes at these supplied
+histories. This is not a residual, estimator, threshold, fit, new metric,
+waveform criterion, deterministic universal comparison or general capacity/
+stealing/release/publicLive/ARM/Apple/physical/calibration law.
+
+The full fourteen-history old AS-OF snapshot remains unchanged and separate
+from these four new observations. R12's four approved count cases DAN-1186–
+1189 stay exact; failedp04 and countp05–09 stay U without new IDs, expectations,
+metrics or grades. The four release/control histories were unattempted in
+that OLD snapshot; these new captures do not rewrite it. No failed count,
+unlaunched count tail, accepted count, baseline or mono-priority history is
+replayed/regraded/repaired and no guard relaxation, retry or automatic
+continuation is authorized. Oldp04 TWOret1/flag1 projections, unaccepted raw
+diagnostic/skippedfailedrawFDfsync and all source/default/envNone/FP/provider/
+ABI/clock/OSexec gaps retain their earlier scope; no old output/PID/receipt/
+metric/criterion transfers into these new cases.
+
+76actual per-child19before/after custody pairs plus two source pairs are
+endpoints, not continuous loaded-provider/nativeFP/register-entry/OSexec or
+source-executed-version proof. Successful raw/log/JSON FDs request fsync;
+outer files lack explicit FDfsync, no directory/crash/powerloss/old-gap
+repair follows.128MiBfull lifecycle+128MiBheadroom/fullremainingraw+8MiBfuture
+logsmetadata+64MiBfinal orremainingsoftbudget guards are unreserved/soft,
+not quotas, concurrent-writer/escaped-child/within-child-overshoot or all
+parent-loss/cleanup guarantees. Import declarations versus used counters
+and initializer versus all nested work retain their exact qualified scopes.
+
+Only this annex and revision metadata change. All1189 prior navigation IDs,
+67 original acceptance rows plus five protocol navigation rows (72 literal
+DAN rows), allR3–R12objects/criteriaU/state/error/history and releases38groups/
+42evaluations remain exact/fullreverse. Prior object preservation uses only
+currentR12 and its sole owner REPORT embedded metadata, never absent-byte
+reconstruction or oldproposals/catalogs/fixtures. New priors/native-waveform
+expectations/portable expected/comparator/grades remain NULL; application
+predicate proof false. The resulting1193 navigation IDs are not passes or
+a whole-product denominator. No release/site credit/grade/newapplication
+proof or closure; required unsupported U remains OPEN.
+
+### Revision 14 finite four-count observations under D09
+
+**Analyst draft; four additional finite observations only.** The complete
+[R14 mapping](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r14-count-opaque-finite-v1/mapping.json)
+assigns DAN-1194–1197 to the separately approved p06–p09 histories. REQ-005
+is navigation context only; these cases establish no general voice capacity,
+stealing, MPE activation, parameter-delivery, return-meaning or public law.
+The resulting 1,197 navigation IDs are not passes or a product denominator.
+
+The sole observation authority is the [independent four-count review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-count-unlaunched4-opaque-v1-review.json),
+983,811 bytes, SHA256 `b0178cac813c0480d65383a0af92f545957e4c5f68c4a7f3ac0dfd3832a39687`.
+Its complete four approved points, exact inputs, source-case/receipt/output
+references and literal ordered return/flag metadata are joined without a
+second actual, source, raw, numeric or provider proof review. All fresh
+waveform priors, native waveform expectations, portable expected values,
+comparators and grades remain NULL; new application proof is false. Native
+output hashes are descriptive references, not portable waveform criteria.
+
+This is the exact user-adopted D09 suffix: only p06–p09 are new observations.
+CalcA's logged signed64 projection is retained in order and canonical run
+lengths as opaque DATA. The observed 638 zeros and 190 ones establish no
+zero/one domain, native ABI, success/error, benignness or failure-cause law.
+Likewise 24 flag-zero and 804 flag-one projections are literal observations,
+not a public activity or flag-success law. The existing flag0or1 and every
+other guard remain unchanged. D09 does not apply retrospectively to any
+older record or automatically to other Analog histories or device families.
+
+The original probe's 203 decimal/binary64/binary32 words and six P1
+differences remain explicit. Polyphony stored 6–9 uses the declared joint
+host-0/host-7 conversion; the four MPE amounts remain exactly 0.5. The
+36 note-ons retain their original order at 4400 + 2200*i, keys 36–71 and
+velocity 100, with no note-offs or warm-up. Rate is 44100, render end
+105650, block 512 and final block 178. The admitted construction, event
+types, model, providers and FP treatment are unchanged; no parameter
+crossproduct or physical calibration is added.
+
+All four approved outputs are finite, nonzero in both lanes and stereo-word
+equal, with four hashes and 64 counted used-Linux code names. Those are
+descriptive finite observations only, not new equality, productivity,
+waveform, metric, residual, tolerance, pitch, capacity or numerical criteria.
+The four account for 1,652 selected direct exports and 828 CalcA projections;
+four logged initializer entries are separate and nested/all-native work is U.
+
+Previously launched p00–p05 are excluded and were not replayed. Failed p04
+and p05 remain U under their frozen strict guards, without reclassification,
+new receipts, expectations or repair. The R12 fourteen-history and later
+five-count partial snapshots remain unchanged ASOF metadata; their old
+unattempted labels are not rewritten. This annex records the separate later
+four-observation D09 result without claiming either old partial was complete.
+Prior release/control observations and their byte-only comparisons also remain exact.
+
+Custody is 30 before/after endpoint pairs per new child, 120 actual pairs in
+all, plus three authority pairs. Endpoint agreement is not continuous loaded
+provider, FP, source-to-compiled, ABI or OS-execution attestation. The minimal
+supplied C/TIME0 environment is separate from old env=None/source/default
+clock and version unknowns. Raw/log/JSON FD-fsync requests do not prove
+crash or directory durability; outer-FD fsync is not explicit. Old failed
+and skipped-fsync scopes are not repaired.
+The unreserved full resource budgets, child limits, lack of a parent wall
+watchdog and escaped-descendant/cleanup qualifications remain explicit.
+
+Only this annex and revision metadata change. All 23 whole requirements,
+1,193 prior navigation IDs, 67 acceptance rows plus five protocol navigation
+rows (72 literal DAN rows), R3–R13 objects, criteria, tolerances, U, state,
+error and history, all old fourteen/five ASOF records and the immutable
+release's 38 groups/42 evaluations remain exact. Preservation uses the
+current 119,503-byte R13 baseline, including its additive return-evidence
+qualification; the historical 119,032-byte approved R13 target is not restored.
+Full reversal restores that current baseline. No public/ARM, compatibility,
+portable criterion, grade, release, O observation or whole-product closure follows.
+Required unsupported behavior stays U and whole-Live coverage OPEN.
+
 ## Open questions
 
 Proposed for [questions](../questions.md) (not edited by this draft):
@@ -622,6 +1468,8 @@ Proposed for [questions](../questions.md) (not edited by this draft):
 - **Metric.** Acceptance of the proposed metric for ADR 0004.
 
 ## Analyst evidence appendix
+
+**Return evidence qualification (2026-10-22).** The [sole-reviewed executed-x86 CalcA study](../research/device-analog-dsp.md#executed-x86-calca-metadatanativescalar-adoption--2026-10-22) records conditional local return-carrier construction, separate optional-pointer delivery and remaining exit/runtime/ABI unknowns. It establishes no public return meaning or benignness and changes no guard, failed disposition, requirement, case or criterion. R13 remains unchanged.
 
 Analysis-only. Do not copy into a handoff. Canonical evidence:
 [Analog DSP by extracted execution](../research/device-analog-dsp.md). Retained run
@@ -660,17 +1508,273 @@ loader, built to `/var/tmp/sound-analysis/t12-analog/xdev`. Slice:
 | Revision | Date | Change |
 | --- | --- | --- |
 | 1 | 2026-10-18 | First draft (T1.2, packet t12-analog-v1). 23 requirements: 17 with X closed forms or X tables (004 to 019 in part, 022); 002 S with S-cond and U parts; 001 X with U parts; 020, 021 and 023 largely U. 47 cases: 42 graded against retained reference renders, 1 graded statistically (DAN-012), 4 not graded (DAN-043, 044, 046, 047) |
+| 2 | 2026-10-20 | ANRMAP-001 correction, pending independent review: REQ-022 removes unsupported sustain/first-change/settling/host-arrival grading claims. Whole eight-control no-replay results remain ungraded discovery. All 22 other requirement bodies and 39 case rows/47 IDs unchanged; device-analog-v1 unchanged. |
+| 3 | 2026-10-21 | Adopt reviewed finite extracted observations directly under design12: eight paired no-replay histories (DAN-048–055) and all twenty first-order envelope-mode inputs (DAN-056–075), with fresh DAN028 as explicit control. General R2 timing/mode/lifecycle unknowns and all39old acceptance rows/47IDs preserved; no portable waveform criterion or release change. |
+| 4 | 2026-10-21 | Add 127 finite native velocity-byte observations DAN-076–202 and one inherited DAN-028/P1 reference / full 128-point catalog; qualify REQ004/017 at fixed 203-value vector / all 8 modifiers 0. Old bodies retained as exact prefixes (21 other whole bodies), all 67 rows / 75 IDs / R3 objects / tolerances / released scope / U exact; portable comparators and grades NULL, no new general velocity, public, ARM or calibration law. |
+| 5 | 2026-10-21 | Add127 finite typed note-key observations DAN-203–329 plus inherited key60 DAN028/P1 / complete128 catalog. Append only REQ004 finite qualification; REQ006 remains unchanged context, no f0 or general pitch/clamp/alias mechanism. All202 old IDs/67rows/R3objects/R4catalog/tolerances/U/state/history/releasedscope exact; portableexpected/comparator/gradeNULL. |
+| 6 | 2026-10-21 | Add 15 finite matching channel-nibble observations DAN-330–344 and inherited nibble-0 DAN-028/P1 reference/full 16-point catalog. Append only REQ-004 finite qualification. Preserve 22 other whole bodies, old004 prefix, 329 IDs/67 rows, R3 objects/R4 and R5 catalogs, metrics/U/state/history and released scope. Portable expected/comparator/grade NULL; no general channel/public/ARM/calibration law. |
+| 7 | 2026-10-21 | Add 127 finite note-off release-byte observations DAN-345–471 and inherited byte-64 DAN-028/P1 reference/full 128-point catalog. Append only REQ-004 finite qualification. Preserve 22 other whole bodies, old004 prefix, 344 IDs/67 rows, R3 objects/R4–R6 catalogs, metrics/U/state/history and released scope. Portable expected/comparator/grade NULL; no general release/dispatch/timing/public/ARM/calibration law. |
+| 8 | 2026-10-21 | Add one combined 232-observation annex: 24 Transpose cases DAN-472–495 and 208 further native-kind3 vectors DAN-496–703, with full 25-point and 338-alias/254-vector reference catalogs. Append only REQ-003 finite qualification. Preserve 22 other whole bodies, old003 prefix, 471 prior IDs/67 rows, R3–R7 objects/catalogs, criteria/U/state/history and released scope. All portable expected/comparator/grade fields NULL; index99=0 remains measurement-only, no general/public/ARM/calibration law. |
+| 9 | 2026-10-21 | Add 284 finite independent On/Off key/channel observations DAN-704–987, full 288-alias/285-WHOLE-history catalog with one inherited DAN-028 INPUT reference/four baseline aliases/no replay or criterion transfer. Append ONLY REQ-004 finite qualification; preserve 22 other whole bodies incl R8 REQ-003/old 004 R7 prefix/67 rows/703 old IDs/R3–R8 objects/auxiliary i099=0/silent gates/stale scalar qualifiers/criteria U/state/history/releases 38 groups/42 evaluations exact/full reverse. All NULL new priors/portable criteria/grades/new application proof false; no general unmatched-release/public/ARM/calibration law. |
+| 10 | 2026-10-21 | Add 193 finite converted-input observations DAN-988–1180; full 198-alias/194-history catalog, one inherited DAN-028 INPUT reference/five aliases without replay or criterion transfer. Joint Polyphony 0/7 and four target axes only, exact 0.5 amounts under mandatory erratum; no dormancy/MPE/voice/general/public law. All 23 requirement bodies/67 rows/987 prior IDs/R3–R9 objects/criteria/history/releases 38 groups/42 evaluations exact/full reversal; portable criteria/grades NULL. |
+| 11 | 2026-10-21 | Add five finite secondary rate/block observations DAN-1181–1185; full six histories/seven aliases, one baseline INPUT reference/two aliases without replay or criterion transfer. Keep 44,100 frames/events even at 48 kHz; block 64 has 690 CalcA/final 4. Annex/revision only: all 23 whole clauses, 1,180 prior IDs, 67 rows, R3–R10 objects/criteria/history/releases 38 groups/42 evaluations exact/full reversal. Preserve source-association/common170-pair/raw-no-fsync/NULL portable criteria limits; no new rate/block/grid/public/ARM law. |
+| 12 | 2026-10-21 | Add four finite declared multi-note observations DAN-1186–1189; preserve all fourteen dispositions: four accepted, p04 guardFAIL U, nine unlaunched U. Annex/revision only; all23 whole requirements/1185 prior IDs/67 rows/R3–R11 objects/releases38 groups42 evaluations exact/full reversal. No actual pair, capacity, stealing, return-meaning, activation or public/ARM law; all priors/portable criteria/grades NULL, application false. |
+| 13 | 2026-10-22 | Add only four finite release/control observations DAN-1190–1193/full4histories/two descriptive DIFFERbytehash pairs; full14oldASOF separate/unchanged/no failedp04 or counttail replay. Annex/revision ONLY/all23wholeREQ1189oldIDs67acceptance+5protocol=72literalrows/R3–R12objects/criteriaU/history/releases38groups42eval/fullreverse exact; NULL native-waveform/portablecriteriaGrade/appFalse/no capacity/release/publicARM/calibration law. |
+| 14 | 2026-10-23 | Add only four D09 opaque-return observations DAN-1194–1197/p06–09; no failed p04/p05 replay or return/voice meaning. Annex/revision only; all23 whole REQ/1193 prior IDs/72 literal rows/R3–R13 objects/old14+5ASOF/criteria U/releases38 groups42 evaluations preserved/full reverse to current119503B R13 including additive return qualification. All new waveform priors/portable criteria/grades NULL/application false; no public/ARM/general capacity law. |
+| 15 | 2026-10-23 | Add 161 finite current-supplied producer observations DAN-1198–1358 / 231 aliases. Retain all 469 contexts / 548 aliases / 556 slots / 23 groups: failed APCS-0162 U and 307 unattempted U, 14 references, seven FP/provider and eight whole SOURCE gaps. Annex/revision only; all 23 whole requirements, 72 rows, 1,197 old IDs, R3–R14 objects, old 14+5 ASOF, exact D09 four, U/criteria/history/releases 38 groups / 42 evaluations preserved with full reversal. Strict return 0 / flags 0 or 1; no opaque transfer. All nine omitted-input contexts / 16 aliases unattempted; native expectations/portable criteria/grades NULL, application false. |
 
-Not released. A first release could carry these with their cases and renders:
+Released locally on 2026-10-19: [device-analog-v1](../../handoff/device-analog-v1/README.md),
+38 groups and 42 finite evaluations, after independent review. Only finite portions
+of REQ-001, 004–008, 011–017 and 023 are released. The accepted metric uses frozen
+onset/envelope/stationary eligibility and at most the first 40 eligible harmonics;
+it does not release the parent's general formulas or open-ended spectrum criterion.
+The [handoff plan](device-analog-handoff-plan.md) records the exact review and pin.
 
-- REQ-001 and 003 to 019 without their U parts;
-- REQ-002's S clauses.
+Random/statistical noise, uncalibrated modulation trajectories, glide, unison,
+unrendered modes, parameter changes and Live-side protocol/mapping remain outside
+that release. At that release the mutable parent was revision 1: review clarified the finite
+contract's exact nonzero-onset test and zero-based channel numbering without
+changing any captured values. Full behavior and arm64 equivalence remain unknown.
 
-It needs:
 
-- the metric accepted for ADR 0004;
-- a reviewer's check that the formulas are behavior statements, not recovered code;
-- a decision on whether render-only definitions (formant, Notch4, sync waveform, random LFO
-  shapes) are acceptable fixtures.
+## Historical revision 1 evidence qualification — ANRMAP-001, 2026-10-20
 
-REQ-021 and 023 wait on further X work. The Live-side clauses wait on Q-025.
+The [independent family-map review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/family-analog-routes-v1-review.json)
+found a retained-history error affecting REQ-022. Its old “during sustain”
+AttackTime interpretation is **stale and unsupported**. The original table and
+raw values remain history; they are not current proof of held-note latency.
+The driver queues note-on4400 once, then runs two 13,312-frame process requests.
+The harness reuses that queue with per-request coordinates, delivering the note
+again in interval two: cumulative timestamp17,712 in callback17,408, offset304.
+AttackTime first-change17,734 follows that callback and does not establish
+uninterrupted-held-sustain behavior.
+
+Seven other first-change values (13,332/13,340/13,376/13,390) precede the repeated
+callback and retain only finite first-change support. They establish neither
+later ramps nor a general 100ms settling bound. REQ-022's post-change/ramp and
+actual host timing unknowns remain; the 100ms convention is not evidence that
+arbitrary histories settle by then. No new expected value or behavior is adopted
+by this stale notice. All 23 requirement bodies/47 case IDs (39 table rows) remain.
+Current device-analog-v1 already excludes parameter changes and is unchanged.
+A bounded family-map v2 provenance correction is being authored; no original/
+candidate rerun or new metric is selected here.
+
+## Revision 2 disposition — ANRMAP-001, 2026-10-20
+
+At author freeze, revision 2 was **pending independent review**; the approval below now governs. Its REQ-022 supersedes revision 1's
+parameter-change table and grading promises; it does not adopt new expected values, cases,
+metrics or release scope. The historical revision 1 notice above is retained as written at its
+stale-qualification stage: its “being authored” and unchanged-body statements describe that
+stage, not current work. The bounded family-map v2 correction has since been approved, followed
+by a frozen preparation/readiness gate, one whole eight-control execution and
+[bounded actual-result review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-actual-review.json).
+All discoveries remain UNGRADED; the accepted finite device-analog-v1 release is unchanged.
+
+The [revision 2 correction packet](../../analysis/ableton-live-12.4.3/full-spec-v1/analog-owner-r2-anrmap001/README.md)
+pins that chain and the old owner 45184-byte identity, and preserves the exact superseded text
+through a reversible minimal delta rather than a copied specification snapshot. All 23 REQ IDs,
+the other 22 requirement bodies and all 39 acceptance rows covering 47 case IDs remain intact.
+General smoothing/timing/other-control behavior, envelope-stage interpretation, ARM/Apple
+behavior and Live control/receiver/output binding remain unknown. This correction supplies no
+new original run, trajectory tolerance, portable latency metric or numerical acceptance case.
+
+
+## Current r2 approval — 2026-10-20
+
+The [independent owner review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-owner-r2-anrmap001-review.json),
+SHA256 `d621ac57b643ff3a7f0bb853cbb3ccb1e6faca26646900df67babec035157c66`,
+approves the bounded ANRMAP-001 correction, manifest
+`ecba81177c1efbc95d0e430b050ea3eb08f17b0bb8559f81fdf12ca285b4dcee`.
+Pending-review wording in the author-frozen record is historical. Only REQ022
+changes normatively; the other 22 requirement bodies, all 39 acceptance rows/47
+case IDs and all 23 requirement IDs remain exact. Required parameter-change,
+smoothing, settling, history and Live-timing outcomes remain U, with no new
+portable oracle, metric, case or grade. The whole eight-control discovery is
+ungraded. Device-analog-v1 and its 42 finite evaluations remain unchanged.
+
+The [root metadata-adoption receipt](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/analog-owner-r2-root-adoption.json)
+retains the exact reviewed owner identity and reversible status-only adoption
+delta. Frozen predecessor maps and their 241-row inventory refer to revision 1;
+they are not a newly derived r2 outcome denominator.
+
+
+## Revision 3 finite observation adoption — 2026-10-21
+
+The [R3 adoption packet](../../analysis/ableton-live-12.4.3/full-spec-v1/owner-analog-r3-finite-v1/README.md)
+pins the approved R2 predecessor, all23old body hashes and all39old acceptance-row hashes,
+the two immutable batch manifests and independent batch reviews, and all28new case aliases.
+The [eight-pair review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-change-history-v1-actual-review.json)
+SHA256 `42883ae34c203ce530c203e9826520532aaffe4be81a58eb3d7b1c5aa9f73bbe`
+and [whole P1 review](../../analysis/ableton-live-12.4.3/full-spec-v1/reviews/batch-analog-envelope-modes-v1-review.json)
+SHA256 `46402c9f899684c5e105301c522894b43f44ee8b52acb2c501251213c338250f`
+admit the observations under design12 without a second observation review. R3's added
+contract wording is a separate bounded owner-review scope.
+
+The revision1/r2 disposition and approval notices above remain historical statements
+of their own revisions. Their ungraded-discovery wording does not rewrite the new finite
+R3 cases; original capture nulls/statuses remain exact. Only REQ016/021/022 change here;
+the other20requirement bodies and all47old case IDs/39rows remain exact. The approved
+R2 REQ022 withdrawal prefix remains byte-identical. General timing/settling, mode/lifecycle
+and public behavior stay U; whole-product coverage stays open. Device-analog-v1 remains
+immutable and no new handoff release or portable calibration is asserted.
+
+## Interior-state helper qualification — 2026-10-21
+
+[The whole interior-state review](../research/device-analog-dsp.md#analog-interior-state-helper-adoption--2026-10-21) establishes a conditional incoming-I return and 292 direct written bytes within a 696-byte bound. Its two inherited receiver bounds exclude Q's first word only for direct stores, under nonalias/nonwrap premises; eight opaque calls prevent a whole-helper preservation claim. No current class, runtime callback or public/default/math law follows. Cases, grades, releases and main-image sites are unchanged; required unsupported behavior stays U and coverage OPEN.
+
+## Opaque-three eligibility qualification — 2026-10-21
+
+[The whole three-helper review](../research/device-analog-dsp.md#analog-opaque-three-helpers-adoption--2026-10-21) retains direct state writes, opaque string/log-shaped calls and native FRINTZ/FP-store and mixed-precision distinctions. It supplies no receiver-free pure X batch, current-table preservation, exact numeric oracle or public behavior law. This is current missing admission, not an infeasibility claim or a ban on later legal finite discovery. Cases/grades/releases/sites stay unchanged; required U/product OPEN.
+
+## Finite declared multi-note observations — revision 12
+
+**Analyst draft; four observations admitted, ten histories remain U.**
+The [complete R12 catalog](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r12-declared-multinote-partial-finite-v1/mapping.json)
+assigns DAN-1186–1189 only to the four approved count histories p00–p03.
+REQ-005 is navigation context, not a newly validated voice-capacity, stealing,
+mono-priority, MPE activation or release law. The entire fourteen-history
+source-declared class stays visible: p04 failed the frozen guard; p05–p09
+and all four release/control histories were never launched. Those ten U
+histories receive no IDs, accepted metrics, native expectations or grades.
+No complete-class success or actual full/control pair comparison is claimed.
+
+The sole observation authority is Arrangement's [independent partial review](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-declared-multinote-v1-partial-review.json),
+2,648,300 bytes, SHA256 `34a683877d016b55d09efb5cfe1fceedc835687e2fdce8ab0034ff639a093c61`.
+Each new ID joins its exact input, approved point, native output reference and
+copied unsigned/protocol metadata. Fresh waveform priors, native waveform
+expectations, portable expected values, comparators and grades remain NULL;
+new application proof is false. Native hashes are descriptive references,
+not portable waveform criteria or new calibration. This owner revision does
+not repeat actual/source/raw/numeric/provider proof or inherit old outputs.
+
+These are the retained probe recipe's original 203 decimal/binary64/binary32
+words, not the P1 vector. The six differences at indices 29, 36, 105, 106,
+108 and 110 remain explicit in the inherited input qualification. The
+mandatory corrected amounts at 196, 198, 200 and 202 remain 0.5; superseded
+zero-amount prose was not executed and is not restored. Polyphony uses the
+joint host-0/host-7 conversion; no independent Poly/MPE crossproduct is added.
+The count inputs schedule 36 note-ons at frames 4400 + 2200*i, keys 36–71,
+velocity 100, with no note-offs or warm-up, rate 44100, block 512 and end
+105650 (last block 178). They are distinct whole event histories, not repeated
+single-note finite-host samples. p00–p03 alone were accepted under the
+unchanged admitted model and its ret0/flag0or1/CXX/shape/finite guards.
+
+The source-declared release comparison uses exactly its two literal release
+settings and full-three-note versus ev[:2] histories with the same end.
+All four members are unattempted U: there is no accepted omission/control
+output comparison or residual, tail, stealing or capacity inference.
+Historical old-input nonintersection is bounded to the recorded cut, not a
+claim that these inputs were never run. Old env=None, executed-source/default,
+clock, FP and version bridges remain unknown; the current explicit supplied
+environment does not establish historical equivalence.
+
+Accepted p00–p03 outputs are copied as finite, nonzero in both lanes and
+stereo-word-equal, with four hashes. These facts are descriptive only.
+The failed p04 log retains two unaccepted ret1/flag1 projections at frames
+59392 and 87552; its remaining ret0 projections, child exit0 and full raw
+shape do not override the frozen rejection or explain the native return.
+No return-error, clipping, ABI, activation or numerical-cause law is inferred.
+The failed raw-FD fsync branch was skipped. Its diagnostics remain unaccepted;
+no retry, guard relaxation, continuation or retroactive classification occurs.
+
+The accepted four account for 1652 selected exports, 828 CalcA projections
+and four separately logged initializer entries. Nested/all-native work remains
+unknown. Rate's signed integer is opaque. Recorded custody is 19 actual
+before/after endpoint pairs for each of five attempted children (95 pairs)
+and two whole-batch source pairs, not continuous loaded-provider, actual-FP,
+source-version or OSexec attestation. Successful child raw/log/JSON fsync
+requests do not establish directory/crash durability; the failed raw path and
+outer recorder have no such raw/outer FD request. Existing cleanup, within-child
+first-detected-fault, unreserved resource and escaped-descendant limits remain.
+
+Only this annex and revision metadata are added. All 23 whole requirements,
+1185 prior navigation IDs, 67 acceptance rows plus five R11 protocol
+navigation table rows (all 72 literal DAN rows), R3–R11 referenced objects, mandatory MPE
+erratum, criteria, tolerances, U, state/error/history and the immutable release's
+38 groups/42 evaluations remain exact. Prior preservation is inherited from
+the approved R11 owner report's embedded metadata without reopening old
+proposals, catalogs or fixtures. Full reversal restores R11. The resulting
+1189 navigation IDs are not passes or a product-outcome denominator. Required
+unsupported behavior stays U and whole-Live coverage OPEN; no new public/ARM,
+physical compatibility, calibration, portable criterion, grade or release.
+
+## Revision 15 finite current-supplied producer observations
+
+This annex adds only 161 finite **X native observations**, **DAN-1198–1358**,
+from the [sole-approved partial actual REPORT](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/reviews/analog-complete-producer-current-supplied-v1-partial-review.json),
+84,865,091 bytes / SHA256 `f3f46e962d315bb708d5baf74216880c32dd31b6b63247d5bab419ea66889fa3`.
+The [complete owner mapping](../../analysis/ableton-live-12.4.3/r2-large/full-spec-v1/owner-analog-r15-complete-producer-partial-finite-v1/mapping.json)
+joins those cases to 231 SOURCE aliases and retains every other disposition.
+Root reviews only this new wording, IDs, mapping and preservation; actual,
+SOURCE, collector, raw/audio and numerical proof is inherited from the sole
+review without reopening or rerunning underlying evidence.
+
+The complete supplied class has 469 current contexts / 548 aliases derived
+from 556 new SOURCE slots across all 23 groups. Inherited 183 shared arrays
+and current 181 distinct ordered arrays are different DATA units, not native
+uniqueness or product denominators. Fourteen prior INPUT references, one
+conservative old 47-script reference/exclusion, seven unlaunched FP/provider
+slots and eight original whole SOURCE gaps remain separate and unchanged.
+The bounded 1,239 prior INPUT records and 22 exact-history bridge gaps do not
+establish global absence, historical/current equivalence or 1,197 reconstructed
+native histories. Every literal 203-word decimal/f64/f32 array, full script,
+event/order/frame/rate/block/tail/default omission and supplied context is
+retained in the approved mapping. No native law or new A1 emission follows.
+
+Exactly 162 children were attempted once: 161 approved, APCS-0162 guardFAIL U
+and 307 unattempted U. Accepted groups are oscillator 26, noise 21, filter 75,
+voices 2, routing 22, drive 14 and output 1. The failed output history carries one
+alias; unattempted histories carry 316 aliases. The sole peer verifies correct
+failed process geometry and legal flags, but rejects its nonzero CalcA return
+projection under the unchanged strict return 0 guard. Its finite diagnostic raw,
+exit 0 and completed same-child calls are not an accepted observation, metric,
+expectation, case or grade. Stale RUNNING with end fields, failure and partial
+history remain exact. No return ABI/meaning/cause, retry, automatic continuation
+or opaque-policy transfer is inferred. All prior p00–09, failed p04/p05 and
+the exact D09 four remain unchanged and unreplayed.
+
+All nine omitted-input contexts covering sixteen setter-tail aliases were
+unattempted. Their literal omission remains; no input-zero command is inserted.
+The conditional NULL-input byte-fill SOURCE premise is associated with the
+same unchanged admitted model only. It is not an actual observation of those
+tails, compiled-source/current consumption proof, explicit-input command/log
+equivalence or a general default-input law. FTZ/provider variants stay U; source
+envNone, literal TIME and import/table/executed-version/public associations
+retain their recorded qualifications. Reset is absent from this supplied class;
+an early chat-only assumption was corrected before native calls. Eight existing
+command verbs and source geometry establish no unlimited process/completion law.
+
+The accepted 161 account for 59,432 selected exports, 26,266 CalcA projections,
+107,414,640 raw stereo bytes and 161 separately logged initializers; nested/all
+native work stays unknown. All accepted renders are finite, BOTH nonzero and
+stereo-word-equal; 144 raw hashes and 70 counted Linux names are descriptive
+references only. All new waveform priors, native waveform expectations,
+portable expected values/comparators and grades remain NULL; application proof
+is false. Neither equality/nonzero/silence nor a waveform hash is a new guard,
+portable criterion, productivity, capacity, release, causal or public/ARM law.
+Strict CalcA return 0 / flags 0 or 1 and every other existing guard remain; D09 and
+other opaque policies do not transfer. Rate is opaque; the frozen parser lacks
+an explicit int64 range guard, while the sole peer checked the retained Rate
+values within int64. No frozen repair or domain/meaning law follows.
+
+The sole review checks 524 runtime/common-frozen before/after endpoint pairs
+for each of 162 attempts (84,888 pairs), not continuous loaded-provider/FP,
+OSexec or source-to-compiled attestation. Accepted raw fsync branch progress is
+inferred from SOURCE/RECORDED state, without a separate syscall-receipt boolean;
+failed raw skipped that branch. Log/JSON requests do not prove directory/crash
+durability; outer recorder redirection has no explicit FDfsync. Child 20-second
+CPU/wall, core-zero and file bounds do not imply a parent 20-second watchdog. Existing cleanup,
+uncatchable/escaped-descendant, transitive-library, within-child detection and
+overshoot limitations remain. The complete 6,991,975,856-byte fresh requirement
+retains full remaining raw, 8MiB logs and 4MiB metadata per future child,
+512MiB final/review/owner, 128MiB headroom and 256MiB concurrent allowance, retaining
+the old Analog floor. It is an unreserved planning estimate, not quota or a
+hard aggregate bound, with external writers/within-child/finalization limits.
+
+Only this annex and revision metadata change. All 23 whole requirements,
+72 literal rows, 1,197 old IDs, R3–R14 objects, criteria/U/state/history,
+old 14+5 ASOF, mandatory MPE amount 0.5 qualification, old count/failure/D09
+dispositions and immutable release 38 groups/42 evaluations remain exact.
+Full reversal restores the exact 124,809-byte R14 owner. Navigation totals
+1,358 IDs are not passes or whole-product coverage. Required unsupported
+behavior remains U, whole-Live coverage OPEN; no new release or application grade.

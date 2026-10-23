@@ -1,0 +1,106 @@
+{
+  "schema": "root-bounded-x86-construction-readback-v1",
+  "status": "pending-independent-actual-result-review",
+  "written_utc": "2026-10-21T00:15:15.097611+00:00",
+  "fresh_scope": "Root read all93decoded rows and associated320rawbytes/per-childreceipts; independently checked16E8signedrel32targets and23selected carrier/store opcode encodings. No outside targetbody/global/slot read.",
+  "premises": [
+    "Selected address entered on statednormalpath and unreadcalls return normally; no originalexecution occurred.",
+    "Unreadcalls preserve used savedregisters/stack and do not corrupt carrier/objectregions; not established by outsidebody reads.",
+    "Valid nonwrapping/nonalias memory and no concurrentinterferingwrite for explicitlocal effects."
+  ],
+  "facts": [
+    {
+      "id": "UXC-01",
+      "entry": "0x1022313c0",
+      "PC_span": "0x1022313c0\u20130x1022313f0",
+      "claim": "The entry saves incomingRDI/C inRBX and forms frame-localT=RBP-0x38 inR14. It calls101ad08a0 and102231400 in that order,each withRDI=T/RSI=C. After the second call,the selected normal epilogue leavesRAX unchanged throughRET.",
+      "limits": "Register flow under normal-return/saved-register-and-stack preservation premises only. T is frame-local,not the actual processor; C meaning/currentpublic context unknown."
+    },
+    {
+      "id": "UXC-02",
+      "entry": "0x101ad08a0",
+      "PC_span": "0x101ad08a6\u20130x101ad0906",
+      "claim": "IncomingRDI/T is saved inRBX. A frame-local qwordL atRBP-0x10 is explicitly zeroed,then six unread calls receive address arguments T,T+4,T+8,&L,T+0x18,T+0x20 with chained opaque carriers. Final selected MOV loadsL toRAX and stores that carrier to[T+0x10],thenreturns it.",
+      "limits": "Passing&L to an unread helper permits mutation; finalL is not provedzero. No parser/serialization/type/default/constructor role,writeextent or control semantics inferred."
+    },
+    {
+      "id": "UXC-03",
+      "entry": "0x102231400",
+      "PC_span": "0x10223140a\u20130x102231447",
+      "claim": "IncomingRSI/C is saved inRBX and incomingRDI/T inR14. Two unread calls receive frame-local output addresses. EDI=0x28 is passed to101ac8330; its returnRAX is saved asH inR15. The call101acf4c0 receivesRDI=H,RSI=T,EDX=(0x268+load32(RBP-0x20))mod2^32 andECX=zeroExtend(load8(RBP-0x19)).",
+      "limits": "Unread helpers are not proven to initialize the locals. Literal0x28 is not allocation-size/success/extent proof;0x268 is not a field/object-size guarantee. Saved-carrier,validmemory and normalreturn premises apply."
+    },
+    {
+      "id": "UXC-04",
+      "entry": "0x102231400",
+      "PC_span": "0x10223144c\u20130x102231456",
+      "claim": "Before directCALL102247e80,the selected instructions loadRDI=load64(H+0x18),RSI=T,RDX=C. Exact E8rel32 arithmetic independently matches that target.",
+      "limits": "Targetbody/alias/nativeABI/objectrole unread. No equation with ARM10215f2b8 or same-device/currentcontrol/publicprocessor follows from a similar carrier pattern."
+    },
+    {
+      "id": "UXC-05",
+      "entry": "0x102231400",
+      "PC_span": "0x10223145b\u20130x102231470",
+      "claim": "H is passed inRDI to101acf650,thenexplicitMOVRAX,R15 returnsH at selectedRET. Combined withUXC01,the outer entry returns that saved carrier on this normalpath.",
+      "limits": "Unread callee saved-register/stack preservation and normalreturn are explicit premises,not proved outsidewindow. H is not provedallocator-owned/publicobject,processorP or modelM."
+    },
+    {
+      "id": "UXC-06",
+      "entry": "0x102231400",
+      "PC_span": "0x102231471\u20130x102231489",
+      "claim": "The physical suffix after normalRET contains two more direct calls at10223147c\u2192101ac6ba0 and102231484\u2192105a4d2c6,and a trailingNOP. All16capturedE8targets match raw signedrel32 arithmetic.",
+      "limits": "No selected predecessor establishes entry to this suffix; no unwind/exception/error/refusal/teardown meaning or full CFG is inferred. All encountered targets outsidefixedranges stay unread."
+    },
+    {
+      "id": "UXC-07",
+      "entry": "three selected entries",
+      "PC_span": "320physicalbytes/93rows",
+      "claim": "All three ranges match exact raw row coverage,including post-RET padding/suffix bytes. The selected208byte overlap equals retainedoldraw;161previously opaque overlap bytes now have byte-associated decoder rows,32oldraw bytes remain outside this selection and112newimagebytes are captured.",
+      "limits": "Historical240/47/193packet is immutable. New decoded byte coverage is not independent proof of every decoder operand,completefunction extent,ARM/x86equivalence or publicMute/audio/default/lifecycle behavior."
+    }
+  ],
+  "operational": {
+    "attempts": 1,
+    "capture_utc": [
+      "2026-10-21T00:13:17.693284+00:00",
+      "2026-10-21T00:13:18.108780+00:00"
+    ],
+    "windows": [
+      {
+        "entry": "0x101ad08a0",
+        "bytes": 112,
+        "rows": 31,
+        "pid": 1092143,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x1022313c0",
+        "bytes": 64,
+        "rows": 19,
+        "pid": 1092144,
+        "cleanup": "process-group-already-gone"
+      },
+      {
+        "entry": "0x102231400",
+        "bytes": 144,
+        "rows": 43,
+        "pid": 1092145,
+        "cleanup": "process-group-already-gone"
+      }
+    ],
+    "rows": 93,
+    "bytes": 320,
+    "watched_identities": 17,
+    "recorded_before_after_equal": true,
+    "full_image_tool_hashes_fresh": "Recorded collector before/after once perbatch; not reopened by this readback.",
+    "outer_pid": null,
+    "cleanup_limits": "All3already-gone after normalcompletion; no timeout/descendantkill/failurepath/process-table absence tested."
+  },
+  "all_six_bridges": "U",
+  "application_U": 38,
+  "family_inventory": 48,
+  "new_original_calls": 0,
+  "new_indirectsite_credit": 0,
+  "normative_case_release_or_grade_changes": false,
+  "selected_successor": null
+}
